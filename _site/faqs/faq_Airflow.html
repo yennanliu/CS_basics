@@ -1,0 +1,230 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Faq Airflow - CS_basics</title>
+  <meta name="description" content="Computer Science fundamentals: algorithms, data structures, system design, and LeetCode solutions">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>CS</text></svg>">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="../vendor/fonts.css">
+  <link rel="stylesheet" href="../vendor/highlight/github-dark.min.css">
+  <script src="../vendor/highlight/highlight.min.js"></script>
+  <script>
+  // Apply theme before render to prevent flash
+  (function() {
+    var saved = localStorage.getItem('theme');
+    if (saved === 'dark' || (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      document.documentElement.setAttribute('data-theme', 'dark');
+    }
+  })();
+  </script>
+  <script>document.addEventListener('DOMContentLoaded', function() {
+    hljs.highlightAll();
+    document.querySelectorAll('pre code').forEach(function(codeEl) {
+      var pre = codeEl.parentElement;
+      var lang = '';
+      var cls = codeEl.className || '';
+      var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
+      if (m) lang = m[1];
+      var wrapper = document.createElement('div');
+      wrapper.className = 'code-block-wrapper';
+      pre.parentNode.insertBefore(wrapper, pre);
+      var header = document.createElement('div');
+      header.className = 'code-block-header';
+      if (lang) {
+        var label = document.createElement('span');
+        label.className = 'code-lang-label';
+        label.textContent = lang;
+        header.appendChild(label);
+      } else {
+        header.appendChild(document.createElement('span'));
+      }
+      var btn = document.createElement('button');
+      btn.className = 'copy-btn';
+      btn.textContent = 'Copy';
+      btn.addEventListener('click', function() {
+        navigator.clipboard.writeText(codeEl.textContent).then(function() {
+          btn.textContent = 'Copied!';
+          btn.classList.add('copied');
+          setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+        });
+      });
+      header.appendChild(btn);
+      wrapper.appendChild(header);
+      wrapper.appendChild(pre);
+    });
+    document.querySelectorAll('table').forEach(function(table) {
+      if (!table.parentElement.classList.contains('table-wrap')) {
+        var wrapper = document.createElement('div');
+        wrapper.className = 'table-wrap';
+        table.parentNode.insertBefore(wrapper, table);
+        wrapper.appendChild(table);
+      }
+    });
+    // Reading progress bar
+    var progressBar = document.getElementById('reading-progress');
+    if (progressBar) {
+      window.addEventListener('scroll', function() {
+        var winScroll = document.documentElement.scrollTop;
+        var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        progressBar.style.width = height > 0 ? (winScroll / height * 100) + '%' : '0%';
+      });
+    }
+    // Dark mode toggle
+    var toggle = document.getElementById('theme-toggle');
+    if (toggle) {
+      var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      toggle.textContent = isDark ? '☀️' : '🌙';
+      toggle.addEventListener('click', function() {
+        var dark = document.documentElement.getAttribute('data-theme') === 'dark';
+        if (dark) {
+          document.documentElement.removeAttribute('data-theme');
+          localStorage.setItem('theme', 'light');
+          toggle.textContent = '🌙';
+        } else {
+          document.documentElement.setAttribute('data-theme', 'dark');
+          localStorage.setItem('theme', 'dark');
+          toggle.textContent = '☀️';
+        }
+      });
+    }
+  });</script>
+</head>
+<body>
+  <div class="progress-container"><div class="progress-bar" id="reading-progress"></div></div>
+  <nav class="navbar">
+    <div class="container">
+      <div class="nav-brand">
+        <span class="nav-icon">💻</span>
+        <span class="nav-title">CS_basics</span>
+      </div>
+      <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+      <div class="nav-links">
+        <a href="../index.html" class="">Home</a>
+        <a href="../cheatsheets.html" class="">Cheat Sheets</a>
+        <a href="../patterns.html" class="">Pattern Recognition</a>
+        <a href="../faqs.html" class="active">FAQs</a>
+        <a href="../resources.html" class="">Resources</a>
+        <a href="../lc-explorer.html" class="">LC Explorer</a>
+        <a href="../lc-random-picker.html" class="">🎲 Random Picker</a>
+        <a href="../algo_demo/index.html" class="">Visualizer</a>
+        <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">&#127769;</button>
+        <a href="https://github.com/yennanliu/CS_basics" target="_blank" class="github-link" aria-label="GitHub">
+          <svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor">
+            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container">
+    <div class="content">
+      
+      <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../faqs.html">FAQs</a> <span class="sep">›</span> <span class="current">Faq Airflow</span></nav>
+      <div class="cheatsheet-header">
+        <h1>Faq Airflow</h1>
+        <span class="last-updated">Last updated: Feb 23, 2024</span>
+      </div>
+      
+      <div class="cheatsheet-content">
+        <h1 id="airflow-faq" tabindex="-1"><a class="header-anchor" href="#airflow-faq"><span>Airflow FAQ</span></a></h1>
+<ol>
+<li>
+<p>How can you scale Airflow?</p>
+<ul>
+<li>General
+<ul>
+<li><a href="https://eng.lyft.com/running-apache-airflow-at-lyft-6e53bb8fccff">https://eng.lyft.com/running-apache-airflow-at-lyft-6e53bb8fccff</a></li>
+<li><a href="https://medium.com/@tomaszdudek/yet-another-scalable-apache-airflow-with-docker-example-setup-84775af5c451">https://medium.com/@tomaszdudek/yet-another-scalable-apache-airflow-with-docker-example-setup-84775af5c451</a></li>
+<li><a href="https://www.astronomer.io/guides/airflow-scaling-workers/">https://www.astronomer.io/guides/airflow-scaling-workers/</a></li>
+</ul>
+</li>
+<li>Scale Airflow with gcloud
+<ul>
+<li><a href="https://medium.com/traveloka-engineering/enabling-autoscaling-in-google-cloud-composer-ac84d3ddd60">https://medium.com/traveloka-engineering/enabling-autoscaling-in-google-cloud-composer-ac84d3ddd60</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>Scale airflow via <code>airflow.cfg </code></p>
+<ul>
+<li>
+<p><a href="https://www.astronomer.io/guides/airflow-scaling-workers/">https://www.astronomer.io/guides/airflow-scaling-workers/</a></p>
+</li>
+<li>
+<p>parallelism : is the max number of task instances that can run concurrently on airflow. This means that across all running DAGs, no more than 32 tasks will run at one time.</p>
+</li>
+<li>
+<p>dag_concurrency : is the number of task instances allowed to run concurrently within a specific dag. In other words, you could have 2 DAGs running 16 tasks each in parallel, but a single DAG with 50 tasks would also only run 16 tasks - not 32</p>
+</li>
+<li>
+<p>max_threads : max_threads = 2 setting can be used to increase the number of threads running on the scheduler. This can prevent the scheduler from getting behind, but may also require more resources. If you increase this, you may need to increase CPU and/or memory on your scheduler. This should be set to n-1 where n is the number of CPUs of your scheduler.</p>
+</li>
+<li>
+<p>pools : are a way of limiting the number of concurrent instances of a specific type of task. This is great if you have a lot of workers in parallel, but you don’t want to overwhelm a source or destination. For example, with the default settings above, and a DAG with 50 tasks to pull data from a REST API, when the DAG starts, you would get 16 workers hitting the API at once and you may get some throttling errors back from your API. You can create a pool and give it a limit of 5. Then assign all of the tasks to that pool. Even though you have plenty of free workers, only 5 will run at one time.
+<em><strong>Airflow pool is used to limit the execution parallelism. Users could increase the priority_weight for the task if it is a critical one.</strong></em></p>
+</li>
+<li>
+<p>scheduler_heartbeat_sec: User should consider increasing scheduler_heartbeat_sec config to a higher value (e.g. 60 secs) which controls how frequently the Airflow scheduler gets the heartbeat and updates the job’s entry in the Airflow metastore.</p>
+</li>
+<li>
+<p>Q “Why are more tasks not running even after I add workers?”</p>
+<ul>
+<li>
+<p>worker_concurrency is related, but it determines how many tasks a single worker can process. So, if you have 4 workers running at a worker concurrency of 16, you could process up to 64 tasks at once. Configured with the defaults above, however, only 32 would actually run in parallel. (and only 16 if all tasks are in the same DAG)</p>
+</li>
+<li>
+<p>If you increase worker_concurrency, make sure your worker has enough resources to handle the load. You may need to increase CPU and/or memory on your workers. Note: This setting only impacts the CeleryExecutor</p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>Improve Airflow reliability</p>
+<ul>
+<li>
+<p><a href="https://eng.lyft.com/running-apache-airflow-at-lyft-6e53bb8fccff">https://eng.lyft.com/running-apache-airflow-at-lyft-6e53bb8fccff</a></p>
+</li>
+<li>
+<p>Source Control For Pools: We maintain the Airflow pool configuration in source control and review each team’s pool request with their estimations on the max task slots. The updated pool configuration is applied in runtime for Airflow.</p>
+</li>
+<li>
+<p>Integration Test For DAG: We have integration tests running in Continuous Integration phase, which do checks to ensure Airflow best practices including a sanity check on all the DAG definitions; a start_date parameter check to guarantee all DAGs have a fixed start_date; a pool check to ensure there is no unused pool and a check to ensure pool specified in any DAG actually exists, etc.</p>
+</li>
+<li>
+<p>Secure UI access: We disable write access on a couple of important UI ModelViews (e.g, PoolModelView, VariableView, DagRunModelView) on Airflow. This is to avoid users accidentally modifying Pool, Variable, and DagRun tables in the Airflow metastore from the UI.</p>
+</li>
+</ul>
+</li>
+</ol>
+
+      </div>
+      <div class="cheatsheet-footer">
+        <a href="../faqs.html" class="back-link">← Back to FAQs</a>
+        <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/faq/faq_Airflow.md" class="github-edit" target="_blank">
+          Edit on GitHub →
+        </a>
+      </div>
+    <nav class="prev-next"><a href="db_postgre.html" class="prev-link">← Postgre</a><a href="faq_DE.html" class="next-link">Faq DE →</a></nav>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>CS_basics - Computer Science Fundamentals & Interview Preparation</p>
+      <p>
+        <a href="https://github.com/yennanliu/CS_basics">GitHub</a> •
+        <a href="https://github.com/yennanliu/CS_basics/tree/master/doc">Documentation</a> •
+        <a href="https://github.com/yennanliu/CS_basics/issues">Report Issues</a>
+      </p>
+    </div>
+  </footer>
+</body>
+</html>

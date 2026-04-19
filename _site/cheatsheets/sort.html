@@ -1,0 +1,1816 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sort - CS_basics</title>
+  <meta name="description" content="Computer Science fundamentals: algorithms, data structures, system design, and LeetCode solutions">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>CS</text></svg>">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="../vendor/fonts.css">
+  <link rel="stylesheet" href="../vendor/highlight/github-dark.min.css">
+  <script src="../vendor/highlight/highlight.min.js"></script>
+  <script>
+  // Apply theme before render to prevent flash
+  (function() {
+    var saved = localStorage.getItem('theme');
+    if (saved === 'dark' || (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      document.documentElement.setAttribute('data-theme', 'dark');
+    }
+  })();
+  </script>
+  <script>document.addEventListener('DOMContentLoaded', function() {
+    hljs.highlightAll();
+    document.querySelectorAll('pre code').forEach(function(codeEl) {
+      var pre = codeEl.parentElement;
+      var lang = '';
+      var cls = codeEl.className || '';
+      var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
+      if (m) lang = m[1];
+      var wrapper = document.createElement('div');
+      wrapper.className = 'code-block-wrapper';
+      pre.parentNode.insertBefore(wrapper, pre);
+      var header = document.createElement('div');
+      header.className = 'code-block-header';
+      if (lang) {
+        var label = document.createElement('span');
+        label.className = 'code-lang-label';
+        label.textContent = lang;
+        header.appendChild(label);
+      } else {
+        header.appendChild(document.createElement('span'));
+      }
+      var btn = document.createElement('button');
+      btn.className = 'copy-btn';
+      btn.textContent = 'Copy';
+      btn.addEventListener('click', function() {
+        navigator.clipboard.writeText(codeEl.textContent).then(function() {
+          btn.textContent = 'Copied!';
+          btn.classList.add('copied');
+          setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+        });
+      });
+      header.appendChild(btn);
+      wrapper.appendChild(header);
+      wrapper.appendChild(pre);
+    });
+    document.querySelectorAll('table').forEach(function(table) {
+      if (!table.parentElement.classList.contains('table-wrap')) {
+        var wrapper = document.createElement('div');
+        wrapper.className = 'table-wrap';
+        table.parentNode.insertBefore(wrapper, table);
+        wrapper.appendChild(table);
+      }
+    });
+    // Reading progress bar
+    var progressBar = document.getElementById('reading-progress');
+    if (progressBar) {
+      window.addEventListener('scroll', function() {
+        var winScroll = document.documentElement.scrollTop;
+        var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        progressBar.style.width = height > 0 ? (winScroll / height * 100) + '%' : '0%';
+      });
+    }
+    // Dark mode toggle
+    var toggle = document.getElementById('theme-toggle');
+    if (toggle) {
+      var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      toggle.textContent = isDark ? '☀️' : '🌙';
+      toggle.addEventListener('click', function() {
+        var dark = document.documentElement.getAttribute('data-theme') === 'dark';
+        if (dark) {
+          document.documentElement.removeAttribute('data-theme');
+          localStorage.setItem('theme', 'light');
+          toggle.textContent = '🌙';
+        } else {
+          document.documentElement.setAttribute('data-theme', 'dark');
+          localStorage.setItem('theme', 'dark');
+          toggle.textContent = '☀️';
+        }
+      });
+    }
+  });</script>
+</head>
+<body>
+  <div class="progress-container"><div class="progress-bar" id="reading-progress"></div></div>
+  <nav class="navbar">
+    <div class="container">
+      <div class="nav-brand">
+        <span class="nav-icon">💻</span>
+        <span class="nav-title">CS_basics</span>
+      </div>
+      <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+      <div class="nav-links">
+        <a href="../index.html" class="">Home</a>
+        <a href="../cheatsheets.html" class="active">Cheat Sheets</a>
+        <a href="../patterns.html" class="">Pattern Recognition</a>
+        <a href="../faqs.html" class="">FAQs</a>
+        <a href="../resources.html" class="">Resources</a>
+        <a href="../lc-explorer.html" class="">LC Explorer</a>
+        <a href="../lc-random-picker.html" class="">🎲 Random Picker</a>
+        <a href="../algo_demo/index.html" class="">Visualizer</a>
+        <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">&#127769;</button>
+        <a href="https://github.com/yennanliu/CS_basics" target="_blank" class="github-link" aria-label="GitHub">
+          <svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor">
+            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container">
+    <div class="content">
+      
+      <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">Sort</span></nav>
+      <div class="cheatsheet-header">
+        <h1>Sort</h1>
+        <span class="last-updated">Last updated: Sep 2, 2025</span>
+      </div>
+      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#overview">Overview</a></li><li class="toc-sub"><a href="#key-properties">Key Properties</a></li><li class="toc-sub"><a href="#algorithm-selection-guide">Algorithm Selection Guide</a></li><li class="toc-sub"><a href="#references">References</a></li><li><a href="#problem-categories">Problem Categories</a></li><li class="toc-sub"><a href="#pattern-1-custom-comparator-sorting">Pattern 1: Custom Comparator Sorting</a></li><li class="toc-sub"><a href="#pattern-2-topological-sorting">Pattern 2: Topological Sorting</a></li><li class="toc-sub"><a href="#pattern-3-interval-sorting">Pattern 3: Interval Sorting</a></li><li class="toc-sub"><a href="#pattern-4-k-th-element">Pattern 4: K-th Element</a></li><li class="toc-sub"><a href="#pattern-5-bucket-counting-sort">Pattern 5: Bucket/Counting Sort</a></li><li class="toc-sub"><a href="#pattern-6-merge-sort-applications">Pattern 6: Merge Sort Applications</a></li><li><a href="#templates-algorithms">Templates &amp; Algorithms</a></li><li class="toc-sub"><a href="#algorithm-comparison-table">Algorithm Comparison Table</a></li><li class="toc-sub"><a href="#template-1-quick-sort">Template 1: Quick Sort</a></li><li class="toc-sub"><a href="#template-2-merge-sort">Template 2: Merge Sort</a></li><li class="toc-sub"><a href="#template-3-custom-comparator-sorting">Template 3: Custom Comparator Sorting</a></li><li class="toc-sub"><a href="#template-4-quick-select-k-th-element">Template 4: Quick Select (K-th Element)</a></li><li class="toc-sub"><a href="#template-5-counting-sort">Template 5: Counting Sort</a></li><li class="toc-sub"><a href="#template-6-topological-sort">Template 6: Topological Sort</a></li><li><a href="#problems-by-pattern">Problems by Pattern</a></li><li class="toc-sub"><a href="#pattern-based-problem-tables">Pattern-Based Problem Tables</a></li><li><a href="#pattern-selection-strategy">Pattern Selection Strategy</a></li><li><a href="#summary-quick-reference">Summary &amp; Quick Reference</a></li><li class="toc-sub"><a href="#complexity-quick-reference">Complexity Quick Reference</a></li><li class="toc-sub"><a href="#template-quick-reference">Template Quick Reference</a></li><li class="toc-sub"><a href="#common-patterns-tricks">Common Patterns &amp; Tricks</a></li><li class="toc-sub"><a href="#problem-solving-steps">Problem-Solving Steps</a></li><li class="toc-sub"><a href="#common-mistakes-tips">Common Mistakes &amp; Tips</a></li><li class="toc-sub"><a href="#interview-tips">Interview Tips</a></li><li class="toc-sub"><a href="#advanced-techniques">Advanced Techniques</a></li><li class="toc-sub"><a href="#related-topics">Related Topics</a></li><li><a href="#lc-example">LC Example</a></li><li class="toc-sub"><a href="#2-1-pancake-sorting">2-1) Pancake Sorting</a></li><li class="toc-sub"><a href="#2-1-reorder-data-in-log-files">2-1) Reorder Data in Log Files</a></li><li class="toc-sub"><a href="#2-2-meeting-rooms">2-2) Meeting Rooms</a></li><li class="toc-sub"><a href="#2-3-custom-sort-string">2-3) Custom Sort String</a></li><li class="toc-sub"><a href="#2-4-find-k-closest-elements">2-4) Find K Closest Elements</a></li><li class="toc-sub"><a href="#2-5-largest-number">2-5) Largest Number</a></li><li class="toc-sub"><a href="#2-6-permutation-in-string">2-6) Permutation in String</a></li><li class="toc-sub"><a href="#2-7-car-fleet">2-7) Car Fleet</a></li><li class="toc-sub"><a href="#2-7-topk-frequent-words">2-7)  TopK Frequent Words</a></li></ul></div>
+      <div class="cheatsheet-content">
+        <h1 id="sorting-algorithms-techniques" tabindex="-1"><a class="header-anchor" href="#sorting-algorithms-techniques"><span>Sorting Algorithms &amp; Techniques</span></a></h1>
+<p><img src="../doc/pic/sort_cheatsheet.png"></p></p>
+<h2 id="overview" tabindex="-1"><a class="header-anchor" href="#overview"><span>Overview</span></a></h2>
+<p><strong>Sorting</strong> is the process of arranging elements in a specific order (ascending or descending). It’s fundamental to many algorithms and data structures, enabling efficient searching, data analysis, and problem-solving.</p>
+<h3 id="key-properties" tabindex="-1"><a class="header-anchor" href="#key-properties"><span>Key Properties</span></a></h3>
+<ul>
+<li><strong>Stability</strong>: Maintains relative order of equal elements</li>
+<li><strong>In-place</strong>: Uses O(1) extra space</li>
+<li><strong>Adaptive</strong>: Performs better on partially sorted data</li>
+<li><strong>When to Use</strong>: Data ordering, preprocessing for binary search, finding medians/percentiles</li>
+</ul>
+<h3 id="algorithm-selection-guide" tabindex="-1"><a class="header-anchor" href="#algorithm-selection-guide"><span>Algorithm Selection Guide</span></a></h3>
+<ul>
+<li><strong>Small datasets (n &lt; 50)</strong>: Insertion Sort</li>
+<li><strong>General purpose</strong>: Quick Sort, Merge Sort</li>
+<li><strong>Guaranteed O(n log n)</strong>: Heap Sort, Merge Sort</li>
+<li><strong>Nearly sorted</strong>: Insertion Sort, Bubble Sort</li>
+<li><strong>Limited range</strong>: Counting Sort, Radix Sort</li>
+</ul>
+<h3 id="references" tabindex="-1"><a class="header-anchor" href="#references"><span>References</span></a></h3>
+<ul>
+<li><a href="https://neetcode.io/courses/lessons/sorting-algorithms">Neetcode Sort cheatsheet</a></li>
+<li><a href="https://visualgo.net/en/sorting">Sorting Visualizations</a></li>
+<li><a href="https://algs4.cs.princeton.edu/20sorting/">Princeton Algorithms</a></li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><strong>Sorting Algorithm</strong></th>
+<th><strong>Time Complexity (Best Case)</strong></th>
+<th><strong>Time Complexity (Average Case)</strong></th>
+<th><strong>Time Complexity (Worst Case)</strong></th>
+<th><strong>Space Complexity</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Bubble Sort</strong></td>
+<td>O(n)</td>
+<td>O(n²)</td>
+<td>O(n²)</td>
+<td>O(1)</td>
+</tr>
+<tr>
+<td><strong>Insertion Sort</strong></td>
+<td>O(n)</td>
+<td>O(n²)</td>
+<td>O(n²)</td>
+<td>O(1)</td>
+</tr>
+<tr>
+<td><strong>Selection Sort</strong></td>
+<td>O(n²)</td>
+<td>O(n²)</td>
+<td>O(n²)</td>
+<td>O(1)</td>
+</tr>
+<tr>
+<td><strong>Merge Sort</strong></td>
+<td>O(n log n)</td>
+<td>O(n log n)</td>
+<td>O(n log n)</td>
+<td>O(n)</td>
+</tr>
+<tr>
+<td><strong>Quick Sort</strong></td>
+<td>O(n log n)</td>
+<td>O(n log n)</td>
+<td>O(n²)</td>
+<td>O(log n)</td>
+</tr>
+<tr>
+<td><strong>Heap Sort</strong></td>
+<td>O(n log n)</td>
+<td>O(n log n)</td>
+<td>O(n log n)</td>
+<td>O(1)</td>
+</tr>
+<tr>
+<td><strong>Counting Sort</strong></td>
+<td>O(n + k)</td>
+<td>O(n + k)</td>
+<td>O(n + k)</td>
+<td>O(k)</td>
+</tr>
+<tr>
+<td><strong>Radix Sort</strong></td>
+<td>O(nk)</td>
+<td>O(nk)</td>
+<td>O(nk)</td>
+<td>O(n + k)</td>
+</tr>
+<tr>
+<td><strong>Bucket Sort</strong></td>
+<td>O(n + k)</td>
+<td>O(n + k)</td>
+<td>O(n²)</td>
+<td>O(n)</td>
+</tr>
+</tbody>
+</table>
+<h2 id="problem-categories" tabindex="-1"><a class="header-anchor" href="#problem-categories"><span>Problem Categories</span></a></h2>
+<h3 id="pattern-1-custom-comparator-sorting" tabindex="-1"><a class="header-anchor" href="#pattern-1-custom-comparator-sorting"><span><strong>Pattern 1: Custom Comparator Sorting</strong></span></a></h3>
+<ul>
+<li><strong>Description</strong>: Sort with custom rules or multiple criteria</li>
+<li><strong>Examples</strong>: LC 179, 791, 937, 1029, 1366</li>
+<li><strong>Pattern</strong>: Define comparison function for complex ordering</li>
+</ul>
+<h3 id="pattern-2-topological-sorting" tabindex="-1"><a class="header-anchor" href="#pattern-2-topological-sorting"><span><strong>Pattern 2: Topological Sorting</strong></span></a></h3>
+<ul>
+<li><strong>Description</strong>: Order elements based on dependencies</li>
+<li><strong>Examples</strong>: LC 207, 210, 269, 310, 1136</li>
+<li><strong>Pattern</strong>: DFS/BFS with in-degree tracking</li>
+</ul>
+<h3 id="pattern-3-interval-sorting" tabindex="-1"><a class="header-anchor" href="#pattern-3-interval-sorting"><span><strong>Pattern 3: Interval Sorting</strong></span></a></h3>
+<ul>
+<li><strong>Description</strong>: Sort intervals for merging/processing</li>
+<li><strong>Examples</strong>: LC 56, 57, 252, 253, 435</li>
+<li><strong>Pattern</strong>: Sort by start, then process</li>
+</ul>
+<h3 id="pattern-4-k-th-element" tabindex="-1"><a class="header-anchor" href="#pattern-4-k-th-element"><span><strong>Pattern 4: K-th Element</strong></span></a></h3>
+<ul>
+<li><strong>Description</strong>: Find k-th smallest/largest efficiently</li>
+<li><strong>Examples</strong>: LC 215, 347, 378, 658, 973</li>
+<li><strong>Pattern</strong>: Quick Select or Heap</li>
+</ul>
+<h3 id="pattern-5-bucket-counting-sort" tabindex="-1"><a class="header-anchor" href="#pattern-5-bucket-counting-sort"><span><strong>Pattern 5: Bucket/Counting Sort</strong></span></a></h3>
+<ul>
+<li><strong>Description</strong>: Sort with limited value range</li>
+<li><strong>Examples</strong>: LC 164, 274, 451, 1122, 1636</li>
+<li><strong>Pattern</strong>: Use value as index</li>
+</ul>
+<h3 id="pattern-6-merge-sort-applications" tabindex="-1"><a class="header-anchor" href="#pattern-6-merge-sort-applications"><span><strong>Pattern 6: Merge Sort Applications</strong></span></a></h3>
+<ul>
+<li><strong>Description</strong>: Divide-and-conquer with sorting</li>
+<li><strong>Examples</strong>: LC 23, 148, 315, 327, 493</li>
+<li><strong>Pattern</strong>: Merge sorted sequences</li>
+</ul>
+<h2 id="templates-algorithms" tabindex="-1"><a class="header-anchor" href="#templates-algorithms"><span>Templates &amp; Algorithms</span></a></h2>
+<h3 id="algorithm-comparison-table" tabindex="-1"><a class="header-anchor" href="#algorithm-comparison-table"><span>Algorithm Comparison Table</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>Algorithm</th>
+<th>Best</th>
+<th>Average</th>
+<th>Worst</th>
+<th>Space</th>
+<th>Stable</th>
+<th>When to Use</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Quick Sort</strong></td>
+<td>O(n log n)</td>
+<td>O(n log n)</td>
+<td>O(n²)</td>
+<td>O(log n)</td>
+<td>No</td>
+<td>General purpose</td>
+</tr>
+<tr>
+<td><strong>Merge Sort</strong></td>
+<td>O(n log n)</td>
+<td>O(n log n)</td>
+<td>O(n log n)</td>
+<td>O(n)</td>
+<td>Yes</td>
+<td>Stable, guaranteed O(n log n)</td>
+</tr>
+<tr>
+<td><strong>Heap Sort</strong></td>
+<td>O(n log n)</td>
+<td>O(n log n)</td>
+<td>O(n log n)</td>
+<td>O(1)</td>
+<td>No</td>
+<td>In-place, guaranteed O(n log n)</td>
+</tr>
+<tr>
+<td><strong>Insertion Sort</strong></td>
+<td>O(n)</td>
+<td>O(n²)</td>
+<td>O(n²)</td>
+<td>O(1)</td>
+<td>Yes</td>
+<td>Small or nearly sorted</td>
+</tr>
+<tr>
+<td><strong>Counting Sort</strong></td>
+<td>O(n+k)</td>
+<td>O(n+k)</td>
+<td>O(n+k)</td>
+<td>O(k)</td>
+<td>Yes</td>
+<td>Limited range integers</td>
+</tr>
+<tr>
+<td><strong>Radix Sort</strong></td>
+<td>O(nk)</td>
+<td>O(nk)</td>
+<td>O(nk)</td>
+<td>O(n+k)</td>
+<td>Yes</td>
+<td>Fixed-width integers</td>
+</tr>
+</tbody>
+</table>
+<h3 id="template-1-quick-sort" tabindex="-1"><a class="header-anchor" href="#template-1-quick-sort"><span>Template 1: Quick Sort</span></a></h3>
+<pre><code class="language-python"># Python - Classic Quick Sort
+def quickSort(arr, low=0, high=None):
+    if high is None:
+        high = len(arr) - 1
+    
+    if low &lt; high:
+        # Partition and get pivot index
+        pi = partition(arr, low, high)
+        
+        # Recursively sort left and right
+        quickSort(arr, low, pi - 1)
+        quickSort(arr, pi + 1, high)
+    
+    return arr
+
+def partition(arr, low, high):
+    # Choose rightmost as pivot
+    pivot = arr[high]
+    i = low - 1  # Smaller element index
+    
+    for j in range(low, high):
+        if arr[j] &lt;= pivot:
+            i += 1
+            arr[i], arr[j] = arr[j], arr[i]
+    
+    arr[i + 1], arr[high] = arr[high], arr[i + 1]
+    return i + 1
+
+# 3-way Quick Sort for duplicates
+def quickSort3Way(arr, low=0, high=None):
+    if high is None:
+        high = len(arr) - 1
+    
+    if low &lt; high:
+        lt, gt = partition3Way(arr, low, high)
+        quickSort3Way(arr, low, lt - 1)
+        quickSort3Way(arr, gt + 1, high)
+    
+    return arr
+
+def partition3Way(arr, low, high):
+    pivot = arr[low]
+    i = low
+    lt = low
+    gt = high
+    
+    while i &lt;= gt:
+        if arr[i] &lt; pivot:
+            arr[lt], arr[i] = arr[i], arr[lt]
+            lt += 1
+            i += 1
+        elif arr[i] &gt; pivot:
+            arr[i], arr[gt] = arr[gt], arr[i]
+            gt -= 1
+        else:
+            i += 1
+    
+    return lt, gt
+</code></pre>
+<pre><code class="language-java">// Java - Quick Sort
+public void quickSort(int[] arr, int low, int high) {
+    if (low &lt; high) {
+        int pi = partition(arr, low, high);
+        quickSort(arr, low, pi - 1);
+        quickSort(arr, pi + 1, high);
+    }
+}
+
+private int partition(int[] arr, int low, int high) {
+    int pivot = arr[high];
+    int i = low - 1;
+    
+    for (int j = low; j &lt; high; j++) {
+        if (arr[j] &lt;= pivot) {
+            i++;
+            swap(arr, i, j);
+        }
+    }
+    
+    swap(arr, i + 1, high);
+    return i + 1;
+}
+
+private void swap(int[] arr, int i, int j) {
+    int temp = arr[i];
+    arr[i] = arr[j];
+    arr[j] = temp;
+}
+</code></pre>
+<h3 id="template-2-merge-sort" tabindex="-1"><a class="header-anchor" href="#template-2-merge-sort"><span>Template 2: Merge Sort</span></a></h3>
+<pre><code class="language-python"># Python - Merge Sort
+def mergeSort(arr):
+    if len(arr) &lt;= 1:
+        return arr
+    
+    mid = len(arr) // 2
+    left = mergeSort(arr[:mid])
+    right = mergeSort(arr[mid:])
+    
+    return merge(left, right)
+
+def merge(left, right):
+    result = []
+    i = j = 0
+    
+    while i &lt; len(left) and j &lt; len(right):
+        if left[i] &lt;= right[j]:
+            result.append(left[i])
+            i += 1
+        else:
+            result.append(right[j])
+            j += 1
+    
+    result.extend(left[i:])
+    result.extend(right[j:])
+    return result
+
+# In-place merge sort
+def mergeSortInPlace(arr, left=0, right=None):
+    if right is None:
+        right = len(arr) - 1
+    
+    if left &lt; right:
+        mid = (left + right) // 2
+        mergeSortInPlace(arr, left, mid)
+        mergeSortInPlace(arr, mid + 1, right)
+        mergeInPlace(arr, left, mid, right)
+    
+    return arr
+
+def mergeInPlace(arr, left, mid, right):
+    left_arr = arr[left:mid + 1]
+    right_arr = arr[mid + 1:right + 1]
+    
+    i = j = 0
+    k = left
+    
+    while i &lt; len(left_arr) and j &lt; len(right_arr):
+        if left_arr[i] &lt;= right_arr[j]:
+            arr[k] = left_arr[i]
+            i += 1
+        else:
+            arr[k] = right_arr[j]
+            j += 1
+        k += 1
+    
+    while i &lt; len(left_arr):
+        arr[k] = left_arr[i]
+        i += 1
+        k += 1
+    
+    while j &lt; len(right_arr):
+        arr[k] = right_arr[j]
+        j += 1
+        k += 1
+</code></pre>
+<pre><code class="language-java">// Java - Merge Sort
+public void mergeSort(int[] arr, int left, int right) {
+    if (left &lt; right) {
+        int mid = left + (right - left) / 2;
+        
+        mergeSort(arr, left, mid);
+        mergeSort(arr, mid + 1, right);
+        
+        merge(arr, left, mid, right);
+    }
+}
+
+private void merge(int[] arr, int left, int mid, int right) {
+    int n1 = mid - left + 1;
+    int n2 = right - mid;
+    
+    int[] leftArr = new int[n1];
+    int[] rightArr = new int[n2];
+    
+    for (int i = 0; i &lt; n1; i++) {
+        leftArr[i] = arr[left + i];
+    }
+    for (int j = 0; j &lt; n2; j++) {
+        rightArr[j] = arr[mid + 1 + j];
+    }
+    
+    int i = 0, j = 0, k = left;
+    
+    while (i &lt; n1 &amp;&amp; j &lt; n2) {
+        if (leftArr[i] &lt;= rightArr[j]) {
+            arr[k++] = leftArr[i++];
+        } else {
+            arr[k++] = rightArr[j++];
+        }
+    }
+    
+    while (i &lt; n1) {
+        arr[k++] = leftArr[i++];
+    }
+    
+    while (j &lt; n2) {
+        arr[k++] = rightArr[j++];
+    }
+}
+</code></pre>
+<h3 id="template-3-custom-comparator-sorting" tabindex="-1"><a class="header-anchor" href="#template-3-custom-comparator-sorting"><span>Template 3: Custom Comparator Sorting</span></a></h3>
+<pre><code class="language-python"># Python - Custom sorting
+class Solution:
+    def customSort(self, items):
+        # Single key
+        items.sort(key=lambda x: x[0])
+        
+        # Multiple keys
+        items.sort(key=lambda x: (x[0], -x[1], x[2]))
+        
+        # Complex comparison
+        def compare(item):
+            # Return tuple of sort keys
+            if condition:
+                return (0, item.value, item.name)
+            else:
+                return (1, -item.priority, item.id)
+        
+        items.sort(key=compare)
+        
+        # Using functools for traditional comparison
+        from functools import cmp_to_key
+        
+        def compare_func(a, b):
+            if a &lt; b:
+                return -1
+            elif a &gt; b:
+                return 1
+            else:
+                return 0
+        
+        items.sort(key=cmp_to_key(compare_func))
+        
+        return items
+
+# Custom class for sorting
+class CustomComparable:
+    def __init__(self, value, priority):
+        self.value = value
+        self.priority = priority
+    
+    def __lt__(self, other):
+        # Define less than for sorting
+        if self.priority != other.priority:
+            return self.priority &gt; other.priority
+        return self.value &lt; other.value
+</code></pre>
+<pre><code class="language-java">// Java - Custom comparator
+public void customSort(List&lt;Item&gt; items) {
+    // Lambda comparator
+    items.sort((a, b) -&gt; a.value - b.value);
+    
+    // Multiple criteria
+    items.sort((a, b) -&gt; {
+        if (a.priority != b.priority) {
+            return b.priority - a.priority;  // Descending
+        }
+        return a.name.compareTo(b.name);    // Ascending
+    });
+    
+    // Using Comparator methods
+    items.sort(Comparator
+        .comparingInt(Item::getPriority).reversed()
+        .thenComparing(Item::getName));
+    
+    // Custom Comparator class
+    items.sort(new Comparator&lt;Item&gt;() {
+        @Override
+        public int compare(Item a, Item b) {
+            // Custom logic
+            return customCompare(a, b);
+        }
+    });
+}
+
+// Comparable interface
+class Item implements Comparable&lt;Item&gt; {
+    int value;
+    String name;
+    
+    @Override
+    public int compareTo(Item other) {
+        if (this.value != other.value) {
+            return this.value - other.value;
+        }
+        return this.name.compareTo(other.name);
+    }
+}
+</code></pre>
+<h3 id="template-4-quick-select-k-th-element" tabindex="-1"><a class="header-anchor" href="#template-4-quick-select-k-th-element"><span>Template 4: Quick Select (K-th Element)</span></a></h3>
+<pre><code class="language-python"># Python - Quick Select for k-th smallest
+def quickSelect(arr, k):
+    # Find k-th smallest (0-indexed)
+    return quickSelectHelper(arr, 0, len(arr) - 1, k - 1)
+
+def quickSelectHelper(arr, left, right, k):
+    if left == right:
+        return arr[left]
+    
+    # Random pivot for better average case
+    import random
+    pivot_idx = random.randint(left, right)
+    pivot_idx = partition(arr, left, right, pivot_idx)
+    
+    if k == pivot_idx:
+        return arr[k]
+    elif k &lt; pivot_idx:
+        return quickSelectHelper(arr, left, pivot_idx - 1, k)
+    else:
+        return quickSelectHelper(arr, pivot_idx + 1, right, k)
+
+def partition(arr, left, right, pivot_idx):
+    pivot = arr[pivot_idx]
+    # Move pivot to end
+    arr[pivot_idx], arr[right] = arr[right], arr[pivot_idx]
+    
+    store_idx = left
+    for i in range(left, right):
+        if arr[i] &lt; pivot:
+            arr[store_idx], arr[i] = arr[i], arr[store_idx]
+            store_idx += 1
+    
+    # Move pivot to final position
+    arr[store_idx], arr[right] = arr[right], arr[store_idx]
+    return store_idx
+</code></pre>
+<h3 id="template-5-counting-sort" tabindex="-1"><a class="header-anchor" href="#template-5-counting-sort"><span>Template 5: Counting Sort</span></a></h3>
+<pre><code class="language-python"># Python - Counting Sort
+def countingSort(arr, max_val=None):
+    if not arr:
+        return arr
+    
+    if max_val is None:
+        max_val = max(arr)
+    min_val = min(arr)
+    
+    # Create counting array
+    range_size = max_val - min_val + 1
+    count = [0] * range_size
+    
+    # Count occurrences
+    for num in arr:
+        count[num - min_val] += 1
+    
+    # Reconstruct sorted array
+    idx = 0
+    for i in range(range_size):
+        while count[i] &gt; 0:
+            arr[idx] = i + min_val
+            idx += 1
+            count[i] -= 1
+    
+    return arr
+
+# Stable counting sort
+def stableCountingSort(arr):
+    if not arr:
+        return arr
+    
+    max_val = max(arr)
+    min_val = min(arr)
+    range_size = max_val - min_val + 1
+    
+    count = [0] * range_size
+    output = [0] * len(arr)
+    
+    # Count occurrences
+    for num in arr:
+        count[num - min_val] += 1
+    
+    # Cumulative count
+    for i in range(1, range_size):
+        count[i] += count[i - 1]
+    
+    # Build output array (stable)
+    for i in range(len(arr) - 1, -1, -1):
+        output[count[arr[i] - min_val] - 1] = arr[i]
+        count[arr[i] - min_val] -= 1
+    
+    return output
+</code></pre>
+<h3 id="template-6-topological-sort" tabindex="-1"><a class="header-anchor" href="#template-6-topological-sort"><span>Template 6: Topological Sort</span></a></h3>
+<pre><code class="language-python"># Python - Topological Sort (Kahn's Algorithm)
+def topologicalSort(numNodes, edges):
+    # Build graph and in-degree
+    graph = defaultdict(list)
+    in_degree = [0] * numNodes
+    
+    for u, v in edges:
+        graph[u].append(v)
+        in_degree[v] += 1
+    
+    # Queue for nodes with no dependencies
+    queue = deque([i for i in range(numNodes) if in_degree[i] == 0])
+    result = []
+    
+    while queue:
+        node = queue.popleft()
+        result.append(node)
+        
+        for neighbor in graph[node]:
+            in_degree[neighbor] -= 1
+            if in_degree[neighbor] == 0:
+                queue.append(neighbor)
+    
+    # Check for cycle
+    if len(result) != numNodes:
+        return []  # Cycle detected
+    
+    return result
+
+# DFS-based Topological Sort
+def topologicalSortDFS(numNodes, edges):
+    graph = defaultdict(list)
+    for u, v in edges:
+        graph[u].append(v)
+    
+    visited = set()
+    stack = []
+    
+    def dfs(node):
+        visited.add(node)
+        for neighbor in graph[node]:
+            if neighbor not in visited:
+                dfs(neighbor)
+        stack.append(node)
+    
+    for i in range(numNodes):
+        if i not in visited:
+            dfs(i)
+    
+    return stack[::-1]
+</code></pre>
+<h2 id="problems-by-pattern" tabindex="-1"><a class="header-anchor" href="#problems-by-pattern"><span>Problems by Pattern</span></a></h2>
+<h3 id="pattern-based-problem-tables" tabindex="-1"><a class="header-anchor" href="#pattern-based-problem-tables"><span>Pattern-Based Problem Tables</span></a></h3>
+<h4 id="custom-comparator-problems" tabindex="-1"><a class="header-anchor" href="#custom-comparator-problems"><span><strong>Custom Comparator Problems</strong></span></a></h4>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC #</th>
+<th>Key Technique</th>
+<th>Difficulty</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Largest Number</td>
+<td>179</td>
+<td>String comparison</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Custom Sort String</td>
+<td>791</td>
+<td>Character order</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Reorder Data in Log Files</td>
+<td>937</td>
+<td>Multi-key sort</td>
+<td>Easy</td>
+</tr>
+<tr>
+<td>Two City Scheduling</td>
+<td>1029</td>
+<td>Cost difference</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Rank Teams by Votes</td>
+<td>1366</td>
+<td>Vote counting</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Sort Array by Parity</td>
+<td>905</td>
+<td>Even/odd separation</td>
+<td>Easy</td>
+</tr>
+<tr>
+<td>Relative Sort Array</td>
+<td>1122</td>
+<td>Custom order</td>
+<td>Easy</td>
+</tr>
+</tbody>
+</table>
+<h4 id="topological-sort-problems" tabindex="-1"><a class="header-anchor" href="#topological-sort-problems"><span><strong>Topological Sort Problems</strong></span></a></h4>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC #</th>
+<th>Key Technique</th>
+<th>Difficulty</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Course Schedule</td>
+<td>207</td>
+<td>Cycle detection</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Course Schedule II</td>
+<td>210</td>
+<td>Ordering with dependencies</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Alien Dictionary</td>
+<td>269</td>
+<td>Character ordering</td>
+<td>Hard</td>
+</tr>
+<tr>
+<td>Minimum Height Trees</td>
+<td>310</td>
+<td>Tree centroid</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Parallel Courses</td>
+<td>1136</td>
+<td>Level-based processing</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Sequence Reconstruction</td>
+<td>444</td>
+<td>Unique ordering</td>
+<td>Medium</td>
+</tr>
+</tbody>
+</table>
+<h4 id="interval-sorting-problems" tabindex="-1"><a class="header-anchor" href="#interval-sorting-problems"><span><strong>Interval Sorting Problems</strong></span></a></h4>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC #</th>
+<th>Key Technique</th>
+<th>Difficulty</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Merge Intervals</td>
+<td>56</td>
+<td>Sort and merge</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Insert Interval</td>
+<td>57</td>
+<td>Binary search insertion</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Meeting Rooms</td>
+<td>252</td>
+<td>Overlap check</td>
+<td>Easy</td>
+</tr>
+<tr>
+<td>Meeting Rooms II</td>
+<td>253</td>
+<td>Sweep line</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Non-overlapping Intervals</td>
+<td>435</td>
+<td>Greedy removal</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Minimum Number of Arrows</td>
+<td>452</td>
+<td>Interval intersection</td>
+<td>Medium</td>
+</tr>
+</tbody>
+</table>
+<h4 id="k-th-element-problems" tabindex="-1"><a class="header-anchor" href="#k-th-element-problems"><span><strong>K-th Element Problems</strong></span></a></h4>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC #</th>
+<th>Key Technique</th>
+<th>Difficulty</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Kth Largest Element</td>
+<td>215</td>
+<td>Quick select</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Top K Frequent Elements</td>
+<td>347</td>
+<td>Bucket sort</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Kth Smallest in Matrix</td>
+<td>378</td>
+<td>Binary search</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Find K Closest Elements</td>
+<td>658</td>
+<td>Two pointers</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>K Closest Points to Origin</td>
+<td>973</td>
+<td>Quick select</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Kth Largest in Stream</td>
+<td>703</td>
+<td>Min heap</td>
+<td>Easy</td>
+</tr>
+</tbody>
+</table>
+<h4 id="counting-bucket-sort-problems" tabindex="-1"><a class="header-anchor" href="#counting-bucket-sort-problems"><span><strong>Counting/Bucket Sort Problems</strong></span></a></h4>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC #</th>
+<th>Key Technique</th>
+<th>Difficulty</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Maximum Gap</td>
+<td>164</td>
+<td>Bucket sort</td>
+<td>Hard</td>
+</tr>
+<tr>
+<td>H-Index</td>
+<td>274</td>
+<td>Counting sort</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Sort Characters By Frequency</td>
+<td>451</td>
+<td>Frequency buckets</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Relative Sort Array</td>
+<td>1122</td>
+<td>Counting sort</td>
+<td>Easy</td>
+</tr>
+<tr>
+<td>Sort Array by Frequency</td>
+<td>1636</td>
+<td>Custom comparator</td>
+<td>Easy</td>
+</tr>
+</tbody>
+</table>
+<h4 id="merge-sort-application-problems" tabindex="-1"><a class="header-anchor" href="#merge-sort-application-problems"><span><strong>Merge Sort Application Problems</strong></span></a></h4>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC #</th>
+<th>Key Technique</th>
+<th>Difficulty</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Merge k Sorted Lists</td>
+<td>23</td>
+<td>K-way merge</td>
+<td>Hard</td>
+</tr>
+<tr>
+<td>Sort List</td>
+<td>148</td>
+<td>Linked list merge sort</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Count of Smaller Numbers</td>
+<td>315</td>
+<td>Merge sort with count</td>
+<td>Hard</td>
+</tr>
+<tr>
+<td>Count of Range Sum</td>
+<td>327</td>
+<td>Merge sort</td>
+<td>Hard</td>
+</tr>
+<tr>
+<td>Reverse Pairs</td>
+<td>493</td>
+<td>Modified merge sort</td>
+<td>Hard</td>
+</tr>
+</tbody>
+</table>
+<h2 id="pattern-selection-strategy" tabindex="-1"><a class="header-anchor" href="#pattern-selection-strategy"><span>Pattern Selection Strategy</span></a></h2>
+<pre><code>Problem Analysis Flowchart:
+
+1. Need custom ordering rules?
+   ├── YES → Custom Comparator
+   │         ├── Multiple criteria → Tuple comparison
+   │         └── Complex logic → Comparison function
+   └── NO → Continue to 2
+
+2. Dealing with dependencies?
+   ├── YES → Topological Sort
+   │         ├── Detect cycle → Kahn's algorithm
+   │         └── Find ordering → DFS approach
+   └── NO → Continue to 3
+
+3. Working with intervals?
+   ├── YES → Sort by start/end
+   │         ├── Merge overlapping → Greedy merge
+   │         └── Find conflicts → Sweep line
+   └── NO → Continue to 4
+
+4. Finding k-th element?
+   ├── YES → Quick Select or Heap
+   │         ├── One-time query → Quick select O(n)
+   │         └── Multiple queries → Heap O(n log k)
+   └── NO → Continue to 5
+
+5. Limited value range?
+   ├── YES → Counting/Bucket Sort
+   │         ├── Integers → Counting sort
+   │         └── With precision → Bucket sort
+   └── NO → Use standard sorting
+</code></pre>
+<h2 id="summary-quick-reference" tabindex="-1"><a class="header-anchor" href="#summary-quick-reference"><span>Summary &amp; Quick Reference</span></a></h2>
+<h3 id="complexity-quick-reference" tabindex="-1"><a class="header-anchor" href="#complexity-quick-reference"><span>Complexity Quick Reference</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>Algorithm</th>
+<th>Best Case</th>
+<th>Average</th>
+<th>Worst Case</th>
+<th>Space</th>
+<th>Stable</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Quick Sort</td>
+<td>O(n log n)</td>
+<td>O(n log n)</td>
+<td>O(n²)</td>
+<td>O(log n)</td>
+<td>No</td>
+</tr>
+<tr>
+<td>Merge Sort</td>
+<td>O(n log n)</td>
+<td>O(n log n)</td>
+<td>O(n log n)</td>
+<td>O(n)</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>Heap Sort</td>
+<td>O(n log n)</td>
+<td>O(n log n)</td>
+<td>O(n log n)</td>
+<td>O(1)</td>
+<td>No</td>
+</tr>
+<tr>
+<td>Tim Sort</td>
+<td>O(n)</td>
+<td>O(n log n)</td>
+<td>O(n log n)</td>
+<td>O(n)</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>Counting Sort</td>
+<td>O(n+k)</td>
+<td>O(n+k)</td>
+<td>O(n+k)</td>
+<td>O(k)</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>Radix Sort</td>
+<td>O(nk)</td>
+<td>O(nk)</td>
+<td>O(nk)</td>
+<td>O(n+k)</td>
+<td>Yes</td>
+</tr>
+</tbody>
+</table>
+<h3 id="template-quick-reference" tabindex="-1"><a class="header-anchor" href="#template-quick-reference"><span>Template Quick Reference</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>Template</th>
+<th>Pattern</th>
+<th>Key Code</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Quick Sort</strong></td>
+<td>Partition</td>
+<td><code>pivot; partition; recurse</code></td>
+</tr>
+<tr>
+<td><strong>Merge Sort</strong></td>
+<td>Divide &amp; merge</td>
+<td><code>mid; merge(left, right)</code></td>
+</tr>
+<tr>
+<td><strong>Custom Sort</strong></td>
+<td>Comparator</td>
+<td><code>key=lambda x: criteria</code></td>
+</tr>
+<tr>
+<td><strong>Quick Select</strong></td>
+<td>K-th element</td>
+<td><code>partition until k</code></td>
+</tr>
+<tr>
+<td><strong>Counting Sort</strong></td>
+<td>Value as index</td>
+<td><code>count[val]++</code></td>
+</tr>
+<tr>
+<td><strong>Topological</strong></td>
+<td>Dependencies</td>
+<td><code>in_degree; queue</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="common-patterns-tricks" tabindex="-1"><a class="header-anchor" href="#common-patterns-tricks"><span>Common Patterns &amp; Tricks</span></a></h3>
+<h4 id="python-sorting-tricks" tabindex="-1"><a class="header-anchor" href="#python-sorting-tricks"><span><strong>Python Sorting Tricks</strong></span></a></h4>
+<pre><code class="language-python"># Sort with multiple keys
+items.sort(key=lambda x: (x[0], -x[1], x[2]))
+
+# Sort by custom class
+items.sort(key=lambda x: x.priority, reverse=True)
+
+# Stable sort in multiple passes
+items.sort(key=lambda x: x.secondary)  # First
+items.sort(key=lambda x: x.primary)    # Then primary
+
+# In-place vs new list
+arr.sort()           # In-place
+sorted_arr = sorted(arr)  # New list
+</code></pre>
+<h4 id="java-sorting-tricks" tabindex="-1"><a class="header-anchor" href="#java-sorting-tricks"><span><strong>Java Sorting Tricks</strong></span></a></h4>
+<pre><code class="language-java">// Lambda comparator
+Arrays.sort(arr, (a, b) -&gt; a - b);
+
+// Method reference
+Arrays.sort(arr, Integer::compare);
+
+// Comparator chaining
+Arrays.sort(items, Comparator
+    .comparing(Item::getPriority)
+    .thenComparing(Item::getName));
+
+// Reverse order
+Arrays.sort(arr, Collections.reverseOrder());
+</code></pre>
+<h3 id="problem-solving-steps" tabindex="-1"><a class="header-anchor" href="#problem-solving-steps"><span>Problem-Solving Steps</span></a></h3>
+<ol>
+<li>
+<p><strong>Identify Sorting Need</strong></p>
+<ul>
+<li>Is sorting necessary?</li>
+<li>Can we use partial sorting?</li>
+<li>Do we need stability?</li>
+</ul>
+</li>
+<li>
+<p><strong>Choose Algorithm</strong></p>
+<ul>
+<li>Dataset size</li>
+<li>Value range</li>
+<li>Memory constraints</li>
+<li>Stability requirement</li>
+</ul>
+</li>
+<li>
+<p><strong>Define Comparison</strong></p>
+<ul>
+<li>Single or multiple keys?</li>
+<li>Ascending or descending?</li>
+<li>Special cases handling</li>
+</ul>
+</li>
+<li>
+<p><strong>Optimize if Needed</strong></p>
+<ul>
+<li>Quick select for k-th element</li>
+<li>Counting sort for limited range</li>
+<li>Bucket sort for uniform distribution</li>
+</ul>
+</li>
+</ol>
+<h3 id="common-mistakes-tips" tabindex="-1"><a class="header-anchor" href="#common-mistakes-tips"><span>Common Mistakes &amp; Tips</span></a></h3>
+<p><strong>🚫 Common Mistakes:</strong></p>
+<ul>
+<li>Modifying array during custom comparison</li>
+<li>Integer overflow in comparator (a - b)</li>
+<li>Not handling equal elements in comparator</li>
+<li>Using unstable sort when stability needed</li>
+<li>O(n²) algorithms for large datasets</li>
+</ul>
+<p><strong>✅ Best Practices:</strong></p>
+<ul>
+<li>Use built-in sort for most cases</li>
+<li>Prefer Integer.compare() over subtraction</li>
+<li>Test with duplicates and edge cases</li>
+<li>Consider partial sorting for k elements</li>
+<li>Use stable sort for equal element ordering</li>
+</ul>
+<h3 id="interview-tips" tabindex="-1"><a class="header-anchor" href="#interview-tips"><span>Interview Tips</span></a></h3>
+<ol>
+<li>
+<p><strong>Algorithm Choice</strong></p>
+<ul>
+<li>Start with built-in sort</li>
+<li>Optimize only if needed</li>
+<li>Explain time/space trade-offs</li>
+</ul>
+</li>
+<li>
+<p><strong>Custom Comparator</strong></p>
+<ul>
+<li>Handle all comparison cases</li>
+<li>Avoid integer overflow</li>
+<li>Maintain transitivity</li>
+</ul>
+</li>
+<li>
+<p><strong>Common Questions</strong></p>
+<ul>
+<li>“Why Quick Sort over Merge Sort?”</li>
+<li>“How to make Quick Sort stable?”</li>
+<li>“When to use Counting Sort?”</li>
+</ul>
+</li>
+<li>
+<p><strong>Follow-up Optimizations</strong></p>
+<ul>
+<li>Sort only k elements</li>
+<li>External sorting for large data</li>
+<li>Parallel sorting</li>
+</ul>
+</li>
+</ol>
+<h3 id="advanced-techniques" tabindex="-1"><a class="header-anchor" href="#advanced-techniques"><span>Advanced Techniques</span></a></h3>
+<h4 id="hybrid-sorting" tabindex="-1"><a class="header-anchor" href="#hybrid-sorting"><span><strong>Hybrid Sorting</strong></span></a></h4>
+<ul>
+<li>Tim Sort: Merge + Insertion</li>
+<li>Intro Sort: Quick + Heap + Insertion</li>
+<li>Used in Python and Java standard libraries</li>
+</ul>
+<h4 id="external-sorting" tabindex="-1"><a class="header-anchor" href="#external-sorting"><span><strong>External Sorting</strong></span></a></h4>
+<ul>
+<li>K-way merge for disk-based data</li>
+<li>Used in databases and big data</li>
+</ul>
+<h4 id="parallel-sorting" tabindex="-1"><a class="header-anchor" href="#parallel-sorting"><span><strong>Parallel Sorting</strong></span></a></h4>
+<ul>
+<li>Divide data among processors</li>
+<li>Parallel merge or sample sort</li>
+</ul>
+<h3 id="related-topics" tabindex="-1"><a class="header-anchor" href="#related-topics"><span>Related Topics</span></a></h3>
+<ul>
+<li><strong>Heap</strong>: Priority queue, k-th element</li>
+<li><strong>Binary Search</strong>: On sorted arrays</li>
+<li><strong>Divide &amp; Conquer</strong>: Merge sort pattern</li>
+<li><strong>Greedy</strong>: Interval scheduling</li>
+<li><strong>Graph</strong>: Topological ordering</li>
+</ul>
+<h2 id="lc-example" tabindex="-1"><a class="header-anchor" href="#lc-example"><span>LC Example</span></a></h2>
+<h3 id="2-1-pancake-sorting" tabindex="-1"><a class="header-anchor" href="#2-1-pancake-sorting"><span>2-1) Pancake Sorting</span></a></h3>
+<pre><code class="language-python"># python
+# LC 969 Pancake Sorting
+# V0
+# IDEA : pankcake sort + while loop
+# IDEA : 3 STEPS
+#   -&gt; step 1) Find the maximum number in arr
+#   -&gt; step 2) Reverse from 0 to max_idx
+#   -&gt; step 3) Reverse whole list
+# https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/pancake_sort.py
+class Solution(object):
+    def pancakeSort(self, arr):
+        &quot;&quot;&quot;Sort Array with Pancake Sort.
+        :param arr: Collection containing comparable items
+        :return: Collection ordered in ascending order of items
+        Examples:
+        &gt;&gt;&gt; pancake_sort([0, 5, 3, 2, 2])
+        [0, 2, 2, 3, 5]
+        &gt;&gt;&gt; pancake_sort([])
+        []
+        &gt;&gt;&gt; pancake_sort([-2, -5, -45])
+        [-45, -5, -2]
+        &quot;&quot;&quot;
+        cur = len(arr)
+        res = []
+        while cur &gt; 1:
+            # step 1) Find the maximum number in arr
+            max_idx = arr.index(max(arr[0:cur]))
+            res = res + [max_idx+1, cur] # idx is 1 based
+            # step 2) Reverse from 0 to max_idx
+            #arr = arr[max_idx::-1] + arr[max_idx + 1 : len(arr)] # this is OK as well
+            arr = arr[:max_idx][::-1] + arr[max_idx + 1 : len(arr)]
+            # step 3) Reverse whole list
+            #arr = arr[cur - 1 :: -1] + arr[cur : len(arr)] # this is OK as well
+            #arr = arr[:cur - 1][::-1] + arr[cur : len(arr)] # this is OK as well
+            tmp = arr[::-1]
+            arr = tmp
+            cur -= 1
+        print (&quot;arr = &quot; + str(arr))
+        return res
+
+# V1
+# https://leetcode.com/problems/pancake-sorting/discuss/817978/Python-O(n2)-by-simulation-w-Comment
+# https://leetcode.com/problems/pancake-sorting/discuss/330990/Python
+class Solution:
+    def pancakeSort(self, A):
+
+        res = []
+
+        for x in range(len(A), 1, -1):
+            # Carry out pancake-sort from largest number n to smallest number 1
+
+            # find the index of x
+            i = A.index(x)
+
+            # flip first i+1 elements to put x on A[0]
+            # flip first x elements to put x on A[x-1]
+            # now, x is on its corresponding position A[x-1] on ascending order
+            # 
+            &quot;&quot;&quot;
+            # array extend
+            In [10]: x = [1,2,3]
+
+            In [11]: x.extend([4])
+
+            In [12]: x
+            Out[12]: [1, 2, 3, 4]
+
+            In [13]: x = [1,2,3]
+
+            In [14]: x = x + [4]
+
+            In [15]: x
+            Out[15]: [1, 2, 3, 4]
+
+            &quot;&quot;&quot;
+            #res.extend([i + 1, x])
+            res = res + [i + 1, x]
+
+            # update A
+            &quot;&quot;&quot;
+            https://stackoverflow.com/questions/509211/understanding-slice-notation
+
+            a[::-1]    # all items in the array, reversed
+            a[1::-1]   # the first two items, reversed
+            a[:-3:-1]  # the last two items, reversed
+            a[-3::-1]  # everything except the last two items, reversed
+
+            -&gt; A[:i:-1] : last i items, reversed
+
+            &quot;&quot;&quot;
+            A = A[:i:-1] + A[:i]
+        #print (&quot;res = &quot; + str(res))
+        return res
+
+# V1
+# IDEA : RECURSIVE
+# https://leetcode.com/problems/pancake-sorting/discuss/553116/My-python-solution
+# https://leetcode.com/problems/pancake-sorting/discuss/274921/PythonDetailed-Explanation-for-This-Problem
+class Solution:
+    def pancakeSort(self, A):
+        pointer = len(A)
+        result = []
+
+        while pointer &gt; 1:
+            idx = A.index(pointer)
+            result.append(idx + 1)
+            A = A[idx::-1] + A[idx + 1:]
+            result.append(pointer)
+            A = A[pointer - 1::-1] + A[pointer:]
+            pointer -= 1
+            
+        return result
+</code></pre>
+<pre><code class="language-java">// java
+// aAlgorithm book (labu) p. 347
+
+// record reverse op array
+LinkedList&lt;Integer&gt; res = new LinkedList&lt;&gt;{};
+
+List&lt;Integer&gt; pancakeSort(int[] cakes){
+	sort(cakes, cakes.length);
+	return res;
+}
+
+// order first N pancakes
+void sort(int[] cakes, int n){
+	// base case
+	if (n == 1) return;
+
+	// find max index
+	int maxCake = 0;
+	int maxCakeIndex = 0;
+	for (int i = 0; i &lt; n; i ++){
+		if (cakes[i] &gt; maxCake){
+			maxCakeIndex = i;
+			maxCake = cakes[i];
+		}
+	}
+	// after 1st flip, put max pancake to the 1st layer
+	reverse(cakes, 0, maxCakeIndex);
+	// record this flip
+	res.add(maxCakeIndex+1);
+	// 2nd flip, make max pancake to the bottom (last layer)
+	reverse(cakes, 0, n-1);
+	// record this flop
+	res.add(n);
+	// recursive call : flip the remaining pancakes
+	sort(cakes, n-1);
+}
+
+/** flip arr[i..j] elements */
+void reverse(int[] arr, int i, int j){
+	while (i &lt; j){
+		int tmp = arr[i];
+		arr[i] = arr[j];
+		arr[j] = tmp;
+		i++;
+		j--;
+	}
+}
+</code></pre>
+<h3 id="2-1-reorder-data-in-log-files" tabindex="-1"><a class="header-anchor" href="#2-1-reorder-data-in-log-files"><span>2-1) Reorder Data in Log Files</span></a></h3>
+<pre><code class="language-python"># LC 937. Reorder Data in Log Files
+# V0
+# IDEA : SORT BY KEY
+class Solution:
+    def reorderLogFiles(self, logs):
+        def f(log):
+            id_, rest = log.split(&quot; &quot;, 1)
+            &quot;&quot;&quot;
+            NOTE !!!
+              2 cases:
+               1) case 1: rest[0].isalpha() =&gt; sort by rest, id_
+               2) case 2: rest[0] is digit =&gt;  DO NOTHING (keep original order)
+
+               syntax:
+                 if condition:
+                    return key1, key2, key3 ....
+            &quot;&quot;&quot;
+            if rest[0].isalpha():
+                return 0, rest, id_
+            else:
+                return 1, None, None
+                #return 100, None, None  # since we need to put Digit-logs behind of Letter-logs, so first key should be ANY DIGIT BIGGER THAN 0 
+
+        logs.sort(key = lambda x : f(x))
+        return logs
+
+# V1
+# IDEA : SORT BY keys
+# https://leetcode.com/problems/reorder-data-in-log-files/solution/
+class Solution:
+    def reorderLogFiles(self, logs):
+
+        def get_key(log):
+            _id, rest = log.split(&quot; &quot;, maxsplit=1)
+            &quot;&quot;&quot;
+            NOTE !!!
+              2 cases:
+               1) case 1: rest[0].isalpha() =&gt; sort by rest, id_
+               2) case 2: rest[0] is digit =&gt;  DO NOTHING (keep original order)
+            &quot;&quot;&quot;
+            return (0, rest, _id) if rest[0].isalpha() else (1, )
+
+        return sorted(logs, key=get_key)
+</code></pre>
+<h3 id="2-2-meeting-rooms" tabindex="-1"><a class="header-anchor" href="#2-2-meeting-rooms"><span>2-2) Meeting Rooms</span></a></h3>
+<pre><code class="language-python"># LC 252. Meeting Rooms
+# V0
+class Solution:
+    def canAttendMeetings(self, intervals):
+        &quot;&quot;&quot;
+        NOTE this
+        &quot;&quot;&quot;
+        intervals.sort(key=lambda x: x[0])
+        for i in range(1, len(intervals)):
+            &quot;&quot;&quot;
+            NOTE this : 
+                -&gt; we compare ntervals[i][0] and ntervals[i-1][1]
+            &quot;&quot;&quot;
+            if intervals[i][0] &lt; intervals[i-1][1]:
+                return False
+        return True
+</code></pre>
+<h3 id="2-3-custom-sort-string" tabindex="-1"><a class="header-anchor" href="#2-3-custom-sort-string"><span>2-3) Custom Sort String</span></a></h3>
+<pre><code class="language-python"># LC 791. Custom Sort String
+# V0
+# IDEA : COUNTER
+from collections import Counter
+class Solution(object):
+    def customSortString(self, order, s):
+        s_map = Counter(s)
+        res = &quot;&quot;
+        for o in order:
+            if o in s_map:
+                res += (o * s_map[o])
+                del s_map[o]
+        for s in s_map:
+            res += s * s_map[s]
+        return res
+</code></pre>
+<h3 id="2-4-find-k-closest-elements" tabindex="-1"><a class="header-anchor" href="#2-4-find-k-closest-elements"><span>2-4) Find K Closest Elements</span></a></h3>
+<pre><code class="language-python"># LC 658. Find K Closest Elements
+# NOTE : there is also stack, binary search.. approaches
+# V0'
+# IDEA : SORTING
+class Solution:
+    def findClosestElements(self, arr, k, x):
+        # Sort using custom comparator
+        sorted_arr = sorted(arr, key = lambda num: abs(x - num))
+
+        # Only take k elements
+        result = []
+        for i in range(k):
+            result.append(sorted_arr[i])
+        
+        # Sort again to have output in ascending order
+        return sorted(result)
+</code></pre>
+<h3 id="2-5-largest-number" tabindex="-1"><a class="header-anchor" href="#2-5-largest-number"><span>2-5) Largest Number</span></a></h3>
+<pre><code class="language-python"># LC 179. Largest Number
+# V0
+# IDEA : Sorting via Custom Comparator
+class compare(str):
+    # __lt__ defines &quot;&gt;&quot; operator in python
+    def __lt__(x, y):
+        return x+y &gt; y+x
+
+class Solution:
+    def largestNumber(self, nums):
+        largest = sorted([str(v) for v in nums], key=compare) 
+        largest = ''.join(largest) 
+        return '0' if largest[0] == '0' else largest 
+</code></pre>
+<h3 id="2-6-permutation-in-string" tabindex="-1"><a class="header-anchor" href="#2-6-permutation-in-string"><span>2-6) Permutation in String</span></a></h3>
+<pre><code class="language-python"># LC 567 
+# V0
+# IDEA : collections + sliding window
+from collections import Counter
+class Solution(object):
+    def checkInclusion(self, s1, s2):
+        if len(s1) &gt; len(s2):
+            return False   
+        l = 0
+        tmp = &quot;&quot;
+        _s1 = Counter(s1)
+        _s2 = Counter()     
+        for i, item in enumerate(s2):
+            ### NOTE : we need to append new element first, then compare
+            _s2[item] += 1
+            tmp = s2[l:i+1]
+            if _s2 == _s1 and len(tmp) &gt; 0:
+                return True
+            if len(tmp) &gt;= len(s1):
+                _s2[tmp[0]] -= 1
+                if _s2[tmp[0]] == 0:
+                    del _s2[tmp[0]]
+                l += 1
+        return False
+</code></pre>
+<pre><code class="language-java">// java
+// LC 567
+// V2
+// IDEA : SORTING
+// https://leetcode.com/problems/permutation-in-string/editorial/
+public boolean checkInclusion_3(String s1, String s2) {
+    s1 = sort(s1);
+    for (int i = 0; i &lt;= s2.length() - s1.length(); i++) {
+        if (s1.equals(sort(s2.substring(i, i + s1.length()))))
+            return true;
+    }
+    return false;
+}
+
+public String sort(String s) {
+    char[] t = s.toCharArray();
+    Arrays.sort(t);
+    return new String(t);
+} 
+</code></pre>
+<h3 id="2-7-car-fleet" tabindex="-1"><a class="header-anchor" href="#2-7-car-fleet"><span>2-7) Car Fleet</span></a></h3>
+<pre><code class="language-java">// java
+
+// LC 853. Car Fleet
+
+    // V0
+    // IDEA: pair position and speed, sorting (gpt)
+    /**
+     * IDEA :
+     *
+     * The approach involves sorting the cars by their starting positions
+     * (from farthest to nearest to the target)
+     * and computing their time to reach the target.
+     * We then iterate through these times to count the number of distinct fleets.
+     *
+     *
+     *
+     * Steps in the Code:
+     *  1.  Pair Cars with Their Speeds:
+     *      •   Combine position and speed into a 2D array cars for easier sorting and access.
+     *  2.  Sort Cars by Position Descending:
+     *      •   Use Arrays.sort with a custom comparator to sort cars from farthest to nearest relative to the target.
+     *  3.  Calculate Arrival Times:
+     *      •   Compute the time each car takes to reach the target using the formula:
+     *
+     *  time = (target - position) / speed
+     *
+     *  4.  Count Fleets:
+     *      •   Iterate through the times array:
+     *      •   If the current car’s arrival time is greater than the lastTime (time of the last fleet), it forms a new fleet.
+     *      •   Update lastTime to the current car’s time.
+     *  5.  Return Fleet Count:
+     *      •   The number of distinct times that exceed lastTime corresponds to the number of fleets.
+     *
+     */
+    public int carFleet(int target, int[] position, int[] speed) {
+        int n = position.length;
+        // Pair positions with speeds and `sort by position in descending order`
+        // cars : [position][speed]
+        int[][] cars = new int[n][2];
+        for (int i = 0; i &lt; n; i++) {
+            cars[i][0] = position[i];
+            cars[i][1] = speed[i];
+        }
+
+        /**
+         * NOTE !!!
+         *
+         *  Sort by position descending (simulate the &quot;car arriving&quot; process
+         */
+        Arrays.sort(cars, (a, b) -&gt; b[0] - a[0]); // Sort by position descending
+
+        // Calculate arrival times
+        double[] times = new double[n];
+        for (int i = 0; i &lt; n; i++) {
+            times[i] = (double) (target - cars[i][0]) / cars[i][1];
+        }
+
+        // Count fleets
+        int fleets = 0;
+        double lastTime = 0;
+        for (double time : times) {
+            /**
+             *  4.  Count Fleets:
+             *  •   Iterate through the times array:
+             *  •   If the current car’s arrival time is greater than the lastTime (time of the last fleet), it forms a new fleet.
+             *  •   Update lastTime to the current car’s time.
+             */
+            // If current car's time is greater than the last fleet's time, it forms a new fleet
+            if (time &gt; lastTime) {
+                fleets++;
+                lastTime = time;
+            }
+        }
+
+        return fleets;
+    }
+</code></pre>
+<h3 id="2-7-topk-frequent-words" tabindex="-1"><a class="header-anchor" href="#2-7-topk-frequent-words"><span>2-7)  TopK Frequent Words</span></a></h3>
+<pre><code class="language-java">// java
+// LC 692
+
+// V0-1
+// IDEA: Sort on map key set
+public List&lt;String&gt; topKFrequent_0_1(String[] words, int k) {
+
+    // IDEA: map sorting
+    HashMap&lt;String, Integer&gt; freq = new HashMap&lt;&gt;();
+    for (int i = 0; i &lt; words.length; i++) {
+        freq.put(words[i], freq.getOrDefault(words[i], 0) + 1);
+    }
+    List&lt;String&gt; res = new ArrayList(freq.keySet());
+
+    /**
+     * NOTE !!!
+     *
+     *  we directly sort over map's keySet
+     *  (with the data val, key that read from map)
+     *
+     *
+     *  example:
+     *
+     *          Collections.sort(res,
+     *                 (w1, w2) -&gt; freq.get(w1).equals(freq.get(w2)) ? w1.compareTo(w2) : freq.get(w2) - freq.get(w1));
+     */
+    Collections.sort(res, (x, y) -&gt; {
+        int valDiff = freq.get(y) - freq.get(x); // sort on `value` bigger number first (decreasing order)
+        if (valDiff == 0){
+            // Sort on `key ` with `lexicographically` order (increasing order)
+            //return y.length() - x.length(); // ?
+            return x.compareTo(y);
+        }
+        return valDiff;
+    });
+
+    // get top K result
+    return res.subList(0, k);
+}
+</code></pre>
+
+      </div>
+      <div class="cheatsheet-footer">
+        <a href="../cheatsheets.html" class="back-link">← Back to Cheat Sheets</a>
+        <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/sort.md" class="github-edit" target="_blank">
+          Edit on GitHub →
+        </a>
+      </div>
+    <nav class="prev-next"><a href="sliding_window.html" class="prev-link">← Sliding Window</a><a href="stack.html" class="next-link">Stack →</a></nav>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>CS_basics - Computer Science Fundamentals & Interview Preparation</p>
+      <p>
+        <a href="https://github.com/yennanliu/CS_basics">GitHub</a> •
+        <a href="https://github.com/yennanliu/CS_basics/tree/master/doc">Documentation</a> •
+        <a href="https://github.com/yennanliu/CS_basics/issues">Report Issues</a>
+      </p>
+    </div>
+  </footer>
+</body>
+</html>

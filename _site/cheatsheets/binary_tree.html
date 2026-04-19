@@ -1,0 +1,1572 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Binary Tree - CS_basics</title>
+  <meta name="description" content="Computer Science fundamentals: algorithms, data structures, system design, and LeetCode solutions">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>CS</text></svg>">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="../vendor/fonts.css">
+  <link rel="stylesheet" href="../vendor/highlight/github-dark.min.css">
+  <script src="../vendor/highlight/highlight.min.js"></script>
+  <script>
+  // Apply theme before render to prevent flash
+  (function() {
+    var saved = localStorage.getItem('theme');
+    if (saved === 'dark' || (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      document.documentElement.setAttribute('data-theme', 'dark');
+    }
+  })();
+  </script>
+  <script>document.addEventListener('DOMContentLoaded', function() {
+    hljs.highlightAll();
+    document.querySelectorAll('pre code').forEach(function(codeEl) {
+      var pre = codeEl.parentElement;
+      var lang = '';
+      var cls = codeEl.className || '';
+      var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
+      if (m) lang = m[1];
+      var wrapper = document.createElement('div');
+      wrapper.className = 'code-block-wrapper';
+      pre.parentNode.insertBefore(wrapper, pre);
+      var header = document.createElement('div');
+      header.className = 'code-block-header';
+      if (lang) {
+        var label = document.createElement('span');
+        label.className = 'code-lang-label';
+        label.textContent = lang;
+        header.appendChild(label);
+      } else {
+        header.appendChild(document.createElement('span'));
+      }
+      var btn = document.createElement('button');
+      btn.className = 'copy-btn';
+      btn.textContent = 'Copy';
+      btn.addEventListener('click', function() {
+        navigator.clipboard.writeText(codeEl.textContent).then(function() {
+          btn.textContent = 'Copied!';
+          btn.classList.add('copied');
+          setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+        });
+      });
+      header.appendChild(btn);
+      wrapper.appendChild(header);
+      wrapper.appendChild(pre);
+    });
+    document.querySelectorAll('table').forEach(function(table) {
+      if (!table.parentElement.classList.contains('table-wrap')) {
+        var wrapper = document.createElement('div');
+        wrapper.className = 'table-wrap';
+        table.parentNode.insertBefore(wrapper, table);
+        wrapper.appendChild(table);
+      }
+    });
+    // Reading progress bar
+    var progressBar = document.getElementById('reading-progress');
+    if (progressBar) {
+      window.addEventListener('scroll', function() {
+        var winScroll = document.documentElement.scrollTop;
+        var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        progressBar.style.width = height > 0 ? (winScroll / height * 100) + '%' : '0%';
+      });
+    }
+    // Dark mode toggle
+    var toggle = document.getElementById('theme-toggle');
+    if (toggle) {
+      var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      toggle.textContent = isDark ? '☀️' : '🌙';
+      toggle.addEventListener('click', function() {
+        var dark = document.documentElement.getAttribute('data-theme') === 'dark';
+        if (dark) {
+          document.documentElement.removeAttribute('data-theme');
+          localStorage.setItem('theme', 'light');
+          toggle.textContent = '🌙';
+        } else {
+          document.documentElement.setAttribute('data-theme', 'dark');
+          localStorage.setItem('theme', 'dark');
+          toggle.textContent = '☀️';
+        }
+      });
+    }
+  });</script>
+</head>
+<body>
+  <div class="progress-container"><div class="progress-bar" id="reading-progress"></div></div>
+  <nav class="navbar">
+    <div class="container">
+      <div class="nav-brand">
+        <span class="nav-icon">💻</span>
+        <span class="nav-title">CS_basics</span>
+      </div>
+      <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+      <div class="nav-links">
+        <a href="../index.html" class="">Home</a>
+        <a href="../cheatsheets.html" class="active">Cheat Sheets</a>
+        <a href="../patterns.html" class="">Pattern Recognition</a>
+        <a href="../faqs.html" class="">FAQs</a>
+        <a href="../resources.html" class="">Resources</a>
+        <a href="../lc-explorer.html" class="">LC Explorer</a>
+        <a href="../lc-random-picker.html" class="">🎲 Random Picker</a>
+        <a href="../algo_demo/index.html" class="">Visualizer</a>
+        <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">&#127769;</button>
+        <a href="https://github.com/yennanliu/CS_basics" target="_blank" class="github-link" aria-label="GitHub">
+          <svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor">
+            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container">
+    <div class="content">
+      
+      <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">Binary Tree</span></nav>
+      <div class="cheatsheet-header">
+        <h1>Binary Tree</h1>
+        <span class="last-updated">Last updated: Mar 1, 2026</span>
+      </div>
+      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#overview">Overview</a></li><li class="toc-sub"><a href="#key-properties">Key Properties</a></li><li class="toc-sub"><a href="#references">References</a></li><li><a href="#problem-categories">Problem Categories</a></li><li class="toc-sub"><a href="#pattern-1-tree-traversal">Pattern 1: Tree Traversal</a></li><li class="toc-sub"><a href="#pattern-2-tree-construction">Pattern 2: Tree Construction</a></li><li class="toc-sub"><a href="#pattern-3-path-problems">Pattern 3: Path Problems</a></li><li class="toc-sub"><a href="#pattern-4-tree-properties">Pattern 4: Tree Properties</a></li><li class="toc-sub"><a href="#pattern-5-lca-distance">Pattern 5: LCA &amp; Distance</a></li><li class="toc-sub"><a href="#pattern-6-binary-search-on-trees">Pattern 6: Binary Search on Trees</a></li><li class="toc-sub"><a href="#complete-tree-to-array-representation">Complete Tree to Array Representation</a></li><li><a href="#templates-algorithms">Templates &amp; Algorithms</a></li><li class="toc-sub"><a href="#template-comparison-table">Template Comparison Table</a></li><li class="toc-sub"><a href="#universal-tree-template">Universal Tree Template</a></li><li class="toc-sub"><a href="#template-1-tree-traversal-recursive">Template 1: Tree Traversal (Recursive)</a></li><li class="toc-sub"><a href="#template-2-tree-traversal-iterative">Template 2: Tree Traversal (Iterative)</a></li><li class="toc-sub"><a href="#template-3-tree-construction">Template 3: Tree Construction</a></li><li class="toc-sub"><a href="#template-4-path-problems">Template 4: Path Problems</a></li><li class="toc-sub"><a href="#template-5-tree-properties">Template 5: Tree Properties</a></li><li class="toc-sub"><a href="#template-6-lca-lowest-common-ancestor">Template 6: LCA (Lowest Common Ancestor)</a></li><li class="toc-sub"><a href="#template-7-binary-search-on-trees">Template 7: Binary Search on Trees</a></li><li><a href="#problems-by-pattern">Problems by Pattern</a></li><li class="toc-sub"><a href="#pattern-based-problem-classification">Pattern-Based Problem Classification</a></li><li class="toc-sub"><a href="#complete-problem-list-by-difficulty">Complete Problem List by Difficulty</a></li><li><a href="#2-lc-example">2) LC Example</a></li><li class="toc-sub"><a href="#2-1-construct-binary-tree-from-preorder-and-inorder-traversal">2-1) Construct Binary Tree from Preorder and Inorder Traversal</a></li><li class="toc-sub"><a href="#2-2-construct-binary-tree-from-inorder-and-postorder-traversal">2-2) Construct Binary Tree from Inorder and Postorder Traversal</a></li><li class="toc-sub"><a href="#2-3-binary-tree-paths">2-3) Binary Tree Paths</a></li><li class="toc-sub"><a href="#2-4-binary-tree-longest-consecutive-sequence">2-4) Binary Tree Longest Consecutive Sequence</a></li><li class="toc-sub"><a href="#2-5-binary-search-tree-iterator">2-5) Binary Search Tree Iterator</a></li><li class="toc-sub"><a href="#2-6-count-complete-tree-nodes-binary-search-on-trees">2-6) Count Complete Tree Nodes (Binary Search on Trees)</a></li><li><a href="#pattern-selection-strategy">Pattern Selection Strategy</a></li><li class="toc-sub"><a href="#decision-framework">Decision Framework</a></li><li><a href="#summary-quick-reference">Summary &amp; Quick Reference</a></li><li class="toc-sub"><a href="#complexity-quick-reference">Complexity Quick Reference</a></li><li class="toc-sub"><a href="#template-quick-reference">Template Quick Reference</a></li><li class="toc-sub"><a href="#common-patterns-tricks">Common Patterns &amp; Tricks</a></li><li class="toc-sub"><a href="#problem-solving-steps">Problem-Solving Steps</a></li><li class="toc-sub"><a href="#common-mistakes-tips">Common Mistakes &amp; Tips</a></li><li class="toc-sub"><a href="#interview-tips">Interview Tips</a></li><li class="toc-sub"><a href="#related-topics">Related Topics</a></li><li class="toc-sub"><a href="#java-implementation-notes">Java Implementation Notes</a></li><li class="toc-sub"><a href="#python-implementation-notes">Python Implementation Notes</a></li></ul></div>
+      <div class="cheatsheet-content">
+        <h1 id="binary-tree" tabindex="-1"><a class="header-anchor" href="#binary-tree"><span>Binary Tree</span></a></h1>
+<h2 id="overview" tabindex="-1"><a class="header-anchor" href="#overview"><span>Overview</span></a></h2>
+<p><strong>Binary Tree</strong> is a hierarchical data structure where each node has at most two children (left and right). It forms the foundation for many advanced data structures like BST, Heap, and is crucial for understanding tree-based algorithms.</p>
+<h3 id="key-properties" tabindex="-1"><a class="header-anchor" href="#key-properties"><span>Key Properties</span></a></h3>
+<ul>
+<li><strong>Time Complexity</strong>:
+<ul>
+<li>Access/Search: O(n) worst case, O(log n) balanced</li>
+<li>Insert/Delete: O(n) worst case, O(log n) balanced</li>
+</ul>
+</li>
+<li><strong>Space Complexity</strong>: O(n) for storing n nodes</li>
+<li><strong>Core Idea</strong>: Hierarchical structure with recursive properties</li>
+<li><strong>When to Use</strong>: Hierarchical data, searching, sorting, decision making, expression parsing</li>
+</ul>
+<h3 id="references" tabindex="-1"><a class="header-anchor" href="#references"><span>References</span></a></h3>
+<ul>
+<li><a href="https://www.cs.usfca.edu/~galles/visualization/BST.html">Binary Tree Visualizer</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Binary_tree">Wikipedia - Binary Tree</a></li>
+<li><a href="https://web.ntnu.edu.tw/~algo/BinaryTree.html">Binary Tree - 演算法筆記</a></li>
+</ul>
+<h2 id="problem-categories" tabindex="-1"><a class="header-anchor" href="#problem-categories"><span>Problem Categories</span></a></h2>
+<h3 id="pattern-1-tree-traversal" tabindex="-1"><a class="header-anchor" href="#pattern-1-tree-traversal"><span><strong>Pattern 1: Tree Traversal</strong></span></a></h3>
+<ul>
+<li><strong>Description</strong>: Visit all nodes in specific order (preorder, inorder, postorder, level-order)</li>
+<li><strong>Recognition</strong>: “Visit all nodes”, “print tree”, “serialize tree”</li>
+<li><strong>Examples</strong>: LC 94, LC 144, LC 145, LC 102</li>
+<li><strong>Template</strong>: Use Traversal Templates</li>
+</ul>
+<h3 id="pattern-2-tree-construction" tabindex="-1"><a class="header-anchor" href="#pattern-2-tree-construction"><span><strong>Pattern 2: Tree Construction</strong></span></a></h3>
+<ul>
+<li><strong>Description</strong>: Build tree from traversal sequences or other representations</li>
+<li><strong>Recognition</strong>: “Construct from”, “build tree”, “deserialize”</li>
+<li><strong>Examples</strong>: LC 105, LC 106, LC 108, LC 297</li>
+<li><strong>Template</strong>: Use Construction Template</li>
+</ul>
+<h3 id="pattern-3-path-problems" tabindex="-1"><a class="header-anchor" href="#pattern-3-path-problems"><span><strong>Pattern 3: Path Problems</strong></span></a></h3>
+<ul>
+<li><strong>Description</strong>: Find paths with specific properties (sum, length, pattern)</li>
+<li><strong>Recognition</strong>: “Path sum”, “root to leaf”, “longest path”</li>
+<li><strong>Examples</strong>: LC 112, LC 113, LC 257, LC 124</li>
+<li><strong>Template</strong>: Use Path Template with backtracking</li>
+</ul>
+<h3 id="pattern-4-tree-properties" tabindex="-1"><a class="header-anchor" href="#pattern-4-tree-properties"><span><strong>Pattern 4: Tree Properties</strong></span></a></h3>
+<ul>
+<li><strong>Description</strong>: Check or calculate tree properties (height, balance, symmetry)</li>
+<li><strong>Recognition</strong>: “Height”, “balanced”, “symmetric”, “diameter”</li>
+<li><strong>Examples</strong>: LC 104, LC 110, LC 101, LC 543</li>
+<li><strong>Template</strong>: Use Property Check Template</li>
+</ul>
+<h3 id="pattern-5-lca-distance" tabindex="-1"><a class="header-anchor" href="#pattern-5-lca-distance"><span><strong>Pattern 5: LCA &amp; Distance</strong></span></a></h3>
+<ul>
+<li><strong>Description</strong>: Find common ancestors or calculate distances between nodes</li>
+<li><strong>Recognition</strong>: “Lowest common ancestor”, “distance between nodes”</li>
+<li><strong>Examples</strong>: LC 236, LC 235, LC 863</li>
+<li><strong>Template</strong>: Use LCA Template</li>
+</ul>
+<h3 id="pattern-6-binary-search-on-trees" tabindex="-1"><a class="header-anchor" href="#pattern-6-binary-search-on-trees"><span><strong>Pattern 6: Binary Search on Trees</strong></span></a></h3>
+<ul>
+<li><strong>Description</strong>: Apply binary search technique on tree properties (height, node count, structure)</li>
+<li><strong>Recognition</strong>: “O(log n) time”, “complete binary tree”, “count nodes”, “find kth element”</li>
+<li><strong>Examples</strong>: LC 222 (Count Complete Tree Nodes), LC 230 (Kth Smallest in BST)</li>
+<li><strong>Template</strong>: Use Binary Search + Tree Properties Template</li>
+<li><strong>Key Insight</strong>:
+<ul>
+<li>For complete binary trees, can use binary search on tree structure</li>
+<li>Check left/right subtree properties to decide search direction</li>
+<li>Time complexity can be reduced from O(n) to O(log²n)</li>
+</ul>
+</li>
+</ul>
+<h3 id="complete-tree-to-array-representation" tabindex="-1"><a class="header-anchor" href="#complete-tree-to-array-representation"><span>Complete Tree to Array Representation</span></a></h3>
+<ul>
+<li>Note if we use an <code>array</code> to represent the <code>complete binary tree</code>,and <code>store the root node at index 1</code>
+<ul>
+<li>so, index of the <code>parent</code> node of any node is <code>[index of the node / 2]</code></li>
+<li>so, index of the <code>left child</code> node is <code>[index of the node * 2]</code></li>
+<li>so, index of the <code>right child</code> node is <code>[index of the node * 2 + 1]</code></li>
+<li><a href="https://github.com/yennanliu/CS_basics/blob/master/data_structure/python/MinHeap.py#L36-L40">https://github.com/yennanliu/CS_basics/blob/master/data_structure/python/MinHeap.py#L36-L40</a></li>
+<li><a href="https://leetcode.com/explore/learn/card/heap/643/heap/4017/">video</a> : very good explanation!!!</li>
+<li>properties
+<ul>
+<li>how to store ?
+<ul>
+<li>via Array and index</li>
+</ul>
+</li>
+<li>how to find the parent node ?
+<ul>
+<li>n / 2</li>
+<li>NOTE : <code>n is an &quot;index&quot;</code> in array</li>
+</ul>
+</li>
+<li>how to find the left and right children ?
+<ul>
+<li>left children : n * 2</li>
+<li>right children : n * 2 + 1</li>
+</ul>
+</li>
+<li>how to check if a node is leaf node ?
+<ul>
+<li>check if i &gt; (# of nodes) / 2</li>
+</ul>
+</li>
+<li>
+<p align="center"><img src="../doc/pic/complete_tree_to_array.png" ></p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="example" tabindex="-1"><a class="header-anchor" href="#example"><span>Example:</span></a></h4>
+<p>Let’s say you have a complete binary tree like this:</p>
+<pre><code>        10
+       /  \
+     15    20
+    / \    /
+   30 40  50
+</code></pre>
+<p>This tree as an <strong>array (1-based)</strong> would be:</p>
+<pre><code># `n is an &quot;index&quot;` in array
+
+Index:   1   2   3   4   5   6
+Value: [10, 15, 20, 30, 40, 50]
+</code></pre>
+<p>Relationships:</p>
+<ul>
+<li>
+<p>Node at index 2 (15)</p>
+<ul>
+<li>Parent: 2 / 2 = 1 → 10</li>
+<li>Left child: 2 * 2 = 4 → 30</li>
+<li>Right child: 2 * 2 + 1 = 5 → 40</li>
+</ul>
+</li>
+</ul>
+<hr>
+<ul>
+<li>
+<p>Array to Complete Tree</p>
+<ul>
+<li>dev</li>
+</ul>
+</li>
+<li>
+<p><code>Complete binary tree</code></p>
+<ul>
+<li>A complete binary tree is a binary tree in which every level, <code>except possibly the last</code>, is completely filled, and all nodes in the last level are as far left as possible.</li>
+<li><a href="https://en.wikipedia.org/wiki/Binary_tree#:~:text=A%20complete%20binary%20tree%20is,tree%20is%20not%20necessarily%20perfect.">wiki</a></li>
+<li>example :
+<ul>
+<li>complete binary tree</li>
+</ul>
+  <p align="center"><img src="../doc/pic/complete_binary_tree1.png" ></p>
+  - NOT complete binary tree
+  <p align="center"><img src="../doc/pic/not_complete_binary_tree.png" ></p>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="templates-algorithms" tabindex="-1"><a class="header-anchor" href="#templates-algorithms"><span>Templates &amp; Algorithms</span></a></h2>
+<h3 id="template-comparison-table" tabindex="-1"><a class="header-anchor" href="#template-comparison-table"><span>Template Comparison Table</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>Template Type</th>
+<th>Use Case</th>
+<th>Approach</th>
+<th>Time</th>
+<th>Space</th>
+<th>When to Use</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Recursive Traversal</strong></td>
+<td>Simple traversal</td>
+<td>Recursion</td>
+<td>O(n)</td>
+<td>O(h)</td>
+<td>Default choice, clean code</td>
+</tr>
+<tr>
+<td><strong>Iterative Traversal</strong></td>
+<td>Memory limited</td>
+<td>Stack/Queue</td>
+<td>O(n)</td>
+<td>O(h)</td>
+<td>Avoid recursion overhead</td>
+</tr>
+<tr>
+<td><strong>Morris Traversal</strong></td>
+<td>Space limited</td>
+<td>Threading</td>
+<td>O(n)</td>
+<td>O(1)</td>
+<td>Constant space required</td>
+</tr>
+<tr>
+<td><strong>Level Order</strong></td>
+<td>BFS problems</td>
+<td>Queue</td>
+<td>O(n)</td>
+<td>O(w)</td>
+<td>Level-by-level processing</td>
+</tr>
+<tr>
+<td><strong>Binary Search on Trees</strong></td>
+<td>Complete/Balanced tree</td>
+<td>Binary Search</td>
+<td>O(log²n)</td>
+<td>O(log n)</td>
+<td>Optimize with tree structure</td>
+</tr>
+</tbody>
+</table>
+<h3 id="universal-tree-template" tabindex="-1"><a class="header-anchor" href="#universal-tree-template"><span>Universal Tree Template</span></a></h3>
+<pre><code class="language-python">def tree_problem(root):
+    &quot;&quot;&quot;
+    Universal template for most binary tree problems
+    Can be adapted for traversal, calculation, or modification
+    &quot;&quot;&quot;
+    # Base case
+    if not root:
+        return None  # or 0, [], depending on problem
+    
+    # Pre-order processing (before recursion)
+    # process_current_node()
+    
+    # Recursive calls
+    left_result = tree_problem(root.left)
+    right_result = tree_problem(root.right)
+    
+    # Post-order processing (after recursion)
+    # combine_results()
+    
+    return result
+</code></pre>
+<h3 id="template-1-tree-traversal-recursive" tabindex="-1"><a class="header-anchor" href="#template-1-tree-traversal-recursive"><span>Template 1: Tree Traversal (Recursive)</span></a></h3>
+<pre><code class="language-python"># Preorder Traversal
+def preorder(root):
+    if not root:
+        return []
+    return [root.val] + preorder(root.left) + preorder(root.right)
+
+# Inorder Traversal  
+def inorder(root):
+    if not root:
+        return []
+    return inorder(root.left) + [root.val] + inorder(root.right)
+
+# Postorder Traversal
+def postorder(root):
+    if not root:
+        return []
+    return postorder(root.left) + postorder(root.right) + [root.val]
+</code></pre>
+<h3 id="template-2-tree-traversal-iterative" tabindex="-1"><a class="header-anchor" href="#template-2-tree-traversal-iterative"><span>Template 2: Tree Traversal (Iterative)</span></a></h3>
+<pre><code class="language-python"># Iterative Inorder with Stack
+def inorder_iterative(root):
+    result, stack = [], []
+    current = root
+    
+    while current or stack:
+        # Go to leftmost node
+        while current:
+            stack.append(current)
+            current = current.left
+        
+        # Current must be None, so pop from stack
+        current = stack.pop()
+        result.append(current.val)
+        
+        # Visit right subtree
+        current = current.right
+    
+    return result
+
+# Level Order with Queue
+def level_order(root):
+    if not root:
+        return []
+    
+    result = []
+    queue = collections.deque([root])
+    
+    while queue:
+        level_size = len(queue)
+        current_level = []
+        
+        for _ in range(level_size):
+            node = queue.popleft()
+            current_level.append(node.val)
+            
+            if node.left:
+                queue.append(node.left)
+            if node.right:
+                queue.append(node.right)
+        
+        result.append(current_level)
+    
+    return result
+</code></pre>
+<h3 id="template-3-tree-construction" tabindex="-1"><a class="header-anchor" href="#template-3-tree-construction"><span>Template 3: Tree Construction</span></a></h3>
+<pre><code class="language-python">def build_tree_from_traversals(preorder, inorder):
+    &quot;&quot;&quot;
+    Construct tree from preorder and inorder traversals
+    Key insight: First element in preorder is always root
+    &quot;&quot;&quot;
+    if not preorder or not inorder:
+        return None
+    
+    # Root is first element in preorder
+    root = TreeNode(preorder[0])
+    
+    # Find root position in inorder to split left/right
+    root_idx = inorder.index(root.val)
+    
+    # Recursively build subtrees
+    # Left subtree: elements before root in inorder
+    root.left = build_tree_from_traversals(
+        preorder[1:root_idx+1],  # Skip root, take left elements
+        inorder[:root_idx]       # Everything before root
+    )
+    
+    # Right subtree: elements after root in inorder
+    root.right = build_tree_from_traversals(
+        preorder[root_idx+1:],   # Everything after left subtree
+        inorder[root_idx+1:]     # Everything after root
+    )
+    
+    return root
+</code></pre>
+<h3 id="template-4-path-problems" tabindex="-1"><a class="header-anchor" href="#template-4-path-problems"><span>Template 4: Path Problems</span></a></h3>
+<pre><code class="language-python">def path_sum_template(root, target):
+    &quot;&quot;&quot;
+    Template for path sum problems
+    Can track paths, sums, or other properties
+    &quot;&quot;&quot;
+    def dfs(node, current_sum, path):
+        if not node:
+            return
+        
+        # Update current state
+        current_sum += node.val
+        path.append(node.val)
+        
+        # Check if leaf node and condition met
+        if not node.left and not node.right:
+            if current_sum == target:
+                result.append(path[:])  # Copy current path
+        
+        # Explore subtrees
+        dfs(node.left, current_sum, path)
+        dfs(node.right, current_sum, path)
+        
+        # Backtrack
+        &quot;&quot;&quot;
+        NOTE !!! why do we need backtrack here ? (gemini)
+        In simple terms, **backtracking** is the &quot;undo&quot; button for your recursion.
+
+
+        ### 3. A Visual Example
+
+        Imagine this tree:
+
+        ```text
+            1
+           / \
+           2   3
+
+        ```
+
+        **Without `path.pop()`:**
+
+        1. Go to `1`: `path = [1]`
+        2. Go to `2`: `path = [1, 2]`
+        3. Finish `2`, go back to `1`.
+        4. Go to `3`: `path = [1, 2, 3]`  &lt;-- **ERROR!** (2 shouldn't be here)
+
+        **With `path.pop()`:**
+
+        1. Go to `1`: `path = [1]`
+        2. Go to `2`: `path = [1, 2]`
+        3. Finish `2`, **`pop()`**: `path = [1]`
+        4. Go to `3`: `path = [1, 3]` &lt;-- **CORRECT!**
+        &quot;&quot;&quot;
+        path.pop()
+    
+    result = []
+    dfs(root, 0, [])
+    return result
+</code></pre>
+<h3 id="template-5-tree-properties" tabindex="-1"><a class="header-anchor" href="#template-5-tree-properties"><span>Template 5: Tree Properties</span></a></h3>
+<pre><code class="language-python">def tree_property_template(root):
+    &quot;&quot;&quot;
+    Calculate tree properties (height, diameter, balance)
+    &quot;&quot;&quot;
+    def helper(node):
+        if not node:
+            return 0  # or (0, True) for multiple values
+        
+        # Get info from subtrees
+        left_info = helper(node.left)
+        right_info = helper(node.right)
+        
+        # Calculate current node's property
+        current_property = calculate(left_info, right_info)
+        
+        # Update global result if needed
+        self.result = max(self.result, current_property)
+        
+        return current_property
+    
+    self.result = 0
+    helper(root)
+    return self.result
+</code></pre>
+<h3 id="template-6-lca-lowest-common-ancestor" tabindex="-1"><a class="header-anchor" href="#template-6-lca-lowest-common-ancestor"><span>Template 6: LCA (Lowest Common Ancestor)</span></a></h3>
+<pre><code class="language-python">def find_lca(root, p, q):
+    &quot;&quot;&quot;
+    Find lowest common ancestor of nodes p and q
+    &quot;&quot;&quot;
+    if not root or root == p or root == q:
+        return root
+
+    left = find_lca(root.left, p, q)
+    right = find_lca(root.right, p, q)
+
+    # Both found in different subtrees -&gt; current is LCA
+    if left and right:
+        return root
+
+    # One or both found in same subtree
+    return left if left else right
+</code></pre>
+<h3 id="template-7-binary-search-on-trees" tabindex="-1"><a class="header-anchor" href="#template-7-binary-search-on-trees"><span>Template 7: Binary Search on Trees</span></a></h3>
+<pre><code class="language-python">def count_complete_tree_nodes(root):
+    &quot;&quot;&quot;
+    Count nodes in complete binary tree in O(log²n) time
+    Key: Use binary search on tree structure
+    &quot;&quot;&quot;
+    if not root:
+        return 0
+
+    def get_height(node):
+        &quot;&quot;&quot;Get height by going left&quot;&quot;&quot;
+        height = 0
+        while node:
+            height += 1
+            node = node.left
+        return height
+
+    left_height = get_height(root.left)
+    right_height = get_height(root.right)
+
+    if left_height == right_height:
+        # Left subtree is perfect binary tree
+        # Nodes in left = 2^left_height - 1
+        # Plus root = 2^left_height
+        return (1 &lt;&lt; left_height) + count_complete_tree_nodes(root.right)
+    else:
+        # Right subtree is perfect binary tree
+        # Height = right_height, nodes = 2^right_height - 1
+        # Plus root = 2^right_height
+        return (1 &lt;&lt; right_height) + count_complete_tree_nodes(root.left)
+</code></pre>
+<h2 id="problems-by-pattern" tabindex="-1"><a class="header-anchor" href="#problems-by-pattern"><span>Problems by Pattern</span></a></h2>
+<h3 id="pattern-based-problem-classification" tabindex="-1"><a class="header-anchor" href="#pattern-based-problem-classification"><span>Pattern-Based Problem Classification</span></a></h3>
+<h4 id="pattern-1-tree-traversal-problems" tabindex="-1"><a class="header-anchor" href="#pattern-1-tree-traversal-problems"><span><strong>Pattern 1: Tree Traversal Problems</strong></span></a></h4>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC #</th>
+<th>Difficulty</th>
+<th>Key Technique</th>
+<th>Template</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Binary Tree Inorder Traversal</td>
+<td>94</td>
+<td>Easy</td>
+<td>Stack/Recursion</td>
+<td>Template 1/2</td>
+</tr>
+<tr>
+<td>Binary Tree Preorder Traversal</td>
+<td>144</td>
+<td>Easy</td>
+<td>Stack/Recursion</td>
+<td>Template 1/2</td>
+</tr>
+<tr>
+<td>Binary Tree Postorder Traversal</td>
+<td>145</td>
+<td>Easy</td>
+<td>Stack/Recursion</td>
+<td>Template 1/2</td>
+</tr>
+<tr>
+<td>Binary Tree Level Order Traversal</td>
+<td>102</td>
+<td>Medium</td>
+<td>BFS with Queue</td>
+<td>Template 2</td>
+</tr>
+<tr>
+<td>Binary Tree Zigzag Level Order</td>
+<td>103</td>
+<td>Medium</td>
+<td>BFS + Direction</td>
+<td>Template 2</td>
+</tr>
+<tr>
+<td>Binary Tree Right Side View</td>
+<td>199</td>
+<td>Medium</td>
+<td>Level Order/DFS</td>
+<td>Template 2</td>
+</tr>
+<tr>
+<td>Binary Tree Vertical Order</td>
+<td>314</td>
+<td>Medium</td>
+<td>BFS + HashMap</td>
+<td>Template 2</td>
+</tr>
+<tr>
+<td>Find Bottom Left Tree Value</td>
+<td>513</td>
+<td>Medium</td>
+<td>Level Order</td>
+<td>Template 2</td>
+</tr>
+</tbody>
+</table>
+<h4 id="pattern-2-tree-construction-problems" tabindex="-1"><a class="header-anchor" href="#pattern-2-tree-construction-problems"><span><strong>Pattern 2: Tree Construction Problems</strong></span></a></h4>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC #</th>
+<th>Difficulty</th>
+<th>Key Technique</th>
+<th>Template</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Construct from Preorder &amp; Inorder</td>
+<td>105</td>
+<td>Medium</td>
+<td>Index mapping</td>
+<td>Template 3</td>
+</tr>
+<tr>
+<td>Construct from Inorder &amp; Postorder</td>
+<td>106</td>
+<td>Medium</td>
+<td>Index mapping</td>
+<td>Template 3</td>
+</tr>
+<tr>
+<td>Construct from Preorder &amp; Postorder</td>
+<td>889</td>
+<td>Medium</td>
+<td>Recursion</td>
+<td>Template 3</td>
+</tr>
+<tr>
+<td>Convert Sorted Array to BST</td>
+<td>108</td>
+<td>Easy</td>
+<td>Binary Search</td>
+<td>Template 3</td>
+</tr>
+<tr>
+<td>Serialize and Deserialize Tree</td>
+<td>297</td>
+<td>Hard</td>
+<td>BFS/DFS</td>
+<td>Template 3</td>
+</tr>
+<tr>
+<td>Construct from String</td>
+<td>536</td>
+<td>Medium</td>
+<td>Stack/Recursion</td>
+<td>Template 3</td>
+</tr>
+</tbody>
+</table>
+<h4 id="pattern-3-path-problems-1" tabindex="-1"><a class="header-anchor" href="#pattern-3-path-problems-1"><span><strong>Pattern 3: Path Problems</strong></span></a></h4>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC #</th>
+<th>Difficulty</th>
+<th>Key Technique</th>
+<th>Template</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Path Sum</td>
+<td>112</td>
+<td>Easy</td>
+<td>DFS</td>
+<td>Template 4</td>
+</tr>
+<tr>
+<td>Path Sum II</td>
+<td>113</td>
+<td>Medium</td>
+<td>DFS + Backtrack</td>
+<td>Template 4</td>
+</tr>
+<tr>
+<td>Binary Tree Paths</td>
+<td>257</td>
+<td>Easy</td>
+<td>DFS + Path Track</td>
+<td>Template 4</td>
+</tr>
+<tr>
+<td>Sum Root to Leaf Numbers</td>
+<td>129</td>
+<td>Medium</td>
+<td>DFS</td>
+<td>Template 4</td>
+</tr>
+<tr>
+<td>Binary Tree Maximum Path Sum</td>
+<td>124</td>
+<td>Hard</td>
+<td>DFS + Global Max</td>
+<td>Template 4</td>
+</tr>
+<tr>
+<td>Longest Consecutive Sequence</td>
+<td>298</td>
+<td>Medium</td>
+<td>DFS + Counter</td>
+<td>Template 4</td>
+</tr>
+<tr>
+<td>Path Sum III</td>
+<td>437</td>
+<td>Medium</td>
+<td>Prefix Sum</td>
+<td>Template 4</td>
+</tr>
+</tbody>
+</table>
+<h4 id="pattern-4-tree-properties-problems" tabindex="-1"><a class="header-anchor" href="#pattern-4-tree-properties-problems"><span><strong>Pattern 4: Tree Properties Problems</strong></span></a></h4>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC #</th>
+<th>Difficulty</th>
+<th>Key Technique</th>
+<th>Template</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Maximum Depth</td>
+<td>104</td>
+<td>Easy</td>
+<td>DFS/BFS</td>
+<td>Template 5</td>
+</tr>
+<tr>
+<td>Minimum Depth</td>
+<td>111</td>
+<td>Easy</td>
+<td>DFS/BFS</td>
+<td>Template 5</td>
+</tr>
+<tr>
+<td>Balanced Binary Tree</td>
+<td>110</td>
+<td>Easy</td>
+<td>Height Check</td>
+<td>Template 5</td>
+</tr>
+<tr>
+<td>Diameter of Binary Tree</td>
+<td>543</td>
+<td>Easy</td>
+<td>DFS + Max</td>
+<td>Template 5</td>
+</tr>
+<tr>
+<td>Symmetric Tree</td>
+<td>101</td>
+<td>Easy</td>
+<td>Mirror Check</td>
+<td>Template 5</td>
+</tr>
+<tr>
+<td>Same Tree</td>
+<td>100</td>
+<td>Easy</td>
+<td>Simultaneous DFS</td>
+<td>Template 5</td>
+</tr>
+</tbody>
+</table>
+<h4 id="pattern-5-lca-distance-problems" tabindex="-1"><a class="header-anchor" href="#pattern-5-lca-distance-problems"><span><strong>Pattern 5: LCA &amp; Distance Problems</strong></span></a></h4>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC #</th>
+<th>Difficulty</th>
+<th>Key Technique</th>
+<th>Template</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Lowest Common Ancestor</td>
+<td>236</td>
+<td>Medium</td>
+<td>DFS</td>
+<td>Template 6</td>
+</tr>
+<tr>
+<td>LCA of BST</td>
+<td>235</td>
+<td>Easy</td>
+<td>BST Property</td>
+<td>Template 6</td>
+</tr>
+<tr>
+<td>Distance K from Target</td>
+<td>863</td>
+<td>Medium</td>
+<td>Graph Convert</td>
+<td>Template 6</td>
+</tr>
+<tr>
+<td>LCA of Deepest Leaves</td>
+<td>1123</td>
+<td>Medium</td>
+<td>DFS + Depth</td>
+<td>Template 6</td>
+</tr>
+</tbody>
+</table>
+<h4 id="pattern-6-binary-search-on-trees-problems" tabindex="-1"><a class="header-anchor" href="#pattern-6-binary-search-on-trees-problems"><span><strong>Pattern 6: Binary Search on Trees Problems</strong></span></a></h4>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC #</th>
+<th>Difficulty</th>
+<th>Key Technique</th>
+<th>Template</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Count Complete Tree Nodes</td>
+<td>222</td>
+<td>Medium</td>
+<td>Binary Search on Height</td>
+<td>Template 7</td>
+</tr>
+<tr>
+<td>Kth Smallest in BST</td>
+<td>230</td>
+<td>Medium</td>
+<td>Inorder + Binary Search</td>
+<td>Template 7</td>
+</tr>
+<tr>
+<td>Closest BST Value</td>
+<td>270</td>
+<td>Easy</td>
+<td>Binary Search on BST</td>
+<td>Template 7</td>
+</tr>
+<tr>
+<td>Closest BST Value II</td>
+<td>272</td>
+<td>Hard</td>
+<td>Inorder + Two Pointers</td>
+<td>Template 7</td>
+</tr>
+</tbody>
+</table>
+<h3 id="complete-problem-list-by-difficulty" tabindex="-1"><a class="header-anchor" href="#complete-problem-list-by-difficulty"><span>Complete Problem List by Difficulty</span></a></h3>
+<h4 id="easy-problems-foundation" tabindex="-1"><a class="header-anchor" href="#easy-problems-foundation"><span>Easy Problems (Foundation)</span></a></h4>
+<ul>
+<li>LC 94: Binary Tree Inorder Traversal - Basic traversal</li>
+<li>LC 100: Same Tree - Tree comparison</li>
+<li>LC 101: Symmetric Tree - Mirror property check</li>
+<li>LC 104: Maximum Depth - Basic recursion</li>
+<li>LC 108: Convert Sorted Array to BST - Array to tree</li>
+<li>LC 110: Balanced Binary Tree - Height calculation</li>
+<li>LC 111: Minimum Depth - BFS for shortest path</li>
+<li>LC 112: Path Sum - Simple path tracking</li>
+<li>LC 144: Binary Tree Preorder Traversal - Stack usage</li>
+<li>LC 145: Binary Tree Postorder Traversal - Stack manipulation</li>
+<li>LC 226: Invert Binary Tree - Tree modification</li>
+<li>LC 235: LCA of BST - BST properties</li>
+<li>LC 257: Binary Tree Paths - Path collection</li>
+<li>LC 543: Diameter of Binary Tree - Global max pattern</li>
+<li>LC 572: Subtree of Another Tree - Tree matching</li>
+</ul>
+<h4 id="medium-problems-core" tabindex="-1"><a class="header-anchor" href="#medium-problems-core"><span>Medium Problems (Core)</span></a></h4>
+<ul>
+<li>LC 102: Binary Tree Level Order Traversal - BFS foundation</li>
+<li>LC 103: Binary Tree Zigzag Level Order - Level with direction</li>
+<li>LC 105: Construct from Preorder &amp; Inorder - Index mapping</li>
+<li>LC 106: Construct from Inorder &amp; Postorder - Array slicing</li>
+<li>LC 113: Path Sum II - Backtracking paths</li>
+<li>LC 114: Flatten Binary Tree - In-place modification</li>
+<li>LC 116: Populating Next Right Pointers - Level connection</li>
+<li>LC 129: Sum Root to Leaf Numbers - Number construction</li>
+<li>LC 173: Binary Search Tree Iterator - Iterator design</li>
+<li>LC 199: Binary Tree Right Side View - Level last element</li>
+<li>LC 222: Count Complete Tree Nodes - Binary search on tree</li>
+<li>LC 230: Kth Smallest in BST - Inorder property</li>
+<li>LC 236: Lowest Common Ancestor - Classic LCA</li>
+<li>LC 298: Binary Tree Longest Consecutive - Path tracking</li>
+<li>LC 314: Binary Tree Vertical Order - Column indexing</li>
+<li>LC 437: Path Sum III - Prefix sum on tree</li>
+<li>LC 513: Find Bottom Left Tree Value - Level order variant</li>
+<li>LC 536: Construct from String - Parsing to tree</li>
+<li>LC 654: Maximum Binary Tree - Monotonic stack</li>
+<li>LC 863: All Nodes Distance K - Graph conversion</li>
+</ul>
+<h4 id="hard-problems-advanced" tabindex="-1"><a class="header-anchor" href="#hard-problems-advanced"><span>Hard Problems (Advanced)</span></a></h4>
+<ul>
+<li>LC 124: Binary Tree Maximum Path Sum - Global optimization</li>
+<li>LC 297: Serialize and Deserialize - String to tree</li>
+<li>LC 834: Sum of Distances in Tree - Rerooting technique</li>
+<li>LC 968: Binary Tree Cameras - Greedy on tree</li>
+</ul>
+<h2 id="2-lc-example" tabindex="-1"><a class="header-anchor" href="#2-lc-example"><span>2) LC Example</span></a></h2>
+<h3 id="2-1-construct-binary-tree-from-preorder-and-inorder-traversal" tabindex="-1"><a class="header-anchor" href="#2-1-construct-binary-tree-from-preorder-and-inorder-traversal"><span>2-1) Construct Binary Tree from Preorder and Inorder Traversal</span></a></h3>
+<pre><code class="language-python"># python
+# LC 105. Construct Binary Tree from Preorder and Inorder Traversal
+# V0
+# IDEA : BST property
+class Solution(object):
+    def buildTree(self, preorder, inorder):
+        if len(preorder) == 0:
+            return None
+        if len(preorder) == 1:
+            return TreeNode(preorder[0])
+        ### NOTE : init root like below (via TreeNode and root value (preorder[0]))
+        root = TreeNode(preorder[0])
+        &quot;&quot;&quot;
+        NOTE !!!
+        -&gt; # we get index of root.val from &quot;INORDER&quot; to SPLIT TREE
+        &quot;&quot;&quot;
+        index = inorder.index(root.val)  # the index of root at inorder, and we can also get the length of left-sub-tree, right-sub-tree ( preorder[1:index+1]) for following using
+        # recursion for root.left
+        #### NOTE : the idx is from &quot;INORDER&quot;
+        #### NOTE : WE idx from inorder in preorder as well 
+        #### NOTE : preorder[1 : index + 1] (for left sub tree)
+        root.left = self.buildTree(preorder[1 : index + 1], inorder[ : index]) ### since the BST is symmery so the length of left-sub-tree is same in both Preorder and Inorder, so we can use the index to get the left-sub-tree of Preorder as well
+        # recursion for root.right 
+        root.right = self.buildTree(preorder[index + 1 : ], inorder[index + 1 :]) ### since the BST is symmery so the length of left-sub-tree is same in both Preorder and Inorder, so we can use the index to get the right-sub-tree of Preorder as well
+        return root
+</code></pre>
+<h3 id="2-2-construct-binary-tree-from-inorder-and-postorder-traversal" tabindex="-1"><a class="header-anchor" href="#2-2-construct-binary-tree-from-inorder-and-postorder-traversal"><span>2-2) Construct Binary Tree from Inorder and Postorder Traversal</span></a></h3>
+<pre><code class="language-python"># python
+# LC 106 Construct Binary Tree from Inorder and Postorder Traversal
+# V0
+# IDEA : Binary Tree property, same as LC 105 
+class Solution(object):
+    def buildTree(self, inorder, postorder):
+        if not inorder:
+            return None
+        if len(inorder) == 1:
+            return TreeNode(inorder[0])
+        ### NOTE : we get root from postorder
+        root = TreeNode(postorder[-1])
+        &quot;&quot;&quot;
+        ### NOTE : the index is from inorder
+        ### NOTE : we get index of root in inorder
+        #    -&gt; and this idx CAN BE USED IN BOTH inorder, postorder (Binary Tree property)
+        &quot;&quot;&quot;
+        idx = inorder.index(root.val)
+        ### NOTE : inorder[:idx], postorder[:idx]
+        root.left = self.buildTree(inorder[:idx], postorder[:idx])
+        ### NOTE : postorder[idx:-1]
+        root.right =  self.buildTree(inorder[idx+1:], postorder[idx:-1])
+        return root
+</code></pre>
+<h3 id="2-3-binary-tree-paths" tabindex="-1"><a class="header-anchor" href="#2-3-binary-tree-paths"><span>2-3) Binary Tree Paths</span></a></h3>
+<pre><code class="language-python"># LC 257 Binary Tree Paths
+
+# V0
+# IDEA : BFS
+class Solution:
+    def binaryTreePaths(self, root):
+        res = []
+        ### NOTE : we set q like this : [[root, cur]]
+        cur = &quot;&quot;
+        q = [[root, cur]]
+        while q:
+            for i in range(len(q)):
+                node, cur = q.pop(0)
+                ### NOTE : if node exist, but no sub tree (i.e. not root.left and not root.right)
+                #         -&gt; append cur to result
+                if node:
+                    if not node.left and not node.right:
+                        res.append(cur + str(node.val))
+                ### NOTE : we keep cur to left sub tree
+                if node.left:
+                    q.append((node.left, cur + str(node.val) + '-&gt;'))
+                ### NOTE : we keep cur to left sub tree
+                if node.right:
+                    q.append((node.right, cur + str(node.val) + '-&gt;'))
+        return res
+
+# V0'
+# IDEA : DFS 
+class Solution:
+    def binaryTreePaths(self, root):
+        ans = []
+        def dfs(r, tmp):
+            if r.left:
+                dfs(r.left, tmp + [str(r.left.val)])
+            if r.right:
+                dfs(r.right, tmp + [str(r.right.val)])
+            if not r.left and not r.right:
+                ans.append('-&gt;'.join(tmp))
+        if not root:
+            return []
+        dfs(root, [str(root.val)])
+        return ans
+</code></pre>
+<h3 id="2-4-binary-tree-longest-consecutive-sequence" tabindex="-1"><a class="header-anchor" href="#2-4-binary-tree-longest-consecutive-sequence"><span>2-4) Binary Tree Longest Consecutive Sequence</span></a></h3>
+<pre><code class="language-python"># LC 298 Binary Tree Longest Consecutive Sequence
+# V0
+# IDEA : DFS
+class Solution(object):
+    def longestConsecutive(self, root):
+        if not root:
+            return 0
+
+        self.result = 0
+        self.helper(root, 1)
+
+        return self.result
+
+    def helper(self, root, curLen):
+        self.result = curLen if curLen &gt; self.result else self.result
+        if root.left:
+            if root.left.val == root.val + 1:
+                self.helper(root.left, curLen + 1)
+            else:
+                self.helper(root.left, 1)
+        if root.right:
+            if root.right.val == root.val + 1:
+                self.helper(root.right, curLen + 1)
+            else:
+                self.helper(root.right, 1)
+
+# V0'
+# IDEA : BFS
+class Solution(object):
+    def longestConsecutive(self, root):
+        if root is None:
+            return 0
+
+        stack = list()
+        stack.append((root, 1))
+        maxLen = 1
+        while len(stack) &gt; 0:
+            node, pathLen = stack.pop()
+            if node.left is not None:
+                if node.val + 1 == node.left.val:
+                    stack.append((node.left, pathLen + 1))
+                    maxLen = max(maxLen, pathLen + 1)
+                else:
+                    stack.append((node.left, 1))
+            if node.right is not None:
+                if node.val + 1 == node.right.val:
+                    stack.append((node.right, pathLen + 1))
+                    maxLen = max(maxLen, pathLen + 1)
+                else:
+                    stack.append((node.right, 1))
+
+        return maxLen
+</code></pre>
+<h3 id="2-5-binary-search-tree-iterator" tabindex="-1"><a class="header-anchor" href="#2-5-binary-search-tree-iterator"><span>2-5) Binary Search Tree Iterator</span></a></h3>
+<pre><code class="language-python"># LC 173. Binary Search Tree Iterator
+
+# V0
+# IDEA : STACK + tree
+class BSTIterator(object):
+    def __init__(self, root):
+        &quot;&quot;&quot;
+        :type root: TreeNode
+        &quot;&quot;&quot;
+        self.stack = []
+        self.inOrder(root)
+
+    def inOrder(self, root):
+        if not root:
+            return
+        self.inOrder(root.right)
+        self.stack.append(root.val)
+        self.inOrder(root.left)
+
+    def hasNext(self):
+        &quot;&quot;&quot;
+        :rtype: bool
+        &quot;&quot;&quot;
+        return len(self.stack) &gt; 0
+
+    def next(self):
+        &quot;&quot;&quot;
+        :rtype: int
+        &quot;&quot;&quot;
+        return self.stack.pop()
+</code></pre>
+<h3 id="2-6-count-complete-tree-nodes-binary-search-on-trees" tabindex="-1"><a class="header-anchor" href="#2-6-count-complete-tree-nodes-binary-search-on-trees"><span>2-6) Count Complete Tree Nodes (Binary Search on Trees)</span></a></h3>
+<pre><code class="language-java">// LC 222. Count Complete Tree Nodes
+// Java Implementation
+
+// V0 - BFS Approach
+// IDEA: Level-order traversal to count all nodes
+/**
+ * time = O(N)
+ * space = O(N)
+ */
+public int countNodes_BFS(TreeNode root) {
+    if (root == null) {
+        return 0;
+    }
+
+    List&lt;TreeNode&gt; collected = new ArrayList&lt;&gt;();
+    Queue&lt;TreeNode&gt; q = new LinkedList&lt;&gt;();
+    q.add(root);
+
+    while (!q.isEmpty()) {
+        TreeNode cur = q.poll();
+        collected.add(cur);
+
+        if (cur.left != null) {
+            q.add(cur.left);
+        }
+        if (cur.right != null) {
+            q.add(cur.right);
+        }
+    }
+
+    return collected.size();
+}
+
+// V1 - DFS Approach
+// IDEA: Recursively count nodes in left and right subtrees
+/**
+ * time = O(N)
+ * space = O(log N)
+ */
+public int countNodes_DFS(TreeNode root) {
+    if (root == null) {
+        return 0;
+    }
+
+    // Recursively count the nodes in the left subtree
+    int leftCount = countNodes_DFS(root.left);
+
+    // Recursively count the nodes in the right subtree
+    int rightCount = countNodes_DFS(root.right);
+
+    // Return the total count (current node + left subtree + right subtree)
+    return 1 + leftCount + rightCount;
+}
+
+// V2 - Optimized Binary Search Approach for Complete Binary Tree
+// IDEA: Use complete tree property + binary search on height
+/**
+ * time = O(log²N)
+ * space = O(log N)
+ *
+ * Key Insight:
+ * - In a complete binary tree, at least one subtree is a perfect binary tree
+ * - For perfect binary tree with height h: nodes = 2^h - 1
+ * - Check left and right subtree heights to determine which is perfect
+ */
+public int countNodes_Optimized(TreeNode root) {
+    if (root == null) {
+        return 0;
+    }
+
+    int leftHeight = getHeight(root.left);
+    int rightHeight = getHeight(root.right);
+
+    if (leftHeight == rightHeight) {
+        // Left subtree is perfect binary tree
+        // Nodes in left = 2^leftHeight - 1, plus root = 2^leftHeight
+        return (1 &lt;&lt; leftHeight) + countNodes_Optimized(root.right);
+    } else {
+        // Right subtree is perfect binary tree
+        // Height = rightHeight, nodes = 2^rightHeight - 1, plus root = 2^rightHeight
+        return (1 &lt;&lt; rightHeight) + countNodes_Optimized(root.left);
+    }
+}
+
+/**
+ * Helper: Get height by traversing left path only
+ * Works because in complete tree, leftmost path gives height
+ */
+private int getHeight(TreeNode node) {
+    int height = 0;
+    while (node != null) {
+        height++;
+        node = node.left;
+    }
+    return height;
+}
+</code></pre>
+<h2 id="pattern-selection-strategy" tabindex="-1"><a class="header-anchor" href="#pattern-selection-strategy"><span>Pattern Selection Strategy</span></a></h2>
+<pre><code>Problem Analysis Flowchart:
+
+1. Does the problem require visiting nodes in specific order?
+   ├── YES → Use Traversal Templates (1 or 2)
+   │   ├── Need all nodes level by level? → Level Order (Template 2)
+   │   ├── Need specific order (pre/in/post)? → Template 1
+   │   └── Need iterative approach? → Template 2
+   └── NO → Continue to 2
+
+2. Does the problem involve building/modifying tree structure?
+   ├── YES → Use Construction Template (3)
+   │   ├── From traversal sequences? → Template 3
+   │   ├── From array/string? → Template 3 variant
+   │   └── Serialize/Deserialize? → Custom Template 3
+   └── NO → Continue to 3
+
+3. Does the problem involve paths from root to leaves?
+   ├── YES → Use Path Template (4)
+   │   ├── Need all paths? → Template 4 with result collection
+   │   ├── Need path sum? → Template 4 with sum tracking
+   │   └── Need max/min path? → Template 4 with optimization
+   └── NO → Continue to 4
+
+4. Does the problem ask for tree properties?
+   ├── YES → Use Property Template (5)
+   │   ├── Height/Depth? → Template 5 basic
+   │   ├── Balance/Symmetry? → Template 5 with comparison
+   │   └── Diameter/Width? → Template 5 with global max
+   └── NO → Continue to 5
+
+5. Does the problem involve finding ancestors or distances?
+   ├── YES → Use LCA Template (6)
+   │   ├── Common ancestor? → Template 6
+   │   └── Distance between nodes? → Template 6 + path tracking
+   └── NO → Continue to 6
+
+6. Does the problem require O(log n) time or involve complete/balanced tree optimization?
+   ├── YES → Use Binary Search on Trees Template (7)
+   │   ├── Complete binary tree? → Template 7 with height optimization
+   │   ├── BST with kth element? → Template 7 with inorder traversal
+   │   └── Need log time complexity? → Template 7 with binary search
+   └── NO → Use Universal Template or reconsider problem type
+</code></pre>
+<h3 id="decision-framework" tabindex="-1"><a class="header-anchor" href="#decision-framework"><span>Decision Framework</span></a></h3>
+<ol>
+<li><strong>Identify pattern</strong>: Look for keywords (traversal, path, construct, property, ancestor)</li>
+<li><strong>Choose template</strong>: Match problem requirements to template capabilities</li>
+<li><strong>Adapt solution</strong>: Modify template for specific constraints</li>
+<li><strong>Optimize</strong>: Consider iterative vs recursive, space vs time tradeoffs</li>
+</ol>
+<h2 id="summary-quick-reference" tabindex="-1"><a class="header-anchor" href="#summary-quick-reference"><span>Summary &amp; Quick Reference</span></a></h2>
+<h3 id="complexity-quick-reference" tabindex="-1"><a class="header-anchor" href="#complexity-quick-reference"><span>Complexity Quick Reference</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>Operation</th>
+<th>Time</th>
+<th>Space</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Traversal (any order)</td>
+<td>O(n)</td>
+<td>O(h)</td>
+<td>h = height, O(log n) balanced</td>
+</tr>
+<tr>
+<td>Level Order</td>
+<td>O(n)</td>
+<td>O(w)</td>
+<td>w = max width</td>
+</tr>
+<tr>
+<td>Construction</td>
+<td>O(n)</td>
+<td>O(n)</td>
+<td>Building entire tree</td>
+</tr>
+<tr>
+<td>Path Finding</td>
+<td>O(n)</td>
+<td>O(h)</td>
+<td>May need O(n) for all paths</td>
+</tr>
+<tr>
+<td>Property Check</td>
+<td>O(n)</td>
+<td>O(h)</td>
+<td>Single pass usually sufficient</td>
+</tr>
+<tr>
+<td>LCA</td>
+<td>O(n)</td>
+<td>O(h)</td>
+<td>Can optimize to O(log n) for BST</td>
+</tr>
+<tr>
+<td>Binary Search on Trees</td>
+<td>O(log²n)</td>
+<td>O(log n)</td>
+<td>For complete/balanced trees</td>
+</tr>
+<tr>
+<td>Serialize/Deserialize</td>
+<td>O(n)</td>
+<td>O(n)</td>
+<td>String representation</td>
+</tr>
+</tbody>
+</table>
+<h3 id="template-quick-reference" tabindex="-1"><a class="header-anchor" href="#template-quick-reference"><span>Template Quick Reference</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>Template</th>
+<th>Best For</th>
+<th>Avoid When</th>
+<th>Key Code Pattern</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Universal</td>
+<td>General recursion</td>
+<td>Need iterative</td>
+<td><code>if not root: return</code></td>
+</tr>
+<tr>
+<td>Traversal Recursive</td>
+<td>Clean code</td>
+<td>Stack overflow risk</td>
+<td>Order determines position</td>
+</tr>
+<tr>
+<td>Traversal Iterative</td>
+<td>Large trees</td>
+<td>Simple recursion works</td>
+<td>Stack/Queue manipulation</td>
+</tr>
+<tr>
+<td>Construction</td>
+<td>Building trees</td>
+<td>Modifying existing</td>
+<td>Index mapping crucial</td>
+</tr>
+<tr>
+<td>Path</td>
+<td>Root-to-leaf</td>
+<td>Any path in tree</td>
+<td>Backtracking pattern</td>
+</tr>
+<tr>
+<td>Property</td>
+<td>Tree metrics</td>
+<td>Path problems</td>
+<td>Bottom-up calculation</td>
+</tr>
+<tr>
+<td>LCA</td>
+<td>Common ancestors</td>
+<td>Simple traversal</td>
+<td>Return early pattern</td>
+</tr>
+<tr>
+<td>Binary Search on Trees</td>
+<td>Complete/Balanced trees</td>
+<td>General trees</td>
+<td>Height comparison + recursion</td>
+</tr>
+</tbody>
+</table>
+<h3 id="common-patterns-tricks" tabindex="-1"><a class="header-anchor" href="#common-patterns-tricks"><span>Common Patterns &amp; Tricks</span></a></h3>
+<h4 id="pattern-global-variable-for-optimization" tabindex="-1"><a class="header-anchor" href="#pattern-global-variable-for-optimization"><span><strong>Pattern: Global Variable for Optimization</strong></span></a></h4>
+<pre><code class="language-python">class Solution:
+    def maxPathSum(self, root):
+        self.max_sum = float('-inf')
+        
+        def helper(node):
+            if not node:
+                return 0
+            left = max(0, helper(node.left))
+            right = max(0, helper(node.right))
+            self.max_sum = max(self.max_sum, left + right + node.val)
+            return max(left, right) + node.val
+        
+        helper(root)
+        return self.max_sum
+</code></pre>
+<h4 id="pattern-level-processing-with-delimiter" tabindex="-1"><a class="header-anchor" href="#pattern-level-processing-with-delimiter"><span><strong>Pattern: Level Processing with Delimiter</strong></span></a></h4>
+<pre><code class="language-python">def rightSideView(root):
+    if not root:
+        return []
+    result, queue = [], [root, None]
+    
+    while queue:
+        node = queue.pop(0)
+        if node:
+            if queue[0] is None:  # Last node in level
+                result.append(node.val)
+            if node.left:
+                queue.append(node.left)
+            if node.right:
+                queue.append(node.right)
+        elif queue:  # Level delimiter
+            queue.append(None)
+    
+    return result
+</code></pre>
+<h3 id="problem-solving-steps" tabindex="-1"><a class="header-anchor" href="#problem-solving-steps"><span>Problem-Solving Steps</span></a></h3>
+<ol>
+<li><strong>Analyze</strong>: Identify tree structure and required output</li>
+<li><strong>Choose</strong>: Select appropriate template based on pattern</li>
+<li><strong>Implement</strong>: Adapt template to specific requirements</li>
+<li><strong>Optimize</strong>: Consider iterative alternatives, pruning</li>
+<li><strong>Test</strong>: Check null root, single node, skewed tree</li>
+</ol>
+<h3 id="common-mistakes-tips" tabindex="-1"><a class="header-anchor" href="#common-mistakes-tips"><span>Common Mistakes &amp; Tips</span></a></h3>
+<p><strong>🚫 Common Mistakes:</strong></p>
+<ul>
+<li><strong>Forgetting base case</strong>: Always check <code>if not root</code></li>
+<li><strong>Modifying during traversal</strong>: Can break tree structure</li>
+<li><strong>Not handling null children</strong>: Check before accessing <code>.left/.right</code></li>
+<li><strong>Wrong traversal order</strong>: Preorder ≠ Inorder ≠ Postorder</li>
+<li><strong>Reference vs value</strong>: Python passes object references</li>
+</ul>
+<p><strong>✅ Best Practices:</strong></p>
+<ul>
+<li><strong>Use meaningful variable names</strong>: <code>left_height</code> not <code>l</code></li>
+<li><strong>Handle edge cases first</strong>: Empty tree, single node</li>
+<li><strong>Consider both recursive and iterative</strong>: Know tradeoffs</li>
+<li><strong>Track state carefully</strong>: Use helper functions for clarity</li>
+<li><strong>Test with skewed trees</strong>: Worst case for recursion depth</li>
+</ul>
+<h3 id="interview-tips" tabindex="-1"><a class="header-anchor" href="#interview-tips"><span>Interview Tips</span></a></h3>
+<ol>
+<li><strong>Clarify</strong>: Ask about tree properties (balanced? BST? complete?)</li>
+<li><strong>Draw</strong>: Visualize small examples (3-5 nodes)</li>
+<li><strong>Approach</strong>: Start with recursive, mention iterative alternative</li>
+<li><strong>Complexity</strong>: Always state time and space complexity</li>
+<li><strong>Edge cases</strong>: null, single node, all left/right skewed</li>
+</ol>
+<h3 id="related-topics" tabindex="-1"><a class="header-anchor" href="#related-topics"><span>Related Topics</span></a></h3>
+<ul>
+<li><strong>Binary Search Tree (BST)</strong>: When nodes follow left &lt; root &lt; right</li>
+<li><strong>Heap</strong>: Complete binary tree with heap property</li>
+<li><strong>Graph</strong>: Trees are special case of graphs (acyclic, connected)</li>
+<li><strong>Trie</strong>: Tree for prefix matching</li>
+<li><strong>B-Tree</strong>: Self-balancing tree for databases</li>
+</ul>
+<h3 id="java-implementation-notes" tabindex="-1"><a class="header-anchor" href="#java-implementation-notes"><span>Java Implementation Notes</span></a></h3>
+<pre><code class="language-java">// Java TreeNode definition
+class TreeNode {
+    int val;
+    TreeNode left, right;
+    TreeNode(int x) { val = x; }
+}
+
+// Use Queue interface with LinkedList
+Queue&lt;TreeNode&gt; queue = new LinkedList&lt;&gt;();
+
+// Stack for iterative traversal
+Stack&lt;TreeNode&gt; stack = new Stack&lt;&gt;();
+</code></pre>
+<h3 id="python-implementation-notes" tabindex="-1"><a class="header-anchor" href="#python-implementation-notes"><span>Python Implementation Notes</span></a></h3>
+<pre><code class="language-python"># TreeNode definition
+class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
+
+# Use collections.deque for O(1) operations
+from collections import deque
+queue = deque([root])
+
+# List as stack (append/pop)
+stack = []
+</code></pre>
+<hr>
+<p><strong>Must-Know Problems for Interviews</strong>: LC 94, 102, 104, 105, 110, 124, 222, 226, 236, 297, 543
+<strong>Advanced Problems</strong>: LC 124, 222 (optimized), 297, 437, 863, 968
+<strong>Keywords</strong>: binary tree, traversal, DFS, BFS, recursion, path, LCA, construction, binary search on trees, complete tree</p>
+
+      </div>
+      <div class="cheatsheet-footer">
+        <a href="../cheatsheets.html" class="back-link">← Back to Cheat Sheets</a>
+        <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/binary_tree.md" class="github-edit" target="_blank">
+          Edit on GitHub →
+        </a>
+      </div>
+    <nav class="prev-next"><a href="binary_search.html" class="prev-link">← Binary Search</a><a href="bit_manipulation.html" class="next-link">Bit Manipulation →</a></nav>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>CS_basics - Computer Science Fundamentals & Interview Preparation</p>
+      <p>
+        <a href="https://github.com/yennanliu/CS_basics">GitHub</a> •
+        <a href="https://github.com/yennanliu/CS_basics/tree/master/doc">Documentation</a> •
+        <a href="https://github.com/yennanliu/CS_basics/issues">Report Issues</a>
+      </p>
+    </div>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,948 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cs Basic - CS_basics</title>
+  <meta name="description" content="Computer Science fundamentals: algorithms, data structures, system design, and LeetCode solutions">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>CS</text></svg>">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="../vendor/fonts.css">
+  <link rel="stylesheet" href="../vendor/highlight/github-dark.min.css">
+  <script src="../vendor/highlight/highlight.min.js"></script>
+  <script>
+  // Apply theme before render to prevent flash
+  (function() {
+    var saved = localStorage.getItem('theme');
+    if (saved === 'dark' || (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      document.documentElement.setAttribute('data-theme', 'dark');
+    }
+  })();
+  </script>
+  <script>document.addEventListener('DOMContentLoaded', function() {
+    hljs.highlightAll();
+    document.querySelectorAll('pre code').forEach(function(codeEl) {
+      var pre = codeEl.parentElement;
+      var lang = '';
+      var cls = codeEl.className || '';
+      var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
+      if (m) lang = m[1];
+      var wrapper = document.createElement('div');
+      wrapper.className = 'code-block-wrapper';
+      pre.parentNode.insertBefore(wrapper, pre);
+      var header = document.createElement('div');
+      header.className = 'code-block-header';
+      if (lang) {
+        var label = document.createElement('span');
+        label.className = 'code-lang-label';
+        label.textContent = lang;
+        header.appendChild(label);
+      } else {
+        header.appendChild(document.createElement('span'));
+      }
+      var btn = document.createElement('button');
+      btn.className = 'copy-btn';
+      btn.textContent = 'Copy';
+      btn.addEventListener('click', function() {
+        navigator.clipboard.writeText(codeEl.textContent).then(function() {
+          btn.textContent = 'Copied!';
+          btn.classList.add('copied');
+          setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+        });
+      });
+      header.appendChild(btn);
+      wrapper.appendChild(header);
+      wrapper.appendChild(pre);
+    });
+    document.querySelectorAll('table').forEach(function(table) {
+      if (!table.parentElement.classList.contains('table-wrap')) {
+        var wrapper = document.createElement('div');
+        wrapper.className = 'table-wrap';
+        table.parentNode.insertBefore(wrapper, table);
+        wrapper.appendChild(table);
+      }
+    });
+    // Reading progress bar
+    var progressBar = document.getElementById('reading-progress');
+    if (progressBar) {
+      window.addEventListener('scroll', function() {
+        var winScroll = document.documentElement.scrollTop;
+        var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        progressBar.style.width = height > 0 ? (winScroll / height * 100) + '%' : '0%';
+      });
+    }
+    // Dark mode toggle
+    var toggle = document.getElementById('theme-toggle');
+    if (toggle) {
+      var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      toggle.textContent = isDark ? '☀️' : '🌙';
+      toggle.addEventListener('click', function() {
+        var dark = document.documentElement.getAttribute('data-theme') === 'dark';
+        if (dark) {
+          document.documentElement.removeAttribute('data-theme');
+          localStorage.setItem('theme', 'light');
+          toggle.textContent = '🌙';
+        } else {
+          document.documentElement.setAttribute('data-theme', 'dark');
+          localStorage.setItem('theme', 'dark');
+          toggle.textContent = '☀️';
+        }
+      });
+    }
+  });</script>
+</head>
+<body>
+  <div class="progress-container"><div class="progress-bar" id="reading-progress"></div></div>
+  <nav class="navbar">
+    <div class="container">
+      <div class="nav-brand">
+        <span class="nav-icon">💻</span>
+        <span class="nav-title">CS_basics</span>
+      </div>
+      <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+      <div class="nav-links">
+        <a href="../index.html" class="">Home</a>
+        <a href="../cheatsheets.html" class="">Cheat Sheets</a>
+        <a href="../patterns.html" class="">Pattern Recognition</a>
+        <a href="../faqs.html" class="active">FAQs</a>
+        <a href="../resources.html" class="">Resources</a>
+        <a href="../lc-explorer.html" class="">LC Explorer</a>
+        <a href="../lc-random-picker.html" class="">🎲 Random Picker</a>
+        <a href="../algo_demo/index.html" class="">Visualizer</a>
+        <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">&#127769;</button>
+        <a href="https://github.com/yennanliu/CS_basics" target="_blank" class="github-link" aria-label="GitHub">
+          <svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor">
+            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container">
+    <div class="content">
+      
+      <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../faqs.html">FAQs</a> <span class="sep">›</span> <span class="current">Cs Basic</span></nav>
+      <div class="cheatsheet-header">
+        <h1>Cs Basic</h1>
+        <span class="last-updated">Last updated: Apr 17, 2026</span>
+      </div>
+      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#">目錄</a></li><li><a href="#1">1. 程式 / 進程 / 執行緒</a></li><li class="toc-sub"><a href="#-1">三者的區別</a></li><li class="toc-sub"><a href="#vs">進程 vs 執行緒</a></li><li class="toc-sub"><a href="#-2">執行緒的三種狀態</a></li><li class="toc-sub"><a href="#concurrency-vs-parallelism">並行（Concurrency）vs 並行（Parallelism）</a></li><li><a href="#2">2. 記憶體管理</a></li><li class="toc-sub"><a href="#-3">記憶體區域劃分</a></li><li class="toc-sub"><a href="#stack-vs-heap">Stack vs Heap</a></li><li class="toc-sub"><a href="#gc">垃圾回收（GC）</a></li><li><a href="#3">3. 作業系統核心概念</a></li><li class="toc-sub"><a href="#context-switch">Context Switch（上下文切換）</a></li><li class="toc-sub"><a href="#cpu">CPU 排程演算法</a></li><li class="toc-sub"><a href="#deadlock">死鎖（Deadlock）</a></li><li class="toc-sub"><a href="#ipc">進程間通訊（IPC）</a></li><li class="toc-sub"><a href="#-4">虛擬記憶體與分頁</a></li><li><a href="#4">4. 網路基礎</a></li><li class="toc-sub"><a href="#tcp-vs-udp">TCP vs UDP</a></li><li class="toc-sub"><a href="#tcp">TCP 三次握手</a></li><li class="toc-sub"><a href="#http">HTTP 狀態碼</a></li><li class="toc-sub"><a href="#http-1-1-vs-http-2-vs-http-3">HTTP/1.1 vs HTTP/2 vs HTTP/3</a></li><li class="toc-sub"><a href="#https-tls">HTTPS 與 TLS 握手</a></li><li><a href="#5">5. 資料結構速查</a></li><li class="toc-sub"><a href="#-5">時間複雜度總覽</a></li><li class="toc-sub"><a href="#graph">圖（Graph）演算法</a></li><li><a href="#6">6. 演算法複雜度</a></li><li class="toc-sub"><a href="#big-o">Big-O 速查</a></li><li class="toc-sub"><a href="#-6">排序演算法比較</a></li><li class="toc-sub"><a href="#-7">常見演算法模式</a></li><li><a href="#7">7. 常見面試題</a></li><li class="toc-sub"><a href="#q1">Q1：進程和執行緒的主要差別？何時用哪個？</a></li><li class="toc-sub"><a href="#q2-deadlock">Q2：什麼是 Deadlock？如何避免？</a></li><li class="toc-sub"><a href="#q3-stack-overflow">Q3：Stack Overflow 是什麼原因造成的？</a></li><li class="toc-sub"><a href="#q4-hash-map-hash">Q4：Hash Map 的實作原理？如何解決 Hash 衝突？</a></li><li class="toc-sub"><a href="#q5-binary-search">Q5：Binary Search 的邊界條件如何處理？</a></li><li class="toc-sub"><a href="#q6-dynamic-programming">Q6：如何判斷一個演算法是否需要 Dynamic Programming？</a></li><li class="toc-sub"><a href="#q7-tcp">Q7：TCP 為什麼需要三次握手而不是兩次？</a></li></ul></div>
+      <div class="cheatsheet-content">
+        <h1 id="cs" tabindex="-1"><a class="header-anchor" href="#cs"><span>CS 基礎概念</span></a></h1>
+<h2 id="" tabindex="-1"><a class="header-anchor" href="#"><span>目錄</span></a></h2>
+<ol>
+<li><a href="#1-%E7%A8%8B%E5%BC%8F--%E9%80%B2%E7%A8%8B--%E5%9F%B7%E8%A1%8C%E7%B7%92">程式 / 進程 / 執行緒</a></li>
+<li><a href="#2-%E8%A8%98%E6%86%B6%E9%AB%94%E7%AE%A1%E7%90%86">記憶體管理</a></li>
+<li><a href="#3-%E4%BD%9C%E6%A5%AD%E7%B3%BB%E7%B5%B1%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5">作業系統核心概念</a></li>
+<li><a href="#4-%E7%B6%B2%E8%B7%AF%E5%9F%BA%E7%A4%8E">網路基礎</a></li>
+<li><a href="#5-%E8%B3%87%E6%96%99%E7%B5%90%E6%A7%8B%E9%80%9F%E6%9F%A5">資料結構速查</a></li>
+<li><a href="#6-%E6%BC%94%E7%AE%97%E6%B3%95%E8%A4%87%E9%9B%9C%E5%BA%A6">演算法複雜度</a></li>
+<li><a href="#7-%E5%B8%B8%E8%A6%8B%E9%9D%A2%E8%A9%A6%E9%A1%8C">常見面試題</a></li>
+</ol>
+<hr>
+<h2 id="1" tabindex="-1"><a class="header-anchor" href="#1"><span>1. 程式 / 進程 / 執行緒</span></a></h2>
+<h3 id="-1" tabindex="-1"><a class="header-anchor" href="#-1"><span>三者的區別</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>概念</th>
+<th>說明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>程式（Program）</strong></td>
+<td>儲存在磁碟上的靜態程式碼檔案，尚未執行</td>
+</tr>
+<tr>
+<td><strong>進程（Process）</strong></td>
+<td>程式載入記憶體後的執行實例，有獨立的記憶體空間</td>
+</tr>
+<tr>
+<td><strong>執行緒（Thread）</strong></td>
+<td>進程內的執行單位，同一進程的執行緒<strong>共享</strong>記憶體空間</td>
+</tr>
+</tbody>
+</table>
+<pre><code>程式（Program）= 食譜
+進程（Process）= 廚師照著食譜煮菜的過程（獨立的鍋碗瓢盆）
+執行緒（Thread）= 多個廚師同時在同一廚房裡合作
+</code></pre>
+<img src="../doc/pic/diff_process_thread.png">
+<h3 id="vs" tabindex="-1"><a class="header-anchor" href="#vs"><span>進程 vs 執行緒</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>特性</th>
+<th>進程（Process）</th>
+<th>執行緒（Thread）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>記憶體空間</td>
+<td>獨立（互不影響）</td>
+<td>共享（一個掛掉可能影響全體）</td>
+</tr>
+<tr>
+<td>通訊方式</td>
+<td>IPC（Pipe、Socket、共享記憶體）</td>
+<td>直接讀寫共享變數</td>
+</tr>
+<tr>
+<td>切換成本</td>
+<td>高（Context Switch 較重）</td>
+<td>低</td>
+</tr>
+<tr>
+<td>建立成本</td>
+<td>高</td>
+<td>低</td>
+</tr>
+<tr>
+<td>崩潰影響</td>
+<td>不影響其他進程</td>
+<td>可能讓整個進程崩潰</td>
+</tr>
+<tr>
+<td>適用場景</td>
+<td>隔離性要求高（瀏覽器 Tab）</td>
+<td>高效能並行（Web Server 處理請求）</td>
+</tr>
+</tbody>
+</table>
+<h3 id="-2" tabindex="-1"><a class="header-anchor" href="#-2"><span>執行緒的三種狀態</span></a></h3>
+<pre><code>新建（New）→ 就緒（Runnable）→ 執行（Running）
+                   ↑                    ↓
+               喚醒/解鎖          等待 IO / 鎖 / sleep
+                                        ↓
+                                  阻塞（Blocked）
+</code></pre>
+<h3 id="concurrency-vs-parallelism" tabindex="-1"><a class="header-anchor" href="#concurrency-vs-parallelism"><span>並行（Concurrency）vs 並行（Parallelism）</span></a></h3>
+<ul>
+<li><strong>Concurrency（並發）</strong>：多個任務交替執行，同一時刻只有一個在運行（單核心）</li>
+<li><strong>Parallelism（並行）</strong>：多個任務真正同時執行（多核心）</li>
+</ul>
+<hr>
+<h2 id="2" tabindex="-1"><a class="header-anchor" href="#2"><span>2. 記憶體管理</span></a></h2>
+<h3 id="-3" tabindex="-1"><a class="header-anchor" href="#-3"><span>記憶體區域劃分</span></a></h3>
+<pre><code>高位址
+┌───────────────┐
+│  Stack（堆疊） │ ← 自動管理；函數呼叫、區域變數；後進先出；容量有限
+├───────────────┤
+│      ↓        │
+│               │
+│      ↑        │
+├───────────────┤
+│  Heap（堆積）  │ ← 手動管理（C/C++）或 GC；動態分配物件；容量大但慢
+├───────────────┤
+│  BSS Segment  │ ← 未初始化的全域變數
+├───────────────┤
+│ Data Segment  │ ← 已初始化的全域變數和靜態變數
+├───────────────┤
+│ Text Segment  │ ← 程式碼（唯讀）
+低位址
+</code></pre>
+<h3 id="stack-vs-heap" tabindex="-1"><a class="header-anchor" href="#stack-vs-heap"><span>Stack vs Heap</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>特性</th>
+<th>Stack</th>
+<th>Heap</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>管理方式</td>
+<td>自動（函數返回即釋放）</td>
+<td>手動 / GC</td>
+</tr>
+<tr>
+<td>速度</td>
+<td>快</td>
+<td>慢（需要分配和回收）</td>
+</tr>
+<tr>
+<td>大小</td>
+<td>有限（預設 1～8MB）</td>
+<td>大（受系統記憶體限制）</td>
+</tr>
+<tr>
+<td>溢出</td>
+<td>Stack Overflow</td>
+<td>OutOfMemoryError</td>
+</tr>
+<tr>
+<td>適合</td>
+<td>區域變數、函數呼叫</td>
+<td>物件、動態資料</td>
+</tr>
+</tbody>
+</table>
+<h3 id="gc" tabindex="-1"><a class="header-anchor" href="#gc"><span>垃圾回收（GC）</span></a></h3>
+<p><strong>常見 GC 演算法：</strong></p>
+<table>
+<thead>
+<tr>
+<th>演算法</th>
+<th>說明</th>
+<th>特點</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>標記-清除（Mark-Sweep）</strong></td>
+<td>標記可達物件，清除未標記的</td>
+<td>會產生記憶體碎片</td>
+</tr>
+<tr>
+<td><strong>標記-整理（Mark-Compact）</strong></td>
+<td>標記後移動存活物件到連續區域</td>
+<td>無碎片，但移動成本高</td>
+</tr>
+<tr>
+<td><strong>複製（Copying）</strong></td>
+<td>將存活物件複製到新區域</td>
+<td>無碎片，適合短命物件</td>
+</tr>
+<tr>
+<td><strong>分代收集（Generational）</strong></td>
+<td>依物件年齡分代管理（新生代/老年代）</td>
+<td>JVM、Python 等主流 GC 策略</td>
+</tr>
+</tbody>
+</table>
+<p><strong>常見 GC 問題：</strong></p>
+<ul>
+<li><strong>Stop-the-World（STW）</strong>：GC 執行時暫停所有應用執行緒，影響延遲</li>
+<li><strong>記憶體洩漏（Memory Leak）</strong>：物件不再使用，但仍被根物件引用，GC 無法回收</li>
+</ul>
+<hr>
+<h2 id="3" tabindex="-1"><a class="header-anchor" href="#3"><span>3. 作業系統核心概念</span></a></h2>
+<h3 id="context-switch" tabindex="-1"><a class="header-anchor" href="#context-switch"><span>Context Switch（上下文切換）</span></a></h3>
+<p>CPU 從一個進程/執行緒切換到另一個的過程：</p>
+<ol>
+<li>儲存當前進程的 CPU 暫存器、PC 等狀態到 PCB（Process Control Block）</li>
+<li>載入下一個進程的狀態</li>
+<li>切換記憶體映射（進程切換才需要，執行緒切換不需要）</li>
+</ol>
+<p><strong>成本：</strong> 執行緒切換 &lt; 進程切換（進程需要刷新 TLB）</p>
+<h3 id="cpu" tabindex="-1"><a class="header-anchor" href="#cpu"><span>CPU 排程演算法</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>演算法</th>
+<th>說明</th>
+<th>特點</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>FIFO / FCFS</strong></td>
+<td>先來先服務</td>
+<td>簡單，可能有護航效應</td>
+</tr>
+<tr>
+<td><strong>SJF（最短工作優先）</strong></td>
+<td>優先執行最短的任務</td>
+<td>效率高，可能造成飢餓</td>
+</tr>
+<tr>
+<td><strong>Round Robin</strong></td>
+<td>每個進程輪流執行一個時間片</td>
+<td>公平，適合互動式系統</td>
+</tr>
+<tr>
+<td><strong>Priority Scheduling</strong></td>
+<td>依優先級排程</td>
+<td>可能造成低優先級飢餓</td>
+</tr>
+<tr>
+<td><strong>MLFQ（多層佇列）</strong></td>
+<td>動態調整優先級</td>
+<td>Linux 和現代 OS 主要使用</td>
+</tr>
+</tbody>
+</table>
+<h3 id="deadlock" tabindex="-1"><a class="header-anchor" href="#deadlock"><span>死鎖（Deadlock）</span></a></h3>
+<p><strong>四個必要條件（Coffman Conditions）：</strong></p>
+<ol>
+<li><strong>互斥（Mutual Exclusion）</strong>：資源一次只能被一個進程使用</li>
+<li><strong>持有並等待（Hold and Wait）</strong>：進程持有部分資源，等待其他資源</li>
+<li><strong>不可搶占（No Preemption）</strong>：資源不能被強制搶走</li>
+<li><strong>循環等待（Circular Wait）</strong>：進程間形成等待環</li>
+</ol>
+<p><strong>防止死鎖的方法：</strong></p>
+<ul>
+<li>破壞循環等待：規定獲取鎖的順序</li>
+<li>使用 <code>tryLock(timeout)</code> 避免無限等待</li>
+<li>使用死鎖檢測演算法定期掃描</li>
+</ul>
+<h3 id="ipc" tabindex="-1"><a class="header-anchor" href="#ipc"><span>進程間通訊（IPC）</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>方式</th>
+<th>說明</th>
+<th>適用場景</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Pipe（管道）</strong></td>
+<td>單向、親子進程間</td>
+<td>`ls</td>
+</tr>
+<tr>
+<td><strong>Message Queue</strong></td>
+<td>消息佇列，非同步</td>
+<td>解耦服務</td>
+</tr>
+<tr>
+<td><strong>Shared Memory</strong></td>
+<td>最快的 IPC，需要同步機制</td>
+<td>高效能資料交換</td>
+</tr>
+<tr>
+<td><strong>Socket</strong></td>
+<td>可跨機器通訊</td>
+<td>網路通訊、本地進程</td>
+</tr>
+<tr>
+<td><strong>Signal</strong></td>
+<td>非同步通知</td>
+<td><code>kill -9 PID</code></td>
+</tr>
+<tr>
+<td><strong>Semaphore</strong></td>
+<td>用於控制資源存取</td>
+<td>同步、互斥</td>
+</tr>
+</tbody>
+</table>
+<h3 id="-4" tabindex="-1"><a class="header-anchor" href="#-4"><span>虛擬記憶體與分頁</span></a></h3>
+<ul>
+<li>每個進程有獨立的<strong>虛擬位址空間</strong>，由 OS 透過 MMU 映射到實體記憶體</li>
+<li><strong>分頁（Paging）</strong>：記憶體分成固定大小的頁（通常 4KB）</li>
+<li><strong>Page Fault</strong>：存取的虛擬頁不在實體記憶體，OS 從磁碟載入（IO 操作，很慢）</li>
+<li><strong>TLB（Translation Lookaside Buffer）</strong>：位址轉換的快取，進程切換需要刷新</li>
+</ul>
+<hr>
+<h2 id="4" tabindex="-1"><a class="header-anchor" href="#4"><span>4. 網路基礎</span></a></h2>
+<h3 id="tcp-vs-udp" tabindex="-1"><a class="header-anchor" href="#tcp-vs-udp"><span>TCP vs UDP</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>特性</th>
+<th>TCP</th>
+<th>UDP</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>連接</td>
+<td>面向連接（三次握手）</td>
+<td>無連接</td>
+</tr>
+<tr>
+<td>可靠性</td>
+<td>可靠（確認、重傳）</td>
+<td>不可靠</td>
+</tr>
+<tr>
+<td>順序</td>
+<td>保證順序</td>
+<td>不保證</td>
+</tr>
+<tr>
+<td>速度</td>
+<td>較慢（有確認機制）</td>
+<td>快</td>
+</tr>
+<tr>
+<td>表頭大小</td>
+<td>20 bytes</td>
+<td>8 bytes</td>
+</tr>
+<tr>
+<td>適用場景</td>
+<td>HTTP、FTP、Email（需完整性）</td>
+<td>串流、遊戲、DNS（需速度）</td>
+</tr>
+</tbody>
+</table>
+<h3 id="tcp" tabindex="-1"><a class="header-anchor" href="#tcp"><span>TCP 三次握手</span></a></h3>
+<pre><code>Client              Server
+  |── SYN ──────────→|   (1) Client 說：我想連線
+  |← SYN-ACK ────────|   (2) Server 說：好，我準備好了
+  |── ACK ──────────→|   (3) Client 說：收到，連線建立
+</code></pre>
+<p><strong>四次揮手（斷線）：</strong></p>
+<pre><code>Client              Server
+  |── FIN ──────────→|   (1) Client：我要關閉了
+  |← ACK ────────────|   (2) Server：收到，但我還有資料要傳
+  |← FIN ────────────|   (3) Server：我也傳完了，我要關閉
+  |── ACK ──────────→|   (4) Client：好，連線關閉
+</code></pre>
+<h3 id="http" tabindex="-1"><a class="header-anchor" href="#http"><span>HTTP 狀態碼</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>範圍</th>
+<th>類別</th>
+<th>常見範例</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>2xx</strong></td>
+<td>成功</td>
+<td>200 OK、201 Created、204 No Content</td>
+</tr>
+<tr>
+<td><strong>3xx</strong></td>
+<td>重新導向</td>
+<td>301 Moved Permanently、302 Found、304 Not Modified</td>
+</tr>
+<tr>
+<td><strong>4xx</strong></td>
+<td>客戶端錯誤</td>
+<td>400 Bad Request、401 Unauthorized、403 Forbidden、404 Not Found、429 Too Many Requests</td>
+</tr>
+<tr>
+<td><strong>5xx</strong></td>
+<td>伺服器錯誤</td>
+<td>500 Internal Server Error、502 Bad Gateway、503 Service Unavailable、504 Gateway Timeout</td>
+</tr>
+</tbody>
+</table>
+<h3 id="http-1-1-vs-http-2-vs-http-3" tabindex="-1"><a class="header-anchor" href="#http-1-1-vs-http-2-vs-http-3"><span>HTTP/1.1 vs HTTP/2 vs HTTP/3</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>版本</th>
+<th>特性</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>HTTP/1.1</strong></td>
+<td>長連接（Keep-Alive）；每個請求序列化，有 Head-of-Line Blocking</td>
+</tr>
+<tr>
+<td><strong>HTTP/2</strong></td>
+<td>多路復用（一個連接同時多個請求）；Header 壓縮（HPACK）；Server Push</td>
+</tr>
+<tr>
+<td><strong>HTTP/3</strong></td>
+<td>基於 QUIC（UDP）；解決 TCP 的 Head-of-Line Blocking；更快的連接建立</td>
+</tr>
+</tbody>
+</table>
+<h3 id="https-tls" tabindex="-1"><a class="header-anchor" href="#https-tls"><span>HTTPS 與 TLS 握手</span></a></h3>
+<pre><code>Client                          Server
+  |─── ClientHello ────────────→|   支援的 TLS 版本、加密套件
+  |←── ServerHello + 憑證 ──────|   選定的加密套件、伺服器公鑰
+  |─── 驗證憑證 ────────────────|   確認憑證合法（CA 簽署）
+  |─── 交換金鑰（pre-master） ──→|   用伺服器公鑰加密
+  |←─ 雙方推導出對稱金鑰 ────────|   後續通訊用對稱加密
+</code></pre>
+<hr>
+<h2 id="5" tabindex="-1"><a class="header-anchor" href="#5"><span>5. 資料結構速查</span></a></h2>
+<h3 id="-5" tabindex="-1"><a class="header-anchor" href="#-5"><span>時間複雜度總覽</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>資料結構</th>
+<th>存取</th>
+<th>搜尋</th>
+<th>插入</th>
+<th>刪除</th>
+<th>特點</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Array</strong></td>
+<td>O(1)</td>
+<td>O(n)</td>
+<td>O(n)</td>
+<td>O(n)</td>
+<td>隨機存取快；插入/刪除需移動元素</td>
+</tr>
+<tr>
+<td><strong>Linked List</strong></td>
+<td>O(n)</td>
+<td>O(n)</td>
+<td>O(1)*</td>
+<td>O(1)*</td>
+<td>插入/刪除快（若已有指標）；無法隨機存取</td>
+</tr>
+<tr>
+<td><strong>Hash Map</strong></td>
+<td>—</td>
+<td>O(1) avg</td>
+<td>O(1) avg</td>
+<td>O(1) avg</td>
+<td>最快的查詢；無順序；需處理衝突</td>
+</tr>
+<tr>
+<td><strong>Binary Search Tree</strong></td>
+<td>O(log n)</td>
+<td>O(log n)</td>
+<td>O(log n)</td>
+<td>O(log n)</td>
+<td>有序；最壞 O(n)（不平衡時）</td>
+</tr>
+<tr>
+<td><strong>Balanced BST（AVL/Red-Black）</strong></td>
+<td>O(log n)</td>
+<td>O(log n)</td>
+<td>O(log n)</td>
+<td>O(log n)</td>
+<td>保證平衡；Java TreeMap、C++ std::map</td>
+</tr>
+<tr>
+<td><strong>Heap</strong></td>
+<td>O(n)</td>
+<td>O(n)</td>
+<td>O(log n)</td>
+<td>O(log n)</td>
+<td>快速取最大/最小值；Priority Queue</td>
+</tr>
+<tr>
+<td><strong>Stack</strong></td>
+<td>O(n)</td>
+<td>O(n)</td>
+<td>O(1)</td>
+<td>O(1)</td>
+<td>LIFO；函數呼叫、括號配對</td>
+</tr>
+<tr>
+<td><strong>Queue</strong></td>
+<td>O(n)</td>
+<td>O(n)</td>
+<td>O(1)</td>
+<td>O(1)</td>
+<td>FIFO；BFS、任務佇列</td>
+</tr>
+</tbody>
+</table>
+<h3 id="graph" tabindex="-1"><a class="header-anchor" href="#graph"><span>圖（Graph）演算法</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>演算法</th>
+<th>複雜度</th>
+<th>用途</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>BFS</strong></td>
+<td>O(V+E)</td>
+<td>最短路徑（無權重）、層序遍歷</td>
+</tr>
+<tr>
+<td><strong>DFS</strong></td>
+<td>O(V+E)</td>
+<td>連通性、拓撲排序、迷宮</td>
+</tr>
+<tr>
+<td><strong>Dijkstra</strong></td>
+<td>O((V+E) log V)</td>
+<td>最短路徑（無負邊）</td>
+</tr>
+<tr>
+<td><strong>Bellman-Ford</strong></td>
+<td>O(VE)</td>
+<td>最短路徑（可處理負邊）</td>
+</tr>
+<tr>
+<td><strong>Topological Sort</strong></td>
+<td>O(V+E)</td>
+<td>有向無環圖（DAG）的依賴關係排序</td>
+</tr>
+<tr>
+<td><strong>Union-Find</strong></td>
+<td>O(α(n)) ≈ O(1)</td>
+<td>連通分量、最小生成樹（Kruskal）</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="6" tabindex="-1"><a class="header-anchor" href="#6"><span>6. 演算法複雜度</span></a></h2>
+<h3 id="big-o" tabindex="-1"><a class="header-anchor" href="#big-o"><span>Big-O 速查</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>複雜度</th>
+<th>名稱</th>
+<th>範例</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>O(1)</td>
+<td>常數</td>
+<td>Hash Map 查詢、陣列隨機存取</td>
+</tr>
+<tr>
+<td>O(log n)</td>
+<td>對數</td>
+<td>Binary Search、平衡 BST 操作</td>
+</tr>
+<tr>
+<td>O(n)</td>
+<td>線性</td>
+<td>線性搜尋、單層迴圈</td>
+</tr>
+<tr>
+<td>O(n log n)</td>
+<td>線性對數</td>
+<td>Merge Sort、Heap Sort、快速排序（avg）</td>
+</tr>
+<tr>
+<td>O(n²)</td>
+<td>平方</td>
+<td>選擇排序、插入排序、雙層迴圈</td>
+</tr>
+<tr>
+<td>O(2ⁿ)</td>
+<td>指數</td>
+<td>暴力列舉所有子集</td>
+</tr>
+<tr>
+<td>O(n!)</td>
+<td>階乘</td>
+<td>列舉所有排列</td>
+</tr>
+</tbody>
+</table>
+<h3 id="-6" tabindex="-1"><a class="header-anchor" href="#-6"><span>排序演算法比較</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>演算法</th>
+<th>最佳</th>
+<th>平均</th>
+<th>最差</th>
+<th>空間</th>
+<th>穩定</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Bubble Sort</strong></td>
+<td>O(n)</td>
+<td>O(n²)</td>
+<td>O(n²)</td>
+<td>O(1)</td>
+<td>✅</td>
+</tr>
+<tr>
+<td><strong>Selection Sort</strong></td>
+<td>O(n²)</td>
+<td>O(n²)</td>
+<td>O(n²)</td>
+<td>O(1)</td>
+<td>❌</td>
+</tr>
+<tr>
+<td><strong>Insertion Sort</strong></td>
+<td>O(n)</td>
+<td>O(n²)</td>
+<td>O(n²)</td>
+<td>O(1)</td>
+<td>✅</td>
+</tr>
+<tr>
+<td><strong>Merge Sort</strong></td>
+<td>O(n log n)</td>
+<td>O(n log n)</td>
+<td>O(n log n)</td>
+<td>O(n)</td>
+<td>✅</td>
+</tr>
+<tr>
+<td><strong>Quick Sort</strong></td>
+<td>O(n log n)</td>
+<td>O(n log n)</td>
+<td>O(n²)</td>
+<td>O(log n)</td>
+<td>❌</td>
+</tr>
+<tr>
+<td><strong>Heap Sort</strong></td>
+<td>O(n log n)</td>
+<td>O(n log n)</td>
+<td>O(n log n)</td>
+<td>O(1)</td>
+<td>❌</td>
+</tr>
+<tr>
+<td><strong>Tim Sort</strong></td>
+<td>O(n)</td>
+<td>O(n log n)</td>
+<td>O(n log n)</td>
+<td>O(n)</td>
+<td>✅</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>Tim Sort = Merge Sort + Insertion Sort，是 Java / Python 的預設排序演算法</p>
+</blockquote>
+<h3 id="-7" tabindex="-1"><a class="header-anchor" href="#-7"><span>常見演算法模式</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>模式</th>
+<th>說明</th>
+<th>典型題目</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Two Pointers</strong></td>
+<td>雙指標，O(n) 解決有序陣列問題</td>
+<td>Two Sum（排序後）、回文</td>
+</tr>
+<tr>
+<td><strong>Sliding Window</strong></td>
+<td>固定或可變視窗在陣列上滑動</td>
+<td>最大子陣列、最長無重複字串</td>
+</tr>
+<tr>
+<td><strong>Binary Search</strong></td>
+<td>有序資料的 O(log n) 搜尋</td>
+<td>搜尋旋轉陣列、尋找邊界</td>
+</tr>
+<tr>
+<td><strong>DFS / Backtracking</strong></td>
+<td>窮舉所有可能，剪枝優化</td>
+<td>排列、組合、N-Queens</td>
+</tr>
+<tr>
+<td><strong>BFS</strong></td>
+<td>逐層搜尋，找最短路</td>
+<td>最短路徑、圖的層序</td>
+</tr>
+<tr>
+<td><strong>Dynamic Programming</strong></td>
+<td>拆分子問題，儲存中間結果</td>
+<td>背包問題、LCS、股票問題</td>
+</tr>
+<tr>
+<td><strong>Greedy</strong></td>
+<td>局部最優推導全局最優</td>
+<td>區間排程、Huffman 編碼</td>
+</tr>
+<tr>
+<td><strong>Divide and Conquer</strong></td>
+<td>分治，再合併</td>
+<td>Merge Sort、快速冪</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="7" tabindex="-1"><a class="header-anchor" href="#7"><span>7. 常見面試題</span></a></h2>
+<h3 id="q1" tabindex="-1"><a class="header-anchor" href="#q1"><span>Q1：進程和執行緒的主要差別？何時用哪個？</span></a></h3>
+<p><strong>進程</strong>：完全隔離，一個崩潰不影響其他進程。適合需要安全隔離的場景（如瀏覽器的每個分頁是獨立進程）。</p>
+<p><strong>執行緒</strong>：共享記憶體，切換成本低，溝通容易。適合高並發場景（如 Web Server 用執行緒池處理多個請求）。</p>
+<hr>
+<h3 id="q2-deadlock" tabindex="-1"><a class="header-anchor" href="#q2-deadlock"><span>Q2：什麼是 Deadlock？如何避免？</span></a></h3>
+<p>Deadlock 發生需要同時滿足：互斥、持有並等待、不可搶占、循環等待。</p>
+<p><strong>避免方式：</strong></p>
+<ul>
+<li>規定所有執行緒獲取鎖的順序一致（破壞循環等待）</li>
+<li>使用 <code>tryLock(timeout)</code> 避免無限等待</li>
+<li>盡量減小鎖的粒度和持有時間</li>
+</ul>
+<hr>
+<h3 id="q3-stack-overflow" tabindex="-1"><a class="header-anchor" href="#q3-stack-overflow"><span>Q3：Stack Overflow 是什麼原因造成的？</span></a></h3>
+<p>Stack 記憶體有限（通常 1～8MB），常見原因：</p>
+<ul>
+<li><strong>無終止條件的遞迴</strong>（最常見）</li>
+<li>函數呼叫層數過深</li>
+<li>在 Stack 上宣告了過大的陣列</li>
+</ul>
+<p>解決方式：將遞迴改為迭代（用顯式 Stack）、增加 Stack 大小（治標）。</p>
+<hr>
+<h3 id="q4-hash-map-hash" tabindex="-1"><a class="header-anchor" href="#q4-hash-map-hash"><span>Q4：Hash Map 的實作原理？如何解決 Hash 衝突？</span></a></h3>
+<ol>
+<li>計算 key 的 hash 值，對陣列大小取模，得到陣列索引</li>
+<li>將 key-value 存入對應的 bucket</li>
+</ol>
+<p><strong>衝突解決方式：</strong></p>
+<ul>
+<li><strong>鏈結串列法（Chaining）</strong>：同一 bucket 的元素串成 Linked List（Java HashMap 使用此方法，超過 8 個時轉為紅黑樹）</li>
+<li><strong>開放位址法（Open Addressing）</strong>：衝突時探測下一個空位（Linear Probing / Quadratic Probing）</li>
+</ul>
+<p><strong>負載因子（Load Factor）</strong>：元素數 / bucket 數，超過閾值（Java 預設 0.75）時擴容（rehash）。</p>
+<hr>
+<h3 id="q5-binary-search" tabindex="-1"><a class="header-anchor" href="#q5-binary-search"><span>Q5：Binary Search 的邊界條件如何處理？</span></a></h3>
+<pre><code class="language-python">def binary_search(nums, target):
+    left, right = 0, len(nums) - 1
+    while left &lt;= right:              # ≤ 確保單元素也能處理
+        mid = left + (right - left) // 2  # 防止 overflow
+        if nums[mid] == target:
+            return mid
+        elif nums[mid] &lt; target:
+            left = mid + 1
+        else:
+            right = mid - 1
+    return -1
+</code></pre>
+<p><strong>常見變形：</strong></p>
+<ul>
+<li>找最左邊的符合元素：<code>right = mid - 1</code>（當找到時繼續向左）</li>
+<li>找最右邊的符合元素：<code>left = mid + 1</code>（當找到時繼續向右）</li>
+</ul>
+<hr>
+<h3 id="q6-dynamic-programming" tabindex="-1"><a class="header-anchor" href="#q6-dynamic-programming"><span>Q6：如何判斷一個演算法是否需要 Dynamic Programming？</span></a></h3>
+<p>DP 適用的兩個特徵：</p>
+<ol>
+<li><strong>最優子結構（Optimal Substructure）</strong>：問題的最優解包含子問題的最優解</li>
+<li><strong>重疊子問題（Overlapping Subproblems）</strong>：同樣的子問題被反覆計算</li>
+</ol>
+<p><strong>解題框架：</strong></p>
+<ol>
+<li>定義 <code>dp[i]</code> 的含義</li>
+<li>找狀態轉移方程（從前一狀態推導當前狀態）</li>
+<li>確定初始值（base case）</li>
+<li>確定計算順序</li>
+</ol>
+<hr>
+<h3 id="q7-tcp" tabindex="-1"><a class="header-anchor" href="#q7-tcp"><span>Q7：TCP 為什麼需要三次握手而不是兩次？</span></a></h3>
+<p>兩次握手的問題：假設 Client 的第一個連線請求因網路延遲，在 Client 以為失敗後才到達 Server，Server 回覆後以為連線建立，但 Client 已不再理會。三次握手讓 Client 也確認 Server 可以接收，避免伺服器資源浪費。</p>
+<p>本質是：三次握手確保雙方都能<strong>發送</strong>和<strong>接收</strong>，是建立可靠連線所需的最少次數。</p>
+
+      </div>
+      <div class="cheatsheet-footer">
+        <a href="../faqs.html" class="back-link">← Back to FAQs</a>
+        <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/faq/cs_basic.md" class="github-edit" target="_blank">
+          Edit on GitHub →
+        </a>
+      </div>
+    <nav class="prev-next"><a href="backend_後端面試題總整理.html" class="prev-link">← 後端面試題總整理</a><a href="db_faq_DB_DW.html" class="next-link">Faq DB DW →</a></nav>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>CS_basics - Computer Science Fundamentals & Interview Preparation</p>
+      <p>
+        <a href="https://github.com/yennanliu/CS_basics">GitHub</a> •
+        <a href="https://github.com/yennanliu/CS_basics/tree/master/doc">Documentation</a> •
+        <a href="https://github.com/yennanliu/CS_basics/issues">Report Issues</a>
+      </p>
+    </div>
+  </footer>
+</body>
+</html>

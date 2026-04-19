@@ -1,0 +1,1469 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dp Pattern - CS_basics</title>
+  <meta name="description" content="Computer Science fundamentals: algorithms, data structures, system design, and LeetCode solutions">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>CS</text></svg>">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="../vendor/fonts.css">
+  <link rel="stylesheet" href="../vendor/highlight/github-dark.min.css">
+  <script src="../vendor/highlight/highlight.min.js"></script>
+  <script>
+  // Apply theme before render to prevent flash
+  (function() {
+    var saved = localStorage.getItem('theme');
+    if (saved === 'dark' || (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      document.documentElement.setAttribute('data-theme', 'dark');
+    }
+  })();
+  </script>
+  <script>document.addEventListener('DOMContentLoaded', function() {
+    hljs.highlightAll();
+    document.querySelectorAll('pre code').forEach(function(codeEl) {
+      var pre = codeEl.parentElement;
+      var lang = '';
+      var cls = codeEl.className || '';
+      var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
+      if (m) lang = m[1];
+      var wrapper = document.createElement('div');
+      wrapper.className = 'code-block-wrapper';
+      pre.parentNode.insertBefore(wrapper, pre);
+      var header = document.createElement('div');
+      header.className = 'code-block-header';
+      if (lang) {
+        var label = document.createElement('span');
+        label.className = 'code-lang-label';
+        label.textContent = lang;
+        header.appendChild(label);
+      } else {
+        header.appendChild(document.createElement('span'));
+      }
+      var btn = document.createElement('button');
+      btn.className = 'copy-btn';
+      btn.textContent = 'Copy';
+      btn.addEventListener('click', function() {
+        navigator.clipboard.writeText(codeEl.textContent).then(function() {
+          btn.textContent = 'Copied!';
+          btn.classList.add('copied');
+          setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+        });
+      });
+      header.appendChild(btn);
+      wrapper.appendChild(header);
+      wrapper.appendChild(pre);
+    });
+    document.querySelectorAll('table').forEach(function(table) {
+      if (!table.parentElement.classList.contains('table-wrap')) {
+        var wrapper = document.createElement('div');
+        wrapper.className = 'table-wrap';
+        table.parentNode.insertBefore(wrapper, table);
+        wrapper.appendChild(table);
+      }
+    });
+    // Reading progress bar
+    var progressBar = document.getElementById('reading-progress');
+    if (progressBar) {
+      window.addEventListener('scroll', function() {
+        var winScroll = document.documentElement.scrollTop;
+        var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        progressBar.style.width = height > 0 ? (winScroll / height * 100) + '%' : '0%';
+      });
+    }
+    // Dark mode toggle
+    var toggle = document.getElementById('theme-toggle');
+    if (toggle) {
+      var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      toggle.textContent = isDark ? '☀️' : '🌙';
+      toggle.addEventListener('click', function() {
+        var dark = document.documentElement.getAttribute('data-theme') === 'dark';
+        if (dark) {
+          document.documentElement.removeAttribute('data-theme');
+          localStorage.setItem('theme', 'light');
+          toggle.textContent = '🌙';
+        } else {
+          document.documentElement.setAttribute('data-theme', 'dark');
+          localStorage.setItem('theme', 'dark');
+          toggle.textContent = '☀️';
+        }
+      });
+    }
+  });</script>
+</head>
+<body>
+  <div class="progress-container"><div class="progress-bar" id="reading-progress"></div></div>
+  <nav class="navbar">
+    <div class="container">
+      <div class="nav-brand">
+        <span class="nav-icon">💻</span>
+        <span class="nav-title">CS_basics</span>
+      </div>
+      <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+      <div class="nav-links">
+        <a href="../index.html" class="">Home</a>
+        <a href="../cheatsheets.html" class="active">Cheat Sheets</a>
+        <a href="../patterns.html" class="">Pattern Recognition</a>
+        <a href="../faqs.html" class="">FAQs</a>
+        <a href="../resources.html" class="">Resources</a>
+        <a href="../lc-explorer.html" class="">LC Explorer</a>
+        <a href="../lc-random-picker.html" class="">🎲 Random Picker</a>
+        <a href="../algo_demo/index.html" class="">Visualizer</a>
+        <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">&#127769;</button>
+        <a href="https://github.com/yennanliu/CS_basics" target="_blank" class="github-link" aria-label="GitHub">
+          <svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor">
+            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container">
+    <div class="content">
+      
+      <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">Dp Pattern</span></nav>
+      <div class="cheatsheet-header">
+        <h1>Dp Pattern</h1>
+        <span class="last-updated">Last updated: Mar 10, 2026</span>
+      </div>
+      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#1-kadane-s-algorithm-maximum-subarray">1. Kadane’s Algorithm (Maximum Subarray)</a></li><li class="toc-sub"><a href="#template-code">Template Code:</a></li><li class="toc-sub"><a href="#common-problems">Common Problems:</a></li><li><a href="#2-longest-increasing-subsequence-lis">2. Longest Increasing Subsequence (LIS)</a></li><li class="toc-sub"><a href="#template-code-o-n-approach">Template Code (O(n²) approach):</a></li><li class="toc-sub"><a href="#template-code-o-n-log-n-with-binary-search">Template Code (O(n log n) with Binary Search):</a></li><li class="toc-sub"><a href="#common-problems-1">Common Problems:</a></li><li><a href="#3-matrix-chain-multiplication-mcm-interval-dp">3. Matrix Chain Multiplication (MCM) / Interval DP</a></li><li class="toc-sub"><a href="#template-code-1">Template Code:</a></li><li class="toc-sub"><a href="#common-problems-2">Common Problems:</a></li><li><a href="#4-longest-common-subsequence-lcs">4. Longest Common Subsequence (LCS)</a></li><li class="toc-sub"><a href="#template-code-2">Template Code:</a></li><li class="toc-sub"><a href="#common-problems-3">Common Problems:</a></li><li><a href="#5-unbounded-knapsack">5. Unbounded Knapsack</a></li><li class="toc-sub"><a href="#template-code-3">Template Code:</a></li><li class="toc-sub"><a href="#common-problems-4">Common Problems:</a></li><li><a href="#6-0-1-knapsack">6. 0/1 Knapsack</a></li><li class="toc-sub"><a href="#template-code-4">Template Code:</a></li><li class="toc-sub"><a href="#common-problems-5">Common Problems:</a></li><li><a href="#7-state-machine-dp">7. State Machine DP</a></li><li class="toc-sub"><a href="#template-code-5">Template Code:</a></li><li class="toc-sub"><a href="#common-problems-6">Common Problems:</a></li><li><a href="#8-grid-path-dp">8. Grid Path DP</a></li><li class="toc-sub"><a href="#template-code-6">Template Code:</a></li><li class="toc-sub"><a href="#common-problems-7">Common Problems:</a></li><li><a href="#9-bitmask-dp">9. Bitmask DP</a></li><li class="toc-sub"><a href="#template-code-7">Template Code:</a></li><li class="toc-sub"><a href="#common-problems-8">Common Problems:</a></li><li><a href="#10-digit-dp">10. Digit DP</a></li><li class="toc-sub"><a href="#template-code-8">Template Code:</a></li><li class="toc-sub"><a href="#common-problems-9">Common Problems:</a></li><li><a href="#11-dp-on-trees">11. DP on Trees</a></li><li class="toc-sub"><a href="#template-code-9">Template Code:</a></li><li class="toc-sub"><a href="#common-problems-10">Common Problems:</a></li><li><a href="#key-dp-problem-solving-steps">Key DP Problem-Solving Steps</a></li><li><a href="#dp-optimization-techniques">DP Optimization Techniques</a></li><li><a href="#lc-examples">LC Examples</a></li><li class="toc-sub"><a href="#2-1-climbing-stairs-lc-70-1d-linear-dp">2-1) Climbing Stairs (LC 70) — 1D Linear DP</a></li><li class="toc-sub"><a href="#2-2-coin-change-lc-322-unbounded-knapsack-dp">2-2) Coin Change (LC 322) — Unbounded Knapsack DP</a></li><li class="toc-sub"><a href="#2-3-longest-increasing-subsequence-lc-300-lis-dp-binary-search">2-3) Longest Increasing Subsequence (LC 300) — LIS DP / Binary Search</a></li><li class="toc-sub"><a href="#2-4-partition-equal-subset-sum-lc-416-0-1-knapsack-dp">2-4) Partition Equal Subset Sum (LC 416) — 0/1 Knapsack DP</a></li><li class="toc-sub"><a href="#2-5-unique-paths-lc-62-2d-grid-dp">2-5) Unique Paths (LC 62) — 2D Grid DP</a></li><li class="toc-sub"><a href="#2-6-decode-ways-lc-91-1d-dp">2-6) Decode Ways (LC 91) — 1D DP</a></li><li class="toc-sub"><a href="#2-7-longest-common-subsequence-lc-1143-2d-string-dp">2-7) Longest Common Subsequence (LC 1143) — 2D String DP</a></li><li class="toc-sub"><a href="#2-8-burst-balloons-lc-312-interval-dp">2-8) Burst Balloons (LC 312) — Interval DP</a></li><li class="toc-sub"><a href="#2-9-best-time-to-buy-and-sell-stock-with-cooldown-lc-309-state-machine-dp">2-9) Best Time to Buy and Sell Stock with Cooldown (LC 309) — State Machine DP</a></li><li class="toc-sub"><a href="#2-10-minimum-path-sum-lc-64-grid-dp">2-10) Minimum Path Sum (LC 64) — Grid DP</a></li><li class="toc-sub"><a href="#2-11-target-sum-lc-494-dp-dfs-with-memo">2-11) Target Sum (LC 494) — DP / DFS with Memo</a></li></ul></div>
+      <div class="cheatsheet-content">
+        <h1 id="dp-pattern" tabindex="-1"><a class="header-anchor" href="#dp-pattern"><span>DP Pattern</span></a></h1>
+<ul>
+<li><a href="https://leetcode.com/discuss/study-guide/1308617/Dynamic-Programming-Patterns">https://leetcode.com/discuss/study-guide/1308617/Dynamic-Programming-Patterns</a></li>
+</ul>
+<h2 id="1-kadane-s-algorithm-maximum-subarray" tabindex="-1"><a class="header-anchor" href="#1-kadane-s-algorithm-maximum-subarray"><span>1. Kadane’s Algorithm (Maximum Subarray)</span></a></h2>
+<p><strong>Pattern</strong>: Find the maximum/minimum sum of a contiguous subarray.</p>
+<p><strong>Key Idea</strong>: At each position, decide whether to extend the current subarray or start a new one.</p>
+<p><strong>Recurrence</strong>: <code>dp[i] = max(nums[i], dp[i-1] + nums[i])</code></p>
+<p><strong>Time Complexity</strong>: O(n) | <strong>Space Complexity</strong>: O(1)</p>
+<h3 id="template-code" tabindex="-1"><a class="header-anchor" href="#template-code"><span>Template Code:</span></a></h3>
+<p><strong>Python:</strong></p>
+<pre><code class="language-python">def maxSubArray(nums):
+    max_sum = nums[0]
+    current_sum = nums[0]
+
+    for i in range(1, len(nums)):
+        current_sum = max(nums[i], current_sum + nums[i])
+        max_sum = max(max_sum, current_sum)
+
+    return max_sum
+</code></pre>
+<p><strong>Java:</strong></p>
+<pre><code class="language-java">public int maxSubArray(int[] nums) {
+    int maxSum = nums[0];
+    int currentSum = nums[0];
+
+    for (int i = 1; i &lt; nums.length; i++) {
+        currentSum = Math.max(nums[i], currentSum + nums[i]);
+        maxSum = Math.max(maxSum, currentSum);
+    }
+
+    return maxSum;
+}
+</code></pre>
+<h3 id="common-problems" tabindex="-1"><a class="header-anchor" href="#common-problems"><span>Common Problems:</span></a></h3>
+<ul>
+<li>LC 53: Maximum Subarray</li>
+<li>LC 152: Maximum Product Subarray</li>
+<li>LC 918: Maximum Sum Circular Subarray</li>
+<li>LC 1749: Maximum Alternating Sum</li>
+<li>Maximum difference of 0’s and 1’s in a binary string</li>
+<li>Smallest sum contiguous subarray</li>
+<li>Largest sum increasing contiguous subarray</li>
+<li>Maximum Sum Rectangle In A 2D Matrix</li>
+</ul>
+<h2 id="2-longest-increasing-subsequence-lis" tabindex="-1"><a class="header-anchor" href="#2-longest-increasing-subsequence-lis"><span>2. Longest Increasing Subsequence (LIS)</span></a></h2>
+<p><strong>Pattern</strong>: Find the longest subsequence where elements are in increasing order.</p>
+<p><strong>Key Idea</strong>: For each element, find the longest increasing subsequence ending at that position.</p>
+<p><strong>Recurrence</strong>: <code>dp[i] = max(dp[j] + 1)</code> for all <code>j &lt; i</code> where <code>nums[j] &lt; nums[i]</code></p>
+<p><strong>Time Complexity</strong>: O(n²) or O(n log n) with binary search | <strong>Space Complexity</strong>: O(n)</p>
+<h3 id="template-code-o-n-approach" tabindex="-1"><a class="header-anchor" href="#template-code-o-n-approach"><span>Template Code (O(n²) approach):</span></a></h3>
+<p><strong>Python:</strong></p>
+<pre><code class="language-python">def lengthOfLIS(nums):
+    if not nums:
+        return 0
+
+    n = len(nums)
+    dp = [1] * n
+
+    for i in range(1, n):
+        for j in range(i):
+            if nums[j] &lt; nums[i]:
+                dp[i] = max(dp[i], dp[j] + 1)
+
+    return max(dp)
+</code></pre>
+<p><strong>Java:</strong></p>
+<pre><code class="language-java">public int lengthOfLIS(int[] nums) {
+    if (nums.length == 0) return 0;
+
+    int n = nums.length;
+    int[] dp = new int[n];
+    Arrays.fill(dp, 1);
+
+    for (int i = 1; i &lt; n; i++) {
+        for (int j = 0; j &lt; i; j++) {
+            if (nums[j] &lt; nums[i]) {
+                dp[i] = Math.max(dp[i], dp[j] + 1);
+            }
+        }
+    }
+
+    return Arrays.stream(dp).max().getAsInt();
+}
+</code></pre>
+<h3 id="template-code-o-n-log-n-with-binary-search" tabindex="-1"><a class="header-anchor" href="#template-code-o-n-log-n-with-binary-search"><span>Template Code (O(n log n) with Binary Search):</span></a></h3>
+<p><strong>Python:</strong></p>
+<pre><code class="language-python">def lengthOfLIS(nums):
+    tails = []
+
+    for num in nums:
+        left, right = 0, len(tails)
+        while left &lt; right:
+            mid = (left + right) // 2
+            if tails[mid] &lt; num:
+                left = mid + 1
+            else:
+                right = mid
+        if left == len(tails):
+            tails.append(num)
+        else:
+            tails[left] = num
+
+    return len(tails)
+</code></pre>
+<p><strong>Java:</strong></p>
+<pre><code class="language-java">public int lengthOfLIS(int[] nums) {
+    List&lt;Integer&gt; tails = new ArrayList&lt;&gt;();
+
+    for (int num : nums) {
+        int left = 0, right = tails.size();
+        while (left &lt; right) {
+            int mid = left + (right - left) / 2;
+            if (tails.get(mid) &lt; num) {
+                left = mid + 1;
+            } else {
+                right = mid;
+            }
+        }
+        if (left == tails.size()) {
+            tails.add(num);
+        } else {
+            tails.set(left, num);
+        }
+    }
+
+    return tails.size();
+}
+</code></pre>
+<h3 id="common-problems-1" tabindex="-1"><a class="header-anchor" href="#common-problems-1"><span>Common Problems:</span></a></h3>
+<ul>
+<li>LC 300: Longest Increasing Subsequence</li>
+<li>LC 673: Number of Longest Increasing Subsequence</li>
+<li>LC 334: Increasing Triplet Subsequence</li>
+<li>LC 1626: Best Team with No Conflicts</li>
+<li>LC 1964: Find the Longest Valid Obstacle Course at Each Position</li>
+<li>LC 2111: Minimum Number of Removals to Make Mountain Array</li>
+<li>Maximum Sum Increasing Subsequence</li>
+<li>Print LIS (<code>Longest Increasing Subsequence</code>)</li>
+<li>LIS having sum almost K</li>
+</ul>
+<h2 id="3-matrix-chain-multiplication-mcm-interval-dp" tabindex="-1"><a class="header-anchor" href="#3-matrix-chain-multiplication-mcm-interval-dp"><span>3. Matrix Chain Multiplication (MCM) / Interval DP</span></a></h2>
+<p><strong>Pattern</strong>: Divide a problem into subproblems by splitting at different positions and combining results.</p>
+<p><strong>Key Idea</strong>: Try all possible ways to partition the interval and take the optimal one.</p>
+<p><strong>Recurrence</strong>: <code>dp[i][j] = min/max(dp[i][k] + dp[k+1][j] + cost)</code> for all <code>k</code> in <code>[i, j)</code></p>
+<p><strong>Time Complexity</strong>: O(n³) | <strong>Space Complexity</strong>: O(n²)</p>
+<h3 id="template-code-1" tabindex="-1"><a class="header-anchor" href="#template-code-1"><span>Template Code:</span></a></h3>
+<p><strong>Python:</strong></p>
+<pre><code class="language-python">def mcm(arr):
+    n = len(arr)
+    dp = [[0] * n for _ in range(n)]
+
+    # length is the chain length
+    for length in range(2, n):
+        for i in range(n - length):
+            j = i + length
+            dp[i][j] = float('inf')
+            for k in range(i + 1, j):
+                cost = dp[i][k] + dp[k][j] + arr[i] * arr[k] * arr[j]
+                dp[i][j] = min(dp[i][j], cost)
+
+    return dp[0][n-1]
+
+# For problems like burst balloons (bottom-up)
+def maxCoins(nums):
+    nums = [1] + nums + [1]
+    n = len(nums)
+    dp = [[0] * n for _ in range(n)]
+
+    for length in range(2, n):
+        for left in range(n - length):
+            right = left + length
+            for i in range(left + 1, right):
+                coins = nums[left] * nums[i] * nums[right]
+                coins += dp[left][i] + dp[i][right]
+                dp[left][right] = max(dp[left][right], coins)
+
+    return dp[0][n-1]
+</code></pre>
+<p><strong>Java:</strong></p>
+<pre><code class="language-java">public int mcm(int[] arr) {
+    int n = arr.length;
+    int[][] dp = new int[n][n];
+
+    for (int length = 2; length &lt; n; length++) {
+        for (int i = 0; i &lt; n - length; i++) {
+            int j = i + length;
+            dp[i][j] = Integer.MAX_VALUE;
+            for (int k = i + 1; k &lt; j; k++) {
+                int cost = dp[i][k] + dp[k][j] + arr[i] * arr[k] * arr[j];
+                dp[i][j] = Math.min(dp[i][j], cost);
+            }
+        }
+    }
+
+    return dp[0][n-1];
+}
+
+// For problems like burst balloons
+public int maxCoins(int[] nums) {
+    int[] arr = new int[nums.length + 2];
+    arr[0] = 1;
+    arr[arr.length - 1] = 1;
+    System.arraycopy(nums, 0, arr, 1, nums.length);
+
+    int n = arr.length;
+    int[][] dp = new int[n][n];
+
+    for (int length = 2; length &lt; n; length++) {
+        for (int left = 0; left &lt; n - length; left++) {
+            int right = left + length;
+            for (int i = left + 1; i &lt; right; i++) {
+                int coins = arr[left] * arr[i] * arr[right];
+                coins += dp[left][i] + dp[i][right];
+                dp[left][right] = Math.max(dp[left][right], coins);
+            }
+        }
+    }
+
+    return dp[0][n-1];
+}
+</code></pre>
+<h3 id="common-problems-2" tabindex="-1"><a class="header-anchor" href="#common-problems-2"><span>Common Problems:</span></a></h3>
+<ul>
+<li>LC 312: Burst Balloons</li>
+<li>LC 1039: Minimum Score Triangulation of Polygon</li>
+<li>LC 87: Scramble String</li>
+<li>LC 131: Palindrome Partitioning</li>
+<li>LC 132: Palindrome Partitioning II</li>
+<li>LC 1547: Minimum Cost to Cut a Stick</li>
+<li>LC 1000: Minimum Cost to Merge Stones</li>
+<li>Evaluate Expression to True / Boolean Parenthesization</li>
+<li>Minimum / Maximum Value of an Expression</li>
+<li>Egg Dropping Problem</li>
+</ul>
+<h2 id="4-longest-common-subsequence-lcs" tabindex="-1"><a class="header-anchor" href="#4-longest-common-subsequence-lcs"><span>4. Longest Common Subsequence (LCS)</span></a></h2>
+<p><strong>Pattern</strong>: Find the longest subsequence common to two sequences.</p>
+<p><strong>Key Idea</strong>: If characters match, extend the LCS; otherwise, take the maximum from skipping either character.</p>
+<p><strong>Recurrence</strong>:</p>
+<ul>
+<li>If <code>s1[i] == s2[j]</code>: <code>dp[i][j] = dp[i-1][j-1] + 1</code></li>
+<li>Else: <code>dp[i][j] = max(dp[i-1][j], dp[i][j-1])</code></li>
+</ul>
+<p><strong>Time Complexity</strong>: O(m<em>n) | <strong>Space Complexity</strong>: O(m</em>n) or O(min(m,n))</p>
+<h3 id="template-code-2" tabindex="-1"><a class="header-anchor" href="#template-code-2"><span>Template Code:</span></a></h3>
+<p><strong>Python:</strong></p>
+<pre><code class="language-python">def longestCommonSubsequence(text1, text2):
+    m, n = len(text1), len(text2)
+    dp = [[0] * (n + 1) for _ in range(m + 1)]
+
+    for i in range(1, m + 1):
+        for j in range(1, n + 1):
+            if text1[i-1] == text2[j-1]:
+                dp[i][j] = dp[i-1][j-1] + 1
+            else:
+                dp[i][j] = max(dp[i-1][j], dp[i][j-1])
+
+    return dp[m][n]
+
+# Space optimized version
+def longestCommonSubsequence_optimized(text1, text2):
+    m, n = len(text1), len(text2)
+    prev = [0] * (n + 1)
+
+    for i in range(1, m + 1):
+        curr = [0] * (n + 1)
+        for j in range(1, n + 1):
+            if text1[i-1] == text2[j-1]:
+                curr[j] = prev[j-1] + 1
+            else:
+                curr[j] = max(prev[j], curr[j-1])
+        prev = curr
+
+    return prev[n]
+
+# Longest Common Substring (different from LCS!)
+def longestCommonSubstring(text1, text2):
+    m, n = len(text1), len(text2)
+    dp = [[0] * (n + 1) for _ in range(m + 1)]
+    max_length = 0
+
+    for i in range(1, m + 1):
+        for j in range(1, n + 1):
+            if text1[i-1] == text2[j-1]:
+                dp[i][j] = dp[i-1][j-1] + 1
+                max_length = max(max_length, dp[i][j])
+            else:
+                dp[i][j] = 0  # Key difference: reset to 0
+
+    return max_length
+</code></pre>
+<p><strong>Java:</strong></p>
+<pre><code class="language-java">public int longestCommonSubsequence(String text1, String text2) {
+    int m = text1.length(), n = text2.length();
+    int[][] dp = new int[m + 1][n + 1];
+
+    for (int i = 1; i &lt;= m; i++) {
+        for (int j = 1; j &lt;= n; j++) {
+            if (text1.charAt(i-1) == text2.charAt(j-1)) {
+                dp[i][j] = dp[i-1][j-1] + 1;
+            } else {
+                dp[i][j] = Math.max(dp[i-1][j], dp[i][j-1]);
+            }
+        }
+    }
+
+    return dp[m][n];
+}
+
+// Space optimized version
+public int longestCommonSubsequence_optimized(String text1, String text2) {
+    int m = text1.length(), n = text2.length();
+    int[] prev = new int[n + 1];
+
+    for (int i = 1; i &lt;= m; i++) {
+        int[] curr = new int[n + 1];
+        for (int j = 1; j &lt;= n; j++) {
+            if (text1.charAt(i-1) == text2.charAt(j-1)) {
+                curr[j] = prev[j-1] + 1;
+            } else {
+                curr[j] = Math.max(prev[j], curr[j-1]);
+            }
+        }
+        prev = curr;
+    }
+
+    return prev[n];
+}
+
+// Longest Common Substring
+public int longestCommonSubstring(String text1, String text2) {
+    int m = text1.length(), n = text2.length();
+    int[][] dp = new int[m + 1][n + 1];
+    int maxLength = 0;
+
+    for (int i = 1; i &lt;= m; i++) {
+        for (int j = 1; j &lt;= n; j++) {
+            if (text1.charAt(i-1) == text2.charAt(j-1)) {
+                dp[i][j] = dp[i-1][j-1] + 1;
+                maxLength = Math.max(maxLength, dp[i][j]);
+            } else {
+                dp[i][j] = 0;
+            }
+        }
+    }
+
+    return maxLength;
+}
+</code></pre>
+<h3 id="common-problems-3" tabindex="-1"><a class="header-anchor" href="#common-problems-3"><span>Common Problems:</span></a></h3>
+<ul>
+<li>LC 1143: Longest Common Subsequence</li>
+<li>LC 72: Edit Distance</li>
+<li>LC 583: Delete Operation for Two Strings</li>
+<li>LC 712: Minimum ASCII Delete Sum for Two Strings</li>
+<li>LC 1092: Shortest Common Supersequence</li>
+<li>LC 516: Longest Palindromic Subsequence</li>
+<li>LC 5: Longest Palindromic Substring</li>
+<li>LC 647: Palindromic Substrings</li>
+<li>LC 115: Distinct Subsequences</li>
+<li>LC 392: Is Subsequence</li>
+<li>Longest Common Substring</li>
+<li>Print LCS / SCS</li>
+<li>Minimum insertions/deletions to transform string a to b</li>
+<li>Largest Repeating Subsequence</li>
+<li>Subsequence Pattern Matching</li>
+<li>Count number of times a appears as subsequence in b</li>
+</ul>
+<h2 id="5-unbounded-knapsack" tabindex="-1"><a class="header-anchor" href="#5-unbounded-knapsack"><span>5. Unbounded Knapsack</span></a></h2>
+<p><strong>Pattern</strong>: Select items with unlimited quantity to maximize/minimize value or count combinations.</p>
+<p><strong>Key Idea</strong>: For each item, you can use it multiple times. Decision: include the current item again or move to the next item.</p>
+<p><strong>Recurrence</strong>: <code>dp[i][w] = max(dp[i-1][w], dp[i][w-weight[i]] + value[i])</code></p>
+<p><strong>Time Complexity</strong>: O(n*W) | <strong>Space Complexity</strong>: O(W)</p>
+<h3 id="template-code-3" tabindex="-1"><a class="header-anchor" href="#template-code-3"><span>Template Code:</span></a></h3>
+<p><strong>Python:</strong></p>
+<pre><code class="language-python"># Unbounded Knapsack - Maximum Value
+def unboundedKnapsack(weights, values, capacity):
+    dp = [0] * (capacity + 1)
+
+    for w in range(capacity + 1):
+        for i in range(len(weights)):
+            if weights[i] &lt;= w:
+                dp[w] = max(dp[w], dp[w - weights[i]] + values[i])
+
+    return dp[capacity]
+
+# Coin Change - Minimum Coins (LC 322)
+def coinChange(coins, amount):
+    dp = [float('inf')] * (amount + 1)
+    dp[0] = 0
+
+    for coin in coins:
+        for i in range(coin, amount + 1):
+            dp[i] = min(dp[i], dp[i - coin] + 1)
+
+    return dp[amount] if dp[amount] != float('inf') else -1
+
+# Coin Change - Number of Ways (LC 518)
+def change(amount, coins):
+    dp = [0] * (amount + 1)
+    dp[0] = 1
+
+    for coin in coins:
+        for i in range(coin, amount + 1):
+            dp[i] += dp[i - coin]
+
+    return dp[amount]
+</code></pre>
+<p><strong>Java:</strong></p>
+<pre><code class="language-java">// Unbounded Knapsack - Maximum Value
+public int unboundedKnapsack(int[] weights, int[] values, int capacity) {
+    int[] dp = new int[capacity + 1];
+
+    for (int w = 0; w &lt;= capacity; w++) {
+        for (int i = 0; i &lt; weights.length; i++) {
+            if (weights[i] &lt;= w) {
+                dp[w] = Math.max(dp[w], dp[w - weights[i]] + values[i]);
+            }
+        }
+    }
+
+    return dp[capacity];
+}
+
+// Coin Change - Minimum Coins (LC 322)
+public int coinChange(int[] coins, int amount) {
+    int[] dp = new int[amount + 1];
+    Arrays.fill(dp, amount + 1);
+    dp[0] = 0;
+
+    for (int coin : coins) {
+        for (int i = coin; i &lt;= amount; i++) {
+            dp[i] = Math.min(dp[i], dp[i - coin] + 1);
+        }
+    }
+
+    return dp[amount] &gt; amount ? -1 : dp[amount];
+}
+
+// Coin Change - Number of Ways (LC 518)
+public int change(int amount, int[] coins) {
+    int[] dp = new int[amount + 1];
+    dp[0] = 1;
+
+    for (int coin : coins) {
+        for (int i = coin; i &lt;= amount; i++) {
+            dp[i] += dp[i - coin];
+        }
+    }
+
+    return dp[amount];
+}
+</code></pre>
+<h3 id="common-problems-4" tabindex="-1"><a class="header-anchor" href="#common-problems-4"><span>Common Problems:</span></a></h3>
+<ul>
+<li>LC 322: Coin Change (Minimum Coins)</li>
+<li>LC 518: Coin Change II (Number of Ways)</li>
+<li>LC 377: Combination Sum IV</li>
+<li>LC 139: Word Break</li>
+<li>LC 983: Minimum Cost For Tickets</li>
+<li>Rod Cutting Problem</li>
+<li>Maximum Ribbon Cut</li>
+<li>Number Partitioning</li>
+</ul>
+<h2 id="6-0-1-knapsack" tabindex="-1"><a class="header-anchor" href="#6-0-1-knapsack"><span>6. 0/1 Knapsack</span></a></h2>
+<p><strong>Pattern</strong>: Select items (each item can be used at most once) to maximize/minimize value or count combinations.</p>
+<p><strong>Key Idea</strong>: For each item, decide whether to include it or not.</p>
+<p><strong>Recurrence</strong>: <code>dp[i][w] = max(dp[i-1][w], dp[i-1][w-weight[i]] + value[i])</code></p>
+<p><strong>Time Complexity</strong>: O(n*W) | <strong>Space Complexity</strong>: O(W)</p>
+<h3 id="template-code-4" tabindex="-1"><a class="header-anchor" href="#template-code-4"><span>Template Code:</span></a></h3>
+<p><strong>Python:</strong></p>
+<pre><code class="language-python"># 0/1 Knapsack - Maximum Value
+def knapsack(weights, values, capacity):
+    n = len(weights)
+    dp = [0] * (capacity + 1)
+
+    for i in range(n):
+        # Traverse backwards to avoid using same item twice
+        for w in range(capacity, weights[i] - 1, -1):
+            dp[w] = max(dp[w], dp[w - weights[i]] + values[i])
+
+    return dp[capacity]
+
+# Subset Sum (can we make target sum?)
+def canPartition(nums, target):
+    dp = [False] * (target + 1)
+    dp[0] = True
+
+    for num in nums:
+        for i in range(target, num - 1, -1):
+            dp[i] = dp[i] or dp[i - num]
+
+    return dp[target]
+
+# Count of Subsets with Given Sum
+def countSubsets(nums, target):
+    dp = [0] * (target + 1)
+    dp[0] = 1
+
+    for num in nums:
+        for i in range(target, num - 1, -1):
+            dp[i] += dp[i - num]
+
+    return dp[target]
+
+# Target Sum (LC 494)
+def findTargetSumWays(nums, target):
+    total = sum(nums)
+    if abs(target) &gt; total or (total + target) % 2 != 0:
+        return 0
+
+    # Transform to subset sum problem
+    subset_sum = (total + target) // 2
+    dp = [0] * (subset_sum + 1)
+    dp[0] = 1
+
+    for num in nums:
+        for i in range(subset_sum, num - 1, -1):
+            dp[i] += dp[i - num]
+
+    return dp[subset_sum]
+</code></pre>
+<p><strong>Java:</strong></p>
+<pre><code class="language-java">// 0/1 Knapsack - Maximum Value
+public int knapsack(int[] weights, int[] values, int capacity) {
+    int n = weights.length;
+    int[] dp = new int[capacity + 1];
+
+    for (int i = 0; i &lt; n; i++) {
+        for (int w = capacity; w &gt;= weights[i]; w--) {
+            dp[w] = Math.max(dp[w], dp[w - weights[i]] + values[i]);
+        }
+    }
+
+    return dp[capacity];
+}
+
+// Subset Sum (can we make target sum?)
+public boolean canPartition(int[] nums, int target) {
+    boolean[] dp = new boolean[target + 1];
+    dp[0] = true;
+
+    for (int num : nums) {
+        for (int i = target; i &gt;= num; i--) {
+            dp[i] = dp[i] || dp[i - num];
+        }
+    }
+
+    return dp[target];
+}
+
+// Count of Subsets with Given Sum
+public int countSubsets(int[] nums, int target) {
+    int[] dp = new int[target + 1];
+    dp[0] = 1;
+
+    for (int num : nums) {
+        for (int i = target; i &gt;= num; i--) {
+            dp[i] += dp[i - num];
+        }
+    }
+
+    return dp[target];
+}
+
+// Target Sum (LC 494)
+public int findTargetSumWays(int[] nums, int target) {
+    int total = 0;
+    for (int num : nums) total += num;
+
+    if (Math.abs(target) &gt; total || (total + target) % 2 != 0) {
+        return 0;
+    }
+
+    int subsetSum = (total + target) / 2;
+    int[] dp = new int[subsetSum + 1];
+    dp[0] = 1;
+
+    for (int num : nums) {
+        for (int i = subsetSum; i &gt;= num; i--) {
+            dp[i] += dp[i - num];
+        }
+    }
+
+    return dp[subsetSum];
+}
+</code></pre>
+<h3 id="common-problems-5" tabindex="-1"><a class="header-anchor" href="#common-problems-5"><span>Common Problems:</span></a></h3>
+<ul>
+<li>LC 416: Partition Equal Subset Sum</li>
+<li>LC 494: Target Sum</li>
+<li>LC 698: Partition to K Equal Sum Subsets</li>
+<li>LC 1049: Last Stone Weight II</li>
+<li>LC 474: Ones and Zeroes (2D Knapsack)</li>
+<li>Subset Sum</li>
+<li>Count of Subsets with Given Sum</li>
+<li>Minimum Subset Sum Difference</li>
+<li>Number of Subsets with Given Difference</li>
+</ul>
+<h2 id="7-state-machine-dp" tabindex="-1"><a class="header-anchor" href="#7-state-machine-dp"><span>7. State Machine DP</span></a></h2>
+<p><strong>Pattern</strong>: Problems with states that transition based on actions/decisions.</p>
+<p><strong>Key Idea</strong>: Track different states and transitions between them. Common in buy/sell stock problems.</p>
+<p><strong>Time Complexity</strong>: O(n*states) | <strong>Space Complexity</strong>: O(states)</p>
+<h3 id="template-code-5" tabindex="-1"><a class="header-anchor" href="#template-code-5"><span>Template Code:</span></a></h3>
+<p><strong>Python:</strong></p>
+<pre><code class="language-python"># Best Time to Buy and Sell Stock with Cooldown (LC 309)
+def maxProfit(prices):
+    if not prices:
+        return 0
+
+    # States: hold stock, sold (cooldown), rest (can buy)
+    hold = -prices[0]
+    sold = 0
+    rest = 0
+
+    for i in range(1, len(prices)):
+        prev_hold = hold
+        prev_sold = sold
+        prev_rest = rest
+
+        hold = max(prev_hold, prev_rest - prices[i])  # Keep holding or buy
+        sold = prev_hold + prices[i]  # Sell
+        rest = max(prev_rest, prev_sold)  # Rest or after cooldown
+
+    return max(sold, rest)
+
+# Best Time to Buy and Sell Stock with Transaction Fee (LC 714)
+def maxProfit_fee(prices, fee):
+    cash = 0  # Not holding stock
+    hold = -prices[0]  # Holding stock
+
+    for i in range(1, len(prices)):
+        cash = max(cash, hold + prices[i] - fee)
+        hold = max(hold, cash - prices[i])
+
+    return cash
+</code></pre>
+<p><strong>Java:</strong></p>
+<pre><code class="language-java">// Best Time to Buy and Sell Stock with Cooldown (LC 309)
+public int maxProfit(int[] prices) {
+    if (prices.length == 0) return 0;
+
+    int hold = -prices[0];
+    int sold = 0;
+    int rest = 0;
+
+    for (int i = 1; i &lt; prices.length; i++) {
+        int prevHold = hold;
+        int prevSold = sold;
+        int prevRest = rest;
+
+        hold = Math.max(prevHold, prevRest - prices[i]);
+        sold = prevHold + prices[i];
+        rest = Math.max(prevRest, prevSold);
+    }
+
+    return Math.max(sold, rest);
+}
+
+// Best Time to Buy and Sell Stock with Transaction Fee (LC 714)
+public int maxProfit(int[] prices, int fee) {
+    int cash = 0;
+    int hold = -prices[0];
+
+    for (int i = 1; i &lt; prices.length; i++) {
+        cash = Math.max(cash, hold + prices[i] - fee);
+        hold = Math.max(hold, cash - prices[i]);
+    }
+
+    return cash;
+}
+</code></pre>
+<h3 id="common-problems-6" tabindex="-1"><a class="header-anchor" href="#common-problems-6"><span>Common Problems:</span></a></h3>
+<ul>
+<li>LC 121: Best Time to Buy and Sell Stock</li>
+<li>LC 122: Best Time to Buy and Sell Stock II</li>
+<li>LC 123: Best Time to Buy and Sell Stock III</li>
+<li>LC 188: Best Time to Buy and Sell Stock IV</li>
+<li>LC 309: Best Time to Buy and Sell Stock with Cooldown</li>
+<li>LC 714: Best Time to Buy and Sell Stock with Transaction Fee</li>
+<li>LC 198: House Robber (rob/not rob states)</li>
+<li>LC 213: House Robber II</li>
+</ul>
+<h2 id="8-grid-path-dp" tabindex="-1"><a class="header-anchor" href="#8-grid-path-dp"><span>8. Grid Path DP</span></a></h2>
+<p><strong>Pattern</strong>: Count paths or find minimum/maximum cost paths in a grid.</p>
+<p><strong>Key Idea</strong>: Each cell depends on cells that can reach it (usually top, left, or diagonal).</p>
+<p><strong>Recurrence</strong>: <code>dp[i][j] = dp[i-1][j] + dp[i][j-1]</code> (for counting paths)</p>
+<p><strong>Time Complexity</strong>: O(m*n) | <strong>Space Complexity</strong>: O(n)</p>
+<h3 id="template-code-6" tabindex="-1"><a class="header-anchor" href="#template-code-6"><span>Template Code:</span></a></h3>
+<p><strong>Python:</strong></p>
+<pre><code class="language-python"># Unique Paths (LC 62)
+def uniquePaths(m, n):
+    dp = [1] * n
+
+    for i in range(1, m):
+        for j in range(1, n):
+            dp[j] += dp[j-1]
+
+    return dp[n-1]
+
+# Minimum Path Sum (LC 64)
+def minPathSum(grid):
+    m, n = len(grid), len(grid[0])
+    dp = [0] * n
+    dp[0] = grid[0][0]
+
+    # Initialize first row
+    for j in range(1, n):
+        dp[j] = dp[j-1] + grid[0][j]
+
+    # Process remaining rows
+    for i in range(1, m):
+        dp[0] += grid[i][0]
+        for j in range(1, n):
+            dp[j] = min(dp[j], dp[j-1]) + grid[i][j]
+
+    return dp[n-1]
+
+# Unique Paths with Obstacles (LC 63)
+def uniquePathsWithObstacles(grid):
+    if not grid or grid[0][0] == 1:
+        return 0
+
+    m, n = len(grid), len(grid[0])
+    dp = [0] * n
+    dp[0] = 1
+
+    for i in range(m):
+        for j in range(n):
+            if grid[i][j] == 1:
+                dp[j] = 0
+            elif j &gt; 0:
+                dp[j] += dp[j-1]
+
+    return dp[n-1]
+</code></pre>
+<p><strong>Java:</strong></p>
+<pre><code class="language-java">// Unique Paths (LC 62)
+public int uniquePaths(int m, int n) {
+    int[] dp = new int[n];
+    Arrays.fill(dp, 1);
+
+    for (int i = 1; i &lt; m; i++) {
+        for (int j = 1; j &lt; n; j++) {
+            dp[j] += dp[j-1];
+        }
+    }
+
+    return dp[n-1];
+}
+
+// Minimum Path Sum (LC 64)
+public int minPathSum(int[][] grid) {
+    int m = grid.length, n = grid[0].length;
+    int[] dp = new int[n];
+    dp[0] = grid[0][0];
+
+    for (int j = 1; j &lt; n; j++) {
+        dp[j] = dp[j-1] + grid[0][j];
+    }
+
+    for (int i = 1; i &lt; m; i++) {
+        dp[0] += grid[i][0];
+        for (int j = 1; j &lt; n; j++) {
+            dp[j] = Math.min(dp[j], dp[j-1]) + grid[i][j];
+        }
+    }
+
+    return dp[n-1];
+}
+
+// Unique Paths with Obstacles (LC 63)
+public int uniquePathsWithObstacles(int[][] grid) {
+    if (grid.length == 0 || grid[0][0] == 1) return 0;
+
+    int m = grid.length, n = grid[0].length;
+    int[] dp = new int[n];
+    dp[0] = 1;
+
+    for (int i = 0; i &lt; m; i++) {
+        for (int j = 0; j &lt; n; j++) {
+            if (grid[i][j] == 1) {
+                dp[j] = 0;
+            } else if (j &gt; 0) {
+                dp[j] += dp[j-1];
+            }
+        }
+    }
+
+    return dp[n-1];
+}
+</code></pre>
+<h3 id="common-problems-7" tabindex="-1"><a class="header-anchor" href="#common-problems-7"><span>Common Problems:</span></a></h3>
+<ul>
+<li>LC 62: Unique Paths</li>
+<li>LC 63: Unique Paths II</li>
+<li>LC 64: Minimum Path Sum</li>
+<li>LC 120: Triangle</li>
+<li>LC 174: Dungeon Game</li>
+<li>LC 221: Maximal Square</li>
+<li>LC 931: Minimum Falling Path Sum</li>
+<li>LC 1594: Maximum Non Negative Product in a Matrix</li>
+</ul>
+<h2 id="9-bitmask-dp" tabindex="-1"><a class="header-anchor" href="#9-bitmask-dp"><span>9. Bitmask DP</span></a></h2>
+<p><strong>Pattern</strong>: Use bitmask to represent subsets/states in problems with small constraints (n ≤ 20).</p>
+<p><strong>Key Idea</strong>: Each bit represents whether an element is included/visited. Iterate through all possible states.</p>
+<p><strong>Time Complexity</strong>: O(2^n * n) or O(2^n * n²) | <strong>Space Complexity</strong>: O(2^n)</p>
+<h3 id="template-code-7" tabindex="-1"><a class="header-anchor" href="#template-code-7"><span>Template Code:</span></a></h3>
+<p><strong>Python:</strong></p>
+<pre><code class="language-python"># Traveling Salesman Problem (TSP)
+def tsp(graph):
+    n = len(graph)
+    ALL_VISITED = (1 &lt;&lt; n) - 1
+    dp = [[float('inf')] * n for _ in range(1 &lt;&lt; n)]
+    dp[1][0] = 0  # Start from node 0
+
+    for mask in range(1 &lt;&lt; n):
+        for u in range(n):
+            if not (mask &amp; (1 &lt;&lt; u)):
+                continue
+            for v in range(n):
+                if mask &amp; (1 &lt;&lt; v):
+                    continue
+                new_mask = mask | (1 &lt;&lt; v)
+                dp[new_mask][v] = min(dp[new_mask][v],
+                                      dp[mask][u] + graph[u][v])
+
+    return min(dp[ALL_VISITED][i] + graph[i][0] for i in range(n))
+
+# Shortest Path Visiting All Nodes (LC 847)
+def shortestPathLength(graph):
+    n = len(graph)
+    target = (1 &lt;&lt; n) - 1
+    queue = [(i, 1 &lt;&lt; i, 0) for i in range(n)]  # (node, mask, dist)
+    visited = {(i, 1 &lt;&lt; i) for i in range(n)}
+
+    while queue:
+        node, mask, dist = queue.pop(0)
+        if mask == target:
+            return dist
+
+        for neighbor in graph[node]:
+            new_mask = mask | (1 &lt;&lt; neighbor)
+            if (neighbor, new_mask) not in visited:
+                visited.add((neighbor, new_mask))
+                queue.append((neighbor, new_mask, dist + 1))
+
+    return -1
+</code></pre>
+<p><strong>Java:</strong></p>
+<pre><code class="language-java">// Traveling Salesman Problem (TSP)
+public int tsp(int[][] graph) {
+    int n = graph.length;
+    int ALL_VISITED = (1 &lt;&lt; n) - 1;
+    int[][] dp = new int[1 &lt;&lt; n][n];
+
+    for (int[] row : dp) {
+        Arrays.fill(row, Integer.MAX_VALUE / 2);
+    }
+    dp[1][0] = 0;
+
+    for (int mask = 0; mask &lt; (1 &lt;&lt; n); mask++) {
+        for (int u = 0; u &lt; n; u++) {
+            if ((mask &amp; (1 &lt;&lt; u)) == 0) continue;
+
+            for (int v = 0; v &lt; n; v++) {
+                if ((mask &amp; (1 &lt;&lt; v)) != 0) continue;
+
+                int newMask = mask | (1 &lt;&lt; v);
+                dp[newMask][v] = Math.min(dp[newMask][v],
+                                          dp[mask][u] + graph[u][v]);
+            }
+        }
+    }
+
+    int result = Integer.MAX_VALUE;
+    for (int i = 0; i &lt; n; i++) {
+        result = Math.min(result, dp[ALL_VISITED][i] + graph[i][0]);
+    }
+    return result;
+}
+</code></pre>
+<h3 id="common-problems-8" tabindex="-1"><a class="header-anchor" href="#common-problems-8"><span>Common Problems:</span></a></h3>
+<ul>
+<li>LC 847: Shortest Path Visiting All Nodes</li>
+<li>LC 943: Find the Shortest Superstring</li>
+<li>LC 1125: Smallest Sufficient Team</li>
+<li>LC 1434: Number of Ways to Wear Different Hats to Each Other</li>
+<li>LC 1595: Minimum Cost to Connect Two Groups of Points</li>
+<li>LC 2172: Maximum AND Sum of Array</li>
+<li>Traveling Salesman Problem</li>
+<li>Assignment Problem</li>
+</ul>
+<h2 id="10-digit-dp" tabindex="-1"><a class="header-anchor" href="#10-digit-dp"><span>10. Digit DP</span></a></h2>
+<p><strong>Pattern</strong>: Count numbers in a range satisfying certain digit properties.</p>
+<p><strong>Key Idea</strong>: Build numbers digit by digit, tracking constraints (tight bound, leading zeros, etc.).</p>
+<p><strong>Time Complexity</strong>: O(digits * states) | <strong>Space Complexity</strong>: O(digits * states)</p>
+<h3 id="template-code-8" tabindex="-1"><a class="header-anchor" href="#template-code-8"><span>Template Code:</span></a></h3>
+<p><strong>Python:</strong></p>
+<pre><code class="language-python"># Count numbers with unique digits (LC 357)
+def countNumbersWithUniqueDigits(n):
+    if n == 0:
+        return 1
+
+    result = 10  # For n=1
+    unique_digits = 9
+    available = 9
+
+    for i in range(2, n + 1):
+        unique_digits *= available
+        result += unique_digits
+        available -= 1
+
+    return result
+
+# Numbers At Most N Given Digit Set (LC 902)
+def atMostNGivenDigitSet(digits, n):
+    s = str(n)
+    k = len(s)
+    dp = [0] * (k + 1)
+    dp[k] = 1
+
+    for i in range(k - 1, -1, -1):
+        for d in digits:
+            if d &lt; s[i]:
+                dp[i] += len(digits) ** (k - i - 1)
+            elif d == s[i]:
+                dp[i] += dp[i + 1]
+
+    # Add numbers with fewer digits
+    for i in range(1, k):
+        dp[0] += len(digits) ** i
+
+    return dp[0]
+</code></pre>
+<p><strong>Java:</strong></p>
+<pre><code class="language-java">// Count numbers with unique digits (LC 357)
+public int countNumbersWithUniqueDigits(int n) {
+    if (n == 0) return 1;
+
+    int result = 10;
+    int uniqueDigits = 9;
+    int available = 9;
+
+    for (int i = 2; i &lt;= n &amp;&amp; available &gt; 0; i++) {
+        uniqueDigits *= available;
+        result += uniqueDigits;
+        available--;
+    }
+
+    return result;
+}
+
+// Numbers At Most N Given Digit Set (LC 902)
+public int atMostNGivenDigitSet(String[] digits, int n) {
+    String s = String.valueOf(n);
+    int k = s.length();
+    int[] dp = new int[k + 1];
+    dp[k] = 1;
+
+    for (int i = k - 1; i &gt;= 0; i--) {
+        char c = s.charAt(i);
+        for (String d : digits) {
+            if (d.charAt(0) &lt; c) {
+                dp[i] += Math.pow(digits.length, k - i - 1);
+            } else if (d.charAt(0) == c) {
+                dp[i] += dp[i + 1];
+            }
+        }
+    }
+
+    for (int i = 1; i &lt; k; i++) {
+        dp[0] += Math.pow(digits.length, i);
+    }
+
+    return dp[0];
+}
+</code></pre>
+<h3 id="common-problems-9" tabindex="-1"><a class="header-anchor" href="#common-problems-9"><span>Common Problems:</span></a></h3>
+<ul>
+<li>LC 233: Number of Digit One</li>
+<li>LC 357: Count Numbers with Unique Digits</li>
+<li>LC 600: Non-negative Integers without Consecutive Ones</li>
+<li>LC 902: Numbers At Most N Given Digit Set</li>
+<li>LC 1012: Numbers With Repeated Digits</li>
+<li>LC 2376: Count Special Integers</li>
+</ul>
+<h2 id="11-dp-on-trees" tabindex="-1"><a class="header-anchor" href="#11-dp-on-trees"><span>11. DP on Trees</span></a></h2>
+<p><strong>Pattern</strong>: Compute values on tree nodes based on subtree values.</p>
+<p><strong>Key Idea</strong>: Use DFS/post-order traversal to solve for children first, then combine results at parent.</p>
+<p><strong>Time Complexity</strong>: O(n) | <strong>Space Complexity</strong>: O(height)</p>
+<h3 id="template-code-9" tabindex="-1"><a class="header-anchor" href="#template-code-9"><span>Template Code:</span></a></h3>
+<p><strong>Python:</strong></p>
+<pre><code class="language-python"># House Robber III (LC 337)
+def rob(root):
+    def dfs(node):
+        if not node:
+            return (0, 0)  # (rob, not_rob)
+
+        left = dfs(node.left)
+        right = dfs(node.right)
+
+        # If rob current node, can't rob children
+        rob_current = node.val + left[1] + right[1]
+        # If not rob current, take max of children
+        not_rob_current = max(left) + max(right)
+
+        return (rob_current, not_rob_current)
+
+    return max(dfs(root))
+
+# Binary Tree Maximum Path Sum (LC 124)
+def maxPathSum(root):
+    max_sum = float('-inf')
+
+    def dfs(node):
+        nonlocal max_sum
+        if not node:
+            return 0
+
+        # Get max sum from left and right subtrees (ignore negative)
+        left = max(0, dfs(node.left))
+        right = max(0, dfs(node.right))
+
+        # Update max_sum considering path through current node
+        max_sum = max(max_sum, node.val + left + right)
+
+        # Return max sum ending at current node
+        return node.val + max(left, right)
+
+    dfs(root)
+    return max_sum
+</code></pre>
+<p><strong>Java:</strong></p>
+<pre><code class="language-java">// House Robber III (LC 337)
+public int rob(TreeNode root) {
+    int[] result = dfs(root);
+    return Math.max(result[0], result[1]);
+}
+
+private int[] dfs(TreeNode node) {
+    if (node == null) return new int[]{0, 0};
+
+    int[] left = dfs(node.left);
+    int[] right = dfs(node.right);
+
+    int rob = node.val + left[1] + right[1];
+    int notRob = Math.max(left[0], left[1]) + Math.max(right[0], right[1]);
+
+    return new int[]{rob, notRob};
+}
+
+// Binary Tree Maximum Path Sum (LC 124)
+int maxSum = Integer.MIN_VALUE;
+
+public int maxPathSum(TreeNode root) {
+    dfs(root);
+    return maxSum;
+}
+
+private int dfs(TreeNode node) {
+    if (node == null) return 0;
+
+    int left = Math.max(0, dfs(node.left));
+    int right = Math.max(0, dfs(node.right));
+
+    maxSum = Math.max(maxSum, node.val + left + right);
+
+    return node.val + Math.max(left, right);
+}
+</code></pre>
+<h3 id="common-problems-10" tabindex="-1"><a class="header-anchor" href="#common-problems-10"><span>Common Problems:</span></a></h3>
+<ul>
+<li>LC 124: Binary Tree Maximum Path Sum</li>
+<li>LC 337: House Robber III</li>
+<li>LC 543: Diameter of Binary Tree</li>
+<li>LC 687: Longest Univalue Path</li>
+<li>LC 968: Binary Tree Cameras</li>
+<li>LC 979: Distribute Coins in Binary Tree</li>
+<li>LC 1130: Minimum Cost Tree From Leaf Values</li>
+<li>LC 2246: Longest Path With Different Adjacent Characters</li>
+</ul>
+<h2 id="key-dp-problem-solving-steps" tabindex="-1"><a class="header-anchor" href="#key-dp-problem-solving-steps"><span>Key DP Problem-Solving Steps</span></a></h2>
+<ol>
+<li><strong>Identify if it’s a DP problem</strong>: Look for optimal substructure and overlapping subproblems</li>
+<li><strong>Define the state</strong>: What parameters uniquely identify a subproblem?</li>
+<li><strong>Define the recurrence relation</strong>: How do subproblems relate?</li>
+<li><strong>Identify base cases</strong>: What are the smallest subproblems?</li>
+<li><strong>Decide on approach</strong>: Top-down (memoization) vs Bottom-up (tabulation)</li>
+<li><strong>Optimize space</strong>: Can you reduce dimensions or use rolling arrays?</li>
+</ol>
+<h2 id="dp-optimization-techniques" tabindex="-1"><a class="header-anchor" href="#dp-optimization-techniques"><span>DP Optimization Techniques</span></a></h2>
+<ul>
+<li><strong>Space Optimization</strong>: Use 1D array instead of 2D when only previous row/column is needed</li>
+<li><strong>Rolling Array</strong>: Keep only last k rows/states instead of all</li>
+<li><strong>State Compression</strong>: Use bitmask to compress states</li>
+<li><strong>Monotonic Queue/Stack</strong>: Optimize window-based DP (sliding window maximum)</li>
+<li><strong>Matrix Exponentiation</strong>: For linear recurrences with large n</li>
+</ul>
+<h2 id="lc-examples" tabindex="-1"><a class="header-anchor" href="#lc-examples"><span>LC Examples</span></a></h2>
+<h3 id="2-1-climbing-stairs-lc-70-1d-linear-dp" tabindex="-1"><a class="header-anchor" href="#2-1-climbing-stairs-lc-70-1d-linear-dp"><span>2-1) Climbing Stairs (LC 70) — 1D Linear DP</span></a></h3>
+<blockquote>
+<p>dp[i] = dp[i-1] + dp[i-2]; classic Fibonacci-style DP.</p>
+</blockquote>
+<pre><code class="language-java">// LC 70 - Climbing Stairs
+// IDEA: dp[i] = number of ways to reach step i
+// time = O(N), space = O(1)
+public int climbStairs(int n) {
+    if (n &lt;= 2) return n;
+    int prev2 = 1, prev1 = 2;
+    for (int i = 3; i &lt;= n; i++) {
+        int curr = prev1 + prev2;
+        prev2 = prev1;
+        prev1 = curr;
+    }
+    return prev1;
+}
+</code></pre>
+<h3 id="2-2-coin-change-lc-322-unbounded-knapsack-dp" tabindex="-1"><a class="header-anchor" href="#2-2-coin-change-lc-322-unbounded-knapsack-dp"><span>2-2) Coin Change (LC 322) — Unbounded Knapsack DP</span></a></h3>
+<blockquote>
+<p>dp[i] = minimum coins needed to make amount i; try all coin denominations.</p>
+</blockquote>
+<pre><code class="language-java">// LC 322 - Coin Change
+// IDEA: dp[i] = min coins for amount i; dp[i] = min(dp[i], dp[i-coin] + 1)
+// time = O(amount * coins), space = O(amount)
+public int coinChange(int[] coins, int amount) {
+    int[] dp = new int[amount + 1];
+    Arrays.fill(dp, amount + 1);
+    dp[0] = 0;
+    for (int i = 1; i &lt;= amount; i++)
+        for (int coin : coins)
+            if (coin &lt;= i) dp[i] = Math.min(dp[i], dp[i - coin] + 1);
+    return dp[amount] &gt; amount ? -1 : dp[amount];
+}
+</code></pre>
+<h3 id="2-3-longest-increasing-subsequence-lc-300-lis-dp-binary-search" tabindex="-1"><a class="header-anchor" href="#2-3-longest-increasing-subsequence-lc-300-lis-dp-binary-search"><span>2-3) Longest Increasing Subsequence (LC 300) — LIS DP / Binary Search</span></a></h3>
+<blockquote>
+<p>dp[i] = length of LIS ending at index i; optimized with patience sorting.</p>
+</blockquote>
+<pre><code class="language-java">// LC 300 - Longest Increasing Subsequence
+// IDEA: Binary search + tails array (patience sorting)
+// time = O(N log N), space = O(N)
+public int lengthOfLIS(int[] nums) {
+    List&lt;Integer&gt; tails = new ArrayList&lt;&gt;();
+    for (int num : nums) {
+        int l = 0, r = tails.size();
+        while (l &lt; r) {
+            int mid = (l + r) / 2;
+            if (tails.get(mid) &lt; num) l = mid + 1;
+            else r = mid;
+        }
+        if (l == tails.size()) tails.add(num);
+        else tails.set(l, num);
+    }
+    return tails.size();
+}
+</code></pre>
+<h3 id="2-4-partition-equal-subset-sum-lc-416-0-1-knapsack-dp" tabindex="-1"><a class="header-anchor" href="#2-4-partition-equal-subset-sum-lc-416-0-1-knapsack-dp"><span>2-4) Partition Equal Subset Sum (LC 416) — 0/1 Knapsack DP</span></a></h3>
+<blockquote>
+<p>dp[j] = true if subset summing to j exists; iterate items and update dp right to left.</p>
+</blockquote>
+<pre><code class="language-java">// LC 416 - Partition Equal Subset Sum
+// IDEA: 0/1 Knapsack — dp[j] = can we reach sum j using subset of nums
+// time = O(N * sum), space = O(sum)
+public boolean canPartition(int[] nums) {
+    int sum = 0;
+    for (int n : nums) sum += n;
+    if ((sum &amp; 1) == 1) return false;
+    int target = sum / 2;
+    boolean[] dp = new boolean[target + 1];
+    dp[0] = true;
+    for (int num : nums)
+        for (int j = target; j &gt;= num; j--)
+            dp[j] = dp[j] || dp[j - num];
+    return dp[target];
+}
+</code></pre>
+<h3 id="2-5-unique-paths-lc-62-2d-grid-dp" tabindex="-1"><a class="header-anchor" href="#2-5-unique-paths-lc-62-2d-grid-dp"><span>2-5) Unique Paths (LC 62) — 2D Grid DP</span></a></h3>
+<blockquote>
+<p>dp[i][j] = paths to reach (i,j) = dp[i-1][j] + dp[i][j-1]; first row/col = 1.</p>
+</blockquote>
+<pre><code class="language-java">// LC 62 - Unique Paths
+// IDEA: 2D DP — dp[i][j] = dp[i-1][j] + dp[i][j-1]
+// time = O(M*N), space = O(N) with row compression
+public int uniquePaths(int m, int n) {
+    int[] dp = new int[n];
+    Arrays.fill(dp, 1);
+    for (int i = 1; i &lt; m; i++)
+        for (int j = 1; j &lt; n; j++)
+            dp[j] += dp[j-1];
+    return dp[n-1];
+}
+</code></pre>
+<h3 id="2-6-decode-ways-lc-91-1d-dp" tabindex="-1"><a class="header-anchor" href="#2-6-decode-ways-lc-91-1d-dp"><span>2-6) Decode Ways (LC 91) — 1D DP</span></a></h3>
+<blockquote>
+<p>dp[i] = number of ways to decode s[0…i-1]; consider 1-digit and 2-digit decodings.</p>
+</blockquote>
+<pre><code class="language-java">// LC 91 - Decode Ways
+// IDEA: DP — dp[i] = ways to decode s[0..i-1]; check 1-char and 2-char decodings
+// time = O(N), space = O(1)
+public int numDecodings(String s) {
+    int n = s.length(), prev2 = 1, prev1 = s.charAt(0) == '0' ? 0 : 1;
+    for (int i = 2; i &lt;= n; i++) {
+        int curr = 0;
+        int one = s.charAt(i-1) - '0';
+        int two = Integer.parseInt(s.substring(i-2, i));
+        if (one != 0) curr += prev1;
+        if (two &gt;= 10 &amp;&amp; two &lt;= 26) curr += prev2;
+        prev2 = prev1; prev1 = curr;
+    }
+    return n == 1 ? prev1 : prev1;
+}
+</code></pre>
+<h3 id="2-7-longest-common-subsequence-lc-1143-2d-string-dp" tabindex="-1"><a class="header-anchor" href="#2-7-longest-common-subsequence-lc-1143-2d-string-dp"><span>2-7) Longest Common Subsequence (LC 1143) — 2D String DP</span></a></h3>
+<blockquote>
+<p>dp[i][j] = LCS of s1[0…i-1] and s2[0…j-1]; diagonal + 1 on match, else max of neighbors.</p>
+</blockquote>
+<pre><code class="language-java">// LC 1143 - Longest Common Subsequence
+// IDEA: 2D DP — dp[i][j] = LCS length for s1[0..i-1] and s2[0..j-1]
+// time = O(M*N), space = O(M*N)
+public int longestCommonSubsequence(String text1, String text2) {
+    int m = text1.length(), n = text2.length();
+    int[][] dp = new int[m+1][n+1];
+    for (int i = 1; i &lt;= m; i++)
+        for (int j = 1; j &lt;= n; j++)
+            dp[i][j] = text1.charAt(i-1) == text2.charAt(j-1)
+                ? dp[i-1][j-1] + 1
+                : Math.max(dp[i-1][j], dp[i][j-1]);
+    return dp[m][n];
+}
+</code></pre>
+<h3 id="2-8-burst-balloons-lc-312-interval-dp" tabindex="-1"><a class="header-anchor" href="#2-8-burst-balloons-lc-312-interval-dp"><span>2-8) Burst Balloons (LC 312) — Interval DP</span></a></h3>
+<blockquote>
+<p>dp[i][j] = max coins from bursting all balloons between i and j; try each as last to burst.</p>
+</blockquote>
+<pre><code class="language-java">// LC 312 - Burst Balloons
+// IDEA: Interval DP — dp[i][j] = max coins when k is the LAST balloon burst in (i,j)
+// time = O(N^3), space = O(N^2)
+public int maxCoins(int[] nums) {
+    int n = nums.length;
+    int[] arr = new int[n+2];
+    arr[0] = arr[n+1] = 1;
+    for (int i = 0; i &lt; n; i++) arr[i+1] = nums[i];
+    int[][] dp = new int[n+2][n+2];
+    for (int len = 1; len &lt;= n; len++)
+        for (int l = 1; l &lt;= n-len+1; l++) {
+            int r = l + len - 1;
+            for (int k = l; k &lt;= r; k++)
+                dp[l][r] = Math.max(dp[l][r], dp[l][k-1] + arr[l-1]*arr[k]*arr[r+1] + dp[k+1][r]);
+        }
+    return dp[1][n];
+}
+</code></pre>
+<h3 id="2-9-best-time-to-buy-and-sell-stock-with-cooldown-lc-309-state-machine-dp" tabindex="-1"><a class="header-anchor" href="#2-9-best-time-to-buy-and-sell-stock-with-cooldown-lc-309-state-machine-dp"><span>2-9) Best Time to Buy and Sell Stock with Cooldown (LC 309) — State Machine DP</span></a></h3>
+<blockquote>
+<p>Three states: hold, sold, rest; transitions enforce cooldown after selling.</p>
+</blockquote>
+<pre><code class="language-java">// LC 309 - Best Time to Buy and Sell Stock with Cooldown
+// IDEA: State machine DP — hold, sold, rest states
+// time = O(N), space = O(1)
+public int maxProfit(int[] prices) {
+    int hold = Integer.MIN_VALUE, sold = 0, rest = 0;
+    for (int price : prices) {
+        int prevSold = sold;
+        hold = Math.max(hold, rest - price);   // buy from rest state
+        sold = hold + price;                    // sell
+        rest = Math.max(rest, prevSold);        // cooldown or stay rest
+    }
+    return Math.max(sold, rest);
+}
+</code></pre>
+<h3 id="2-10-minimum-path-sum-lc-64-grid-dp" tabindex="-1"><a class="header-anchor" href="#2-10-minimum-path-sum-lc-64-grid-dp"><span>2-10) Minimum Path Sum (LC 64) — Grid DP</span></a></h3>
+<blockquote>
+<p>dp[i][j] = grid[i][j] + min(dp[i-1][j], dp[i][j-1]); initialize borders first.</p>
+</blockquote>
+<pre><code class="language-java">// LC 64 - Minimum Path Sum
+// IDEA: DP — dp[i][j] = min cost to reach (i,j); modify grid in-place
+// time = O(M*N), space = O(1)
+public int minPathSum(int[][] grid) {
+    int m = grid.length, n = grid[0].length;
+    for (int i = 1; i &lt; m; i++) grid[i][0] += grid[i-1][0];
+    for (int j = 1; j &lt; n; j++) grid[0][j] += grid[0][j-1];
+    for (int i = 1; i &lt; m; i++)
+        for (int j = 1; j &lt; n; j++)
+            grid[i][j] += Math.min(grid[i-1][j], grid[i][j-1]);
+    return grid[m-1][n-1];
+}
+</code></pre>
+<h3 id="2-11-target-sum-lc-494-dp-dfs-with-memo" tabindex="-1"><a class="header-anchor" href="#2-11-target-sum-lc-494-dp-dfs-with-memo"><span>2-11) Target Sum (LC 494) — DP / DFS with Memo</span></a></h3>
+<blockquote>
+<p>Assign + or − to each number; dp[j] = number of ways to reach sum j.</p>
+</blockquote>
+<pre><code class="language-java">// LC 494 - Target Sum
+// IDEA: DP — equivalent to subset sum with positive/negative assignment
+// time = O(N * sum), space = O(sum)
+public int findTargetSumWays(int[] nums, int target) {
+    int sum = 0;
+    for (int n : nums) sum += n;
+    if (Math.abs(target) &gt; sum || (sum + target) % 2 != 0) return 0;
+    int pos = (sum + target) / 2;
+    int[] dp = new int[pos + 1];
+    dp[0] = 1;
+    for (int num : nums)
+        for (int j = pos; j &gt;= num; j--)
+            dp[j] += dp[j - num];
+    return dp[pos];
+}
+</code></pre>
+<ul>
+<li><strong>Convex Hull Trick</strong>: For optimizing certain recurrence relations</li>
+</ul>
+
+      </div>
+      <div class="cheatsheet-footer">
+        <a href="../cheatsheets.html" class="back-link">← Back to Cheat Sheets</a>
+        <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/dp_pattern.md" class="github-edit" target="_blank">
+          Edit on GitHub →
+        </a>
+      </div>
+    <nav class="prev-next"><a href="dp.html" class="prev-link">← Dp</a><a href="graph.html" class="next-link">Graph →</a></nav>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>CS_basics - Computer Science Fundamentals & Interview Preparation</p>
+      <p>
+        <a href="https://github.com/yennanliu/CS_basics">GitHub</a> •
+        <a href="https://github.com/yennanliu/CS_basics/tree/master/doc">Documentation</a> •
+        <a href="https://github.com/yennanliu/CS_basics/issues">Report Issues</a>
+      </p>
+    </div>
+  </footer>
+</body>
+</html>

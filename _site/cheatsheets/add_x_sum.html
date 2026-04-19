@@ -1,0 +1,491 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Add X Sum - CS_basics</title>
+  <meta name="description" content="Computer Science fundamentals: algorithms, data structures, system design, and LeetCode solutions">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>CS</text></svg>">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="../vendor/fonts.css">
+  <link rel="stylesheet" href="../vendor/highlight/github-dark.min.css">
+  <script src="../vendor/highlight/highlight.min.js"></script>
+  <script>
+  // Apply theme before render to prevent flash
+  (function() {
+    var saved = localStorage.getItem('theme');
+    if (saved === 'dark' || (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      document.documentElement.setAttribute('data-theme', 'dark');
+    }
+  })();
+  </script>
+  <script>document.addEventListener('DOMContentLoaded', function() {
+    hljs.highlightAll();
+    document.querySelectorAll('pre code').forEach(function(codeEl) {
+      var pre = codeEl.parentElement;
+      var lang = '';
+      var cls = codeEl.className || '';
+      var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
+      if (m) lang = m[1];
+      var wrapper = document.createElement('div');
+      wrapper.className = 'code-block-wrapper';
+      pre.parentNode.insertBefore(wrapper, pre);
+      var header = document.createElement('div');
+      header.className = 'code-block-header';
+      if (lang) {
+        var label = document.createElement('span');
+        label.className = 'code-lang-label';
+        label.textContent = lang;
+        header.appendChild(label);
+      } else {
+        header.appendChild(document.createElement('span'));
+      }
+      var btn = document.createElement('button');
+      btn.className = 'copy-btn';
+      btn.textContent = 'Copy';
+      btn.addEventListener('click', function() {
+        navigator.clipboard.writeText(codeEl.textContent).then(function() {
+          btn.textContent = 'Copied!';
+          btn.classList.add('copied');
+          setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+        });
+      });
+      header.appendChild(btn);
+      wrapper.appendChild(header);
+      wrapper.appendChild(pre);
+    });
+    document.querySelectorAll('table').forEach(function(table) {
+      if (!table.parentElement.classList.contains('table-wrap')) {
+        var wrapper = document.createElement('div');
+        wrapper.className = 'table-wrap';
+        table.parentNode.insertBefore(wrapper, table);
+        wrapper.appendChild(table);
+      }
+    });
+    // Reading progress bar
+    var progressBar = document.getElementById('reading-progress');
+    if (progressBar) {
+      window.addEventListener('scroll', function() {
+        var winScroll = document.documentElement.scrollTop;
+        var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        progressBar.style.width = height > 0 ? (winScroll / height * 100) + '%' : '0%';
+      });
+    }
+    // Dark mode toggle
+    var toggle = document.getElementById('theme-toggle');
+    if (toggle) {
+      var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      toggle.textContent = isDark ? '☀️' : '🌙';
+      toggle.addEventListener('click', function() {
+        var dark = document.documentElement.getAttribute('data-theme') === 'dark';
+        if (dark) {
+          document.documentElement.removeAttribute('data-theme');
+          localStorage.setItem('theme', 'light');
+          toggle.textContent = '🌙';
+        } else {
+          document.documentElement.setAttribute('data-theme', 'dark');
+          localStorage.setItem('theme', 'dark');
+          toggle.textContent = '☀️';
+        }
+      });
+    }
+  });</script>
+</head>
+<body>
+  <div class="progress-container"><div class="progress-bar" id="reading-progress"></div></div>
+  <nav class="navbar">
+    <div class="container">
+      <div class="nav-brand">
+        <span class="nav-icon">💻</span>
+        <span class="nav-title">CS_basics</span>
+      </div>
+      <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+      <div class="nav-links">
+        <a href="../index.html" class="">Home</a>
+        <a href="../cheatsheets.html" class="active">Cheat Sheets</a>
+        <a href="../patterns.html" class="">Pattern Recognition</a>
+        <a href="../faqs.html" class="">FAQs</a>
+        <a href="../resources.html" class="">Resources</a>
+        <a href="../lc-explorer.html" class="">LC Explorer</a>
+        <a href="../lc-random-picker.html" class="">🎲 Random Picker</a>
+        <a href="../algo_demo/index.html" class="">Visualizer</a>
+        <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">&#127769;</button>
+        <a href="https://github.com/yennanliu/CS_basics" target="_blank" class="github-link" aria-label="GitHub">
+          <svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor">
+            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container">
+    <div class="content">
+      
+      <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">Add X Sum</span></nav>
+      <div class="cheatsheet-header">
+        <h1>Add X Sum</h1>
+        <span class="last-updated">Last updated: May 29, 2025</span>
+      </div>
+      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#0-concept">0) Concept</a></li><li class="toc-sub"><a href="#0-1-types">0-1) Types</a></li><li class="toc-sub"><a href="#0-2-pattern">0-2) Pattern</a></li><li><a href="#1-general-form">1) General form</a></li><li class="toc-sub"><a href="#1-1-basic-op">1-1) Basic OP</a></li><li><a href="#2-lc-example">2) LC Example</a></li><li class="toc-sub"><a href="#2-1-add-binary">2-1) Add Binary</a></li><li class="toc-sub"><a href="#2-2-add-strings">2-2) Add Strings</a></li><li class="toc-sub"><a href="#2-3-sum-of-two-integers">2-3) Sum of Two Integers</a></li><li class="toc-sub"><a href="#2-4-add-to-array-form-of-integer">2-4) Add to Array Form of Integer</a></li><li class="toc-sub"><a href="#2-5-plus-one">2-5) Plus One</a></li><li class="toc-sub"><a href="#2-6-add-two-numbers">2-6) Add Two Numbers</a></li><li class="toc-sub"><a href="#2-7-add-two-numbers-ii">2-7) Add Two Numbers II</a></li></ul></div>
+      <div class="cheatsheet-content">
+        <h1 id="add-xxx-to-sum" tabindex="-1"><a class="header-anchor" href="#add-xxx-to-sum"><span>Add <code>xxx</code> to Sum</span></a></h1>
+<ul>
+<li><a href="https://leetcode.com/problems/add-strings/solution/">https://leetcode.com/problems/add-strings/solution/</a></li>
+</ul>
+<p><code>Facebook</code> interviewers like this question and propose it in four main variations. The choice of algorithm should be based on the input format:</p>
+<ol>
+<li>
+<p>Strings (the current problem). Use schoolbook digit-by-digit addition. Note, that to fit into constant space is not possible for languages with immutable strings, for example, for Java and Python. Here are two examples:</p>
+<ul>
+<li>LC 067 : Add Binary: sum two binary strings.</li>
+<li>LC 415 : Add Strings: sum two non-negative numbers in a string representation without converting them to integers directly.</li>
+</ul>
+</li>
+<li>
+<p>Integers. Usually, the interviewer would ask you to implement a sum without using + and - operators. Use bit manipulation approach. Here is an example:</p>
+<ul>
+<li>LC 371 : Sum of Two Integers: Sum two integers without using + and - operators.</li>
+</ul>
+</li>
+<li>
+<p>Arrays. The same textbook addition. Here is an example:</p>
+<ul>
+<li>LC 989 : Add to Array Form of Integer.</li>
+</ul>
+</li>
+<li>
+<p>Linked Lists. Sentinel Head + Textbook Addition. Here are some examples:</p>
+<ul>
+<li>LC 66 : Plus One.</li>
+<li>LC 002 : Add Two Numbers.</li>
+<li>LC 445 : Add Two Numbers II.</li>
+</ul>
+</li>
+</ol>
+<h2 id="0-concept" tabindex="-1"><a class="header-anchor" href="#0-concept"><span>0) Concept</span></a></h2>
+<h3 id="0-1-types" tabindex="-1"><a class="header-anchor" href="#0-1-types"><span>0-1) Types</span></a></h3>
+<h3 id="0-2-pattern" tabindex="-1"><a class="header-anchor" href="#0-2-pattern"><span>0-2) Pattern</span></a></h3>
+<h2 id="1-general-form" tabindex="-1"><a class="header-anchor" href="#1-general-form"><span>1) General form</span></a></h2>
+<h3 id="1-1-basic-op" tabindex="-1"><a class="header-anchor" href="#1-1-basic-op"><span>1-1) Basic OP</span></a></h3>
+<h2 id="2-lc-example" tabindex="-1"><a class="header-anchor" href="#2-lc-example"><span>2) LC Example</span></a></h2>
+<h3 id="2-1-add-binary" tabindex="-1"><a class="header-anchor" href="#2-1-add-binary"><span>2-1) Add Binary</span></a></h3>
+<pre><code class="language-python"># LC 067 Add Binary: sum two binary strings.
+# V0
+# IDEA : STRING + BINARY
+class Solution(object):
+    def addBinary(self, a, b):
+
+        _len = max(len(a), len(b))
+        if len(a) &lt; _len:
+            a = (_len - len(a)) * '0' + a
+        if len(b) &lt; _len:
+            b = (_len - len(b)) * '0' + b
+
+        plus = 0
+        result = &quot;&quot;
+
+        # INVERSE LOOPING THE a, b
+        for i in range(len(a))[::-1]:
+            tmp = int(a[i]) + int(b[i]) + plus
+            if tmp &gt; 1:
+                tmp -= 2
+                plus = 1
+            else:
+                plus = 0
+
+            result += str(tmp)
+
+        if plus == 1:
+            return '1' + result[::-1]  ### NOTE WE NEED TO REVERSE IT!
+        else: 
+            return result[::-1] ### NOTE WE NEED TO REVERSE IT!
+
+# V0
+class Solution(object):
+    def addBinary(self, a, b):
+        &quot;&quot;&quot;
+        :type a: str
+        :type b: str
+        :rtype: str
+        &quot;&quot;&quot;
+        res = ''
+        i, j, plus = len(a)-1, len(b)-1, 0
+        while i&gt;=0 or j&gt;=0 or plus==1:
+            plus += int(a[i]) if i&gt;= 0 else 0
+            plus += int(b[j]) if j&gt;= 0 else 0
+            res = str(plus % 2) + res
+            i, j, plus = i-1, j-1, plus//2  # since max of &quot;plus&quot; is 3 in bimary case, so &quot;plus//2&quot; works here
+        return res
+</code></pre>
+<h3 id="2-2-add-strings" tabindex="-1"><a class="header-anchor" href="#2-2-add-strings"><span>2-2) Add Strings</span></a></h3>
+<pre><code class="language-java">// java
+// LC 415
+// V0
+// IDEA: string op (fixed by gpt)
+public String addStrings(String num1, String num2) {
+    if (num1 == null || num2 == null) {
+        if (num1 == null) {
+            return num2;
+        }
+        return num1;
+    }
+    if (num1.equals(&quot;0&quot;) &amp;&amp; num2.equals(&quot;0&quot;)) {
+        return &quot;0&quot;;
+    }
+
+    StringBuilder sb = new StringBuilder();
+
+    int plus = 0;
+    int idx_1 = num1.length() - 1;
+    int idx_2 = num2.length() - 1;
+
+    /** NOTE !!!
+     *
+     *  1. while loop
+     *  2. idx_1 &gt;= 0 or idx_2 &gt;= 0
+     */
+    while (idx_1 &gt;= 0 || idx_2 &gt;= 0) {
+
+        int v1 = 0;
+        int v2 = 0;
+
+        int new_val = 0;
+
+        /** NOTE !!!
+         *
+         *  if idx_1 &gt;= 0, then get val from it
+         */
+        if (idx_1 &gt;= 0) {
+            v1 = Integer.parseInt(String.valueOf(num1.charAt(idx_1)));
+            idx_1 -= 1;
+        }
+
+        /** NOTE !!!
+         *
+         *  if idx_1 &gt;= 0, then get val from it
+         */
+        if (idx_2 &gt;= 0) {
+            v2 = Integer.parseInt(String.valueOf(num2.charAt(idx_2)));
+            idx_2 -= 1;
+        }
+
+        new_val = (new_val + v1 + v2 + plus);
+
+        /** NOTE !!!
+         *
+         *  if new_vla &gt; 9,
+         *  we should `subtract 10` (instead of 9)
+         */
+        if (new_val &gt; 9) {
+            plus = 1;
+            new_val -= 10;
+        } else {
+            plus = 0;
+        }
+
+        sb.append(new_val);
+    }
+
+    /** NOTE !!!
+     *
+     *  need to add the `remaining plus` to res
+     *  if there is it
+     */
+    if (plus &gt; 0) {
+        sb.append(plus);
+    }
+
+    // reverse
+    return sb.reverse().toString();
+}
+</code></pre>
+<pre><code class="language-python"># LC 415. Add Strings
+# V0
+# IDEA : string + math
+class Solution(object):
+    def addStrings(self, num1, num2):
+        result = []
+        # note : we init carry as 0
+        carry = 0
+        num1 = list(num1)
+        num2 = list(num2)
+        # while there is still non-add digit in num1, and num2; or there is non-zero carry 
+        while num1 or num2 or carry:
+            digit = carry
+            if num1:
+                tmp1 = num1.pop(-1)
+                digit += int(tmp1)
+            if num2:
+                tmp2 = num2.pop(-1)
+                digit += int(tmp2)
+            &quot;&quot;&quot;
+            if digit &gt; 9 -&gt; we need to &quot;carry&quot; 1 to next digit -&gt; carry = 1
+            else -&gt; carry = 0
+            &quot;&quot;&quot;
+            if digit &gt; 9:
+                carry = 1
+            else:
+                carry = 0
+            # NOTE !!! we get &quot;remain&quot; by 10 via below code
+            result.append(str(digit % 10))
+        return ''.join(result[::-1]) 
+</code></pre>
+<h3 id="2-3-sum-of-two-integers" tabindex="-1"><a class="header-anchor" href="#2-3-sum-of-two-integers"><span>2-3) Sum of Two Integers</span></a></h3>
+<pre><code class="language-python"># LC 371 : Sum of Two Integers
+# V0
+# https://leetcode.com/problems/sum-of-two-integers/discuss/1214257/Python-1-line%3A-91-faster
+class Souluton:
+    def getSum(self, a, b):
+        tmp = math.exp(a) * math.exp(b)
+        r = int(math.log(tmp))
+        return r
+</code></pre>
+<h3 id="2-4-add-to-array-form-of-integer" tabindex="-1"><a class="header-anchor" href="#2-4-add-to-array-form-of-integer"><span>2-4) Add to Array Form of Integer</span></a></h3>
+<pre><code class="language-python"># LC 989 Add to Array Form of Integer
+# V0
+# IDEA : array op
+class Solution:
+    def addToArrayForm(self, num, k):
+        s = &quot;&quot;
+        for i in num:
+            s += str(i)       
+        answer = int(s) + k
+        return  list(&quot;&quot;.join(str(answer)))
+</code></pre>
+<h3 id="2-5-plus-one" tabindex="-1"><a class="header-anchor" href="#2-5-plus-one"><span>2-5) Plus One</span></a></h3>
+<pre><code class="language-python"># LC 66 Plus One
+# V0
+# NOTE : Notice the index of inverse loop  : range(len(a)-1, -1, -1)
+# a = ['a', 'b', 'c']
+# for i in range(len(a)-1, -1, -1):
+#     print (a[i])
+# c
+# b
+# a
+class Solution(object):
+    def plusOne(self, digits):
+        &quot;&quot;&quot;
+        :type digits: List[int]
+        :rtype: List[int]
+        &quot;&quot;&quot;
+        plus = 1
+        for i in range(len(digits)-1, -1, -1):
+            if digits[i] + plus &gt; 9:
+                digits[i] = 0
+                plus = 1
+            else:
+                digits[i] = digits[i] + plus
+                plus = 0
+        if plus == 1:
+            digits.insert(0, 1)
+        return digits
+</code></pre>
+<h3 id="2-6-add-two-numbers" tabindex="-1"><a class="header-anchor" href="#2-6-add-two-numbers"><span>2-6) Add Two Numbers</span></a></h3>
+<pre><code class="language-python"># LC 002 Add Two Numbers
+# V0
+class Solution(object):
+    def addTwoNumbers(self, l1, l2):
+        &quot;&quot;&quot;
+        NOTE :
+         1. we init linkedlist via ListNode()
+         2. we NEED make extra head refer same linkedlist, since we need to return beginning of linkedlust of this func, while res will meet &quot;tail&quot; at the end of while loop
+        &quot;&quot;&quot;
+        head = res = ListNode()
+        plus = 0
+        tmp = 0
+        while l1 or l2:
+            tmp += plus
+            plus = 0
+            if l1:
+                tmp += l1.val
+                l1 = l1.next
+            if l2:
+                tmp += l2.val
+                l2 = l2.next
+            if tmp &gt; 9:
+                tmp -= 10
+                plus = 1
+
+            res.next = ListNode(tmp)
+            res = res.next
+            tmp = 0
+        ### NOTE : need to deal with case : l1, l2 are completed, but still &quot;remaining&quot; plus
+        if plus != 0:
+            res.next = ListNode(plus)
+            res = res.next
+        #print (&quot;res = &quot; + str(res))
+        #print (&quot;head = &quot; + str(head))
+        return head.next
+</code></pre>
+<h3 id="2-7-add-two-numbers-ii" tabindex="-1"><a class="header-anchor" href="#2-7-add-two-numbers-ii"><span>2-7) Add Two Numbers II</span></a></h3>
+<pre><code class="language-python"># LC 445 Add Two Numbers II
+# V0
+# IDEA : string + linked list
+# DEMO
+# input :
+# [7,2,4,3]
+# [5,6,4]
+# intermedia output : 
+# l1_num = 7243
+# l2_num = 564
+class Solution:
+    def addTwoNumbers(self, l1, l2):
+        if not l1 and not l2:
+            return None
+
+        l1_num = 0
+        while l1:
+            l1_num = l1_num * 10 + l1.val
+            l1 = l1.next
+
+        l2_num = 0
+        while l2:
+            l2_num = l2_num * 10 + l2.val
+            l2 = l2.next
+
+        print (&quot;l1_num = &quot; + str(l1_num))
+        print (&quot;l2_num = &quot; + str(l2_num))
+
+
+        ### NOTE : trick here :
+        #    -&gt; get int format of 2 linked list first (l1, l2)
+        #    -&gt; then sum them (l1_num + l2_num)
+        lsum = l1_num + l2_num
+
+        head = ListNode(None)
+        cur = head
+        ### NOTE : go thrpigh the linked list int sum, append each digit to ListNode and return it
+        for istr in str(lsum):
+            cur.next = ListNode(int(istr))
+            cur = cur.next
+        # NOTE : need to return head (but not cur, since cur already meet the end of ListNode)
+        return head.next
+</code></pre>
+
+      </div>
+      <div class="cheatsheet-footer">
+        <a href="../cheatsheets.html" class="back-link">← Back to Cheat Sheets</a>
+        <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/add_x_sum.md" class="github-edit" target="_blank">
+          Edit on GitHub →
+        </a>
+      </div>
+    <nav class="prev-next"><a href="Floyd-Warshall.html" class="prev-link">← Floyd-Warshall</a><a href="advanced_divide_and_conquer.html" class="next-link">Advanced Divide And Conquer →</a></nav>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>CS_basics - Computer Science Fundamentals & Interview Preparation</p>
+      <p>
+        <a href="https://github.com/yennanliu/CS_basics">GitHub</a> •
+        <a href="https://github.com/yennanliu/CS_basics/tree/master/doc">Documentation</a> •
+        <a href="https://github.com/yennanliu/CS_basics/issues">Report Issues</a>
+      </p>
+    </div>
+  </footer>
+</body>
+</html>

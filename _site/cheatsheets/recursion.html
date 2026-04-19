@@ -1,0 +1,790 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Recursion - CS_basics</title>
+  <meta name="description" content="Computer Science fundamentals: algorithms, data structures, system design, and LeetCode solutions">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>CS</text></svg>">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="../vendor/fonts.css">
+  <link rel="stylesheet" href="../vendor/highlight/github-dark.min.css">
+  <script src="../vendor/highlight/highlight.min.js"></script>
+  <script>
+  // Apply theme before render to prevent flash
+  (function() {
+    var saved = localStorage.getItem('theme');
+    if (saved === 'dark' || (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      document.documentElement.setAttribute('data-theme', 'dark');
+    }
+  })();
+  </script>
+  <script>document.addEventListener('DOMContentLoaded', function() {
+    hljs.highlightAll();
+    document.querySelectorAll('pre code').forEach(function(codeEl) {
+      var pre = codeEl.parentElement;
+      var lang = '';
+      var cls = codeEl.className || '';
+      var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
+      if (m) lang = m[1];
+      var wrapper = document.createElement('div');
+      wrapper.className = 'code-block-wrapper';
+      pre.parentNode.insertBefore(wrapper, pre);
+      var header = document.createElement('div');
+      header.className = 'code-block-header';
+      if (lang) {
+        var label = document.createElement('span');
+        label.className = 'code-lang-label';
+        label.textContent = lang;
+        header.appendChild(label);
+      } else {
+        header.appendChild(document.createElement('span'));
+      }
+      var btn = document.createElement('button');
+      btn.className = 'copy-btn';
+      btn.textContent = 'Copy';
+      btn.addEventListener('click', function() {
+        navigator.clipboard.writeText(codeEl.textContent).then(function() {
+          btn.textContent = 'Copied!';
+          btn.classList.add('copied');
+          setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+        });
+      });
+      header.appendChild(btn);
+      wrapper.appendChild(header);
+      wrapper.appendChild(pre);
+    });
+    document.querySelectorAll('table').forEach(function(table) {
+      if (!table.parentElement.classList.contains('table-wrap')) {
+        var wrapper = document.createElement('div');
+        wrapper.className = 'table-wrap';
+        table.parentNode.insertBefore(wrapper, table);
+        wrapper.appendChild(table);
+      }
+    });
+    // Reading progress bar
+    var progressBar = document.getElementById('reading-progress');
+    if (progressBar) {
+      window.addEventListener('scroll', function() {
+        var winScroll = document.documentElement.scrollTop;
+        var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        progressBar.style.width = height > 0 ? (winScroll / height * 100) + '%' : '0%';
+      });
+    }
+    // Dark mode toggle
+    var toggle = document.getElementById('theme-toggle');
+    if (toggle) {
+      var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      toggle.textContent = isDark ? '☀️' : '🌙';
+      toggle.addEventListener('click', function() {
+        var dark = document.documentElement.getAttribute('data-theme') === 'dark';
+        if (dark) {
+          document.documentElement.removeAttribute('data-theme');
+          localStorage.setItem('theme', 'light');
+          toggle.textContent = '🌙';
+        } else {
+          document.documentElement.setAttribute('data-theme', 'dark');
+          localStorage.setItem('theme', 'dark');
+          toggle.textContent = '☀️';
+        }
+      });
+    }
+  });</script>
+</head>
+<body>
+  <div class="progress-container"><div class="progress-bar" id="reading-progress"></div></div>
+  <nav class="navbar">
+    <div class="container">
+      <div class="nav-brand">
+        <span class="nav-icon">💻</span>
+        <span class="nav-title">CS_basics</span>
+      </div>
+      <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+      <div class="nav-links">
+        <a href="../index.html" class="">Home</a>
+        <a href="../cheatsheets.html" class="active">Cheat Sheets</a>
+        <a href="../patterns.html" class="">Pattern Recognition</a>
+        <a href="../faqs.html" class="">FAQs</a>
+        <a href="../resources.html" class="">Resources</a>
+        <a href="../lc-explorer.html" class="">LC Explorer</a>
+        <a href="../lc-random-picker.html" class="">🎲 Random Picker</a>
+        <a href="../algo_demo/index.html" class="">Visualizer</a>
+        <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">&#127769;</button>
+        <a href="https://github.com/yennanliu/CS_basics" target="_blank" class="github-link" aria-label="GitHub">
+          <svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor">
+            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container">
+    <div class="content">
+      
+      <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">Recursion</span></nav>
+      <div class="cheatsheet-header">
+        <h1>Recursion</h1>
+        <span class="last-updated">Last updated: Apr 15, 2026</span>
+      </div>
+      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#0-quick-reference">0) Quick Reference</a></li><li class="toc-sub"><a href="#core-principle">Core Principle</a></li><li class="toc-sub"><a href="#quick-tips">Quick Tips</a></li><li><a href="#1-concepts">1) Concepts</a></li><li class="toc-sub"><a href="#1-1-core-ideas">1-1) Core Ideas</a></li><li class="toc-sub"><a href="#1-2-complexity-analysis">1-2) Complexity Analysis</a></li><li class="toc-sub"><a href="#1-3-related-concepts">1-3) Related Concepts</a></li><li><a href="#2-patterns">2) Patterns</a></li><li class="toc-sub"><a href="#2-1-basic-operation">2-1) Basic Operation</a></li><li class="toc-sub"><a href="#2-2-top-down-recursion">2-2) Top-Down Recursion</a></li><li class="toc-sub"><a href="#2-3-bottom-up-recursion">2-3) Bottom-Up Recursion</a></li><li class="toc-sub"><a href="#2-4-pass-state-to-next-recursion">2-4) Pass State to Next Recursion</a></li><li class="toc-sub"><a href="#2-5-any-true-status-in-recursion">2-5) Any-True Status in Recursion</a></li><li class="toc-sub"><a href="#2-6-cartesian-product-construction">2-6) Cartesian Product Construction</a></li><li><a href="#3-advanced-techniques">3) Advanced Techniques</a></li><li class="toc-sub"><a href="#3-1-memoization">3-1) Memoization</a></li><li class="toc-sub"><a href="#3-2-divide-conquer">3-2) Divide &amp; Conquer</a></li><li class="toc-sub"><a href="#3-3-recursion-to-iteration-unfold-recursion">3-3) Recursion to Iteration (Unfold Recursion)</a></li><li><a href="#4-complete-leetcode-examples">4) Complete LeetCode Examples</a></li><li class="toc-sub"><a href="#4-1-symmetric-tree-lc-101">4-1) Symmetric Tree (LC 101)</a></li><li class="toc-sub"><a href="#4-2-one-edit-distance-lc-161">4-2) One Edit Distance (LC 161)</a></li><li class="toc-sub"><a href="#4-3-merge-two-sorted-lists-lc-21">4-3) Merge Two Sorted Lists (LC 21)</a></li><li class="toc-sub"><a href="#4-4-subtree-of-another-tree-lc-572">4-4) Subtree of Another Tree (LC 572)</a></li></ul></div>
+      <div class="cheatsheet-content">
+        <h1 id="recursion" tabindex="-1"><a class="header-anchor" href="#recursion"><span>Recursion</span></a></h1>
+<h2 id="0-quick-reference" tabindex="-1"><a class="header-anchor" href="#0-quick-reference"><span>0) Quick Reference</span></a></h2>
+<p><strong>When should I use recursion?</strong></p>
+<ul>
+<li>When a problem has <strong>overlapping subproblems</strong> that reduce the scope</li>
+<li>When you can clearly define a <strong>base case</strong> and <strong>recursive case</strong></li>
+<li>When the problem naturally decomposes into smaller instances of itself</li>
+<li>For <strong>tree/graph traversal</strong> or <strong>backtracking</strong> problems</li>
+</ul>
+<p><strong>Quick Decision Guide</strong></p>
+<table>
+<thead>
+<tr>
+<th>Use Case</th>
+<th>Pattern</th>
+<th>Key Idea</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Need info from parent nodes</td>
+<td><strong>Top-Down</strong></td>
+<td>Pass context down while traversing</td>
+</tr>
+<tr>
+<td>Need results from children</td>
+<td><strong>Bottom-Up</strong></td>
+<td>Solve children first, combine results</td>
+</tr>
+<tr>
+<td>Need to split &amp; merge results</td>
+<td><strong>Divide &amp; Conquer</strong></td>
+<td>Partition problem, solve parts, merge</td>
+</tr>
+<tr>
+<td>Need to explore all possibilities</td>
+<td><strong>Backtracking</strong></td>
+<td>DFS with decision making</td>
+</tr>
+<tr>
+<td>Multiple recursive calls, same subproblems</td>
+<td><strong>Memoization</strong></td>
+<td>Cache results to avoid redundant work</td>
+</tr>
+</tbody>
+</table>
+<h3 id="core-principle" tabindex="-1"><a class="header-anchor" href="#core-principle"><span>Core Principle</span></a></h3>
+<p>For a problem F(X) where X is the input:</p>
+<pre><code>1. Break down into smaller scopes: x₀, x₁, ..., xₙ ∈ X
+2. Recursively solve: F(x₀), F(x₁), ..., F(xₙ)
+3. Combine results to solve F(X)
+</code></pre>
+<h3 id="quick-tips" tabindex="-1"><a class="header-anchor" href="#quick-tips"><span>Quick Tips</span></a></h3>
+<ul>
+<li><strong>When in doubt</strong>: Write down the <strong>recurrence relationship</strong> (how F(n) relates to F(n-1), F(n-2), etc.)</li>
+<li><strong>For redundant calls</strong>: Apply <strong>memoization</strong> (cache intermediate results)</li>
+<li><strong>For stack overflow</strong>: Use <strong>tail recursion</strong> or convert to <strong>iteration</strong></li>
+</ul>
+<hr>
+<h2 id="1-concepts" tabindex="-1"><a class="header-anchor" href="#1-concepts"><span>1) Concepts</span></a></h2>
+<h3 id="1-1-core-ideas" tabindex="-1"><a class="header-anchor" href="#1-1-core-ideas"><span>1-1) Core Ideas</span></a></h3>
+<h3 id="1-2-complexity-analysis" tabindex="-1"><a class="header-anchor" href="#1-2-complexity-analysis"><span>1-2) Complexity Analysis</span></a></h3>
+<p><strong>Time Complexity</strong>:
+Think of recursion as a <strong>tree structure</strong>:</p>
+<pre><code>        fib(5)
+       /      \
+    fib(4)    fib(3)
+    /    \     /    \
+fib(3)  fib(2) fib(2) fib(1)
+ /   \    /  \   /  \
+fib(2) fib(1) fib(1) fib(0)
+ /   \
+fib(1) fib(0)
+</code></pre>
+<p>Given a recursion algorithm: <strong>O(T) = R × O(S)</strong></p>
+<ul>
+<li><strong>R</strong> = number of recursion invocations</li>
+<li><strong>O(S)</strong> = time complexity of work per call</li>
+<li>For Fibonacci without memoization: <strong>O(2^n)</strong> (exponential)</li>
+</ul>
+<p><strong>Space Complexity</strong>:</p>
+<p><strong>Recursion-Related Space</strong> (Call Stack):</p>
+<ul>
+<li>Local variables in recursive function calls</li>
+<li>Input parameters</li>
+<li>Output variables</li>
+<li><strong>Stack overflow risk</strong>: when allocated stack space reaches system limit</li>
+</ul>
+<p><strong>Recursion-Independent Space</strong> (Heap):</p>
+<ul>
+<li>Global variables</li>
+<li>Memoization cache (stores intermediate results)</li>
+<li><strong>Important</strong>: Count memoization space when analyzing overall complexity</li>
+</ul>
+<h3 id="1-3-related-concepts" tabindex="-1"><a class="header-anchor" href="#1-3-related-concepts"><span>1-3) Related Concepts</span></a></h3>
+<p>Recursion is used in:</p>
+<ul>
+<li><strong>DFS</strong> (Depth-First Search) — tree/graph traversal</li>
+<li><strong>Backtracking</strong> — exploring all possibilities with pruning</li>
+<li><strong>Tree problems</strong> — natural fit for recursive algorithms</li>
+<li><strong>Dynamic Programming</strong> — with memoization optimization</li>
+</ul>
+<hr>
+<h2 id="2-patterns" tabindex="-1"><a class="header-anchor" href="#2-patterns"><span>2) Patterns</span></a></h2>
+<h3 id="2-1-basic-operation" tabindex="-1"><a class="header-anchor" href="#2-1-basic-operation"><span>2-1) Basic Operation</span></a></h3>
+<p>Endless loop through elements in list (common in backtracking/generation):</p>
+<pre><code class="language-python"># Example: LC 22 (Generate Parentheses)
+_list = [&quot;(&quot;, &quot;)&quot;]
+for x in _list:
+    _tmp = tmp + x
+    help(_tmp)
+</code></pre>
+<hr>
+<h3 id="2-2-top-down-recursion" tabindex="-1"><a class="header-anchor" href="#2-2-top-down-recursion"><span>2-2) Top-Down Recursion</span></a></h3>
+<p><strong>Definition</strong>: Start from the root and make decisions at each node based on information passed down from parent nodes. Also known as “preorder” approach.</p>
+<p><strong>Time Complexity</strong>:</p>
+<ul>
+<li>Usually O(n) where n is the number of nodes</li>
+<li>Can be O(n²) if same subproblems are solved repeatedly without memoization</li>
+</ul>
+<p><strong>Space Complexity</strong>:</p>
+<ul>
+<li>O(h) where h is the height of recursion tree (call stack)</li>
+<li>O(n) additional space if memoization is used</li>
+</ul>
+<p><strong>Use Cases</strong>:</p>
+<ul>
+<li>When you need to pass information from parent to child</li>
+<li>Tree traversal with accumulated state</li>
+<li>Path-based problems</li>
+<li>Validation problems</li>
+</ul>
+<p><strong>Pros</strong>:</p>
+<ul>
+<li>Intuitive and easy to understand</li>
+<li>Natural for problems requiring parent-to-child information flow</li>
+<li>Good for early termination conditions</li>
+</ul>
+<p><strong>Cons</strong>:</p>
+<ul>
+<li>May do redundant calculations without memoization</li>
+<li>Can have higher space complexity due to call stack</li>
+</ul>
+<p><strong>Pattern</strong>:</p>
+<pre><code class="language-python">def topDown(node, parentInfo):
+    # Base case
+    if not node:
+        return baseResult
+
+    # Use parentInfo to make decision
+    currentResult = processWithParentInfo(node, parentInfo)
+
+    # Pass updated info to children
+    newParentInfo = updateParentInfo(parentInfo, node)
+    leftResult = topDown(node.left, newParentInfo)
+    rightResult = topDown(node.right, newParentInfo)
+
+    # Combine results
+    return combineResults(currentResult, leftResult, rightResult)
+</code></pre>
+<p><strong>Common LeetCode Problems</strong>:</p>
+<ul>
+<li>LC 104: Maximum Depth of Binary Tree</li>
+<li>LC 110: Balanced Binary Tree</li>
+<li>LC 112: Path Sum</li>
+<li>LC 113: Path Sum II</li>
+<li>LC 124: Binary Tree Maximum Path Sum</li>
+<li>LC 236: Lowest Common Ancestor</li>
+<li>LC 257: Binary Tree Paths</li>
+<li>LC 404: Sum of Left Leaves</li>
+<li>LC 437: Path Sum III</li>
+</ul>
+<p><strong>Example - Path Sum (LC 112)</strong>:</p>
+<pre><code class="language-python">def hasPathSum(self, root, targetSum):
+    def topDown(node, currentSum):
+        if not node:
+            return False
+
+        currentSum += node.val
+
+        # Leaf node check
+        if not node.left and not node.right:
+            return currentSum == targetSum
+
+        # Continue to children with updated sum
+        return (topDown(node.left, currentSum) or
+                topDown(node.right, currentSum))
+
+    return topDown(root, 0)
+</code></pre>
+<h3 id="2-3-bottom-up-recursion" tabindex="-1"><a class="header-anchor" href="#2-3-bottom-up-recursion"><span>2-3) Bottom-Up Recursion</span></a></h3>
+<p><strong>Definition</strong>: Start from leaf nodes and build up the solution by combining results from child nodes. Also known as “postorder” approach.</p>
+<p><strong>Time Complexity</strong>:</p>
+<ul>
+<li>Usually O(n) where n is the number of nodes</li>
+<li>Generally more efficient as each node is visited exactly once</li>
+</ul>
+<p><strong>Space Complexity</strong>:</p>
+<ul>
+<li>O(h) where h is the height of recursion tree (call stack)</li>
+<li>Usually no additional space needed for memoization</li>
+</ul>
+<p><strong>Use Cases</strong>:</p>
+<ul>
+<li>When solution depends on results from subtrees</li>
+<li>Tree property calculations (height, diameter, etc.)</li>
+<li>Aggregation problems</li>
+<li>Dynamic programming on trees</li>
+</ul>
+<p><strong>Pros</strong>:</p>
+<ul>
+<li>More efficient - each subproblem solved exactly once</li>
+<li>Natural for problems requiring child-to-parent information flow</li>
+<li>Often leads to cleaner code</li>
+<li>Better performance in most cases</li>
+</ul>
+<p><strong>Cons</strong>:</p>
+<ul>
+<li>Can be less intuitive for some problems</li>
+<li>May need to return multiple values from recursive calls</li>
+</ul>
+<p><strong>Pattern</strong>:</p>
+<pre><code class="language-python">def bottomUp(node):
+    # Base case
+    if not node:
+        return baseResult
+
+    # Get results from children first
+    leftResult = bottomUp(node.left)
+    rightResult = bottomUp(node.right)
+
+    # Process current node using children results
+    currentResult = processNode(node, leftResult, rightResult)
+
+    return currentResult
+</code></pre>
+<p><strong>Common LeetCode Problems</strong>:</p>
+<ul>
+<li>LC 104: Maximum Depth of Binary Tree</li>
+<li>LC 110: Balanced Binary Tree</li>
+<li>LC 543: Diameter of Binary Tree</li>
+<li>LC 124: Binary Tree Maximum Path Sum</li>
+<li>LC 968: Binary Tree Cameras</li>
+<li>LC 979: Distribute Coins in Binary Tree</li>
+<li>LC 1120: Maximum Average Subtree</li>
+<li>LC 1130: Minimum Cost Tree From Leaf Values</li>
+<li>LC 1372: Longest ZigZag Path in a Binary Tree</li>
+</ul>
+<p><strong>Example - Maximum Depth (LC 104)</strong>:</p>
+<pre><code class="language-python">def maxDepth(self, root):
+    def bottomUp(node):
+        if not node:
+            return 0
+
+        # Get depths from children
+        leftDepth = bottomUp(node.left)
+        rightDepth = bottomUp(node.right)
+
+        # Current depth is max of children + 1
+        return max(leftDepth, rightDepth) + 1
+
+    return bottomUp(root)
+</code></pre>
+<p><strong>Example - Balanced Binary Tree (LC 110)</strong>:</p>
+<pre><code class="language-python">def isBalanced(self, root):
+    def bottomUp(node):
+        if not node:
+            return True, 0  # (isBalanced, height)
+
+        # Check left subtree
+        leftBalanced, leftHeight = bottomUp(node.left)
+        if not leftBalanced:
+            return False, 0
+
+        # Check right subtree
+        rightBalanced, rightHeight = bottomUp(node.right)
+        if not rightBalanced:
+            return False, 0
+
+        # Check current node balance
+        isCurrentBalanced = abs(leftHeight - rightHeight) &lt;= 1
+        currentHeight = max(leftHeight, rightHeight) + 1
+
+        return isCurrentBalanced, currentHeight
+
+    balanced, _ = bottomUp(root)
+    return balanced
+</code></pre>
+<p><strong>Comparison Table</strong>:</p>
+<table>
+<thead>
+<tr>
+<th>Aspect</th>
+<th>Top Down</th>
+<th>Bottom Up</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Direction</strong></td>
+<td>Root → Leaves</td>
+<td>Leaves → Root</td>
+</tr>
+<tr>
+<td><strong>Information Flow</strong></td>
+<td>Parent → Child</td>
+<td>Child → Parent</td>
+</tr>
+<tr>
+<td><strong>When to Use</strong></td>
+<td>Need parent context</td>
+<td>Need subtree results</td>
+</tr>
+<tr>
+<td><strong>Efficiency</strong></td>
+<td>May have redundancy</td>
+<td>Usually more efficient</td>
+</tr>
+<tr>
+<td><strong>Intuition</strong></td>
+<td>More intuitive for path problems</td>
+<td>More intuitive for aggregation</td>
+</tr>
+<tr>
+<td><strong>Memoization Need</strong></td>
+<td>Often needed</td>
+<td>Rarely needed</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h3 id="2-4-pass-state-to-next-recursion" tabindex="-1"><a class="header-anchor" href="#2-4-pass-state-to-next-recursion"><span>2-4) Pass State to Next Recursion</span></a></h3>
+<p>Pass accumulated state/context as parameters to child recursive calls. Useful when you need to track information from parent nodes.</p>
+<p><strong>Example: LC 404 (Sum of Left Leaves)</strong></p>
+<pre><code class="language-java">// LC 404 - Sum of Left Leaves
+// IDEA: Pre-order traversal, pass isLeft flag to track if node is left child
+private int processSubtree(TreeNode subtree, boolean isLeft) {
+    // Base case: empty subtree
+    if (subtree == null) {
+        return 0;
+    }
+
+    // Base case: leaf node
+    if (subtree.left == null &amp;&amp; subtree.right == null) {
+        return isLeft ? subtree.val : 0;
+    }
+
+    // Recursive case: process left and right subtrees
+    return processSubtree(subtree.left, true) + processSubtree(subtree.right, false);
+}
+</code></pre>
+<p><strong>Key Insight</strong>: By passing <code>isLeft</code> as a parameter, we track parent context without needing global state.</p>
+<hr>
+<h3 id="2-5-any-true-status-in-recursion" tabindex="-1"><a class="header-anchor" href="#2-5-any-true-status-in-recursion"><span>2-5) Any-True Status in Recursion</span></a></h3>
+<p>When you need to find ANY true result among recursive calls, use OR logic. Stop early if any recursive call returns true.</p>
+<p><strong>Example: LC 572 (Subtree of Another Tree)</strong></p>
+<pre><code class="language-java">// LC 572 - Subtree of Another Tree
+public boolean isSubtree(TreeNode root, TreeNode subRoot) {
+    // Check if subtree rooted at 'root' matches 'subRoot'
+    // Use OR: if ANY recursive call returns true, short-circuit and return true
+    return isSameTree(root, subRoot) 
+        || isSubtree(root.left, subRoot) 
+        || isSubtree(root.right, subRoot);
+}
+
+private boolean isSameTree(TreeNode node1, TreeNode node2) {
+    if (node1 == null || node2 == null) {
+        return node1 == null &amp;&amp; node2 == null;
+    }
+    return node1.val == node2.val 
+        &amp;&amp; isSameTree(node1.left, node2.left) 
+        &amp;&amp; isSameTree(node1.right, node2.right);
+}
+</code></pre>
+<p><strong>Key Insight</strong>: Using OR (<code>||</code>) allows early exit when a true result is found, avoiding unnecessary recursive calls.</p>
+<hr>
+<h3 id="2-6-cartesian-product-construction" tabindex="-1"><a class="header-anchor" href="#2-6-cartesian-product-construction"><span>2-6) Cartesian Product Construction</span></a></h3>
+<p><strong>Definition</strong>: Recursively generate all possible structures by dividing a range, building all sub-results for each partition, and combining them via Cartesian product. This is a form of <strong>Divide &amp; Conquer</strong> where the “combine” step enumerates all left × right combinations.</p>
+<p><strong>Time Complexity</strong>: O(4^n / n^(3/2)) — Catalan number growth</p>
+<p><strong>Space Complexity</strong>: O(4^n / n^(3/2)) — storing all generated structures</p>
+<p><strong>Use Cases</strong>:</p>
+<ul>
+<li>Generate all structurally unique trees (BST, full binary trees)</li>
+<li>Enumerate all ways to parenthesize/split an expression</li>
+<li>Any problem where you partition a range and combine all sub-results</li>
+</ul>
+<p><strong>Pattern</strong>:</p>
+<pre><code>1. Pick each element i in [start, end] as the &quot;root&quot; / split point
+2. Recursively build all left results from [start, i-1]
+3. Recursively build all right results from [i+1, end]
+4. Cartesian product: for each left × right, construct and collect result
+5. Base case: empty range → return [null/None] (one empty result, NOT empty list)
+</code></pre>
+<pre><code class="language-java">// Template: Recursive Construction via Cartesian Product
+private List&lt;TreeNode&gt; build(int start, int end) {
+    List&lt;TreeNode&gt; res = new ArrayList&lt;&gt;();
+    if (start &gt; end) {
+        res.add(null);  // CRITICAL: null = valid empty subtree
+        return res;
+    }
+    for (int i = start; i &lt;= end; i++) {
+        List&lt;TreeNode&gt; lefts = build(start, i - 1);
+        List&lt;TreeNode&gt; rights = build(i + 1, end);
+        for (TreeNode l : lefts)
+            for (TreeNode r : rights)
+                res.add(new TreeNode(i, l, r));
+    }
+    return res;
+}
+</code></pre>
+<p><strong>Key Insight</strong>: Base case must return <code>[null]</code> (list containing null), NOT empty list. Otherwise Cartesian product loses all trees with empty left/right subtrees.</p>
+<p><strong>Optimization</strong>: Add memoization with <code>Map&lt;Pair&lt;Integer,Integer&gt;, List&lt;TreeNode&gt;&gt;</code> to avoid recomputing overlapping subproblems.</p>
+<p><strong>Common LeetCode Problems</strong>:</p>
+<ul>
+<li>LC 95: Unique Binary Search Trees II</li>
+<li>LC 96: Unique Binary Search Trees (Catalan count)</li>
+<li>LC 241: Different Ways to Add Parentheses</li>
+<li>LC 894: All Possible Full Binary Trees</li>
+<li>LC 1382: Balance a Binary Search Tree</li>
+</ul>
+<p><strong>Example — LC 95: Unique Binary Search Trees II</strong>:</p>
+<pre><code class="language-python">def generateTrees(n):
+    if n == 0: return []
+    def generate(start, end):
+        if start &gt; end:
+            return [None]
+        all_trees = []
+        for i in range(start, end + 1):
+            for left in generate(start, i - 1):
+                for right in generate(i + 1, end):
+                    root = TreeNode(i)
+                    root.left = left
+                    root.right = right
+                    all_trees.append(root)
+        return all_trees
+    return generate(1, n)
+</code></pre>
+<hr>
+<h2 id="3-advanced-techniques" tabindex="-1"><a class="header-anchor" href="#3-advanced-techniques"><span>3) Advanced Techniques</span></a></h2>
+<h3 id="3-1-memoization" tabindex="-1"><a class="header-anchor" href="#3-1-memoization"><span>3-1) Memoization</span></a></h3>
+<p><strong>Idea</strong>: Cache results of recursive calls to avoid redundant work when the same subproblem is encountered multiple times.</p>
+<p><strong>When to Use</strong>:</p>
+<ul>
+<li>When recursive calls repeat (overlapping subproblems)</li>
+<li>When time complexity without memoization is exponential</li>
+<li>Trade space for time (use a hash map for cache)</li>
+</ul>
+<p><strong>Example 1: Fibonacci</strong></p>
+<pre><code class="language-python"># Without memoization: O(2^n) — exponential
+def fibonacci(n):
+    if n &lt; 2:
+        return n
+    return fibonacci(n - 1) + fibonacci(n - 2)
+
+# With memoization: O(n) — linear
+def fibonacci(n):
+    cache = {}
+    def helper(n):
+        if n in cache:
+            return cache[n]
+        if n &lt; 2:
+            res = n
+        else:
+            res = helper(n - 1) + helper(n - 2)
+        cache[n] = res
+        return res
+    return helper(n)
+</code></pre>
+<p><strong>Example 2: Climbing Stairs (LC 70)</strong></p>
+<pre><code class="language-python"># Without memoization: O(2^n)
+class Solution:
+    def climbStairs(self, n):
+        if n == 1:
+            return 1
+        if n == 2:
+            return 2
+        return self.climbStairs(n - 1) + self.climbStairs(n - 2)
+
+# With memoization: O(n)
+class Solution:
+    def climbStairs(self, n):
+        cache = {}
+        def helper(n):
+            if n in cache:
+                return cache[n]
+            if n &lt;= 2:
+                res = n
+            else:
+                res = helper(n - 2) + helper(n - 1)
+            cache[n] = res
+            return res
+        return helper(n)
+</code></pre>
+<p><strong>Reference</strong>: <a href="https://leetcode.com/explore/learn/card/recursion-i/255/recursion-memoization/1495/">https://leetcode.com/explore/learn/card/recursion-i/255/recursion-memoization/1495/</a></p>
+<hr>
+<h3 id="3-2-divide-conquer" tabindex="-1"><a class="header-anchor" href="#3-2-divide-conquer"><span>3-2) Divide &amp; Conquer</span></a></h3>
+<p><strong>Template</strong>:</p>
+<pre><code>1. Divide: Split problem into subproblems
+2. Conquer: Solve each subproblem recursively
+3. Combine: Merge subproblem results
+</code></pre>
+<p><strong>Pseudo-code</strong>:</p>
+<pre><code class="language-python">def divide_and_conquer(problem):
+    # (1) Divide
+    subproblems = divide(problem)
+    
+    # (2) Conquer
+    results = [divide_and_conquer(sub) for sub in subproblems]
+    
+    # (3) Combine
+    return combine(results)
+</code></pre>
+<p><strong>Common Examples</strong>:</p>
+<ul>
+<li>Merge Sort — O(n log n)</li>
+<li>Quick Sort — O(n log n) average</li>
+<li>Binary Search — O(log n)</li>
+</ul>
+<p><strong>Common LeetCode Problems</strong>:</p>
+<ul>
+<li>LC 22: Generate Parentheses</li>
+<li>LC 84: Largest Rectangle in Histogram</li>
+<li>LC 315: Count of Smaller Numbers After Self</li>
+<li>LC 493: Reverse Pairs</li>
+<li>LC 1649: Create Sorted Array Through Instructions</li>
+</ul>
+<p><strong>Reference</strong>: <a href="https://leetcode.com/explore/learn/card/recursion-ii/470/divide-and-conquer/2869/">https://leetcode.com/explore/learn/card/recursion-ii/470/divide-and-conquer/2869/</a></p>
+<hr>
+<h3 id="3-3-recursion-to-iteration-unfold-recursion" tabindex="-1"><a class="header-anchor" href="#3-3-recursion-to-iteration-unfold-recursion"><span>3-3) Recursion to Iteration (Unfold Recursion)</span></a></h3>
+<p><strong>Why Convert</strong>:</p>
+<ul>
+<li>Avoid stack overflow risk</li>
+<li>Improve space/time efficiency</li>
+<li>Reduce function call overhead</li>
+</ul>
+<p><strong>How to Convert</strong>:</p>
+<pre><code>1. Use a stack or queue to replace the system call stack
+2. At each recursion point, push parameters onto data structure
+3. Replace recursive chain with loop over the data structure
+</code></pre>
+<p><strong>Example</strong>: <a href="https://leetcode.com/explore/learn/card/recursion-ii/503/recursion-to-iteration/2693/">https://leetcode.com/explore/learn/card/recursion-ii/503/recursion-to-iteration/2693/</a></p>
+<hr>
+<h2 id="4-complete-leetcode-examples" tabindex="-1"><a class="header-anchor" href="#4-complete-leetcode-examples"><span>4) Complete LeetCode Examples</span></a></h2>
+<h3 id="4-1-symmetric-tree-lc-101" tabindex="-1"><a class="header-anchor" href="#4-1-symmetric-tree-lc-101"><span>4-1) Symmetric Tree (LC 101)</span></a></h3>
+<p><strong>Pattern</strong>: Bottom-up recursion, comparing two subtrees in parallel.</p>
+<pre><code class="language-python">class Solution:
+    def isSymmetric(self, root):
+        if not root:
+            return True
+        return self.mirror(root.left, root.right)
+
+    def mirror(self, left, right):
+        if not left or not right:
+            return left == right
+        if left.val != right.val:
+            return False
+        return self.mirror(left.left, right.right) and self.mirror(left.right, right.left)
+</code></pre>
+<hr>
+<h3 id="4-2-one-edit-distance-lc-161" tabindex="-1"><a class="header-anchor" href="#4-2-one-edit-distance-lc-161"><span>4-2) One Edit Distance (LC 161)</span></a></h3>
+<p><strong>Pattern</strong>: Pruning branches early (abs difference &gt; 1), then checking each position.</p>
+<pre><code class="language-python">class Solution:
+    def isOneEditDistance(self, s, t):
+        m, n = len(s), len(t)
+        if abs(m - n) &gt; 1:
+            return False
+        if m &gt; n:
+            return self.isOneEditDistance(t, s)
+        for i in range(m):
+            if s[i] != t[i]:
+                if m == n:
+                    return s[i + 1:] == t[i + 1:]
+                return s[i:] == t[i + 1:]
+        return m != n
+</code></pre>
+<hr>
+<h3 id="4-3-merge-two-sorted-lists-lc-21" tabindex="-1"><a class="header-anchor" href="#4-3-merge-two-sorted-lists-lc-21"><span>4-3) Merge Two Sorted Lists (LC 21)</span></a></h3>
+<p><strong>Pattern</strong>: Simple recursion with local state update.</p>
+<pre><code class="language-python">class Solution:
+    def mergeTwoLists(self, l1, l2):
+        if not l1 or not l2:
+            return l1 or l2
+        if l1.val &lt; l2.val:
+            l1.next = self.mergeTwoLists(l1.next, l2)
+            return l1
+        else:
+            l2.next = self.mergeTwoLists(l1, l2.next)
+            return l2
+</code></pre>
+<hr>
+<h3 id="4-4-subtree-of-another-tree-lc-572" tabindex="-1"><a class="header-anchor" href="#4-4-subtree-of-another-tree-lc-572"><span>4-4) Subtree of Another Tree (LC 572)</span></a></h3>
+<p><strong>Pattern</strong>: Any-true status with recursive helper.</p>
+<pre><code class="language-python">class Solution:
+    def isSubtree(self, root, subRoot):
+        def isSameTree(p, q):
+            if not p and not q:
+                return True
+            if not p or not q:
+                return False
+            return (p.val == q.val and 
+                    isSameTree(p.left, q.left) and 
+                    isSameTree(p.right, q.right))
+        
+        if not root and not subRoot:
+            return True
+        if not root or not subRoot:
+            return False
+        # Use OR: if any recursive call returns True, stop early
+        return (isSameTree(root, subRoot) or 
+                self.isSubtree(root.left, subRoot) or 
+                self.isSubtree(root.right, subRoot))
+</code></pre>
+<p><strong>Java Version</strong>:</p>
+<pre><code class="language-java">public boolean isSubtree(TreeNode root, TreeNode subRoot) {
+    if (root == null) {
+        return false;
+    }
+    if (isIdentical(root, subRoot)) {
+        return true;
+    }
+    return isSubtree(root.left, subRoot) || isSubtree(root.right, subRoot);
+}
+
+private boolean isIdentical(TreeNode node1, TreeNode node2) {
+    if (node1 == null || node2 == null) {
+        return node1 == null &amp;&amp; node2 == null;
+    }
+    return node1.val == node2.val &amp;&amp; 
+           isIdentical(node1.left, node2.left) &amp;&amp; 
+           isIdentical(node1.right, node2.right);
+}
+</code></pre>
+
+      </div>
+      <div class="cheatsheet-footer">
+        <a href="../cheatsheets.html" class="back-link">← Back to Cheat Sheets</a>
+        <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/recursion.md" class="github-edit" target="_blank">
+          Edit on GitHub →
+        </a>
+      </div>
+    <nav class="prev-next"><a href="queue.html" class="prev-link">← Queue</a><a href="recursion_to_dp.html" class="next-link">Recursion To Dp →</a></nav>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>CS_basics - Computer Science Fundamentals & Interview Preparation</p>
+      <p>
+        <a href="https://github.com/yennanliu/CS_basics">GitHub</a> •
+        <a href="https://github.com/yennanliu/CS_basics/tree/master/doc">Documentation</a> •
+        <a href="https://github.com/yennanliu/CS_basics/issues">Report Issues</a>
+      </p>
+    </div>
+  </footer>
+</body>
+</html>

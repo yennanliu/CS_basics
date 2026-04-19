@@ -1,0 +1,337 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2 Pointers Linkedlist - CS_basics</title>
+  <meta name="description" content="Computer Science fundamentals: algorithms, data structures, system design, and LeetCode solutions">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>CS</text></svg>">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="../vendor/fonts.css">
+  <link rel="stylesheet" href="../vendor/highlight/github-dark.min.css">
+  <script src="../vendor/highlight/highlight.min.js"></script>
+  <script>
+  // Apply theme before render to prevent flash
+  (function() {
+    var saved = localStorage.getItem('theme');
+    if (saved === 'dark' || (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      document.documentElement.setAttribute('data-theme', 'dark');
+    }
+  })();
+  </script>
+  <script>document.addEventListener('DOMContentLoaded', function() {
+    hljs.highlightAll();
+    document.querySelectorAll('pre code').forEach(function(codeEl) {
+      var pre = codeEl.parentElement;
+      var lang = '';
+      var cls = codeEl.className || '';
+      var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
+      if (m) lang = m[1];
+      var wrapper = document.createElement('div');
+      wrapper.className = 'code-block-wrapper';
+      pre.parentNode.insertBefore(wrapper, pre);
+      var header = document.createElement('div');
+      header.className = 'code-block-header';
+      if (lang) {
+        var label = document.createElement('span');
+        label.className = 'code-lang-label';
+        label.textContent = lang;
+        header.appendChild(label);
+      } else {
+        header.appendChild(document.createElement('span'));
+      }
+      var btn = document.createElement('button');
+      btn.className = 'copy-btn';
+      btn.textContent = 'Copy';
+      btn.addEventListener('click', function() {
+        navigator.clipboard.writeText(codeEl.textContent).then(function() {
+          btn.textContent = 'Copied!';
+          btn.classList.add('copied');
+          setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+        });
+      });
+      header.appendChild(btn);
+      wrapper.appendChild(header);
+      wrapper.appendChild(pre);
+    });
+    document.querySelectorAll('table').forEach(function(table) {
+      if (!table.parentElement.classList.contains('table-wrap')) {
+        var wrapper = document.createElement('div');
+        wrapper.className = 'table-wrap';
+        table.parentNode.insertBefore(wrapper, table);
+        wrapper.appendChild(table);
+      }
+    });
+    // Reading progress bar
+    var progressBar = document.getElementById('reading-progress');
+    if (progressBar) {
+      window.addEventListener('scroll', function() {
+        var winScroll = document.documentElement.scrollTop;
+        var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        progressBar.style.width = height > 0 ? (winScroll / height * 100) + '%' : '0%';
+      });
+    }
+    // Dark mode toggle
+    var toggle = document.getElementById('theme-toggle');
+    if (toggle) {
+      var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      toggle.textContent = isDark ? '☀️' : '🌙';
+      toggle.addEventListener('click', function() {
+        var dark = document.documentElement.getAttribute('data-theme') === 'dark';
+        if (dark) {
+          document.documentElement.removeAttribute('data-theme');
+          localStorage.setItem('theme', 'light');
+          toggle.textContent = '🌙';
+        } else {
+          document.documentElement.setAttribute('data-theme', 'dark');
+          localStorage.setItem('theme', 'dark');
+          toggle.textContent = '☀️';
+        }
+      });
+    }
+  });</script>
+</head>
+<body>
+  <div class="progress-container"><div class="progress-bar" id="reading-progress"></div></div>
+  <nav class="navbar">
+    <div class="container">
+      <div class="nav-brand">
+        <span class="nav-icon">💻</span>
+        <span class="nav-title">CS_basics</span>
+      </div>
+      <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+      <div class="nav-links">
+        <a href="../index.html" class="">Home</a>
+        <a href="../cheatsheets.html" class="active">Cheat Sheets</a>
+        <a href="../patterns.html" class="">Pattern Recognition</a>
+        <a href="../faqs.html" class="">FAQs</a>
+        <a href="../resources.html" class="">Resources</a>
+        <a href="../lc-explorer.html" class="">LC Explorer</a>
+        <a href="../lc-random-picker.html" class="">🎲 Random Picker</a>
+        <a href="../algo_demo/index.html" class="">Visualizer</a>
+        <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">&#127769;</button>
+        <a href="https://github.com/yennanliu/CS_basics" target="_blank" class="github-link" aria-label="GitHub">
+          <svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor">
+            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container">
+    <div class="content">
+      
+      <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">2 Pointers Linkedlist</span></nav>
+      <div class="cheatsheet-header">
+        <h1>2 Pointers Linkedlist</h1>
+        <span class="last-updated">Last updated: Oct 31, 2024</span>
+      </div>
+      <div class="toc"><h2>Table of Contents</h2><ul><li class="toc-sub"><a href="#0-1-types">0-1) Types</a></li><li><a href="#1-general-form">1) General form</a></li><li class="toc-sub"><a href="#1-1-basic-op">1-1) Basic OP</a></li><li><a href="#2-lc-example">2) LC Example</a></li><li class="toc-sub"><a href="#2-1-remove-duplicates-from-sorted-list">2-1) Remove Duplicates from Sorted List</a></li></ul></div>
+      <div class="cheatsheet-content">
+        <h1 id="two-pointers-linkedlist" tabindex="-1"><a class="header-anchor" href="#two-pointers-linkedlist"><span>Two pointers - Linkedlist</span></a></h1>
+<ul>
+<li>Ref
+<ul>
+<li><a href="https://labuladong.online/algo/essential-technique/linked-list-skills-summary/">fucking-algorithm : 2 pointers Linkedlist</a></li>
+</ul>
+</li>
+</ul>
+<h3 id="0-1-types" tabindex="-1"><a class="header-anchor" href="#0-1-types"><span>0-1) Types</span></a></h3>
+<ul>
+<li>Pointer types
+<ul>
+<li><code>Fast - Slow pointers</code>
+<ul>
+<li>fast, slow pointers from <code>same start point</code></li>
+<li>Usualy set
+<ul>
+<li>slow pointer moves 1 idx</li>
+<li>fast pointer moves 2 idx</li>
+</ul>
+</li>
+<li>linked list
+<ul>
+<li>find mid point of linked list</li>
+<li>check if linked list is circular
+<ul>
+<li>LC 141</li>
+<li>LC 142</li>
+</ul>
+</li>
+<li>if a circular linked list, return beginning point of circular</li>
+<li>find last k elements of a single linked list
+<ul>
+<li>LC 19 : Remove Nth Node From End of List</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="1-general-form" tabindex="-1"><a class="header-anchor" href="#1-general-form"><span>1) General form</span></a></h2>
+<h3 id="1-1-basic-op" tabindex="-1"><a class="header-anchor" href="#1-1-basic-op"><span>1-1) Basic OP</span></a></h3>
+<h4 id="1-1-1-check-if-there-is-a-circular-linked-list" tabindex="-1"><a class="header-anchor" href="#1-1-1-check-if-there-is-a-circular-linked-list"><span>1-1-1 : Check if there is a circular linked list</span></a></h4>
+<pre><code class="language-java">// java
+boolean hasCycle(ListNode head){
+    fast = slow = head;
+    // NOTE : while loop condition
+    while (fast != null and fast.next != null){
+        /** NOTE : need to do move slow, fast pointer then compare them */
+        slow = slow.next;
+        fast = fast.next.next;
+        if (fast == slow){
+            return True
+        }
+    }
+    return False;
+}
+</code></pre>
+<h4 id="1-1-2-return-the-ring-start-point-of-circular-linked-list" tabindex="-1"><a class="header-anchor" href="#1-1-2-return-the-ring-start-point-of-circular-linked-list"><span>1-1-2 : return the “ring start point” of circular linked list</span></a></h4>
+<pre><code class="language-java">// java
+// LC 141
+ListNode detectCycle(ListNode head){
+    ListNode fast, slow;
+    fast = slow = head;
+    while (fast != null and fast.next != null){
+        /** NOTE !!! We move pointers first */
+        fast = fast.next.next;
+        slow = slow.next;
+        if (fast == slow){
+            break;
+        }
+    }
+    slow = head;
+    // may need below logic to check whether is cycle linked list or not
+    // if (! fast or ! fast.next){
+    //     return null;
+    // }
+    while (slow != fast){
+        slow = slow.next;
+        fast = fast.next;
+    }
+    return slow;
+}
+</code></pre>
+<pre><code class="language-python"># LC 142. Linked List Cycle II
+# python
+class Solution:
+    def detectCycle(self, head):
+        if not head or not head.next:
+            return
+        slow = fast = head
+        while fast and fast.next:
+            fast = fast.next.next
+            slow = slow.next
+            if fast == slow:
+                break
+        #print (&quot;slow = &quot; + str(slow) + &quot; fast = &quot; + str(fast))
+        ### NOTE : via below condition check if is a cycle linked list
+        if not fast or not fast.next:
+            return
+        &quot;&quot;&quot;
+        ### NOTE : re-init slow or fast as head (from starting point)
+        -&gt; can init slow or head
+        &quot;&quot;&quot;
+        slow = head
+        #fast = head 
+        &quot;&quot;&quot;
+        ### NOTE : check while slow != fast
+        ### NOTE : use the same speed
+        &quot;&quot;&quot;
+        while slow != fast:
+            # NOTE this !!! : fast, slow move SAME speed (in this step)
+            fast = fast.next
+            slow = slow.next
+        return slow
+
+# V0'
+# IDEA : SET
+class Solution(object):
+    def detectCycle(self, head):
+        if not head or not head.next:
+            return
+        s = set()
+        while head:
+            s.add(head)
+            head = head.next
+            if head in s:
+                return head
+        return
+</code></pre>
+<h4 id="1-1-3-find-mid-point-of-a-single-linked-list" tabindex="-1"><a class="header-anchor" href="#1-1-3-find-mid-point-of-a-single-linked-list"><span>1-1-3 : find mid point of a single linked list</span></a></h4>
+<pre><code class="language-java">// java
+while (fast != null and fast.next != null){
+    fast = fast.next.next;
+    slow = slow.next;
+}
+return slow;
+</code></pre>
+<h4 id="1-1-4-find-last-k-elements-in-a-single-linked-list" tabindex="-1"><a class="header-anchor" href="#1-1-4-find-last-k-elements-in-a-single-linked-list"><span>1-1-4 : find last k elements in a single linked list</span></a></h4>
+<pre><code class="language-java">// java
+ListNode fast, slow;
+slow = fast = head;
+while (k &gt; 0){
+    fast = fast.next;
+    k -= 1;
+}
+while (fast != null){
+    fast = fast.next;
+    slow = slow.next;
+}
+return slow;
+</code></pre>
+<h2 id="2-lc-example" tabindex="-1"><a class="header-anchor" href="#2-lc-example"><span>2) LC Example</span></a></h2>
+<h3 id="2-1-remove-duplicates-from-sorted-list" tabindex="-1"><a class="header-anchor" href="#2-1-remove-duplicates-from-sorted-list"><span>2-1) Remove Duplicates from Sorted List</span></a></h3>
+<pre><code class="language-java">// LC 83 (LC 26)
+// https://labuladong.online/algo/essential-technique/array-two-pointers-summary/#%E5%8E%9F%E5%9C%B0%E4%BF%AE%E6%94%B9
+class Solution {
+    public ListNode deleteDuplicates(ListNode head) {
+        if (head == null) return null;
+        ListNode slow = head, fast = head;
+        while (fast != null) {
+            if (fast.val != slow.val) {
+                // nums[slow] = nums[fast];
+                slow.next = fast;
+                // slow++;
+                slow = slow.next;
+            }
+            // fast++
+            fast = fast.next;
+        }
+        // 断开与后面重复元素的连接
+        slow.next = null;
+        return head;
+    }
+}
+</code></pre>
+
+      </div>
+      <div class="cheatsheet-footer">
+        <a href="../cheatsheets.html" class="back-link">← Back to Cheat Sheets</a>
+        <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/2_pointers_linkedlist.md" class="github-edit" target="_blank">
+          Edit on GitHub →
+        </a>
+      </div>
+    <nav class="prev-next"><a href="2_pointers.html" class="prev-link">← 2 Pointers</a><a href="Bellman-Ford.html" class="next-link">Bellman-Ford →</a></nav>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>CS_basics - Computer Science Fundamentals & Interview Preparation</p>
+      <p>
+        <a href="https://github.com/yennanliu/CS_basics">GitHub</a> •
+        <a href="https://github.com/yennanliu/CS_basics/tree/master/doc">Documentation</a> •
+        <a href="https://github.com/yennanliu/CS_basics/issues">Report Issues</a>
+      </p>
+    </div>
+  </footer>
+</body>
+</html>

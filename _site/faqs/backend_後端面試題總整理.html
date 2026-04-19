@@ -1,0 +1,1633 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>後端面試題總整理 - CS_basics</title>
+  <meta name="description" content="Computer Science fundamentals: algorithms, data structures, system design, and LeetCode solutions">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>CS</text></svg>">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="../vendor/fonts.css">
+  <link rel="stylesheet" href="../vendor/highlight/github-dark.min.css">
+  <script src="../vendor/highlight/highlight.min.js"></script>
+  <script>
+  // Apply theme before render to prevent flash
+  (function() {
+    var saved = localStorage.getItem('theme');
+    if (saved === 'dark' || (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      document.documentElement.setAttribute('data-theme', 'dark');
+    }
+  })();
+  </script>
+  <script>document.addEventListener('DOMContentLoaded', function() {
+    hljs.highlightAll();
+    document.querySelectorAll('pre code').forEach(function(codeEl) {
+      var pre = codeEl.parentElement;
+      var lang = '';
+      var cls = codeEl.className || '';
+      var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
+      if (m) lang = m[1];
+      var wrapper = document.createElement('div');
+      wrapper.className = 'code-block-wrapper';
+      pre.parentNode.insertBefore(wrapper, pre);
+      var header = document.createElement('div');
+      header.className = 'code-block-header';
+      if (lang) {
+        var label = document.createElement('span');
+        label.className = 'code-lang-label';
+        label.textContent = lang;
+        header.appendChild(label);
+      } else {
+        header.appendChild(document.createElement('span'));
+      }
+      var btn = document.createElement('button');
+      btn.className = 'copy-btn';
+      btn.textContent = 'Copy';
+      btn.addEventListener('click', function() {
+        navigator.clipboard.writeText(codeEl.textContent).then(function() {
+          btn.textContent = 'Copied!';
+          btn.classList.add('copied');
+          setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+        });
+      });
+      header.appendChild(btn);
+      wrapper.appendChild(header);
+      wrapper.appendChild(pre);
+    });
+    document.querySelectorAll('table').forEach(function(table) {
+      if (!table.parentElement.classList.contains('table-wrap')) {
+        var wrapper = document.createElement('div');
+        wrapper.className = 'table-wrap';
+        table.parentNode.insertBefore(wrapper, table);
+        wrapper.appendChild(table);
+      }
+    });
+    // Reading progress bar
+    var progressBar = document.getElementById('reading-progress');
+    if (progressBar) {
+      window.addEventListener('scroll', function() {
+        var winScroll = document.documentElement.scrollTop;
+        var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        progressBar.style.width = height > 0 ? (winScroll / height * 100) + '%' : '0%';
+      });
+    }
+    // Dark mode toggle
+    var toggle = document.getElementById('theme-toggle');
+    if (toggle) {
+      var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      toggle.textContent = isDark ? '☀️' : '🌙';
+      toggle.addEventListener('click', function() {
+        var dark = document.documentElement.getAttribute('data-theme') === 'dark';
+        if (dark) {
+          document.documentElement.removeAttribute('data-theme');
+          localStorage.setItem('theme', 'light');
+          toggle.textContent = '🌙';
+        } else {
+          document.documentElement.setAttribute('data-theme', 'dark');
+          localStorage.setItem('theme', 'dark');
+          toggle.textContent = '☀️';
+        }
+      });
+    }
+  });</script>
+</head>
+<body>
+  <div class="progress-container"><div class="progress-bar" id="reading-progress"></div></div>
+  <nav class="navbar">
+    <div class="container">
+      <div class="nav-brand">
+        <span class="nav-icon">💻</span>
+        <span class="nav-title">CS_basics</span>
+      </div>
+      <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+      <div class="nav-links">
+        <a href="../index.html" class="">Home</a>
+        <a href="../cheatsheets.html" class="">Cheat Sheets</a>
+        <a href="../patterns.html" class="">Pattern Recognition</a>
+        <a href="../faqs.html" class="active">FAQs</a>
+        <a href="../resources.html" class="">Resources</a>
+        <a href="../lc-explorer.html" class="">LC Explorer</a>
+        <a href="../lc-random-picker.html" class="">🎲 Random Picker</a>
+        <a href="../algo_demo/index.html" class="">Visualizer</a>
+        <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">&#127769;</button>
+        <a href="https://github.com/yennanliu/CS_basics" target="_blank" class="github-link" aria-label="GitHub">
+          <svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor">
+            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container">
+    <div class="content">
+      
+      <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../faqs.html">FAQs</a> <span class="sep">›</span> <span class="current">後端面試題總整理</span></nav>
+      <div class="cheatsheet-header">
+        <h1>後端面試題總整理</h1>
+        <span class="last-updated">Last updated: Feb 16, 2026</span>
+      </div>
+      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#-1">目錄</a></li><li><a href="#1">1. 資料庫相關</a></li><li class="toc-sub"><a href="#1-1-transaction-isolation-levels">1.1 資料庫隔離級別 (Transaction Isolation Levels)</a></li><li class="toc-sub"><a href="#1-2-mysql">1.2 MySQL 鎖機制</a></li><li class="toc-sub"><a href="#1-3-sql">1.3 SQL 查詢優化與執行計畫</a></li><li><a href="#2">2. 快取相關</a></li><li class="toc-sub"><a href="#2-1">2.1 快取三大問題</a></li><li class="toc-sub"><a href="#2-2-redis">2.2 Redis 分散式鎖</a></li><li class="toc-sub"><a href="#2-3-spring-boot-redis">2.3 Spring Boot + Redis 快取實踐</a></li><li><a href="#3">3. 分散式系統</a></li><li class="toc-sub"><a href="#3-1-global-transaction">3.1 全域事務 (Global Transaction)</a></li><li class="toc-sub"><a href="#3-2-zookeeper">3.2 ZooKeeper 分散式鎖</a></li><li><a href="#4">4. 網路與協定</a></li><li class="toc-sub"><a href="#4-1-tcp-vs-udp">4.1 TCP vs UDP</a></li><li class="toc-sub"><a href="#4-2-http">4.2 HTTP 相關</a></li><li class="toc-sub"><a href="#4-3-jwt-json-web-token">4.3 JWT (JSON Web Token)</a></li><li><a href="#5">5. 應用架構</a></li><li class="toc-sub"><a href="#5-1-middleware">5.1 Middleware (中介層)</a></li><li class="toc-sub"><a href="#5-2-orm-object-relational-mapping">5.2 ORM (Object-Relational Mapping)</a></li><li class="toc-sub"><a href="#5-3-mvc-vs-mvvm">5.3 MVC vs MVVM</a></li><li><a href="#6">6. 常見面試題</a></li><li class="toc-sub"><a href="#6-1">6.1 如何建立全域事務？</a></li><li class="toc-sub"><a href="#6-2-redis">6.2 建立分散式 Redis 鎖時的考量？</a></li><li class="toc-sub"><a href="#6-3-sql">6.3 如何優化 SQL 查詢？如何使用執行計畫？</a></li><li class="toc-sub"><a href="#6-4-spring-boot-cloud">6.4 Spring Boot Cloud 主要組件有哪些？</a></li><li class="toc-sub"><a href="#6-5">6.5 如何確保資料庫資料一致性？</a></li><li class="toc-sub"><a href="#6-6-redis-mysql-redis">6.6 如何使用 Redis 快取和資料庫（MySQL），當 Redis 可能失效時？</a></li><li class="toc-sub"><a href="#6-7-interface-class-bytecode">6.7 Interface、Class 在編譯時、執行時的使用，以及與 Bytecode 的關係？</a></li><li><a href="#-23">參考資料</a></li></ul></div>
+      <div class="cheatsheet-content">
+        <h1 id="" tabindex="-1"><a class="header-anchor" href="#"><span>後端面試題總整理</span></a></h1>
+<h2 id="-1" tabindex="-1"><a class="header-anchor" href="#-1"><span>目錄</span></a></h2>
+<ul>
+<li><a href="#1-%E8%B3%87%E6%96%99%E5%BA%AB%E7%9B%B8%E9%97%9C">1. 資料庫相關</a>
+<ul>
+<li><a href="#11-%E8%B3%87%E6%96%99%E5%BA%AB%E9%9A%94%E9%9B%A2%E7%B4%9A%E5%88%A5-transaction-isolation-levels">1.1 資料庫隔離級別 (Transaction Isolation Levels)</a></li>
+<li><a href="#12-mysql-%E9%8E%96%E6%A9%9F%E5%88%B6">1.2 MySQL 鎖機制</a></li>
+<li><a href="#13-sql-%E6%9F%A5%E8%A9%A2%E5%84%AA%E5%8C%96%E8%88%87%E5%9F%B7%E8%A1%8C%E8%A8%88%E7%95%AB">1.3 SQL 查詢優化與執行計畫</a></li>
+</ul>
+</li>
+<li><a href="#2-%E5%BF%AB%E5%8F%96%E7%9B%B8%E9%97%9C">2. 快取相關</a>
+<ul>
+<li><a href="#21-%E5%BF%AB%E5%8F%96%E4%B8%89%E5%A4%A7%E5%95%8F%E9%A1%8C">2.1 快取三大問題</a></li>
+<li><a href="#22-redis-%E5%88%86%E6%95%A3%E5%BC%8F%E9%8E%96">2.2 Redis 分散式鎖</a></li>
+<li><a href="#23-spring-boot--redis-%E5%BF%AB%E5%8F%96%E5%AF%A6%E8%B8%90">2.3 Spring Boot + Redis 快取實踐</a></li>
+</ul>
+</li>
+<li><a href="#3-%E5%88%86%E6%95%A3%E5%BC%8F%E7%B3%BB%E7%B5%B1">3. 分散式系統</a>
+<ul>
+<li><a href="#31-%E5%85%A8%E5%9F%9F%E4%BA%8B%E5%8B%99-global-transaction">3.1 全域事務 (Global Transaction)</a></li>
+<li><a href="#32-zookeeper-%E5%88%86%E6%95%A3%E5%BC%8F%E9%8E%96">3.2 ZooKeeper 分散式鎖</a></li>
+</ul>
+</li>
+<li><a href="#4-%E7%B6%B2%E8%B7%AF%E8%88%87%E5%8D%94%E5%AE%9A">4. 網路與協定</a>
+<ul>
+<li><a href="#41-tcp-vs-udp">4.1 TCP vs UDP</a></li>
+<li><a href="#42-http-%E7%9B%B8%E9%97%9C">4.2 HTTP 相關</a></li>
+<li><a href="#43-jwt-json-web-token">4.3 JWT (JSON Web Token)</a></li>
+</ul>
+</li>
+<li><a href="#5-%E6%87%89%E7%94%A8%E6%9E%B6%E6%A7%8B">5. 應用架構</a>
+<ul>
+<li><a href="#51-middleware-%E4%B8%AD%E4%BB%8B%E5%B1%A4">5.1 Middleware (中介層)</a></li>
+<li><a href="#52-orm-object-relational-mapping">5.2 ORM (Object-Relational Mapping)</a></li>
+<li><a href="#53-mvc-vs-mvvm">5.3 MVC vs MVVM</a></li>
+</ul>
+</li>
+<li><a href="#6-%E5%B8%B8%E8%A6%8B%E9%9D%A2%E8%A9%A6%E9%A1%8C">6. 常見面試題</a></li>
+</ul>
+<hr>
+<h2 id="1" tabindex="-1"><a class="header-anchor" href="#1"><span>1. 資料庫相關</span></a></h2>
+<h3 id="1-1-transaction-isolation-levels" tabindex="-1"><a class="header-anchor" href="#1-1-transaction-isolation-levels"><span>1.1 資料庫隔離級別 (Transaction Isolation Levels)</span></a></h3>
+<h4 id="acid" tabindex="-1"><a class="header-anchor" href="#acid"><span>ACID 特性</span></a></h4>
+<p>資料庫事務需滿足 <strong>ACID</strong> 特性：</p>
+<ul>
+<li><strong>Atomicity (原子性)</strong>：事務中的所有操作要麼全部完成，要麼全部不完成</li>
+<li><strong>Consistency (一致性)</strong>：事務執行前後，資料庫都保持一致性狀態</li>
+<li><strong>Isolation (隔離性)</strong>：並行執行的事務之間互不干擾</li>
+<li><strong>Durability (持久性)</strong>：事務提交後，對資料庫的改變是永久性的</li>
+</ul>
+<h4 id="-2" tabindex="-1"><a class="header-anchor" href="#-2"><span>四種隔離級別</span></a></h4>
+<p>從最寬鬆到最嚴格：<strong>Read Uncommitted → Read Committed → Repeatable Read → Serializable</strong></p>
+<table>
+<thead>
+<tr>
+<th>隔離級別</th>
+<th>Dirty Read<br>(髒讀)</th>
+<th>Non-repeatable Read<br>(不可重複讀)</th>
+<th>Phantom Read<br>(幻讀)</th>
+<th>說明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Read Uncommitted</strong></td>
+<td>✅ 可能發生</td>
+<td>✅ 可能發生</td>
+<td>✅ 可能發生</td>
+<td>可以讀取其他事務尚未提交的資料，最不安全但速度最快</td>
+</tr>
+<tr>
+<td><strong>Read Committed</strong></td>
+<td>❌ 已避免</td>
+<td>✅ 可能發生</td>
+<td>✅ 可能發生</td>
+<td>只能讀取已提交的資料 (PostgreSQL 預設)</td>
+</tr>
+<tr>
+<td><strong>Repeatable Read</strong></td>
+<td>❌ 已避免</td>
+<td>❌ 已避免</td>
+<td>✅ 可能發生</td>
+<td>同一事務中相同查詢會得到相同結果 (MySQL InnoDB 預設)</td>
+</tr>
+<tr>
+<td><strong>Serializable</strong></td>
+<td>❌ 已避免</td>
+<td>❌ 已避免</td>
+<td>❌ 已避免</td>
+<td>最嚴格的隔離級別，事務串行執行，性能最差</td>
+</tr>
+</tbody>
+</table>
+<h4 id="-3" tabindex="-1"><a class="header-anchor" href="#-3"><span>異常現象說明</span></a></h4>
+<ul>
+<li><strong>Dirty Read (髒讀)</strong>：讀取到其他事務尚未提交的資料</li>
+<li><strong>Non-repeatable Read (不可重複讀)</strong>：同一事務中兩次讀取同一資料得到不同結果</li>
+<li><strong>Phantom Read (幻讀)</strong>：同一事務中重新執行查詢，會出現新增或減少的資料列</li>
+</ul>
+<h4 id="-4" tabindex="-1"><a class="header-anchor" href="#-4"><span>不同資料庫的預設隔離級別</span></a></h4>
+<ul>
+<li><strong>MySQL InnoDB</strong>: <code>Repeatable Read</code></li>
+<li><strong>PostgreSQL</strong>: <code>Read Committed</code></li>
+</ul>
+<h4 id="mysql" tabindex="-1"><a class="header-anchor" href="#mysql"><span>設定隔離級別 (MySQL)</span></a></h4>
+<pre><code class="language-sql">-- 設定 Session 級別
+SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;
+START TRANSACTION;
+-- 執行查詢
+COMMIT;
+
+-- 設定全域級別
+SET GLOBAL TRANSACTION ISOLATION LEVEL READ COMMITTED;
+
+-- 查看當前隔離級別
+SELECT @@session.transaction_isolation;  -- Session 級別
+SELECT @@global.transaction_isolation;   -- 全域級別
+</code></pre>
+<h4 id="-5" tabindex="-1"><a class="header-anchor" href="#-5"><span>使用場景建議</span></a></h4>
+<table>
+<thead>
+<tr>
+<th>使用情境</th>
+<th>建議的隔離級別</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>分析報表 / 資料查詢</td>
+<td>Read Committed</td>
+</tr>
+<tr>
+<td>高並發服務</td>
+<td>Read Committed / Repeatable Read + 重試機制</td>
+</tr>
+<tr>
+<td>金融交易 (如銀行轉帳)</td>
+<td>Repeatable Read / Serializable</td>
+</tr>
+<tr>
+<td>庫存系統 / 訂票系統</td>
+<td>Serializable 或加鎖</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h3 id="1-2-mysql" tabindex="-1"><a class="header-anchor" href="#1-2-mysql"><span>1.2 MySQL 鎖機制</span></a></h3>
+<h4 id="-6" tabindex="-1"><a class="header-anchor" href="#-6"><span>鎖的分類</span></a></h4>
+<p>MySQL 中的鎖主要分為三個層級：</p>
+<ol>
+<li><strong>全域鎖 (Global Lock)</strong></li>
+<li><strong>表級鎖 (Table-Level Lock)</strong></li>
+<li><strong>行級鎖 (Row-Level Lock)</strong></li>
+</ol>
+<h4 id="1-2-1" tabindex="-1"><a class="header-anchor" href="#1-2-1"><span>1.2.1 全域鎖</span></a></h4>
+<ul>
+<li><strong>使用場景</strong>：資料庫備份</li>
+<li><strong>效果</strong>：資料庫中所有表變為唯讀狀態</li>
+</ul>
+<pre><code class="language-sql">-- 加全域鎖
+FLUSH TABLES WITH READ LOCK;
+
+-- 解鎖
+UNLOCK TABLES;
+</code></pre>
+<h4 id="1-2-2" tabindex="-1"><a class="header-anchor" href="#1-2-2"><span>1.2.2 表級鎖</span></a></h4>
+<p><strong>類型</strong>：</p>
+<ul>
+<li>表鎖 (Table Lock)</li>
+<li>元數據鎖 (Metadata Lock, MDL)</li>
+<li>意向鎖 (Intention Lock)</li>
+<li>AUTO-INC 鎖</li>
+</ul>
+<p><strong>表鎖特性</strong>：</p>
+<ul>
+<li>讀讀共享、讀寫互斥、寫寫互斥</li>
+<li>粒度大，開銷小，不會產生死鎖</li>
+<li>併發性能較差，適合 MyISAM 引擎</li>
+</ul>
+<p><strong>表鎖類型</strong>：</p>
+<table>
+<thead>
+<tr>
+<th>鎖類型</th>
+<th>說明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>讀鎖</strong></td>
+<td>持有讀鎖可以讀表但不能寫表；允許多個執行緒持有讀鎖；其他執行緒加寫鎖會被阻塞</td>
+</tr>
+<tr>
+<td><strong>寫鎖</strong></td>
+<td>持有寫鎖的執行緒可讀可寫；只有持有寫鎖的執行緒能訪問該表，其他執行緒被阻塞</td>
+</tr>
+</tbody>
+</table>
+<pre><code class="language-sql">-- 加讀鎖
+LOCK TABLES authors READ;
+
+-- 加寫鎖
+LOCK TABLES comment WRITE;
+
+-- 解鎖當前 Session 所有表鎖
+UNLOCK TABLES;
+</code></pre>
+<p><strong>意向鎖</strong>：</p>
+<ul>
+<li>在使用 InnoDB 引擎的表中對某些記錄加行級鎖之前，需要先在表級加意向鎖</li>
+<li>意向鎖的目的是為了快速判斷表裡是否有記錄被加鎖</li>
+<li>意向鎖之間不會衝突，只會與表級的共享鎖和獨佔鎖衝突</li>
+</ul>
+<h4 id="1-2-3" tabindex="-1"><a class="header-anchor" href="#1-2-3"><span>1.2.3 行級鎖</span></a></h4>
+<p><strong>類型</strong>：</p>
+<ul>
+<li>Record Lock (記錄鎖)</li>
+<li>Gap Lock (間隙鎖)</li>
+<li>Next-Key Lock (記錄鎖 + 間隙鎖)</li>
+</ul>
+<p><strong>特性</strong>：</p>
+<ul>
+<li>InnoDB 支援行級鎖，MyISAM 不支援</li>
+<li>讀讀共享、讀寫互斥、寫寫互斥</li>
+<li>粒度小，開銷大，可能產生死鎖</li>
+<li>併發性能好</li>
+</ul>
+<p><strong>Record Lock (記錄鎖)</strong>：</p>
+<pre><code class="language-sql">-- 對讀取的記錄加共享鎖 (S鎖)
+SELECT * FROM authors WHERE id = 1 LOCK IN SHARE MODE;
+
+-- 對讀取的記錄加獨佔鎖 (X鎖)
+SELECT * FROM authors WHERE id = 1 FOR UPDATE;
+</code></pre>
+<p><strong>Gap Lock (間隙鎖)</strong>：</p>
+<ul>
+<li>鎖定兩個索引之間的間隙，防止其他事務在此範圍內插入或修改記錄</li>
+<li>可以避免幻讀現象</li>
+</ul>
+<p><strong>Next-Key Lock</strong>：</p>
+<ul>
+<li>概念上等於 Record Lock + Gap Lock</li>
+<li>建立一個前開後閉的索引間隙，避免其他事務在此間隙插入資料</li>
+</ul>
+<h4 id="1-2-4-deadlock" tabindex="-1"><a class="header-anchor" href="#1-2-4-deadlock"><span>1.2.4 死鎖 (Deadlock)</span></a></h4>
+<p><strong>根本原因</strong>：兩個或多個事務加鎖順序不一致</p>
+<p><strong>處理方式</strong>：</p>
+<ul>
+<li>設定鎖等待超時時間</li>
+<li>使用死鎖檢測機制</li>
+<li>確保事務按相同順序獲取鎖</li>
+</ul>
+<h4 id="innodb-vs-myisam" tabindex="-1"><a class="header-anchor" href="#innodb-vs-myisam"><span>InnoDB vs MyISAM</span></a></h4>
+<table>
+<thead>
+<tr>
+<th>特性</th>
+<th>InnoDB</th>
+<th>MyISAM</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>預設版本</td>
+<td>MySQL 5.5+</td>
+<td>MySQL 5.1 及之前</td>
+</tr>
+<tr>
+<td>事務支援</td>
+<td>✅ 支援</td>
+<td>❌ 不支援</td>
+</tr>
+<tr>
+<td>行級鎖</td>
+<td>✅ 支援</td>
+<td>❌ 不支援，僅支援表鎖</td>
+</tr>
+<tr>
+<td>外鍵</td>
+<td>✅ 支援</td>
+<td>❌ 不支援</td>
+</tr>
+<tr>
+<td>崩潰恢復</td>
+<td>✅ 自動恢復</td>
+<td>❌ 不支援</td>
+</tr>
+<tr>
+<td>儲存空間</td>
+<td>較大</td>
+<td>較小，可壓縮</td>
+</tr>
+<tr>
+<td>適用場景</td>
+<td>高並發、事務處理</td>
+<td>大量查詢、篩選</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h3 id="1-3-sql" tabindex="-1"><a class="header-anchor" href="#1-3-sql"><span>1.3 SQL 查詢優化與執行計畫</span></a></h3>
+<h4 id="-7" tabindex="-1"><a class="header-anchor" href="#-7"><span>什麼是執行計畫？</span></a></h4>
+<p>執行計畫 (Execution Plan) 是資料庫引擎執行 SQL 查詢的具體步驟，包括：</p>
+<ul>
+<li>JOIN 順序</li>
+<li>索引使用情況</li>
+<li>表掃描方式</li>
+<li>預估成本</li>
+</ul>
+<h4 id="-8" tabindex="-1"><a class="header-anchor" href="#-8"><span>取得執行計畫</span></a></h4>
+<pre><code class="language-sql">-- MySQL / PostgreSQL
+EXPLAIN SELECT * FROM orders WHERE status = 'shipped';
+
+-- PostgreSQL - 包含實際執行時間
+EXPLAIN ANALYZE SELECT * FROM orders WHERE status = 'shipped';
+
+-- MySQL - JSON 格式，更詳細
+EXPLAIN FORMAT=JSON SELECT * FROM orders WHERE status = 'shipped';
+</code></pre>
+<h4 id="-9" tabindex="-1"><a class="header-anchor" href="#-9"><span>執行計畫關鍵指標</span></a></h4>
+<table>
+<thead>
+<tr>
+<th>指標</th>
+<th>說明</th>
+<th>理想值 / 需注意的問題</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>type</strong></td>
+<td>訪問方式 (ALL, index, ref, eq_ref)</td>
+<td>✅ 優先選擇 ref 或 eq_ref，避免 ALL (全表掃描)</td>
+</tr>
+<tr>
+<td><strong>key</strong></td>
+<td>使用的索引</td>
+<td>❗ 若為 NULL，表示未使用索引</td>
+</tr>
+<tr>
+<td><strong>rows</strong></td>
+<td>預估掃描的行數</td>
+<td>✅ 越低越好</td>
+</tr>
+<tr>
+<td><strong>filtered</strong></td>
+<td>傳遞到下一階段的行數百分比</td>
+<td>❗ 低於 30% 表示過濾效果差</td>
+</tr>
+<tr>
+<td><strong>Extra</strong></td>
+<td>額外資訊</td>
+<td>❗ “Using temporary” 或 “filesort” 表示性能差</td>
+</tr>
+</tbody>
+</table>
+<h4 id="-10" tabindex="-1"><a class="header-anchor" href="#-10"><span>優化步驟</span></a></h4>
+<p><strong>1. 識別昂貴的操作</strong></p>
+<ul>
+<li>全表掃描 (Full Table Scan) 而非索引掃描</li>
+<li>大數據集上的嵌套迴圈連接 (Nested Loop Join)</li>
+<li>排序操作 (Sort) 或 Hash 聚合</li>
+<li>使用臨時表或磁碟</li>
+</ul>
+<p><strong>2. 檢查索引使用</strong></p>
+<ul>
+<li>確保 WHERE 條件和 JOIN 使用索引欄位</li>
+<li>複合索引的欄位順序要與查詢條件匹配</li>
+<li>添加缺失的索引</li>
+<li>移除未使用或低效的索引</li>
+</ul>
+<p><strong>3. 避免 SELECT *</strong></p>
+<ul>
+<li>只查詢需要的欄位，減少 I/O</li>
+</ul>
+<p><strong>4. 分析 JOIN 順序</strong></p>
+<ul>
+<li>將過濾條件推到 JOIN 之前執行</li>
+<li>使用 CTE (Common Table Expression) 隔離昂貴的分支</li>
+</ul>
+<p><strong>5. 重構 WHERE/HAVING 子句</strong></p>
+<ul>
+<li>確保謂詞是 Sargable (Search Argument-able)</li>
+<li>避免 <code>WHERE YEAR(date_col) = 2023</code>，改用 <code>WHERE date_col BETWEEN '2023-01-01' AND '2023-12-31'</code></li>
+<li>使用顯式 JOIN 而非相關子查詢</li>
+</ul>
+<p><strong>6. 檢查 GROUP BY / ORDER BY</strong></p>
+<ul>
+<li>為 GROUP BY、ORDER BY 使用的欄位建立索引</li>
+<li>添加覆蓋索引 (Covering Index)</li>
+</ul>
+<h4 id="-11" tabindex="-1"><a class="header-anchor" href="#-11"><span>優化範例</span></a></h4>
+<p><strong>問題查詢</strong>：</p>
+<pre><code class="language-sql">SELECT o.id, o.order_date, c.name
+FROM orders o
+JOIN customers c ON o.customer_id = c.id
+WHERE o.status = 'shipped' AND c.region = 'US'
+ORDER BY o.order_date DESC
+LIMIT 100;
+</code></pre>
+<p><strong>執行 EXPLAIN 發現問題</strong>：</p>
+<ul>
+<li><code>customers</code> 表進行全表掃描 (type=ALL, key=NULL)</li>
+<li><code>orders</code> 表使用 filesort</li>
+</ul>
+<p><strong>優化方案</strong>：</p>
+<pre><code class="language-sql">-- 添加索引
+CREATE INDEX idx_customers_region ON customers(region);
+CREATE INDEX idx_orders_status_date ON orders(status, order_date DESC);
+
+-- 可選：覆蓋索引
+CREATE INDEX idx_orders_covering ON orders(status, order_date DESC, customer_id, id);
+</code></pre>
+<h4 id="-12" tabindex="-1"><a class="header-anchor" href="#-12"><span>常見問題與修復</span></a></h4>
+<table>
+<thead>
+<tr>
+<th>症狀</th>
+<th>修復方案</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>type=ALL</td>
+<td>為 WHERE / JOIN 欄位添加索引</td>
+</tr>
+<tr>
+<td>Extra 有 filesort</td>
+<td>為 ORDER BY 欄位添加索引</td>
+</tr>
+<tr>
+<td>Extra 有 Using temporary</td>
+<td>重寫查詢或添加索引</td>
+</tr>
+<tr>
+<td>rows 數量過高</td>
+<td>重寫邏輯或拆分為子查詢</td>
+</tr>
+<tr>
+<td>filtered &lt; 30%</td>
+<td>改進 WHERE 條件或在應用層預過濾</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="2" tabindex="-1"><a class="header-anchor" href="#2"><span>2. 快取相關</span></a></h2>
+<h3 id="2-1" tabindex="-1"><a class="header-anchor" href="#2-1"><span>2.1 快取三大問題</span></a></h3>
+<p>快取在高並發系統中扮演重要角色，但也會遇到三大經典問題：</p>
+<ol>
+<li><strong>快取穿透 (Cache Penetration)</strong></li>
+<li><strong>快取擊穿 (Hotspot Invalid)</strong></li>
+<li><strong>快取雪崩 (Cache Avalanche)</strong></li>
+</ol>
+<h4 id="2-1-1-cache-avalanche" tabindex="-1"><a class="header-anchor" href="#2-1-1-cache-avalanche"><span>2.1.1 快取雪崩 (Cache Avalanche)</span></a></h4>
+<p><strong>現象</strong>：</p>
+<ul>
+<li>在某個時刻，所有的快取同時過期或 Redis 服務失效</li>
+<li>導致大量請求直接打到資料庫</li>
+<li>當流量巨大時，資料庫可能被打掛</li>
+</ul>
+<p><strong>解決方案</strong>：</p>
+<ul>
+<li>✅ <strong>隨機過期時間</strong>：為每個快取 key 設定隨機的過期時間，避免同時失效</li>
+<li>✅ <strong>互斥鎖</strong>：快取不存在時使用鎖機制，只允許一個執行緒查詢資料庫</li>
+<li>✅ <strong>後台定期更新快取</strong>：在快取過期前自動更新</li>
+<li>✅ <strong>服務熔斷或請求限流</strong>：避免資料庫過載</li>
+<li>✅ <strong>Redis 叢集</strong>：提高可用性</li>
+</ul>
+<h4 id="2-1-2-hotspot-invalid" tabindex="-1"><a class="header-anchor" href="#2-1-2-hotspot-invalid"><span>2.1.2 快取擊穿 (Hotspot Invalid)</span></a></h4>
+<p><strong>現象</strong>：</p>
+<ul>
+<li>某個熱門的快取 key 過期</li>
+<li>高並發集中在此 key，流量直接打到資料庫</li>
+</ul>
+<p><strong>解決方案</strong>：</p>
+<ul>
+<li>✅ <strong>將熱點 key 設為永不過期</strong></li>
+<li>✅ <strong>互斥鎖</strong>：在應用層加鎖，確保只有一個執行緒查詢資料庫並更新快取
+<ul>
+<li>缺點：會降低系統吞吐量，阻礙其他執行緒</li>
+</ul>
+</li>
+</ul>
+<h4 id="2-1-3-cache-penetration" tabindex="-1"><a class="header-anchor" href="#2-1-3-cache-penetration"><span>2.1.3 快取穿透 (Cache Penetration)</span></a></h4>
+<p><strong>現象</strong>：</p>
+<ul>
+<li>客戶端請求的資料<strong>既不存在於快取，也不存在於資料庫</strong></li>
+<li>每次請求都會穿過快取直接打到資料庫</li>
+<li>例如：查詢 <code>id=-1</code> 的資料，但資料庫從 <code>id=1</code> 開始</li>
+</ul>
+<p><strong>解決方案</strong>：</p>
+<ul>
+<li>✅ <strong>過濾非法請求</strong>：在應用層驗證請求參數的合法性</li>
+<li>✅ <strong>快取空值或預設值</strong>：將查詢不到的資料也快取起來（設定較短的過期時間）</li>
+<li>✅ <strong>布隆過濾器 (Bloom Filter)</strong>：判斷請求的 key 是否可能存在於資料集中
+<ul>
+<li>存在則查詢 Redis</li>
+<li>不存在則直接返回預設訊息</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 id="2-2-redis" tabindex="-1"><a class="header-anchor" href="#2-2-redis"><span>2.2 Redis 分散式鎖</span></a></h3>
+<p>在分散式系統中，Redis 鎖用於確保同一時刻只有一個程序能訪問特定資源，防止競態條件 (race condition) 和資料不一致。</p>
+<h4 id="-13" tabindex="-1"><a class="header-anchor" href="#-13"><span>核心概念</span></a></h4>
+<ol>
+<li><strong>原子性</strong>：Redis 支援原子操作，鎖的獲取和釋放不可中斷</li>
+<li><strong>過期時間</strong>：設定 TTL (Time To Live)，避免死鎖</li>
+<li><strong>分散式</strong>：可跨多個實例或微服務使用</li>
+</ol>
+<h4 id="2-2-1-setnx-set-if-not-exists" tabindex="-1"><a class="header-anchor" href="#2-2-1-setnx-set-if-not-exists"><span>2.2.1 SETNX (Set if Not Exists)</span></a></h4>
+<p>最簡單的鎖實現方式：</p>
+<pre><code class="language-python">import redis
+r = redis.Redis()
+
+lock_key = &quot;lock:my_resource&quot;
+
+# 嘗試獲取鎖
+if r.setnx(lock_key, 1):
+    try:
+        # 取得鎖，執行臨界區程式碼
+        pass
+    finally:
+        # 釋放鎖
+        r.delete(lock_key)
+else:
+    # 未取得鎖，稍後重試
+    pass
+</code></pre>
+<p><strong>問題</strong>：如果程式在釋放鎖之前崩潰，會造成死鎖</p>
+<h4 id="2-2-2-set-with-expiration" tabindex="-1"><a class="header-anchor" href="#2-2-2-set-with-expiration"><span>2.2.2 SET with Expiration (推薦)</span></a></h4>
+<p>使用 <code>SET</code> 命令搭配 <code>NX</code> 和 <code>EX</code> 選項，原子地設定鎖和過期時間：</p>
+<pre><code class="language-python">import redis
+r = redis.Redis()
+
+lock_key = &quot;lock:my_resource&quot;
+lock_timeout = 10  # 鎖在 10 秒後自動過期
+
+# 嘗試獲取鎖
+if r.set(lock_key, 1, nx=True, ex=lock_timeout):
+    try:
+        # 取得鎖，執行臨界區程式碼
+        pass
+    finally:
+        # 釋放鎖
+        r.delete(lock_key)
+else:
+    # 未取得鎖，稍後重試
+    pass
+</code></pre>
+<h4 id="2-2-3-redlock" tabindex="-1"><a class="header-anchor" href="#2-2-3-redlock"><span>2.2.3 Redlock 演算法</span></a></h4>
+<p>用於多個 Redis 實例的分散式鎖，提供容錯能力：</p>
+<pre><code class="language-python">from redis import Redis
+from redlock import Redlock
+
+# 連接多個 Redis 實例
+redis_instances = [Redis(host='localhost', port=6379) for _ in range(5)]
+dlock = Redlock(redis_instances)
+
+lock_key = &quot;lock:my_resource&quot;
+lock = dlock.lock(lock_key, 10000)  # 鎖在 10 秒後過期
+
+if lock:
+    try:
+        # 執行任務
+        pass
+    finally:
+        dlock.unlock(lock)
+else:
+    # 未取得鎖
+    pass
+</code></pre>
+<p><strong>工作原理</strong>：</p>
+<ul>
+<li>嘗試在多個 Redis 節點 (如 5 個) 上獲取鎖</li>
+<li>當大多數節點 (如 3 個) 成功獲取鎖時，才認為鎖獲取成功</li>
+<li>提高可靠性，即使部分節點失效也能正常工作</li>
+</ul>
+<h4 id="-14" tabindex="-1"><a class="header-anchor" href="#-14"><span>最佳實踐</span></a></h4>
+<ol>
+<li><strong>設定合理的過期時間</strong>：避免死鎖，但要足夠完成任務</li>
+<li><strong>確保釋放鎖</strong>：使用 try-finally 確保鎖被釋放</li>
+<li><strong>重試邏輯</strong>：使用指數退避策略 (exponential backoff)</li>
+<li><strong>原子性和隔離性</strong>：確保被鎖保護的操作是原子的</li>
+<li><strong>超時和失敗處理</strong>：考慮使用 Lua 腳本確保鎖和操作的原子性</li>
+</ol>
+<hr>
+<h3 id="2-3-spring-boot-redis" tabindex="-1"><a class="header-anchor" href="#2-3-spring-boot-redis"><span>2.3 Spring Boot + Redis 快取實踐</span></a></h3>
+<h4 id="-15" tabindex="-1"><a class="header-anchor" href="#-15"><span>快取模式</span></a></h4>
+<table>
+<thead>
+<tr>
+<th>模式</th>
+<th>說明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Read-Through</strong></td>
+<td>應用先查快取，若未命中則查資料庫，並填充快取</td>
+</tr>
+<tr>
+<td><strong>Write-Through</strong></td>
+<td>寫入時同時更新快取和資料庫</td>
+</tr>
+<tr>
+<td><strong>Write-Behind (Async)</strong></td>
+<td>先寫快取，稍後非同步寫入資料庫（風險較高）</td>
+</tr>
+<tr>
+<td><strong>Cache-Aside (Lazy Load)</strong></td>
+<td>應用讀取快取，未命中時查資料庫並更新快取（最常見）</td>
+</tr>
+</tbody>
+</table>
+<h4 id="spring-boot-cache-aside" tabindex="-1"><a class="header-anchor" href="#spring-boot-cache-aside"><span>Spring Boot 快取實現 (Cache-Aside)</span></a></h4>
+<pre><code class="language-java">@Service
+public class UserService {
+
+    @Autowired
+    private UserRepository userRepository;
+
+    // 查詢時先查快取，未命中則查資料庫並快取結果
+    @Cacheable(value = &quot;user&quot;, key = &quot;#userId&quot;)
+    public User getUserById(Long userId) {
+        return userRepository.findById(userId).orElseThrow();
+    }
+
+    // 更新資料後清除快取
+    @CacheEvict(value = &quot;user&quot;, key = &quot;#user.id&quot;)
+    public void updateUser(User user) {
+        userRepository.save(user);
+    }
+
+    // 更新資料並同時更新快取
+    @CachePut(value = &quot;user&quot;, key = &quot;#user.id&quot;)
+    public User saveUser(User user) {
+        return userRepository.save(user);
+    }
+}
+</code></pre>
+<h4 id="-16" tabindex="-1"><a class="header-anchor" href="#-16"><span>快取一致性策略</span></a></h4>
+<table>
+<thead>
+<tr>
+<th>策略</th>
+<th>實現方式</th>
+<th>優點</th>
+<th>缺點</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>寫入時清除</strong> (<code>@CacheEvict</code>)</td>
+<td>更新資料庫後刪除快取項</td>
+<td>簡單、一致性好</td>
+<td>下次讀取需重新載入快取</td>
+</tr>
+<tr>
+<td><strong>寫入時更新</strong> (<code>@CachePut</code>)</td>
+<td>同時寫入資料庫和快取</td>
+<td>讀取快速</td>
+<td>可能部分失敗導致不一致</td>
+</tr>
+<tr>
+<td><strong>訊息佇列</strong> (如 Kafka)</td>
+<td>透過事件流非同步同步</td>
+<td>解耦、可擴展</td>
+<td>複雜度高、可能有延遲</td>
+</tr>
+<tr>
+<td><strong>雙寫事務</strong></td>
+<td>事務性地更新兩者</td>
+<td>可靠</td>
+<td>回滾管理困難</td>
+</tr>
+</tbody>
+</table>
+<h4 id="-17" tabindex="-1"><a class="header-anchor" href="#-17"><span>常見問題與解決方案</span></a></h4>
+<p><strong>1. 快取風暴 (Cache Stampede)</strong></p>
+<p>問題：快取過期時大量請求同時打到資料庫</p>
+<p>解決方案：</p>
+<ul>
+<li>使用隨機化的 TTL</li>
+<li>使用互斥鎖 (SETNX)</li>
+<li>使用 Redisson 或 Caffeine 等函式庫</li>
+</ul>
+<p><strong>2. 快取不一致</strong></p>
+<p>問題：資料庫已更新，但快取未更新</p>
+<p>解決方案：</p>
+<ul>
+<li>使用 <code>@CacheEvict</code> 或 <code>@CachePut</code></li>
+<li>避免並行更新，使用鎖或防抖</li>
+</ul>
+<p><strong>3. 冷啟動 (Cold Start)</strong></p>
+<p>問題：重啟後快取為空</p>
+<p>解決方案：</p>
+<ul>
+<li>啟動時預熱快取 (可選的批次載入器)</li>
+</ul>
+<p><strong>4. 序列化格式</strong></p>
+<p>Redis 需要快速的序列化，建議使用 <strong>JSON</strong> 或 <strong>String</strong> 而非 Java 原生序列化：</p>
+<pre><code class="language-java">@Bean
+public RedisTemplate&lt;String, Object&gt; redisTemplate(RedisConnectionFactory factory) {
+    RedisTemplate&lt;String, Object&gt; template = new RedisTemplate&lt;&gt;();
+    template.setConnectionFactory(factory);
+    template.setValueSerializer(new Jackson2JsonRedisSerializer&lt;&gt;(Object.class));
+    return template;
+}
+</code></pre>
+<hr>
+<h2 id="3" tabindex="-1"><a class="header-anchor" href="#3"><span>3. 分散式系統</span></a></h2>
+<h3 id="3-1-global-transaction" tabindex="-1"><a class="header-anchor" href="#3-1-global-transaction"><span>3.1 全域事務 (Global Transaction)</span></a></h3>
+<p>在分散式系統中，全域事務用於確保跨多個服務或資料庫的操作具有 ACID 特性。</p>
+<h4 id="3-1-1-2pc-two-phase-commit" tabindex="-1"><a class="header-anchor" href="#3-1-1-2pc-two-phase-commit"><span>3.1.1 兩階段提交 (2PC - Two-Phase Commit)</span></a></h4>
+<p><strong>適用場景</strong>：強一致性的分散式資料庫</p>
+<p><strong>工作流程</strong>：</p>
+<ul>
+<li><strong>階段 1 - 準備 (Prepare)</strong>：協調者詢問所有參與節點是否準備好提交</li>
+<li><strong>階段 2 - 提交 (Commit)</strong>：如果所有節點回覆「是」，協調者發出提交指令；否則回滾</li>
+</ul>
+<p><strong>優點</strong>：</p>
+<ul>
+<li>✅ 強一致性 (ACID)</li>
+<li>✅ 中央協調</li>
+</ul>
+<p><strong>缺點</strong>：</p>
+<ul>
+<li>❌ 阻塞協定，可能造成鎖競爭</li>
+<li>❌ 單點故障（協調者失效）</li>
+<li>❌ 在網路分區時可用性差</li>
+<li>❌ 不適合雲原生 / 微服務架構</li>
+</ul>
+<h4 id="3-1-2-saga" tabindex="-1"><a class="header-anchor" href="#3-1-2-saga"><span>3.1.2 Saga 模式 (推薦用於微服務)</span></a></h4>
+<p><strong>適用場景</strong>：現代微服務和事件驅動架構</p>
+<p><strong>工作原理</strong>：</p>
+<ul>
+<li>一系列本地事務，每個服務更新自己的資料並發布事件觸發下一步</li>
+<li>如果某一步失敗，執行補償事務 (Compensating Transaction) 回滾之前的步驟</li>
+</ul>
+<p><strong>範例（訂票流程）</strong>：</p>
+<ul>
+<li>步驟 1：預訂飯店 → 步驟 2：預訂機票 → 步驟 3：付款</li>
+<li>如果步驟 2 失敗，執行補償動作取消步驟 1 的飯店預訂</li>
+</ul>
+<p><strong>實現方式</strong>：</p>
+<table>
+<thead>
+<tr>
+<th>方式</th>
+<th>說明</th>
+<th>範例工具</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>編排式 Saga</strong> (Orchestration)</td>
+<td>中央服務控制流程</td>
+<td>Netflix Conductor, Temporal</td>
+</tr>
+<tr>
+<td><strong>編舞式 Saga</strong> (Choreography)</td>
+<td>服務對事件做出反應，自行管理轉換</td>
+<td>Apache Kafka + EventBridge</td>
+</tr>
+</tbody>
+</table>
+<p><strong>優點</strong>：</p>
+<ul>
+<li>✅ 最終一致性</li>
+<li>✅ 高可用性和回應性</li>
+<li>✅ 適合鬆散耦合的系統</li>
+</ul>
+<p><strong>缺點</strong>：</p>
+<ul>
+<li>❌ 補償邏輯複雜</li>
+<li>❌ 難以除錯和追蹤</li>
+</ul>
+<p><strong>注意事項</strong>：</p>
+<ul>
+<li>確保每個服務的操作具有冪等性 (idempotency)</li>
+<li>使用相關 ID (correlation ID) 進行跨系統追蹤</li>
+<li>應用超時和斷路器 (circuit breaker) 提高韌性</li>
+</ul>
+<h4 id="3-1-3-tcc-try-confirm-cancel" tabindex="-1"><a class="header-anchor" href="#3-1-3-tcc-try-confirm-cancel"><span>3.1.3 TCC (Try-Confirm-Cancel)</span></a></h4>
+<p><strong>適用場景</strong>：資源可以預留的系統（如庫存、訂票）</p>
+<p><strong>工作流程</strong>：</p>
+<ul>
+<li><strong>Try</strong>：預留資源（如鎖定庫存）</li>
+<li><strong>Confirm</strong>：確認操作，提交事務</li>
+<li><strong>Cancel</strong>：取消操作，釋放資源</li>
+</ul>
+<p><strong>優點</strong>：</p>
+<ul>
+<li>✅ 對操作有細粒度控制</li>
+<li>✅ 顯式的補償模型</li>
+</ul>
+<p><strong>缺點</strong>：</p>
+<ul>
+<li>❌ 所有服務必須實現 try/confirm/cancel 邏輯</li>
+<li>❌ 實現複雜度高</li>
+</ul>
+<h4 id="3-1-4" tabindex="-1"><a class="header-anchor" href="#3-1-4"><span>3.1.4 最終一致性 + 事件驅動架構</span></a></h4>
+<p><strong>適用場景</strong>：可以容忍一致性延遲的系統</p>
+<p><strong>優點</strong>：</p>
+<ul>
+<li>✅ 非同步</li>
+<li>✅ 高度可擴展</li>
+<li>✅ 服務解耦</li>
+</ul>
+<p><strong>缺點</strong>：</p>
+<ul>
+<li>❌ 失敗處理複雜</li>
+<li>❌ 需要冪等操作</li>
+<li>❌ 難以除錯和追蹤</li>
+</ul>
+<h4 id="3-1-5-outbox" tabindex="-1"><a class="header-anchor" href="#3-1-5-outbox"><span>3.1.5 可靠訊息 + Outbox 模式</span></a></h4>
+<p><strong>適用場景</strong>：確保事件/訊息以事務方式傳遞</p>
+<p><strong>優點</strong>：</p>
+<ul>
+<li>✅ 確保資料庫和訊息的原子性</li>
+<li>✅ 服務解耦</li>
+</ul>
+<p><strong>缺點</strong>：</p>
+<ul>
+<li>❌ 需要額外基礎設施 (Kafka, Debezium 等)</li>
+<li>❌ 運維和基礎設施開銷較高</li>
+</ul>
+<h4 id="-18" tabindex="-1"><a class="header-anchor" href="#-18"><span>模式比較表</span></a></h4>
+<table>
+<thead>
+<tr>
+<th>模式</th>
+<th>一致性</th>
+<th>可擴展性</th>
+<th>複雜度</th>
+<th>失敗處理</th>
+<th>理想使用場景</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Saga</strong></td>
+<td>最終一致</td>
+<td>✅ 高</td>
+<td>⚠️ 中等</td>
+<td>需要補償邏輯</td>
+<td>長時間運行、可分解的業務流程</td>
+</tr>
+<tr>
+<td><strong>2PC</strong></td>
+<td>強一致 (ACID)</td>
+<td>❌ 低</td>
+<td>⚠️ 高</td>
+<td>協調者是瓶頸</td>
+<td>需要嚴格一致性的金融操作</td>
+</tr>
+<tr>
+<td><strong>TCC</strong></td>
+<td>強一致</td>
+<td>⚠️ 中等</td>
+<td>❌ 高</td>
+<td>顯式取消邏輯</td>
+<td>訂票系統、可預留資源</td>
+</tr>
+<tr>
+<td><strong>最終一致性 (EDA)</strong></td>
+<td>最終一致</td>
+<td>✅ 非常高</td>
+<td>⚠️ 中等</td>
+<td>重試邏輯、冪等性</td>
+<td>容忍延遲的微服務</td>
+</tr>
+<tr>
+<td><strong>Outbox 模式</strong></td>
+<td>最終一致</td>
+<td>✅ 高</td>
+<td>⚠️ 中等</td>
+<td>可靠訊息傳遞</td>
+<td>確保訊息和資料庫一致性</td>
+</tr>
+</tbody>
+</table>
+<h4 id="-19" tabindex="-1"><a class="header-anchor" href="#-19"><span>選擇建議</span></a></h4>
+<table>
+<thead>
+<tr>
+<th>需求</th>
+<th>最佳選擇</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>需要強一致性</td>
+<td>2PC, TCC</td>
+</tr>
+<tr>
+<td>高可擴展性</td>
+<td>Saga, Outbox</td>
+</tr>
+<tr>
+<td>需要資源預留</td>
+<td>TCC</td>
+</tr>
+<tr>
+<td>容錯能力</td>
+<td>Saga, Outbox</td>
+</tr>
+<tr>
+<td>簡單性 &gt; 一致性</td>
+<td>手動對帳</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h3 id="3-2-zookeeper" tabindex="-1"><a class="header-anchor" href="#3-2-zookeeper"><span>3.2 ZooKeeper 分散式鎖</span></a></h3>
+<p>ZooKeeper 是一個分散式協調服務，常用於實現分散式鎖、配置管理、服務發現等功能。</p>
+<p><strong>基本概念</strong>：</p>
+<ul>
+<li>使用臨時順序節點 (Ephemeral Sequential Node) 實現鎖</li>
+<li>客戶端創建節點，序號最小的獲得鎖</li>
+<li>其他客戶端監聽前一個節點，等待鎖釋放</li>
+</ul>
+<p><strong>優點</strong>：</p>
+<ul>
+<li>支援阻塞式鎖</li>
+<li>自動釋放（客戶端斷線時自動刪除臨時節點）</li>
+<li>避免羊群效應 (thundering herd)</li>
+</ul>
+<p><strong>缺點</strong>：</p>
+<ul>
+<li>需要部署和維護 ZooKeeper 叢集</li>
+<li>性能不如 Redis</li>
+</ul>
+<hr>
+<h2 id="4" tabindex="-1"><a class="header-anchor" href="#4"><span>4. 網路與協定</span></a></h2>
+<h3 id="4-1-tcp-vs-udp" tabindex="-1"><a class="header-anchor" href="#4-1-tcp-vs-udp"><span>4.1 TCP vs UDP</span></a></h3>
+<h4 id="tcp-transmission-control-protocol" tabindex="-1"><a class="header-anchor" href="#tcp-transmission-control-protocol"><span>TCP (Transmission Control Protocol)</span></a></h4>
+<p><strong>特性</strong>：</p>
+<ul>
+<li>面向連接的協定</li>
+<li>提供可靠的資料傳輸</li>
+<li>錯誤檢查和重傳功能</li>
+<li>確保資料不會丟失</li>
+</ul>
+<p><strong>三次握手 (Three-Way Handshake)</strong>：</p>
+<ol>
+<li>Client 向 Server 發送連接請求封包 (SYN)</li>
+<li>Server 接收並確認，回傳確認封包 (SYN-ACK)</li>
+<li>Client 收到後再回傳確認封包 (ACK)，連接建立</li>
+</ol>
+<p><strong>特性</strong>：</p>
+<ul>
+<li>建立連接後，所有封包都會加上序號</li>
+<li>保證完整性、順序性、重傳處理</li>
+<li>使用滑動窗口提升傳輸效率</li>
+</ul>
+<p><strong>適用場景</strong>：</p>
+<ul>
+<li>網頁瀏覽 (HTTP/HTTPS)</li>
+<li>電子郵件 (SMTP, IMAP)</li>
+<li>檔案傳輸 (FTP)</li>
+<li>需要資料完整性的應用</li>
+</ul>
+<h4 id="udp-user-datagram-protocol" tabindex="-1"><a class="header-anchor" href="#udp-user-datagram-protocol"><span>UDP (User Datagram Protocol)</span></a></h4>
+<p><strong>特性</strong>：</p>
+<ul>
+<li>面向非連接的協定</li>
+<li>不保證資料傳輸的可靠性</li>
+<li>傳輸速度快，通訊引擎簡單</li>
+<li>無需確認機制，表頭資料較少</li>
+</ul>
+<p><strong>適用場景</strong>：</p>
+<ul>
+<li>串流服務 (影片、音訊)</li>
+<li>線上遊戲</li>
+<li>DNS 查詢</li>
+<li>即時通訊</li>
+</ul>
+<h4 id="tcp-vs-udp" tabindex="-1"><a class="header-anchor" href="#tcp-vs-udp"><span>TCP vs UDP 比較</span></a></h4>
+<table>
+<thead>
+<tr>
+<th>特性</th>
+<th>TCP</th>
+<th>UDP</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>連接</td>
+<td>面向連接</td>
+<td>無連接</td>
+</tr>
+<tr>
+<td>可靠性</td>
+<td>可靠</td>
+<td>不可靠</td>
+</tr>
+<tr>
+<td>速度</td>
+<td>較慢</td>
+<td>較快</td>
+</tr>
+<tr>
+<td>順序</td>
+<td>保證順序</td>
+<td>不保證順序</td>
+</tr>
+<tr>
+<td>錯誤檢查</td>
+<td>有</td>
+<td>有但簡單</td>
+</tr>
+<tr>
+<td>重傳</td>
+<td>支援</td>
+<td>不支援</td>
+</tr>
+<tr>
+<td>表頭大小</td>
+<td>較大 (20 bytes)</td>
+<td>較小 (8 bytes)</td>
+</tr>
+<tr>
+<td>使用場景</td>
+<td>需要完整性的應用</td>
+<td>需要速度的應用</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h3 id="4-2-http" tabindex="-1"><a class="header-anchor" href="#4-2-http"><span>4.2 HTTP 相關</span></a></h3>
+<h4 id="http-tcp-socket" tabindex="-1"><a class="header-anchor" href="#http-tcp-socket"><span>HTTP, TCP, Socket 關係</span></a></h4>
+<ul>
+<li><strong>TCP/IP</strong>：傳輸控制協定/網路協定，指一系列協定族</li>
+<li><strong>HTTP</strong>：基於 TCP 的應用層協定，用於 Web 伺服器與瀏覽器之間傳輸超文本</li>
+<li><strong>Socket</strong>：TCP/IP 網路的 API，隱藏了複雜的 TCP/IP 協定細節</li>
+</ul>
+<p><strong>關係總結</strong>：</p>
+<ul>
+<li>需要 IP 協定來連接網路</li>
+<li>TCP 是一種安全傳輸資料的機制</li>
+<li>HTTP 使用 TCP 協定來傳輸資料</li>
+<li>Socket 可以用來建立 TCP 連接</li>
+</ul>
+<h4 id="http" tabindex="-1"><a class="header-anchor" href="#http"><span>HTTP 長連接與短連接</span></a></h4>
+<p><strong>短連接</strong>（HTTP/1.0 預設）：</p>
+<ul>
+<li>瀏覽器和伺服器每進行一次 HTTP 操作，就建立一次連接</li>
+<li>任務結束後立即中斷連接</li>
+<li>每個資源（HTML、CSS、JS、圖片）都需要獨立的連接</li>
+</ul>
+<p><strong>長連接</strong>（HTTP/1.1 預設）：</p>
+<ul>
+<li>使用 Keep-Alive 保持連接</li>
+<li>網頁開啟完成後，TCP 連接不會關閉</li>
+<li>客戶端再次訪問相同伺服器時，繼續使用已建立的連接</li>
+<li>有保持時間限制，可在伺服器配置中設定</li>
+</ul>
+<p><strong>實質</strong>：HTTP 協定的長短連接，實質上是 TCP 協定的長短連接</p>
+<h4 id="http-304-not-modified" tabindex="-1"><a class="header-anchor" href="#http-304-not-modified"><span>HTTP 304 (Not Modified)</span></a></h4>
+<ul>
+<li><strong>含義</strong>：已讀取過的資源，由瀏覽器快取 (cache) 中讀取</li>
+<li><strong>作用</strong>：節省頻寬，加快頁面載入速度</li>
+<li><strong>觸發條件</strong>：
+<ul>
+<li>客戶端發送帶有 <code>If-Modified-Since</code> 或 <code>If-None-Match</code> 的請求</li>
+<li>伺服器判斷資源未修改，返回 304 狀態碼</li>
+<li>瀏覽器使用本地快取的版本</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 id="4-3-jwt-json-web-token" tabindex="-1"><a class="header-anchor" href="#4-3-jwt-json-web-token"><span>4.3 JWT (JSON Web Token)</span></a></h3>
+<h4 id="jwt" tabindex="-1"><a class="header-anchor" href="#jwt"><span>什麼是 JWT？</span></a></h4>
+<p>JWT 全名為 JSON Web Token，是一種基於 JSON 的開放標準（RFC 7519）。</p>
+<p><strong>結構</strong>：由三部分組成，以 <code>.</code> 分隔</p>
+<ul>
+<li><strong>Header</strong>：包含 token 類型和加密演算法</li>
+<li><strong>Payload</strong>：包含聲明 (claims)，如用戶 ID、過期時間等</li>
+<li><strong>Signature</strong>：使用 Header 中指定的演算法 (HMAC、RSA、ECDSA) 對 Header 和 Payload 進行簽名</li>
+</ul>
+<p><strong>範例</strong>：</p>
+<pre><code>eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
+</code></pre>
+<h4 id="jwt-1" tabindex="-1"><a class="header-anchor" href="#jwt-1"><span>JWT 的優點</span></a></h4>
+<ul>
+<li>✅ 無狀態：伺服器不需要存儲 session</li>
+<li>✅ 可擴展：適合分散式系統和微服務</li>
+<li>✅ 跨域支援：可在多個網域間使用</li>
+<li>✅ 自包含：Token 本身包含用戶資訊</li>
+</ul>
+<h4 id="jwt-2" tabindex="-1"><a class="header-anchor" href="#jwt-2"><span>JWT 的缺點</span></a></h4>
+<ul>
+<li>❌ <strong>Cross-site 攻擊</strong>：可能遭受 XSS 攻擊</li>
+<li>❌ <strong>Local storage 不安全</strong>：存儲在 Local Storage 中容易被竊取</li>
+<li>❌ <strong>無法單獨銷毀</strong>：Token 在過期前無法撤銷，除非使用黑名單機制</li>
+</ul>
+<h4 id="-20" tabindex="-1"><a class="header-anchor" href="#-20"><span>使用時機</span></a></h4>
+<ul>
+<li>✅ <strong>Token 生命期較短</strong>：讓擁有此 Token 的用戶能在時間內完成特定操作（如登入、下載檔案）</li>
+<li>✅ <strong>Token 僅單次使用</strong>：任何 Token 只用於一次後就會被拋棄，不存在於任何持久化狀態</li>
+</ul>
+<h4 id="-21" tabindex="-1"><a class="header-anchor" href="#-21"><span>安全建議</span></a></h4>
+<ul>
+<li>使用 HTTPS 傳輸 JWT</li>
+<li>設定合理的過期時間</li>
+<li>敏感資訊不要放在 Payload 中（因為 Base64 可解碼）</li>
+<li>考慮使用 Refresh Token 機制</li>
+<li>實現 Token 黑名單（如 Redis）用於撤銷</li>
+</ul>
+<hr>
+<h2 id="5" tabindex="-1"><a class="header-anchor" href="#5"><span>5. 應用架構</span></a></h2>
+<h3 id="5-1-middleware" tabindex="-1"><a class="header-anchor" href="#5-1-middleware"><span>5.1 Middleware (中介層)</span></a></h3>
+<h4 id="middleware" tabindex="-1"><a class="header-anchor" href="#middleware"><span>什麼是 Middleware？</span></a></h4>
+<p>Middleware 是位於<strong>傳入請求和核心應用邏輯之間的程式碼層</strong>，用於攔截、修改或處理請求和回應，而不改變主要業務邏輯。</p>
+<p><strong>流程</strong>：</p>
+<pre><code>Client → Middleware → App → Middleware → Response → Client
+</code></pre>
+<h4 id="middleware-1" tabindex="-1"><a class="header-anchor" href="#middleware-1"><span>為什麼使用 Middleware？</span></a></h4>
+<p>Middleware 讓你可以將常見關注點從核心應用邏輯中解耦：</p>
+<table>
+<thead>
+<tr>
+<th>使用案例</th>
+<th>說明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>✅ <strong>認證 (Authentication)</strong></td>
+<td>驗證 token、session、API key</td>
+</tr>
+<tr>
+<td>✅ <strong>日誌 (Logging)</strong></td>
+<td>記錄請求/回應詳情</td>
+</tr>
+<tr>
+<td>✅ <strong>速率限制 (Rate Limiting)</strong></td>
+<td>基於 IP/用戶防止濫用</td>
+</tr>
+<tr>
+<td>✅ <strong>CORS / Headers</strong></td>
+<td>添加/修改 header 處理跨域請求</td>
+</tr>
+<tr>
+<td>✅ <strong>錯誤處理 (Error Handling)</strong></td>
+<td>捕獲並回應異常</td>
+</tr>
+<tr>
+<td>✅ <strong>請求解析/驗證</strong></td>
+<td>確保資料乾淨且安全</td>
+</tr>
+</tbody>
+</table>
+<h4 id="flask" tabindex="-1"><a class="header-anchor" href="#flask"><span>Flask 範例</span></a></h4>
+<pre><code class="language-python">from flask import Flask, request
+
+app = Flask(__name__)
+
+# 請求前的日誌記錄
+@app.before_request
+def log_request():
+    print(f&quot;[{request.method}] {request.path}&quot;)
+
+# 請求後添加自訂 header
+@app.after_request
+def add_custom_header(response):
+    response.headers['X-App-Version'] = '1.0.0'
+    return response
+
+@app.route(&quot;/hello&quot;)
+def hello():
+    return &quot;Hello, World!&quot;
+</code></pre>
+<h4 id="flask-middleware" tabindex="-1"><a class="header-anchor" href="#flask-middleware"><span>Flask 認證 Middleware 範例</span></a></h4>
+<pre><code class="language-python">from flask import Flask, request, jsonify, abort
+
+app = Flask(__name__)
+
+# 模擬的 token 儲存（生產環境應使用資料庫或外部認證服務）
+VALID_API_TOKENS = {
+    &quot;token123&quot;: &quot;user_a&quot;,
+    &quot;token456&quot;: &quot;user_b&quot;
+}
+
+@app.before_request
+def authenticate():
+    # 定義不需要認證的公開路徑
+    public_paths = ['/health', '/login']
+
+    if request.path in public_paths:
+        return  # 跳過認證檢查
+
+    auth_header = request.headers.get(&quot;Authorization&quot;)
+    if not auth_header or not auth_header.startswith(&quot;Bearer &quot;):
+        abort(401, description=&quot;Missing or malformed Authorization header&quot;)
+
+    token = auth_header.split(&quot;Bearer &quot;)[1]
+    user = VALID_API_TOKENS.get(token)
+    if not user:
+        abort(401, description=&quot;Invalid or expired token&quot;)
+
+    # 將用戶資訊附加到全域 request context
+    request.user = user
+
+@app.route(&quot;/health&quot;)
+def health_check():
+    return {&quot;status&quot;: &quot;ok&quot;}
+
+@app.route(&quot;/protected&quot;)
+def protected_resource():
+    return {&quot;message&quot;: f&quot;Hello, {request.user}. You accessed a protected route.&quot;}
+
+if __name__ == &quot;__main__&quot;:
+    app.run(debug=True)
+</code></pre>
+<h4 id="express-node-js" tabindex="-1"><a class="header-anchor" href="#express-node-js"><span>Express (Node.js) 範例</span></a></h4>
+<pre><code class="language-javascript">const express = require('express');
+const app = express();
+
+// 日誌 middleware
+app.use((req, res, next) =&gt; {
+  console.log(`${req.method} ${req.url}`);
+  next(); // 傳遞控制權給下一個 middleware 或路由
+});
+
+// 認證 middleware
+app.use((req, res, next) =&gt; {
+  if (!req.headers['authorization']) {
+    return res.status(401).send('Unauthorized');
+  }
+  next();
+});
+
+app.get('/api/data', (req, res) =&gt; {
+  res.send({ message: 'Protected data' });
+});
+</code></pre>
+<h4 id="-22" tabindex="-1"><a class="header-anchor" href="#-22"><span>核心概念</span></a></h4>
+<ul>
+<li>Middleware 通常是<strong>無狀態的</strong>，獨立處理每個請求</li>
+<li>Middleware 可以<strong>短路</strong>請求（如在到達路由前返回 401）</li>
+<li>通常是<strong>堆疊或組合的</strong>，形成管道</li>
+<li>可以是<strong>自訂的</strong>或來自框架/函式庫</li>
+</ul>
+<h4 id="middleware-2" tabindex="-1"><a class="header-anchor" href="#middleware-2"><span>各框架的 Middleware</span></a></h4>
+<table>
+<thead>
+<tr>
+<th>框架</th>
+<th>Middleware 術語</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Express (Node.js)</strong></td>
+<td><code>app.use()</code> handlers</td>
+</tr>
+<tr>
+<td><strong>Flask (Python)</strong></td>
+<td><code>@before_request</code>, WSGI middleware</td>
+</tr>
+<tr>
+<td><strong>Django</strong></td>
+<td><code>MIDDLEWARE</code> setting in <a href="http://settings.py">settings.py</a></td>
+</tr>
+<tr>
+<td><strong><a href="http://ASP.NET">ASP.NET</a> Core</strong></td>
+<td>Middleware pipeline with <code>UseXXX()</code></td>
+</tr>
+<tr>
+<td><strong>Ruby on Rails</strong></td>
+<td>Rack middleware</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h3 id="5-2-orm-object-relational-mapping" tabindex="-1"><a class="header-anchor" href="#5-2-orm-object-relational-mapping"><span>5.2 ORM (Object-Relational Mapping)</span></a></h3>
+<h4 id="orm" tabindex="-1"><a class="header-anchor" href="#orm"><span>什麼是 ORM？</span></a></h4>
+<p>ORM 是一種程式設計技術，用於在關聯式資料庫和物件導向程式語言之間建立映射關係。</p>
+<p><strong>核心概念</strong>：</p>
+<ul>
+<li>將資料庫表映射為類別 (Class)</li>
+<li>將表中的行映射為物件實例 (Object Instance)</li>
+<li>將欄位映射為物件屬性 (Attribute)</li>
+</ul>
+<p><strong>優點</strong>：</p>
+<ul>
+<li>✅ 減少 SQL 程式碼，提高開發效率</li>
+<li>✅ 資料庫無關性，易於切換資料庫</li>
+<li>✅ 型別安全，減少 SQL 注入風險</li>
+<li>✅ 易於維護和測試</li>
+</ul>
+<p><strong>缺點</strong>：</p>
+<ul>
+<li>❌ 性能可能不如原生 SQL（特別是複雜查詢）</li>
+<li>❌ 學習曲線（需要理解 ORM 框架）</li>
+<li>❌ 可能產生低效的 SQL（N+1 問題）</li>
+</ul>
+<p><strong>常見 ORM 框架</strong>：</p>
+<ul>
+<li>Java: Hibernate, JPA, MyBatis</li>
+<li>Python: SQLAlchemy, Django ORM</li>
+<li>Node.js: Sequelize, TypeORM, Prisma</li>
+<li>.NET: Entity Framework</li>
+</ul>
+<hr>
+<h3 id="5-3-mvc-vs-mvvm" tabindex="-1"><a class="header-anchor" href="#5-3-mvc-vs-mvvm"><span>5.3 MVC vs MVVM</span></a></h3>
+<h4 id="mvc-model-view-controller" tabindex="-1"><a class="header-anchor" href="#mvc-model-view-controller"><span>MVC (Model-View-Controller)</span></a></h4>
+<p><strong>架構</strong>：</p>
+<ul>
+<li><strong>Model</strong>：資料和業務邏輯</li>
+<li><strong>View</strong>：使用者介面</li>
+<li><strong>Controller</strong>：處理用戶輸入，協調 Model 和 View</li>
+</ul>
+<p><strong>流程</strong>：</p>
+<pre><code>User → Controller → Model → Controller → View → User
+</code></pre>
+<p><strong>優點</strong>：</p>
+<ul>
+<li>✅ 職責分離</li>
+<li>✅ 易於測試</li>
+<li>✅ 適合傳統 Web 應用</li>
+</ul>
+<p><strong>缺點</strong>：</p>
+<ul>
+<li>❌ Controller 可能變得臃腫</li>
+<li>❌ View 和 Model 可能存在耦合</li>
+</ul>
+<h4 id="mvvm-model-view-viewmodel" tabindex="-1"><a class="header-anchor" href="#mvvm-model-view-viewmodel"><span>MVVM (Model-View-ViewModel)</span></a></h4>
+<p><strong>架構</strong>：</p>
+<ul>
+<li><strong>Model</strong>：資料和業務邏輯</li>
+<li><strong>View</strong>：使用者介面</li>
+<li><strong>ViewModel</strong>：View 的抽象，處理 View 的展示邏輯和狀態</li>
+</ul>
+<p><strong>流程</strong>：</p>
+<pre><code>User → View ↔ ViewModel ↔ Model
+</code></pre>
+<p><strong>特點</strong>：</p>
+<ul>
+<li>View 和 ViewModel 之間通過資料綁定 (Data Binding) 自動同步</li>
+</ul>
+<p><strong>優點</strong>：</p>
+<ul>
+<li>✅ View 和業務邏輯完全分離</li>
+<li>✅ 易於單元測試（ViewModel 可獨立測試）</li>
+<li>✅ 適合現代前端框架（Vue.js, Angular, React）</li>
+</ul>
+<p><strong>缺點</strong>：</p>
+<ul>
+<li>❌ 學習曲線較陡</li>
+<li>❌ 過度使用資料綁定可能影響性能</li>
+</ul>
+<hr>
+<h2 id="6" tabindex="-1"><a class="header-anchor" href="#6"><span>6. 常見面試題</span></a></h2>
+<h3 id="6-1" tabindex="-1"><a class="header-anchor" href="#6-1"><span>6.1 如何建立全域事務？</span></a></h3>
+<p><strong>回答要點</strong>：</p>
+<ul>
+<li>說明 2PC 適用於強一致性需求</li>
+<li>說明 Saga 適用於微服務架構</li>
+<li>提到 TCC、Outbox 模式等替代方案</li>
+<li>強調需考慮一致性、可用性、性能的權衡</li>
+</ul>
+<p>詳見 <a href="#31-%E5%85%A8%E5%9F%9F%E4%BA%8B%E5%8B%99-global-transaction">3.1 全域事務</a></p>
+<hr>
+<h3 id="6-2-redis" tabindex="-1"><a class="header-anchor" href="#6-2-redis"><span>6.2 建立分散式 Redis 鎖時的考量？</span></a></h3>
+<p><strong>回答要點</strong>：</p>
+<ol>
+<li><strong>原子性</strong>：使用 <code>SET key value NX EX timeout</code> 確保鎖的獲取和過期時間設定是原子的</li>
+<li><strong>過期時間</strong>：設定合理的 TTL，避免死鎖</li>
+<li><strong>鎖的釋放</strong>：確保在 finally 塊中釋放鎖</li>
+<li><strong>重試策略</strong>：使用指數退避 (exponential backoff)</li>
+<li><strong>唯一標識</strong>：使用 UUID 作為鎖的值，釋放時驗證是否為自己持有的鎖</li>
+<li><strong>Redlock 演算法</strong>：多 Redis 實例場景下使用 Redlock 提高可靠性</li>
+</ol>
+<p>詳見 <a href="#22-redis-%E5%88%86%E6%95%A3%E5%BC%8F%E9%8E%96">2.2 Redis 分散式鎖</a></p>
+<hr>
+<h3 id="6-3-sql" tabindex="-1"><a class="header-anchor" href="#6-3-sql"><span>6.3 如何優化 SQL 查詢？如何使用執行計畫？</span></a></h3>
+<p><strong>回答要點</strong>：</p>
+<ol>
+<li>使用 <code>EXPLAIN</code> 或 <code>EXPLAIN ANALYZE</code> 查看執行計畫</li>
+<li>識別昂貴的操作：全表掃描、filesort、using temporary</li>
+<li>確保 WHERE 和 JOIN 使用索引</li>
+<li>避免 <code>SELECT *</code>，只查詢需要的欄位</li>
+<li>分析 JOIN 順序，將過濾條件前置</li>
+<li>為 ORDER BY 和 GROUP BY 欄位建立索引</li>
+</ol>
+<p>詳見 <a href="#13-sql-%E6%9F%A5%E8%A9%A2%E5%84%AA%E5%8C%96%E8%88%87%E5%9F%B7%E8%A1%8C%E8%A8%88%E7%95%AB">1.3 SQL 查詢優化與執行計畫</a></p>
+<hr>
+<h3 id="6-4-spring-boot-cloud" tabindex="-1"><a class="header-anchor" href="#6-4-spring-boot-cloud"><span>6.4 Spring Boot Cloud 主要組件有哪些？</span></a></h3>
+<p><strong>常見組件</strong>：</p>
+<ul>
+<li><strong>Eureka</strong>：服務註冊與發現</li>
+<li><strong>Ribbon</strong>：客戶端負載平衡</li>
+<li><strong>Feign</strong>：聲明式 REST 客戶端</li>
+<li><strong>Hystrix</strong>：斷路器，實現服務降級和熔斷</li>
+<li><strong>Zuul / Gateway</strong>：API 閘道</li>
+<li><strong>Config Server</strong>：集中式配置管理</li>
+<li><strong>Sleuth + Zipkin</strong>：分散式追蹤</li>
+</ul>
+<hr>
+<h3 id="6-5" tabindex="-1"><a class="header-anchor" href="#6-5"><span>6.5 如何確保資料庫資料一致性？</span></a></h3>
+<p><strong>回答要點</strong>：</p>
+<ol>
+<li><strong>事務隔離級別</strong>：根據需求選擇合適的隔離級別</li>
+<li><strong>樂觀鎖 vs 悲觀鎖</strong>：
+<ul>
+<li>悲觀鎖：<code>SELECT ... FOR UPDATE</code></li>
+<li>樂觀鎖：版本號或時間戳</li>
+</ul>
+</li>
+<li><strong>分散式事務</strong>：使用 2PC、Saga、TCC 等模式</li>
+<li><strong>冪等性</strong>：確保操作可重複執行而不影響結果</li>
+<li><strong>補償機制</strong>：失敗時執行補償邏輯</li>
+</ol>
+<p>詳見 <a href="#11-%E8%B3%87%E6%96%99%E5%BA%AB%E9%9A%94%E9%9B%A2%E7%B4%9A%E5%88%A5-transaction-isolation-levels">1.1 資料庫隔離級別</a>、<a href="#31-%E5%85%A8%E5%9F%9F%E4%BA%8B%E5%8B%99-global-transaction">3.1 全域事務</a></p>
+<hr>
+<h3 id="6-6-redis-mysql-redis" tabindex="-1"><a class="header-anchor" href="#6-6-redis-mysql-redis"><span>6.6 如何使用 Redis 快取和資料庫（MySQL），當 Redis 可能失效時？</span></a></h3>
+<p><strong>回答要點</strong>：</p>
+<ol>
+<li><strong>快取模式</strong>：使用 Cache-Aside 模式</li>
+<li><strong>快取一致性</strong>：
+<ul>
+<li>寫入時使用 <code>@CacheEvict</code> 清除快取</li>
+<li>或使用 <code>@CachePut</code> 同時更新快取</li>
+</ul>
+</li>
+<li><strong>快取失效場景</strong>：
+<ul>
+<li>快取穿透：使用布隆過濾器或快取空值</li>
+<li>快取擊穿：熱點資料設為永不過期或使用互斥鎖</li>
+<li>快取雪崩：使用隨機過期時間或 Redis 叢集</li>
+</ul>
+</li>
+<li><strong>降級策略</strong>：Redis 不可用時直接查詢資料庫</li>
+</ol>
+<p>詳見 <a href="#21-%E5%BF%AB%E5%8F%96%E4%B8%89%E5%A4%A7%E5%95%8F%E9%A1%8C">2.1 快取三大問題</a>、<a href="#23-spring-boot--redis-%E5%BF%AB%E5%8F%96%E5%AF%A6%E8%B8%90">2.3 Spring Boot + Redis 快取實踐</a></p>
+<hr>
+<h3 id="6-7-interface-class-bytecode" tabindex="-1"><a class="header-anchor" href="#6-7-interface-class-bytecode"><span>6.7 Interface、Class 在編譯時、執行時的使用，以及與 Bytecode 的關係？</span></a></h3>
+<p><strong>回答要點</strong>：</p>
+<p><strong>編譯時 (Compile Time)</strong>：</p>
+<ul>
+<li>Interface 定義契約，Class 實現契約</li>
+<li>編譯器檢查型別安全、方法簽名等</li>
+<li>Java 編譯器將 <code>.java</code> 檔案編譯為 <code>.class</code> bytecode 檔案</li>
+</ul>
+<p><strong>執行時 (Runtime)</strong>：</p>
+<ul>
+<li>JVM 載入 bytecode 並執行</li>
+<li>使用多型 (Polymorphism) 時，JVM 根據實際物件類型調用對應方法</li>
+<li>Interface 在執行時通過虛擬方法表 (Virtual Method Table) 實現動態綁定</li>
+</ul>
+<p><strong>與 Bytecode 的關係</strong>：</p>
+<ul>
+<li>Interface 編譯後產生 <code>.class</code> 檔案，包含方法簽名但無實現</li>
+<li>Class 編譯後產生包含實現的 bytecode</li>
+<li>Bytecode 指令如 <code>invokevirtual</code>、<code>invokeinterface</code> 用於方法調用</li>
+</ul>
+<hr>
+<h2 id="-23" tabindex="-1"><a class="header-anchor" href="#-23"><span>參考資料</span></a></h2>
+<ul>
+<li><a href="https://totoroliu.medium.com/redis-%E5%BF%AB%E5%8F%96%E9%9B%AA%E5%B4%A9-%E6%93%8A%E7%A9%BF-%E7%A9%BF%E9%80%8F-8bc02f09fe8f">Redis 快取雪崩、擊穿、穿透</a></li>
+<li><a href="https://xiaolincoding.com/redis/cluster/cache_problem.html">小林 coding - 緩存問題</a></li>
+<li><a href="https://www.explainthis.io/zh-hant/swe/why-nginx">ExplainThis - 反向代理</a></li>
+<li><a href="https://www.xiaolincoding.com/mysql/lock/mysql_lock.html">MySQL Lock</a></li>
+<li><a href="https://blog.twjoin.com/%E9%8E%96-lock-%E7%9A%84%E4%BB%8B%E7%B4%B9%E8%88%87%E6%AD%BB%E9%8E%96%E5%88%86%E6%9E%90-19833c18baab">鎖的介紹與死鎖分析</a></li>
+<li><a href="https://blog.amis.com/database-transaction-isolation-a1e448a7736e">Database Transaction Isolation</a></li>
+<li><a href="https://www.mysql.tw/2023/05/mysql-lock.html">MySQL 事務隔離級別</a></li>
+<li><a href="https://github.com/yongxinz/backend-interview">後端面試題</a></li>
+</ul>
+<hr>
+<p><strong>最後更新日期</strong>: 2026-02-14</p>
+
+      </div>
+      <div class="cheatsheet-footer">
+        <a href="../faqs.html" class="back-link">← Back to FAQs</a>
+        <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/faq/backend/後端面試題總整理.md" class="github-edit" target="_blank">
+          Edit on GitHub →
+        </a>
+      </div>
+    <nav class="prev-next"><a href="backend_db_isolation_demo_mysql.html" class="prev-link">← Db Isolation Demo Mysql</a><a href="cs_basic.html" class="next-link">Cs Basic →</a></nav>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>CS_basics - Computer Science Fundamentals & Interview Preparation</p>
+      <p>
+        <a href="https://github.com/yennanliu/CS_basics">GitHub</a> •
+        <a href="https://github.com/yennanliu/CS_basics/tree/master/doc">Documentation</a> •
+        <a href="https://github.com/yennanliu/CS_basics/issues">Report Issues</a>
+      </p>
+    </div>
+  </footer>
+</body>
+</html>

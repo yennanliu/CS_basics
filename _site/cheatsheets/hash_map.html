@@ -1,0 +1,3648 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hash Map - CS_basics</title>
+  <meta name="description" content="Computer Science fundamentals: algorithms, data structures, system design, and LeetCode solutions">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>CS</text></svg>">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="../vendor/fonts.css">
+  <link rel="stylesheet" href="../vendor/highlight/github-dark.min.css">
+  <script src="../vendor/highlight/highlight.min.js"></script>
+  <script>
+  // Apply theme before render to prevent flash
+  (function() {
+    var saved = localStorage.getItem('theme');
+    if (saved === 'dark' || (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      document.documentElement.setAttribute('data-theme', 'dark');
+    }
+  })();
+  </script>
+  <script>document.addEventListener('DOMContentLoaded', function() {
+    hljs.highlightAll();
+    document.querySelectorAll('pre code').forEach(function(codeEl) {
+      var pre = codeEl.parentElement;
+      var lang = '';
+      var cls = codeEl.className || '';
+      var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
+      if (m) lang = m[1];
+      var wrapper = document.createElement('div');
+      wrapper.className = 'code-block-wrapper';
+      pre.parentNode.insertBefore(wrapper, pre);
+      var header = document.createElement('div');
+      header.className = 'code-block-header';
+      if (lang) {
+        var label = document.createElement('span');
+        label.className = 'code-lang-label';
+        label.textContent = lang;
+        header.appendChild(label);
+      } else {
+        header.appendChild(document.createElement('span'));
+      }
+      var btn = document.createElement('button');
+      btn.className = 'copy-btn';
+      btn.textContent = 'Copy';
+      btn.addEventListener('click', function() {
+        navigator.clipboard.writeText(codeEl.textContent).then(function() {
+          btn.textContent = 'Copied!';
+          btn.classList.add('copied');
+          setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+        });
+      });
+      header.appendChild(btn);
+      wrapper.appendChild(header);
+      wrapper.appendChild(pre);
+    });
+    document.querySelectorAll('table').forEach(function(table) {
+      if (!table.parentElement.classList.contains('table-wrap')) {
+        var wrapper = document.createElement('div');
+        wrapper.className = 'table-wrap';
+        table.parentNode.insertBefore(wrapper, table);
+        wrapper.appendChild(table);
+      }
+    });
+    // Reading progress bar
+    var progressBar = document.getElementById('reading-progress');
+    if (progressBar) {
+      window.addEventListener('scroll', function() {
+        var winScroll = document.documentElement.scrollTop;
+        var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        progressBar.style.width = height > 0 ? (winScroll / height * 100) + '%' : '0%';
+      });
+    }
+    // Dark mode toggle
+    var toggle = document.getElementById('theme-toggle');
+    if (toggle) {
+      var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      toggle.textContent = isDark ? '☀️' : '🌙';
+      toggle.addEventListener('click', function() {
+        var dark = document.documentElement.getAttribute('data-theme') === 'dark';
+        if (dark) {
+          document.documentElement.removeAttribute('data-theme');
+          localStorage.setItem('theme', 'light');
+          toggle.textContent = '🌙';
+        } else {
+          document.documentElement.setAttribute('data-theme', 'dark');
+          localStorage.setItem('theme', 'dark');
+          toggle.textContent = '☀️';
+        }
+      });
+    }
+  });</script>
+</head>
+<body>
+  <div class="progress-container"><div class="progress-bar" id="reading-progress"></div></div>
+  <nav class="navbar">
+    <div class="container">
+      <div class="nav-brand">
+        <span class="nav-icon">💻</span>
+        <span class="nav-title">CS_basics</span>
+      </div>
+      <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+      <div class="nav-links">
+        <a href="../index.html" class="">Home</a>
+        <a href="../cheatsheets.html" class="active">Cheat Sheets</a>
+        <a href="../patterns.html" class="">Pattern Recognition</a>
+        <a href="../faqs.html" class="">FAQs</a>
+        <a href="../resources.html" class="">Resources</a>
+        <a href="../lc-explorer.html" class="">LC Explorer</a>
+        <a href="../lc-random-picker.html" class="">🎲 Random Picker</a>
+        <a href="../algo_demo/index.html" class="">Visualizer</a>
+        <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">&#127769;</button>
+        <a href="https://github.com/yennanliu/CS_basics" target="_blank" class="github-link" aria-label="GitHub">
+          <svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor">
+            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container">
+    <div class="content">
+      
+      <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">Hash Map</span></nav>
+      <div class="cheatsheet-header">
+        <h1>Hash Map</h1>
+        <span class="last-updated">Last updated: Feb 28, 2026</span>
+      </div>
+      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#overview">Overview</a></li><li class="toc-sub"><a href="#key-properties">Key Properties</a></li><li class="toc-sub"><a href="#when-hash-collisions-occur">When Hash Collisions Occur</a></li><li><a href="#problem-categories">Problem Categories</a></li><li class="toc-sub"><a href="#1-counting-and-frequency">1. Counting and Frequency</a></li><li class="toc-sub"><a href="#2-two-sum-variants-and-complement-finding">2. Two Sum Variants and Complement Finding</a></li><li class="toc-sub"><a href="#3-prefix-sum-and-subarray-problems">3. Prefix Sum and Subarray Problems</a></li><li class="toc-sub"><a href="#4-sliding-window-with-hash-map">4. Sliding Window with Hash Map</a></li><li class="toc-sub"><a href="#5-design-and-caching">5. Design and Caching</a></li><li class="toc-sub"><a href="#6-graph-and-tree-problems-with-hash-map">6. Graph and Tree Problems with Hash Map</a></li><li><a href="#templates-and-patterns">Templates and Patterns</a></li><li class="toc-sub"><a href="#template-1-counting-frequency-pattern">Template 1: Counting/Frequency Pattern</a></li><li class="toc-sub"><a href="#template-2-two-sum-complement-finding">Template 2: Two Sum/Complement Finding</a></li><li class="toc-sub"><a href="#template-3-prefix-sum-with-hash-map">Template 3: Prefix Sum with Hash Map</a></li><li class="toc-sub"><a href="#template-4-sliding-window-with-hash-map">Template 4: Sliding Window with Hash Map</a></li><li class="toc-sub"><a href="#template-5-hash-map-for-caching-memoization">Template 5: Hash Map for Caching/Memoization</a></li><li class="toc-sub"><a href="#template-6-graph-problems-with-hash-map">Template 6: Graph Problems with Hash Map</a></li><li class="toc-sub"><a href="#template-7-treemap-pattern-ordered-map">Template 7: TreeMap Pattern (Ordered Map)</a></li><li><a href="#0-concept">0) Concept</a></li><li class="toc-sub"><a href="#0-1-types">0-1) Types</a></li><li class="toc-sub"><a href="#0-2-pattern">0-2) Pattern</a></li><li><a href="#1-general-form">1) General form</a></li><li class="toc-sub"><a href="#1-1-basic-op">1-1) Basic OP</a></li><li><a href="#2-lc-example">2) LC Example</a></li><li class="toc-sub"><a href="#2-1-contiguous-array-lc-525">2-1) Contiguous Array (LC 525)</a></li><li class="toc-sub"><a href="#2-1-1-subarray-sums-divisible-by-k-lc-974">2-1-1) Subarray Sums Divisible by K (LC 974)</a></li><li class="toc-sub"><a href="#2-2-continuous-subarray-sum">2-2) Continuous Subarray Sum</a></li><li class="toc-sub"><a href="#2-3-group-anagrams">2-3) Group Anagrams</a></li><li class="toc-sub"><a href="#2-3-longest-substring-without-repeating-characters">2-3) Longest Substring Without Repeating Characters</a></li><li class="toc-sub"><a href="#2-4-count-primes">2-4) Count Primes</a></li><li class="toc-sub"><a href="#2-5-valid-sudoku">2-5) Valid Sudoku</a></li><li class="toc-sub"><a href="#2-6-pairs-of-songs-with-total-durations-divisible-by-60">2-6) Pairs of Songs With Total Durations Divisible by 60</a></li><li class="toc-sub"><a href="#2-7-subarray-sum-equals-k">2-7) Subarray Sum Equals K</a></li><li class="toc-sub"><a href="#2-8-k-diff-pairs-in-an-array">2-8) K-diff Pairs in an Array</a></li><li class="toc-sub"><a href="#2-9-sentence-similarity">2-9) Sentence Similarity</a></li><li class="toc-sub"><a href="#2-10-lru-cache">2-10) LRU Cache</a></li><li class="toc-sub"><a href="#2-11-find-all-anagrams-in-a-string">2-11) Find All Anagrams in a String</a></li><li class="toc-sub"><a href="#2-12-brick-wall">2-12) Brick Wall</a></li><li class="toc-sub"><a href="#2-13-maximum-size-subarray-sum-equals-k">2-13) Maximum Size Subarray Sum Equals k</a></li><li class="toc-sub"><a href="#2-14-smallest-common-region">2-14)  Smallest Common Region</a></li><li><a href="#problem-classification-table">Problem Classification Table</a></li><li class="toc-sub"><a href="#category-1-counting-and-frequency-25-problems">Category 1: Counting and Frequency (25 problems)</a></li><li class="toc-sub"><a href="#category-2-two-sum-variants-15-problems">Category 2: Two Sum Variants (15 problems)</a></li><li class="toc-sub"><a href="#category-3-prefix-sum-and-subarray-17-problems">Category 3: Prefix Sum and Subarray (17 problems)</a></li><li class="toc-sub"><a href="#category-4-sliding-window-with-hash-map-12-problems">Category 4: Sliding Window with Hash Map (12 problems)</a></li><li class="toc-sub"><a href="#category-5-design-and-caching-10-problems">Category 5: Design and Caching (10 problems)</a></li><li class="toc-sub"><a href="#category-6-graph-and-tree-with-hash-map-8-problems">Category 6: Graph and Tree with Hash Map (8 problems)</a></li><li><a href="#decision-framework">Decision Framework</a></li><li class="toc-sub"><a href="#pattern-selection-flowchart">Pattern Selection Flowchart</a></li><li class="toc-sub"><a href="#decision-questions">Decision Questions</a></li><li class="toc-sub"><a href="#time-complexity-guide">Time Complexity Guide</a></li><li><a href="#interview-tips-and-best-practices">Interview Tips and Best Practices</a></li><li class="toc-sub"><a href="#quick-recognition-patterns">🎯 Quick Recognition Patterns</a></li><li class="toc-sub"><a href="#key-insights-to-remember">💡 Key Insights to Remember</a></li><li class="toc-sub"><a href="#implementation-best-practices">🔧 Implementation Best Practices</a></li><li class="toc-sub"><a href="#common-mistakes-to-avoid">⚠️ Common Mistakes to Avoid</a></li><li class="toc-sub"><a href="#advanced-techniques">🏆 Advanced Techniques</a></li><li class="toc-sub"><a href="#performance-optimization">📈 Performance Optimization</a></li><li class="toc-sub"><a href="#interview-preparation-checklist">🎯 Interview Preparation Checklist</a></li><li class="toc-sub"><a href="#summary">📚 Summary</a></li></ul></div>
+      <div class="cheatsheet-content">
+        <h1 id="hash-map-cheatsheet" tabindex="-1"><a class="header-anchor" href="#hash-map-cheatsheet"><span>Hash Map Cheatsheet</span></a></h1>
+<h2 id="overview" tabindex="-1"><a class="header-anchor" href="#overview"><span>Overview</span></a></h2>
+<p>Hash Map (Hash Table/Dictionary) is a fundamental data structure that provides efficient key-value storage and retrieval operations.</p>
+<h3 id="key-properties" tabindex="-1"><a class="header-anchor" href="#key-properties"><span>Key Properties</span></a></h3>
+<ul>
+<li><strong>Average Time Complexity</strong>: O(1) for insert, delete, and search</li>
+<li><strong>Worst Time Complexity</strong>: O(n) for insert, delete, and search (when all keys hash to same bucket)</li>
+<li><strong>Space Complexity</strong>: O(n)</li>
+<li><strong>Implementation</strong>: Array + Linked List/Red-Black Tree (Java HashMap)</li>
+<li><strong>Hash Collisions</strong>: Handled via chaining or open addressing</li>
+</ul>
+<h3 id="when-hash-collisions-occur" tabindex="-1"><a class="header-anchor" href="#when-hash-collisions-occur"><span>When Hash Collisions Occur</span></a></h3>
+<ul>
+<li><strong>Load Factor &gt; 0.75</strong>: Performance degrades</li>
+<li><strong>Poor Hash Function</strong>: Many keys map to same bucket</li>
+<li><strong>Java HashMap</strong>: Converts linked list to red-black tree when length &gt; 8</li>
+</ul>
+<p><img src="../doc/pic/hash_op_101.png"></p></p>
+<ul>
+<li><a href="https://www.linkedin.com/posts/neetcodeio_how-do-hashmaps-work-under-the-hood-activity-7298370869301526530-DsIi?utm_source=social_share_send&amp;utm_medium=member_desktop_web&amp;rcm=ACoAAA6fzw4BpOSBO1YeSrJwPZ-dNBhjC3jXTDE">NC - HashMap under the hood</a></li>
+</ul>
+<h2 id="problem-categories" tabindex="-1"><a class="header-anchor" href="#problem-categories"><span>Problem Categories</span></a></h2>
+<h3 id="1-counting-and-frequency" tabindex="-1"><a class="header-anchor" href="#1-counting-and-frequency"><span>1. Counting and Frequency</span></a></h3>
+<p><strong>Description</strong>: Track frequency of elements, characters, or patterns.
+<strong>Key Insight</strong>: Use hash map as counter to avoid nested loops.
+<strong>Examples</strong>:</p>
+<ul>
+<li>Character frequency in strings</li>
+<li>Element counting in arrays</li>
+<li>Anagram detection</li>
+<li>Most frequent elements</li>
+</ul>
+<h3 id="2-two-sum-variants-and-complement-finding" tabindex="-1"><a class="header-anchor" href="#2-two-sum-variants-and-complement-finding"><span>2. Two Sum Variants and Complement Finding</span></a></h3>
+<p><strong>Description</strong>: Find pairs, triplets, or complements that satisfy specific conditions.
+<strong>Key Insight</strong>: Store elements and check for required complement.
+<strong>Examples</strong>:</p>
+<ul>
+<li>Two Sum, Three Sum, Four Sum</li>
+<li>Pair differences (k-diff pairs)</li>
+<li>Subarray sum problems</li>
+<li>Target sum combinations</li>
+</ul>
+<h3 id="3-prefix-sum-and-subarray-problems" tabindex="-1"><a class="header-anchor" href="#3-prefix-sum-and-subarray-problems"><span>3. Prefix Sum and Subarray Problems</span></a></h3>
+<p><strong>Description</strong>: Use cumulative sums with hash map to find subarrays with target properties.
+<strong>Key Insight</strong>: <code>subarray[i,j] = prefixSum[j] - prefixSum[i-1]</code>
+<strong>Examples</strong>:</p>
+<ul>
+<li>Subarray sum equals K</li>
+<li>Continuous subarray sum</li>
+<li>Maximum size subarray sum equals K</li>
+<li>Binary array with equal 0s and 1s</li>
+</ul>
+<h3 id="4-sliding-window-with-hash-map" tabindex="-1"><a class="header-anchor" href="#4-sliding-window-with-hash-map"><span>4. Sliding Window with Hash Map</span></a></h3>
+<p><strong>Description</strong>: Maintain a dynamic window while tracking element frequency or properties.
+<strong>Key Insight</strong>: Hash map maintains window state efficiently.
+<strong>Examples</strong>:</p>
+<ul>
+<li>Longest substring without repeating characters</li>
+<li>Minimum window substring</li>
+<li>Find all anagrams in string</li>
+<li>Permutation in string</li>
+</ul>
+<h3 id="5-design-and-caching" tabindex="-1"><a class="header-anchor" href="#5-design-and-caching"><span>5. Design and Caching</span></a></h3>
+<p><strong>Description</strong>: Implement data structures or caching mechanisms using hash maps.
+<strong>Key Insight</strong>: Hash map provides O(1) access for cache operations.
+<strong>Examples</strong>:</p>
+<ul>
+<li>LRU Cache</li>
+<li>LFU Cache</li>
+<li>Design HashMap</li>
+<li>Design HashSet</li>
+</ul>
+<h3 id="6-graph-and-tree-problems-with-hash-map" tabindex="-1"><a class="header-anchor" href="#6-graph-and-tree-problems-with-hash-map"><span>6. Graph and Tree Problems with Hash Map</span></a></h3>
+<p><strong>Description</strong>: Use hash map to store graph relationships, tree paths, or node mappings.
+<strong>Key Insight</strong>: Hash map simplifies complex relationship tracking.
+<strong>Examples</strong>:</p>
+<ul>
+<li>Clone graph</li>
+<li>Tree serialization/deserialization</li>
+<li>Find duplicate subtrees</li>
+<li>Lowest common ancestor with parent pointers</li>
+</ul>
+<h2 id="templates-and-patterns" tabindex="-1"><a class="header-anchor" href="#templates-and-patterns"><span>Templates and Patterns</span></a></h2>
+<h3 id="template-1-counting-frequency-pattern" tabindex="-1"><a class="header-anchor" href="#template-1-counting-frequency-pattern"><span>Template 1: Counting/Frequency Pattern</span></a></h3>
+<pre><code class="language-python"># Universal Counting Template
+def counting_pattern(arr):
+    count = {}  # or collections.defaultdict(int)
+    result = []
+    
+    # Count frequency
+    for item in arr:
+        count[item] = count.get(item, 0) + 1
+        # or count[item] += 1 with defaultdict
+    
+    # Process based on frequency
+    for key, freq in count.items():
+        if meets_condition(freq):
+            result.append(key)
+    
+    return result
+
+# Examples: LC 49, LC 242, LC 451, LC 347, LC 692
+</code></pre>
+<h3 id="template-2-two-sum-complement-finding" tabindex="-1"><a class="header-anchor" href="#template-2-two-sum-complement-finding"><span>Template 2: Two Sum/Complement Finding</span></a></h3>
+<pre><code class="language-python"># Two Sum Pattern Template
+def two_sum_pattern(nums, target):
+    seen = {}  # {value: index}
+    
+    for i, num in enumerate(nums):
+        complement = target - num
+        
+        if complement in seen:
+            return [seen[complement], i]
+        
+        seen[num] = i
+    
+    return []
+
+# Variations:
+# - Multiple pairs: collect all instead of returning first
+# - K-diff pairs: check for num+k and num-k
+# - Examples: LC 1, LC 167, LC 15, LC 532, LC 1010
+</code></pre>
+<h3 id="template-3-prefix-sum-with-hash-map" tabindex="-1"><a class="header-anchor" href="#template-3-prefix-sum-with-hash-map"><span>Template 3: Prefix Sum with Hash Map</span></a></h3>
+<p><strong>See detailed pattern explanation in <a href="#subarray-sum-count-pattern-lc-560-core-pattern">0-2) Pattern &gt; Subarray Sum Count Pattern</a></strong></p>
+<pre><code class="language-python"># Prefix Sum Pattern Template
+def prefix_sum_pattern(nums, target):
+    prefix_sum = 0
+    sum_count = {0: 1}  # {sum: count/index}
+    result = 0
+
+    for num in nums:
+        prefix_sum += num
+
+        # Check if (prefix_sum - target) exists
+        if prefix_sum - target in sum_count:
+            result += sum_count[prefix_sum - target]
+
+        # Update current prefix sum count
+        sum_count[prefix_sum] = sum_count.get(prefix_sum, 0) + 1
+
+    return result
+
+# For max length problems, store index instead of count:
+# sum_index = {0: -1}, then calculate i - sum_index[prefix_sum - target]
+# Examples: LC 560, LC 325, LC 525, LC 523
+</code></pre>
+<p><strong>Key Differences by Problem Type</strong>:</p>
+<ul>
+<li><strong>Count problems</strong> (LC 560, 930, 974): Store <code>{sum: count}</code>, check then update
+<ul>
+<li><strong>LC 974 variant</strong>: Use modulo <code>{remainder: count}</code>, <strong>MUST handle negative remainders!</strong></li>
+</ul>
+</li>
+<li><strong>Max length problems</strong> (LC 325, 525): Store <code>{sum: first_index}</code>, only update if new
+<ul>
+<li><strong>LC 525 variant</strong>: Transform problem (0→-1, 1→+1), initialize with <code>{0: -1}</code>, store first occurrence only</li>
+</ul>
+</li>
+<li><strong>Existence problems</strong> (LC 523): Store <code>{sum: any_index}</code>, just need to find one</li>
+</ul>
+<h3 id="template-4-sliding-window-with-hash-map" tabindex="-1"><a class="header-anchor" href="#template-4-sliding-window-with-hash-map"><span>Template 4: Sliding Window with Hash Map</span></a></h3>
+<pre><code class="language-python"># Sliding Window with HashMap Template
+def sliding_window_hashmap(s, pattern):
+    if len(pattern) &gt; len(s):
+        return []
+    
+    pattern_count = {}
+    window_count = {}
+    
+    # Count pattern frequency
+    for char in pattern:
+        pattern_count[char] = pattern_count.get(char, 0) + 1
+    
+    left = 0
+    result = []
+    
+    for right in range(len(s)):
+        # Expand window
+        char = s[right]
+        window_count[char] = window_count.get(char, 0) + 1
+        
+        # Contract window if needed
+        while window_size_condition_met():
+            # Check if current window is valid
+            if window_count == pattern_count:
+                result.append(left)
+            
+            # Remove leftmost character
+            left_char = s[left]
+            window_count[left_char] -= 1
+            if window_count[left_char] == 0:
+                del window_count[left_char]
+            left += 1
+    
+    return result
+
+# Examples: LC 3, LC 76, LC 438, LC 567
+</code></pre>
+<h3 id="template-5-hash-map-for-caching-memoization" tabindex="-1"><a class="header-anchor" href="#template-5-hash-map-for-caching-memoization"><span>Template 5: Hash Map for Caching/Memoization</span></a></h3>
+<pre><code class="language-python"># Caching/Memoization Template
+class CacheTemplate:
+    def __init__(self, capacity):
+        self.capacity = capacity
+        self.cache = {}  # key -&gt; value
+        self.usage = {}  # key -&gt; usage_info
+    
+    def get(self, key):
+        if key in self.cache:
+            self.update_usage(key)
+            return self.cache[key]
+        return -1
+    
+    def put(self, key, value):
+        if len(self.cache) &gt;= self.capacity:
+            self.evict()
+        
+        self.cache[key] = value
+        self.update_usage(key)
+    
+    def update_usage(self, key):
+        # Update usage tracking
+        pass
+    
+    def evict(self):
+        # Remove least recently/frequently used
+        pass
+
+# Examples: LC 146 (LRU), LC 460 (LFU)
+</code></pre>
+<h3 id="template-6-graph-problems-with-hash-map" tabindex="-1"><a class="header-anchor" href="#template-6-graph-problems-with-hash-map"><span>Template 6: Graph Problems with Hash Map</span></a></h3>
+<pre><code class="language-python"># Graph with HashMap Template
+def graph_hashmap_pattern(graph_input):
+    # Build adjacency list/map
+    graph = {}  # node -&gt; [neighbors] or node -&gt; {neighbor: weight}
+    
+    for edge in graph_input:
+        node1, node2 = edge[0], edge[1]
+        if node1 not in graph:
+            graph[node1] = []
+        if node2 not in graph:
+            graph[node2] = []
+        
+        graph[node1].append(node2)
+        graph[node2].append(node1)  # for undirected
+    
+    # Process using DFS/BFS with visited tracking
+    visited = set()
+    result = []
+    
+    def dfs(node):
+        if node in visited:
+            return
+        
+        visited.add(node)
+        result.append(node)
+        
+        for neighbor in graph.get(node, []):
+            dfs(neighbor)
+    
+    return result
+
+# Examples: LC 133, LC 200, LC 694, LC 1257
+</code></pre>
+<h3 id="template-7-treemap-pattern-ordered-map" tabindex="-1"><a class="header-anchor" href="#template-7-treemap-pattern-ordered-map"><span>Template 7: TreeMap Pattern (Ordered Map)</span></a></h3>
+<pre><code class="language-python"># Python - SortedDict (from sortedcontainers)
+from sortedcontainers import SortedDict
+
+# TreeMap Pattern Template
+def treemap_pattern(data):
+    # TreeMap maintains sorted order by key
+    tree_map = SortedDict()
+
+    # Basic operations
+    tree_map[key] = value           # O(log n) insert
+    value = tree_map.get(key)       # O(log n) search
+    del tree_map[key]               # O(log n) delete
+
+    # Ordered operations
+    first_key = tree_map.keys()[0] if tree_map else None    # Min key
+    last_key = tree_map.keys()[-1] if tree_map else None    # Max key
+
+    # Range queries
+    # Get all keys in sorted order
+    for key in tree_map.keys():
+        process(key, tree_map[key])
+
+    # Find floor/ceiling (closest keys)
+    # bisect_left/bisect_right for approximate match
+    import bisect
+    keys = list(tree_map.keys())
+    idx = bisect.bisect_left(keys, target)  # Floor index
+
+    return tree_map
+
+# Examples: LC 853, LC 729/731/732, LC 846, LC 352, LC 981
+</code></pre>
+<pre><code class="language-java">// Java - TreeMap Pattern
+import java.util.*;
+
+// TreeMap Pattern Template
+public void treeMapPattern(int[] data) {
+    // TreeMap maintains sorted order by key (Red-Black Tree)
+    TreeMap&lt;Integer, Integer&gt; treeMap = new TreeMap&lt;&gt;();
+
+    // Basic operations - O(log n)
+    treeMap.put(key, value);        // Insert
+    Integer value = treeMap.get(key);  // Search
+    treeMap.remove(key);            // Delete
+
+    // Ordered operations - O(log n)
+    Integer firstKey = treeMap.firstKey();   // Min key
+    Integer lastKey = treeMap.lastKey();     // Max key
+    Integer floorKey = treeMap.floorKey(k);  // Largest key &lt;= k
+    Integer ceilKey = treeMap.ceilingKey(k); // Smallest key &gt;= k
+
+    // Lower/Higher (exclusive)
+    Integer lower = treeMap.lowerKey(k);     // Largest key &lt; k
+    Integer higher = treeMap.higherKey(k);   // Smallest key &gt; k
+
+    // Range queries - O(k log n) where k is range size
+    Map.Entry&lt;Integer, Integer&gt; firstEntry = treeMap.firstEntry();
+    Map.Entry&lt;Integer, Integer&gt; lastEntry = treeMap.lastEntry();
+
+    // Iterate in sorted order - O(n)
+    for (Map.Entry&lt;Integer, Integer&gt; entry : treeMap.entrySet()) {
+        int key = entry.getKey();
+        int val = entry.getValue();
+        // Process in sorted order
+    }
+
+    // SubMap views (range queries)
+    SortedMap&lt;Integer, Integer&gt; subMap = treeMap.subMap(fromKey, toKey);
+    SortedMap&lt;Integer, Integer&gt; headMap = treeMap.headMap(toKey);
+    SortedMap&lt;Integer, Integer&gt; tailMap = treeMap.tailMap(fromKey);
+}
+</code></pre>
+<p><strong>TreeMap vs HashMap Comparison:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>HashMap</th>
+<th>TreeMap</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Ordering</strong></td>
+<td>No ordering</td>
+<td>Sorted by key</td>
+</tr>
+<tr>
+<td><strong>Underlying Structure</strong></td>
+<td>Hash Table + Linked List/Red-Black Tree (collision)</td>
+<td>Red-Black Tree</td>
+</tr>
+<tr>
+<td><strong>Insert/Delete/Search</strong></td>
+<td>O(1) average, O(n) worst</td>
+<td>O(log n)</td>
+</tr>
+<tr>
+<td><strong>Iteration</strong></td>
+<td>No specific order</td>
+<td>Sorted order by key</td>
+</tr>
+<tr>
+<td><strong>Floor/Ceiling</strong></td>
+<td>Not supported</td>
+<td>O(log n)</td>
+</tr>
+<tr>
+<td><strong>Range Queries</strong></td>
+<td>Not supported</td>
+<td>O(k log n)</td>
+</tr>
+<tr>
+<td><strong>Use Case</strong></td>
+<td>Fast lookups, no ordering needed</td>
+<td>Ordered iteration, range queries, floor/ceiling</td>
+</tr>
+<tr>
+<td><strong>Memory</strong></td>
+<td>Less (hash table)</td>
+<td>More (tree nodes + pointers)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>When to Use TreeMap:</strong></p>
+<ul>
+<li>Need keys in sorted order</li>
+<li>Need floor/ceiling operations (closest key)</li>
+<li>Need range queries (all keys in [a, b])</li>
+<li>Need first/last key efficiently</li>
+<li>Problems involving intervals, ranges, or ordering constraints</li>
+</ul>
+<p><strong>When NOT to Use TreeMap:</strong></p>
+<ul>
+<li>Only need fast O(1) lookups without ordering</li>
+<li>Memory is constrained (TreeMap uses more memory)</li>
+<li>Don’t need ordered operations (HashMap is faster)</li>
+</ul>
+<p><strong>Common TreeMap Patterns:</strong></p>
+<ol>
+<li>
+<p><strong>Pattern 1: Ordered Map for Sorting</strong></p>
+<pre><code class="language-java">// LC 853 - Car Fleet
+// Convert HashMap to TreeMap for sorted iteration
+Map&lt;Integer, Integer&gt; map = new HashMap&lt;&gt;();
+// ... populate map ...
+TreeMap&lt;Integer, Integer&gt; sorted = new TreeMap&lt;&gt;(map);
+</code></pre>
+</li>
+<li>
+<p><strong>Pattern 2: Interval Management</strong></p>
+<pre><code class="language-java">// LC 729/731/732 - My Calendar series
+// Use TreeMap to check overlapping intervals
+TreeMap&lt;Integer, Integer&gt; calendar = new TreeMap&lt;&gt;();
+
+public boolean book(int start, int end) {
+    Integer prev = calendar.floorKey(start);
+    Integer next = calendar.ceilingKey(start);
+
+    if ((prev == null || calendar.get(prev) &lt;= start) &amp;&amp;
+        (next == null || end &lt;= next)) {
+        calendar.put(start, end);
+        return true;
+    }
+    return false;
+}
+</code></pre>
+</li>
+<li>
+<p><strong>Pattern 3: Consecutive Elements</strong></p>
+<pre><code class="language-java">// LC 846 - Hand of Straights
+// Use TreeMap to process smallest elements first
+TreeMap&lt;Integer, Integer&gt; count = new TreeMap&lt;&gt;();
+// ... count frequency ...
+
+while (!count.isEmpty()) {
+    int first = count.firstKey();
+    // Process consecutive sequence starting from first
+}
+</code></pre>
+</li>
+<li>
+<p><strong>Pattern 4: Range/Stream Problems</strong></p>
+<pre><code class="language-java">// LC 352 - Data Stream as Disjoint Intervals
+// Maintain disjoint intervals in sorted order
+TreeMap&lt;Integer, int[]&gt; intervals = new TreeMap&lt;&gt;();
+
+public void addNum(int val) {
+    Integer lower = intervals.floorKey(val);
+    Integer higher = intervals.ceilingKey(val);
+    // Merge intervals if needed
+}
+</code></pre>
+</li>
+</ol>
+<p><strong>Classic LeetCode Problems:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC#</th>
+<th>Difficulty</th>
+<th>Key TreeMap Operation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Car Fleet</td>
+<td>853</td>
+<td>Medium</td>
+<td>Sort by position (key)</td>
+</tr>
+<tr>
+<td>My Calendar I</td>
+<td>729</td>
+<td>Medium</td>
+<td>floorKey/ceilingKey for overlap check</td>
+</tr>
+<tr>
+<td>My Calendar II</td>
+<td>731</td>
+<td>Medium</td>
+<td>Count overlapping bookings</td>
+</tr>
+<tr>
+<td>My Calendar III</td>
+<td>732</td>
+<td>Hard</td>
+<td>Maximum overlapping count</td>
+</tr>
+<tr>
+<td>Hand of Straights</td>
+<td>846</td>
+<td>Medium</td>
+<td>firstKey for smallest element</td>
+</tr>
+<tr>
+<td>Data Stream as Disjoint Intervals</td>
+<td>352</td>
+<td>Hard</td>
+<td>Merge intervals with floor/ceiling</td>
+</tr>
+<tr>
+<td>Time Based Key-Value Store</td>
+<td>981</td>
+<td>Medium</td>
+<td>floorKey for timestamp lookup</td>
+</tr>
+<tr>
+<td>Count of Smaller Numbers After Self</td>
+<td>315</td>
+<td>Hard</td>
+<td>Ordered iteration</td>
+</tr>
+<tr>
+<td>Contains Duplicate III</td>
+<td>220</td>
+<td>Medium</td>
+<td>floorKey/ceilingKey for range check</td>
+</tr>
+<tr>
+<td>The Skyline Problem</td>
+<td>218</td>
+<td>Hard</td>
+<td>Multiset with TreeMap</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Example: LC 853 - Car Fleet</strong></p>
+<pre><code class="language-python"># Python - LC 853 Car Fleet
+def carFleet(target, position, speed):
+    # Use sorted iteration (similar to TreeMap)
+    cars = sorted(zip(position, speed), reverse=True)  # Sort by position descending
+
+    stack = []
+    for pos, spd in cars:
+        time = (target - pos) / spd  # Time to reach target
+        if not stack or time &gt; stack[-1]:
+            stack.append(time)
+
+    return len(stack)
+
+# Alternative using SortedDict
+from sortedcontainers import SortedDict
+
+def carFleet_v2(target, position, speed):
+    car_map = SortedDict()
+    for p, s in zip(position, speed):
+        car_map[-p] = s  # Negative for reverse order
+
+    fleets = 0
+    prev_time = 0
+
+    for neg_pos, spd in car_map.items():
+        pos = -neg_pos
+        time = (target - pos) / spd
+        if time &gt; prev_time:
+            fleets += 1
+            prev_time = time
+
+    return fleets
+</code></pre>
+<pre><code class="language-java">// Java - LC 853 Car Fleet
+/**
+ * time = O(N log N)
+ * space = O(N)
+ */
+public int carFleet(int target, int[] position, int[] speed) {
+    // Build HashMap first
+    Map&lt;Integer, Integer&gt; map = new HashMap&lt;&gt;();
+    for (int i = 0; i &lt; position.length; i++) {
+        map.put(position[i], speed[i]);
+    }
+
+    // Convert to TreeMap for sorted iteration (descending order)
+    TreeMap&lt;Integer, Integer&gt; treeMap = new TreeMap&lt;&gt;(Collections.reverseOrder());
+    treeMap.putAll(map);
+
+    int fleets = 0;
+    double prevTime = 0;
+
+    // Iterate from position closest to target (sorted order)
+    for (Map.Entry&lt;Integer, Integer&gt; entry : treeMap.entrySet()) {
+        int pos = entry.getKey();
+        int spd = entry.getValue();
+        double time = (double)(target - pos) / spd;
+
+        // If current car takes longer, it forms a new fleet
+        if (time &gt; prevTime) {
+            fleets++;
+            prevTime = time;
+        }
+    }
+
+    return fleets;
+}
+</code></pre>
+<p><strong>Example: LC 729 - My Calendar I</strong></p>
+<pre><code class="language-java">// Java - LC 729 My Calendar I
+/**
+ * time = O(log N) per operation
+ * space = O(N)
+ */
+class MyCalendar {
+    TreeMap&lt;Integer, Integer&gt; calendar;
+
+    public MyCalendar() {
+        calendar = new TreeMap&lt;&gt;();
+    }
+
+    public boolean book(int start, int end) {
+        // Find largest start time &lt;= current start
+        Integer prev = calendar.floorKey(start);
+
+        // Find smallest start time &gt;= current start
+        Integer next = calendar.ceilingKey(start);
+
+        // Check no overlap with previous booking
+        if (prev != null &amp;&amp; calendar.get(prev) &gt; start) {
+            return false;
+        }
+
+        // Check no overlap with next booking
+        if (next != null &amp;&amp; next &lt; end) {
+            return false;
+        }
+
+        calendar.put(start, end);
+        return true;
+    }
+}
+</code></pre>
+<pre><code class="language-python"># Python - LC 729 My Calendar I
+from sortedcontainers import SortedDict
+
+class MyCalendar:
+    &quot;&quot;&quot;
+    time = O(log N) per operation
+    space = O(N)
+    &quot;&quot;&quot;
+    def __init__(self):
+        self.calendar = SortedDict()
+
+    def book(self, start: int, end: int) -&gt; bool:
+        # Find previous and next bookings
+        idx = self.calendar.bisect_left(start)
+
+        # Check previous booking
+        if idx &gt; 0:
+            prev_start = self.calendar.keys()[idx - 1]
+            if self.calendar[prev_start] &gt; start:
+                return False
+
+        # Check next booking
+        if idx &lt; len(self.calendar):
+            next_start = self.calendar.keys()[idx]
+            if next_start &lt; end:
+                return False
+
+        self.calendar[start] = end
+        return True
+</code></pre>
+<p><strong>Interview Tips for TreeMap Problems:</strong></p>
+<ol>
+<li>
+<p><strong>Recognition Patterns:</strong></p>
+<ul>
+<li>“sorted order”, “smallest/largest”, “floor/ceiling” → Think TreeMap</li>
+<li>“overlapping intervals” → TreeMap with floorKey/ceilingKey</li>
+<li>“consecutive elements” → TreeMap.firstKey() for greedy processing</li>
+<li>“range queries” → TreeMap.subMap()</li>
+</ul>
+</li>
+<li>
+<p><strong>Common Mistakes:</strong></p>
+<ul>
+<li>Forgetting O(log n) complexity vs O(1) for HashMap</li>
+<li>Not handling null returns from floor/ceiling operations</li>
+<li>Using TreeMap when HashMap would suffice</li>
+<li>Not considering memory overhead of tree structure</li>
+</ul>
+</li>
+<li>
+<p><strong>Optimization:</strong></p>
+<ul>
+<li>If only need sorted iteration once, sort array instead (O(n log n) vs maintaining TreeMap)</li>
+<li>If range queries are rare, consider lazy sorting</li>
+<li>For Python, <code>sortedcontainers</code> library provides efficient SortedDict</li>
+</ul>
+</li>
+<li>
+<p><strong>Edge Cases:</strong></p>
+<ul>
+<li>Empty TreeMap (firstKey/lastKey throw exceptions)</li>
+<li>Null values from floor/ceiling operations</li>
+<li>Duplicate keys (TreeMap doesn’t allow, use value as counter)</li>
+<li>Reverse order iteration (use descendingMap() in Java)</li>
+</ul>
+</li>
+</ol>
+<h2 id="0-concept" tabindex="-1"><a class="header-anchor" href="#0-concept"><span>0) Concept</span></a></h2>
+<ul>
+<li>
+<p><a href="https://bbs.huaweicloud.com/blogs/276884?utm_source=juejin&amp;utm_medium=bbs-ex&amp;utm_campaign=other&amp;utm_content=content">Java HashMap</a></p>
+<ul>
+<li>Low level : Array + Linked list / red-black tree
+<ul>
+<li>if Linked list length &gt; 8 -&gt; transform Linked list to red-black tree</li>
+<li>if Linked list length &lt; 6 -&gt; transform red-black tree back to Linked list</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>FAQ</p>
+<ul>
+<li>why hashmap search time complexity ~= O(1) ? explain ?
+<ul>
+<li>TL;DR : O(1) is avg and best case. worst case could be O(N) (hash collision)</li>
+<li>hash func matters -&gt; how to storage data &amp; possible hash collision happens</li>
+<li>OP
+<ul>
+<li>insert
+<ul>
+<li>get key, get hash val via hash func</li>
+<li>find bucket in memory based on hash val</li>
+<li>save key and value in the bucket</li>
+</ul>
+</li>
+<li>query
+<ul>
+<li>get index based on key</li>
+<li>find bucket location based on index
+<ul>
+<li>NOTE !!! use bit op (<code>int pos = (n - 1) &amp; hash</code>), so this op can be O(1) time complexity. (find bucket address directly, NO need to loop over all items)</li>
+</ul>
+</li>
+<li>loop over all elements under that key (if there is one element, then do once)</li>
+<li>return value
+<img src="../doc/pic/hash_map1.png"></p>
+<img src="../doc/pic/hash_map2.jpeg"></p></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="https://blog.csdn.net/junqing_wu/article/details/104606619">ref 1</a></li>
+<li><a href="https://blog.csdn.net/john1337/article/details/104727895">ref 2</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>LC Ref</p>
+<ul>
+<li><a href="prefix_sum.html">prefix_sum.md</a></li>
+</ul>
+</li>
+</ul>
+<h3 id="0-1-types" tabindex="-1"><a class="header-anchor" href="#0-1-types"><span>0-1) Types</span></a></h3>
+<ul>
+<li>
+<p>N sum:</p>
+<ul>
+<li><a href="n_sum.html">n_sum.md</a></li>
+</ul>
+</li>
+<li>
+<p>Prefix problems</p>
+<ul>
+<li><a href="prefix_sum.html">prefix_sum.md</a></li>
+<li>Continous sum
+<ul>
+<li><strong>LC 525 : Contiguous Array</strong> ⭐ <strong><a href="#2-1-contiguous-array-lc-525">See detailed pattern</a></strong>
+<ul>
+<li>Transform + Prefix Sum: 0→-1, 1→+1, store {count: first_index}</li>
+</ul>
+</li>
+<li>LC 523 : Continuous Subarray Sum</li>
+</ul>
+</li>
+<li>Pair of sums
+<ul>
+<li>LC 1010 : Pairs of Songs With Total Durations Divisible by 60</li>
+</ul>
+</li>
+<li>Sub array sum
+<ul>
+<li>LC 560 : Subarray Sum Equals K
+<ul>
+<li><code>TODO : note this as pattern!!!</code></li>
+</ul>
+</li>
+<li>LC 325: Maximum Size Subarray Sum Equals k
+<ul>
+<li><code>prefix sum</code> + hashmap</li>
+</ul>
+</li>
+<li><strong>LC 974: Subarray Sums Divisible by K</strong> ⭐ <strong><a href="#2-1-1-subarray-sums-divisible-by-k-lc-974">See detailed pattern</a></strong>
+<ul>
+<li>Prefix Sum + Modulo: {remainder: count}, <strong>handle negative remainders!</strong></li>
+</ul>
+</li>
+</ul>
+<pre><code>subarray[i,j] = prefixSum[j] - prefixSum[i-1]
+
+so, to find a subarray equals k
+
+-&gt; prefixSum[j] - prefixSum[i-1] = k
+
+-&gt; prefixSum[j]  - k = prefixSum[i-1]
+
+-&gt; so all need to do is : check if &quot;prefixSum[j]  - k&quot; is in map
+</code></pre>
+</li>
+<li>check <code>permutaion sub string</code>
+<ul>
+<li>LC 567</li>
+</ul>
+<pre><code class="language-java">// LC 567
+// ...
+     /** NOTE !!!
+     *
+     *  we use below trick to
+     *
+     *  -&gt; 1) check if `new reached s2 val` is in s1 map
+     *  -&gt; 2) check if 2 map are equal
+     *
+     *  -&gt; so we have more simple code, and clean logic
+     */
+    if (map2.equals(map1)) {
+        return true;
+    }
+// ...
+</code></pre>
+</li>
+</ul>
+</li>
+<li>
+<p>Check with <code>letest existed idx</code></p>
+<ul>
+<li>LC 763 Partition Labels</li>
+</ul>
+</li>
+<li>
+<p>Top <code>k</code> element (with PQ)</p>
+<ul>
+<li>LC 347, 215, 692</li>
+</ul>
+</li>
+<li>
+<p>Any problems with below</p>
+<ul>
+<li>need to cache</li>
+<li>avoid double loop</li>
+</ul>
+</li>
+</ul>
+<h3 id="0-2-pattern" tabindex="-1"><a class="header-anchor" href="#0-2-pattern"><span>0-2) Pattern</span></a></h3>
+<h4 id="subarray-sum-count-pattern-lc-560-core-pattern" tabindex="-1"><a class="header-anchor" href="#subarray-sum-count-pattern-lc-560-core-pattern"><span>Subarray Sum Count Pattern (LC 560 Core Pattern)</span></a></h4>
+<p><strong>Core Concept</strong>: Use hashmap to count ALL subarray combinations that sum to target in O(N) time with single loop.</p>
+<p><strong>Key Insight</strong>:</p>
+<pre><code>If we want subarray[i,j] to sum to k:
+  presum[j] - presum[i-1] = k
+  → presum[i-1] = presum[j] - k
+
+So at index j, check if (presum[j] - k) exists in map!
+</code></pre>
+<p><strong>Critical Implementation Details</strong>:</p>
+<ol>
+<li>
+<p><strong>Use Count, NOT Index</strong>:</p>
+<pre><code class="language-java">Map&lt;Integer, Integer&gt; map = new HashMap&lt;&gt;();  // {prefixSum: count}
+</code></pre>
+<ul>
+<li>Same prefix sum can occur MULTIPLE times</li>
+<li>We need to count ALL valid subarrays, not just find one</li>
+<li>Example: <code>[1, -1, 1, -1]</code> with k=0 has multiple solutions</li>
+</ul>
+</li>
+<li>
+<p><strong>Initialize with <code>map.put(0, 1)</code></strong>:</p>
+<pre><code class="language-java">map.put(0, 1);  // Handle subarrays starting from index 0
+</code></pre>
+<ul>
+<li>When <code>presum[j] == k</code>, then <code>presum[j] - k = 0</code></li>
+<li>Need to count these subarrays starting from beginning</li>
+</ul>
+</li>
+<li>
+<p><strong>Check BEFORE Update</strong> (Critical Order):</p>
+<pre><code class="language-java">for (int num : nums) {
+    presum += num;
+
+    // 1. CHECK first: count how many previous prefix sums = (presum - k)
+    if (map.containsKey(presum - k)) {
+        count += map.get(presum - k);  // Add ALL occurrences
+    }
+
+    // 2. UPDATE after: add current prefix sum for future iterations
+    map.put(presum, map.getOrDefault(presum, 0) + 1);
+}
+</code></pre>
+<ul>
+<li><strong>Why this order?</strong> Prevents counting current subarray with itself</li>
+<li>Current prefix sum should only be available for FUTURE iterations</li>
+</ul>
+</li>
+</ol>
+<p><strong>Why This Pattern Gets ALL Combinations</strong>:</p>
+<ul>
+<li>Map stores ALL previously seen prefix sums with their counts</li>
+<li>When we check <code>presum - k</code>, we get count of ALL previous occurrences</li>
+<li>Each previous occurrence represents a valid starting point</li>
+<li><code>count += map.get(presum - k)</code> adds ALL valid subarrays ending at current index</li>
+</ul>
+<p><strong>Example Walkthrough</strong> (<code>nums = [1,1,1], k = 2</code>):</p>
+<pre><code>i=0: num=1, presum=1
+  - Check: (1-2)=-1 not in map → count=0
+  - Update: map={0:1, 1:1}
+
+i=1: num=1, presum=2
+  - Check: (2-2)=0 in map, count += map[0] = 1 → count=1
+  - Update: map={0:1, 1:1, 2:1}
+
+i=2: num=1, presum=3
+  - Check: (3-2)=1 in map, count += map[1] = 1 → count=2
+  - Update: map={0:1, 1:1, 2:1, 3:1}
+
+Result: count=2 (subarrays [1,1] and [1,1])
+</code></pre>
+<p><strong>Related LC Problems (Same Pattern)</strong>:</p>
+<ul>
+<li>LC 560: Subarray Sum Equals K (exact pattern)</li>
+<li>LC 325: Maximum Size Subarray Sum Equals k (store index instead of count)</li>
+<li>LC 930: Binary Subarrays with Sum</li>
+<li><strong>LC 974: Subarray Sums Divisible by K</strong> (use modulo <code>{remainder: count}</code>, <strong>handle negatives!</strong>)</li>
+</ul>
+<p><strong>Java Implementation Template</strong>:</p>
+<pre><code class="language-java">public int subarraySum(int[] nums, int k) {
+    // Map: {prefixSum: count} - NOT {prefixSum: index}!
+    Map&lt;Integer, Integer&gt; map = new HashMap&lt;&gt;();
+    map.put(0, 1);  // Handle subarrays from index 0
+
+    int presum = 0;
+    int count = 0;
+
+    for (int num : nums) {
+        presum += num;
+
+        // Check if (presum - k) exists: presum - x = k → x = presum - k
+        if (map.containsKey(presum - k)) {
+            count += map.get(presum - k);  // Add ALL occurrences
+        }
+
+        // Update map AFTER checking (critical order!)
+        map.put(presum, map.getOrDefault(presum, 0) + 1);
+    }
+
+    return count;
+}
+</code></pre>
+<p><strong>When to Use Count vs Index</strong>:</p>
+<table>
+<thead>
+<tr>
+<th>Problem Type</th>
+<th>Map Value</th>
+<th>Example</th>
+<th>Special Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Count ALL subarrays</td>
+<td><code>count</code></td>
+<td>LC 560, 930, 974</td>
+<td>Check before update</td>
+</tr>
+<tr>
+<td>Count (with modulo)</td>
+<td><code>count</code></td>
+<td><strong>LC 974</strong></td>
+<td><strong>Use remainder as key; handle negatives!</strong></td>
+</tr>
+<tr>
+<td>Find LONGEST subarray</td>
+<td><code>index</code> (first occurrence)</td>
+<td>LC 325, 525</td>
+<td>Store only first occurrence</td>
+</tr>
+<tr>
+<td>Find LONGEST (with transformation)</td>
+<td><code>index</code> (first occurrence)</td>
+<td><strong>LC 525</strong></td>
+<td><strong>Transform 0→-1, 1→+1; init {0:-1}</strong></td>
+</tr>
+<tr>
+<td>Find if EXISTS</td>
+<td><code>boolean/index</code></td>
+<td>LC 523</td>
+<td>Any occurrence works</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Common Mistakes</strong>:</p>
+<ol>
+<li>❌ Using <code>{prefixSum: index}</code> for counting problems</li>
+<li>❌ Updating map before checking (causes self-counting)</li>
+<li>❌ Forgetting <code>map.put(0, 1)</code> initialization</li>
+<li>❌ Not handling the case where prefix sum itself equals k</li>
+<li>❌ <strong>[LC 974] Forgetting to handle negative remainders</strong> (Java/Python <code>-7 % 5 = -2</code>, need to add k to get 3)</li>
+</ol>
+<hr>
+<h2 id="1-general-form" tabindex="-1"><a class="header-anchor" href="#1-general-form"><span>1) General form</span></a></h2>
+<ul>
+<li>
+<p>Definition</p>
+</li>
+<li>
+<p>When to use</p>
+<ul>
+<li>Use case that need data IO with ~ O(1) time complexity</li>
+<li>optimization via cache (space - time tradeoff)</li>
+<li><code>sum, pair, continuous</code></li>
+<li>avoid double loop (O(N^2))</li>
+</ul>
+</li>
+<li>
+<p>When Not to use</p>
+<ul>
+<li>When data is time sequence</li>
+<li>When data is in ordering</li>
+<li><a href="https://www.reddit.com/r/learnprogramming/comments/29t4s4/when_is_it_bad_to_use_a_hash_table/">https://www.reddit.com/r/learnprogramming/comments/29t4s4/when_is_it_bad_to_use_a_hash_table/</a></li>
+</ul>
+</li>
+<li>
+<p>Hash Collisions</p>
+<ul>
+<li>Chaining</li>
+<li>Open addressing</li>
+<li><a href="https://github.com/yennanliu/CS_basics/blob/master/doc/hash_map_collision.md">hash_map_collisions.md</a></li>
+</ul>
+</li>
+<li>
+<p>Ref</p>
+<ul>
+<li><a href="https://blog.techbridge.cc/2017/01/21/simple-hash-table-intro/">https://blog.techbridge.cc/2017/01/21/simple-hash-table-intro/</a></li>
+<li><a href="https://www.freecodecamp.org/news/hash-tables/">https://www.freecodecamp.org/news/hash-tables/</a></li>
+</ul>
+</li>
+</ul>
+<h3 id="1-1-basic-op" tabindex="-1"><a class="header-anchor" href="#1-1-basic-op"><span>1-1) Basic OP</span></a></h3>
+<ul>
+<li><code>get</code> : get value from dict with default value if key not existed</li>
+</ul>
+<pre><code class="language-python">In [10]: d = {'a': 1, 'b': 2}
+    ...: d['a']
+Out[10]: 1
+
+In [11]: d.get('a')
+Out[11]: 1
+
+In [12]: d.get('c', 0)
+Out[12]: 0
+
+In [13]: d.get('z')
+
+In [14]:
+</code></pre>
+<ul>
+<li><code>setdefault()</code>
+<ul>
+<li><a href="https://www.w3schools.com/python/ref_dictionary_setdefault.asp">https://www.w3schools.com/python/ref_dictionary_setdefault.asp</a></li>
+</ul>
+</li>
+</ul>
+<pre><code class="language-python">#-------------------------------------------------------------------------------
+# setdefault : will creatte key if key NOT existed (with value as well if defined)
+#-------------------------------------------------------------------------------
+
+# syntax
+d.setdefault(new_key)
+d.setdefault(new_key, new_value)
+
+# 662 Maximum Width of Binary Tree
+car = {
+  &quot;brand&quot;: &quot;Ford&quot;,
+  &quot;model&quot;: &quot;Mustang&quot;,
+  &quot;year&quot;: 1964
+}
+
+# example 1) insert key &quot;my_key&quot;, since my_key not existed, -&gt; make it as new key and value as None (since not defined)
+car.setdefault(&quot;my_key&quot;)
+print (car)
+# In [18]: car
+# Out[18]: {'brand': 'Ford', 'model': 'Mustang', 'year': 1964, 'my_key': None}
+
+# example 2) insert key &quot;color&quot;, since my_key not existed, -&gt; make it as new key and value as white
+car.setdefault(&quot;color&quot;, &quot;white&quot;)
+print (car)
+# Out[22]:
+# {'brand': 'Ford',
+#  'model': 'Mustang',
+#  'year': 1964,
+#  'my_key': None,
+#  'color': 'white'}
+</code></pre>
+<ul>
+<li><code>Sort</code> on <em><strong>hashmap (dict)</strong></em></li>
+</ul>
+<pre><code class="language-python"># https://stackoverflow.com/questions/613183/how-do-i-sort-a-dictionary-by-value
+
+x = {1: 2, 3: 4, 4: 3, 2: 1, 0: 0}
+In [11]: x.items()
+Out[11]: dict_items([(1, 2), (3, 4), (4, 3), (2, 1), (0, 0)])
+
+#----------------------------------
+# Sort hashMap by key/value !!!
+#----------------------------------
+x = {1: 2, 3: 4, 4: 3, 2: 1, 0: 0}
+# note : have to use sorted(xxx, key=yyy), instead of xxx.sorted(....)
+### NOTE this !!! : x.items()
+sorted_x = sorted(x.items(), key=lambda kv: kv[1])
+print (sorted_x)
+# [(0, 0), (2, 1), (1, 2), (4, 3), (3, 4)]
+
+x = {1: 2, 3: 4, 4: 3, 2: 1, 0: 0}
+sorted_x = sorted(x.items(), key=lambda kv: kv[0])
+print (sorted_x)
+# [(0, 0), (1, 2), (2, 1), (3, 4), (4, 3)]
+
+# 451  Sort Characters By Frequency
+import collections
+class Solution(object):
+    def frequencySort(self, s):
+        count = collections.Counter(s)
+        count_dict = dict(count)
+        &quot;&quot;&quot;
+        NOTE this !!!
+            1. use sorted()
+            2. count_dict.items()
+        &quot;&quot;&quot;
+        count_tuple_sorted = sorted(count_dict.items(), key=lambda kv : -kv[1])
+        res = ''
+        for item in count_tuple_sorted:
+            res += item[0] * item[1]
+        return res
+</code></pre>
+<pre><code class="language-python"># dict values -&gt; array
+In [6]:
+   ...: mydict = {'a':['a1','a2','a3'], 'b':['b1','b2','b3']}
+   ...:
+   ...: res = [mydict[x] for x in mydict]
+   ...:
+   ...: print (res)
+[['a1', 'a2', 'a3'], ['b1', 'b2', 'b3']]
+
+# LC 049 Group Anagrams
+# V0
+# IDEA : HASH TABLE
+class Solution:
+    def groupAnagrams(self, strs):
+        res = {}
+        for item in strs:
+            k = ''.join(sorted(item))  # sort the string 
+            if k not in res:  #  check if exists in res 
+                res[k] = []
+            res[k].append(item)  # if same, put all the same string into dict k 
+        return [res[x] for x in res]  # output the result 
+</code></pre>
+<ul>
+<li>Get <code>max index</code> for each element in a string</li>
+</ul>
+<pre><code class="language-python">s = 'ababcbacadefegdehijhklij'
+{k:v for k,v in enumerate(s)}
+
+# LC 763
+# V0
+# IDEA : GREEDY
+class Solution(object):
+    def partitionLabels(self, s):
+        d = {val:idx for idx, val in enumerate(list(s))}
+        #print (d)
+        res = []
+        tmp = set()
+        for idx, val in enumerate(s):
+            #print (&quot;idx = &quot; + str(idx) + &quot; tmp = &quot; + str(tmp) + &quot;idx == d[val] = &quot; + str(idx == d[val]))
+            &quot;&quot;&quot;
+            ### have to fit 2 CONDITIONS so we can split the string
+            # -&gt; 1) the element has &quot;last time exist index&quot; with current index
+            # -&gt; 2) ALL of the elements in cache with &quot;last time exist index&quot; should &lt;= current index
+            &quot;&quot;&quot;
+            if idx == d[val] and all(idx &gt;= d[t] for t in tmp):
+                res.append(idx+1)
+            else:
+                tmp.add(val)
+        _res = [res[0]] + [ res[i] - res[i-1] for i in range(1, len(res)) ]
+        return _res
+
+# V0'
+# IDEA : GREEDY
+class Solution(object):
+    def partitionLabels(self, S):
+        # note : this trick for get max index for each element in S
+        lindex = { c: i for i, c in enumerate(S) }
+        j = anchor = 0
+        ans = []
+        for i, c in enumerate(S):
+            ### NOTE : trick here
+            #          -&gt; via below line of code, we can get the max idx of current substring which &quot;has element only exist in itself&quot;
+            #          -&gt; e.g. the index we need to do partition 
+            j = max(j, lindex[c])
+            print (&quot;i = &quot; + str(i) + &quot;,&quot; + &quot; c = &quot; + str(c) + &quot;,&quot; +   &quot; j = &quot; + str(j) + &quot;,&quot; +  &quot; ans = &quot; + str(ans))
+            if i == j:
+                ans.append(j - anchor + 1)
+                anchor = j + 1
+        return ans
+</code></pre>
+<ul>
+<li>Get pairs with specific sum</li>
+</ul>
+<pre><code class="language-python"># LC 1010 Pairs of Songs With Total Durations Divisible by 60
+d = {}
+res = 0
+DURATION = some_duration
+for num in nums:
+    tmp = num % DURATION # let's say sum is multiply by 60
+    ### NOTICE THIS :  (60 - tmp) % 60
+    if (DURATION - tmp) % DURATION in d:
+        res += d[(DURATION - tmp) % DURATION]
+    if tmp not in d:
+        d[tmp] = 1
+    else:
+        d[tmp] += 1
+</code></pre>
+<ul>
+<li>Get <code>sub array sum</code></li>
+</ul>
+<pre><code class="language-python"># (algorithm book (labu) p.350)
+my_array = [1,2,3,4,5]
+my_array_pre = [0] * (len(my_array)+1)
+cur = 0
+for i in range(len(my_array)):
+    cur += my_array[i]
+    my_array_pre[i+1] += cur
+
+# In [17]: print (&quot;my_array = &quot; + str(my_array))
+#     ...: print (&quot;my_array_pre = &quot; + str(my_array_pre))
+# my_array = [1, 2, 3, 4, 5]
+# my_array_pre = [0, 1, 3, 6, 10, 15]
+
+#-----------------------------------------------
+# Get sub array sum !!!!!!!
+#    -&gt; nums[i..j] sum = preSum[j+1] - preSum[i]
+#-----------------------------------------------
+
+# example 1 : sum of [1,2]
+my_array_pre[1+1] - my_array_pre[0]  # 1's index is 0, and 2's index is 1. (my_array = [1, 2, 3, 4, 5])
+
+# example 2 : sum of [2,3,4]
+my_array_pre[3+1] - my_array_pre[1] # 2's index is 1, and 4's index is 3. (my_array = [1, 2, 3, 4, 5])
+</code></pre>
+<ul>
+<li>Longest Substring</li>
+</ul>
+<pre><code class="language-python"># LC 003
+# 2 pointers + dict
+# ....
+l = 0
+d = {}
+res = 0
+for r in range(len(s)):
+    if s[r] in d:
+        l = max(l, d[s[r]]+1)
+    d[s[r]] = r
+    res = max(res, r-l+1)
+# ...
+</code></pre>
+<h2 id="2-lc-example" tabindex="-1"><a class="header-anchor" href="#2-lc-example"><span>2) LC Example</span></a></h2>
+<h3 id="2-1-contiguous-array-lc-525" tabindex="-1"><a class="header-anchor" href="#2-1-contiguous-array-lc-525"><span>2-1) Contiguous Array (LC 525)</span></a></h3>
+<p><strong>Core Pattern: Transform + Prefix Sum + HashMap</strong></p>
+<h4 id="key-concept" tabindex="-1"><a class="header-anchor" href="#key-concept"><span>Key Concept</span></a></h4>
+<p>Finding if there are <code>at least 2 indexes</code> with <code>SAME count</code> (running sum).</p>
+<p>This is the same as finding <code>any 2 x-axis with same y-axis</code> in the visualization below.</p>
+<h4 id="pattern-breakdown" tabindex="-1"><a class="header-anchor" href="#pattern-breakdown"><span>Pattern Breakdown</span></a></h4>
+<p><strong>1. Problem Transformation:</strong></p>
+<pre><code>Transform the binary array:
+- Treat 0 as -1
+- Treat 1 as +1
+
+Why? Equal 0s and 1s → sum of transformed array = 0
+</code></pre>
+<p><strong>2. HashMap Structure:</strong></p>
+<pre><code class="language-java">Map&lt;Integer, Integer&gt; map = new HashMap&lt;&gt;();
+// {count: first_index_where_count_occurred}
+
+map.put(0, -1); // Initialize for subarrays starting at index 0
+</code></pre>
+<p><strong>3. Core Logic:</strong></p>
+<pre><code>count: running sum (cumulative)
+  - +1 for each 1
+  - -1 for each 0
+
+If count(i) == count(j) where i &lt; j:
+  → Elements between i and j sum to 0
+  → Subarray [i+1, j] is balanced (equal 0s and 1s)
+  → Length = j - i
+</code></pre>
+<p><strong>4. Why Store FIRST Occurrence Only?</strong></p>
+<pre><code>To maximize length, we want the earliest index with this count.
+If count appears at indices [3, 7, 10]:
+  - Store index 3
+  - When we see count again at index 10, length = 10 - 3 = 7 (maximum)
+</code></pre>
+<p><strong>5. Why Initialize map.put(0, -1)?</strong></p>
+<pre><code>If from index 0 to i, count = 0:
+  → Entire subarray [0, i] is balanced
+  → Length = i - (-1) = i + 1 ✓
+
+Without this initialization, we'd miss subarrays starting at index 0.
+</code></pre>
+<h4 id="visual-example" tabindex="-1"><a class="header-anchor" href="#visual-example"><span>Visual Example</span></a></h4>
+<p>Sequence: <code>[0, 0, 0, 0, 1, 1]</code>
+Count progression: 0 → -1 → -2 → -3 → -4 → -3 → -2</p>
+<p>The longest subarray has equal 0s and 1s when count returns to -2 (indices 1 and 5).
+Length = 5 - 1 = 4: <code>[0, 1, 1, 1]</code> wait, that’s wrong…</p>
+<p>Actually, the charts show <code>changes VS index</code> of the sequence. We can find the longest subarray length is 4 (index 2 to 5), since <code>index 2 and index 5 have the same count</code> → <code>count at index 2 and index 5 are the same (-2)</code>.</p>
+<p align="center"><img src="../doc/pic/lc_525_1.png" ></p>
+<p align="center"><img src="../doc/pic/lc_525_1.png" ></p>
+<h4 id="mathematical-reasoning" tabindex="-1"><a class="header-anchor" href="#mathematical-reasoning"><span>Mathematical Reasoning</span></a></h4>
+<p><strong>Why Same Count Means Balanced Subarray:</strong></p>
+<pre><code>Let count(i) = cumulative sum at index i
+
+If count(i) == count(j) where i &lt; j:
+  count(j) - count(i) = 0
+
+This means:
+  sum of elements from index (i+1) to j = 0
+
+In transformed array (0→-1, 1→+1):
+  sum = 0 means equal number of -1s and +1s
+  → equal number of 0s and 1s in original array
+</code></pre>
+<h4 id="implementation-template" tabindex="-1"><a class="header-anchor" href="#implementation-template"><span>Implementation Template</span></a></h4>
+<pre><code class="language-java">// Java Template
+public int findMaxLength(int[] nums) {
+    // Map: {count: first_index_where_count_occurred}
+    Map&lt;Integer, Integer&gt; map = new HashMap&lt;&gt;();
+
+    // Initialize: handle subarrays starting at index 0
+    map.put(0, -1);
+
+    int maxLen = 0;
+    int count = 0;
+
+    for (int i = 0; i &lt; nums.length; i++) {
+        // Transform: 0 → -1, 1 → +1
+        count += (nums[i] == 1) ? 1 : -1;
+
+        // If count seen before: calculate subarray length
+        if (map.containsKey(count)) {
+            maxLen = Math.max(maxLen, i - map.get(count));
+        } else {
+            // Store FIRST occurrence only (for max length)
+            map.put(count, i);
+        }
+    }
+
+    return maxLen;
+}
+</code></pre>
+<pre><code class="language-python"># Python Template
+def findMaxLength(nums):
+    # Map: {count: first_index_where_count_occurred}
+    d = {0: -1}  # Initialize for subarrays starting at index 0
+
+    max_len = 0
+    count = 0
+
+    for i, num in enumerate(nums):
+        # Transform: 0 → -1, 1 → +1
+        count += 1 if num == 1 else -1
+
+        # If count seen before: calculate subarray length
+        if count in d:
+            max_len = max(max_len, i - d[count])
+        else:
+            # Store FIRST occurrence only (for max length)
+            d[count] = i
+
+    return max_len
+</code></pre>
+<h4 id="key-differences-from-lc-560-pattern" tabindex="-1"><a class="header-anchor" href="#key-differences-from-lc-560-pattern"><span>Key Differences from LC 560 Pattern</span></a></h4>
+<table>
+<thead>
+<tr>
+<th>Aspect</th>
+<th>LC 560 (Subarray Sum K)</th>
+<th>LC 525 (Contiguous Array)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Goal</strong></td>
+<td>Count ALL subarrays</td>
+<td>Find LONGEST subarray</td>
+</tr>
+<tr>
+<td><strong>Map Value</strong></td>
+<td><code>count</code> (occurrences)</td>
+<td><code>index</code> (first occurrence)</td>
+</tr>
+<tr>
+<td><strong>Map Update</strong></td>
+<td>Always increment count</td>
+<td>Only if new count</td>
+</tr>
+<tr>
+<td><strong>Check Formula</strong></td>
+<td><code>presum - k</code></td>
+<td>Same <code>count</code></td>
+</tr>
+<tr>
+<td><strong>Initialization</strong></td>
+<td><code>{0: 1}</code></td>
+<td><code>{0: -1}</code></td>
+</tr>
+</tbody>
+</table>
+<h4 id="related-problems-same-pattern" tabindex="-1"><a class="header-anchor" href="#related-problems-same-pattern"><span>Related Problems (Same Pattern)</span></a></h4>
+<ul>
+<li><strong>LC 525</strong>: Contiguous Array (exactly this pattern)</li>
+<li><strong>LC 1124</strong>: Longest Well-Performing Interval (similar transformation)</li>
+<li><strong>LC 523</strong>: Continuous Subarray Sum (modulo transformation)</li>
+<li><strong>LC 325</strong>: Maximum Size Subarray Sum Equals k (prefix sum + index)</li>
+</ul>
+<hr>
+<pre><code class="language-python"># 525 Contiguous Array
+
+# V0
+# IDEA : HashMap
+#     -&gt; SET UP A DICT,
+#     -&gt; FIND MAX SUB ARRAY LENGH WHEN COUNT(0) == COUNT(1)
+#     -&gt; (WHEN cur in _dict, THERE IS THE COUNT(0) == COUNT(1) CASE)
+# explaination : https://leetcode.com/problems/contiguous-array/discuss/99655/python-on-solution-with-visual-explanation
+class Solution(object):
+    def findMaxLength(self, nums):
+        # edge case
+        if len(nums) &lt;= 1:
+            return 0
+        # note this edge case
+        if len(nums) == 2:
+            if nums.count(0) == nums.count(1):
+                return 2
+            else:
+                return 0
+
+        # NOTE !!! : init hash map like below (idx=0, no solution, for [0,1,1] case)
+        d = {0:-1} # {tmp_sum : index}
+        tmp = 0
+        res = 0
+        for k, v in enumerate(nums):
+            if v == 1:
+                tmp += 1
+            else:
+                tmp -= 1
+            &quot;&quot;&quot;
+            Case 1 : if tmp sum in dict
+            # NOTE THIS : if tmp in d, return the max of (res,cur-index - index) from d with same cur-value
+            &quot;&quot;&quot;
+            if tmp in d:
+                res = max(res, k - d[tmp])
+            &quot;&quot;&quot;
+            Case 2 : if tmp sum NOT in dict
+            # NOTE THIS : if tmp not in d, then use its cur value as key, index as value
+            &quot;&quot;&quot;
+            else:
+                d[tmp] = k ### NOTE : we just need to add index to dict at once, since what we need is MAX len of continous subarray with condition, so we only add 1st index to dist will make this work (max len subarray)
+        return res
+
+# V0'
+# https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Tree/contiguous-array.py
+# explanation : https://leetcode.com/problems/contiguous-array/discuss/99655/python-on-solution-with-visual-explanation
+# HASH MAP FIND EQUAL 0, 1
+class Solution(object):
+    def findMaxLength(self, nums):
+        r = 0
+        cur = 0
+        ### NOTE : WE HAVE TO INIT DICT LIKE BELOW
+        # https://blog.csdn.net/fuxuemingzhu/article/details/82667054
+        _dict = {0:-1}
+        for k, v in enumerate(nums):
+            if v == 1:
+                cur += 1
+            else:
+                cur -= 1
+            if cur in _dict:
+                r = max(r, k - _dict[cur])
+            else:
+                _dict[cur] = k
+        return r
+</code></pre>
+<h3 id="2-1-1-subarray-sums-divisible-by-k-lc-974" tabindex="-1"><a class="header-anchor" href="#2-1-1-subarray-sums-divisible-by-k-lc-974"><span>2-1-1) Subarray Sums Divisible by K (LC 974)</span></a></h3>
+<p><strong>Core Pattern: Prefix Sum + Modular Arithmetic + HashMap</strong></p>
+<h4 id="key-concept-1" tabindex="-1"><a class="header-anchor" href="#key-concept-1"><span>Key Concept</span></a></h4>
+<p>Count ALL subarrays whose sum is divisible by K using remainder tracking.</p>
+<p>If two prefix sums have the <strong>same remainder mod K</strong>, their difference is divisible by K.</p>
+<h4 id="pattern-breakdown-1" tabindex="-1"><a class="header-anchor" href="#pattern-breakdown-1"><span>Pattern Breakdown</span></a></h4>
+<p><strong>1. Mathematical Foundation:</strong></p>
+<pre><code>If prefix[i] % k == prefix[j] % k  (where j &lt; i)
+
+Then:
+  (prefix[i] - prefix[j]) % k == 0
+
+Which means:
+  prefix[i] - prefix[j] = sum of nums[j+1 .. i]
+
+Therefore:
+  The subarray [j+1, i] has a sum divisible by k
+</code></pre>
+<p><strong>2. HashMap Structure:</strong></p>
+<pre><code class="language-java">Map&lt;Integer, Integer&gt; map = new HashMap&lt;&gt;();
+// {remainder: count}  ← Store COUNT, not index (similar to LC 560)
+
+map.put(0, 1); // Initialize for subarrays starting from beginning
+</code></pre>
+<p><strong>3. Why Store Remainder COUNT (Not Index)?</strong></p>
+<pre><code>This is a &quot;count ALL subarrays&quot; problem (like LC 560).
+
+If remainder 3 appears at indices [2, 5, 8]:
+  - When we reach index 5: add 1 (subarray from index 2 to 5)
+  - When we reach index 8: add 2 (subarrays from 2→8 and 5→8)
+
+Total: 3 valid subarrays
+</code></pre>
+<p><strong>4. Critical: Handle Negative Remainders</strong></p>
+<pre><code class="language-java">int remainder = prefixSum % k;
+
+// MUST adjust negative remainders to positive
+if (remainder &lt; 0) {
+    remainder += k;
+}
+
+// Or use this one-liner:
+remainder = ((prefixSum % k) + k) % k;
+</code></pre>
+<p><strong>Why?</strong> In Java/Python, <code>-7 % 5 = -2</code>, but we need remainder 3 (since -2 ≡ 3 mod 5).</p>
+<p><strong>5. Initialization: Why map.put(0, 1)?</strong></p>
+<pre><code>If prefixSum % k == 0 at some index i:
+  → The entire subarray [0, i] is divisible by k
+  → We need to count this case
+
+Without initialization, we'd miss these subarrays.
+</code></pre>
+<h4 id="visual-example-1" tabindex="-1"><a class="header-anchor" href="#visual-example-1"><span>Visual Example</span></a></h4>
+<p><strong>Input:</strong> <code>nums = [4, 5, 0, -2, -3, 1]</code>, <code>k = 5</code></p>
+<p><strong>Prefix sums:</strong> <code>[4, 9, 9, 7, 4, 5]</code></p>
+<p><strong>Remainders (mod 5):</strong> <code>[4, 4, 4, 2, 4, 0]</code></p>
+<table>
+<thead>
+<tr>
+<th>Index</th>
+<th>Num</th>
+<th>PrefixSum</th>
+<th>Remainder</th>
+<th>Map State</th>
+<th>Count Added</th>
+<th>Total Count</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>-</td>
+<td>-</td>
+<td>0</td>
+<td>0</td>
+<td>{0:1}</td>
+<td>-</td>
+<td>0</td>
+</tr>
+<tr>
+<td>0</td>
+<td>4</td>
+<td>4</td>
+<td>4</td>
+<td>{0:1, 4:1}</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td>1</td>
+<td>5</td>
+<td>9</td>
+<td>4</td>
+<td>{0:1, 4:2}</td>
+<td>+1</td>
+<td>1</td>
+</tr>
+<tr>
+<td>2</td>
+<td>0</td>
+<td>9</td>
+<td>4</td>
+<td>{0:1, 4:3}</td>
+<td>+2</td>
+<td>3</td>
+</tr>
+<tr>
+<td>3</td>
+<td>-2</td>
+<td>7</td>
+<td>2</td>
+<td>{0:1, 4:3, 2:1}</td>
+<td>0</td>
+<td>3</td>
+</tr>
+<tr>
+<td>4</td>
+<td>-3</td>
+<td>4</td>
+<td>4</td>
+<td>{0:1, 4:4, 2:1}</td>
+<td>+3</td>
+<td>6</td>
+</tr>
+<tr>
+<td>5</td>
+<td>1</td>
+<td>5</td>
+<td>0</td>
+<td>{0:2, 4:4, 2:1}</td>
+<td>+1</td>
+<td><strong>7</strong></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Result:</strong> 7 subarrays with sum divisible by 5</p>
+<p><strong>Subarrays found:</strong></p>
+<ol>
+<li><code>[4,5,0,-2,-3,1]</code> (entire array, remainder 0 at end)</li>
+<li><code>[5]</code> (remainder 4 at indices 0 and 1)</li>
+<li><code>[5,0]</code> (remainder 4 at indices 0 and 2)</li>
+<li><code>[5,0,-2,-3]</code> (remainder 4 at indices 0 and 4)</li>
+<li><code>[0]</code> (remainder 4 at indices 1 and 2)</li>
+<li><code>[0,-2,-3]</code> (remainder 4 at indices 1 and 4)</li>
+<li><code>[-2,-3]</code> (remainder 4 at indices 2 and 4)</li>
+</ol>
+<h4 id="implementation-template-1" tabindex="-1"><a class="header-anchor" href="#implementation-template-1"><span>Implementation Template</span></a></h4>
+<pre><code class="language-java">// Java Template
+public int subarraysDivByK(int[] nums, int k) {
+    // Map: {remainder: count}
+    Map&lt;Integer, Integer&gt; map = new HashMap&lt;&gt;();
+    map.put(0, 1); // Handle subarrays from beginning
+
+    int count = 0;
+    int prefixSum = 0;
+
+    for (int num : nums) {
+        prefixSum += num;
+
+        // Calculate remainder (handle negatives!)
+        int remainder = prefixSum % k;
+        if (remainder &lt; 0) {
+            remainder += k;
+        }
+        // Or: int remainder = ((prefixSum % k) + k) % k;
+
+        // Add count of all previous same remainders
+        count += map.getOrDefault(remainder, 0);
+
+        // Update remainder count
+        map.put(remainder, map.getOrDefault(remainder, 0) + 1);
+    }
+
+    return count;
+}
+</code></pre>
+<pre><code class="language-python"># Python Template
+def subarraysDivByK(nums, k):
+    # Map: {remainder: count}
+    remainder_count = {0: 1}
+
+    count = 0
+    prefix_sum = 0
+
+    for num in nums:
+        prefix_sum += num
+
+        # Calculate remainder (Python % handles negatives correctly)
+        remainder = prefix_sum % k
+
+        # Add count of all previous same remainders
+        count += remainder_count.get(remainder, 0)
+
+        # Update remainder count
+        remainder_count[remainder] = remainder_count.get(remainder, 0) + 1
+
+    return count
+</code></pre>
+<p><strong>Note:</strong> Python’s <code>%</code> operator always returns positive remainders, so no adjustment needed.</p>
+<h4 id="optimization-array-instead-of-hashmap" tabindex="-1"><a class="header-anchor" href="#optimization-array-instead-of-hashmap"><span>Optimization: Array Instead of HashMap</span></a></h4>
+<p>Since remainders are always in range <code>[0, k-1]</code>, use an array for better performance:</p>
+<pre><code class="language-java">public int subarraysDivByK(int[] nums, int k) {
+    int[] remainderCount = new int[k];
+    remainderCount[0] = 1;
+
+    int count = 0;
+    int prefixSum = 0;
+
+    for (int num : nums) {
+        prefixSum += num;
+        int remainder = ((prefixSum % k) + k) % k;
+
+        count += remainderCount[remainder];
+        remainderCount[remainder]++;
+    }
+
+    return count;
+}
+</code></pre>
+<p><strong>Time Complexity:</strong> O(N)
+<strong>Space Complexity:</strong> O(K) instead of O(N)</p>
+<h4 id="key-differences-from-related-problems" tabindex="-1"><a class="header-anchor" href="#key-differences-from-related-problems"><span>Key Differences from Related Problems</span></a></h4>
+<table>
+<thead>
+<tr>
+<th>Aspect</th>
+<th>LC 560 (Sum = K)</th>
+<th>LC 974 (Divisible by K)</th>
+<th>LC 525 (Equal 0/1)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Goal</strong></td>
+<td>Count subarrays</td>
+<td>Count subarrays</td>
+<td>Find longest</td>
+</tr>
+<tr>
+<td><strong>Map Key</strong></td>
+<td><code>prefixSum</code></td>
+<td><code>prefixSum % k</code></td>
+<td><code>count</code></td>
+</tr>
+<tr>
+<td><strong>Map Value</strong></td>
+<td><code>count</code></td>
+<td><code>count</code></td>
+<td><code>first_index</code></td>
+</tr>
+<tr>
+<td><strong>Check Formula</strong></td>
+<td><code>presum - k</code></td>
+<td>Same <code>remainder</code></td>
+<td>Same <code>count</code></td>
+</tr>
+<tr>
+<td><strong>Special Handling</strong></td>
+<td>None</td>
+<td><strong>Negative remainders!</strong></td>
+<td>Transform 0→-1</td>
+</tr>
+<tr>
+<td><strong>Initialization</strong></td>
+<td><code>{0: 1}</code></td>
+<td><code>{0: 1}</code></td>
+<td><code>{0: -1}</code></td>
+</tr>
+</tbody>
+</table>
+<h4 id="critical-why-negative-remainder-handling-matters" tabindex="-1"><a class="header-anchor" href="#critical-why-negative-remainder-handling-matters"><span>Critical: Why Negative Remainder Handling Matters</span></a></h4>
+<p><strong>Example:</strong> <code>nums = [-1, -2, -3]</code>, <code>k = 5</code></p>
+<p>Without adjustment:</p>
+<pre><code>prefixSum = -1: remainder = -1 (wrong!)
+prefixSum = -3: remainder = -3 (wrong!)
+prefixSum = -6: remainder = -1 (wrong!)
+</code></pre>
+<p>With adjustment:</p>
+<pre><code>prefixSum = -1: remainder = 4 (correct: -1 ≡ 4 mod 5)
+prefixSum = -3: remainder = 2 (correct: -3 ≡ 2 mod 5)
+prefixSum = -6: remainder = 4 (correct: -6 ≡ 4 mod 5)
+</code></pre>
+<p>Now remainders 4 match → subarray <code>[-1]</code> and <code>[-2, -3]</code> have the same remainder → subarray <code>[-2, -3]</code> has sum divisible by 5 ✓</p>
+<h4 id="related-problems-same-pattern-1" tabindex="-1"><a class="header-anchor" href="#related-problems-same-pattern-1"><span>Related Problems (Same Pattern)</span></a></h4>
+<ul>
+<li><strong>LC 974</strong>: Subarray Sums Divisible by K (exactly this pattern)</li>
+<li><strong>LC 523</strong>: Continuous Subarray Sum (divisible, but length ≥ 2 constraint)</li>
+<li><strong>LC 560</strong>: Subarray Sum Equals K (no modulo, simpler)</li>
+<li><strong>LC 1248</strong>: Count Nice Subarrays (transform + count pattern)</li>
+</ul>
+<hr>
+<h3 id="2-2-continuous-subarray-sum" tabindex="-1"><a class="header-anchor" href="#2-2-continuous-subarray-sum"><span>2-2) Continuous Subarray Sum</span></a></h3>
+<ul>
+<li>Similar concept as Contiguous Array (LC 525)</li>
+</ul>
+<pre><code class="language-python"># 523 Continuous Subarray Sum
+# V0
+# IDEA : HASH TABLE
+# -&gt; if sum(nums[i:j]) % k == 0 for some i &lt; j, 
+#   -&gt;  then sum(nums[:j]) % k == sum(nums[:i]) % k  !!!!
+#   -&gt; So we just need to use a dict to keep track of sum(nums[:i]) % k 
+#   -&gt; and the corresponding index i. Once some later sum(nums[:i']) % k == sum(nums[:i]) % k and i' - i &gt; 1, so we return True.
+class Solution(object):
+    def checkSubarraySum(self, nums, k):
+        &quot;&quot;&quot;
+        # _dict = {0:-1} : for edge case (need to find a continuous subarray of size AT LEAST two )
+        # https://leetcode.com/problems/continuous-subarray-sum/discuss/236976/Python-solution
+        # 0: -1 is for edge case that current sum mod k == 0
+        # demo :
+                In [93]: nums = [0]
+                    ...: k = 1
+                    ...:
+                    ...:
+                    ...: s = Solution()
+                    ...: r = s.checkSubarraySum(nums, k)
+                    ...: print (r)
+                0
+                i - _dict[tmp] = 1
+                False
+        &quot;&quot;&quot;
+        ### NOTE : we need to init _dict as {0:-1}
+        _dict = {0:-1}
+        tmp = 0
+        for i in range(len(nums)):
+            tmp += nums[i]
+            if k != 0:
+                ### NOTE : we get remainder of tmp by k
+                tmp = tmp % k
+            # if tmp in _dict, means there is the other sub part make sub array sum % k == 0
+            if tmp in _dict:
+                ### only if continuous sub array with length &gt;= 2
+                if i - _dict[tmp] &gt; 1:
+                    return True
+            else:
+                _dict[tmp] = i
+        return False
+</code></pre>
+<h3 id="2-3-group-anagrams" tabindex="-1"><a class="header-anchor" href="#2-3-group-anagrams"><span>2-3) Group Anagrams</span></a></h3>
+<pre><code class="language-python"># 049 Group Anagrams
+# V0
+# IDEA : HASH TABLE
+class Solution:
+    def groupAnagrams(self, strs):
+        res = {}
+        for item in strs:
+            k = ''.join(sorted(item))  # sort the string 
+            if k not in res:  #  check if exists in res 
+                res[k] = []
+            res[k].append(item)  # if same, put all the same string into dict k 
+        return [res[x] for x in res]  # output the result 
+
+</code></pre>
+<h3 id="2-3-longest-substring-without-repeating-characters" tabindex="-1"><a class="header-anchor" href="#2-3-longest-substring-without-repeating-characters"><span>2-3) Longest Substring Without Repeating Characters</span></a></h3>
+<pre><code class="language-python"># LC 003
+# V0'
+# IDEA : TWO POINTER + SLIDING WINDOW + DICT (NOTE this method !!!!)
+#       -&gt; use a hash table (d) record visited &quot;element&quot; (e.g. : a,b,c,...)
+#          (but NOT sub-string)
+class Solution(object):
+    def lengthOfLongestSubstring(self, s):
+        d = {}
+        # left pointer
+        l = 0
+        res = 0
+        &quot;&quot;&quot;
+        NOTE !!!
+
+        we move right pointer first, then left pointer
+        &quot;&quot;&quot;
+        # NOTE !!! right pointer
+        for r in range(len(s)):
+            &quot;&quot;&quot;
+            ### NOTE : deal with &quot;s[r] in d&quot; case ONLY !!! 
+            ### NOTE : if already visited, means &quot;repeating&quot;
+            #      -&gt; then we need to update left pointer (l)
+            &quot;&quot;&quot;
+            if s[r] in d:
+                &quot;&quot;&quot;
+                NOTE !!! this
+                -&gt; via max(l, d[s[r]] + 1) trick,
+                   we can get the &quot;latest&quot; idx of duplicated s[r], and start from that one
+                &quot;&quot;&quot;
+                l = max(l, d[s[r]] + 1)
+            # if not visited yet, record the alphabet
+            # and re-calculate the max length
+            d[s[r]] = r
+            res = max(res, r -l + 1)
+        return res
+</code></pre>
+<h3 id="2-4-count-primes" tabindex="-1"><a class="header-anchor" href="#2-4-count-primes"><span>2-4) Count Primes</span></a></h3>
+<pre><code class="language-python"># LC 204 Count Primes
+# V0
+# IDEA : dict
+# https://leetcode.com/problems/count-primes/discuss/1343795/python%3A-sieve-of-eretosthenes
+# prime(x) : check if x is a prime
+# prime(0) = 0
+# prime(1) = 0
+# prime(2) = 0
+# prime(3) = 1
+# prime(4) = 2
+# prime(5) = 3
+# python 3
+class Solution:
+    def countPrimes(self, n):
+        # using sieve of eretosthenes algorithm
+        if n &lt; 2: return 0
+        nonprimes = set()
+        for i in range(2, round(n**(1/2))+1):
+            if i not in nonprimes:
+                for j in range(i*i, n, i):
+                    nonprimes.add(j)
+        return n - len(nonprimes) - 2  # remove prime(1), prime(2)
+</code></pre>
+<h3 id="2-5-valid-sudoku" tabindex="-1"><a class="header-anchor" href="#2-5-valid-sudoku"><span>2-5) Valid Sudoku</span></a></h3>
+<pre><code class="language-python"># python
+# LC 036 Valid Sudoku
+# V0
+class Solution(object):
+    def isValidSudoku(self, board):
+        &quot;&quot;&quot;
+        :type board: List[List[str]]
+        :rtype: bool
+        &quot;&quot;&quot;
+        n = len(board)
+        return self.isValidRow(board) and self.isValidCol(board) and self.isValidNineCell(board)
+        
+    def isValidRow(self, board):
+        n = len(board)
+        for r in range(n):
+            row = [x for x in board[r] if x != '.']
+            if len(set(row)) != len(row): # if not repetition 
+                return False
+        return True
+
+    def isValidCol(self, board):
+        n = len(board)
+        for c in range(n):
+            col = [board[r][c] for r in range(n) if board[r][c] != '.']
+            if len(set(col)) != len(col): # if not repetition 
+                return False
+        return True
+
+    def isValidNineCell(self, board):
+        n = len(board)
+        for r in range(0, n, 3):
+            for c in range(0, n, 3):
+                cell = []
+                for i in range(3):
+                    for j in range(3):
+                        num = board[r + i][c + j]
+                        if num != '.':
+                            cell.append(num)
+                if len(set(cell)) != len(cell): # if not repetition 
+                    return False
+        return True
+</code></pre>
+<pre><code class="language-java">// java
+// LC 036 Valid Sudoku
+// backtrack
+// (algorithm book (labu) p.311)
+boolean backtrack(char[][] boolean,int i, int j){
+
+    int m = 9, n = 9;
+    
+    if (j == n){
+        // if visit last col, start from next row
+        return backtrack(board, i + 1, 0);
+    }
+
+    if (i == m){
+        // found one solution, trigger base case
+        return true;
+    }
+
+    if (board[i][j] != '.'){
+        // if there id default number, then no need to looping
+        return backtrack(board, i, j + 1);
+    }
+
+    for (char ch = '1'; ch &lt;= '9'; ch++){
+        // if there is no valid number, negelect it
+        if (!isValid(board, i, j, ch)){
+            continue;
+        }
+
+        board[i][j] = ch;
+
+        // if found one solution, return it and terminate the program
+        if (backtrack(board, i, j+1)){
+            return true;
+        }
+
+        board[i][j] = '.';
+    }
+
+    // if looping 1 ~ 9, still can't find a solution
+    // -&gt; change a number to loop
+    return false;
+}
+
+bollean isValid(char[][] board, int r, int c, char n){
+    for (int i = 0; i &lt; 9; i++){
+        // check if row has duplicate
+        if (board[r][i] == n) return false;
+        // check if col has duplicate
+        if (board[i][c] == n) return false;
+        // check if &quot;3 x 3 matrix&quot; has duplicate
+        if (board[ (r/3) * 3 + i / 3 ][ (c/3) * 3 + i % 3] == n) return false;
+    }
+    return true;
+}  
+</code></pre>
+<h3 id="2-6-pairs-of-songs-with-total-durations-divisible-by-60" tabindex="-1"><a class="header-anchor" href="#2-6-pairs-of-songs-with-total-durations-divisible-by-60"><span>2-6) Pairs of Songs With Total Durations Divisible by 60</span></a></h3>
+<pre><code class="language-python"># LC 1010. Pairs of Songs With Total Durations Divisible by 60
+# V0
+# IDEA : dict
+# IDEA : NOTE : we only count &quot;NUMBER OF PAIRS&quot;, instead get all pairs indexes
+class Solution(object):
+    def numPairsDivisibleBy60(self, time):
+        rem = {}
+        pairs = 0
+        for t in time:
+            #print (&quot;rem = &quot; + str(rem))
+            t %= 60
+            if (60 - t) % 60 in rem:
+                &quot;&quot;&quot;
+                NOTE : this trick
+                -&gt; we append &quot;all 60 duration combinations count&quot; via the existing times of element &quot;(60 - t) % 60&quot; 
+                &quot;&quot;&quot;
+                pairs += rem[(60 - t) % 60]
+            if t not in rem:
+                rem[t] = 1
+            else:
+                ### NOTE : here : we plus 1 when an element already exist
+                rem[t] += 1
+        return pairs
+</code></pre>
+<h3 id="2-7-subarray-sum-equals-k" tabindex="-1"><a class="header-anchor" href="#2-7-subarray-sum-equals-k"><span>2-7) Subarray Sum Equals K</span></a></h3>
+<pre><code class="language-python"># LC 560 : Subarray Sum Equals K
+
+# V0
+# IDEA : HASH TABLE + sub array sum
+# IDEA : https://blog.csdn.net/fuxuemingzhu/article/details/82767119
+class Solution(object):
+    def subarraySum(self, nums, k):
+        n = len(nums)
+        d = collections.defaultdict(int)
+        d[0] = 1
+        sum = 0
+        res = 0
+        for i in range(n):
+            sum += nums[i]
+            # if sum - k in d
+            #  -&gt; if sum - (every _ in d) == k
+            if sum - k in d:
+                res += d[sum - k]
+            d[sum] += 1
+        return res
+
+# V0'
+# IDEA : HASH TABLE + sub array sum
+class Solution:
+    def subarraySum(self, nums, k):
+        # write your code here
+        for i in range(1, len(nums)):
+            nums[i] += nums[i - 1]
+        print (&quot;nums = &quot; + str(nums))
+        d = {0:1}
+        ans = 0
+        for i in range(len(nums)):
+            # check sub array equals k
+            if(d.get(nums[i] - k) != None):
+                ans += d[nums[i] - k]
+            # update dict
+            if nums[i] not in d:
+                d[nums[i]] = 1
+            else:
+                d[nums[i]] += 1
+        return ans
+</code></pre>
+<pre><code class="language-java">// LC 560 : Subarray Sum Equals K
+// java
+// (algorithm book (labu) p.350)
+// V1 : brute force + cum sum
+int subarraySum(int[] nums, int k){
+    int n = nums.length;
+    // init pre sum
+    int[] sum = new int[n+1];
+    sum[0] = 0;
+    for (int i = 0; i &lt; n; i++){
+        sum[i+1] = sum[i] + nums[i];
+    }
+
+    int ans = 0;
+    // loop over all sub array
+    for (int i=1; i &lt;= n; i++){
+        for (int j=0; j &lt; i; j++){
+            // sum of nums[j...i-1]
+            if (sum[i] - sum[j] == k){
+                ans += 1;
+            }
+        }
+    }
+    return ans;
+}
+
+// (algorithm book (labu) p.350)
+// V2 : hash map + cum sum
+int subarraySum(int[] nums, int k){
+    int n = nums.length;
+    // map :  key : prefix, value : prefix exists count
+    // init hash map
+    HashMap&lt;Integer, Integer&gt; preSum = new HashMap&lt;Integer, Integer&gt;();
+
+    // base case
+    preSum.put(0,1);
+
+    int ans = 0;
+    sum0_i = 0;
+
+    for (int i = 0; i &lt; n; i++){
+        sum0_i += nums[i];
+        // for presum : nums[0..j]
+        int sum0_j = sum0_i - k;
+        // if there is already presum, update the ans directly
+        if (preSum.containsKey(sum0_j)){
+            ans += preSum.get(sum0_j);
+        }
+        // add prefix and nums[0..i] and record exists count
+        preSum.put(sum0_i, preSum.getOrDefault(sum0_i,0) + 1);
+    }
+    return ans;
+}
+</code></pre>
+<h3 id="2-8-k-diff-pairs-in-an-array" tabindex="-1"><a class="header-anchor" href="#2-8-k-diff-pairs-in-an-array"><span>2-8) K-diff Pairs in an Array</span></a></h3>
+<pre><code class="language-python"># LC 532 K-diff Pairs in an Array
+# V0
+# IDEA : HASH TABLE
+import collections
+class Solution(object):
+    def findPairs(self, nums, k):
+        answer = 0
+        cnt = collections.Counter(nums)
+        # NOTE THIS : !!! we use set(nums) for reduced time complexity, and deal with k == 0 case separately
+        for num in set(nums):
+            &quot;&quot;&quot;
+            # [b - a] = k
+            #  -&gt; b - a = +k or -k
+            #  -&gt; b = k + a or b = -k + a
+            #  -&gt; however, 0 &lt;= k &lt;= 10^7, so ONLY b = k + a is possible
+
+            2 cases
+                -&gt; case 1) k &gt; 0 and num + k in cnt
+                -&gt; case 2) k == 0 and cnt[num] &gt; 1
+            &quot;&quot;&quot;
+            # case 1) k &gt; 0 and num + k in cnt
+            if k &gt; 0 and num + k in cnt: # | a - b | = k -&gt; a - b = +k or -k, but here don't have to deal with &quot;a - b = -k&quot; case, since this sutuation will be covered when go through whole nums  
+                answer += 1
+            # case 2) k == 0 and cnt[num] &gt; 1
+            if k == 0 and cnt[num] &gt; 1:  # for cases k = 0 -&gt;  pair like (1,1) will work. (i.e. 1 + (-1))
+                answer += 1
+        return answer
+
+# V0'
+# IDEA : SORT + BRUTE FORCE + BREAK
+class Solution(object):
+    def findPairs(self, nums, k):
+        # edge case
+        if not nums and k:
+            return 0
+        nums.sort()
+        res = 0
+        tmp = []
+        for i in range(len(nums)):
+            for j in range(i+1, len(nums)):
+                if abs(nums[j] - nums[i]) == k:
+                    cur = [nums[i], nums[j]]
+                    cur.sort()
+                    if cur not in tmp:
+                        res += 1
+                        tmp.append(cur)
+                elif abs(nums[j] - nums[i]) &gt; k:
+                    break
+        return res
+</code></pre>
+<h3 id="2-9-sentence-similarity" tabindex="-1"><a class="header-anchor" href="#2-9-sentence-similarity"><span>2-9) Sentence Similarity</span></a></h3>
+<pre><code class="language-python"># LC 734. Sentence Similarity
+# V0'
+# https://zxi.mytechroad.com/blog/hashtable/leetcode-734-sentence-similarity/
+import collections
+class Solution(object):
+    def areSentencesSimilar(self, words1, words2, pairs):
+        if len(words1) != len(words2): return False
+        similars = collections.defaultdict(set)
+        for w1, w2 in pairs:
+            similars[w1].add(w2)
+            similars[w2].add(w1)
+        for w1, w2 in zip(words1, words2):
+            if w1 != w2 and w2 not in similars[w1]:
+                return False
+        return True
+
+# V0
+# IDEA : array op
+#   -&gt; Apart from edge cases
+#   -&gt; there are cases we need to consider
+#     -&gt; 1) if sentence1[i] == sentence2[i]
+#     -&gt; 2) if sentence1[i] != sentence2[i] and
+#           -&gt; [sentence1[i], sentence2[i]] in similarPairs
+#           -&gt; [sentence2[i], sentence1[i]] in similarPairs
+class Solution(object):
+    def areSentencesSimilar(self, sentence1, sentence2, similarPairs):
+        # edge case
+        if sentence1 == sentence2:
+            return True
+        if len(sentence1) != len(sentence2):
+            return False
+        for i in range(len(sentence1)):
+            tmp = [sentence1[i], sentence2[i]]
+            &quot;&quot;&quot;
+            NOTE : below condition
+                1) sentence1[i] != sentence2[i]
+                  AND
+                2) (tmp not in similarPairs and tmp[::-1] not in similarPairs)
+
+                -&gt; return false
+            &quot;&quot;&quot;
+            if sentence1[i] != sentence2[i] and (tmp not in similarPairs and tmp[::-1] not in similarPairs):
+                return False
+        return True
+</code></pre>
+<h3 id="2-10-lru-cache" tabindex="-1"><a class="header-anchor" href="#2-10-lru-cache"><span>2-10) LRU Cache</span></a></h3>
+<pre><code class="language-python"># LC 146 LRU Cache
+# note : there is also array/queue approach
+# V1
+# IDEA : Ordered dictionary
+# https://leetcode.com/problems/lru-cache/solution/
+# IDEA : 
+#       -&gt; There is a structure called ordered dictionary, it combines behind both hashmap and linked list. 
+#       -&gt; In Python this structure is called OrderedDict 
+#       -&gt; and in Java LinkedHashMap.
+from collections import OrderedDict
+class LRUCache(OrderedDict):
+
+    def __init__(self, capacity):
+        &quot;&quot;&quot;
+        :type capacity: int
+        &quot;&quot;&quot;
+        self.capacity = capacity
+
+    def get(self, key):
+        &quot;&quot;&quot;
+        :type key: int
+        :rtype: int
+        &quot;&quot;&quot;
+        if key not in self:
+            return - 1
+        
+        self.move_to_end(key)
+        return self[key]
+
+    def put(self, key, value):
+        &quot;&quot;&quot;
+        :type key: int
+        :type value: int
+        :rtype: void
+        &quot;&quot;&quot;
+        if key in self:
+            self.move_to_end(key)
+        self[key] = value
+        if len(self) &gt; self.capacity:
+            self.popitem(last = False)
+</code></pre>
+<h3 id="2-11-find-all-anagrams-in-a-string" tabindex="-1"><a class="header-anchor" href="#2-11-find-all-anagrams-in-a-string"><span>2-11) Find All Anagrams in a String</span></a></h3>
+<pre><code class="language-python"># LC 438. Find All Anagrams in a String
+# V0
+# IDEA : SLIDING WINDOW + collections.Counter()
+class Solution(object):
+    def findAnagrams(self, s, p):
+        ls, lp = len(s), len(p)
+        cp = collections.Counter(p)
+        cs = collections.Counter()
+        ans = []
+        for i in range(ls):
+            cs[s[i]] += 1
+            if i &gt;= lp:
+                cs[s[i - lp]] -= 1
+                ### BE AWARE OF IT
+                if cs[s[i - lp]] == 0:
+                    del cs[s[i - lp]]
+            if cs == cp:
+                ans.append(i - lp + 1)
+        return ans
+</code></pre>
+<h3 id="2-12-brick-wall" tabindex="-1"><a class="header-anchor" href="#2-12-brick-wall"><span>2-12) Brick Wall</span></a></h3>
+<pre><code class="language-python"># LC 554. Brick Wall
+# V0
+# IDEA : HASH TABLE + COUNTER UPDATE (looping every element in the list and cumsum and 
+import collections
+class Solution(object):
+    def leastBricks(self, wall):
+        _counter = collections.Counter()
+        count = 0
+        # go through every sub-wall in wall
+        for w in wall:
+            cum_sum = 0
+            # go through every element in sub-wall
+            for i in range(len(w) - 1):
+                cum_sum += w[i]
+                ### NOTE we can update collections.Counter() via below
+                _counter.update([cum_sum])
+                count = max(count, _counter[cum_sum])
+        return len(wall) - count
+</code></pre>
+<h3 id="2-13-maximum-size-subarray-sum-equals-k" tabindex="-1"><a class="header-anchor" href="#2-13-maximum-size-subarray-sum-equals-k"><span>2-13) Maximum Size Subarray Sum Equals k</span></a></h3>
+<pre><code class="language-java">// java
+// LC 325
+    public int maxSubArrayLen_0_1(int[] nums, int k) {
+        // Map to store (prefixSum, index)
+        Map&lt;Integer, Integer&gt; preSumMap = new HashMap&lt;&gt;();
+        preSumMap.put(0, -1); // Initialize for subarrays starting from index 0
+
+        int curSum = 0;
+        int maxSize = 0;
+
+        for (int i = 0; i &lt; nums.length; i++) {
+            curSum += nums[i];
+
+            /**
+             *
+             *   TODO: check if `preSum == k` already existed before (within loop over nunms)
+             *
+             *    -&gt; if preSum == k existed
+             *    -&gt; (let's say current idx = j, and a previous idx = i, can make sum(i, j) == k)
+             *    -&gt; `preSum(j) - preSum(i) = k`  !!!!
+             *      -&gt; preSum(j) if what we have  (preSum)
+             *      ----&gt; so need to check if `preSum(j) - k` exists in map  !!!
+             */
+            // Check if there's a prefix sum such that curSum - prefixSum = k
+            /**
+             *  Prefix sum
+             *
+             *
+             * The prefix sum approach works because any subarray sum can be expressed in terms of two prefix sums:
+             *
+             *
+             * sum of subarray[i,j] = prefixSum[j] - prefixSum[i-1]
+             *
+             *
+             * Where:
+             *  •   prefixSum[j] is the cumulative sum of the array up to index j.
+             *  •   prefixSum[i-1] is the cumulative sum of the array up to index i-1.
+             *
+             * Rewriting this:
+             *
+             * -&gt; prefixSum[j] - prefixSum[i-1] = k
+             *
+             * -&gt; prefixSum[i-1] = prefixSum[j] - k
+             *
+             *
+             * Thus, the task is to find a previous prefix
+             * sum (prefixSum[i-1]) such that the
+             * difference between the current
+             * prefix sum (prefixSum[j]) and that value equals k.
+             *
+             *
+             *
+             *  How the Code Works
+             *
+             *  1.  Tracking Prefix Sums:
+             *      •   curSum is the cumulative prefix sum up to the current index i.
+             *      •   The map preSumMap stores previously seen prefix sums as keys, with their earliest index as the value.
+             *  2.  Checking for Subarrays:
+             *      •   At any index i, the condition curSum - k checks if there exists a previously seen prefix sum that, when subtracted from the current cumulative sum, gives the desired subarray sum k.
+             *
+             *  3.  Why It Covers All Possible Subarrays******:
+             *      •   The map contains all prefix sums seen so far, so it inherently includes all potential starting points of subarrays.
+             *      •   If a subarray [start, i] has a sum equal to k, the difference curSum - k corresponds to the prefix sum at start - 1. Since the map stores all previously seen prefix sums, this difference is guaranteed to be checked.
+             *
+             */
+            if (preSumMap.containsKey(curSum - k)) {
+                maxSize = Math.max(maxSize, i - preSumMap.get(curSum - k));
+            }
+
+            // Add current prefix sum to the map if not already present
+            preSumMap.putIfAbsent(curSum, i);
+        }
+
+        return maxSize;
+    }
+</code></pre>
+<h3 id="2-14-smallest-common-region" tabindex="-1"><a class="header-anchor" href="#2-14-smallest-common-region"><span>2-14)  Smallest Common Region</span></a></h3>
+<pre><code class="language-java">// java
+// LC 1257
+
+// V0-1
+// IDEA: HASHMAP (fixed by gpt)
+// TODO: validate
+public String findSmallestRegion_0_1(List&lt;List&lt;String&gt;&gt; regions, String region1, String region2) {
+
+    // Map each region to its parent
+    /**
+     *  NOTE !!!
+     *
+     *   map : {child : parent}
+     *
+     *   -&gt; so the key is child, and the value is its parent
+     *
+     */
+    Map&lt;String, String&gt; parentMap = new HashMap&lt;&gt;();
+
+    for (List&lt;String&gt; regionList : regions) {
+        String parent = regionList.get(0);
+        for (int i = 1; i &lt; regionList.size(); i++) {
+            parentMap.put(regionList.get(i), parent);
+        }
+    }
+
+    // Track ancestors of region1
+    /**  NOTE !!!
+     *
+     *  we use `set` to track `parents` (ancestors)
+     *  if exists, add it to set,
+     *  and set `current region` as its `parent`
+     *
+     */
+    Set&lt;String&gt; ancestors = new HashSet&lt;&gt;();
+    while (region1 != null) {
+        ancestors.add(region1);
+        region1 = parentMap.get(region1);
+    }
+
+    // Traverse region2’s ancestors until we find one in region1’s ancestor set
+    while (!ancestors.contains(region2)) {
+        region2 = parentMap.get(region2);
+    }
+
+    return region2;
+}
+</code></pre>
+<h2 id="problem-classification-table" tabindex="-1"><a class="header-anchor" href="#problem-classification-table"><span>Problem Classification Table</span></a></h2>
+<h3 id="category-1-counting-and-frequency-25-problems" tabindex="-1"><a class="header-anchor" href="#category-1-counting-and-frequency-25-problems"><span>Category 1: Counting and Frequency (25 problems)</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC#</th>
+<th>Difficulty</th>
+<th>Template</th>
+<th>Key Insight</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Valid Anagram</td>
+<td>242</td>
+<td>Easy</td>
+<td>Counting</td>
+<td>Compare character frequencies</td>
+</tr>
+<tr>
+<td>Group Anagrams</td>
+<td>49</td>
+<td>Medium</td>
+<td>Counting</td>
+<td>Sort string as key</td>
+</tr>
+<tr>
+<td>Sort Characters by Frequency</td>
+<td>451</td>
+<td>Medium</td>
+<td>Counting</td>
+<td>Sort by frequency</td>
+</tr>
+<tr>
+<td>Top K Frequent Elements</td>
+<td>347</td>
+<td>Medium</td>
+<td>Counting + Heap</td>
+<td>Count + priority queue</td>
+</tr>
+<tr>
+<td>Top K Frequent Words</td>
+<td>692</td>
+<td>Medium</td>
+<td>Counting + Heap</td>
+<td>Count + custom comparator</td>
+</tr>
+<tr>
+<td>Most Common Word</td>
+<td>819</td>
+<td>Easy</td>
+<td>Counting</td>
+<td>Clean input, count words</td>
+</tr>
+<tr>
+<td>Subdomain Visit Count</td>
+<td>811</td>
+<td>Easy</td>
+<td>Counting</td>
+<td>Split domains, count visits</td>
+</tr>
+<tr>
+<td>Find All Anagrams in String</td>
+<td>438</td>
+<td>Medium</td>
+<td>Sliding Window</td>
+<td>Window frequency matching</td>
+</tr>
+<tr>
+<td>Word Pattern</td>
+<td>290</td>
+<td>Easy</td>
+<td>Counting</td>
+<td>Bijection between pattern &amp; words</td>
+</tr>
+<tr>
+<td>Isomorphic Strings</td>
+<td>205</td>
+<td>Easy</td>
+<td>Counting</td>
+<td>Character mapping</td>
+</tr>
+<tr>
+<td>First Unique Character</td>
+<td>387</td>
+<td>Easy</td>
+<td>Counting</td>
+<td>Find first with freq=1</td>
+</tr>
+<tr>
+<td>Unique Number of Occurrences</td>
+<td>1207</td>
+<td>Easy</td>
+<td>Counting</td>
+<td>Frequency of frequencies</td>
+</tr>
+<tr>
+<td>Find Anagram Mappings</td>
+<td>760</td>
+<td>Easy</td>
+<td>Counting</td>
+<td>Index mapping</td>
+</tr>
+<tr>
+<td>Vowels of All Substrings</td>
+<td>2063</td>
+<td>Medium</td>
+<td>Counting</td>
+<td>Contribution of each vowel</td>
+</tr>
+<tr>
+<td>Maximum Number of Balloons</td>
+<td>1189</td>
+<td>Easy</td>
+<td>Counting</td>
+<td>Count limiting character</td>
+</tr>
+<tr>
+<td>Number of Good Pairs</td>
+<td>1512</td>
+<td>Easy</td>
+<td>Counting</td>
+<td>n*(n-1)/2 pairs</td>
+</tr>
+<tr>
+<td>Decode the Message</td>
+<td>2325</td>
+<td>Easy</td>
+<td>Counting</td>
+<td>Character substitution</td>
+</tr>
+<tr>
+<td>Sort Array by Frequency</td>
+<td>1636</td>
+<td>Easy</td>
+<td>Counting</td>
+<td>Sort by frequency then value</td>
+</tr>
+<tr>
+<td>Check if Two Strings are Equivalent</td>
+<td>1662</td>
+<td>Easy</td>
+<td>Counting</td>
+<td>Build strings and compare</td>
+</tr>
+<tr>
+<td>Baseball Game</td>
+<td>682</td>
+<td>Easy</td>
+<td>Counting</td>
+<td>Simulate game rules</td>
+</tr>
+<tr>
+<td>Number of Arithmetic Triplets</td>
+<td>2367</td>
+<td>Easy</td>
+<td>Counting</td>
+<td>Check differences</td>
+</tr>
+<tr>
+<td>Count Elements</td>
+<td>1426</td>
+<td>Easy</td>
+<td>Counting</td>
+<td>Count x where x+1 exists</td>
+</tr>
+<tr>
+<td>Distribute Candies</td>
+<td>575</td>
+<td>Easy</td>
+<td>Counting</td>
+<td>Min of types and n/2</td>
+</tr>
+<tr>
+<td>Intersection of Two Arrays</td>
+<td>349</td>
+<td>Easy</td>
+<td>Counting</td>
+<td>Set intersection</td>
+</tr>
+<tr>
+<td>Intersection of Two Arrays II</td>
+<td>350</td>
+<td>Easy</td>
+<td>Counting</td>
+<td>Frequency intersection</td>
+</tr>
+</tbody>
+</table>
+<h3 id="category-2-two-sum-variants-15-problems" tabindex="-1"><a class="header-anchor" href="#category-2-two-sum-variants-15-problems"><span>Category 2: Two Sum Variants (15 problems)</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC#</th>
+<th>Difficulty</th>
+<th>Template</th>
+<th>Key Insight</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Two Sum</td>
+<td>1</td>
+<td>Easy</td>
+<td>Two Sum</td>
+<td>Store complement indices</td>
+</tr>
+<tr>
+<td>Two Sum II</td>
+<td>167</td>
+<td>Easy</td>
+<td>Two Pointers</td>
+<td>Sorted array advantage</td>
+</tr>
+<tr>
+<td>3Sum</td>
+<td>15</td>
+<td>Medium</td>
+<td>Two Sum</td>
+<td>Fix one, find pairs</td>
+</tr>
+<tr>
+<td>3Sum Closest</td>
+<td>16</td>
+<td>Medium</td>
+<td>Two Sum</td>
+<td>Track closest sum</td>
+</tr>
+<tr>
+<td>4Sum</td>
+<td>18</td>
+<td>Medium</td>
+<td>Two Sum</td>
+<td>Fix two, find pairs</td>
+</tr>
+<tr>
+<td>Two Sum IV - BST</td>
+<td>653</td>
+<td>Easy</td>
+<td>Two Sum</td>
+<td>In-order + hash set</td>
+</tr>
+<tr>
+<td>K-diff Pairs in Array</td>
+<td>532</td>
+<td>Medium</td>
+<td>Two Sum</td>
+<td>Handle k=0 case</td>
+</tr>
+<tr>
+<td>Pairs of Songs with Total Duration Divisible by 60</td>
+<td>1010</td>
+<td>Medium</td>
+<td>Two Sum</td>
+<td>Modular arithmetic</td>
+</tr>
+<tr>
+<td>Count Number of Pairs with Absolute Difference K</td>
+<td>2006</td>
+<td>Easy</td>
+<td>Two Sum</td>
+<td>Check num+k, num-k</td>
+</tr>
+<tr>
+<td>Find All K-Distant Indices</td>
+<td>2200</td>
+<td>Easy</td>
+<td>Two Sum</td>
+<td>Distance constraint</td>
+</tr>
+<tr>
+<td>Max Number of K-Sum Pairs</td>
+<td>1679</td>
+<td>Medium</td>
+<td>Two Sum</td>
+<td>Remove pairs greedily</td>
+</tr>
+<tr>
+<td>Two Sum Less Than K</td>
+<td>1099</td>
+<td>Easy</td>
+<td>Two Sum</td>
+<td>Track maximum valid sum</td>
+</tr>
+<tr>
+<td>Two Sum - Data Structure</td>
+<td>170</td>
+<td>Easy</td>
+<td>Design</td>
+<td>Add/Find operations</td>
+</tr>
+<tr>
+<td>Count Good Meals</td>
+<td>1711</td>
+<td>Medium</td>
+<td>Two Sum</td>
+<td>Powers of 2 as targets</td>
+</tr>
+<tr>
+<td>Count Pairs With XOR in Range</td>
+<td>1803</td>
+<td>Hard</td>
+<td>Trie + Two Sum</td>
+<td>XOR properties</td>
+</tr>
+</tbody>
+</table>
+<h3 id="category-3-prefix-sum-and-subarray-17-problems" tabindex="-1"><a class="header-anchor" href="#category-3-prefix-sum-and-subarray-17-problems"><span>Category 3: Prefix Sum and Subarray (17 problems)</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC#</th>
+<th>Difficulty</th>
+<th>Template</th>
+<th>Key Insight</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Subarray Sum Equals K</strong></td>
+<td><strong>560</strong></td>
+<td><strong>Medium</strong></td>
+<td><strong>Prefix Sum</strong></td>
+<td><strong>{sum: count} pattern, check before update</strong></td>
+</tr>
+<tr>
+<td>Maximum Size Subarray Sum Equals k</td>
+<td>325</td>
+<td>Medium</td>
+<td>Prefix Sum</td>
+<td>Store first occurrence index</td>
+</tr>
+<tr>
+<td>Continuous Subarray Sum</td>
+<td>523</td>
+<td>Medium</td>
+<td>Prefix Sum</td>
+<td>Modular arithmetic, store index</td>
+</tr>
+<tr>
+<td><strong>Contiguous Array</strong></td>
+<td><strong>525</strong></td>
+<td><strong>Medium</strong></td>
+<td><strong>Prefix Sum + Transform</strong></td>
+<td><strong>Transform 0→-1, 1→+1; store {count: first_index}</strong></td>
+</tr>
+<tr>
+<td>Binary Subarrays with Sum</td>
+<td>930</td>
+<td>Medium</td>
+<td>Prefix Sum</td>
+<td>Same as LC 560, count pattern</td>
+</tr>
+<tr>
+<td><strong>Subarray Sums Divisible by K</strong></td>
+<td><strong>974</strong></td>
+<td><strong>Medium</strong></td>
+<td><strong>Prefix Sum + Modulo</strong></td>
+<td><strong>{remainder: count}; MUST handle negative remainders!</strong></td>
+</tr>
+<tr>
+<td>Count Number of Nice Subarrays</td>
+<td>1248</td>
+<td>Medium</td>
+<td>Prefix Sum</td>
+<td>Transform odd→1, even→0</td>
+</tr>
+<tr>
+<td>Subarray Sum Equals K II</td>
+<td>1074</td>
+<td>Hard</td>
+<td>Prefix Sum</td>
+<td>2D matrix version</td>
+</tr>
+<tr>
+<td>Minimum Size Subarray Sum</td>
+<td>209</td>
+<td>Medium</td>
+<td>Sliding Window</td>
+<td>Contract when sum ≥ target</td>
+</tr>
+<tr>
+<td>Number of Subarrays with Bounded Maximum</td>
+<td>795</td>
+<td>Medium</td>
+<td>Prefix Sum</td>
+<td>Inclusion-exclusion</td>
+</tr>
+<tr>
+<td>Shortest Subarray with Sum at Least K</td>
+<td>862</td>
+<td>Hard</td>
+<td>Deque</td>
+<td>Monotonic deque optimization</td>
+</tr>
+<tr>
+<td>Count of Range Sum</td>
+<td>327</td>
+<td>Hard</td>
+<td>Merge Sort</td>
+<td>Count inversions variant</td>
+</tr>
+<tr>
+<td>Range Sum Query - Immutable</td>
+<td>303</td>
+<td>Easy</td>
+<td>Prefix Sum</td>
+<td>Precompute prefix sums</td>
+</tr>
+<tr>
+<td>Range Sum Query 2D</td>
+<td>304</td>
+<td>Medium</td>
+<td>Prefix Sum</td>
+<td>2D prefix sum array</td>
+</tr>
+<tr>
+<td>Subarray Product Less Than K</td>
+<td>713</td>
+<td>Medium</td>
+<td>Sliding Window</td>
+<td>Contract when product ≥ k</td>
+</tr>
+<tr>
+<td>Maximum Average Subarray I</td>
+<td>643</td>
+<td>Easy</td>
+<td>Sliding Window</td>
+<td>Fixed window size</td>
+</tr>
+<tr>
+<td>Find Pivot Index</td>
+<td>724</td>
+<td>Easy</td>
+<td>Prefix Sum</td>
+<td>Left sum = right sum</td>
+</tr>
+</tbody>
+</table>
+<h3 id="category-4-sliding-window-with-hash-map-12-problems" tabindex="-1"><a class="header-anchor" href="#category-4-sliding-window-with-hash-map-12-problems"><span>Category 4: Sliding Window with Hash Map (12 problems)</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC#</th>
+<th>Difficulty</th>
+<th>Template</th>
+<th>Key Insight</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Longest Substring Without Repeating Characters</td>
+<td>3</td>
+<td>Medium</td>
+<td>Sliding Window</td>
+<td>Track last occurrence</td>
+</tr>
+<tr>
+<td>Minimum Window Substring</td>
+<td>76</td>
+<td>Hard</td>
+<td>Sliding Window</td>
+<td>Contract when valid</td>
+</tr>
+<tr>
+<td>Permutation in String</td>
+<td>567</td>
+<td>Medium</td>
+<td>Sliding Window</td>
+<td>Fixed window size</td>
+</tr>
+<tr>
+<td>Find All Anagrams in String</td>
+<td>438</td>
+<td>Medium</td>
+<td>Sliding Window</td>
+<td>Match frequency maps</td>
+</tr>
+<tr>
+<td>Longest Substring with At Most Two Distinct Characters</td>
+<td>159</td>
+<td>Medium</td>
+<td>Sliding Window</td>
+<td>Track character count</td>
+</tr>
+<tr>
+<td>Longest Substring with At Most K Distinct Characters</td>
+<td>340</td>
+<td>Medium</td>
+<td>Sliding Window</td>
+<td>Generalize distinct limit</td>
+</tr>
+<tr>
+<td>Fruit Into Baskets</td>
+<td>904</td>
+<td>Medium</td>
+<td>Sliding Window</td>
+<td>At most 2 types</td>
+</tr>
+<tr>
+<td>Longest Repeating Character Replacement</td>
+<td>424</td>
+<td>Medium</td>
+<td>Sliding Window</td>
+<td>Track max frequency</td>
+</tr>
+<tr>
+<td>Get Equal Substrings Within Budget</td>
+<td>1208</td>
+<td>Medium</td>
+<td>Sliding Window</td>
+<td>Cost constraint</td>
+</tr>
+<tr>
+<td>Max Consecutive Ones III</td>
+<td>1004</td>
+<td>Medium</td>
+<td>Sliding Window</td>
+<td>Flip at most K zeros</td>
+</tr>
+<tr>
+<td>Substring with Concatenation of All Words</td>
+<td>30</td>
+<td>Hard</td>
+<td>Sliding Window</td>
+<td>Multiple word matching</td>
+</tr>
+<tr>
+<td>Replace the Substring for Balanced String</td>
+<td>1234</td>
+<td>Medium</td>
+<td>Sliding Window</td>
+<td>Make all frequencies ≤ n/4</td>
+</tr>
+</tbody>
+</table>
+<h3 id="category-5-design-and-caching-10-problems" tabindex="-1"><a class="header-anchor" href="#category-5-design-and-caching-10-problems"><span>Category 5: Design and Caching (10 problems)</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC#</th>
+<th>Difficulty</th>
+<th>Template</th>
+<th>Key Insight</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>LRU Cache</td>
+<td>146</td>
+<td>Medium</td>
+<td>OrderedDict</td>
+<td>Combine hash + doubly linked list</td>
+</tr>
+<tr>
+<td>LFU Cache</td>
+<td>460</td>
+<td>Hard</td>
+<td>Hash + Heap</td>
+<td>Track frequency and recency</td>
+</tr>
+<tr>
+<td>Design HashMap</td>
+<td>706</td>
+<td>Easy</td>
+<td>Array + Chaining</td>
+<td>Handle collisions</td>
+</tr>
+<tr>
+<td>Design HashSet</td>
+<td>705</td>
+<td>Easy</td>
+<td>Array + Chaining</td>
+<td>Similar to HashMap</td>
+</tr>
+<tr>
+<td>All O(1) Data Structure</td>
+<td>432</td>
+<td>Hard</td>
+<td>Hash + DLL</td>
+<td>Complex multi-level structure</td>
+</tr>
+<tr>
+<td>Insert Delete GetRandom O(1)</td>
+<td>380</td>
+<td>Medium</td>
+<td>Hash + Array</td>
+<td>Maintain index mapping</td>
+</tr>
+<tr>
+<td>Insert Delete GetRandom O(1) - Duplicates</td>
+<td>381</td>
+<td>Hard</td>
+<td>Hash + Array</td>
+<td>Handle duplicates</td>
+</tr>
+<tr>
+<td>Design Twitter</td>
+<td>355</td>
+<td>Medium</td>
+<td>Hash + Heap</td>
+<td>User feeds and following</td>
+</tr>
+<tr>
+<td>Time Based Key-Value Store</td>
+<td>981</td>
+<td>Medium</td>
+<td>Hash + Binary Search</td>
+<td>Timestamp-based storage</td>
+</tr>
+<tr>
+<td>Design A Leaderboard</td>
+<td>1244</td>
+<td>Medium</td>
+<td>Hash + Sort</td>
+<td>Score tracking</td>
+</tr>
+</tbody>
+</table>
+<h3 id="category-6-graph-and-tree-with-hash-map-8-problems" tabindex="-1"><a class="header-anchor" href="#category-6-graph-and-tree-with-hash-map-8-problems"><span>Category 6: Graph and Tree with Hash Map (8 problems)</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC#</th>
+<th>Difficulty</th>
+<th>Template</th>
+<th>Key Insight</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Clone Graph</td>
+<td>133</td>
+<td>Medium</td>
+<td>Hash + DFS</td>
+<td>Node mapping during traversal</td>
+</tr>
+<tr>
+<td>Copy List with Random Pointer</td>
+<td>138</td>
+<td>Medium</td>
+<td>Hash + DFS</td>
+<td>Node mapping for random pointers</td>
+</tr>
+<tr>
+<td>Find Duplicate Subtrees</td>
+<td>652</td>
+<td>Medium</td>
+<td>Hash + DFS</td>
+<td>Serialize subtrees as keys</td>
+</tr>
+<tr>
+<td>Sentence Similarity</td>
+<td>734</td>
+<td>Easy</td>
+<td>Hash + Set</td>
+<td>Bidirectional similarity mapping</td>
+</tr>
+<tr>
+<td>Accounts Merge</td>
+<td>721</td>
+<td>Medium</td>
+<td>Hash + Union Find</td>
+<td>Email to account mapping</td>
+</tr>
+<tr>
+<td>Evaluate Division</td>
+<td>399</td>
+<td>Medium</td>
+<td>Hash + DFS</td>
+<td>Build equation graph</td>
+</tr>
+<tr>
+<td>Most Stones Removed</td>
+<td>947</td>
+<td>Medium</td>
+<td>Hash + Union Find</td>
+<td>Connect same row/col stones</td>
+</tr>
+<tr>
+<td>Smallest Common Region</td>
+<td>1257</td>
+<td>Medium</td>
+<td>Hash + Set</td>
+<td>Parent mapping + LCA</td>
+</tr>
+</tbody>
+</table>
+<h2 id="decision-framework" tabindex="-1"><a class="header-anchor" href="#decision-framework"><span>Decision Framework</span></a></h2>
+<h3 id="pattern-selection-flowchart" tabindex="-1"><a class="header-anchor" href="#pattern-selection-flowchart"><span>Pattern Selection Flowchart</span></a></h3>
+<pre><code>START: Analyzing Hash Map Problem
+                   |
+                   v
+           Are you counting elements/frequency?
+                   |
+                YES|    NO
+                   |     |
+                   v     v
+         [CATEGORY 1:     Looking for pairs/complements?
+          COUNTING]            |
+                            YES|    NO
+                               |     |
+                               v     v
+                     [CATEGORY 2:    Need to find subarray properties?
+                      TWO SUM]            |
+                                       YES|    NO
+                                          |     |
+                                          v     v
+                                 [CATEGORY 3:    Using sliding window technique?
+                                  PREFIX SUM]          |
+                                                    YES|    NO
+                                                       |     |
+                                                       v     v
+                                             [CATEGORY 4:    Designing a data structure?
+                                              SLIDING]            |
+                                                               YES|    NO
+                                                                  |     |
+                                                                  v     v
+                                                        [CATEGORY 5:    Working with graphs/trees?
+                                                         DESIGN]              |
+                                                                           YES|    NO
+                                                                              |     |
+                                                                              v     v
+                                                                    [CATEGORY 6:   [OTHER PATTERNS]
+                                                                     GRAPH]
+</code></pre>
+<h3 id="decision-questions" tabindex="-1"><a class="header-anchor" href="#decision-questions"><span>Decision Questions</span></a></h3>
+<ol>
+<li>
+<p><strong>Counting Problems</strong>:</p>
+<ul>
+<li>“Do I need to track frequency of elements?”</li>
+<li>“Am I looking for duplicates or unique elements?”</li>
+<li>“Do I need to sort by frequency?”</li>
+</ul>
+</li>
+<li>
+<p><strong>Two Sum Variants</strong>:</p>
+<ul>
+<li>“Am I looking for pairs that sum to a target?”</li>
+<li>“Do I need indices or just existence?”</li>
+<li>“Are there multiple valid pairs?”</li>
+</ul>
+</li>
+<li>
+<p><strong>Prefix Sum Problems</strong>:</p>
+<ul>
+<li>“Do I need subarray sum information?”</li>
+<li>“Can I transform this to prefix sum lookup?”</li>
+<li>“Am I looking for subarrays with specific properties?”</li>
+</ul>
+</li>
+<li>
+<p><strong>Sliding Window</strong>:</p>
+<ul>
+<li>“Do I need a dynamic window of elements?”</li>
+<li>“Am I tracking state within a window?”</li>
+<li>“Does window size change based on conditions?”</li>
+</ul>
+</li>
+<li>
+<p><strong>Design Problems</strong>:</p>
+<ul>
+<li>“Do I need to implement get/put operations?”</li>
+<li>“Are there capacity or eviction requirements?”</li>
+<li>“Do I need O(1) average operations?”</li>
+</ul>
+</li>
+<li>
+<p><strong>Graph/Tree Problems</strong>:</p>
+<ul>
+<li>“Am I dealing with node relationships?”</li>
+<li>“Do I need to map nodes during traversal?”</li>
+<li>“Are there parent-child or neighbor relationships?”</li>
+</ul>
+</li>
+</ol>
+<h3 id="time-complexity-guide" tabindex="-1"><a class="header-anchor" href="#time-complexity-guide"><span>Time Complexity Guide</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>Pattern</th>
+<th>Average Case</th>
+<th>Worst Case</th>
+<th>Space</th>
+<th>When to Use</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Counting</td>
+<td>O(n)</td>
+<td>O(n)</td>
+<td>O(n)</td>
+<td>Frequency analysis</td>
+</tr>
+<tr>
+<td>Two Sum</td>
+<td>O(n)</td>
+<td>O(n)</td>
+<td>O(n)</td>
+<td>Finding pairs/complements</td>
+</tr>
+<tr>
+<td>Prefix Sum</td>
+<td>O(n)</td>
+<td>O(n)</td>
+<td>O(n)</td>
+<td>Subarray problems</td>
+</tr>
+<tr>
+<td>Sliding Window</td>
+<td>O(n)</td>
+<td>O(n)</td>
+<td>O(k)</td>
+<td>Dynamic windows</td>
+</tr>
+<tr>
+<td>Design/Cache</td>
+<td>O(1)*</td>
+<td>O(n)</td>
+<td>O(n)</td>
+<td>Data structure design</td>
+</tr>
+<tr>
+<td>Graph/Tree</td>
+<td>O(n)</td>
+<td>O(n)</td>
+<td>O(n)</td>
+<td>Node relationship tracking</td>
+</tr>
+</tbody>
+</table>
+<p>*Amortized for most cache operations</p>
+<h2 id="interview-tips-and-best-practices" tabindex="-1"><a class="header-anchor" href="#interview-tips-and-best-practices"><span>Interview Tips and Best Practices</span></a></h2>
+<h3 id="quick-recognition-patterns" tabindex="-1"><a class="header-anchor" href="#quick-recognition-patterns"><span>🎯 Quick Recognition Patterns</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>If you see…</th>
+<th>Think…</th>
+<th>Pattern</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>“count frequency”</td>
+<td>Counting/Frequency</td>
+<td>Template 1</td>
+</tr>
+<tr>
+<td>“find pair”, “target sum”</td>
+<td>Two Sum</td>
+<td>Template 2</td>
+</tr>
+<tr>
+<td>“subarray sum equals”</td>
+<td>Prefix Sum</td>
+<td>Template 3</td>
+</tr>
+<tr>
+<td>“substring without repeating”</td>
+<td>Sliding Window</td>
+<td>Template 4</td>
+</tr>
+<tr>
+<td>“implement cache”</td>
+<td>Design/Cache</td>
+<td>Template 5</td>
+</tr>
+<tr>
+<td>“clone graph”, “tree paths”</td>
+<td>Graph/Tree</td>
+<td>Template 6</td>
+</tr>
+</tbody>
+</table>
+<h3 id="key-insights-to-remember" tabindex="-1"><a class="header-anchor" href="#key-insights-to-remember"><span>💡 Key Insights to Remember</span></a></h3>
+<ol>
+<li><strong>Space-Time Tradeoff</strong>: Hash maps trade extra O(n) space for O(1) average lookup time</li>
+<li><strong>Prefix Sum Magic</strong>: <code>subarray[i,j] = prefixSum[j] - prefixSum[i-1]</code></li>
+<li><strong>Sliding Window State</strong>: Use hash map to maintain window properties efficiently</li>
+<li><strong>Complement Thinking</strong>: Instead of checking all pairs, store elements and check complements</li>
+<li><strong>Index vs Value</strong>: Decide whether to store indices, values, or both as hash map values</li>
+<li><strong>Frequency Counting</strong>: Most string/array problems can be solved with frequency analysis</li>
+</ol>
+<h3 id="implementation-best-practices" tabindex="-1"><a class="header-anchor" href="#implementation-best-practices"><span>🔧 Implementation Best Practices</span></a></h3>
+<h4 id="python-best-practices" tabindex="-1"><a class="header-anchor" href="#python-best-practices"><span>Python Best Practices</span></a></h4>
+<pre><code class="language-python"># 1. Use defaultdict for cleaner counting code
+from collections import defaultdict
+count = defaultdict(int)  # No need for get(key, 0)
+
+# 2. Use Counter for frequency problems
+from collections import Counter
+freq = Counter(arr)  # Automatically counts frequencies
+
+# 3. Handle edge cases with dict.get()
+value = my_dict.get(key, default_value)
+
+# 4. Clean up zero counts to save space
+if count[key] == 0:
+    del count[key]
+
+# 5. Use enumerate when you need both index and value
+for i, val in enumerate(arr):
+    # Use both i and val
+</code></pre>
+<h4 id="java-best-practices" tabindex="-1"><a class="header-anchor" href="#java-best-practices"><span>Java Best Practices</span></a></h4>
+<pre><code class="language-java">// 1. Use getOrDefault to avoid null checks
+map.put(key, map.getOrDefault(key, 0) + 1);
+
+// 2. Use containsKey for existence checks
+if (map.containsKey(key)) { /* ... */ }
+
+// 3. Initialize with appropriate capacity
+Map&lt;String, Integer&gt; map = new HashMap&lt;&gt;(expectedSize);
+
+// 4. Use putIfAbsent for first occurrence
+map.putIfAbsent(key, index);  // Only puts if key doesn't exist
+</code></pre>
+<h3 id="common-mistakes-to-avoid" tabindex="-1"><a class="header-anchor" href="#common-mistakes-to-avoid"><span>⚠️ Common Mistakes to Avoid</span></a></h3>
+<ol>
+<li>
+<p><strong>Hash Collision Assumption</strong>: Remember that worst-case time complexity is O(n), not O(1)</p>
+</li>
+<li>
+<p><strong>Index Out of Bounds</strong>:</p>
+<pre><code class="language-python"># Wrong: Can cause index errors
+if target - nums[i] in seen:
+    return [i, seen[target - nums[i]]]
+seen[nums[i]] = i
+
+# Right: Check existence first
+if target - nums[i] in seen:
+    return [seen[target - nums[i]], i]
+seen[nums[i]] = i
+</code></pre>
+</li>
+<li>
+<p><strong>Modifying Dict During Iteration</strong>:</p>
+<pre><code class="language-python"># Wrong: Can cause runtime errors
+for key in my_dict:
+    if condition:
+        del my_dict[key]
+
+# Right: Collect keys first
+to_delete = [k for k, v in my_dict.items() if condition]
+for k in to_delete:
+    del my_dict[k]
+</code></pre>
+</li>
+<li>
+<p><strong>Ignoring Edge Cases</strong>:</p>
+<ul>
+<li>Empty input arrays</li>
+<li>Single element arrays</li>
+<li>All elements the same</li>
+<li>Target not achievable</li>
+</ul>
+</li>
+<li>
+<p><strong>Wrong Data Structure Choice</strong>:</p>
+<ul>
+<li>Use <code>set()</code> for existence checks only</li>
+<li>Use <code>dict()</code> when you need key-value mapping</li>
+<li>Use <code>Counter()</code> for frequency counting</li>
+</ul>
+</li>
+</ol>
+<h3 id="advanced-techniques" tabindex="-1"><a class="header-anchor" href="#advanced-techniques"><span>🏆 Advanced Techniques</span></a></h3>
+<h4 id="1-multiple-hash-maps" tabindex="-1"><a class="header-anchor" href="#1-multiple-hash-maps"><span>1. Multiple Hash Maps</span></a></h4>
+<pre><code class="language-python"># Track multiple relationships simultaneously
+def complex_problem(arr):
+    index_map = {}      # value -&gt; index
+    freq_map = {}       # value -&gt; frequency
+    reverse_map = {}    # index -&gt; value
+    
+    for i, val in enumerate(arr):
+        index_map[val] = i
+        freq_map[val] = freq_map.get(val, 0) + 1
+        reverse_map[i] = val
+</code></pre>
+<h4 id="2-hash-map-other-data-structures" tabindex="-1"><a class="header-anchor" href="#2-hash-map-other-data-structures"><span>2. Hash Map + Other Data Structures</span></a></h4>
+<pre><code class="language-python"># Hash Map + Priority Queue (Heap)
+import heapq
+from collections import defaultdict
+
+def top_k_frequent(nums, k):
+    count = defaultdict(int)
+    for num in nums:
+        count[num] += 1
+    
+    # Use heap with frequency
+    heap = []
+    for num, freq in count.items():
+        heapq.heappush(heap, (-freq, num))  # Max heap using negative values
+    
+    result = []
+    for _ in range(k):
+        result.append(heapq.heappop(heap)[1])
+    return result
+</code></pre>
+<h4 id="3-rolling-hash-for-string-problems" tabindex="-1"><a class="header-anchor" href="#3-rolling-hash-for-string-problems"><span>3. Rolling Hash for String Problems</span></a></h4>
+<pre><code class="language-python"># For substring pattern matching
+def rolling_hash_example(s, pattern):
+    base, mod = 256, 10**9 + 7
+    pattern_hash = sum(ord(c) * pow(base, i, mod) for i, c in enumerate(pattern)) % mod
+    
+    # Slide window and update hash incrementally
+    # ... implementation details
+</code></pre>
+<h3 id="performance-optimization" tabindex="-1"><a class="header-anchor" href="#performance-optimization"><span>📈 Performance Optimization</span></a></h3>
+<ol>
+<li><strong>Choose Right Hash Function</strong>: Python’s built-in hash is usually optimal</li>
+<li><strong>Avoid Unnecessary Rehashing</strong>: Pre-size maps when possible</li>
+<li><strong>Memory Cleanup</strong>: Remove zero-count entries in frequency maps</li>
+<li><strong>Use Appropriate Load Factor</strong>: Default 0.75 is usually optimal</li>
+</ol>
+<h3 id="interview-preparation-checklist" tabindex="-1"><a class="header-anchor" href="#interview-preparation-checklist"><span>🎯 Interview Preparation Checklist</span></a></h3>
+<ul>
+<li>[ ] Master all 6 templates and when to use each</li>
+<li>[ ] Practice 3-5 problems from each category</li>
+<li>[ ] Understand time/space complexity for each pattern</li>
+<li>[ ] Know common edge cases and how to handle them</li>
+<li>[ ] Practice explaining hash collision resolution</li>
+<li>[ ] Be comfortable with both Python dict and Java HashMap APIs</li>
+<li>[ ] Understand when NOT to use hash maps (sorted data, range queries, etc.)</li>
+</ul>
+<h3 id="summary" tabindex="-1"><a class="header-anchor" href="#summary"><span>📚 Summary</span></a></h3>
+<p>Hash maps are one of the most versatile data structures in competitive programming and technical interviews. The key to mastering hash map problems is:</p>
+<ol>
+<li><strong>Pattern Recognition</strong>: Quickly identify which of the 6 categories a problem falls into</li>
+<li><strong>Template Application</strong>: Use the appropriate template as a starting point</li>
+<li><strong>Edge Case Handling</strong>: Always consider empty inputs, duplicates, and boundary conditions</li>
+<li><strong>Complexity Analysis</strong>: Understand both average and worst-case performance</li>
+<li><strong>Code Clarity</strong>: Write clean, readable code with proper variable names</li>
+</ol>
+<p>Remember: Hash maps excel at problems requiring fast lookups, frequency counting, and avoiding nested loops. When you see O(n²) brute force solutions, ask yourself: “Can I use a hash map to store some information and reduce this to O(n)?”</p>
+
+      </div>
+      <div class="cheatsheet-footer">
+        <a href="../cheatsheets.html" class="back-link">← Back to Cheat Sheets</a>
+        <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/hash_map.md" class="github-edit" target="_blank">
+          Edit on GitHub →
+        </a>
+      </div>
+    <nav class="prev-next"><a href="greedy.html" class="prev-link">← Greedy</a><a href="hashing.html" class="next-link">Hashing →</a></nav>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>CS_basics - Computer Science Fundamentals & Interview Preparation</p>
+      <p>
+        <a href="https://github.com/yennanliu/CS_basics">GitHub</a> •
+        <a href="https://github.com/yennanliu/CS_basics/tree/master/doc">Documentation</a> •
+        <a href="https://github.com/yennanliu/CS_basics/issues">Report Issues</a>
+      </p>
+    </div>
+  </footer>
+</body>
+</html>

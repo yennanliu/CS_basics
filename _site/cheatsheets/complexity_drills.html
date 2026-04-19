@@ -1,0 +1,543 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Complexity Drills - CS_basics</title>
+  <meta name="description" content="Computer Science fundamentals: algorithms, data structures, system design, and LeetCode solutions">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>CS</text></svg>">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="../vendor/fonts.css">
+  <link rel="stylesheet" href="../vendor/highlight/github-dark.min.css">
+  <script src="../vendor/highlight/highlight.min.js"></script>
+  <script>
+  // Apply theme before render to prevent flash
+  (function() {
+    var saved = localStorage.getItem('theme');
+    if (saved === 'dark' || (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      document.documentElement.setAttribute('data-theme', 'dark');
+    }
+  })();
+  </script>
+  <script>document.addEventListener('DOMContentLoaded', function() {
+    hljs.highlightAll();
+    document.querySelectorAll('pre code').forEach(function(codeEl) {
+      var pre = codeEl.parentElement;
+      var lang = '';
+      var cls = codeEl.className || '';
+      var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
+      if (m) lang = m[1];
+      var wrapper = document.createElement('div');
+      wrapper.className = 'code-block-wrapper';
+      pre.parentNode.insertBefore(wrapper, pre);
+      var header = document.createElement('div');
+      header.className = 'code-block-header';
+      if (lang) {
+        var label = document.createElement('span');
+        label.className = 'code-lang-label';
+        label.textContent = lang;
+        header.appendChild(label);
+      } else {
+        header.appendChild(document.createElement('span'));
+      }
+      var btn = document.createElement('button');
+      btn.className = 'copy-btn';
+      btn.textContent = 'Copy';
+      btn.addEventListener('click', function() {
+        navigator.clipboard.writeText(codeEl.textContent).then(function() {
+          btn.textContent = 'Copied!';
+          btn.classList.add('copied');
+          setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+        });
+      });
+      header.appendChild(btn);
+      wrapper.appendChild(header);
+      wrapper.appendChild(pre);
+    });
+    document.querySelectorAll('table').forEach(function(table) {
+      if (!table.parentElement.classList.contains('table-wrap')) {
+        var wrapper = document.createElement('div');
+        wrapper.className = 'table-wrap';
+        table.parentNode.insertBefore(wrapper, table);
+        wrapper.appendChild(table);
+      }
+    });
+    // Reading progress bar
+    var progressBar = document.getElementById('reading-progress');
+    if (progressBar) {
+      window.addEventListener('scroll', function() {
+        var winScroll = document.documentElement.scrollTop;
+        var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        progressBar.style.width = height > 0 ? (winScroll / height * 100) + '%' : '0%';
+      });
+    }
+    // Dark mode toggle
+    var toggle = document.getElementById('theme-toggle');
+    if (toggle) {
+      var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      toggle.textContent = isDark ? '☀️' : '🌙';
+      toggle.addEventListener('click', function() {
+        var dark = document.documentElement.getAttribute('data-theme') === 'dark';
+        if (dark) {
+          document.documentElement.removeAttribute('data-theme');
+          localStorage.setItem('theme', 'light');
+          toggle.textContent = '🌙';
+        } else {
+          document.documentElement.setAttribute('data-theme', 'dark');
+          localStorage.setItem('theme', 'dark');
+          toggle.textContent = '☀️';
+        }
+      });
+    }
+  });</script>
+</head>
+<body>
+  <div class="progress-container"><div class="progress-bar" id="reading-progress"></div></div>
+  <nav class="navbar">
+    <div class="container">
+      <div class="nav-brand">
+        <span class="nav-icon">💻</span>
+        <span class="nav-title">CS_basics</span>
+      </div>
+      <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+      <div class="nav-links">
+        <a href="../index.html" class="">Home</a>
+        <a href="../cheatsheets.html" class="active">Cheat Sheets</a>
+        <a href="../patterns.html" class="">Pattern Recognition</a>
+        <a href="../faqs.html" class="">FAQs</a>
+        <a href="../resources.html" class="">Resources</a>
+        <a href="../lc-explorer.html" class="">LC Explorer</a>
+        <a href="../lc-random-picker.html" class="">🎲 Random Picker</a>
+        <a href="../algo_demo/index.html" class="">Visualizer</a>
+        <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">&#127769;</button>
+        <a href="https://github.com/yennanliu/CS_basics" target="_blank" class="github-link" aria-label="GitHub">
+          <svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor">
+            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container">
+    <div class="content">
+      
+      <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">Complexity Drills</span></nav>
+      <div class="cheatsheet-header">
+        <h1>Complexity Drills</h1>
+        <span class="last-updated">Last updated: Apr 11, 2026</span>
+      </div>
+      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#how-to-use">How to Use</a></li><li><a href="#drill-1-nested-loops">Drill 1: Nested Loops</a></li><li><a href="#drill-2-loop-with-multiply">Drill 2: Loop with Multiply</a></li><li><a href="#drill-3-loop-with-divide">Drill 3: Loop with Divide</a></li><li><a href="#drill-4-recursive-fibonacci-naive">Drill 4: Recursive Fibonacci (Naive)</a></li><li><a href="#drill-5-hashmap-in-a-loop">Drill 5: HashMap in a Loop</a></li><li><a href="#drill-6-sorting-binary-search">Drill 6: Sorting + Binary Search</a></li><li><a href="#drill-7-bfs-on-grid">Drill 7: BFS on Grid</a></li><li><a href="#drill-8-merge-sort">Drill 8: Merge Sort</a></li><li><a href="#drill-9-subsets-generation">Drill 9: Subsets Generation</a></li><li><a href="#drill-10-sliding-window">Drill 10: Sliding Window</a></li><li><a href="#drill-11-union-find-with-path-compression-union-by-rank">Drill 11: Union-Find with Path Compression + Union by Rank</a></li><li><a href="#drill-12-trie-insert-search">Drill 12: Trie Insert + Search</a></li><li><a href="#drill-13-heap-k-closest-points">Drill 13: Heap — K Closest Points</a></li><li><a href="#drill-14-dp-with-2d-table">Drill 14: DP with 2D Table</a></li><li><a href="#drill-15-backtracking-n-queens">Drill 15: Backtracking — N-Queens</a></li><li><a href="#drill-16-amortized-dynamic-array">Drill 16: Amortized — Dynamic Array</a></li><li><a href="#drill-17-string-concatenation-in-loop">Drill 17: String Concatenation in Loop</a></li><li><a href="#drill-18-two-pointers-container-with-most-water">Drill 18: Two Pointers — Container with Most Water</a></li><li><a href="#drill-19-dfs-on-tree-with-serialization">Drill 19: DFS on Tree with Serialization</a></li><li><a href="#drill-20-dijkstra-with-priority-queue">Drill 20: Dijkstra with Priority Queue</a></li><li><a href="#score-yourself">Score Yourself</a></li></ul></div>
+      <div class="cheatsheet-content">
+        <h1 id="complexity-analysis-drills" tabindex="-1"><a class="header-anchor" href="#complexity-analysis-drills"><span>Complexity Analysis Drills</span></a></h1>
+<blockquote>
+<p>Practice identifying time and space complexity from code snippets.
+Google interviewers heavily probe this — expect follow-up questions like
+“Can you do better?” and “What’s the space if we optimize?”</p>
+</blockquote>
+<hr>
+<h2 id="how-to-use" tabindex="-1"><a class="header-anchor" href="#how-to-use"><span>How to Use</span></a></h2>
+<ol>
+<li>Read the code snippet</li>
+<li>Determine Time and Space complexity <strong>before</strong> looking at the answer</li>
+<li>Check your reasoning against the explanation</li>
+<li>Star (⭐) problems you got wrong — revisit them</li>
+</ol>
+<hr>
+<h2 id="drill-1-nested-loops" tabindex="-1"><a class="header-anchor" href="#drill-1-nested-loops"><span>Drill 1: Nested Loops</span></a></h2>
+<pre><code class="language-java">for (int i = 0; i &lt; n; i++) {
+    for (int j = i; j &lt; n; j++) {
+        // O(1) work
+    }
+}
+</code></pre>
+<details>
+<summary>Answer</summary>
+<p><strong>Time: O(N²)</strong>
+Inner loop runs: N + (N-1) + (N-2) + … + 1 = N(N+1)/2 → O(N²)</p>
+<p><strong>Space: O(1)</strong></p>
+<p>Common mistake: saying O(N) because “j starts at i”. The sum of the series is still quadratic.</p>
+</details>
+<hr>
+<h2 id="drill-2-loop-with-multiply" tabindex="-1"><a class="header-anchor" href="#drill-2-loop-with-multiply"><span>Drill 2: Loop with Multiply</span></a></h2>
+<pre><code class="language-java">int i = 1;
+while (i &lt; n) {
+    // O(1) work
+    i *= 2;
+}
+</code></pre>
+<details>
+<summary>Answer</summary>
+<p><strong>Time: O(log N)</strong>
+i takes values 1, 2, 4, 8, …, until i ≥ N. That’s log₂(N) iterations.</p>
+<p><strong>Space: O(1)</strong></p>
+</details>
+<hr>
+<h2 id="drill-3-loop-with-divide" tabindex="-1"><a class="header-anchor" href="#drill-3-loop-with-divide"><span>Drill 3: Loop with Divide</span></a></h2>
+<pre><code class="language-java">for (int i = n; i &gt;= 1; i /= 2) {
+    for (int j = 0; j &lt; i; j++) {
+        // O(1) work
+    }
+}
+</code></pre>
+<details>
+<summary>Answer</summary>
+<p><strong>Time: O(N)</strong>
+Inner loop runs: N + N/2 + N/4 + … + 1 = 2N → O(N) (geometric series!)</p>
+<p><strong>Space: O(1)</strong></p>
+<p>Common mistake: saying O(N log N). The work <strong>halves</strong> each iteration — geometric series converges to 2N.</p>
+</details>
+<hr>
+<h2 id="drill-4-recursive-fibonacci-naive" tabindex="-1"><a class="header-anchor" href="#drill-4-recursive-fibonacci-naive"><span>Drill 4: Recursive Fibonacci (Naive)</span></a></h2>
+<pre><code class="language-python">def fib(n):
+    if n &lt;= 1: return n
+    return fib(n-1) + fib(n-2)
+</code></pre>
+<details>
+<summary>Answer</summary>
+<p><strong>Time: O(2^N)</strong> — more precisely O(φ^N) where φ ≈ 1.618 (golden ratio)
+Each call branches into 2 subcalls. Tree has ~2^N nodes.</p>
+<p><strong>Space: O(N)</strong> — recursion stack depth is N (goes all the way down the left branch before returning)</p>
+<p>Common mistake: saying space is O(2^N). The stack only holds one path at a time.</p>
+</details>
+<hr>
+<h2 id="drill-5-hashmap-in-a-loop" tabindex="-1"><a class="header-anchor" href="#drill-5-hashmap-in-a-loop"><span>Drill 5: HashMap in a Loop</span></a></h2>
+<pre><code class="language-java">Map&lt;Integer, Integer&gt; map = new HashMap&lt;&gt;();
+for (int i = 0; i &lt; n; i++) {
+    map.put(nums[i], i);
+}
+for (int i = 0; i &lt; n; i++) {
+    int complement = target - nums[i];
+    if (map.containsKey(complement)) return true;
+}
+</code></pre>
+<details>
+<summary>Answer</summary>
+<p><strong>Time: O(N)</strong> average — HashMap put/get are O(1) amortized
+<strong>Space: O(N)</strong> — storing up to N entries</p>
+<p>Note: Worst case is O(N²) if all keys hash to the same bucket. Mention this in interviews but state the average case.</p>
+</details>
+<hr>
+<h2 id="drill-6-sorting-binary-search" tabindex="-1"><a class="header-anchor" href="#drill-6-sorting-binary-search"><span>Drill 6: Sorting + Binary Search</span></a></h2>
+<pre><code class="language-python">nums.sort()  # Timsort
+for x in nums:
+    idx = bisect_left(nums, target - x)
+</code></pre>
+<details>
+<summary>Answer</summary>
+<p><strong>Time: O(N log N)</strong> — sort is O(N log N), loop is N × O(log N) = O(N log N). Total: O(N log N).</p>
+<p><strong>Space: O(N)</strong> for Timsort (Python) or O(log N) for in-place sort (quicksort)</p>
+</details>
+<hr>
+<h2 id="drill-7-bfs-on-grid" tabindex="-1"><a class="header-anchor" href="#drill-7-bfs-on-grid"><span>Drill 7: BFS on Grid</span></a></h2>
+<pre><code class="language-python">from collections import deque
+queue = deque([(0, 0)])
+visited = set()
+visited.add((0, 0))
+while queue:
+    r, c = queue.popleft()
+    for dr, dc in [(0,1),(0,-1),(1,0),(-1,0)]:
+        nr, nc = r+dr, c+dc
+        if 0 &lt;= nr &lt; m and 0 &lt;= nc &lt; n and (nr,nc) not in visited:
+            visited.add((nr, nc))
+            queue.append((nr, nc))
+</code></pre>
+<details>
+<summary>Answer</summary>
+<p><strong>Time: O(M·N)</strong> — each cell visited at most once
+<strong>Space: O(M·N)</strong> — visited set + queue can hold up to M·N cells</p>
+<p>Common mistake: saying O(M·N·4) for the 4 directions. The 4 is a constant — drop it.</p>
+</details>
+<hr>
+<h2 id="drill-8-merge-sort" tabindex="-1"><a class="header-anchor" href="#drill-8-merge-sort"><span>Drill 8: Merge Sort</span></a></h2>
+<pre><code class="language-python">def mergeSort(arr):
+    if len(arr) &lt;= 1: return arr
+    mid = len(arr) // 2
+    left = mergeSort(arr[:mid])
+    right = mergeSort(arr[mid:])
+    return merge(left, right)  # merge is O(N)
+</code></pre>
+<details>
+<summary>Answer</summary>
+<p><strong>Time: O(N log N)</strong> — log N levels, each level does O(N) merge work total</p>
+<p><strong>Space: O(N)</strong> — merge creates new arrays; recursion stack is O(log N) but dominated by O(N) for the merged arrays</p>
+<p>Note: <code>arr[:mid]</code> creates a copy — this is the O(N) space. In-place merge sort uses O(log N) space but is harder to implement.</p>
+</details>
+<hr>
+<h2 id="drill-9-subsets-generation" tabindex="-1"><a class="header-anchor" href="#drill-9-subsets-generation"><span>Drill 9: Subsets Generation</span></a></h2>
+<pre><code class="language-python">def subsets(nums):
+    result = [[]]
+    for num in nums:
+        result += [curr + [num] for curr in result]
+    return result
+</code></pre>
+<details>
+<summary>Answer</summary>
+<p><strong>Time: O(N × 2^N)</strong> — 2^N subsets, each up to length N to copy</p>
+<p><strong>Space: O(N × 2^N)</strong> — storing all subsets</p>
+<p>Iteration breakdown: after processing k elements, result has 2^k subsets. We copy all of them and add num → 2^k copies of avg length k/2.</p>
+</details>
+<hr>
+<h2 id="drill-10-sliding-window" tabindex="-1"><a class="header-anchor" href="#drill-10-sliding-window"><span>Drill 10: Sliding Window</span></a></h2>
+<pre><code class="language-python">left = 0
+max_len = 0
+freq = {}
+for right in range(len(s)):
+    freq[s[right]] = freq.get(s[right], 0) + 1
+    while len(freq) &gt; k:
+        freq[s[left]] -= 1
+        if freq[s[left]] == 0: del freq[s[left]]
+        left += 1
+    max_len = max(max_len, right - left + 1)
+</code></pre>
+<details>
+<summary>Answer</summary>
+<p><strong>Time: O(N)</strong> — <code>left</code> pointer only moves forward, total moves ≤ N. Each character enters and exits the window at most once.</p>
+<p><strong>Space: O(K)</strong> or O(min(N, Σ)) where Σ = alphabet size</p>
+<p>Common mistake: saying O(N²) because of the while loop inside the for loop. But left never goes backward — amortized O(N).</p>
+</details>
+<hr>
+<h2 id="drill-11-union-find-with-path-compression-union-by-rank" tabindex="-1"><a class="header-anchor" href="#drill-11-union-find-with-path-compression-union-by-rank"><span>Drill 11: Union-Find with Path Compression + Union by Rank</span></a></h2>
+<pre><code class="language-java">int find(int x) {
+    if (parent[x] != x) parent[x] = find(parent[x]);  // path compression
+    return parent[x];
+}
+void union(int x, int y) {
+    int px = find(x), py = find(y);
+    if (px == py) return;
+    if (rank[px] &lt; rank[py]) parent[px] = py;
+    else if (rank[px] &gt; rank[py]) parent[py] = px;
+    else { parent[py] = px; rank[px]++; }
+}
+</code></pre>
+<details>
+<summary>Answer</summary>
+<p><strong>Time: O(α(N))</strong> per operation — α is the inverse Ackermann function, effectively O(1) for all practical inputs (α(N) ≤ 5 for N ≤ 2^65536)</p>
+<p><strong>Space: O(N)</strong> for parent and rank arrays</p>
+<p>Key insight: path compression alone gives O(log N) amortized. Union by rank alone gives O(log N). Together: O(α(N)) ≈ O(1).</p>
+</details>
+<hr>
+<h2 id="drill-12-trie-insert-search" tabindex="-1"><a class="header-anchor" href="#drill-12-trie-insert-search"><span>Drill 12: Trie Insert + Search</span></a></h2>
+<pre><code class="language-java">void insert(String word) {
+    TrieNode node = root;
+    for (char c : word.toCharArray()) {
+        if (node.children[c - 'a'] == null)
+            node.children[c - 'a'] = new TrieNode();
+        node = node.children[c - 'a'];
+    }
+    node.isEnd = true;
+}
+</code></pre>
+<details>
+<summary>Answer</summary>
+<p><strong>Time: O(M)</strong> where M = length of word</p>
+<p><strong>Space: O(M)</strong> for the new nodes in worst case (no shared prefix)</p>
+<p>Total trie space for N words of avg length M: O(26 × M × N) worst case, but typically much less due to shared prefixes.</p>
+</details>
+<hr>
+<h2 id="drill-13-heap-k-closest-points" tabindex="-1"><a class="header-anchor" href="#drill-13-heap-k-closest-points"><span>Drill 13: Heap — K Closest Points</span></a></h2>
+<pre><code class="language-python">import heapq
+def kClosest(points, k):
+    return heapq.nsmallest(k, points, key=lambda p: p[0]**2 + p[1]**2)
+</code></pre>
+<details>
+<summary>Answer</summary>
+<p><strong>Time: O(N log K)</strong> — <code>nsmallest</code> maintains a max-heap of size K, processes all N points</p>
+<p><strong>Space: O(K)</strong> for the heap</p>
+<p>Alternative: QuickSelect gives O(N) average time, O(1) extra space (mutates input).</p>
+</details>
+<hr>
+<h2 id="drill-14-dp-with-2d-table" tabindex="-1"><a class="header-anchor" href="#drill-14-dp-with-2d-table"><span>Drill 14: DP with 2D Table</span></a></h2>
+<pre><code class="language-java">// LC 72 — Edit Distance
+int[][] dp = new int[m + 1][n + 1];
+for (int i = 0; i &lt;= m; i++) dp[i][0] = i;
+for (int j = 0; j &lt;= n; j++) dp[0][j] = j;
+for (int i = 1; i &lt;= m; i++) {
+    for (int j = 1; j &lt;= n; j++) {
+        if (word1.charAt(i-1) == word2.charAt(j-1))
+            dp[i][j] = dp[i-1][j-1];
+        else
+            dp[i][j] = 1 + Math.min(dp[i-1][j-1],
+                            Math.min(dp[i-1][j], dp[i][j-1]));
+    }
+}
+</code></pre>
+<details>
+<summary>Answer</summary>
+<p><strong>Time: O(M·N)</strong> — fill M×N table, O(1) per cell</p>
+<p><strong>Space: O(M·N)</strong> — but optimizable to O(min(M,N)) using rolling array (only need previous row)</p>
+<p>Follow-up: “Can you optimize space?” → Use 1D array of size min(M,N)+1, update in-place with a temp variable for the diagonal.</p>
+</details>
+<hr>
+<h2 id="drill-15-backtracking-n-queens" tabindex="-1"><a class="header-anchor" href="#drill-15-backtracking-n-queens"><span>Drill 15: Backtracking — N-Queens</span></a></h2>
+<pre><code class="language-python">def solveNQueens(n):
+    def backtrack(row, cols, diags, anti_diags):
+        if row == n:
+            result.append(board_snapshot())
+            return
+        for col in range(n):
+            if col in cols or (row-col) in diags or (row+col) in anti_diags:
+                continue
+            # place queen and recurse
+            backtrack(row+1, cols|{col}, diags|{row-col}, anti_diags|{row+col})
+</code></pre>
+<details>
+<summary>Answer</summary>
+<p><strong>Time: O(N!)</strong> — at row 0: N choices, row 1: ~N-1, row 2: ~N-2, etc. (with pruning, much less in practice)</p>
+<p><strong>Space: O(N)</strong> — recursion depth is N, sets hold at most N elements each</p>
+<p>Note: The number of solutions grows much slower than N!. For N=8, there are only 92 solutions out of 8! = 40320 possible placements.</p>
+</details>
+<hr>
+<h2 id="drill-16-amortized-dynamic-array" tabindex="-1"><a class="header-anchor" href="#drill-16-amortized-dynamic-array"><span>Drill 16: Amortized — Dynamic Array</span></a></h2>
+<pre><code class="language-java">ArrayList&lt;Integer&gt; list = new ArrayList&lt;&gt;();
+for (int i = 0; i &lt; n; i++) {
+    list.add(i);  // occasionally triggers resize and copy
+}
+</code></pre>
+<details>
+<summary>Answer</summary>
+<p><strong>Time: O(N) total, O(1) amortized per add</strong></p>
+<p>Resizes happen at sizes 1, 2, 4, 8, …, N. Total copies: 1 + 2 + 4 + … + N = 2N → O(N).</p>
+<p><strong>Space: O(N)</strong></p>
+<p>Key insight: even though individual adds can be O(N) (during resize), the amortized cost is O(1) because resizes are exponentially rare.</p>
+</details>
+<hr>
+<h2 id="drill-17-string-concatenation-in-loop" tabindex="-1"><a class="header-anchor" href="#drill-17-string-concatenation-in-loop"><span>Drill 17: String Concatenation in Loop</span></a></h2>
+<pre><code class="language-java">String result = &quot;&quot;;
+for (int i = 0; i &lt; n; i++) {
+    result += chars[i];  // creates new String each time
+}
+</code></pre>
+<details>
+<summary>Answer</summary>
+<p><strong>Time: O(N²)</strong> — each concatenation copies the entire existing string. Copies: 1 + 2 + 3 + … + N = O(N²)</p>
+<p><strong>Space: O(N)</strong> for the result string (intermediate strings are GC’d)</p>
+<p>Fix: Use <code>StringBuilder</code> for O(N) total time.</p>
+<p>This is a classic interview trap. Always mention StringBuilder/StringBuffer in Java.</p>
+</details>
+<hr>
+<h2 id="drill-18-two-pointers-container-with-most-water" tabindex="-1"><a class="header-anchor" href="#drill-18-two-pointers-container-with-most-water"><span>Drill 18: Two Pointers — Container with Most Water</span></a></h2>
+<pre><code class="language-python">left, right = 0, len(height) - 1
+max_area = 0
+while left &lt; right:
+    max_area = max(max_area, min(height[left], height[right]) * (right - left))
+    if height[left] &lt; height[right]:
+        left += 1
+    else:
+        right -= 1
+</code></pre>
+<details>
+<summary>Answer</summary>
+<p><strong>Time: O(N)</strong> — each iteration moves one pointer, total at most N iterations</p>
+<p><strong>Space: O(1)</strong></p>
+<p>Why it works: moving the shorter side is the only way to potentially increase area (moving the taller side can only decrease width without increasing height).</p>
+</details>
+<hr>
+<h2 id="drill-19-dfs-on-tree-with-serialization" tabindex="-1"><a class="header-anchor" href="#drill-19-dfs-on-tree-with-serialization"><span>Drill 19: DFS on Tree with Serialization</span></a></h2>
+<pre><code class="language-python">def serialize(root):
+    if not root: return &quot;null&quot;
+    return str(root.val) + &quot;,&quot; + serialize(root.left) + &quot;,&quot; + serialize(root.right)
+</code></pre>
+<details>
+<summary>Answer</summary>
+<p><strong>Time: O(N²)</strong> in languages where string concatenation creates copies (Python, Java String). Each concat copies growing string.</p>
+<p><strong>Space: O(N)</strong> for recursion stack (if balanced: O(log N) stack + O(N) result string)</p>
+<p>Fix: Use a list and join at the end → O(N) time.</p>
+<pre><code class="language-python">def serialize(root):
+    parts = []
+    def dfs(node):
+        if not node: parts.append(&quot;null&quot;); return
+        parts.append(str(node.val))
+        dfs(node.left)
+        dfs(node.right)
+    dfs(root)
+    return &quot;,&quot;.join(parts)  # O(N) total
+</code></pre>
+</details>
+<hr>
+<h2 id="drill-20-dijkstra-with-priority-queue" tabindex="-1"><a class="header-anchor" href="#drill-20-dijkstra-with-priority-queue"><span>Drill 20: Dijkstra with Priority Queue</span></a></h2>
+<pre><code class="language-java">PriorityQueue&lt;int[]&gt; pq = new PriorityQueue&lt;&gt;((a,b) -&gt; a[1] - b[1]);
+pq.offer(new int[]{src, 0});
+int[] dist = new int[V];
+Arrays.fill(dist, Integer.MAX_VALUE);
+dist[src] = 0;
+
+while (!pq.isEmpty()) {
+    int[] curr = pq.poll();
+    int u = curr[0], d = curr[1];
+    if (d &gt; dist[u]) continue;  // skip outdated entries
+    for (int[] edge : graph[u]) {
+        int v = edge[0], w = edge[1];
+        if (dist[u] + w &lt; dist[v]) {
+            dist[v] = dist[u] + w;
+            pq.offer(new int[]{v, dist[v]});
+        }
+    }
+}
+</code></pre>
+<details>
+<summary>Answer</summary>
+<p><strong>Time: O((V + E) log V)</strong> — each vertex extracted once (skip check), each edge relaxed once, heap operations are O(log V). Heap can have up to E entries → technically O((V + E) log E) = O((V + E) log V) since log E ≤ log V² = 2 log V.</p>
+<p><strong>Space: O(V + E)</strong> — dist array O(V), heap can hold O(E) entries</p>
+<p>Note: Without the <code>if (d &gt; dist[u]) continue</code> check, you’d process stale entries and potentially get O(E log E) with worse constants.</p>
+</details>
+<hr>
+<h2 id="score-yourself" tabindex="-1"><a class="header-anchor" href="#score-yourself"><span>Score Yourself</span></a></h2>
+<table>
+<thead>
+<tr>
+<th>Score</th>
+<th>Level</th>
+<th>Next Step</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>18-20 correct</td>
+<td>Ready for Google</td>
+<td>Focus on speed — explain in 30 seconds</td>
+</tr>
+<tr>
+<td>14-17 correct</td>
+<td>Almost there</td>
+<td>Review the math intuitions in complexity_cheatsheet.md</td>
+</tr>
+<tr>
+<td>10-13 correct</td>
+<td>Needs work</td>
+<td>Study geometric series, amortized analysis, recursion trees</td>
+</tr>
+<tr>
+<td>&lt; 10 correct</td>
+<td>Fundamentals</td>
+<td>Start with Big-O basics, practice with simple examples</td>
+</tr>
+</tbody>
+</table>
+
+      </div>
+      <div class="cheatsheet-footer">
+        <a href="../cheatsheets.html" class="back-link">← Back to Cheat Sheets</a>
+        <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/complexity_drills.md" class="github-edit" target="_blank">
+          Edit on GitHub →
+        </a>
+      </div>
+    <nav class="prev-next"><a href="complexity_cheatsheet.html" class="prev-link">← Complexity Cheatsheet</a><a href="concurrency_patterns.html" class="next-link">Concurrency Patterns →</a></nav>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>CS_basics - Computer Science Fundamentals & Interview Preparation</p>
+      <p>
+        <a href="https://github.com/yennanliu/CS_basics">GitHub</a> •
+        <a href="https://github.com/yennanliu/CS_basics/tree/master/doc">Documentation</a> •
+        <a href="https://github.com/yennanliu/CS_basics/issues">Report Issues</a>
+      </p>
+    </div>
+  </footer>
+</body>
+</html>

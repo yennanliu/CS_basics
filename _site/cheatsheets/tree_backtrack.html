@@ -1,0 +1,345 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tree Backtrack - CS_basics</title>
+  <meta name="description" content="Computer Science fundamentals: algorithms, data structures, system design, and LeetCode solutions">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>CS</text></svg>">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="../vendor/fonts.css">
+  <link rel="stylesheet" href="../vendor/highlight/github-dark.min.css">
+  <script src="../vendor/highlight/highlight.min.js"></script>
+  <script>
+  // Apply theme before render to prevent flash
+  (function() {
+    var saved = localStorage.getItem('theme');
+    if (saved === 'dark' || (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      document.documentElement.setAttribute('data-theme', 'dark');
+    }
+  })();
+  </script>
+  <script>document.addEventListener('DOMContentLoaded', function() {
+    hljs.highlightAll();
+    document.querySelectorAll('pre code').forEach(function(codeEl) {
+      var pre = codeEl.parentElement;
+      var lang = '';
+      var cls = codeEl.className || '';
+      var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
+      if (m) lang = m[1];
+      var wrapper = document.createElement('div');
+      wrapper.className = 'code-block-wrapper';
+      pre.parentNode.insertBefore(wrapper, pre);
+      var header = document.createElement('div');
+      header.className = 'code-block-header';
+      if (lang) {
+        var label = document.createElement('span');
+        label.className = 'code-lang-label';
+        label.textContent = lang;
+        header.appendChild(label);
+      } else {
+        header.appendChild(document.createElement('span'));
+      }
+      var btn = document.createElement('button');
+      btn.className = 'copy-btn';
+      btn.textContent = 'Copy';
+      btn.addEventListener('click', function() {
+        navigator.clipboard.writeText(codeEl.textContent).then(function() {
+          btn.textContent = 'Copied!';
+          btn.classList.add('copied');
+          setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+        });
+      });
+      header.appendChild(btn);
+      wrapper.appendChild(header);
+      wrapper.appendChild(pre);
+    });
+    document.querySelectorAll('table').forEach(function(table) {
+      if (!table.parentElement.classList.contains('table-wrap')) {
+        var wrapper = document.createElement('div');
+        wrapper.className = 'table-wrap';
+        table.parentNode.insertBefore(wrapper, table);
+        wrapper.appendChild(table);
+      }
+    });
+    // Reading progress bar
+    var progressBar = document.getElementById('reading-progress');
+    if (progressBar) {
+      window.addEventListener('scroll', function() {
+        var winScroll = document.documentElement.scrollTop;
+        var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        progressBar.style.width = height > 0 ? (winScroll / height * 100) + '%' : '0%';
+      });
+    }
+    // Dark mode toggle
+    var toggle = document.getElementById('theme-toggle');
+    if (toggle) {
+      var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      toggle.textContent = isDark ? '☀️' : '🌙';
+      toggle.addEventListener('click', function() {
+        var dark = document.documentElement.getAttribute('data-theme') === 'dark';
+        if (dark) {
+          document.documentElement.removeAttribute('data-theme');
+          localStorage.setItem('theme', 'light');
+          toggle.textContent = '🌙';
+        } else {
+          document.documentElement.setAttribute('data-theme', 'dark');
+          localStorage.setItem('theme', 'dark');
+          toggle.textContent = '☀️';
+        }
+      });
+    }
+  });</script>
+</head>
+<body>
+  <div class="progress-container"><div class="progress-bar" id="reading-progress"></div></div>
+  <nav class="navbar">
+    <div class="container">
+      <div class="nav-brand">
+        <span class="nav-icon">💻</span>
+        <span class="nav-title">CS_basics</span>
+      </div>
+      <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+      <div class="nav-links">
+        <a href="../index.html" class="">Home</a>
+        <a href="../cheatsheets.html" class="active">Cheat Sheets</a>
+        <a href="../patterns.html" class="">Pattern Recognition</a>
+        <a href="../faqs.html" class="">FAQs</a>
+        <a href="../resources.html" class="">Resources</a>
+        <a href="../lc-explorer.html" class="">LC Explorer</a>
+        <a href="../lc-random-picker.html" class="">🎲 Random Picker</a>
+        <a href="../algo_demo/index.html" class="">Visualizer</a>
+        <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">&#127769;</button>
+        <a href="https://github.com/yennanliu/CS_basics" target="_blank" class="github-link" aria-label="GitHub">
+          <svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor">
+            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container">
+    <div class="content">
+      
+      <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">Tree Backtrack</span></nav>
+      <div class="cheatsheet-header">
+        <h1>Tree Backtrack</h1>
+        <span class="last-updated">Last updated: Mar 10, 2026</span>
+      </div>
+      
+      <div class="cheatsheet-content">
+        <h1 id="tree-backtracking-template-gpt" tabindex="-1"><a class="header-anchor" href="#tree-backtracking-template-gpt"><span>Tree Backtracking Template (gpt)</span></a></h1>
+<p>Great — many <strong>tree path problems</strong> share the same DFS + backtracking structure. The following template works for problems like:</p>
+<ul>
+<li>LeetCode 113 Path Sum II</li>
+<li>LeetCode 257 Binary Tree Paths</li>
+<li>LeetCode 129 Sum Root to Leaf Numbers</li>
+<li>LeetCode 437 Path Sum III (slightly modified)</li>
+</ul>
+<p>I’ll show the <strong>universal template</strong>, then how each problem plugs into it.</p>
+<hr>
+<h1 id="1-universal-tree-backtracking-template" tabindex="-1"><a class="header-anchor" href="#1-universal-tree-backtracking-template"><span>1️⃣ Universal Tree Backtracking Template</span></a></h1>
+<pre><code class="language-java">void dfs(TreeNode node, ...) {
+
+    if (node == null) return;
+
+    // 1. choose (update path / sum / state)
+    
+    // 2. check goal (usually leaf condition)
+    
+    // 3. explore children
+    dfs(node.left, ...);
+    dfs(node.right, ...);
+
+    // 4. undo choice (backtrack)
+}
+</code></pre>
+<p>For <strong>path problems</strong>, we typically maintain:</p>
+<pre><code>List&lt;Integer&gt; path
+some running state (sum / number / string)
+</code></pre>
+<hr>
+<h1 id="2-full-generic-template" tabindex="-1"><a class="header-anchor" href="#2-full-generic-template"><span>2️⃣ Full Generic Template</span></a></h1>
+<pre><code class="language-java">void dfs(TreeNode node, List&lt;Integer&gt; path, int state) {
+
+    if (node == null) return;
+
+    // choose
+    path.add(node.val);
+    state = update(state, node.val);
+
+    // goal check
+    if (isLeaf(node) &amp;&amp; condition(state)) {
+        save(path);
+    }
+
+    // explore
+    dfs(node.left, path, state);
+    dfs(node.right, path, state);
+
+    // undo (backtrack)
+    path.remove(path.size() - 1);
+}
+</code></pre>
+<p>Key parts:</p>
+<table>
+<thead>
+<tr>
+<th>Step</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>choose</td>
+<td>add node to path</td>
+</tr>
+<tr>
+<td>check</td>
+<td>see if goal reached</td>
+</tr>
+<tr>
+<td>explore</td>
+<td>DFS children</td>
+</tr>
+<tr>
+<td>undo</td>
+<td>restore state</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h1 id="3-apply-to-lc-113-path-sum-ii" tabindex="-1"><a class="header-anchor" href="#3-apply-to-lc-113-path-sum-ii"><span>3️⃣ Apply to LC 113 (Path Sum II)</span></a></h1>
+<p>For LeetCode 113 Path Sum II:</p>
+<p>State = <strong>remaining sum</strong></p>
+<pre><code class="language-java">void dfs(TreeNode node, int remain, List&lt;Integer&gt; path) {
+
+    if (node == null) return;
+
+    path.add(node.val);
+
+    if (node.left == null &amp;&amp; node.right == null &amp;&amp; remain == node.val) {
+        res.add(new ArrayList&lt;&gt;(path));
+    }
+
+    dfs(node.left, remain - node.val, path);
+    dfs(node.right, remain - node.val, path);
+
+    path.remove(path.size() - 1);
+}
+</code></pre>
+<hr>
+<h1 id="4-apply-to-lc-257-binary-tree-paths" tabindex="-1"><a class="header-anchor" href="#4-apply-to-lc-257-binary-tree-paths"><span>4️⃣ Apply to LC 257 (Binary Tree Paths)</span></a></h1>
+<p>For LeetCode 257 Binary Tree Paths:</p>
+<p>State = <strong>path string</strong></p>
+<pre><code class="language-java">void dfs(TreeNode node, String path) {
+
+    if (node == null) return;
+
+    path += node.val;
+
+    if (node.left == null &amp;&amp; node.right == null) {
+        res.add(path);
+        return;
+    }
+
+    path += &quot;-&gt;&quot;;
+
+    dfs(node.left, path);
+    dfs(node.right, path);
+}
+</code></pre>
+<hr>
+<h1 id="5-apply-to-lc-129-root-leaf-numbers" tabindex="-1"><a class="header-anchor" href="#5-apply-to-lc-129-root-leaf-numbers"><span>5️⃣ Apply to LC 129 (Root → Leaf Numbers)</span></a></h1>
+<p>For LeetCode 129 Sum Root to Leaf Numbers:</p>
+<p>State = <strong>number</strong></p>
+<pre><code>123 means path: 1 → 2 → 3
+</code></pre>
+<pre><code class="language-java">void dfs(TreeNode node, int num) {
+
+    if (node == null) return;
+
+    num = num * 10 + node.val;
+
+    if (node.left == null &amp;&amp; node.right == null) {
+        total += num;
+        return;
+    }
+
+    dfs(node.left, num);
+    dfs(node.right, num);
+}
+</code></pre>
+<hr>
+<h1 id="6-special-case-lc-437-path-sum-iii" tabindex="-1"><a class="header-anchor" href="#6-special-case-lc-437-path-sum-iii"><span>6️⃣ Special Case: LC 437 (Path Sum III)</span></a></h1>
+<p>LeetCode 437 Path Sum III is different because paths <strong>can start anywhere</strong>, not only root.</p>
+<p>So we run DFS <strong>from every node</strong>.</p>
+<p>But the inner DFS still follows the same template.</p>
+<hr>
+<h1 id="7-mental-model-very-important" tabindex="-1"><a class="header-anchor" href="#7-mental-model-very-important"><span>7️⃣ Mental Model (Very Important)</span></a></h1>
+<p>Whenever you see:</p>
+<pre><code>root → leaf
+path
+all paths
+sum of paths
+string of paths
+</code></pre>
+<p>Think immediately:</p>
+<pre><code>DFS + Backtracking
+</code></pre>
+<p>Template:</p>
+<pre><code>add node
+check leaf
+dfs children
+remove node
+</code></pre>
+<hr>
+<h1 id="8-interview-cheat-code" tabindex="-1"><a class="header-anchor" href="#8-interview-cheat-code"><span>8️⃣ Interview Cheat Code ⭐</span></a></h1>
+<p>Just memorize this <strong>5-line skeleton</strong>:</p>
+<pre><code class="language-java">path.add(node.val);
+
+if (leaf condition)
+    save result;
+
+dfs(left)
+dfs(right)
+
+path.remove(path.size()-1);
+</code></pre>
+<p>You can solve <strong>most root-to-leaf problems</strong> with this.</p>
+<hr>
+<p>✅ <strong>Pro tip for interviews</strong></p>
+<p>If a problem contains these words:</p>
+<pre><code>all paths
+root to leaf
+return list of paths
+</code></pre>
+<p>It’s almost <strong>guaranteed DFS + backtracking</strong>.</p>
+
+      </div>
+      <div class="cheatsheet-footer">
+        <a href="../cheatsheets.html" class="back-link">← Back to Cheat Sheets</a>
+        <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/tree_backtrack.md" class="github-edit" target="_blank">
+          Edit on GitHub →
+        </a>
+      </div>
+    <nav class="prev-next"><a href="tree2.html" class="prev-link">← Tree2</a><a href="trie.html" class="next-link">Trie →</a></nav>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>CS_basics - Computer Science Fundamentals & Interview Preparation</p>
+      <p>
+        <a href="https://github.com/yennanliu/CS_basics">GitHub</a> •
+        <a href="https://github.com/yennanliu/CS_basics/tree/master/doc">Documentation</a> •
+        <a href="https://github.com/yennanliu/CS_basics/issues">Report Issues</a>
+      </p>
+    </div>
+  </footer>
+</body>
+</html>

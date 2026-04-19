@@ -1,0 +1,1086 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Faq Sql - CS_basics</title>
+  <meta name="description" content="Computer Science fundamentals: algorithms, data structures, system design, and LeetCode solutions">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>CS</text></svg>">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="../vendor/fonts.css">
+  <link rel="stylesheet" href="../vendor/highlight/github-dark.min.css">
+  <script src="../vendor/highlight/highlight.min.js"></script>
+  <script>
+  // Apply theme before render to prevent flash
+  (function() {
+    var saved = localStorage.getItem('theme');
+    if (saved === 'dark' || (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      document.documentElement.setAttribute('data-theme', 'dark');
+    }
+  })();
+  </script>
+  <script>document.addEventListener('DOMContentLoaded', function() {
+    hljs.highlightAll();
+    document.querySelectorAll('pre code').forEach(function(codeEl) {
+      var pre = codeEl.parentElement;
+      var lang = '';
+      var cls = codeEl.className || '';
+      var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
+      if (m) lang = m[1];
+      var wrapper = document.createElement('div');
+      wrapper.className = 'code-block-wrapper';
+      pre.parentNode.insertBefore(wrapper, pre);
+      var header = document.createElement('div');
+      header.className = 'code-block-header';
+      if (lang) {
+        var label = document.createElement('span');
+        label.className = 'code-lang-label';
+        label.textContent = lang;
+        header.appendChild(label);
+      } else {
+        header.appendChild(document.createElement('span'));
+      }
+      var btn = document.createElement('button');
+      btn.className = 'copy-btn';
+      btn.textContent = 'Copy';
+      btn.addEventListener('click', function() {
+        navigator.clipboard.writeText(codeEl.textContent).then(function() {
+          btn.textContent = 'Copied!';
+          btn.classList.add('copied');
+          setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+        });
+      });
+      header.appendChild(btn);
+      wrapper.appendChild(header);
+      wrapper.appendChild(pre);
+    });
+    document.querySelectorAll('table').forEach(function(table) {
+      if (!table.parentElement.classList.contains('table-wrap')) {
+        var wrapper = document.createElement('div');
+        wrapper.className = 'table-wrap';
+        table.parentNode.insertBefore(wrapper, table);
+        wrapper.appendChild(table);
+      }
+    });
+    // Reading progress bar
+    var progressBar = document.getElementById('reading-progress');
+    if (progressBar) {
+      window.addEventListener('scroll', function() {
+        var winScroll = document.documentElement.scrollTop;
+        var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        progressBar.style.width = height > 0 ? (winScroll / height * 100) + '%' : '0%';
+      });
+    }
+    // Dark mode toggle
+    var toggle = document.getElementById('theme-toggle');
+    if (toggle) {
+      var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      toggle.textContent = isDark ? '☀️' : '🌙';
+      toggle.addEventListener('click', function() {
+        var dark = document.documentElement.getAttribute('data-theme') === 'dark';
+        if (dark) {
+          document.documentElement.removeAttribute('data-theme');
+          localStorage.setItem('theme', 'light');
+          toggle.textContent = '🌙';
+        } else {
+          document.documentElement.setAttribute('data-theme', 'dark');
+          localStorage.setItem('theme', 'dark');
+          toggle.textContent = '☀️';
+        }
+      });
+    }
+  });</script>
+</head>
+<body>
+  <div class="progress-container"><div class="progress-bar" id="reading-progress"></div></div>
+  <nav class="navbar">
+    <div class="container">
+      <div class="nav-brand">
+        <span class="nav-icon">💻</span>
+        <span class="nav-title">CS_basics</span>
+      </div>
+      <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+      <div class="nav-links">
+        <a href="../index.html" class="">Home</a>
+        <a href="../cheatsheets.html" class="">Cheat Sheets</a>
+        <a href="../patterns.html" class="">Pattern Recognition</a>
+        <a href="../faqs.html" class="active">FAQs</a>
+        <a href="../resources.html" class="">Resources</a>
+        <a href="../lc-explorer.html" class="">LC Explorer</a>
+        <a href="../lc-random-picker.html" class="">🎲 Random Picker</a>
+        <a href="../algo_demo/index.html" class="">Visualizer</a>
+        <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">&#127769;</button>
+        <a href="https://github.com/yennanliu/CS_basics" target="_blank" class="github-link" aria-label="GitHub">
+          <svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor">
+            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container">
+    <div class="content">
+      
+      <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../faqs.html">FAQs</a> <span class="sep">›</span> <span class="current">Faq Sql</span></nav>
+      <div class="cheatsheet-header">
+        <h1>Faq Sql</h1>
+        <span class="last-updated">Last updated: Feb 23, 2024</span>
+      </div>
+      <div class="toc"><h2>Table of Contents</h2><ul><li class="toc-sub"><a href="#6-select-list-of-integer-from-1-100-recursive-cte">6. select list of integer from 1 -&gt; 100 (recursive CTE)?</a></li><li class="toc-sub"><a href="#7-given-tables-movie-actor-multi-to-multi-relations-please-design-a-data-model-and-query-that-can-report-number-of-actor-with-given-movie-id-movie-name">7. Given tables: movie, actor (multi to multi relations), please design a data model and query that can report number of actor with given movie-id/movie-name ?</a></li><li class="toc-sub"><a href="#8-solve-the-many-to-many-db-design-problem">8. Solve the “many-to-many” DB design problem?</a></li><li class="toc-sub"><a href="#9-which-op-is-faster-union-or-union-all">9. Which op is faster union or union all?</a></li><li class="toc-sub"><a href="#9-difference-between-union-and-union-all">9’. Difference between union and union all?</a></li><li class="toc-sub"><a href="#10-example-of-use-variable-in-sql">10. Example of use variable in SQL ?</a></li><li class="toc-sub"><a href="#11-delete-duplicate-record-from-table">11. Delete duplicate record from table ?</a></li><li class="toc-sub"><a href="#12-sql-deal-with-null-value">12. SQL deal with NULL value ?</a></li><li class="toc-sub"><a href="#13-when-how-sub-query">13. When/how sub query ?</a></li><li class="toc-sub"><a href="#14-sql-join-vs-sub-query">14. SQL join VS Sub-query ?</a></li><li class="toc-sub"><a href="#15-explain-demo-on-window-function-in-sql">15. Explain/demo on window function in SQL ?</a></li><li class="toc-sub"><a href="#16-count-vs-count-1-in-sql">16. Count(*) VS Count(1) in SQL ?</a></li><li class="toc-sub"><a href="#17-where-vs-having-in-sql">17. Where VS Having in SQL ?</a></li><li class="toc-sub"><a href="#18-case-when-then-else-end-case-expression-in-sql">18. case when.. then.. else end CASE Expression in SQL ?</a></li><li class="toc-sub"><a href="#19-when-to-use-right-left-inner-full-outer-join">19. When to use right, left, inner, full outer join?</a></li><li class="toc-sub"><a href="#20-aggregate-function-in-sql">20. Aggregate function in SQL</a></li><li class="toc-sub"><a href="#21-explain-demo-on-hierarchy-select-in-sql">21. Explain/demo on hierarchy select in SQL ?</a></li><li class="toc-sub"><a href="#22-db-model-questions">22. DB model questions?</a></li><li class="toc-sub"><a href="#23-sql-recursive-cte">23. SQL recursive CTE</a></li><li class="toc-sub"><a href="#24-explain-meaning">24. explain &lt;&gt; meaning ?</a></li><li class="toc-sub"><a href="#25-char-vs-varchar">25. char VS varchar ?</a></li><li class="toc-sub"><a href="#26-lead-vs-load">26. lead VS load?</a></li><li class="toc-sub"><a href="#27-explain-foreign-key-fk">27. Explain foreign key (fk) ?</a></li><li class="toc-sub"><a href="#28-explain-difference-between-data-mart-data-warehouse">28. Explain difference between Data mart, data warehouse ?</a></li><li class="toc-sub"><a href="#29-rank-example">29. Rank() example ?</a></li><li class="toc-sub"><a href="#30-exists-example">30. EXISTS example ?</a></li><li class="toc-sub"><a href="#31-explain-cross-join">31. explain cross join ?</a></li><li class="toc-sub"><a href="#33-left-join-example">33. Left join example ?</a></li><li class="toc-sub"><a href="#34-where-in-multiple-cols">34. where in multiple cols</a></li><li class="toc-sub"><a href="#35-the-best-medium-hard-data-analyst-sql-interview-questions">35. The Best Medium-Hard Data Analyst SQL Interview Questions</a></li><li class="toc-sub"><a href="#36-sql-sort-by-desc-and-asc-on-different-columns">36. SQL sort by desc and asc (on different columns)</a></li></ul></div>
+      <div class="cheatsheet-content">
+        <h1 id="sql-faq" tabindex="-1"><a class="header-anchor" href="#sql-faq"><span>SQL FAQ</span></a></h1>
+<h4 id="1-given-2-table-a-3k-rows-b-4k-rows-what-s-the" tabindex="-1"><a class="header-anchor" href="#1-given-2-table-a-3k-rows-b-4k-rows-what-s-the"><span>1. Given 2 table a (3k rows), b (4k rows), what’s the</span></a></h4>
+<p>result count of <code>select a.Color, b.Size from a cross join b</code> ?</p>
+<ul>
+<li>3k * 4k = 12k</li>
+<li><a href="https://www.essentialsql.com/cross-join-introduction/">https://www.essentialsql.com/cross-join-introduction/</a></li>
+<li><a href="http://www.sqlservertutorial.net/sql-server-basics/sql-server-cross-join/">http://www.sqlservertutorial.net/sql-server-basics/sql-server-cross-join/</a></li>
+<li>(cross join pic)</li>
+</ul>
+<img src="../doc/pic/cross_join.png" width="500" height="300">
+<h4 id="2-difference-between-full-outer-join-and-union-in-sql" tabindex="-1"><a class="header-anchor" href="#2-difference-between-full-outer-join-and-union-in-sql"><span>2. Difference between <code>full outer Join</code> And <code>Union</code> in SQL ?</span></a></h4>
+<ul>
+<li>
+<p>Full outer Join: Joins two table, and gives the 1) Matched record + 2) Unmatched Record from Right table + 3) Unmatched Record from left table</p>
+<ul>
+<li>i.e. table A (a,b,c), table B (c,d).</li>
+</ul>
+</li>
+<li>
+<p>Full outer join : return all columns in table A, table B (no depulicate)</p>
+<ul>
+<li>-&gt; <code>select A*, B.* from A full outer join B on A.c = B.c</code></li>
+</ul>
+</li>
+</ul>
+<pre><code class="language-sql"> 		# output : 
+			 a | b | c1 | c2 | d
+			 a1  b1  c11  c21   d1
+			 a2 b2  c12  c22   d2
+			 a3  b3  c13  c23   d3
+			 .......             
+</code></pre>
+<img src="../doc/pic/full_outer_join.gif" width="500" height="300">
+<ul>
+<li>Union : Consolidate the result of two queries and returns as single result set.
+<ul>
+<li>i.e. table A (a,b,c), table B (c,d).</li>
+<li>-&gt; <code>select A.a, A.b from A union select B.c, B.d from B </code></li>
+</ul>
+</li>
+</ul>
+<pre><code class="language-sql">		# output :   
+		  	  col1 | col2
+		  	   a1     b1
+		  	   a2     b2
+		  	   c1     d2
+		  	   c2     d2
+		  	   ..........
+</code></pre>
+<img src="../doc/pic/union_sql.png" width="500" height="300">
+<ul>
+<li>In short :
+<ul>
+<li>Full outer join : Join all <code>columns</code> (No matter if table A, B has same  columns )</li>
+<li>Union           : Join  all <code>rows</code>    (if table A, B has same columns)</li>
+<li>Cross join      : <code> Combinations</code> of all columns within table A and B</li>
+</ul>
+</li>
+<li><a href="https://www.quora.com/What-is-the-difference-between-full-outer-join-and-union-in-SQL">https://www.quora.com/What-is-the-difference-between-full-outer-join-and-union-in-SQL</a></li>
+<li><a href="https://www.solutionfactory.in/posts/Difference-between-Join-And-Union-in-SQL">https://www.solutionfactory.in/posts/Difference-between-Join-And-Union-in-SQL</a></li>
+</ul>
+<h4 id="3-find-the-orders-in-quater-no-hard-code" tabindex="-1"><a class="header-anchor" href="#3-find-the-orders-in-quater-no-hard-code"><span>3. Find the orders in Quater ? (no hard-code)</span></a></h4>
+<pre><code class="language-sql">-- postgre
+
+SELECT extract(QUARTER
+               FROM order_timestamp) AS QUARTER,
+       count(*)
+FROM orders 
+GROUP BY 1;
+
+</code></pre>
+<pre><code class="language-sql">-- mysql
+
+SELECT QUARTER(order_timestamp) AS QUARTER,
+       count(*)
+FROM orders 
+GROUP BY 1;
+
+</code></pre>
+<h4 id="4-select-value-and-max-value-with-conditions-in-one-query" tabindex="-1"><a class="header-anchor" href="#4-select-value-and-max-value-with-conditions-in-one-query"><span>4. Select value, and max value with conditions in one query?</span></a></h4>
+<pre><code class="language-sql">-- postgre
+
+SELECT commit_timestamp,
+       max(commit_timestamp) max_commit_time,
+
+  (SELECT max(commit_timestamp)
+   FROM git_commit
+   WHERE commit_timestamp &gt;= '2019-01-01'
+     AND commit_timestamp &lt;= '2019-12-31' ) AS max_commit_time_in_timeslot
+FROM git_commit
+GROUP BY 1
+LIMIT 10 ;
+
+
+</code></pre>
+<h4 id="5-select-data-with-value-larger-than-average-value" tabindex="-1"><a class="header-anchor" href="#5-select-data-with-value-larger-than-average-value"><span>5. Select data with value larger than average value?</span></a></h4>
+<pre><code class="language-sql">-- postgre
+-- V1
+
+WITH user_commit_count AS
+  (SELECT user_id,
+          count(*) AS commit_count
+   FROM git_commit
+   GROUP BY 1),
+     avg_commit AS
+  (SELECT avg(commit_count)::int AS avg_commit_count
+   FROM user_commit_count)
+SELECT user_id,
+       commit_count,
+  (SELECT *
+   FROM avg_commit)
+FROM user_commit_count
+WHERE commit_count &gt;
+    (SELECT avg_commit_count
+     FROM avg_commit)
+LIMIT 30;
+
+</code></pre>
+<h3 id="6-select-list-of-integer-from-1-100-recursive-cte" tabindex="-1"><a class="header-anchor" href="#6-select-list-of-integer-from-1-100-recursive-cte"><span>6. select list of integer from 1 -&gt; 100 (recursive CTE)?</span></a></h3>
+<pre><code class="language-sql">-- postgre
+
+WITH RECURSIVE my_num AS
+  (SELECT 1 AS seqnum
+   UNION ALL SELECT seqnum + 1
+   FROM my_num
+   WHERE seqnum &lt; 100 )
+SELECT seqnum
+FROM my_num;
+
+</code></pre>
+<h3 id="7-given-tables-movie-actor-multi-to-multi-relations-please-design-a-data-model-and-query-that-can-report-number-of-actor-with-given-movie-id-movie-name" tabindex="-1"><a class="header-anchor" href="#7-given-tables-movie-actor-multi-to-multi-relations-please-design-a-data-model-and-query-that-can-report-number-of-actor-with-given-movie-id-movie-name"><span>7. Given tables: movie, actor (multi to multi relations), please design a data model and query that can report number of actor with given movie-id/movie-name ?</span></a></h3>
+<h3 id="8-solve-the-many-to-many-db-design-problem" tabindex="-1"><a class="header-anchor" href="#8-solve-the-many-to-many-db-design-problem"><span>8. Solve the “many-to-many” DB design problem?</span></a></h3>
+<ul>
+<li><a href="https://dzone.com/articles/how-to-handle-a-many-to-many-relationship-in-datab">https://dzone.com/articles/how-to-handle-a-many-to-many-relationship-in-datab</a></li>
+</ul>
+<h3 id="9-which-op-is-faster-union-or-union-all" tabindex="-1"><a class="header-anchor" href="#9-which-op-is-faster-union-or-union-all"><span>9. Which op is faster <code>union</code> or <code>union all</code>?</span></a></h3>
+<ul>
+<li><code>union all</code> is faster, since it <strong>WILL NOT</strong> avoid possible duplicates.</li>
+</ul>
+<h3 id="9-difference-between-union-and-union-all" tabindex="-1"><a class="header-anchor" href="#9-difference-between-union-and-union-all"><span>9’. Difference between <code>union</code> and <code>union all</code>?</span></a></h3>
+<ul>
+<li><code>Union</code> will remove the duplicated records (only show same record once)</li>
+<li><code>Union all</code> will return everything, includes the duplicated data (merge directly)</li>
+<li><a href="https://dataschool.com/learn-sql/what-is-the-difference-between-union-and-union-all/">https://dataschool.com/learn-sql/what-is-the-difference-between-union-and-union-all/</a></li>
+<li><a href="http://sqlqna.blogspot.com/2013/08/union-union-all.html">http://sqlqna.blogspot.com/2013/08/union-union-all.html</a></li>
+</ul>
+<h3 id="10-example-of-use-variable-in-sql" tabindex="-1"><a class="header-anchor" href="#10-example-of-use-variable-in-sql"><span>10. Example of use variable in SQL ?</span></a></h3>
+<pre><code class="language-sql"># mysql
+SELECT 
+@x AS x, 
+@y AS y, 
+@x + 1 AS x_Plus_1, 
+@x := @x + 1 AS updated_x
+FROM
+  (SELECT @x := 0, @y := 1) INIT;
+
+</code></pre>
+<h3 id="11-delete-duplicate-record-from-table" tabindex="-1"><a class="header-anchor" href="#11-delete-duplicate-record-from-table"><span>11. Delete duplicate record from table ?</span></a></h3>
+<ul>
+<li><a href="https://github.com/yennanliu/CS_basics/blob/master/leetcode_SQL/delete-duplicate-emails.sql">https://github.com/yennanliu/CS_basics/blob/master/leetcode_SQL/delete-duplicate-emails.sql</a></li>
+</ul>
+<pre><code class="language-sql">DELETE a
+FROM TABLE a,
+           TABLE b
+WHERE a.id = b.id
+  AND a.timestamp &gt; b.timestamp
+</code></pre>
+<ul>
+<li>Follow up : if in the “whole column duplicate” case?</li>
+</ul>
+<pre><code class="language-sql">
+-- build the table 
+CREATE TABLE IF NOT EXIST test( id int, age int);
+TRUNCATE TABLE test; 
+INSERT INTO test VALUES (1,1);
+INSERT INTO test VALUES (2,2);
+INSERT INTO test VALUES (3,3);
+INSERT INTO test VALUES (3,3);
+INSERT INTO test VALUES (3,3);
+INSERT INTO test VALUES (3,3);
+SELECT * FROM test;
+
+-- delete duplicated
+-- V1 
+DELETE
+FROM test
+WHERE id IN
+    (SELECT id
+     FROM
+       (SELECT 
+        id,
+        age,
+        ROW_NUMBER() OVER (PARTITION BY id ORDER BY id) AS order_
+        FROM test) sub
+     WHERE order_ &gt; 2 )
+
+-- delete duplicated
+-- V2
+DELETE FROM test
+WHERE id IN (
+  SELECT calc_id FROM (
+    SELECT MAX(id) AS calc_id
+    FROM test
+    GROUP BY id, age
+    HAVING COUNT(id) &gt; 1
+  ) temp
+); 
+
+</code></pre>
+<h3 id="12-sql-deal-with-null-value" tabindex="-1"><a class="header-anchor" href="#12-sql-deal-with-null-value"><span>12. SQL deal with NULL value ?</span></a></h3>
+<ul>
+<li><code>IS NULL</code> VS <code> = NULL</code></li>
+</ul>
+<pre><code class="language-sql">-- select data where SALARY is not null
+ SELECT  ID, NAME, AGE, ADDRESS, SALARY
+   FROM CUSTOMERS
+   WHERE SALARY IS NOT NULL; 
+
+-- select data where SALARY is null
+ SELECT  ID, NAME, AGE, ADDRESS, SALARY
+   FROM CUSTOMERS
+   WHERE SALARY IS NULL; 
+
+</code></pre>
+<ul>
+<li>COALESCE</li>
+</ul>
+<pre><code class="language-sql">
+-- COALESCE
+SELECT StudentId, StudentName, Department, 
+Semester_I, Semester_II, Semester_III,
+COALESCE(Semester_I, Semester_II, Semester_III, 0) AS COALESCE_Result
+FROM StudentDetails
+
+-- above SQL is as same as below 
+-- i.e. COALESCE(a, b, c, 0)
+--  -&gt; if a is not null then a 
+--      -&gt; if b is not null then b
+--          -&gt; if c is not null then c 
+--                -&gt; else 0 
+SELECT StudentId, StudentName, Department, 
+Semester_I, Semester_II, Semester_III,
+COALESCE(Semester_I, Semester_II, Semester_III, 0) AS COALESCE_Result,
+CASE
+  WHEN Semester_I IS NOT NULL THEN Semester_I
+  WHEN Semester_II IS NOT NULL THEN Semester_II
+  WHEN Semester_III IS NOT NULL THEN Semester_III
+  ELSE 0
+END CASE_Result
+FROM StudentDetails
+
+</code></pre>
+<ul>
+<li>Addition value with Null</li>
+</ul>
+<pre><code class="language-sql">
+-- Method 1  : IFNULL
+SELECT IFNULL(NULL, 0) + value; 
+
+-- Method 2  : COALESCE
+SELECT COALESCE(NULL, value); 
+
+</code></pre>
+<ul>
+<li>Any Value + NULL = Any Value?</li>
+</ul>
+<pre><code class="language-sql">SELECT NULL + 100;
+-- NULL 
+</code></pre>
+<ul>
+<li>Output of NULL != NULL, NULL = NULL ?</li>
+</ul>
+<pre><code class="language-sql">SELECT NULL != NULL;
+-- NULL 
+
+SELECT NULL = NULL;
+-- NULL 
+
+</code></pre>
+<ul>
+<li><a href="https://www.codeproject.com/Articles/1017058/Handle-NULL-in-SQL-Server">https://www.codeproject.com/Articles/1017058/Handle-NULL-in-SQL-Server</a></li>
+<li><a href="https://www.tutorialspoint.com/sql/sql-null-values.htm">https://www.tutorialspoint.com/sql/sql-null-values.htm</a></li>
+</ul>
+<h3 id="13-when-how-sub-query" tabindex="-1"><a class="header-anchor" href="#13-when-how-sub-query"><span>13. When/how sub query ?</span></a></h3>
+<ul>
+<li>
+<p>When</p>
+<ul>
+<li>A subquery is used to return data that will be used in the main query as a condition to further restrict the data to be retrieved.</li>
+<li>A subquery may occur in :
+<ul>
+<li>A SELECT clause</li>
+<li>A FROM clause</li>
+<li>A WHERE clause</li>
+</ul>
+</li>
+<li>The inner query executes first before its parent query so that the results of an inner query can be passed to the outer query.</li>
+</ul>
+</li>
+<li>
+<p>How</p>
+</li>
+</ul>
+<pre><code class="language-sql">-- sub-query pattern
+SELECT column_name [, column_name ]
+FROM   table1 [, table2 ]
+WHERE  column_name OPERATOR
+   (SELECT column_name [, column_name ]
+   FROM table1 [, table2 ]
+   [WHERE])
+
+</code></pre>
+<ul>
+<li><a href="https://www.tutorialspoint.com/sql/sql-sub-queries.htm">https://www.tutorialspoint.com/sql/sql-sub-queries.htm</a></li>
+<li><a href="https://www.w3resource.com/sql/subqueries/understanding-sql-subqueries.php">https://www.w3resource.com/sql/subqueries/understanding-sql-subqueries.php</a></li>
+<li><a href="https://www.sqlservertutorial.net/sql-server-basics/sql-server-subquery/">https://www.sqlservertutorial.net/sql-server-basics/sql-server-subquery/</a></li>
+</ul>
+<h3 id="14-sql-join-vs-sub-query" tabindex="-1"><a class="header-anchor" href="#14-sql-join-vs-sub-query"><span>14. SQL join VS Sub-query ?</span></a></h3>
+<p>-&gt; By cases. (performance VS readable)</p>
+<ul>
+<li><a href="https://www.quora.com/Which-is-faster-joins-or-subqueries">https://www.quora.com/Which-is-faster-joins-or-subqueries</a></li>
+<li><a href="https://stackoverflow.com/questions/2577174/join-vs-sub-query">https://stackoverflow.com/questions/2577174/join-vs-sub-query</a></li>
+<li><a href="https://stackoverflow.com/questions/3856164/sql-joins-vs-sql-subqueries-performance">https://stackoverflow.com/questions/3856164/sql-joins-vs-sql-subqueries-performance</a></li>
+</ul>
+<h3 id="15-explain-demo-on-window-function-in-sql" tabindex="-1"><a class="header-anchor" href="#15-explain-demo-on-window-function-in-sql"><span>15. Explain/demo on <code>window function</code> in SQL ?</span></a></h3>
+<p>-&gt;</p>
+<ul>
+<li>A window function performs a calculation across a set of table rows that are somehow related to the current row</li>
+<li>Pattern</li>
+</ul>
+<pre><code class="language-sql">SELECT
+aggre_func() OVER (PARTITION BY ... ORDER BY ...),
+ROW_NUMBER() OVER (PARTITION BY ... ORDER BY ...),
+RANK() OVER (PARTITION BY ... ORDER BY ...),
+LAG(timestamp, 1) OVER (PARTITION BY ... ORDER BY ...) AS prev_record,
+RANK() OVER (PARTITION BY timestamp, ORDER BY count(product_id)) AS rank # NOTE : rank can order by count
+...
+</code></pre>
+<ul>
+<li>Example</li>
+</ul>
+<pre><code class="language-sql">-- example 1 
+SELECT duration_seconds,
+       SUM(duration_seconds) OVER (ORDER BY start_time) AS running_total
+  FROM tutorial.dc_bikeshare_q1_2012
+
+-- example 2 
+SELECT start_terminal,
+       duration_seconds,
+       SUM(duration_seconds) OVER
+         (PARTITION BY start_terminal ORDER BY start_time)
+         AS running_total
+  FROM tutorial.dc_bikeshare_q1_2012
+ WHERE start_time &lt; '2012-01-08'
+
+-- example 3 
+SELECT start_terminal,
+       duration_seconds,
+       SUM(duration_seconds) OVER
+         (PARTITION BY start_terminal) AS running_total,
+       COUNT(duration_seconds) OVER
+         (PARTITION BY start_terminal) AS running_count,
+       AVG(duration_seconds) OVER
+         (PARTITION BY start_terminal) AS running_avg
+  FROM tutorial.dc_bikeshare_q1_2012
+ WHERE start_time &lt; '2012-01-08'
+
+</code></pre>
+<ul>
+<li>ROW_NUMBER()
+<ul>
+<li>ROW_NUMBER() does just what it sounds like—displays the number of a given row. It starts are 1 and numbers the rows according to the ORDER BY part of the window statement.</li>
+</ul>
+</li>
+<li>Example</li>
+</ul>
+<pre><code class="language-sql">SELECT start_terminal,
+       start_time,
+       duration_seconds,
+       ROW_NUMBER() OVER (PARTITION BY start_terminal
+                          ORDER BY start_time)
+                    AS row_number
+  FROM tutorial.dc_bikeshare_q1_2012
+ WHERE start_time &lt; '2012-01-08'
+</code></pre>
+<ul>
+<li>RANK() and DENSE_RANK()
+<ul>
+<li>RANK() : is slightly different from ROW_NUMBER(). If you order by start_time, for example, it might be the case that some terminals have rides with two identical start times. In this case, they are given the same rank, whereas ROW_NUMBER() gives them different numbers. In the following query, you notice the 4th and 5th observations for start_terminal 31000—they are both given a rank of 4, and the following result receives a rank of 6:</li>
+<li>RANK() would give the identical rows a rank of 2, then skip ranks 3 and 4, so the next result would be 5</li>
+<li>DENSE_RANK() would still give all the identical rows a rank of 2, but the following row would be 3—no ranks would be skipped.</li>
+</ul>
+</li>
+<li>Example</li>
+</ul>
+<pre><code class="language-sql">SELECT start_terminal,
+       duration_seconds,
+       RANK() OVER (PARTITION BY start_terminal
+                    ORDER BY start_time)
+              AS rank
+  FROM tutorial.dc_bikeshare_q1_2012
+ WHERE start_time &lt; '2012-01-08'
+
+</code></pre>
+<ul>
+<li>LAG and LEAD()
+<ul>
+<li>You can use LAG or LEAD to create columns that pull values from other rows—all you need to do is enter which column to pull from and how many rows away you’d like to do the pull. LAG pulls from previous rows and LEAD pulls from following rows</li>
+</ul>
+</li>
+<li>Example</li>
+</ul>
+<pre><code class="language-sql">-- example 1 
+SELECT start_terminal,
+       duration_seconds,
+       LAG(duration_seconds, 1) OVER
+         (PARTITION BY start_terminal ORDER BY duration_seconds) AS lag,
+       LEAD(duration_seconds, 1) OVER
+         (PARTITION BY start_terminal ORDER BY duration_seconds) AS lead
+  FROM tutorial.dc_bikeshare_q1_2012
+ WHERE start_time &lt; '2012-01-08'
+ ORDER BY start_terminal, duration_seconds
+
+-- example 2 
+SELECT start_terminal,
+       duration_seconds,
+       duration_seconds -LAG(duration_seconds, 1) OVER
+         (PARTITION BY start_terminal ORDER BY duration_seconds)
+         AS difference
+  FROM tutorial.dc_bikeshare_q1_2012
+ WHERE start_time &lt; '2012-01-08'
+ ORDER BY start_terminal, duration_seconds
+
+</code></pre>
+<ul>
+<li>NTILE()
+<ul>
+<li>You can use window functions to identify what percentile (or quartile, or any other subdivision) a given row falls into. The syntax is NTILE(<em># of buckets</em>). In this case, ORDER BY determines which column to use to determine the quartiles (or whatever number of 'tiles you specify)</li>
+</ul>
+</li>
+<li>Example</li>
+</ul>
+<pre><code class="language-sql">SELECT start_terminal,
+       duration_seconds,
+       NTILE(4) OVER
+         (PARTITION BY start_terminal ORDER BY duration_seconds)
+          AS quartile,
+       NTILE(5) OVER
+         (PARTITION BY start_terminal ORDER BY duration_seconds)
+         AS quintile,
+       NTILE(100) OVER
+         (PARTITION BY start_terminal ORDER BY duration_seconds)
+         AS percentile
+  FROM tutorial.dc_bikeshare_q1_2012
+ WHERE start_time &lt; '2012-01-08'
+ ORDER BY start_terminal, duration_seconds
+
+</code></pre>
+<ul>
+<li>Can also define window function as alias (Defining a window alias)</li>
+<li>Example</li>
+</ul>
+<pre><code class="language-sql">SELECT start_terminal,
+       duration_seconds,
+       NTILE(4) OVER ntile_window AS quartile,
+       NTILE(5) OVER ntile_window AS quintile,
+       NTILE(100) OVER ntile_window AS percentile
+  FROM tutorial.dc_bikeshare_q1_2012
+ WHERE start_time &lt; '2012-01-08'
+WINDOW ntile_window AS
+         (PARTITION BY start_terminal ORDER BY duration_seconds)
+ ORDER BY start_terminal, duration_seconds
+</code></pre>
+<ul>
+<li><a href="https://mode.com/sql-tutorial/sql-window-functions/">https://mode.com/sql-tutorial/sql-window-functions/</a></li>
+<li><a href="https://www.postgresql.org/docs/8.4/functions-window.html">https://www.postgresql.org/docs/8.4/functions-window.html</a></li>
+</ul>
+<h3 id="16-count-vs-count-1-in-sql" tabindex="-1"><a class="header-anchor" href="#16-count-vs-count-1-in-sql"><span>16. Count(<code>*</code>) VS Count(1) in SQL ?</span></a></h3>
+<ul>
+<li>
+<p>Difference</p>
+<ul>
+<li>count on <code>non null</code>
+<ul>
+<li><code>Count(col)</code> will only count the <code>Non-Null</code> value in the col, neglect NULL. (# of value exist in col)</li>
+</ul>
+</li>
+<li>count on <code>all</code>
+<ul>
+<li><code>Count(1)</code> will count all value (include NULL) in the col anyway. NOT neglect NULL. (# of all record, include Null)</li>
+<li>Count(<code>*</code>) is <code>SAME</code> as Count(1) (consider all columns in table). NOT neglect NULL</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>Performance</p>
+<ul>
+<li>If col is the primary key, count(col) faster than count(1)</li>
+<li>If col is NOT primary key, count(1) faster than count(col)</li>
+<li>If there is NO primary key, count(1) faster than count(col)</li>
+<li>If there is a primary key, count(col) is the fastest</li>
+</ul>
+</li>
+<li>
+<p>Ref</p>
+<ul>
+<li><a href="https://stackoverflow.com/questions/3003457/count-vs-countcolumn-name-which-is-more-correct">https://stackoverflow.com/questions/3003457/count-vs-countcolumn-name-which-is-more-correct</a></li>
+</ul>
+</li>
+<li>
+<p>example</p>
+</li>
+</ul>
+<pre><code class="language-sql">-- build table 
+CREATE table if not exists user(id int, age int); 
+truncate table user; 
+INSERT INTO user values (1, 10);
+INSERT INTO user values (1, 10);
+INSERT INTO user values (1, 10);
+INSERT INTO user values (1, 10);
+INSERT INTO user values (1, 10);
+INSERT INTO user values (NULL, 10);
+INSERT INTO user values (1, NULL);
+
+-- select 
+SELECT * FROM user;
+
+-- mysql&gt; SELECT * FROM user;
+-- +------+------+
+-- | id   | age  |
+-- +------+------+
+-- |    1 |   10 |
+-- |    1 |   10 |
+-- |    1 |   10 |
+-- |    1 |   10 |
+-- |    1 |   10 |
+-- | NULL |   10 |
+-- |    1 | NULL |
+-- +------+------+
+-- 7 rows in set (0.00 sec)
+
+-- select 
+SELECT COUNT(id), COUNT(*) ,COUNT(1) FROM user;
+
+-- mysql&gt; SELECT COUNT(id), COUNT(*) ,COUNT(1) FROM user;
+-- +-----------+----------+----------+
+-- | COUNT(id) | COUNT(*) | COUNT(1) |
+-- +-----------+----------+----------+
+-- |         6 |        7 |        7 |
+-- +-----------+----------+----------+
+-- 1 row in set (0.00 sec)
+
+</code></pre>
+<ul>
+<li><a href="https://kknews.cc/tech/mro8689.html">https://kknews.cc/tech/mro8689.html</a></li>
+</ul>
+<h3 id="17-where-vs-having-in-sql" tabindex="-1"><a class="header-anchor" href="#17-where-vs-having-in-sql"><span>17. <code>Where</code> VS <code>Having</code> in SQL ?</span></a></h3>
+<p>-&gt;</p>
+<ul>
+<li>
+<p>The <code>having</code> clause works on aggregated data</p>
+</li>
+<li>
+<p>Apart from SELECT queries, you can use WHERE clause with UPDATE and DELETE clause but HAVING clause can only be used with SELECT query.</p>
+</li>
+<li>
+<p><code>WHERE</code> clause is used for filtering rows and it applies on each and every <code>ow</code>, while <code>HAVING</code> clause is used to filter <code>groups</code> in SQL.</p>
+</li>
+<li>
+<p>One syntax level difference between WHERE and HAVING clause is that, former is used before GROUP BY clause, while later is used after GROUP BY clause.</p>
+</li>
+<li>
+<p>When WHERE and HAVING clause are used together in a SELECT query with aggregate function,  WHERE clause is applied first on individual rows and only rows which pass the condition is included for creating groups. Once group is created, HAVING clause is used to filter groups based upon condition specified.</p>
+</li>
+<li>
+<p>Example</p>
+</li>
+</ul>
+<pre><code class="language-sql">-- example 1 
+SELECT d.DEPT_NAME, count(e.EMP_NAME) as NUM_EMPLOYEE, avg(e.EMP_SALARY) as AVG_SALARY FROM Employee e,
+Department d WHERE e.DEPT_ID=d.DEPT_ID AND EMP_SALARY &gt; 5000 GROUP BY d.DEPT_NAME HAVING AVG_SALARY &gt; 7000;
+
+-- example 2 
+update DEPARTMENT set DEPT_NAME=&quot;NewSales&quot; WHERE DEPT_ID=1 ; 
+
+</code></pre>
+<ul>
+<li><a href="https://www.geeksforgeeks.org/having-vs-where-clause-in-sql/">https://www.geeksforgeeks.org/having-vs-where-clause-in-sql/</a></li>
+<li><a href="https://javarevisited.blogspot.com/2013/08/difference-between-where-vs-having-clause-SQL-databse-group-by-comparision.html">https://javarevisited.blogspot.com/2013/08/difference-between-where-vs-having-clause-SQL-databse-group-by-comparision.html</a></li>
+</ul>
+<h3 id="18-case-when-then-else-end-case-expression-in-sql" tabindex="-1"><a class="header-anchor" href="#18-case-when-then-else-end-case-expression-in-sql"><span>18. <code>case when.. then.. else end</code> CASE Expression in SQL ?</span></a></h3>
+<p>-&gt;</p>
+<ul>
+<li>Pattern</li>
+</ul>
+<pre><code class="language-sql">
+CASE expression   
+    WHEN expression_1 THEN result_1
+    WHEN expression_2 THEN result_2
+    ...
+    WHEN expression_n THEN result_n
+    [ ELSE else_result ]   
+END  
+</code></pre>
+<ul>
+<li>Example</li>
+</ul>
+<pre><code class="language-sql">
+SELECT 
+    title, 
+    rating,
+    CASE 
+        WHEN (rating &gt;= 1 AND rating &lt; 2) THEN 'Not so good' 
+        WHEN (rating &gt;= 2 AND rating &lt; 3) THEN 'Limited useful information'
+        WHEN (rating &gt;= 3 AND rating &lt; 4) THEN 'Good book, but nothing special'
+        WHEN (rating &gt;= 4 AND rating &lt; 5) THEN 'Incredbly special'
+        WHEN rating = 5 THEN 'Life changing. Must Read.'
+        ELSE
+            'No rating yet'
+    END AS comment
+FROM 
+    books
+ORDER BY 
+    title;
+</code></pre>
+<ul>
+<li><a href="https://www.db2tutorial.com/db2-basics/db2-case-expression/">https://www.db2tutorial.com/db2-basics/db2-case-expression/</a></li>
+<li><a href="https://chartio.com/resources/tutorials/how-to-use-if-then-logic-in-sql-server/">https://chartio.com/resources/tutorials/how-to-use-if-then-logic-in-sql-server/</a></li>
+</ul>
+<h3 id="19-when-to-use-right-left-inner-full-outer-join" tabindex="-1"><a class="header-anchor" href="#19-when-to-use-right-left-inner-full-outer-join"><span>19. When to use <code>right</code>, <code>left</code>, <code>inner</code>, <code>full outer</code> join?</span></a></h3>
+<img src="../doc/pic/sql_join.jpg" width="700" height="500">
+<ul>
+<li>
+<p>OUTER join : extends that functionality and also include unmatched rows in the final result</p>
+</li>
+<li>
+<p>LEFT outer : join includes unmatched rows from table written on the left of join predicate. On the other hand, RIGHT OUTER join</p>
+<ul>
+<li>LEFT outer join = INNER JOIN + unmatched rows from LEFT table</li>
+</ul>
+</li>
+<li>
+<p>RIGHT outer : join includes unmatched rows from table written on the left of join predicate. On the other hand, RIGHT OUTER join</p>
+<ul>
+<li>RIGHT OUTER join = INNER JOIN + unmatched rows from the right-hand side table.</li>
+</ul>
+</li>
+<li>
+<p><a href="https://sqlhints.com/2016/10/15/difference-between-left-outer-join-and-right-outer-join-in-sql-server/">https://sqlhints.com/2016/10/15/difference-between-left-outer-join-and-right-outer-join-in-sql-server/</a></p>
+</li>
+<li>
+<p><a href="https://javarevisited.blogspot.com/2013/05/difference-between-left-and-right-outer-join-sql-mysql.html">https://javarevisited.blogspot.com/2013/05/difference-between-left-and-right-outer-join-sql-mysql.html</a></p>
+</li>
+</ul>
+<h3 id="20-aggregate-function-in-sql" tabindex="-1"><a class="header-anchor" href="#20-aggregate-function-in-sql"><span>20. Aggregate function in SQL</span></a></h3>
+<p>-&gt;</p>
+<ul>
+<li>
+<p><a href="https://www.geeksforgeeks.org/aggregate-functions-in-sql/">https://www.geeksforgeeks.org/aggregate-functions-in-sql/</a></p>
+</li>
+<li>
+<p>Example</p>
+</li>
+</ul>
+<pre><code>1) Count()
+2) Sum()
+3) Avg()
+4) Min()
+5) Max()
+</code></pre>
+<pre><code class="language-sql">
+SELECT COUNT()
+SELECT Count(Distinct Salary)
+SELECT Avg(salary)  --  Sum(salary) / count(salary) = 310/5
+SELECT Avg(Distinct salary) -- = sum(Distinct salary) / Count(Distinct Salary) 
+
+</code></pre>
+<h3 id="21-explain-demo-on-hierarchy-select-in-sql" tabindex="-1"><a class="header-anchor" href="#21-explain-demo-on-hierarchy-select-in-sql"><span>21. Explain/demo on <code>hierarchy select</code> in SQL ?</span></a></h3>
+<h3 id="22-db-model-questions" tabindex="-1"><a class="header-anchor" href="#22-db-model-questions"><span>22. DB model questions?</span></a></h3>
+<ul>
+<li><a href="https://www.toptal.com/data-modeling/interview-questions">https://www.toptal.com/data-modeling/interview-questions</a></li>
+<li><a href="https://mindmajix.com/data-modeling-interview-questions">https://mindmajix.com/data-modeling-interview-questions</a></li>
+<li><a href="https://www.indeed.com/career-advice/interviewing/data-modeling-interview-questions">https://www.indeed.com/career-advice/interviewing/data-modeling-interview-questions</a></li>
+</ul>
+<h3 id="23-sql-recursive-cte" tabindex="-1"><a class="header-anchor" href="#23-sql-recursive-cte"><span>23. SQL recursive CTE</span></a></h3>
+<ul>
+<li><a href="https://www.sqlservertutorial.net/sql-server-basics/sql-server-recursive-cte/">https://www.sqlservertutorial.net/sql-server-basics/sql-server-recursive-cte/</a></li>
+</ul>
+<pre><code class="language-sql">WITH recursive cte(columns_name) 
+AS (
+
+  initial_query
+  UNION ALL
+  recursive_query
+
+)
+SELECT * 
+FROM cte
+</code></pre>
+<h3 id="24-explain-meaning" tabindex="-1"><a class="header-anchor" href="#24-explain-meaning"><span>24. explain <code>&lt;&gt;</code> meaning ?</span></a></h3>
+<pre><code class="language-sql"># https://docs.microsoft.com/en-us/sql/t-sql/language-elements/not-equal-to-transact-sql-traditional?view=sql-server-ver15
+# Not Equal To (Transact SQL)
+# Compares two expressions (a comparison operator). When you compare nonnull expressions, the result is TRUE if the left operand is not equal to the right operand; otherwise, the result is FALSE. If either or both operands are NULL, see the topic SET ANSI_NULLS (Transact-SQL).
+expression &lt;&gt; expression  
+
+</code></pre>
+<h3 id="25-char-vs-varchar" tabindex="-1"><a class="header-anchor" href="#25-char-vs-varchar"><span>25. <code>char</code> VS <code>varchar</code> ?</span></a></h3>
+<ul>
+<li><a href="https://stackoverflow.com/questions/1885630/whats-the-difference-between-varchar-and-char#:~:text=CHAR%20is%20fixed%20length%20and,to%20store%20the%20actual%20text.&amp;text=The%20char%20is%20a%20fixed,variable%2Dlength%20character%20data%20type">https://stackoverflow.com/questions/1885630/whats-the-difference-between-varchar-and-char#:~:text=CHAR is fixed length and,to store the actual text.&amp;text=The char is a fixed,variable-length character data type</a>.</li>
+<li>CHAR is fixed length and VARCHAR is variable length. CHAR always uses the same amount of storage space per entry, while VARCHAR only uses the amount necessary to store the actual text.</li>
+<li>VARCHAR :
+<ul>
+<li>stores variable-length character strings and is the most common string data type. It can require less storage space than fixed-length types, because it uses only as much space as it needs (i.e., less space is used to store shorter values). The exception is a MyISAM table created with ROW_FORMAT=FIXED, which uses a fixed amount of space on disk for each row and can thus waste space. VARCHAR helps performance because it saves space.</li>
+</ul>
+</li>
+<li>CHAR :
+<ul>
+<li>is fixed-length: MySQL always allocates enough space for the specified number of characters. When storing a CHAR value, MySQL removes any trailing spaces. (This was also true of VARCHAR in MySQL 4.1 and older versions—CHAR and VAR CHAR were logically identical and differed only in storage format.) Values are padded with spaces as needed for comparisons.</li>
+</ul>
+</li>
+</ul>
+<h3 id="26-lead-vs-load" tabindex="-1"><a class="header-anchor" href="#26-lead-vs-load"><span>26. <code>lead</code> VS <code>load</code>?</span></a></h3>
+<ul>
+<li><a href="https://riptutorial.com/sql/example/27455/lag-and-lead">https://riptutorial.com/sql/example/27455/lag-and-lead</a></li>
+<li>The LEAD function provides data on rows after the current row in the row set. For example, in a SELECT statement, you can compare values in the current row with values in the following row.</li>
+<li>example :</li>
+</ul>
+<pre><code class="language-sql"># LC 1790 : Biggest Window Between Visits
+WITH cte1 AS
+  (SELECT user_id,
+          coalesce(lead(visit_date) OVER (PARTITION BY user_id
+                                          ORDER BY visit_date), '2021-01-01') AS lead_visit_date,
+          visit_date
+   FROM UserVisits),
+     cte2 AS
+  (SELECT user_id,
+          max(datediff(lead_visit_date, visit_date)) AS max_diff
+   FROM cte1
+   GROUP BY user_id)
+SELECT *
+FROM cte2
+ORDER BY user_id
+</code></pre>
+<h3 id="27-explain-foreign-key-fk" tabindex="-1"><a class="header-anchor" href="#27-explain-foreign-key-fk"><span>27. Explain <code>foreign key</code> (fk) ?</span></a></h3>
+<ul>
+<li><a href="https://www.w3schools.com/sql/sql_foreignkey.asp">https://www.w3schools.com/sql/sql_foreignkey.asp</a></li>
+<li><a href="https://www.cockroachlabs.com/docs/stable/foreign-key.html">https://www.cockroachlabs.com/docs/stable/foreign-key.html</a></li>
+<li><a href="https://b-l-u-e-b-e-r-r-y.github.io/post/ForeignKey/">https://b-l-u-e-b-e-r-r-y.github.io/post/ForeignKey/</a></li>
+<li>aka <code>FOREIGN KEY Constraint</code></li>
+<li>The FOREIGN KEY constraint is used to prevent actions that would destroy links between tables.</li>
+<li>The table with the foreign key is called the child table, and the table with the primary key is called the referenced or parent table.</li>
+<li>Any CRUD op will be constrainted by the fk constraint
+<ul>
+<li>-&gt; Prevent invalid op that break data Consistency within tables (with fk)</li>
+<li>-&gt; i.e. we need to do the op on <code>ALL the tables with same fk constraint</code> at once</li>
+</ul>
+</li>
+</ul>
+<h3 id="28-explain-difference-between-data-mart-data-warehouse" tabindex="-1"><a class="header-anchor" href="#28-explain-difference-between-data-mart-data-warehouse"><span>28. Explain difference between Data mart, data warehouse ?</span></a></h3>
+<img src="../doc/pic/dm_dw2.png" width="700" height="300">
+<img src="../doc/pic/dm_dw.png" width="700" height="500">
+<ul>
+<li><a href="https://aws.amazon.com/data-warehouse/?nc1=h_ls">https://aws.amazon.com/data-warehouse/?nc1=h_ls</a></li>
+</ul>
+<h3 id="29-rank-example" tabindex="-1"><a class="header-anchor" href="#29-rank-example"><span>29. Rank() example ?</span></a></h3>
+<pre><code class="language-sql"># LC 1831
+WITH cte AS
+  (SELECT transaction_id,
+          RANK() OVER (PARTITION BY DATE(DAY)
+                       ORDER BY amount DESC) AS rank
+   FROM transactions)
+SELECT transaction_id
+FROM cte
+WHERE rank = 1
+ORDER BY transaction_id
+</code></pre>
+<h3 id="30-exists-example" tabindex="-1"><a class="header-anchor" href="#30-exists-example"><span>30. <code>EXISTS</code> example ?</span></a></h3>
+<ul>
+<li><a href="https://www.fooish.com/sql/exists.html">https://www.fooish.com/sql/exists.html</a></li>
+</ul>
+<pre><code class="language-sql"># V1
+SELECT * FROM table_a
+WHERE EXISTS
+(SELECT * FROM table_b WHERE table_b.id=table_a.id);
+
+# is equal to below
+
+# V2
+SELECT * FROM table_a
+WHERE id
+in (SELECT id FROM table_b);
+</code></pre>
+<h3 id="31-explain-cross-join" tabindex="-1"><a class="header-anchor" href="#31-explain-cross-join"><span>31. explain <code>cross join</code> ?</span></a></h3>
+<ul>
+<li><a href="https://www.fooish.com/sql/cross-join.html">https://www.fooish.com/sql/cross-join.html</a></li>
+<li>Cross join will return <code>ALL POSSIBLE COMBINATION OF ROWS IN GIVEN columns and tables</code></li>
+<li>NOTE : below sql are eaual to each other</li>
+</ul>
+<pre><code class="language-sql"># sql 1
+SELECT table_column1, table_column2...
+FROM table_name1
+CROSS JOIN table_name2;
+
+# sql 2
+SELECT table_column1, table_column2...
+FROM table_name1, table_name2;
+
+# sql 3
+SELECT table_column1, table_column2...
+FROM table_name1
+JOIN table_name2;
+</code></pre>
+<h3 id="33-left-join-example" tabindex="-1"><a class="header-anchor" href="#33-left-join-example"><span>33. Left join example ?</span></a></h3>
+<ul>
+<li>Note : Should use <code>IS NULL</code> (rather than “= null”)</li>
+</ul>
+<pre><code class="language-sql"># LC 0183
+### NOTE : 
+#       -&gt; SHOULD BE o.CustomerId is NULL
+#       -&gt; RATHER THAN o.CustomerId = NULL
+SELECT
+c.Name AS Customers
+FROM
+Customers c
+left join
+Orders o
+on c.Id = o.CustomerId
+WHERE
+o.CustomerId is NULL -- note this condition
+</code></pre>
+<h3 id="34-where-in-multiple-cols" tabindex="-1"><a class="header-anchor" href="#34-where-in-multiple-cols"><span>34. where in multiple cols</span></a></h3>
+<pre><code class="language-sql">-- LC 184 Department Highest Salary
+/* V0 */
+SELECT d.name AS Department,
+       e.name AS Employee,
+       e.salary AS Salary
+FROM Employee e
+INNER JOIN Department d ON e.DepartmentId = d.Id
+--  NOTE : below where has 2 columns !!!
+WHERE (e.DepartmentId,
+       e.salary) in
+    (SELECT DepartmentId,
+            max(Salary) AS salary
+     FROM Employee GROUP
+BY DepartmentId)
+</code></pre>
+<h3 id="35-the-best-medium-hard-data-analyst-sql-interview-questions" tabindex="-1"><a class="header-anchor" href="#35-the-best-medium-hard-data-analyst-sql-interview-questions"><span>35. The Best Medium-Hard Data Analyst SQL Interview Questions</span></a></h3>
+<ul>
+<li><a href="https://quip.com/2gwZArKuWk7W">https://quip.com/2gwZArKuWk7W</a></li>
+<li>Self-Join Practice Problems
+<ul>
+<li>MoM (month over month)Percent Change : Find the month-over-month percentage change for monthly active users (MAU).</li>
+</ul>
+</li>
+</ul>
+<pre><code class="language-sql">-- data
+| user_id | date       |
+|---------|------------|
+| 1       | 2018-07-01 |
+| 234     | 2018-07-02 |
+| 3       | 2018-07-02 |
+| 1       | 2018-07-02 |
+| ...     | ...        |
+| 234     | 2018-10-04 |
+</code></pre>
+<pre><code class="language-sql">WITH mau AS 
+(
+  SELECT 
+   /* 
+    * Typically, interviewers allow you to write psuedocode for date functions 
+    * i.e. will NOT be checking if you have memorized date functions. 
+    * Just explain what your function does as you whiteboard 
+    *
+    * DATE_TRUNC() is available in Postgres, but other SQL date functions or 
+    * combinations of date functions can give you a identical results   
+    * See https://www.postgresql.org/docs/9.0/functions-datetime.html#FUNCTIONS-DATETIME-TRUNC
+    */ 
+    DATE_TRUNC('month', date) month_timestamp,
+    COUNT(DISTINCT user_id) mau
+  FROM 
+    logins 
+  GROUP BY 
+    DATE_TRUNC('month', date)
+  )
+ 
+ SELECT 
+    /*
+    * You don't literally need to include the previous month in this SELECT statement. 
+    * 
+    * However, as mentioned in the &quot;Tips&quot; section of this guide, it can be helpful 
+    * to at least sketch out self-joins to avoid getting confused which table 
+    * represents the prior month vs current month, etc. 
+    */ 
+    a.month_timestamp previous_month, 
+    a.mau previous_mau, 
+    b.month_timestamp current_month, 
+    b.mau current_mau, 
+    ROUND(100.0*(b.mau - a.mau)/a.mau,2) AS percent_change 
+ FROM
+    mau a 
+ JOIN 
+    /*
+    * Could also have done `ON b.month_timestamp = a.month_timestamp + interval '1 month'` 
+    */
+    mau b ON a.month_timestamp = b.month_timestamp - interval '1 month' 
+
+</code></pre>
+<ul>
+<li>Window Function Practice Problems</li>
+<li>Other Medium/Hard SQL Practice Problems</li>
+</ul>
+<h3 id="36-sql-sort-by-desc-and-asc-on-different-columns" tabindex="-1"><a class="header-anchor" href="#36-sql-sort-by-desc-and-asc-on-different-columns"><span>36. SQL sort by desc and asc (on different columns)</span></a></h3>
+<pre><code class="language-sql">-- LC 580 Count Student Number in Departments
+# V1
+# https://www.datageekinme.com/general/leetcode/leetcode-sql-580-count-student-number-in-departments/
+select 
+    a.dept_name,
+    coalesce(count(student_id), 0) student_number
+from 
+    department a 
+left join
+    student b
+on 
+    (a.dept_id = b.dept_id)
+group by a.dept_name
+order by student_number desc, a.dept_name asc; --- NOTE this !!!
+</code></pre>
+
+      </div>
+      <div class="cheatsheet-footer">
+        <a href="../faqs.html" class="back-link">← Back to FAQs</a>
+        <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/faq/sql/faq_sql.md" class="github-edit" target="_blank">
+          Edit on GitHub →
+        </a>
+      </div>
+    <nav class="prev-next"><a href="sql_faq_mysql.html" class="prev-link">← Faq Mysql</a><a href="stream_faq_stream.html" class="next-link">Faq Stream →</a></nav>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>CS_basics - Computer Science Fundamentals & Interview Preparation</p>
+      <p>
+        <a href="https://github.com/yennanliu/CS_basics">GitHub</a> •
+        <a href="https://github.com/yennanliu/CS_basics/tree/master/doc">Documentation</a> •
+        <a href="https://github.com/yennanliu/CS_basics/issues">Report Issues</a>
+      </p>
+    </div>
+  </footer>
+</body>
+</html>

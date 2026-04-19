@@ -1,0 +1,2401 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Stack - CS_basics</title>
+  <meta name="description" content="Computer Science fundamentals: algorithms, data structures, system design, and LeetCode solutions">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>CS</text></svg>">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="../vendor/fonts.css">
+  <link rel="stylesheet" href="../vendor/highlight/github-dark.min.css">
+  <script src="../vendor/highlight/highlight.min.js"></script>
+  <script>
+  // Apply theme before render to prevent flash
+  (function() {
+    var saved = localStorage.getItem('theme');
+    if (saved === 'dark' || (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      document.documentElement.setAttribute('data-theme', 'dark');
+    }
+  })();
+  </script>
+  <script>document.addEventListener('DOMContentLoaded', function() {
+    hljs.highlightAll();
+    document.querySelectorAll('pre code').forEach(function(codeEl) {
+      var pre = codeEl.parentElement;
+      var lang = '';
+      var cls = codeEl.className || '';
+      var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
+      if (m) lang = m[1];
+      var wrapper = document.createElement('div');
+      wrapper.className = 'code-block-wrapper';
+      pre.parentNode.insertBefore(wrapper, pre);
+      var header = document.createElement('div');
+      header.className = 'code-block-header';
+      if (lang) {
+        var label = document.createElement('span');
+        label.className = 'code-lang-label';
+        label.textContent = lang;
+        header.appendChild(label);
+      } else {
+        header.appendChild(document.createElement('span'));
+      }
+      var btn = document.createElement('button');
+      btn.className = 'copy-btn';
+      btn.textContent = 'Copy';
+      btn.addEventListener('click', function() {
+        navigator.clipboard.writeText(codeEl.textContent).then(function() {
+          btn.textContent = 'Copied!';
+          btn.classList.add('copied');
+          setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+        });
+      });
+      header.appendChild(btn);
+      wrapper.appendChild(header);
+      wrapper.appendChild(pre);
+    });
+    document.querySelectorAll('table').forEach(function(table) {
+      if (!table.parentElement.classList.contains('table-wrap')) {
+        var wrapper = document.createElement('div');
+        wrapper.className = 'table-wrap';
+        table.parentNode.insertBefore(wrapper, table);
+        wrapper.appendChild(table);
+      }
+    });
+    // Reading progress bar
+    var progressBar = document.getElementById('reading-progress');
+    if (progressBar) {
+      window.addEventListener('scroll', function() {
+        var winScroll = document.documentElement.scrollTop;
+        var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        progressBar.style.width = height > 0 ? (winScroll / height * 100) + '%' : '0%';
+      });
+    }
+    // Dark mode toggle
+    var toggle = document.getElementById('theme-toggle');
+    if (toggle) {
+      var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      toggle.textContent = isDark ? '☀️' : '🌙';
+      toggle.addEventListener('click', function() {
+        var dark = document.documentElement.getAttribute('data-theme') === 'dark';
+        if (dark) {
+          document.documentElement.removeAttribute('data-theme');
+          localStorage.setItem('theme', 'light');
+          toggle.textContent = '🌙';
+        } else {
+          document.documentElement.setAttribute('data-theme', 'dark');
+          localStorage.setItem('theme', 'dark');
+          toggle.textContent = '☀️';
+        }
+      });
+    }
+  });</script>
+</head>
+<body>
+  <div class="progress-container"><div class="progress-bar" id="reading-progress"></div></div>
+  <nav class="navbar">
+    <div class="container">
+      <div class="nav-brand">
+        <span class="nav-icon">💻</span>
+        <span class="nav-title">CS_basics</span>
+      </div>
+      <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+      <div class="nav-links">
+        <a href="../index.html" class="">Home</a>
+        <a href="../cheatsheets.html" class="active">Cheat Sheets</a>
+        <a href="../patterns.html" class="">Pattern Recognition</a>
+        <a href="../faqs.html" class="">FAQs</a>
+        <a href="../resources.html" class="">Resources</a>
+        <a href="../lc-explorer.html" class="">LC Explorer</a>
+        <a href="../lc-random-picker.html" class="">🎲 Random Picker</a>
+        <a href="../algo_demo/index.html" class="">Visualizer</a>
+        <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">&#127769;</button>
+        <a href="https://github.com/yennanliu/CS_basics" target="_blank" class="github-link" aria-label="GitHub">
+          <svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor">
+            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container">
+    <div class="content">
+      
+      <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">Stack</span></nav>
+      <div class="cheatsheet-header">
+        <h1>Stack</h1>
+        <span class="last-updated">Last updated: Apr 15, 2026</span>
+      </div>
+      <div class="toc"><h2>Table of Contents</h2><ul><li class="toc-sub"><a href="#key-properties">Key Properties</a></li><li class="toc-sub"><a href="#quick-decision-guide">Quick Decision Guide</a></li><li class="toc-sub"><a href="#important-tips">Important Tips</a></li><li class="toc-sub"><a href="#video-references">Video References</a></li><li><a href="#0-concept">0) Concept</a></li><li class="toc-sub"><a href="#0-1-types">0-1) Types</a></li><li class="toc-sub"><a href="#0-2-pattern">0-2) Pattern</a></li><li><a href="#1-core-patterns">1) Core Patterns</a></li><li class="toc-sub"><a href="#1-1-basic-stack-operations">1-1) Basic Stack Operations</a></li><li class="toc-sub"><a href="#1-2-monotonic-stack-next-greater-element">1-2) Monotonic Stack: Next Greater Element</a></li><li class="toc-sub"><a href="#1-1-2-2-next-greater-element-2">1-1-2-2) next greater element 2</a></li><li class="toc-sub"><a href="#1-1-3-get-non-balanced-string">1-1-3) get non balanced String</a></li><li class="toc-sub"><a href="#1-1-4-deal-with-pre-num-pre-string">1-1-4) deal with pre num, pre string</a></li><li><a href="#2-leetcode-examples">2) LeetCode Examples</a></li><li class="toc-sub"><a href="#2-1-decode-string">2-1) Decode String</a></li><li class="toc-sub"><a href="#2-2-next-greater-element-i">2-2) Next Greater Element I</a></li><li class="toc-sub"><a href="#2-3-next-greater-element-ii">2-3) Next Greater Element II</a></li><li class="toc-sub"><a href="#2-4-daily-temperatures">2-4) Daily Temperatures</a></li><li class="toc-sub"><a href="#2-5-basic-calculator-i">2-5) Basic Calculator I</a></li><li class="toc-sub"><a href="#2-5-basic-calculator-ii">2-5’) Basic Calculator II</a></li><li class="toc-sub"><a href="#2-5-sum-of-subarray-minimums">2-5) Sum of Subarray Minimums</a></li><li class="toc-sub"><a href="#2-6-asteroid-collision">2-6) Asteroid Collision</a></li><li class="toc-sub"><a href="#2-7-remove-all-adjacent-duplicates-in-string">2-7) Remove All Adjacent Duplicates in String</a></li><li class="toc-sub"><a href="#2-8-remove-all-adjacent-duplicates-in-string-ii">2-8) Remove All Adjacent Duplicates in String II</a></li><li class="toc-sub"><a href="#2-9-simplify-path">2-9) Simplify Path</a></li><li class="toc-sub"><a href="#2-10-min-stack">2-10) Min Stack</a></li><li class="toc-sub"><a href="#2-11-sum-of-subarray-ranges">2-11) Sum of Subarray Ranges</a></li><li class="toc-sub"><a href="#2-11-largest-rectangle-in-histogram">2-11) Largest Rectangle in Histogram</a></li><li class="toc-sub"><a href="#2-12-remove-duplicate-letters">2-12) Remove Duplicate Letters</a></li><li class="toc-sub"><a href="#2-13-remove-k-digits">2-13) Remove K Digits</a></li><li class="toc-sub"><a href="#2-14-online-stock-span">2-14) Online Stock Span</a></li></ul></div>
+      <div class="cheatsheet-content">
+        <h1 id="stack" tabindex="-1"><a class="header-anchor" href="#stack"><span>Stack</span></a></h1>
+<p><img src="../doc/pic/stack.jpeg"></p></p>
+<p><strong>Stack</strong> is a data structure with Last-In-First-Out (LIFO) property. Each operation adds/removes from the top of the stack.</p>
+<h3 id="key-properties" tabindex="-1"><a class="header-anchor" href="#key-properties"><span>Key Properties</span></a></h3>
+<ul>
+<li><strong>Time Complexity</strong>: O(1) for push, pop, peek</li>
+<li><strong>Space Complexity</strong>: O(n) where n is the number of elements</li>
+<li><strong>Core Principle</strong>: Last element added is the first one removed</li>
+<li><strong>Use Case</strong>: Problems involving order reversal, pattern matching, or maintaining context</li>
+</ul>
+<p><img src="../doc/pic/stack_101.png"></p></p>
+<h3 id="quick-decision-guide" tabindex="-1"><a class="header-anchor" href="#quick-decision-guide"><span>Quick Decision Guide</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>Problem Type</th>
+<th>Pattern</th>
+<th>Key Idea</th>
+<th>Examples</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Find <strong>next greater/smaller</strong> element</td>
+<td>Monotonic Stack</td>
+<td>Maintain increasing/decreasing order</td>
+<td>LC 496, 503, 739</td>
+</tr>
+<tr>
+<td><strong>Remove adjacent duplicates</strong></td>
+<td>Stack with Pair [element, count]</td>
+<td>Track counts, pop when k reached</td>
+<td>LC 1047, 1209, 1544</td>
+</tr>
+<tr>
+<td><strong>Decode strings</strong> with brackets</td>
+<td>Stack with Count</td>
+<td>Use pairs for nested repetitions</td>
+<td>LC 394, 726</td>
+</tr>
+<tr>
+<td><strong>Arithmetic expressions</strong></td>
+<td>Stack with Operators</td>
+<td>Handle precedence and evaluation</td>
+<td>LC 224, 227</td>
+</tr>
+<tr>
+<td><strong>Remove k digits</strong> for min number</td>
+<td>Greedy + Monotonic</td>
+<td>Pop larger digits when beneficial</td>
+<td>LC 402</td>
+</tr>
+<tr>
+<td><strong>Lexicographically smallest</strong> with duplicates</td>
+<td>Monotonic + Last Occurrence</td>
+<td>Greedy removal with “appears later” check</td>
+<td>LC 316, 1081</td>
+</tr>
+<tr>
+<td><strong>Streaming/online</strong> frequency</td>
+<td>Stack with Span Pairs</td>
+<td>Accumulate counts in pairs</td>
+<td>LC 901</td>
+</tr>
+<tr>
+<td><strong>FIFO from LIFO</strong></td>
+<td>Two Stacks</td>
+<td>Use input/output stacks for queue</td>
+<td>LC 232</td>
+</tr>
+</tbody>
+</table>
+<p><strong>How to read</strong>: Find your problem goal in the leftmost column, then use the pattern and examples as a starting point.</p>
+<ul>
+<li>Ref
+<ul>
+<li><a href="https://github.com/labuladong/fucking-Algorithm/blob/master/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E7%B3%BB%E5%88%97/%E5%8D%95%E8%B0%83%E6%A0%88.md">fuck-Algorithm - single stack</a></li>
+<li><a href="https://github.com/labuladong/fucking-Algorithm/blob/master/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E7%B3%BB%E5%88%97/%E9%98%9F%E5%88%97%E5%AE%9E%E7%8E%B0%E6%A0%88%E6%A0%88%E5%AE%9E%E7%8E%B0%E9%98%9F%E5%88%97.md">fuck-Algorithm - implement array via stack / stack via array </a></li>
+</ul>
+</li>
+</ul>
+<h3 id="important-tips" tabindex="-1"><a class="header-anchor" href="#important-tips"><span>Important Tips</span></a></h3>
+<ul>
+<li><strong>Monotonic Stack</strong>: Critical pattern for problems involving “next greater/smaller” — check if the pattern requires increasing or decreasing order</li>
+<li><strong>Stack with Pair</strong>: For adjacent duplicate removal or nested counting problems, store <code>[element, count]</code> pairs</li>
+<li><strong>Greedy Removal</strong>: Some problems benefit from greedily removing elements while maintaining an invariant</li>
+</ul>
+<h3 id="video-references" tabindex="-1"><a class="header-anchor" href="#video-references"><span>Video References</span></a></h3>
+<ul>
+<li><a href="https://www.bilibili.com/list/525438321?sort_field=pubtime&amp;spm_id_from=333.999.0.0&amp;oid=779764003&amp;bvid=BV1my4y1Z7jj">Stack Fundamentals</a></li>
+</ul>
+<h2 id="0-concept" tabindex="-1"><a class="header-anchor" href="#0-concept"><span>0) Concept</span></a></h2>
+<ul>
+<li><a href="https://blog.csdn.net/oChangWen/article/details/72859556">Java Stack</a>
+<ul>
+<li>Low level : Array</li>
+</ul>
+</li>
+</ul>
+<h3 id="0-1-types" tabindex="-1"><a class="header-anchor" href="#0-1-types"><span>0-1) Types</span></a></h3>
+<ul>
+<li>Single stack</li>
+<li>Build queue via stack
+<ul>
+<li>LC 232 (use <code>2 stack</code>)</li>
+</ul>
+</li>
+<li>Build stack via queue</li>
+<li><strong>Stack with Pair (char, count)</strong>
+<ul>
+<li>Store <code>[element, count]</code> pairs instead of raw elements</li>
+<li>LC 1047 (k=2 special case, simple pop)</li>
+<li>LC 1209 (k consecutive duplicates removal)</li>
+<li>LC 1544 (Make The String Great)</li>
+<li>LC 394 (Decode String, stack with count for repetition)</li>
+<li>LC 726 (Number of Atoms)</li>
+</ul>
+</li>
+</ul>
+<h3 id="0-2-pattern" tabindex="-1"><a class="header-anchor" href="#0-2-pattern"><span>0-2) Pattern</span></a></h3>
+<pre><code class="language-python"># python
+# LC 739, LC 503 - Find next `big number`
+# ...
+stack = [] # [[idx, val]]
+for i, val in enumerate(len(tmp)):
+    while stack and stack[-1][1] &lt; val:
+        _idx, _val = stack.pop(-1)
+        res[tmp[_idx]] = i - _idx
+    stack.append([i, val]) 
+# ...
+</code></pre>
+<pre><code class="language-java">// java
+// LC 739
+for (int j = 0; j &lt; temperatures.length; j++){
+    int x = temperatures[j];
+    /**
+     *  NOTE !!!
+     *   1) while loop
+     *   2) stack is NOT empty
+     *   3) cache temperature smaller than current temperature
+     *
+     *   st.peek().get(0) is cached temperature
+     */
+    while (!st.isEmpty() &amp;&amp; st.peek().get(0) &lt; x){
+        /**
+         *  st.peek().get(1) is idx
+         *
+         */
+        nextGreater[st.peek().get(1)] = j - st.peek().get(1);
+        st.pop();
+    }
+</code></pre>
+<ul>
+<li>monotonic stack (<code>increasing</code>)</li>
+</ul>
+<pre><code class="language-java">// java
+// LC 239
+// LC 496
+// ...
+
+// Traverse the array from right to left
+for (int i = 0; i &lt; n; i++) {
+    // Maintain a decreasing monotonic stack
+    /** NOTE !!! below */
+    while (!stack.isEmpty() &amp;&amp; nums[stack.peek()] &lt;= nums[i]) {
+        stack.pop();  // Pop elements from the stack that are smaller or equal to the current element
+    }
+    
+    // If stack is not empty, the next greater element is at the top of the stack
+    if (!stack.isEmpty()) {
+        result[i] = nums[stack.peek()];
+    }
+    
+    // Push the current element's index onto the stack
+    stack.push(i);
+}
+
+// ...
+</code></pre>
+<ul>
+<li><strong>Stack with Pair <code>[element, count]</code></strong> (adjacent duplicate removal with k)</li>
+</ul>
+<pre><code>Core Idea:
+  - Instead of pushing raw elements, push [element, count] pairs
+  - When current element == stack top element: increment count
+  - When count reaches k: pop (remove k consecutive duplicates)
+  - Handles partial sequences naturally (e.g., &quot;aa&quot; waiting for 3rd 'a')
+
+When to Use:
+  - Remove k consecutive/adjacent equal elements (k &gt;= 2)
+  - Track both identity AND frequency of consecutive runs
+  - Need compressed representation of the string/array
+  - LC 1047 is k=2 special case (simple pop, no count needed)
+
+Similar LC:
+  - LC 1047  Remove All Adjacent Duplicates in String (k=2)
+  - LC 1209  Remove All Adjacent Duplicates in String II (general k)
+  - LC 1544  Make The String Great (adjacent opposite-case removal)
+  - LC 394   Decode String (stack with count for repetition)
+  - LC 726   Number of Atoms (nested count tracking)
+</code></pre>
+<pre><code class="language-python"># python - Stack Pair pattern
+# LC 1209
+stack = [['#', 0]]  # sentinel to avoid empty-check
+for c in s:
+    if stack[-1][0] == c:
+        stack[-1][1] += 1
+        if stack[-1][1] == k:
+            stack.pop()
+    else:
+        stack.append([c, 1])
+return ''.join(c * cnt for c, cnt in stack)
+</code></pre>
+<pre><code class="language-java">// java - Stack Pair pattern
+// LC 1209
+Stack&lt;int[]&gt; stack = new Stack&lt;&gt;(); // {char_as_int, count}
+for (char c : s.toCharArray()) {
+    if (!stack.isEmpty() &amp;&amp; stack.peek()[0] == c) {
+        stack.peek()[1]++;
+        if (stack.peek()[1] == k) {
+            stack.pop();
+        }
+    } else {
+        stack.push(new int[]{c, 1});
+    }
+}
+StringBuilder sb = new StringBuilder();
+for (int[] pair : stack) {
+    for (int i = 0; i &lt; pair[1]; i++) {
+        sb.append((char) pair[0]);
+    }
+}
+return sb.toString();
+</code></pre>
+<ul>
+<li>monotonic stack (<code>decreasing</code>)</li>
+</ul>
+<pre><code class="language-java">
+// java
+for (int j = 0; j &lt; temperatures.length; j++) {
+    int x = temperatures[j];
+    /**
+     *  NOTE !!!
+     *   1) while loop
+     *   2) stack is NOT empty
+     *   3) cache temperature greater than current temperature
+     *
+     *   st.peek().get(0) is cached temperature
+     */
+     /** NOTE !!! below */
+    while (!st.isEmpty() &amp;&amp; st.peek().get(0) &gt; x) {
+        /**
+         *  st.peek().get(1) is idx
+         *
+         */
+        nextGreater[st.peek().get(1)] = j - st.peek().get(1);
+        st.pop();
+    }
+    
+    // Push the current temperature and its index to the stack
+    st.push(new Pair&lt;&gt;(x, j));
+}
+</code></pre>
+<ul>
+<li>monotonic stack (greedy removal pattern - Remove K Digits)</li>
+</ul>
+<pre><code class="language-java">// java
+// LC 402 Remove K Digits
+// Pattern: Maintain monotonic increasing stack by greedily removing larger digits
+
+Deque&lt;Character&gt; stack = new ArrayDeque&lt;&gt;();
+
+for (int i = 0; i &lt; num.length(); i++) {
+    char digit = num.charAt(i);
+
+    /**
+     * NOTE !!!
+     * Greedy removal: while we can still remove digits (k &gt; 0)
+     * and current digit is smaller than stack top,
+     * pop the larger digit to make the number smaller
+     */
+    while (k &gt; 0 &amp;&amp; !stack.isEmpty() &amp;&amp; stack.peekLast() &gt; digit) {
+        stack.removeLast();
+        k--;
+    }
+    stack.addLast(digit);
+}
+
+// If k &gt; 0, remove remaining digits from the end
+while (k &gt; 0) {
+    stack.removeLast();
+    k--;
+}
+
+// Remove leading zeros
+StringBuilder sb = new StringBuilder();
+boolean leadingZero = true;
+while (!stack.isEmpty()) {
+    char c = stack.removeFirst();
+    if (leadingZero &amp;&amp; c == '0')
+        continue;
+    leadingZero = false;
+    sb.append(c);
+}
+
+return sb.length() == 0 ? &quot;0&quot; : sb.toString();
+</code></pre>
+<ul>
+<li>monotonic stack (lexicographical order with deduplication - Remove Duplicate Letters)</li>
+</ul>
+<pre><code class="language-java">// java
+// LC 316 Remove Duplicate Letters (same as LC 1081)
+// Pattern: Monotonic increasing stack with &quot;will appear later&quot; check for lexicographical smallest result
+
+/**
+ * Key differences from basic greedy removal:
+ * 1. Track which characters are already in result (inStack/seen)
+ * 2. Only remove if character will appear again later (lastOccurrence)
+ * 3. Each character must appear exactly once
+ */
+
+// Step 1: Store the LAST index where each character appears
+int[] lastOccurrence = new int[26];
+for (int i = 0; i &lt; s.length(); i++) {
+    lastOccurrence[s.charAt(i) - 'a'] = i;
+}
+
+Stack&lt;Character&gt; stack = new Stack&lt;&gt;();
+// Use boolean array for O(1) &quot;contains&quot; check
+boolean[] inStack = new boolean[26];
+
+for (int i = 0; i &lt; s.length(); i++) {
+    char c = s.charAt(i);
+
+    // If character already in stack, skip it (each char appears once)
+    if (inStack[c - 'a'])
+        continue;
+
+    /**
+     * NOTE !!! MONO STACK LOGIC with &quot;will appear later&quot; check
+     *
+     * We can safely remove stack top if ALL conditions met:
+     * 0. Stack is NOT empty
+     * 1. Stack top is BIGGER than current char (for lexicographical order)
+     * 2. Stack top will appear AGAIN LATER (lastOccurrence[stack.peek()] &gt; i)
+     *
+     * This ensures we get the lexicographically smallest result
+     */
+    while (!stack.isEmpty() &amp;&amp; stack.peek() &gt; c &amp;&amp; lastOccurrence[stack.peek() - 'a'] &gt; i) {
+        char removed = stack.pop();
+        inStack[removed - 'a'] = false;  // Mark as not in stack
+    }
+
+    stack.push(c);
+    inStack[c - 'a'] = true;  // Mark as in stack
+}
+
+// Build result from stack
+StringBuilder sb = new StringBuilder();
+for (char c : stack) {
+    sb.append(c);
+}
+return sb.toString();
+</code></pre>
+<p><strong>Explanation of “will appear later” logic:</strong></p>
+<pre><code class="language-java">/**
+ * lastOccurrence array tracks the LAST index of each character
+ *
+ * Example: s = &quot;cbacdcbc&quot;
+ *
+ * lastOccurrence['c' - 'a'] = 7  (last 'c' at index 7)
+ * lastOccurrence['b' - 'a'] = 6  (last 'b' at index 6)
+ * lastOccurrence['a' - 'a'] = 2  (last 'a' at index 2)
+ * lastOccurrence['d' - 'a'] = 4  (last 'd' at index 4)
+ *
+ * When at index i = 1 (char 'b'):
+ * - Stack has 'c', current char is 'b'
+ * - 'c' &gt; 'b' (can potentially remove 'c')
+ * - lastOccurrence['c'] = 7 &gt; 1 (YES, 'c' appears later)
+ * - Safe to remove 'c' and add 'b' first
+ *
+ * When at index i = 2 (char 'a'):
+ * - Stack has 'b', current char is 'a'
+ * - 'b' &gt; 'a' (can potentially remove 'b')
+ * - lastOccurrence['b'] = 6 &gt; 2 (YES, 'b' appears later)
+ * - Safe to remove 'b' and add 'a' first
+ *
+ * Result: &quot;acdb&quot; (lexicographically smallest)
+ */
+</code></pre>
+<ul>
+<li>monotonic stack (span accumulation pattern - Online Stock Span)</li>
+</ul>
+<pre><code class="language-java">// java
+// LC 901 Online Stock Span
+// Pattern: Monotonic decreasing stack with span accumulation for streaming data
+
+Deque&lt;int[]&gt; stack = new ArrayDeque&lt;&gt;(); // {price, span}
+
+public int next(int price) {
+    int span = 1; // Today always counts
+
+    /**
+     * NOTE !!!
+     * Pop all smaller/equal prices and accumulate their spans
+     * This gives us the count of consecutive days with price &lt;= current
+     */
+    while (!stack.isEmpty() &amp;&amp; stack.peek()[0] &lt;= price) {
+        span += stack.pop()[1]; // Absorb previous span
+    }
+
+    stack.push(new int[] { price, span });
+    return span;
+}
+
+/**
+ * Key differences from other monotonic stack patterns:
+ * 1. Streaming/online: processes data one at a time (not batch)
+ * 2. Span accumulation: accumulates counts rather than finding next element
+ * 3. Stateful: maintains stack across multiple calls
+ * 4. Stack stores pairs: [value, accumulated_count]
+ */
+</code></pre>
+<ul>
+<li>Implement Queue using Stacks</li>
+</ul>
+<pre><code class="language-java">// java
+
+// LC 232
+// V3
+// https://leetcode.com/problems/implement-queue-using-stacks/solutions/6579732/video-simple-solution-by-niits-sqaw/
+// IDEA: 2 stack
+class MyQueue_3{
+    private Stack&lt;Integer&gt; input;
+    private Stack&lt;Integer&gt; output;
+
+    public MyQueue_3() {
+        input = new Stack&lt;&gt;();
+        output = new Stack&lt;&gt;();
+    }
+
+    public void push(int x) {
+        input.push(x);
+    }
+
+    public int pop() {
+        /**
+         *  NOTE !!!
+         *
+         *  1)  before calling pop() directly,
+         *      we firstly call `peak()`
+         *      purpose:
+         *        reset / reassign elements at `output` stack,
+         *        so we can have the element in `queue ordering` in `output` stack
+         *
+         *  2) peak() return an integer, but it DOES NOT terminate the pop() execution
+         *     since the `peek()` method is called and NOT assign its result to any object,
+         *     then the `output.pop();` code is executed and return as result
+         */
+        peek();
+        return output.pop();
+    }
+
+    public int peek() {
+        if (output.isEmpty()) {
+            while (!input.isEmpty()) {
+                output.push(input.pop());
+            }
+        }
+        return output.peek();
+    }
+
+    public boolean empty() {
+        return input.isEmpty() &amp;&amp; output.isEmpty();
+    }
+}
+</code></pre>
+<h2 id="1-core-patterns" tabindex="-1"><a class="header-anchor" href="#1-core-patterns"><span>1) Core Patterns</span></a></h2>
+<h3 id="1-1-basic-stack-operations" tabindex="-1"><a class="header-anchor" href="#1-1-basic-stack-operations"><span>1-1) Basic Stack Operations</span></a></h3>
+<p><strong>Stack push (insert):</strong></p>
+<pre><code class="language-java">// Java
+Stack&lt;Integer&gt; stack = new Stack&lt;&gt;();
+stack.push(element);  // O(1)
+</code></pre>
+<pre><code class="language-python"># Python
+stack = []
+stack.append(element)  # O(1)
+</code></pre>
+<p><strong>Stack pop (remove top):</strong></p>
+<pre><code class="language-java">// Java
+int top = stack.pop();  // O(1), throws if empty
+</code></pre>
+<pre><code class="language-python"># Python
+top = stack.pop()  # O(1), raises if empty
+</code></pre>
+<p><strong>Stack peek (view top):</strong></p>
+<pre><code class="language-java">// Java
+int top = stack.peek();  // O(1), throws if empty
+if (!stack.isEmpty()) {
+    top = stack.peek();
+}
+</code></pre>
+<pre><code class="language-python"># Python
+top = stack[-1]  # O(1), raises if empty
+if stack:
+    top = stack[-1]
+</code></pre>
+<hr>
+<h3 id="1-2-monotonic-stack-next-greater-element" tabindex="-1"><a class="header-anchor" href="#1-2-monotonic-stack-next-greater-element"><span>1-2) Monotonic Stack: Next Greater Element</span></a></h3>
+<pre><code class="language-java">// java
+// LC 496
+  // V0
+    // IDEA : STACK
+    // https://www.youtube.com/watch?v=68a1Dc_qVq4
+    /** NOTE !!!
+     *
+     *  nums1 is &quot;sub set&quot; of nums2,
+     *  so all elements in nums1 are in nums2 as well
+     *  and in order to find next greater element in nums1 reference nums2
+     *  -&gt; ACTUALLY we only need to check nums2
+     *  -&gt; then append result per element in nums1
+     */
+    /**
+     *
+     *  Example 1)
+     *
+     *  nums1 = [4,1,2]
+     *  nums2 = [1,3,4,2]
+     *           x
+     *             x
+     *               x
+     *                 x
+     *  st = [1]
+     *  st = [3]  map : {1:3}
+     *  st = [4], map : {1:3, 3:4}
+     *  st = [], map : {1:3, 3:4}
+     *
+     *  so, res = [-1, 3, -1]
+     *
+     *
+     *  Example 2)
+     *
+     *   nums1 = [1,3,5,2,4]
+     *   nums2 = [6,5,4,3,2,1,7]
+     *            x
+     *              x
+     *               x
+     *                 x
+     *                   x
+     *                     x
+     *                       x
+     *                         x
+     *
+     *  st = [6], map :{}
+     *  st = [6,5],  map :{}
+     *  ..
+     *
+     *  st = [6,5,4,3,2,1], map = {}
+     *  st = [], map = {6:7, 5:7,4:7,3:7,2:7,1:7}
+     *
+     */
+    public int[] nextGreaterElement(int[] nums1, int[] nums2) {
+
+        if (nums1.length == 1 &amp;&amp; nums2.length == 1){
+            return new int[]{-1};
+        }
+
+        /**
+         *  NOTE !!!
+         *  we use map &quot; collect next greater element&quot;
+         *  map definition :  {element, next-greater-element}
+         */
+        Map&lt;Integer, Integer&gt; map = new HashMap&lt;&gt;();
+        Stack&lt;Integer&gt; st = new Stack&lt;&gt;();
+
+        for (int x : nums2){
+            /**
+             *  NOTE !!!
+             *   1) use while loop
+             *   2) while stack is NOT null and stack &quot;top&quot; element is smaller than current element (x) is nums2
+             *
+             *   -&gt; found &quot;next greater element&quot;, so update map
+             */
+            while(!st.isEmpty() &amp;&amp; st.peek() &lt; x){
+                int cur = st.pop();
+                map.put(cur, x);
+            }
+            /** NOTE !!! if not feat above condition, we put element to stack */
+            st.add(x);
+        }
+
+        //System.out.println(&quot;map = &quot; + map);
+        int[] res = new int[nums1.length];
+        // fill with -1 for element without next greater element
+        Arrays.fill(res, -1);
+        for (int j = 0; j &lt; nums1.length; j++){
+            if(map.containsKey(nums1[j])){
+                res[j] = map.get(nums1[j]);
+            }
+        }
+
+        //System.out.println(&quot;res = &quot; + res);
+        return res;
+    }
+</code></pre>
+<h3 id="1-1-2-2-next-greater-element-2" tabindex="-1"><a class="header-anchor" href="#1-1-2-2-next-greater-element-2"><span>1-1-2-2) next greater element 2</span></a></h3>
+<pre><code class="language-python"># V0
+# IDEA : LC 739, LC 503
+class Solution(object):
+    def nextGreaterElements(self, nums):
+        # edge case
+        if not nums:
+            return
+        _len = len(nums)
+        # note : we init res as [-1] * _len
+        res = [-1] * _len
+        # note : we use &quot;nums = 2 * nums&quot; to simuldate &quot;circular array&quot;
+        nums = 2 * nums
+        stack = [] # [[idx, val]]
+        for idx, val in enumerate(nums):
+            while stack and stack[-1][1] &lt; val:
+                _idx, _val = stack.pop(-1)
+                &quot;&quot;&quot;
+                NOTE !!!
+                    -&gt; we get remainder via &quot;_idx % _len&quot; for handling idx issue
+                      (since we made nums = 2 * nums earlier)
+                &quot;&quot;&quot;
+                res[_idx % _len] = val
+            stack.append([idx, val])
+        return res
+</code></pre>
+<h3 id="1-1-3-get-non-balanced-string" tabindex="-1"><a class="header-anchor" href="#1-1-3-get-non-balanced-string"><span>1-1-3) get <code>non balanced</code> String</span></a></h3>
+<pre><code class="language-python"># LC 1963. Minimum Number of Swaps to Make the String Balanced
+
+# NOTE !!! below trick will ONLY collect not Balanced ], [
+#          -&gt; e.g. &quot;]][[&quot; or &quot;]]][[[&quot;
+ 
+s = &quot;]]][[[&quot;
+stack = []
+for i in range(len(s)):
+    # NOTE HERE !!!
+    if stack and s[i] == &quot;]&quot;:
+        stack.pop(-1)
+    else:
+        stack.append()
+print (stack)
+</code></pre>
+<h3 id="1-1-4-deal-with-pre-num-pre-string" tabindex="-1"><a class="header-anchor" href="#1-1-4-deal-with-pre-num-pre-string"><span>1-1-4) deal with <code>pre num, pre string</code></span></a></h3>
+<pre><code class="language-python"># LC 227, 394
+# ...
+for i, each in enumerate(s):
+    # ...
+    if i == len(s) - 1 or each in &quot;+-*/&quot;:
+        if pre_op == &quot;+&quot;:
+            # ...
+        elif pre_op == &quot;-&quot;:
+            # ...
+        elif pre_op == &quot;*&quot;:
+            # ...
+        elif pre_op == &quot;/&quot;:
+            # ...
+        &quot;&quot;&quot;
+        NOTE this !!!
+        &quot;&quot;&quot;
+        pre_op = each
+        num = 0
+# ...
+</code></pre>
+<h2 id="2-leetcode-examples" tabindex="-1"><a class="header-anchor" href="#2-leetcode-examples"><span>2) LeetCode Examples</span></a></h2>
+<h3 id="2-1-decode-string" tabindex="-1"><a class="header-anchor" href="#2-1-decode-string"><span>2-1) Decode String</span></a></h3>
+<pre><code class="language-python"># LC 394 Decode String
+# V0
+# IDEA : STACK
+# NOTE : treat before cases separately
+#        1) isdigit
+#        2) isalpha
+#        3) &quot;[&quot;
+#        4) &quot;]&quot;
+# and define num = 0 for dealing with &quot;100a[b]&quot;, &quot;10abc&quot; cases
+class Solution:
+    def decodeString(self, s):
+        num = 0
+        string = ''
+        stack = []
+        &quot;&quot;&quot;
+        NOTE : we deal with 4 cases
+            1) digit
+            2) &quot;[&quot;
+            3) alphabet
+            4) &quot;]&quot;
+
+        NOTE :
+            we use pre_num, pre_string for dealing with previous result
+        &quot;&quot;&quot;
+        for c in s:
+            # case 1) : digit
+            if c.isdigit():
+                num = num*10 + int(c)
+            # case 2) : &quot;[&quot;
+            elif c == &quot;[&quot;:
+                stack.append(string)
+                stack.append(num)
+                string = ''
+                num = 0
+            # case 3) : alphabet
+            elif c.isalpha():
+                string += c
+            # case 4) &quot;]&quot;
+            elif c == ']':
+                pre_num = stack.pop()
+                pre_string = stack.pop()
+                string = pre_string + pre_num * string
+        return string
+</code></pre>
+<pre><code class="language-java">// java
+// LC 394 Decode String
+
+/**
+ * Problem: Given an encoded string, return its decoded string.
+ *
+ * Encoding rule: k[encoded_string] means repeat encoded_string k times
+ *
+ * Examples:
+ * - &quot;3[a]2[bc]&quot; → &quot;aaabcbc&quot;
+ * - &quot;3[a2[c]]&quot; → &quot;accaccacc&quot;
+ * - &quot;2[abc]3[cd]ef&quot; → &quot;abcabccdcdcdef&quot;
+ *
+ * Key Insight:
+ * - Use stack to handle nested brackets
+ * - Process 4 cases: digit, '[', letter, ']'
+ * - Build number incrementally (e.g., &quot;100&quot; = 1*10 + 0*10 + 0)
+ * - On ']': pop count and previous string, build result
+ *
+ * Time: O(maxK * N) where maxK is max k value and N is length of decoded string
+ * Space: O(N) for the stack
+ */
+
+// V0
+// IDEA: STACK + 4 CASES (digit, '[', letter, ']')
+public String decodeString(String s) {
+    if (s == null || s.length() == 0) {
+        return &quot;&quot;;
+    }
+
+    /**
+     * NOTE !!!
+     * Stack stores alternating pattern:
+     * - String (previous accumulated string)
+     * - Integer (repeat count)
+     * - String (next accumulated string)
+     * - Integer (next repeat count)
+     * ...
+     *
+     * Example for &quot;3[a2[c]]&quot;:
+     * When processing '2[c]':
+     *   Stack bottom: [&quot;&quot;, 3, &quot;a&quot;, 2] Stack top
+     */
+    Stack&lt;Object&gt; stack = new Stack&lt;&gt;();
+
+    int num = 0;              // Current number being built
+    String currentString = &quot;&quot;; // Current string being built
+
+    for (char c : s.toCharArray()) {
+
+        /**
+         * Case 1: Digit
+         * Build multi-digit numbers (e.g., &quot;100&quot;)
+         */
+        if (Character.isDigit(c)) {
+            num = num * 10 + (c - '0');
+        }
+
+        /**
+         * Case 2: '['
+         * Push current string and number to stack
+         * Reset for new nested level
+         */
+        else if (c == '[') {
+            // Push current string first, then number
+            stack.push(currentString);
+            stack.push(num);
+
+            // Reset for new level
+            currentString = &quot;&quot;;
+            num = 0;
+        }
+
+        /**
+         * Case 3: Letter
+         * Append to current string
+         */
+        else if (Character.isLetter(c)) {
+            currentString += c;
+        }
+
+        /**
+         * Case 4: ']'
+         * Pop count and previous string
+         * Build repeated string and concatenate
+         */
+        else if (c == ']') {
+            // Pop in reverse order of push
+            int repeatCount = (int) stack.pop();
+            String prevString = (String) stack.pop();
+
+            /**
+             * NOTE !!!
+             * Repeat current string repeatCount times
+             * Then prepend previous string
+             */
+            StringBuilder temp = new StringBuilder(prevString);
+            for (int i = 0; i &lt; repeatCount; i++) {
+                temp.append(currentString);
+            }
+
+            currentString = temp.toString();
+        }
+    }
+
+    return currentString;
+}
+
+/**
+ * Example Walkthrough: s = &quot;3[a2[c]]&quot;
+ *
+ * Step 1: c='3' (digit)
+ *   num = 3
+ *
+ * Step 2: c='[' (open bracket)
+ *   stack.push(&quot;&quot;) → stack: [&quot;&quot;]
+ *   stack.push(3)  → stack: [&quot;&quot;, 3]
+ *   currentString = &quot;&quot;, num = 0
+ *
+ * Step 3: c='a' (letter)
+ *   currentString = &quot;a&quot;
+ *
+ * Step 4: c='2' (digit)
+ *   num = 2
+ *
+ * Step 5: c='[' (open bracket)
+ *   stack.push(&quot;a&quot;) → stack: [&quot;&quot;, 3, &quot;a&quot;]
+ *   stack.push(2)   → stack: [&quot;&quot;, 3, &quot;a&quot;, 2]
+ *   currentString = &quot;&quot;, num = 0
+ *
+ * Step 6: c='c' (letter)
+ *   currentString = &quot;c&quot;
+ *
+ * Step 7: c=']' (close bracket)
+ *   repeatCount = stack.pop() = 2
+ *   prevString = stack.pop() = &quot;a&quot;
+ *   temp = &quot;a&quot; + &quot;c&quot; * 2 = &quot;acc&quot;
+ *   currentString = &quot;acc&quot;
+ *   stack: [&quot;&quot;, 3]
+ *
+ * Step 8: c=']' (close bracket)
+ *   repeatCount = stack.pop() = 3
+ *   prevString = stack.pop() = &quot;&quot;
+ *   temp = &quot;&quot; + &quot;acc&quot; * 3 = &quot;accaccacc&quot;
+ *   currentString = &quot;accaccacc&quot;
+ *   stack: []
+ *
+ * Result: &quot;accaccacc&quot;
+ */
+
+// V1
+// IDEA: STACK with separate stacks for counts and strings (cleaner approach)
+public String decodeString_v1(String s) {
+    Stack&lt;Integer&gt; countStack = new Stack&lt;&gt;();
+    Stack&lt;String&gt; stringStack = new Stack&lt;&gt;();
+
+    String currentString = &quot;&quot;;
+    int num = 0;
+
+    for (char c : s.toCharArray()) {
+        if (Character.isDigit(c)) {
+            num = num * 10 + (c - '0');
+        }
+        else if (c == '[') {
+            // Push current state to stacks
+            countStack.push(num);
+            stringStack.push(currentString);
+
+            // Reset for nested level
+            currentString = &quot;&quot;;
+            num = 0;
+        }
+        else if (c == ']') {
+            // Build decoded string for this level
+            int repeatCount = countStack.pop();
+            StringBuilder temp = new StringBuilder(stringStack.pop());
+
+            for (int i = 0; i &lt; repeatCount; i++) {
+                temp.append(currentString);
+            }
+
+            currentString = temp.toString();
+        }
+        else {
+            // Letter
+            currentString += c;
+        }
+    }
+
+    return currentString;
+}
+
+/**
+ * Common Mistakes:
+ *
+ * 1. Not handling multi-digit numbers (e.g., &quot;100[a]&quot;)
+ *    ✗ num = c - '0'
+ *    ✓ num = num * 10 + (c - '0')
+ *
+ * 2. Wrong stack push/pop order
+ *    ✗ push(num, string) → pop(string, num)  // Wrong!
+ *    ✓ push(string, num) → pop(num, string)  // Correct LIFO
+ *
+ * 3. Forgetting to reset num and currentString after '['
+ *    ✗ Only reset one of them
+ *    ✓ Reset both: num = 0; currentString = &quot;&quot;;
+ *
+ * 4. Not handling strings outside brackets (e.g., &quot;2[abc]3[cd]ef&quot;)
+ *    ✓ Continue building currentString for letters outside brackets
+ *
+ * 5. Using Stack&lt;Object&gt; without proper casting
+ *    ✓ Use separate stacks (countStack, stringStack) for type safety
+ */
+
+/**
+ * Interview Tips:
+ *
+ * 1. Clarify constraints:
+ *    - Is input always valid? (no unmatched brackets)
+ *    - Max value of k? (affects overflow considerations)
+ *
+ * 2. Edge cases to test:
+ *    - No brackets: &quot;abc&quot; → &quot;abc&quot;
+ *    - Nested brackets: &quot;2[a2[b]]&quot; → &quot;abbabb&quot;
+ *    - Multi-digit numbers: &quot;100[a]&quot;
+ *    - Mixed: &quot;2[abc]3[cd]ef&quot; → &quot;abcabccdcdcdef&quot;
+ *
+ * 3. Follow-up questions:
+ *    - What if string is invalid? (add validation)
+ *    - Can we decode in-place? (no, need stack for nesting)
+ *    - How to handle very large k values? (streaming approach)
+ */
+</code></pre>
+<h3 id="2-2-next-greater-element-i" tabindex="-1"><a class="header-anchor" href="#2-2-next-greater-element-i"><span>2-2) Next Greater Element I</span></a></h3>
+<pre><code class="language-python"># 496. Next Greater Element I
+
+# V0
+# IDEA : STACK (for + while loop)
+class Solution(object):
+    def nextGreaterElement(self, nums1, nums2):
+        # edge case
+        if not nums2 or (not nums1 and not nums2):
+            return nums1
+        res = []
+        # NOTE : the trick here (found as a flag)
+        found = False
+        for i in nums1:
+            #print (&quot;i = &quot; + str(i) + &quot; res = &quot; + str(res))
+            idx = nums2.index(i)
+            # start from &quot;next&quot; element in nums2
+            # here we init tmp _nums2
+            _nums2 = nums2[idx+1:]
+            # while loop keep pop _nums2 for finding the next bigger element
+            while _nums2:
+                tmp = _nums2.pop(0)
+                # if found, then append to res, and break the while loop directly
+                if tmp &gt; i:
+                    found = True
+                    res.append(tmp)
+                    break
+            # if not found, we need to append -1 to res
+            if not found:
+                res.append(-1)
+            found = False
+        return res
+
+# V0
+# IDEA : double for loop (one of loops is INVERSE ORDERING) + case conditions op
+class Solution(object):
+    def nextGreaterElement(self, nums1, nums2):
+        res = [None for _ in range(len(nums1))]
+        tmp = []
+        for i in range(len(nums1)):
+            ### NOTE : from last idx to 0 idx. (Note the start and end idx)
+            for j in range(len(nums2)-1, -1, -1):
+                #print (&quot;i = &quot; + str(i) + &quot; j = &quot; + str(j) + &quot; tmp = &quot; + str(tmp))
+
+                # case 1) No &quot;next greater element&quot; found in nums2
+                if not tmp and nums2[j] == nums1[i]:
+                    res[i] = -1
+                    break
+                # case 2) found &quot;next greater element&quot; in nums2, keep inverse looping
+                elif nums2[j] &gt; nums1[i]:
+                    tmp.append(nums2[j])
+                # case 3) already reach same element in nums2 (as nums1), pop &quot;last&quot; &quot;next greater element&quot;, paste to res, break the loop
+                elif tmp and nums2[j] == nums1[i]:
+                    _tmp = tmp.pop(-1)
+                    res[i] = _tmp
+                    tmp = []
+                    break
+        return res
+</code></pre>
+<pre><code class="language-java">// java
+// LC 496
+// V0
+// IDEA : STACK
+// https://www.youtube.com/watch?v=68a1Dc_qVq4
+/** NOTE !!!
+ *
+ *  nums1 is &quot;sub set&quot; of nums2,
+ *  so all elements in nums1 are in nums2 as well
+ *  and in order to find next greater element in nums1 reference nums2
+ *  -&gt; ACTUALLY we only need to check nums2
+ *  -&gt; then append result per element in nums1
+ */
+public int[] nextGreaterElement(int[] nums1, int[] nums2) {
+
+    if (nums1.length == 1 &amp;&amp; nums2.length == 1){
+        return new int[]{-1};
+    }
+
+    /**
+     *  NOTE !!!
+     *  we use map &quot; collect next greater element&quot;
+     *  map definition :  {element, next-greater-element}
+     */
+    Map&lt;Integer, Integer&gt; map = new HashMap&lt;&gt;();
+    Stack&lt;Integer&gt; st = new Stack&lt;&gt;();
+
+    for (int x : nums2){
+        /**
+         *  NOTE !!!
+         *   1) use while loop
+         *   2) while stack is NOT null and stack &quot;top&quot; element is smaller than current element (x) is nums2
+         *
+         *   -&gt; found &quot;next greater element&quot;, so update map
+         */
+        while(!st.isEmpty() &amp;&amp; st.peek() &lt; x){
+            int cur = st.pop();
+            map.put(cur, x);
+        }
+        /** NOTE !!! if not feat above condition, we put element to stack */
+        st.add(x);
+    }
+
+    //System.out.println(&quot;map = &quot; + map);
+    int[] res = new int[nums1.length];
+    // fill with -1 for element without next greater element
+    Arrays.fill(res, -1);
+    for (int j = 0; j &lt; nums1.length; j++){
+        if(map.containsKey(nums1[j])){
+            res[j] = map.get(nums1[j]);
+        }
+    }
+
+    //System.out.println(&quot;res = &quot; + res);
+    return res;
+}
+</code></pre>
+<h3 id="2-3-next-greater-element-ii" tabindex="-1"><a class="header-anchor" href="#2-3-next-greater-element-ii"><span>2-3) Next Greater Element II</span></a></h3>
+<pre><code class="language-python"># LC 503. Next Greater Element II
+
+# V0'
+# IDEA : LC 739
+class Solution(object):
+    def nextGreaterElements(self, nums):
+        # edge case
+        if not nums:
+            return
+        _len = len(nums)
+        # note : we init res as [-1] * _len
+        res = [-1] * _len
+        # note : we use &quot;nums = 2 * nums&quot; to simuldate &quot;circular array&quot;
+        nums = 2 * nums
+        stack = [] # [[idx, val]]
+        for idx, val in enumerate(nums):
+            while stack and stack[-1][1] &lt; val:
+                _idx, _val = stack.pop(-1)
+                &quot;&quot;&quot;
+                NOTE !!!
+                    -&gt; we get remainder via &quot;_idx % _len&quot; for handling idx issue
+                      (since we made nums = 2 * nums earlier)
+                &quot;&quot;&quot;
+                res[_idx % _len] = val
+            stack.append([idx, val])
+        return res
+
+# V0'
+# IDEA : STACK + circular loop handling
+class Solution:
+    def nextGreaterElements(self, nums):
+        ### NOTE : since we can search nums circurly, 
+        #  -&gt; so here we make a new array (augLst = nums + nums) for that     
+        augLst = nums + nums
+        stack = []
+        # init ans
+        res = [-1] * len(nums)
+        ### NOTE : we looping augLst with inverse order
+        for i in range(len(augLst)-1, -1, -1):
+            ### NOTE : if stack and last value in stack smaller than augLst[i], we pop last value from stack
+            while stack and stack[-1] &lt;= augLst[i]:
+                stack.pop()
+            ### NOTE : the remaining element in stack must fit the condition, so we append it to res
+            #   -&gt; note : append to `i % len(nums)` idx in res
+            if stack:
+                res[i % len(nums)] = stack[-1]
+            ### NOTE : we also need to append augLst[i] to stack
+            stack.append(augLst[i])
+        return res
+</code></pre>
+<h3 id="2-4-daily-temperatures" tabindex="-1"><a class="header-anchor" href="#2-4-daily-temperatures"><span>2-4) Daily Temperatures</span></a></h3>
+<pre><code class="language-python"># LC 739. Daily Temperatures
+# V0
+# IDEA : STACK
+# DEMO 
+#     ...: T=[73, 74, 75, 71, 69, 72, 76, 73]
+#     ...: s=Solution()
+#     ...: r= s.dailyTemperatures(T)
+#     ...: print(r)
+#     ...: 
+# i : 1, stack : [(73, 0)], res : [0, 0, 0, 0, 0, 0, 0, 0]
+# i : 2, stack : [(74, 1)], res : [1, 0, 0, 0, 0, 0, 0, 0]
+# i : 5, stack : [(75, 2), (71, 3), (69, 4)], res : [1, 1, 0, 0, 0, 0, 0, 0]
+# i : 5, stack : [(75, 2), (71, 3)], res : [1, 1, 0, 0, 1, 0, 0, 0]
+# i : 6, stack : [(75, 2), (72, 5)], res : [1, 1, 0, 2, 1, 0, 0, 0]
+# i : 6, stack : [(75, 2)], res : [1, 1, 0, 2, 1, 1, 0, 0]
+# [1, 1, 4, 2, 1, 1, 0, 0]
+class Solution(object):
+    def dailyTemperatures(self, T):
+        N = len(T)
+        stack = []
+        res = [0] * N
+        ### NOTE : we only use 1 for loop in this problem
+        for i, t in enumerate(T):
+            # if stack is not bland and last temp &lt; current tmpe
+            # -&gt; pop the stack (get its temp)
+            # -&gt; and calculate the difference 
+            ### BEWARE &quot;while&quot; op 
+            while stack and stack[-1][0] &lt; t:
+                oi = stack.pop()[1]
+                res[oi] = i - oi
+            # no matter any case, we have to insert current temp into stack anyway
+            # since the result (next higher temp) is decided by the coming temp, rather than current temp 
+            stack.append((t, i))
+        return res
+</code></pre>
+<pre><code class="language-java">// java
+// LC 739
+
+// V0
+// IDEA : STACK (MONOTONIC STACK)
+// LC 496
+public int[] dailyTemperatures(int[] temperatures) {
+
+    if (temperatures.length == 1){
+        return temperatures;
+    }
+
+    /**
+     *  Stack :
+     *
+     *   -&gt; cache elements (temperature) that DOESN'T have (NOT found) next warmer temperature yet
+     *   -&gt; structure : stack ([temperature, idx])
+     */
+    Stack&lt;List&lt;Integer&gt;&gt; st = new Stack&lt;&gt;(); // element, idx
+    /** NOTE !!!
+     *
+     *    can't use map, since there will be &quot;duplicated&quot; temperature
+     *   -&gt; which will cause different val has same key (hashMap key)
+     */
+    //Map&lt;Integer, Integer&gt; map = new HashMap&lt;&gt;(); // {temperature : idx-of-next-warmer-temperature}
+    /**
+     *  NOTE !!!
+     *
+     *   we use nextGreater collect answer,
+     *   -&gt; idx : temperature, val : idx-of-next-warmer-temperature
+     */
+    int[] nextGreater = new int[temperatures.length];
+    Arrays.fill(nextGreater, 0); // idx : temperature, val : idx-of-next-warmer-temperature
+    for (int j = 0; j &lt; temperatures.length; j++){
+        int x = temperatures[j];
+        /**
+         *  NOTE !!!
+         *   1) while loop
+         *   2) stack is NOT empty
+         *   3) cache temperature smaller than current temperature
+         *
+         *   st.peek().get(0) is cached temperature
+         */
+        while (!st.isEmpty() &amp;&amp; st.peek().get(0) &lt; x){
+            /**
+             *  st.peek().get(1) is idx
+             *
+             */
+            nextGreater[st.peek().get(1)] = j - st.peek().get(1);
+            st.pop();
+        }
+        List&lt;Integer&gt; cur = new ArrayList&lt;&gt;();
+        cur.add(x); // element
+        cur.add(j); // idx
+        st.add(cur);
+    }
+
+    //System.out.println(&quot;nextGreater = &quot; + nextGreater);
+    return nextGreater;
+}
+</code></pre>
+<h3 id="2-5-basic-calculator-i" tabindex="-1"><a class="header-anchor" href="#2-5-basic-calculator-i"><span>2-5) Basic Calculator I</span></a></h3>
+<pre><code class="language-python"># LC 224 Basic Calculator
+# V0'
+# IDEA : STACK
+# https://leetcode.com/problems/basic-calculator/solution/
+class Solution:
+    def calculate(self, s):
+
+        stack = []
+        operand = 0
+        res = 0 # For the on-going result
+        sign = 1 # 1 means positive, -1 means negative  
+
+        for ch in s:
+            if ch.isdigit():
+
+                # Forming operand, since it could be more than one digit
+                operand = (operand * 10) + int(ch)
+
+            elif ch == '+':
+
+                # Evaluate the expression to the left,
+                # with result, sign, operand
+                res += sign * operand
+
+                # Save the recently encountered '+' sign
+                sign = 1
+
+                # Reset operand
+                operand = 0
+
+            elif ch == '-':
+
+                res += sign * operand
+                sign = -1
+                operand = 0
+
+            elif ch == '(':
+
+                # Push the result and sign on to the stack, for later
+                # We push the result first, then sign
+                stack.append(res)
+                stack.append(sign)
+
+                # Reset operand and result, as if new evaluation begins for the new sub-expression
+                sign = 1
+                res = 0
+
+            elif ch == ')':
+
+                # Evaluate the expression to the left
+                # with result, sign and operand
+                res += sign * operand
+
+                # ')' marks end of expression within a set of parenthesis
+                # Its result is multiplied with sign on top of stack
+                # as stack.pop() is the sign before the parenthesis
+                res *= stack.pop() # stack pop 1, sign
+
+                # Then add to the next operand on the top.
+                # as stack.pop() is the result calculated before this parenthesis
+                # (operand on stack) + (sign on stack * (result from parenthesis))
+                res += stack.pop() # stack pop 2, operand
+
+                # Reset the operand
+                operand = 0
+
+        return res + sign * operand
+</code></pre>
+<h3 id="2-5-basic-calculator-ii" tabindex="-1"><a class="header-anchor" href="#2-5-basic-calculator-ii"><span>2-5’) Basic Calculator II</span></a></h3>
+<pre><code class="language-python"># python
+# LC 227. Basic Calculator II, LC 224. Basic Calculator
+# V0
+# IDEA : STACK
+class Solution:
+    def calculate(self, s):
+        stack = []
+        # NOTE THIS !!
+        pre_op = '+'
+        num = 0
+        for i, each in enumerate(s):
+            # case 1) : digit
+            if each.isdigit():
+                num = 10 * num + int(each)  # the way to deal with number like &quot;100&quot;, &quot;10&quot;... 
+            if i == len(s) - 1 or each in '+-*/':
+                &quot;&quot;&quot;
+                NOTE !!! : we deal with &quot;pre_op&quot; (rather than current op)
+                &quot;&quot;&quot;
+                # case 2) : &quot;+&quot;
+                if pre_op == '+':
+                    stack.append(num)
+                # case 3) : &quot;-&quot;    
+                elif pre_op == '-':
+                    stack.append(-num)
+                # case 3) : &quot;*&quot; 
+                elif pre_op == '*':
+                    stack.append(stack.pop() * num)
+                # case 3) : &quot;/&quot; 
+                elif pre_op == '/':
+                    top = stack.pop()
+                    if top &lt; 0:
+                        stack.append(int(top / num))
+                    else:
+                        stack.append(top // num)
+                # NOTE this!
+                pre_op = each
+                num = 0
+        return sum(stack)
+
+# Algorithm book (labu) p. 342
+# IDEA : STACK + RECURSIVE
+# TODO : fix output format
+class Solution(object):
+    def calculate(self, s):
+
+        def helper(s):
+            stack = []
+            sign = '+'
+            num = 0
+
+            while len(s) &gt; 0:
+                c = s.pop(0)
+                if c.isdigit():
+                    num = 10 * num + int(c)
+                    &quot;&quot;&quot;
+                    do recursive when meet &quot;(&quot;
+                    &quot;&quot;&quot;
+                    if c == '(':
+                        num = helper(s)
+                    if (not c.isdigit() and c != ' ') or len(s) == 0:
+                        if sign == '+':
+                            stack.append(num)
+                        elif sign == '-':
+                            stack.append(-num)
+                        elif sign == '*':
+                            stack[-1] = stack[-1] * num
+                        elif sign == '/':
+                            stack[-1] = int(stack[-1] / float(num))
+                        num = 0
+                        sign = c
+                    &quot;&quot;&quot;
+                    end recursive when meet &quot;)&quot;
+                    &quot;&quot;&quot;
+                    if c == ')':
+                        break
+            return sum(stack)
+
+        # run the helper func    
+        return helper(list(s))
+
+# V1
+# python 3
+class Solution:
+    def calculate(self, s):
+        stack = []
+        pre_op = '+'
+        num = 0
+        for i, each in enumerate(s):
+            if each.isdigit():
+                num = 10 * num + int(each)  # the way to deal with number like &quot;100&quot;, &quot;10&quot;... 
+            if i == len(s) - 1 or each in '+-*/':
+                if pre_op == '+':
+                    stack.append(num)
+                elif pre_op == '-':
+                    stack.append(-num)
+                elif pre_op == '*':
+                    stack.append(stack.pop() * num)
+                elif pre_op == '/':
+                    top = stack.pop()
+                    if top &lt; 0:
+                        stack.append(int(top / num))
+                    else:
+                        stack.append(top // num)
+                pre_op = each
+                num = 0
+        return sum(stack)
+</code></pre>
+<h3 id="2-5-sum-of-subarray-minimums" tabindex="-1"><a class="header-anchor" href="#2-5-sum-of-subarray-minimums"><span>2-5) Sum of Subarray Minimums</span></a></h3>
+<pre><code class="language-python"># LC 907. Sum of Subarray Minimums
+# V0
+# IDEA :  increasing stacks
+class Solution:
+    def sumSubarrayMins(self, A):
+        n, mod = len(A), 10**9 + 7
+        left, right, s1, s2 = [0] * n, [0] * n, [], []
+
+        for i in range(n):
+            count = 1
+            while s1 and s1[-1][0] &gt; A[i]:
+                count += s1.pop()[1]
+            left[i] = count
+            s1.append([A[i], count])
+
+        for i in range(n)[::-1]:
+            count = 1
+            while s2 and s2[-1][0] &gt;= A[i]:
+                count += s2.pop()[1]
+            right[i] = count
+            s2.append([A[i], count])
+        return sum(a * l * r for a, l, r in zip(A, left, right)) % mod
+</code></pre>
+<h3 id="2-6-asteroid-collision" tabindex="-1"><a class="header-anchor" href="#2-6-asteroid-collision"><span>2-6) Asteroid Collision</span></a></h3>
+<pre><code class="language-python"># LC 735. Asteroid Collision
+# V0
+class Solution(object):
+    def asteroidCollision(self, asteroids):
+        ans = []
+        for new in asteroids:
+            while ans and new &lt; 0 &lt; ans[-1]:
+                if ans[-1] &lt; -new:
+                    ans.pop()
+                    continue
+                elif ans[-1] == -new:
+                    ans.pop()
+                break
+            else:
+                ans.append(new)
+        return ans
+</code></pre>
+<h3 id="2-7-remove-all-adjacent-duplicates-in-string" tabindex="-1"><a class="header-anchor" href="#2-7-remove-all-adjacent-duplicates-in-string"><span>2-7) Remove All Adjacent Duplicates in String</span></a></h3>
+<pre><code class="language-python"># LC 1047. Remove All Adjacent Duplicates In String
+# V0
+# IDEA : STACK
+class Solution:
+     def removeDuplicates(self, x):
+          # edge
+          if not x:
+            return
+          stack = []
+          &quot;&quot;&quot;
+          NOTE !!! below op
+          &quot;&quot;&quot;
+          for i in range(len(x)):
+               # NOTE !!! : trick here : if stack last element == current x's element
+               #       -&gt; we pop last stack element
+               #       -&gt; and NOT add current element
+               if stack and stack[-1] == x[i]:
+                    stack.pop(-1)
+               # if stack last element != current x's element
+               #      -&gt; we append x[i]
+               else:
+                    stack.append(x[i])
+          return &quot;&quot;.join(stack)
+
+# V0'
+# IDEA : TWO POINTERS
+#      -&gt; pointers : end, c
+class Solution:
+     def removeDuplicates(self, S):
+            end =  -1
+            a = list(S)
+            for c in a:
+                if end &gt;= 0 and a[end] == c:
+                    end -= 1
+                else:
+                    end += 1
+                    a[end] = c
+            return ''.join(a[: end + 1])
+</code></pre>
+<h3 id="2-8-remove-all-adjacent-duplicates-in-string-ii" tabindex="-1"><a class="header-anchor" href="#2-8-remove-all-adjacent-duplicates-in-string-ii"><span>2-8) Remove All Adjacent Duplicates in String II</span></a></h3>
+<p><strong>Pattern: Stack with Character-Count Pairs</strong></p>
+<p>This pattern uses <code>Stack&lt;int[]&gt;</code> or <code>Stack&lt;[char, count]&gt;</code> to efficiently track consecutive duplicates and their counts. It’s particularly useful when you need to remove k consecutive equal elements.</p>
+<p><strong>When to Use This Pattern:</strong></p>
+<ol>
+<li>
+<p><strong>Problem mentions “k consecutive/adjacent equal elements”</strong></p>
+<ul>
+<li>Remove k duplicates: LC 1209</li>
+<li>Count k consecutive: various counting problems</li>
+</ul>
+</li>
+<li>
+<p><strong>Need to track both character AND its frequency</strong></p>
+<ul>
+<li>Can’t just track character (need count for k-removal)</li>
+<li>Can’t just track count (need to know which character)</li>
+</ul>
+</li>
+<li>
+<p><strong>Removal happens when count reaches threshold k</strong></p>
+<ul>
+<li>Unlike LC 1047 (k=2, simple stack.pop()), k is variable</li>
+<li>Need to track partial progress (e.g., “aa” in “aaab” with k=3)</li>
+</ul>
+</li>
+<li>
+<p><strong>One-pass solution required with O(n) space</strong></p>
+<ul>
+<li>Stack stores compressed form: {char, count}</li>
+<li>More efficient than storing all characters</li>
+</ul>
+</li>
+</ol>
+<p><strong>Recognition Signs:</strong></p>
+<ul>
+<li>✓ Keywords: “k adjacent”, “k consecutive”, “k duplicates”</li>
+<li>✓ Remove/count when reaching exactly k occurrences</li>
+<li>✓ Need to handle partial sequences (count &lt; k)</li>
+<li>✓ Input constraint: k &gt;= 2 (if k=1, different approach needed)</li>
+</ul>
+<p><strong>Structure:</strong></p>
+<pre><code class="language-java">// Core data structure
+Stack&lt;int[]&gt; stack = new Stack&lt;&gt;();
+// Each element: {character_as_int, count}
+
+// Or for clarity
+Stack&lt;Pair&lt;Character, Integer&gt;&gt; stack = new Stack&lt;&gt;();
+</code></pre>
+<p><strong>Similar Problems:</strong></p>
+<ul>
+<li>LC 1047: Remove All Adjacent Duplicates in String (k=2 special case)</li>
+<li>LC 1544: Make The String Great (remove adjacent opposite case)</li>
+<li>LC 316: Remove Duplicate Letters (lexicographical order with stack)</li>
+<li>LC 394: Decode String (stack with count, but for repetition)</li>
+</ul>
+<pre><code class="language-python"># LC 1209. Remove All Adjacent Duplicates in String II
+# V0
+# IDEA : STACK
+class Solution:
+     def removeDuplicates(self, x, k):
+          # edge case
+          if not x:
+            return None
+          stack = []
+          &quot;&quot;&quot;
+          NOTE !!!
+            1) we use [[element, _count]] format for below op
+            2) note the case when deal with duplicated elements
+
+               if stack and stack[-1][0] == x[i]:
+                    if stack[-1][1] &lt; k-1:
+                         stack[-1][1] += 1
+                    else:
+                         stack.pop(-1)
+          &quot;&quot;&quot;
+          for i in range(len(x)):
+               if stack and stack[-1][0] == x[i]:
+                    if stack[-1][1] &lt; k-1:
+                         stack[-1][1] += 1
+                    else:
+                         stack.pop(-1)
+               else:
+                    stack.append([x[i], 1])
+          #print (&quot;&gt;&gt; stack = &quot; + str(stack))
+          tmp = [x[0]*x[1] for x in stack]
+          #print (&quot;&gt;&gt; tmp = &quot; + str(tmp))
+          return &quot;&quot;.join(tmp)
+
+# V0'
+# IDEA : STACK
+# NOTE !!! we DON'T need to modify original s, (but maintain an extra stack for duplicated checks)
+class Solution:
+     def removeDuplicates(self, s, k):
+            stack = [['#', 0]]
+            for c in s:
+                #print (&quot;c = &quot; + str(c) + &quot; stack = &quot; + str(stack))
+                if stack[-1][0] == c:
+                    stack[-1][1] += 1
+                    if stack[-1][1] == k:
+                        stack.pop()
+                else:
+                    stack.append([c, 1])
+            return ''.join(c * k for c, k in stack)
+</code></pre>
+<pre><code class="language-java">// java
+// LC 1209. Remove All Adjacent Duplicates in String II
+
+/**
+ * Problem: Remove k consecutive equal characters repeatedly until no more removals possible.
+ *
+ * Examples:
+ * - s = &quot;deeedbbcccbdaa&quot;, k = 3
+ *   &quot;deeedbbcccbdaa&quot; → &quot;ddbbbdaa&quot; (remove &quot;eee&quot;, &quot;ccc&quot;)
+ *   &quot;ddbbbdaa&quot; → &quot;dddaa&quot; (remove &quot;bbb&quot;)
+ *   &quot;dddaa&quot; → &quot;aa&quot; (remove &quot;ddd&quot;)
+ *
+ * - s = &quot;pbbcggttciiippooaais&quot;, k = 2
+ *   Output: &quot;ps&quot;
+ *
+ * Key Insight:
+ * - Use Stack&lt;int[]&gt; to store {character, count} pairs
+ * - When char matches stack top: increment count
+ * - When count reaches k: pop (remove k consecutive chars)
+ * - This handles cascading removals naturally
+ *
+ * Time: O(N) - single pass through string
+ * Space: O(N) - worst case all different characters
+ */
+
+// V0
+// IDEA: STACK with {char, count} pairs
+/**
+ * time = O(N)
+ * space = O(N)
+ */
+public String removeDuplicates(String s, int k) {
+    if (s == null || s.length() == 0 || k &lt;= 0) {
+        return s;
+    }
+
+    /**
+     * NOTE !!!
+     * Stack stores int array: {character_as_int, count}
+     *
+     * Why int[] instead of Pair&lt;Character, Integer&gt;?
+     * - More memory efficient (no object wrapper overhead)
+     * - Direct access: pair[0] = char, pair[1] = count
+     * - Java doesn't have built-in Pair in older versions
+     */
+    Stack&lt;int[]&gt; st = new Stack&lt;&gt;();
+
+    for (char ch : s.toCharArray()) {
+        /**
+         * Case 1: Character matches stack top
+         * Increment the count of consecutive occurrences
+         */
+        if (!st.isEmpty() &amp;&amp; st.peek()[0] == ch) {
+            st.peek()[1]++;
+
+            /**
+             * NOTE !!!
+             * When count reaches k, remove the entire block
+             * This triggers potential cascading removals
+             */
+            if (st.peek()[1] == k) {
+                st.pop();
+            }
+        }
+        /**
+         * Case 2: New character (different from stack top)
+         * Start a new block with count = 1
+         */
+        else {
+            st.push(new int[] { ch, 1 });
+        }
+    }
+
+    /**
+     * Build final string from remaining characters in stack
+     * Each stack element may have count &gt; 1
+     */
+    StringBuilder sb = new StringBuilder();
+    for (int[] pair : st) {
+        char c = (char) pair[0];
+        int count = pair[1];
+
+        // Append character 'count' times
+        for (int i = 0; i &lt; count; i++) {
+            sb.append(c);
+        }
+    }
+
+    return sb.toString();
+}
+
+/**
+ * Example Walkthrough: s = &quot;deeedbbcccbdaa&quot;, k = 3
+ *
+ * Iteration:
+ * ch='d': st = [{d,1}]
+ * ch='e': st = [{d,1}, {e,1}]
+ * ch='e': st = [{d,1}, {e,2}]
+ * ch='e': st = [{d,1}, {e,3}] → count==k, pop → st = [{d,1}]
+ * ch='d': st = [{d,2}]
+ * ch='b': st = [{d,2}, {b,1}]
+ * ch='b': st = [{d,2}, {b,2}]
+ * ch='c': st = [{d,2}, {b,2}, {c,1}]
+ * ch='c': st = [{d,2}, {b,2}, {c,2}]
+ * ch='c': st = [{d,2}, {b,2}, {c,3}] → pop → st = [{d,2}, {b,2}]
+ * ch='b': st = [{d,2}, {b,3}] → pop → st = [{d,2}]
+ * ch='d': st = [{d,3}] → pop → st = []
+ * ch='a': st = [{a,1}]
+ * ch='a': st = [{a,2}]
+ *
+ * Result: &quot;aa&quot;
+ */
+
+// V1
+// IDEA: Two separate stacks (cleaner type safety)
+/**
+ * time = O(N)
+ * space = O(N)
+ */
+public String removeDuplicates_v1(String s, int k) {
+    Stack&lt;Character&gt; charStack = new Stack&lt;&gt;();
+    Stack&lt;Integer&gt; countStack = new Stack&lt;&gt;();
+
+    for (char ch : s.toCharArray()) {
+        if (!charStack.isEmpty() &amp;&amp; charStack.peek() == ch) {
+            countStack.push(countStack.peek() + 1);
+        } else {
+            countStack.push(1);
+        }
+
+        charStack.push(ch);
+
+        // Remove k characters when count reaches k
+        if (countStack.peek() == k) {
+            for (int i = 0; i &lt; k; i++) {
+                charStack.pop();
+                countStack.pop();
+            }
+        }
+    }
+
+    // Build result
+    StringBuilder sb = new StringBuilder();
+    while (!charStack.isEmpty()) {
+        sb.append(charStack.pop());
+    }
+
+    return sb.reverse().toString();
+}
+
+/**
+ * Common Mistakes:
+ *
+ * 1. Forgetting to check !st.isEmpty() before peek()
+ *    ✗ if (st.peek()[0] == ch)  // NPE if stack empty!
+ *    ✓ if (!st.isEmpty() &amp;&amp; st.peek()[0] == ch)
+ *
+ * 2. Removing only one character instead of the whole block
+ *    ✗ if (st.peek()[1] == k) st.peek()[1] = 0;  // Wrong!
+ *    ✓ if (st.peek()[1] == k) st.pop();
+ *
+ * 3. Not handling count correctly when building result
+ *    ✗ sb.append((char) pair[0]);  // Only appends once!
+ *    ✓ for (int i = 0; i &lt; count; i++) sb.append(c);
+ *
+ * 4. Using wrong data structure (List instead of Stack)
+ *    ✗ List doesn't support peek() efficiently
+ *    ✓ Stack or Deque for O(1) peek/pop
+ */
+
+/**
+ * Interview Tips:
+ *
+ * 1. Clarify edge cases:
+ *    - What if k &gt; s.length()? (no removal possible)
+ *    - What if k == 1? (all characters removed)
+ *    - Empty string input?
+ *
+ * 2. Discuss trade-offs:
+ *    - Stack&lt;int[]&gt; vs two separate stacks
+ *      • int[]: more memory efficient, less readable
+ *      • Two stacks: cleaner, type-safe, slightly more space
+ *
+ * 3. Follow-up optimizations:
+ *    - Can we do it in-place? (tricky, but possible with two pointers)
+ *    - What if k is very large? (same approach works)
+ *    - What if we need to track which removals were made? (add to result list)
+ *
+ * 4. Related patterns:
+ *    - LC 1047 (k=2): simpler, can use single stack
+ *    - LC 394 (Decode String): similar stack with count pattern
+ *    - LC 316 (Remove Duplicate Letters): stack with different removal criteria
+ */
+</code></pre>
+<h3 id="2-9-simplify-path" tabindex="-1"><a class="header-anchor" href="#2-9-simplify-path"><span>2-9) Simplify Path</span></a></h3>
+<pre><code class="language-python"># LC 71. Simplify Path
+
+# V0
+# IDEA : STACK
+class Solution:
+    def simplifyPath(self, path: str) -&gt; str:
+        s = path.split('/')
+        result = []
+        for i in range(len(s)):
+            if s[i] and s[i] != '.' and s[i]!='/' and s[i]!='..':
+                result.append(s[i])
+            elif s[i] == '..':
+                if result:
+                    result.pop()
+        
+        return &quot;/&quot;+&quot;/&quot;.join(result)
+</code></pre>
+<h3 id="2-10-min-stack" tabindex="-1"><a class="header-anchor" href="#2-10-min-stack"><span>2-10) Min Stack</span></a></h3>
+<pre><code class="language-python"># LC 155. Min Stack
+# V0
+# IDEA : STACK
+# IDEA : 
+# -&gt; USE A STACK TO STORAGE MIN VALUE IN THE STACK WHEN EVERY PUSH
+# -&gt; SO WE CAN RETURN getMin IN CONSTANT TIEM VIA STACK ABOVE
+class MinStack(object):
+
+    def __init__(self):
+        &quot;&quot;&quot;
+        initialize your data structure here.
+        &quot;&quot;&quot;
+        self.stack = []
+        
+    def push(self, x):
+        if not self.stack:
+            &quot;&quot;&quot;
+            NOTE : we use stack = [(x, y)]
+                    x is the current element
+                    y in current MIN value in current stack
+            &quot;&quot;&quot;
+            ### note here
+            self.stack.append((x, x))
+        ### NOTICE HERE 
+        # stack[i][1] save to min value when every push
+        # so the latest min in stack is at stack[-1][1]
+        else:
+            ### note here
+            self.stack.append((x, min(x, self.stack[-1][1])))
+        
+    def pop(self):
+        self.stack.pop()
+        
+    def top(self):
+        return self.stack[-1][0]
+        
+    def getMin(self):
+        # the latest min in stack is at stack[-1][1]
+        return self.stack[-1][1]
+</code></pre>
+<h3 id="2-11-sum-of-subarray-ranges" tabindex="-1"><a class="header-anchor" href="#2-11-sum-of-subarray-ranges"><span>2-11) Sum of Subarray Ranges</span></a></h3>
+<pre><code class="language-python"># LC 2104. Sum of Subarray Ranges
+# NOTE : there are also brute force, 2 pointers ... approaches
+# V0'
+# IDEA : monotonic stack
+# https://zhuanlan.zhihu.com/p/444725220
+class Solution:
+    def subArrayRanges(self, nums):
+        A, s, res = [-float('inf')] + nums + [-float('inf')], [], 0
+        for i, num in enumerate(A):
+            while s and num &lt; A[s[-1]]:
+                j = s.pop()
+                res -= (i - j) * (j - s[-1]) * A[j]
+            s.append(i)
+        A, s = [float('inf')] + nums + [float('inf')], []
+        for i, num in enumerate(A):
+            while s and num &gt; A[s[-1]]:
+                j = s.pop()
+                res += (i - j) * (j - s[-1]) * A[j]
+            s.append(i)
+        return res 
+</code></pre>
+<h3 id="2-11-largest-rectangle-in-histogram" tabindex="-1"><a class="header-anchor" href="#2-11-largest-rectangle-in-histogram"><span>2-11) Largest Rectangle in Histogram</span></a></h3>
+<pre><code class="language-python"># LC 84. Largest Rectangle in Histogram
+# python
+# V1'''
+# IDEA : STACK
+# https://leetcode.com/problems/largest-rectangle-in-histogram/solution/
+class Solution:
+    def largestRectangleArea(self, heights: List[int]) -&gt; int:
+        stack = [-1]
+        max_area = 0
+        for i in range(len(heights)):
+            while stack[-1] != -1 and heights[stack[-1]] &gt;= heights[i]:
+                current_height = heights[stack.pop()]
+                current_width = i - stack[-1] - 1
+                max_area = max(max_area, current_height * current_width)
+            stack.append(i)
+
+        while stack[-1] != -1:
+            current_height = heights[stack.pop()]
+            current_width = len(heights) - stack[-1] - 1
+            max_area = max(max_area, current_height * current_width)
+        return max_area
+</code></pre>
+<h3 id="2-12-remove-duplicate-letters" tabindex="-1"><a class="header-anchor" href="#2-12-remove-duplicate-letters"><span>2-12) Remove Duplicate Letters</span></a></h3>
+<pre><code class="language-java">// java
+// LC 316
+
+/**
+*  NOTE
+*
+*  Lexicographically Smaller
+*
+* A string a is lexicographically smaller than a
+* string b if in the first position where a and b differ,
+* string a has a letter that appears earlier in the alphabet
+* than the corresponding letter in b.
+* If the first min(a.length, b.length) characters do not differ,
+* then the shorter string is the lexicographically smaller one.
+*
+*/
+
+// V0-1
+// IDEA: STACK (fixed by gpt)
+// Time: O(n) — one pass over the string and each character is pushed/popped at most once.
+// Space: O(1) — constant space for 26 characters (seen, freq, stack)
+/**
+* 📌 Example Walkthrough
+*
+* Input: &quot;cbacdcbc&quot;
+*    1.  'c' → Stack: [&quot;c&quot;]
+*    2.  'b' &lt; 'c' and 'c' still appears → pop 'c', push 'b'
+*    3.  'a' &lt; 'b' → pop 'b', push 'a'
+*    4.  'c' &gt; 'a' → push 'c'
+*    5.  'd' &gt; 'c' → push 'd'
+*    6.  'c' already seen → skip
+*    7.  'b' &gt; 'd' → push 'b'
+*    8.  'c' &gt; 'b' → push 'c'
+*
+* Final stack: ['a', 'c', 'd', 'b']
+* Lexicographically smallest valid string: &quot;acdb&quot;
+*
+*/
+public String removeDuplicateLetters_0_1(String s) {
+  if (s == null || s.length() == 0) {
+      return &quot;&quot;;
+  }
+
+/**
+ *  •   freq: array to count how many times each letter appears in s.
+ *  •   We use c - 'a' to map each character to index 0–25 ('a' to 'z').
+ *  •   This helps us later determine if we can remove a character and see it again later.
+ */
+int[] freq = new int[26]; // frequency of each character
+  for (char c : s.toCharArray()) {
+      freq[c - 'a']++;
+  }
+
+/**
+ *  •   Tracks which characters have already been added to the result.
+ *  •   This ensures we only include each character once.
+ *
+ *
+ *  NOTE !!! sean is a `boolean` array
+ */
+boolean[] seen = new boolean[26]; // whether character is in stack/result
+
+/** NOTE !!!
+ *
+ *  we init stack here
+ *
+ *
+ *  •   This stack is used to build the final result.
+ *  •   We’ll maintain characters in order and manipulate
+ *      the top to maintain lexicographical order.
+ */
+/**
+ *  NOTE !!!
+ *
+ *   use `STACK`, but NOT use `PQ`
+ *
+ */
+Stack&lt;Character&gt; stack = new Stack&lt;&gt;();
+
+/**
+ *  •   Iterate through the string one character at a time.
+ *  •   Since we’ve now processed c, decrement its frequency count.
+ */
+for (char c : s.toCharArray()) {
+      freq[c - 'a']--; // reduce frequency, since we're processing this char
+
+    /**
+     *  •   If we’ve already added this character to the result,
+     *      skip it — we only want one occurrence of each letter.
+     */
+      if (seen[c - 'a']) {
+          continue; // already added, skip
+      }
+
+  /** NOTE !!!
+   *
+   * Now we’re checking:
+   *
+   *    •   Is the stack NOT empty?
+   *
+   *    •   Is the current character c lexicographically
+   *        smaller than the character at the top of the stack?
+   *
+   *    •   Does the character at the top of the stack still
+   *        appear later (i.e., its freq &gt; 0)?
+   *
+   * If yes to all, we can:
+   *
+   *    •   pop it from the result,
+   *
+   *    •   and add it later again in a better
+   *        position (lexicographically smaller order).
+   */
+  // remove characters that are bigger than current AND appear later again
+  while (!stack.isEmpty() &amp;&amp; c &lt; stack.peek() &amp;&amp; freq[stack.peek() - 'a'] &gt; 0) {
+          /**
+           *
+           *    Remove the character from the stack,
+           *    and mark it as not seen so it can be added again later.
+           */
+          char removed = stack.pop();
+          seen[removed - 'a'] = false;
+      }
+
+  /**
+   *    •   Push the current character c to the stack,
+   *    •   And mark it as seen (i.e., already in the result).
+   */
+  stack.push(c);
+  seen[c - 'a'] = true;
+  }
+
+  // build result from stack
+  StringBuilder sb = new StringBuilder();
+  for (char c : stack) {
+      sb.append(c);
+  }
+
+  return sb.toString();
+}
+</code></pre>
+<h3 id="2-13-remove-k-digits" tabindex="-1"><a class="header-anchor" href="#2-13-remove-k-digits"><span>2-13) Remove K Digits</span></a></h3>
+<pre><code class="language-java">// java
+// LC 402. Remove K Digits
+
+/**
+ * Problem: Given a non-negative integer num and an integer k,
+ * return the smallest possible integer after removing k digits from num.
+ *
+ * Key Insight:
+ * To make the number as small as possible, we want smaller digits
+ * at the beginning (most significant positions).
+ *
+ * Greedy Strategy:
+ * - Use a monotonic increasing stack
+ * - If current digit is smaller than stack top, pop the larger digit
+ * - Continue popping while k &gt; 0 and current digit &lt; stack top
+ * - This ensures we remove larger digits from higher positions
+ *
+ * Time: O(N) - each digit pushed/popped at most once
+ * Space: O(N) - stack size
+ */
+
+// V0-1
+// IDEA: MONOTONIC STACK (increasing)
+public String removeKdigits(String num, int k) {
+    int n = num.length();
+    if (k == n)
+        return &quot;0&quot;;
+
+    // Use Deque as stack for efficient operations
+    Deque&lt;Character&gt; stack = new ArrayDeque&lt;&gt;();
+
+    for (int i = 0; i &lt; n; i++) {
+        char digit = num.charAt(i);
+
+        /**
+         * NOTE !!!
+         * While we can still remove digits (k &gt; 0)
+         * and current digit is smaller than stack top,
+         * pop the stack (greedy removal of larger digits)
+         */
+        while (k &gt; 0 &amp;&amp; !stack.isEmpty() &amp;&amp; stack.peekLast() &gt; digit) {
+            stack.removeLast();
+            k--;
+        }
+        stack.addLast(digit);
+    }
+
+    // Edge case: if k &gt; 0, remove digits from end (e.g., &quot;1111&quot;)
+    while (k &gt; 0) {
+        stack.removeLast();
+        k--;
+    }
+
+    // Build result and remove leading zeros
+    StringBuilder sb = new StringBuilder();
+    boolean leadingZero = true;
+    while (!stack.isEmpty()) {
+        char c = stack.removeFirst();
+        if (leadingZero &amp;&amp; c == '0')
+            continue;
+        leadingZero = false;
+        sb.append(c);
+    }
+
+    return sb.length() == 0 ? &quot;0&quot; : sb.toString();
+}
+
+/**
+ * Example Walkthrough:
+ *
+ * Input: num = &quot;1432219&quot;, k = 3
+ *
+ * Step-by-step:
+ * 1. Push '1': [1]
+ * 2. Push '4': [1, 4]
+ * 3. '3' &lt; '4': Pop '4', push '3', k=2. Stack: [1, 3]
+ * 4. '2' &lt; '3': Pop '3', push '2', k=1. Stack: [1, 2]
+ * 5. Push '2': [1, 2, 2]
+ * 6. '1' &lt; '2': Pop '2', push '1', k=0. Stack: [1, 2, 1]
+ * 7. k=0, push '9': [1, 2, 1, 9]
+ *
+ * Result: &quot;1219&quot;
+ *
+ * Why ArrayDeque?
+ * - Stack&lt;Character&gt; is synchronized and slow
+ * - ArrayDeque is faster and modern alternative for stack operations
+ */
+</code></pre>
+<h3 id="2-14-online-stock-span" tabindex="-1"><a class="header-anchor" href="#2-14-online-stock-span"><span>2-14) Online Stock Span</span></a></h3>
+<pre><code class="language-java">// java
+// LC 901. Online Stock Span
+
+/**
+ * Problem: Design an algorithm that collects daily price quotes for some stock
+ * and returns the span of that stock's price for the current day.
+ *
+ * The span is the maximum number of consecutive days (starting from today and going backward)
+ * for which the stock price was less than or equal to today's price.
+ *
+ * Example:
+ * Prices: [100, 80, 60, 70, 60, 75, 85]
+ * Spans:  [1,   1,  1,  2,  1,  4,  6]
+ *
+ * Key Insight:
+ * - Use monotonic decreasing stack to track [price, span] pairs
+ * - When new price arrives, pop all smaller/equal prices
+ * - Accumulate their spans into current span
+ * - This gives us the count of consecutive days with price &lt;= current
+ *
+ * Time: O(1) amortized per next() call (each element pushed/popped once)
+ * Space: O(N) for the stack
+ */
+
+// V0
+// IDEA: MONOTONIC STACK (decreasing) + SPAN ACCUMULATION
+class StockSpanner {
+
+    /**
+     * NOTE !!!
+     * Stack stores [price, span] pairs
+     * - price: the stock price
+     * - span: how many consecutive days (including itself) had price &lt;= this price
+     */
+    private Deque&lt;int[]&gt; stack; // {price, span}
+
+    public StockSpanner() {
+        stack = new ArrayDeque&lt;&gt;();
+    }
+
+    /**
+     * NOTE !!!
+     * Monotonic decreasing stack pattern:
+     * 1. Start with span = 1 (today counts)
+     * 2. While stack top has price &lt;= current price:
+     *    - Pop it and add its span to current span
+     * 3. Push [current price, accumulated span]
+     * 4. Return span
+     */
+    public int next(int price) {
+        int span = 1; // Today always counts as 1
+
+        /**
+         * Pop all prices that are less than or equal to current price
+         * and accumulate their spans
+         */
+        while (!stack.isEmpty() &amp;&amp; stack.peek()[0] &lt;= price) {
+            // &quot;Absorb&quot; the previous span into current span
+            span += stack.pop()[1];
+        }
+
+        // Push current price with its accumulated span
+        stack.push(new int[] { price, span });
+
+        return span;
+    }
+}
+
+/**
+ * Example Walkthrough:
+ *
+ * Input: [100, 80, 60, 70, 60, 75, 85]
+ *
+ * next(100):
+ *   - span = 1, stack is empty
+ *   - Push [100, 1]
+ *   - Return 1
+ *   Stack: [[100, 1]]
+ *
+ * next(80):
+ *   - span = 1, stack top is [100, 1], 100 &gt; 80, don't pop
+ *   - Push [80, 1]
+ *   - Return 1
+ *   Stack: [[80, 1], [100, 1]]
+ *
+ * next(60):
+ *   - span = 1, stack top is [80, 1], 80 &gt; 60, don't pop
+ *   - Push [60, 1]
+ *   - Return 1
+ *   Stack: [[60, 1], [80, 1], [100, 1]]
+ *
+ * next(70):
+ *   - span = 1
+ *   - stack top is [60, 1], 60 &lt;= 70, pop and add span: span = 1 + 1 = 2
+ *   - stack top is [80, 1], 80 &gt; 70, stop
+ *   - Push [70, 2]
+ *   - Return 2
+ *   Stack: [[70, 2], [80, 1], [100, 1]]
+ *
+ * next(60):
+ *   - span = 1
+ *   - stack top is [70, 2], 70 &gt; 60, don't pop
+ *   - Push [60, 1]
+ *   - Return 1
+ *   Stack: [[60, 1], [70, 2], [80, 1], [100, 1]]
+ *
+ * next(75):
+ *   - span = 1
+ *   - stack top is [60, 1], 60 &lt;= 75, pop and add: span = 1 + 1 = 2
+ *   - stack top is [70, 2], 70 &lt;= 75, pop and add: span = 2 + 2 = 4
+ *   - stack top is [80, 1], 80 &gt; 75, stop
+ *   - Push [75, 4]
+ *   - Return 4 (covers prices: 60, 70, 60, 75)
+ *   Stack: [[75, 4], [80, 1], [100, 1]]
+ *
+ * next(85):
+ *   - span = 1
+ *   - stack top is [75, 4], 75 &lt;= 85, pop and add: span = 1 + 4 = 5
+ *   - stack top is [80, 1], 80 &lt;= 85, pop and add: span = 5 + 1 = 6
+ *   - stack top is [100, 1], 100 &gt; 85, stop
+ *   - Push [85, 6]
+ *   - Return 6 (covers prices: 60, 70, 60, 75, 80, 85)
+ *   Stack: [[85, 6], [100, 1]]
+ *
+ * Why this works:
+ * - When we pop [60, 1] and [70, 2], we're saying:
+ *   &quot;60 had 1 consecutive day &lt;= 60 (itself)&quot;
+ *   &quot;70 had 2 consecutive days &lt;= 70 (60, 70)&quot;
+ * - By accumulating: span = 1 + 1 + 2 = 4
+ *   We get: &quot;75 has 4 consecutive days &lt;= 75 (60, 70, 60, 75)&quot;
+ */
+
+/**
+ * Usage:
+ * StockSpanner obj = new StockSpanner();
+ * int span = obj.next(price);
+ */
+</code></pre>
+
+      </div>
+      <div class="cheatsheet-footer">
+        <a href="../cheatsheets.html" class="back-link">← Back to Cheat Sheets</a>
+        <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/stack.md" class="github-edit" target="_blank">
+          Edit on GitHub →
+        </a>
+      </div>
+    <nav class="prev-next"><a href="sort.html" class="prev-link">← Sort</a><a href="stock_trading.html" class="next-link">Stock Trading →</a></nav>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>CS_basics - Computer Science Fundamentals & Interview Preparation</p>
+      <p>
+        <a href="https://github.com/yennanliu/CS_basics">GitHub</a> •
+        <a href="https://github.com/yennanliu/CS_basics/tree/master/doc">Documentation</a> •
+        <a href="https://github.com/yennanliu/CS_basics/issues">Report Issues</a>
+      </p>
+    </div>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,441 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shortest Path Comparison - CS_basics</title>
+  <meta name="description" content="Computer Science fundamentals: algorithms, data structures, system design, and LeetCode solutions">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>CS</text></svg>">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="../vendor/fonts.css">
+  <link rel="stylesheet" href="../vendor/highlight/github-dark.min.css">
+  <script src="../vendor/highlight/highlight.min.js"></script>
+  <script>
+  // Apply theme before render to prevent flash
+  (function() {
+    var saved = localStorage.getItem('theme');
+    if (saved === 'dark' || (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      document.documentElement.setAttribute('data-theme', 'dark');
+    }
+  })();
+  </script>
+  <script>document.addEventListener('DOMContentLoaded', function() {
+    hljs.highlightAll();
+    document.querySelectorAll('pre code').forEach(function(codeEl) {
+      var pre = codeEl.parentElement;
+      var lang = '';
+      var cls = codeEl.className || '';
+      var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
+      if (m) lang = m[1];
+      var wrapper = document.createElement('div');
+      wrapper.className = 'code-block-wrapper';
+      pre.parentNode.insertBefore(wrapper, pre);
+      var header = document.createElement('div');
+      header.className = 'code-block-header';
+      if (lang) {
+        var label = document.createElement('span');
+        label.className = 'code-lang-label';
+        label.textContent = lang;
+        header.appendChild(label);
+      } else {
+        header.appendChild(document.createElement('span'));
+      }
+      var btn = document.createElement('button');
+      btn.className = 'copy-btn';
+      btn.textContent = 'Copy';
+      btn.addEventListener('click', function() {
+        navigator.clipboard.writeText(codeEl.textContent).then(function() {
+          btn.textContent = 'Copied!';
+          btn.classList.add('copied');
+          setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+        });
+      });
+      header.appendChild(btn);
+      wrapper.appendChild(header);
+      wrapper.appendChild(pre);
+    });
+    document.querySelectorAll('table').forEach(function(table) {
+      if (!table.parentElement.classList.contains('table-wrap')) {
+        var wrapper = document.createElement('div');
+        wrapper.className = 'table-wrap';
+        table.parentNode.insertBefore(wrapper, table);
+        wrapper.appendChild(table);
+      }
+    });
+    // Reading progress bar
+    var progressBar = document.getElementById('reading-progress');
+    if (progressBar) {
+      window.addEventListener('scroll', function() {
+        var winScroll = document.documentElement.scrollTop;
+        var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        progressBar.style.width = height > 0 ? (winScroll / height * 100) + '%' : '0%';
+      });
+    }
+    // Dark mode toggle
+    var toggle = document.getElementById('theme-toggle');
+    if (toggle) {
+      var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      toggle.textContent = isDark ? '☀️' : '🌙';
+      toggle.addEventListener('click', function() {
+        var dark = document.documentElement.getAttribute('data-theme') === 'dark';
+        if (dark) {
+          document.documentElement.removeAttribute('data-theme');
+          localStorage.setItem('theme', 'light');
+          toggle.textContent = '🌙';
+        } else {
+          document.documentElement.setAttribute('data-theme', 'dark');
+          localStorage.setItem('theme', 'dark');
+          toggle.textContent = '☀️';
+        }
+      });
+    }
+  });</script>
+</head>
+<body>
+  <div class="progress-container"><div class="progress-bar" id="reading-progress"></div></div>
+  <nav class="navbar">
+    <div class="container">
+      <div class="nav-brand">
+        <span class="nav-icon">💻</span>
+        <span class="nav-title">CS_basics</span>
+      </div>
+      <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+      <div class="nav-links">
+        <a href="../index.html" class="">Home</a>
+        <a href="../cheatsheets.html" class="active">Cheat Sheets</a>
+        <a href="../patterns.html" class="">Pattern Recognition</a>
+        <a href="../faqs.html" class="">FAQs</a>
+        <a href="../resources.html" class="">Resources</a>
+        <a href="../lc-explorer.html" class="">LC Explorer</a>
+        <a href="../lc-random-picker.html" class="">🎲 Random Picker</a>
+        <a href="../algo_demo/index.html" class="">Visualizer</a>
+        <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">&#127769;</button>
+        <a href="https://github.com/yennanliu/CS_basics" target="_blank" class="github-link" aria-label="GitHub">
+          <svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor">
+            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container">
+    <div class="content">
+      
+      <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">Shortest Path Comparison</span></nav>
+      <div class="cheatsheet-header">
+        <h1>Shortest Path Comparison</h1>
+        <span class="last-updated">Last updated: Apr 11, 2026</span>
+      </div>
+      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#quick-decision-table">Quick Decision Table</a></li><li><a href="#side-by-side-comparison">Side-by-Side Comparison</a></li><li><a href="#decision-flowchart">Decision Flowchart</a></li><li><a href="#common-mistakes-gotchas">Common Mistakes &amp; Gotchas</a></li><li class="toc-sub"><a href="#1-using-dijkstra-with-negative-weights">1. Using Dijkstra with negative weights</a></li><li class="toc-sub"><a href="#2-bellman-ford-vs-dijkstra-for-lc-787-cheapest-flights-k-stops">2. Bellman-Ford vs Dijkstra for LC 787 (Cheapest Flights K Stops)</a></li><li class="toc-sub"><a href="#3-floyd-warshall-loop-order-matters">3. Floyd-Warshall loop order matters</a></li><li class="toc-sub"><a href="#4-when-to-use-dijkstra-vs-dp-on-grids">4. When to use Dijkstra vs DP on grids</a></li><li><a href="#variant-0-1-bfs">Variant: 0-1 BFS</a></li><li><a href="#lc-example">LC Example</a></li><li><a href="#see-also">See Also</a></li></ul></div>
+      <div class="cheatsheet-content">
+        <h1 id="shortest-path-algorithms-when-to-use-which" tabindex="-1"><a class="header-anchor" href="#shortest-path-algorithms-when-to-use-which"><span>Shortest Path Algorithms — When to Use Which</span></a></h1>
+<h2 id="quick-decision-table" tabindex="-1"><a class="header-anchor" href="#quick-decision-table"><span>Quick Decision Table</span></a></h2>
+<table>
+<thead>
+<tr>
+<th>Question</th>
+<th>Answer → Algorithm</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Non-negative weights, single source?</td>
+<td><strong>Dijkstra</strong> O((V+E) log V)</td>
+</tr>
+<tr>
+<td>Negative weights allowed, single source?</td>
+<td><strong>Bellman-Ford</strong> O(V·E)</td>
+</tr>
+<tr>
+<td>Need to detect negative cycles?</td>
+<td><strong>Bellman-Ford</strong> O(V·E)</td>
+</tr>
+<tr>
+<td>At most K edges/stops?</td>
+<td><strong>Bellman-Ford</strong> (K iterations)</td>
+</tr>
+<tr>
+<td>All-pairs shortest path?</td>
+<td><strong>Floyd-Warshall</strong> O(V³)</td>
+</tr>
+<tr>
+<td>Transitive closure (reachability)?</td>
+<td><strong>Floyd-Warshall</strong> (boolean)</td>
+</tr>
+<tr>
+<td>Unweighted graph?</td>
+<td><strong>BFS</strong> O(V+E)</td>
+</tr>
+<tr>
+<td>Grid with 0/1 weights?</td>
+<td><strong>0-1 BFS</strong> (deque) O(V+E)</td>
+</tr>
+<tr>
+<td>DAG?</td>
+<td><strong>Topological Sort + relax</strong> O(V+E)</td>
+</tr>
+<tr>
+<td>Dense graph, single source?</td>
+<td><strong>Dijkstra</strong> with array O(V²)</td>
+</tr>
+<tr>
+<td>Sparse graph, single source?</td>
+<td><strong>Dijkstra</strong> with heap O((V+E) log V)</td>
+</tr>
+</tbody>
+</table>
+<h2 id="side-by-side-comparison" tabindex="-1"><a class="header-anchor" href="#side-by-side-comparison"><span>Side-by-Side Comparison</span></a></h2>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>BFS</th>
+<th>Dijkstra</th>
+<th>Bellman-Ford</th>
+<th>Floyd-Warshall</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Type</strong></td>
+<td>Single-source</td>
+<td>Single-source</td>
+<td>Single-source</td>
+<td>All-pairs</td>
+</tr>
+<tr>
+<td><strong>Time</strong></td>
+<td>O(V+E)</td>
+<td>O((V+E) log V)</td>
+<td>O(V·E)</td>
+<td>O(V³)</td>
+</tr>
+<tr>
+<td><strong>Space</strong></td>
+<td>O(V)</td>
+<td>O(V)</td>
+<td>O(V)</td>
+<td>O(V²)</td>
+</tr>
+<tr>
+<td><strong>Negative weights</strong></td>
+<td>No</td>
+<td>No</td>
+<td>Yes</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td><strong>Negative cycle detect</strong></td>
+<td>No</td>
+<td>No</td>
+<td>Yes</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td><strong>Graph type</strong></td>
+<td>Unweighted</td>
+<td>Weighted (≥0)</td>
+<td>Any</td>
+<td>Any</td>
+</tr>
+<tr>
+<td><strong>Approach</strong></td>
+<td>Queue</td>
+<td>Greedy + heap</td>
+<td>Relaxation ×(V-1)</td>
+<td>DP</td>
+</tr>
+<tr>
+<td><strong>Implementation</strong></td>
+<td>Simple</td>
+<td>Medium</td>
+<td>Simple</td>
+<td>Simple</td>
+</tr>
+</tbody>
+</table>
+<h2 id="decision-flowchart" tabindex="-1"><a class="header-anchor" href="#decision-flowchart"><span>Decision Flowchart</span></a></h2>
+<pre><code>Start: What's the shortest path problem?
+│
+├── Unweighted graph?
+│   └── YES → BFS  O(V+E)
+│
+├── Single source or all pairs?
+│   ├── ALL PAIRS
+│   │   ├── V ≤ 400? → Floyd-Warshall  O(V³)
+│   │   └── V &gt; 400?  → Run Dijkstra from each vertex  O(V·(V+E) log V)
+│   │
+│   └── SINGLE SOURCE
+│       ├── DAG? → Topo sort + relax  O(V+E)
+│       ├── Negative weights?
+│       │   ├── NO  → Dijkstra  O((V+E) log V)
+│       │   └── YES → Bellman-Ford  O(V·E)
+│       └── At most K edges?
+│           └── Bellman-Ford with K iterations
+│
+└── Need negative cycle detection?
+    ├── Single check → Bellman-Ford (V-th iteration)
+    └── All pairs → Floyd-Warshall (check diagonal)
+</code></pre>
+<h2 id="common-mistakes-gotchas" tabindex="-1"><a class="header-anchor" href="#common-mistakes-gotchas"><span>Common Mistakes &amp; Gotchas</span></a></h2>
+<h3 id="1-using-dijkstra-with-negative-weights" tabindex="-1"><a class="header-anchor" href="#1-using-dijkstra-with-negative-weights"><span>1. Using Dijkstra with negative weights</span></a></h3>
+<pre><code>Graph:  A --1--&gt; B --(-5)--&gt; C
+        A --3--&gt; C
+
+Dijkstra visits C via A→C (cost 3), marks C as done.
+Misses A→B→C (cost 1+(-5) = -4).  ← WRONG ANSWER
+
+Fix: Use Bellman-Ford.
+</code></pre>
+<h3 id="2-bellman-ford-vs-dijkstra-for-lc-787-cheapest-flights-k-stops" tabindex="-1"><a class="header-anchor" href="#2-bellman-ford-vs-dijkstra-for-lc-787-cheapest-flights-k-stops"><span>2. Bellman-Ford vs Dijkstra for LC 787 (Cheapest Flights K Stops)</span></a></h3>
+<pre><code>Dijkstra alone doesn't work — K stop constraint means a longer
+path might be cheaper. Need modified Bellman-Ford with K iterations,
+or modified Dijkstra with state (node, stops_remaining).
+</code></pre>
+<h3 id="3-floyd-warshall-loop-order-matters" tabindex="-1"><a class="header-anchor" href="#3-floyd-warshall-loop-order-matters"><span>3. Floyd-Warshall loop order matters</span></a></h3>
+<pre><code class="language-java">// CORRECT: k (intermediate) must be outermost loop
+for (int k = 0; k &lt; V; k++)        // intermediate vertex
+    for (int i = 0; i &lt; V; i++)     // source
+        for (int j = 0; j &lt; V; j++) // destination
+            dist[i][j] = Math.min(dist[i][j], dist[i][k] + dist[k][j]);
+
+// WRONG: i or j as outermost loop gives incorrect results
+</code></pre>
+<h3 id="4-when-to-use-dijkstra-vs-dp-on-grids" tabindex="-1"><a class="header-anchor" href="#4-when-to-use-dijkstra-vs-dp-on-grids"><span>4. When to use Dijkstra vs DP on grids</span></a></h3>
+<pre><code>LC 64 (Min Path Sum): only move right/down → DAG → use DP (simpler)
+LC 1631 (Min Effort):  move 4 directions → cycles possible → use Dijkstra
+LC 778 (Swim in Rising Water): 4 directions → Dijkstra or binary search + BFS
+
+Rule: If movement is restricted to one direction (no cycles) → DP.
+      If movement allows backtracking/cycles → Dijkstra.
+</code></pre>
+<h2 id="variant-0-1-bfs" tabindex="-1"><a class="header-anchor" href="#variant-0-1-bfs"><span>Variant: 0-1 BFS</span></a></h2>
+<p>For graphs where edge weights are only 0 or 1:</p>
+<pre><code class="language-python"># Time: O(V+E), Space: O(V)
+from collections import deque
+
+def bfs01(graph, src, n):
+    dist = [float('inf')] * n
+    dist[src] = 0
+    dq = deque([src])
+
+    while dq:
+        u = dq.popleft()
+        for v, w in graph[u]:  # w is 0 or 1
+            if dist[u] + w &lt; dist[v]:
+                dist[v] = dist[u] + w
+                if w == 0:
+                    dq.appendleft(v)  # 0-weight → front
+                else:
+                    dq.append(v)      # 1-weight → back
+    return dist
+</code></pre>
+<p><strong>Classic LC:</strong> LC 1368 (Min Cost to Make at Least One Valid Path) — 0-1 BFS on grid</p>
+<h2 id="lc-example" tabindex="-1"><a class="header-anchor" href="#lc-example"><span>LC Example</span></a></h2>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Problem</th>
+<th>Algorithm</th>
+<th>Why This One?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>743</td>
+<td>Network Delay Time</td>
+<td>Dijkstra</td>
+<td>Non-negative, single source</td>
+</tr>
+<tr>
+<td>787</td>
+<td>Cheapest Flights K Stops</td>
+<td>Bellman-Ford (K iters)</td>
+<td>K-edge constraint</td>
+</tr>
+<tr>
+<td>1334</td>
+<td>Find City Smallest Neighbors</td>
+<td>Floyd-Warshall</td>
+<td>All-pairs + threshold</td>
+</tr>
+<tr>
+<td>1631</td>
+<td>Path with Min Effort</td>
+<td>Dijkstra</td>
+<td>Grid, 4-directional, non-negative</td>
+</tr>
+<tr>
+<td>778</td>
+<td>Swim in Rising Water</td>
+<td>Dijkstra / BS+BFS</td>
+<td>Grid, min-max path</td>
+</tr>
+<tr>
+<td>1368</td>
+<td>Min Cost Valid Path</td>
+<td>0-1 BFS</td>
+<td>0/1 weights</td>
+</tr>
+<tr>
+<td>1462</td>
+<td>Course Schedule IV</td>
+<td>Floyd-Warshall</td>
+<td>Transitive closure</td>
+</tr>
+<tr>
+<td>862</td>
+<td>Shortest Subarray Sum ≥ K</td>
+<td>Not shortest path!</td>
+<td>Prefix sum + mono deque</td>
+</tr>
+<tr>
+<td>64</td>
+<td>Minimum Path Sum</td>
+<td>DP (not Dijkstra)</td>
+<td>DAG — right/down only</td>
+</tr>
+<tr>
+<td>505</td>
+<td>The Maze II</td>
+<td>Dijkstra</td>
+<td>Weighted (roll distance), non-negative</td>
+</tr>
+</tbody>
+</table>
+<h2 id="see-also" tabindex="-1"><a class="header-anchor" href="#see-also"><span>See Also</span></a></h2>
+<ul>
+<li><a href="https://github.com/yennanliu/CS_basics/blob/master/Dijkstra.md">Dijkstra Cheatsheet</a></li>
+<li><a href="https://github.com/yennanliu/CS_basics/blob/master/Bellman-Ford.md">Bellman-Ford Cheatsheet</a></li>
+<li><a href="https://github.com/yennanliu/CS_basics/blob/master/Floyd-Warshall.md">Floyd-Warshall Cheatsheet</a></li>
+<li><a href="https://github.com/yennanliu/CS_basics/blob/master/bfs.md">BFS Cheatsheet</a></li>
+</ul>
+
+      </div>
+      <div class="cheatsheet-footer">
+        <a href="../cheatsheets.html" class="back-link">← Back to Cheat Sheets</a>
+        <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/shortest_path_comparison.md" class="github-edit" target="_blank">
+          Edit on GitHub →
+        </a>
+      </div>
+    <nav class="prev-next"><a href="set.html" class="prev-link">← Set</a><a href="sliding_window.html" class="next-link">Sliding Window →</a></nav>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>CS_basics - Computer Science Fundamentals & Interview Preparation</p>
+      <p>
+        <a href="https://github.com/yennanliu/CS_basics">GitHub</a> •
+        <a href="https://github.com/yennanliu/CS_basics/tree/master/doc">Documentation</a> •
+        <a href="https://github.com/yennanliu/CS_basics/issues">Report Issues</a>
+      </p>
+    </div>
+  </footer>
+</body>
+</html>

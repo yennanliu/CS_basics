@@ -1,0 +1,1651 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Be Programming Notes Pt2 - CS_basics</title>
+  <meta name="description" content="Computer Science fundamentals: algorithms, data structures, system design, and LeetCode solutions">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>CS</text></svg>">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="../vendor/fonts.css">
+  <link rel="stylesheet" href="../vendor/highlight/github-dark.min.css">
+  <script src="../vendor/highlight/highlight.min.js"></script>
+  <script>
+  // Apply theme before render to prevent flash
+  (function() {
+    var saved = localStorage.getItem('theme');
+    if (saved === 'dark' || (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      document.documentElement.setAttribute('data-theme', 'dark');
+    }
+  })();
+  </script>
+  <script>document.addEventListener('DOMContentLoaded', function() {
+    hljs.highlightAll();
+    document.querySelectorAll('pre code').forEach(function(codeEl) {
+      var pre = codeEl.parentElement;
+      var lang = '';
+      var cls = codeEl.className || '';
+      var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
+      if (m) lang = m[1];
+      var wrapper = document.createElement('div');
+      wrapper.className = 'code-block-wrapper';
+      pre.parentNode.insertBefore(wrapper, pre);
+      var header = document.createElement('div');
+      header.className = 'code-block-header';
+      if (lang) {
+        var label = document.createElement('span');
+        label.className = 'code-lang-label';
+        label.textContent = lang;
+        header.appendChild(label);
+      } else {
+        header.appendChild(document.createElement('span'));
+      }
+      var btn = document.createElement('button');
+      btn.className = 'copy-btn';
+      btn.textContent = 'Copy';
+      btn.addEventListener('click', function() {
+        navigator.clipboard.writeText(codeEl.textContent).then(function() {
+          btn.textContent = 'Copied!';
+          btn.classList.add('copied');
+          setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+        });
+      });
+      header.appendChild(btn);
+      wrapper.appendChild(header);
+      wrapper.appendChild(pre);
+    });
+    document.querySelectorAll('table').forEach(function(table) {
+      if (!table.parentElement.classList.contains('table-wrap')) {
+        var wrapper = document.createElement('div');
+        wrapper.className = 'table-wrap';
+        table.parentNode.insertBefore(wrapper, table);
+        wrapper.appendChild(table);
+      }
+    });
+    // Reading progress bar
+    var progressBar = document.getElementById('reading-progress');
+    if (progressBar) {
+      window.addEventListener('scroll', function() {
+        var winScroll = document.documentElement.scrollTop;
+        var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        progressBar.style.width = height > 0 ? (winScroll / height * 100) + '%' : '0%';
+      });
+    }
+    // Dark mode toggle
+    var toggle = document.getElementById('theme-toggle');
+    if (toggle) {
+      var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      toggle.textContent = isDark ? '☀️' : '🌙';
+      toggle.addEventListener('click', function() {
+        var dark = document.documentElement.getAttribute('data-theme') === 'dark';
+        if (dark) {
+          document.documentElement.removeAttribute('data-theme');
+          localStorage.setItem('theme', 'light');
+          toggle.textContent = '🌙';
+        } else {
+          document.documentElement.setAttribute('data-theme', 'dark');
+          localStorage.setItem('theme', 'dark');
+          toggle.textContent = '☀️';
+        }
+      });
+    }
+  });</script>
+</head>
+<body>
+  <div class="progress-container"><div class="progress-bar" id="reading-progress"></div></div>
+  <nav class="navbar">
+    <div class="container">
+      <div class="nav-brand">
+        <span class="nav-icon">💻</span>
+        <span class="nav-title">CS_basics</span>
+      </div>
+      <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+      <div class="nav-links">
+        <a href="../index.html" class="">Home</a>
+        <a href="../cheatsheets.html" class="">Cheat Sheets</a>
+        <a href="../patterns.html" class="">Pattern Recognition</a>
+        <a href="../faqs.html" class="active">FAQs</a>
+        <a href="../resources.html" class="">Resources</a>
+        <a href="../lc-explorer.html" class="">LC Explorer</a>
+        <a href="../lc-random-picker.html" class="">🎲 Random Picker</a>
+        <a href="../algo_demo/index.html" class="">Visualizer</a>
+        <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">&#127769;</button>
+        <a href="https://github.com/yennanliu/CS_basics" target="_blank" class="github-link" aria-label="GitHub">
+          <svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor">
+            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container">
+    <div class="content">
+      
+      <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../faqs.html">FAQs</a> <span class="sep">›</span> <span class="current">Be Programming Notes Pt2</span></nav>
+      <div class="cheatsheet-header">
+        <h1>Be Programming Notes Pt2</h1>
+        <span class="last-updated">Last updated: Mar 26, 2026</span>
+      </div>
+      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#table-of-contents">Table of Contents</a></li><li><a href="#thread-pool-executor-framework">Thread Pool &amp; Executor Framework</a></li><li class="toc-sub"><a href="#1-threadpoolexecutor-deep-dive">1. ThreadPoolExecutor Deep Dive</a></li><li class="toc-sub"><a href="#2-rejection-policies-comparison">2. Rejection Policies Comparison</a></li><li class="toc-sub"><a href="#3-choosing-queue-type">3. Choosing Queue Type</a></li><li class="toc-sub"><a href="#4-monitor-thread-pool-health">4. Monitor Thread Pool Health</a></li><li><a href="#completablefuture-async-programming">CompletableFuture &amp; Async Programming</a></li><li class="toc-sub"><a href="#1-basic-completablefuture-patterns">1. Basic CompletableFuture Patterns</a></li><li class="toc-sub"><a href="#2-error-handling">2. Error Handling</a></li><li class="toc-sub"><a href="#3-parallel-execution-patterns">3. Parallel Execution Patterns</a></li><li><a href="#caching-strategies">Caching Strategies</a></li><li class="toc-sub"><a href="#1-cache-aside-pattern-lazy-loading">1. Cache-Aside Pattern (Lazy Loading)</a></li><li class="toc-sub"><a href="#2-write-through-pattern">2. Write-Through Pattern</a></li><li class="toc-sub"><a href="#3-write-behind-write-back-pattern">3. Write-Behind (Write-Back) Pattern</a></li><li class="toc-sub"><a href="#4-cache-with-distributed-lock-prevent-stampede">4. Cache with Distributed Lock (Prevent Stampede)</a></li><li class="toc-sub"><a href="#5-refresh-ahead-pattern">5. Refresh-Ahead Pattern</a></li><li><a href="#message-queue-patterns">Message Queue Patterns</a></li><li class="toc-sub"><a href="#1-at-least-once-delivery-with-idempotency">1. At-Least-Once Delivery with Idempotency</a></li><li class="toc-sub"><a href="#2-transactional-outbox-pattern">2. Transactional Outbox Pattern</a></li><li class="toc-sub"><a href="#3-dead-letter-queue-handler">3. Dead Letter Queue Handler</a></li><li class="toc-sub"><a href="#4-consumer-group-with-partition-assignment">4. Consumer Group with Partition Assignment</a></li><li><a href="#distributed-transactions">Distributed Transactions</a></li><li class="toc-sub"><a href="#1-saga-pattern-choreography">1. Saga Pattern (Choreography)</a></li><li class="toc-sub"><a href="#2-saga-pattern-orchestrator">2. Saga Pattern (Orchestrator)</a></li><li class="toc-sub"><a href="#3-two-phase-commit-2pc-simulation">3. Two-Phase Commit (2PC) Simulation</a></li><li><a href="#coordination-utilities">Coordination Utilities</a></li><li class="toc-sub"><a href="#1-countdownlatch-wait-for-n-events">1. CountDownLatch - Wait for N Events</a></li><li class="toc-sub"><a href="#2-cyclicbarrier-synchronization-point">2. CyclicBarrier - Synchronization Point</a></li><li class="toc-sub"><a href="#3-semaphore-limit-concurrent-access">3. Semaphore - Limit Concurrent Access</a></li><li class="toc-sub"><a href="#4-phaser-flexible-barrier">4. Phaser - Flexible Barrier</a></li><li><a href="#graceful-shutdown">Graceful Shutdown</a></li><li class="toc-sub"><a href="#1-executorservice-graceful-shutdown">1. ExecutorService Graceful Shutdown</a></li><li class="toc-sub"><a href="#2-spring-boot-graceful-shutdown">2. Spring Boot Graceful Shutdown</a></li><li><a href="#backpressure-handling">Backpressure Handling</a></li><li class="toc-sub"><a href="#1-blocking-with-bounded-queue">1. Blocking with Bounded Queue</a></li><li class="toc-sub"><a href="#2-rate-based-backpressure">2. Rate-Based Backpressure</a></li><li class="toc-sub"><a href="#3-reactive-backpressure-conceptual">3. Reactive Backpressure (Conceptual)</a></li><li><a href="#common-interview-questions">Common Interview Questions</a></li><li class="toc-sub"><a href="#q1-how-would-you-handle-a-thundering-herd-problem">Q1: How would you handle a thundering herd problem?</a></li><li class="toc-sub"><a href="#q2-difference-between-saga-choreography-vs-orchestration">Q2: Difference between Saga Choreography vs Orchestration?</a></li><li class="toc-sub"><a href="#q3-how-to-ensure-exactly-once-processing">Q3: How to ensure exactly-once processing?</a></li><li class="toc-sub"><a href="#q4-when-to-use-countdownlatch-vs-cyclicbarrier">Q4: When to use CountDownLatch vs CyclicBarrier?</a></li><li class="toc-sub"><a href="#q5-how-to-prevent-memory-leaks-in-thread-pools">Q5: How to prevent memory leaks in thread pools?</a></li><li><a href="#summary-pattern-selection-guide">Summary: Pattern Selection Guide</a></li><li><a href="#references">References</a></li></ul></div>
+      <div class="cheatsheet-content">
+        <h1 id="backend-programming-notes-for-be-role-part-2" tabindex="-1"><a class="header-anchor" href="#backend-programming-notes-for-be-role-part-2"><span>Backend Programming Notes for BE Role (Part 2)</span></a></h1>
+<blockquote>
+<p>Focus: Thread Pools, Async Programming, Caching, Message Queues, Distributed Transactions</p>
+</blockquote>
+<h2 id="table-of-contents" tabindex="-1"><a class="header-anchor" href="#table-of-contents"><span>Table of Contents</span></a></h2>
+<ol>
+<li><a href="#thread-pool--executor-framework">Thread Pool &amp; Executor Framework</a></li>
+<li><a href="#completablefuture--async-programming">CompletableFuture &amp; Async Programming</a></li>
+<li><a href="#caching-strategies">Caching Strategies</a></li>
+<li><a href="#message-queue-patterns">Message Queue Patterns</a></li>
+<li><a href="#distributed-transactions">Distributed Transactions</a></li>
+<li><a href="#coordination-utilities">Coordination Utilities</a></li>
+<li><a href="#graceful-shutdown">Graceful Shutdown</a></li>
+<li><a href="#backpressure-handling">Backpressure Handling</a></li>
+<li><a href="#common-interview-questions">Common Interview Questions</a></li>
+</ol>
+<hr>
+<h2 id="thread-pool-executor-framework" tabindex="-1"><a class="header-anchor" href="#thread-pool-executor-framework"><span>Thread Pool &amp; Executor Framework</span></a></h2>
+<h3 id="1-threadpoolexecutor-deep-dive" tabindex="-1"><a class="header-anchor" href="#1-threadpoolexecutor-deep-dive"><span>1. ThreadPoolExecutor Deep Dive</span></a></h3>
+<pre><code class="language-java">import java.util.concurrent.*;
+
+public class ThreadPoolDemo {
+
+    /**
+     * ThreadPoolExecutor parameters:
+     * - corePoolSize: minimum threads always kept alive
+     * - maximumPoolSize: maximum threads allowed
+     * - keepAliveTime: idle time before non-core threads terminate
+     * - workQueue: queue to hold tasks before execution
+     * - threadFactory: creates new threads
+     * - handler: rejection policy when queue is full
+     */
+    public static ThreadPoolExecutor createCustomPool() {
+        return new ThreadPoolExecutor(
+            4,                              // corePoolSize
+            8,                              // maximumPoolSize
+            60L, TimeUnit.SECONDS,          // keepAliveTime
+            new LinkedBlockingQueue&lt;&gt;(100), // workQueue with capacity
+            new CustomThreadFactory(&quot;worker&quot;),
+            new ThreadPoolExecutor.CallerRunsPolicy() // rejection policy
+        );
+    }
+
+    static class CustomThreadFactory implements ThreadFactory {
+        private final String namePrefix;
+        private final AtomicInteger counter = new AtomicInteger(0);
+
+        CustomThreadFactory(String namePrefix) {
+            this.namePrefix = namePrefix;
+        }
+
+        @Override
+        public Thread newThread(Runnable r) {
+            Thread t = new Thread(r, namePrefix + &quot;-&quot; + counter.incrementAndGet());
+            t.setDaemon(false);
+            t.setUncaughtExceptionHandler((thread, ex) -&gt; {
+                System.err.println(&quot;Thread &quot; + thread.getName() + &quot; failed: &quot; + ex.getMessage());
+            });
+            return t;
+        }
+    }
+}
+</code></pre>
+<h3 id="2-rejection-policies-comparison" tabindex="-1"><a class="header-anchor" href="#2-rejection-policies-comparison"><span>2. Rejection Policies Comparison</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>Policy</th>
+<th>Behavior</th>
+<th>Use Case</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>AbortPolicy</code></td>
+<td>Throws <code>RejectedExecutionException</code></td>
+<td>Fail fast, alert monitoring</td>
+</tr>
+<tr>
+<td><code>CallerRunsPolicy</code></td>
+<td>Caller thread executes the task</td>
+<td>Backpressure, slow down producer</td>
+</tr>
+<tr>
+<td><code>DiscardPolicy</code></td>
+<td>Silently discards task</td>
+<td>Non-critical tasks</td>
+</tr>
+<tr>
+<td><code>DiscardOldestPolicy</code></td>
+<td>Discards oldest queued task</td>
+<td>Prefer newest data</td>
+</tr>
+</tbody>
+</table>
+<pre><code class="language-java">// Custom rejection handler with logging and metrics
+public class LoggingRejectionHandler implements RejectedExecutionHandler {
+
+    private final AtomicLong rejectedCount = new AtomicLong(0);
+
+    @Override
+    public void rejectedExecution(Runnable r, ThreadPoolExecutor executor) {
+        rejectedCount.incrementAndGet();
+
+        // Log details
+        System.err.println(&quot;Task rejected. Pool size: &quot; + executor.getPoolSize() +
+                          &quot;, Active: &quot; + executor.getActiveCount() +
+                          &quot;, Queue size: &quot; + executor.getQueue().size());
+
+        // Option 1: Block and wait
+        try {
+            executor.getQueue().put(r);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            throw new RejectedExecutionException(&quot;Interrupted while waiting&quot;, e);
+        }
+
+        // Option 2: Execute in caller thread (like CallerRunsPolicy)
+        // if (!executor.isShutdown()) {
+        //     r.run();
+        // }
+    }
+
+    public long getRejectedCount() {
+        return rejectedCount.get();
+    }
+}
+</code></pre>
+<h3 id="3-choosing-queue-type" tabindex="-1"><a class="header-anchor" href="#3-choosing-queue-type"><span>3. Choosing Queue Type</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>Queue Type</th>
+<th>Behavior</th>
+<th>Use Case</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>LinkedBlockingQueue</code></td>
+<td>Unbounded or bounded FIFO</td>
+<td>General purpose</td>
+</tr>
+<tr>
+<td><code>ArrayBlockingQueue</code></td>
+<td>Bounded, array-backed</td>
+<td>Memory-constrained</td>
+</tr>
+<tr>
+<td><code>SynchronousQueue</code></td>
+<td>No capacity, direct handoff</td>
+<td>Maximize threads first</td>
+</tr>
+<tr>
+<td><code>PriorityBlockingQueue</code></td>
+<td>Priority ordering</td>
+<td>Task prioritization</td>
+</tr>
+</tbody>
+</table>
+<pre><code class="language-java">// SynchronousQueue: Creates new thread for each task (up to max)
+// Good for short-lived tasks with unpredictable load
+ThreadPoolExecutor cachedLikePool = new ThreadPoolExecutor(
+    0, Integer.MAX_VALUE,
+    60L, TimeUnit.SECONDS,
+    new SynchronousQueue&lt;&gt;()
+);
+
+// Bounded queue: Predictable memory usage
+ThreadPoolExecutor boundedPool = new ThreadPoolExecutor(
+    4, 8,
+    60L, TimeUnit.SECONDS,
+    new ArrayBlockingQueue&lt;&gt;(100)
+);
+</code></pre>
+<h3 id="4-monitor-thread-pool-health" tabindex="-1"><a class="header-anchor" href="#4-monitor-thread-pool-health"><span>4. Monitor Thread Pool Health</span></a></h3>
+<pre><code class="language-java">public class ThreadPoolMonitor {
+
+    private final ScheduledExecutorService monitor = Executors.newSingleThreadScheduledExecutor();
+
+    public void startMonitoring(ThreadPoolExecutor pool, long intervalMs) {
+        monitor.scheduleAtFixedRate(() -&gt; {
+            System.out.println(&quot;=== Thread Pool Stats ===&quot;);
+            System.out.println(&quot;Pool Size: &quot; + pool.getPoolSize());
+            System.out.println(&quot;Active Threads: &quot; + pool.getActiveCount());
+            System.out.println(&quot;Queued Tasks: &quot; + pool.getQueue().size());
+            System.out.println(&quot;Completed Tasks: &quot; + pool.getCompletedTaskCount());
+            System.out.println(&quot;Core Pool Size: &quot; + pool.getCorePoolSize());
+            System.out.println(&quot;Max Pool Size: &quot; + pool.getMaximumPoolSize());
+        }, 0, intervalMs, TimeUnit.MILLISECONDS);
+    }
+
+    public void stop() {
+        monitor.shutdown();
+    }
+}
+</code></pre>
+<hr>
+<h2 id="completablefuture-async-programming" tabindex="-1"><a class="header-anchor" href="#completablefuture-async-programming"><span>CompletableFuture &amp; Async Programming</span></a></h2>
+<h3 id="1-basic-completablefuture-patterns" tabindex="-1"><a class="header-anchor" href="#1-basic-completablefuture-patterns"><span>1. Basic CompletableFuture Patterns</span></a></h3>
+<pre><code class="language-java">import java.util.concurrent.*;
+
+public class CompletableFutureDemo {
+
+    private final ExecutorService executor = Executors.newFixedThreadPool(4);
+
+    // Basic async execution
+    public CompletableFuture&lt;String&gt; fetchDataAsync(String id) {
+        return CompletableFuture.supplyAsync(() -&gt; {
+            // Simulate API call
+            sleep(100);
+            return &quot;Data for &quot; + id;
+        }, executor);
+    }
+
+    // Chain transformations
+    public CompletableFuture&lt;Integer&gt; processData(String id) {
+        return fetchDataAsync(id)
+            .thenApply(data -&gt; data.toUpperCase())      // Transform
+            .thenApply(data -&gt; data.length());           // Transform again
+    }
+
+    // Chain async operations
+    public CompletableFuture&lt;String&gt; fetchAndEnrich(String id) {
+        return fetchDataAsync(id)
+            .thenCompose(data -&gt; enrichDataAsync(data)); // Async chain
+    }
+
+    // Combine two independent futures
+    public CompletableFuture&lt;String&gt; fetchBothAndCombine(String id1, String id2) {
+        CompletableFuture&lt;String&gt; future1 = fetchDataAsync(id1);
+        CompletableFuture&lt;String&gt; future2 = fetchDataAsync(id2);
+
+        return future1.thenCombine(future2, (data1, data2) -&gt; {
+            return data1 + &quot; + &quot; + data2;
+        });
+    }
+
+    private CompletableFuture&lt;String&gt; enrichDataAsync(String data) {
+        return CompletableFuture.supplyAsync(() -&gt; &quot;Enriched: &quot; + data, executor);
+    }
+
+    private void sleep(long ms) {
+        try { Thread.sleep(ms); } catch (InterruptedException e) { Thread.currentThread().interrupt(); }
+    }
+}
+</code></pre>
+<h3 id="2-error-handling" tabindex="-1"><a class="header-anchor" href="#2-error-handling"><span>2. Error Handling</span></a></h3>
+<pre><code class="language-java">public class CompletableFutureErrorHandling {
+
+    // Handle exceptions
+    public CompletableFuture&lt;String&gt; fetchWithFallback(String id) {
+        return fetchDataAsync(id)
+            .exceptionally(ex -&gt; {
+                System.err.println(&quot;Error: &quot; + ex.getMessage());
+                return &quot;Default Value&quot;;  // Fallback
+            });
+    }
+
+    // Handle both success and failure
+    public CompletableFuture&lt;String&gt; fetchWithHandle(String id) {
+        return fetchDataAsync(id)
+            .handle((result, ex) -&gt; {
+                if (ex != null) {
+                    return &quot;Error: &quot; + ex.getMessage();
+                }
+                return &quot;Success: &quot; + result;
+            });
+    }
+
+    // Recover with another async operation
+    public CompletableFuture&lt;String&gt; fetchWithAsyncFallback(String id) {
+        return fetchDataAsync(id)
+            .exceptionallyCompose(ex -&gt; {
+                System.err.println(&quot;Primary failed, trying backup...&quot;);
+                return fetchFromBackupAsync(id);
+            });
+    }
+
+    // Timeout handling
+    public CompletableFuture&lt;String&gt; fetchWithTimeout(String id) {
+        return fetchDataAsync(id)
+            .orTimeout(5, TimeUnit.SECONDS)
+            .exceptionally(ex -&gt; {
+                if (ex instanceof TimeoutException) {
+                    return &quot;Timeout - using cached value&quot;;
+                }
+                throw new CompletionException(ex);
+            });
+    }
+
+    private CompletableFuture&lt;String&gt; fetchDataAsync(String id) {
+        return CompletableFuture.supplyAsync(() -&gt; &quot;Data: &quot; + id);
+    }
+
+    private CompletableFuture&lt;String&gt; fetchFromBackupAsync(String id) {
+        return CompletableFuture.supplyAsync(() -&gt; &quot;Backup Data: &quot; + id);
+    }
+}
+</code></pre>
+<h3 id="3-parallel-execution-patterns" tabindex="-1"><a class="header-anchor" href="#3-parallel-execution-patterns"><span>3. Parallel Execution Patterns</span></a></h3>
+<pre><code class="language-java">public class ParallelExecutionPatterns {
+
+    private final ExecutorService executor = Executors.newFixedThreadPool(10);
+
+    // Wait for all futures to complete
+    public CompletableFuture&lt;List&lt;String&gt;&gt; fetchAll(List&lt;String&gt; ids) {
+        List&lt;CompletableFuture&lt;String&gt;&gt; futures = ids.stream()
+            .map(this::fetchDataAsync)
+            .collect(Collectors.toList());
+
+        return CompletableFuture.allOf(futures.toArray(new CompletableFuture[0]))
+            .thenApply(v -&gt; futures.stream()
+                .map(CompletableFuture::join)
+                .collect(Collectors.toList()));
+    }
+
+    // Return first completed result
+    public CompletableFuture&lt;String&gt; fetchFirst(List&lt;String&gt; ids) {
+        List&lt;CompletableFuture&lt;String&gt;&gt; futures = ids.stream()
+            .map(this::fetchDataAsync)
+            .collect(Collectors.toList());
+
+        return CompletableFuture.anyOf(futures.toArray(new CompletableFuture[0]))
+            .thenApply(result -&gt; (String) result);
+    }
+
+    // Collect results as they complete (with timeout per item)
+    public List&lt;String&gt; fetchAllWithIndividualTimeout(List&lt;String&gt; ids, long timeoutMs) {
+        List&lt;CompletableFuture&lt;String&gt;&gt; futures = ids.stream()
+            .map(id -&gt; fetchDataAsync(id)
+                .orTimeout(timeoutMs, TimeUnit.MILLISECONDS)
+                .exceptionally(ex -&gt; &quot;Failed: &quot; + id))
+            .collect(Collectors.toList());
+
+        return futures.stream()
+            .map(CompletableFuture::join)
+            .collect(Collectors.toList());
+    }
+
+    // Limit concurrency with Semaphore
+    public CompletableFuture&lt;List&lt;String&gt;&gt; fetchWithConcurrencyLimit(
+            List&lt;String&gt; ids, int maxConcurrent) {
+
+        Semaphore semaphore = new Semaphore(maxConcurrent);
+
+        List&lt;CompletableFuture&lt;String&gt;&gt; futures = ids.stream()
+            .map(id -&gt; CompletableFuture.supplyAsync(() -&gt; {
+                try {
+                    semaphore.acquire();
+                    try {
+                        return fetchDataSync(id);
+                    } finally {
+                        semaphore.release();
+                    }
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                    throw new CompletionException(e);
+                }
+            }, executor))
+            .collect(Collectors.toList());
+
+        return CompletableFuture.allOf(futures.toArray(new CompletableFuture[0]))
+            .thenApply(v -&gt; futures.stream()
+                .map(CompletableFuture::join)
+                .collect(Collectors.toList()));
+    }
+
+    private CompletableFuture&lt;String&gt; fetchDataAsync(String id) {
+        return CompletableFuture.supplyAsync(() -&gt; fetchDataSync(id), executor);
+    }
+
+    private String fetchDataSync(String id) {
+        // Simulate work
+        return &quot;Data: &quot; + id;
+    }
+}
+</code></pre>
+<hr>
+<h2 id="caching-strategies" tabindex="-1"><a class="header-anchor" href="#caching-strategies"><span>Caching Strategies</span></a></h2>
+<h3 id="1-cache-aside-pattern-lazy-loading" tabindex="-1"><a class="header-anchor" href="#1-cache-aside-pattern-lazy-loading"><span>1. Cache-Aside Pattern (Lazy Loading)</span></a></h3>
+<pre><code class="language-java">public class CacheAsidePattern {
+
+    private final Cache&lt;String, User&gt; cache;
+    private final UserRepository repository;
+
+    public CacheAsidePattern(Cache&lt;String, User&gt; cache, UserRepository repository) {
+        this.cache = cache;
+        this.repository = repository;
+    }
+
+    public User getUser(String userId) {
+        // 1. Check cache first
+        User user = cache.get(userId);
+
+        if (user != null) {
+            return user;  // Cache hit
+        }
+
+        // 2. Cache miss - load from database
+        user = repository.findById(userId);
+
+        if (user != null) {
+            // 3. Store in cache
+            cache.put(userId, user);
+        }
+
+        return user;
+    }
+
+    public void updateUser(User user) {
+        // 1. Update database first
+        repository.save(user);
+
+        // 2. Invalidate cache (or update)
+        cache.invalidate(user.getId());
+
+        // Alternative: Update cache
+        // cache.put(user.getId(), user);
+    }
+}
+</code></pre>
+<h3 id="2-write-through-pattern" tabindex="-1"><a class="header-anchor" href="#2-write-through-pattern"><span>2. Write-Through Pattern</span></a></h3>
+<pre><code class="language-java">public class WriteThroughPattern {
+
+    private final Cache&lt;String, User&gt; cache;
+    private final UserRepository repository;
+
+    public User getUser(String userId) {
+        // Always read from cache (cache is source of truth for reads)
+        User user = cache.get(userId);
+
+        if (user == null) {
+            user = repository.findById(userId);
+            if (user != null) {
+                cache.put(userId, user);
+            }
+        }
+
+        return user;
+    }
+
+    public void saveUser(User user) {
+        // Write to both cache and database synchronously
+        repository.save(user);
+        cache.put(user.getId(), user);
+    }
+}
+</code></pre>
+<h3 id="3-write-behind-write-back-pattern" tabindex="-1"><a class="header-anchor" href="#3-write-behind-write-back-pattern"><span>3. Write-Behind (Write-Back) Pattern</span></a></h3>
+<pre><code class="language-java">public class WriteBehindPattern {
+
+    private final Cache&lt;String, User&gt; cache;
+    private final UserRepository repository;
+    private final BlockingQueue&lt;User&gt; writeQueue = new LinkedBlockingQueue&lt;&gt;();
+    private final ScheduledExecutorService writer = Executors.newSingleThreadScheduledExecutor();
+
+    public WriteBehindPattern(Cache&lt;String, User&gt; cache, UserRepository repository) {
+        this.cache = cache;
+        this.repository = repository;
+
+        // Start background writer
+        writer.scheduleWithFixedDelay(this::flushWrites, 100, 100, TimeUnit.MILLISECONDS);
+    }
+
+    public void saveUser(User user) {
+        // 1. Write to cache immediately
+        cache.put(user.getId(), user);
+
+        // 2. Queue for async database write
+        writeQueue.offer(user);
+    }
+
+    private void flushWrites() {
+        List&lt;User&gt; batch = new ArrayList&lt;&gt;();
+        writeQueue.drainTo(batch, 100);  // Batch up to 100 items
+
+        if (!batch.isEmpty()) {
+            try {
+                repository.saveAll(batch);  // Batch write to DB
+            } catch (Exception e) {
+                // Re-queue failed items
+                writeQueue.addAll(batch);
+            }
+        }
+    }
+
+    public void shutdown() {
+        writer.shutdown();
+        flushWrites();  // Final flush
+    }
+}
+</code></pre>
+<h3 id="4-cache-with-distributed-lock-prevent-stampede" tabindex="-1"><a class="header-anchor" href="#4-cache-with-distributed-lock-prevent-stampede"><span>4. Cache with Distributed Lock (Prevent Stampede)</span></a></h3>
+<pre><code class="language-java">public class CacheWithLock {
+
+    private final Cache&lt;String, User&gt; cache;
+    private final UserRepository repository;
+    private final ConcurrentHashMap&lt;String, ReentrantLock&gt; locks = new ConcurrentHashMap&lt;&gt;();
+
+    public User getUser(String userId) {
+        // 1. Check cache
+        User user = cache.get(userId);
+        if (user != null) {
+            return user;
+        }
+
+        // 2. Get lock for this specific key
+        ReentrantLock lock = locks.computeIfAbsent(userId, k -&gt; new ReentrantLock());
+
+        lock.lock();
+        try {
+            // 3. Double-check cache after acquiring lock
+            user = cache.get(userId);
+            if (user != null) {
+                return user;
+            }
+
+            // 4. Load from database
+            user = repository.findById(userId);
+            if (user != null) {
+                cache.put(userId, user);
+            }
+
+            return user;
+        } finally {
+            lock.unlock();
+        }
+    }
+}
+</code></pre>
+<h3 id="5-refresh-ahead-pattern" tabindex="-1"><a class="header-anchor" href="#5-refresh-ahead-pattern"><span>5. Refresh-Ahead Pattern</span></a></h3>
+<pre><code class="language-java">public class RefreshAheadCache {
+
+    private final Cache&lt;String, CacheEntry&lt;User&gt;&gt; cache;
+    private final UserRepository repository;
+    private final ExecutorService refreshExecutor = Executors.newFixedThreadPool(2);
+
+    private static final long TTL_MS = 60_000;           // 60 seconds TTL
+    private static final long REFRESH_THRESHOLD = 45_000; // Refresh at 75% of TTL
+
+    static class CacheEntry&lt;T&gt; {
+        final T value;
+        final long createdAt;
+        volatile boolean refreshing = false;
+
+        CacheEntry(T value) {
+            this.value = value;
+            this.createdAt = System.currentTimeMillis();
+        }
+
+        boolean shouldRefresh() {
+            return System.currentTimeMillis() - createdAt &gt; REFRESH_THRESHOLD;
+        }
+
+        boolean isExpired() {
+            return System.currentTimeMillis() - createdAt &gt; TTL_MS;
+        }
+    }
+
+    public User getUser(String userId) {
+        CacheEntry&lt;User&gt; entry = cache.get(userId);
+
+        if (entry == null || entry.isExpired()) {
+            // Cache miss or expired - synchronous load
+            return loadAndCache(userId);
+        }
+
+        // Trigger async refresh if approaching expiry
+        if (entry.shouldRefresh() &amp;&amp; !entry.refreshing) {
+            entry.refreshing = true;
+            refreshExecutor.submit(() -&gt; {
+                try {
+                    loadAndCache(userId);
+                } catch (Exception e) {
+                    entry.refreshing = false;
+                }
+            });
+        }
+
+        return entry.value;
+    }
+
+    private User loadAndCache(String userId) {
+        User user = repository.findById(userId);
+        if (user != null) {
+            cache.put(userId, new CacheEntry&lt;&gt;(user));
+        }
+        return user;
+    }
+}
+</code></pre>
+<hr>
+<h2 id="message-queue-patterns" tabindex="-1"><a class="header-anchor" href="#message-queue-patterns"><span>Message Queue Patterns</span></a></h2>
+<h3 id="1-at-least-once-delivery-with-idempotency" tabindex="-1"><a class="header-anchor" href="#1-at-least-once-delivery-with-idempotency"><span>1. At-Least-Once Delivery with Idempotency</span></a></h3>
+<pre><code class="language-java">public class AtLeastOnceConsumer {
+
+    private final MessageQueue queue;
+    private final IdempotencyStore idempotencyStore;
+    private final OrderService orderService;
+
+    public void processMessages() {
+        while (true) {
+            Message message = queue.receive();
+
+            try {
+                // Check if already processed
+                if (idempotencyStore.isProcessed(message.getId())) {
+                    queue.acknowledge(message);
+                    continue;
+                }
+
+                // Process the message
+                orderService.processOrder(message.getPayload());
+
+                // Mark as processed BEFORE acknowledging
+                idempotencyStore.markProcessed(message.getId());
+
+                // Acknowledge to queue
+                queue.acknowledge(message);
+
+            } catch (Exception e) {
+                // Don't acknowledge - message will be redelivered
+                queue.nack(message);
+            }
+        }
+    }
+}
+</code></pre>
+<h3 id="2-transactional-outbox-pattern" tabindex="-1"><a class="header-anchor" href="#2-transactional-outbox-pattern"><span>2. Transactional Outbox Pattern</span></a></h3>
+<pre><code class="language-java">/**
+ * Ensures message is sent if and only if database transaction commits.
+ * Solves dual-write problem.
+ */
+public class TransactionalOutbox {
+
+    private final DataSource dataSource;
+    private final ScheduledExecutorService publisher = Executors.newSingleThreadScheduledExecutor();
+
+    public TransactionalOutbox() {
+        // Poll and publish outbox messages
+        publisher.scheduleWithFixedDelay(this::publishPendingMessages, 100, 100, TimeUnit.MILLISECONDS);
+    }
+
+    @Transactional
+    public void createOrder(Order order) {
+        // 1. Save order to database
+        saveOrder(order);
+
+        // 2. Save event to outbox table (same transaction)
+        OutboxEvent event = new OutboxEvent(
+            UUID.randomUUID().toString(),
+            &quot;order.created&quot;,
+            toJson(order),
+            &quot;PENDING&quot;
+        );
+        saveOutboxEvent(event);
+
+        // Transaction commits both or neither
+    }
+
+    private void publishPendingMessages() {
+        List&lt;OutboxEvent&gt; pending = fetchPendingEvents(100);
+
+        for (OutboxEvent event : pending) {
+            try {
+                // Publish to message queue
+                messageQueue.publish(event.getTopic(), event.getPayload());
+
+                // Mark as published
+                markEventPublished(event.getId());
+
+            } catch (Exception e) {
+                // Will retry on next poll
+                markEventFailed(event.getId());
+            }
+        }
+    }
+
+    // Database operations
+    private void saveOrder(Order order) { /* ... */ }
+    private void saveOutboxEvent(OutboxEvent event) { /* ... */ }
+    private List&lt;OutboxEvent&gt; fetchPendingEvents(int limit) { /* ... */ return List.of(); }
+    private void markEventPublished(String id) { /* ... */ }
+    private void markEventFailed(String id) { /* ... */ }
+}
+</code></pre>
+<h3 id="3-dead-letter-queue-handler" tabindex="-1"><a class="header-anchor" href="#3-dead-letter-queue-handler"><span>3. Dead Letter Queue Handler</span></a></h3>
+<pre><code class="language-java">public class DeadLetterQueueHandler {
+
+    private final MessageQueue mainQueue;
+    private final MessageQueue dlq;
+    private final int maxRetries = 3;
+
+    public void processWithDLQ() {
+        while (true) {
+            Message message = mainQueue.receive();
+
+            try {
+                processMessage(message);
+                mainQueue.acknowledge(message);
+
+            } catch (RetryableException e) {
+                int retryCount = message.getRetryCount();
+
+                if (retryCount &lt; maxRetries) {
+                    // Requeue with incremented retry count
+                    message.setRetryCount(retryCount + 1);
+                    message.setNextRetryTime(calculateBackoff(retryCount));
+                    mainQueue.requeue(message);
+                } else {
+                    // Move to DLQ
+                    dlq.publish(message);
+                    mainQueue.acknowledge(message);
+                }
+
+            } catch (NonRetryableException e) {
+                // Immediately move to DLQ
+                dlq.publish(message);
+                mainQueue.acknowledge(message);
+            }
+        }
+    }
+
+    private long calculateBackoff(int retryCount) {
+        // Exponential backoff: 1s, 2s, 4s, 8s...
+        return System.currentTimeMillis() + (1000L * (1 &lt;&lt; retryCount));
+    }
+
+    private void processMessage(Message message) throws RetryableException, NonRetryableException {
+        // Business logic
+    }
+}
+</code></pre>
+<h3 id="4-consumer-group-with-partition-assignment" tabindex="-1"><a class="header-anchor" href="#4-consumer-group-with-partition-assignment"><span>4. Consumer Group with Partition Assignment</span></a></h3>
+<pre><code class="language-java">public class PartitionedConsumer {
+
+    private final int consumerId;
+    private final int totalConsumers;
+    private final MessageQueue queue;
+
+    public PartitionedConsumer(int consumerId, int totalConsumers) {
+        this.consumerId = consumerId;
+        this.totalConsumers = totalConsumers;
+    }
+
+    public void consume() {
+        while (true) {
+            Message message = queue.receive();
+
+            // Check if this message belongs to this consumer
+            int partition = getPartition(message.getKey());
+
+            if (partition == consumerId) {
+                processMessage(message);
+                queue.acknowledge(message);
+            } else {
+                // Requeue for correct consumer (or skip if using proper partitioning)
+                queue.requeue(message);
+            }
+        }
+    }
+
+    private int getPartition(String key) {
+        // Consistent hash to determine partition
+        return Math.abs(key.hashCode() % totalConsumers);
+    }
+
+    private void processMessage(Message message) {
+        // Process message
+    }
+}
+</code></pre>
+<hr>
+<h2 id="distributed-transactions" tabindex="-1"><a class="header-anchor" href="#distributed-transactions"><span>Distributed Transactions</span></a></h2>
+<h3 id="1-saga-pattern-choreography" tabindex="-1"><a class="header-anchor" href="#1-saga-pattern-choreography"><span>1. Saga Pattern (Choreography)</span></a></h3>
+<pre><code class="language-java">/**
+ * Each service publishes events, others react.
+ * Compensating transactions for rollback.
+ */
+public class OrderSagaChoreography {
+
+    // Order Service
+    public void createOrder(Order order) {
+        saveOrder(order, &quot;PENDING&quot;);
+        publishEvent(new OrderCreatedEvent(order));
+    }
+
+    public void handlePaymentCompleted(PaymentCompletedEvent event) {
+        updateOrderStatus(event.getOrderId(), &quot;PAYMENT_COMPLETED&quot;);
+        publishEvent(new OrderPaidEvent(event.getOrderId()));
+    }
+
+    public void handlePaymentFailed(PaymentFailedEvent event) {
+        // Compensating transaction
+        updateOrderStatus(event.getOrderId(), &quot;CANCELLED&quot;);
+    }
+
+    // Payment Service
+    public void handleOrderCreated(OrderCreatedEvent event) {
+        try {
+            processPayment(event.getOrder());
+            publishEvent(new PaymentCompletedEvent(event.getOrderId()));
+        } catch (Exception e) {
+            publishEvent(new PaymentFailedEvent(event.getOrderId(), e.getMessage()));
+        }
+    }
+
+    // Inventory Service
+    public void handleOrderPaid(OrderPaidEvent event) {
+        try {
+            reserveInventory(event.getOrderId());
+            publishEvent(new InventoryReservedEvent(event.getOrderId()));
+        } catch (Exception e) {
+            // Compensate: refund payment
+            publishEvent(new InventoryFailedEvent(event.getOrderId()));
+        }
+    }
+}
+</code></pre>
+<h3 id="2-saga-pattern-orchestrator" tabindex="-1"><a class="header-anchor" href="#2-saga-pattern-orchestrator"><span>2. Saga Pattern (Orchestrator)</span></a></h3>
+<pre><code class="language-java">/**
+ * Central orchestrator controls the saga flow.
+ * Easier to understand and debug.
+ */
+public class OrderSagaOrchestrator {
+
+    private final OrderService orderService;
+    private final PaymentService paymentService;
+    private final InventoryService inventoryService;
+    private final ShippingService shippingService;
+
+    public OrderResult executeOrderSaga(OrderRequest request) {
+        String sagaId = UUID.randomUUID().toString();
+        SagaState state = new SagaState(sagaId);
+
+        try {
+            // Step 1: Create order
+            Order order = orderService.createOrder(request);
+            state.setOrderId(order.getId());
+            state.addCompensation(() -&gt; orderService.cancelOrder(order.getId()));
+
+            // Step 2: Process payment
+            PaymentResult payment = paymentService.processPayment(order);
+            state.setPaymentId(payment.getId());
+            state.addCompensation(() -&gt; paymentService.refund(payment.getId()));
+
+            // Step 3: Reserve inventory
+            InventoryReservation reservation = inventoryService.reserve(order);
+            state.setReservationId(reservation.getId());
+            state.addCompensation(() -&gt; inventoryService.release(reservation.getId()));
+
+            // Step 4: Schedule shipping
+            Shipment shipment = shippingService.schedule(order);
+            state.setShipmentId(shipment.getId());
+
+            // All steps succeeded
+            orderService.confirmOrder(order.getId());
+            return OrderResult.success(order.getId());
+
+        } catch (Exception e) {
+            // Execute compensations in reverse order
+            state.compensate();
+            return OrderResult.failure(e.getMessage());
+        }
+    }
+
+    static class SagaState {
+        private final String sagaId;
+        private final Deque&lt;Runnable&gt; compensations = new ArrayDeque&lt;&gt;();
+        private String orderId;
+        private String paymentId;
+        private String reservationId;
+        private String shipmentId;
+
+        SagaState(String sagaId) {
+            this.sagaId = sagaId;
+        }
+
+        void addCompensation(Runnable compensation) {
+            compensations.push(compensation);
+        }
+
+        void compensate() {
+            while (!compensations.isEmpty()) {
+                try {
+                    compensations.pop().run();
+                } catch (Exception e) {
+                    // Log and continue with other compensations
+                    System.err.println(&quot;Compensation failed: &quot; + e.getMessage());
+                }
+            }
+        }
+
+        // Setters omitted for brevity
+        void setOrderId(String id) { this.orderId = id; }
+        void setPaymentId(String id) { this.paymentId = id; }
+        void setReservationId(String id) { this.reservationId = id; }
+        void setShipmentId(String id) { this.shipmentId = id; }
+    }
+}
+</code></pre>
+<h3 id="3-two-phase-commit-2pc-simulation" tabindex="-1"><a class="header-anchor" href="#3-two-phase-commit-2pc-simulation"><span>3. Two-Phase Commit (2PC) Simulation</span></a></h3>
+<pre><code class="language-java">/**
+ * Coordinator-based 2PC implementation.
+ * Note: Rarely used in practice due to blocking nature.
+ */
+public class TwoPhaseCommitCoordinator {
+
+    private final List&lt;Participant&gt; participants;
+
+    public boolean executeTransaction(TransactionContext context) {
+        String txId = UUID.randomUUID().toString();
+
+        // Phase 1: Prepare
+        boolean allPrepared = true;
+        for (Participant participant : participants) {
+            try {
+                boolean prepared = participant.prepare(txId, context);
+                if (!prepared) {
+                    allPrepared = false;
+                    break;
+                }
+            } catch (Exception e) {
+                allPrepared = false;
+                break;
+            }
+        }
+
+        // Phase 2: Commit or Rollback
+        if (allPrepared) {
+            for (Participant participant : participants) {
+                participant.commit(txId);
+            }
+            return true;
+        } else {
+            for (Participant participant : participants) {
+                participant.rollback(txId);
+            }
+            return false;
+        }
+    }
+
+    interface Participant {
+        boolean prepare(String txId, TransactionContext context);
+        void commit(String txId);
+        void rollback(String txId);
+    }
+}
+</code></pre>
+<hr>
+<h2 id="coordination-utilities" tabindex="-1"><a class="header-anchor" href="#coordination-utilities"><span>Coordination Utilities</span></a></h2>
+<h3 id="1-countdownlatch-wait-for-n-events" tabindex="-1"><a class="header-anchor" href="#1-countdownlatch-wait-for-n-events"><span>1. CountDownLatch - Wait for N Events</span></a></h3>
+<pre><code class="language-java">public class CountDownLatchDemo {
+
+    /**
+     * Wait for multiple services to initialize before starting main application.
+     */
+    public void initializeServices() throws InterruptedException {
+        int serviceCount = 3;
+        CountDownLatch latch = new CountDownLatch(serviceCount);
+
+        // Start services in parallel
+        new Thread(() -&gt; {
+            initDatabase();
+            latch.countDown();
+        }).start();
+
+        new Thread(() -&gt; {
+            initCache();
+            latch.countDown();
+        }).start();
+
+        new Thread(() -&gt; {
+            initMessageQueue();
+            latch.countDown();
+        }).start();
+
+        // Wait for all services
+        boolean completed = latch.await(30, TimeUnit.SECONDS);
+
+        if (completed) {
+            System.out.println(&quot;All services initialized!&quot;);
+        } else {
+            throw new RuntimeException(&quot;Service initialization timeout&quot;);
+        }
+    }
+
+    private void initDatabase() { sleep(1000); }
+    private void initCache() { sleep(500); }
+    private void initMessageQueue() { sleep(800); }
+    private void sleep(long ms) { try { Thread.sleep(ms); } catch (InterruptedException e) {} }
+}
+</code></pre>
+<h3 id="2-cyclicbarrier-synchronization-point" tabindex="-1"><a class="header-anchor" href="#2-cyclicbarrier-synchronization-point"><span>2. CyclicBarrier - Synchronization Point</span></a></h3>
+<pre><code class="language-java">public class CyclicBarrierDemo {
+
+    /**
+     * All threads wait at barrier, then proceed together.
+     * Useful for parallel algorithms with phases.
+     */
+    public void parallelMatrixComputation() {
+        int threadCount = 4;
+        CyclicBarrier barrier = new CyclicBarrier(threadCount, () -&gt; {
+            System.out.println(&quot;All threads completed phase, merging results...&quot;);
+        });
+
+        for (int i = 0; i &lt; threadCount; i++) {
+            final int threadId = i;
+            new Thread(() -&gt; {
+                try {
+                    // Phase 1: Compute partial result
+                    System.out.println(&quot;Thread &quot; + threadId + &quot; computing...&quot;);
+                    Thread.sleep(100 * threadId);
+
+                    // Wait for all threads
+                    barrier.await();
+
+                    // Phase 2: All threads proceed together
+                    System.out.println(&quot;Thread &quot; + threadId + &quot; proceeding to phase 2&quot;);
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }).start();
+        }
+    }
+}
+</code></pre>
+<h3 id="3-semaphore-limit-concurrent-access" tabindex="-1"><a class="header-anchor" href="#3-semaphore-limit-concurrent-access"><span>3. Semaphore - Limit Concurrent Access</span></a></h3>
+<pre><code class="language-java">public class SemaphoreDemo {
+
+    /**
+     * Connection pool with limited connections.
+     */
+    private final Semaphore connectionSemaphore;
+    private final Queue&lt;Connection&gt; connectionPool;
+
+    public SemaphoreDemo(int maxConnections) {
+        this.connectionSemaphore = new Semaphore(maxConnections);
+        this.connectionPool = new ConcurrentLinkedQueue&lt;&gt;();
+
+        // Pre-create connections
+        for (int i = 0; i &lt; maxConnections; i++) {
+            connectionPool.offer(createConnection());
+        }
+    }
+
+    public Connection acquireConnection(long timeout, TimeUnit unit)
+            throws InterruptedException, TimeoutException {
+
+        if (!connectionSemaphore.tryAcquire(timeout, unit)) {
+            throw new TimeoutException(&quot;Could not acquire connection&quot;);
+        }
+
+        Connection conn = connectionPool.poll();
+        if (conn == null || !conn.isValid()) {
+            conn = createConnection();
+        }
+        return conn;
+    }
+
+    public void releaseConnection(Connection conn) {
+        if (conn != null) {
+            connectionPool.offer(conn);
+            connectionSemaphore.release();
+        }
+    }
+
+    private Connection createConnection() {
+        return new Connection();
+    }
+}
+</code></pre>
+<h3 id="4-phaser-flexible-barrier" tabindex="-1"><a class="header-anchor" href="#4-phaser-flexible-barrier"><span>4. Phaser - Flexible Barrier</span></a></h3>
+<pre><code class="language-java">public class PhaserDemo {
+
+    /**
+     * Dynamic number of parties, multiple phases.
+     */
+    public void dynamicParallelProcessing() {
+        Phaser phaser = new Phaser(1); // Register self
+
+        for (int i = 0; i &lt; 3; i++) {
+            final int taskId = i;
+            phaser.register(); // Register new party
+
+            new Thread(() -&gt; {
+                for (int phase = 0; phase &lt; 3; phase++) {
+                    System.out.println(&quot;Task &quot; + taskId + &quot; executing phase &quot; + phase);
+
+                    // Wait for others to complete this phase
+                    phaser.arriveAndAwaitAdvance();
+                }
+
+                // Deregister when done
+                phaser.arriveAndDeregister();
+            }).start();
+        }
+
+        // Wait for all tasks to complete
+        while (!phaser.isTerminated()) {
+            phaser.arriveAndAwaitAdvance();
+        }
+    }
+}
+</code></pre>
+<hr>
+<h2 id="graceful-shutdown" tabindex="-1"><a class="header-anchor" href="#graceful-shutdown"><span>Graceful Shutdown</span></a></h2>
+<h3 id="1-executorservice-graceful-shutdown" tabindex="-1"><a class="header-anchor" href="#1-executorservice-graceful-shutdown"><span>1. ExecutorService Graceful Shutdown</span></a></h3>
+<pre><code class="language-java">public class GracefulShutdownDemo {
+
+    private final ExecutorService executor = Executors.newFixedThreadPool(10);
+    private volatile boolean shuttingDown = false;
+
+    public void shutdown() {
+        shuttingDown = true;
+
+        // Stop accepting new tasks
+        executor.shutdown();
+
+        try {
+            // Wait for existing tasks to complete
+            if (!executor.awaitTermination(30, TimeUnit.SECONDS)) {
+                System.err.println(&quot;Forcing shutdown...&quot;);
+
+                // Force shutdown
+                List&lt;Runnable&gt; pendingTasks = executor.shutdownNow();
+                System.err.println(&quot;Pending tasks: &quot; + pendingTasks.size());
+
+                // Wait again
+                if (!executor.awaitTermination(10, TimeUnit.SECONDS)) {
+                    System.err.println(&quot;Executor did not terminate&quot;);
+                }
+            }
+        } catch (InterruptedException e) {
+            executor.shutdownNow();
+            Thread.currentThread().interrupt();
+        }
+    }
+
+    public void submitTask(Runnable task) {
+        if (shuttingDown) {
+            throw new RejectedExecutionException(&quot;Service is shutting down&quot;);
+        }
+        executor.submit(task);
+    }
+}
+</code></pre>
+<h3 id="2-spring-boot-graceful-shutdown" tabindex="-1"><a class="header-anchor" href="#2-spring-boot-graceful-shutdown"><span>2. Spring Boot Graceful Shutdown</span></a></h3>
+<pre><code class="language-java">@Component
+public class GracefulShutdownHandler implements ApplicationListener&lt;ContextClosedEvent&gt; {
+
+    private final ExecutorService executor;
+    private final AtomicInteger activeRequests = new AtomicInteger(0);
+
+    @Override
+    public void onApplicationEvent(ContextClosedEvent event) {
+        System.out.println(&quot;Shutdown initiated, waiting for active requests...&quot;);
+
+        // Wait for active requests to complete
+        int maxWaitSeconds = 30;
+        int waited = 0;
+
+        while (activeRequests.get() &gt; 0 &amp;&amp; waited &lt; maxWaitSeconds) {
+            try {
+                Thread.sleep(1000);
+                waited++;
+                System.out.println(&quot;Active requests: &quot; + activeRequests.get());
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                break;
+            }
+        }
+
+        // Shutdown executor
+        executor.shutdown();
+        try {
+            executor.awaitTermination(10, TimeUnit.SECONDS);
+        } catch (InterruptedException e) {
+            executor.shutdownNow();
+        }
+
+        System.out.println(&quot;Shutdown complete&quot;);
+    }
+
+    public void trackRequest() {
+        activeRequests.incrementAndGet();
+    }
+
+    public void completeRequest() {
+        activeRequests.decrementAndGet();
+    }
+}
+</code></pre>
+<hr>
+<h2 id="backpressure-handling" tabindex="-1"><a class="header-anchor" href="#backpressure-handling"><span>Backpressure Handling</span></a></h2>
+<h3 id="1-blocking-with-bounded-queue" tabindex="-1"><a class="header-anchor" href="#1-blocking-with-bounded-queue"><span>1. Blocking with Bounded Queue</span></a></h3>
+<pre><code class="language-java">public class BackpressureWithBoundedQueue {
+
+    // Bounded queue - producer blocks when full
+    private final BlockingQueue&lt;Task&gt; queue = new ArrayBlockingQueue&lt;&gt;(100);
+
+    public void produce(Task task) throws InterruptedException {
+        // Blocks if queue is full - natural backpressure
+        queue.put(task);
+    }
+
+    public void produceWithTimeout(Task task, long timeout, TimeUnit unit)
+            throws InterruptedException {
+
+        if (!queue.offer(task, timeout, unit)) {
+            throw new RejectedExecutionException(&quot;Queue full, try again later&quot;);
+        }
+    }
+
+    public void consume() throws InterruptedException {
+        Task task = queue.take(); // Blocks if empty
+        process(task);
+    }
+
+    private void process(Task task) { }
+}
+</code></pre>
+<h3 id="2-rate-based-backpressure" tabindex="-1"><a class="header-anchor" href="#2-rate-based-backpressure"><span>2. Rate-Based Backpressure</span></a></h3>
+<pre><code class="language-java">public class RateBasedBackpressure {
+
+    private final RateLimiter rateLimiter;
+    private final BlockingQueue&lt;Task&gt; queue;
+    private final ExecutorService executor;
+
+    public RateBasedBackpressure(int maxRatePerSecond, int queueCapacity) {
+        this.rateLimiter = new TokenBucketRateLimiter(maxRatePerSecond, maxRatePerSecond);
+        this.queue = new ArrayBlockingQueue&lt;&gt;(queueCapacity);
+        this.executor = Executors.newFixedThreadPool(4);
+
+        startConsumer();
+    }
+
+    public boolean submit(Task task) {
+        // Check rate limit
+        if (!rateLimiter.tryAcquire()) {
+            return false; // Rate limited
+        }
+
+        // Check queue capacity
+        return queue.offer(task);
+    }
+
+    private void startConsumer() {
+        executor.submit(() -&gt; {
+            while (!Thread.currentThread().isInterrupted()) {
+                try {
+                    Task task = queue.take();
+                    process(task);
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                    break;
+                }
+            }
+        });
+    }
+
+    private void process(Task task) { }
+}
+</code></pre>
+<h3 id="3-reactive-backpressure-conceptual" tabindex="-1"><a class="header-anchor" href="#3-reactive-backpressure-conceptual"><span>3. Reactive Backpressure (Conceptual)</span></a></h3>
+<pre><code class="language-java">/**
+ * Reactive Streams backpressure with request-based flow control.
+ */
+public class ReactiveBackpressureExample {
+
+    // Subscriber requests N items at a time
+    public void demonstrateBackpressure() {
+        // Conceptual - using Project Reactor/RxJava syntax
+
+        /*
+        Flux.range(1, 1000)
+            .onBackpressureBuffer(100)      // Buffer up to 100
+            .onBackpressureDrop(i -&gt; log(&quot;Dropped: &quot; + i))  // Drop if buffer full
+            .publishOn(Schedulers.parallel())
+            .subscribe(new BaseSubscriber&lt;Integer&gt;() {
+                @Override
+                protected void hookOnSubscribe(Subscription s) {
+                    request(10); // Request initial 10 items
+                }
+
+                @Override
+                protected void hookOnNext(Integer value) {
+                    process(value);
+                    request(1); // Request next item after processing
+                }
+            });
+        */
+    }
+}
+</code></pre>
+<hr>
+<h2 id="common-interview-questions" tabindex="-1"><a class="header-anchor" href="#common-interview-questions"><span>Common Interview Questions</span></a></h2>
+<h3 id="q1-how-would-you-handle-a-thundering-herd-problem" tabindex="-1"><a class="header-anchor" href="#q1-how-would-you-handle-a-thundering-herd-problem"><span>Q1: How would you handle a thundering herd problem?</span></a></h3>
+<p><strong>Answer:</strong></p>
+<ol>
+<li><strong>Cache stampede prevention</strong>: Use distributed lock or <code>computeIfAbsent</code></li>
+<li><strong>Staggered cache expiration</strong>: Add jitter to TTL</li>
+<li><strong>Request coalescing</strong>: Multiple identical requests share one backend call</li>
+<li><strong>Circuit breaker</strong>: Prevent cascading failures</li>
+</ol>
+<pre><code class="language-java">// Request coalescing example
+ConcurrentHashMap&lt;String, CompletableFuture&lt;Data&gt;&gt; inFlightRequests = new ConcurrentHashMap&lt;&gt;();
+
+public CompletableFuture&lt;Data&gt; getData(String key) {
+    return inFlightRequests.computeIfAbsent(key, k -&gt; {
+        return fetchFromBackend(k)
+            .whenComplete((result, ex) -&gt; inFlightRequests.remove(k));
+    });
+}
+</code></pre>
+<h3 id="q2-difference-between-saga-choreography-vs-orchestration" tabindex="-1"><a class="header-anchor" href="#q2-difference-between-saga-choreography-vs-orchestration"><span>Q2: Difference between Saga Choreography vs Orchestration?</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>Aspect</th>
+<th>Choreography</th>
+<th>Orchestration</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Coordination</td>
+<td>Decentralized (events)</td>
+<td>Centralized (orchestrator)</td>
+</tr>
+<tr>
+<td>Coupling</td>
+<td>Loose</td>
+<td>Tighter to orchestrator</td>
+</tr>
+<tr>
+<td>Complexity</td>
+<td>Complex event flows</td>
+<td>Simpler flow control</td>
+</tr>
+<tr>
+<td>Debugging</td>
+<td>Harder (distributed)</td>
+<td>Easier (single point)</td>
+</tr>
+<tr>
+<td>Single point of failure</td>
+<td>No</td>
+<td>Yes (orchestrator)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="q3-how-to-ensure-exactly-once-processing" tabindex="-1"><a class="header-anchor" href="#q3-how-to-ensure-exactly-once-processing"><span>Q3: How to ensure exactly-once processing?</span></a></h3>
+<p><strong>Answer:</strong> True exactly-once is hard. Use idempotency:</p>
+<ol>
+<li><strong>Idempotent operations</strong>: Design operations to be safely repeatable</li>
+<li><strong>Idempotency key</strong>: Track processed request IDs</li>
+<li><strong>Transactional outbox</strong>: Atomically update DB and outbox</li>
+</ol>
+<pre><code class="language-java">// At-least-once delivery + idempotent processing = effectively exactly-once
+public void processMessage(Message msg) {
+    if (isAlreadyProcessed(msg.getId())) {
+        return; // Skip duplicate
+    }
+
+    // Process idempotently (use upsert, conditional updates)
+    processIdempotently(msg);
+
+    markAsProcessed(msg.getId());
+}
+</code></pre>
+<h3 id="q4-when-to-use-countdownlatch-vs-cyclicbarrier" tabindex="-1"><a class="header-anchor" href="#q4-when-to-use-countdownlatch-vs-cyclicbarrier"><span>Q4: When to use CountDownLatch vs CyclicBarrier?</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>CountDownLatch</th>
+<th>CyclicBarrier</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Reusable</td>
+<td>No (single use)</td>
+<td>Yes (can reset)</td>
+</tr>
+<tr>
+<td>Use case</td>
+<td>Wait for N events</td>
+<td>Sync N threads repeatedly</td>
+</tr>
+<tr>
+<td>Action</td>
+<td>Count down to zero</td>
+<td>Wait at barrier</td>
+</tr>
+<tr>
+<td>Example</td>
+<td>Wait for services to start</td>
+<td>Parallel algorithm phases</td>
+</tr>
+</tbody>
+</table>
+<h3 id="q5-how-to-prevent-memory-leaks-in-thread-pools" tabindex="-1"><a class="header-anchor" href="#q5-how-to-prevent-memory-leaks-in-thread-pools"><span>Q5: How to prevent memory leaks in thread pools?</span></a></h3>
+<ol>
+<li><strong>ThreadLocal cleanup</strong>: Always remove ThreadLocal values</li>
+<li><strong>Bounded queues</strong>: Use bounded work queues</li>
+<li><strong>Proper shutdown</strong>: Call <code>shutdown()</code> and <code>awaitTermination()</code></li>
+<li><strong>Reject policy</strong>: Handle rejected tasks properly</li>
+<li><strong>Monitor queue size</strong>: Alert on growing queues</li>
+</ol>
+<pre><code class="language-java">// ThreadLocal cleanup
+public void processInPool(Task task) {
+    executor.submit(() -&gt; {
+        try {
+            threadLocalContext.set(createContext());
+            process(task);
+        } finally {
+            threadLocalContext.remove(); // IMPORTANT!
+        }
+    });
+}
+</code></pre>
+<hr>
+<h2 id="summary-pattern-selection-guide" tabindex="-1"><a class="header-anchor" href="#summary-pattern-selection-guide"><span>Summary: Pattern Selection Guide</span></a></h2>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>Pattern</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Parallel independent tasks</td>
+<td><code>CompletableFuture.allOf()</code></td>
+</tr>
+<tr>
+<td>First result wins</td>
+<td><code>CompletableFuture.anyOf()</code></td>
+</tr>
+<tr>
+<td>Limit concurrency</td>
+<td><code>Semaphore</code></td>
+</tr>
+<tr>
+<td>Wait for events</td>
+<td><code>CountDownLatch</code></td>
+</tr>
+<tr>
+<td>Sync at phases</td>
+<td><code>CyclicBarrier</code></td>
+</tr>
+<tr>
+<td>Dynamic coordination</td>
+<td><code>Phaser</code></td>
+</tr>
+<tr>
+<td>Distributed transactions</td>
+<td>Saga (Orchestrator)</td>
+</tr>
+<tr>
+<td>Event-driven transactions</td>
+<td>Saga (Choreography)</td>
+</tr>
+<tr>
+<td>Cache miss handling</td>
+<td>Cache-Aside + Lock</td>
+</tr>
+<tr>
+<td>Write performance</td>
+<td>Write-Behind</td>
+</tr>
+<tr>
+<td>Message reliability</td>
+<td>At-least-once + Idempotency</td>
+</tr>
+<tr>
+<td>Failed message handling</td>
+<td>Dead Letter Queue</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="references" tabindex="-1"><a class="header-anchor" href="#references"><span>References</span></a></h2>
+<ul>
+<li><a href="https://jcip.net/">Java Concurrency in Practice</a></li>
+<li><a href="https://martinfowler.com/bliki/CQRS.html">Martin Fowler - CQRS</a></li>
+<li><a href="https://microservices.io/patterns/">Microservices Patterns - Chris Richardson</a></li>
+<li><a href="https://docs.aws.amazon.com/prescriptive-guidance/latest/modernization-data-persistence/saga-pattern.html">AWS: Saga Pattern</a></li>
+</ul>
+
+      </div>
+      <div class="cheatsheet-footer">
+        <a href="../faqs.html" class="back-link">← Back to FAQs</a>
+        <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/faq/backend/be_programming_notes_pt2.md" class="github-edit" target="_blank">
+          Edit on GitHub →
+        </a>
+      </div>
+    <nav class="prev-next"><a href="backend_be_programming_notes.html" class="prev-link">← Be Programming Notes</a><a href="backend_be_programming_notes_pt3.html" class="next-link">Be Programming Notes Pt3 →</a></nav>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>CS_basics - Computer Science Fundamentals & Interview Preparation</p>
+      <p>
+        <a href="https://github.com/yennanliu/CS_basics">GitHub</a> •
+        <a href="https://github.com/yennanliu/CS_basics/tree/master/doc">Documentation</a> •
+        <a href="https://github.com/yennanliu/CS_basics/issues">Report Issues</a>
+      </p>
+    </div>
+  </footer>
+</body>
+</html>

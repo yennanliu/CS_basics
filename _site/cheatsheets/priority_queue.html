@@ -1,0 +1,2617 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Priority Queue - CS_basics</title>
+  <meta name="description" content="Computer Science fundamentals: algorithms, data structures, system design, and LeetCode solutions">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>CS</text></svg>">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="../vendor/fonts.css">
+  <link rel="stylesheet" href="../vendor/highlight/github-dark.min.css">
+  <script src="../vendor/highlight/highlight.min.js"></script>
+  <script>
+  // Apply theme before render to prevent flash
+  (function() {
+    var saved = localStorage.getItem('theme');
+    if (saved === 'dark' || (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      document.documentElement.setAttribute('data-theme', 'dark');
+    }
+  })();
+  </script>
+  <script>document.addEventListener('DOMContentLoaded', function() {
+    hljs.highlightAll();
+    document.querySelectorAll('pre code').forEach(function(codeEl) {
+      var pre = codeEl.parentElement;
+      var lang = '';
+      var cls = codeEl.className || '';
+      var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
+      if (m) lang = m[1];
+      var wrapper = document.createElement('div');
+      wrapper.className = 'code-block-wrapper';
+      pre.parentNode.insertBefore(wrapper, pre);
+      var header = document.createElement('div');
+      header.className = 'code-block-header';
+      if (lang) {
+        var label = document.createElement('span');
+        label.className = 'code-lang-label';
+        label.textContent = lang;
+        header.appendChild(label);
+      } else {
+        header.appendChild(document.createElement('span'));
+      }
+      var btn = document.createElement('button');
+      btn.className = 'copy-btn';
+      btn.textContent = 'Copy';
+      btn.addEventListener('click', function() {
+        navigator.clipboard.writeText(codeEl.textContent).then(function() {
+          btn.textContent = 'Copied!';
+          btn.classList.add('copied');
+          setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+        });
+      });
+      header.appendChild(btn);
+      wrapper.appendChild(header);
+      wrapper.appendChild(pre);
+    });
+    document.querySelectorAll('table').forEach(function(table) {
+      if (!table.parentElement.classList.contains('table-wrap')) {
+        var wrapper = document.createElement('div');
+        wrapper.className = 'table-wrap';
+        table.parentNode.insertBefore(wrapper, table);
+        wrapper.appendChild(table);
+      }
+    });
+    // Reading progress bar
+    var progressBar = document.getElementById('reading-progress');
+    if (progressBar) {
+      window.addEventListener('scroll', function() {
+        var winScroll = document.documentElement.scrollTop;
+        var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        progressBar.style.width = height > 0 ? (winScroll / height * 100) + '%' : '0%';
+      });
+    }
+    // Dark mode toggle
+    var toggle = document.getElementById('theme-toggle');
+    if (toggle) {
+      var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      toggle.textContent = isDark ? '☀️' : '🌙';
+      toggle.addEventListener('click', function() {
+        var dark = document.documentElement.getAttribute('data-theme') === 'dark';
+        if (dark) {
+          document.documentElement.removeAttribute('data-theme');
+          localStorage.setItem('theme', 'light');
+          toggle.textContent = '🌙';
+        } else {
+          document.documentElement.setAttribute('data-theme', 'dark');
+          localStorage.setItem('theme', 'dark');
+          toggle.textContent = '☀️';
+        }
+      });
+    }
+  });</script>
+</head>
+<body>
+  <div class="progress-container"><div class="progress-bar" id="reading-progress"></div></div>
+  <nav class="navbar">
+    <div class="container">
+      <div class="nav-brand">
+        <span class="nav-icon">💻</span>
+        <span class="nav-title">CS_basics</span>
+      </div>
+      <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+      <div class="nav-links">
+        <a href="../index.html" class="">Home</a>
+        <a href="../cheatsheets.html" class="active">Cheat Sheets</a>
+        <a href="../patterns.html" class="">Pattern Recognition</a>
+        <a href="../faqs.html" class="">FAQs</a>
+        <a href="../resources.html" class="">Resources</a>
+        <a href="../lc-explorer.html" class="">LC Explorer</a>
+        <a href="../lc-random-picker.html" class="">🎲 Random Picker</a>
+        <a href="../algo_demo/index.html" class="">Visualizer</a>
+        <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">&#127769;</button>
+        <a href="https://github.com/yennanliu/CS_basics" target="_blank" class="github-link" aria-label="GitHub">
+          <svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor">
+            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container">
+    <div class="content">
+      
+      <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">Priority Queue</span></nav>
+      <div class="cheatsheet-header">
+        <h1>Priority Queue</h1>
+        <span class="last-updated">Last updated: Apr 9, 2026</span>
+      </div>
+      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#overview">Overview</a></li><li class="toc-sub"><a href="#key-properties">Key Properties</a></li><li class="toc-sub"><a href="#implementation">Implementation</a></li><li class="toc-sub"><a href="#references">References</a></li><li><a href="#problem-categories">Problem Categories</a></li><li class="toc-sub"><a href="#pattern-1-top-k-elements">Pattern 1: Top K Elements</a></li><li class="toc-sub"><a href="#pattern-2-merge-k-sorted">Pattern 2: Merge K Sorted</a></li><li class="toc-sub"><a href="#pattern-3-scheduling-intervals">Pattern 3: Scheduling &amp; Intervals</a></li><li class="toc-sub"><a href="#pattern-4-sliding-window-with-order">Pattern 4: Sliding Window with Order</a></li><li class="toc-sub"><a href="#pattern-5-graph-algorithms">Pattern 5: Graph Algorithms</a></li><li class="toc-sub"><a href="#pattern-6-data-stream-median">Pattern 6: Data Stream &amp; Median</a></li><li class="toc-sub"><a href="#pattern-7-greedy-string-sequence-building-with-constraint">Pattern 7: Greedy String/Sequence Building with Constraint</a></li><li class="toc-sub"><a href="#pattern-8-pq-cooldown-queue-k-distance-scheduling">Pattern 8: PQ + Cooldown Queue (k-Distance Scheduling)</a></li><li><a href="#templates-algorithms">Templates &amp; Algorithms</a></li><li class="toc-sub"><a href="#template-comparison-table">Template Comparison Table</a></li><li class="toc-sub"><a href="#template-1-top-k-elements-pattern">Template 1: Top K Elements Pattern</a></li><li class="toc-sub"><a href="#template-2-k-way-merge-pattern">Template 2: K-Way Merge Pattern</a></li><li class="toc-sub"><a href="#template-3-two-heaps-pattern-median-finding">Template 3: Two Heaps Pattern (Median Finding)</a></li><li class="toc-sub"><a href="#template-4-interval-scheduling-pattern">Template 4: Interval Scheduling Pattern</a></li><li class="toc-sub"><a href="#template-5-graph-shortest-path-dijkstra">Template 5: Graph Shortest Path (Dijkstra)</a></li><li class="toc-sub"><a href="#template-6-custom-priority-pattern">Template 6: Custom Priority Pattern</a></li><li class="toc-sub"><a href="#template-7-greedy-string-building-with-consecutive-constraint">Template 7: Greedy String Building with Consecutive Constraint</a></li><li class="toc-sub"><a href="#template-8-pq-cooldown-queue-k-distance-scheduling">Template 8: PQ + Cooldown Queue (k-Distance Scheduling)</a></li><li><a href="#basic-operations">Basic Operations</a></li><li class="toc-sub"><a href="#python-heapq-operations">Python heapq Operations</a></li><li class="toc-sub"><a href="#java-priorityqueue-operations">Java PriorityQueue Operations</a></li><li><a href="#problems-by-pattern">Problems by Pattern</a></li><li class="toc-sub"><a href="#pattern-based-problem-tables">Pattern-Based Problem Tables</a></li><li><a href="#pattern-selection-strategy">Pattern Selection Strategy</a></li><li><a href="#summary-quick-reference">Summary &amp; Quick Reference</a></li><li class="toc-sub"><a href="#complexity-quick-reference">Complexity Quick Reference</a></li><li class="toc-sub"><a href="#template-quick-reference">Template Quick Reference</a></li><li class="toc-sub"><a href="#common-patterns-tricks">Common Patterns &amp; Tricks</a></li><li class="toc-sub"><a href="#problem-solving-steps">Problem-Solving Steps</a></li><li class="toc-sub"><a href="#common-mistakes-tips">Common Mistakes &amp; Tips</a></li><li class="toc-sub"><a href="#interview-tips">Interview Tips</a></li><li class="toc-sub"><a href="#advanced-techniques">Advanced Techniques</a></li><li class="toc-sub"><a href="#related-topics">Related Topics</a></li><li><a href="#classic-lc-problems-with-java-solutions">Classic LC Problems with Java Solutions</a></li><li class="toc-sub"><a href="#2-1-kth-largest-element-in-an-array-lc-215">2-1) Kth Largest Element in an Array (LC 215)</a></li><li class="toc-sub"><a href="#2-2-top-k-frequent-elements-lc-347">2-2) Top K Frequent Elements (LC 347)</a></li><li class="toc-sub"><a href="#2-3-merge-k-sorted-lists-lc-23">2-3) Merge K Sorted Lists (LC 23)</a></li><li class="toc-sub"><a href="#2-4-find-median-from-data-stream-lc-295">2-4) Find Median from Data Stream (LC 295)</a></li><li class="toc-sub"><a href="#2-5-meeting-rooms-ii-lc-253">2-5) Meeting Rooms II (LC 253)</a></li><li class="toc-sub"><a href="#2-6-kth-largest-element-in-a-stream-lc-703">2-6) Kth Largest Element in a Stream (LC 703)</a></li><li class="toc-sub"><a href="#2-7-k-closest-points-to-origin-lc-973">2-7) K Closest Points to Origin (LC 973)</a></li><li class="toc-sub"><a href="#2-8-kth-smallest-element-in-a-sorted-matrix-lc-378">2-8) Kth Smallest Element in a Sorted Matrix (LC 378)</a></li><li class="toc-sub"><a href="#2-9-task-scheduler-lc-621">2-9) Task Scheduler (LC 621)</a></li><li class="toc-sub"><a href="#2-10-reorganize-string-lc-767">2-10) Reorganize String (LC 767)</a></li><li class="toc-sub"><a href="#2-10-1-rearrange-string-k-distance-apart-lc-358-pq-cooldown-queue">2-10-1) Rearrange String k Distance Apart (LC 358) — PQ + Cooldown Queue</a></li><li class="toc-sub"><a href="#2-11-sliding-window-median-lc-480">2-11) Sliding Window Median (LC 480)</a></li><li class="toc-sub"><a href="#2-12-ugly-number-ii-lc-264">2-12) Ugly Number II (LC 264)</a></li><li class="toc-sub"><a href="#2-13-network-delay-time-lc-743-dijkstra">2-13) Network Delay Time (LC 743 - Dijkstra)</a></li><li class="toc-sub"><a href="#2-14-sort-characters-by-frequency-lc-451">2-14) Sort Characters By Frequency (LC 451)</a></li><li class="toc-sub"><a href="#2-15-last-stone-weight-lc-1046">2-15) Last Stone Weight (LC 1046)</a></li><li><a href="#quick-reference-pq-pattern-problem-mapping">Quick Reference: PQ Pattern → Problem Mapping</a></li><li><a href="#lc-examples">LC Examples</a></li><li class="toc-sub"><a href="#2-1-kth-largest-element-in-a-stream-lc-703-min-heap-of-size-k">2-1) Kth Largest Element in a Stream (LC 703) — Min-Heap of Size K</a></li><li class="toc-sub"><a href="#2-2-top-k-frequent-elements-lc-347-min-heap-with-frequency">2-2) Top K Frequent Elements (LC 347) — Min-Heap with Frequency</a></li><li class="toc-sub"><a href="#2-3-merge-k-sorted-lists-lc-23-min-heap">2-3) Merge K Sorted Lists (LC 23) — Min-Heap</a></li></ul></div>
+      <div class="cheatsheet-content">
+        <h1 id="priority-queue-pq-data-structure" tabindex="-1"><a class="header-anchor" href="#priority-queue-pq-data-structure"><span>Priority Queue (PQ) Data Structure</span></a></h1>
+<h2 id="overview" tabindex="-1"><a class="header-anchor" href="#overview"><span>Overview</span></a></h2>
+<p><strong>Priority Queue</strong> is an abstract data type that operates similar to a regular queue but with an added priority element. Elements are served based on their priority rather than the order they were added.</p>
+<h3 id="key-properties" tabindex="-1"><a class="header-anchor" href="#key-properties"><span>Key Properties</span></a></h3>
+<ul>
+<li><strong>Time Complexity</strong>:
+<ul>
+<li>Insert: O(log n)</li>
+<li>Delete max/min: O(log n)</li>
+<li>Get max/min: O(1)</li>
+<li>Heapify: O(n)</li>
+</ul>
+</li>
+<li><strong>Space Complexity</strong>: O(n)</li>
+<li><strong>Core Idea</strong>: Elements with higher priority are served before elements with lower priority</li>
+<li><strong>When to Use</strong>: When you need to process elements based on priority/order, not just insertion time</li>
+</ul>
+<h3 id="implementation" tabindex="-1"><a class="header-anchor" href="#implementation"><span>Implementation</span></a></h3>
+<ul>
+<li>Usually implemented using <strong>Binary Heap</strong> (min-heap or max-heap)</li>
+<li>Can also use balanced BST or Fibonacci heap for advanced operations</li>
+<li>Python: <code>heapq</code> module (min-heap by default)</li>
+<li>Java: <code>PriorityQueue</code> class (min-heap by default)</li>
+</ul>
+<h3 id="references" tabindex="-1"><a class="header-anchor" href="#references"><span>References</span></a></h3>
+<ul>
+<li><a href="https://docs.python.org/3/library/heapq.html">Python heapq documentation</a></li>
+<li><a href="https://docs.oracle.com/javase/8/docs/api/java/util/PriorityQueue.html">Java PriorityQueue</a></li>
+<li><a href="https://docs.python.org/3/library/heapq.html#priority-queue-implementation-notes">Priority Queue Implementation Notes</a></li>
+</ul>
+<h2 id="problem-categories" tabindex="-1"><a class="header-anchor" href="#problem-categories"><span>Problem Categories</span></a></h2>
+<h3 id="pattern-1-top-k-elements" tabindex="-1"><a class="header-anchor" href="#pattern-1-top-k-elements"><span><strong>Pattern 1: Top K Elements</strong></span></a></h3>
+<ul>
+<li><strong>Description</strong>: Finding K largest/smallest elements efficiently</li>
+<li><strong>Examples</strong>: LC 215, 347, 692, 973, 1985</li>
+<li><strong>Pattern</strong>: Use min-heap for K largest, max-heap for K smallest</li>
+</ul>
+<h3 id="pattern-2-merge-k-sorted" tabindex="-1"><a class="header-anchor" href="#pattern-2-merge-k-sorted"><span><strong>Pattern 2: Merge K Sorted</strong></span></a></h3>
+<ul>
+<li><strong>Description</strong>: Merging multiple sorted sequences</li>
+<li><strong>Examples</strong>: LC 23, 88, 313, 373, 786</li>
+<li><strong>Pattern</strong>: Use PQ to track current smallest/largest from each sequence</li>
+</ul>
+<h3 id="pattern-3-scheduling-intervals" tabindex="-1"><a class="header-anchor" href="#pattern-3-scheduling-intervals"><span><strong>Pattern 3: Scheduling &amp; Intervals</strong></span></a></h3>
+<ul>
+<li><strong>Description</strong>: Task scheduling and interval processing</li>
+<li><strong>Examples</strong>: LC 253, 1094, 1353, 1834, 2402</li>
+<li><strong>Pattern</strong>: Sort by start time, use PQ for end times or priorities</li>
+</ul>
+<h3 id="pattern-4-sliding-window-with-order" tabindex="-1"><a class="header-anchor" href="#pattern-4-sliding-window-with-order"><span><strong>Pattern 4: Sliding Window with Order</strong></span></a></h3>
+<ul>
+<li><strong>Description</strong>: Maintaining order statistics in sliding windows</li>
+<li><strong>Examples</strong>: LC 239, 480, 703, 1438, 2542</li>
+<li><strong>Pattern</strong>: Use PQ to track min/max in current window</li>
+</ul>
+<h3 id="pattern-5-graph-algorithms" tabindex="-1"><a class="header-anchor" href="#pattern-5-graph-algorithms"><span><strong>Pattern 5: Graph Algorithms</strong></span></a></h3>
+<ul>
+<li><strong>Description</strong>: Shortest path and MST algorithms</li>
+<li><strong>Examples</strong>: LC 743, 787, 1514, 1584, 1631</li>
+<li><strong>Pattern</strong>: Dijkstra’s algorithm, Prim’s algorithm</li>
+</ul>
+<h3 id="pattern-6-data-stream-median" tabindex="-1"><a class="header-anchor" href="#pattern-6-data-stream-median"><span><strong>Pattern 6: Data Stream &amp; Median</strong></span></a></h3>
+<ul>
+<li><strong>Description</strong>: Processing continuous data streams</li>
+<li><strong>Examples</strong>: LC 295, 346, 352, 703, 1825</li>
+<li><strong>Pattern</strong>: Two-heap technique for median, PQ for percentiles</li>
+</ul>
+<h3 id="pattern-7-greedy-string-sequence-building-with-constraint" tabindex="-1"><a class="header-anchor" href="#pattern-7-greedy-string-sequence-building-with-constraint"><span><strong>Pattern 7: Greedy String/Sequence Building with Constraint</strong></span></a></h3>
+<ul>
+<li><strong>Description</strong>: Build a string/sequence greedily using the most frequent element, but skip it when adding it would violate a constraint (e.g., 3 consecutive same chars). Use a max-heap to always have the current most frequent element ready.</li>
+<li><strong>Examples</strong>: LC 1405 (Longest Happy String), LC 767 (Reorganize String), LC 621 (Task Scheduler), LC 358 (Rearrange String k Distance Apart)</li>
+<li><strong>Pattern</strong>: Max-heap ordered by count; on each step try the top element — if it violates the constraint, temporarily use the 2nd element, then put the 1st back</li>
+<li><strong>Key Trick</strong>: Two-case loop
+<ol>
+<li><strong>Case 1 — constraint violated</strong>: poll <code>second</code>, append it, decrement, re-add if &gt; 0; then re-add <code>first</code> (it was NOT consumed)</li>
+<li><strong>Case 2 — safe</strong>: append <code>first</code>, decrement, re-add if &gt; 0</li>
+</ol>
+</li>
+</ul>
+<h3 id="pattern-8-pq-cooldown-queue-k-distance-scheduling" tabindex="-1"><a class="header-anchor" href="#pattern-8-pq-cooldown-queue-k-distance-scheduling"><span><strong>Pattern 8: PQ + Cooldown Queue (k-Distance Scheduling)</strong></span></a></h3>
+<ul>
+<li><strong>Description</strong>: Greedily pick the most frequent element from a max-heap, then lock it in a cooldown queue for k steps before it can be reused. This is the canonical pattern for “same element must be at least k distance apart” problems.</li>
+<li><strong>Examples</strong>: LC 358 (Rearrange String k Distance Apart), LC 621 (Task Scheduler), LC 767 (Reorganize String — k=2 special case)</li>
+<li><strong>Pattern</strong>: Max-heap picks next element; after use, element enters a cooldown queue with <code>releaseTime = time + k</code>; when <code>time == releaseTime</code>, element is moved back to the heap</li>
+<li><strong>Key Insight</strong>: PQ alone cannot track “last used position” — the cooldown queue acts as a k-slot delay line that automatically re-enables elements after k steps</li>
+<li><strong>When to Use</strong>:
+<ol>
+<li>Problem says “same element at least k apart” or “cooldown of k”</li>
+<li>Need to greedily pick most frequent available element</li>
+<li>Elements cycle through available → used → cooling → available</li>
+</ol>
+</li>
+<li><strong>Difference from Pattern 7</strong>: Pattern 7 checks a look-back window and swaps elements; Pattern 8 uses an explicit cooldown queue to enforce the distance, which is cleaner for variable k</li>
+</ul>
+<h2 id="templates-algorithms" tabindex="-1"><a class="header-anchor" href="#templates-algorithms"><span>Templates &amp; Algorithms</span></a></h2>
+<h3 id="template-comparison-table" tabindex="-1"><a class="header-anchor" href="#template-comparison-table"><span>Template Comparison Table</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>Template Type</th>
+<th>Use Case</th>
+<th>Heap Type</th>
+<th>Complexity</th>
+<th>When to Use</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Top K Elements</strong></td>
+<td>Find K largest/smallest</td>
+<td>Min/Max heap</td>
+<td>O(n log k)</td>
+<td>Fixed K selection</td>
+</tr>
+<tr>
+<td><strong>K-Way Merge</strong></td>
+<td>Merge sorted lists</td>
+<td>Min heap</td>
+<td>O(n log k)</td>
+<td>Multiple sorted sources</td>
+</tr>
+<tr>
+<td><strong>Two Heaps</strong></td>
+<td>Find median</td>
+<td>Min + Max heap</td>
+<td>O(log n)</td>
+<td>Stream median/percentile</td>
+</tr>
+<tr>
+<td><strong>Interval Scheduling</strong></td>
+<td>Process intervals</td>
+<td>Min heap</td>
+<td>O(n log n)</td>
+<td>Meeting rooms, events</td>
+</tr>
+<tr>
+<td><strong>Graph Shortest Path</strong></td>
+<td>Dijkstra’s</td>
+<td>Min heap</td>
+<td>O(E log V)</td>
+<td>Weighted graphs</td>
+</tr>
+<tr>
+<td><strong>Custom Priority</strong></td>
+<td>Complex ordering</td>
+<td>Custom comparator</td>
+<td>O(log n)</td>
+<td>Multi-criteria sorting</td>
+</tr>
+<tr>
+<td><strong>Greedy + Constraint</strong></td>
+<td>Build string avoiding consecutive repeats</td>
+<td>Max heap</td>
+<td>O(n log k)</td>
+<td>Reorganize/happy string</td>
+</tr>
+<tr>
+<td><strong>PQ + Cooldown Queue</strong></td>
+<td>k-distance apart scheduling</td>
+<td>Max heap + Queue</td>
+<td>O(n log k)</td>
+<td>Rearrange k-dist, task scheduler</td>
+</tr>
+</tbody>
+</table>
+<h3 id="template-1-top-k-elements-pattern" tabindex="-1"><a class="header-anchor" href="#template-1-top-k-elements-pattern"><span>Template 1: Top K Elements Pattern</span></a></h3>
+<pre><code class="language-python"># Python - Find K largest elements
+def topKElements(nums, k):
+    import heapq
+    
+    # Min heap of size k for k largest
+    min_heap = []
+    
+    for num in nums:
+        heapq.heappush(min_heap, num)
+        if len(min_heap) &gt; k:
+            heapq.heappop(min_heap)
+    
+    return min_heap  # Contains k largest elements
+
+# With custom key for frequency
+def topKFrequent(nums, k):
+    from collections import Counter
+    import heapq
+    
+    count = Counter(nums)
+    # Use negative count for max heap effect
+    return heapq.nlargest(k, count.keys(), key=count.get)
+</code></pre>
+<pre><code class="language-java">// Java - Top K elements with frequency
+public int[] topKFrequent(int[] nums, int k) {
+    Map&lt;Integer, Integer&gt; map = new HashMap&lt;&gt;();
+    for (int n : nums) {
+        map.put(n, map.getOrDefault(n, 0) + 1);
+    }
+    
+    // Min heap based on frequency
+    PriorityQueue&lt;Integer&gt; pq = new PriorityQueue&lt;&gt;(
+        (a, b) -&gt; map.get(a) - map.get(b)
+    );
+    
+    for (int key : map.keySet()) {
+        pq.add(key);
+        if (pq.size() &gt; k) {
+            pq.poll();
+        }
+    }
+    
+    int[] result = new int[k];
+    for (int i = k - 1; i &gt;= 0; i--) {
+        result[i] = pq.poll();
+    }
+    return result;
+}
+</code></pre>
+<h3 id="template-2-k-way-merge-pattern" tabindex="-1"><a class="header-anchor" href="#template-2-k-way-merge-pattern"><span>Template 2: K-Way Merge Pattern</span></a></h3>
+<pre><code class="language-python"># Python - Merge K sorted lists
+def mergeKSortedLists(lists):
+    import heapq
+    
+    min_heap = []
+    
+    # Initialize with first element from each list
+    for i, lst in enumerate(lists):
+        if lst:
+            heapq.heappush(min_heap, (lst[0], i, 0))
+    
+    result = []
+    while min_heap:
+        val, list_idx, elem_idx = heapq.heappop(min_heap)
+        result.append(val)
+        
+        # Add next element from same list
+        if elem_idx + 1 &lt; len(lists[list_idx]):
+            next_val = lists[list_idx][elem_idx + 1]
+            heapq.heappush(min_heap, (next_val, list_idx, elem_idx + 1))
+    
+    return result
+</code></pre>
+<pre><code class="language-java">// Java - Merge K sorted arrays
+public int[] mergeKSortedArrays(int[][] arrays) {
+    PriorityQueue&lt;int[]&gt; pq = new PriorityQueue&lt;&gt;(
+        (a, b) -&gt; a[0] - b[0]  // Compare values
+    );
+    
+    int totalSize = 0;
+    // Initialize PQ with first element from each array
+    for (int i = 0; i &lt; arrays.length; i++) {
+        if (arrays[i].length &gt; 0) {
+            pq.offer(new int[]{arrays[i][0], i, 0});
+            totalSize += arrays[i].length;
+        }
+    }
+    
+    int[] result = new int[totalSize];
+    int idx = 0;
+    
+    while (!pq.isEmpty()) {
+        int[] curr = pq.poll();
+        result[idx++] = curr[0];
+        
+        int arrIdx = curr[1];
+        int elemIdx = curr[2];
+        
+        if (elemIdx + 1 &lt; arrays[arrIdx].length) {
+            pq.offer(new int[]{
+                arrays[arrIdx][elemIdx + 1], 
+                arrIdx, 
+                elemIdx + 1
+            });
+        }
+    }
+    
+    return result;
+}
+</code></pre>
+<h3 id="template-3-two-heaps-pattern-median-finding" tabindex="-1"><a class="header-anchor" href="#template-3-two-heaps-pattern-median-finding"><span>Template 3: Two Heaps Pattern (Median Finding)</span></a></h3>
+<pre><code class="language-python"># Python - Find median from data stream
+class MedianFinder:
+    def __init__(self):
+        self.small = []  # Max heap (negate values)
+        self.large = []  # Min heap
+    
+    def addNum(self, num):
+        import heapq
+        
+        # Add to max heap (small values)
+        heapq.heappush(self.small, -num)
+        
+        # Balance: ensure max of small &lt;= min of large
+        if self.small and self.large and (-self.small[0] &gt; self.large[0]):
+            val = -heapq.heappop(self.small)
+            heapq.heappush(self.large, val)
+        
+        # Balance sizes
+        if len(self.small) &gt; len(self.large) + 1:
+            val = -heapq.heappop(self.small)
+            heapq.heappush(self.large, val)
+        if len(self.large) &gt; len(self.small) + 1:
+            val = heapq.heappop(self.large)
+            heapq.heappush(self.small, -val)
+    
+    def findMedian(self):
+        if len(self.small) &gt; len(self.large):
+            return -self.small[0]
+        if len(self.large) &gt; len(self.small):
+            return self.large[0]
+        return (-self.small[0] + self.large[0]) / 2.0
+</code></pre>
+<pre><code class="language-java">// Java - Two heaps for median
+class MedianFinder {
+    private PriorityQueue&lt;Integer&gt; small;  // Max heap
+    private PriorityQueue&lt;Integer&gt; large;  // Min heap
+    
+    public MedianFinder() {
+        small = new PriorityQueue&lt;&gt;(Collections.reverseOrder());
+        large = new PriorityQueue&lt;&gt;();
+    }
+    
+    public void addNum(int num) {
+        small.offer(num);
+        
+        // Balance property
+        if (!small.isEmpty() &amp;&amp; !large.isEmpty() &amp;&amp; 
+            small.peek() &gt; large.peek()) {
+            large.offer(small.poll());
+        }
+        
+        // Size property
+        if (small.size() &gt; large.size() + 1) {
+            large.offer(small.poll());
+        }
+        if (large.size() &gt; small.size() + 1) {
+            small.offer(large.poll());
+        }
+    }
+    
+    public double findMedian() {
+        if (small.size() &gt; large.size()) {
+            return small.peek();
+        }
+        if (large.size() &gt; small.size()) {
+            return large.peek();
+        }
+        return (small.peek() + large.peek()) / 2.0;
+    }
+}
+</code></pre>
+<h3 id="template-4-interval-scheduling-pattern" tabindex="-1"><a class="header-anchor" href="#template-4-interval-scheduling-pattern"><span>Template 4: Interval Scheduling Pattern</span></a></h3>
+<pre><code class="language-python"># Python - Meeting rooms (minimum rooms needed)
+def minMeetingRooms(intervals):
+    import heapq
+    
+    if not intervals:
+        return 0
+    
+    # Sort by start time
+    intervals.sort(key=lambda x: x[0])
+    
+    # Min heap to track end times
+    heap = []
+    heapq.heappush(heap, intervals[0][1])
+    
+    for i in range(1, len(intervals)):
+        # If current meeting starts after earliest end
+        if intervals[i][0] &gt;= heap[0]:
+            heapq.heappop(heap)
+        
+        # Add current meeting end time
+        heapq.heappush(heap, intervals[i][1])
+    
+    return len(heap)
+</code></pre>
+<pre><code class="language-java">// Java - Interval scheduling
+public int minMeetingRooms(int[][] intervals) {
+    if (intervals.length == 0) return 0;
+    
+    // Sort by start time
+    Arrays.sort(intervals, (a, b) -&gt; a[0] - b[0]);
+    
+    // Min heap for end times
+    PriorityQueue&lt;Integer&gt; pq = new PriorityQueue&lt;&gt;();
+    pq.offer(intervals[0][1]);
+    
+    for (int i = 1; i &lt; intervals.length; i++) {
+        // Room becomes free
+        if (intervals[i][0] &gt;= pq.peek()) {
+            pq.poll();
+        }
+        pq.offer(intervals[i][1]);
+    }
+    
+    return pq.size();
+}
+</code></pre>
+<h3 id="template-5-graph-shortest-path-dijkstra" tabindex="-1"><a class="header-anchor" href="#template-5-graph-shortest-path-dijkstra"><span>Template 5: Graph Shortest Path (Dijkstra)</span></a></h3>
+<pre><code class="language-python"># Python - Dijkstra's algorithm with PQ
+def dijkstra(graph, start, end):
+    import heapq
+    
+    # Min heap: (distance, node)
+    pq = [(0, start)]
+    distances = {start: 0}
+    visited = set()
+    
+    while pq:
+        curr_dist, curr_node = heapq.heappop(pq)
+        
+        if curr_node in visited:
+            continue
+        visited.add(curr_node)
+        
+        if curr_node == end:
+            return curr_dist
+        
+        for neighbor, weight in graph[curr_node]:
+            if neighbor not in visited:
+                new_dist = curr_dist + weight
+                if neighbor not in distances or new_dist &lt; distances[neighbor]:
+                    distances[neighbor] = new_dist
+                    heapq.heappush(pq, (new_dist, neighbor))
+    
+    return -1  # Path not found
+</code></pre>
+<pre><code class="language-java">// Java - Dijkstra with Priority Queue
+public int dijkstra(Map&lt;Integer, List&lt;int[]&gt;&gt; graph, int start, int end) {
+    // Min heap: [distance, node]
+    PriorityQueue&lt;int[]&gt; pq = new PriorityQueue&lt;&gt;(
+        (a, b) -&gt; a[0] - b[0]
+    );
+    
+    Map&lt;Integer, Integer&gt; distances = new HashMap&lt;&gt;();
+    Set&lt;Integer&gt; visited = new HashSet&lt;&gt;();
+    
+    pq.offer(new int[]{0, start});
+    distances.put(start, 0);
+    
+    while (!pq.isEmpty()) {
+        int[] curr = pq.poll();
+        int currDist = curr[0];
+        int currNode = curr[1];
+        
+        if (visited.contains(currNode)) continue;
+        visited.add(currNode);
+        
+        if (currNode == end) return currDist;
+        
+        if (graph.containsKey(currNode)) {
+            for (int[] edge : graph.get(currNode)) {
+                int neighbor = edge[0];
+                int weight = edge[1];
+                
+                if (!visited.contains(neighbor)) {
+                    int newDist = currDist + weight;
+                    if (!distances.containsKey(neighbor) || 
+                        newDist &lt; distances.get(neighbor)) {
+                        distances.put(neighbor, newDist);
+                        pq.offer(new int[]{newDist, neighbor});
+                    }
+                }
+            }
+        }
+    }
+    
+    return -1;
+}
+</code></pre>
+<h3 id="template-6-custom-priority-pattern" tabindex="-1"><a class="header-anchor" href="#template-6-custom-priority-pattern"><span>Template 6: Custom Priority Pattern</span></a></h3>
+<pre><code class="language-python"># Python - Custom priority with multiple criteria
+class Task:
+    def __init__(self, name, priority, deadline):
+        self.name = name
+        self.priority = priority
+        self.deadline = deadline
+    
+    def __lt__(self, other):
+        # Higher priority first, then earlier deadline
+        if self.priority != other.priority:
+            return self.priority &gt; other.priority
+        return self.deadline &lt; other.deadline
+
+def processTasks(tasks):
+    import heapq
+    
+    heap = []
+    for task in tasks:
+        heapq.heappush(heap, task)
+    
+    result = []
+    while heap:
+        task = heapq.heappop(heap)
+        result.append(task.name)
+    
+    return result
+</code></pre>
+<pre><code class="language-java">// Java - Custom comparator for complex ordering
+class Task {
+    String name;
+    int priority;
+    int deadline;
+    
+    Task(String name, int priority, int deadline) {
+        this.name = name;
+        this.priority = priority;
+        this.deadline = deadline;
+    }
+}
+
+public List&lt;String&gt; processTasks(List&lt;Task&gt; tasks) {
+    PriorityQueue&lt;Task&gt; pq = new PriorityQueue&lt;&gt;((a, b) -&gt; {
+        // Higher priority first
+        if (a.priority != b.priority) {
+            return b.priority - a.priority;
+        }
+        // Earlier deadline first
+        return a.deadline - b.deadline;
+    });
+    
+    for (Task task : tasks) {
+        pq.offer(task);
+    }
+    
+    List&lt;String&gt; result = new ArrayList&lt;&gt;();
+    while (!pq.isEmpty()) {
+        result.add(pq.poll().name);
+    }
+    
+    return result;
+}
+</code></pre>
+<h3 id="template-7-greedy-string-building-with-consecutive-constraint" tabindex="-1"><a class="header-anchor" href="#template-7-greedy-string-building-with-consecutive-constraint"><span>Template 7: Greedy String Building with Consecutive Constraint</span></a></h3>
+<pre><code class="language-java">// Java - Longest Happy String (LC 1405) / Reorganize String (LC 767)
+// IDEA: Max-heap by count; two-case loop:
+//   Case 1: top char would create 3 consecutive → use 2nd, put 1st back
+//   Case 2: safe → use top char directly
+// time = O((a+b+c) * log(3)) = O(n), space = O(1) heap size bounded by alphabet
+
+class ValCnt {
+    char val;
+    int cnt;
+    ValCnt(char val, int cnt) { this.val = val; this.cnt = cnt; }
+}
+
+public String longestDiverseString(int a, int b, int c) {
+    PriorityQueue&lt;ValCnt&gt; pq = new PriorityQueue&lt;&gt;((x, y) -&gt; y.cnt - x.cnt);
+    if (a &gt; 0) pq.add(new ValCnt('a', a));
+    if (b &gt; 0) pq.add(new ValCnt('b', b));
+    if (c &gt; 0) pq.add(new ValCnt('c', c));
+
+    StringBuilder sb = new StringBuilder();
+
+    while (!pq.isEmpty()) {
+        ValCnt first = pq.poll();
+        int len = sb.length();
+
+        // Case 1: adding `first` would create 3 consecutive → use second instead
+        if (len &gt;= 2
+                &amp;&amp; sb.charAt(len - 1) == first.val
+                &amp;&amp; sb.charAt(len - 2) == first.val) {
+
+            if (pq.isEmpty()) break;          // no alternative → stop
+
+            ValCnt second = pq.poll();        // use 2nd most frequent
+            sb.append(second.val);
+            second.cnt--;
+
+            if (second.cnt &gt; 0) pq.add(second);
+            pq.add(first);                    // first was NOT used, put it back
+
+        // Case 2: safe to use the most frequent character
+        } else {
+            sb.append(first.val);
+            first.cnt--;
+            if (first.cnt &gt; 0) pq.add(first);
+        }
+    }
+
+    return sb.toString();
+}
+</code></pre>
+<p><strong>Key Observations:</strong></p>
+<ul>
+<li>Always greedily pick the most frequent (max-heap ensures this).</li>
+<li>When the constraint is about to be violated, <strong>temporarily skip</strong> the top element and use the next — then <strong>put the top back unchanged</strong>.</li>
+<li><code>first</code> is only consumed in Case 2; in Case 1 it is re-inserted untouched.</li>
+<li>Works for any “at most K consecutive” constraint by changing the look-back window check.</li>
+</ul>
+<p><strong>Variant: Reorganize String (LC 767) — at most 1 consecutive</strong></p>
+<pre><code class="language-java">// Only Case 1 check changes: len &gt;= 1 &amp;&amp; sb.charAt(len-1) == first.val
+// Everything else is identical to the template above.
+</code></pre>
+<h3 id="template-8-pq-cooldown-queue-k-distance-scheduling" tabindex="-1"><a class="header-anchor" href="#template-8-pq-cooldown-queue-k-distance-scheduling"><span>Template 8: PQ + Cooldown Queue (k-Distance Scheduling)</span></a></h3>
+<pre><code class="language-java">// Java - Rearrange String k Distance Apart (LC 358)
+// IDEA: Max-heap picks most frequent available char;
+//       cooldown queue locks used chars for k steps.
+//
+// Flow: PQ → poll → append → cooldown.offer([char, releaseTime])
+//       when time == releaseTime → move back to PQ
+//
+// time = O(n log 26) = O(n), space = O(26) = O(1)
+
+public String rearrangeString(String s, int k) {
+    if (k &lt;= 1) return s;
+
+    int[] freq = new int[26];
+    for (char c : s.toCharArray()) {
+        freq[c - 'a']++;
+    }
+
+    // Max-heap ordered by remaining frequency
+    PriorityQueue&lt;Integer&gt; pq = new PriorityQueue&lt;&gt;((a, b) -&gt; freq[b] - freq[a]);
+    for (int i = 0; i &lt; 26; i++) {
+        if (freq[i] &gt; 0) pq.offer(i);
+    }
+
+    // Cooldown queue: [charIndex, remainingCount]
+    // Size reaches k → front element has cooled for k steps → re-enable
+    Queue&lt;int[]&gt; cooldown = new LinkedList&lt;&gt;();
+    StringBuilder res = new StringBuilder();
+
+    while (!pq.isEmpty()) {
+        int idx = pq.poll();
+        res.append((char) ('a' + idx));
+        freq[idx]--;
+
+        // Enter cooldown with current remaining count
+        cooldown.offer(new int[]{idx, freq[idx]});
+
+        // Release from cooldown after k steps
+        if (cooldown.size() == k) {
+            int[] ready = cooldown.poll();
+            if (ready[1] &gt; 0) {
+                pq.offer(ready[0]);  // re-add to heap
+            }
+        }
+    }
+
+    return res.length() == s.length() ? res.toString() : &quot;&quot;;
+}
+</code></pre>
+<p><strong>Key Observations:</strong></p>
+<ul>
+<li>The cooldown queue acts as a <strong>fixed-size delay line of length k</strong>. When its size reaches k, the oldest entry has waited exactly k steps and is ready.</li>
+<li>If <code>pq</code> is empty but <code>cooldown</code> still has entries → impossible to place anything → return <code>&quot;&quot;</code>.</li>
+<li><strong>Alternative cooldown approach</strong>: store <code>[char, releaseTime]</code> and check <code>cooldown.peek()[1] == time</code> instead of checking queue size. Both are equivalent.</li>
+<li>This pattern generalizes: LC 621 (Task Scheduler) uses the same idea but counts idle slots; LC 767 is k=2 special case.</li>
+</ul>
+<p><strong>Comparison: Cooldown Queue vs Skip-and-Swap (Template 7)</strong></p>
+<table>
+<thead>
+<tr>
+<th>Aspect</th>
+<th>Cooldown Queue (Template 8)</th>
+<th>Skip-and-Swap (Template 7)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Best for</td>
+<td>Variable k, large k</td>
+<td>Small k (k=2 or k=3)</td>
+</tr>
+<tr>
+<td>Mechanism</td>
+<td>Explicit queue delays re-entry</td>
+<td>Look-back window + swap</td>
+</tr>
+<tr>
+<td>Impossible detection</td>
+<td><code>pq.isEmpty()</code> while cooldown non-empty</td>
+<td>N/A (stops when no option)</td>
+</tr>
+<tr>
+<td>Cleaner for</td>
+<td>LC 358, LC 621</td>
+<td>LC 1405, LC 767</td>
+</tr>
+</tbody>
+</table>
+<h2 id="basic-operations" tabindex="-1"><a class="header-anchor" href="#basic-operations"><span>Basic Operations</span></a></h2>
+<h3 id="python-heapq-operations" tabindex="-1"><a class="header-anchor" href="#python-heapq-operations"><span>Python heapq Operations</span></a></h3>
+<pre><code class="language-python">import heapq
+
+# Create heap (min-heap by default)
+heap = []
+
+# Push element
+heapq.heappush(heap, 5)
+
+# Pop smallest
+smallest = heapq.heappop(heap)
+
+# Push and pop in one operation
+val = heapq.heappushpop(heap, 3)  # Push 3, then pop smallest
+
+# Pop and push in one operation  
+val = heapq.heapreplace(heap, 3)  # Pop smallest, then push 3
+
+# Get smallest without removing
+smallest = heap[0] if heap else None
+
+# Convert list to heap in-place
+nums = [3, 1, 4, 1, 5]
+heapq.heapify(nums)  # O(n) time
+
+# Get n largest/smallest
+largest_k = heapq.nlargest(k, nums)
+smallest_k = heapq.nsmallest(k, nums)
+
+# Max heap trick (negate values)
+max_heap = []
+heapq.heappush(max_heap, -5)  # Push
+max_val = -heapq.heappop(max_heap)  # Pop
+</code></pre>
+<h3 id="java-priorityqueue-operations" tabindex="-1"><a class="header-anchor" href="#java-priorityqueue-operations"><span>Java PriorityQueue Operations</span></a></h3>
+<pre><code class="language-java">import java.util.*;
+
+// Create PQ (min-heap by default)
+PriorityQueue&lt;Integer&gt; minHeap = new PriorityQueue&lt;&gt;();
+
+// Create max-heap
+PriorityQueue&lt;Integer&gt; maxHeap = new PriorityQueue&lt;&gt;(Collections.reverseOrder());
+
+// Add elements
+minHeap.offer(5);
+minHeap.add(3);  // Same as offer
+
+// Remove and return smallest/largest
+Integer smallest = minHeap.poll();
+
+// Peek without removing
+Integer top = minHeap.peek();
+
+// Check if empty
+boolean isEmpty = minHeap.isEmpty();
+
+// Get size
+int size = minHeap.size();
+
+// Clear all elements
+minHeap.clear();
+
+// Custom comparator
+PriorityQueue&lt;int[]&gt; customPQ = new PriorityQueue&lt;&gt;(
+    (a, b) -&gt; a[0] - b[0]  // Compare first element
+);
+</code></pre>
+<h2 id="problems-by-pattern" tabindex="-1"><a class="header-anchor" href="#problems-by-pattern"><span>Problems by Pattern</span></a></h2>
+<h3 id="pattern-based-problem-tables" tabindex="-1"><a class="header-anchor" href="#pattern-based-problem-tables"><span>Pattern-Based Problem Tables</span></a></h3>
+<h4 id="top-k-elements-problems" tabindex="-1"><a class="header-anchor" href="#top-k-elements-problems"><span><strong>Top K Elements Problems</strong></span></a></h4>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC #</th>
+<th>Key Technique</th>
+<th>Difficulty</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Kth Largest Element in an Array</td>
+<td>215</td>
+<td>Quick select or min-heap</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Top K Frequent Elements</td>
+<td>347</td>
+<td>Frequency map + heap</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Top K Frequent Words</td>
+<td>692</td>
+<td>Custom comparator</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>K Closest Points to Origin</td>
+<td>973</td>
+<td>Distance calculation</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Find K Pairs with Smallest Sums</td>
+<td>373</td>
+<td>K-way merge pattern</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Kth Smallest Element in a Sorted Matrix</td>
+<td>378</td>
+<td>Binary search or heap</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Find K-th Smallest Pair Distance</td>
+<td>719</td>
+<td>Binary search + sliding</td>
+<td>Hard</td>
+</tr>
+<tr>
+<td>K-th Smallest Prime Fraction</td>
+<td>786</td>
+<td>Binary search or heap</td>
+<td>Medium</td>
+</tr>
+</tbody>
+</table>
+<h4 id="merge-k-sorted-problems" tabindex="-1"><a class="header-anchor" href="#merge-k-sorted-problems"><span><strong>Merge K Sorted Problems</strong></span></a></h4>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC #</th>
+<th>Key Technique</th>
+<th>Difficulty</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Merge k Sorted Lists</td>
+<td>23</td>
+<td>K-way merge</td>
+<td>Hard</td>
+</tr>
+<tr>
+<td>Merge Sorted Array</td>
+<td>88</td>
+<td>Two pointers</td>
+<td>Easy</td>
+</tr>
+<tr>
+<td>Smallest Range Covering K Lists</td>
+<td>632</td>
+<td>Multi-pointer + heap</td>
+<td>Hard</td>
+</tr>
+<tr>
+<td>Find K Pairs with Smallest Sums</td>
+<td>373</td>
+<td>Heap with pairs</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Super Ugly Number</td>
+<td>313</td>
+<td>Multiple pointers</td>
+<td>Medium</td>
+</tr>
+</tbody>
+</table>
+<h4 id="scheduling-interval-problems" tabindex="-1"><a class="header-anchor" href="#scheduling-interval-problems"><span><strong>Scheduling &amp; Interval Problems</strong></span></a></h4>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC #</th>
+<th>Key Technique</th>
+<th>Difficulty</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Meeting Rooms II</td>
+<td>253</td>
+<td>Sort + min heap</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Task Scheduler</td>
+<td>621</td>
+<td>Greedy + counting</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Reorganize String</td>
+<td>767</td>
+<td>Max heap + greedy</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Car Pooling</td>
+<td>1094</td>
+<td>Timeline events</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Maximum Events That Can Be Attended</td>
+<td>1353</td>
+<td>Sort + greedy</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Single-Threaded CPU</td>
+<td>1834</td>
+<td>Two heaps</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Maximum Number of Tasks You Can Assign</td>
+<td>2071</td>
+<td>Binary search + greedy</td>
+<td>Hard</td>
+</tr>
+</tbody>
+</table>
+<h4 id="sliding-window-with-order-problems" tabindex="-1"><a class="header-anchor" href="#sliding-window-with-order-problems"><span><strong>Sliding Window with Order Problems</strong></span></a></h4>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC #</th>
+<th>Key Technique</th>
+<th>Difficulty</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Sliding Window Maximum</td>
+<td>239</td>
+<td>Deque or heap</td>
+<td>Hard</td>
+</tr>
+<tr>
+<td>Sliding Window Median</td>
+<td>480</td>
+<td>Two heaps</td>
+<td>Hard</td>
+</tr>
+<tr>
+<td>Kth Largest Element in a Stream</td>
+<td>703</td>
+<td>Min heap of size k</td>
+<td>Easy</td>
+</tr>
+<tr>
+<td>Longest Continuous Subarray</td>
+<td>1438</td>
+<td>Two deques</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Maximum Score of a Good Subarray</td>
+<td>1793</td>
+<td>Monotonic stack</td>
+<td>Hard</td>
+</tr>
+</tbody>
+</table>
+<h4 id="graph-algorithm-problems" tabindex="-1"><a class="header-anchor" href="#graph-algorithm-problems"><span><strong>Graph Algorithm Problems</strong></span></a></h4>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC #</th>
+<th>Key Technique</th>
+<th>Difficulty</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Network Delay Time</td>
+<td>743</td>
+<td>Dijkstra’s</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Cheapest Flights Within K Stops</td>
+<td>787</td>
+<td>Modified Dijkstra</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Path with Maximum Probability</td>
+<td>1514</td>
+<td>Dijkstra variant</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Path With Minimum Effort</td>
+<td>1631</td>
+<td>Binary search + DFS/Dijkstra</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Min Cost to Connect All Points</td>
+<td>1584</td>
+<td>Prim’s MST</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Swim in Rising Water</td>
+<td>778</td>
+<td>Binary search or Dijkstra</td>
+<td>Hard</td>
+</tr>
+<tr>
+<td>Reachable Nodes In Subdivided Graph</td>
+<td>882</td>
+<td>Dijkstra’s</td>
+<td>Hard</td>
+</tr>
+</tbody>
+</table>
+<h4 id="data-stream-median-problems" tabindex="-1"><a class="header-anchor" href="#data-stream-median-problems"><span><strong>Data Stream &amp; Median Problems</strong></span></a></h4>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC #</th>
+<th>Key Technique</th>
+<th>Difficulty</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Find Median from Data Stream</td>
+<td>295</td>
+<td>Two heaps</td>
+<td>Hard</td>
+</tr>
+<tr>
+<td>Moving Average from Data Stream</td>
+<td>346</td>
+<td>Queue</td>
+<td>Easy</td>
+</tr>
+<tr>
+<td>Data Stream as Disjoint Intervals</td>
+<td>352</td>
+<td>TreeMap or heap</td>
+<td>Hard</td>
+</tr>
+<tr>
+<td>Kth Largest Element in a Stream</td>
+<td>703</td>
+<td>Min heap</td>
+<td>Easy</td>
+</tr>
+<tr>
+<td>Finding MK Average</td>
+<td>1825</td>
+<td>Multiset simulation</td>
+<td>Hard</td>
+</tr>
+</tbody>
+</table>
+<h4 id="greedy-consecutive-constraint-problems" tabindex="-1"><a class="header-anchor" href="#greedy-consecutive-constraint-problems"><span><strong>Greedy + Consecutive Constraint Problems</strong></span></a></h4>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC #</th>
+<th>Key Technique</th>
+<th>Difficulty</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Longest Happy String</td>
+<td>1405</td>
+<td>Max heap + greedy two-case loop</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Reorganize String</td>
+<td>767</td>
+<td>Max heap + greedy (no adjacent same)</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Task Scheduler</td>
+<td>621</td>
+<td>Max heap + greedy cooldown</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Rearrange String k Distance Apart</td>
+<td>358</td>
+<td>Max heap + greedy (k-distance)</td>
+<td>Hard</td>
+</tr>
+<tr>
+<td>Distant Barcodes</td>
+<td>1054</td>
+<td>Max heap + greedy (no adjacent same)</td>
+<td>Medium</td>
+</tr>
+</tbody>
+</table>
+<h2 id="pattern-selection-strategy" tabindex="-1"><a class="header-anchor" href="#pattern-selection-strategy"><span>Pattern Selection Strategy</span></a></h2>
+<pre><code>Problem Analysis Flowchart:
+
+1. Do you need to find K largest/smallest elements?
+   ├── YES → Use Top K Elements pattern
+   │         ├── K largest → Min heap of size K
+   │         └── K smallest → Max heap of size K
+   └── NO → Continue to 2
+
+2. Are you merging multiple sorted sequences?
+   ├── YES → Use K-Way Merge pattern
+   │         └── Track position in each sequence
+   └── NO → Continue to 3
+
+3. Is it a scheduling/interval problem?
+   ├── YES → Use Interval Scheduling pattern
+   │         ├── Sort by start time
+   │         └── Use heap for end times
+   └── NO → Continue to 4
+
+4. Do you need to maintain order in sliding window?
+   ├── YES → Use Sliding Window with Order
+   │         └── Consider deque vs heap trade-offs
+   └── NO → Continue to 5
+
+5. Is it a graph shortest path problem?
+   ├── YES → Use Dijkstra pattern with PQ
+   │         └── Min heap with distances
+   └── NO → Continue to 6
+
+6. Processing data stream for statistics?
+   ├── YES → Use Data Stream pattern
+   │         ├── Median → Two heaps
+   │         └── Top K → Fixed size heap
+   └── NO → Continue to 7
+
+7. Build string/sequence with &quot;no K consecutive same&quot; constraint?
+   ├── YES → Use Greedy + Constraint pattern
+   │         ├── Max-heap ordered by frequency
+   │         ├── Case 1 (constraint violated): use 2nd element, put 1st back
+   │         └── Case 2 (safe): use 1st element
+   └── NO → Use Custom Priority pattern
+</code></pre>
+<h2 id="summary-quick-reference" tabindex="-1"><a class="header-anchor" href="#summary-quick-reference"><span>Summary &amp; Quick Reference</span></a></h2>
+<h3 id="complexity-quick-reference" tabindex="-1"><a class="header-anchor" href="#complexity-quick-reference"><span>Complexity Quick Reference</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>Operation</th>
+<th>Time Complexity</th>
+<th>Space</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Insert</td>
+<td>O(log n)</td>
+<td>O(1)</td>
+<td>Heap rebalancing</td>
+</tr>
+<tr>
+<td>Extract min/max</td>
+<td>O(log n)</td>
+<td>O(1)</td>
+<td>Heap rebalancing</td>
+</tr>
+<tr>
+<td>Peek min/max</td>
+<td>O(1)</td>
+<td>O(1)</td>
+<td>Direct access</td>
+</tr>
+<tr>
+<td>Build heap</td>
+<td>O(n)</td>
+<td>O(n)</td>
+<td>Bottom-up heapify</td>
+</tr>
+<tr>
+<td>K-way merge</td>
+<td>O(n log k)</td>
+<td>O(k)</td>
+<td>k = number of lists</td>
+</tr>
+<tr>
+<td>Top K elements</td>
+<td>O(n log k)</td>
+<td>O(k)</td>
+<td>Maintain heap of size k</td>
+</tr>
+<tr>
+<td>Heap sort</td>
+<td>O(n log n)</td>
+<td>O(1)</td>
+<td>In-place sorting</td>
+</tr>
+</tbody>
+</table>
+<h3 id="template-quick-reference" tabindex="-1"><a class="header-anchor" href="#template-quick-reference"><span>Template Quick Reference</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>Template</th>
+<th>Pattern</th>
+<th>Key Code</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Top K</strong></td>
+<td>Min heap for K largest</td>
+<td><code>if len(heap) &gt; k: heappop(heap)</code></td>
+</tr>
+<tr>
+<td><strong>K-Way Merge</strong></td>
+<td>Track indices</td>
+<td><code>(val, list_idx, elem_idx)</code></td>
+</tr>
+<tr>
+<td><strong>Two Heaps</strong></td>
+<td>Balance sizes</td>
+<td><code>if len(small) &gt; len(large) + 1</code></td>
+</tr>
+<tr>
+<td><strong>Intervals</strong></td>
+<td>Sort + heap</td>
+<td><code>sort by start, heap for end times</code></td>
+</tr>
+<tr>
+<td><strong>Dijkstra</strong></td>
+<td>Min distance</td>
+<td><code>(distance, node)</code> in heap</td>
+</tr>
+<tr>
+<td><strong>Custom</strong></td>
+<td>Comparator</td>
+<td><code>__lt__</code> in Python, <code>Comparator</code> in Java</td>
+</tr>
+<tr>
+<td><strong>Greedy+Constraint</strong></td>
+<td>Two-case loop</td>
+<td>case1: use 2nd, put 1st back; case2: use 1st</td>
+</tr>
+</tbody>
+</table>
+<h3 id="common-patterns-tricks" tabindex="-1"><a class="header-anchor" href="#common-patterns-tricks"><span>Common Patterns &amp; Tricks</span></a></h3>
+<h4 id="heap-direction-trick" tabindex="-1"><a class="header-anchor" href="#heap-direction-trick"><span><strong>Heap Direction Trick</strong></span></a></h4>
+<pre><code class="language-python"># Python max heap using negation
+max_heap = []
+heapq.heappush(max_heap, -value)  # Push
+max_value = -heapq.heappop(max_heap)  # Pop
+</code></pre>
+<h4 id="k-size-maintenance" tabindex="-1"><a class="header-anchor" href="#k-size-maintenance"><span><strong>K-Size Maintenance</strong></span></a></h4>
+<pre><code class="language-python"># Maintain exactly k elements
+if len(heap) &gt; k:
+    heapq.heappop(heap)
+# Now heap contains k largest (min-heap) or k smallest (max-heap)
+</code></pre>
+<h4 id="lazy-deletion-pattern" tabindex="-1"><a class="header-anchor" href="#lazy-deletion-pattern"><span><strong>Lazy Deletion Pattern</strong></span></a></h4>
+<pre><code class="language-python"># Mark as deleted without immediate removal
+deleted = set()
+while heap and heap[0] in deleted:
+    heapq.heappop(heap)
+</code></pre>
+<h4 id="two-heaps-balance" tabindex="-1"><a class="header-anchor" href="#two-heaps-balance"><span><strong>Two Heaps Balance</strong></span></a></h4>
+<pre><code class="language-python"># Keep sizes balanced within 1
+if len(small) &gt; len(large) + 1:
+    large.push(small.pop())
+if len(large) &gt; len(small) + 1:
+    small.push(large.pop())
+</code></pre>
+<h3 id="problem-solving-steps" tabindex="-1"><a class="header-anchor" href="#problem-solving-steps"><span>Problem-Solving Steps</span></a></h3>
+<ol>
+<li>
+<p><strong>Identify the Pattern</strong></p>
+<ul>
+<li>Is it about K elements? → Top K pattern</li>
+<li>Multiple sorted sources? → K-way merge</li>
+<li>Need median/percentiles? → Two heaps</li>
+<li>Graph shortest path? → Dijkstra with PQ</li>
+</ul>
+</li>
+<li>
+<p><strong>Choose Heap Type</strong></p>
+<ul>
+<li>K largest → Min heap of size K</li>
+<li>K smallest → Max heap of size K</li>
+<li>Median → Two heaps (max + min)</li>
+</ul>
+</li>
+<li>
+<p><strong>Design the Element</strong></p>
+<ul>
+<li>Simple value or tuple?</li>
+<li>What to compare? (value, index, custom)</li>
+<li>Need to track source? (for merging)</li>
+</ul>
+</li>
+<li>
+<p><strong>Handle Edge Cases</strong></p>
+<ul>
+<li>Empty heap checks</li>
+<li>K &gt; n scenarios</li>
+<li>Duplicate elements</li>
+<li>Custom comparator edge cases</li>
+</ul>
+</li>
+</ol>
+<h3 id="common-mistakes-tips" tabindex="-1"><a class="header-anchor" href="#common-mistakes-tips"><span>Common Mistakes &amp; Tips</span></a></h3>
+<p><strong>🚫 Common Mistakes:</strong></p>
+<ul>
+<li>Using max heap for K largest (should use min heap)</li>
+<li>Forgetting to maintain heap size ≤ K</li>
+<li>Not handling empty heap before peek</li>
+<li>Wrong comparator direction</li>
+<li>Not considering duplicates in custom comparators</li>
+<li>In greedy+constraint pattern: forgetting to re-add <code>first</code> back to PQ in Case 1 (it was NOT consumed)</li>
+</ul>
+<p><strong>✅ Best Practices:</strong></p>
+<ul>
+<li>Always check heap empty before peek/pop</li>
+<li>Use tuples for complex comparisons</li>
+<li>Maintain heap invariants after each operation</li>
+<li>Consider space-time trade-offs for large K</li>
+<li>Use heapify for batch initialization</li>
+</ul>
+<h3 id="interview-tips" tabindex="-1"><a class="header-anchor" href="#interview-tips"><span>Interview Tips</span></a></h3>
+<ol>
+<li>
+<p><strong>Clarify Requirements</strong></p>
+<ul>
+<li>Ask about K relative to N</li>
+<li>Confirm if duplicates are allowed</li>
+<li>Check if online/offline algorithm needed</li>
+</ul>
+</li>
+<li>
+<p><strong>Optimize for K</strong></p>
+<ul>
+<li>K small → Heap approach O(n log k)</li>
+<li>K ≈ n → Quick select O(n) average</li>
+<li>K = 1 → Simple scan O(n)</li>
+</ul>
+</li>
+<li>
+<p><strong>Explain Trade-offs</strong></p>
+<ul>
+<li>Heap: Good for streaming, K &lt;&lt; n</li>
+<li>Sorting: Simple but O(n log n)</li>
+<li>Quick select: Best average case but unstable</li>
+</ul>
+</li>
+<li>
+<p><strong>Implementation Details</strong></p>
+<ul>
+<li>Python: heapq is min-heap only</li>
+<li>Java: PriorityQueue with Comparator</li>
+<li>Remember heap is not sorted internally</li>
+</ul>
+</li>
+</ol>
+<h3 id="advanced-techniques" tabindex="-1"><a class="header-anchor" href="#advanced-techniques"><span>Advanced Techniques</span></a></h3>
+<h4 id="indexed-priority-queue" tabindex="-1"><a class="header-anchor" href="#indexed-priority-queue"><span><strong>Indexed Priority Queue</strong></span></a></h4>
+<ul>
+<li>Allows decrease-key operation</li>
+<li>Useful for Dijkstra optimization</li>
+<li>Track element positions in heap</li>
+</ul>
+<h4 id="fibonacci-heap" tabindex="-1"><a class="header-anchor" href="#fibonacci-heap"><span><strong>Fibonacci Heap</strong></span></a></h4>
+<ul>
+<li>O(1) amortized insert, decrease-key</li>
+<li>O(log n) extract-min</li>
+<li>Complex implementation, rarely used</li>
+</ul>
+<h4 id="binary-heap-variants" tabindex="-1"><a class="header-anchor" href="#binary-heap-variants"><span><strong>Binary Heap Variants</strong></span></a></h4>
+<ul>
+<li>d-ary heap: Better cache performance</li>
+<li>Binomial heap: Better merge operation</li>
+<li>Pairing heap: Simple, good practical performance</li>
+</ul>
+<h3 id="related-topics" tabindex="-1"><a class="header-anchor" href="#related-topics"><span>Related Topics</span></a></h3>
+<ul>
+<li><strong>Binary Heap</strong>: Implementation details and properties</li>
+<li><strong>Sorting</strong>: Heap sort algorithm</li>
+<li><strong>Graph Algorithms</strong>: Dijkstra, Prim’s MST</li>
+<li><strong>Greedy Algorithms</strong>: Often use PQ for optimal selection</li>
+<li><strong>Data Streams</strong>: Real-time processing with PQ</li>
+</ul>
+<hr>
+<h2 id="classic-lc-problems-with-java-solutions" tabindex="-1"><a class="header-anchor" href="#classic-lc-problems-with-java-solutions"><span>Classic LC Problems with Java Solutions</span></a></h2>
+<h3 id="2-1-kth-largest-element-in-an-array-lc-215" tabindex="-1"><a class="header-anchor" href="#2-1-kth-largest-element-in-an-array-lc-215"><span>2-1) Kth Largest Element in an Array (LC 215)</span></a></h3>
+<pre><code class="language-java">// Java
+// LC 215 - Find the kth largest element in an unsorted array
+// IDEA: Use min-heap of size K
+// Time: O(N log K), Space: O(K)
+
+public int findKthLargest(int[] nums, int k) {
+    // Min heap - keeps k largest elements
+    PriorityQueue&lt;Integer&gt; minHeap = new PriorityQueue&lt;&gt;();
+
+    for (int num : nums) {
+        minHeap.offer(num);
+        // Maintain size k
+        if (minHeap.size() &gt; k) {
+            minHeap.poll();  // Remove smallest
+        }
+    }
+
+    // Top of heap is kth largest
+    return minHeap.peek();
+}
+
+// Alternative: Quick Select (O(N) average)
+public int findKthLargest_QuickSelect(int[] nums, int k) {
+    // Convert to find (n-k)th smallest (0-indexed)
+    int targetIdx = nums.length - k;
+    return quickSelect(nums, 0, nums.length - 1, targetIdx);
+}
+
+private int quickSelect(int[] nums, int left, int right, int k) {
+    if (left == right) return nums[left];
+
+    int pivotIdx = partition(nums, left, right);
+
+    if (k == pivotIdx) {
+        return nums[k];
+    } else if (k &lt; pivotIdx) {
+        return quickSelect(nums, left, pivotIdx - 1, k);
+    } else {
+        return quickSelect(nums, pivotIdx + 1, right, k);
+    }
+}
+
+private int partition(int[] nums, int left, int right) {
+    int pivot = nums[right];
+    int i = left;
+    for (int j = left; j &lt; right; j++) {
+        if (nums[j] &lt;= pivot) {
+            swap(nums, i, j);
+            i++;
+        }
+    }
+    swap(nums, i, right);
+    return i;
+}
+
+private void swap(int[] nums, int i, int j) {
+    int temp = nums[i];
+    nums[i] = nums[j];
+    nums[j] = temp;
+}
+</code></pre>
+<h3 id="2-2-top-k-frequent-elements-lc-347" tabindex="-1"><a class="header-anchor" href="#2-2-top-k-frequent-elements-lc-347"><span>2-2) Top K Frequent Elements (LC 347)</span></a></h3>
+<pre><code class="language-java">// Java
+// LC 347 - Return the k most frequent elements
+// IDEA: HashMap for frequency + Min heap of size K
+// Time: O(N log K), Space: O(N)
+
+public int[] topKFrequent(int[] nums, int k) {
+    // Step 1: Count frequency
+    Map&lt;Integer, Integer&gt; freqMap = new HashMap&lt;&gt;();
+    for (int num : nums) {
+        freqMap.put(num, freqMap.getOrDefault(num, 0) + 1);
+    }
+
+    // Step 2: Min heap based on frequency (keep k largest frequencies)
+    PriorityQueue&lt;Integer&gt; minHeap = new PriorityQueue&lt;&gt;(
+        (a, b) -&gt; freqMap.get(a) - freqMap.get(b)
+    );
+
+    for (int num : freqMap.keySet()) {
+        minHeap.offer(num);
+        if (minHeap.size() &gt; k) {
+            minHeap.poll();  // Remove element with smallest frequency
+        }
+    }
+
+    // Step 3: Build result
+    int[] result = new int[k];
+    for (int i = k - 1; i &gt;= 0; i--) {
+        result[i] = minHeap.poll();
+    }
+
+    return result;
+}
+
+// Alternative: Bucket Sort (O(N) time)
+public int[] topKFrequent_BucketSort(int[] nums, int k) {
+    Map&lt;Integer, Integer&gt; freqMap = new HashMap&lt;&gt;();
+    for (int num : nums) {
+        freqMap.put(num, freqMap.getOrDefault(num, 0) + 1);
+    }
+
+    // Buckets: index = frequency, value = list of numbers with that frequency
+    List&lt;Integer&gt;[] buckets = new List[nums.length + 1];
+    for (int i = 0; i &lt; buckets.length; i++) {
+        buckets[i] = new ArrayList&lt;&gt;();
+    }
+
+    for (Map.Entry&lt;Integer, Integer&gt; entry : freqMap.entrySet()) {
+        buckets[entry.getValue()].add(entry.getKey());
+    }
+
+    // Collect k most frequent from highest frequency bucket
+    int[] result = new int[k];
+    int idx = 0;
+    for (int i = buckets.length - 1; i &gt;= 0 &amp;&amp; idx &lt; k; i--) {
+        for (int num : buckets[i]) {
+            result[idx++] = num;
+            if (idx == k) break;
+        }
+    }
+
+    return result;
+}
+</code></pre>
+<h3 id="2-3-merge-k-sorted-lists-lc-23" tabindex="-1"><a class="header-anchor" href="#2-3-merge-k-sorted-lists-lc-23"><span>2-3) Merge K Sorted Lists (LC 23)</span></a></h3>
+<pre><code class="language-java">// Java
+// LC 23 - Merge k sorted linked lists
+// IDEA: Min heap to always get the smallest node
+// Time: O(N log K) where N = total nodes, K = number of lists
+// Space: O(K) for the heap
+
+public ListNode mergeKLists(ListNode[] lists) {
+    if (lists == null || lists.length == 0) {
+        return null;
+    }
+
+    // Min heap: compare by node value
+    PriorityQueue&lt;ListNode&gt; minHeap = new PriorityQueue&lt;&gt;(
+        (a, b) -&gt; a.val - b.val
+    );
+
+    // Add first node of each list to heap
+    for (ListNode node : lists) {
+        if (node != null) {
+            minHeap.offer(node);
+        }
+    }
+
+    // Dummy head for result
+    ListNode dummy = new ListNode(0);
+    ListNode curr = dummy;
+
+    while (!minHeap.isEmpty()) {
+        // Get smallest node
+        ListNode smallest = minHeap.poll();
+        curr.next = smallest;
+        curr = curr.next;
+
+        // Add next node from same list
+        if (smallest.next != null) {
+            minHeap.offer(smallest.next);
+        }
+    }
+
+    return dummy.next;
+}
+
+// Alternative: Divide and Conquer
+public ListNode mergeKLists_DivideConquer(ListNode[] lists) {
+    if (lists == null || lists.length == 0) return null;
+    return mergeRange(lists, 0, lists.length - 1);
+}
+
+private ListNode mergeRange(ListNode[] lists, int start, int end) {
+    if (start == end) return lists[start];
+
+    int mid = start + (end - start) / 2;
+    ListNode left = mergeRange(lists, start, mid);
+    ListNode right = mergeRange(lists, mid + 1, end);
+
+    return mergeTwoLists(left, right);
+}
+
+private ListNode mergeTwoLists(ListNode l1, ListNode l2) {
+    ListNode dummy = new ListNode(0);
+    ListNode curr = dummy;
+
+    while (l1 != null &amp;&amp; l2 != null) {
+        if (l1.val &lt;= l2.val) {
+            curr.next = l1;
+            l1 = l1.next;
+        } else {
+            curr.next = l2;
+            l2 = l2.next;
+        }
+        curr = curr.next;
+    }
+
+    curr.next = (l1 != null) ? l1 : l2;
+    return dummy.next;
+}
+</code></pre>
+<h3 id="2-4-find-median-from-data-stream-lc-295" tabindex="-1"><a class="header-anchor" href="#2-4-find-median-from-data-stream-lc-295"><span>2-4) Find Median from Data Stream (LC 295)</span></a></h3>
+<pre><code class="language-java">// Java
+// LC 295 - Design a data structure to find median from a stream
+// IDEA: Two heaps - max heap for smaller half, min heap for larger half
+// Time: O(log N) for addNum, O(1) for findMedian
+// Space: O(N)
+
+class MedianFinder {
+    // Max heap for smaller half (largest of small at top)
+    private PriorityQueue&lt;Integer&gt; small;
+    // Min heap for larger half (smallest of large at top)
+    private PriorityQueue&lt;Integer&gt; large;
+
+    public MedianFinder() {
+        small = new PriorityQueue&lt;&gt;(Collections.reverseOrder());
+        large = new PriorityQueue&lt;&gt;();
+    }
+
+    public void addNum(int num) {
+        // Add to small (max heap) first
+        small.offer(num);
+
+        // Balance property: max of small &lt;= min of large
+        if (!small.isEmpty() &amp;&amp; !large.isEmpty() &amp;&amp;
+            small.peek() &gt; large.peek()) {
+            large.offer(small.poll());
+        }
+
+        // Size property: sizes differ by at most 1
+        if (small.size() &gt; large.size() + 1) {
+            large.offer(small.poll());
+        }
+        if (large.size() &gt; small.size() + 1) {
+            small.offer(large.poll());
+        }
+    }
+
+    public double findMedian() {
+        if (small.size() &gt; large.size()) {
+            return small.peek();
+        }
+        if (large.size() &gt; small.size()) {
+            return large.peek();
+        }
+        // Equal sizes - average of two middle elements
+        return (small.peek() + large.peek()) / 2.0;
+    }
+}
+
+/**
+ * Dry Run Example:
+ * addNum(1): small=[1], large=[]           → median=1
+ * addNum(2): small=[1], large=[2]          → median=1.5
+ * addNum(3): small=[1], large=[2,3]        → rebalance → small=[2,1], large=[3] → median=2
+ * addNum(4): small=[2,1], large=[3,4]      → median=2.5
+ */
+</code></pre>
+<h3 id="2-5-meeting-rooms-ii-lc-253" tabindex="-1"><a class="header-anchor" href="#2-5-meeting-rooms-ii-lc-253"><span>2-5) Meeting Rooms II (LC 253)</span></a></h3>
+<pre><code class="language-java">// Java
+// LC 253 - Find minimum number of conference rooms required
+// IDEA: Sort by start time, use min heap to track end times
+// Time: O(N log N), Space: O(N)
+
+public int minMeetingRooms(int[][] intervals) {
+    if (intervals == null || intervals.length == 0) {
+        return 0;
+    }
+
+    // Sort by start time
+    Arrays.sort(intervals, (a, b) -&gt; a[0] - b[0]);
+
+    // Min heap to track end times of ongoing meetings
+    PriorityQueue&lt;Integer&gt; endTimes = new PriorityQueue&lt;&gt;();
+
+    // First meeting
+    endTimes.offer(intervals[0][1]);
+
+    for (int i = 1; i &lt; intervals.length; i++) {
+        int start = intervals[i][0];
+        int end = intervals[i][1];
+
+        // If current meeting starts after earliest ending meeting
+        // Reuse that room (remove from heap)
+        if (start &gt;= endTimes.peek()) {
+            endTimes.poll();
+        }
+
+        // Add current meeting's end time
+        endTimes.offer(end);
+    }
+
+    // Heap size = number of rooms needed
+    return endTimes.size();
+}
+
+// Alternative: Two Arrays (Chronological Ordering)
+public int minMeetingRooms_TwoArrays(int[][] intervals) {
+    int n = intervals.length;
+    int[] starts = new int[n];
+    int[] ends = new int[n];
+
+    for (int i = 0; i &lt; n; i++) {
+        starts[i] = intervals[i][0];
+        ends[i] = intervals[i][1];
+    }
+
+    Arrays.sort(starts);
+    Arrays.sort(ends);
+
+    int rooms = 0;
+    int endPtr = 0;
+
+    for (int i = 0; i &lt; n; i++) {
+        if (starts[i] &lt; ends[endPtr]) {
+            rooms++;  // Need new room
+        } else {
+            endPtr++;  // Reuse room
+        }
+    }
+
+    return rooms;
+}
+</code></pre>
+<h3 id="2-6-kth-largest-element-in-a-stream-lc-703" tabindex="-1"><a class="header-anchor" href="#2-6-kth-largest-element-in-a-stream-lc-703"><span>2-6) Kth Largest Element in a Stream (LC 703)</span></a></h3>
+<pre><code class="language-java">// Java
+// LC 703 - Design a class to find kth largest element in a stream
+// IDEA: Min heap of size K - top is always kth largest
+// Time: O(log K) for add, Space: O(K)
+
+class KthLargest {
+    private PriorityQueue&lt;Integer&gt; minHeap;
+    private int k;
+
+    public KthLargest(int k, int[] nums) {
+        this.k = k;
+        this.minHeap = new PriorityQueue&lt;&gt;();
+
+        for (int num : nums) {
+            add(num);
+        }
+    }
+
+    public int add(int val) {
+        minHeap.offer(val);
+
+        // Maintain size k
+        if (minHeap.size() &gt; k) {
+            minHeap.poll();
+        }
+
+        // Top of min heap is kth largest
+        return minHeap.peek();
+    }
+}
+
+/**
+ * Example:
+ * KthLargest kthLargest = new KthLargest(3, [4, 5, 8, 2]);
+ * Heap after init: [4, 5, 8] (size 3, sorted as min-heap)
+ *
+ * kthLargest.add(3);  // heap=[4,5,8], return 4
+ * kthLargest.add(5);  // heap=[5,5,8], return 5
+ * kthLargest.add(10); // heap=[5,8,10], return 5
+ * kthLargest.add(9);  // heap=[8,9,10], return 8
+ * kthLargest.add(4);  // heap=[8,9,10], return 8
+ */
+</code></pre>
+<h3 id="2-7-k-closest-points-to-origin-lc-973" tabindex="-1"><a class="header-anchor" href="#2-7-k-closest-points-to-origin-lc-973"><span>2-7) K Closest Points to Origin (LC 973)</span></a></h3>
+<pre><code class="language-java">// Java
+// LC 973 - Find K closest points to origin (0,0)
+// IDEA: Max heap of size K (to keep K smallest distances)
+// Time: O(N log K), Space: O(K)
+
+public int[][] kClosest(int[][] points, int k) {
+    // Max heap based on distance (squared, no need for sqrt)
+    PriorityQueue&lt;int[]&gt; maxHeap = new PriorityQueue&lt;&gt;(
+        (a, b) -&gt; (b[0]*b[0] + b[1]*b[1]) - (a[0]*a[0] + a[1]*a[1])
+    );
+
+    for (int[] point : points) {
+        maxHeap.offer(point);
+        if (maxHeap.size() &gt; k) {
+            maxHeap.poll();  // Remove farthest point
+        }
+    }
+
+    // Convert heap to result array
+    int[][] result = new int[k][2];
+    for (int i = 0; i &lt; k; i++) {
+        result[i] = maxHeap.poll();
+    }
+
+    return result;
+}
+
+// Alternative: Min heap (push all, pop k)
+public int[][] kClosest_MinHeap(int[][] points, int k) {
+    PriorityQueue&lt;int[]&gt; minHeap = new PriorityQueue&lt;&gt;(
+        (a, b) -&gt; (a[0]*a[0] + a[1]*a[1]) - (b[0]*b[0] + b[1]*b[1])
+    );
+
+    for (int[] point : points) {
+        minHeap.offer(point);
+    }
+
+    int[][] result = new int[k][2];
+    for (int i = 0; i &lt; k; i++) {
+        result[i] = minHeap.poll();
+    }
+
+    return result;
+}
+</code></pre>
+<h3 id="2-8-kth-smallest-element-in-a-sorted-matrix-lc-378" tabindex="-1"><a class="header-anchor" href="#2-8-kth-smallest-element-in-a-sorted-matrix-lc-378"><span>2-8) Kth Smallest Element in a Sorted Matrix (LC 378)</span></a></h3>
+<pre><code class="language-java">// Java
+// LC 378 - Find kth smallest element in n x n sorted matrix
+// IDEA: Min heap with (value, row, col)
+// Time: O(K log N), Space: O(N)
+
+public int kthSmallest(int[][] matrix, int k) {
+    int n = matrix.length;
+
+    // Min heap: [value, row, col]
+    PriorityQueue&lt;int[]&gt; minHeap = new PriorityQueue&lt;&gt;(
+        (a, b) -&gt; a[0] - b[0]
+    );
+
+    // Add first element of each row
+    for (int i = 0; i &lt; Math.min(n, k); i++) {
+        minHeap.offer(new int[]{matrix[i][0], i, 0});
+    }
+
+    int result = 0;
+    // Pop k times
+    for (int i = 0; i &lt; k; i++) {
+        int[] curr = minHeap.poll();
+        result = curr[0];
+        int row = curr[1];
+        int col = curr[2];
+
+        // Add next element from same row
+        if (col + 1 &lt; n) {
+            minHeap.offer(new int[]{matrix[row][col + 1], row, col + 1});
+        }
+    }
+
+    return result;
+}
+
+// Alternative: Binary Search
+public int kthSmallest_BinarySearch(int[][] matrix, int k) {
+    int n = matrix.length;
+    int lo = matrix[0][0];
+    int hi = matrix[n - 1][n - 1];
+
+    while (lo &lt; hi) {
+        int mid = lo + (hi - lo) / 2;
+        int count = countLessOrEqual(matrix, mid);
+
+        if (count &lt; k) {
+            lo = mid + 1;
+        } else {
+            hi = mid;
+        }
+    }
+
+    return lo;
+}
+
+private int countLessOrEqual(int[][] matrix, int target) {
+    int n = matrix.length;
+    int count = 0;
+    int row = n - 1;
+    int col = 0;
+
+    // Start from bottom-left corner
+    while (row &gt;= 0 &amp;&amp; col &lt; n) {
+        if (matrix[row][col] &lt;= target) {
+            count += row + 1;  // All elements in this column up to row
+            col++;
+        } else {
+            row--;
+        }
+    }
+
+    return count;
+}
+</code></pre>
+<h3 id="2-9-task-scheduler-lc-621" tabindex="-1"><a class="header-anchor" href="#2-9-task-scheduler-lc-621"><span>2-9) Task Scheduler (LC 621)</span></a></h3>
+<pre><code class="language-java">// Java
+// LC 621 - Return minimum intervals to finish all tasks with cooldown
+// IDEA: Greedy - always execute most frequent task
+// Time: O(N), Space: O(1) - only 26 letters
+
+public int leastInterval(char[] tasks, int n) {
+    // Count frequency of each task
+    int[] freq = new int[26];
+    for (char task : tasks) {
+        freq[task - 'A']++;
+    }
+
+    // Max heap for task frequencies
+    PriorityQueue&lt;Integer&gt; maxHeap = new PriorityQueue&lt;&gt;(Collections.reverseOrder());
+    for (int f : freq) {
+        if (f &gt; 0) {
+            maxHeap.offer(f);
+        }
+    }
+
+    int time = 0;
+
+    while (!maxHeap.isEmpty()) {
+        List&lt;Integer&gt; temp = new ArrayList&lt;&gt;();
+
+        // Process n+1 tasks (cooldown cycle)
+        for (int i = 0; i &lt;= n; i++) {
+            if (!maxHeap.isEmpty()) {
+                int f = maxHeap.poll();
+                if (f &gt; 1) {
+                    temp.add(f - 1);  // Task still has remaining count
+                }
+            }
+            time++;
+
+            // If all tasks done, break
+            if (maxHeap.isEmpty() &amp;&amp; temp.isEmpty()) {
+                break;
+            }
+        }
+
+        // Add back remaining tasks
+        for (int f : temp) {
+            maxHeap.offer(f);
+        }
+    }
+
+    return time;
+}
+
+// Mathematical Approach (O(N) time, O(1) space)
+public int leastInterval_Math(char[] tasks, int n) {
+    int[] freq = new int[26];
+    int maxFreq = 0;
+    int maxCount = 0;
+
+    for (char task : tasks) {
+        freq[task - 'A']++;
+        if (freq[task - 'A'] &gt; maxFreq) {
+            maxFreq = freq[task - 'A'];
+            maxCount = 1;
+        } else if (freq[task - 'A'] == maxFreq) {
+            maxCount++;
+        }
+    }
+
+    // (maxFreq - 1) full cycles + last partial cycle
+    int partCount = (maxFreq - 1) * (n + 1) + maxCount;
+
+    // Result is max of calculated intervals or total tasks
+    return Math.max(partCount, tasks.length);
+}
+</code></pre>
+<h3 id="2-10-reorganize-string-lc-767" tabindex="-1"><a class="header-anchor" href="#2-10-reorganize-string-lc-767"><span>2-10) Reorganize String (LC 767)</span></a></h3>
+<pre><code class="language-java">// Java
+// LC 767 - Rearrange string so no adjacent characters are same
+// IDEA: Max heap - always pick most frequent, alternate placement
+// Time: O(N log 26) = O(N), Space: O(26) = O(1)
+
+public String reorganizeString(String s) {
+    // Count frequency
+    int[] freq = new int[26];
+    for (char c : s.toCharArray()) {
+        freq[c - 'a']++;
+    }
+
+    // Check if possible: no char should appear more than (n+1)/2 times
+    int n = s.length();
+    for (int f : freq) {
+        if (f &gt; (n + 1) / 2) {
+            return &quot;&quot;;
+        }
+    }
+
+    // Max heap: [frequency, char]
+    PriorityQueue&lt;int[]&gt; maxHeap = new PriorityQueue&lt;&gt;(
+        (a, b) -&gt; b[0] - a[0]
+    );
+
+    for (int i = 0; i &lt; 26; i++) {
+        if (freq[i] &gt; 0) {
+            maxHeap.offer(new int[]{freq[i], i});
+        }
+    }
+
+    StringBuilder sb = new StringBuilder();
+
+    while (maxHeap.size() &gt;= 2) {
+        // Take two most frequent characters
+        int[] first = maxHeap.poll();
+        int[] second = maxHeap.poll();
+
+        sb.append((char) (first[1] + 'a'));
+        sb.append((char) (second[1] + 'a'));
+
+        // Put back if remaining
+        if (--first[0] &gt; 0) maxHeap.offer(first);
+        if (--second[0] &gt; 0) maxHeap.offer(second);
+    }
+
+    // Handle last character if any
+    if (!maxHeap.isEmpty()) {
+        sb.append((char) (maxHeap.poll()[1] + 'a'));
+    }
+
+    return sb.toString();
+}
+</code></pre>
+<h3 id="2-10-1-rearrange-string-k-distance-apart-lc-358-pq-cooldown-queue" tabindex="-1"><a class="header-anchor" href="#2-10-1-rearrange-string-k-distance-apart-lc-358-pq-cooldown-queue"><span>2-10-1) Rearrange String k Distance Apart (LC 358) — PQ + Cooldown Queue</span></a></h3>
+<pre><code class="language-java">// Java
+// LC 358 - Rearrange string so same chars are at least k distance apart
+// IDEA: Max-heap + cooldown queue (k-slot delay line)
+// Time: O(N log 26) = O(N), Space: O(26) = O(1)
+
+public String rearrangeString(String s, int k) {
+    if (k &lt;= 1) return s;
+
+    int[] counts = new int[26];
+    for (char c : s.toCharArray()) {
+        counts[c - 'a']++;
+    }
+
+    // Max-heap: store char indices, ordered by remaining count
+    PriorityQueue&lt;Integer&gt; maxHeap = new PriorityQueue&lt;&gt;((a, b) -&gt; counts[b] - counts[a]);
+    for (int i = 0; i &lt; 26; i++) {
+        if (counts[i] &gt; 0) maxHeap.add(i);
+    }
+
+    // Cooldown queue: [charIndex, remainingCount]
+    // When queue size reaches k, front element is ready to re-enter heap
+    Queue&lt;int[]&gt; cooldown = new LinkedList&lt;&gt;();
+    StringBuilder result = new StringBuilder();
+
+    while (!maxHeap.isEmpty()) {
+        int charIdx = maxHeap.poll();
+        result.append((char) ('a' + charIdx));
+        counts[charIdx]--;
+
+        // Lock this char for k steps
+        cooldown.offer(new int[]{charIdx, counts[charIdx]});
+
+        // Release oldest char after k steps
+        if (cooldown.size() == k) {
+            int[] ready = cooldown.poll();
+            if (ready[1] &gt; 0) {
+                maxHeap.add(ready[0]);
+            }
+        }
+    }
+
+    // If we couldn't place all chars, return &quot;&quot;
+    return result.length() == s.length() ? result.toString() : &quot;&quot;;
+}
+</code></pre>
+<p><strong>Walkthrough</strong> — <code>s = &quot;aabbcc&quot;, k = 3</code>:</p>
+<pre><code>t=0: pick 'a'(2), cooldown=[(a,1)]          → &quot;a&quot;
+t=1: pick 'b'(2), cooldown=[(a,1),(b,1)]    → &quot;ab&quot;
+t=2: pick 'c'(2), cooldown size=3=k → release 'a'(1) back to PQ
+     cooldown=[(b,1),(c,1)]                  → &quot;abc&quot;
+t=3: pick 'a'(1), cooldown size=3=k → release 'b'(1) back to PQ
+     cooldown=[(c,1),(a,0)]                  → &quot;abca&quot;
+t=4: pick 'b'(1), cooldown size=3=k → release 'c'(1) back to PQ
+     cooldown=[(a,0),(b,0)]                  → &quot;abcab&quot;
+t=5: pick 'c'(1), cooldown size=3=k → release 'a'(0) → don't re-add
+                                             → &quot;abcabc&quot; ✓
+</code></pre>
+<h3 id="2-11-sliding-window-median-lc-480" tabindex="-1"><a class="header-anchor" href="#2-11-sliding-window-median-lc-480"><span>2-11) Sliding Window Median (LC 480)</span></a></h3>
+<pre><code class="language-java">// Java
+// LC 480 - Return median of each sliding window of size k
+// IDEA: Two heaps (TreeMap/Multiset for lazy removal)
+// Time: O(N log K), Space: O(K)
+
+public double[] medianSlidingWindow(int[] nums, int k) {
+    // Use TreeMap to support removal
+    TreeMap&lt;Integer, Integer&gt; small = new TreeMap&lt;&gt;(Collections.reverseOrder()); // max heap
+    TreeMap&lt;Integer, Integer&gt; large = new TreeMap&lt;&gt;(); // min heap
+
+    int smallSize = 0, largeSize = 0;
+    double[] result = new double[nums.length - k + 1];
+
+    for (int i = 0; i &lt; nums.length; i++) {
+        // Add to appropriate heap
+        if (small.isEmpty() || nums[i] &lt;= small.firstKey()) {
+            add(small, nums[i]);
+            smallSize++;
+        } else {
+            add(large, nums[i]);
+            largeSize++;
+        }
+
+        // Rebalance
+        while (smallSize &gt; largeSize + 1) {
+            int val = small.firstKey();
+            remove(small, val);
+            smallSize--;
+            add(large, val);
+            largeSize++;
+        }
+        while (largeSize &gt; smallSize) {
+            int val = large.firstKey();
+            remove(large, val);
+            largeSize--;
+            add(small, val);
+            smallSize++;
+        }
+
+        // Window is full
+        if (i &gt;= k - 1) {
+            // Calculate median
+            if (k % 2 == 1) {
+                result[i - k + 1] = small.firstKey();
+            } else {
+                result[i - k + 1] = ((double) small.firstKey() + large.firstKey()) / 2.0;
+            }
+
+            // Remove element leaving window
+            int toRemove = nums[i - k + 1];
+            if (toRemove &lt;= small.firstKey()) {
+                remove(small, toRemove);
+                smallSize--;
+            } else {
+                remove(large, toRemove);
+                largeSize--;
+            }
+        }
+    }
+
+    return result;
+}
+
+private void add(TreeMap&lt;Integer, Integer&gt; map, int val) {
+    map.put(val, map.getOrDefault(val, 0) + 1);
+}
+
+private void remove(TreeMap&lt;Integer, Integer&gt; map, int val) {
+    int count = map.get(val);
+    if (count == 1) {
+        map.remove(val);
+    } else {
+        map.put(val, count - 1);
+    }
+}
+</code></pre>
+<h3 id="2-12-ugly-number-ii-lc-264" tabindex="-1"><a class="header-anchor" href="#2-12-ugly-number-ii-lc-264"><span>2-12) Ugly Number II (LC 264)</span></a></h3>
+<pre><code class="language-java">// Java
+// LC 264 - Find nth ugly number (only prime factors 2, 3, 5)
+// IDEA: Min heap to generate ugly numbers in order
+// Time: O(N log N), Space: O(N)
+
+public int nthUglyNumber(int n) {
+    PriorityQueue&lt;Long&gt; minHeap = new PriorityQueue&lt;&gt;();
+    Set&lt;Long&gt; seen = new HashSet&lt;&gt;();
+
+    minHeap.offer(1L);
+    seen.add(1L);
+
+    int[] primes = {2, 3, 5};
+    long ugly = 1;
+
+    for (int i = 0; i &lt; n; i++) {
+        ugly = minHeap.poll();
+
+        for (int prime : primes) {
+            long next = ugly * prime;
+            if (!seen.contains(next)) {
+                seen.add(next);
+                minHeap.offer(next);
+            }
+        }
+    }
+
+    return (int) ugly;
+}
+
+// Three Pointers Approach (O(N) time, O(N) space)
+public int nthUglyNumber_ThreePointers(int n) {
+    int[] ugly = new int[n];
+    ugly[0] = 1;
+
+    int p2 = 0, p3 = 0, p5 = 0;
+
+    for (int i = 1; i &lt; n; i++) {
+        int next2 = ugly[p2] * 2;
+        int next3 = ugly[p3] * 3;
+        int next5 = ugly[p5] * 5;
+
+        int next = Math.min(next2, Math.min(next3, next5));
+        ugly[i] = next;
+
+        // Move pointers (handle duplicates)
+        if (next == next2) p2++;
+        if (next == next3) p3++;
+        if (next == next5) p5++;
+    }
+
+    return ugly[n - 1];
+}
+</code></pre>
+<h3 id="2-13-network-delay-time-lc-743-dijkstra" tabindex="-1"><a class="header-anchor" href="#2-13-network-delay-time-lc-743-dijkstra"><span>2-13) Network Delay Time (LC 743 - Dijkstra)</span></a></h3>
+<pre><code class="language-java">// Java
+// LC 743 - Find time for all nodes to receive signal
+// IDEA: Dijkstra's shortest path algorithm
+// Time: O(E log V), Space: O(V + E)
+
+public int networkDelayTime(int[][] times, int n, int k) {
+    // Build adjacency list
+    Map&lt;Integer, List&lt;int[]&gt;&gt; graph = new HashMap&lt;&gt;();
+    for (int[] time : times) {
+        graph.computeIfAbsent(time[0], x -&gt; new ArrayList&lt;&gt;())
+             .add(new int[]{time[1], time[2]});
+    }
+
+    // Min heap: [distance, node]
+    PriorityQueue&lt;int[]&gt; minHeap = new PriorityQueue&lt;&gt;(
+        (a, b) -&gt; a[0] - b[0]
+    );
+
+    int[] dist = new int[n + 1];
+    Arrays.fill(dist, Integer.MAX_VALUE);
+    dist[k] = 0;
+
+    minHeap.offer(new int[]{0, k});
+
+    while (!minHeap.isEmpty()) {
+        int[] curr = minHeap.poll();
+        int d = curr[0];
+        int node = curr[1];
+
+        // Skip if already processed with shorter distance
+        if (d &gt; dist[node]) continue;
+
+        if (graph.containsKey(node)) {
+            for (int[] edge : graph.get(node)) {
+                int neighbor = edge[0];
+                int weight = edge[1];
+                int newDist = d + weight;
+
+                if (newDist &lt; dist[neighbor]) {
+                    dist[neighbor] = newDist;
+                    minHeap.offer(new int[]{newDist, neighbor});
+                }
+            }
+        }
+    }
+
+    // Find max distance (time for all nodes to receive)
+    int maxDist = 0;
+    for (int i = 1; i &lt;= n; i++) {
+        if (dist[i] == Integer.MAX_VALUE) {
+            return -1;  // Unreachable node
+        }
+        maxDist = Math.max(maxDist, dist[i]);
+    }
+
+    return maxDist;
+}
+</code></pre>
+<h3 id="2-14-sort-characters-by-frequency-lc-451" tabindex="-1"><a class="header-anchor" href="#2-14-sort-characters-by-frequency-lc-451"><span>2-14) Sort Characters By Frequency (LC 451)</span></a></h3>
+<pre><code class="language-java">// Java
+// LC 451 - Sort characters in string by frequency (descending)
+// IDEA: Count frequency, use max heap to build result
+// Time: O(N log K) where K = unique chars, Space: O(N)
+
+public String frequencySort(String s) {
+    // Count frequency
+    Map&lt;Character, Integer&gt; freq = new HashMap&lt;&gt;();
+    for (char c : s.toCharArray()) {
+        freq.put(c, freq.getOrDefault(c, 0) + 1);
+    }
+
+    // Max heap based on frequency
+    PriorityQueue&lt;Character&gt; maxHeap = new PriorityQueue&lt;&gt;(
+        (a, b) -&gt; freq.get(b) - freq.get(a)
+    );
+
+    maxHeap.addAll(freq.keySet());
+
+    // Build result
+    StringBuilder sb = new StringBuilder();
+    while (!maxHeap.isEmpty()) {
+        char c = maxHeap.poll();
+        int count = freq.get(c);
+        for (int i = 0; i &lt; count; i++) {
+            sb.append(c);
+        }
+    }
+
+    return sb.toString();
+}
+
+// Bucket Sort Alternative (O(N) time)
+public String frequencySort_Bucket(String s) {
+    Map&lt;Character, Integer&gt; freq = new HashMap&lt;&gt;();
+    for (char c : s.toCharArray()) {
+        freq.put(c, freq.getOrDefault(c, 0) + 1);
+    }
+
+    // Bucket: index = frequency
+    List&lt;Character&gt;[] buckets = new List[s.length() + 1];
+    for (int i = 0; i &lt; buckets.length; i++) {
+        buckets[i] = new ArrayList&lt;&gt;();
+    }
+
+    for (Map.Entry&lt;Character, Integer&gt; entry : freq.entrySet()) {
+        buckets[entry.getValue()].add(entry.getKey());
+    }
+
+    StringBuilder sb = new StringBuilder();
+    for (int i = buckets.length - 1; i &gt;= 0; i--) {
+        for (char c : buckets[i]) {
+            for (int j = 0; j &lt; i; j++) {
+                sb.append(c);
+            }
+        }
+    }
+
+    return sb.toString();
+}
+</code></pre>
+<h3 id="2-15-last-stone-weight-lc-1046" tabindex="-1"><a class="header-anchor" href="#2-15-last-stone-weight-lc-1046"><span>2-15) Last Stone Weight (LC 1046)</span></a></h3>
+<pre><code class="language-java">// Java
+// LC 1046 - Smash two heaviest stones, return remaining weight
+// IDEA: Max heap - always get two largest
+// Time: O(N log N), Space: O(N)
+
+public int lastStoneWeight(int[] stones) {
+    // Max heap
+    PriorityQueue&lt;Integer&gt; maxHeap = new PriorityQueue&lt;&gt;(
+        Collections.reverseOrder()
+    );
+
+    for (int stone : stones) {
+        maxHeap.offer(stone);
+    }
+
+    while (maxHeap.size() &gt; 1) {
+        int stone1 = maxHeap.poll();  // Heaviest
+        int stone2 = maxHeap.poll();  // Second heaviest
+
+        if (stone1 != stone2) {
+            maxHeap.offer(stone1 - stone2);  // Remaining weight
+        }
+        // If equal, both destroyed
+    }
+
+    return maxHeap.isEmpty() ? 0 : maxHeap.peek();
+}
+</code></pre>
+<hr>
+<h2 id="quick-reference-pq-pattern-problem-mapping" tabindex="-1"><a class="header-anchor" href="#quick-reference-pq-pattern-problem-mapping"><span>Quick Reference: PQ Pattern → Problem Mapping</span></a></h2>
+<table>
+<thead>
+<tr>
+<th>Pattern</th>
+<th>Classic Problems</th>
+<th>Key Insight</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Top K</strong></td>
+<td>LC 215, 347, 692, 973, 1046</td>
+<td>Min heap size K for K largest</td>
+</tr>
+<tr>
+<td><strong>K-Way Merge</strong></td>
+<td>LC 23, 378, 373</td>
+<td>Track (value, source_index)</td>
+</tr>
+<tr>
+<td><strong>Two Heaps</strong></td>
+<td>LC 295, 480</td>
+<td>Max heap for small, min heap for large</td>
+</tr>
+<tr>
+<td><strong>Scheduling</strong></td>
+<td>LC 253, 621, 767</td>
+<td>Sort by start/priority, heap for end times</td>
+</tr>
+<tr>
+<td><strong>Dijkstra</strong></td>
+<td>LC 743, 787, 1514, 1631</td>
+<td>Min heap with (distance, node)</td>
+</tr>
+<tr>
+<td><strong>Stream</strong></td>
+<td>LC 703, 295, 346</td>
+<td>Fixed size heap or two heaps</td>
+</tr>
+<tr>
+<td><strong>Ugly Numbers</strong></td>
+<td>LC 264, 313, 373</td>
+<td>Generate in sorted order</td>
+</tr>
+<tr>
+<td><strong>Greedy+Constraint</strong></td>
+<td>LC 1405, 767, 621, 358, 1054</td>
+<td>Max-heap + two-case loop (use 2nd if constraint violated, put 1st back)</td>
+</tr>
+</tbody>
+</table>
+<h2 id="lc-examples" tabindex="-1"><a class="header-anchor" href="#lc-examples"><span>LC Examples</span></a></h2>
+<h3 id="2-1-kth-largest-element-in-a-stream-lc-703-min-heap-of-size-k" tabindex="-1"><a class="header-anchor" href="#2-1-kth-largest-element-in-a-stream-lc-703-min-heap-of-size-k"><span>2-1) Kth Largest Element in a Stream (LC 703) — Min-Heap of Size K</span></a></h3>
+<blockquote>
+<p>Maintain a min-heap of size k; the top is always the kth largest element.</p>
+</blockquote>
+<pre><code class="language-java">// LC 703 - Kth Largest Element in a Stream
+// IDEA: Min-heap of size k — top = kth largest
+// time = O(N log k), space = O(k)
+class KthLargest {
+    PriorityQueue&lt;Integer&gt; heap;
+    int k;
+    public KthLargest(int k, int[] nums) {
+        this.k = k;
+        this.heap = new PriorityQueue&lt;&gt;();
+        for (int num : nums) add(num);
+    }
+    public int add(int val) {
+        heap.offer(val);
+        if (heap.size() &gt; k) heap.poll();
+        return heap.peek();
+    }
+}
+</code></pre>
+<h3 id="2-2-top-k-frequent-elements-lc-347-min-heap-with-frequency" tabindex="-1"><a class="header-anchor" href="#2-2-top-k-frequent-elements-lc-347-min-heap-with-frequency"><span>2-2) Top K Frequent Elements (LC 347) — Min-Heap with Frequency</span></a></h3>
+<blockquote>
+<p>Count frequencies with HashMap, then maintain min-heap of size k by frequency.</p>
+</blockquote>
+<pre><code class="language-java">// LC 347 - Top K Frequent Elements
+// IDEA: HashMap for frequency + min-heap of size k ordered by frequency
+// time = O(N log k), space = O(N)
+public int[] topKFrequent(int[] nums, int k) {
+    Map&lt;Integer, Integer&gt; freq = new HashMap&lt;&gt;();
+    for (int num : nums) freq.merge(num, 1, Integer::sum);
+    PriorityQueue&lt;Integer&gt; pq = new PriorityQueue&lt;&gt;((a, b) -&gt; freq.get(a) - freq.get(b));
+    for (int key : freq.keySet()) {
+        pq.offer(key);
+        if (pq.size() &gt; k) pq.poll();
+    }
+    int[] ans = new int[k];
+    for (int i = k - 1; i &gt;= 0; i--) ans[i] = pq.poll();
+    return ans;
+}
+</code></pre>
+<h3 id="2-3-merge-k-sorted-lists-lc-23-min-heap" tabindex="-1"><a class="header-anchor" href="#2-3-merge-k-sorted-lists-lc-23-min-heap"><span>2-3) Merge K Sorted Lists (LC 23) — Min-Heap</span></a></h3>
+<blockquote>
+<p>Use min-heap to always extract the global minimum node across all lists.</p>
+</blockquote>
+<pre><code class="language-java">// LC 23 - Merge K Sorted Lists
+// IDEA: Min-heap ordered by node value; pop min, push its next
+// time = O(N log k), space = O(k)  N = total nodes, k = number of lists
+public ListNode mergeKLists(ListNode[] lists) {
+    PriorityQueue&lt;ListNode&gt; pq = new PriorityQueue&lt;&gt;((a, b) -&gt; a.val - b.val);
+    for (ListNode node : lists) if (node != null) pq.offer(node);
+    ListNode dummy = new ListNode(0), curr = dummy;
+    while (!pq.isEmpty()) {
+        curr.next = pq.poll();
+        curr = curr.next;
+        if (curr.next != null) pq.offer(curr.next);
+    }
+    return dummy.next;
+}
+</code></pre>
+
+      </div>
+      <div class="cheatsheet-footer">
+        <a href="../cheatsheets.html" class="back-link">← Back to Cheat Sheets</a>
+        <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/priority_queue.md" class="github-edit" target="_blank">
+          Edit on GitHub →
+        </a>
+      </div>
+    <nav class="prev-next"><a href="prefix_sum.html" class="prev-link">← Prefix Sum</a><a href="python_trick.html" class="next-link">Python Trick →</a></nav>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>CS_basics - Computer Science Fundamentals & Interview Preparation</p>
+      <p>
+        <a href="https://github.com/yennanliu/CS_basics">GitHub</a> •
+        <a href="https://github.com/yennanliu/CS_basics/tree/master/doc">Documentation</a> •
+        <a href="https://github.com/yennanliu/CS_basics/issues">Report Issues</a>
+      </p>
+    </div>
+  </footer>
+</body>
+</html>

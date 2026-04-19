@@ -1,0 +1,239 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cqrs - CS_basics</title>
+  <meta name="description" content="Computer Science fundamentals: algorithms, data structures, system design, and LeetCode solutions">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>CS</text></svg>">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="../vendor/fonts.css">
+  <link rel="stylesheet" href="../vendor/highlight/github-dark.min.css">
+  <script src="../vendor/highlight/highlight.min.js"></script>
+  <script>
+  // Apply theme before render to prevent flash
+  (function() {
+    var saved = localStorage.getItem('theme');
+    if (saved === 'dark' || (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      document.documentElement.setAttribute('data-theme', 'dark');
+    }
+  })();
+  </script>
+  <script>document.addEventListener('DOMContentLoaded', function() {
+    hljs.highlightAll();
+    document.querySelectorAll('pre code').forEach(function(codeEl) {
+      var pre = codeEl.parentElement;
+      var lang = '';
+      var cls = codeEl.className || '';
+      var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
+      if (m) lang = m[1];
+      var wrapper = document.createElement('div');
+      wrapper.className = 'code-block-wrapper';
+      pre.parentNode.insertBefore(wrapper, pre);
+      var header = document.createElement('div');
+      header.className = 'code-block-header';
+      if (lang) {
+        var label = document.createElement('span');
+        label.className = 'code-lang-label';
+        label.textContent = lang;
+        header.appendChild(label);
+      } else {
+        header.appendChild(document.createElement('span'));
+      }
+      var btn = document.createElement('button');
+      btn.className = 'copy-btn';
+      btn.textContent = 'Copy';
+      btn.addEventListener('click', function() {
+        navigator.clipboard.writeText(codeEl.textContent).then(function() {
+          btn.textContent = 'Copied!';
+          btn.classList.add('copied');
+          setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+        });
+      });
+      header.appendChild(btn);
+      wrapper.appendChild(header);
+      wrapper.appendChild(pre);
+    });
+    document.querySelectorAll('table').forEach(function(table) {
+      if (!table.parentElement.classList.contains('table-wrap')) {
+        var wrapper = document.createElement('div');
+        wrapper.className = 'table-wrap';
+        table.parentNode.insertBefore(wrapper, table);
+        wrapper.appendChild(table);
+      }
+    });
+    // Reading progress bar
+    var progressBar = document.getElementById('reading-progress');
+    if (progressBar) {
+      window.addEventListener('scroll', function() {
+        var winScroll = document.documentElement.scrollTop;
+        var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        progressBar.style.width = height > 0 ? (winScroll / height * 100) + '%' : '0%';
+      });
+    }
+    // Dark mode toggle
+    var toggle = document.getElementById('theme-toggle');
+    if (toggle) {
+      var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      toggle.textContent = isDark ? '☀️' : '🌙';
+      toggle.addEventListener('click', function() {
+        var dark = document.documentElement.getAttribute('data-theme') === 'dark';
+        if (dark) {
+          document.documentElement.removeAttribute('data-theme');
+          localStorage.setItem('theme', 'light');
+          toggle.textContent = '🌙';
+        } else {
+          document.documentElement.setAttribute('data-theme', 'dark');
+          localStorage.setItem('theme', 'dark');
+          toggle.textContent = '☀️';
+        }
+      });
+    }
+  });</script>
+</head>
+<body>
+  <div class="progress-container"><div class="progress-bar" id="reading-progress"></div></div>
+  <nav class="navbar">
+    <div class="container">
+      <div class="nav-brand">
+        <span class="nav-icon">💻</span>
+        <span class="nav-title">CS_basics</span>
+      </div>
+      <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+      <div class="nav-links">
+        <a href="../index.html" class="">Home</a>
+        <a href="../cheatsheets.html" class="">Cheat Sheets</a>
+        <a href="../patterns.html" class="">Pattern Recognition</a>
+        <a href="../faqs.html" class="active">FAQs</a>
+        <a href="../resources.html" class="">Resources</a>
+        <a href="../lc-explorer.html" class="">LC Explorer</a>
+        <a href="../lc-random-picker.html" class="">🎲 Random Picker</a>
+        <a href="../algo_demo/index.html" class="">Visualizer</a>
+        <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">&#127769;</button>
+        <a href="https://github.com/yennanliu/CS_basics" target="_blank" class="github-link" aria-label="GitHub">
+          <svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor">
+            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container">
+    <div class="content">
+      
+      <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../faqs.html">FAQs</a> <span class="sep">›</span> <span class="current">Cqrs</span></nav>
+      <div class="cheatsheet-header">
+        <h1>Cqrs</h1>
+        <span class="last-updated">Last updated: Feb 23, 2024</span>
+      </div>
+      
+      <div class="cheatsheet-content">
+        <h1 id="command-query-responsibility-segregation-cqrs" tabindex="-1"><a class="header-anchor" href="#command-query-responsibility-segregation-cqrs"><span>Command Query Responsibility Segregation (CQRS)</span></a></h1>
+<ul>
+<li>
+<p>命令與查詢責任分離 (command, query)</p>
+</li>
+<li>
+<p>分開設計以下兩種操作：會改變系統狀態但不會回傳值的操作，稱之為Command，
+以及不會改變狀態但會回傳值的操作，稱為Query</p>
+</li>
+<li>
+<p>Pros : 3S</p>
+</li>
+<li>
+<p>Simplicity：
+CQRS將系統分成Write Model與Read Model，這兩種模型的行為與責任大不相同。從單一責任原則（Single Responsibility Principle；SRP）的角度來看，CQRS進一步簡化不同模型之內的複雜度。
+寫入模型：
+Strong consistency
+normalized data model
+one-way dependency
+讀取模型：
+Eventually consistency
+de-normalized data model (materialized view)
+any-way dependency</p>
+</li>
+<li>
+<p>Scalability：
+很多系統的讀取頻率遠大於寫入，例如在電子商務系統中大部分的使用者都在瀏覽資料，少部分的操作才會改變系統狀態。在這種情況下，套用CQRS可以單獨針對讀取部分加以拓展，如圖3所示。</p>
+</li>
+<li>
+<p>Speed (Performance)：
+綜合上述兩個優點，CQRS可以提升系統反應速度與效能，因為開發人員可以分別針對寫入端與讀取端採取不同的優化策略。例如，寫入端採取Event Sourcing簡化與加速寫入操作，讀取端因為不會改變狀態，可以用各種快取工具加快讀取。圖4是ezKanban團隊成員杜奕萱在她的碩士論文《套用命令與查詢責任分離以簡化聚合依賴：以 ezKanban 為例》中針對套用CQRS之後ezKanban的GetBoardContent查詢所做的效能測試，可以發現套用CQRS之後有著非常巨大的讀取效能提升。</p>
+</li>
+<li>
+<p>CQRS provides us a convenient way to select separate domain models
+appropriate for write and read operations;
+we don’t have to create a complex domain model supporting both</p>
+</li>
+<li>
+<p>It helps us to select repositories that are individually suited
+for handling the complexities of the read and write operations,
+like high throughput for writing and low latency for reading</p>
+</li>
+<li>
+<p>It naturally complements event-based programming models in
+a distributed architecture by providing a separation of
+concerns as well as simpler domain models</p>
+</li>
+<li>
+<p>Cons</p>
+<ul>
+<li>
+<p>implementation complexity</p>
+<ul>
+<li>example :</li>
+<li>例如，如圖1所示，ezKanban在資料庫端也套用CQRS，因此讀取資料庫與寫入資料庫之間的狀態同步是最終一致性。為了維持最終一致性，就會有新的設計工作產生：同步的訊息就需要考慮順序（ordering）與at least once等議題，而負責產生讀取資料庫的Projector（投影器）設計則須考慮idempotent與replay events等問題。另外，如何撰寫Projector也是一個問題。</li>
+</ul>
+</li>
+<li>
+<p>Only a complex domain model can benefit from the added complexity of this pattern; a simple domain model can be managed without all this</p>
+</li>
+<li>
+<p>Naturally leads to code duplication to some extent, which is an acceptable evil compared to the gain it leads us to; however, individual judgment is advised</p>
+</li>
+<li>
+<p>Separate repositories lead to problems of consistency, and it’s difficult to keep the write and read repositories in perfect sync always; we often have to settle for eventual consistency</p>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="ref" tabindex="-1"><a class="header-anchor" href="#ref"><span>Ref</span></a></h2>
+<ul>
+<li>
+<p><a href="https://teddy-chen-tw.blogspot.com/2022/07/8cqrs.html">https://teddy-chen-tw.blogspot.com/2022/07/8cqrs.html</a></p>
+</li>
+<li>
+<p>example code</p>
+<ul>
+<li><a href="https://www.baeldung.com/cqrs-event-sourcing-java">https://www.baeldung.com/cqrs-event-sourcing-java</a></li>
+</ul>
+</li>
+</ul>
+
+      </div>
+      <div class="cheatsheet-footer">
+        <a href="../faqs.html" class="back-link">← Back to FAQs</a>
+        <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/faq/java/cqrs.md" class="github-edit" target="_blank">
+          Edit on GitHub →
+        </a>
+      </div>
+    <nav class="prev-next"><a href="flink_faq_flink.html" class="prev-link">← Faq Flink</a><a href="java_faq_OOP.html" class="next-link">Faq OOP →</a></nav>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>CS_basics - Computer Science Fundamentals & Interview Preparation</p>
+      <p>
+        <a href="https://github.com/yennanliu/CS_basics">GitHub</a> •
+        <a href="https://github.com/yennanliu/CS_basics/tree/master/doc">Documentation</a> •
+        <a href="https://github.com/yennanliu/CS_basics/issues">Report Issues</a>
+      </p>
+    </div>
+  </footer>
+</body>
+</html>

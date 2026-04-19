@@ -1,0 +1,642 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Faq Kafka - CS_basics</title>
+  <meta name="description" content="Computer Science fundamentals: algorithms, data structures, system design, and LeetCode solutions">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>CS</text></svg>">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="../vendor/fonts.css">
+  <link rel="stylesheet" href="../vendor/highlight/github-dark.min.css">
+  <script src="../vendor/highlight/highlight.min.js"></script>
+  <script>
+  // Apply theme before render to prevent flash
+  (function() {
+    var saved = localStorage.getItem('theme');
+    if (saved === 'dark' || (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      document.documentElement.setAttribute('data-theme', 'dark');
+    }
+  })();
+  </script>
+  <script>document.addEventListener('DOMContentLoaded', function() {
+    hljs.highlightAll();
+    document.querySelectorAll('pre code').forEach(function(codeEl) {
+      var pre = codeEl.parentElement;
+      var lang = '';
+      var cls = codeEl.className || '';
+      var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
+      if (m) lang = m[1];
+      var wrapper = document.createElement('div');
+      wrapper.className = 'code-block-wrapper';
+      pre.parentNode.insertBefore(wrapper, pre);
+      var header = document.createElement('div');
+      header.className = 'code-block-header';
+      if (lang) {
+        var label = document.createElement('span');
+        label.className = 'code-lang-label';
+        label.textContent = lang;
+        header.appendChild(label);
+      } else {
+        header.appendChild(document.createElement('span'));
+      }
+      var btn = document.createElement('button');
+      btn.className = 'copy-btn';
+      btn.textContent = 'Copy';
+      btn.addEventListener('click', function() {
+        navigator.clipboard.writeText(codeEl.textContent).then(function() {
+          btn.textContent = 'Copied!';
+          btn.classList.add('copied');
+          setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+        });
+      });
+      header.appendChild(btn);
+      wrapper.appendChild(header);
+      wrapper.appendChild(pre);
+    });
+    document.querySelectorAll('table').forEach(function(table) {
+      if (!table.parentElement.classList.contains('table-wrap')) {
+        var wrapper = document.createElement('div');
+        wrapper.className = 'table-wrap';
+        table.parentNode.insertBefore(wrapper, table);
+        wrapper.appendChild(table);
+      }
+    });
+    // Reading progress bar
+    var progressBar = document.getElementById('reading-progress');
+    if (progressBar) {
+      window.addEventListener('scroll', function() {
+        var winScroll = document.documentElement.scrollTop;
+        var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        progressBar.style.width = height > 0 ? (winScroll / height * 100) + '%' : '0%';
+      });
+    }
+    // Dark mode toggle
+    var toggle = document.getElementById('theme-toggle');
+    if (toggle) {
+      var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      toggle.textContent = isDark ? '☀️' : '🌙';
+      toggle.addEventListener('click', function() {
+        var dark = document.documentElement.getAttribute('data-theme') === 'dark';
+        if (dark) {
+          document.documentElement.removeAttribute('data-theme');
+          localStorage.setItem('theme', 'light');
+          toggle.textContent = '🌙';
+        } else {
+          document.documentElement.setAttribute('data-theme', 'dark');
+          localStorage.setItem('theme', 'dark');
+          toggle.textContent = '☀️';
+        }
+      });
+    }
+  });</script>
+</head>
+<body>
+  <div class="progress-container"><div class="progress-bar" id="reading-progress"></div></div>
+  <nav class="navbar">
+    <div class="container">
+      <div class="nav-brand">
+        <span class="nav-icon">💻</span>
+        <span class="nav-title">CS_basics</span>
+      </div>
+      <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+      <div class="nav-links">
+        <a href="../index.html" class="">Home</a>
+        <a href="../cheatsheets.html" class="">Cheat Sheets</a>
+        <a href="../patterns.html" class="">Pattern Recognition</a>
+        <a href="../faqs.html" class="active">FAQs</a>
+        <a href="../resources.html" class="">Resources</a>
+        <a href="../lc-explorer.html" class="">LC Explorer</a>
+        <a href="../lc-random-picker.html" class="">🎲 Random Picker</a>
+        <a href="../algo_demo/index.html" class="">Visualizer</a>
+        <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">&#127769;</button>
+        <a href="https://github.com/yennanliu/CS_basics" target="_blank" class="github-link" aria-label="GitHub">
+          <svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor">
+            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container">
+    <div class="content">
+      
+      <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../faqs.html">FAQs</a> <span class="sep">›</span> <span class="current">Faq Kafka</span></nav>
+      <div class="cheatsheet-header">
+        <h1>Faq Kafka</h1>
+        <span class="last-updated">Last updated: Jul 3, 2024</span>
+      </div>
+      <div class="toc"><h2>Table of Contents</h2><ul><li class="toc-sub"><a href="#1-explain-kafka-architecture">1) Explain kafka architecture ?</a></li><li class="toc-sub"><a href="#1-kafka-message-structure">1’) Kafka message structure ?</a></li><li class="toc-sub"><a href="#1-how-kafka-find-log-file-via-index">1’') How kafka find .log file via index ?</a></li><li class="toc-sub"><a href="#1-explain-how-does-zookeeper-zk-work-in-kafka-how-kafka-interact-with-offset-via-zk">1’‘’) Explain how does zookeeper (ZK) work in kafka ? how kafka interact with offset via ZK ?</a></li><li class="toc-sub"><a href="#2-how-does-kafka-implement-exactly-once">2) How does kafka implement exactly once ?</a></li><li class="toc-sub"><a href="#3-how-kafka-avoid-data-missing">3) How kafka avoid data missing ?</a></li><li class="toc-sub"><a href="#3-explain-kafka-ack">3’) Explain kafka ACK ?</a></li><li class="toc-sub"><a href="#4-explain-kafka-basic-data-model">4) Explain kafka basic data model ?</a></li><li class="toc-sub"><a href="#5-explain-how-does-kafka-save-data-low-level-file-system-level">5) Explain how does kafka save data (low level, file system level) ?</a></li><li class="toc-sub"><a href="#6-explain-kafka-master-slaves-relation-regarding-data-partition">6) Explain kafka master, slaves relation ? regarding data partition, … ?</a></li><li class="toc-sub"><a href="#7-steps-when-a-consumer-consumes-a-kafka-topic">7) Steps when a consumer consumes a kafka topic ?</a></li><li class="toc-sub"><a href="#8-explain-kafka-s-idempotence">8) Explain kafka’s Idempotence (冪等性)</a></li><li class="toc-sub"><a href="#9-explain-kafka-s-transactional">9) Explain kafka’s transactional (事務性)</a></li><li class="toc-sub"><a href="#9-explain-transaction-coordinator-and-it-mechanism">9’) Explain Transaction Coordinator and it mechanism ?</a></li><li class="toc-sub"><a href="#10-explain-ar-assigned-replicas-isr-in-sync-replica-and-osr-out-of-sync-replicas">10) Explain AR（Assigned Replicas), ISR (In-sync replica), and OSR（Out-of-Sync Replicas）?</a></li><li class="toc-sub"><a href="#11-describe-kafka-limitation">11) Describe kafka limitation ?</a></li><li class="toc-sub"><a href="#12-explain-why-kafka-can-do-high-i-o">12) Explain why kafka can do high I/O ?</a></li><li class="toc-sub"><a href="#13-explain-kafka-topic-partition-strategy">13) Explain kafka topic partition strategy ?</a></li><li class="toc-sub"><a href="#14-what-s-if-multiple-consumers-in-same-consumer-group">14) What’s if multiple consumers in same consumer group ?</a></li><li class="toc-sub"><a href="#14-streaming-model">14) streaming model ?</a></li><li><a href="#ref">Ref</a></li></ul></div>
+      <div class="cheatsheet-content">
+        <h1 id="kafka-faq" tabindex="-1"><a class="header-anchor" href="#kafka-faq"><span>Kafka FAQ</span></a></h1>
+<h3 id="1-explain-kafka-architecture" tabindex="-1"><a class="header-anchor" href="#1-explain-kafka-architecture"><span>1) Explain kafka architecture ?</span></a></h3>
+<ul>
+<li>
+<p>Feature</p>
+<ul>
+<li>kafka is a sustainable <code>distributed</code> pub-sub (publish-subscribe) message system</li>
+<li>developed by Linkedin via scala</li>
+<li>can work with both online and offline msg. Data saved on disk with replica -&gt; prevent data lost</li>
+</ul>
+</li>
+<li>
+<p>Component</p>
+<ul>
+<li><code>Broker</code>
+<ul>
+<li>kafka cluster has many nodes</li>
+<li>A broker is a node/server</li>
+</ul>
+</li>
+<li><code>Topic</code>
+<ul>
+<li>every event on kafka belongs to a class, which is “topic”</li>
+<li>each topic for different data source (feeds of messages)</li>
+<li>can have unlimit topics</li>
+<li>producer-subscriber use “topic” as basic unit. Can split further via topic partition</li>
+</ul>
+</li>
+<li><code>Partition</code>
+<ul>
+<li>each topic has multiple partitions</li>
+<li>NOTE : same broker can have multiple partition
+-&gt; broker count has NO relation to partition count</li>
+<li>each topic has a partition id. Start from 0</li>
+<li>NOTE !!! :
+<ul>
+<li>data in each partition can be ordering. But CAN’T guarantee global data (all data in topic) is ordering</li>
+<li>ordering : keep the same ordering in producer’s data and data read by consumer</li>
+</ul>
+</li>
+<li>partition defines the MAX “con-current” consumer in the same consumer group</li>
+<li>So, we can raise consuming speed, if we have more partition
+<img src="../doc/pic/partition1.png">
+<img src="../doc/pic/partition2.png"></li>
+</ul>
+</li>
+<li>Partition replicas
+<ul>
+<li>replication-factor
+<ul>
+<li>define how many replicas (on different brokers).</li>
+<li><code># of replicas == # of broker</code> in general</li>
+<li>Each <code>partition</code> has its own <code>leader replica</code> and <code>follower replica</code>
+<ul>
+<li>e.g. 1 leader, N followers -&gt; N replicas</li>
+</ul>
+</li>
+<li>the follower replica which is in sync called “in-sync-replicas(ISR)”</li>
+<li>NOTE !!! : <code>producer and consumer</code> BOTH <code>read and write</code> data from <code>leader replica</code>, NOT interact with follower replica</li>
+<li>For data reliability when data I/O</li>
+<li>if leader down, then will raise the other follower as new leader
+<img src="../doc/pic/partition_replicas.png"></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><code>Segment</code>
+<ul>
+<li>each partition has <code>multiple</code> segments.
+<ul>
+<li>Each segment has 2 parts:
+<ul>
+<li><code>.index</code> : index file (for .log). for finding offset in .log file</li>
+<li><code>.log</code> :  record actual event data</li>
+</ul>
+</li>
+<li>Name convention
+<ul>
+<li>consider “global partition”. Start from 0</li>
+<li>Next segment name if last partition’s MAX offset (offset msg count)</li>
+<li>offset is 64 bit Long, 20 digit nunber, filled with 0 if no digit</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>example:
+<ul>
+<li><code> 3,497</code> in <code>index</code> : means 3rd msg in .log file, and its offset = 497</li>
+<li><code>Message 368772</code> in <code>log</code> : means it’s 368772 rd msg in global partition</li>
+<li>.log and .index</li>
+</ul>
+<pre><code class="language-bash"># file structure
+/&lt;topic_name&gt;-&lt;partition_name&gt;
+/.../xxx.index
+/.../xxx.log
+
+# index file
+00000000000000000000.index   // &lt;offset&gt;.index
+# log content
+00000000000000000000.log     // &lt;offset&gt;.log
+</code></pre>
+<pre><code class="language-bash"># example
+-rw-r--r--. 1 root root 389k  1月  17  18:03   00000000000000000000.index
+-rw-r--r--. 1 root root 1.0G  1月  17  18:03   00000000000000000000.log
+-rw-r--r--. 1 root root  10M  1月  17  18:03   00000000000000077894.index
+-rw-r--r--. 1 root root 127M  1月  17  18:03   00000000000000077894.log
+</code></pre>
+</li>
+</ul>
+  <img src="../doc/pic/index_log_file1.png">
+</li>
+<li><code>Producer</code>
+<ul>
+<li>msg producer, send msg to kafka broker</li>
+<li>write data to <code>leader replica</code></li>
+</ul>
+</li>
+<li><code>Consumer</code>
+<ul>
+<li>msg consumer (client), read msg from kafka</li>
+<li>consumer MUST belong to a consumer group</li>
+<li>read data from <code>leader replica</code></li>
+<li>NOTE !!! : <code># of consumer</code> should <code>&lt;=</code> <code># of partition in topic</code>
+<ul>
+<li>since same data should ONLY be consumed by one consumer under same consumer group at once</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><code>Consumer group</code>
+<ul>
+<li>each consumer belogs to a specific <code>consumer group</code> (we can define consumer’s group name)</li>
+<li>SAME consumer in SAME consunmer group ONLY consume same msg ONCE</li>
+<li>each consumer has a ID (group ID). All consumers can subscribe all partition under a topic</li>
+<li>each partition CAN ONLY be consumed by A consumer under a consumer group</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>Pic
+<img src="../doc/pic/kafka_architecture1.png"></p>
+</li>
+<li>
+<p>Ref</p>
+<ul>
+<li><a href="https://www.gushiciku.cn/pl/g6Tu/zh-tw">https://www.gushiciku.cn/pl/g6Tu/zh-tw</a></li>
+</ul>
+</li>
+</ul>
+<h3 id="1-kafka-message-structure" tabindex="-1"><a class="header-anchor" href="#1-kafka-message-structure"><span>1’) Kafka message structure ?</span></a></h3>
+<ul>
+<li>As below, every msg sent from producer will be pre-processed via kafka, then saved as below structure (in kafka broker). Only last field is the actual data from broker</li>
+<li>Pic
+<img src="../doc/pic/kafka_msg.png"></li>
+</ul>
+<h3 id="1-how-kafka-find-log-file-via-index" tabindex="-1"><a class="header-anchor" href="#1-how-kafka-find-log-file-via-index"><span>1’') How kafka find .log file via index ?</span></a></h3>
+<h3 id="1-explain-how-does-zookeeper-zk-work-in-kafka-how-kafka-interact-with-offset-via-zk" tabindex="-1"><a class="header-anchor" href="#1-explain-how-does-zookeeper-zk-work-in-kafka-how-kafka-interact-with-offset-via-zk"><span>1’‘’) Explain how does zookeeper (ZK) work in kafka ? how kafka interact with offset via ZK ?</span></a></h3>
+<h3 id="2-how-does-kafka-implement-exactly-once" tabindex="-1"><a class="header-anchor" href="#2-how-does-kafka-implement-exactly-once"><span>2) How does kafka implement <code>exactly once</code> ?</span></a></h3>
+<ul>
+<li>please check below <code> Idempotence (冪等性)</code>, <code> transactional (事務性)</code></li>
+<li>TL;DR
+<ul>
+<li>PID (producer ID), sequence number</li>
+<li>transaction</li>
+</ul>
+</li>
+</ul>
+<h3 id="3-how-kafka-avoid-data-missing" tabindex="-1"><a class="header-anchor" href="#3-how-kafka-avoid-data-missing"><span>3) How kafka avoid data missing ?</span></a></h3>
+<ul>
+<li>Producer
+<ul>
+<li>Via <code>ACK</code></li>
+<li>Can use <code>sync</code>, <code>async</code> mode send data to kafka</li>
+<li>Mode
+<ul>
+<li>Sync
+<ul>
+<li>send a batch data to kafka, wait for kafka’s response
+<ul>
+<li>producer wait 10 sec (?), if no ACK response, mark as failure</li>
+<li>producer retry 3 times (?), if no ACK response, mark as failure</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Async
+<ul>
+<li>send a batch data to kafka, ONLY offer a <code>callback()</code> method</li>
+<li>save data in producer’s buffer first, buffer size is about 20k</li>
+<li>if meat threshold, then can send data (to kafka)</li>
+<li>size of batch data is about 500</li>
+<li>NOTE : if there is no ACK from kafka broker, but producer buffer is full, developer can decide mechanisms whether clean buffer or not (programmatically)</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Broker
+<ul>
+<li>Via <code>Partition replicas</code> avoid data missing</li>
+</ul>
+</li>
+<li>Consumer
+<ul>
+<li>Each consumer record/maintain its own offset. can avoid data missing</li>
+<li>We can save offset on client’s file system, DB, Redis…</li>
+</ul>
+</li>
+</ul>
+<h3 id="3-explain-kafka-ack" tabindex="-1"><a class="header-anchor" href="#3-explain-kafka-ack"><span>3’) Explain kafka <code>ACK</code> ?</span></a></h3>
+<ul>
+<li><code>request.required.acks</code> : how to acknowledge when kafka writes producers’ messgage to its (kafka) copy</li>
+<li>A tradeoff between efficiency (response speed) and reliability (fault tolerance)</li>
+<li>cases
+<ul>
+<li><code>ack = 1 (default)</code>
+<ul>
+<li>when producer -&gt; kafka broker. if kafka leader comfirms msg received successfully -&gt; Success, will lost data if leader down before followers sync</li>
+</ul>
+</li>
+<li><code>ack = 0</code>
+<ul>
+<li>whenever producer -&gt; kafka broker, mark it as success. Highest speed, will lost data if broker down</li>
+</ul>
+</li>
+<li><code>ack = -1 (or all)</code>
+<ul>
+<li>when producer -&gt; kafka broker, have to wait <code>leader and ALL followers' confirmation</code>. Slowest speed, but make sure NO data lost.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Ref
+<ul>
+<li><a href="https://blog.51cto.com/u_15193673/2850009">https://blog.51cto.com/u_15193673/2850009</a></li>
+<li><a href="https://blog.51cto.com/u_15278282/2932140">https://blog.51cto.com/u_15278282/2932140</a></li>
+<li><a href="https://blog.csdn.net/lbh199466/article/details/89917693">https://blog.csdn.net/lbh199466/article/details/89917693</a></li>
+</ul>
+</li>
+</ul>
+<h3 id="4-explain-kafka-basic-data-model" tabindex="-1"><a class="header-anchor" href="#4-explain-kafka-basic-data-model"><span>4) Explain kafka basic data model ?</span></a></h3>
+<h3 id="5-explain-how-does-kafka-save-data-low-level-file-system-level" tabindex="-1"><a class="header-anchor" href="#5-explain-how-does-kafka-save-data-low-level-file-system-level"><span>5) Explain how does kafka save data (low level, file system level) ?</span></a></h3>
+<ul>
+<li>File
+<ul>
+<li>.log : file save data</li>
+<li>.idnex : file save .log files’ index</li>
+</ul>
+</li>
+</ul>
+<h3 id="6-explain-kafka-master-slaves-relation-regarding-data-partition" tabindex="-1"><a class="header-anchor" href="#6-explain-kafka-master-slaves-relation-regarding-data-partition"><span>6) Explain kafka master, slaves relation ? regarding data partition, … ?</span></a></h3>
+<h3 id="7-steps-when-a-consumer-consumes-a-kafka-topic" tabindex="-1"><a class="header-anchor" href="#7-steps-when-a-consumer-consumes-a-kafka-topic"><span>7) Steps when a consumer consumes a kafka topic ?</span></a></h3>
+<h3 id="8-explain-kafka-s-idempotence" tabindex="-1"><a class="header-anchor" href="#8-explain-kafka-s-idempotence"><span>8) Explain kafka’s Idempotence (冪等性)</span></a></h3>
+<ul>
+<li>Idempotence -&gt; when run same process multiple times, the result SHOULD BE THE SAME</li>
+<li>core concept : PID（Producer ID), sequence number</li>
+<li>kafka gives each producer a PID, also maintain a <code>&lt;PID, Partition&gt; -&gt; sequence number</code> mapping for each Partition in each producer</li>
+<li>Can ONLY make sure Idempotence inside producer, can’t guarantee if producer down and restart</li>
+<li>Can ONLY make sure Idempotence inside single partition, can’t across topic-partition</li>
+<li>Implementation
+<ul>
+<li>Broker
+<ul>
+<li>when get event
+<ul>
+<li>If <code>sequence number = &quot;&lt;PID, Partition&gt;&quot;'s sequence number + 1 </code>: broker accept this event</li>
+<li>If <code>sequence number &lt; &quot;&lt;PID, Partition&gt;&quot;'s sequence number</code>: duplicated event, broker will neglect it</li>
+<li>If <code>sequence number &gt; &quot;&lt;PID, Partition&gt;&quot;'s sequence number</code>: there is data missing, broker will raise <code>OutOfOrderSequenceException</code> exception</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Producer
+<ul>
+<li><code>PID（Producer ID)</code> :
+<ul>
+<li>use <code>Properties.put(“enable.idempotence”,true);</code> enable Idempotence</li>
+<li>recognize each producer client</li>
+<li>every producer gets a global unique PID when init</li>
+<li>if producer resrart, it will get a new PID</li>
+<li>for each PID,  sequence number starts from 0</li>
+<li>each topic-partition has a independent sequence number</li>
+<li>apply PID via ZK:
+<ul>
+<li>step 1) get <code>/latest_producer_id_block</code> from zk for lastest allocated PID</li>
+<li>step 2) if such node is new, start PID from 0 (0-1000), get 1000 PID at once (default)</li>
+<li>step 3) if such node existed, get its data, get PID based on block_end</li>
+<li>step 4) get PID, and write such inform back to ZK, if writes success -&gt; whole process OK, if fail, means maybe node already updated/other, will redo from step 1)</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><code>Sequence number</code> :
+<ul>
+<li>every msg (from producer client) has this value, for checking if a record is duplicated</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Ref
+<ul>
+<li><a href="https://blog.csdn.net/zc19921215/article/details/108466393#:~:text=Kafka%E5%B9%82%E7%AD%89%E6%80%A7%EF%BC%9A,number%E8%BF%99%E4%B8%A4%E4%B8%AA%E6%A6%82%E5%BF%B5%E3%80%82">https://blog.csdn.net/zc19921215/article/details/108466393#:~:text=Kafka幂等性：,number这两个概念。</a></li>
+</ul>
+</li>
+</ul>
+<h3 id="9-explain-kafka-s-transactional" tabindex="-1"><a class="header-anchor" href="#9-explain-kafka-s-transactional"><span>9) Explain kafka’s transactional (事務性)</span></a></h3>
+<ul>
+<li>offer “partition writing” <code>ATOM</code> -&gt; ONLY when ALL ops success, then commit and say these ops are success, else -&gt; rollback (e.g. ALL success or ALL failure)</li>
+<li>core concept :
+<ul>
+<li>TransactionalId</li>
+<li><code>_transaction_state（Topic)</code></li>
+<li>Producer epoch</li>
+<li>ControlBatch (aka Control Mesage, Transaction Marker)
+<ul>
+<li>special event sent from producer to kafka topic.</li>
+<li>2 types: COMMIT, ABORT (commuit success or not)</li>
+</ul>
+</li>
+<li>TransactionCoordinator</li>
+</ul>
+</li>
+<li>why not use producer id (PID), but introduce TransactionalId ?
+<ul>
+<li>producer id (PID) get refreshed when producer restart, so <code>we use TransactionalId make each event unique</code></li>
+</ul>
+</li>
+<li>make sure “exactly once”</li>
+<li>Implementation
+<ul>
+<li>step 1) find <code>Tranaction Corordinator (TC)</code>
+<ul>
+<li>producer sends <code>FindCoordinatorRequest</code> to a broker, then finds a TC, and gets its node_id, host, port</li>
+</ul>
+</li>
+<li>step 2) init initTransaction
+<ul>
+<li>producer sends <code>InitpidRequest</code> to TC, gets PID (producer ID), TC will record <code>&lt;TransactionalId,pid&gt;</code> to Transaction Log, state infromation (e.g. <code>Empty/Ongoing/PrepareCommit/PrepareAbort/CompleteCommit/CompleteAbort/Dead</code>) is also included</li>
+<li>Commit/Abort non-completed tasks</li>
+<li>add PIC with epoch, make transaction in producer</li>
+</ul>
+</li>
+<li>step 3) begin Transaction
+<ul>
+<li>run producer’s <code>beginTransacion()</code>. Will mark a transaction as “start” state in local record.</li>
+</ul>
+</li>
+<li>step 4) read-process-write
+<ul>
+<li>Once producer start sending event, TC will save <code>&lt;Transaction, Topic, Partition&gt;</code> to Transaction Log, and set it “start” state, also record the time.</li>
+<li>Broker will save sent event in its disk (without commit/abort). If there is an “abort”, msg on broker will NOT be canceled, but changed state to “abort”</li>
+</ul>
+</li>
+<li>step 5) commitTransaction/abortTransaction
+<ul>
+<li>while producer run commit/abort, TC will do 2 phase commit
+<ul>
+<li>phase 1 : modify Transaction log to <code>PREPARE_COMMIT</code> or <code>PREPARE_ABORT</code></li>
+<li>phase 2 : modify all events written by Transaction Marker to committed or aborted</li>
+</ul>
+</li>
+<li>once Transaction Marker complete writing, TC will write final status to Transaction log and mark such transaction is completed</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>pic
+<img src="../doc/pic/TransactionCoordinator1.png"></li>
+<li>Ref
+<ul>
+<li><a href="https://blog.csdn.net/zc19921215/article/details/108466393#:~:text=Kafka%E5%B9%82%E7%AD%89%E6%80%A7%EF%BC%9A,number%E8%BF%99%E4%B8%A4%E4%B8%AA%E6%A6%82%E5%BF%B5%E3%80%82">https://blog.csdn.net/zc19921215/article/details/108466393#:~:text=Kafka幂等性：,number这两个概念。</a></li>
+</ul>
+</li>
+</ul>
+<h3 id="9-explain-transaction-coordinator-and-it-mechanism" tabindex="-1"><a class="header-anchor" href="#9-explain-transaction-coordinator-and-it-mechanism"><span>9’) Explain Transaction Coordinator and it mechanism ?</span></a></h3>
+<h3 id="10-explain-ar-assigned-replicas-isr-in-sync-replica-and-osr-out-of-sync-replicas" tabindex="-1"><a class="header-anchor" href="#10-explain-ar-assigned-replicas-isr-in-sync-replica-and-osr-out-of-sync-replicas"><span>10) Explain AR（Assigned Replicas), ISR (In-sync replica), and OSR（Out-of-Sync Replicas）?</span></a></h3>
+<ul>
+<li>AR（Assigned Replicas)</li>
+<li>ISR (In-sync replica)</li>
+<li>OSR（Out-of-Sync Replicas）</li>
+<li>Ref
+<ul>
+<li><a href="http://hk.noobyard.com/article/p-azlfvsay-mq.html">http://hk.noobyard.com/article/p-azlfvsay-mq.html</a></li>
+<li><a href="https://www.gushiciku.cn/pl/pTAJ/zh-tw">https://www.gushiciku.cn/pl/pTAJ/zh-tw</a></li>
+</ul>
+</li>
+</ul>
+<h3 id="11-describe-kafka-limitation" tabindex="-1"><a class="header-anchor" href="#11-describe-kafka-limitation"><span>11) Describe kafka limitation ?</span></a></h3>
+<ul>
+<li>auto scale : it’s hard to scale down if scale out first (modify partition data in topics)
+<ul>
+<li>can have 2 kafka clusters, if one wants to scale up/down still. (Use the other service request first, avoid downtime)</li>
+</ul>
+</li>
+<li>keep published event in <code>ordering in global</code></li>
+</ul>
+<h3 id="12-explain-why-kafka-can-do-high-i-o" tabindex="-1"><a class="header-anchor" href="#12-explain-why-kafka-can-do-high-i-o"><span>12) Explain why kafka can do high I/O ?</span></a></h3>
+<ul>
+<li>ordering read/write</li>
+<li>zero copy</li>
+<li>split file</li>
+<li>batch transmit</li>
+<li>data compression</li>
+<li>Ref
+<ul>
+<li><a href="https://iter01.com/639107.html">https://iter01.com/639107.html</a></li>
+</ul>
+</li>
+</ul>
+<h3 id="13-explain-kafka-topic-partition-strategy" tabindex="-1"><a class="header-anchor" href="#13-explain-kafka-topic-partition-strategy"><span>13) Explain kafka topic partition strategy ?</span></a></h3>
+<ul>
+<li>Range strategy</li>
+<li>RoundRobin strategy</li>
+<li>Ref
+<ul>
+<li><a href="https://iter01.com/639107.html">https://iter01.com/639107.html</a></li>
+</ul>
+</li>
+</ul>
+<h3 id="14-what-s-if-multiple-consumers-in-same-consumer-group" tabindex="-1"><a class="header-anchor" href="#14-what-s-if-multiple-consumers-in-same-consumer-group"><span>14) What’s if multiple consumers in same consumer group ?</span></a></h3>
+<ul>
+<li>
+<p>Can multiple Kafka consumers read same message from the partition ?</p>
+</li>
+<li>
+<p><a href="https://stackoverflow.com/questions/35561110/can-multiple-kafka-consumers-read-same-message-from-the-partition">swf ref</a></p>
+</li>
+<li>
+<p><a href="https://www.oreilly.com/library/view/kafka-the-definitive/9781491936153/ch04.html#:~:text=Kafka%20consumers%20are%20typically%20part,the%20partitions%20in%20the%20topic.">o relly ref</a></p>
+</li>
+<li>
+<p><a href="https://youtu.be/a_Oafk7fAjY?si=w6V-rpDUMjyswRRw&amp;t=1538">https://youtu.be/a_Oafk7fAjY?si=w6V-rpDUMjyswRRw&amp;t=1538</a></p>
+</li>
+<li>
+<p>Kafka consumers are typically part of a consumer group. When multiple consumers are subscribed to a topic and belong to the <code>same consumer group</code>, <code>each consumer</code> in the group will receive messages from a different <code>subset</code> of the partitions in the topic.</p>
+</li>
+<li>
+<p>如果ㄧ個consumer group 裡有複數個consumer -&gt; 每個consumer只會收到topic<code>部分</code>的訊息</p>
+</li>
+<li>
+<p>如果consumer 分屬不同 consumer group (訂閱同個topic) -&gt; 每個consumer都會收到topic<code>全部</code>訊息</p>
+</li>
+<li>
+<p>In same group : No</p>
+<ul>
+<li>Two consumers (Consumer 1, 2) within the same group (Group 1) <code>CAN NOT</code> consume the same message from partition (Partition 0)</li>
+</ul>
+</li>
+<li>
+<p>In different group : Yes</p>
+<ul>
+<li>Two consumers in two groups (Consumer 1 from Group 1, Consumer 1 from Group 2) CAN consume the same message from partition (Partition 0).</li>
+</ul>
+</li>
+</ul>
+<h3 id="14-streaming-model" tabindex="-1"><a class="header-anchor" href="#14-streaming-model"><span>14) streaming model ?</span></a></h3>
+<ul>
+<li>
+<p>Msg queue (e.g. rebbitMQ)</p>
+<ul>
+<li>each serve can only read part of msg fro queue</li>
+</ul>
+</li>
+<li>
+<p>pub - sub (e.g. publish, subscriber)</p>
+</li>
+<li>
+<p><a href="https://youtu.be/7YS0gOAXnWM?si=WUqoQTs7IE7ljsNP&amp;t=546">https://youtu.be/7YS0gOAXnWM?si=WUqoQTs7IE7ljsNP&amp;t=546</a></p>
+</li>
+</ul>
+<p>Note : In kafka, the concept of “consumer group” offers the generic of mix above</p>
+<ul>
+<li>multiple consumers in same group ~= reading from queue</li>
+</ul>
+<h2 id="ref" tabindex="-1"><a class="header-anchor" href="#ref"><span>Ref</span></a></h2>
+<ul>
+<li><a href="https://blog.csdn.net/ajianyingxiaoqinghan/article/details/107171104">https://blog.csdn.net/ajianyingxiaoqinghan/article/details/107171104</a></li>
+<li><a href="https://so.csdn.net/so/search?spm=1001.2101.3001.4498&amp;q=Kafka%E6%8A%80%E6%9C%AF%E7%9F%A5%E8%AF%86%E6%80%BB%E7%BB%93&amp;t=&amp;u=">https://so.csdn.net/so/search?spm=1001.2101.3001.4498&amp;q=Kafka技术知识总结&amp;t=&amp;u=</a></li>
+<li><a href="https://github.com/IcyBiscuit/Java-Guide/blob/master/docs/system-design/distributed-system/message-queue/Kafka%E5%B8%B8%E8%A7%81%E9%9D%A2%E8%AF%95%E9%A2%98%E6%80%BB%E7%BB%93.md">https://github.com/IcyBiscuit/Java-Guide/blob/master/docs/system-design/distributed-system/message-queue/Kafka常见面试题总结.md</a></li>
+</ul>
+
+      </div>
+      <div class="cheatsheet-footer">
+        <a href="../faqs.html" class="back-link">← Back to FAQs</a>
+        <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/faq/kafka/faq_kafka.md" class="github-edit" target="_blank">
+          Edit on GitHub →
+        </a>
+      </div>
+    <nav class="prev-next"><a href="java_jvm.html" class="prev-link">← Jvm</a><a href="redis_redis_backend.html" class="next-link">Redis Backend →</a></nav>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>CS_basics - Computer Science Fundamentals & Interview Preparation</p>
+      <p>
+        <a href="https://github.com/yennanliu/CS_basics">GitHub</a> •
+        <a href="https://github.com/yennanliu/CS_basics/tree/master/doc">Documentation</a> •
+        <a href="https://github.com/yennanliu/CS_basics/issues">Report Issues</a>
+      </p>
+    </div>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,3028 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Graph - CS_basics</title>
+  <meta name="description" content="Computer Science fundamentals: algorithms, data structures, system design, and LeetCode solutions">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>CS</text></svg>">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="../vendor/fonts.css">
+  <link rel="stylesheet" href="../vendor/highlight/github-dark.min.css">
+  <script src="../vendor/highlight/highlight.min.js"></script>
+  <script>
+  // Apply theme before render to prevent flash
+  (function() {
+    var saved = localStorage.getItem('theme');
+    if (saved === 'dark' || (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      document.documentElement.setAttribute('data-theme', 'dark');
+    }
+  })();
+  </script>
+  <script>document.addEventListener('DOMContentLoaded', function() {
+    hljs.highlightAll();
+    document.querySelectorAll('pre code').forEach(function(codeEl) {
+      var pre = codeEl.parentElement;
+      var lang = '';
+      var cls = codeEl.className || '';
+      var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
+      if (m) lang = m[1];
+      var wrapper = document.createElement('div');
+      wrapper.className = 'code-block-wrapper';
+      pre.parentNode.insertBefore(wrapper, pre);
+      var header = document.createElement('div');
+      header.className = 'code-block-header';
+      if (lang) {
+        var label = document.createElement('span');
+        label.className = 'code-lang-label';
+        label.textContent = lang;
+        header.appendChild(label);
+      } else {
+        header.appendChild(document.createElement('span'));
+      }
+      var btn = document.createElement('button');
+      btn.className = 'copy-btn';
+      btn.textContent = 'Copy';
+      btn.addEventListener('click', function() {
+        navigator.clipboard.writeText(codeEl.textContent).then(function() {
+          btn.textContent = 'Copied!';
+          btn.classList.add('copied');
+          setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+        });
+      });
+      header.appendChild(btn);
+      wrapper.appendChild(header);
+      wrapper.appendChild(pre);
+    });
+    document.querySelectorAll('table').forEach(function(table) {
+      if (!table.parentElement.classList.contains('table-wrap')) {
+        var wrapper = document.createElement('div');
+        wrapper.className = 'table-wrap';
+        table.parentNode.insertBefore(wrapper, table);
+        wrapper.appendChild(table);
+      }
+    });
+    // Reading progress bar
+    var progressBar = document.getElementById('reading-progress');
+    if (progressBar) {
+      window.addEventListener('scroll', function() {
+        var winScroll = document.documentElement.scrollTop;
+        var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        progressBar.style.width = height > 0 ? (winScroll / height * 100) + '%' : '0%';
+      });
+    }
+    // Dark mode toggle
+    var toggle = document.getElementById('theme-toggle');
+    if (toggle) {
+      var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      toggle.textContent = isDark ? '☀️' : '🌙';
+      toggle.addEventListener('click', function() {
+        var dark = document.documentElement.getAttribute('data-theme') === 'dark';
+        if (dark) {
+          document.documentElement.removeAttribute('data-theme');
+          localStorage.setItem('theme', 'light');
+          toggle.textContent = '🌙';
+        } else {
+          document.documentElement.setAttribute('data-theme', 'dark');
+          localStorage.setItem('theme', 'dark');
+          toggle.textContent = '☀️';
+        }
+      });
+    }
+  });</script>
+</head>
+<body>
+  <div class="progress-container"><div class="progress-bar" id="reading-progress"></div></div>
+  <nav class="navbar">
+    <div class="container">
+      <div class="nav-brand">
+        <span class="nav-icon">💻</span>
+        <span class="nav-title">CS_basics</span>
+      </div>
+      <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+      <div class="nav-links">
+        <a href="../index.html" class="">Home</a>
+        <a href="../cheatsheets.html" class="active">Cheat Sheets</a>
+        <a href="../patterns.html" class="">Pattern Recognition</a>
+        <a href="../faqs.html" class="">FAQs</a>
+        <a href="../resources.html" class="">Resources</a>
+        <a href="../lc-explorer.html" class="">LC Explorer</a>
+        <a href="../lc-random-picker.html" class="">🎲 Random Picker</a>
+        <a href="../algo_demo/index.html" class="">Visualizer</a>
+        <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">&#127769;</button>
+        <a href="https://github.com/yennanliu/CS_basics" target="_blank" class="github-link" aria-label="GitHub">
+          <svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor">
+            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container">
+    <div class="content">
+      
+      <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">Graph</span></nav>
+      <div class="cheatsheet-header">
+        <h1>Graph</h1>
+        <span class="last-updated">Last updated: Feb 28, 2026</span>
+      </div>
+      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#overview">Overview</a></li><li class="toc-sub"><a href="#key-properties">Key Properties</a></li><li class="toc-sub"><a href="#core-characteristics">Core Characteristics</a></li><li class="toc-sub"><a href="#graph-representations">Graph Representations</a></li><li><a href="#problem-categories">Problem Categories</a></li><li class="toc-sub"><a href="#category-1-graph-traversal">Category 1: Graph Traversal</a></li><li class="toc-sub"><a href="#category-2-shortest-path">Category 2: Shortest Path</a></li><li class="toc-sub"><a href="#category-3-union-find-dsu">Category 3: Union-Find (DSU)</a></li><li class="toc-sub"><a href="#category-4-topological-sort">Category 4: Topological Sort</a></li><li class="toc-sub"><a href="#category-5-bipartite-graphs">Category 5: Bipartite Graphs</a></li><li class="toc-sub"><a href="#category-6-minimum-spanning-tree">Category 6: Minimum Spanning Tree</a></li><li><a href="#templates-algorithms">Templates &amp; Algorithms</a></li><li class="toc-sub"><a href="#template-comparison-table">Template Comparison Table</a></li><li class="toc-sub"><a href="#universal-graph-template">Universal Graph Template</a></li><li class="toc-sub"><a href="#template-1-bfs-traversal">Template 1: BFS Traversal</a></li><li class="toc-sub"><a href="#template-2-dfs-traversal">Template 2: DFS Traversal</a></li><li class="toc-sub"><a href="#template-3-union-find-dsu">Template 3: Union-Find (DSU)</a></li><li class="toc-sub"><a href="#template-4-topological-sort-dfs">Template 4: Topological Sort (DFS)</a></li><li class="toc-sub"><a href="#template-5-topological-sort-bfs-kahn-s">Template 5: Topological Sort (BFS/Kahn’s)</a></li><li class="toc-sub"><a href="#template-6-bipartite-graph-checking">Template 6: Bipartite Graph Checking</a></li><li class="toc-sub"><a href="#template-7-shortest-path-algorithms">Template 7: Shortest Path Algorithms</a></li><li class="toc-sub"><a href="#template-8-tarjan-s-algorithm-graph-connectivity">Template 8: Tarjan’s Algorithm (Graph Connectivity)</a></li><li><a href="#problems-by-pattern">Problems by Pattern</a></li><li class="toc-sub"><a href="#graph-traversal-problems">Graph Traversal Problems</a></li><li class="toc-sub"><a href="#shortest-path-problems">Shortest Path Problems</a></li><li class="toc-sub"><a href="#union-find-problems">Union-Find Problems</a></li><li class="toc-sub"><a href="#topological-sort-problems">Topological Sort Problems</a></li><li class="toc-sub"><a href="#bipartite-problems">Bipartite Problems</a></li><li class="toc-sub"><a href="#advanced-graph-problems">Advanced Graph Problems</a></li><li><a href="#2-lc-example">2) LC Example</a></li><li class="toc-sub"><a href="#2-1-closest-leaf-in-a-binary-tree">2-1) Closest Leaf in a Binary Tree</a></li><li class="toc-sub"><a href="#2-2-number-of-connected-components-in-an-undirected-graph">2-2) Number of Connected Components in an Undirected Graph</a></li><li class="toc-sub"><a href="#2-3-clone-graph">2-3) Clone Graph</a></li><li class="toc-sub"><a href="#2-4-bus-routes">2-4) Bus Routes</a></li><li class="toc-sub"><a href="#2-5-course-schedule">2-5) Course Schedule</a></li><li><a href="#decision-framework">Decision Framework</a></li><li class="toc-sub"><a href="#pattern-selection-strategy">Pattern Selection Strategy</a></li><li class="toc-sub"><a href="#algorithm-selection-guide">Algorithm Selection Guide</a></li><li><a href="#summary-quick-reference">Summary &amp; Quick Reference</a></li><li class="toc-sub"><a href="#complexity-quick-reference">Complexity Quick Reference</a></li><li class="toc-sub"><a href="#graph-building-patterns">Graph Building Patterns</a></li><li class="toc-sub"><a href="#common-patterns-tricks">Common Patterns &amp; Tricks</a></li><li class="toc-sub"><a href="#problem-solving-steps">Problem-Solving Steps</a></li><li class="toc-sub"><a href="#common-mistakes-tips">Common Mistakes &amp; Tips</a></li><li class="toc-sub"><a href="#interview-tips">Interview Tips</a></li><li class="toc-sub"><a href="#related-topics">Related Topics</a></li><li class="toc-sub"><a href="#2-6-find-eventual-safe-states">2-6) Find Eventual Safe States</a></li></ul></div>
+      <div class="cheatsheet-content">
+        <h1 id="graph-algorithms" tabindex="-1"><a class="header-anchor" href="#graph-algorithms"><span>Graph Algorithms</span></a></h1>
+<h2 id="overview" tabindex="-1"><a class="header-anchor" href="#overview"><span>Overview</span></a></h2>
+<p><strong>Graph algorithms</strong> are techniques for solving problems on graph data structures consisting of vertices (nodes) and edges (connections between nodes).</p>
+<h3 id="key-properties" tabindex="-1"><a class="header-anchor" href="#key-properties"><span>Key Properties</span></a></h3>
+<ul>
+<li><strong>Time Complexity</strong>: O(V + E) for traversal, varies for other algorithms</li>
+<li><strong>Space Complexity</strong>: O(V) for adjacency list, O(V²) for matrix</li>
+<li><strong>Core Idea</strong>: Model relationships and connections between entities</li>
+<li><strong>When to Use</strong>: Network problems, dependencies, paths, connectivity</li>
+<li><strong>Key Algorithms</strong>: BFS, DFS, Dijkstra, Union-Find, Topological Sort</li>
+</ul>
+<h3 id="core-characteristics" tabindex="-1"><a class="header-anchor" href="#core-characteristics"><span>Core Characteristics</span></a></h3>
+<ul>
+<li><strong>Directed vs Undirected</strong>: One-way or two-way edges</li>
+<li><strong>Weighted vs Unweighted</strong>: Edges with or without costs</li>
+<li><strong>Cyclic vs Acyclic</strong>: Contains cycles or not</li>
+<li><strong>Connected vs Disconnected</strong>: All nodes reachable or not</li>
+</ul>
+<h3 id="graph-representations" tabindex="-1"><a class="header-anchor" href="#graph-representations"><span>Graph Representations</span></a></h3>
+<ul>
+<li><strong>Adjacency List</strong>: Space O(V + E), efficient for sparse graphs</li>
+<li><strong>Adjacency Matrix</strong>: Space O(V²), efficient for dense graphs</li>
+<li><strong>Edge List</strong>: Space O(E), simple but less efficient</li>
+</ul>
+<p><img src="../doc/pic/graph_processing_problem.png"></p></p>
+<h2 id="problem-categories" tabindex="-1"><a class="header-anchor" href="#problem-categories"><span>Problem Categories</span></a></h2>
+<h3 id="category-1-graph-traversal" tabindex="-1"><a class="header-anchor" href="#category-1-graph-traversal"><span><strong>Category 1: Graph Traversal</strong></span></a></h3>
+<ul>
+<li><strong>Description</strong>: Explore all nodes using BFS or DFS</li>
+<li><strong>Examples</strong>: LC 200 (Number of Islands), LC 133 (Clone Graph)</li>
+<li><strong>Pattern</strong>: Visit all connected components</li>
+</ul>
+<h3 id="category-2-shortest-path" tabindex="-1"><a class="header-anchor" href="#category-2-shortest-path"><span><strong>Category 2: Shortest Path</strong></span></a></h3>
+<ul>
+<li><strong>Description</strong>: Find minimum distance between nodes</li>
+<li><strong>Examples</strong>: LC 743 (Network Delay), LC 787 (Cheapest Flights)</li>
+<li><strong>Pattern</strong>: Dijkstra, Bellman-Ford, Floyd-Warshall</li>
+</ul>
+<h3 id="category-3-union-find-dsu" tabindex="-1"><a class="header-anchor" href="#category-3-union-find-dsu"><span><strong>Category 3: Union-Find (DSU)</strong></span></a></h3>
+<ul>
+<li><strong>Description</strong>: Detect cycles, find connected components</li>
+<li><strong>Examples</strong>: LC 684 (Redundant Connection), LC 721 (Accounts Merge)</li>
+<li><strong>Pattern</strong>: Union by rank, path compression</li>
+</ul>
+<h3 id="category-4-topological-sort" tabindex="-1"><a class="header-anchor" href="#category-4-topological-sort"><span><strong>Category 4: Topological Sort</strong></span></a></h3>
+<ul>
+<li><strong>Description</strong>: Order nodes with dependencies</li>
+<li><strong>Examples</strong>: LC 207 (Course Schedule), LC 210 (Course Schedule II)</li>
+<li><strong>Pattern</strong>: DFS or Kahn’s algorithm (BFS)</li>
+</ul>
+<h3 id="category-5-bipartite-graphs" tabindex="-1"><a class="header-anchor" href="#category-5-bipartite-graphs"><span><strong>Category 5: Bipartite Graphs</strong></span></a></h3>
+<ul>
+<li><strong>Description</strong>: Check if graph can be colored with 2 colors</li>
+<li><strong>Examples</strong>: LC 785 (Is Graph Bipartite), LC 886 (Possible Bipartition)</li>
+<li><strong>Pattern</strong>: BFS/DFS with coloring</li>
+</ul>
+<h3 id="category-6-minimum-spanning-tree" tabindex="-1"><a class="header-anchor" href="#category-6-minimum-spanning-tree"><span><strong>Category 6: Minimum Spanning Tree</strong></span></a></h3>
+<ul>
+<li><strong>Description</strong>: Connect all nodes with minimum cost</li>
+<li><strong>Examples</strong>: LC 1135 (Connecting Cities), LC 1584 (Min Cost Connect Points)</li>
+<li><strong>Pattern</strong>: Kruskal’s or Prim’s algorithm</li>
+</ul>
+<h2 id="templates-algorithms" tabindex="-1"><a class="header-anchor" href="#templates-algorithms"><span>Templates &amp; Algorithms</span></a></h2>
+<h3 id="template-comparison-table" tabindex="-1"><a class="header-anchor" href="#template-comparison-table"><span>Template Comparison Table</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>Template Type</th>
+<th>Use Case</th>
+<th>Time Complexity</th>
+<th>When to Use</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>BFS</strong></td>
+<td>Level-order, shortest path</td>
+<td>O(V + E)</td>
+<td>Unweighted shortest path</td>
+</tr>
+<tr>
+<td><strong>DFS</strong></td>
+<td>All paths, cycle detection</td>
+<td>O(V + E)</td>
+<td>Explore all possibilities</td>
+</tr>
+<tr>
+<td><strong>Union-Find</strong></td>
+<td>Connected components</td>
+<td>O(α(n))</td>
+<td>Dynamic connectivity</td>
+</tr>
+<tr>
+<td><strong>Dijkstra</strong></td>
+<td>Weighted shortest path</td>
+<td>O((V+E)logV)</td>
+<td>Non-negative weights</td>
+</tr>
+<tr>
+<td><strong>Topological</strong></td>
+<td>Dependencies</td>
+<td>O(V + E)</td>
+<td>DAG ordering</td>
+</tr>
+</tbody>
+</table>
+<h3 id="universal-graph-template" tabindex="-1"><a class="header-anchor" href="#universal-graph-template"><span>Universal Graph Template</span></a></h3>
+<pre><code class="language-python">def graph_algorithm(n, edges):
+    # Build adjacency list
+    graph = collections.defaultdict(list)
+    for u, v in edges:
+        graph[u].append(v)
+        graph[v].append(u)  # For undirected
+    
+    # Track visited nodes
+    visited = set()
+    
+    # Process each component
+    result = 0
+    for node in range(n):
+        if node not in visited:
+            # Process component
+            process_component(node, graph, visited)
+            result += 1
+    
+    return result
+</code></pre>
+<h3 id="template-1-bfs-traversal" tabindex="-1"><a class="header-anchor" href="#template-1-bfs-traversal"><span>Template 1: BFS Traversal</span></a></h3>
+<pre><code class="language-python">def bfs_template(graph, start):
+    &quot;&quot;&quot;Breadth-first search template&quot;&quot;&quot;
+    from collections import deque
+    
+    visited = set([start])
+    queue = deque([start])
+    level = 0
+    
+    while queue:
+        # Process level by level
+        size = len(queue)
+        for _ in range(size):
+            node = queue.popleft()
+            
+            # Process node
+            for neighbor in graph[node]:
+                if neighbor not in visited:
+                    visited.add(neighbor)
+                    queue.append(neighbor)
+        level += 1
+    
+    return level
+</code></pre>
+<h3 id="template-2-dfs-traversal" tabindex="-1"><a class="header-anchor" href="#template-2-dfs-traversal"><span>Template 2: DFS Traversal</span></a></h3>
+<pre><code class="language-python">def dfs_template(graph, start):
+    &quot;&quot;&quot;Depth-first search template&quot;&quot;&quot;
+    visited = set()
+    path = []
+    
+    def dfs(node):
+        visited.add(node)
+        path.append(node)
+        
+        for neighbor in graph[node]:
+            if neighbor not in visited:
+                dfs(neighbor)
+        
+        # Backtrack if needed
+        # path.pop()
+    
+    dfs(start)
+    return visited
+</code></pre>
+<h3 id="template-3-union-find-dsu" tabindex="-1"><a class="header-anchor" href="#template-3-union-find-dsu"><span>Template 3: Union-Find (DSU)</span></a></h3>
+<pre><code class="language-python">class UnionFind:
+    def __init__(self, n):
+        self.parent = list(range(n))
+        self.rank = [0] * n
+        self.count = n
+    
+    def find(self, x):
+        &quot;&quot;&quot;Find with path compression&quot;&quot;&quot;
+        if self.parent[x] != x:
+            self.parent[x] = self.find(self.parent[x])
+        return self.parent[x]
+    
+    def union(self, x, y):
+        &quot;&quot;&quot;Union by rank&quot;&quot;&quot;
+        px, py = self.find(x), self.find(y)
+        if px == py:
+            return False
+        
+        if self.rank[px] &lt; self.rank[py]:
+            px, py = py, px
+        self.parent[py] = px
+        if self.rank[px] == self.rank[py]:
+            self.rank[px] += 1
+        
+        self.count -= 1
+        return True
+    
+    def connected(self, x, y):
+        return self.find(x) == self.find(y)
+</code></pre>
+<h3 id="template-4-topological-sort-dfs" tabindex="-1"><a class="header-anchor" href="#template-4-topological-sort-dfs"><span>Template 4: Topological Sort (DFS)</span></a></h3>
+<pre><code class="language-python">def topological_sort_dfs(n, edges):
+    &quot;&quot;&quot;Topological sort using DFS&quot;&quot;&quot;
+    graph = collections.defaultdict(list)
+    for u, v in edges:
+        graph[u].append(v)
+    
+    # 0: unvisited, 1: visiting, 2: visited
+    state = [0] * n
+    result = []
+    
+    def dfs(node):
+        if state[node] == 1:  # Cycle detected
+            return False
+        if state[node] == 2:  # Already processed
+            return True
+        
+        state[node] = 1  # Mark as visiting
+        for neighbor in graph[node]:
+            if not dfs(neighbor):
+                return False
+        
+        state[node] = 2  # Mark as visited
+        result.append(node)
+        return True
+    
+    for i in range(n):
+        if state[i] == 0:
+            if not dfs(i):
+                return []  # Cycle exists
+    
+    return result[::-1]
+</code></pre>
+<h3 id="template-5-topological-sort-bfs-kahn-s" tabindex="-1"><a class="header-anchor" href="#template-5-topological-sort-bfs-kahn-s"><span>Template 5: Topological Sort (BFS/Kahn’s)</span></a></h3>
+<pre><code class="language-python">def topological_sort_bfs(n, edges):
+    &quot;&quot;&quot;Kahn's algorithm for topological sort&quot;&quot;&quot;
+    from collections import deque
+    
+    graph = collections.defaultdict(list)
+    indegree = [0] * n
+    
+    for u, v in edges:
+        graph[u].append(v)
+        indegree[v] += 1
+    
+    queue = deque([i for i in range(n) if indegree[i] == 0])
+    result = []
+    
+    while queue:
+        node = queue.popleft()
+        result.append(node)
+        
+        for neighbor in graph[node]:
+            indegree[neighbor] -= 1
+            if indegree[neighbor] == 0:
+                queue.append(neighbor)
+    
+    return result if len(result) == n else []
+</code></pre>
+<h3 id="template-6-bipartite-graph-checking" tabindex="-1"><a class="header-anchor" href="#template-6-bipartite-graph-checking"><span>Template 6: Bipartite Graph Checking</span></a></h3>
+<p><strong>Definition</strong>: A graph is bipartite if its vertices can be colored using only two colors such that no two adjacent vertices have the same color. Equivalent to checking if the graph has no odd-length cycles.</p>
+<p><strong>Time Complexity</strong>: O(V + E) - visit each vertex and edge once
+<strong>Space Complexity</strong>: O(V) - for color array and queue/recursion stack</p>
+<p><strong>Use Cases</strong>:</p>
+<ul>
+<li>Graph coloring problems</li>
+<li>Matching problems (assignment, scheduling)</li>
+<li>Conflict detection</li>
+<li>Resource allocation</li>
+<li>Network flow problems</li>
+</ul>
+<p><strong>Key Properties</strong>:</p>
+<ul>
+<li>All trees are bipartite</li>
+<li>Graphs with odd cycles are NOT bipartite</li>
+<li>Complete bipartite graphs K(m,n) are bipartite</li>
+<li>Can be solved using BFS or DFS with 2-coloring</li>
+</ul>
+<h4 id="approach-1-bfs-with-coloring" tabindex="-1"><a class="header-anchor" href="#approach-1-bfs-with-coloring"><span><strong>Approach 1: BFS with Coloring</strong></span></a></h4>
+<pre><code class="language-python">def is_bipartite_bfs(graph):
+    &quot;&quot;&quot;Check if graph is bipartite using BFS&quot;&quot;&quot;
+    from collections import deque
+
+    n = len(graph)
+    colors = [-1] * n  # -1: uncolored, 0: color A, 1: color B
+
+    # Handle disconnected components
+    for start in range(n):
+        if colors[start] != -1:
+            continue
+
+        # BFS coloring
+        queue = deque([start])
+        colors[start] = 0
+
+        while queue:
+            node = queue.popleft()
+
+            for neighbor in graph[node]:
+                if colors[neighbor] == -1:
+                    # Color with opposite color
+                    colors[neighbor] = 1 - colors[node]
+                    queue.append(neighbor)
+                elif colors[neighbor] == colors[node]:
+                    # Same color conflict - not bipartite
+                    return False
+
+    return True
+</code></pre>
+<h4 id="approach-2-dfs-with-coloring" tabindex="-1"><a class="header-anchor" href="#approach-2-dfs-with-coloring"><span><strong>Approach 2: DFS with Coloring</strong></span></a></h4>
+<pre><code class="language-python">def is_bipartite_dfs(graph):
+    &quot;&quot;&quot;Check if graph is bipartite using DFS&quot;&quot;&quot;
+    n = len(graph)
+    colors = [-1] * n
+
+    def dfs(node, color):
+        colors[node] = color
+
+        for neighbor in graph[node]:
+            if colors[neighbor] == -1:
+                # Recursively color with opposite color
+                if not dfs(neighbor, 1 - color):
+                    return False
+            elif colors[neighbor] == colors[node]:
+                # Same color conflict
+                return False
+
+        return True
+
+    # Check each component
+    for i in range(n):
+        if colors[i] == -1:
+            if not dfs(i, 0):
+                return False
+
+    return True
+</code></pre>
+<h4 id="approach-3-union-find-advanced" tabindex="-1"><a class="header-anchor" href="#approach-3-union-find-advanced"><span><strong>Approach 3: Union-Find (Advanced)</strong></span></a></h4>
+<pre><code class="language-python">def is_bipartite_union_find(n, edges):
+    &quot;&quot;&quot;Check bipartite using Union-Find for conflict detection&quot;&quot;&quot;
+
+    class UnionFind:
+        def __init__(self, n):
+            self.parent = list(range(2 * n))  # 2n for opposite groups
+
+        def find(self, x):
+            if self.parent[x] != x:
+                self.parent[x] = self.find(self.parent[x])
+            return self.parent[x]
+
+        def union(self, x, y):
+            px, py = self.find(x), self.find(y)
+            if px != py:
+                self.parent[px] = py
+
+        def connected(self, x, y):
+            return self.find(x) == self.find(y)
+
+    uf = UnionFind(n)
+
+    # For each edge (u,v), union u with opposite of v, and v with opposite of u
+    for u, v in edges:
+        if uf.connected(u, v):  # Same group conflict
+            return False
+
+        # u should be in opposite group of v
+        uf.union(u, v + n)  # u with opposite of v
+        uf.union(v, u + n)  # v with opposite of u
+
+    return True
+</code></pre>
+<h4 id="grid-based-bipartite-check" tabindex="-1"><a class="header-anchor" href="#grid-based-bipartite-check"><span><strong>Grid-based Bipartite Check</strong></span></a></h4>
+<pre><code class="language-python">def is_bipartite_grid(grid):
+    &quot;&quot;&quot;Check if grid graph is bipartite (checkerboard pattern)&quot;&quot;&quot;
+    rows, cols = len(grid), len(grid[0])
+    colors = [[-1] * cols for _ in range(rows)]
+    directions = [(0, 1), (1, 0), (0, -1), (-1, 0)]
+
+    def bfs(start_r, start_c):
+        from collections import deque
+        queue = deque([(start_r, start_c)])
+        colors[start_r][start_c] = 0
+
+        while queue:
+            r, c = queue.popleft()
+
+            for dr, dc in directions:
+                nr, nc = r + dr, c + dc
+
+                if 0 &lt;= nr &lt; rows and 0 &lt;= nc &lt; cols and grid[nr][nc] == 1:
+                    if colors[nr][nc] == -1:
+                        colors[nr][nc] = 1 - colors[r][c]
+                        queue.append((nr, nc))
+                    elif colors[nr][nc] == colors[r][c]:
+                        return False
+        return True
+
+    # Check each component
+    for i in range(rows):
+        for j in range(cols):
+            if grid[i][j] == 1 and colors[i][j] == -1:
+                if not bfs(i, j):
+                    return False
+
+    return True
+</code></pre>
+<h4 id="enhanced-template-with-partition-information" tabindex="-1"><a class="header-anchor" href="#enhanced-template-with-partition-information"><span><strong>Enhanced Template with Partition Information</strong></span></a></h4>
+<pre><code class="language-python">def bipartite_partition(graph):
+    &quot;&quot;&quot;
+    Returns bipartite partition if exists, None otherwise
+    Returns: (setA, setB) or None
+    &quot;&quot;&quot;
+    n = len(graph)
+    colors = [-1] * n
+
+    def dfs(node, color):
+        colors[node] = color
+
+        for neighbor in graph[node]:
+            if colors[neighbor] == -1:
+                if not dfs(neighbor, 1 - color):
+                    return False
+            elif colors[neighbor] == colors[node]:
+                return False
+        return True
+
+    # Check bipartite property
+    for i in range(n):
+        if colors[i] == -1:
+            if not dfs(i, 0):
+                return None
+
+    # Create partition sets
+    setA = [i for i in range(n) if colors[i] == 0]
+    setB = [i for i in range(n) if colors[i] == 1]
+
+    return setA, setB
+</code></pre>
+<h4 id="related-problems-examples" tabindex="-1"><a class="header-anchor" href="#related-problems-examples"><span><strong>Related Problems &amp; Examples</strong></span></a></h4>
+<p><strong>LC 785: Is Graph Bipartite</strong></p>
+<pre><code class="language-python">def isBipartite(self, graph):
+    &quot;&quot;&quot;LC 785 - Standard bipartite check&quot;&quot;&quot;
+    n = len(graph)
+    colors = {}
+
+    def dfs(node, color):
+        colors[node] = color
+        for neighbor in graph[node]:
+            if neighbor in colors:
+                if colors[neighbor] == colors[node]:
+                    return False
+            else:
+                if not dfs(neighbor, 1 - color):
+                    return False
+        return True
+
+    for i in range(n):
+        if i not in colors:
+            if not dfs(i, 0):
+                return False
+    return True
+</code></pre>
+<p><strong>LC 886: Possible Bipartition</strong></p>
+<pre><code class="language-python">def possibleBipartition(self, n, dislikes):
+    &quot;&quot;&quot;LC 886 - Build graph from dislike relationships&quot;&quot;&quot;
+    from collections import defaultdict
+
+    # Build adjacency list from dislikes
+    graph = defaultdict(list)
+    for u, v in dislikes:
+        graph[u].append(v)
+        graph[v].append(u)
+
+    colors = {}
+
+    def dfs(node, color):
+        colors[node] = color
+        for neighbor in graph[node]:
+            if neighbor in colors:
+                if colors[neighbor] == colors[node]:
+                    return False
+            else:
+                if not dfs(neighbor, 1 - color):
+                    return False
+        return True
+
+    for i in range(1, n + 1):
+        if i not in colors:
+            if not dfs(i, 0):
+                return False
+    return True
+</code></pre>
+<h4 id="applications-variations" tabindex="-1"><a class="header-anchor" href="#applications-variations"><span><strong>Applications &amp; Variations</strong></span></a></h4>
+<p><strong>1. Maximum Bipartite Matching</strong></p>
+<pre><code class="language-python">def max_bipartite_matching(graph, n, m):
+    &quot;&quot;&quot;Find maximum matching in bipartite graph&quot;&quot;&quot;
+    match = [-1] * m
+
+    def dfs(u, visited):
+        for v in graph[u]:
+            if not visited[v]:
+                visited[v] = True
+                if match[v] == -1 or dfs(match[v], visited):
+                    match[v] = u
+                    return True
+        return False
+
+    result = 0
+    for u in range(n):
+        visited = [False] * m
+        if dfs(u, visited):
+            result += 1
+
+    return result
+</code></pre>
+<p><strong>2. Bipartite Graph Validation with Custom Logic</strong></p>
+<pre><code class="language-python">def validate_bipartite_assignment(assignments, conflicts):
+    &quot;&quot;&quot;
+    Validate if assignment is bipartite given conflict pairs
+    assignments: list of items to assign
+    conflicts: list of (item1, item2) that cannot be in same group
+    &quot;&quot;&quot;
+    from collections import defaultdict
+
+    graph = defaultdict(list)
+    for u, v in conflicts:
+        graph[u].append(v)
+        graph[v].append(u)
+
+    colors = {}
+
+    def can_color(item, color):
+        if item in colors:
+            return colors[item] == color
+
+        colors[item] = color
+        for conflict_item in graph[item]:
+            if not can_color(conflict_item, 1 - color):
+                return False
+        return True
+
+    for item in assignments:
+        if item not in colors:
+            if not can_color(item, 0):
+                return False, {}
+
+    # Return partition
+    group_a = [item for item, color in colors.items() if color == 0]
+    group_b = [item for item, color in colors.items() if color == 1]
+
+    return True, {&quot;Group A&quot;: group_a, &quot;Group B&quot;: group_b}
+</code></pre>
+<h4 id="performance-comparison" tabindex="-1"><a class="header-anchor" href="#performance-comparison"><span><strong>Performance Comparison</strong></span></a></h4>
+<table>
+<thead>
+<tr>
+<th>Approach</th>
+<th>Time</th>
+<th>Space</th>
+<th>Best Use Case</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>BFS</td>
+<td>O(V+E)</td>
+<td>O(V)</td>
+<td>Level-by-level processing</td>
+</tr>
+<tr>
+<td>DFS</td>
+<td>O(V+E)</td>
+<td>O(V)</td>
+<td>Simple recursive solution</td>
+</tr>
+<tr>
+<td>Union-Find</td>
+<td>O(E⋅α(V))</td>
+<td>O(V)</td>
+<td>Dynamic conflict detection</td>
+</tr>
+<tr>
+<td>Grid-specific</td>
+<td>O(R⋅C)</td>
+<td>O(R⋅C)</td>
+<td>2D grid problems</td>
+</tr>
+</tbody>
+</table>
+<h4 id="common-patterns-tips" tabindex="-1"><a class="header-anchor" href="#common-patterns-tips"><span><strong>Common Patterns &amp; Tips</strong></span></a></h4>
+<p><strong>Pattern Recognition:</strong></p>
+<ul>
+<li>Graph coloring → Bipartite check</li>
+<li>Conflict/compatibility → Build conflict graph</li>
+<li>Two groups assignment → Bipartite partition</li>
+<li>Matching problems → Bipartite matching</li>
+</ul>
+<p><strong>Implementation Tips:</strong></p>
+<ul>
+<li>Always handle disconnected components</li>
+<li>Use 0/1 or -1/1 for colors consistently</li>
+<li>Check conflicts immediately when coloring</li>
+<li>Consider Union-Find for dynamic scenarios</li>
+</ul>
+<p><strong>Edge Cases:</strong></p>
+<ul>
+<li>Empty graph (bipartite by definition)</li>
+<li>Single node (bipartite)</li>
+<li>No edges (bipartite)</li>
+<li>Self-loops (not bipartite if exists)</li>
+<li>Disconnected components (check all)</li>
+</ul>
+<p><img src="../doc/pic/graph_rep1.png"></p></p>
+<p><img src="../doc/pic/graph_rep2.png"></p></p>
+<hr>
+<h3 id="template-7-shortest-path-algorithms" tabindex="-1"><a class="header-anchor" href="#template-7-shortest-path-algorithms"><span>Template 7: Shortest Path Algorithms</span></a></h3>
+<h4 id="overview-shortest-path-algorithm-comparison" tabindex="-1"><a class="header-anchor" href="#overview-shortest-path-algorithm-comparison"><span>Overview: Shortest Path Algorithm Comparison</span></a></h4>
+<table>
+<thead>
+<tr>
+<th>Algorithm</th>
+<th>Time</th>
+<th>Space</th>
+<th>Edge Weights</th>
+<th>Use Case</th>
+<th>Best For</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>BFS</strong></td>
+<td>O(V+E)</td>
+<td>O(V)</td>
+<td>Unweighted</td>
+<td>Single source</td>
+<td>Unweighted graphs</td>
+</tr>
+<tr>
+<td><strong>Dijkstra</strong></td>
+<td>O((V+E)logV)</td>
+<td>O(V)</td>
+<td>Non-negative</td>
+<td>Single source</td>
+<td>Non-negative weights</td>
+</tr>
+<tr>
+<td><strong>Bellman-Ford</strong></td>
+<td><strong>O(V⋅E)</strong></td>
+<td><strong>O(V)</strong></td>
+<td><strong>Any (including negative)</strong></td>
+<td><strong>Single source</strong></td>
+<td><strong>Negative edges, detect cycles</strong></td>
+</tr>
+<tr>
+<td><strong>Floyd-Warshall</strong></td>
+<td><strong>O(V³)</strong></td>
+<td><strong>O(V²)</strong></td>
+<td><strong>Any (including negative)</strong></td>
+<td><strong>All pairs</strong></td>
+<td><strong>Dense graphs, all-pairs</strong></td>
+</tr>
+<tr>
+<td><strong>SPFA</strong></td>
+<td>O(V⋅E) avg</td>
+<td>O(V)</td>
+<td>Any</td>
+<td>Single source</td>
+<td>Sparse graphs with negative</td>
+</tr>
+</tbody>
+</table>
+<p><strong>When to Use Each:</strong></p>
+<ul>
+<li><strong>BFS</strong>: Unweighted graphs, shortest path in terms of number of edges</li>
+<li><strong>Dijkstra</strong>: Non-negative weights, need optimal performance</li>
+<li><strong>Bellman-Ford</strong>: Negative weights exist, need to detect negative cycles</li>
+<li><strong>Floyd-Warshall</strong>: Need all-pairs shortest paths, small dense graph</li>
+<li><strong>SPFA (Shortest Path Faster Algorithm)</strong>: Bellman-Ford optimization, average O(E)</li>
+</ul>
+<hr>
+<h4 id="7-1-bellman-ford-algorithm" tabindex="-1"><a class="header-anchor" href="#7-1-bellman-ford-algorithm"><span>7.1) Bellman-Ford Algorithm</span></a></h4>
+<p><strong>Core Concept:</strong>
+Bellman-Ford finds shortest paths from a single source to all vertices, even with <strong>negative edge weights</strong>. It can also <strong>detect negative cycles</strong>.</p>
+<p><strong>Key Insight:</strong></p>
+<ul>
+<li>Relaxes all edges V-1 times (V = number of vertices)</li>
+<li>After V-1 iterations, shortest paths are found (if no negative cycle)</li>
+<li>One more iteration detects negative cycles</li>
+</ul>
+<p><strong>Algorithm Steps:</strong></p>
+<ol>
+<li>Initialize distances: <code>dist[source] = 0</code>, all others = ∞</li>
+<li>Relax all edges V-1 times:
+<ul>
+<li>For each edge (u, v, weight):
+<ul>
+<li>If <code>dist[u] + weight &lt; dist[v]</code>: update <code>dist[v]</code></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Check for negative cycles:
+<ul>
+<li>If any edge can still be relaxed, negative cycle exists</li>
+</ul>
+</li>
+</ol>
+<p><strong>Why V-1 Iterations?</strong></p>
+<pre><code>In a graph with V vertices, the shortest path between any two vertices
+contains at most V-1 edges (no cycles).
+
+After k iterations, we have the shortest path using at most k edges.
+After V-1 iterations, we have the shortest paths for all pairs.
+</code></pre>
+<h5 id="python-implementation" tabindex="-1"><a class="header-anchor" href="#python-implementation"><span>Python Implementation</span></a></h5>
+<pre><code class="language-python"># Bellman-Ford Algorithm
+def bellman_ford(n, edges, source):
+    &quot;&quot;&quot;
+    Find shortest paths from source to all vertices.
+    Can handle negative weights and detect negative cycles.
+
+    Args:
+        n: number of vertices (0 to n-1)
+        edges: list of (u, v, weight) tuples
+        source: starting vertex
+
+    Returns:
+        dist: array of shortest distances (or None if negative cycle)
+
+    Time: O(V⋅E)
+    Space: O(V)
+    &quot;&quot;&quot;
+    # Initialize distances
+    dist = [float('inf')] * n
+    dist[source] = 0
+
+    # Relax all edges V-1 times
+    for _ in range(n - 1):
+        updated = False
+        for u, v, weight in edges:
+            if dist[u] != float('inf') and dist[u] + weight &lt; dist[v]:
+                dist[v] = dist[u] + weight
+                updated = True
+
+        # Early termination if no updates
+        if not updated:
+            break
+
+    # Check for negative cycles
+    for u, v, weight in edges:
+        if dist[u] != float('inf') and dist[u] + weight &lt; dist[v]:
+            return None  # Negative cycle detected
+
+    return dist
+
+# Example usage:
+# edges = [(0, 1, 4), (0, 2, 5), (1, 2, -3), (2, 3, 4)]
+# result = bellman_ford(4, edges, 0)
+# Output: [0, 4, 1, 5] (shortest distances from vertex 0)
+</code></pre>
+<h5 id="java-implementation" tabindex="-1"><a class="header-anchor" href="#java-implementation"><span>Java Implementation</span></a></h5>
+<pre><code class="language-java">// Bellman-Ford Algorithm
+/**
+ * LC 787 - Cheapest Flights Within K Stops (Bellman-Ford variant)
+ *
+ * time = O(V⋅E) or O(K⋅E) for K iterations
+ * space = O(V)
+ */
+class Solution {
+    public int[] bellmanFord(int n, int[][] edges, int src) {
+        // Initialize distances
+        int[] dist = new int[n];
+        Arrays.fill(dist, Integer.MAX_VALUE);
+        dist[src] = 0;
+
+        // Relax edges V-1 times
+        for (int i = 0; i &lt; n - 1; i++) {
+            boolean updated = false;
+
+            for (int[] edge : edges) {
+                int u = edge[0];
+                int v = edge[1];
+                int weight = edge[2];
+
+                if (dist[u] != Integer.MAX_VALUE &amp;&amp; dist[u] + weight &lt; dist[v]) {
+                    dist[v] = dist[u] + weight;
+                    updated = true;
+                }
+            }
+
+            // Early termination
+            if (!updated) break;
+        }
+
+        // Check for negative cycle
+        for (int[] edge : edges) {
+            int u = edge[0];
+            int v = edge[1];
+            int weight = edge[2];
+
+            if (dist[u] != Integer.MAX_VALUE &amp;&amp; dist[u] + weight &lt; dist[v]) {
+                return null;  // Negative cycle detected
+            }
+        }
+
+        return dist;
+    }
+}
+</code></pre>
+<h5 id="visual-example" tabindex="-1"><a class="header-anchor" href="#visual-example"><span>Visual Example</span></a></h5>
+<pre><code>Graph with negative edge:
+    0 --4--&gt; 1
+    |       / |
+    5     -3  |
+    |   /     4
+    v v       v
+    2 --------&gt; 3
+
+Edges: [(0,1,4), (0,2,5), (1,2,-3), (2,3,4)]
+
+Iteration 0 (Initial):
+dist = [0, ∞, ∞, ∞]
+
+Iteration 1:
+Edge (0,1,4): dist[1] = 0 + 4 = 4
+Edge (0,2,5): dist[2] = 0 + 5 = 5
+Edge (1,2,-3): dist[2] = min(5, 4-3) = 1
+Edge (2,3,4): dist[3] = 1 + 4 = 5
+dist = [0, 4, 1, 5]
+
+Iteration 2:
+Edge (1,2,-3): dist[2] = min(1, 4-3) = 1 (no change)
+Edge (2,3,4): dist[3] = min(5, 1+4) = 5 (no change)
+No updates → Early termination
+
+Final: dist = [0, 4, 1, 5] ✓
+</code></pre>
+<h5 id="negative-cycle-detection" tabindex="-1"><a class="header-anchor" href="#negative-cycle-detection"><span>Negative Cycle Detection</span></a></h5>
+<pre><code class="language-python"># Example with negative cycle
+def detect_negative_cycle(n, edges):
+    &quot;&quot;&quot;
+    Detect if graph contains a negative cycle.
+
+    Time: O(V⋅E)
+    Space: O(V)
+    &quot;&quot;&quot;
+    # Pick arbitrary source (negative cycle affects all paths)
+    source = 0
+    dist = [float('inf')] * n
+    dist[source] = 0
+
+    # Relax V-1 times
+    for _ in range(n - 1):
+        for u, v, weight in edges:
+            if dist[u] != float('inf') and dist[u] + weight &lt; dist[v]:
+                dist[v] = dist[u] + weight
+
+    # Check if can still relax
+    for u, v, weight in edges:
+        if dist[u] != float('inf') and dist[u] + weight &lt; dist[v]:
+            return True  # Negative cycle exists
+
+    return False
+
+# Example: edges = [(0,1,1), (1,2,-3), (2,0,1)]
+# Forms cycle: 0→1→2→0 with total weight 1-3+1 = -1
+# Returns: True
+</code></pre>
+<hr>
+<h4 id="7-2-floyd-warshall-algorithm" tabindex="-1"><a class="header-anchor" href="#7-2-floyd-warshall-algorithm"><span>7.2) Floyd-Warshall Algorithm</span></a></h4>
+<p><strong>Core Concept:</strong>
+Floyd-Warshall finds <strong>all-pairs shortest paths</strong> in a weighted graph using dynamic programming. Works with negative weights but not negative cycles.</p>
+<p><strong>Key Insight:</strong></p>
+<ul>
+<li>DP approach: For each pair (i, j), try all intermediate vertices k</li>
+<li><code>dist[i][j] = min(dist[i][j], dist[i][k] + dist[k][j])</code></li>
+<li>After considering all k, we have shortest paths for all pairs</li>
+</ul>
+<p><strong>Algorithm Steps:</strong></p>
+<ol>
+<li>Initialize <code>dist[i][j]</code>:
+<ul>
+<li><code>dist[i][i] = 0</code> (same vertex)</li>
+<li><code>dist[i][j] = weight(i, j)</code> if edge exists</li>
+<li><code>dist[i][j] = ∞</code> otherwise</li>
+</ul>
+</li>
+<li>For each intermediate vertex k (0 to n-1):
+<ul>
+<li>For each pair (i, j):
+<ul>
+<li><code>dist[i][j] = min(dist[i][j], dist[i][k] + dist[k][j])</code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<p><strong>Why It Works:</strong></p>
+<pre><code>After considering vertices {0, 1, ..., k} as intermediate:
+dist[i][j] = shortest path from i to j using only vertices {0...k}
+
+When k = n-1, we've considered all possible intermediates
+→ dist[i][j] = shortest path from i to j
+</code></pre>
+<h5 id="python-implementation-1" tabindex="-1"><a class="header-anchor" href="#python-implementation-1"><span>Python Implementation</span></a></h5>
+<pre><code class="language-python"># Floyd-Warshall Algorithm
+def floyd_warshall(n, edges):
+    &quot;&quot;&quot;
+    Find all-pairs shortest paths.
+
+    Args:
+        n: number of vertices (0 to n-1)
+        edges: list of (u, v, weight) tuples
+
+    Returns:
+        dist: 2D array where dist[i][j] = shortest path from i to j
+
+    Time: O(V³)
+    Space: O(V²)
+    &quot;&quot;&quot;
+    # Initialize distance matrix
+    dist = [[float('inf')] * n for _ in range(n)]
+
+    # Distance from vertex to itself is 0
+    for i in range(n):
+        dist[i][i] = 0
+
+    # Fill in edge weights
+    for u, v, weight in edges:
+        dist[u][v] = weight
+        # For undirected graphs, uncomment:
+        # dist[v][u] = weight
+
+    # Dynamic programming: try all intermediate vertices
+    for k in range(n):
+        for i in range(n):
+            for j in range(n):
+                # Can we improve path i→j by going through k?
+                if dist[i][k] != float('inf') and dist[k][j] != float('inf'):
+                    dist[i][j] = min(dist[i][j], dist[i][k] + dist[k][j])
+
+    # Check for negative cycles
+    for i in range(n):
+        if dist[i][i] &lt; 0:
+            return None  # Negative cycle detected
+
+    return dist
+
+# Example usage:
+# edges = [(0,1,3), (1,2,1), (0,2,7), (2,3,2)]
+# result = floyd_warshall(4, edges)
+# result[i][j] = shortest distance from i to j
+</code></pre>
+<h5 id="java-implementation-1" tabindex="-1"><a class="header-anchor" href="#java-implementation-1"><span>Java Implementation</span></a></h5>
+<pre><code class="language-java">// Floyd-Warshall Algorithm
+/**
+ * LC 1334 - Find the City With the Smallest Number of Neighbors
+ *
+ * time = O(V³)
+ * space = O(V²)
+ */
+class Solution {
+    public int[][] floydWarshall(int n, int[][] edges) {
+        // Initialize distance matrix
+        int[][] dist = new int[n][n];
+
+        // Fill with infinity
+        for (int i = 0; i &lt; n; i++) {
+            Arrays.fill(dist[i], Integer.MAX_VALUE / 2);  // Avoid overflow
+            dist[i][i] = 0;  // Distance to self is 0
+        }
+
+        // Add edge weights
+        for (int[] edge : edges) {
+            int u = edge[0];
+            int v = edge[1];
+            int weight = edge[2];
+            dist[u][v] = weight;
+            dist[v][u] = weight;  // For undirected graph
+        }
+
+        // Floyd-Warshall: try all intermediate vertices
+        for (int k = 0; k &lt; n; k++) {
+            for (int i = 0; i &lt; n; i++) {
+                for (int j = 0; j &lt; n; j++) {
+                    // Relax through vertex k
+                    dist[i][j] = Math.min(dist[i][j], dist[i][k] + dist[k][j]);
+                }
+            }
+        }
+
+        return dist;
+    }
+}
+</code></pre>
+<h5 id="visual-example-1" tabindex="-1"><a class="header-anchor" href="#visual-example-1"><span>Visual Example</span></a></h5>
+<pre><code>Graph:
+  0 --3--&gt; 1
+  |        |
+  7        1
+  |        |
+  v        v
+  2 &lt;--2-- 3
+
+Initial distance matrix:
+     0   1   2   3
+0 [  0   3   7   ∞ ]
+1 [  ∞   0   ∞   1 ]
+2 [  ∞   ∞   0   ∞ ]
+3 [  ∞   ∞   2   0 ]
+
+After k=0 (intermediate vertex 0):
+No changes (0 is only source, not intermediate)
+
+After k=1 (intermediate vertex 1):
+dist[0][3] = min(∞, dist[0][1] + dist[1][3]) = min(∞, 3+1) = 4
+     0   1   2   3
+0 [  0   3   7   4 ]
+1 [  ∞   0   ∞   1 ]
+2 [  ∞   ∞   0   ∞ ]
+3 [  ∞   ∞   2   0 ]
+
+After k=2:
+No improvements
+
+After k=3 (intermediate vertex 3):
+dist[0][2] = min(7, dist[0][3] + dist[3][2]) = min(7, 4+2) = 6
+dist[1][2] = min(∞, dist[1][3] + dist[3][2]) = min(∞, 1+2) = 3
+
+Final:
+     0   1   2   3
+0 [  0   3   6   4 ]
+1 [  ∞   0   3   1 ]
+2 [  ∞   ∞   0   ∞ ]
+3 [  ∞   ∞   2   0 ]
+</code></pre>
+<h5 id="path-reconstruction" tabindex="-1"><a class="header-anchor" href="#path-reconstruction"><span>Path Reconstruction</span></a></h5>
+<pre><code class="language-python"># Floyd-Warshall with path reconstruction
+def floyd_warshall_with_path(n, edges):
+    &quot;&quot;&quot;
+    Find all-pairs shortest paths and reconstruct paths.
+
+    Returns:
+        dist: shortest distances
+        next_vertex: for path reconstruction
+    &quot;&quot;&quot;
+    dist = [[float('inf')] * n for _ in range(n)]
+    next_vertex = [[None] * n for _ in range(n)]
+
+    # Initialize
+    for i in range(n):
+        dist[i][i] = 0
+
+    for u, v, weight in edges:
+        dist[u][v] = weight
+        next_vertex[u][v] = v
+
+    # Floyd-Warshall
+    for k in range(n):
+        for i in range(n):
+            for j in range(n):
+                if dist[i][k] + dist[k][j] &lt; dist[i][j]:
+                    dist[i][j] = dist[i][k] + dist[k][j]
+                    next_vertex[i][j] = next_vertex[i][k]
+
+    return dist, next_vertex
+
+def reconstruct_path(next_vertex, start, end):
+    &quot;&quot;&quot;Reconstruct shortest path from start to end.&quot;&quot;&quot;
+    if next_vertex[start][end] is None:
+        return []
+
+    path = [start]
+    current = start
+
+    while current != end:
+        current = next_vertex[current][end]
+        path.append(current)
+
+    return path
+
+# Example:
+# dist, next_v = floyd_warshall_with_path(4, edges)
+# path = reconstruct_path(next_v, 0, 3)
+# Output: [0, 1, 3] (path from 0 to 3)
+</code></pre>
+<hr>
+<h4 id="7-3-classic-leetcode-problems" tabindex="-1"><a class="header-anchor" href="#7-3-classic-leetcode-problems"><span>7.3) Classic LeetCode Problems</span></a></h4>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC#</th>
+<th>Algorithm</th>
+<th>Difficulty</th>
+<th>Key Insight</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Network Delay Time</strong></td>
+<td><strong>743</strong></td>
+<td><strong>Bellman-Ford / Dijkstra</strong></td>
+<td><strong>Medium</strong></td>
+<td>Single source shortest path</td>
+</tr>
+<tr>
+<td><strong>Cheapest Flights K Stops</strong></td>
+<td><strong>787</strong></td>
+<td><strong>Bellman-Ford (K iterations)</strong></td>
+<td><strong>Medium</strong></td>
+<td>Limit iterations to K+1</td>
+</tr>
+<tr>
+<td>Find the City</td>
+<td>1334</td>
+<td>Floyd-Warshall</td>
+<td>Medium</td>
+<td>All-pairs, count neighbors</td>
+</tr>
+<tr>
+<td>Course Schedule III</td>
+<td>630</td>
+<td>Bellman-Ford variant</td>
+<td>Hard</td>
+<td>With constraints</td>
+</tr>
+<tr>
+<td>Minimum Cost to Reach Destination</td>
+<td>1928</td>
+<td>Bellman-Ford / Dijkstra</td>
+<td>Hard</td>
+<td>Modified edge costs</td>
+</tr>
+<tr>
+<td>Bellman-Ford</td>
+<td>1724</td>
+<td>Bellman-Ford</td>
+<td>Medium</td>
+<td>Check negative cycles</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h4 id="7-4-performance-comparison-when-to-use" tabindex="-1"><a class="header-anchor" href="#7-4-performance-comparison-when-to-use"><span>7.4) Performance Comparison &amp; When to Use</span></a></h4>
+<p><strong>Bellman-Ford vs Dijkstra:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Aspect</th>
+<th>Bellman-Ford</th>
+<th>Dijkstra</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Time</strong></td>
+<td>O(V⋅E) slower</td>
+<td>O((V+E)logV) faster</td>
+</tr>
+<tr>
+<td><strong>Edge Weights</strong></td>
+<td>Any (including negative)</td>
+<td>Non-negative only</td>
+</tr>
+<tr>
+<td><strong>Negative Cycles</strong></td>
+<td>Can detect</td>
+<td>Cannot handle</td>
+</tr>
+<tr>
+<td><strong>Implementation</strong></td>
+<td>Simpler</td>
+<td>More complex (priority queue)</td>
+</tr>
+<tr>
+<td><strong>Use Case</strong></td>
+<td>Negative weights, cycle detection</td>
+<td>Optimal for non-negative</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Floyd-Warshall vs Running Dijkstra V times:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Aspect</th>
+<th>Floyd-Warshall</th>
+<th>V × Dijkstra</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Time</strong></td>
+<td>O(V³)</td>
+<td>O(V²⋅E⋅logV)</td>
+</tr>
+<tr>
+<td><strong>Space</strong></td>
+<td>O(V²)</td>
+<td>O(V)</td>
+</tr>
+<tr>
+<td><strong>Code Complexity</strong></td>
+<td>Simple (3 loops)</td>
+<td>More complex</td>
+</tr>
+<tr>
+<td><strong>Best For</strong></td>
+<td>Dense graphs, small V</td>
+<td>Sparse graphs, large V</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Decision Tree:</strong></p>
+<pre><code>Need shortest paths?
+├─ Single source
+│  ├─ Negative weights? → Bellman-Ford
+│  └─ Non-negative? → Dijkstra (faster)
+│
+└─ All pairs
+   ├─ Dense graph or small V? → Floyd-Warshall
+   └─ Sparse graph or large V? → Run Dijkstra V times
+</code></pre>
+<hr>
+<h4 id="7-5-interview-tips" tabindex="-1"><a class="header-anchor" href="#7-5-interview-tips"><span>7.5) Interview Tips</span></a></h4>
+<p><strong>1. Algorithm Selection:</strong></p>
+<pre><code>Q: &quot;Find shortest path from A to B&quot;
+→ Clarify: Negative weights? → Bellman-Ford : Dijkstra
+
+Q: &quot;Find shortest paths between all pairs&quot;
+→ Ask: Graph density? → Dense: Floyd-Warshall, Sparse: Dijkstra×V
+
+Q: &quot;Detect if negative cycle exists&quot;
+→ Use: Bellman-Ford (only algorithm that detects this)
+</code></pre>
+<p><strong>2. Common Mistakes:</strong></p>
+<ul>
+<li><strong>Bellman-Ford</strong>: Forgetting to check <code>dist[u] != INF</code> before relaxation</li>
+<li><strong>Floyd-Warshall</strong>: Wrong loop order (must be k→i→j, not i→j→k)</li>
+<li><strong>Both</strong>: Not handling unreachable vertices (dist = INF)</li>
+<li><strong>Negative cycles</strong>: Not checking after main algorithm</li>
+</ul>
+<p><strong>3. Optimization Tips:</strong></p>
+<pre><code class="language-python"># Bellman-Ford: Early termination
+for iteration in range(n - 1):
+    updated = False
+    for edge in edges:
+        if relax(edge):
+            updated = True
+    if not updated:
+        break  # No more improvements possible
+
+# Floyd-Warshall: Only update if improves
+if dist[i][k] + dist[k][j] &lt; dist[i][j]:
+    dist[i][j] = dist[i][k] + dist[k][j]
+</code></pre>
+<p><strong>4. Edge Cases:</strong></p>
+<ul>
+<li>Graph with no edges (all distances = INF except self)</li>
+<li>Negative cycle (Bellman-Ford returns None)</li>
+<li>Disconnected graph (some distances remain INF)</li>
+<li>Self-loops with negative weight (negative cycle)</li>
+</ul>
+<p><strong>5. Talking Points:</strong></p>
+<ul>
+<li>“Bellman-Ford trades time for flexibility with negative weights”</li>
+<li>“Floyd-Warshall is DP: optimal substructure through intermediate vertices”</li>
+<li>“V-1 iterations because longest simple path has V-1 edges”</li>
+<li>“Floyd-Warshall is simple but O(V³) limits scalability”</li>
+</ul>
+<hr>
+<h3 id="template-8-tarjan-s-algorithm-graph-connectivity" tabindex="-1"><a class="header-anchor" href="#template-8-tarjan-s-algorithm-graph-connectivity"><span>Template 8: Tarjan’s Algorithm (Graph Connectivity)</span></a></h3>
+<p><strong>Overview:</strong>
+Tarjan’s algorithm is a DFS-based technique for finding critical graph structures:</p>
+<ol>
+<li><strong>Strongly Connected Components (SCC)</strong> - Maximal sets of mutually reachable vertices (directed graphs)</li>
+<li><strong>Bridges</strong> - Edges whose removal disconnects the graph (undirected graphs)</li>
+<li><strong>Articulation Points (Cut Vertices)</strong> - Vertices whose removal disconnects the graph (undirected graphs)</li>
+</ol>
+<p><strong>Core Concept:</strong>
+Uses DFS with two key arrays:</p>
+<ul>
+<li><code>disc[v]</code>: Discovery time of vertex v (when first visited)</li>
+<li><code>low[v]</code>: Lowest discovery time reachable from v’s subtree</li>
+</ul>
+<p><strong>Time Complexity</strong>: O(V + E) - single DFS traversal
+<strong>Space Complexity</strong>: O(V) - recursion stack + arrays</p>
+<hr>
+<h4 id="8-1-strongly-connected-components-scc" tabindex="-1"><a class="header-anchor" href="#8-1-strongly-connected-components-scc"><span>8.1) Strongly Connected Components (SCC)</span></a></h4>
+<p><strong>Definition</strong>: In a directed graph, an SCC is a maximal set of vertices where every vertex is reachable from every other vertex in the set.</p>
+<p><strong>Key Insight:</strong></p>
+<ul>
+<li>Use a stack to track vertices in current DFS path</li>
+<li>When <code>low[v] == disc[v]</code>, v is the root of an SCC</li>
+<li>Pop all vertices from stack until v to get complete SCC</li>
+</ul>
+<p><strong>Algorithm Steps:</strong></p>
+<ol>
+<li>Initialize <code>disc[]</code>, <code>low[]</code>, and stack</li>
+<li>DFS from each unvisited vertex</li>
+<li>For each vertex v:
+<ul>
+<li>Set <code>disc[v] = low[v] = timer++</code></li>
+<li>Push v onto stack</li>
+<li>For each neighbor u:
+<ul>
+<li>If unvisited: DFS(u), update <code>low[v] = min(low[v], low[u])</code></li>
+<li>If u on stack: update <code>low[v] = min(low[v], disc[u])</code></li>
+</ul>
+</li>
+<li>If <code>low[v] == disc[v]</code>: pop stack until v to form SCC</li>
+</ul>
+</li>
+</ol>
+<h5 id="python-implementation-2" tabindex="-1"><a class="header-anchor" href="#python-implementation-2"><span>Python Implementation</span></a></h5>
+<pre><code class="language-python"># Tarjan's Algorithm for SCC
+def tarjan_scc(n, graph):
+    &quot;&quot;&quot;
+    Find all strongly connected components using Tarjan's algorithm.
+
+    Args:
+        n: number of vertices (0 to n-1)
+        graph: adjacency list (directed graph)
+
+    Returns:
+        List of SCCs, where each SCC is a list of vertices
+
+    Time: O(V + E)
+    Space: O(V)
+    &quot;&quot;&quot;
+    disc = [-1] * n  # Discovery times
+    low = [-1] * n   # Lowest reachable
+    on_stack = [False] * n
+    stack = []
+    sccs = []
+    timer = [0]  # Use list for mutability
+
+    def dfs(v):
+        # Initialize discovery time and low value
+        disc[v] = low[v] = timer[0]
+        timer[0] += 1
+        stack.append(v)
+        on_stack[v] = True
+
+        # Explore neighbors
+        for u in graph[v]:
+            if disc[u] == -1:
+                # Unvisited neighbor
+                dfs(u)
+                low[v] = min(low[v], low[u])
+            elif on_stack[u]:
+                # Back edge to vertex on stack
+                low[v] = min(low[v], disc[u])
+
+        # If v is a root of SCC, pop the SCC
+        if low[v] == disc[v]:
+            scc = []
+            while True:
+                u = stack.pop()
+                on_stack[u] = False
+                scc.append(u)
+                if u == v:
+                    break
+            sccs.append(scc)
+
+    # Run DFS from each unvisited vertex
+    for i in range(n):
+        if disc[i] == -1:
+            dfs(i)
+
+    return sccs
+
+# Example:
+# graph = {0: [1], 1: [2], 2: [0, 3], 3: [4], 4: [5], 5: [3]}
+#    0 → 1 → 2
+#    ↑       ↓
+#    └───────┘    3 ⇄ 4 → 5
+#                     ↑   ↓
+#                     └───┘
+# SCCs: [[0, 2, 1], [3, 5, 4]]
+</code></pre>
+<h5 id="java-implementation-2" tabindex="-1"><a class="header-anchor" href="#java-implementation-2"><span>Java Implementation</span></a></h5>
+<pre><code class="language-java">// Tarjan's SCC Algorithm
+/**
+ * LC 1192 - Critical Connections in a Network (related)
+ *
+ * time = O(V + E)
+ * space = O(V)
+ */
+class TarjanSCC {
+    private int timer = 0;
+    private int[] disc;
+    private int[] low;
+    private boolean[] onStack;
+    private Stack&lt;Integer&gt; stack;
+    private List&lt;List&lt;Integer&gt;&gt; sccs;
+
+    public List&lt;List&lt;Integer&gt;&gt; findSCCs(int n, List&lt;List&lt;Integer&gt;&gt; graph) {
+        disc = new int[n];
+        low = new int[n];
+        onStack = new boolean[n];
+        stack = new Stack&lt;&gt;();
+        sccs = new ArrayList&lt;&gt;();
+
+        Arrays.fill(disc, -1);
+        Arrays.fill(low, -1);
+
+        // DFS from each unvisited vertex
+        for (int i = 0; i &lt; n; i++) {
+            if (disc[i] == -1) {
+                dfs(i, graph);
+            }
+        }
+
+        return sccs;
+    }
+
+    private void dfs(int v, List&lt;List&lt;Integer&gt;&gt; graph) {
+        // Initialize
+        disc[v] = low[v] = timer++;
+        stack.push(v);
+        onStack[v] = true;
+
+        // Explore neighbors
+        for (int u : graph.get(v)) {
+            if (disc[u] == -1) {
+                // Unvisited
+                dfs(u, graph);
+                low[v] = Math.min(low[v], low[u]);
+            } else if (onStack[u]) {
+                // Back edge
+                low[v] = Math.min(low[v], disc[u]);
+            }
+        }
+
+        // Root of SCC found
+        if (low[v] == disc[v]) {
+            List&lt;Integer&gt; scc = new ArrayList&lt;&gt;();
+            while (true) {
+                int u = stack.pop();
+                onStack[u] = false;
+                scc.add(u);
+                if (u == v) break;
+            }
+            sccs.add(scc);
+        }
+    }
+}
+</code></pre>
+<hr>
+<h4 id="8-2-finding-bridges-critical-connections" tabindex="-1"><a class="header-anchor" href="#8-2-finding-bridges-critical-connections"><span>8.2) Finding Bridges (Critical Connections)</span></a></h4>
+<p><strong>Definition</strong>: A bridge is an edge whose removal increases the number of connected components (disconnects the graph).</p>
+<p><strong>Key Insight:</strong></p>
+<ul>
+<li>Edge (u, v) is a bridge if <code>low[v] &gt; disc[u]</code></li>
+<li>Means v cannot reach any vertex discovered before u without using edge (u, v)</li>
+</ul>
+<p><strong>Algorithm Steps:</strong></p>
+<ol>
+<li>Run DFS with <code>disc[]</code> and <code>low[]</code></li>
+<li>For each edge (u, v) in DFS tree:
+<ul>
+<li>If <code>low[v] &gt; disc[u]</code>: (u, v) is a bridge</li>
+</ul>
+</li>
+</ol>
+<h5 id="python-implementation-3" tabindex="-1"><a class="header-anchor" href="#python-implementation-3"><span>Python Implementation</span></a></h5>
+<pre><code class="language-python"># Tarjan's Algorithm for Bridges
+def find_bridges(n, edges):
+    &quot;&quot;&quot;
+    Find all bridges (critical connections) in an undirected graph.
+
+    Args:
+        n: number of vertices
+        edges: list of [u, v] edges
+
+    Returns:
+        List of bridges (critical edges)
+
+    Time: O(V + E)
+    Space: O(V + E)
+    &quot;&quot;&quot;
+    # Build adjacency list
+    graph = [[] for _ in range(n)]
+    for u, v in edges:
+        graph[u].append(v)
+        graph[v].append(u)
+
+    disc = [-1] * n
+    low = [-1] * n
+    bridges = []
+    timer = [0]
+
+    def dfs(v, parent):
+        disc[v] = low[v] = timer[0]
+        timer[0] += 1
+
+        for u in graph[v]:
+            if u == parent:
+                # Skip edge to parent (undirected graph)
+                continue
+
+            if disc[u] == -1:
+                # Unvisited neighbor
+                dfs(u, v)
+                low[v] = min(low[v], low[u])
+
+                # Check if (v, u) is a bridge
+                if low[u] &gt; disc[v]:
+                    bridges.append([v, u])
+            else:
+                # Back edge
+                low[v] = min(low[v], disc[u])
+
+    # Run DFS from each component
+    for i in range(n):
+        if disc[i] == -1:
+            dfs(i, -1)
+
+    return bridges
+
+# Example:
+# n = 4, edges = [[0,1],[1,2],[2,0],[1,3]]
+#
+#    0 --- 1 --- 3
+#     \   /
+#      \ /
+#       2
+#
+# Bridge: [1, 3] (removing this disconnects 3 from rest)
+</code></pre>
+<h5 id="java-implementation-3" tabindex="-1"><a class="header-anchor" href="#java-implementation-3"><span>Java Implementation</span></a></h5>
+<pre><code class="language-java">// LC 1192 - Critical Connections in a Network
+/**
+ * time = O(V + E)
+ * space = O(V + E)
+ */
+class Solution {
+    private int timer = 0;
+    private int[] disc;
+    private int[] low;
+    private List&lt;List&lt;Integer&gt;&gt; bridges;
+
+    public List&lt;List&lt;Integer&gt;&gt; criticalConnections(int n, List&lt;List&lt;Integer&gt;&gt; connections) {
+        // Build adjacency list
+        List&lt;List&lt;Integer&gt;&gt; graph = new ArrayList&lt;&gt;();
+        for (int i = 0; i &lt; n; i++) {
+            graph.add(new ArrayList&lt;&gt;());
+        }
+        for (List&lt;Integer&gt; conn : connections) {
+            int u = conn.get(0);
+            int v = conn.get(1);
+            graph.get(u).add(v);
+            graph.get(v).add(u);
+        }
+
+        disc = new int[n];
+        low = new int[n];
+        bridges = new ArrayList&lt;&gt;();
+        Arrays.fill(disc, -1);
+
+        // DFS from vertex 0 (graph is connected in this problem)
+        dfs(0, -1, graph);
+
+        return bridges;
+    }
+
+    private void dfs(int v, int parent, List&lt;List&lt;Integer&gt;&gt; graph) {
+        disc[v] = low[v] = timer++;
+
+        for (int u : graph.get(v)) {
+            if (u == parent) continue;  // Skip parent edge
+
+            if (disc[u] == -1) {
+                // Unvisited
+                dfs(u, v, graph);
+                low[v] = Math.min(low[v], low[u]);
+
+                // Check for bridge
+                if (low[u] &gt; disc[v]) {
+                    bridges.add(Arrays.asList(v, u));
+                }
+            } else {
+                // Back edge
+                low[v] = Math.min(low[v], disc[u]);
+            }
+        }
+    }
+}
+</code></pre>
+<hr>
+<h4 id="8-3-finding-articulation-points-cut-vertices" tabindex="-1"><a class="header-anchor" href="#8-3-finding-articulation-points-cut-vertices"><span>8.3) Finding Articulation Points (Cut Vertices)</span></a></h4>
+<p><strong>Definition</strong>: An articulation point is a vertex whose removal increases the number of connected components.</p>
+<p><strong>Key Insight:</strong></p>
+<ul>
+<li>Vertex u is an articulation point if:
+<ul>
+<li><strong>Root of DFS tree</strong>: has 2+ children</li>
+<li><strong>Non-root</strong>: has a child v where <code>low[v] &gt;= disc[u]</code></li>
+</ul>
+</li>
+</ul>
+<p><strong>Algorithm Steps:</strong></p>
+<ol>
+<li>Run DFS with <code>disc[]</code> and <code>low[]</code></li>
+<li>For each vertex u:
+<ul>
+<li>If root: count children, articulation point if ≥ 2</li>
+<li>If non-root: check if any child v has <code>low[v] &gt;= disc[u]</code></li>
+</ul>
+</li>
+</ol>
+<h5 id="python-implementation-4" tabindex="-1"><a class="header-anchor" href="#python-implementation-4"><span>Python Implementation</span></a></h5>
+<pre><code class="language-python"># Tarjan's Algorithm for Articulation Points
+def find_articulation_points(n, edges):
+    &quot;&quot;&quot;
+    Find all articulation points (cut vertices).
+
+    Args:
+        n: number of vertices
+        edges: list of [u, v] edges
+
+    Returns:
+        Set of articulation points
+
+    Time: O(V + E)
+    Space: O(V + E)
+    &quot;&quot;&quot;
+    # Build adjacency list
+    graph = [[] for _ in range(n)]
+    for u, v in edges:
+        graph[u].append(v)
+        graph[v].append(u)
+
+    disc = [-1] * n
+    low = [-1] * n
+    ap = set()  # Articulation points
+    timer = [0]
+
+    def dfs(v, parent):
+        children = 0
+        disc[v] = low[v] = timer[0]
+        timer[0] += 1
+
+        for u in graph[v]:
+            if u == parent:
+                continue
+
+            if disc[u] == -1:
+                # Unvisited child
+                children += 1
+                dfs(u, v)
+                low[v] = min(low[v], low[u])
+
+                # Check if v is articulation point
+                # Case 1: Root with 2+ children
+                if parent == -1 and children &gt; 1:
+                    ap.add(v)
+
+                # Case 2: Non-root with child that can't reach ancestor
+                if parent != -1 and low[u] &gt;= disc[v]:
+                    ap.add(v)
+            else:
+                # Back edge
+                low[v] = min(low[v], disc[u])
+
+    # Run DFS from each component
+    for i in range(n):
+        if disc[i] == -1:
+            dfs(i, -1)
+
+    return list(ap)
+
+# Example:
+# n = 5, edges = [[0,1],[1,2],[2,0],[1,3],[3,4]]
+#
+#    0 --- 1 --- 3 --- 4
+#     \   /
+#      \ /
+#       2
+#
+# Articulation points: [1, 3]
+# (Removing 1 disconnects {0,2} from {3,4})
+# (Removing 3 disconnects 4 from rest)
+</code></pre>
+<h5 id="java-implementation-4" tabindex="-1"><a class="header-anchor" href="#java-implementation-4"><span>Java Implementation</span></a></h5>
+<pre><code class="language-java">// Articulation Points Algorithm
+/**
+ * time = O(V + E)
+ * space = O(V + E)
+ */
+class ArticulationPoints {
+    private int timer = 0;
+    private int[] disc;
+    private int[] low;
+    private Set&lt;Integer&gt; ap;
+
+    public List&lt;Integer&gt; findArticulationPoints(int n, int[][] edges) {
+        // Build adjacency list
+        List&lt;List&lt;Integer&gt;&gt; graph = new ArrayList&lt;&gt;();
+        for (int i = 0; i &lt; n; i++) {
+            graph.add(new ArrayList&lt;&gt;());
+        }
+        for (int[] edge : edges) {
+            int u = edge[0];
+            int v = edge[1];
+            graph.get(u).add(v);
+            graph.get(v).add(u);
+        }
+
+        disc = new int[n];
+        low = new int[n];
+        ap = new HashSet&lt;&gt;();
+        Arrays.fill(disc, -1);
+
+        // DFS from each component
+        for (int i = 0; i &lt; n; i++) {
+            if (disc[i] == -1) {
+                dfs(i, -1, graph);
+            }
+        }
+
+        return new ArrayList&lt;&gt;(ap);
+    }
+
+    private void dfs(int v, int parent, List&lt;List&lt;Integer&gt;&gt; graph) {
+        int children = 0;
+        disc[v] = low[v] = timer++;
+
+        for (int u : graph.get(v)) {
+            if (u == parent) continue;
+
+            if (disc[u] == -1) {
+                children++;
+                dfs(u, v, graph);
+                low[v] = Math.min(low[v], low[u]);
+
+                // Root with 2+ children
+                if (parent == -1 &amp;&amp; children &gt; 1) {
+                    ap.add(v);
+                }
+
+                // Non-root with blocking child
+                if (parent != -1 &amp;&amp; low[u] &gt;= disc[v]) {
+                    ap.add(v);
+                }
+            } else {
+                // Back edge
+                low[v] = Math.min(low[v], disc[u]);
+            }
+        }
+    }
+}
+</code></pre>
+<hr>
+<h4 id="8-4-visual-example-tarjan-s-algorithm-walkthrough" tabindex="-1"><a class="header-anchor" href="#8-4-visual-example-tarjan-s-algorithm-walkthrough"><span>8.4) Visual Example: Tarjan’s Algorithm Walkthrough</span></a></h4>
+<pre><code>Graph (Directed):
+    0 → 1 → 2
+    ↑       ↓
+    └───────┘     3 ⇄ 4
+                  ↓   ↑
+                  5 ──┘
+
+DFS Traversal:
+
+Step 1: Start at 0
+  disc[0] = low[0] = 0
+  stack = [0]
+
+Step 2: Visit 1 from 0
+  disc[1] = low[1] = 1
+  stack = [0, 1]
+
+Step 3: Visit 2 from 1
+  disc[2] = low[2] = 2
+  stack = [0, 1, 2]
+
+Step 4: Back edge 2→0 (0 already on stack)
+  low[2] = min(2, disc[0]) = 0
+  Backtrack to 1: low[1] = min(1, low[2]) = 0
+  Backtrack to 0: low[0] = min(0, low[1]) = 0
+
+Step 5: At 0, low[0] == disc[0] → SCC found!
+  Pop stack: [2, 1, 0]
+  SCC #1: {0, 1, 2}
+
+Step 6: Start at 3
+  disc[3] = low[3] = 3
+  stack = [3]
+
+Step 7: Visit 4 from 3
+  disc[4] = low[4] = 4
+  stack = [3, 4]
+
+Step 8: Visit 5 from 4
+  disc[5] = low[5] = 5
+  stack = [3, 4, 5]
+
+Step 9: Edge 5→3 (back edge)
+  low[5] = min(5, disc[3]) = 3
+  Backtrack to 4: low[4] = min(4, low[5]) = 3
+  Backtrack to 3: low[3] = min(3, low[4]) = 3
+
+Step 10: At 3, low[3] == disc[3] → SCC found!
+  Pop stack: [5, 4, 3]
+  SCC #2: {3, 4, 5}
+
+Final SCCs: [{0,1,2}, {3,4,5}]
+</code></pre>
+<hr>
+<h4 id="8-5-classic-leetcode-problems" tabindex="-1"><a class="header-anchor" href="#8-5-classic-leetcode-problems"><span>8.5) Classic LeetCode Problems</span></a></h4>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC#</th>
+<th>Variant</th>
+<th>Difficulty</th>
+<th>Key Insight</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Critical Connections in Network</strong></td>
+<td><strong>1192</strong></td>
+<td><strong>Bridges</strong></td>
+<td><strong>Hard</strong></td>
+<td>Find all bridges using Tarjan</td>
+</tr>
+<tr>
+<td>Number of Provinces</td>
+<td>547</td>
+<td>Basic connectivity</td>
+<td>Medium</td>
+<td>Count connected components</td>
+</tr>
+<tr>
+<td>Redundant Connection</td>
+<td>684</td>
+<td>Cycle detection</td>
+<td>Medium</td>
+<td>Find edge creating cycle</td>
+</tr>
+<tr>
+<td>Redundant Connection II</td>
+<td>685</td>
+<td>Directed graph</td>
+<td>Hard</td>
+<td>SCC + cycle in directed graph</td>
+</tr>
+<tr>
+<td>Minimum Number of Vertices</td>
+<td>1557</td>
+<td>SCC sources</td>
+<td>Medium</td>
+<td>Find vertices with no incoming</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h4 id="8-6-comparison-tarjan-vs-kosaraju-for-scc" tabindex="-1"><a class="header-anchor" href="#8-6-comparison-tarjan-vs-kosaraju-for-scc"><span>8.6) Comparison: Tarjan vs Kosaraju for SCC</span></a></h4>
+<table>
+<thead>
+<tr>
+<th>Aspect</th>
+<th>Tarjan’s Algorithm</th>
+<th>Kosaraju’s Algorithm</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Passes</strong></td>
+<td>Single DFS</td>
+<td>Two DFS passes</td>
+</tr>
+<tr>
+<td><strong>Time</strong></td>
+<td>O(V + E)</td>
+<td>O(V + E)</td>
+</tr>
+<tr>
+<td><strong>Space</strong></td>
+<td>O(V) stack</td>
+<td>O(V) + transpose graph</td>
+</tr>
+<tr>
+<td><strong>Complexity</strong></td>
+<td>More complex (one pass)</td>
+<td>Simpler (two passes)</td>
+</tr>
+<tr>
+<td><strong>Extra Space</strong></td>
+<td>Stack for SCC</td>
+<td>Reversed graph</td>
+</tr>
+<tr>
+<td><strong>Preference</strong></td>
+<td>More efficient (one pass)</td>
+<td>Easier to understand</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h4 id="8-7-interview-tips" tabindex="-1"><a class="header-anchor" href="#8-7-interview-tips"><span>8.7) Interview Tips</span></a></h4>
+<p><strong>1. Recognition Patterns:</strong></p>
+<pre><code>&quot;critical connections&quot; → Bridges (Tarjan)
+&quot;strongly connected&quot; → SCC (Tarjan or Kosaraju)
+&quot;cut vertices&quot; → Articulation points (Tarjan)
+&quot;remove vertex/edge disconnects graph&quot; → Articulation/Bridge
+</code></pre>
+<p><strong>2. Key Differences:</strong></p>
+<pre><code>SCC: Directed graph, maximal mutually reachable sets
+Bridges: Undirected graph, critical edges
+Articulation Points: Undirected graph, critical vertices
+
+low[v] == disc[v] → Root of SCC (directed)
+low[v] &gt; disc[u] → (u,v) is bridge (undirected)
+low[v] &gt;= disc[u] → u is articulation point (undirected)
+</code></pre>
+<p><strong>3. Common Mistakes:</strong></p>
+<ul>
+<li>Forgetting to skip parent edge in undirected graphs</li>
+<li>Wrong condition for articulation point (root vs non-root)</li>
+<li>Not using <code>on_stack</code> array for SCC (leads to incorrect SCCs)</li>
+<li>Confusing <code>disc[u]</code> vs <code>low[u]</code> in back edge updates</li>
+</ul>
+<p><strong>4. Template to Memorize:</strong></p>
+<pre><code class="language-python">def tarjan_template(v, parent=-1):
+    disc[v] = low[v] = timer
+    timer += 1
+
+    for u in graph[v]:
+        if u == parent:  # Undirected graphs only
+            continue
+
+        if disc[u] == -1:
+            # Tree edge
+            dfs(u, v)
+            low[v] = min(low[v], low[u])
+            # Check condition here (bridge, AP, etc.)
+        else:
+            # Back edge
+            low[v] = min(low[v], disc[u])  # Or check on_stack for SCC
+</code></pre>
+<p><strong>5. Talking Points:</strong></p>
+<ul>
+<li>“Tarjan’s uses single DFS with discovery times”</li>
+<li>“low[v] tracks earliest reachable vertex from v’s subtree”</li>
+<li>“Bridges/APs indicate critical graph structure”</li>
+<li>“SCCs represent maximal strongly connected regions”</li>
+</ul>
+<hr>
+<h2 id="problems-by-pattern" tabindex="-1"><a class="header-anchor" href="#problems-by-pattern"><span>Problems by Pattern</span></a></h2>
+<h3 id="graph-traversal-problems" tabindex="-1"><a class="header-anchor" href="#graph-traversal-problems"><span><strong>Graph Traversal Problems</strong></span></a></h3>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC #</th>
+<th>Key Technique</th>
+<th>Difficulty</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Number of Islands</td>
+<td>200</td>
+<td>DFS/BFS on grid</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Max Area of Island</td>
+<td>695</td>
+<td>DFS with counting</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Clone Graph</td>
+<td>133</td>
+<td>BFS/DFS with map</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Pacific Atlantic Water</td>
+<td>417</td>
+<td>Multi-source DFS</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Word Ladder</td>
+<td>127</td>
+<td>BFS shortest path</td>
+<td>Hard</td>
+</tr>
+<tr>
+<td>Surrounded Regions</td>
+<td>130</td>
+<td>DFS from boundary</td>
+<td>Medium</td>
+</tr>
+</tbody>
+</table>
+<h3 id="shortest-path-problems" tabindex="-1"><a class="header-anchor" href="#shortest-path-problems"><span><strong>Shortest Path Problems</strong></span></a></h3>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC #</th>
+<th>Key Technique</th>
+<th>Difficulty</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Network Delay Time</td>
+<td>743</td>
+<td>Dijkstra</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Cheapest Flights K Stops</td>
+<td>787</td>
+<td>Modified Dijkstra</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Path with Min Effort</td>
+<td>1631</td>
+<td>Dijkstra on grid</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Bus Routes</td>
+<td>815</td>
+<td>BFS on routes</td>
+<td>Hard</td>
+</tr>
+<tr>
+<td>Shortest Path Binary Matrix</td>
+<td>1091</td>
+<td>BFS</td>
+<td>Medium</td>
+</tr>
+</tbody>
+</table>
+<h3 id="union-find-problems" tabindex="-1"><a class="header-anchor" href="#union-find-problems"><span><strong>Union-Find Problems</strong></span></a></h3>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC #</th>
+<th>Key Technique</th>
+<th>Difficulty</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Number of Connected Components</td>
+<td>323</td>
+<td>Basic Union-Find</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Redundant Connection</td>
+<td>684</td>
+<td>Detect cycle</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Accounts Merge</td>
+<td>721</td>
+<td>Union-Find with map</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Number of Provinces</td>
+<td>547</td>
+<td>Union-Find or DFS</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Satisfiability of Equality</td>
+<td>990</td>
+<td>Union-Find</td>
+<td>Medium</td>
+</tr>
+</tbody>
+</table>
+<h3 id="topological-sort-problems" tabindex="-1"><a class="header-anchor" href="#topological-sort-problems"><span><strong>Topological Sort Problems</strong></span></a></h3>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC #</th>
+<th>Key Technique</th>
+<th>Difficulty</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Course Schedule</td>
+<td>207</td>
+<td>Cycle detection</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Course Schedule II</td>
+<td>210</td>
+<td>Topological order</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Alien Dictionary</td>
+<td>269</td>
+<td>Build graph + sort</td>
+<td>Hard</td>
+</tr>
+<tr>
+<td>Minimum Height Trees</td>
+<td>310</td>
+<td>Leaf removal</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Parallel Courses</td>
+<td>1136</td>
+<td>Level-wise BFS</td>
+<td>Medium</td>
+</tr>
+</tbody>
+</table>
+<h3 id="bipartite-problems" tabindex="-1"><a class="header-anchor" href="#bipartite-problems"><span><strong>Bipartite Problems</strong></span></a></h3>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC #</th>
+<th>Key Technique</th>
+<th>Difficulty</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Is Graph Bipartite</td>
+<td>785</td>
+<td>BFS coloring</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Possible Bipartition</td>
+<td>886</td>
+<td>DFS coloring</td>
+<td>Medium</td>
+</tr>
+</tbody>
+</table>
+<h3 id="advanced-graph-problems" tabindex="-1"><a class="header-anchor" href="#advanced-graph-problems"><span><strong>Advanced Graph Problems</strong></span></a></h3>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC #</th>
+<th>Key Technique</th>
+<th>Difficulty</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Critical Connections</td>
+<td>1192</td>
+<td>Tarjan’s algorithm</td>
+<td>Hard</td>
+</tr>
+<tr>
+<td>Find Eventual Safe States</td>
+<td>802</td>
+<td>Cycle detection</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Reconstruct Itinerary</td>
+<td>332</td>
+<td>Hierholzer’s algorithm</td>
+<td>Hard</td>
+</tr>
+<tr>
+<td>Minimum Spanning Tree</td>
+<td>1135</td>
+<td>Kruskal/Prim</td>
+<td>Medium</td>
+</tr>
+</tbody>
+</table>
+<h4 id="1-1-1-number-of-islands" tabindex="-1"><a class="header-anchor" href="#1-1-1-number-of-islands"><span>1-1-1) Number of Islands</span></a></h4>
+<ul>
+<li>LC 200</li>
+</ul>
+<pre><code class="language-java">// java
+void dfs(char[][] grid, int r, int c){
+    int nr = grid.length;
+    int nc = grid[0].length;
+
+    if (r &lt; 0 || c &lt; 0 || r &gt;= nr || c &gt;= nc || grid[r][c] == '0') {
+        return;
+    }
+
+    grid[r][c] = '0';
+
+    /** NOTE here !!!*/
+    dfs_1(grid, r - 1, c);
+    dfs_1(grid, r + 1, c);
+    dfs_1(grid, r, c - 1);
+    dfs_1(grid, r, c + 1);
+}
+
+public int numIslands_1(char[][] grid) {
+    if (grid == null || grid.length == 0) {
+        return 0;
+    }
+
+    int nr = grid.length;
+    int nc = grid[0].length;
+    int num_islands = 0;
+
+    for (int r = 0; r &lt; nr; ++r) {
+        for (int c = 0; c &lt; nc; ++c) {
+            if (grid[r][c] == '1') {
+                ++num_islands;
+                dfs_1(grid, r, c);
+            }
+        }
+    }
+
+    return num_islands;
+}
+
+</code></pre>
+<h4 id="1-1-2-max-area-of-island" tabindex="-1"><a class="header-anchor" href="#1-1-2-max-area-of-island"><span>1-1-2) Max Area of Island</span></a></h4>
+<ul>
+<li>LC 695</li>
+</ul>
+<pre><code class="language-java">// java
+int[][] grid;
+boolean[][] seen;
+
+public int area(int r, int c) {
+    if (r &lt; 0 || r &gt;= grid.length || c &lt; 0 || c &gt;= grid[0].length ||
+            seen[r][c] || grid[r][c] == 0)
+        return 0;
+    seen[r][c] = true;
+
+    /** NOTE !!!*/
+    return (1 + area(r+1, c) + area(r-1, c)
+            + area(r, c-1) + area(r, c+1));
+}
+
+public int maxAreaOfIsland_1(int[][] grid) {
+    this.grid = grid;
+    seen = new boolean[grid.length][grid[0].length];
+    int ans = 0;
+    for (int r = 0; r &lt; grid.length; r++) {
+        for (int c = 0; c &lt; grid[0].length; c++) {
+            ans = Math.max(ans, area(r, c));
+        }
+    }
+    return ans;
+}
+</code></pre>
+<h2 id="2-lc-example" tabindex="-1"><a class="header-anchor" href="#2-lc-example"><span>2) LC Example</span></a></h2>
+<h3 id="2-1-closest-leaf-in-a-binary-tree" tabindex="-1"><a class="header-anchor" href="#2-1-closest-leaf-in-a-binary-tree"><span>2-1) Closest Leaf in a Binary Tree</span></a></h3>
+<pre><code class="language-python"># 742 Closest Leaf in a Binary Tree
+import collections
+class Solution:
+    # search via DFS
+    def findClosestLeaf(self, root, k):
+        self.start = None
+        self.buildGraph(root, None, k)
+        q, visited = [root], set()
+        #q, visited = [self.start], set() # need to validate this
+        self.graph = collections.defaultdict(list)
+        while q:
+            for i in range(len(q)):
+                cur = q.pop(0) # this is dfs
+                # add cur to visited, NOT to visit this node again
+                visited.add(cur)
+                ### NOTICE HERE 
+                # if not cur.left and not cur.right: means this is the leaf (HAS NO ANY left/right node) of the tree
+                # so the first value of this is what we want, just return cur.val as answer directly
+                if not cur.left and not cur.right:
+                    # return the answer
+                    return cur.val
+                # if not find the leaf, then go through all neighbors of current node, and search again
+                for node in self.graph:
+                    if node not in visited: # need to check if &quot;if node not in visited&quot; or &quot;if node in visited&quot;
+                        q.append(node)
+
+    # build graph via DFS
+    # node : current node
+    # parent : parent of current node
+    def buildGraph(self, node, parent, k):
+        if not node:
+            return
+        # if node.val == k, THEN GET THE start point FROM current &quot;node&quot;,
+        # then build graph based on above
+        if node.val == k:
+            self.start = node
+        if parent:
+            self.graph[node].append(parent)
+            self.graph[parent].append(node)
+        self.buildGraph(node.left, node, k)
+        self.buildGraph(node.right, node, k)
+
+</code></pre>
+<h3 id="2-2-number-of-connected-components-in-an-undirected-graph" tabindex="-1"><a class="header-anchor" href="#2-2-number-of-connected-components-in-an-undirected-graph"><span>2-2) Number of Connected Components in an Undirected Graph</span></a></h3>
+<pre><code class="language-python"># LC 323 Number of Connected Components in an Undirected Graph
+# V0
+# IDEA : DFS
+class Solution:
+    def countComponents(self, n, edges):
+        def helper(u):
+            if u in pair:
+                for v in pair[u]:
+                    if v not in visited:
+                        visited.add(v)
+                        helper(v)
+            
+        pair = collections.defaultdict(set)
+        for u,v in edges:
+            pair[u].add(v)
+            pair[v].add(u)
+        count = 0
+        visited = set()
+        for i in range(n):
+            if i not in visited:
+                helper(i)
+                count+=1
+        return count
+</code></pre>
+<h3 id="2-3-clone-graph" tabindex="-1"><a class="header-anchor" href="#2-3-clone-graph"><span>2-3) Clone Graph</span></a></h3>
+<pre><code class="language-python"># LC 133. Clone Graph
+
+# V0
+# IDEA : BFS
+class Solution(object):
+    def cloneGraph(self, node):
+        if not node:
+            return
+        q = [node]
+        &quot;&quot;&quot;
+        NOTE !!! : we init res as Node(node.val, [])
+          -&gt; since Node has structure as below :
+
+          class Node:
+            def __init__(self, val = 0, neighbors = None):
+                self.val = val
+                self.neighbors = neighbors if neighbors is not None else []
+        &quot;&quot;&quot;
+        res = Node(node.val, [])
+        &quot;&quot;&quot;
+        NOTE !!! : we use dict as visited,
+                   and we use node as visited dict key 
+        &quot;&quot;&quot;
+        visited = dict()
+        visited[node] = res
+        while q:
+            #t = q.pop(0) # this works as well
+            t = q.pop(-1)
+            if not t:
+                continue
+            for n in t.neighbors:
+                if n not in visited:
+                    &quot;&quot;&quot;
+                    NOTE !!! : we need to 
+                         -&gt; use n as visited key
+                         -&gt; use Node(n.val, []) as visited value
+                    &quot;&quot;&quot;
+                    visited[n] = Node(n.val, [])
+                    q.append(n)
+                &quot;&quot;&quot;
+                NOTE !!! 
+                    -&gt; we need to append visited[n] to visited[t].neighbors
+                &quot;&quot;&quot;
+                visited[t].neighbors.append(visited[n])
+        return res
+
+# V0
+# IDEA : DFS
+# NOTE :
+#  -&gt; 1) we init node via : node_copy = Node(node.val, [])
+#  -&gt; 2) we copy graph via dict
+class Solution(object):
+    def cloneGraph(self, node):
+        &quot;&quot;&quot;
+        :type node: Node
+        :rtype: Node
+        &quot;&quot;&quot;
+        node_copy = self.dfs(node, dict())
+        return node_copy
+    
+    def dfs(self, node, hashd):
+        if not node: return None
+        if node in hashd: return hashd[node]
+        node_copy = Node(node.val, [])
+        hashd[node] = node_copy
+        for n in node.neighbors:
+            n_copy = self.dfs(n, hashd)
+            if n_copy:
+                node_copy.neighbors.append(n_copy)
+        return node_copy
+</code></pre>
+<h3 id="2-4-bus-routes" tabindex="-1"><a class="header-anchor" href="#2-4-bus-routes"><span>2-4) Bus Routes</span></a></h3>
+<pre><code class="language-python"># LC 815. Bus Routes
+# V0
+# IDEA : BFS + GRAPH
+class Solution(object):
+    def numBusesToDestination(self, routes, S, T):
+        # edge case:
+        if S == T:
+            return 0
+        to_routes = collections.defaultdict(set)
+        for i, route in enumerate(routes):
+            for j in route:
+                to_routes[j].add(i)
+        bfs = [(S, 0)]
+        seen = set([S])
+        for stop, bus in bfs:
+            if stop == T:
+                return bus
+            for i in to_routes[stop]:
+                for j in routes[i]:
+                    if j not in seen:
+                        bfs.append((j, bus + 1))
+                        seen.add(j)
+                routes[i] = []  # seen route
+        return -1
+</code></pre>
+<h3 id="2-5-course-schedule" tabindex="-1"><a class="header-anchor" href="#2-5-course-schedule"><span>2-5) Course Schedule</span></a></h3>
+<pre><code class="language-java">// java
+// V0
+// IDEA : DFS (fix by gpt) (NOTE : there is also TOPOLOGICAL SORT solution)
+// NOTE !!! instead of maintain status (0,1,2), below video offers a simpler approach
+//      -&gt; e.g. use a set, recording the current visiting course, if ANY duplicated (already in set) course being met,
+//      -&gt; means &quot;cyclic&quot;, so return false directly
+// https://www.youtube.com/watch?v=EgI5nU9etnU
+public boolean canFinish(int numCourses, int[][] prerequisites) {
+    // Initialize adjacency list for storing prerequisites
+    /**
+     *  NOTE !!!
+     *
+     *  init prerequisites map
+     *  {course : [prerequisites_array]}
+     *  below init map with null array as first step
+     */
+    Map&lt;Integer, List&lt;Integer&gt;&gt; preMap = new HashMap&lt;&gt;();
+    for (int i = 0; i &lt; numCourses; i++) {
+        preMap.put(i, new ArrayList&lt;&gt;());
+    }
+
+    // Populate the adjacency list with prerequisites
+    /**
+     *  NOTE !!!
+     *
+     *  update prerequisites map
+     *  {course : [prerequisites_array]}
+     *  so we go through prerequisites,
+     *  then append each course's prerequisites to preMap
+     */
+    for (int[] pair : prerequisites) {
+        int crs = pair[0];
+        int pre = pair[1];
+        preMap.get(crs).add(pre);
+    }
+
+    /** NOTE !!!
+     *
+     *  init below set for checking if there is &quot;cyclic&quot; case
+     */
+    // Set for tracking courses during the current DFS path
+    Set&lt;Integer&gt; visiting = new HashSet&lt;&gt;();
+
+    // Recursive DFS function
+    for (int c = 0; c &lt; numCourses; c++) {
+        if (!dfs(c, preMap, visiting)) {
+            return false;
+        }
+    }
+    return true;
+}
+
+private boolean dfs(int crs, Map&lt;Integer, List&lt;Integer&gt;&gt; preMap, Set&lt;Integer&gt; visiting) {
+    /** NOTE !!!
+     *
+     *  if visiting contains current course,
+     *  means there is a &quot;cyclic&quot;,
+     *  (e.g. : needs to take course a, then can take course b, and needs to take course b, then can take course a)
+     *  so return false directly
+     */
+    if (visiting.contains(crs)) {
+        return false;
+    }
+    /**
+     *  NOTE !!!
+     *
+     *  if such course has NO preRequisite,
+     *  return true directly
+     */
+    if (preMap.get(crs).isEmpty()) {
+        return true;
+    }
+
+    /**
+     *  NOTE !!!
+     *
+     *  add current course to set (Set&lt;Integer&gt; visiting)
+     */
+    visiting.add(crs);
+    for (int pre : preMap.get(crs)) {
+        if (!dfs(pre, preMap, visiting)) {
+            return false;
+        }
+    }
+    /**
+     *  NOTE !!!
+     *
+     *  remove current course from set,
+     *  since already finish visiting
+     *
+     *  e.g. undo changes
+     */
+    visiting.remove(crs);
+    preMap.get(crs).clear(); // Clear prerequisites as the course is confirmed to be processed
+    return true;
+}
+</code></pre>
+<h2 id="decision-framework" tabindex="-1"><a class="header-anchor" href="#decision-framework"><span>Decision Framework</span></a></h2>
+<h3 id="pattern-selection-strategy" tabindex="-1"><a class="header-anchor" href="#pattern-selection-strategy"><span>Pattern Selection Strategy</span></a></h3>
+<pre><code>Graph Algorithm Selection Flowchart:
+
+1. What is the problem asking for?
+   ├── Find shortest path → Continue to 2
+   ├── Check connectivity → Use Union-Find or DFS/BFS
+   ├── Order with dependencies → Use Topological Sort
+   ├── Detect cycles → Use DFS with states or Union-Find
+   └── Traverse all nodes → Use BFS or DFS
+
+2. For shortest path problems:
+   ├── Unweighted graph → Use BFS
+   ├── Non-negative weights → Use Dijkstra
+   ├── Negative weights → Use Bellman-Ford
+   └── All pairs → Use Floyd-Warshall
+
+3. For connectivity problems:
+   ├── Static graph → Use DFS/BFS once
+   ├── Dynamic connections → Use Union-Find
+   └── Count components → Use either approach
+
+4. For traversal problems:
+   ├── Level-by-level → Use BFS
+   ├── Path finding → Use DFS with backtracking
+   └── State space search → Use BFS for optimal
+
+5. Is the graph special?
+   ├── Tree → Simpler DFS/BFS
+   ├── DAG → Topological sort possible
+   ├── Bipartite → Two-coloring
+   └── Grid → Treat as implicit graph
+</code></pre>
+<h3 id="algorithm-selection-guide" tabindex="-1"><a class="header-anchor" href="#algorithm-selection-guide"><span>Algorithm Selection Guide</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>Problem Type</th>
+<th>Best Algorithm</th>
+<th>Time</th>
+<th>When to Use</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Single-source shortest (unweighted)</td>
+<td>BFS</td>
+<td>O(V+E)</td>
+<td>Simple shortest path</td>
+</tr>
+<tr>
+<td>Single-source shortest (weighted)</td>
+<td>Dijkstra</td>
+<td>O((V+E)logV)</td>
+<td>Non-negative weights</td>
+</tr>
+<tr>
+<td>All-pairs shortest</td>
+<td>Floyd-Warshall</td>
+<td>O(V³)</td>
+<td>Dense graphs</td>
+</tr>
+<tr>
+<td>Cycle detection</td>
+<td>DFS</td>
+<td>O(V+E)</td>
+<td>Directed graphs</td>
+</tr>
+<tr>
+<td>Connected components</td>
+<td>Union-Find</td>
+<td>O(α(n))</td>
+<td>Dynamic connectivity</td>
+</tr>
+<tr>
+<td>Topological order</td>
+<td>Kahn’s/DFS</td>
+<td>O(V+E)</td>
+<td>Task scheduling</td>
+</tr>
+<tr>
+<td>Minimum spanning tree</td>
+<td>Kruskal/Prim</td>
+<td>O(ElogE)</td>
+<td>Network design</td>
+</tr>
+</tbody>
+</table>
+<h2 id="summary-quick-reference" tabindex="-1"><a class="header-anchor" href="#summary-quick-reference"><span>Summary &amp; Quick Reference</span></a></h2>
+<h3 id="complexity-quick-reference" tabindex="-1"><a class="header-anchor" href="#complexity-quick-reference"><span>Complexity Quick Reference</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>Algorithm</th>
+<th>Time Complexity</th>
+<th>Space Complexity</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>BFS/DFS</td>
+<td>O(V + E)</td>
+<td>O(V)</td>
+<td>Standard traversal</td>
+</tr>
+<tr>
+<td>Dijkstra</td>
+<td>O((V+E)logV)</td>
+<td>O(V)</td>
+<td>With binary heap</td>
+</tr>
+<tr>
+<td>Bellman-Ford</td>
+<td>O(VE)</td>
+<td>O(V)</td>
+<td>Handles negative weights</td>
+</tr>
+<tr>
+<td>Floyd-Warshall</td>
+<td>O(V³)</td>
+<td>O(V²)</td>
+<td>All pairs</td>
+</tr>
+<tr>
+<td>Union-Find</td>
+<td>O(α(n))</td>
+<td>O(V)</td>
+<td>Near constant</td>
+</tr>
+<tr>
+<td>Topological Sort</td>
+<td>O(V + E)</td>
+<td>O(V)</td>
+<td>Linear time</td>
+</tr>
+</tbody>
+</table>
+<h3 id="graph-building-patterns" tabindex="-1"><a class="header-anchor" href="#graph-building-patterns"><span>Graph Building Patterns</span></a></h3>
+<h4 id="adjacency-list" tabindex="-1"><a class="header-anchor" href="#adjacency-list"><span><strong>Adjacency List</strong></span></a></h4>
+<pre><code class="language-python"># For edges list
+graph = defaultdict(list)
+for u, v in edges:
+    graph[u].append(v)
+    graph[v].append(u)  # Undirected
+
+# For weighted edges
+graph = defaultdict(list)
+for u, v, w in edges:
+    graph[u].append((v, w))
+</code></pre>
+<h4 id="adjacency-matrix" tabindex="-1"><a class="header-anchor" href="#adjacency-matrix"><span><strong>Adjacency Matrix</strong></span></a></h4>
+<pre><code class="language-python"># For unweighted
+graph = [[0] * n for _ in range(n)]
+for u, v in edges:
+    graph[u][v] = 1
+    graph[v][u] = 1  # Undirected
+
+# For weighted
+graph = [[float('inf')] * n for _ in range(n)]
+for u, v, w in edges:
+    graph[u][v] = w
+</code></pre>
+<h3 id="common-patterns-tricks" tabindex="-1"><a class="header-anchor" href="#common-patterns-tricks"><span>Common Patterns &amp; Tricks</span></a></h3>
+<h4 id="visited-tracking" tabindex="-1"><a class="header-anchor" href="#visited-tracking"><span><strong>Visited Tracking</strong></span></a></h4>
+<pre><code class="language-python"># Set for simple visited
+visited = set()
+
+# Array for state tracking
+# 0: unvisited, 1: visiting, 2: visited
+state = [0] * n
+
+# Dictionary for path reconstruction
+parent = {}
+</code></pre>
+<h4 id="grid-as-graph" tabindex="-1"><a class="header-anchor" href="#grid-as-graph"><span><strong>Grid as Graph</strong></span></a></h4>
+<pre><code class="language-python"># 4-directional movement
+directions = [(0, 1), (1, 0), (0, -1), (-1, 0)]
+
+# 8-directional movement
+directions = [(0, 1), (1, 0), (0, -1), (-1, 0),
+              (1, 1), (1, -1), (-1, 1), (-1, -1)]
+
+# Check bounds
+def is_valid(r, c, rows, cols):
+    return 0 &lt;= r &lt; rows and 0 &lt;= c &lt; cols
+</code></pre>
+<h4 id="cycle-detection-patterns" tabindex="-1"><a class="header-anchor" href="#cycle-detection-patterns"><span><strong>Cycle Detection Patterns</strong></span></a></h4>
+<pre><code class="language-python"># Directed graph - DFS with states
+def has_cycle_directed(graph):
+    # 0: unvisited, 1: visiting, 2: visited
+    state = [0] * n
+    
+    def dfs(node):
+        if state[node] == 1:  # Back edge
+            return True
+        if state[node] == 2:
+            return False
+        
+        state[node] = 1
+        for neighbor in graph[node]:
+            if dfs(neighbor):
+                return True
+        state[node] = 2
+        return False
+
+# Undirected graph - Union-Find
+def has_cycle_undirected(edges):
+    uf = UnionFind(n)
+    for u, v in edges:
+        if not uf.union(u, v):
+            return True  # Already connected
+    return False
+</code></pre>
+<h3 id="problem-solving-steps" tabindex="-1"><a class="header-anchor" href="#problem-solving-steps"><span>Problem-Solving Steps</span></a></h3>
+<ol>
+<li><strong>Identify graph type</strong>: Directed/undirected, weighted/unweighted</li>
+<li><strong>Choose representation</strong>: Adjacency list vs matrix</li>
+<li><strong>Select algorithm</strong>: Based on problem requirements</li>
+<li><strong>Handle edge cases</strong>: Empty graph, disconnected components</li>
+<li><strong>Track state properly</strong>: Visited nodes, paths, distances</li>
+<li><strong>Optimize if needed</strong>: Space or time improvements</li>
+</ol>
+<h3 id="common-mistakes-tips" tabindex="-1"><a class="header-anchor" href="#common-mistakes-tips"><span>Common Mistakes &amp; Tips</span></a></h3>
+<p><strong>🚫 Common Mistakes:</strong></p>
+<ul>
+<li>Not handling disconnected components</li>
+<li>Incorrect visited state management</li>
+<li>Missing cycle detection in recursive DFS</li>
+<li>Wrong graph representation choice</li>
+<li>Not considering edge cases (self-loops, multiple edges)</li>
+</ul>
+<p><strong>✅ Best Practices:</strong></p>
+<ul>
+<li>Use adjacency list for sparse graphs</li>
+<li>Clear visited tracking strategy</li>
+<li>Handle both directed and undirected cases</li>
+<li>Consider using Union-Find for dynamic connectivity</li>
+<li>Test with disconnected components</li>
+</ul>
+<h3 id="interview-tips" tabindex="-1"><a class="header-anchor" href="#interview-tips"><span>Interview Tips</span></a></h3>
+<ol>
+<li><strong>Clarify graph properties</strong>: Directed? Weighted? Connected?</li>
+<li><strong>Draw small examples</strong>: Visualize the problem</li>
+<li><strong>Choose right representation</strong>: List vs matrix</li>
+<li><strong>State complexities</strong>: Time and space upfront</li>
+<li><strong>Handle edge cases</strong>: Empty, single node, cycles</li>
+<li><strong>Optimize incrementally</strong>: Start simple, then improve</li>
+</ol>
+<h3 id="related-topics" tabindex="-1"><a class="header-anchor" href="#related-topics"><span>Related Topics</span></a></h3>
+<ul>
+<li><strong>Trees</strong>: Special case of graphs (connected, acyclic)</li>
+<li><strong>Dynamic Programming</strong>: DP on graphs (paths, trees)</li>
+<li><strong>Greedy Algorithms</strong>: MST algorithms</li>
+<li><strong>Heap/Priority Queue</strong>: Used in Dijkstra, Prim’s</li>
+<li><strong>Recursion/Backtracking</strong>: DFS implementation</li>
+</ul>
+<h3 id="2-6-find-eventual-safe-states" tabindex="-1"><a class="header-anchor" href="#2-6-find-eventual-safe-states"><span>2-6) Find Eventual Safe States</span></a></h3>
+<pre><code class="language-java">// java
+// LC 802
+
+// V1-0
+// IDEA : DFS
+// KEY : check if there is a &quot;cycle&quot; on a node
+// https://www.youtube.com/watch?v=v5Ni_3bHjzk
+// https://zxi.mytechroad.com/blog/graph/leetcode-802-find-eventual-safe-states/
+public List&lt;Integer&gt; eventualSafeNodes(int[][] graph) {
+    // init
+    int n = graph.length;
+    State[] states = new State[n];
+    for (int i = 0; i &lt; n; i++) {
+        states[i] = State.UNKNOWN;
+    }
+
+    List&lt;Integer&gt; result = new ArrayList&lt;&gt;();
+    for (int i = 0; i &lt; n; i++) {
+        // if node is with SAFE state, add to result
+        if (dfs(graph, i, states) == State.SAFE) {
+            result.add(i);
+        }
+    }
+    return result;
+}
+
+private enum State {
+    UNKNOWN, VISITING, SAFE, UNSAFE
+}
+
+private State dfs(int[][] graph, int node, State[] states) {
+    /**
+     * NOTE !!!
+     *  if a node with &quot;VISITING&quot; state,
+     *  but is visited again (within the other iteration)
+     *  -&gt; there must be a cycle
+     *  -&gt; this node is UNSAFE
+     */
+    if (states[node] == State.VISITING) {
+        return states[node] = State.UNSAFE;
+    }
+    /**
+     * NOTE !!!
+     *  if a node is not with &quot;UNKNOWN&quot; state,
+     *  -&gt; update its state
+     */
+    if (states[node] != State.UNKNOWN) {
+        return states[node];
+    }
+
+    /**
+     * NOTE !!!
+     *  update node state as VISITING
+     */
+    states[node] = State.VISITING;
+    for (int next : graph[node]) {
+        /**
+         * NOTE !!!
+         *   for every sub node, if any one them
+         *   has UNSAFE state,
+         *   -&gt; set and return node state as UNSAFE directly
+         */
+        if (dfs(graph, next, states) == State.UNSAFE) {
+            return states[node] = State.UNSAFE;
+        }
+    }
+
+    /**
+     * NOTE !!!
+     *   if can pass all above checks
+     *   -&gt; this is node has SAFE state
+     */
+    return states[node] = State.SAFE;
+}
+</code></pre>
+
+      </div>
+      <div class="cheatsheet-footer">
+        <a href="../cheatsheets.html" class="back-link">← Back to Cheat Sheets</a>
+        <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/graph.md" class="github-edit" target="_blank">
+          Edit on GitHub →
+        </a>
+      </div>
+    <nav class="prev-next"><a href="dp_pattern.html" class="prev-link">← Dp Pattern</a><a href="greedy.html" class="next-link">Greedy →</a></nav>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>CS_basics - Computer Science Fundamentals & Interview Preparation</p>
+      <p>
+        <a href="https://github.com/yennanliu/CS_basics">GitHub</a> •
+        <a href="https://github.com/yennanliu/CS_basics/tree/master/doc">Documentation</a> •
+        <a href="https://github.com/yennanliu/CS_basics/issues">Report Issues</a>
+      </p>
+    </div>
+  </footer>
+</body>
+</html>

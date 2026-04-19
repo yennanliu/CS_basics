@@ -1,0 +1,456 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Combinatorics Math Patterns - CS_basics</title>
+  <meta name="description" content="Computer Science fundamentals: algorithms, data structures, system design, and LeetCode solutions">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>CS</text></svg>">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="../vendor/fonts.css">
+  <link rel="stylesheet" href="../vendor/highlight/github-dark.min.css">
+  <script src="../vendor/highlight/highlight.min.js"></script>
+  <script>
+  // Apply theme before render to prevent flash
+  (function() {
+    var saved = localStorage.getItem('theme');
+    if (saved === 'dark' || (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      document.documentElement.setAttribute('data-theme', 'dark');
+    }
+  })();
+  </script>
+  <script>document.addEventListener('DOMContentLoaded', function() {
+    hljs.highlightAll();
+    document.querySelectorAll('pre code').forEach(function(codeEl) {
+      var pre = codeEl.parentElement;
+      var lang = '';
+      var cls = codeEl.className || '';
+      var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
+      if (m) lang = m[1];
+      var wrapper = document.createElement('div');
+      wrapper.className = 'code-block-wrapper';
+      pre.parentNode.insertBefore(wrapper, pre);
+      var header = document.createElement('div');
+      header.className = 'code-block-header';
+      if (lang) {
+        var label = document.createElement('span');
+        label.className = 'code-lang-label';
+        label.textContent = lang;
+        header.appendChild(label);
+      } else {
+        header.appendChild(document.createElement('span'));
+      }
+      var btn = document.createElement('button');
+      btn.className = 'copy-btn';
+      btn.textContent = 'Copy';
+      btn.addEventListener('click', function() {
+        navigator.clipboard.writeText(codeEl.textContent).then(function() {
+          btn.textContent = 'Copied!';
+          btn.classList.add('copied');
+          setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+        });
+      });
+      header.appendChild(btn);
+      wrapper.appendChild(header);
+      wrapper.appendChild(pre);
+    });
+    document.querySelectorAll('table').forEach(function(table) {
+      if (!table.parentElement.classList.contains('table-wrap')) {
+        var wrapper = document.createElement('div');
+        wrapper.className = 'table-wrap';
+        table.parentNode.insertBefore(wrapper, table);
+        wrapper.appendChild(table);
+      }
+    });
+    // Reading progress bar
+    var progressBar = document.getElementById('reading-progress');
+    if (progressBar) {
+      window.addEventListener('scroll', function() {
+        var winScroll = document.documentElement.scrollTop;
+        var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        progressBar.style.width = height > 0 ? (winScroll / height * 100) + '%' : '0%';
+      });
+    }
+    // Dark mode toggle
+    var toggle = document.getElementById('theme-toggle');
+    if (toggle) {
+      var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      toggle.textContent = isDark ? '☀️' : '🌙';
+      toggle.addEventListener('click', function() {
+        var dark = document.documentElement.getAttribute('data-theme') === 'dark';
+        if (dark) {
+          document.documentElement.removeAttribute('data-theme');
+          localStorage.setItem('theme', 'light');
+          toggle.textContent = '🌙';
+        } else {
+          document.documentElement.setAttribute('data-theme', 'dark');
+          localStorage.setItem('theme', 'dark');
+          toggle.textContent = '☀️';
+        }
+      });
+    }
+  });</script>
+</head>
+<body>
+  <div class="progress-container"><div class="progress-bar" id="reading-progress"></div></div>
+  <nav class="navbar">
+    <div class="container">
+      <div class="nav-brand">
+        <span class="nav-icon">💻</span>
+        <span class="nav-title">CS_basics</span>
+      </div>
+      <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+      <div class="nav-links">
+        <a href="../index.html" class="">Home</a>
+        <a href="../cheatsheets.html" class="active">Cheat Sheets</a>
+        <a href="../patterns.html" class="">Pattern Recognition</a>
+        <a href="../faqs.html" class="">FAQs</a>
+        <a href="../resources.html" class="">Resources</a>
+        <a href="../lc-explorer.html" class="">LC Explorer</a>
+        <a href="../lc-random-picker.html" class="">🎲 Random Picker</a>
+        <a href="../algo_demo/index.html" class="">Visualizer</a>
+        <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">&#127769;</button>
+        <a href="https://github.com/yennanliu/CS_basics" target="_blank" class="github-link" aria-label="GitHub">
+          <svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor">
+            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container">
+    <div class="content">
+      
+      <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">Combinatorics Math Patterns</span></nav>
+      <div class="cheatsheet-header">
+        <h1>Combinatorics Math Patterns</h1>
+        <span class="last-updated">Last updated: Apr 11, 2026</span>
+      </div>
+      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#overview">Overview</a></li><li class="toc-sub"><a href="#key-properties">Key Properties</a></li><li><a href="#pattern-1-modular-arithmetic">Pattern 1: Modular Arithmetic</a></li><li class="toc-sub"><a href="#basics">Basics</a></li><li class="toc-sub"><a href="#modular-exponentiation-fast-power">Modular Exponentiation (Fast Power)</a></li><li class="toc-sub"><a href="#modular-inverse-when-mod-is-prime">Modular Inverse (when mod is prime)</a></li><li><a href="#pattern-2-gcd-lcm">Pattern 2: GCD / LCM</a></li><li><a href="#pattern-3-prime-numbers-sieve">Pattern 3: Prime Numbers &amp; Sieve</a></li><li class="toc-sub"><a href="#sieve-of-eratosthenes">Sieve of Eratosthenes</a></li><li class="toc-sub"><a href="#prime-factorization">Prime Factorization</a></li><li><a href="#pattern-4-combinations-counting">Pattern 4: Combinations &amp; Counting</a></li><li class="toc-sub"><a href="#ncr-with-pascal-s-triangle">nCr with Pascal’s Triangle</a></li><li class="toc-sub"><a href="#ncr-with-modular-inverse-for-large-n">nCr with Modular Inverse (for large N)</a></li><li class="toc-sub"><a href="#catalan-numbers">Catalan Numbers</a></li><li><a href="#pattern-5-reservoir-sampling-random">Pattern 5: Reservoir Sampling &amp; Random</a></li><li class="toc-sub"><a href="#reservoir-sampling-k-1">Reservoir Sampling (K=1)</a></li><li class="toc-sub"><a href="#fisher-yates-shuffle">Fisher-Yates Shuffle</a></li><li class="toc-sub"><a href="#weighted-random-binary-search-on-prefix-sum">Weighted Random / Binary Search on Prefix Sum</a></li><li><a href="#pattern-6-geometry-computational-geometry">Pattern 6: Geometry / Computational Geometry</a></li><li class="toc-sub"><a href="#cross-product-orientation-test">Cross Product (Orientation Test)</a></li><li class="toc-sub"><a href="#convex-hull-andrew-s-monotone-chain">Convex Hull (Andrew’s Monotone Chain)</a></li><li class="toc-sub"><a href="#distance-line-formulas">Distance &amp; Line Formulas</a></li><li><a href="#pattern-7-bit-counting-number-theory">Pattern 7: Bit Counting &amp; Number Theory</a></li><li class="toc-sub"><a href="#count-divisors">Count Divisors</a></li><li class="toc-sub"><a href="#euler-s-totient">Euler’s Totient</a></li><li class="toc-sub"><a href="#sum-of-digits-digital-root">Sum of Digits / Digital Root</a></li><li><a href="#lc-example">LC Example</a></li></ul></div>
+      <div class="cheatsheet-content">
+        <h1 id="combinatorics-math-patterns" tabindex="-1"><a class="header-anchor" href="#combinatorics-math-patterns"><span>Combinatorics &amp; Math Patterns</span></a></h1>
+<h2 id="overview" tabindex="-1"><a class="header-anchor" href="#overview"><span>Overview</span></a></h2>
+<p>Google interviews frequently test math/combinatorics reasoning — more than other FAANGs. This covers number theory, counting, geometry, and probability patterns common in coding interviews.</p>
+<h3 id="key-properties" tabindex="-1"><a class="header-anchor" href="#key-properties"><span>Key Properties</span></a></h3>
+<ul>
+<li><strong>When to Use</strong>: Problem involves counting arrangements, modular arithmetic, GCD/LCM, prime numbers, or geometric calculations</li>
+<li><strong>Google Signal</strong>: Can you derive a formula instead of brute-forcing?</li>
+</ul>
+<h2 id="pattern-1-modular-arithmetic" tabindex="-1"><a class="header-anchor" href="#pattern-1-modular-arithmetic"><span>Pattern 1: Modular Arithmetic</span></a></h2>
+<h3 id="basics" tabindex="-1"><a class="header-anchor" href="#basics"><span>Basics</span></a></h3>
+<pre><code>(a + b) % m = ((a % m) + (b % m)) % m
+(a * b) % m = ((a % m) * (b % m)) % m
+(a - b) % m = ((a % m) - (b % m) + m) % m   ← add m to avoid negative
+
+Division: (a / b) % m = (a * b^(-1)) % m  where b^(-1) = modular inverse
+</code></pre>
+<h3 id="modular-exponentiation-fast-power" tabindex="-1"><a class="header-anchor" href="#modular-exponentiation-fast-power"><span>Modular Exponentiation (Fast Power)</span></a></h3>
+<pre><code class="language-java">// Time: O(log exp), Space: O(1)
+long modPow(long base, long exp, long mod) {
+    long result = 1;
+    base %= mod;
+    while (exp &gt; 0) {
+        if ((exp &amp; 1) == 1) result = result * base % mod;
+        exp &gt;&gt;= 1;
+        base = base * base % mod;
+    }
+    return result;
+}
+</code></pre>
+<pre><code class="language-python"># Python has built-in: pow(base, exp, mod)
+</code></pre>
+<h3 id="modular-inverse-when-mod-is-prime" tabindex="-1"><a class="header-anchor" href="#modular-inverse-when-mod-is-prime"><span>Modular Inverse (when mod is prime)</span></a></h3>
+<pre><code>b^(-1) mod p = b^(p-2) mod p    (Fermat's little theorem)
+</code></pre>
+<p><strong>Classic LC:</strong> LC 1808 (Maximize Number of Nice Divisors), LC 372 (Super Pow)</p>
+<h2 id="pattern-2-gcd-lcm" tabindex="-1"><a class="header-anchor" href="#pattern-2-gcd-lcm"><span>Pattern 2: GCD / LCM</span></a></h2>
+<pre><code class="language-java">int gcd(int a, int b) { return b == 0 ? a : gcd(b, a % b); }
+long lcm(long a, long b) { return a / gcd(a, b) * b; }  // divide first to avoid overflow
+</code></pre>
+<pre><code class="language-python">from math import gcd
+lcm = a * b // gcd(a, b)
+# Python 3.9+: math.lcm(a, b)
+</code></pre>
+<p><strong>Classic LC:</strong></p>
+<ul>
+<li>LC 1071 GCD of Strings — O(N+M)</li>
+<li>LC 878 Nth Magical Number — LCM + binary search</li>
+<li>LC 2344 Minimum Deletions to Make Array Divisible — GCD of target array</li>
+</ul>
+<h2 id="pattern-3-prime-numbers-sieve" tabindex="-1"><a class="header-anchor" href="#pattern-3-prime-numbers-sieve"><span>Pattern 3: Prime Numbers &amp; Sieve</span></a></h2>
+<h3 id="sieve-of-eratosthenes" tabindex="-1"><a class="header-anchor" href="#sieve-of-eratosthenes"><span>Sieve of Eratosthenes</span></a></h3>
+<pre><code class="language-java">// Time: O(N log log N), Space: O(N)
+boolean[] sieve(int n) {
+    boolean[] isPrime = new boolean[n + 1];
+    Arrays.fill(isPrime, true);
+    isPrime[0] = isPrime[1] = false;
+    for (int i = 2; i * i &lt;= n; i++) {
+        if (isPrime[i]) {
+            for (int j = i * i; j &lt;= n; j += i) {
+                isPrime[j] = false;
+            }
+        }
+    }
+    return isPrime;
+}
+</code></pre>
+<h3 id="prime-factorization" tabindex="-1"><a class="header-anchor" href="#prime-factorization"><span>Prime Factorization</span></a></h3>
+<pre><code class="language-java">// Time: O(√N)
+List&lt;int[]&gt; primeFactors(int n) {
+    List&lt;int[]&gt; factors = new ArrayList&lt;&gt;();
+    for (int i = 2; i * i &lt;= n; i++) {
+        int count = 0;
+        while (n % i == 0) { n /= i; count++; }
+        if (count &gt; 0) factors.add(new int[]{i, count});
+    }
+    if (n &gt; 1) factors.add(new int[]{n, 1});
+    return factors;
+}
+</code></pre>
+<p><strong>Classic LC:</strong> LC 204 (Count Primes), LC 952 (Largest Component by Common Factor)</p>
+<h2 id="pattern-4-combinations-counting" tabindex="-1"><a class="header-anchor" href="#pattern-4-combinations-counting"><span>Pattern 4: Combinations &amp; Counting</span></a></h2>
+<h3 id="ncr-with-pascal-s-triangle" tabindex="-1"><a class="header-anchor" href="#ncr-with-pascal-s-triangle"><span>nCr with Pascal’s Triangle</span></a></h3>
+<pre><code class="language-java">// Time: O(N·K), Space: O(N·K)
+long[][] pascal(int n) {
+    long[][] C = new long[n + 1][n + 1];
+    for (int i = 0; i &lt;= n; i++) {
+        C[i][0] = 1;
+        for (int j = 1; j &lt;= i; j++) {
+            C[i][j] = C[i-1][j-1] + C[i-1][j];  // add % MOD if needed
+        }
+    }
+    return C;
+}
+</code></pre>
+<h3 id="ncr-with-modular-inverse-for-large-n" tabindex="-1"><a class="header-anchor" href="#ncr-with-modular-inverse-for-large-n"><span>nCr with Modular Inverse (for large N)</span></a></h3>
+<pre><code class="language-python">MOD = 10**9 + 7
+
+def nCr(n, r):
+    if r &gt; n: return 0
+    num = den = 1
+    for i in range(r):
+        num = num * (n - i) % MOD
+        den = den * (i + 1) % MOD
+    return num * pow(den, MOD - 2, MOD) % MOD
+</code></pre>
+<h3 id="catalan-numbers" tabindex="-1"><a class="header-anchor" href="#catalan-numbers"><span>Catalan Numbers</span></a></h3>
+<pre><code>C(n) = C(2n, n) / (n+1) = (2n)! / ((n+1)! * n!)
+
+C(0)=1, C(1)=1, C(2)=2, C(3)=5, C(4)=14, C(5)=42
+
+Applications:
+  - Number of valid parentheses sequences of length 2n
+  - Number of unique BSTs with n nodes
+  - Number of ways to triangulate a polygon with n+2 sides
+</code></pre>
+<p><strong>Classic LC:</strong> LC 96 (Unique BSTs), LC 22 (Generate Parentheses count)</p>
+<h2 id="pattern-5-reservoir-sampling-random" tabindex="-1"><a class="header-anchor" href="#pattern-5-reservoir-sampling-random"><span>Pattern 5: Reservoir Sampling &amp; Random</span></a></h2>
+<h3 id="reservoir-sampling-k-1" tabindex="-1"><a class="header-anchor" href="#reservoir-sampling-k-1"><span>Reservoir Sampling (K=1)</span></a></h3>
+<pre><code class="language-java">// Select 1 random element from stream of unknown length
+// Each element has 1/n probability of being chosen
+// Time: O(N), Space: O(1)
+Random rand = new Random();
+int result = 0;
+int count = 0;
+for (int val : stream) {
+    count++;
+    if (rand.nextInt(count) == 0) {
+        result = val;
+    }
+}
+</code></pre>
+<p><strong>Classic LC:</strong> LC 382 (Linked List Random Node), LC 398 (Random Pick Index)</p>
+<h3 id="fisher-yates-shuffle" tabindex="-1"><a class="header-anchor" href="#fisher-yates-shuffle"><span>Fisher-Yates Shuffle</span></a></h3>
+<pre><code class="language-java">// Time: O(N), Space: O(1) extra
+void shuffle(int[] arr) {
+    Random rand = new Random();
+    for (int i = arr.length - 1; i &gt; 0; i--) {
+        int j = rand.nextInt(i + 1);
+        int tmp = arr[i]; arr[i] = arr[j]; arr[j] = tmp;
+    }
+}
+</code></pre>
+<p><strong>Classic LC:</strong> LC 384 (Shuffle an Array)</p>
+<h3 id="weighted-random-binary-search-on-prefix-sum" tabindex="-1"><a class="header-anchor" href="#weighted-random-binary-search-on-prefix-sum"><span>Weighted Random / Binary Search on Prefix Sum</span></a></h3>
+<p><strong>Classic LC:</strong> LC 528 (Random Pick with Weight) — O(log N) per pick</p>
+<h2 id="pattern-6-geometry-computational-geometry" tabindex="-1"><a class="header-anchor" href="#pattern-6-geometry-computational-geometry"><span>Pattern 6: Geometry / Computational Geometry</span></a></h2>
+<h3 id="cross-product-orientation-test" tabindex="-1"><a class="header-anchor" href="#cross-product-orientation-test"><span>Cross Product (Orientation Test)</span></a></h3>
+<pre><code class="language-java">// Returns &gt; 0 if counter-clockwise, &lt; 0 if clockwise, 0 if collinear
+long cross(int[] O, int[] A, int[] B) {
+    return (long)(A[0] - O[0]) * (B[1] - O[1])
+         - (long)(A[1] - O[1]) * (B[0] - O[0]);
+}
+</code></pre>
+<h3 id="convex-hull-andrew-s-monotone-chain" tabindex="-1"><a class="header-anchor" href="#convex-hull-andrew-s-monotone-chain"><span>Convex Hull (Andrew’s Monotone Chain)</span></a></h3>
+<pre><code class="language-python"># Time: O(N log N), Space: O(N)
+def convex_hull(points):
+    points.sort()
+    lower = []
+    for p in points:
+        while len(lower) &gt;= 2 and cross(lower[-2], lower[-1], p) &lt;= 0:
+            lower.pop()
+        lower.append(p)
+    upper = []
+    for p in reversed(points):
+        while len(upper) &gt;= 2 and cross(upper[-2], upper[-1], p) &lt;= 0:
+            upper.pop()
+        upper.append(p)
+    return lower[:-1] + upper[:-1]
+
+def cross(O, A, B):
+    return (A[0]-O[0])*(B[1]-O[1]) - (A[1]-O[1])*(B[0]-O[0])
+</code></pre>
+<h3 id="distance-line-formulas" tabindex="-1"><a class="header-anchor" href="#distance-line-formulas"><span>Distance &amp; Line Formulas</span></a></h3>
+<pre><code>Euclidean distance: sqrt((x2-x1)² + (y2-y1)²)
+Manhattan distance: |x2-x1| + |y2-y1|
+
+Tip: Avoid sqrt when possible — compare squared distances instead.
+Tip: Use long to avoid integer overflow in distance calculations.
+</code></pre>
+<p><strong>Classic LC:</strong></p>
+<ul>
+<li>LC 149 Max Points on a Line — GCD for slope representation, O(N²)</li>
+<li>LC 587 Erect the Fence — Convex Hull</li>
+<li>LC 973 K Closest Points to Origin — O(N) quickselect or O(N log K) heap</li>
+<li>LC 1232 Check if Straight Line — Cross product</li>
+</ul>
+<h2 id="pattern-7-bit-counting-number-theory" tabindex="-1"><a class="header-anchor" href="#pattern-7-bit-counting-number-theory"><span>Pattern 7: Bit Counting &amp; Number Theory</span></a></h2>
+<h3 id="count-divisors" tabindex="-1"><a class="header-anchor" href="#count-divisors"><span>Count Divisors</span></a></h3>
+<pre><code>Number of divisors of n = product of (e_i + 1) for each prime factor p_i^e_i
+Example: 12 = 2² × 3¹ → (2+1)(1+1) = 6 divisors
+</code></pre>
+<h3 id="euler-s-totient" tabindex="-1"><a class="header-anchor" href="#euler-s-totient"><span>Euler’s Totient</span></a></h3>
+<pre><code>φ(n) = count of integers in [1, n] coprime to n
+φ(p) = p - 1  for prime p
+φ(p^k) = p^k - p^(k-1)
+</code></pre>
+<h3 id="sum-of-digits-digital-root" tabindex="-1"><a class="header-anchor" href="#sum-of-digits-digital-root"><span>Sum of Digits / Digital Root</span></a></h3>
+<pre><code>Digital root of n = 1 + (n-1) % 9  (for n &gt; 0)
+</code></pre>
+<p><strong>Classic LC:</strong> LC 258 (Add Digits), LC 1922 (Count Good Numbers)</p>
+<h2 id="lc-example" tabindex="-1"><a class="header-anchor" href="#lc-example"><span>LC Example</span></a></h2>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Problem</th>
+<th>Pattern</th>
+<th>Time</th>
+<th>Space</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>204</td>
+<td>Count Primes</td>
+<td>Sieve</td>
+<td>O(N log log N)</td>
+<td>O(N)</td>
+</tr>
+<tr>
+<td>96</td>
+<td>Unique BSTs</td>
+<td>Catalan</td>
+<td>O(N)</td>
+<td>O(N)</td>
+</tr>
+<tr>
+<td>382</td>
+<td>Linked List Random Node</td>
+<td>Reservoir sampling</td>
+<td>O(N)</td>
+<td>O(1)</td>
+</tr>
+<tr>
+<td>528</td>
+<td>Random Pick with Weight</td>
+<td>Prefix sum + BS</td>
+<td>O(N) build, O(log N) pick</td>
+<td>O(N)</td>
+</tr>
+<tr>
+<td>149</td>
+<td>Max Points on a Line</td>
+<td>GCD slope</td>
+<td>O(N²)</td>
+<td>O(N)</td>
+</tr>
+<tr>
+<td>587</td>
+<td>Erect the Fence</td>
+<td>Convex Hull</td>
+<td>O(N log N)</td>
+<td>O(N)</td>
+</tr>
+<tr>
+<td>878</td>
+<td>Nth Magical Number</td>
+<td>LCM + binary search</td>
+<td>O(log(N·max(A,B)))</td>
+<td>O(1)</td>
+</tr>
+<tr>
+<td>952</td>
+<td>Largest Component</td>
+<td>Sieve + Union-Find</td>
+<td>O(N√M)</td>
+<td>O(M)</td>
+</tr>
+<tr>
+<td>1071</td>
+<td>GCD of Strings</td>
+<td>GCD</td>
+<td>O(N+M)</td>
+<td>O(1)</td>
+</tr>
+<tr>
+<td>384</td>
+<td>Shuffle an Array</td>
+<td>Fisher-Yates</td>
+<td>O(N)</td>
+<td>O(1)</td>
+</tr>
+<tr>
+<td>372</td>
+<td>Super Pow</td>
+<td>Mod exponentiation</td>
+<td>O(N)</td>
+<td>O(1)</td>
+</tr>
+<tr>
+<td>1808</td>
+<td>Max Nice Divisors</td>
+<td>Mod exp + math</td>
+<td>O(log N)</td>
+<td>O(1)</td>
+</tr>
+</tbody>
+</table>
+
+      </div>
+      <div class="cheatsheet-footer">
+        <a href="../cheatsheets.html" class="back-link">← Back to Cheat Sheets</a>
+        <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/combinatorics_math_patterns.md" class="github-edit" target="_blank">
+          Edit on GitHub →
+        </a>
+      </div>
+    <nav class="prev-next"><a href="code_interview_general_cheatsheet.html" class="prev-link">← Code Interview General Cheatsheet</a><a href="complexity_cheatsheet.html" class="next-link">Complexity Cheatsheet →</a></nav>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>CS_basics - Computer Science Fundamentals & Interview Preparation</p>
+      <p>
+        <a href="https://github.com/yennanliu/CS_basics">GitHub</a> •
+        <a href="https://github.com/yennanliu/CS_basics/tree/master/doc">Documentation</a> •
+        <a href="https://github.com/yennanliu/CS_basics/issues">Report Issues</a>
+      </p>
+    </div>
+  </footer>
+</body>
+</html>

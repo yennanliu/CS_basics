@@ -1,102 +1,655 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Pattern Recognition - CS Basics</title>
+  <title>Pattern Recognition - CS_basics</title>
+  <meta name="description" content="Computer Science fundamentals: algorithms, data structures, system design, and LeetCode solutions">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>CS</text></svg>">
-  <style>
-    * { box-sizing: border-box; }
-    body { 
-      margin: 0; 
-      padding: 0; 
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
-      line-height: 1.6;
-      color: #333;
-      background: #f5f5f5;
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="vendor/fonts.css">
+  <link rel="stylesheet" href="vendor/highlight/github-dark.min.css">
+  <script src="vendor/highlight/highlight.min.js"></script>
+  <script>
+  // Apply theme before render to prevent flash
+  (function() {
+    var saved = localStorage.getItem('theme');
+    if (saved === 'dark' || (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      document.documentElement.setAttribute('data-theme', 'dark');
     }
-    nav {
-      background: white;
-      border-bottom: 1px solid #ddd;
-      padding: 1rem 2rem;
-      position: sticky;
-      top: 0;
-      z-index: 100;
+  })();
+  </script>
+  <script>document.addEventListener('DOMContentLoaded', function() {
+    hljs.highlightAll();
+    document.querySelectorAll('pre code').forEach(function(codeEl) {
+      var pre = codeEl.parentElement;
+      var lang = '';
+      var cls = codeEl.className || '';
+      var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
+      if (m) lang = m[1];
+      var wrapper = document.createElement('div');
+      wrapper.className = 'code-block-wrapper';
+      pre.parentNode.insertBefore(wrapper, pre);
+      var header = document.createElement('div');
+      header.className = 'code-block-header';
+      if (lang) {
+        var label = document.createElement('span');
+        label.className = 'code-lang-label';
+        label.textContent = lang;
+        header.appendChild(label);
+      } else {
+        header.appendChild(document.createElement('span'));
+      }
+      var btn = document.createElement('button');
+      btn.className = 'copy-btn';
+      btn.textContent = 'Copy';
+      btn.addEventListener('click', function() {
+        navigator.clipboard.writeText(codeEl.textContent).then(function() {
+          btn.textContent = 'Copied!';
+          btn.classList.add('copied');
+          setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+        });
+      });
+      header.appendChild(btn);
+      wrapper.appendChild(header);
+      wrapper.appendChild(pre);
+    });
+    document.querySelectorAll('table').forEach(function(table) {
+      if (!table.parentElement.classList.contains('table-wrap')) {
+        var wrapper = document.createElement('div');
+        wrapper.className = 'table-wrap';
+        table.parentNode.insertBefore(wrapper, table);
+        wrapper.appendChild(table);
+      }
+    });
+    // Reading progress bar
+    var progressBar = document.getElementById('reading-progress');
+    if (progressBar) {
+      window.addEventListener('scroll', function() {
+        var winScroll = document.documentElement.scrollTop;
+        var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        progressBar.style.width = height > 0 ? (winScroll / height * 100) + '%' : '0%';
+      });
     }
-    .nav-container {
-      max-width: 1200px;
-      margin: 0 auto;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 2rem;
+    // Dark mode toggle
+    var toggle = document.getElementById('theme-toggle');
+    if (toggle) {
+      var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      toggle.textContent = isDark ? '☀️' : '🌙';
+      toggle.addEventListener('click', function() {
+        var dark = document.documentElement.getAttribute('data-theme') === 'dark';
+        if (dark) {
+          document.documentElement.removeAttribute('data-theme');
+          localStorage.setItem('theme', 'light');
+          toggle.textContent = '🌙';
+        } else {
+          document.documentElement.setAttribute('data-theme', 'dark');
+          localStorage.setItem('theme', 'dark');
+          toggle.textContent = '☀️';
+        }
+      });
     }
-    .logo {
-      font-size: 1.3rem;
-      font-weight: 700;
-      text-decoration: none;
-      color: #333;
-    }
-    .nav-links {
-      display: flex;
-      gap: 1.5rem;
-      list-style: none;
-      margin: 0;
-      padding: 0;
-    }
-    .nav-links a {
-      color: #666;
-      text-decoration: none;
-      padding: 0.5rem 0.75rem;
-      border-bottom: 2px solid transparent;
-      transition: all 0.2s;
-    }
-    .nav-links a:hover,
-    .nav-links a.active {
-      color: #333;
-      border-bottom-color: #333;
-    }
-    .container {
-      max-width: 1200px;
-      margin: 2rem auto;
-      padding: 0 2rem;
-      background: white;
-      padding: 2rem;
-      border-radius: 8px;
-      min-height: 60vh;
-    }
-    h1 { margin-top: 0; }
-    footer {
-      text-align: center;
-      padding: 2rem;
-      color: #666;
-      font-size: 0.9rem;
-      margin-top: 4rem;
-      border-top: 1px solid #ddd;
-    }
-  </style>
+  });</script>
 </head>
 <body>
-  <nav>
-    <div class="nav-container">
-      <a href="index.html" class="logo">CS Basics</a>
+  <div class="progress-container"><div class="progress-bar" id="reading-progress"></div></div>
+  <nav class="navbar">
+    <div class="container">
+      <div class="nav-brand">
+        <span class="nav-icon">💻</span>
+        <span class="nav-title">CS_basics</span>
+      </div>
+      <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
       <div class="nav-links">
         <a href="index.html" class="">Home</a>
         <a href="cheatsheets.html" class="">Cheat Sheets</a>
-        <a href="patterns.html" class="active">Patterns</a>
+        <a href="patterns.html" class="active">Pattern Recognition</a>
         <a href="faqs.html" class="">FAQs</a>
         <a href="resources.html" class="">Resources</a>
         <a href="lc-explorer.html" class="">LC Explorer</a>
         <a href="lc-random-picker.html" class="">🎲 Random Picker</a>
-        <a href="https://github.com/yennanliu/CS_basics" target="_blank">GitHub</a>
+        <a href="algo_demo/index.html" class="">Visualizer</a>
+        <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">&#127769;</button>
+        <a href="https://github.com/yennanliu/CS_basics" target="_blank" class="github-link" aria-label="GitHub">
+          <svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor">
+            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
+          </svg>
+        </a>
       </div>
     </div>
   </nav>
-  <div class="container">
-    <h1>Pattern Recognition</h1><p>Common algorithm patterns and techniques. <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/pattern_recognition.md">View full guide</a>.</p>
-  </div>
+
+  <main class="container">
+    <div class="content">
+      
+    <div class="cheatsheet-header">
+      <h1>Pattern Recognition Guide</h1>
+      <p>Map problem keywords to algorithm patterns — the fastest way to crack coding interviews.</p>
+    </div>
+    <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#how-to-use-this-page">How to Use This Page</a></li><li><a href="#keyword-pattern-map">Keyword → Pattern Map</a></li><li class="toc-sub"><a href="#array-string-keywords">Array / String Keywords</a></li><li class="toc-sub"><a href="#graph-tree-keywords">Graph / Tree Keywords</a></li><li class="toc-sub"><a href="#dynamic-programming-keywords">Dynamic Programming Keywords</a></li><li class="toc-sub"><a href="#backtracking-recursion-keywords">Backtracking / Recursion Keywords</a></li><li class="toc-sub"><a href="#design-data-structure-keywords">Design / Data Structure Keywords</a></li><li class="toc-sub"><a href="#greedy-keywords">Greedy Keywords</a></li><li class="toc-sub"><a href="#bit-manipulation-keywords">Bit Manipulation Keywords</a></li><li><a href="#decision-flowchart">Decision Flowchart</a></li><li><a href="#quick-pattern-comparison">Quick Pattern Comparison</a></li></ul></div>
+    <div class="cheatsheet-content"><h1 id="pattern-recognition-guide" tabindex="-1"><a class="header-anchor" href="#pattern-recognition-guide"><span>Pattern Recognition Guide</span></a></h1>
+<blockquote>
+<p>See a keyword in the problem? Jump to the right pattern instantly.
+This page maps <strong>problem signals</strong> to <strong>algorithm patterns</strong> — the fastest way to crack coding interviews.</p>
+</blockquote>
+<hr>
+<h2 id="how-to-use-this-page" tabindex="-1"><a class="header-anchor" href="#how-to-use-this-page"><span>How to Use This Page</span></a></h2>
+<ol>
+<li>Read the problem statement</li>
+<li>Spot keywords or structural clues below</li>
+<li>Jump to the matching pattern and its template</li>
+</ol>
+<hr>
+<h2 id="keyword-pattern-map" tabindex="-1"><a class="header-anchor" href="#keyword-pattern-map"><span>Keyword → Pattern Map</span></a></h2>
+<h3 id="array-string-keywords" tabindex="-1"><a class="header-anchor" href="#array-string-keywords"><span>Array / String Keywords</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>Keyword / Clue in Problem</th>
+<th>Pattern</th>
+<th>Example Problems</th>
+<th>Cheat Sheet</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>“subarray sum equals k”, “sum of subarray”</td>
+<td><strong>Prefix Sum</strong></td>
+<td>LC 560, 974, 523, 1248</td>
+<td><a href="cheatsheets/prefix_sum.html">prefix_sum</a></td>
+</tr>
+<tr>
+<td>“contiguous subarray”, “maximum subarray”</td>
+<td><strong>Kadane’s / Sliding Window</strong></td>
+<td>LC 53, 918, 152</td>
+<td><a href="cheatsheets/kadane.html">kadane</a></td>
+</tr>
+<tr>
+<td>“longest substring without repeating”, “at most k distinct”</td>
+<td><strong>Sliding Window</strong></td>
+<td>LC 3, 159, 340, 424, 76</td>
+<td><a href="cheatsheets/sliding_window.html">sliding_window</a></td>
+</tr>
+<tr>
+<td>“minimum window”, “smallest subarray”</td>
+<td><strong>Sliding Window (shrink)</strong></td>
+<td>LC 76, 209, 862</td>
+<td><a href="cheatsheets/sliding_window.html">sliding_window</a></td>
+</tr>
+<tr>
+<td>“sorted array”, “find target”, “search”</td>
+<td><strong>Binary Search</strong></td>
+<td>LC 704, 33, 153, 34</td>
+<td><a href="cheatsheets/binary_search.html">binary_search</a></td>
+</tr>
+<tr>
+<td>“minimum/maximum possible value”, “capacity”, “can you achieve”</td>
+<td><strong>Binary Search on Answer</strong></td>
+<td>LC 875, 1011, 410, 1283</td>
+<td><a href="cheatsheets/binary_search.html">binary_search</a></td>
+</tr>
+<tr>
+<td>“two sum”, “pair with sum”, “three sum”</td>
+<td><strong>Two Pointers / HashMap</strong></td>
+<td>LC 1, 15, 167, 18</td>
+<td><a href="cheatsheets/2_pointers.html">2_pointers</a></td>
+</tr>
+<tr>
+<td>“remove duplicates”, “move zeroes”, “sort colors”</td>
+<td><strong>Two Pointers (in-place)</strong></td>
+<td>LC 26, 283, 75, 27</td>
+<td><a href="cheatsheets/2_pointers.html">2_pointers</a></td>
+</tr>
+<tr>
+<td>“merge intervals”, “overlapping intervals”</td>
+<td><strong>Interval Sorting</strong></td>
+<td>LC 56, 57, 253, 435</td>
+<td><a href="cheatsheets/intervals.html">intervals</a></td>
+</tr>
+<tr>
+<td>“next greater element”, “daily temperatures”</td>
+<td><strong>Monotonic Stack</strong></td>
+<td>LC 496, 739, 84, 42</td>
+<td><a href="cheatsheets/monotonic_stack.html">monotonic_stack</a></td>
+</tr>
+<tr>
+<td>“median”, “top k”, “kth largest”</td>
+<td><strong>Heap / Quick Select</strong></td>
+<td>LC 215, 295, 347, 973</td>
+<td><a href="cheatsheets/heap.html">heap</a></td>
+</tr>
+<tr>
+<td>“difference”, “range update”, “increment subarray”</td>
+<td><strong>Difference Array</strong></td>
+<td>LC 370, 1109, 1094</td>
+<td><a href="cheatsheets/difference_array.html">difference_array</a></td>
+</tr>
+</tbody>
+</table>
+<h3 id="graph-tree-keywords" tabindex="-1"><a class="header-anchor" href="#graph-tree-keywords"><span>Graph / Tree Keywords</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>Keyword / Clue in Problem</th>
+<th>Pattern</th>
+<th>Example Problems</th>
+<th>Cheat Sheet</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>“number of islands”, “connected components”, “flood fill”</td>
+<td><strong>BFS / DFS on Grid</strong></td>
+<td>LC 200, 695, 733, 130</td>
+<td><a href="cheatsheets/bfs.html">bfs</a>, <a href="cheatsheets/dfs.html">dfs</a></td>
+</tr>
+<tr>
+<td>“shortest path” (unweighted)</td>
+<td><strong>BFS</strong></td>
+<td>LC 127, 752, 994, 1091</td>
+<td><a href="cheatsheets/bfs.html">bfs</a></td>
+</tr>
+<tr>
+<td>“shortest path” (weighted, non-negative)</td>
+<td><strong>Dijkstra</strong></td>
+<td>LC 743, 787, 1631</td>
+<td><a href="cheatsheets/Dijkstra.html">Dijkstra</a></td>
+</tr>
+<tr>
+<td>“shortest path” (negative weights)</td>
+<td><strong>Bellman-Ford</strong></td>
+<td>LC 787 (k stops)</td>
+<td><a href="cheatsheets/graph.html">graph</a></td>
+</tr>
+<tr>
+<td>“course schedule”, “prerequisites”, “ordering”</td>
+<td><strong>Topological Sort</strong></td>
+<td>LC 207, 210, 269, 1136</td>
+<td><a href="cheatsheets/topology_sorting.html">topology_sorting</a></td>
+</tr>
+<tr>
+<td>“detect cycle” (directed)</td>
+<td><strong>Topological Sort / DFS coloring</strong></td>
+<td>LC 207, 802</td>
+<td><a href="cheatsheets/topology_sorting.html">topology_sorting</a></td>
+</tr>
+<tr>
+<td>“detect cycle” (undirected)</td>
+<td><strong>Union-Find</strong></td>
+<td>LC 684, 685</td>
+<td><a href="cheatsheets/union_find.html">union_find</a></td>
+</tr>
+<tr>
+<td>“connected”, “groups”, “redundant connection”</td>
+<td><strong>Union-Find</strong></td>
+<td>LC 547, 684, 721, 1319</td>
+<td><a href="cheatsheets/union_find.html">union_find</a></td>
+</tr>
+<tr>
+<td>“lowest common ancestor”, “LCA”</td>
+<td><strong>DFS / Binary Lifting</strong></td>
+<td>LC 236, 235, 1644</td>
+<td><a href="cheatsheets/tree.html">tree</a></td>
+</tr>
+<tr>
+<td>“level order”, “zigzag”, “right side view”</td>
+<td><strong>BFS (level-by-level)</strong></td>
+<td>LC 102, 103, 199, 515</td>
+<td><a href="cheatsheets/bfs.html">bfs</a></td>
+</tr>
+<tr>
+<td>“serialize/deserialize tree”</td>
+<td><strong>BFS or Preorder DFS</strong></td>
+<td>LC 297, 449</td>
+<td><a href="cheatsheets/tree.html">tree</a></td>
+</tr>
+<tr>
+<td>“diameter”, “max path sum”</td>
+<td><strong>DFS (post-order + global max)</strong></td>
+<td>LC 543, 124, 687</td>
+<td><a href="cheatsheets/tree.html">tree</a></td>
+</tr>
+<tr>
+<td>“validate BST”, “inorder”</td>
+<td><strong>DFS (in-order traversal)</strong></td>
+<td>LC 98, 230, 99</td>
+<td><a href="cheatsheets/bst.html">bst</a></td>
+</tr>
+</tbody>
+</table>
+<h3 id="dynamic-programming-keywords" tabindex="-1"><a class="header-anchor" href="#dynamic-programming-keywords"><span>Dynamic Programming Keywords</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>Keyword / Clue in Problem</th>
+<th>Pattern</th>
+<th>Example Problems</th>
+<th>Cheat Sheet</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>“minimum/maximum cost”, “minimum number of”</td>
+<td><strong>DP (optimization)</strong></td>
+<td>LC 322, 64, 120, 746</td>
+<td><a href="cheatsheets/dp.html">dp</a></td>
+</tr>
+<tr>
+<td>“how many ways”, “number of ways”, “count paths”</td>
+<td><strong>DP (counting)</strong></td>
+<td>LC 62, 63, 70, 96</td>
+<td><a href="cheatsheets/dp.html">dp</a></td>
+</tr>
+<tr>
+<td>“can you”, “is it possible”, “true or false”</td>
+<td><strong>DP (feasibility) / Backtracking</strong></td>
+<td>LC 139, 416, 97, 55</td>
+<td><a href="cheatsheets/dp.html">dp</a></td>
+</tr>
+<tr>
+<td>“longest increasing subsequence”</td>
+<td><strong>DP + Binary Search</strong></td>
+<td>LC 300, 354, 1143</td>
+<td><a href="cheatsheets/dp.html">dp</a></td>
+</tr>
+<tr>
+<td>“edit distance”, “transform”, “common subsequence”</td>
+<td><strong>Two-String Grid DP</strong></td>
+<td>LC 72, 1143, 97, 115</td>
+<td><a href="cheatsheets/dp.html">dp</a></td>
+</tr>
+<tr>
+<td>“palindrome partitioning”, “palindrome subsequence”</td>
+<td><strong>Palindrome DP</strong></td>
+<td>LC 5, 131, 516, 647</td>
+<td><a href="cheatsheets/palindrome.html">palindrome</a></td>
+</tr>
+<tr>
+<td>“knapsack”, “subset sum”, “partition equal”</td>
+<td><strong>0/1 Knapsack DP</strong></td>
+<td>LC 416, 494, 474, 1049</td>
+<td><a href="cheatsheets/dp.html">dp</a></td>
+</tr>
+<tr>
+<td>“coin change”, “combinations that sum to”</td>
+<td><strong>Unbounded Knapsack DP</strong></td>
+<td>LC 322, 518, 377</td>
+<td><a href="cheatsheets/dp.html">dp</a></td>
+</tr>
+<tr>
+<td>“buy and sell stock”</td>
+<td><strong>State Machine DP</strong></td>
+<td>LC 121, 122, 123, 188, 309</td>
+<td><a href="cheatsheets/stock_trading.html">stock_trading</a></td>
+</tr>
+<tr>
+<td>“word break”, “can segment”</td>
+<td><strong>DP + Trie/HashSet</strong></td>
+<td>LC 139, 140, 472</td>
+<td><a href="cheatsheets/dp.html">dp</a></td>
+</tr>
+<tr>
+<td>“house robber”, “non-adjacent”</td>
+<td><strong>Linear DP (take/skip)</strong></td>
+<td>LC 198, 213, 337, 740</td>
+<td><a href="cheatsheets/dp.html">dp</a></td>
+</tr>
+</tbody>
+</table>
+<h3 id="backtracking-recursion-keywords" tabindex="-1"><a class="header-anchor" href="#backtracking-recursion-keywords"><span>Backtracking / Recursion Keywords</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>Keyword / Clue in Problem</th>
+<th>Pattern</th>
+<th>Example Problems</th>
+<th>Cheat Sheet</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>“all combinations”, “all permutations”, “generate all”</td>
+<td><strong>Backtracking</strong></td>
+<td>LC 46, 47, 77, 78, 90</td>
+<td><a href="cheatsheets/backtrack.html">backtrack</a></td>
+</tr>
+<tr>
+<td>“subsets”, “power set”</td>
+<td><strong>Backtracking / Bit Manipulation</strong></td>
+<td>LC 78, 90, 784</td>
+<td><a href="cheatsheets/backtrack.html">backtrack</a></td>
+</tr>
+<tr>
+<td>“word search”, “exist in board”</td>
+<td><strong>Backtracking (grid)</strong></td>
+<td>LC 79, 212</td>
+<td><a href="cheatsheets/backtrack.html">backtrack</a></td>
+</tr>
+<tr>
+<td>“generate parentheses”, “valid combinations”</td>
+<td><strong>Backtracking (pruning)</strong></td>
+<td>LC 22, 17, 39</td>
+<td><a href="cheatsheets/backtrack.html">backtrack</a></td>
+</tr>
+<tr>
+<td>“N-Queens”, “Sudoku”</td>
+<td><strong>Backtracking (constraint)</strong></td>
+<td>LC 51, 37</td>
+<td><a href="cheatsheets/backtrack.html">backtrack</a></td>
+</tr>
+</tbody>
+</table>
+<h3 id="design-data-structure-keywords" tabindex="-1"><a class="header-anchor" href="#design-data-structure-keywords"><span>Design / Data Structure Keywords</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>Keyword / Clue in Problem</th>
+<th>Pattern</th>
+<th>Example Problems</th>
+<th>Cheat Sheet</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>“implement LRU cache”</td>
+<td><strong>HashMap + Doubly Linked List</strong></td>
+<td>LC 146</td>
+<td><a href="cheatsheets/design.html">design</a></td>
+</tr>
+<tr>
+<td>“implement LFU cache”</td>
+<td><strong>HashMap + Min-Heap / Freq Map</strong></td>
+<td>LC 460</td>
+<td><a href="cheatsheets/design.html">design</a></td>
+</tr>
+<tr>
+<td>“implement trie”, “prefix search”, “autocomplete”</td>
+<td><strong>Trie</strong></td>
+<td>LC 208, 211, 212, 648</td>
+<td><a href="cheatsheets/trie.html">trie</a></td>
+</tr>
+<tr>
+<td>“random”, “shuffle”, “pick random”</td>
+<td><strong>Reservoir Sampling / HashMap</strong></td>
+<td>LC 380, 384, 398</td>
+<td><a href="cheatsheets/design.html">design</a></td>
+</tr>
+<tr>
+<td>“iterator”, “flatten”, “next/hasNext”</td>
+<td><strong>Stack-based Iterator</strong></td>
+<td>LC 173, 341, 284</td>
+<td><a href="cheatsheets/iterator.html">iterator</a></td>
+</tr>
+<tr>
+<td>“stream”, “moving average”, “sliding window median”</td>
+<td><strong>Heap / Queue</strong></td>
+<td>LC 295, 346, 480</td>
+<td><a href="cheatsheets/heap.html">heap</a></td>
+</tr>
+</tbody>
+</table>
+<h3 id="greedy-keywords" tabindex="-1"><a class="header-anchor" href="#greedy-keywords"><span>Greedy Keywords</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>Keyword / Clue in Problem</th>
+<th>Pattern</th>
+<th>Example Problems</th>
+<th>Cheat Sheet</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>“jump game”, “minimum jumps”</td>
+<td><strong>Greedy (furthest reach)</strong></td>
+<td>LC 55, 45, 1024</td>
+<td><a href="cheatsheets/greedy.html">greedy</a></td>
+</tr>
+<tr>
+<td>“assign cookies”, “meeting rooms”</td>
+<td><strong>Greedy (sort + scan)</strong></td>
+<td>LC 455, 253, 435</td>
+<td><a href="cheatsheets/greedy.html">greedy</a></td>
+</tr>
+<tr>
+<td>“task scheduler”, “reorganize string”</td>
+<td><strong>Greedy + Heap</strong></td>
+<td>LC 621, 767</td>
+<td><a href="cheatsheets/greedy.html">greedy</a></td>
+</tr>
+<tr>
+<td>“gas station”, “circular”</td>
+<td><strong>Greedy (running sum)</strong></td>
+<td>LC 134</td>
+<td><a href="cheatsheets/greedy.html">greedy</a></td>
+</tr>
+</tbody>
+</table>
+<h3 id="bit-manipulation-keywords" tabindex="-1"><a class="header-anchor" href="#bit-manipulation-keywords"><span>Bit Manipulation Keywords</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>Keyword / Clue in Problem</th>
+<th>Pattern</th>
+<th>Example Problems</th>
+<th>Cheat Sheet</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>“single number”, “appears once”</td>
+<td><strong>XOR</strong></td>
+<td>LC 136, 137, 260</td>
+<td><a href="cheatsheets/bit_manipulation.html">bit_manipulation</a></td>
+</tr>
+<tr>
+<td>“power of two”, “count bits”</td>
+<td><strong>Bit tricks</strong></td>
+<td>LC 191, 231, 338</td>
+<td><a href="cheatsheets/bit_manipulation.html">bit_manipulation</a></td>
+</tr>
+<tr>
+<td>“subsets” (alternative)</td>
+<td><strong>Bitmask enumeration</strong></td>
+<td>LC 78, 784</td>
+<td><a href="cheatsheets/bit_manipulation.html">bit_manipulation</a></td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="decision-flowchart" tabindex="-1"><a class="header-anchor" href="#decision-flowchart"><span>Decision Flowchart</span></a></h2>
+<pre><code>Is input SORTED or can you sort it?
+├── YES → Is it &quot;find target&quot;? → Binary Search
+│         Is it &quot;find pair&quot;? → Two Pointers
+│         Is it &quot;merge intervals&quot;? → Sort + Scan
+│         Is it &quot;find min/max possible&quot;? → Binary Search on Answer
+│
+├── NO → Is it a GRAPH/GRID?
+│        ├── Unweighted shortest path → BFS
+│        ├── Weighted shortest path → Dijkstra
+│        ├── Dependencies/ordering → Topological Sort
+│        ├── Connected components → Union-Find / DFS
+│        └── All paths / combinations → DFS + Backtracking
+│
+├── Is it asking for OPTIMIZATION (min/max)?
+│   ├── Overlapping subproblems → DP
+│   ├── Local choice = global optimal → Greedy
+│   └── Not sure → Try Greedy first, verify with DP
+│
+├── Is it asking for ALL combinations/permutations?
+│   └── Backtracking
+│
+├── Is it a SUBARRAY/SUBSTRING problem?
+│   ├── Sum related → Prefix Sum or Sliding Window
+│   ├── Longest/shortest with condition → Sliding Window
+│   └── Next greater/smaller → Monotonic Stack
+│
+└── Is it a DESIGN problem?
+    ├── Cache → HashMap + LinkedList
+    ├── Prefix operations → Trie
+    └── Stream/online → Heap or Queue
+</code></pre>
+<hr>
+<h2 id="quick-pattern-comparison" tabindex="-1"><a class="header-anchor" href="#quick-pattern-comparison"><span>Quick Pattern Comparison</span></a></h2>
+<table>
+<thead>
+<tr>
+<th>When you see TWO patterns that could work</th>
+<th>How to choose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>BFS vs DFS</td>
+<td>BFS for shortest path / level-order; DFS for exhaustive search / path finding</td>
+</tr>
+<tr>
+<td>DP vs Greedy</td>
+<td>Greedy if local optimal = global optimal; DP if choices depend on subproblems</td>
+</tr>
+<tr>
+<td>DP vs Backtracking</td>
+<td>DP for counting / optimization; Backtracking for enumerating all solutions</td>
+</tr>
+<tr>
+<td>HashMap vs Sorting</td>
+<td>HashMap for O(n) time, O(n) space; Sorting for O(n log n) time, O(1) space</td>
+</tr>
+<tr>
+<td>Binary Search vs Two Pointers</td>
+<td>Binary Search on sorted single array; Two Pointers for pair/triplet problems</td>
+</tr>
+<tr>
+<td>Union-Find vs DFS</td>
+<td>Union-Find for dynamic connectivity; DFS for static graph traversal</td>
+</tr>
+<tr>
+<td>Heap vs Sorting</td>
+<td>Heap for streaming / top-k; Sorting when you need full order</td>
+</tr>
+<tr>
+<td>Prefix Sum vs Sliding Window</td>
+<td>Prefix Sum for any subarray sum query; Sliding Window for contiguous with constraint</td>
+</tr>
+</tbody>
+</table>
+</div>
+  
+    </div>
+  </main>
+
   <footer>
-    <p>&copy; 2026 CS Basics. <a href="https://github.com/yennanliu/CS_basics" style="color: #666;">Open source on GitHub</a>.</p>
+    <div class="container">
+      <p>CS_basics - Computer Science Fundamentals & Interview Preparation</p>
+      <p>
+        <a href="https://github.com/yennanliu/CS_basics">GitHub</a> •
+        <a href="https://github.com/yennanliu/CS_basics/tree/master/doc">Documentation</a> •
+        <a href="https://github.com/yennanliu/CS_basics/issues">Report Issues</a>
+      </p>
+    </div>
   </footer>
 </body>
 </html>

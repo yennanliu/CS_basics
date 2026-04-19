@@ -1,0 +1,365 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Concurrency Patterns - CS_basics</title>
+  <meta name="description" content="Computer Science fundamentals: algorithms, data structures, system design, and LeetCode solutions">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>CS</text></svg>">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="../vendor/fonts.css">
+  <link rel="stylesheet" href="../vendor/highlight/github-dark.min.css">
+  <script src="../vendor/highlight/highlight.min.js"></script>
+  <script>
+  // Apply theme before render to prevent flash
+  (function() {
+    var saved = localStorage.getItem('theme');
+    if (saved === 'dark' || (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      document.documentElement.setAttribute('data-theme', 'dark');
+    }
+  })();
+  </script>
+  <script>document.addEventListener('DOMContentLoaded', function() {
+    hljs.highlightAll();
+    document.querySelectorAll('pre code').forEach(function(codeEl) {
+      var pre = codeEl.parentElement;
+      var lang = '';
+      var cls = codeEl.className || '';
+      var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
+      if (m) lang = m[1];
+      var wrapper = document.createElement('div');
+      wrapper.className = 'code-block-wrapper';
+      pre.parentNode.insertBefore(wrapper, pre);
+      var header = document.createElement('div');
+      header.className = 'code-block-header';
+      if (lang) {
+        var label = document.createElement('span');
+        label.className = 'code-lang-label';
+        label.textContent = lang;
+        header.appendChild(label);
+      } else {
+        header.appendChild(document.createElement('span'));
+      }
+      var btn = document.createElement('button');
+      btn.className = 'copy-btn';
+      btn.textContent = 'Copy';
+      btn.addEventListener('click', function() {
+        navigator.clipboard.writeText(codeEl.textContent).then(function() {
+          btn.textContent = 'Copied!';
+          btn.classList.add('copied');
+          setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+        });
+      });
+      header.appendChild(btn);
+      wrapper.appendChild(header);
+      wrapper.appendChild(pre);
+    });
+    document.querySelectorAll('table').forEach(function(table) {
+      if (!table.parentElement.classList.contains('table-wrap')) {
+        var wrapper = document.createElement('div');
+        wrapper.className = 'table-wrap';
+        table.parentNode.insertBefore(wrapper, table);
+        wrapper.appendChild(table);
+      }
+    });
+    // Reading progress bar
+    var progressBar = document.getElementById('reading-progress');
+    if (progressBar) {
+      window.addEventListener('scroll', function() {
+        var winScroll = document.documentElement.scrollTop;
+        var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        progressBar.style.width = height > 0 ? (winScroll / height * 100) + '%' : '0%';
+      });
+    }
+    // Dark mode toggle
+    var toggle = document.getElementById('theme-toggle');
+    if (toggle) {
+      var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      toggle.textContent = isDark ? '☀️' : '🌙';
+      toggle.addEventListener('click', function() {
+        var dark = document.documentElement.getAttribute('data-theme') === 'dark';
+        if (dark) {
+          document.documentElement.removeAttribute('data-theme');
+          localStorage.setItem('theme', 'light');
+          toggle.textContent = '🌙';
+        } else {
+          document.documentElement.setAttribute('data-theme', 'dark');
+          localStorage.setItem('theme', 'dark');
+          toggle.textContent = '☀️';
+        }
+      });
+    }
+  });</script>
+</head>
+<body>
+  <div class="progress-container"><div class="progress-bar" id="reading-progress"></div></div>
+  <nav class="navbar">
+    <div class="container">
+      <div class="nav-brand">
+        <span class="nav-icon">💻</span>
+        <span class="nav-title">CS_basics</span>
+      </div>
+      <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+      <div class="nav-links">
+        <a href="../index.html" class="">Home</a>
+        <a href="../cheatsheets.html" class="active">Cheat Sheets</a>
+        <a href="../patterns.html" class="">Pattern Recognition</a>
+        <a href="../faqs.html" class="">FAQs</a>
+        <a href="../resources.html" class="">Resources</a>
+        <a href="../lc-explorer.html" class="">LC Explorer</a>
+        <a href="../lc-random-picker.html" class="">🎲 Random Picker</a>
+        <a href="../algo_demo/index.html" class="">Visualizer</a>
+        <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">&#127769;</button>
+        <a href="https://github.com/yennanliu/CS_basics" target="_blank" class="github-link" aria-label="GitHub">
+          <svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor">
+            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container">
+    <div class="content">
+      
+      <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">Concurrency Patterns</span></nav>
+      <div class="cheatsheet-header">
+        <h1>Concurrency Patterns</h1>
+        <span class="last-updated">Last updated: Apr 11, 2026</span>
+      </div>
+      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#overview">Overview</a></li><li class="toc-sub"><a href="#when-to-use">When to Use</a></li><li><a href="#pattern-1-print-in-order-sequence-control">Pattern 1: Print in Order / Sequence Control</a></li><li class="toc-sub"><a href="#using-countdownlatch">Using CountDownLatch</a></li><li class="toc-sub"><a href="#using-semaphore">Using Semaphore</a></li><li><a href="#pattern-2-producer-consumer-bounded-buffer">Pattern 2: Producer-Consumer / Bounded Buffer</a></li><li><a href="#pattern-3-read-write-lock-h2o-problem">Pattern 3: Read-Write Lock / H2O Problem</a></li><li><a href="#key-concurrency-primitives">Key Concurrency Primitives</a></li><li><a href="#lc-example">LC Example</a></li></ul></div>
+      <div class="cheatsheet-content">
+        <h1 id="concurrency-patterns-java" tabindex="-1"><a class="header-anchor" href="#concurrency-patterns-java"><span>Concurrency Patterns (Java)</span></a></h1>
+<h2 id="overview" tabindex="-1"><a class="header-anchor" href="#overview"><span>Overview</span></a></h2>
+<p>Google sometimes asks concurrency/threading problems at L4+. These test understanding of synchronization, thread safety, and concurrent data structure design.</p>
+<h3 id="when-to-use" tabindex="-1"><a class="header-anchor" href="#when-to-use"><span>When to Use</span></a></h3>
+<ul>
+<li>Problem explicitly mentions threads, parallel execution, or producer/consumer</li>
+<li>Design problems requiring thread-safe data structures</li>
+</ul>
+<h2 id="pattern-1-print-in-order-sequence-control" tabindex="-1"><a class="header-anchor" href="#pattern-1-print-in-order-sequence-control"><span>Pattern 1: Print in Order / Sequence Control</span></a></h2>
+<h3 id="using-countdownlatch" tabindex="-1"><a class="header-anchor" href="#using-countdownlatch"><span>Using CountDownLatch</span></a></h3>
+<pre><code class="language-java">// LC 1114 — Print in Order
+class Foo {
+    private CountDownLatch latch1 = new CountDownLatch(1);
+    private CountDownLatch latch2 = new CountDownLatch(1);
+
+    public void first(Runnable printFirst) throws InterruptedException {
+        printFirst.run();
+        latch1.countDown();
+    }
+
+    public void second(Runnable printSecond) throws InterruptedException {
+        latch1.await();
+        printSecond.run();
+        latch2.countDown();
+    }
+
+    public void third(Runnable printThird) throws InterruptedException {
+        latch2.await();
+        printThird.run();
+    }
+}
+</code></pre>
+<h3 id="using-semaphore" tabindex="-1"><a class="header-anchor" href="#using-semaphore"><span>Using Semaphore</span></a></h3>
+<pre><code class="language-java">// LC 1115 — Print FooBar Alternately
+class FooBar {
+    private int n;
+    private Semaphore fooSem = new Semaphore(1);
+    private Semaphore barSem = new Semaphore(0);
+
+    public FooBar(int n) { this.n = n; }
+
+    public void foo(Runnable printFoo) throws InterruptedException {
+        for (int i = 0; i &lt; n; i++) {
+            fooSem.acquire();
+            printFoo.run();
+            barSem.release();
+        }
+    }
+
+    public void bar(Runnable printBar) throws InterruptedException {
+        for (int i = 0; i &lt; n; i++) {
+            barSem.acquire();
+            printBar.run();
+            fooSem.release();
+        }
+    }
+}
+</code></pre>
+<h2 id="pattern-2-producer-consumer-bounded-buffer" tabindex="-1"><a class="header-anchor" href="#pattern-2-producer-consumer-bounded-buffer"><span>Pattern 2: Producer-Consumer / Bounded Buffer</span></a></h2>
+<pre><code class="language-java">// LC 1188 — Design Bounded Blocking Queue
+class BoundedBlockingQueue {
+    private Queue&lt;Integer&gt; queue = new LinkedList&lt;&gt;();
+    private int capacity;
+    private ReentrantLock lock = new ReentrantLock();
+    private Condition notFull = lock.newCondition();
+    private Condition notEmpty = lock.newCondition();
+
+    public BoundedBlockingQueue(int capacity) { this.capacity = capacity; }
+
+    public void enqueue(int element) throws InterruptedException {
+        lock.lock();
+        try {
+            while (queue.size() == capacity) notFull.await();
+            queue.offer(element);
+            notEmpty.signal();
+        } finally { lock.unlock(); }
+    }
+
+    public int dequeue() throws InterruptedException {
+        lock.lock();
+        try {
+            while (queue.isEmpty()) notEmpty.await();
+            int val = queue.poll();
+            notFull.signal();
+            return val;
+        } finally { lock.unlock(); }
+    }
+
+    public int size() { lock.lock(); try { return queue.size(); } finally { lock.unlock(); } }
+}
+</code></pre>
+<h2 id="pattern-3-read-write-lock-h2o-problem" tabindex="-1"><a class="header-anchor" href="#pattern-3-read-write-lock-h2o-problem"><span>Pattern 3: Read-Write Lock / H2O Problem</span></a></h2>
+<pre><code class="language-java">// LC 1117 — Building H2O
+class H2O {
+    private Semaphore hSem = new Semaphore(2);
+    private Semaphore oSem = new Semaphore(0);
+    private CyclicBarrier barrier = new CyclicBarrier(3, () -&gt; {
+        hSem.release(2);
+    });
+
+    public void hydrogen(Runnable releaseHydrogen) throws InterruptedException {
+        hSem.acquire();
+        releaseHydrogen.run();
+        try { barrier.await(); } catch (BrokenBarrierException e) {}
+    }
+
+    public void oxygen(Runnable releaseOxygen) throws InterruptedException {
+        oSem.acquire();  // wait for 2 H first — actually, simpler approach below
+        releaseOxygen.run();
+        try { barrier.await(); } catch (BrokenBarrierException e) {}
+    }
+}
+</code></pre>
+<h2 id="key-concurrency-primitives" tabindex="-1"><a class="header-anchor" href="#key-concurrency-primitives"><span>Key Concurrency Primitives</span></a></h2>
+<table>
+<thead>
+<tr>
+<th>Primitive</th>
+<th>Purpose</th>
+<th>Key Methods</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>synchronized</code></td>
+<td>Mutual exclusion</td>
+<td><code>wait()</code>, <code>notify()</code>, <code>notifyAll()</code></td>
+</tr>
+<tr>
+<td><code>ReentrantLock</code></td>
+<td>Explicit lock with conditions</td>
+<td><code>lock()</code>, <code>unlock()</code>, <code>newCondition()</code></td>
+</tr>
+<tr>
+<td><code>Semaphore</code></td>
+<td>Counting permits</td>
+<td><code>acquire()</code>, <code>release()</code></td>
+</tr>
+<tr>
+<td><code>CountDownLatch</code></td>
+<td>One-time gate (count to 0)</td>
+<td><code>await()</code>, <code>countDown()</code></td>
+</tr>
+<tr>
+<td><code>CyclicBarrier</code></td>
+<td>Reusable rendezvous point</td>
+<td><code>await()</code></td>
+</tr>
+<tr>
+<td><code>volatile</code></td>
+<td>Visibility guarantee</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>AtomicInteger</code></td>
+<td>Lock-free counter</td>
+<td><code>incrementAndGet()</code>, <code>compareAndSet()</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="lc-example" tabindex="-1"><a class="header-anchor" href="#lc-example"><span>LC Example</span></a></h2>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Problem</th>
+<th>Key Concept</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1114</td>
+<td>Print in Order</td>
+<td>CountDownLatch / Semaphore</td>
+</tr>
+<tr>
+<td>1115</td>
+<td>Print FooBar Alternately</td>
+<td>Semaphore pair</td>
+</tr>
+<tr>
+<td>1116</td>
+<td>Print Zero Even Odd</td>
+<td>Semaphore coordination</td>
+</tr>
+<tr>
+<td>1117</td>
+<td>Building H2O</td>
+<td>CyclicBarrier + Semaphore</td>
+</tr>
+<tr>
+<td>1188</td>
+<td>Bounded Blocking Queue</td>
+<td>ReentrantLock + Condition</td>
+</tr>
+<tr>
+<td>1195</td>
+<td>Fizz Buzz Multithreaded</td>
+<td>Semaphore / CyclicBarrier</td>
+</tr>
+<tr>
+<td>1226</td>
+<td>The Dining Philosophers</td>
+<td>Deadlock avoidance</td>
+</tr>
+</tbody>
+</table>
+
+      </div>
+      <div class="cheatsheet-footer">
+        <a href="../cheatsheets.html" class="back-link">← Back to Cheat Sheets</a>
+        <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/concurrency_patterns.md" class="github-edit" target="_blank">
+          Edit on GitHub →
+        </a>
+      </div>
+    <nav class="prev-next"><a href="complexity_drills.html" class="prev-link">← Complexity Drills</a><a href="design.html" class="next-link">Design →</a></nav>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>CS_basics - Computer Science Fundamentals & Interview Preparation</p>
+      <p>
+        <a href="https://github.com/yennanliu/CS_basics">GitHub</a> •
+        <a href="https://github.com/yennanliu/CS_basics/tree/master/doc">Documentation</a> •
+        <a href="https://github.com/yennanliu/CS_basics/issues">Report Issues</a>
+      </p>
+    </div>
+  </footer>
+</body>
+</html>

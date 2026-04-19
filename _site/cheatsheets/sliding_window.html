@@ -1,0 +1,2156 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sliding Window - CS_basics</title>
+  <meta name="description" content="Computer Science fundamentals: algorithms, data structures, system design, and LeetCode solutions">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>CS</text></svg>">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="../vendor/fonts.css">
+  <link rel="stylesheet" href="../vendor/highlight/github-dark.min.css">
+  <script src="../vendor/highlight/highlight.min.js"></script>
+  <script>
+  // Apply theme before render to prevent flash
+  (function() {
+    var saved = localStorage.getItem('theme');
+    if (saved === 'dark' || (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      document.documentElement.setAttribute('data-theme', 'dark');
+    }
+  })();
+  </script>
+  <script>document.addEventListener('DOMContentLoaded', function() {
+    hljs.highlightAll();
+    document.querySelectorAll('pre code').forEach(function(codeEl) {
+      var pre = codeEl.parentElement;
+      var lang = '';
+      var cls = codeEl.className || '';
+      var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
+      if (m) lang = m[1];
+      var wrapper = document.createElement('div');
+      wrapper.className = 'code-block-wrapper';
+      pre.parentNode.insertBefore(wrapper, pre);
+      var header = document.createElement('div');
+      header.className = 'code-block-header';
+      if (lang) {
+        var label = document.createElement('span');
+        label.className = 'code-lang-label';
+        label.textContent = lang;
+        header.appendChild(label);
+      } else {
+        header.appendChild(document.createElement('span'));
+      }
+      var btn = document.createElement('button');
+      btn.className = 'copy-btn';
+      btn.textContent = 'Copy';
+      btn.addEventListener('click', function() {
+        navigator.clipboard.writeText(codeEl.textContent).then(function() {
+          btn.textContent = 'Copied!';
+          btn.classList.add('copied');
+          setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+        });
+      });
+      header.appendChild(btn);
+      wrapper.appendChild(header);
+      wrapper.appendChild(pre);
+    });
+    document.querySelectorAll('table').forEach(function(table) {
+      if (!table.parentElement.classList.contains('table-wrap')) {
+        var wrapper = document.createElement('div');
+        wrapper.className = 'table-wrap';
+        table.parentNode.insertBefore(wrapper, table);
+        wrapper.appendChild(table);
+      }
+    });
+    // Reading progress bar
+    var progressBar = document.getElementById('reading-progress');
+    if (progressBar) {
+      window.addEventListener('scroll', function() {
+        var winScroll = document.documentElement.scrollTop;
+        var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        progressBar.style.width = height > 0 ? (winScroll / height * 100) + '%' : '0%';
+      });
+    }
+    // Dark mode toggle
+    var toggle = document.getElementById('theme-toggle');
+    if (toggle) {
+      var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      toggle.textContent = isDark ? '☀️' : '🌙';
+      toggle.addEventListener('click', function() {
+        var dark = document.documentElement.getAttribute('data-theme') === 'dark';
+        if (dark) {
+          document.documentElement.removeAttribute('data-theme');
+          localStorage.setItem('theme', 'light');
+          toggle.textContent = '🌙';
+        } else {
+          document.documentElement.setAttribute('data-theme', 'dark');
+          localStorage.setItem('theme', 'dark');
+          toggle.textContent = '☀️';
+        }
+      });
+    }
+  });</script>
+</head>
+<body>
+  <div class="progress-container"><div class="progress-bar" id="reading-progress"></div></div>
+  <nav class="navbar">
+    <div class="container">
+      <div class="nav-brand">
+        <span class="nav-icon">💻</span>
+        <span class="nav-title">CS_basics</span>
+      </div>
+      <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+      <div class="nav-links">
+        <a href="../index.html" class="">Home</a>
+        <a href="../cheatsheets.html" class="active">Cheat Sheets</a>
+        <a href="../patterns.html" class="">Pattern Recognition</a>
+        <a href="../faqs.html" class="">FAQs</a>
+        <a href="../resources.html" class="">Resources</a>
+        <a href="../lc-explorer.html" class="">LC Explorer</a>
+        <a href="../lc-random-picker.html" class="">🎲 Random Picker</a>
+        <a href="../algo_demo/index.html" class="">Visualizer</a>
+        <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">&#127769;</button>
+        <a href="https://github.com/yennanliu/CS_basics" target="_blank" class="github-link" aria-label="GitHub">
+          <svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor">
+            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container">
+    <div class="content">
+      
+      <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">Sliding Window</span></nav>
+      <div class="cheatsheet-header">
+        <h1>Sliding Window</h1>
+        <span class="last-updated">Last updated: Apr 15, 2026</span>
+      </div>
+      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#overview">Overview</a></li><li class="toc-sub"><a href="#key-properties">Key Properties</a></li><li class="toc-sub"><a href="#when-to-use-sliding-window">When to Use Sliding Window</a></li><li class="toc-sub"><a href="#quick-decision-guide">Quick Decision Guide</a></li><li class="toc-sub"><a href="#references">References</a></li><li><a href="#0-concept">0) Concept</a></li><li class="toc-sub"><a href="#core-components">Core Components</a></li><li class="toc-sub"><a href="#0-1-problem-categories">0-1) Problem Categories</a></li><li class="toc-sub"><a href="#0-2-core-algorithms-data-structures">0-2) Core Algorithms &amp; Data Structures</a></li><li><a href="#1-sliding-window-templates-patterns">1) Sliding Window Templates &amp; Patterns</a></li><li class="toc-sub"><a href="#1-1-template-comparison">1.1) Template Comparison</a></li><li class="toc-sub"><a href="#1-2-universal-sliding-window-template">1.2) Universal Sliding Window Template</a></li><li class="toc-sub"><a href="#1-3-template-1-fixed-size-window">1.3) Template 1: Fixed Size Window</a></li><li class="toc-sub"><a href="#1-4-template-2-variable-size-window-maximum-length">1.4) Template 2: Variable Size Window (Maximum Length)</a></li><li class="toc-sub"><a href="#1-5-template-3-variable-size-window-minimum-length">1.5) Template 3: Variable Size Window (Minimum Length)</a></li><li class="toc-sub"><a href="#1-6-template-4-counting-subarrays">1.6) Template 4: Counting Subarrays</a></li><li class="toc-sub"><a href="#1-7-technique-exactly-k-problems-at-most-k-transformation">1.7) Technique: Exactly K Problems (At Most K Transformation)</a></li><li><a href="#2-problems-by-template-pattern">2) Problems by Template Pattern</a></li><li class="toc-sub"><a href="#2-1-template-classification-guide">2.1) Template Classification Guide</a></li><li class="toc-sub"><a href="#2-2-template-selection-strategy">2.2) Template Selection Strategy</a></li><li><a href="#3-detailed-leetcode-examples">3) Detailed LeetCode Examples</a></li><li class="toc-sub"><a href="#3-1-fixed-size-window-examples">3.1) Fixed Size Window Examples</a></li><li class="toc-sub"><a href="#3-2-variable-size-window-examples">3.2) Variable Size Window Examples</a></li><li class="toc-sub"><a href="#3-3-counting-subarrays-examples">3.3) Counting Subarrays Examples</a></li><li class="toc-sub"><a href="#3-4-minimum-window-examples">3.4) Minimum Window Examples</a></li><li class="toc-sub"><a href="#3-5-advanced-examples">3.5) Advanced Examples</a></li><li class="toc-sub"><a href="#lc-1838-frequency-of-the-most-frequent-element">LC 1838 Frequency of the Most Frequent Element</a></li><li><a href="#4-core-patterns-quick-reference">4) Core Patterns &amp; Quick Reference</a></li><li class="toc-sub"><a href="#4-1-template-quick-reference">4.1) Template Quick Reference</a></li><li class="toc-sub"><a href="#4-2-common-patterns-tricks">4.2) Common Patterns &amp; Tricks</a></li><li class="toc-sub"><a href="#4-3-problem-solving-steps">4.3) Problem-Solving Steps</a></li><li class="toc-sub"><a href="#4-4-common-mistakes-tips">4.4) Common Mistakes &amp; Tips</a></li><li class="toc-sub"><a href="#4-5-time-space-complexity-analysis">4.5) Time &amp; Space Complexity Analysis</a></li><li class="toc-sub"><a href="#4-6-related-algorithms">4.6) Related Algorithms</a></li><li class="toc-sub"><a href="#4-7-additional-template-examples-advanced-java-reference">4.7) Additional Template Examples (Advanced Java Reference)</a></li></ul></div>
+      <div class="cheatsheet-content">
+        <h1 id="sliding-window" tabindex="-1"><a class="header-anchor" href="#sliding-window"><span>Sliding Window</span></a></h1>
+<h2 id="overview" tabindex="-1"><a class="header-anchor" href="#overview"><span>Overview</span></a></h2>
+<p><strong>Sliding Window</strong> is a technique that uses two pointers to maintain a “window” over arrays or strings, expanding and contracting to find optimal solutions efficiently.</p>
+<h3 id="key-properties" tabindex="-1"><a class="header-anchor" href="#key-properties"><span>Key Properties</span></a></h3>
+<ul>
+<li><strong>Time Complexity</strong>: O(n) - each element is visited at most twice</li>
+<li><strong>Space Complexity</strong>: O(1) for pointers, O(k) for window state</li>
+<li><strong>Core Idea</strong>: Maintain a window [left, right] that slides over the data structure</li>
+<li><strong>Two-Phase Process</strong>:
+<ul>
+<li><strong>Expand</strong>: Move right pointer to grow window</li>
+<li><strong>Contract</strong>: Move left pointer to shrink window when invalid</li>
+</ul>
+</li>
+</ul>
+<h3 id="when-to-use-sliding-window" tabindex="-1"><a class="header-anchor" href="#when-to-use-sliding-window"><span>When to Use Sliding Window</span></a></h3>
+<ul>
+<li><strong>Subarray/Substring Problems</strong>: Finding optimal subarrays with specific properties</li>
+<li><strong>Window-based Constraints</strong>: Problems involving fixed or variable window sizes</li>
+<li><strong>Optimization</strong>: Min/max length, count, or sum within constraints</li>
+<li><strong>Character/Element Tracking</strong>: Problems requiring frequency counting</li>
+</ul>
+<h3 id="quick-decision-guide" tabindex="-1"><a class="header-anchor" href="#quick-decision-guide"><span>Quick Decision Guide</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>Problem Type</th>
+<th>Template</th>
+<th>Key Pattern</th>
+<th>Examples</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Find <strong>exact</strong> window size</td>
+<td>Fixed Size</td>
+<td><code>for i</code> with size tracking</td>
+<td>LC 438, 567</td>
+</tr>
+<tr>
+<td>Find <strong>maximum</strong> valid window</td>
+<td>Variable Max</td>
+<td><code>for-while</code> expand-contract</td>
+<td>LC 3, 424</td>
+</tr>
+<tr>
+<td>Find <strong>minimum</strong> valid window</td>
+<td>Variable Min</td>
+<td><code>while-while</code> contract-expand</td>
+<td>LC 76, 209</td>
+</tr>
+<tr>
+<td><strong>Count</strong> valid subarrays</td>
+<td>Counting</td>
+<td><code>count += right-left+1</code></td>
+<td>LC 713, 992</td>
+</tr>
+<tr>
+<td><strong>Exactly K</strong> distinct/unique</td>
+<td>At-Most Subtraction</td>
+<td><code>atMostK(k) - atMostK(k-1)</code></td>
+<td>LC 992, 340</td>
+</tr>
+</tbody>
+</table>
+<p><strong>How to read</strong>: Start with your problem goal (maximum/minimum/count/exact), then choose the matching template.</p>
+<h3 id="references" tabindex="-1"><a class="header-anchor" href="#references"><span>References</span></a></h3>
+<ul>
+<li><a href="https://labuladong.online/algo/essential-technique/sliding-window-framework/">labuladong Sliding Window Guide</a></li>
+<li><a href="https://leetcode.com/discuss/general-discussion/657507/sliding-window-for-beginners-problems-template-sample-solutions/">Sliding Window Template Collection</a></li>
+</ul>
+<h2 id="0-concept" tabindex="-1"><a class="header-anchor" href="#0-concept"><span>0) Concept</span></a></h2>
+<h3 id="core-components" tabindex="-1"><a class="header-anchor" href="#core-components"><span>Core Components</span></a></h3>
+<ol>
+<li><strong>Two Pointers</strong>: <code>left</code> and <code>right</code> to define window boundaries</li>
+<li><strong>Loop Structure</strong>:
+<ul>
+<li><code>while-while</code>: Outer loop expands, inner loop contracts</li>
+<li><code>for-while</code>: For loop expands, while loop contracts</li>
+<li><strong>Key Insight</strong>: 1st loop finds acceptable solution, 2nd loop optimizes to find the best</li>
+</ul>
+</li>
+<li><strong>Window State</strong>: Track elements, counts, or sums within current window</li>
+<li><strong>Validity Condition</strong>: Define when window is valid/invalid</li>
+</ol>
+<p align="center"><img src="../doc/pic/slide_window.png" ></p>
+<p align="center"><img src="../doc/pic/slide_window_2.png" ></p>
+<p align="center"><img src="../doc/pic/slide_window_3.png" ></p>
+<h3 id="0-1-problem-categories" tabindex="-1"><a class="header-anchor" href="#0-1-problem-categories"><span>0-1) Problem Categories</span></a></h3>
+<h4 id="fixed-size-window" tabindex="-1"><a class="header-anchor" href="#fixed-size-window"><span><strong>Fixed Size Window</strong></span></a></h4>
+<ul>
+<li><strong>Description</strong>: Window size is predetermined and constant</li>
+<li><strong>Examples</strong>: LC 438 (Find All Anagrams), LC 567 (Permutation in String)</li>
+<li><strong>Pattern</strong>: Maintain exact window size, slide one position at a time</li>
+</ul>
+<h4 id="variable-size-window-maximum" tabindex="-1"><a class="header-anchor" href="#variable-size-window-maximum"><span><strong>Variable Size Window - Maximum</strong></span></a></h4>
+<ul>
+<li><strong>Description</strong>: Find maximum window size satisfying constraints</li>
+<li><strong>Examples</strong>: LC 3 (Longest Substring), LC 424 (Character Replacement)</li>
+<li><strong>Pattern</strong>: Expand until invalid, record max, then contract</li>
+</ul>
+<h4 id="variable-size-window-minimum" tabindex="-1"><a class="header-anchor" href="#variable-size-window-minimum"><span><strong>Variable Size Window - Minimum</strong></span></a></h4>
+<ul>
+<li><strong>Description</strong>: Find minimum window size satisfying constraints</li>
+<li><strong>Examples</strong>: LC 209 (Minimum Subarray Sum), LC 76 (Minimum Window Substring)</li>
+<li><strong>Pattern</strong>: Contract until invalid, record min, then expand</li>
+</ul>
+<h4 id="subarray-counting" tabindex="-1"><a class="header-anchor" href="#subarray-counting"><span><strong>Subarray Counting</strong></span></a></h4>
+<ul>
+<li><strong>Description</strong>: Count subarrays/substrings meeting criteria</li>
+<li><strong>Examples</strong>: LC 713 (Subarray Product), LC 992 (Subarrays with K Different)</li>
+<li><strong>Pattern</strong>: For each right position, count valid left positions</li>
+</ul>
+<h4 id="string-matching-hash-based" tabindex="-1"><a class="header-anchor" href="#string-matching-hash-based"><span><strong>String Matching (Hash-based)</strong></span></a></h4>
+<ul>
+<li><strong>Description</strong>: Track character frequencies in window</li>
+<li><strong>Examples</strong>: LC 567 (Permutation), LC 438 (Anagrams), LC 76 (Window Substring)</li>
+<li><strong>Pattern</strong>: Use HashMap/Counter to track character counts</li>
+</ul>
+<h3 id="0-2-core-algorithms-data-structures" tabindex="-1"><a class="header-anchor" href="#0-2-core-algorithms-data-structures"><span>0-2) Core Algorithms &amp; Data Structures</span></a></h3>
+<ul>
+<li><strong>Techniques</strong>: Two pointers, sliding window, frequency counting</li>
+<li><strong>Data Structures</strong>: HashMap, Counter, Set, Array</li>
+<li><strong>Helper Tools</strong>: Collections.Counter (Python), HashMap.getOrDefault (Java)</li>
+</ul>
+<h2 id="1-sliding-window-templates-patterns" tabindex="-1"><a class="header-anchor" href="#1-sliding-window-templates-patterns"><span>1) Sliding Window Templates &amp; Patterns</span></a></h2>
+<h3 id="1-1-template-comparison" tabindex="-1"><a class="header-anchor" href="#1-1-template-comparison"><span>1.1) Template Comparison</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>Template Type</th>
+<th>Use Case</th>
+<th>Loop Structure</th>
+<th>When to Use</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Fixed Size</strong></td>
+<td>Exact window size</td>
+<td><code>for</code> with size management</td>
+<td>Anagrams, permutations, k-size problems</td>
+</tr>
+<tr>
+<td><strong>Variable Max</strong></td>
+<td>Maximum valid window</td>
+<td><code>for-while</code> (expand-contract)</td>
+<td>Longest substring problems</td>
+</tr>
+<tr>
+<td><strong>Variable Min</strong></td>
+<td>Minimum valid window</td>
+<td><code>while-while</code> (contract-expand)</td>
+<td>Minimum window problems</td>
+</tr>
+<tr>
+<td><strong>Counting</strong></td>
+<td>Count valid subarrays</td>
+<td><code>for</code> with counting logic</td>
+<td>Subarray counting problems</td>
+</tr>
+</tbody>
+</table>
+<h3 id="1-2-universal-sliding-window-template" tabindex="-1"><a class="header-anchor" href="#1-2-universal-sliding-window-template"><span>1.2) Universal Sliding Window Template</span></a></h3>
+<pre><code class="language-python"># Python Universal Template
+def sliding_window(s, condition):
+    # Initialize window state
+    left = 0
+    window_state = {}  # or Counter, set, etc.
+    result = initialize_result()
+    
+    # Expand window with right pointer
+    for right in range(len(s)):
+        # Add current element to window
+        update_window_state(s[right])
+        
+        # Contract window while invalid
+        while not is_valid(window_state):
+            # Remove leftmost element
+            remove_from_window(s[left])
+            left += 1
+        
+        # Update result with current valid window
+        result = update_result(result, left, right)
+    
+    return result
+</code></pre>
+<pre><code class="language-java">// Java Universal Template  
+public ResultType slidingWindow(String s) {
+    // Initialize window state
+    int left = 0;
+    Map&lt;Character, Integer&gt; window = new HashMap&lt;&gt;();
+    ResultType result = initializeResult();
+    
+    // Expand window with right pointer
+    for (int right = 0; right &lt; s.length(); right++) {
+        char rightChar = s.charAt(right);
+        window.put(rightChar, window.getOrDefault(rightChar, 0) + 1);
+        
+        // Contract window while invalid
+        while (!isValid(window)) {
+            char leftChar = s.charAt(left);
+            window.put(leftChar, window.get(leftChar) - 1);
+            if (window.get(leftChar) == 0) {
+                window.remove(leftChar);
+            }
+            left++;
+        }
+        
+        // Update result with current valid window
+        result = updateResult(result, left, right);
+    }
+    
+    return result;
+}
+</code></pre>
+<h3 id="1-3-template-1-fixed-size-window" tabindex="-1"><a class="header-anchor" href="#1-3-template-1-fixed-size-window"><span>1.3) Template 1: Fixed Size Window</span></a></h3>
+<p><strong>Use Cases</strong>: Anagrams, permutations, k-length substrings
+<strong>Pattern</strong>: Maintain exact window size, slide one position at a time</p>
+<pre><code class="language-python"># Fixed Size Window Template
+def fixed_window(s, k):
+    window = {}
+    result = []
+    
+    for i in range(len(s)):
+        # Add current element to window
+        window[s[i]] = window.get(s[i], 0) + 1
+        
+        # Remove element that's outside window
+        if i &gt;= k:
+            left_char = s[i - k]
+            window[left_char] -= 1
+            if window[left_char] == 0:
+                del window[left_char]
+        
+        # Process window when it reaches target size
+        if i &gt;= k - 1:
+            # Check condition and update result
+            if meets_condition(window):
+                result.append(i - k + 1)
+    
+    return result
+</code></pre>
+<pre><code class="language-java">// Fixed Size Window Template - Java
+public List&lt;Integer&gt; fixedWindow(String s, int k) {
+    Map&lt;Character, Integer&gt; window = new HashMap&lt;&gt;();
+    List&lt;Integer&gt; result = new ArrayList&lt;&gt;();
+    
+    for (int i = 0; i &lt; s.length(); i++) {
+        // Add current element
+        char cur = s.charAt(i);
+        window.put(cur, window.getOrDefault(cur, 0) + 1);
+        
+        // Remove element outside window
+        if (i &gt;= k) {
+            char leftChar = s.charAt(i - k);
+            window.put(leftChar, window.get(leftChar) - 1);
+            if (window.get(leftChar) == 0) {
+                window.remove(leftChar);
+            }
+        }
+        
+        // Process when window is full
+        if (i &gt;= k - 1 &amp;&amp; meetsCondition(window)) {
+            result.add(i - k + 1);
+        }
+    }
+    return result;
+}
+</code></pre>
+<h3 id="1-4-template-2-variable-size-window-maximum-length" tabindex="-1"><a class="header-anchor" href="#1-4-template-2-variable-size-window-maximum-length"><span>1.4) Template 2: Variable Size Window (Maximum Length)</span></a></h3>
+<p><strong>Use Cases</strong>: Longest substring problems, maximum valid window
+<strong>Pattern</strong>: Expand until invalid, record max, then contract</p>
+<pre><code class="language-python"># Variable Size Window (Maximum) Template
+def max_window(s):
+    left = 0
+    window = {}
+    max_len = 0
+    
+    for right in range(len(s)):
+        # Expand window
+        window[s[right]] = window.get(s[right], 0) + 1
+        
+        # Contract while invalid
+        while not is_valid(window):
+            window[s[left]] -= 1
+            if window[s[left]] == 0:
+                del window[s[left]]
+            left += 1
+        
+        # Update maximum length
+        max_len = max(max_len, right - left + 1)
+    
+    return max_len
+</code></pre>
+<h3 id="1-5-template-3-variable-size-window-minimum-length" tabindex="-1"><a class="header-anchor" href="#1-5-template-3-variable-size-window-minimum-length"><span>1.5) Template 3: Variable Size Window (Minimum Length)</span></a></h3>
+<p><strong>Use Cases</strong>: Minimum window substring, smallest valid window
+<strong>Pattern</strong>: Expand until valid, record min, then try to contract</p>
+<pre><code class="language-python"># Variable Size Window (Minimum) Template  
+def min_window(s, target):
+    left = 0
+    window = {}
+    target_count = Counter(target)
+    min_len = float('inf')
+    result = &quot;&quot;
+    
+    for right in range(len(s)):
+        # Expand window
+        window[s[right]] = window.get(s[right], 0) + 1
+        
+        # Contract while valid
+        while is_valid(window, target_count):
+            # Update minimum
+            if right - left + 1 &lt; min_len:
+                min_len = right - left + 1
+                result = s[left:right + 1]
+            
+            # Try to shrink
+            window[s[left]] -= 1
+            if window[s[left]] == 0:
+                del window[s[left]]
+            left += 1
+    
+    return result if min_len != float('inf') else &quot;&quot;
+</code></pre>
+<h3 id="1-6-template-4-counting-subarrays" tabindex="-1"><a class="header-anchor" href="#1-6-template-4-counting-subarrays"><span>1.6) Template 4: Counting Subarrays</span></a></h3>
+<p><strong>Use Cases</strong>: Count subarrays meeting criteria
+<strong>Pattern</strong>: For each right position, count valid left positions</p>
+<pre><code class="language-python"># Subarray Counting Template
+def count_subarrays(nums, condition):
+    left = 0
+    count = 0
+    window_state = initialize_state()
+    
+    for right in range(len(nums)):
+        # Add current element
+        update_window_state(nums[right])
+        
+        # Shrink window while invalid
+        while not is_valid(window_state):
+            remove_from_window(nums[left])
+            left += 1
+        
+        # Count valid subarrays ending at 'right'
+        count += right - left + 1
+
+    return count
+</code></pre>
+<h3 id="1-7-technique-exactly-k-problems-at-most-k-transformation" tabindex="-1"><a class="header-anchor" href="#1-7-technique-exactly-k-problems-at-most-k-transformation"><span>1.7) Technique: Exactly K Problems (At Most K Transformation)</span></a></h3>
+<p><strong>Core Insight:</strong>
+“Exactly K” problems are often difficult to solve directly, but can be transformed using the powerful formula:</p>
+<pre><code>Exactly K = At Most K - At Most (K-1)
+</code></pre>
+<p><strong>Why This Works:</strong></p>
+<pre><code>At Most K: All subarrays with ≤ K distinct/count
+At Most (K-1): All subarrays with ≤ K-1 distinct/count
+
+Difference: Only subarrays with EXACTLY K distinct/count
+</code></pre>
+<p><strong>Proof by Example:</strong></p>
+<pre><code>Array: [1, 2, 1, 2, 3]
+K = 2 (exactly 2 distinct integers)
+
+At Most 2 distinct:
+[1], [1,2], [1,2,1], [1,2,1,2], [2], [2,1], [2,1,2], [1], [1,2], [2], [2,3], [3]
+Count = 12
+
+At Most 1 distinct:
+[1], [2], [1], [2], [3]
+Count = 5
+
+Exactly 2 distinct = 12 - 5 = 7 ✓
+[1,2], [1,2,1], [1,2,1,2], [2,1], [2,1,2], [1,2], [2,3]
+</code></pre>
+<hr>
+<h4 id="template-at-most-k-pattern" tabindex="-1"><a class="header-anchor" href="#template-at-most-k-pattern"><span>Template: At Most K Pattern</span></a></h4>
+<pre><code class="language-python"># Universal At Most K Template
+def at_most_k(nums, k):
+    &quot;&quot;&quot;
+    Count subarrays with AT MOST K distinct/elements/condition.
+
+    Time: O(n)
+    Space: O(k) for tracking state
+
+    Key: Window is valid when condition ≤ k
+    &quot;&quot;&quot;
+    left = 0
+    count = 0
+    window_map = {}  # Track state (frequency, distinct, etc.)
+
+    for right in range(len(nums)):
+        # Expand window: add nums[right]
+        window_map[nums[right]] = window_map.get(nums[right], 0) + 1
+
+        # Shrink window while invalid (&gt; k)
+        while len(window_map) &gt; k:  # Or other condition &gt; k
+            window_map[nums[left]] -= 1
+            if window_map[nums[left]] == 0:
+                del window_map[nums[left]]
+            left += 1
+
+        # Count all valid subarrays ending at 'right'
+        # All subarrays from [left, right], [left+1, right], ..., [right, right]
+        count += right - left + 1
+
+    return count
+</code></pre>
+<pre><code class="language-python"># Transform to Exactly K
+def exactly_k(nums, k):
+    &quot;&quot;&quot;
+    Count subarrays with EXACTLY K distinct/elements/condition.
+
+    Time: O(n) - at_most_k called twice
+    Space: O(k)
+    &quot;&quot;&quot;
+    if k == 0:
+        return 0
+
+    # Exactly K = At Most K - At Most (K-1)
+    return at_most_k(nums, k) - at_most_k(nums, k - 1)
+</code></pre>
+<hr>
+<h4 id="full-example-lc-992-subarrays-with-k-different-integers" tabindex="-1"><a class="header-anchor" href="#full-example-lc-992-subarrays-with-k-different-integers"><span>Full Example: LC 992 - Subarrays with K Different Integers</span></a></h4>
+<p><strong>Problem:</strong> Count subarrays with exactly K distinct integers.</p>
+<pre><code class="language-python"># Python - LC 992 Subarrays with K Different Integers
+def subarraysWithKDistinct(nums, k):
+    &quot;&quot;&quot;
+    Count subarrays with exactly K distinct integers.
+
+    Time: O(n)
+    Space: O(k)
+
+    Key: Use Exactly K = At Most K - At Most (K-1) transformation
+    &quot;&quot;&quot;
+    def at_most_k_distinct(k):
+        &quot;&quot;&quot;Count subarrays with at most K distinct integers.&quot;&quot;&quot;
+        left = 0
+        count = 0
+        freq = {}
+
+        for right in range(len(nums)):
+            # Add right element
+            freq[nums[right]] = freq.get(nums[right], 0) + 1
+
+            # Shrink while &gt; k distinct
+            while len(freq) &gt; k:
+                freq[nums[left]] -= 1
+                if freq[nums[left]] == 0:
+                    del freq[nums[left]]
+                left += 1
+
+            # Count subarrays ending at right
+            count += right - left + 1
+
+        return count
+
+    # Edge case
+    if k == 0:
+        return 0
+
+    # Exactly K = At Most K - At Most (K-1)
+    return at_most_k_distinct(k) - at_most_k_distinct(k - 1)
+
+# Example:
+# nums = [1,2,1,2,3], k = 2
+# at_most_k(2) = 12
+# at_most_k(1) = 5
+# exactly_k(2) = 12 - 5 = 7 ✓
+</code></pre>
+<pre><code class="language-java">// Java - LC 992 Subarrays with K Different Integers
+/**
+ * time = O(N)
+ * space = O(K)
+ */
+public int subarraysWithKDistinct(int[] nums, int k) {
+    // Exactly K = At Most K - At Most (K-1)
+    return atMostK(nums, k) - atMostK(nums, k - 1);
+}
+
+private int atMostK(int[] nums, int k) {
+    if (k == 0) return 0;
+
+    int left = 0;
+    int count = 0;
+    Map&lt;Integer, Integer&gt; freq = new HashMap&lt;&gt;();
+
+    for (int right = 0; right &lt; nums.length; right++) {
+        // Add right element
+        freq.put(nums[right], freq.getOrDefault(nums[right], 0) + 1);
+
+        // Shrink while &gt; k distinct
+        while (freq.size() &gt; k) {
+            freq.put(nums[left], freq.get(nums[left]) - 1);
+            if (freq.get(nums[left]) == 0) {
+                freq.remove(nums[left]);
+            }
+            left++;
+        }
+
+        // Count subarrays ending at right
+        count += right - left + 1;
+    }
+
+    return count;
+}
+</code></pre>
+<hr>
+<h4 id="visual-example-why-at-most-k-at-most-k-1-works" tabindex="-1"><a class="header-anchor" href="#visual-example-why-at-most-k-at-most-k-1-works"><span>Visual Example: Why “At Most K - At Most (K-1)” Works</span></a></h4>
+<pre><code>Array: [1, 2, 1, 3], K = 2 (exactly 2 distinct)
+
+At Most 2 Distinct:
+Index 0 (1): [1] ✓                                 → count = 1
+Index 1 (2): [2] ✓, [1,2] ✓                        → count = 2
+Index 2 (1): [1] ✓, [2,1] ✓, [1,2,1] ✓             → count = 3
+Index 3 (3): [3] ✓, [1,3] ✓, but NOT [2,1,3] ❌    → count = 2
+                   (window shrinks to [1,3])
+
+Total At Most 2: 1 + 2 + 3 + 2 = 8
+
+At Most 1 Distinct:
+Index 0 (1): [1] ✓                                 → count = 1
+Index 1 (2): [2] ✓, but NOT [1,2] ❌               → count = 1
+                   (window shrinks to [2])
+Index 2 (1): [1] ✓, but NOT [2,1] ❌               → count = 1
+                   (window shrinks to [1])
+Index 3 (3): [3] ✓, but NOT [1,3] ❌               → count = 1
+                   (window shrinks to [3])
+
+Total At Most 1: 1 + 1 + 1 + 1 = 4
+
+Exactly 2 Distinct = 8 - 4 = 4 ✓
+
+The 4 subarrays with exactly 2 distinct:
+[1,2], [1,2,1], [2,1], [1,3]
+</code></pre>
+<hr>
+<h4 id="classic-problems-using-this-technique" tabindex="-1"><a class="header-anchor" href="#classic-problems-using-this-technique"><span>Classic Problems Using This Technique</span></a></h4>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC#</th>
+<th>Difficulty</th>
+<th>Transformation</th>
+<th>Key Insight</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Subarrays with K Different Integers</strong></td>
+<td><strong>992</strong></td>
+<td><strong>Hard</strong></td>
+<td>Exactly K distinct = atMost(K) - atMost(K-1)</td>
+<td>Core example</td>
+</tr>
+<tr>
+<td>Count Nice Subarrays</td>
+<td>1248</td>
+<td>Medium</td>
+<td>Exactly K odds = atMost(K) - atMost(K-1)</td>
+<td>Transform odd→1, even→0</td>
+</tr>
+<tr>
+<td>Binary Subarrays With Sum</td>
+<td>930</td>
+<td>Medium</td>
+<td>Exactly sum K = atMost(K) - atMost(K-1)</td>
+<td>Subarray sum</td>
+</tr>
+<tr>
+<td>Longest Substring with At Most K Distinct</td>
+<td>340</td>
+<td>Medium</td>
+<td>Direct atMost(K) for max length</td>
+<td>No subtraction needed</td>
+</tr>
+<tr>
+<td>Fruits Into Baskets</td>
+<td>904</td>
+<td>Medium</td>
+<td>atMost(2) distinct for max length</td>
+<td>Simplified K=2</td>
+</tr>
+<tr>
+<td>Max Consecutive Ones III</td>
+<td>1004</td>
+<td>Medium</td>
+<td>atMost(K) zeros for max length</td>
+<td>Count zeros ≤ K</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h4 id="pattern-recognition-when-to-use-this-technique" tabindex="-1"><a class="header-anchor" href="#pattern-recognition-when-to-use-this-technique"><span>Pattern Recognition: When to Use This Technique</span></a></h4>
+<p><strong>Use “Exactly K” transformation when you see:</strong></p>
+<pre><code>✅ &quot;exactly K distinct/different&quot;
+✅ &quot;exactly K times&quot;
+✅ &quot;exactly K occurrences&quot;
+✅ &quot;subarrays with exactly K ...&quot;
+✅ COUNTING problems (not max/min length)
+</code></pre>
+<p><strong>Direct sliding window works when:</strong></p>
+<pre><code>✅ &quot;at most K&quot;
+✅ &quot;maximum length with ≤ K&quot;
+✅ &quot;minimum length with ≥ K&quot;
+✅ &quot;longest substring with at most K&quot;
+</code></pre>
+<hr>
+<h4 id="common-mistakes" tabindex="-1"><a class="header-anchor" href="#common-mistakes"><span>Common Mistakes</span></a></h4>
+<p><strong>1. Forgetting k=0 Edge Case:</strong></p>
+<pre><code class="language-python"># Wrong: Doesn't handle k=0
+def exactly_k(nums, k):
+    return at_most_k(nums, k) - at_most_k(nums, k - 1)
+    # at_most_k(nums, -1) may fail!
+
+# Right: Handle k=0 explicitly
+def exactly_k(nums, k):
+    if k == 0:
+        return 0
+    return at_most_k(nums, k) - at_most_k(nums, k - 1)
+</code></pre>
+<p><strong>2. Using Wrong Approach for Max/Min Length:</strong></p>
+<pre><code class="language-python"># Wrong: Using &quot;exactly K&quot; transformation for max length
+def longest_k_distinct(s, k):
+    # This gives COUNT, not LENGTH!
+    return at_most_k(s, k) - at_most_k(s, k - 1)  ❌
+
+# Right: Direct at_most_k for max length
+def longest_k_distinct(s, k):
+    # Track max window size during at_most_k
+    return at_most_k_max_length(s, k)  ✓
+</code></pre>
+<p><strong>3. Confusing Count vs Length:</strong></p>
+<pre><code class="language-python"># For COUNTING subarrays: use right - left + 1
+count += right - left + 1
+
+# For MAX LENGTH: track max window size
+max_length = max(max_length, right - left + 1)
+</code></pre>
+<hr>
+<h4 id="interview-tips" tabindex="-1"><a class="header-anchor" href="#interview-tips"><span>Interview Tips</span></a></h4>
+<p><strong>1. Recognition:</strong></p>
+<pre><code>Interviewer: &quot;Count subarrays with exactly K ...&quot;
+→ Think: &quot;Exactly K = At Most K - At Most (K-1)&quot;
+
+Interviewer: &quot;Find longest substring with at most K ...&quot;
+→ Think: &quot;Direct sliding window, no subtraction needed&quot;
+</code></pre>
+<p><strong>2. Complexity Analysis:</strong></p>
+<pre><code>Time: O(n) - each element added once, removed at most once in each pass
+      Total: 2 passes × O(n) = O(n)
+
+Space: O(k) - HashMap stores at most K distinct elements
+</code></pre>
+<p><strong>3. Template Code to Memorize:</strong></p>
+<pre><code class="language-python">def exactly_k(nums, k):
+    def at_most_k(limit):
+        left = 0
+        count = 0
+        window = {}
+
+        for right in range(len(nums)):
+            window[nums[right]] = window.get(nums[right], 0) + 1
+
+            while len(window) &gt; limit:
+                window[nums[left]] -= 1
+                if window[nums[left]] == 0:
+                    del window[nums[left]]
+                left += 1
+
+            count += right - left + 1
+
+        return count
+
+    if k == 0:
+        return 0
+    return at_most_k(k) - at_most_k(k - 1)
+</code></pre>
+<p><strong>4. Talking Points:</strong></p>
+<ul>
+<li>“Direct ‘exactly K’ is hard because window validity changes non-monotonically”</li>
+<li>“At most K is monotonic - once valid, stays valid until we shrink”</li>
+<li>“Subtracting at most (K-1) removes all overcounting”</li>
+<li>“This transforms a hard problem into two medium problems”</li>
+</ul>
+<hr>
+<h4 id="advanced-why-direct-exactly-k-is-hard" tabindex="-1"><a class="header-anchor" href="#advanced-why-direct-exactly-k-is-hard"><span>Advanced: Why Direct “Exactly K” is Hard</span></a></h4>
+<p><strong>Problem with direct approach:</strong></p>
+<pre><code class="language-python"># Naive attempt (WRONG!)
+def exactly_k_direct(nums, k):
+    left = 0
+    count = 0
+    window = {}
+
+    for right in range(len(nums)):
+        window[nums[right]] = window.get(nums[right], 0) + 1
+
+        # When to shrink? This is tricky!
+        # If len(window) &gt; k: shrink (too many distinct)
+        # If len(window) &lt; k: can't count yet (too few distinct)
+        # If len(window) == k: count, but should we shrink?
+
+        # If we shrink when == k, we might miss valid subarrays
+        # If we don't shrink, we might count invalid subarrays
+
+        # There's no clean condition! ❌
+
+    return count
+</code></pre>
+<p><strong>Why “at most K” works:</strong></p>
+<pre><code class="language-python"># Window validity is monotonic:
+# - If window is valid (≤ K), all sub-windows are valid
+# - If window becomes invalid (&gt; K), shrink until valid
+# - Clear shrinking condition: while len(window) &gt; k
+
+# This monotonic property makes sliding window perfect!
+</code></pre>
+<p><strong>Mathematical proof of transformation:</strong></p>
+<pre><code>Let S(k) = set of all subarrays with at most k distinct elements
+
+S(2) = {[1], [1,2], [1,2,1], [2], [2,1], [1], [1,3], [3], ...}
+S(1) = {[1], [2], [1], [3], ...}  (only single-element subarrays)
+
+S(2) \ S(1) = subarrays in S(2) but not in S(1)
+            = subarrays with MORE than 1 but AT MOST 2 distinct
+            = subarrays with EXACTLY 2 distinct ✓
+
+Generalized: S(k) \ S(k-1) = subarrays with exactly k distinct
+</code></pre>
+<hr>
+<h2 id="2-problems-by-template-pattern" tabindex="-1"><a class="header-anchor" href="#2-problems-by-template-pattern"><span>2) Problems by Template Pattern</span></a></h2>
+<h3 id="2-1-template-classification-guide" tabindex="-1"><a class="header-anchor" href="#2-1-template-classification-guide"><span>2.1) Template Classification Guide</span></a></h3>
+<h4 id="fixed-size-window-problems" tabindex="-1"><a class="header-anchor" href="#fixed-size-window-problems"><span><strong>Fixed Size Window Problems</strong></span></a></h4>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC #</th>
+<th>Key Technique</th>
+<th>Difficulty</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Find All Anagrams in a String</td>
+<td>438</td>
+<td>Character frequency matching</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Permutation in String</td>
+<td>567</td>
+<td>Character frequency matching</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Maximum Average Subarray I</td>
+<td>643</td>
+<td>Fixed window sum</td>
+<td>Easy</td>
+</tr>
+<tr>
+<td>Contains Duplicate II</td>
+<td>219</td>
+<td>Fixed window with HashSet</td>
+<td>Easy</td>
+</tr>
+<tr>
+<td>Maximum Number of Vowels</td>
+<td>1456</td>
+<td>Fixed window counting</td>
+<td>Medium</td>
+</tr>
+</tbody>
+</table>
+<h4 id="variable-size-maximum-length" tabindex="-1"><a class="header-anchor" href="#variable-size-maximum-length"><span><strong>Variable Size - Maximum Length</strong></span></a></h4>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC #</th>
+<th>Key Technique</th>
+<th>Difficulty</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Longest Substring Without Repeating Characters</td>
+<td>3</td>
+<td>Character uniqueness tracking</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Longest Repeating Character Replacement</td>
+<td>424</td>
+<td>Frequency + max character count</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Max Consecutive Ones III</td>
+<td>1004</td>
+<td>K flips constraint</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Longest Substring with At Most K Distinct Characters</td>
+<td>340</td>
+<td>Distinct character counting</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Longest Substring with At Most Two Distinct Characters</td>
+<td>159</td>
+<td>Two distinct constraint</td>
+<td>Medium</td>
+</tr>
+</tbody>
+</table>
+<h4 id="variable-size-minimum-length" tabindex="-1"><a class="header-anchor" href="#variable-size-minimum-length"><span><strong>Variable Size - Minimum Length</strong></span></a></h4>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC #</th>
+<th>Key Technique</th>
+<th>Difficulty</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Minimum Window Substring</td>
+<td>76</td>
+<td>Character coverage tracking</td>
+<td>Hard</td>
+</tr>
+<tr>
+<td>Minimum Size Subarray Sum</td>
+<td>209</td>
+<td>Running sum comparison</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Smallest Subarray with Sum ≥ K</td>
+<td>862</td>
+<td>Prefix sum + deque</td>
+<td>Hard</td>
+</tr>
+<tr>
+<td>Minimum Window with Characters</td>
+<td>1176</td>
+<td>Diet plan constraint</td>
+<td>Hard</td>
+</tr>
+</tbody>
+</table>
+<h4 id="counting-subarrays" tabindex="-1"><a class="header-anchor" href="#counting-subarrays"><span><strong>Counting Subarrays</strong></span></a></h4>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC #</th>
+<th>Key Technique</th>
+<th>Difficulty</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Subarray Product Less Than K</td>
+<td>713</td>
+<td>Product constraint</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Subarrays with K Different Integers</td>
+<td>992</td>
+<td>Exactly K = At most K - At most (K-1)</td>
+<td>Hard</td>
+</tr>
+<tr>
+<td>Number of Subarrays with Bounded Maximum</td>
+<td>795</td>
+<td>Bounded value constraint</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Count Number of Nice Subarrays</td>
+<td>1248</td>
+<td>Odd number counting</td>
+<td>Medium</td>
+</tr>
+</tbody>
+</table>
+<h4 id="advanced-sliding-window" tabindex="-1"><a class="header-anchor" href="#advanced-sliding-window"><span><strong>Advanced Sliding Window</strong></span></a></h4>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC #</th>
+<th>Key Technique</th>
+<th>Difficulty</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Sliding Window Maximum</td>
+<td>239</td>
+<td>Monotonic deque</td>
+<td>Hard</td>
+</tr>
+<tr>
+<td>Sliding Window Median</td>
+<td>480</td>
+<td>Two heaps</td>
+<td>Hard</td>
+</tr>
+<tr>
+<td>Minimum Swaps to Group All 1’s Together</td>
+<td>1151</td>
+<td>Optimization with fixed window</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Grumpy Bookstore Owner</td>
+<td>1052</td>
+<td>State change optimization</td>
+<td>Medium</td>
+</tr>
+</tbody>
+</table>
+<h3 id="2-2-template-selection-strategy" tabindex="-1"><a class="header-anchor" href="#2-2-template-selection-strategy"><span>2.2) Template Selection Strategy</span></a></h3>
+<pre><code>Problem Analysis Flowchart:
+
+1. Is window size fixed?
+   ├── YES → Use Fixed Size Template
+   └── NO → Continue to 2
+
+2. Are you finding maximum length?
+   ├── YES → Use Variable Max Template  
+   └── NO → Continue to 3
+
+3. Are you finding minimum length?
+   ├── YES → Use Variable Min Template
+   └── NO → Continue to 4
+
+4. Are you counting subarrays?
+   ├── YES → Use Counting Template
+   └── NO → Use custom approach
+</code></pre>
+<h2 id="3-detailed-leetcode-examples" tabindex="-1"><a class="header-anchor" href="#3-detailed-leetcode-examples"><span>3) Detailed LeetCode Examples</span></a></h2>
+<h3 id="3-1-fixed-size-window-examples" tabindex="-1"><a class="header-anchor" href="#3-1-fixed-size-window-examples"><span>3.1) Fixed Size Window Examples</span></a></h3>
+<h4 id="lc-567-permutation-in-string-template-fixed-size" tabindex="-1"><a class="header-anchor" href="#lc-567-permutation-in-string-template-fixed-size"><span>LC 567: Permutation in String (Template: Fixed Size)</span></a></h4>
+<pre><code class="language-java">// java
+// LC 567
+    // V0
+    // IDEA: HASHMAP + SLIDING WINDOW (fixed by gpt)
+    public boolean checkInclusion(String s1, String s2) {
+        if (!s1.isEmpty() &amp;&amp; s2.isEmpty()) {
+            return false;
+        }
+        if (s1.equals(s2)) {
+            return true;
+        }
+        /** NOTE !!!
+         *
+         *  we init 2 map, one for s1 counter, the other one as track `s2 sub str counter`
+         */
+        Map&lt;String, Integer&gt; map1 = new HashMap&lt;&gt;();
+        Map&lt;String, Integer&gt; map2 = new HashMap&lt;&gt;();
+        for (String x : s1.split(&quot;&quot;)) {
+            String k = String.valueOf(x);
+            map1.put(x, map1.getOrDefault(k, 0) + 1);
+        }
+
+        // 2 pointers (for s2)
+        /** NOTE !!!
+         *
+         *  we have 2 pointers (for s2) that can track character cnt in s2 within l, r pointers
+         */
+        int l = 0;
+        for (int r = 0; r &lt; s2.length(); r++) {
+            String val = String.valueOf(s2.charAt(r));
+            map2.put(val, map2.getOrDefault(val, 0) + 1);
+
+            /** NOTE !!!
+             *
+             *  we use below trick to
+             *
+             *  -&gt; 1) check if `new reached s2 val` is in s1 map
+             *  -&gt; 2) check if 2 map are equal
+             *
+             *  -&gt; so we have more simple code, and clean logic
+             */
+            if (map2.equals(map1)) {
+                return true;
+            }
+
+            /**
+             *  NOTE !!!
+             *
+             *  If the window size exceeds the size of s1, move the left pointer
+             *  -&gt; means the `permutation str in s2 of s1` IS NOT FOUND YET,
+             *  -&gt; in this case, we need to move s2 left pointer, and update tracking map
+             */
+            if ((r - l + 1) &gt;= s1.length()) {
+                // update map
+                String leftVal = String.valueOf(s2.charAt(l));
+                map2.put(leftVal, map2.get(leftVal) - 1);
+                /**
+                 * NOTE !!!
+                 *
+                 *  if can't find permutation at current window ([l,r]),
+                 *  then we move left pointer 1 idx (e.g. l += 1)
+                 *  for moving and checking next window
+                 */
+                l += 1;
+                if (map2.get(leftVal) == 0) {
+                    map2.remove(leftVal);
+                }
+            }
+        }
+
+        return false;
+    }
+</code></pre>
+<pre><code class="language-python"># LC 567 Permutation in String
+# V0 
+import collections
+class Solution(object):
+    def checkInclusion(self, s1, s2):
+        l1, l2 = len(s1), len(s2)
+        c1 = collections.Counter(s1)
+        c2 = collections.Counter()
+        p = q = 0
+        while q &lt; l2:
+            c2[s2[q]] += 1
+            if c1 == c2:
+                return True
+            q += 1
+            if q - p + 1 &gt; l1:
+                c2[s2[p]] -= 1
+                if c2[s2[p]] == 0:
+                    del c2[s2[p]]
+                p += 1
+        return False
+</code></pre>
+<h4 id="lc-438-find-all-anagrams-in-a-string-template-fixed-size" tabindex="-1"><a class="header-anchor" href="#lc-438-find-all-anagrams-in-a-string-template-fixed-size"><span>LC 438: Find All Anagrams in a String (Template: Fixed Size)</span></a></h4>
+<pre><code class="language-java">// LC 438
+    // V0
+    // IDEA: HASHMAP + 2 POINTERS (fixed by gpt)
+    public List&lt;Integer&gt; findAnagrams(String s, String p) {
+        List&lt;Integer&gt; res = new ArrayList&lt;&gt;();
+        // edge
+        if (s == null || p == null || s.isEmpty() || p.isEmpty() || p.length() &gt; s.length()) {
+            return res;
+        }
+        if (s.equals(p)) {
+            res.add(0);
+            return res;
+        }
+
+        // init p map
+        Map&lt;String, Integer&gt; p_map = new HashMap&lt;&gt;();
+        for (String x : p.split(&quot;&quot;)) {
+            p_map.put(x, p_map.getOrDefault(x, 0) + 1);
+        }
+
+        String[] s_arr = s.split(&quot;&quot;);
+        Map&lt;String, Integer&gt; s_map = new HashMap&lt;&gt;();
+
+        int l = 0;
+        for (int r = 0; r &lt; s_arr.length; r++) {
+            String key = s_arr[r];
+            s_map.put(key, s_map.getOrDefault(key, 0) + 1);
+
+            /**
+             *  NOTE !!!
+             *
+             *   need `while loop` below
+             *   so we can `shrink` left pointer (window)
+             *   to make the sub string size equals to `p`
+             *
+             *   (could be `if` logic as well here)
+             *   (e.g. if (r - l + 1 &gt; p.length()) )
+             */
+            // shrink window if size &gt; p.length()
+            while (r - l + 1 &gt; p.length()) {
+                String leftKey = s_arr[l];
+                /**
+                 *  NOTE !!!
+                 *
+                 *   need to update s_map
+                 */
+                s_map.put(leftKey, s_map.get(leftKey) - 1);
+                if (s_map.get(leftKey) == 0) {
+                    s_map.remove(leftKey);
+                }
+                l++;
+            }
+
+            /**
+             *  NOTE !!!
+             *
+             *  if same size, compare s_map, and p_map
+             */
+            // if same size, compare
+            if (r - l + 1 == p.length() &amp;&amp; isEqaual(p_map, s_map)) {
+                res.add(l);
+            }
+        }
+
+        return res;
+    }
+
+    private boolean isEqaual(Map&lt;String, Integer&gt; p_map, Map&lt;String, Integer&gt; s_map) {
+        if (p_map.size() != s_map.size()) {
+            return false;
+        }
+        for (String k : p_map.keySet()) {
+            if (!s_map.containsKey(k) || !s_map.get(k).equals(p_map.get(k))) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    // V0-1
+    // IDEA: HASHMAP + SLIDE WINDOW (gpt)
+    /**
+     *  Why `slide window` is needed trick for this problem?
+     *
+     *
+     *  Yes 👍 the sliding window (or two-pointer) is the needed trick for that group of problems like “longest substring without repeating characters”.
+     *
+     * Here’s why:
+     *  •   A brute force way would check all substrings → O(n²) or worse.
+     *  •   But with a sliding window, you keep a “window” [left, right] over the string/array and expand right step by step.
+     *  •   If the constraint is violated (like duplicate chars appear, or the sum is too large), you shrink from the left until it’s valid again.
+     *  •   This way each index moves at most once → O(n) total.
+     *
+     * That’s the exact “trick” behind those problems. The hard part is usually:
+     *  1.  What condition makes the window valid/invalid? (duplicate chars, sum &gt; k, etc.)
+     *  2.  When to update the answer? (on every valid window, or only when shrinking).
+     *
+     */
+    public List&lt;Integer&gt; findAnagrams_0_1(String s, String p) {
+        List&lt;Integer&gt; res = new ArrayList&lt;&gt;();
+        if (s == null || p == null || s.isEmpty() || p.isEmpty() || p.length() &gt; s.length()) {
+            return res;
+        }
+
+        // Build p_map (pattern frequency)
+        Map&lt;String, Integer&gt; p_map = new HashMap&lt;&gt;();
+        for (String x : p.split(&quot;&quot;)) {
+            p_map.put(x, p_map.getOrDefault(x, 0) + 1);
+        }
+
+        Map&lt;String, Integer&gt; s_map = new HashMap&lt;&gt;();
+        String[] s_arr = s.split(&quot;&quot;);
+        int window = p.length();
+
+        for (int i = 0; i &lt; s_arr.length; i++) {
+            String val = s_arr[i];
+
+            /**  NOTE !!!
+             *
+             *  we `add` element to s_amp anyway,
+             *  via `sliding window`  we DON'T need to handle cases
+             *  such as 1) if the element in p_map, 2) if the element cnt &gt; the one in p_map ...
+             *
+             *  -&gt; via `sliding window`, we can simply ONLY compare
+             *     if s_map and p_map qre equals when `sliding window` size equals to p size
+             */
+            // add current char to s_map
+            s_map.put(val, s_map.getOrDefault(val, 0) + 1);
+
+            /**  NOTE !!!
+             *
+             *  sliding window
+             */
+            // maintain sliding window size
+            if (i &gt;= window) {
+                String leftChar = s_arr[i - window];
+                if (s_map.get(leftChar) == 1) {
+                    s_map.remove(leftChar);
+                } else {
+                    s_map.put(leftChar, s_map.get(leftChar) - 1);
+                }
+            }
+
+            // compare maps only when window size matches
+            if (i &gt;= window - 1 &amp;&amp; isEqual(p_map, s_map)) {
+                res.add(i - window + 1);
+            }
+        }
+
+        return res;
+    }
+
+    private boolean isEqual(Map&lt;String, Integer&gt; p_map, Map&lt;String, Integer&gt; s_map) {
+        if (p_map.size() != s_map.size()) {
+            return false;
+        }
+        for (String k : p_map.keySet()) {
+            if (!s_map.containsKey(k) || !p_map.get(k).equals(s_map.get(k))) {
+                return false;
+            }
+        }
+        return true;
+    }
+</code></pre>
+<pre><code class="language-python"># LC 438 Find All Anagrams in a String
+# V0
+# IDEA : SLIDING WINDOW + collections.Counter()
+class Solution(object):
+    def findAnagrams(self, s, p):
+        &quot;&quot;&quot;
+        :type s: str
+        :type p: str
+        :rtype: List[int]
+        &quot;&quot;&quot;
+        ls, lp = len(s), len(p)
+        cp = collections.Counter(p)
+        cs = collections.Counter()
+        ans = []
+        for i in range(ls):
+            cs[s[i]] += 1
+            if i &gt;= lp:
+                cs[s[i - lp]] -= 1
+                ### BE AWARE OF IT
+                if cs[s[i - lp]] == 0:
+                    del cs[s[i - lp]]
+            if cs == cp:
+                ans.append(i - lp + 1)
+        return ans
+</code></pre>
+<h3 id="3-2-variable-size-window-examples" tabindex="-1"><a class="header-anchor" href="#3-2-variable-size-window-examples"><span>3.2) Variable Size Window Examples</span></a></h3>
+<h4 id="lc-3-longest-substring-without-repeating-characters-template-variable-max" tabindex="-1"><a class="header-anchor" href="#lc-3-longest-substring-without-repeating-characters-template-variable-max"><span>LC 3: Longest Substring Without Repeating Characters (Template: Variable Max)</span></a></h4>
+<pre><code class="language-python"># LC 003 Longest Substring Without Repeating Characters
+# V0'
+# IDEA : SLIDING WINDOW + DICT
+#       -&gt; use a hash table (d) record visited &quot;element&quot; (e.g. : a,b,c,...)
+#          (but NOT sub-string)
+class Solution(object):
+    def lengthOfLongestSubstring(self, s):
+        d = {}
+        # left pointer
+        l = 0
+        res = 0
+        # right pointer
+        for r in range(len(s)):
+            &quot;&quot;&quot;
+            ### NOTE : we deal with &quot;s[r] in d&quot; case first 
+            ### NOTE : if already visited, means &quot;repeating&quot;
+            #      -&gt; then we need to update left pointer (l)
+            &quot;&quot;&quot;
+            if s[r] in d:
+                &quot;&quot;&quot;
+                NOTE !!! this
+                -&gt; via max(l, d[s[r]] + 1) trick,
+                   we can get the &quot;latest&quot; idx of duplicated s[r], and start from that one
+                &quot;&quot;&quot;
+                l = max(l, d[s[r]] + 1)
+            # if not visited yet, record the alphabet
+            # and re-calculate the max length
+            d[s[r]] = r
+            res = max(res, r -l + 1)
+        return res
+
+# V0'
+# IDEA : SLIDING WINDOW + DICT
+#       -&gt; use a hash table (d) record visited &quot;element&quot; (e.g. : a,b,c,...)
+#          (but NOT sub-string)
+class Solution(object):
+    def lengthOfLongestSubstring(self, s):
+        d = {}
+        # left pointer
+        l = 0
+        res = 0
+        # right pointer
+        for r in range(len(s)):
+            &quot;&quot;&quot;
+            ### NOTE : we deal with &quot;s[r] in d&quot; case first 
+            ### NOTE : if already visited, means &quot;repeating&quot;
+            #      -&gt; then we need to update left pointer (l)
+            &quot;&quot;&quot;
+            if s[r] in d:
+                &quot;&quot;&quot;
+                NOTE !!! this
+                -&gt; via max(l, d[s[r]] + 1) trick,
+                   we can get the &quot;latest&quot; idx of duplicated s[r], and start from that one
+                &quot;&quot;&quot;
+                l = max(l, d[s[r]] + 1)
+            # if not visited yet, record the alphabet
+            # and re-calculate the max length
+            d[s[r]] = r
+            res = max(res, r -l + 1)
+        return res
+</code></pre>
+<pre><code class="language-java">// java
+// V0
+// IDEA : SLIDING WINDOW + HASH SET
+public int lengthOfLongestSubstring(String s) {
+
+    if (s.equals(&quot;&quot;)){
+        return 0;
+    }
+
+    if (s.equals(&quot; &quot;)){
+        return 1;
+    }
+
+    if (s.length() == 1){
+        return 1;
+    }
+
+    int ans = 0;
+    char[] s_array = s.toCharArray();
+    for (int i = 0; i &lt; s_array.length-1; i++){
+        int j = i;
+        Set&lt;String&gt; set = new HashSet&lt;String&gt;();
+        while (j &lt; s_array.length){
+            String cur = String.valueOf(s_array[j]);
+            if (set.contains(cur)){
+                ans = Math.max(ans, set.size());
+                break;
+            }else{
+                set.add(cur);
+                ans = Math.max(ans, set.size());
+                j += 1;
+            }
+        }
+    }
+
+    return ans;
+}
+</code></pre>
+<h3 id="3-3-counting-subarrays-examples" tabindex="-1"><a class="header-anchor" href="#3-3-counting-subarrays-examples"><span>3.3) Counting Subarrays Examples</span></a></h3>
+<h4 id="lc-713-subarray-product-less-than-k-template-counting" tabindex="-1"><a class="header-anchor" href="#lc-713-subarray-product-less-than-k-template-counting"><span>LC 713: Subarray Product Less Than K (Template: Counting)</span></a></h4>
+<pre><code class="language-python"># LC 713 Subarray Product Less Than K
+# V0 
+# IDEA : SLIDING WINDOW 
+# MAINTAIN 2 INDEX : left, i, SO THE SLIDING WINDOW IS : [left, i]
+# CHECK IF THE PRODUCT OF ALL DIGITS IN THE WINDOW [left, i] &lt; k
+# IF NOT, REMOVE CURRENT LEFT, AND DO LEFT ++
+# REPEAT ABOVE PROCESS AND GO THOROUGH ALL ARRAY  
+class Solution:
+    def numSubarrayProductLessThanK(self, nums, k):
+        # init values
+        product = 1
+        i = 0
+        result = 0
+        
+        for j, num in enumerate(nums):
+            ### NOTE : we get product first
+            product *= num
+            ### NOTE : the while loop condition : product &gt;= k
+            #         -&gt; if product &gt;= k, we do the corresponding op
+            while i &lt;= j and product &gt;= k:
+                ### NOTE this trick
+                #    -&gt; divided the number back, since this number already make the product &gt; k 
+                product = product // nums[i]
+                ### NOTE : move i to 1 right index
+                i += 1
+            ### NOTE : , the number of intervals with subarray product less than k and with right-most coordinate right, is right - left + 1
+            #    -&gt; https://leetcode.com/problems/subarray-product-less-than-k/solution/           
+            result += (j - i + 1)           
+        return result
+</code></pre>
+<h3 id="3-4-minimum-window-examples" tabindex="-1"><a class="header-anchor" href="#3-4-minimum-window-examples"><span>3.4) Minimum Window Examples</span></a></h3>
+<h4 id="lc-209-minimum-size-subarray-sum-template-variable-min" tabindex="-1"><a class="header-anchor" href="#lc-209-minimum-size-subarray-sum-template-variable-min"><span>LC 209: Minimum Size Subarray Sum (Template: Variable Min)</span></a></h4>
+<pre><code class="language-python"># LC 209 Minimum Size Subarray Sum
+# V0
+# IDEA : SLIDING WINDOW : start, end
+class Solution:
+    def minSubArrayLen(self, s, nums):
+        if nums is None or len(nums) == 0:
+            return 0
+
+        n = len(nums)
+        minLength = n + 1
+        sum = 0
+        j = 0
+        for i in range(n):
+            ### NOTE the while loop condition (j &lt; n and sum &lt; s)
+            while j &lt; n and sum &lt; s:
+                sum += nums[j]
+                j += 1
+            # NOTE : we need to check if sum &gt;= s here
+            if sum &gt;= s:
+                minLength = min(minLength, j - i)
+
+            ### NOTE : we need to get min length of sub array
+            #          so once it meats the condition (sum &gt;= s)
+            #          we should update the minLength (minLength = min(minLength, j - i))
+            #          and move to next i and roll back _sum (_sum -= nums[i])
+            sum -= nums[i]
+            
+        ### NOTE : if minLength == n + 1, means there is no such subarray, so return 0 instead
+        if minLength == n + 1:
+            return 0         
+        return minLength
+</code></pre>
+<h4 id="lc-424-longest-repeating-character-replacement-template-variable-max" tabindex="-1"><a class="header-anchor" href="#lc-424-longest-repeating-character-replacement-template-variable-max"><span>LC 424: Longest Repeating Character Replacement (Template: Variable Max)</span></a></h4>
+<pre><code class="language-python"># lc 424. Longest Repeating Character Replacement
+# V0
+# IDEA : SLIDING WINDOW + DICT + 2 POINTERS
+from collections import Counter
+class Solution(object):
+    def characterReplacement(self, s, k):
+        table = Counter()
+        res = 0
+        p1 = p2 = 0
+        # below can be either while or for loop
+        while p2 &lt; len(s):
+            table[s[p2]] += 1
+            p2 += 1
+            &quot;&quot;&quot;
+            ### NOTE : if remain elements &gt; k, means there is no possibility to make this substring as &quot;longest substring containing the same letter&quot;
+               -&gt;  remain elements = p1 - p2 - max(table.values())
+               -&gt;  e.g. if we consider &quot;max(table.values()&quot; as the &quot;repeating character&quot;, then &quot;p2 - p1 - max(table.values()&quot; is the count of elements we need to replace
+               -&gt;  so we need to clear &quot;current candidate&quot; for next iteration
+            &quot;&quot;&quot;
+            while p2 - p1 - max(table.values()) &gt; k:
+                table[s[p1]] -= 1
+                p1 += 1
+            res = max(res, p2 - p1)
+        return res
+    
+# V0'
+from collections import defaultdict
+class Solution:
+    def characterReplacement(self, s, k):
+        cnt = defaultdict(int)
+        maxLen = 0
+        l = 0
+        # below can be either while or for loop
+        for r in range(len(s)):
+            cnt[s[r]] += 1
+            ### NOTE : this condition
+            while r - l + 1 - max(cnt.values()) &gt; k:
+                cnt[s[l]] -= 1
+                l += 1
+            maxLen = max(maxLen, r - l + 1)     
+
+        return maxLen
+</code></pre>
+<pre><code class="language-java">// java
+// LC 424
+// V2
+// IDEA : Sliding Window (Slow)
+// https://leetcode.com/problems/longest-repeating-character-replacement/editorial/
+public int characterReplacement_4(String s, int k) {
+    HashSet&lt;Character&gt; allLetters = new HashSet();
+
+    // collect all unique letters
+    for (int i = 0; i &lt; s.length(); i++) {
+        allLetters.add(s.charAt(i));
+    }
+
+    int maxLength = 0;
+    for (Character letter : allLetters) {
+        int start = 0;
+        int count = 0;
+        // initialize a sliding window for each unique letter
+        for (int end = 0; end &lt; s.length(); end += 1) {
+            if (s.charAt(end) == letter) {
+                // if the letter matches, increase the count
+                count += 1;
+            }
+            // bring start forward until the window is valid again
+            while (!isWindowValid(start, end, count, k)) {
+                if (s.charAt(start) == letter) {
+                    // if the letter matches, decrease the count
+                    count -= 1;
+                }
+                start += 1;
+            }
+            // at this point the window is valid, update maxLength
+            maxLength = Math.max(maxLength, end + 1 - start);
+        }
+    }
+    return maxLength;
+}
+
+private Boolean isWindowValid(int start, int end, int count, int k) {
+    // end + 1 - start - count is different element count
+    return end + 1 - start - count &lt;= k;
+}
+</code></pre>
+<h3 id="3-5-advanced-examples" tabindex="-1"><a class="header-anchor" href="#3-5-advanced-examples"><span>3.5) Advanced Examples</span></a></h3>
+<h4 id="lc-413-arithmetic-slices-template-custom" tabindex="-1"><a class="header-anchor" href="#lc-413-arithmetic-slices-template-custom"><span>LC 413: Arithmetic Slices (Template: Custom)</span></a></h4>
+<pre><code class="language-python"># LC 413 Arithmetic Slices
+# V0
+# IDEA : SLIDING DINDOW + 2 pointers
+# STEPS:
+#   -&gt; step 1) loop over nums from idx=2 (for i in range(2, len(A)))
+#   -&gt; step 2) use the other pointer j, &quot;look back to idx = 0&quot; via while loop
+#       -&gt; if there is any case fit condition, add to result
+#   -&gt; step 3) return ans
+class Solution(object):
+    def numberOfArithmeticSlices(self, A):
+        # edge case
+        if not A or len(A) &lt; 3:
+            return 0
+        res = 0
+        j = 2
+        for i in range(2, len(A)):
+            # use the other pointer j, &quot;look back to idx = 0&quot; via while loop
+            j = i
+            while j-2 &gt;= 0:
+                # if there is any case fit condition, add to result
+                if A[j] - A[j-1] == A[j-1] - A[j-2]:
+                    res += 1
+                    j -= 1
+                else:
+                    break
+        return res 
+</code></pre>
+<h4 id="lc-1151-minimum-swaps-to-group-all-1-s-together-template-fixed-size" tabindex="-1"><a class="header-anchor" href="#lc-1151-minimum-swaps-to-group-all-1-s-together-template-fixed-size"><span>LC 1151: Minimum Swaps to Group All 1’s Together (Template: Fixed Size)</span></a></h4>
+<pre><code class="language-python"># LC 1151 Minimum Swaps to Group All 1's Together
+# V0
+# IDEA : Sliding Window with Two Pointers
+# IDEA : core : Find which sub-array HAS MOST &quot;1&quot;, since it means it needs MINIMUM SWAP for getting all &quot;1&quot; toogether
+# https://leetcode.com/problems/minimum-swaps-to-group-all-1s-together/solution/
+class Solution:
+    def minSwaps(self, data):
+        ones = sum(data)
+        cnt_one = max_one = 0
+        left = right = 0
+        while right &lt; len(data):
+            # updating the number of 1's by adding the new element
+            cnt_one += data[right]
+            right += 1
+            # maintain the length of the window to ones
+            if right - left &gt; ones:
+                # updating the number of 1's by removing the oldest element
+                cnt_one -= data[left]
+                left += 1
+            # record the maximum number of 1's in the window
+            max_one = max(max_one, cnt_one)
+        return ones - max_one
+</code></pre>
+<h4 id="lc-763-partition-labels-template-custom-greedy-sliding-window" tabindex="-1"><a class="header-anchor" href="#lc-763-partition-labels-template-custom-greedy-sliding-window"><span>LC 763: Partition Labels (Template: Custom Greedy + Sliding Window)</span></a></h4>
+<pre><code class="language-java">// java
+// LC 763 Partition Labels
+
+// V0-2
+// IDEA: GREEDY + hashMap record last idx + sliding window (fixed by gpt)
+public List&lt;Integer&gt; partitionLabels_0_2(String s) {
+    List&lt;Integer&gt; res = new ArrayList&lt;&gt;();
+
+    if (s == null || s.length() == 0) {
+        return res;
+    }
+
+    // Map each character to its last index
+    Map&lt;Character, Integer&gt; lastIndexMap = new HashMap&lt;&gt;();
+    for (int i = 0; i &lt; s.length(); i++) {
+        lastIndexMap.put(s.charAt(i), i);
+    }
+
+    int l = 0;
+    while (l &lt; s.length()) {
+        int end = lastIndexMap.get(s.charAt(l));
+        int r = l;
+
+        // Expand the window to include all characters in the current segment
+        while (r &lt; end) {
+            end = Math.max(end, lastIndexMap.get(s.charAt(r)));
+            r++;
+        }
+
+        res.add(end - l + 1);
+        l = end + 1;
+    }
+
+    return res;
+}
+</code></pre>
+<h3 id="lc-1838-frequency-of-the-most-frequent-element" tabindex="-1"><a class="header-anchor" href="#lc-1838-frequency-of-the-most-frequent-element"><span>LC 1838 Frequency of the Most Frequent Element</span></a></h3>
+<pre><code class="language-java">    public int maxFrequency_0_1(int[] nums, int k) {
+        /**
+         *
+         * Sort nums in non-decreasing order.
+         * Sorting is crucial — when array is sorted,
+         * if we want to raise several elements
+         * to match some target value,
+         * the cheapest target to aim for is
+         * always the current rightmost value in a sorted window.
+         */
+        Arrays.sort(nums); // sort ascending
+
+        /**
+         * Maintain the `sum of the current sliding window. `
+         * Use long to prevent integer overflow
+         * if nums values and window size are large.
+         *
+         *
+         * -&gt; windowSum: sum of cur slide window
+         */
+        long windowSum = 0; // use long to avoid overflow
+        // left is the left index of the sliding window. res stores the best (maximum) window size found so far.
+        // Initialize res = 1 because at least one element always fits.
+        int left = 0;
+        int res = 1;
+
+        for (int right = 0; right &lt; nums.length; right++) {
+            windowSum += nums[right];
+
+            /**
+             *  NOTE !!! core logic:
+             *
+             *  This computes the cost to make every element in window [left..right] equal to nums[right]:
+             *
+             *   - nums[right] * windowSize is the total value
+             *     if every element became nums[right].
+             *   - Subtract windowSum (the current total) to
+             *     get how much increment is needed.
+             *
+             * If this cost exceeds k, the current window is
+             *  not achievable with at most k increments,
+             *  so we must shrink it from the left.
+             *
+             *
+             * Important: cast nums[right] to long (done by (long)) to avoid overflow in product.
+             *
+             */
+            // cost to make all numbers in window [left..right] equal to nums[right]:
+            // cost = nums[right] * windowSize - windowSum
+            // if cost &gt; k, shrink from the left
+            /**  NOTE !!
+             *
+             *  nums[right] * (right - left + 1):  how much increment needed
+             *
+             */
+            while ((long) nums[right] * (right - left + 1) - windowSum &gt; k) {
+                /**
+                 * Remove the leftmost element from the window sum because we are going to increment left.
+                 */
+                windowSum -= nums[left];
+                left++;
+            }
+
+            // update max length
+            res = Math.max(res, right - left + 1);
+        }
+
+        return res;
+    }
+</code></pre>
+<h2 id="4-core-patterns-quick-reference" tabindex="-1"><a class="header-anchor" href="#4-core-patterns-quick-reference"><span>4) Core Patterns &amp; Quick Reference</span></a></h2>
+<blockquote>
+<p><strong>📌 Read this section after reviewing the templates (section 1) and before diving into detailed examples (sections 2-3).</strong></p>
+</blockquote>
+<h3 id="4-1-template-quick-reference" tabindex="-1"><a class="header-anchor" href="#4-1-template-quick-reference"><span>4.1) Template Quick Reference</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>Template</th>
+<th>Time</th>
+<th>Space</th>
+<th>Key Pattern</th>
+<th>When to Use</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Fixed Size</strong></td>
+<td>O(n)</td>
+<td>O(k)</td>
+<td><code>for i in range(n)</code></td>
+<td>Window size predetermined</td>
+</tr>
+<tr>
+<td><strong>Variable Max</strong></td>
+<td>O(n)</td>
+<td>O(k)</td>
+<td><code>for-while</code> expand-contract</td>
+<td>Find maximum valid length</td>
+</tr>
+<tr>
+<td><strong>Variable Min</strong></td>
+<td>O(n)</td>
+<td>O(k)</td>
+<td><code>while-while</code> contract-expand</td>
+<td>Find minimum valid length</td>
+</tr>
+<tr>
+<td><strong>Counting</strong></td>
+<td>O(n)</td>
+<td>O(k)</td>
+<td><code>for</code> with <code>count += right-left+1</code></td>
+<td>Count subarrays/substrings</td>
+</tr>
+</tbody>
+</table>
+<h3 id="4-2-common-patterns-tricks" tabindex="-1"><a class="header-anchor" href="#4-2-common-patterns-tricks"><span>4.2) Common Patterns &amp; Tricks</span></a></h3>
+<h4 id="character-frequency-tracking" tabindex="-1"><a class="header-anchor" href="#character-frequency-tracking"><span><strong>Character Frequency Tracking</strong></span></a></h4>
+<pre><code class="language-python"># Track character counts in window
+window = {}
+window[char] = window.get(char, 0) + 1
+
+# Remove character from window
+window[char] -= 1
+if window[char] == 0:
+    del window[char]
+</code></pre>
+<h4 id="validity-conditions" tabindex="-1"><a class="header-anchor" href="#validity-conditions"><span><strong>Validity Conditions</strong></span></a></h4>
+<pre><code class="language-python"># Common validity checks
+def is_valid_permutation(window, target):
+    return window == target
+
+def is_valid_distinct_k(window, k):
+    return len(window) &lt;= k
+
+def is_valid_sum(current_sum, target):
+    return current_sum &gt;= target
+</code></pre>
+<h4 id="result-updates" tabindex="-1"><a class="header-anchor" href="#result-updates"><span><strong>Result Updates</strong></span></a></h4>
+<pre><code class="language-python"># Maximum length problems
+max_len = max(max_len, right - left + 1)
+
+# Minimum length problems  
+if is_valid:
+    min_len = min(min_len, right - left + 1)
+
+# Counting problems
+count += right - left + 1  # All subarrays ending at 'right'
+</code></pre>
+<h3 id="4-3-problem-solving-steps" tabindex="-1"><a class="header-anchor" href="#4-3-problem-solving-steps"><span>4.3) Problem-Solving Steps</span></a></h3>
+<ol>
+<li><strong>Identify Pattern</strong>: Fixed size, variable max/min, or counting?</li>
+<li><strong>Choose Template</strong>: Select appropriate template based on pattern</li>
+<li><strong>Define Window State</strong>: HashMap, set, sum, or counter?</li>
+<li><strong>Define Validity</strong>: What makes the window valid/invalid?</li>
+<li><strong>Update Logic</strong>: When and how to update the result?</li>
+</ol>
+<h3 id="4-4-common-mistakes-tips" tabindex="-1"><a class="header-anchor" href="#4-4-common-mistakes-tips"><span>4.4) Common Mistakes &amp; Tips</span></a></h3>
+<p><strong>🚫 Common Mistakes:</strong></p>
+<ul>
+<li>Wrong loop structure (using wrong template)</li>
+<li>Forgetting to handle window state correctly</li>
+<li>Incorrect validity condition logic</li>
+<li>Missing edge cases (empty input, single element)</li>
+</ul>
+<p><strong>✅ Best Practices:</strong></p>
+<ul>
+<li>Use <code>collections.Counter</code> for character frequency problems</li>
+<li>Always handle the case when removing elements from HashMap</li>
+<li>Test with edge cases: empty string, single character, all same characters</li>
+<li>Consider if the problem needs “exactly k” vs “at most k”</li>
+<li>For “exactly k” problems: use “at most k - at most (k-1)”</li>
+</ul>
+<h3 id="4-5-time-space-complexity-analysis" tabindex="-1"><a class="header-anchor" href="#4-5-time-space-complexity-analysis"><span>4.5) Time &amp; Space Complexity Analysis</span></a></h3>
+<ul>
+<li><strong>Time</strong>: O(n) - each element visited at most twice</li>
+<li><strong>Space</strong>: O(k) where k is window size or number of unique elements</li>
+<li><strong>Optimization</strong>: Use arrays instead of HashMaps when character set is limited (e.g., only lowercase letters)</li>
+</ul>
+<h3 id="4-6-related-algorithms" tabindex="-1"><a class="header-anchor" href="#4-6-related-algorithms"><span>4.6) Related Algorithms</span></a></h3>
+<ul>
+<li><strong>Two Pointers</strong>: Foundation for sliding window</li>
+<li><strong>Hash Table</strong>: For frequency tracking</li>
+<li><strong>Deque</strong>: For sliding window maximum/minimum</li>
+<li><strong>Prefix Sum</strong>: For sum-based sliding window problems</li>
+</ul>
+<h3 id="4-7-additional-template-examples-advanced-java-reference" tabindex="-1"><a class="header-anchor" href="#4-7-additional-template-examples-advanced-java-reference"><span>4.7) Additional Template Examples (Advanced Java Reference)</span></a></h3>
+<h4 id="lc-1004-max-consecutive-ones-iii-variable-window-max-length" tabindex="-1"><a class="header-anchor" href="#lc-1004-max-consecutive-ones-iii-variable-window-max-length"><span>LC 1004: Max Consecutive Ones III — Variable Window (Max Length)</span></a></h4>
+<blockquote>
+<p>Expand right, shrink left when zero count exceeds k.</p>
+</blockquote>
+<pre><code class="language-java">// LC 1004 - Max Consecutive Ones III
+// IDEA: Sliding window — track zero count, shrink when zeroCnt &gt; k
+// time = O(N), space = O(1)
+public int longestOnes(int[] nums, int k) {
+    int l = 0, zeroCnt = 0, ans = 0;
+    for (int r = 0; r &lt; nums.length; r++) {
+        if (nums[r] == 0) zeroCnt++;
+        while (zeroCnt &gt; k) {
+            if (nums[l] == 0) zeroCnt--;
+            l++;
+        }
+        ans = Math.max(ans, r - l + 1);
+    }
+    return ans;
+}
+</code></pre>
+<h4 id="lc-3-longest-substring-without-repeating-characters-variable-window" tabindex="-1"><a class="header-anchor" href="#lc-3-longest-substring-without-repeating-characters-variable-window"><span>LC 3: Longest Substring Without Repeating Characters — Variable Window</span></a></h4>
+<blockquote>
+<p>Shrink left pointer whenever a duplicate character enters the window.</p>
+</blockquote>
+<pre><code class="language-java">// LC 3 - Longest Substring Without Repeating Characters
+// IDEA: Sliding window with HashSet to track characters in window
+// time = O(N), space = O(min(N, charset))
+public int lengthOfLongestSubstring(String s) {
+    Set&lt;Character&gt; set = new HashSet&lt;&gt;();
+    int l = 0, ans = 0;
+    for (int r = 0; r &lt; s.length(); r++) {
+        while (set.contains(s.charAt(r))) {
+            set.remove(s.charAt(l++));
+        }
+        set.add(s.charAt(r));
+        ans = Math.max(ans, r - l + 1);
+    }
+    return ans;
+}
+</code></pre>
+<h4 id="lc-76-minimum-window-substring-variable-window-min-length" tabindex="-1"><a class="header-anchor" href="#lc-76-minimum-window-substring-variable-window-min-length"><span>LC 76: Minimum Window Substring — Variable Window (Min Length)</span></a></h4>
+<blockquote>
+<p>Expand to include all required chars, then shrink to minimize window.</p>
+</blockquote>
+<pre><code class="language-java">// LC 76 - Minimum Window Substring
+// IDEA: Sliding window with frequency maps; shrink when window is valid
+// time = O(N + M), space = O(N + M)
+public String minWindow(String s, String t) {
+    Map&lt;Character, Integer&gt; need = new HashMap&lt;&gt;(), window = new HashMap&lt;&gt;();
+    for (char c : t.toCharArray()) need.merge(c, 1, Integer::sum);
+    int l = 0, valid = 0, start = 0, minLen = Integer.MAX_VALUE;
+    for (int r = 0; r &lt; s.length(); r++) {
+        char c = s.charAt(r);
+        window.merge(c, 1, Integer::sum);
+        if (need.containsKey(c) &amp;&amp; window.get(c).equals(need.get(c))) valid++;
+        while (valid == need.size()) {
+            if (r - l + 1 &lt; minLen) { minLen = r - l + 1; start = l; }
+            char d = s.charAt(l++);
+            if (need.containsKey(d)) {
+                if (window.get(d).equals(need.get(d))) valid--;
+                window.merge(d, -1, Integer::sum);
+            }
+        }
+    }
+    return minLen == Integer.MAX_VALUE ? &quot;&quot; : s.substring(start, start + minLen);
+}
+</code></pre>
+<h4 id="lc-567-permutation-in-string-fixed-window-anagram-check" tabindex="-1"><a class="header-anchor" href="#lc-567-permutation-in-string-fixed-window-anagram-check"><span>LC 567: Permutation in String — Fixed Window Anagram Check</span></a></h4>
+<blockquote>
+<p>Maintain character frequency of window size len(s1); check if it matches s1’s freq.</p>
+</blockquote>
+<pre><code class="language-java">// LC 567 - Permutation in String
+// IDEA: Fixed sliding window — track char frequencies, check match
+// time = O(N), space = O(1)
+public boolean checkInclusion(String s1, String s2) {
+    if (s1.length() &gt; s2.length()) return false;
+    int[] need = new int[26], window = new int[26];
+    for (char c : s1.toCharArray()) need[c-'a']++;
+    int k = s1.length();
+    for (int i = 0; i &lt; s2.length(); i++) {
+        window[s2.charAt(i)-'a']++;
+        if (i &gt;= k) window[s2.charAt(i-k)-'a']--;
+        if (Arrays.equals(need, window)) return true;
+    }
+    return false;
+}
+</code></pre>
+<h4 id="lc-438-find-all-anagrams-in-a-string-fixed-window" tabindex="-1"><a class="header-anchor" href="#lc-438-find-all-anagrams-in-a-string-fixed-window"><span>LC 438: Find All Anagrams in a String — Fixed Window</span></a></h4>
+<blockquote>
+<p>Same as LC 567 but collect all starting indices where anagram window matches.</p>
+</blockquote>
+<pre><code class="language-java">// LC 438 - Find All Anagrams in a String
+// IDEA: Fixed sliding window — collect all positions where window = anagram
+// time = O(N), space = O(1)
+public List&lt;Integer&gt; findAnagrams(String s, String p) {
+    List&lt;Integer&gt; result = new ArrayList&lt;&gt;();
+    if (s.length() &lt; p.length()) return result;
+    int[] need = new int[26], window = new int[26];
+    for (char c : p.toCharArray()) need[c-'a']++;
+    int k = p.length();
+    for (int i = 0; i &lt; s.length(); i++) {
+        window[s.charAt(i)-'a']++;
+        if (i &gt;= k) window[s.charAt(i-k)-'a']--;
+        if (Arrays.equals(need, window)) result.add(i - k + 1);
+    }
+    return result;
+}
+</code></pre>
+<h4 id="lc-209-minimum-size-subarray-sum-variable-window-min-length" tabindex="-1"><a class="header-anchor" href="#lc-209-minimum-size-subarray-sum-variable-window-min-length"><span>LC 209: Minimum Size Subarray Sum — Variable Window (Min Length)</span></a></h4>
+<blockquote>
+<p>Expand right; once sum &gt;= target, shrink left to find minimum window length.</p>
+</blockquote>
+<pre><code class="language-java">// LC 209 - Minimum Size Subarray Sum
+// IDEA: Sliding window — shrink left when sum &gt;= target, record min length
+// time = O(N), space = O(1)
+public int minSubArrayLen(int target, int[] nums) {
+    int l = 0, sum = 0, minLen = Integer.MAX_VALUE;
+    for (int r = 0; r &lt; nums.length; r++) {
+        sum += nums[r];
+        while (sum &gt;= target) {
+            minLen = Math.min(minLen, r - l + 1);
+            sum -= nums[l++];
+        }
+    }
+    return minLen == Integer.MAX_VALUE ? 0 : minLen;
+}
+</code></pre>
+<h4 id="lc-424-longest-repeating-character-replacement-variable-window" tabindex="-1"><a class="header-anchor" href="#lc-424-longest-repeating-character-replacement-variable-window"><span>LC 424: Longest Repeating Character Replacement — Variable Window</span></a></h4>
+<blockquote>
+<p>Window is valid if (window size - max frequency) &lt;= k; expand and track max freq.</p>
+</blockquote>
+<pre><code class="language-java">// LC 424 - Longest Repeating Character Replacement
+// IDEA: Sliding window — valid if windowSize - maxFreq &lt;= k
+// time = O(N), space = O(1)
+public int characterReplacement(String s, int k) {
+    int[] freq = new int[26];
+    int l = 0, maxFreq = 0, ans = 0;
+    for (int r = 0; r &lt; s.length(); r++) {
+        freq[s.charAt(r)-'A']++;
+        maxFreq = Math.max(maxFreq, freq[s.charAt(r)-'A']);
+        while ((r - l + 1) - maxFreq &gt; k) freq[s.charAt(l++)-'A']--;
+        ans = Math.max(ans, r - l + 1);
+    }
+    return ans;
+}
+</code></pre>
+<h4 id="lc-713-subarray-product-less-than-k-sliding-window-count" tabindex="-1"><a class="header-anchor" href="#lc-713-subarray-product-less-than-k-sliding-window-count"><span>LC 713: Subarray Product Less Than K — Sliding Window Count</span></a></h4>
+<blockquote>
+<p>Shrink left when product &gt;= k; each valid right position contributes (r-l+1) subarrays.</p>
+</blockquote>
+<pre><code class="language-java">// LC 713 - Subarray Product Less Than K
+// IDEA: Sliding window — count subarrays ending at r with product &lt; k
+// time = O(N), space = O(1)
+public int numSubarrayProductLessThanK(int[] nums, int k) {
+    if (k &lt;= 1) return 0;
+    int l = 0, product = 1, count = 0;
+    for (int r = 0; r &lt; nums.length; r++) {
+        product *= nums[r];
+        while (product &gt;= k) product /= nums[l++];
+        count += r - l + 1; // all subarrays ending at r with left in [l, r]
+    }
+    return count;
+}
+</code></pre>
+<h4 id="lc-239-sliding-window-maximum-monotonic-deque" tabindex="-1"><a class="header-anchor" href="#lc-239-sliding-window-maximum-monotonic-deque"><span>LC 239: Sliding Window Maximum — Monotonic Deque</span></a></h4>
+<blockquote>
+<p>Maintain a decreasing deque of indices; front is always the max of current window.</p>
+</blockquote>
+<pre><code class="language-java">// LC 239 - Sliding Window Maximum
+// IDEA: Monotonic decreasing deque — front = max of current window
+// time = O(N), space = O(k)
+public int[] maxSlidingWindow(int[] nums, int k) {
+    int n = nums.length;
+    int[] ans = new int[n - k + 1];
+    Deque&lt;Integer&gt; deque = new ArrayDeque&lt;&gt;(); // stores indices
+    for (int i = 0; i &lt; n; i++) {
+        // remove out-of-window indices
+        while (!deque.isEmpty() &amp;&amp; deque.peekFirst() &lt; i - k + 1) deque.pollFirst();
+        // maintain decreasing order
+        while (!deque.isEmpty() &amp;&amp; nums[deque.peekLast()] &lt; nums[i]) deque.pollLast();
+        deque.offerLast(i);
+        if (i &gt;= k - 1) ans[i - k + 1] = nums[deque.peekFirst()];
+    }
+    return ans;
+}
+</code></pre>
+<h4 id="lc-1838-frequency-of-the-most-frequent-element-sliding-window" tabindex="-1"><a class="header-anchor" href="#lc-1838-frequency-of-the-most-frequent-element-sliding-window"><span>LC 1838: Frequency of the Most Frequent Element — Sliding Window</span></a></h4>
+<blockquote>
+<p>Sort array; expand right, shrink left when cost to equalize window exceeds k.</p>
+</blockquote>
+<pre><code class="language-java">// LC 1838 - Frequency of the Most Frequent Element
+// IDEA: Sort + sliding window — equalize all elements in window to nums[r]
+// time = O(N log N), space = O(1)
+public int maxFrequency(int[] nums, int k) {
+    Arrays.sort(nums);
+    int l = 0, ans = 1;
+    long windowSum = 0;
+    for (int r = 1; r &lt; nums.length; r++) {
+        windowSum += nums[r];
+        // cost to raise all window elements to nums[r]
+        while ((long) nums[r] * (r - l + 1) - windowSum &gt; k) {
+            windowSum -= nums[l++];
+        }
+        ans = Math.max(ans, r - l + 1);
+    }
+    return ans;
+}
+</code></pre>
+<h4 id="lc-159-longest-substring-with-at-most-two-distinct-characters-variable-window" tabindex="-1"><a class="header-anchor" href="#lc-159-longest-substring-with-at-most-two-distinct-characters-variable-window"><span>LC 159: Longest Substring with At Most Two Distinct Characters — Variable Window</span></a></h4>
+<blockquote>
+<p>Shrink left when distinct chars in window exceed 2; use frequency map.</p>
+</blockquote>
+<pre><code class="language-java">// LC 159 - Longest Substring with At Most Two Distinct Characters
+// IDEA: Sliding window with HashMap — shrink when distinct &gt; 2
+// time = O(N), space = O(1)
+public int lengthOfLongestSubstringTwoDistinct(String s) {
+    Map&lt;Character, Integer&gt; freq = new HashMap&lt;&gt;();
+    int l = 0, ans = 0;
+    for (int r = 0; r &lt; s.length(); r++) {
+        freq.merge(s.charAt(r), 1, Integer::sum);
+        while (freq.size() &gt; 2) {
+            char lc = s.charAt(l);
+            freq.merge(lc, -1, Integer::sum);
+            if (freq.get(lc) == 0) freq.remove(lc);
+            l++;
+        }
+        ans = Math.max(ans, r - l + 1);
+    }
+    return ans;
+}
+</code></pre>
+
+      </div>
+      <div class="cheatsheet-footer">
+        <a href="../cheatsheets.html" class="back-link">← Back to Cheat Sheets</a>
+        <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/sliding_window.md" class="github-edit" target="_blank">
+          Edit on GitHub →
+        </a>
+      </div>
+    <nav class="prev-next"><a href="shortest_path_comparison.html" class="prev-link">← Shortest Path Comparison</a><a href="sort.html" class="next-link">Sort →</a></nav>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>CS_basics - Computer Science Fundamentals & Interview Preparation</p>
+      <p>
+        <a href="https://github.com/yennanliu/CS_basics">GitHub</a> •
+        <a href="https://github.com/yennanliu/CS_basics/tree/master/doc">Documentation</a> •
+        <a href="https://github.com/yennanliu/CS_basics/issues">Report Issues</a>
+      </p>
+    </div>
+  </footer>
+</body>
+</html>

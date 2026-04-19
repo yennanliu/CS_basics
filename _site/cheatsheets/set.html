@@ -1,0 +1,1303 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Set - CS_basics</title>
+  <meta name="description" content="Computer Science fundamentals: algorithms, data structures, system design, and LeetCode solutions">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>CS</text></svg>">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="../vendor/fonts.css">
+  <link rel="stylesheet" href="../vendor/highlight/github-dark.min.css">
+  <script src="../vendor/highlight/highlight.min.js"></script>
+  <script>
+  // Apply theme before render to prevent flash
+  (function() {
+    var saved = localStorage.getItem('theme');
+    if (saved === 'dark' || (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      document.documentElement.setAttribute('data-theme', 'dark');
+    }
+  })();
+  </script>
+  <script>document.addEventListener('DOMContentLoaded', function() {
+    hljs.highlightAll();
+    document.querySelectorAll('pre code').forEach(function(codeEl) {
+      var pre = codeEl.parentElement;
+      var lang = '';
+      var cls = codeEl.className || '';
+      var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
+      if (m) lang = m[1];
+      var wrapper = document.createElement('div');
+      wrapper.className = 'code-block-wrapper';
+      pre.parentNode.insertBefore(wrapper, pre);
+      var header = document.createElement('div');
+      header.className = 'code-block-header';
+      if (lang) {
+        var label = document.createElement('span');
+        label.className = 'code-lang-label';
+        label.textContent = lang;
+        header.appendChild(label);
+      } else {
+        header.appendChild(document.createElement('span'));
+      }
+      var btn = document.createElement('button');
+      btn.className = 'copy-btn';
+      btn.textContent = 'Copy';
+      btn.addEventListener('click', function() {
+        navigator.clipboard.writeText(codeEl.textContent).then(function() {
+          btn.textContent = 'Copied!';
+          btn.classList.add('copied');
+          setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+        });
+      });
+      header.appendChild(btn);
+      wrapper.appendChild(header);
+      wrapper.appendChild(pre);
+    });
+    document.querySelectorAll('table').forEach(function(table) {
+      if (!table.parentElement.classList.contains('table-wrap')) {
+        var wrapper = document.createElement('div');
+        wrapper.className = 'table-wrap';
+        table.parentNode.insertBefore(wrapper, table);
+        wrapper.appendChild(table);
+      }
+    });
+    // Reading progress bar
+    var progressBar = document.getElementById('reading-progress');
+    if (progressBar) {
+      window.addEventListener('scroll', function() {
+        var winScroll = document.documentElement.scrollTop;
+        var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        progressBar.style.width = height > 0 ? (winScroll / height * 100) + '%' : '0%';
+      });
+    }
+    // Dark mode toggle
+    var toggle = document.getElementById('theme-toggle');
+    if (toggle) {
+      var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      toggle.textContent = isDark ? '☀️' : '🌙';
+      toggle.addEventListener('click', function() {
+        var dark = document.documentElement.getAttribute('data-theme') === 'dark';
+        if (dark) {
+          document.documentElement.removeAttribute('data-theme');
+          localStorage.setItem('theme', 'light');
+          toggle.textContent = '🌙';
+        } else {
+          document.documentElement.setAttribute('data-theme', 'dark');
+          localStorage.setItem('theme', 'dark');
+          toggle.textContent = '☀️';
+        }
+      });
+    }
+  });</script>
+</head>
+<body>
+  <div class="progress-container"><div class="progress-bar" id="reading-progress"></div></div>
+  <nav class="navbar">
+    <div class="container">
+      <div class="nav-brand">
+        <span class="nav-icon">💻</span>
+        <span class="nav-title">CS_basics</span>
+      </div>
+      <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+      <div class="nav-links">
+        <a href="../index.html" class="">Home</a>
+        <a href="../cheatsheets.html" class="active">Cheat Sheets</a>
+        <a href="../patterns.html" class="">Pattern Recognition</a>
+        <a href="../faqs.html" class="">FAQs</a>
+        <a href="../resources.html" class="">Resources</a>
+        <a href="../lc-explorer.html" class="">LC Explorer</a>
+        <a href="../lc-random-picker.html" class="">🎲 Random Picker</a>
+        <a href="../algo_demo/index.html" class="">Visualizer</a>
+        <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">&#127769;</button>
+        <a href="https://github.com/yennanliu/CS_basics" target="_blank" class="github-link" aria-label="GitHub">
+          <svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor">
+            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container">
+    <div class="content">
+      
+      <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">Set</span></nav>
+      <div class="cheatsheet-header">
+        <h1>Set</h1>
+        <span class="last-updated">Last updated: Dec 7, 2025</span>
+      </div>
+      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#overview">Overview</a></li><li class="toc-sub"><a href="#key-properties">Key Properties</a></li><li><a href="#0-concept">0) Concept</a></li><li class="toc-sub"><a href="#0-1-types">0-1) Types</a></li><li class="toc-sub"><a href="#implementation-comparison">Implementation Comparison</a></li><li class="toc-sub"><a href="#0-2-pattern">0-2) Pattern</a></li><li><a href="#1-general-form">1) General form</a></li><li class="toc-sub"><a href="#1-1-basic-op">1-1) Basic OP</a></li><li><a href="#2-lc-example">2) LC Example</a></li><li class="toc-sub"><a href="#2-1-lowest-common-ancestor-of-a-binary-tree-iii">2-1) Lowest Common Ancestor of a Binary Tree III</a></li><li class="toc-sub"><a href="#2-2-contains-duplicate">2-2) Contains Duplicate</a></li><li class="toc-sub"><a href="#2-3-intersection-of-two-arrays">2-3) Intersection of Two Arrays</a></li><li class="toc-sub"><a href="#2-4-happy-number">2-4) Happy Number</a></li><li class="toc-sub"><a href="#2-5-longest-consecutive-sequence">2-5) Longest Consecutive Sequence</a></li><li class="toc-sub"><a href="#2-6-single-number">2-6) Single Number</a></li><li class="toc-sub"><a href="#2-7-valid-sudoku">2-7) Valid Sudoku</a></li><li class="toc-sub"><a href="#2-8-number-of-distinct-islands">2-8) Number of Distinct Islands</a></li><li class="toc-sub"><a href="#2-9-linked-list-cycle-detection">2-9) Linked List Cycle Detection</a></li><li class="toc-sub"><a href="#2-10-word-pattern">2-10) Word Pattern</a></li><li><a href="#problem-categories">Problem Categories</a></li><li class="toc-sub"><a href="#category-1-duplicate-detection-10-problems">Category 1: Duplicate Detection (10 problems)</a></li><li class="toc-sub"><a href="#category-2-set-operations-8-problems">Category 2: Set Operations (8 problems)</a></li><li class="toc-sub"><a href="#category-3-path-ancestry-tracking-6-problems">Category 3: Path/Ancestry Tracking (6 problems)</a></li><li class="toc-sub"><a href="#category-4-sequence-problems-7-problems">Category 4: Sequence Problems (7 problems)</a></li><li class="toc-sub"><a href="#category-5-graph-island-problems-5-problems">Category 5: Graph/Island Problems (5 problems)</a></li><li class="toc-sub"><a href="#category-6-string-pattern-matching-6-problems">Category 6: String/Pattern Matching (6 problems)</a></li><li><a href="#decision-framework">Decision Framework</a></li><li class="toc-sub"><a href="#when-to-use-set-vs-other-data-structures">When to Use Set vs Other Data Structures</a></li><li class="toc-sub"><a href="#set-vs-hashmap-choice">Set vs HashMap Choice</a></li><li class="toc-sub"><a href="#python-set-vs-java-set">Python Set vs Java Set</a></li><li><a href="#summary-best-practices">Summary &amp; Best Practices</a></li><li class="toc-sub"><a href="#key-takeaways">Key Takeaways</a></li><li class="toc-sub"><a href="#interview-tips">Interview Tips</a></li></ul></div>
+      <div class="cheatsheet-content">
+        <h1 id="set" tabindex="-1"><a class="header-anchor" href="#set"><span>Set</span></a></h1>
+<p><img src="../doc/pic/set_operations.png"></p></p>
+<h2 id="overview" tabindex="-1"><a class="header-anchor" href="#overview"><span>Overview</span></a></h2>
+<p><strong>Set</strong> is a collection data structure that stores unique elements with no duplicates. It provides efficient membership testing, insertion, and deletion operations.</p>
+<h3 id="key-properties" tabindex="-1"><a class="header-anchor" href="#key-properties"><span>Key Properties</span></a></h3>
+<ul>
+<li><strong>Time Complexity</strong>:
+<ul>
+<li>Add: O(1) average, O(n) worst</li>
+<li>Remove: O(1) average, O(n) worst</li>
+<li>Contains: O(1) average, O(n) worst</li>
+<li>Union/Intersection: O(min(len(s1), len(s2)))</li>
+</ul>
+</li>
+<li><strong>Space Complexity</strong>: O(n)</li>
+<li><strong>Core Features</strong>: No duplicates, unordered (HashSet), O(1) lookups</li>
+<li><strong>When to Use</strong>: Remove duplicates, membership testing, set operations (union, intersection, difference)</li>
+</ul>
+<h2 id="0-concept" tabindex="-1"><a class="header-anchor" href="#0-concept"><span>0) Concept</span></a></h2>
+<h3 id="0-1-types" tabindex="-1"><a class="header-anchor" href="#0-1-types"><span>0-1) Types</span></a></h3>
+<h4 id="hashset" tabindex="-1"><a class="header-anchor" href="#hashset"><span>HashSet</span></a></h4>
+<ul>
+<li><strong>Python</strong>: <code>set()</code> - unordered, fastest operations</li>
+<li><strong>Java</strong>: <code>HashSet&lt;T&gt;</code> - backed by HashMap</li>
+<li><strong>Time</strong>: O(1) average for add/remove/contains</li>
+<li><strong>Use case</strong>: When order doesn’t matter, need fast lookups</li>
+</ul>
+<h4 id="linkedhashset" tabindex="-1"><a class="header-anchor" href="#linkedhashset"><span>LinkedHashSet</span></a></h4>
+<ul>
+<li><strong>Python</strong>: No native support (use OrderedDict keys)</li>
+<li><strong>Java</strong>: <code>LinkedHashSet&lt;T&gt;</code> - maintains insertion order</li>
+<li><strong>Time</strong>: O(1) for operations, preserves order</li>
+<li><strong>Use case</strong>: Need set operations + insertion order</li>
+</ul>
+<h4 id="treeset" tabindex="-1"><a class="header-anchor" href="#treeset"><span>TreeSet</span></a></h4>
+<ul>
+<li><strong>Python</strong>: No native support (use sorted containers)</li>
+<li><strong>Java</strong>: <code>TreeSet&lt;T&gt;</code> - sorted, uses Red-Black tree</li>
+<li><strong>Time</strong>: O(log n) for add/remove/contains</li>
+<li><strong>Use case</strong>: Need sorted elements, range queries</li>
+</ul>
+<h3 id="implementation-comparison" tabindex="-1"><a class="header-anchor" href="#implementation-comparison"><span>Implementation Comparison</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Ordering</th>
+<th>Time</th>
+<th>Space</th>
+<th>Use Case</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>HashSet</strong></td>
+<td>None</td>
+<td>O(1)</td>
+<td>O(n)</td>
+<td>Fast lookups, no order needed</td>
+</tr>
+<tr>
+<td><strong>LinkedHashSet</strong></td>
+<td>Insertion</td>
+<td>O(1)</td>
+<td>O(n)</td>
+<td>Preserve insertion order</td>
+</tr>
+<tr>
+<td><strong>TreeSet</strong></td>
+<td>Sorted</td>
+<td>O(log n)</td>
+<td>O(n)</td>
+<td>Sorted data, range queries</td>
+</tr>
+</tbody>
+</table>
+<h3 id="0-2-pattern" tabindex="-1"><a class="header-anchor" href="#0-2-pattern"><span>0-2) Pattern</span></a></h3>
+<h4 id="pattern-1-set-operations" tabindex="-1"><a class="header-anchor" href="#pattern-1-set-operations"><span>Pattern 1: Set Operations</span></a></h4>
+<pre><code class="language-python"># Union, Intersection, Difference
+s1 = {1, 2, 3}
+s2 = {2, 3, 4}
+
+union = s1 | s2          # {1, 2, 3, 4}
+intersection = s1 &amp; s2   # {2, 3}
+difference = s1 - s2     # {1}
+symmetric_diff = s1 ^ s2 # {1, 4}
+</code></pre>
+<h4 id="pattern-2-duplicate-detection" tabindex="-1"><a class="header-anchor" href="#pattern-2-duplicate-detection"><span>Pattern 2: Duplicate Detection</span></a></h4>
+<pre><code class="language-python"># Check for duplicates in array
+def has_duplicate(nums):
+    return len(nums) != len(set(nums))
+
+# Find duplicates
+def find_duplicates(nums):
+    seen = set()
+    duplicates = set()
+    for num in nums:
+        if num in seen:
+            duplicates.add(num)
+        seen.add(num)
+    return duplicates
+</code></pre>
+<h4 id="pattern-3-two-set-tracking" tabindex="-1"><a class="header-anchor" href="#pattern-3-two-set-tracking"><span>Pattern 3: Two-Set Tracking</span></a></h4>
+<pre><code class="language-python"># Track visited and current path (for cycle detection)
+def has_cycle(graph, start):
+    visited = set()
+    current_path = set()
+
+    def dfs(node):
+        if node in current_path:
+            return True  # Cycle detected
+        if node in visited:
+            return False
+
+        visited.add(node)
+        current_path.add(node)
+
+        for neighbor in graph[node]:
+            if dfs(neighbor):
+                return True
+
+        current_path.remove(node)
+        return False
+
+    return dfs(start)
+</code></pre>
+<h4 id="pattern-4-set-for-path-ancestry-tracking" tabindex="-1"><a class="header-anchor" href="#pattern-4-set-for-path-ancestry-tracking"><span>Pattern 4: Set for Path/Ancestry Tracking</span></a></h4>
+<pre><code class="language-python"># LC 1650 - Find LCA using set to track ancestors
+def lowestCommonAncestor(p, q):
+    # Track all ancestors of p
+    ancestors = set()
+    while p:
+        ancestors.add(p)
+        p = p.parent
+
+    # Find first common ancestor
+    while q:
+        if q in ancestors:
+            return q
+        q = q.parent
+    return None
+</code></pre>
+<h2 id="1-general-form" tabindex="-1"><a class="header-anchor" href="#1-general-form"><span>1) General form</span></a></h2>
+<h3 id="1-1-basic-op" tabindex="-1"><a class="header-anchor" href="#1-1-basic-op"><span>1-1) Basic OP</span></a></h3>
+<h4 id="1-1-1-set-creation-and-basic-operations" tabindex="-1"><a class="header-anchor" href="#1-1-1-set-creation-and-basic-operations"><span>1-1-1) Set Creation and Basic Operations</span></a></h4>
+<pre><code class="language-python"># Python
+# Create empty set
+s = set()
+s = {}  # Wrong! This creates a dict
+
+# Create with elements
+s = {1, 2, 3}
+s = set([1, 2, 3])
+s = set(&quot;abc&quot;)  # {'a', 'b', 'c'}
+
+# Add element
+s.add(4)
+
+# Remove element
+s.remove(3)     # Raises KeyError if not exists
+s.discard(3)    # No error if not exists
+s.pop()         # Remove and return arbitrary element
+
+# Check membership
+if 2 in s:
+    print(&quot;Found&quot;)
+
+# Size
+len(s)
+
+# Clear all
+s.clear()
+</code></pre>
+<pre><code class="language-java">// Java
+// Create HashSet
+Set&lt;Integer&gt; set = new HashSet&lt;&gt;();
+
+// Add element
+set.add(1);
+set.add(2);
+set.add(3);
+
+// Remove element
+set.remove(2);
+
+// Check membership
+if (set.contains(1)) {
+    System.out.println(&quot;Found&quot;);
+}
+
+// Size
+int size = set.size();
+
+// Clear
+set.clear();
+
+// Iterate
+for (int num : set) {
+    System.out.println(num);
+}
+</code></pre>
+<h4 id="1-1-2-set-operations" tabindex="-1"><a class="header-anchor" href="#1-1-2-set-operations"><span>1-1-2) Set Operations</span></a></h4>
+<pre><code class="language-python"># Python set operations
+s1 = {1, 2, 3, 4}
+s2 = {3, 4, 5, 6}
+
+# Union (elements in either set)
+union1 = s1 | s2
+union2 = s1.union(s2)           # {1, 2, 3, 4, 5, 6}
+
+# Intersection (elements in both sets)
+inter1 = s1 &amp; s2
+inter2 = s1.intersection(s2)    # {3, 4}
+
+# Difference (elements in s1 but not s2)
+diff1 = s1 - s2
+diff2 = s1.difference(s2)       # {1, 2}
+
+# Symmetric difference (elements in either but not both)
+sym1 = s1 ^ s2
+sym2 = s1.symmetric_difference(s2)  # {1, 2, 5, 6}
+
+# Subset check
+is_subset = s1.issubset(s2)     # False
+is_superset = s1.issuperset(s2) # False
+
+# Disjoint check (no common elements)
+is_disjoint = s1.isdisjoint(s2) # False
+</code></pre>
+<pre><code class="language-java">// Java set operations
+Set&lt;Integer&gt; s1 = new HashSet&lt;&gt;(Arrays.asList(1, 2, 3, 4));
+Set&lt;Integer&gt; s2 = new HashSet&lt;&gt;(Arrays.asList(3, 4, 5, 6));
+
+// Union
+Set&lt;Integer&gt; union = new HashSet&lt;&gt;(s1);
+union.addAll(s2);  // {1, 2, 3, 4, 5, 6}
+
+// Intersection
+Set&lt;Integer&gt; intersection = new HashSet&lt;&gt;(s1);
+intersection.retainAll(s2);  // {3, 4}
+
+// Difference
+Set&lt;Integer&gt; difference = new HashSet&lt;&gt;(s1);
+difference.removeAll(s2);  // {1, 2}
+
+// Subset check
+boolean isSubset = s2.containsAll(s1);  // false
+</code></pre>
+<h4 id="1-1-3-converting-between-collections" tabindex="-1"><a class="header-anchor" href="#1-1-3-converting-between-collections"><span>1-1-3) Converting Between Collections</span></a></h4>
+<pre><code class="language-python"># Python conversions
+arr = [1, 2, 2, 3, 3, 4]
+
+# Array to set (remove duplicates)
+s = set(arr)  # {1, 2, 3, 4}
+
+# Set to array
+arr_unique = list(s)
+
+# Set to sorted array
+arr_sorted = sorted(s)
+
+# String to set
+char_set = set(&quot;hello&quot;)  # {'h', 'e', 'l', 'o'}
+
+# Set to string
+s = {'a', 'b', 'c'}
+string = ''.join(sorted(s))  # 'abc'
+</code></pre>
+<pre><code class="language-java">// Java conversions
+Integer[] arr = {1, 2, 2, 3, 3, 4};
+
+// Array to set
+Set&lt;Integer&gt; set = new HashSet&lt;&gt;(Arrays.asList(arr));
+
+// Set to array
+Integer[] arrUnique = set.toArray(new Integer[0]);
+
+// Set to list
+List&lt;Integer&gt; list = new ArrayList&lt;&gt;(set);
+
+// List to set
+Set&lt;Integer&gt; set2 = new HashSet&lt;&gt;(list);
+</code></pre>
+<h2 id="2-lc-example" tabindex="-1"><a class="header-anchor" href="#2-lc-example"><span>2) LC Example</span></a></h2>
+<h3 id="2-1-lowest-common-ancestor-of-a-binary-tree-iii" tabindex="-1"><a class="header-anchor" href="#2-1-lowest-common-ancestor-of-a-binary-tree-iii"><span>2-1) Lowest Common Ancestor of a Binary Tree III</span></a></h3>
+<pre><code class="language-python"># LC 1650. Lowest Common Ancestor of a Binary Tree III
+# NOTE : there are also dict, recursive.. approaches
+
+# V0''
+# IDEA : set - track ancestry path
+# Time: O(h) where h is tree height
+# Space: O(h) for storing ancestors
+class Solution:
+    def lowestCommonAncestor(self, p, q):
+        # Store all ancestors of p
+        visited = set()
+        while p:
+            visited.add(p)
+            p = p.parent
+
+        # Find first common ancestor with q
+        while q:
+            if q in visited:
+                return q
+            q = q.parent
+</code></pre>
+<h3 id="2-2-contains-duplicate" tabindex="-1"><a class="header-anchor" href="#2-2-contains-duplicate"><span>2-2) Contains Duplicate</span></a></h3>
+<pre><code class="language-python"># LC 217. Contains Duplicate
+# V0
+# IDEA: Set to detect duplicates
+class Solution:
+    def containsDuplicate(self, nums):
+        return len(nums) != len(set(nums))
+
+# V0'
+# IDEA: Build set while checking
+class Solution:
+    def containsDuplicate(self, nums):
+        seen = set()
+        for num in nums:
+            if num in seen:
+                return True
+            seen.add(num)
+        return False
+</code></pre>
+<pre><code class="language-java">// Java
+// LC 217
+public boolean containsDuplicate(int[] nums) {
+    Set&lt;Integer&gt; seen = new HashSet&lt;&gt;();
+    for (int num : nums) {
+        if (seen.contains(num)) {
+            return true;
+        }
+        seen.add(num);
+    }
+    return false;
+}
+</code></pre>
+<h3 id="2-3-intersection-of-two-arrays" tabindex="-1"><a class="header-anchor" href="#2-3-intersection-of-two-arrays"><span>2-3) Intersection of Two Arrays</span></a></h3>
+<pre><code class="language-python"># LC 349. Intersection of Two Arrays
+# V0
+# IDEA: Set intersection
+class Solution:
+    def intersection(self, nums1, nums2):
+        return list(set(nums1) &amp; set(nums2))
+
+# V0'
+# IDEA: Convert to sets and use intersection
+class Solution:
+    def intersection(self, nums1, nums2):
+        set1 = set(nums1)
+        set2 = set(nums2)
+        return list(set1.intersection(set2))
+</code></pre>
+<pre><code class="language-java">// Java
+// LC 349
+public int[] intersection(int[] nums1, int[] nums2) {
+    Set&lt;Integer&gt; set1 = new HashSet&lt;&gt;();
+    for (int num : nums1) {
+        set1.add(num);
+    }
+
+    Set&lt;Integer&gt; result = new HashSet&lt;&gt;();
+    for (int num : nums2) {
+        if (set1.contains(num)) {
+            result.add(num);
+        }
+    }
+
+    return result.stream().mapToInt(i -&gt; i).toArray();
+}
+</code></pre>
+<h3 id="2-4-happy-number" tabindex="-1"><a class="header-anchor" href="#2-4-happy-number"><span>2-4) Happy Number</span></a></h3>
+<pre><code class="language-python"># LC 202. Happy Number
+# V0
+# IDEA: Use set to detect cycles
+class Solution:
+    def isHappy(self, n):
+        def get_next(num):
+            total = 0
+            while num &gt; 0:
+                digit = num % 10
+                total += digit * digit
+                num //= 10
+            return total
+
+        seen = set()
+        while n != 1 and n not in seen:
+            seen.add(n)
+            n = get_next(n)
+
+        return n == 1
+</code></pre>
+<h3 id="2-5-longest-consecutive-sequence" tabindex="-1"><a class="header-anchor" href="#2-5-longest-consecutive-sequence"><span>2-5) Longest Consecutive Sequence</span></a></h3>
+<pre><code class="language-python"># LC 128. Longest Consecutive Sequence
+# V0
+# IDEA: Set for O(1) lookups
+# Time: O(n), Space: O(n)
+class Solution:
+    def longestConsecutive(self, nums):
+        if not nums:
+            return 0
+
+        num_set = set(nums)
+        max_length = 0
+
+        for num in num_set:
+            # Only start counting from sequence start
+            if num - 1 not in num_set:
+                current = num
+                length = 1
+
+                while current + 1 in num_set:
+                    current += 1
+                    length += 1
+
+                max_length = max(max_length, length)
+
+        return max_length
+</code></pre>
+<pre><code class="language-java">// Java
+// LC 128
+public int longestConsecutive(int[] nums) {
+    Set&lt;Integer&gt; numSet = new HashSet&lt;&gt;();
+    for (int num : nums) {
+        numSet.add(num);
+    }
+
+    int maxLength = 0;
+
+    for (int num : numSet) {
+        // Only start from sequence beginning
+        if (!numSet.contains(num - 1)) {
+            int current = num;
+            int length = 1;
+
+            while (numSet.contains(current + 1)) {
+                current++;
+                length++;
+            }
+
+            maxLength = Math.max(maxLength, length);
+        }
+    }
+
+    return maxLength;
+}
+</code></pre>
+<h3 id="2-6-single-number" tabindex="-1"><a class="header-anchor" href="#2-6-single-number"><span>2-6) Single Number</span></a></h3>
+<pre><code class="language-python"># LC 136. Single Number
+# V0
+# IDEA: XOR all numbers (duplicates cancel out)
+class Solution:
+    def singleNumber(self, nums):
+        result = 0
+        for num in nums:
+            result ^= num
+        return result
+
+# V0'
+# IDEA: Set addition/removal
+class Solution:
+    def singleNumber(self, nums):
+        return 2 * sum(set(nums)) - sum(nums)
+</code></pre>
+<h3 id="2-7-valid-sudoku" tabindex="-1"><a class="header-anchor" href="#2-7-valid-sudoku"><span>2-7) Valid Sudoku</span></a></h3>
+<pre><code class="language-python"># LC 36. Valid Sudoku
+# V0
+# IDEA: Use sets to track seen values
+class Solution:
+    def isValidSudoku(self, board):
+        # Track seen elements in rows, cols, boxes
+        seen = set()
+
+        for i in range(9):
+            for j in range(9):
+                if board[i][j] != '.':
+                    val = board[i][j]
+                    box_idx = (i // 3) * 3 + j // 3
+
+                    # Create unique keys for row, col, box
+                    row_key = f&quot;row_{i}_{val}&quot;
+                    col_key = f&quot;col_{j}_{val}&quot;
+                    box_key = f&quot;box_{box_idx}_{val}&quot;
+
+                    if row_key in seen or col_key in seen or box_key in seen:
+                        return False
+
+                    seen.add(row_key)
+                    seen.add(col_key)
+                    seen.add(box_key)
+
+        return True
+</code></pre>
+<h3 id="2-8-number-of-distinct-islands" tabindex="-1"><a class="header-anchor" href="#2-8-number-of-distinct-islands"><span>2-8) Number of Distinct Islands</span></a></h3>
+<pre><code class="language-python"># LC 694. Number of Distinct Islands
+# V0
+# IDEA: Use set to store unique island shapes
+class Solution:
+    def numDistinctIslands(self, grid):
+        if not grid:
+            return 0
+
+        def dfs(i, j, i0, j0):
+            # Record relative position from starting point
+            if (0 &lt;= i &lt; len(grid) and 0 &lt;= j &lt; len(grid[0]) and
+                grid[i][j] == 1):
+                grid[i][j] = 0
+                path.append((i - i0, j - j0))
+                dfs(i+1, j, i0, j0)
+                dfs(i-1, j, i0, j0)
+                dfs(i, j+1, i0, j0)
+                dfs(i, j-1, i0, j0)
+
+        shapes = set()
+        for i in range(len(grid)):
+            for j in range(len(grid[0])):
+                if grid[i][j] == 1:
+                    path = []
+                    dfs(i, j, i, j)
+                    # Convert list to tuple for hashing
+                    shapes.add(tuple(path))
+
+        return len(shapes)
+</code></pre>
+<h3 id="2-9-linked-list-cycle-detection" tabindex="-1"><a class="header-anchor" href="#2-9-linked-list-cycle-detection"><span>2-9) Linked List Cycle Detection</span></a></h3>
+<pre><code class="language-python"># LC 141. Linked List Cycle
+# V0
+# IDEA: Use set to track visited nodes
+class Solution:
+    def hasCycle(self, head):
+        visited = set()
+        current = head
+
+        while current:
+            if current in visited:
+                return True
+            visited.add(current)
+            current = current.next
+
+        return False
+
+# V0'
+# IDEA: Two pointers (Floyd's algorithm) - O(1) space
+class Solution:
+    def hasCycle(self, head):
+        if not head:
+            return False
+
+        slow = head
+        fast = head.next
+
+        while slow != fast:
+            if not fast or not fast.next:
+                return False
+            slow = slow.next
+            fast = fast.next.next
+
+        return True
+</code></pre>
+<h3 id="2-10-word-pattern" tabindex="-1"><a class="header-anchor" href="#2-10-word-pattern"><span>2-10) Word Pattern</span></a></h3>
+<pre><code class="language-python"># LC 290. Word Pattern
+# V0
+# IDEA: Use 2 sets to track bijection
+class Solution:
+    def wordPattern(self, pattern, s):
+        words = s.split()
+
+        if len(pattern) != len(words):
+            return False
+
+        char_to_word = {}
+        word_to_char = {}
+
+        for c, word in zip(pattern, words):
+            if c in char_to_word:
+                if char_to_word[c] != word:
+                    return False
+            else:
+                char_to_word[c] = word
+
+            if word in word_to_char:
+                if word_to_char[word] != c:
+                    return False
+            else:
+                word_to_char[word] = c
+
+        return True
+</code></pre>
+<h2 id="problem-categories" tabindex="-1"><a class="header-anchor" href="#problem-categories"><span>Problem Categories</span></a></h2>
+<h3 id="category-1-duplicate-detection-10-problems" tabindex="-1"><a class="header-anchor" href="#category-1-duplicate-detection-10-problems"><span>Category 1: Duplicate Detection (10 problems)</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC #</th>
+<th>Difficulty</th>
+<th>Pattern</th>
+<th>Key Insight</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Contains Duplicate</td>
+<td>217</td>
+<td>Easy</td>
+<td>Set size</td>
+<td>len(nums) != len(set(nums))</td>
+</tr>
+<tr>
+<td>Contains Duplicate II</td>
+<td>219</td>
+<td>Easy</td>
+<td>Sliding window set</td>
+<td>Keep window of k elements</td>
+</tr>
+<tr>
+<td>Contains Duplicate III</td>
+<td>220</td>
+<td>Medium</td>
+<td>TreeSet/SortedList</td>
+<td>Maintain sorted window</td>
+</tr>
+<tr>
+<td>Find Duplicate</td>
+<td>287</td>
+<td>Medium</td>
+<td>Cycle detection</td>
+<td>Floyd’s algorithm or set</td>
+</tr>
+<tr>
+<td>Find All Duplicates</td>
+<td>442</td>
+<td>Medium</td>
+<td>Index marking</td>
+<td>Use array as hashmap</td>
+</tr>
+<tr>
+<td>Single Number</td>
+<td>136</td>
+<td>Easy</td>
+<td>XOR/Set</td>
+<td>XOR cancels duplicates</td>
+</tr>
+<tr>
+<td>Single Number II</td>
+<td>137</td>
+<td>Medium</td>
+<td>Bit manipulation</td>
+<td>Count bits mod 3</td>
+</tr>
+<tr>
+<td>Single Number III</td>
+<td>260</td>
+<td>Medium</td>
+<td>XOR + grouping</td>
+<td>Group by differing bit</td>
+</tr>
+<tr>
+<td>Missing Number</td>
+<td>268</td>
+<td>Easy</td>
+<td>Set/XOR</td>
+<td>Expected vs actual</td>
+</tr>
+<tr>
+<td>First Missing Positive</td>
+<td>41</td>
+<td>Hard</td>
+<td>In-place set</td>
+<td>Use array indices</td>
+</tr>
+</tbody>
+</table>
+<h3 id="category-2-set-operations-8-problems" tabindex="-1"><a class="header-anchor" href="#category-2-set-operations-8-problems"><span>Category 2: Set Operations (8 problems)</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC #</th>
+<th>Difficulty</th>
+<th>Pattern</th>
+<th>Key Insight</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Intersection of Two Arrays</td>
+<td>349</td>
+<td>Easy</td>
+<td>Set intersection</td>
+<td>set1 &amp; set2</td>
+</tr>
+<tr>
+<td>Intersection of Two Arrays II</td>
+<td>350</td>
+<td>Easy</td>
+<td>Counter</td>
+<td>Track frequencies</td>
+</tr>
+<tr>
+<td>Union of Two Arrays</td>
+<td>-</td>
+<td>Easy</td>
+<td>Set union</td>
+<td>set1</td>
+</tr>
+<tr>
+<td>Distribute Candies</td>
+<td>575</td>
+<td>Easy</td>
+<td>Set size</td>
+<td>min(len(set), n/2)</td>
+</tr>
+<tr>
+<td>Uncommon Words</td>
+<td>884</td>
+<td>Easy</td>
+<td>Set difference</td>
+<td>Count once in either</td>
+</tr>
+<tr>
+<td>Set Mismatch</td>
+<td>645</td>
+<td>Easy</td>
+<td>Set difference</td>
+<td>Find duplicate &amp; missing</td>
+</tr>
+<tr>
+<td>Fair Candy Swap</td>
+<td>888</td>
+<td>Easy</td>
+<td>Set membership</td>
+<td>Target difference</td>
+</tr>
+<tr>
+<td>Buddy Strings</td>
+<td>859</td>
+<td>Easy</td>
+<td>Set of pairs</td>
+<td>Check swap possible</td>
+</tr>
+</tbody>
+</table>
+<h3 id="category-3-path-ancestry-tracking-6-problems" tabindex="-1"><a class="header-anchor" href="#category-3-path-ancestry-tracking-6-problems"><span>Category 3: Path/Ancestry Tracking (6 problems)</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC #</th>
+<th>Difficulty</th>
+<th>Pattern</th>
+<th>Key Insight</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Lowest Common Ancestor III</td>
+<td>1650</td>
+<td>Medium</td>
+<td>Ancestor set</td>
+<td>Track parent path</td>
+</tr>
+<tr>
+<td>Linked List Cycle</td>
+<td>141</td>
+<td>Easy</td>
+<td>Visited set</td>
+<td>Two pointers better</td>
+</tr>
+<tr>
+<td>Linked List Cycle II</td>
+<td>142</td>
+<td>Medium</td>
+<td>Visited set</td>
+<td>Floyd’s algorithm</td>
+</tr>
+<tr>
+<td>Course Schedule</td>
+<td>207</td>
+<td>Medium</td>
+<td>DFS + set</td>
+<td>Detect cycle</td>
+</tr>
+<tr>
+<td>Course Schedule II</td>
+<td>210</td>
+<td>Medium</td>
+<td>Topological sort</td>
+<td>Track visited/path</td>
+</tr>
+<tr>
+<td>Find Eventual Safe Nodes</td>
+<td>802</td>
+<td>Medium</td>
+<td>DFS + states</td>
+<td>Terminal vs unsafe</td>
+</tr>
+</tbody>
+</table>
+<h3 id="category-4-sequence-problems-7-problems" tabindex="-1"><a class="header-anchor" href="#category-4-sequence-problems-7-problems"><span>Category 4: Sequence Problems (7 problems)</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC #</th>
+<th>Difficulty</th>
+<th>Pattern</th>
+<th>Key Insight</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Longest Consecutive Sequence</td>
+<td>128</td>
+<td>Medium</td>
+<td>Set lookups</td>
+<td>Start from sequence begin</td>
+</tr>
+<tr>
+<td>Longest Substring Without Repeat</td>
+<td>3</td>
+<td>Medium</td>
+<td>Sliding window set</td>
+<td>Track seen chars</td>
+</tr>
+<tr>
+<td>Longest Palindrome</td>
+<td>409</td>
+<td>Easy</td>
+<td>Char frequency</td>
+<td>Pairs + one odd</td>
+</tr>
+<tr>
+<td>Maximum Length of Repeated Subarray</td>
+<td>718</td>
+<td>Medium</td>
+<td>Set of tuples</td>
+<td>Rolling hash</td>
+</tr>
+<tr>
+<td>Arithmetic Slices</td>
+<td>413</td>
+<td>Medium</td>
+<td>Set of differences</td>
+<td>Track valid sequences</td>
+</tr>
+<tr>
+<td>Happy Number</td>
+<td>202</td>
+<td>Easy</td>
+<td>Cycle detection</td>
+<td>Track seen sums</td>
+</tr>
+<tr>
+<td>Valid Sudoku</td>
+<td>36</td>
+<td>Medium</td>
+<td>Multiple sets</td>
+<td>Row/col/box tracking</td>
+</tr>
+</tbody>
+</table>
+<h3 id="category-5-graph-island-problems-5-problems" tabindex="-1"><a class="header-anchor" href="#category-5-graph-island-problems-5-problems"><span>Category 5: Graph/Island Problems (5 problems)</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC #</th>
+<th>Difficulty</th>
+<th>Pattern</th>
+<th>Key Insight</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Number of Islands</td>
+<td>200</td>
+<td>Medium</td>
+<td>DFS/BFS visited</td>
+<td>Track processed cells</td>
+</tr>
+<tr>
+<td>Number of Distinct Islands</td>
+<td>694</td>
+<td>Medium</td>
+<td>Shape hashing</td>
+<td>Normalize positions</td>
+</tr>
+<tr>
+<td>Max Area of Island</td>
+<td>695</td>
+<td>Medium</td>
+<td>DFS + visited</td>
+<td>Track seen cells</td>
+</tr>
+<tr>
+<td>Island Perimeter</td>
+<td>463</td>
+<td>Easy</td>
+<td>Border counting</td>
+<td>Count land-water edges</td>
+</tr>
+<tr>
+<td>Surrounded Regions</td>
+<td>130</td>
+<td>Medium</td>
+<td>Border DFS</td>
+<td>Mark connected to border</td>
+</tr>
+</tbody>
+</table>
+<h3 id="category-6-string-pattern-matching-6-problems" tabindex="-1"><a class="header-anchor" href="#category-6-string-pattern-matching-6-problems"><span>Category 6: String/Pattern Matching (6 problems)</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC #</th>
+<th>Difficulty</th>
+<th>Pattern</th>
+<th>Key Insight</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Isomorphic Strings</td>
+<td>205</td>
+<td>Easy</td>
+<td>Bijection</td>
+<td>Two maps or sets</td>
+</tr>
+<tr>
+<td>Word Pattern</td>
+<td>290</td>
+<td>Easy</td>
+<td>Bijection</td>
+<td>Char ↔ word mapping</td>
+</tr>
+<tr>
+<td>Group Anagrams</td>
+<td>49</td>
+<td>Medium</td>
+<td>Sorted key</td>
+<td>Use sorted string</td>
+</tr>
+<tr>
+<td>Find Anagrams</td>
+<td>438</td>
+<td>Medium</td>
+<td>Window + counter</td>
+<td>Sliding character counts</td>
+</tr>
+<tr>
+<td>Jewels and Stones</td>
+<td>771</td>
+<td>Easy</td>
+<td>Set membership</td>
+<td>Set of jewels</td>
+</tr>
+<tr>
+<td>Unique Email Addresses</td>
+<td>929</td>
+<td>Easy</td>
+<td>Normalize + set</td>
+<td>Clean emails</td>
+</tr>
+</tbody>
+</table>
+<h2 id="decision-framework" tabindex="-1"><a class="header-anchor" href="#decision-framework"><span>Decision Framework</span></a></h2>
+<h3 id="when-to-use-set-vs-other-data-structures" tabindex="-1"><a class="header-anchor" href="#when-to-use-set-vs-other-data-structures"><span>When to Use Set vs Other Data Structures</span></a></h3>
+<pre><code>Problem Analysis:
+
+1. Need to track unique elements?
+   ├── YES → Consider Set
+   │   ├── Need ordering?
+   │   │   ├── YES → TreeSet (Java) / sorted list (Python)
+   │   │   └── NO → HashSet
+   │   ├── Need count?
+   │   │   └── NO → Use Counter/HashMap instead
+   │   └── Need fast lookups?
+   │       └── YES → HashSet (O(1) average)
+   └── NO → Consider other structures
+
+2. Performing set operations (union, intersection)?
+   ├── YES → Use Set
+   │   └── Multiple operations → Build set once
+   └── NO → Continue analysis
+
+3. Detecting duplicates/cycles?
+   ├── YES → Use Set for visited tracking
+   │   ├── Space constrained?
+   │   │   └── YES → Consider Floyd's algorithm
+   │   └── NO → Set is ideal
+   └── NO → Continue analysis
+
+4. Checking membership repeatedly?
+   ├── YES → Convert to Set first
+   │   └── O(n) conversion + O(1) lookups
+   └── NO → Linear search may be fine
+</code></pre>
+<h3 id="set-vs-hashmap-choice" tabindex="-1"><a class="header-anchor" href="#set-vs-hashmap-choice"><span>Set vs HashMap Choice</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>Use Set When</th>
+<th>Use HashMap When</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Only need existence check</td>
+<td>Need key-value mapping</td>
+</tr>
+<tr>
+<td>Removing duplicates</td>
+<td>Counting frequencies</td>
+</tr>
+<tr>
+<td>Set operations (∪, ∩, -)</td>
+<td>Need associated data</td>
+</tr>
+<tr>
+<td>Memory efficient (no values)</td>
+<td>Need to track counts/indices</td>
+</tr>
+</tbody>
+</table>
+<h3 id="python-set-vs-java-set" tabindex="-1"><a class="header-anchor" href="#python-set-vs-java-set"><span>Python Set vs Java Set</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>Python <code>set</code></th>
+<th>Java <code>HashSet</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Creation</strong></td>
+<td><code>s = {1,2,3}</code> or <code>set()</code></td>
+<td><code>Set&lt;T&gt; s = new HashSet&lt;&gt;()</code></td>
+</tr>
+<tr>
+<td><strong>Add</strong></td>
+<td><code>s.add(x)</code></td>
+<td><code>s.add(x)</code></td>
+</tr>
+<tr>
+<td><strong>Remove</strong></td>
+<td><code>s.remove(x)</code> / <code>s.discard(x)</code></td>
+<td><code>s.remove(x)</code></td>
+</tr>
+<tr>
+<td><strong>Contains</strong></td>
+<td><code>x in s</code></td>
+<td><code>s.contains(x)</code></td>
+</tr>
+<tr>
+<td><strong>Union</strong></td>
+<td>`s1</td>
+<td>s2<code>or</code>s1.union(s2)`</td>
+</tr>
+<tr>
+<td><strong>Intersection</strong></td>
+<td><code>s1 &amp; s2</code> or <code>s1.intersection(s2)</code></td>
+<td><code>s1.retainAll(s2)</code></td>
+</tr>
+<tr>
+<td><strong>Difference</strong></td>
+<td><code>s1 - s2</code> or <code>s1.difference(s2)</code></td>
+<td><code>s1.removeAll(s2)</code></td>
+</tr>
+<tr>
+<td><strong>Size</strong></td>
+<td><code>len(s)</code></td>
+<td><code>s.size()</code></td>
+</tr>
+<tr>
+<td><strong>Empty check</strong></td>
+<td><code>not s</code> or <code>len(s) == 0</code></td>
+<td><code>s.isEmpty()</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="summary-best-practices" tabindex="-1"><a class="header-anchor" href="#summary-best-practices"><span>Summary &amp; Best Practices</span></a></h2>
+<h3 id="key-takeaways" tabindex="-1"><a class="header-anchor" href="#key-takeaways"><span>Key Takeaways</span></a></h3>
+<ol>
+<li>
+<p><strong>When to Use Set</strong>:</p>
+<ul>
+<li>Remove duplicates from collection</li>
+<li>Fast membership testing (O(1) average)</li>
+<li>Performing set operations (union, intersection, difference)</li>
+<li>Tracking visited nodes in graphs/trees</li>
+<li>Detecting cycles</li>
+</ul>
+</li>
+<li>
+<p><strong>Performance Characteristics</strong>:</p>
+<ul>
+<li>HashSet: O(1) average, O(n) worst (hash collisions)</li>
+<li>TreeSet: O(log n) for all operations</li>
+<li>LinkedHashSet: O(1) operations + insertion order</li>
+</ul>
+</li>
+<li>
+<p><strong>Common Patterns</strong>:</p>
+<ul>
+<li>Convert array to set to remove duplicates</li>
+<li>Use set for O(1) lookups instead of O(n) linear search</li>
+<li>Track visited nodes with set</li>
+<li>Detect cycles by checking if element already in set</li>
+</ul>
+</li>
+<li>
+<p><strong>Space-Time Tradeoffs</strong>:</p>
+<ul>
+<li>Set uses O(n) extra space for O(1) operations</li>
+<li>Consider two-pointer techniques if space is constrained</li>
+<li>For small inputs, linear search may be faster</li>
+</ul>
+</li>
+</ol>
+<h3 id="interview-tips" tabindex="-1"><a class="header-anchor" href="#interview-tips"><span>Interview Tips</span></a></h3>
+<p><strong>Common Mistakes to Avoid:</strong></p>
+<ul>
+<li>Using <code>{}</code> to create empty set in Python (creates dict instead)</li>
+<li>Forgetting that sets are unordered (don’t assume order)</li>
+<li>Not considering TreeSet when you need sorted elements</li>
+<li>Using set when you need to count occurrences (use Counter/HashMap)</li>
+</ul>
+<p><strong>Optimization Tips:</strong></p>
+<ul>
+<li>Convert lists to sets before repeated membership checks</li>
+<li>Use set operations instead of manual loops</li>
+<li>Consider frozenset for immutable/hashable sets</li>
+<li>Use set comprehensions for cleaner code</li>
+</ul>
+<p><strong>Follow-up Questions:</strong></p>
+<ul>
+<li>“Can you solve it with O(1) space?” → Consider Floyd’s algorithm</li>
+<li>“What if we need to preserve order?” → LinkedHashSet or OrderedDict</li>
+<li>“What if we need sorted elements?” → TreeSet or sorted list</li>
+<li>“What about duplicates with different data?” → Use HashMap instead</li>
+</ul>
+
+      </div>
+      <div class="cheatsheet-footer">
+        <a href="../cheatsheets.html" class="back-link">← Back to Cheat Sheets</a>
+        <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/set.md" class="github-edit" target="_blank">
+          Edit on GitHub →
+        </a>
+      </div>
+    <nav class="prev-next"><a href="segment_tree.html" class="prev-link">← Segment Tree</a><a href="shortest_path_comparison.html" class="next-link">Shortest Path Comparison →</a></nav>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>CS_basics - Computer Science Fundamentals & Interview Preparation</p>
+      <p>
+        <a href="https://github.com/yennanliu/CS_basics">GitHub</a> •
+        <a href="https://github.com/yennanliu/CS_basics/tree/master/doc">Documentation</a> •
+        <a href="https://github.com/yennanliu/CS_basics/issues">Report Issues</a>
+      </p>
+    </div>
+  </footer>
+</body>
+</html>

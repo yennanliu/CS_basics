@@ -1,0 +1,1129 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Union Find - CS_basics</title>
+  <meta name="description" content="Computer Science fundamentals: algorithms, data structures, system design, and LeetCode solutions">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>CS</text></svg>">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="../vendor/fonts.css">
+  <link rel="stylesheet" href="../vendor/highlight/github-dark.min.css">
+  <script src="../vendor/highlight/highlight.min.js"></script>
+  <script>
+  // Apply theme before render to prevent flash
+  (function() {
+    var saved = localStorage.getItem('theme');
+    if (saved === 'dark' || (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      document.documentElement.setAttribute('data-theme', 'dark');
+    }
+  })();
+  </script>
+  <script>document.addEventListener('DOMContentLoaded', function() {
+    hljs.highlightAll();
+    document.querySelectorAll('pre code').forEach(function(codeEl) {
+      var pre = codeEl.parentElement;
+      var lang = '';
+      var cls = codeEl.className || '';
+      var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
+      if (m) lang = m[1];
+      var wrapper = document.createElement('div');
+      wrapper.className = 'code-block-wrapper';
+      pre.parentNode.insertBefore(wrapper, pre);
+      var header = document.createElement('div');
+      header.className = 'code-block-header';
+      if (lang) {
+        var label = document.createElement('span');
+        label.className = 'code-lang-label';
+        label.textContent = lang;
+        header.appendChild(label);
+      } else {
+        header.appendChild(document.createElement('span'));
+      }
+      var btn = document.createElement('button');
+      btn.className = 'copy-btn';
+      btn.textContent = 'Copy';
+      btn.addEventListener('click', function() {
+        navigator.clipboard.writeText(codeEl.textContent).then(function() {
+          btn.textContent = 'Copied!';
+          btn.classList.add('copied');
+          setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+        });
+      });
+      header.appendChild(btn);
+      wrapper.appendChild(header);
+      wrapper.appendChild(pre);
+    });
+    document.querySelectorAll('table').forEach(function(table) {
+      if (!table.parentElement.classList.contains('table-wrap')) {
+        var wrapper = document.createElement('div');
+        wrapper.className = 'table-wrap';
+        table.parentNode.insertBefore(wrapper, table);
+        wrapper.appendChild(table);
+      }
+    });
+    // Reading progress bar
+    var progressBar = document.getElementById('reading-progress');
+    if (progressBar) {
+      window.addEventListener('scroll', function() {
+        var winScroll = document.documentElement.scrollTop;
+        var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        progressBar.style.width = height > 0 ? (winScroll / height * 100) + '%' : '0%';
+      });
+    }
+    // Dark mode toggle
+    var toggle = document.getElementById('theme-toggle');
+    if (toggle) {
+      var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      toggle.textContent = isDark ? '☀️' : '🌙';
+      toggle.addEventListener('click', function() {
+        var dark = document.documentElement.getAttribute('data-theme') === 'dark';
+        if (dark) {
+          document.documentElement.removeAttribute('data-theme');
+          localStorage.setItem('theme', 'light');
+          toggle.textContent = '🌙';
+        } else {
+          document.documentElement.setAttribute('data-theme', 'dark');
+          localStorage.setItem('theme', 'dark');
+          toggle.textContent = '☀️';
+        }
+      });
+    }
+  });</script>
+</head>
+<body>
+  <div class="progress-container"><div class="progress-bar" id="reading-progress"></div></div>
+  <nav class="navbar">
+    <div class="container">
+      <div class="nav-brand">
+        <span class="nav-icon">💻</span>
+        <span class="nav-title">CS_basics</span>
+      </div>
+      <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+      <div class="nav-links">
+        <a href="../index.html" class="">Home</a>
+        <a href="../cheatsheets.html" class="active">Cheat Sheets</a>
+        <a href="../patterns.html" class="">Pattern Recognition</a>
+        <a href="../faqs.html" class="">FAQs</a>
+        <a href="../resources.html" class="">Resources</a>
+        <a href="../lc-explorer.html" class="">LC Explorer</a>
+        <a href="../lc-random-picker.html" class="">🎲 Random Picker</a>
+        <a href="../algo_demo/index.html" class="">Visualizer</a>
+        <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">&#127769;</button>
+        <a href="https://github.com/yennanliu/CS_basics" target="_blank" class="github-link" aria-label="GitHub">
+          <svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor">
+            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container">
+    <div class="content">
+      
+      <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">Union Find</span></nav>
+      <div class="cheatsheet-header">
+        <h1>Union Find</h1>
+        <span class="last-updated">Last updated: Mar 30, 2026</span>
+      </div>
+      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#0-concept">0) Concept</a></li><li class="toc-sub"><a href="#0-0-union-find-variants">0-0) Union-Find Variants</a></li><li class="toc-sub"><a href="#0-1-key-optimizations">0-1) Key Optimizations</a></li><li class="toc-sub"><a href="#0-1-types">0-1) Types</a></li><li class="toc-sub"><a href="#0-2-algorithm-pattern-template">0-2) Algorithm Pattern / Template</a></li><li class="toc-sub"><a href="#0-3-pattern-specific-code-examples">0-3) Pattern-Specific Code Examples</a></li><li><a href="#1-example-problems-with-code-references">1) Example Problems with Code References</a></li><li><a href="#2-diagrams">2) Diagrams</a></li><li class="toc-sub"><a href="#basic-union-operations">Basic Union Operations</a></li><li class="toc-sub"><a href="#path-compression-visualization">Path Compression Visualization</a></li><li class="toc-sub"><a href="#union-by-rank-example">Union by Rank Example</a></li><li class="toc-sub"><a href="#path-compression-in-action">Path Compression in Action</a></li><li><a href="#3-tips-pitfalls">3) Tips &amp; Pitfalls</a></li><li><a href="#lc-examples">LC Examples</a></li><li class="toc-sub"><a href="#2-1-redundant-connection-lc-684-union-find-cycle-detection">2-1) Redundant Connection (LC 684) — Union-Find Cycle Detection</a></li><li class="toc-sub"><a href="#2-2-number-of-provinces-lc-547-count-connected-components">2-2) Number of Provinces (LC 547) — Count Connected Components</a></li><li class="toc-sub"><a href="#2-3-accounts-merge-lc-721-union-find-on-emails">2-3) Accounts Merge (LC 721) — Union-Find on Emails</a></li><li class="toc-sub"><a href="#2-4-graph-valid-tree-lc-261-union-find">2-4) Graph Valid Tree (LC 261) — Union-Find</a></li><li class="toc-sub"><a href="#2-5-number-of-connected-components-in-undirected-graph-lc-323-union-find">2-5) Number of Connected Components in Undirected Graph (LC 323) — Union-Find</a></li><li class="toc-sub"><a href="#2-6-surrounded-regions-lc-130-union-find-with-virtual-border-node">2-6) Surrounded Regions (LC 130) — Union-Find with Virtual Border Node</a></li><li class="toc-sub"><a href="#2-7-smallest-string-with-swaps-lc-1202-union-find-sorting">2-7) Smallest String with Swaps (LC 1202) — Union-Find + Sorting</a></li><li class="toc-sub"><a href="#2-8-most-stones-removed-with-same-row-or-column-lc-947-union-find">2-8) Most Stones Removed with Same Row or Column (LC 947) — Union-Find</a></li><li class="toc-sub"><a href="#2-9-satisfiability-of-equality-equations-lc-990-union-find">2-9) Satisfiability of Equality Equations (LC 990) — Union-Find</a></li><li class="toc-sub"><a href="#2-10-number-of-operations-to-make-network-connected-lc-1319-union-find">2-10) Number of Operations to Make Network Connected (LC 1319) — Union-Find</a></li><li class="toc-sub"><a href="#2-11-longest-consecutive-sequence-lc-128-hashset-o-n">2-11) Longest Consecutive Sequence (LC 128) — HashSet O(N)</a></li><li class="toc-sub"><a href="#2-12-smallest-subtree-with-all-the-deepest-nodes-lc-865-bfs-union-find-climb">2-12) Smallest Subtree with all the Deepest Nodes (LC 865) — BFS + Union-Find Climb</a></li></ul></div>
+      <div class="cheatsheet-content">
+        <h1 id="union-find" tabindex="-1"><a class="header-anchor" href="#union-find"><span>Union Find</span></a></h1>
+<ul>
+<li>Efficiently determines connectivity between nodes in dynamic graphs</li>
+<li>When to use it: Dynamic connectivity queries, cycle detection, MST algorithms, grouping elements</li>
+<li>Key LeetCode problems: Graph Valid Tree, Number of Islands, Accounts Merge, Friend Circles</li>
+<li>Data structures: Parent array, size/rank array for optimization</li>
+<li>States: Connected components, parent-child relationships</li>
+</ul>
+<p><strong>Time Complexity:</strong> Nearly O(1) per operation with optimizations</p>
+<h2 id="0-concept" tabindex="-1"><a class="header-anchor" href="#0-concept"><span>0) Concept</span></a></h2>
+<h3 id="0-0-union-find-variants" tabindex="-1"><a class="header-anchor" href="#0-0-union-find-variants"><span>0-0) Union-Find Variants</span></a></h3>
+<h4 id="quick-find-vs-quick-union" tabindex="-1"><a class="header-anchor" href="#quick-find-vs-quick-union"><span>Quick Find vs Quick Union</span></a></h4>
+<p><strong>Quick Find:</strong></p>
+<ul>
+<li><strong>Find</strong>: O(1) - Direct array lookup</li>
+<li><strong>Union</strong>: O(n) - Update all elements in component</li>
+<li><strong>Use Case</strong>: When find operations greatly outnumber union operations</li>
+<li><strong>Implementation</strong>: Store component ID directly for each element</li>
+</ul>
+<pre><code class="language-java">// Quick Find Implementation
+class QuickFind {
+    private int[] id;
+    private int count; // number of components
+
+    public QuickFind(int n) {
+        id = new int[n];
+        count = n;
+        for (int i = 0; i &lt; n; i++) {
+            id[i] = i; // Each element is its own component
+        }
+    }
+
+    /**
+     * time = O(1)
+     * space = O(1)
+     */
+    public int find(int p) {
+        return id[p]; // Direct lookup
+    }
+
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
+    public void union(int p, int q) {
+        int pID = find(p);
+        int qID = find(q);
+
+        if (pID == qID) return;
+
+        // Change all entries with id[p] to id[q]
+        for (int i = 0; i &lt; id.length; i++) {
+            if (id[i] == pID) {
+                id[i] = qID;
+            }
+        }
+        count--;
+    }
+
+    public boolean connected(int p, int q) {
+        return find(p) == find(q);
+    }
+}
+</code></pre>
+<p><strong>Quick Union (with optimizations):</strong></p>
+<ul>
+<li><strong>Find</strong>: O(α(n)) ≈ O(1) with path compression</li>
+<li><strong>Union</strong>: O(α(n)) ≈ O(1) with union by rank/size</li>
+<li><strong>Use Case</strong>: General purpose, balanced find/union operations</li>
+<li><strong>Implementation</strong>: Store parent pointers, build tree structure</li>
+</ul>
+<p><strong>Comparison:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Operation</th>
+<th>Quick Find</th>
+<th>Quick Union</th>
+<th>Quick Union + Optimizations</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Initialize</td>
+<td>O(n)</td>
+<td>O(n)</td>
+<td>O(n)</td>
+</tr>
+<tr>
+<td>Find</td>
+<td>O(1)</td>
+<td>O(n) worst</td>
+<td>O(α(n)) ≈ O(1)</td>
+</tr>
+<tr>
+<td>Union</td>
+<td>O(n)</td>
+<td>O(n) worst</td>
+<td>O(α(n)) ≈ O(1)</td>
+</tr>
+<tr>
+<td>Space</td>
+<td>O(n)</td>
+<td>O(n)</td>
+<td>O(n)</td>
+</tr>
+<tr>
+<td>Best For</td>
+<td>Many finds</td>
+<td>Balanced</td>
+<td>General purpose</td>
+</tr>
+</tbody>
+</table>
+<p><strong>When to Use Quick Find:</strong></p>
+<ul>
+<li>Very rare union operations</li>
+<li>Real-time find queries required</li>
+<li>Small datasets where O(n) union is acceptable</li>
+</ul>
+<p><strong>When to Use Quick Union (Optimized):</strong></p>
+<ul>
+<li>Balanced mix of find and union operations</li>
+<li>Large datasets (millions of elements)</li>
+<li>Most practical applications (recommended)</li>
+</ul>
+<h3 id="0-1-key-optimizations" tabindex="-1"><a class="header-anchor" href="#0-1-key-optimizations"><span>0-1) Key Optimizations</span></a></h3>
+<p>Union Find achieves nearly O(1) performance through two critical optimizations:</p>
+<p><strong>Path Compression</strong>: Applied in <code>find()</code> operation</p>
+<ul>
+<li>Makes each visited node point directly to the root</li>
+<li>Flattens the tree structure during traversal</li>
+<li>Recursive: <code>parent[x] = find(parent[x])</code></li>
+<li>Amortizes future lookups to O(1)</li>
+</ul>
+<p><strong>Union by Rank/Size</strong>: Applied in <code>union()</code> operation</p>
+<ul>
+<li>Always attach smaller tree to larger tree’s root</li>
+<li>Keeps tree height balanced (logarithmic)</li>
+<li>Prevents degenerate linear chains</li>
+<li>Can track either tree height (rank) or size (count)</li>
+</ul>
+<p>Without these optimizations, operations degrade to O(n). With both, time complexity becomes O(α(n)) where α is the inverse Ackermann function (effectively constant).</p>
+<h3 id="0-1-types" tabindex="-1"><a class="header-anchor" href="#0-1-types"><span>0-1) Types</span></a></h3>
+<ul>
+<li><strong>Basic Connectivity</strong>: Check if nodes are connected, count components</li>
+<li><strong>Cycle Detection</strong>: Determine if adding edge creates cycle</li>
+<li><strong>Dynamic MST</strong>: Kruskal’s algorithm for minimum spanning trees</li>
+<li><strong>Weighted Union Find</strong>: Handle ratios/weights between nodes (LC 399)</li>
+<li><strong>Grid Problems</strong>: 2D grid connectivity (Number of Islands variants)</li>
+</ul>
+<h3 id="0-2-algorithm-pattern-template" tabindex="-1"><a class="header-anchor" href="#0-2-algorithm-pattern-template"><span>0-2) Algorithm Pattern / Template</span></a></h3>
+<p><strong>Core Operations:</strong></p>
+<ul>
+<li><code>find(x)</code>: Get root parent of x with path compression</li>
+<li><code>union(x, y)</code>: Connect two nodes, return false if already connected</li>
+<li><code>connected(x, y)</code>: Check if two nodes are in same component</li>
+</ul>
+<p><strong>Template (Union by Size):</strong></p>
+<pre><code class="language-java">class UnionFind {
+    int[] parent, size;
+    int components;
+
+    public UnionFind(int n) {
+        parent = new int[n];
+        size = new int[n];
+        components = n;
+        for (int i = 0; i &lt; n; i++) {
+            parent[i] = i;
+            size[i] = 1;
+        }
+    }
+
+    // Path Compression: flatten tree by making nodes point directly to root
+    public int find(int x) {
+        if (parent[x] != x) {
+            parent[x] = find(parent[x]); // Compress path during recursion
+        }
+        return parent[x];
+    }
+
+    // Union by Size: attach smaller tree to larger tree
+    public boolean union(int x, int y) {
+        int rootX = find(x), rootY = find(y);
+        if (rootX == rootY) return false; // Already connected
+
+        // Always attach smaller size to larger size
+        if (size[rootX] &lt; size[rootY]) {
+            parent[rootX] = rootY;
+            size[rootY] += size[rootX];
+        } else {
+            parent[rootY] = rootX;
+            size[rootX] += size[rootY];
+        }
+        components--;
+        return true;
+    }
+}
+</code></pre>
+<p><strong>Alternative Template (Union by Rank):</strong></p>
+<pre><code class="language-java">class UnionFind {
+    int[] parent, rank;
+    int components;
+
+    public UnionFind(int n) {
+        parent = new int[n];
+        rank = new int[n];
+        components = n;
+        for (int i = 0; i &lt; n; i++) {
+            parent[i] = i;
+            rank[i] = 0; // Initial rank is 0
+        }
+    }
+
+    // Path Compression: recursively flatten tree structure
+    public int find(int x) {
+        if (parent[x] != x) {
+            parent[x] = find(parent[x]); // Make x point directly to root
+        }
+        return parent[x];
+    }
+
+    // Union by Rank: attach lower rank tree to higher rank tree
+    public void union(int x, int y) {
+        int rootX = find(x), rootY = find(y);
+
+        // Already in the same component
+        if (rootX == rootY) return;
+
+        // Attach smaller rank tree to larger rank tree
+        if (rank[rootX] &lt; rank[rootY]) {
+            parent[rootX] = rootY; // X's tree becomes child of Y
+        } else if (rank[rootX] &gt; rank[rootY]) {
+            parent[rootY] = rootX; // Y's tree becomes child of X
+        } else {
+            // Equal ranks: attach either way, increment rank of new root
+            parent[rootX] = rootY;
+            rank[rootY]++;
+        }
+        components--;
+    }
+}
+</code></pre>
+<p><strong>Key Differences: Size vs Rank</strong></p>
+<ul>
+<li><strong>Union by Size</strong>: Tracks actual count of nodes in each tree
+<ul>
+<li>Useful when you need component sizes</li>
+<li>Updates size after every union</li>
+</ul>
+</li>
+<li><strong>Union by Rank</strong>: Tracks approximate tree height (upper bound)
+<ul>
+<li>More space efficient (rank grows slowly)</li>
+<li>Rank only increases when merging equal-rank trees</li>
+<li>With path compression, rank != actual height</li>
+</ul>
+</li>
+</ul>
+<p><strong>Edge Cases:</strong></p>
+<ul>
+<li>Single node graphs</li>
+<li>Already connected nodes</li>
+<li>Invalid indices</li>
+</ul>
+<h3 id="0-3-pattern-specific-code-examples" tabindex="-1"><a class="header-anchor" href="#0-3-pattern-specific-code-examples"><span>0-3) Pattern-Specific Code Examples</span></a></h3>
+<h4 id="pattern-1-basic-connectivity-cycle-detection" tabindex="-1"><a class="header-anchor" href="#pattern-1-basic-connectivity-cycle-detection"><span>Pattern 1: Basic Connectivity - Cycle Detection</span></a></h4>
+<p><strong>Problem: LC 261 - Graph Valid Tree</strong></p>
+<pre><code class="language-java">public boolean validTree(int n, int[][] edges) {
+    // A tree must have exactly n-1 edges
+    if (edges.length != n - 1) return false;
+
+    UnionFind uf = new UnionFind(n);
+    for (int[] edge : edges) {
+        if (!uf.union(edge[0], edge[1])) {
+            return false; // Cycle detected
+        }
+    }
+    return true;
+}
+</code></pre>
+<h4 id="pattern-2-component-counting" tabindex="-1"><a class="header-anchor" href="#pattern-2-component-counting"><span>Pattern 2: Component Counting</span></a></h4>
+<p><strong>Problem: LC 323 - Number of Connected Components</strong></p>
+<pre><code class="language-java">public int countComponents(int n, int[][] edges) {
+    UnionFind uf = new UnionFind(n);
+    int components = n;
+
+    for (int[] edge : edges) {
+        if (uf.union(edge[0], edge[1])) {
+            components--;
+        }
+    }
+    return components;
+}
+</code></pre>
+<h4 id="pattern-3-find-redundant-edge-cycle-detection" tabindex="-1"><a class="header-anchor" href="#pattern-3-find-redundant-edge-cycle-detection"><span>Pattern 3: Find Redundant Edge (Cycle Detection)</span></a></h4>
+<p><strong>Problem: LC 684 - Redundant Connection</strong></p>
+<pre><code class="language-java">public int[] findRedundantConnection(int[][] edges) {
+    UnionFind uf = new UnionFind(edges.length + 1);
+
+    for (int[] edge : edges) {
+        int x = edge[0], y = edge[1];
+        if (!uf.union(x, y)) {
+            return edge; // This edge creates a cycle
+        }
+    }
+    return null;
+}
+</code></pre>
+<h4 id="pattern-4-2d-grid-connectivity" tabindex="-1"><a class="header-anchor" href="#pattern-4-2d-grid-connectivity"><span>Pattern 4: 2D Grid Connectivity</span></a></h4>
+<p><strong>Problem: LC 200 - Number of Islands</strong></p>
+<pre><code class="language-java">public int numIslands(char[][] grid) {
+    int rows = grid.length, cols = grid[0].length;
+    UnionFind uf = new UnionFind(rows * cols);
+    int islands = 0;
+
+    for (int r = 0; r &lt; rows; r++) {
+        for (int c = 0; c &lt; cols; c++) {
+            if (grid[r][c] == '1') {
+                islands++;
+                int idx = r * cols + c;
+
+                // Check 4 directions
+                int[][] dirs = {{0,1}, {1,0}, {0,-1}, {-1,0}};
+                for (int[] d : dirs) {
+                    int nr = r + d[0], nc = c + d[1];
+                    if (nr &gt;= 0 &amp;&amp; nr &lt; rows &amp;&amp; nc &gt;= 0 &amp;&amp; nc &lt; cols
+                        &amp;&amp; grid[nr][nc] == '1') {
+                        int nidx = nr * cols + nc;
+                        if (uf.union(idx, nidx)) {
+                            islands--;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    return islands;
+}
+</code></pre>
+<h4 id="pattern-5-weighted-union-find-with-ratios" tabindex="-1"><a class="header-anchor" href="#pattern-5-weighted-union-find-with-ratios"><span>Pattern 5: Weighted Union Find (with Ratios)</span></a></h4>
+<p><strong>Problem: LC 399 - Evaluate Division</strong></p>
+<pre><code class="language-java">class WeightedUnionFind {
+    Map&lt;String, String&gt; parent;
+    Map&lt;String, Double&gt; ratio; // ratio[x] = x / parent[x]
+
+    public WeightedUnionFind() {
+        parent = new HashMap&lt;&gt;();
+        ratio = new HashMap&lt;&gt;();
+    }
+
+    public String find(String x) {
+        if (!parent.containsKey(x)) {
+            parent.put(x, x);
+            ratio.put(x, 1.0);
+        }
+        if (!x.equals(parent.get(x))) {
+            String originalParent = parent.get(x);
+            parent.put(x, find(originalParent));
+            ratio.put(x, ratio.get(x) * ratio.get(originalParent));
+        }
+        return parent.get(x);
+    }
+
+    public void union(String x, String y, double value) {
+        String rootX = find(x);
+        String rootY = find(y);
+        if (!rootX.equals(rootY)) {
+            parent.put(rootX, rootY);
+            ratio.put(rootX, value * ratio.get(y) / ratio.get(x));
+        }
+    }
+
+    public double query(String x, String y) {
+        if (!parent.containsKey(x) || !parent.containsKey(y)) {
+            return -1.0;
+        }
+        String rootX = find(x);
+        String rootY = find(y);
+        if (!rootX.equals(rootY)) return -1.0;
+        return ratio.get(x) / ratio.get(y);
+    }
+}
+
+public double[] calcEquation(List&lt;List&lt;String&gt;&gt; equations,
+                              double[] values,
+                              List&lt;List&lt;String&gt;&gt; queries) {
+    WeightedUnionFind uf = new WeightedUnionFind();
+
+    for (int i = 0; i &lt; equations.size(); i++) {
+        String a = equations.get(i).get(0);
+        String b = equations.get(i).get(1);
+        uf.union(a, b, values[i]);
+    }
+
+    double[] results = new double[queries.size()];
+    for (int i = 0; i &lt; queries.size(); i++) {
+        String c = queries.get(i).get(0);
+        String d = queries.get(i).get(1);
+        results[i] = uf.query(c, d);
+    }
+    return results;
+}
+</code></pre>
+<h4 id="pattern-6-bfs-union-find-climb-tree-lca" tabindex="-1"><a class="header-anchor" href="#pattern-6-bfs-union-find-climb-tree-lca"><span>Pattern 6: BFS + Union-Find Climb (Tree LCA)</span></a></h4>
+<p><strong>Problem: LC 865 - Smallest Subtree with all the Deepest Nodes</strong></p>
+<ul>
+<li><strong>Core Idea</strong>: Use BFS to find all deepest-level nodes and build a parent map, then repeatedly union each node with its parent and move upward until all converge to a single root — that root is the LCA</li>
+<li><strong>When to Use</strong>: Finding LCA of multiple target nodes in a tree when you prefer iterative bottom-up convergence over recursive post-order</li>
+<li><strong>Steps</strong>:
+<ol>
+<li>BFS to build <code>parent</code> map and identify <code>deepestNodes</code> (last level in BFS)</li>
+<li>Put all deepest nodes in a <code>Set</code></li>
+<li>While set size &gt; 1: replace each node with its parent (they converge upward)</li>
+<li>The single remaining node is the LCA</li>
+</ol>
+</li>
+<li><strong>Key Insight</strong>: This is essentially “climb from leaves to root” — all deepest nodes walk upward in lockstep until they meet at one ancestor</li>
+<li><strong>Trade-off vs DFS</strong>: More intuitive for iterative thinkers; DFS post-order approach (return <code>(node, depth)</code> pair) is more concise and commonly used</li>
+<li><strong>Similar Problems</strong>: LC 236 (LCA), LC 1123 (same as 865), LC 1644, LC 1650</li>
+</ul>
+<pre><code class="language-java">// LC 865 - BFS + Parent-Climb approach (simplified Union-Find concept)
+// time = O(N), space = O(N)
+public TreeNode subtreeWithAllDeepest(TreeNode root) {
+    Map&lt;TreeNode, TreeNode&gt; parent = new HashMap&lt;&gt;();
+    Queue&lt;TreeNode&gt; q = new LinkedList&lt;&gt;();
+    q.offer(root);
+    parent.put(root, null);
+    List&lt;TreeNode&gt; level = new ArrayList&lt;&gt;();
+
+    // Step 1: BFS to find deepest level + build parent map
+    while (!q.isEmpty()) {
+        int size = q.size();
+        level = new ArrayList&lt;&gt;();
+        for (int i = 0; i &lt; size; i++) {
+            TreeNode cur = q.poll();
+            level.add(cur);
+            if (cur.left != null) { parent.put(cur.left, cur); q.offer(cur.left); }
+            if (cur.right != null) { parent.put(cur.right, cur); q.offer(cur.right); }
+        }
+    }
+
+    // Step 2: Climb upward until all deepest nodes converge
+    Set&lt;TreeNode&gt; set = new HashSet&lt;&gt;(level);
+    while (set.size() &gt; 1) {
+        Set&lt;TreeNode&gt; next = new HashSet&lt;&gt;();
+        for (TreeNode node : set) next.add(parent.get(node));
+        set = next;
+    }
+    return set.iterator().next();
+}
+</code></pre>
+<h2 id="1-example-problems-with-code-references" tabindex="-1"><a class="header-anchor" href="#1-example-problems-with-code-references"><span>1) Example Problems with Code References</span></a></h2>
+<h4 id="basic-connectivity-component-counting" tabindex="-1"><a class="header-anchor" href="#basic-connectivity-component-counting"><span>Basic Connectivity &amp; Component Counting</span></a></h4>
+<ul>
+<li>
+<p><strong>LC 200</strong> – Number of Islands: Count connected components in 2D grid</p>
+<ul>
+<li>Java: <code>leetcode_java/src/main/java/LeetCodeJava/DFS/NumberOfIslands.java:493</code></li>
+<li>Pattern: Grid to 1D conversion (<code>row * cols + col</code>), Union Find with 4-directional checks</li>
+</ul>
+</li>
+<li>
+<p><strong>LC 261</strong> – Graph Valid Tree: Check if n-1 edges form exactly one component</p>
+<ul>
+<li>Java: <code>leetcode_java/src/main/java/LeetCodeJava/BFS/GraphValidTree.java:36</code></li>
+<li>Pattern: Cycle detection, exactly n-1 edges validation</li>
+</ul>
+</li>
+<li>
+<p><strong>LC 323</strong> – Number of Connected Components: Basic component counting</p>
+<ul>
+<li>Java: <code>leetcode_java/src/main/java/LeetCodeJava/Graph/NumberOfConnectedComponentsUndirectedGraph.java:49</code></li>
+<li>Pattern: Track component count, decrement on successful union</li>
+</ul>
+</li>
+</ul>
+<h4 id="cycle-detection-redundancy" tabindex="-1"><a class="header-anchor" href="#cycle-detection-redundancy"><span>Cycle Detection &amp; Redundancy</span></a></h4>
+<ul>
+<li><strong>LC 684</strong> – Redundant Connection: Find edge that creates cycle in tree
+<ul>
+<li>Java: <code>leetcode_java/src/main/java/LeetCodeJava/Tree/RedundantConnection.java:50</code></li>
+<li>Pattern: Return first edge where <code>union()</code> fails (cycle detected)</li>
+</ul>
+</li>
+</ul>
+<h4 id="weighted-union-find" tabindex="-1"><a class="header-anchor" href="#weighted-union-find"><span>Weighted Union Find</span></a></h4>
+<ul>
+<li><strong>LC 399</strong> – Evaluate Division: Weighted UF with ratios for equation solving
+<ul>
+<li>Java: <code>leetcode_java/src/main/java/LeetCodeJava/DFS/EvaluateDivision.java:421</code></li>
+<li>Pattern: Store ratios, path compression with ratio multiplication</li>
+</ul>
+</li>
+</ul>
+<h4 id="advanced-applications" tabindex="-1"><a class="header-anchor" href="#advanced-applications"><span>Advanced Applications</span></a></h4>
+<ul>
+<li><strong>LC 130</strong> – Surrounded Regions: Use dummy node for boundary connected regions</li>
+<li><strong>LC 547</strong> – Friend Circles: Find groups in friendship matrix</li>
+<li><strong>LC 721</strong> – Accounts Merge: Group accounts by shared emails</li>
+<li><strong>LC 865</strong> – Smallest Subtree with all Deepest Nodes: BFS + parent-climb to find LCA of deepest nodes</li>
+<li><strong>LC 886</strong> – Possible Bipartition: Detect bipartite graph conflicts</li>
+<li><strong>LC 1135</strong> – Connecting Cities: MST with Kruskal’s algorithm</li>
+<li><strong>LC 1319</strong> – Network Connections: Minimum operations to connect all nodes</li>
+</ul>
+<h2 id="2-diagrams" tabindex="-1"><a class="header-anchor" href="#2-diagrams"><span>2) Diagrams</span></a></h2>
+<h3 id="basic-union-operations" tabindex="-1"><a class="header-anchor" href="#basic-union-operations"><span>Basic Union Operations</span></a></h3>
+<pre><code>Initial: [0] [1] [2] [3] [4]
+
+After union(0,1): [0,1] [2] [3] [4]
+                   1
+                  /
+                 0
+
+After union(2,3): [0,1] [2,3] [4]
+                   1     3
+                  /     /
+                 0     2
+</code></pre>
+<h3 id="path-compression-visualization" tabindex="-1"><a class="header-anchor" href="#path-compression-visualization"><span>Path Compression Visualization</span></a></h3>
+<pre><code>Before find(1):           After find(1):
+     4 (root)                4 (root)
+     |                      /|\
+     3                     1 2 3
+     |
+     2
+     |
+     1
+
+Call find(1):
+- 1 → 2 → 3 → 4 (traversal)
+- During return, compress: parent[1] = 4, parent[2] = 4, parent[3] = 4
+- Result: All nodes point directly to root
+</code></pre>
+<h3 id="union-by-rank-example" tabindex="-1"><a class="header-anchor" href="#union-by-rank-example"><span>Union by Rank Example</span></a></h3>
+<pre><code>Initial state:
+  0     1     2     3
+rank: 0 0 0 0
+
+union(0, 1):         union(2, 3):
+    0                    2
+   /                    /
+  1                    3
+rank[0] = 1         rank[2] = 1
+
+union(0, 2):
+    0 (rank=2)
+   / \
+  1   2
+     /
+    3
+
+Why rank increased:
+- rank[0] = 1, rank[2] = 1 (equal)
+- Attach 2 to 0, increment rank[0] to 2
+</code></pre>
+<h3 id="path-compression-in-action" tabindex="-1"><a class="header-anchor" href="#path-compression-in-action"><span>Path Compression in Action</span></a></h3>
+<pre><code>Scenario: find(A) in chain A→B→C→D→E (root)
+
+Step 1: Recursive calls
+  find(A) calls find(B)
+    find(B) calls find(C)
+      find(C) calls find(D)
+        find(D) calls find(E)
+          find(E) returns E
+
+Step 2: Path compression during return
+  parent[D] = E
+  parent[C] = E  ← Compression happens here
+  parent[B] = E  ← Skip intermediate nodes
+  parent[A] = E  ← Direct link to root
+
+Result:
+Before:  A → B → C → D → E
+After:   A → E
+         B → E
+         C → E
+         D → E
+</code></pre>
+<h2 id="3-tips-pitfalls" tabindex="-1"><a class="header-anchor" href="#3-tips-pitfalls"><span>3) Tips &amp; Pitfalls</span></a></h2>
+<p><strong>Common Mistakes:</strong></p>
+<ol>
+<li>
+<p><strong>Forgetting Path Compression</strong>: Results in O(n) time instead of nearly O(1)</p>
+<pre><code class="language-java">// WRONG: No path compression
+public int find(int x) {
+    while (parent[x] != x) x = parent[x];
+    return x;
+}
+
+// CORRECT: With path compression
+public int find(int x) {
+    if (parent[x] != x) {
+        parent[x] = find(parent[x]); // Flatten on return
+    }
+    return parent[x];
+}
+</code></pre>
+</li>
+<li>
+<p><strong>Not Tracking Component Count</strong>: Missing decrement in union operation</p>
+<pre><code class="language-java">// WRONG: Forgot to decrement
+public void union(int x, int y) {
+    parent[find(x)] = find(y);
+}
+
+// CORRECT: Track components
+public void union(int x, int y) {
+    int rootX = find(x), rootY = find(y);
+    if (rootX != rootY) {
+        parent[rootX] = rootY;
+        components--; // Important!
+    }
+}
+</code></pre>
+</li>
+<li>
+<p><strong>Index Confusion</strong>: Mixing 0-based and 1-based indexing</p>
+</li>
+<li>
+<p><strong>Cycle Detection Timing</strong>: Checking after union instead of before</p>
+</li>
+<li>
+<p><strong>Wrong Parent Update</strong>: Updating node instead of root in union</p>
+<pre><code class="language-java">// WRONG: Update x directly
+parent[x] = parent[y];
+
+// CORRECT: Update roots
+int rootX = find(x), rootY = find(y);
+parent[rootX] = rootY;
+</code></pre>
+</li>
+<li>
+<p><strong>Confusing Rank with Size</strong>:</p>
+<ul>
+<li>Rank = approximate tree height (only increases when merging equal ranks)</li>
+<li>Size = actual node count (always increases by merged size)</li>
+</ul>
+</li>
+</ol>
+<p><strong>How to Optimize:</strong></p>
+<ul>
+<li><strong>Always use path compression</strong> in find operation</li>
+<li><strong>Union by size/rank</strong> to keep trees balanced</li>
+<li><strong>Track component count</strong> for quick queries</li>
+<li><strong>Use iterative find</strong> to avoid recursion overhead</li>
+</ul>
+<p><strong>Space vs Time Tradeoffs:</strong></p>
+<ul>
+<li>Basic UF: O(n) space, O(n) time per operation</li>
+<li>With optimizations: O(n) space, O(α(n)) ≈ O(1) time per operation</li>
+<li>α(n) is inverse Ackermann function, effectively constant for practical inputs</li>
+</ul>
+<p><strong>Key Patterns:</strong></p>
+<ol>
+<li><strong>Cycle Detection</strong>: <code>if (find(x) == find(y)) return false; // cycle</code></li>
+<li><strong>Component Counting</strong>: Track and decrement count on successful unions</li>
+<li><strong>2D Grid to 1D</strong>: Use <code>row * cols + col</code> for coordinate conversion</li>
+<li><strong>Dummy Nodes</strong>: Connect boundary elements to virtual node for easier processing</li>
+<li><strong>Weighted Relationships</strong>: Store ratios/distances for equation-like problems</li>
+</ol>
+<p><strong>When NOT to use Union Find:</strong></p>
+<ul>
+<li>Static graphs where DFS/BFS suffice</li>
+<li>Need shortest paths (use Dijkstra/Floyd-Warshall)</li>
+<li>Directed graph strongly connected components (use Tarjan’s)</li>
+<li>Small graphs where simple adjacency checks work</li>
+</ul>
+<h2 id="lc-examples" tabindex="-1"><a class="header-anchor" href="#lc-examples"><span>LC Examples</span></a></h2>
+<h3 id="2-1-redundant-connection-lc-684-union-find-cycle-detection" tabindex="-1"><a class="header-anchor" href="#2-1-redundant-connection-lc-684-union-find-cycle-detection"><span>2-1) Redundant Connection (LC 684) — Union-Find Cycle Detection</span></a></h3>
+<blockquote>
+<p>Add edges one by one; if two nodes are already connected, this edge is redundant.</p>
+</blockquote>
+<pre><code class="language-java">// LC 684 - Redundant Connection
+// IDEA: Union-Find — detect cycle; redundant edge connects already-connected nodes
+// time = O(N * α(N)), space = O(N)
+public int[] findRedundantConnection(int[][] edges) {
+    int n = edges.length;
+    int[] parent = new int[n + 1];
+    for (int i = 0; i &lt;= n; i++) parent[i] = i;
+    for (int[] edge : edges) {
+        if (find(parent, edge[0]) == find(parent, edge[1])) return edge;
+        union(parent, edge[0], edge[1]);
+    }
+    return new int[]{};
+}
+private int find(int[] parent, int x) {
+    if (parent[x] != x) parent[x] = find(parent, parent[x]); // path compression
+    return parent[x];
+}
+private void union(int[] parent, int x, int y) {
+    parent[find(parent, x)] = find(parent, y);
+}
+</code></pre>
+<h3 id="2-2-number-of-provinces-lc-547-count-connected-components" tabindex="-1"><a class="header-anchor" href="#2-2-number-of-provinces-lc-547-count-connected-components"><span>2-2) Number of Provinces (LC 547) — Count Connected Components</span></a></h3>
+<blockquote>
+<p>Count the number of distinct roots after unioning all direct friendships.</p>
+</blockquote>
+<pre><code class="language-java">// LC 547 - Number of Provinces
+// IDEA: Union-Find — count distinct components (roots)
+// time = O(N^2 * α(N)), space = O(N)
+public int findCircleNum(int[][] isConnected) {
+    int n = isConnected.length;
+    int[] parent = new int[n];
+    for (int i = 0; i &lt; n; i++) parent[i] = i;
+    for (int i = 0; i &lt; n; i++)
+        for (int j = i + 1; j &lt; n; j++)
+            if (isConnected[i][j] == 1) union(parent, i, j);
+    int count = 0;
+    for (int i = 0; i &lt; n; i++) if (find(parent, i) == i) count++;
+    return count;
+}
+private int find(int[] parent, int x) {
+    if (parent[x] != x) parent[x] = find(parent, parent[x]);
+    return parent[x];
+}
+private void union(int[] parent, int x, int y) {
+    parent[find(parent, x)] = find(parent, y);
+}
+</code></pre>
+<h3 id="2-3-accounts-merge-lc-721-union-find-on-emails" tabindex="-1"><a class="header-anchor" href="#2-3-accounts-merge-lc-721-union-find-on-emails"><span>2-3) Accounts Merge (LC 721) — Union-Find on Emails</span></a></h3>
+<blockquote>
+<p>Union emails belonging to the same person; group by root; sort and format.</p>
+</blockquote>
+<pre><code class="language-java">// LC 721 - Accounts Merge
+// IDEA: Union-Find — union all emails in same account; group by root
+// time = O(N * M * α(N*M)), space = O(N*M)
+public List&lt;List&lt;String&gt;&gt; accountsMerge(List&lt;List&lt;String&gt;&gt; accounts) {
+    Map&lt;String, String&gt; parent = new HashMap&lt;&gt;();
+    Map&lt;String, String&gt; emailToName = new HashMap&lt;&gt;();
+    // init
+    for (List&lt;String&gt; acc : accounts)
+        for (int i = 1; i &lt; acc.size(); i++) {
+            parent.put(acc.get(i), acc.get(i));
+            emailToName.put(acc.get(i), acc.get(0));
+        }
+    // union
+    for (List&lt;String&gt; acc : accounts)
+        for (int i = 2; i &lt; acc.size(); i++)
+            union(parent, acc.get(1), acc.get(i));
+    // group by root
+    Map&lt;String, TreeSet&lt;String&gt;&gt; groups = new HashMap&lt;&gt;();
+    for (String email : parent.keySet())
+        groups.computeIfAbsent(find(parent, email), k -&gt; new TreeSet&lt;&gt;()).add(email);
+    List&lt;List&lt;String&gt;&gt; result = new ArrayList&lt;&gt;();
+    for (Map.Entry&lt;String, TreeSet&lt;String&gt;&gt; entry : groups.entrySet()) {
+        List&lt;String&gt; list = new ArrayList&lt;&gt;();
+        list.add(emailToName.get(entry.getKey()));
+        list.addAll(entry.getValue());
+        result.add(list);
+    }
+    return result;
+}
+private String find(Map&lt;String, String&gt; parent, String x) {
+    if (!parent.get(x).equals(x)) parent.put(x, find(parent, parent.get(x)));
+    return parent.get(x);
+}
+private void union(Map&lt;String, String&gt; parent, String x, String y) {
+    parent.put(find(parent, x), find(parent, y));
+}
+</code></pre>
+<h3 id="2-4-graph-valid-tree-lc-261-union-find" tabindex="-1"><a class="header-anchor" href="#2-4-graph-valid-tree-lc-261-union-find"><span>2-4) Graph Valid Tree (LC 261) — Union-Find</span></a></h3>
+<blockquote>
+<p>Tree has exactly N-1 edges and no cycle; union each edge, return false on same-component edge.</p>
+</blockquote>
+<pre><code class="language-java">// LC 261 - Graph Valid Tree
+// IDEA: Union-Find — N-1 edges + no cycle = valid tree
+// time = O(N * α(N)), space = O(N)
+public boolean validTree(int n, int[][] edges) {
+    if (edges.length != n - 1) return false;
+    int[] p = new int[n];
+    for (int i = 0; i &lt; n; i++) p[i] = i;
+    for (int[] e : edges) {
+        if (find(p, e[0]) == find(p, e[1])) return false;
+        p[find(p, e[0])] = find(p, e[1]);
+    }
+    return true;
+}
+private int find(int[] p, int x) { return p[x] == x ? x : (p[x] = find(p, p[x])); }
+</code></pre>
+<h3 id="2-5-number-of-connected-components-in-undirected-graph-lc-323-union-find" tabindex="-1"><a class="header-anchor" href="#2-5-number-of-connected-components-in-undirected-graph-lc-323-union-find"><span>2-5) Number of Connected Components in Undirected Graph (LC 323) — Union-Find</span></a></h3>
+<blockquote>
+<p>Union each edge; count remaining distinct roots as connected components.</p>
+</blockquote>
+<pre><code class="language-java">// LC 323 - Number of Connected Components in Undirected Graph
+// IDEA: Union-Find — count distinct roots after unioning all edges
+// time = O(N * α(N)), space = O(N)
+public int countComponents(int n, int[][] edges) {
+    int[] p = new int[n];
+    for (int i = 0; i &lt; n; i++) p[i] = i;
+    int components = n;
+    for (int[] e : edges) {
+        int a = find(p, e[0]), b = find(p, e[1]);
+        if (a != b) { p[a] = b; components--; }
+    }
+    return components;
+}
+private int find(int[] p, int x) { return p[x] == x ? x : (p[x] = find(p, p[x])); }
+</code></pre>
+<h3 id="2-6-surrounded-regions-lc-130-union-find-with-virtual-border-node" tabindex="-1"><a class="header-anchor" href="#2-6-surrounded-regions-lc-130-union-find-with-virtual-border-node"><span>2-6) Surrounded Regions (LC 130) — Union-Find with Virtual Border Node</span></a></h3>
+<blockquote>
+<p>Union all border ‘O’ cells to a virtual node; any ‘O’ not connected gets flipped to ‘X’.</p>
+</blockquote>
+<pre><code class="language-java">// LC 130 - Surrounded Regions
+// IDEA: Union-Find — connect border O cells to virtual node; flip disconnected O cells
+// time = O(M*N), space = O(M*N)
+public void solve(char[][] board) {
+    int m = board.length, n = board[0].length, virtual = m * n;
+    int[] p = new int[virtual + 1];
+    for (int i = 0; i &lt;= virtual; i++) p[i] = i;
+    int[][] dirs = {{1,0},{-1,0},{0,1},{0,-1}};
+    for (int i = 0; i &lt; m; i++) for (int j = 0; j &lt; n; j++) if (board[i][j] == 'O') {
+        int id = i * n + j;
+        if (i == 0 || i == m-1 || j == 0 || j == n-1) union(p, id, virtual);
+        else for (int[] d : dirs) {
+            int ni = i+d[0], nj = j+d[1];
+            if (board[ni][nj] == 'O') union(p, id, ni*n+nj);
+        }
+    }
+    for (int i = 0; i &lt; m; i++) for (int j = 0; j &lt; n; j++)
+        if (board[i][j] == 'O' &amp;&amp; find(p, i*n+j) != find(p, virtual)) board[i][j] = 'X';
+}
+private int find(int[] p, int x) { return p[x]==x ? x : (p[x]=find(p,p[x])); }
+private void union(int[] p, int x, int y) { p[find(p,x)] = find(p,y); }
+</code></pre>
+<h3 id="2-7-smallest-string-with-swaps-lc-1202-union-find-sorting" tabindex="-1"><a class="header-anchor" href="#2-7-smallest-string-with-swaps-lc-1202-union-find-sorting"><span>2-7) Smallest String with Swaps (LC 1202) — Union-Find + Sorting</span></a></h3>
+<blockquote>
+<p>Union swap pairs; sort characters within each component; place sorted chars back.</p>
+</blockquote>
+<pre><code class="language-java">// LC 1202 - Smallest String with Swaps
+// IDEA: Union-Find — group indices; sort chars in each group and reassign
+// time = O(N log N), space = O(N)
+public String smallestStringWithSwaps(String s, List&lt;List&lt;Integer&gt;&gt; pairs) {
+    int n = s.length();
+    int[] p = new int[n];
+    for (int i = 0; i &lt; n; i++) p[i] = i;
+    for (List&lt;Integer&gt; pair : pairs) union(p, pair.get(0), pair.get(1));
+    Map&lt;Integer, List&lt;Integer&gt;&gt; groups = new HashMap&lt;&gt;();
+    for (int i = 0; i &lt; n; i++) groups.computeIfAbsent(find(p, i), k -&gt; new ArrayList&lt;&gt;()).add(i);
+    char[] res = s.toCharArray();
+    for (List&lt;Integer&gt; idx : groups.values()) {
+        char[] chars = new char[idx.size()];
+        for (int i = 0; i &lt; idx.size(); i++) chars[i] = s.charAt(idx.get(i));
+        Arrays.sort(chars);
+        Collections.sort(idx);
+        for (int i = 0; i &lt; idx.size(); i++) res[idx.get(i)] = chars[i];
+    }
+    return new String(res);
+}
+private int find(int[] p, int x) { return p[x]==x ? x : (p[x]=find(p,p[x])); }
+private void union(int[] p, int x, int y) { p[find(p,x)] = find(p,y); }
+</code></pre>
+<h3 id="2-8-most-stones-removed-with-same-row-or-column-lc-947-union-find" tabindex="-1"><a class="header-anchor" href="#2-8-most-stones-removed-with-same-row-or-column-lc-947-union-find"><span>2-8) Most Stones Removed with Same Row or Column (LC 947) — Union-Find</span></a></h3>
+<blockquote>
+<p>Union stones in the same row or column; answer = stones − number of components.</p>
+</blockquote>
+<pre><code class="language-java">// LC 947 - Most Stones Removed with Same Row or Column
+// IDEA: Union-Find — stones sharing row/column are in same component; remove all but one
+// time = O(N^2 * α(N)), space = O(N)
+public int removeStones(int[][] stones) {
+    int n = stones.length;
+    int[] p = new int[n];
+    for (int i = 0; i &lt; n; i++) p[i] = i;
+    for (int i = 0; i &lt; n; i++)
+        for (int j = i+1; j &lt; n; j++)
+            if (stones[i][0] == stones[j][0] || stones[i][1] == stones[j][1])
+                union(p, i, j);
+    Set&lt;Integer&gt; roots = new HashSet&lt;&gt;();
+    for (int i = 0; i &lt; n; i++) roots.add(find(p, i));
+    return n - roots.size();
+}
+private int find(int[] p, int x) { return p[x]==x ? x : (p[x]=find(p,p[x])); }
+private void union(int[] p, int x, int y) { p[find(p,x)] = find(p,y); }
+</code></pre>
+<h3 id="2-9-satisfiability-of-equality-equations-lc-990-union-find" tabindex="-1"><a class="header-anchor" href="#2-9-satisfiability-of-equality-equations-lc-990-union-find"><span>2-9) Satisfiability of Equality Equations (LC 990) — Union-Find</span></a></h3>
+<blockquote>
+<p>Process ‘==’ edges first; then check ‘!=’ pairs for contradiction.</p>
+</blockquote>
+<pre><code class="language-java">// LC 990 - Satisfiability of Equality Equations
+// IDEA: Union-Find — union on ==, validate != pairs for contradiction
+// time = O(N), space = O(26)
+public boolean equationsPossible(String[] equations) {
+    int[] p = new int[26];
+    for (int i = 0; i &lt; 26; i++) p[i] = i;
+    for (String eq : equations)
+        if (eq.charAt(1) == '=') union(p, eq.charAt(0)-'a', eq.charAt(3)-'a');
+    for (String eq : equations)
+        if (eq.charAt(1) == '!' &amp;&amp; find(p, eq.charAt(0)-'a') == find(p, eq.charAt(3)-'a'))
+            return false;
+    return true;
+}
+private int find(int[] p, int x) { return p[x]==x ? x : (p[x]=find(p,p[x])); }
+private void union(int[] p, int x, int y) { p[find(p,x)] = find(p,y); }
+</code></pre>
+<h3 id="2-10-number-of-operations-to-make-network-connected-lc-1319-union-find" tabindex="-1"><a class="header-anchor" href="#2-10-number-of-operations-to-make-network-connected-lc-1319-union-find"><span>2-10) Number of Operations to Make Network Connected (LC 1319) — Union-Find</span></a></h3>
+<blockquote>
+<p>Need at least N-1 edges; count components; extra edges reconnect disconnected components.</p>
+</blockquote>
+<pre><code class="language-java">// LC 1319 - Number of Operations to Make Network Connected
+// IDEA: Union-Find — count components; need (components-1) extra cables
+// time = O(N * α(N)), space = O(N)
+public int makeConnected(int n, int[][] connections) {
+    if (connections.length &lt; n - 1) return -1;
+    int[] p = new int[n];
+    for (int i = 0; i &lt; n; i++) p[i] = i;
+    int components = n;
+    for (int[] c : connections) {
+        int a = find(p, c[0]), b = find(p, c[1]);
+        if (a != b) { p[a] = b; components--; }
+    }
+    return components - 1;
+}
+private int find(int[] p, int x) { return p[x]==x ? x : (p[x]=find(p,p[x])); }
+</code></pre>
+<h3 id="2-11-longest-consecutive-sequence-lc-128-hashset-o-n" tabindex="-1"><a class="header-anchor" href="#2-11-longest-consecutive-sequence-lc-128-hashset-o-n"><span>2-11) Longest Consecutive Sequence (LC 128) — HashSet O(N)</span></a></h3>
+<blockquote>
+<p>For each number, only start counting if (num-1) is absent — marks sequence start.</p>
+</blockquote>
+<pre><code class="language-java">// LC 128 - Longest Consecutive Sequence
+// IDEA: HashSet — only extend sequences from their start element
+// time = O(N), space = O(N)
+public int longestConsecutive(int[] nums) {
+    Set&lt;Integer&gt; set = new HashSet&lt;&gt;();
+    for (int n : nums) set.add(n);
+    int longest = 0;
+    for (int n : set) {
+        if (!set.contains(n - 1)) {   // sequence start
+            int len = 1;
+            while (set.contains(n + len)) len++;
+            longest = Math.max(longest, len);
+        }
+    }
+    return longest;
+}
+</code></pre>
+<h3 id="2-12-smallest-subtree-with-all-the-deepest-nodes-lc-865-bfs-union-find-climb" tabindex="-1"><a class="header-anchor" href="#2-12-smallest-subtree-with-all-the-deepest-nodes-lc-865-bfs-union-find-climb"><span>2-12) Smallest Subtree with all the Deepest Nodes (LC 865) — BFS + Union-Find Climb</span></a></h3>
+<blockquote>
+<p>BFS finds deepest nodes and parent map; then all deepest nodes “climb” upward via parents until they converge to the LCA. This is the same as LC 1123.</p>
+</blockquote>
+<pre><code class="language-java">// LC 865 - Smallest Subtree with all the Deepest Nodes
+// IDEA: BFS to find deepest level + build parent map, then climb upward until convergence
+// time = O(N), space = O(N)
+public TreeNode subtreeWithAllDeepest(TreeNode root) {
+    Map&lt;TreeNode, TreeNode&gt; parent = new HashMap&lt;&gt;();
+    Queue&lt;TreeNode&gt; q = new LinkedList&lt;&gt;();
+    q.offer(root);
+    parent.put(root, null);
+    List&lt;TreeNode&gt; level = new ArrayList&lt;&gt;();
+
+    // BFS: build parent map, track each level (last level = deepest)
+    while (!q.isEmpty()) {
+        int size = q.size();
+        level = new ArrayList&lt;&gt;();
+        for (int i = 0; i &lt; size; i++) {
+            TreeNode cur = q.poll();
+            level.add(cur);
+            if (cur.left != null) { parent.put(cur.left, cur); q.offer(cur.left); }
+            if (cur.right != null) { parent.put(cur.right, cur); q.offer(cur.right); }
+        }
+    }
+
+    // Climb: replace each node with its parent until all converge
+    Set&lt;TreeNode&gt; set = new HashSet&lt;&gt;(level);
+    while (set.size() &gt; 1) {
+        Set&lt;TreeNode&gt; next = new HashSet&lt;&gt;();
+        for (TreeNode node : set) next.add(parent.get(node));
+        set = next;
+    }
+    return set.iterator().next();
+}
+</code></pre>
+
+      </div>
+      <div class="cheatsheet-footer">
+        <a href="../cheatsheets.html" class="back-link">← Back to Cheat Sheets</a>
+        <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/union_find.md" class="github-edit" target="_blank">
+          Edit on GitHub →
+        </a>
+      </div>
+    <nav class="prev-next"><a href="trie.html" class="prev-link">← Trie</a><span></span></nav>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>CS_basics - Computer Science Fundamentals & Interview Preparation</p>
+      <p>
+        <a href="https://github.com/yennanliu/CS_basics">GitHub</a> •
+        <a href="https://github.com/yennanliu/CS_basics/tree/master/doc">Documentation</a> •
+        <a href="https://github.com/yennanliu/CS_basics/issues">Report Issues</a>
+      </p>
+    </div>
+  </footer>
+</body>
+</html>

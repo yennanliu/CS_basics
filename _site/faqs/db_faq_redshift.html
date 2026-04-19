@@ -1,0 +1,310 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Faq Redshift - CS_basics</title>
+  <meta name="description" content="Computer Science fundamentals: algorithms, data structures, system design, and LeetCode solutions">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>CS</text></svg>">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="../vendor/fonts.css">
+  <link rel="stylesheet" href="../vendor/highlight/github-dark.min.css">
+  <script src="../vendor/highlight/highlight.min.js"></script>
+  <script>
+  // Apply theme before render to prevent flash
+  (function() {
+    var saved = localStorage.getItem('theme');
+    if (saved === 'dark' || (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      document.documentElement.setAttribute('data-theme', 'dark');
+    }
+  })();
+  </script>
+  <script>document.addEventListener('DOMContentLoaded', function() {
+    hljs.highlightAll();
+    document.querySelectorAll('pre code').forEach(function(codeEl) {
+      var pre = codeEl.parentElement;
+      var lang = '';
+      var cls = codeEl.className || '';
+      var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
+      if (m) lang = m[1];
+      var wrapper = document.createElement('div');
+      wrapper.className = 'code-block-wrapper';
+      pre.parentNode.insertBefore(wrapper, pre);
+      var header = document.createElement('div');
+      header.className = 'code-block-header';
+      if (lang) {
+        var label = document.createElement('span');
+        label.className = 'code-lang-label';
+        label.textContent = lang;
+        header.appendChild(label);
+      } else {
+        header.appendChild(document.createElement('span'));
+      }
+      var btn = document.createElement('button');
+      btn.className = 'copy-btn';
+      btn.textContent = 'Copy';
+      btn.addEventListener('click', function() {
+        navigator.clipboard.writeText(codeEl.textContent).then(function() {
+          btn.textContent = 'Copied!';
+          btn.classList.add('copied');
+          setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+        });
+      });
+      header.appendChild(btn);
+      wrapper.appendChild(header);
+      wrapper.appendChild(pre);
+    });
+    document.querySelectorAll('table').forEach(function(table) {
+      if (!table.parentElement.classList.contains('table-wrap')) {
+        var wrapper = document.createElement('div');
+        wrapper.className = 'table-wrap';
+        table.parentNode.insertBefore(wrapper, table);
+        wrapper.appendChild(table);
+      }
+    });
+    // Reading progress bar
+    var progressBar = document.getElementById('reading-progress');
+    if (progressBar) {
+      window.addEventListener('scroll', function() {
+        var winScroll = document.documentElement.scrollTop;
+        var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        progressBar.style.width = height > 0 ? (winScroll / height * 100) + '%' : '0%';
+      });
+    }
+    // Dark mode toggle
+    var toggle = document.getElementById('theme-toggle');
+    if (toggle) {
+      var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      toggle.textContent = isDark ? '☀️' : '🌙';
+      toggle.addEventListener('click', function() {
+        var dark = document.documentElement.getAttribute('data-theme') === 'dark';
+        if (dark) {
+          document.documentElement.removeAttribute('data-theme');
+          localStorage.setItem('theme', 'light');
+          toggle.textContent = '🌙';
+        } else {
+          document.documentElement.setAttribute('data-theme', 'dark');
+          localStorage.setItem('theme', 'dark');
+          toggle.textContent = '☀️';
+        }
+      });
+    }
+  });</script>
+</head>
+<body>
+  <div class="progress-container"><div class="progress-bar" id="reading-progress"></div></div>
+  <nav class="navbar">
+    <div class="container">
+      <div class="nav-brand">
+        <span class="nav-icon">💻</span>
+        <span class="nav-title">CS_basics</span>
+      </div>
+      <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+      <div class="nav-links">
+        <a href="../index.html" class="">Home</a>
+        <a href="../cheatsheets.html" class="">Cheat Sheets</a>
+        <a href="../patterns.html" class="">Pattern Recognition</a>
+        <a href="../faqs.html" class="active">FAQs</a>
+        <a href="../resources.html" class="">Resources</a>
+        <a href="../lc-explorer.html" class="">LC Explorer</a>
+        <a href="../lc-random-picker.html" class="">🎲 Random Picker</a>
+        <a href="../algo_demo/index.html" class="">Visualizer</a>
+        <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">&#127769;</button>
+        <a href="https://github.com/yennanliu/CS_basics" target="_blank" class="github-link" aria-label="GitHub">
+          <svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor">
+            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container">
+    <div class="content">
+      
+      <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../faqs.html">FAQs</a> <span class="sep">›</span> <span class="current">Faq Redshift</span></nav>
+      <div class="cheatsheet-header">
+        <h1>Faq Redshift</h1>
+        <span class="last-updated">Last updated: Feb 23, 2024</span>
+      </div>
+      
+      <div class="cheatsheet-content">
+        <h1 id="aws-redshift-faq" tabindex="-1"><a class="header-anchor" href="#aws-redshift-faq"><span>AWS REDSHIFT FAQ</span></a></h1>
+<ul>
+<li>
+<ol>
+<li>Database Developer guide for AWS Redshift</li>
+</ol>
+<ul>
+<li><a href="https://docs.aws.amazon.com/en_us/redshift/latest/dg/c-who-should-use-this-guide.html">https://docs.aws.amazon.com/en_us/redshift/latest/dg/c-who-should-use-this-guide.html</a></li>
+</ul>
+</li>
+<li>
+<ol start="2">
+<li>Difference between Redshift and PostgreSQL</li>
+</ol>
+<ul>
+<li>
+<p>Amazon Redshift is specifically designed for online analytic processing <code>(OLAP)</code>and business intelligence (BI) applications, which require complex queries against large datasets. Because it addresses very different requirements, the specialized data storage schema and query execution engine that Amazon Redshift uses are completely different from the PostgreSQL implementation. For example, where online transaction processing (OLTP) applications typically store data in rows</p>
+</li>
+<li>
+<p><em><strong><code>Amazon Redshift</code> stores data in columns, using specialized data compression encodings for optimum memory usage and disk I/O</strong></em>.</p>
+</li>
+<li>
+<p><em><strong>Some <code>PostgreSQL</code> features that are suited to smaller-scale OLTP processing, such as secondary indexes and efficient single-row data manipulation operations, have been omitted to improve performance</strong></em>.</p>
+</li>
+<li>
+<p><a href="https://docs.aws.amazon.com/en_us/redshift/latest/dg/c_redshift-and-postgres-sql.html">https://docs.aws.amazon.com/en_us/redshift/latest/dg/c_redshift-and-postgres-sql.html</a></p>
+</li>
+</ul>
+</li>
+<li>
+<ol start="3">
+<li>Table design guide</li>
+</ol>
+<ul>
+<li><a href="https://docs.aws.amazon.com/en_us/redshift/latest/dg/c_designing-tables-best-practices.html">https://docs.aws.amazon.com/en_us/redshift/latest/dg/c_designing-tables-best-practices.html</a></li>
+<li><a href="https://github.com/awsdocs/amazon-redshift-developer-guide">https://github.com/awsdocs/amazon-redshift-developer-guide</a></li>
+</ul>
+</li>
+<li>
+<ol start="4">
+<li>Select sort keys</li>
+</ol>
+<ul>
+<li>
+<p>When you create a table, you can specify one or more columns as the sort key. Amazon Redshift stores your data on disk in sorted order according to the sort key. How your data is sorted has an important effect on disk I/O, columnar compression, and query performance.</p>
+</li>
+<li>
+<p>In this step, you choose sort keys for the SSB tables based on these best practices:</p>
+<ul>
+<li>
+<p>If recent data is queried most frequently, specify the timestamp column as the leading column for the sort key.</p>
+</li>
+<li>
+<p>If you do frequent range filtering or equality filtering on one column, specify that column as the sort key.</p>
+</li>
+<li>
+<p>If you frequently join a (dimension) table, specify the join column as the sort key.</p>
+</li>
+</ul>
+</li>
+<li>
+<p><a href="https://docs.aws.amazon.com/en_us/redshift/latest/dg/tutorial-tuning-tables-sort-keys.html">https://docs.aws.amazon.com/en_us/redshift/latest/dg/tutorial-tuning-tables-sort-keys.html</a></p>
+</li>
+</ul>
+</li>
+<li>
+<ol start="5">
+<li>Select Distribution Styles</li>
+</ol>
+<ul>
+<li>
+<p>When you load data into a table, Amazon Redshift distributes the rows of the table to each of the node slices according to the table’s distribution style. The number of slices per node depends on the node size of the cluster. For example, the dc1.large cluster that you are using in this tutorial has four nodes with two slices each, so the cluster has a total of eight slices. The nodes all participate in parallel query execution, working on data that is distributed across the slices.</p>
+</li>
+<li>
+<p>When you execute a query, the query optimizer redistributes the rows to the compute nodes as needed to perform any joins and aggregations. Redistribution might involve either sending specific rows to nodes for joining or broadcasting an entire table to all of the nodes.</p>
+</li>
+<li>
+<p>You should assign distribution styles to achieve these goals.</p>
+<ul>
+<li>
+<p>Collocate the rows from joining tables</p>
+</li>
+<li>
+<p>When the rows for joining columns are on the same slices, less data needs to be moved during query execution.</p>
+</li>
+<li>
+<p>Distribute data evenly among the slices in a cluster. If data is distributed evenly, workload can be allocated evenly to all the slices.</p>
+</li>
+</ul>
+</li>
+<li>
+<p>Distribution Styles</p>
+<ul>
+<li>
+<p>KEY distribution</p>
+<ul>
+<li>The rows are distributed according to the values in one column. The leader node will attempt to place matching values on the same node slice. If you distribute a pair of tables on the joining keys, the leader node collocates the rows on the slices according to the values in the joining columns so that matching values from the common columns are physically stored together.</li>
+</ul>
+</li>
+<li>
+<p>ALL distribution</p>
+<ul>
+<li>A copy of the entire table is distributed to every node. Where EVEN distribution or KEY distribution place only a portion of a table’s rows on each node, ALL distribution ensures that every row is collocated for every join that the table participates in.</li>
+</ul>
+</li>
+<li>
+<p>EVEN distribution</p>
+<ul>
+<li>The rows are distributed across the slices in a round-robin fashion, regardless of the values in any particular column. EVEN distribution is appropriate when a table does not participate in joins or when there is not a clear choice between KEY distribution and ALL distribution. EVEN distribution is the default distribution style.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><a href="https://docs.aws.amazon.com/en_us/redshift/latest/dg/tutorial-tuning-tables-distribution.html">https://docs.aws.amazon.com/en_us/redshift/latest/dg/tutorial-tuning-tables-distribution.html</a></p>
+</li>
+</ul>
+</li>
+<li>
+<ol start="5">
+<li>Review Compression Encodings</li>
+</ol>
+<ul>
+<li>
+<p>Compression is a column-level operation that reduces the size of data when it is stored. Compression conserves storage space and reduces the size of data that is read from storage, which reduces the amount of disk I/O and therefore improves query performance.</p>
+</li>
+<li>
+<p>By default, Amazon Redshift stores data in its raw, uncompressed format. When you create tables in an Amazon Redshift database, you can define a compression type, or encoding, for the columns. For more information, see Compression Encodings.</p>
+</li>
+<li>
+<p>You can apply compression encodings to columns in tables manually when you create the tables, or you can use the COPY command to analyze the load data and apply compression encodings automatically.</p>
+</li>
+<li>
+<p>Type of compresison encodings</p>
+<ul>
+<li>Raw</li>
+<li>Bytedict</li>
+<li>LZO</li>
+<li>Runlength</li>
+<li>Text255</li>
+<li>Text32K</li>
+</ul>
+</li>
+<li>
+<p>Example</p>
+<ul>
+<li><a href="https://docs.aws.amazon.com/en_us/redshift/latest/dg/Examples__compression_encodings_in_CREATE_TABLE_statements.html">https://docs.aws.amazon.com/en_us/redshift/latest/dg/Examples__compression_encodings_in_CREATE_TABLE_statements.html</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+      </div>
+      <div class="cheatsheet-footer">
+        <a href="../faqs.html" class="back-link">← Back to FAQs</a>
+        <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/faq/db/faq_redshift.md" class="github-edit" target="_blank">
+          Edit on GitHub →
+        </a>
+      </div>
+    <nav class="prev-next"><a href="db_faq_DB_DW.html" class="prev-link">← Faq DB DW</a><a href="db_postgre.html" class="next-link">Postgre →</a></nav>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>CS_basics - Computer Science Fundamentals & Interview Preparation</p>
+      <p>
+        <a href="https://github.com/yennanliu/CS_basics">GitHub</a> •
+        <a href="https://github.com/yennanliu/CS_basics/tree/master/doc">Documentation</a> •
+        <a href="https://github.com/yennanliu/CS_basics/issues">Report Issues</a>
+      </p>
+    </div>
+  </footer>
+</body>
+</html>

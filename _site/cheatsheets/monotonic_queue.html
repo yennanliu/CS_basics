@@ -1,0 +1,430 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Monotonic Queue - CS_basics</title>
+  <meta name="description" content="Computer Science fundamentals: algorithms, data structures, system design, and LeetCode solutions">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>CS</text></svg>">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="../vendor/fonts.css">
+  <link rel="stylesheet" href="../vendor/highlight/github-dark.min.css">
+  <script src="../vendor/highlight/highlight.min.js"></script>
+  <script>
+  // Apply theme before render to prevent flash
+  (function() {
+    var saved = localStorage.getItem('theme');
+    if (saved === 'dark' || (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      document.documentElement.setAttribute('data-theme', 'dark');
+    }
+  })();
+  </script>
+  <script>document.addEventListener('DOMContentLoaded', function() {
+    hljs.highlightAll();
+    document.querySelectorAll('pre code').forEach(function(codeEl) {
+      var pre = codeEl.parentElement;
+      var lang = '';
+      var cls = codeEl.className || '';
+      var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
+      if (m) lang = m[1];
+      var wrapper = document.createElement('div');
+      wrapper.className = 'code-block-wrapper';
+      pre.parentNode.insertBefore(wrapper, pre);
+      var header = document.createElement('div');
+      header.className = 'code-block-header';
+      if (lang) {
+        var label = document.createElement('span');
+        label.className = 'code-lang-label';
+        label.textContent = lang;
+        header.appendChild(label);
+      } else {
+        header.appendChild(document.createElement('span'));
+      }
+      var btn = document.createElement('button');
+      btn.className = 'copy-btn';
+      btn.textContent = 'Copy';
+      btn.addEventListener('click', function() {
+        navigator.clipboard.writeText(codeEl.textContent).then(function() {
+          btn.textContent = 'Copied!';
+          btn.classList.add('copied');
+          setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+        });
+      });
+      header.appendChild(btn);
+      wrapper.appendChild(header);
+      wrapper.appendChild(pre);
+    });
+    document.querySelectorAll('table').forEach(function(table) {
+      if (!table.parentElement.classList.contains('table-wrap')) {
+        var wrapper = document.createElement('div');
+        wrapper.className = 'table-wrap';
+        table.parentNode.insertBefore(wrapper, table);
+        wrapper.appendChild(table);
+      }
+    });
+    // Reading progress bar
+    var progressBar = document.getElementById('reading-progress');
+    if (progressBar) {
+      window.addEventListener('scroll', function() {
+        var winScroll = document.documentElement.scrollTop;
+        var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        progressBar.style.width = height > 0 ? (winScroll / height * 100) + '%' : '0%';
+      });
+    }
+    // Dark mode toggle
+    var toggle = document.getElementById('theme-toggle');
+    if (toggle) {
+      var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      toggle.textContent = isDark ? '☀️' : '🌙';
+      toggle.addEventListener('click', function() {
+        var dark = document.documentElement.getAttribute('data-theme') === 'dark';
+        if (dark) {
+          document.documentElement.removeAttribute('data-theme');
+          localStorage.setItem('theme', 'light');
+          toggle.textContent = '🌙';
+        } else {
+          document.documentElement.setAttribute('data-theme', 'dark');
+          localStorage.setItem('theme', 'dark');
+          toggle.textContent = '☀️';
+        }
+      });
+    }
+  });</script>
+</head>
+<body>
+  <div class="progress-container"><div class="progress-bar" id="reading-progress"></div></div>
+  <nav class="navbar">
+    <div class="container">
+      <div class="nav-brand">
+        <span class="nav-icon">💻</span>
+        <span class="nav-title">CS_basics</span>
+      </div>
+      <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+      <div class="nav-links">
+        <a href="../index.html" class="">Home</a>
+        <a href="../cheatsheets.html" class="active">Cheat Sheets</a>
+        <a href="../patterns.html" class="">Pattern Recognition</a>
+        <a href="../faqs.html" class="">FAQs</a>
+        <a href="../resources.html" class="">Resources</a>
+        <a href="../lc-explorer.html" class="">LC Explorer</a>
+        <a href="../lc-random-picker.html" class="">🎲 Random Picker</a>
+        <a href="../algo_demo/index.html" class="">Visualizer</a>
+        <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">&#127769;</button>
+        <a href="https://github.com/yennanliu/CS_basics" target="_blank" class="github-link" aria-label="GitHub">
+          <svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor">
+            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container">
+    <div class="content">
+      
+      <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">Monotonic Queue</span></nav>
+      <div class="cheatsheet-header">
+        <h1>Monotonic Queue</h1>
+        <span class="last-updated">Last updated: Apr 11, 2026</span>
+      </div>
+      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#overview">Overview</a></li><li class="toc-sub"><a href="#key-properties">Key Properties</a></li><li class="toc-sub"><a href="#monotonic-queue-vs-monotonic-stack">Monotonic Queue vs Monotonic Stack</a></li><li><a href="#problem-categories">Problem Categories</a></li><li class="toc-sub"><a href="#pattern-1-sliding-window-maximum-minimum">Pattern 1: Sliding Window Maximum/Minimum</a></li><li class="toc-sub"><a href="#pattern-2-dp-optimization-with-bounded-range">Pattern 2: DP Optimization with Bounded Range</a></li><li class="toc-sub"><a href="#pattern-3-shortest-subarray-with-sum-constraint">Pattern 3: Shortest Subarray with Sum Constraint</a></li><li class="toc-sub"><a href="#pattern-4-multi-queue-min-max-simultaneously">Pattern 4: Multi-Queue (Min + Max simultaneously)</a></li><li><a href="#templates-algorithms">Templates &amp; Algorithms</a></li><li class="toc-sub"><a href="#template-1-sliding-window-maximum-decreasing-deque">Template 1: Sliding Window Maximum (Decreasing Deque)</a></li><li class="toc-sub"><a href="#template-2-dp-optimization-jump-game-vi-lc-1696">Template 2: DP Optimization — Jump Game VI (LC 1696)</a></li><li class="toc-sub"><a href="#template-3-shortest-subarray-with-sum-k-lc-862">Template 3: Shortest Subarray with Sum ≥ K (LC 862)</a></li><li><a href="#key-decision-guide">Key Decision Guide</a></li><li><a href="#lc-example">LC Example</a></li></ul></div>
+      <div class="cheatsheet-content">
+        <h1 id="monotonic-queue-deque" tabindex="-1"><a class="header-anchor" href="#monotonic-queue-deque"><span>Monotonic Queue (Deque)</span></a></h1>
+<h2 id="overview" tabindex="-1"><a class="header-anchor" href="#overview"><span>Overview</span></a></h2>
+<p><strong>Monotonic Queue</strong> is a double-ended queue (deque) that maintains elements in monotonic order (increasing or decreasing). Unlike monotonic stack which only removes from one end, monotonic queue can remove from <strong>both ends</strong> — enabling efficient sliding window min/max queries.</p>
+<h3 id="key-properties" tabindex="-1"><a class="header-anchor" href="#key-properties"><span>Key Properties</span></a></h3>
+<ul>
+<li><strong>Time Complexity</strong>: O(N) amortized for sliding window problems (each element added/removed at most once)</li>
+<li><strong>Space Complexity</strong>: O(K) where K is the window size</li>
+<li><strong>Core Idea</strong>: Maintain candidates in monotonic order; remove stale elements from front, dominated elements from back</li>
+<li><strong>When to Use</strong>: Sliding window min/max, bounded subarray optimization, DP optimization</li>
+</ul>
+<h3 id="monotonic-queue-vs-monotonic-stack" tabindex="-1"><a class="header-anchor" href="#monotonic-queue-vs-monotonic-stack"><span>Monotonic Queue vs Monotonic Stack</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>Monotonic Stack</th>
+<th>Monotonic Queue</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Structure</td>
+<td>Stack (one end)</td>
+<td>Deque (both ends)</td>
+</tr>
+<tr>
+<td>Remove from front?</td>
+<td>No</td>
+<td>Yes — expiry/window</td>
+</tr>
+<tr>
+<td>Primary use</td>
+<td>Next greater/smaller</td>
+<td>Sliding window min/max</td>
+</tr>
+<tr>
+<td>Window constraint?</td>
+<td>No</td>
+<td>Yes — bounded range</td>
+</tr>
+<tr>
+<td>Classic problem</td>
+<td>LC 84 (Histogram)</td>
+<td>LC 239 (Sliding Window Max)</td>
+</tr>
+</tbody>
+</table>
+<h2 id="problem-categories" tabindex="-1"><a class="header-anchor" href="#problem-categories"><span>Problem Categories</span></a></h2>
+<h3 id="pattern-1-sliding-window-maximum-minimum" tabindex="-1"><a class="header-anchor" href="#pattern-1-sliding-window-maximum-minimum"><span><strong>Pattern 1: Sliding Window Maximum/Minimum</strong></span></a></h3>
+<ul>
+<li><strong>Description</strong>: Find max or min in every window of size K</li>
+<li><strong>Examples</strong>: LC 239 (Sliding Window Maximum), LC 1438 (Longest Subarray with Abs Diff ≤ Limit)</li>
+<li><strong>Pattern</strong>: Decreasing deque for max, increasing deque for min; pop front when out of window</li>
+</ul>
+<h3 id="pattern-2-dp-optimization-with-bounded-range" tabindex="-1"><a class="header-anchor" href="#pattern-2-dp-optimization-with-bounded-range"><span><strong>Pattern 2: DP Optimization with Bounded Range</strong></span></a></h3>
+<ul>
+<li><strong>Description</strong>: Optimize DP transitions where you pick the best value from a sliding range</li>
+<li><strong>Examples</strong>: LC 1425 (Constrained Subsequence Sum), LC 1696 (Jump Game VI)</li>
+<li><strong>Pattern</strong>: dp[i] = max(dp[j]) + val[i] for j in [i-K, i-1] → use monotonic deque for the max</li>
+</ul>
+<h3 id="pattern-3-shortest-subarray-with-sum-constraint" tabindex="-1"><a class="header-anchor" href="#pattern-3-shortest-subarray-with-sum-constraint"><span><strong>Pattern 3: Shortest Subarray with Sum Constraint</strong></span></a></h3>
+<ul>
+<li><strong>Description</strong>: Find shortest/longest subarray meeting a sum condition</li>
+<li><strong>Examples</strong>: LC 862 (Shortest Subarray with Sum ≥ K), LC 1499 (Max Value of Equation)</li>
+<li><strong>Pattern</strong>: Monotonic deque on prefix sums</li>
+</ul>
+<h3 id="pattern-4-multi-queue-min-max-simultaneously" tabindex="-1"><a class="header-anchor" href="#pattern-4-multi-queue-min-max-simultaneously"><span><strong>Pattern 4: Multi-Queue (Min + Max simultaneously)</strong></span></a></h3>
+<ul>
+<li><strong>Description</strong>: Maintain both min and max in a sliding window</li>
+<li><strong>Examples</strong>: LC 1438 (Longest Subarray with Abs Diff ≤ Limit)</li>
+<li><strong>Pattern</strong>: Two deques — one increasing (min), one decreasing (max)</li>
+</ul>
+<h2 id="templates-algorithms" tabindex="-1"><a class="header-anchor" href="#templates-algorithms"><span>Templates &amp; Algorithms</span></a></h2>
+<h3 id="template-1-sliding-window-maximum-decreasing-deque" tabindex="-1"><a class="header-anchor" href="#template-1-sliding-window-maximum-decreasing-deque"><span>Template 1: Sliding Window Maximum (Decreasing Deque)</span></a></h3>
+<pre><code class="language-java">// Java — LC 239 Sliding Window Maximum
+// Time: O(N), Space: O(K)
+public int[] maxSlidingWindow(int[] nums, int k) {
+    int n = nums.length;
+    int[] result = new int[n - k + 1];
+    Deque&lt;Integer&gt; deque = new ArrayDeque&lt;&gt;(); // stores indices
+
+    for (int i = 0; i &lt; n; i++) {
+        // Remove elements outside the window
+        while (!deque.isEmpty() &amp;&amp; deque.peekFirst() &lt; i - k + 1) {
+            deque.pollFirst();
+        }
+        // Remove smaller elements from back (they'll never be the max)
+        while (!deque.isEmpty() &amp;&amp; nums[deque.peekLast()] &lt; nums[i]) {
+            deque.pollLast();
+        }
+        deque.offerLast(i);
+        // Window is fully formed
+        if (i &gt;= k - 1) {
+            result[i - k + 1] = nums[deque.peekFirst()];
+        }
+    }
+    return result;
+}
+</code></pre>
+<pre><code class="language-python"># Python — LC 239 Sliding Window Maximum
+# Time: O(N), Space: O(K)
+from collections import deque
+
+def maxSlidingWindow(nums, k):
+    dq = deque()  # stores indices, front = max
+    result = []
+    for i, num in enumerate(nums):
+        # Remove out-of-window
+        while dq and dq[0] &lt; i - k + 1:
+            dq.popleft()
+        # Remove smaller from back
+        while dq and nums[dq[-1]] &lt; num:
+            dq.pop()
+        dq.append(i)
+        if i &gt;= k - 1:
+            result.append(nums[dq[0]])
+    return result
+</code></pre>
+<h3 id="template-2-dp-optimization-jump-game-vi-lc-1696" tabindex="-1"><a class="header-anchor" href="#template-2-dp-optimization-jump-game-vi-lc-1696"><span>Template 2: DP Optimization — Jump Game VI (LC 1696)</span></a></h3>
+<pre><code class="language-java">// Java — LC 1696 Jump Game VI
+// dp[i] = max(dp[j] for j in [i-k, i-1]) + nums[i]
+// Time: O(N), Space: O(N)
+public int maxResult(int[] nums, int k) {
+    int n = nums.length;
+    int[] dp = new int[n];
+    dp[0] = nums[0];
+    Deque&lt;Integer&gt; deque = new ArrayDeque&lt;&gt;();
+    deque.offerLast(0);
+
+    for (int i = 1; i &lt; n; i++) {
+        // Remove out-of-range
+        while (!deque.isEmpty() &amp;&amp; deque.peekFirst() &lt; i - k) {
+            deque.pollFirst();
+        }
+        dp[i] = dp[deque.peekFirst()] + nums[i];
+        // Maintain decreasing order of dp values
+        while (!deque.isEmpty() &amp;&amp; dp[deque.peekLast()] &lt;= dp[i]) {
+            deque.pollLast();
+        }
+        deque.offerLast(i);
+    }
+    return dp[n - 1];
+}
+</code></pre>
+<pre><code class="language-python"># Python — LC 1696 Jump Game VI
+from collections import deque
+
+def maxResult(nums, k):
+    n = len(nums)
+    dp = [0] * n
+    dp[0] = nums[0]
+    dq = deque([0])
+
+    for i in range(1, n):
+        while dq and dq[0] &lt; i - k:
+            dq.popleft()
+        dp[i] = dp[dq[0]] + nums[i]
+        while dq and dp[dq[-1]] &lt;= dp[i]:
+            dq.pop()
+        dq.append(i)
+    return dp[-1]
+</code></pre>
+<h3 id="template-3-shortest-subarray-with-sum-k-lc-862" tabindex="-1"><a class="header-anchor" href="#template-3-shortest-subarray-with-sum-k-lc-862"><span>Template 3: Shortest Subarray with Sum ≥ K (LC 862)</span></a></h3>
+<pre><code class="language-python"># Python — LC 862 (handles negative numbers via prefix sum + monotonic deque)
+# Time: O(N), Space: O(N)
+from collections import deque
+
+def shortestSubarray(nums, k):
+    n = len(nums)
+    prefix = [0] * (n + 1)
+    for i in range(n):
+        prefix[i + 1] = prefix[i] + nums[i]
+
+    dq = deque()  # increasing deque of indices into prefix
+    ans = n + 1
+
+    for i in range(n + 1):
+        # If prefix[i] - prefix[dq.front] &gt;= k, we found a valid subarray
+        while dq and prefix[i] - prefix[dq[0]] &gt;= k:
+            ans = min(ans, i - dq.popleft())
+        # Maintain increasing order of prefix values
+        while dq and prefix[dq[-1]] &gt;= prefix[i]:
+            dq.pop()
+        dq.append(i)
+
+    return ans if ans &lt;= n else -1
+</code></pre>
+<h2 id="key-decision-guide" tabindex="-1"><a class="header-anchor" href="#key-decision-guide"><span>Key Decision Guide</span></a></h2>
+<pre><code>Need sliding window max/min?
+  → Monotonic Deque: O(N) time, O(K) space
+  → Alternative: Heap O(N log N) — slower but simpler
+
+DP transition = max/min over a range of size K?
+  → Monotonic Deque optimization: O(N) instead of O(N·K)
+
+Subarray sum with negative numbers?
+  → Prefix sum + monotonic deque (LC 862 pattern)
+
+Need BOTH min and max in window?
+  → Two deques: one increasing, one decreasing
+</code></pre>
+<h2 id="lc-example" tabindex="-1"><a class="header-anchor" href="#lc-example"><span>LC Example</span></a></h2>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Problem</th>
+<th>Difficulty</th>
+<th>Pattern</th>
+<th>Time</th>
+<th>Space</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>239</td>
+<td>Sliding Window Maximum</td>
+<td>Hard</td>
+<td>Decreasing deque</td>
+<td>O(N)</td>
+<td>O(K)</td>
+</tr>
+<tr>
+<td>862</td>
+<td>Shortest Subarray with Sum ≥ K</td>
+<td>Hard</td>
+<td>Prefix sum + increasing deque</td>
+<td>O(N)</td>
+<td>O(N)</td>
+</tr>
+<tr>
+<td>1425</td>
+<td>Constrained Subsequence Sum</td>
+<td>Hard</td>
+<td>DP + decreasing deque</td>
+<td>O(N)</td>
+<td>O(N)</td>
+</tr>
+<tr>
+<td>1438</td>
+<td>Longest Subarray Abs Diff ≤ Limit</td>
+<td>Medium</td>
+<td>Two deques (min + max)</td>
+<td>O(N)</td>
+<td>O(N)</td>
+</tr>
+<tr>
+<td>1696</td>
+<td>Jump Game VI</td>
+<td>Medium</td>
+<td>DP + decreasing deque</td>
+<td>O(N)</td>
+<td>O(K)</td>
+</tr>
+<tr>
+<td>1499</td>
+<td>Max Value of Equation</td>
+<td>Hard</td>
+<td>Decreasing deque</td>
+<td>O(N)</td>
+<td>O(N)</td>
+</tr>
+<tr>
+<td>2398</td>
+<td>Max Number of Robots Within Budget</td>
+<td>Hard</td>
+<td>Sliding window + deque</td>
+<td>O(N)</td>
+<td>O(N)</td>
+</tr>
+</tbody>
+</table>
+
+      </div>
+      <div class="cheatsheet-footer">
+        <a href="../cheatsheets.html" class="back-link">← Back to Cheat Sheets</a>
+        <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/monotonic_queue.md" class="github-edit" target="_blank">
+          Edit on GitHub →
+        </a>
+      </div>
+    <nav class="prev-next"><a href="matrix.html" class="prev-link">← Matrix</a><a href="monotonic_stack.html" class="next-link">Monotonic Stack →</a></nav>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>CS_basics - Computer Science Fundamentals & Interview Preparation</p>
+      <p>
+        <a href="https://github.com/yennanliu/CS_basics">GitHub</a> •
+        <a href="https://github.com/yennanliu/CS_basics/tree/master/doc">Documentation</a> •
+        <a href="https://github.com/yennanliu/CS_basics/issues">Report Issues</a>
+      </p>
+    </div>
+  </footer>
+</body>
+</html>

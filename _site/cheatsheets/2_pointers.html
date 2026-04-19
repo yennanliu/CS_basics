@@ -1,0 +1,2867 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2 Pointers - CS_basics</title>
+  <meta name="description" content="Computer Science fundamentals: algorithms, data structures, system design, and LeetCode solutions">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>CS</text></svg>">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="../vendor/fonts.css">
+  <link rel="stylesheet" href="../vendor/highlight/github-dark.min.css">
+  <script src="../vendor/highlight/highlight.min.js"></script>
+  <script>
+  // Apply theme before render to prevent flash
+  (function() {
+    var saved = localStorage.getItem('theme');
+    if (saved === 'dark' || (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      document.documentElement.setAttribute('data-theme', 'dark');
+    }
+  })();
+  </script>
+  <script>document.addEventListener('DOMContentLoaded', function() {
+    hljs.highlightAll();
+    document.querySelectorAll('pre code').forEach(function(codeEl) {
+      var pre = codeEl.parentElement;
+      var lang = '';
+      var cls = codeEl.className || '';
+      var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
+      if (m) lang = m[1];
+      var wrapper = document.createElement('div');
+      wrapper.className = 'code-block-wrapper';
+      pre.parentNode.insertBefore(wrapper, pre);
+      var header = document.createElement('div');
+      header.className = 'code-block-header';
+      if (lang) {
+        var label = document.createElement('span');
+        label.className = 'code-lang-label';
+        label.textContent = lang;
+        header.appendChild(label);
+      } else {
+        header.appendChild(document.createElement('span'));
+      }
+      var btn = document.createElement('button');
+      btn.className = 'copy-btn';
+      btn.textContent = 'Copy';
+      btn.addEventListener('click', function() {
+        navigator.clipboard.writeText(codeEl.textContent).then(function() {
+          btn.textContent = 'Copied!';
+          btn.classList.add('copied');
+          setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+        });
+      });
+      header.appendChild(btn);
+      wrapper.appendChild(header);
+      wrapper.appendChild(pre);
+    });
+    document.querySelectorAll('table').forEach(function(table) {
+      if (!table.parentElement.classList.contains('table-wrap')) {
+        var wrapper = document.createElement('div');
+        wrapper.className = 'table-wrap';
+        table.parentNode.insertBefore(wrapper, table);
+        wrapper.appendChild(table);
+      }
+    });
+    // Reading progress bar
+    var progressBar = document.getElementById('reading-progress');
+    if (progressBar) {
+      window.addEventListener('scroll', function() {
+        var winScroll = document.documentElement.scrollTop;
+        var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        progressBar.style.width = height > 0 ? (winScroll / height * 100) + '%' : '0%';
+      });
+    }
+    // Dark mode toggle
+    var toggle = document.getElementById('theme-toggle');
+    if (toggle) {
+      var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      toggle.textContent = isDark ? '☀️' : '🌙';
+      toggle.addEventListener('click', function() {
+        var dark = document.documentElement.getAttribute('data-theme') === 'dark';
+        if (dark) {
+          document.documentElement.removeAttribute('data-theme');
+          localStorage.setItem('theme', 'light');
+          toggle.textContent = '🌙';
+        } else {
+          document.documentElement.setAttribute('data-theme', 'dark');
+          localStorage.setItem('theme', 'dark');
+          toggle.textContent = '☀️';
+        }
+      });
+    }
+  });</script>
+</head>
+<body>
+  <div class="progress-container"><div class="progress-bar" id="reading-progress"></div></div>
+  <nav class="navbar">
+    <div class="container">
+      <div class="nav-brand">
+        <span class="nav-icon">💻</span>
+        <span class="nav-title">CS_basics</span>
+      </div>
+      <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+      <div class="nav-links">
+        <a href="../index.html" class="">Home</a>
+        <a href="../cheatsheets.html" class="active">Cheat Sheets</a>
+        <a href="../patterns.html" class="">Pattern Recognition</a>
+        <a href="../faqs.html" class="">FAQs</a>
+        <a href="../resources.html" class="">Resources</a>
+        <a href="../lc-explorer.html" class="">LC Explorer</a>
+        <a href="../lc-random-picker.html" class="">🎲 Random Picker</a>
+        <a href="../algo_demo/index.html" class="">Visualizer</a>
+        <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">&#127769;</button>
+        <a href="https://github.com/yennanliu/CS_basics" target="_blank" class="github-link" aria-label="GitHub">
+          <svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor">
+            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container">
+    <div class="content">
+      
+      <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">2 Pointers</span></nav>
+      <div class="cheatsheet-header">
+        <h1>2 Pointers</h1>
+        <span class="last-updated">Last updated: Mar 13, 2026</span>
+      </div>
+      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#0-concept">0) Concept</a></li><li class="toc-sub"><a href="#0-1-types">0-1) Types</a></li><li class="toc-sub"><a href="#0-2-pattern">0-2) Pattern</a></li><li class="toc-sub"><a href="#0-2-0-remove-duplicates-from-sorted-array">0-2-0) Remove Duplicates from Sorted Array</a></li><li class="toc-sub"><a href="#0-2-1-remove-element">0-2-1) Remove Element</a></li><li class="toc-sub"><a href="#0-2-1b-remove-element-bidirectional-two-pointers">0-2-1b) Remove Element (Bidirectional Two Pointers)</a></li><li class="toc-sub"><a href="#0-2-2-move-zeros-to-end">0-2-2) Move Zeros to End</a></li><li class="toc-sub"><a href="#0-2-3-quickselect-partition-algorithm-for-kth-element">0-2-3) QuickSelect (Partition Algorithm for Kth Element)</a></li><li><a href="#1-general-form">1) General form</a></li><li class="toc-sub"><a href="#1-1-basic-op">1-1) Basic OP</a></li><li><a href="#2-lc-example">2) LC Example</a></li><li class="toc-sub"><a href="#2-1-remove-element">2-1) Remove Element</a></li><li class="toc-sub"><a href="#2-2-longest-palindromic-substring">2-2) Longest Palindromic Substring</a></li><li class="toc-sub"><a href="#2-3-container-with-most-water">2-3) Container With Most Water</a></li><li class="toc-sub"><a href="#2-4-longest-consecutive-sequence">2-4) Longest Consecutive Sequence</a></li><li class="toc-sub"><a href="#2-6-palindromic-substrings">2-6) Palindromic Substrings</a></li><li class="toc-sub"><a href="#2-7-sum-of-subarray-ranges">2-7) Sum of Subarray Ranges</a></li><li class="toc-sub"><a href="#2-8-trapping-rain-water">2-8) Trapping Rain Water</a></li><li class="toc-sub"><a href="#2-9-next-permutation">2-9) Next Permutation</a></li><li class="toc-sub"><a href="#2-10-valid-palindrome-ii-palindrome-with-one-deletion">2-10) Valid Palindrome II (Palindrome with One Deletion)</a></li><li class="toc-sub"><a href="#2-11-merge-sorted-array">2-11) Merge Sorted Array</a></li><li class="toc-sub"><a href="#2-12-interval-list-intersections">2-12) Interval List Intersections</a></li><li class="toc-sub"><a href="#2-13-sort-colors-dutch-national-flag">2-13) Sort Colors (Dutch National Flag)</a></li><li class="toc-sub"><a href="#2-14-3sum">2-14) 3Sum</a></li><li class="toc-sub"><a href="#2-15-reverse-string-reverse-words">2-15) Reverse String / Reverse Words</a></li><li class="toc-sub"><a href="#2-16-shortest-palindrome-find-longest-palindromic-prefix">2-16) Shortest Palindrome (Find Longest Palindromic Prefix)</a></li><li><a href="#3-classic-lc-problems-summary">3) Classic LC Problems Summary</a></li><li class="toc-sub"><a href="#easy">Easy:</a></li><li class="toc-sub"><a href="#medium">Medium:</a></li><li class="toc-sub"><a href="#hard">Hard:</a></li><li><a href="#4-two-pointers-cheat-sheet">4) Two Pointers Cheat Sheet</a></li></ul></div>
+      <div class="cheatsheet-content">
+        <h1 id="two-pointers" tabindex="-1"><a class="header-anchor" href="#two-pointers"><span>Two pointers</span></a></h1>
+<ul>
+<li>Ref
+<ul>
+<li><a href="https://labuladong.online/algo/essential-technique/array-two-pointers-summary/#%E5%8E%9F%E5%9C%B0%E4%BF%AE%E6%94%B9">fucking-algorithm : 2 pointers</a></li>
+</ul>
+</li>
+</ul>
+<h2 id="0-concept" tabindex="-1"><a class="header-anchor" href="#0-concept"><span>0) Concept</span></a></h2>
+<h3 id="0-1-types" tabindex="-1"><a class="header-anchor" href="#0-1-types"><span>0-1) Types</span></a></h3>
+<ul>
+<li>
+<p>Pointer types</p>
+<ul>
+<li>
+<p><code>Fast - Slow pointers</code></p>
+<ul>
+<li>fast, slow pointers from <code>same start point</code></li>
+</ul>
+</li>
+<li>
+<p><code>Left- Right pointers</code></p>
+<ul>
+<li>left, right pointers from <code>idx = 0, idx = len(n) - 1</code> respectively</li>
+<li>Usually set
+<ul>
+<li>left pointer = 0</li>
+<li>right pointer = len(nums)</li>
+</ul>
+</li>
+<li><a href="binary_search.html">binary search</a></li>
+<li>array reverse</li>
+<li><a href="n_sum.html">2 sum</a></li>
+<li><a href="sliding_window.html">sliding window</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><code>Expand</code> from center (and Deal with <code>odd, even</code> cases)</p>
+<ul>
+<li>LC 680</li>
+<li>LC 647</li>
+<li>LC 005</li>
+</ul>
+</li>
+<li>
+<p>Merge Sorted Array</p>
+<ul>
+<li>LC 88</li>
+</ul>
+</li>
+<li>
+<p>Minimum Swaps to Group All 1’s Together</p>
+<ul>
+<li>LC 1151 (check <a href="sliding_window.html">sliding_window.md</a>)</li>
+</ul>
+</li>
+<li>
+<p>Boats to Save People</p>
+<ul>
+<li>LC 881</li>
+</ul>
+</li>
+<li>
+<p>move <code>right pointer first</code>, then move <code>left point</code> per condition</p>
+<ul>
+<li>LC 567</li>
+<li>LC 209 (see <code>sliding window cheatsheet</code>)</li>
+</ul>
+</li>
+<li>
+<p><code>Subsequence Matching</code> with character type constraints</p>
+<ul>
+<li>One pointer always moves, one conditionally moves</li>
+<li>Extra validation on non-matching characters</li>
+<li>LC 392 (Is Subsequence)</li>
+<li>LC 1023 (Camelcase Matching - with uppercase/lowercase constraint)</li>
+</ul>
+</li>
+<li>
+<p>Algorithm</p>
+<ul>
+<li>binary search</li>
+<li>sliding window</li>
+<li>for loop + “expand <code>left</code>, <code>right</code> from center”</li>
+</ul>
+</li>
+<li>
+<p>Data structure</p>
+<ul>
+<li>Array</li>
+<li>Linked list</li>
+</ul>
+</li>
+</ul>
+<h3 id="0-2-pattern" tabindex="-1"><a class="header-anchor" href="#0-2-pattern"><span>0-2) Pattern</span></a></h3>
+<h3 id="0-2-0-remove-duplicates-from-sorted-array" tabindex="-1"><a class="header-anchor" href="#0-2-0-remove-duplicates-from-sorted-array"><span>0-2-0) Remove Duplicates from Sorted Array</span></a></h3>
+<pre><code class="language-java">// java
+// LC 26 (LC 83)
+// https://labuladong.online/algo/essential-technique/array-two-pointers-summary/#%E5%8E%9F%E5%9C%B0%E4%BF%AE%E6%94%B9
+/**
+ *  //--------------------------------
+ *  Example 1
+ *  //--------------------------------
+ *
+ *  nums = [1,1,2]
+ *
+ *  [1,1,2]
+ *   s f
+ *
+ *  [1,2, 1]     if nums[f] != nums[s], move s, then swap f, s
+ *   s s  f
+ *
+ *
+ *   //--------------------------------
+ *   Example 2
+ *   //--------------------------------
+ *
+ *   nums = [0,0,1,1,1,2,2,3,3,4]
+ *
+ *   [0,0,1,1,1,2,2,3,3,4]
+ *    s f
+ *
+ *   [0,1,0,1,1,2,2,3,3,4]   if nums[f] != nums[s], move s, then swap f, s
+ *    s s f
+ *
+ *   [0,1,0,1,1,2,2,3,3,4]
+ *      s   f
+ *
+ *   [0,1,0,1,1,2,2,3,3,4]
+ *      s     f
+ *
+ *   [0,1,2,1,1,0,2,3,3,4]   if nums[f] != nums[s], move s, then swap f, s
+ *      s s     f
+ *
+ *   [0,1,2,1,1,0,2,3,3,4]
+ *        s       f
+ *
+ *   [0,1,2,3,1,0,2,1,3,4]  if nums[f] != nums[s], move s, then swap f, s
+ *        s s       f
+ *
+ *   [0,1,2,3,1,0,2,1,3,4]
+ *          s         f
+ *
+ *   [0,1,2,3,4,0,2,1,3,1]   if nums[f] != nums[s], move s, then swap f, s
+ *          s s         f
+ *
+ */
+class Solution {
+    public int removeDuplicates(int[] nums) {
+        if (nums.length == 0) {
+            return 0;
+        }
+        int slow = 0, fast = 0;
+        while (fast &lt; nums.length) {
+            // NOTE !!! if slow pointer != fast pointer
+            if (nums[fast] != nums[slow]) {
+                // NOTE !!! move slow pointer first
+                slow++;
+                // 维护 nums[0..slow] 无重复
+                // NOTE !!! swap slow, fast pointer val
+                nums[slow] = nums[fast];
+            }
+            fast++;
+        }
+        // 数组长度为索引 + 1
+        return slow + 1;
+    }
+}
+</code></pre>
+<h3 id="0-2-1-remove-element" tabindex="-1"><a class="header-anchor" href="#0-2-1-remove-element"><span>0-2-1) Remove Element</span></a></h3>
+<pre><code class="language-java">// java
+// LC 27
+// https://labuladong.online/algo/essential-technique/array-two-pointers-summary/#%E5%8E%9F%E5%9C%B0%E4%BF%AE%E6%94%B9
+/**
+ *  //--------------------
+ *  Example 1
+ *  //--------------------
+ *
+ *  nums = [3,2,2,3], val = 3
+ *
+ *  [3,2,2,3]
+ *   s
+ *   f
+ *
+ *  [2,3,2,3]    if nums[f] != val, swap, move s
+ *   s s
+ *     f
+ *
+ *  [2,2,3,3]   if nums[f] != val, swap, move s
+ *     s s
+ *       f
+ *
+ * [2,2,3,3]
+ *      s
+ *        f
+ *
+ *
+ *  //--------------------
+ *  Example 2
+ *  //--------------------
+ *
+ *  nums = [0,1,2,2,3,0,4,2], val = 2
+ *
+ *
+ *  [0,1,2,2,3,0,4,2]   if nums[f] != val, swap, move s
+ *   s s
+ *   f
+ *
+ *  [0,1,2,2,3,0,4,2]     if nums[f] != val, swap, move s
+ *     s s
+ *     f
+ *
+ *  [0,1,2,2,3,0,4,2]
+ *       s
+ *       f
+ *
+ * [0,1,2,2,3,0,4,2]
+ *      s
+ *        f
+ *
+ * [0,1,3,2,2,0,4,2]   if nums[f] != val, swap, move s
+ *      s s
+ *          f
+ *
+ * [0,1,3,0,2,2,4,2]   if nums[f] != val, swap, move s
+ *        s s
+ *            f
+ *
+ * [0,1,3,0,4,2,2,2]    if nums[f] != val, swap, move s
+ *          s s
+ *              f
+ *
+ *  [0,1,3,0,4,2,2,2]
+ *             s
+ *                 f
+ */
+class Solution {
+    public int removeElement(int[] nums, int val) {
+        int fast = 0, slow = 0;
+        while (fast &lt; nums.length) {
+            if (nums[fast] != val) {
+                nums[slow] = nums[fast];
+                slow++;
+            }
+            fast++;
+        }
+        return slow;
+    }
+}
+</code></pre>
+<h3 id="0-2-1b-remove-element-bidirectional-two-pointers" tabindex="-1"><a class="header-anchor" href="#0-2-1b-remove-element-bidirectional-two-pointers"><span>0-2-1b) Remove Element (Bidirectional Two Pointers)</span></a></h3>
+<p><strong>Pattern: Left-Right pointers, shrink from both ends</strong></p>
+<p>Key difference from the fast-slow (0-2-1) approach:</p>
+<ul>
+<li>Fast-slow overwrites sequentially → <strong>preserves relative order</strong></li>
+<li>Bidirectional replaces <code>nums[l]</code> with <code>nums[r]</code> → <strong>does NOT preserve order</strong>, but may do fewer writes (good when <code>val</code> is rare)</li>
+</ul>
+<pre><code class="language-java">// java
+// LC 27 Remove Element - Bidirectional variant
+/**
+ * Key Idea:
+ *   - l starts at 0, r starts at nums.length - 1
+ *   - If nums[l] == val, OVERWRITE it with nums[r] and shrink r
+ *     (do NOT advance l yet — the new nums[l] might also be val)
+ *   - If nums[l] != val, it is a &quot;good&quot; element → advance l
+ *   - When l &gt; r, l equals the count of valid elements
+ *
+ * //--------------------
+ * Example 1
+ * //--------------------
+ * nums = [3,2,2,3], val = 3
+ *
+ * [3,2,2,3]   nums[l]=3==val, nums[l]=nums[r]=3, r--
+ *  l     r
+ *
+ * [3,2,2,3]   nums[l]=3==val, nums[l]=nums[r]=2, r--
+ *  l   r
+ *
+ * [2,2,2,3]   nums[l]=2!=val, l++
+ *  l r
+ *
+ * [2,2,2,3]   nums[l]=2!=val, l++
+ *    lr
+ *
+ * l(2) &gt; r(1), return l = 2
+ *
+ * //--------------------
+ * Example 2
+ * //--------------------
+ * nums = [0,1,2,2,3,0,4,2], val = 2
+ *
+ * [0,1,2,2,3,0,4,2]   nums[l]=0!=val, l++
+ *  l               r
+ *
+ * [0,1,2,2,3,0,4,2]   nums[l]=1!=val, l++
+ *    l             r
+ *
+ * [0,1,2,2,3,0,4,2]   nums[l]=2==val, nums[l]=nums[r]=2, r--
+ *      l           r
+ *
+ * [0,1,2,2,3,0,4,2]   nums[l]=2==val, nums[l]=nums[r]=4, r--
+ *      l         r
+ *
+ * [0,1,4,2,3,0,4,2]   nums[l]=4!=val, l++
+ *      l       r
+ *
+ * [0,1,4,2,3,0,4,2]   nums[l]=2==val, nums[l]=nums[r]=0, r--
+ *        l     r
+ *
+ * [0,1,4,0,3,0,4,2]   nums[l]=0!=val, l++
+ *        l   r
+ *
+ * [0,1,4,0,3,0,4,2]   nums[l]=3!=val, l++
+ *          l r
+ *
+ * l(5) &gt; r(4), return l = 5
+ *
+ * Time: O(N), Space: O(1)
+ */
+public int removeElement(int[] nums, int val) {
+    int l = 0;
+    int r = nums.length - 1;
+
+    while (l &lt;= r) {
+        if (nums[l] == val) {
+            // Overwrite with rightmost element, shrink right boundary
+            // NOTE: do NOT advance l — new nums[l] might also be val
+            nums[l] = nums[r];
+            r--;
+        } else {
+            // Good element confirmed, advance left
+            l++;
+        }
+    }
+
+    // l is exactly the count of non-val elements
+    return l;
+}
+</code></pre>
+<p><strong>Comparison: Fast-Slow vs Bidirectional</strong></p>
+<table>
+<thead>
+<tr>
+<th>Aspect</th>
+<th>Fast-Slow (0-2-1)</th>
+<th>Bidirectional (this)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Order</strong></td>
+<td>Preserves relative order</td>
+<td>Does NOT preserve order</td>
+</tr>
+<tr>
+<td><strong>Writes</strong></td>
+<td>One write per valid element</td>
+<td>Fewer writes when val is rare</td>
+</tr>
+<tr>
+<td><strong>Loop style</strong></td>
+<td><code>for</code> loop (fast advances always)</td>
+<td><code>while (l &lt;= r)</code></td>
+</tr>
+<tr>
+<td><strong>When to use</strong></td>
+<td>Order matters</td>
+<td>Order doesn’t matter, minimal writes</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Similar Problems:</strong></p>
+<ul>
+<li>LC 27 Remove Element (this pattern)</li>
+<li>LC 905 Sort Array By Parity — move evens left, odds right (same bidirectional shrink idea)</li>
+<li>LC 75 Sort Colors (Dutch National Flag) — three-way bidirectional partition</li>
+<li>LC 283 Move Zeroes — order matters, use fast-slow instead</li>
+<li>LC 26 Remove Duplicates from Sorted Array — order matters, use fast-slow instead</li>
+<li>LC 80 Remove Duplicates from Sorted Array II — order matters, use fast-slow instead</li>
+</ul>
+<h3 id="0-2-2-move-zeros-to-end" tabindex="-1"><a class="header-anchor" href="#0-2-2-move-zeros-to-end"><span>0-2-2) Move Zeros to End</span></a></h3>
+<pre><code class="language-java">// java
+// LC 283 Move Zeroes
+// https://leetcode.com/problems/move-zeroes/
+/**
+ * Pattern: Move all zeros (or specific elements) to the end while maintaining
+ * the relative order of non-zero elements. Must be done in-place.
+ *
+ * Key Idea:
+ *   - Both pointers (l and r) start from index 0
+ *   - l tracks the position where the next non-zero should be placed
+ *   - r scans through the array
+ *   - When r finds a non-zero, swap with l and move l forward
+ *   - This moves all zeros to the end naturally
+ *
+ * Difference from &quot;Remove Element&quot; pattern:
+ *   - Remove Element: overwrites without caring about moved elements
+ *   - Move Zeros: uses SWAP to preserve all elements in array
+ *
+ *  //--------------------
+ *  Example 1
+ *  //--------------------
+ *
+ *  nums = [0,1,0,3,12]
+ *
+ *  [0,1,0,3,12]
+ *   l
+ *   r
+ *
+ *  [0,1,0,3,12]    nums[r]=0, no swap, move r
+ *   l
+ *     r
+ *
+ *  [1,0,0,3,12]    nums[r]!=0, swap(l,r), move l and r
+ *   l l
+ *     r
+ *
+ *  [1,0,0,3,12]    nums[r]=0, no swap, move r
+ *     l
+ *       r
+ *
+ *  [1,3,0,0,12]    nums[r]!=0, swap(l,r), move l and r
+ *     l l
+ *         r
+ *
+ *  [1,3,12,0,0]    nums[r]!=0, swap(l,r), move l and r
+ *        l  l
+ *            r
+ *
+ *  //--------------------
+ *  Example 2
+ *  //--------------------
+ *
+ *  nums = [0]
+ *  [0]
+ *   l
+ *   r
+ *  -&gt; only one element, no change
+ *
+ *  //--------------------
+ *  Example 3
+ *  //--------------------
+ *
+ *  nums = [1,0,2,0,3]
+ *
+ *  [1,0,2,0,3]    nums[r]!=0, swap(l,r), move l and r
+ *   l l
+ *   r
+ *
+ *  [1,0,2,0,3]    nums[r]=0, no swap, move r
+ *     l
+ *     r
+ *
+ *  [1,2,0,0,3]    nums[r]!=0, swap(l,r), move l and r
+ *     l l
+ *       r
+ *
+ *  [1,2,0,0,3]    nums[r]=0, no swap, move r
+ *       l
+ *         r
+ *
+ *  [1,2,3,0,0]    nums[r]!=0, swap(l,r), move l and r
+ *       l l
+ *           r
+ *
+ * Time: O(N), Space: O(1)
+ */
+class Solution {
+    public void moveZeroes(int[] nums) {
+        if (nums == null || nums.length &lt;= 1)
+            return;
+
+        // 'l' is the position where the next non-zero number should be placed
+        int l = 0;
+
+        /** NOTE !!!
+         *
+         *  BOTH l, r start from idx = 0
+         */
+        // Iterate through the array with 'r'
+        for (int r = 0; r &lt; nums.length; r++) {
+            // If we find a non-zero element
+            if (nums[r] != 0) {
+                // Swap it with the element at position 'l'
+                int tmp = nums[r];
+                nums[r] = nums[l];
+                nums[l] = tmp;
+
+                /** NOTE !!!
+                 *
+                 *  Move 'l' forward if `we swap`
+                 */
+                // Move 'l' forward
+                l++;
+            }
+        }
+    }
+}
+</code></pre>
+<p><strong>Similar Problems:</strong></p>
+<ul>
+<li>LC 283 Move Zeroes (this pattern)</li>
+<li>LC 27 Remove Element (overwrite version)</li>
+<li>LC 905 Sort Array By Parity (move even numbers to front)</li>
+<li>LC 922 Sort Array By Parity II (even/odd positioning)</li>
+<li>LC 2460 Apply Operations to an Array</li>
+<li>LC 1089 Duplicate Zeros (expanding array version)</li>
+</ul>
+<h4 id="0-2-3-for-loop-expand-left-right-from-center" tabindex="-1"><a class="header-anchor" href="#0-2-3-for-loop-expand-left-right-from-center"><span>0-2-3) for loop + “expand <code>left</code>, <code>right</code> from center”</span></a></h4>
+<pre><code class="language-python"># LC 005  Longest Palindromic Substring
+# LC 647 Palindromic Substrings
+# python
+# pseudo code
+# ...
+for i in range(lens(s)):
+
+    # NOTE !!!
+    # NO NEED to have logic like `if i % 2 == 1`..
+    # we can just consider `odd, even len` cases directly
+
+    #--------------------------------------
+    # if odd
+    # NOTE !!! if `odd`, left = right = i
+    #--------------------------------------
+    left = right = i
+    while left &gt;= 0 and right &lt; len(s) and s[left] == s[right]:
+        if right+1-left &gt; len(res):
+            res = s[left:right+1]
+        left -= 1
+        right += 1
+    
+    #--------------------------------------
+    # if even
+    # NOTE !!! if `odd`, left = i - 1, right = i
+    #--------------------------------------
+    left = i - 1
+    right = i
+    while left &gt;= 0 and right &lt; len(s) and s[left] == s[right]:
+        if right+1-left &gt; len(res):
+            res = s[left:right+1]
+        left -= 1
+        right += 1
+# ...
+</code></pre>
+<h4 id="0-2-4-move-right-pointer-then-move-left-point" tabindex="-1"><a class="header-anchor" href="#0-2-4-move-right-pointer-then-move-left-point"><span>0-2-4) Move <code>right pointer</code>, then move <code>left point</code></span></a></h4>
+<pre><code class="language-java">// java
+// LC 567
+
+int l = 0;
+for (int r = 0; r &lt; s2.length(); r++){
+    // ...
+
+    if(some_condition){
+
+        // ...
+        // update map and move left pointer
+        l += 1;
+    }
+}
+
+
+// ...
+</code></pre>
+<h4 id="0-2-5-subsequence-matching-one-always-moves-one-conditionally-moves" tabindex="-1"><a class="header-anchor" href="#0-2-5-subsequence-matching-one-always-moves-one-conditionally-moves"><span>0-2-5) Subsequence Matching (One Always Moves, One Conditionally Moves)</span></a></h4>
+<pre><code class="language-java">// java
+// LC 392 Is Subsequence
+// https://leetcode.com/problems/is-subsequence/
+
+/**
+ * Pattern: Check if string s is a subsequence of string t
+ *
+ * Key Idea:
+ *   - Use two pointers: i for s (target subsequence), j for t (main string)
+ *   - ALWAYS move j (scan through entire t)
+ *   - ONLY move i when characters match
+ *   - If i reaches end of s, we found all characters in order
+ *
+ * Example:
+ *   s = &quot;abc&quot;, t = &quot;ahbgdc&quot;
+ *
+ *   [a h b g d c]    i=0, j=0, s[i]=a, t[j]=a, match! i++, j++
+ *    i j
+ *
+ *   [a h b g d c]    i=1, j=1, s[i]=b, t[j]=h, no match, j++
+ *      i j
+ *
+ *   [a h b g d c]    i=1, j=2, s[i]=b, t[j]=b, match! i++, j++
+ *        i j
+ *
+ *   [a h b g d c]    i=2, j=3, s[i]=c, t[j]=g, no match, j++
+ *          i j
+ *
+ *   [a h b g d c]    i=2, j=4, s[i]=c, t[j]=d, no match, j++
+ *            i j
+ *
+ *   [a h b g d c]    i=2, j=5, s[i]=c, t[j]=c, match! i++, j++
+ *              i j
+ *
+ *   i == s.length() -&gt; return true
+ */
+public boolean isSubsequence(String s, String t) {
+    if (s.isEmpty())
+        return true;
+    if (t.isEmpty())
+        return false;
+
+    int i = 0; // Pointer for s (target subsequence)
+    int j = 0; // Pointer for t (main string)
+
+    /** NOTE !!!
+     *
+     *  the while loop condition:
+     *
+     *     i &lt; s.length()
+     *     &amp;&amp;
+     *     j &lt; t.length()
+     */
+    while (i &lt; s.length() &amp;&amp; j &lt; t.length()) {
+        // If characters match, move the pointer for s
+        if (s.charAt(i) == t.charAt(j)) {
+            i++;
+        }
+        // Always move the pointer for t
+        j++;
+    }
+
+    // If i reached the end of s, all characters were found in order
+    return i == s.length();
+}
+</code></pre>
+<p><strong>Classic Problems:</strong></p>
+<ul>
+<li>LC 392 Is Subsequence</li>
+<li>LC 524 Longest Word in Dictionary through Deleting</li>
+<li>LC 792 Number of Matching Subsequences</li>
+</ul>
+<h4 id="0-2-6-pattern-matching-with-character-type-constraints-camelcase-matching" tabindex="-1"><a class="header-anchor" href="#0-2-6-pattern-matching-with-character-type-constraints-camelcase-matching"><span>0-2-6) Pattern Matching with Character Type Constraints (CamelCase Matching)</span></a></h4>
+<pre><code class="language-java">// java
+// LC 1023 Camelcase Matching
+// https://leetcode.com/problems/camelcase-matching/
+
+/**
+ * Pattern: Subsequence matching with character type validation
+ *
+ * Key Idea:
+ *   - Similar to subsequence matching, but with EXTRA CONSTRAINT
+ *   - Use two pointers: i for query, j for pattern
+ *   - ALWAYS move i (scan through entire query)
+ *   - ONLY move j when characters match
+ *   - CRITICAL: Any non-matching character in query MUST be lowercase
+ *     (uppercase non-match = invalid)
+ *
+ * Core Logic:
+ *   1. All pattern characters must appear in query in same order (subsequence)
+ *   2. Any extra characters in query MUST be lowercase
+ *   3. If we encounter an extra uppercase letter → immediate failure
+ *
+ * Example 1:
+ *   query = &quot;FooBar&quot;, pattern = &quot;FB&quot;
+ *
+ *   [F o o B a r]    i=0, j=0, query[i]=F, pattern[j]=F, match! j++
+ *    i j
+ *
+ *   [F o o B a r]    i=1, j=1, query[i]=o, pattern[j]=B, no match
+ *      i j           but 'o' is lowercase → OK, i++
+ *
+ *   [F o o B a r]    i=2, j=1, query[i]=o, pattern[j]=B, no match
+ *        i j         but 'o' is lowercase → OK, i++
+ *
+ *   [F o o B a r]    i=3, j=1, query[i]=B, pattern[j]=B, match! j++
+ *          i j
+ *
+ *   [F o o B a r]    i=4, j=2, query[i]=a, pattern[j]=none, no match
+ *            i       but 'a' is lowercase → OK, i++
+ *
+ *   [F o o B a r]    i=5, j=2, query[i]=r, pattern[j]=none, no match
+ *              i     but 'r' is lowercase → OK, i++
+ *
+ *   j == pattern.length() → return true
+ *
+ * Example 2:
+ *   query = &quot;FooBarTest&quot;, pattern = &quot;FB&quot;
+ *
+ *   ... (matches F, o, o, B, a, r) ...
+ *
+ *   [F o o B a r T e s t]    i=6, j=2, query[i]=T
+ *                  i         'T' is UPPERCASE but not in pattern
+ *                            → return false immediately!
+ *
+ * Pointer Behavior:
+ *   - i (Explorer): Moves EVERY step, scans all characters
+ *   - j (Goal Tracker): ONLY moves when finding matching character
+ *   - Safety Check: Non-matching uppercase → instant failure
+ *
+ * Time: O(M) where M = query length
+ * Space: O(1)
+ */
+public List&lt;Boolean&gt; camelMatch(String[] queries, String pattern) {
+    List&lt;Boolean&gt; result = new ArrayList&lt;&gt;();
+
+    for (String query : queries) {
+        result.add(isMatch(query, pattern));
+    }
+
+    return result;
+}
+
+private boolean isMatch(String query, String pattern) {
+    /** NOTE !!!
+     *
+     *  Two pointers:
+     *    i: query pointer (always moves)
+     *    j: pattern pointer (conditionally moves)
+     */
+    int i = 0; // Pointer for query
+    int j = 0; // Pointer for pattern
+
+    while (i &lt; query.length()) {
+        char qChar = query.charAt(i);
+
+        /** NOTE !!!
+         *
+         *  Three cases:
+         *
+         *  Case 1: Characters match
+         *    → Move both pointers
+         *
+         *  Case 2: Characters don't match AND query char is lowercase
+         *    → OK! This is allowed insertion, move i only
+         *
+         *  Case 3: Characters don't match AND query char is UPPERCASE
+         *    → FAIL! Extra uppercase not allowed
+         */
+
+        // Case 1: If characters match, move the pattern pointer
+        if (j &lt; pattern.length() &amp;&amp; qChar == pattern.charAt(j)) {
+            j++;
+        }
+        // Case 3: If characters don't match, the extra character MUST be lowercase
+        else if (Character.isUpperCase(qChar)) {
+            return false;
+        }
+        // Case 2: Lowercase character that doesn't match → skip it
+
+        // Always move the query pointer
+        i++;
+    }
+
+    // Match is only valid if we successfully navigated through the entire pattern
+    return j == pattern.length();
+}
+</code></pre>
+<pre><code class="language-python"># python
+# LC 1023 Camelcase Matching
+
+def camelMatch(queries, pattern):
+    &quot;&quot;&quot;
+    Pattern: Subsequence with character type constraints
+
+    Core Trick:
+      - query pointer ALWAYS moves (explorer)
+      - pattern pointer ONLY moves on match (goal tracker)
+      - Extra validation: non-matching chars MUST be lowercase
+
+    Example:
+      query = &quot;FooBar&quot;, pattern = &quot;FB&quot;
+
+      'F' == 'F' → match, j++
+      'o' != 'B' → but lowercase, OK
+      'o' != 'B' → but lowercase, OK
+      'B' == 'B' → match, j++
+      'a' (no pattern) → but lowercase, OK
+      'r' (no pattern) → but lowercase, OK
+
+      j reached end → True
+    &quot;&quot;&quot;
+    result = []
+
+    for query in queries:
+        i, j = 0, 0
+        is_valid = True
+
+        while i &lt; len(query):
+            # Case 1: Match found
+            if j &lt; len(pattern) and query[i] == pattern[j]:
+                j += 1
+            # Case 2: Uppercase non-match → fail
+            elif query[i].isupper():
+                is_valid = False
+                break
+            # Case 3: Lowercase non-match → skip
+
+            i += 1
+
+        # Valid only if all pattern chars matched
+        result.append(is_valid and j == len(pattern))
+
+    return result
+</code></pre>
+<p><strong>Key Differences from Standard Subsequence:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Aspect</th>
+<th>Subsequence (LC 392)</th>
+<th>CamelCase Matching (LC 1023)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Pattern</strong></td>
+<td>Any subsequence</td>
+<td>Subsequence with type constraint</td>
+</tr>
+<tr>
+<td><strong>Non-match chars</strong></td>
+<td>Ignored</td>
+<td>MUST be lowercase</td>
+</tr>
+<tr>
+<td><strong>Uppercase non-match</strong></td>
+<td>Ignored</td>
+<td><strong>Instant failure</strong></td>
+</tr>
+<tr>
+<td><strong>Use case</strong></td>
+<td>General matching</td>
+<td>Identifier/name matching</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Visualization:</strong></p>
+<pre><code>Pattern = &quot;FB&quot;
+
+Query 1: &quot;FooBar&quot;
+  F → match ✓
+  o → lowercase non-match ✓
+  o → lowercase non-match ✓
+  B → match ✓
+  a → lowercase non-match ✓
+  r → lowercase non-match ✓
+  Result: TRUE
+
+Query 2: &quot;FooBarTest&quot;
+  F → match ✓
+  o → lowercase non-match ✓
+  o → lowercase non-match ✓
+  B → match ✓
+  a → lowercase non-match ✓
+  r → lowercase non-match ✓
+  T → UPPERCASE non-match ✗ FAIL!
+  Result: FALSE
+</code></pre>
+<p><strong>Pointer Movement Rules:</strong></p>
+<ol>
+<li>
+<p><strong>i (Query Explorer):</strong></p>
+<ul>
+<li>Moves forward <strong>EVERY step</strong></li>
+<li>Scans every character in query</li>
+<li>Never goes backward</li>
+</ul>
+</li>
+<li>
+<p><strong>j (Pattern Goal Tracker):</strong></p>
+<ul>
+<li><strong>ONLY moves</strong> when finding matching character</li>
+<li>If <code>j == pattern.length()</code>, all pattern chars found</li>
+</ul>
+</li>
+<li>
+<p><strong>Safety Check:</strong></p>
+<ul>
+<li>Non-matching uppercase → <strong>immediate return false</strong></li>
+<li>Non-matching lowercase → <strong>continue</strong> (allowed insertion)</li>
+</ul>
+</li>
+</ol>
+<p><strong>Classic Problems:</strong></p>
+<ul>
+<li>LC 1023 Camelcase Matching (this pattern)</li>
+<li>LC 392 Is Subsequence (simpler version)</li>
+<li>LC 524 Longest Word in Dictionary through Deleting</li>
+<li>LC 792 Number of Matching Subsequences</li>
+</ul>
+<h3 id="0-2-3-quickselect-partition-algorithm-for-kth-element" tabindex="-1"><a class="header-anchor" href="#0-2-3-quickselect-partition-algorithm-for-kth-element"><span>0-2-3) QuickSelect (Partition Algorithm for Kth Element)</span></a></h3>
+<p><strong>Pattern Overview:</strong>
+QuickSelect is a selection algorithm to find the Kth smallest/largest element in an unordered list. It’s related to QuickSort but only recurses into one side of the partition. This makes it <strong>O(n) average time</strong> instead of O(n log n).</p>
+<p><strong>Core Concept:</strong></p>
+<pre><code>Given array: [3, 2, 1, 5, 6, 4], find 2nd largest (k=2)
+
+QuickSort: Sorts entire array → O(n log n)
+QuickSelect: Only finds the Kth element position → O(n) average
+</code></pre>
+<p><strong>Key Insight:</strong></p>
+<ul>
+<li>After partitioning around a pivot, the pivot is in its final sorted position</li>
+<li>If pivot index = k, we found the answer</li>
+<li>If pivot index &lt; k, search right partition</li>
+<li>If pivot index &gt; k, search left partition</li>
+</ul>
+<p><strong>Algorithm Steps:</strong></p>
+<ol>
+<li>Choose a pivot (usually last element, or random for better performance)</li>
+<li>Partition array: elements &lt; pivot on left, elements &gt; pivot on right</li>
+<li>If pivot position == k, return pivot value</li>
+<li>If pivot position &lt; k, recursively search right partition</li>
+<li>If pivot position &gt; k, recursively search left partition</li>
+</ol>
+<hr>
+<h4 id="template-1-kth-largest-element" tabindex="-1"><a class="header-anchor" href="#template-1-kth-largest-element"><span>Template 1: Kth Largest Element</span></a></h4>
+<pre><code class="language-python"># Python - QuickSelect for Kth Largest
+def findKthLargest(nums, k):
+    &quot;&quot;&quot;
+    Find Kth largest element using QuickSelect.
+
+    Time: O(n) average, O(n^2) worst (if bad pivots)
+    Space: O(1) iterative, O(log n) recursive
+
+    Key: Kth largest means (n - k)th smallest in 0-indexed array
+    &quot;&quot;&quot;
+    def partition(left, right):
+        &quot;&quot;&quot;
+        Partition using last element as pivot.
+        Returns pivot's final position.
+        &quot;&quot;&quot;
+        pivot = nums[right]
+        i = left  # Position where elements &lt; pivot should go
+
+        # Move all elements &lt; pivot to the left
+        for j in range(left, right):
+            if nums[j] &lt; pivot:
+                nums[i], nums[j] = nums[j], nums[i]
+                i += 1
+
+        # Place pivot in correct position
+        nums[i], nums[right] = nums[right], nums[i]
+        return i
+
+    def quickselect(left, right, k_smallest):
+        &quot;&quot;&quot;
+        QuickSelect to find k_smallest element (0-indexed).
+        &quot;&quot;&quot;
+        if left == right:  # Only one element
+            return nums[left]
+
+        # Partition and get pivot position
+        pivot_idx = partition(left, right)
+
+        # Check if we found the answer
+        if pivot_idx == k_smallest:
+            return nums[pivot_idx]
+        elif pivot_idx &lt; k_smallest:
+            # Search right partition
+            return quickselect(pivot_idx + 1, right, k_smallest)
+        else:
+            # Search left partition
+            return quickselect(left, pivot_idx - 1, k_smallest)
+
+    # Kth largest = (n - k)th smallest (0-indexed)
+    n = len(nums)
+    return quickselect(0, n - 1, n - k)
+
+# Example usage:
+# nums = [3, 2, 1, 5, 6, 4], k = 2
+# Result: 5 (2nd largest)
+</code></pre>
+<pre><code class="language-java">// Java - QuickSelect for Kth Largest
+/**
+ * LC 215 - Kth Largest Element in an Array
+ *
+ * time = O(N) average, O(N^2) worst
+ * space = O(1) iterative, O(log N) recursive
+ */
+class Solution {
+    public int findKthLargest(int[] nums, int k) {
+        int n = nums.length;
+        // Kth largest = (n - k)th smallest (0-indexed)
+        return quickSelect(nums, 0, n - 1, n - k);
+    }
+
+    private int quickSelect(int[] nums, int left, int right, int kSmallest) {
+        if (left == right) {
+            return nums[left];
+        }
+
+        // Partition and get pivot position
+        int pivotIdx = partition(nums, left, right);
+
+        // Check if we found the answer
+        if (pivotIdx == kSmallest) {
+            return nums[pivotIdx];
+        } else if (pivotIdx &lt; kSmallest) {
+            // Search right partition
+            return quickSelect(nums, pivotIdx + 1, right, kSmallest);
+        } else {
+            // Search left partition
+            return quickSelect(nums, left, pivotIdx - 1, kSmallest);
+        }
+    }
+
+    private int partition(int[] nums, int left, int right) {
+        // Use last element as pivot
+        int pivot = nums[right];
+        int i = left;  // Position for elements &lt; pivot
+
+        // Move all elements &lt; pivot to the left
+        for (int j = left; j &lt; right; j++) {
+            if (nums[j] &lt; pivot) {
+                swap(nums, i, j);
+                i++;
+            }
+        }
+
+        // Place pivot in correct position
+        swap(nums, i, right);
+        return i;
+    }
+
+    private void swap(int[] nums, int i, int j) {
+        int temp = nums[i];
+        nums[i] = nums[j];
+        nums[j] = temp;
+    }
+}
+</code></pre>
+<hr>
+<h4 id="visual-example-finding-2nd-largest-in-3-2-1-5-6-4" tabindex="-1"><a class="header-anchor" href="#visual-example-finding-2nd-largest-in-3-2-1-5-6-4"><span>Visual Example: Finding 2nd Largest in [3, 2, 1, 5, 6, 4]</span></a></h4>
+<pre><code>Target: k = 2 (2nd largest)
+Array: [3, 2, 1, 5, 6, 4]
+n = 6, so we need (n - k) = 4th smallest element (0-indexed)
+
+Step 1: Partition with pivot = 4 (last element)
+[3, 2, 1, 4, 6, 5]
+         ↑
+    pivot_idx = 3
+
+  Elements &lt; 4: [3, 2, 1]
+  Pivot: 4 (at index 3)
+  Elements &gt; 4: [6, 5]
+
+Check: pivot_idx (3) &lt; k_smallest (4)
+Action: Search right partition [6, 5]
+
+Step 2: Partition right side [6, 5] with pivot = 5
+[3, 2, 1, 4, 5, 6]
+            ↑
+    pivot_idx = 4
+
+Check: pivot_idx (4) == k_smallest (4) ✓
+Answer: nums[4] = 5 (2nd largest element)
+</code></pre>
+<hr>
+<h4 id="template-2-k-closest-points-to-origin-lc-973" tabindex="-1"><a class="header-anchor" href="#template-2-k-closest-points-to-origin-lc-973"><span>Template 2: K Closest Points to Origin (LC 973)</span></a></h4>
+<pre><code class="language-python"># Python - K Closest Points using QuickSelect
+def kClosest(points, k):
+    &quot;&quot;&quot;
+    Find K closest points to origin using QuickSelect.
+
+    Time: O(n) average
+    Space: O(1)
+    &quot;&quot;&quot;
+    def distance(point):
+        return point[0] ** 2 + point[1] ** 2
+
+    def partition(left, right):
+        pivot_dist = distance(points[right])
+        i = left
+
+        for j in range(left, right):
+            if distance(points[j]) &lt; pivot_dist:
+                points[i], points[j] = points[j], points[i]
+                i += 1
+
+        points[i], points[right] = points[right], points[i]
+        return i
+
+    def quickselect(left, right, k):
+        if left == right:
+            return
+
+        pivot_idx = partition(left, right)
+
+        if pivot_idx == k:
+            return
+        elif pivot_idx &lt; k:
+            quickselect(pivot_idx + 1, right, k)
+        else:
+            quickselect(left, pivot_idx - 1, k)
+
+    # Find K smallest distances
+    quickselect(0, len(points) - 1, k - 1)
+    return points[:k]
+</code></pre>
+<pre><code class="language-java">// Java - K Closest Points
+/**
+ * LC 973 - K Closest Points to Origin
+ *
+ * time = O(N) average
+ * space = O(1)
+ */
+class Solution {
+    public int[][] kClosest(int[][] points, int k) {
+        quickSelect(points, 0, points.length - 1, k - 1);
+        return Arrays.copyOfRange(points, 0, k);
+    }
+
+    private void quickSelect(int[][] points, int left, int right, int k) {
+        if (left &gt;= right) return;
+
+        int pivotIdx = partition(points, left, right);
+
+        if (pivotIdx == k) {
+            return;
+        } else if (pivotIdx &lt; k) {
+            quickSelect(points, pivotIdx + 1, right, k);
+        } else {
+            quickSelect(points, left, pivotIdx - 1, k);
+        }
+    }
+
+    private int partition(int[][] points, int left, int right) {
+        int[] pivot = points[right];
+        int pivotDist = distance(pivot);
+        int i = left;
+
+        for (int j = left; j &lt; right; j++) {
+            if (distance(points[j]) &lt; pivotDist) {
+                swap(points, i, j);
+                i++;
+            }
+        }
+
+        swap(points, i, right);
+        return i;
+    }
+
+    private int distance(int[] point) {
+        return point[0] * point[0] + point[1] * point[1];
+    }
+
+    private void swap(int[][] points, int i, int j) {
+        int[] temp = points[i];
+        points[i] = points[j];
+        points[j] = temp;
+    }
+}
+</code></pre>
+<hr>
+<h4 id="optimization-randomized-pivot" tabindex="-1"><a class="header-anchor" href="#optimization-randomized-pivot"><span>Optimization: Randomized Pivot</span></a></h4>
+<pre><code class="language-python"># Randomized QuickSelect for better average performance
+import random
+
+def findKthLargest_randomized(nums, k):
+    &quot;&quot;&quot;
+    Randomized pivot selection reduces worst-case probability.
+
+    Time: O(n) average with high probability
+    &quot;&quot;&quot;
+    def partition(left, right):
+        # RANDOM pivot selection
+        random_idx = random.randint(left, right)
+        nums[random_idx], nums[right] = nums[right], nums[random_idx]
+
+        pivot = nums[right]
+        i = left
+
+        for j in range(left, right):
+            if nums[j] &lt; pivot:
+                nums[i], nums[j] = nums[j], nums[i]
+                i += 1
+
+        nums[i], nums[right] = nums[right], nums[i]
+        return i
+
+    def quickselect(left, right, k_smallest):
+        if left == right:
+            return nums[left]
+
+        pivot_idx = partition(left, right)
+
+        if pivot_idx == k_smallest:
+            return nums[pivot_idx]
+        elif pivot_idx &lt; k_smallest:
+            return quickselect(pivot_idx + 1, right, k_smallest)
+        else:
+            return quickselect(left, pivot_idx - 1, k_smallest)
+
+    n = len(nums)
+    return quickselect(0, n - 1, n - k)
+</code></pre>
+<hr>
+<h4 id="partition-algorithm-variants" tabindex="-1"><a class="header-anchor" href="#partition-algorithm-variants"><span>Partition Algorithm Variants</span></a></h4>
+<p><strong>1. Hoare Partition (Two-Pointer from Ends):</strong></p>
+<pre><code class="language-python">def partition_hoare(nums, left, right):
+    &quot;&quot;&quot;
+    Hoare's partition: pointers move from both ends.
+    More efficient with fewer swaps.
+    &quot;&quot;&quot;
+    pivot = nums[(left + right) // 2]  # Middle element as pivot
+    i, j = left - 1, right + 1
+
+    while True:
+        # Move i right until element &gt;= pivot
+        i += 1
+        while nums[i] &lt; pivot:
+            i += 1
+
+        # Move j left until element &lt;= pivot
+        j -= 1
+        while nums[j] &gt; pivot:
+            j -= 1
+
+        if i &gt;= j:
+            return j
+
+        nums[i], nums[j] = nums[j], nums[i]
+</code></pre>
+<p><strong>2. Lomuto Partition (Single Pass):</strong></p>
+<pre><code class="language-python">def partition_lomuto(nums, left, right):
+    &quot;&quot;&quot;
+    Lomuto's partition: single pointer from left.
+    Simpler but may do more swaps.
+    &quot;&quot;&quot;
+    pivot = nums[right]
+    i = left
+
+    for j in range(left, right):
+        if nums[j] &lt;= pivot:
+            nums[i], nums[j] = nums[j], nums[i]
+            i += 1
+
+    nums[i], nums[right] = nums[right], nums[i]
+    return i
+</code></pre>
+<hr>
+<h4 id="classic-leetcode-problems" tabindex="-1"><a class="header-anchor" href="#classic-leetcode-problems"><span>Classic LeetCode Problems</span></a></h4>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC#</th>
+<th>Difficulty</th>
+<th>Variant</th>
+<th>Key Insight</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Kth Largest Element in Array</td>
+<td>215</td>
+<td>Medium</td>
+<td>Basic QuickSelect</td>
+<td>Find (n-k)th smallest</td>
+</tr>
+<tr>
+<td>K Closest Points to Origin</td>
+<td>973</td>
+<td>Medium</td>
+<td>Custom comparator</td>
+<td>Partition by distance</td>
+</tr>
+<tr>
+<td>Top K Frequent Elements</td>
+<td>347</td>
+<td>Medium</td>
+<td>With frequency map</td>
+<td>QuickSelect on frequencies</td>
+</tr>
+<tr>
+<td>Top K Frequent Words</td>
+<td>692</td>
+<td>Medium</td>
+<td>With frequency + trie</td>
+<td>QuickSelect + lexicographic order</td>
+</tr>
+<tr>
+<td>Kth Largest Element in Stream</td>
+<td>703</td>
+<td>Easy</td>
+<td>Min heap alternative</td>
+<td>QuickSelect for initialization</td>
+</tr>
+<tr>
+<td>Find Kth Smallest Pair Distance</td>
+<td>719</td>
+<td>Hard</td>
+<td>Binary search on answer</td>
+<td>Not direct QuickSelect</td>
+</tr>
+<tr>
+<td>Wiggle Sort II</td>
+<td>324</td>
+<td>Medium</td>
+<td>3-way partition</td>
+<td>Dutch national flag variant</td>
+</tr>
+<tr>
+<td>Sort Colors</td>
+<td>75</td>
+<td>Medium</td>
+<td>3-way partition</td>
+<td>Dutch national flag</td>
+</tr>
+<tr>
+<td>Kth Smallest Element in BST</td>
+<td>230</td>
+<td>Medium</td>
+<td>In-order traversal</td>
+<td>Not QuickSelect (tree structure)</td>
+</tr>
+<tr>
+<td>Find Median from Data Stream</td>
+<td>295</td>
+<td>Hard</td>
+<td>Two heaps</td>
+<td>QuickSelect alternative</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h4 id="performance-comparison" tabindex="-1"><a class="header-anchor" href="#performance-comparison"><span>Performance Comparison</span></a></h4>
+<table>
+<thead>
+<tr>
+<th>Algorithm</th>
+<th>Average Time</th>
+<th>Worst Time</th>
+<th>Space</th>
+<th>Use Case</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>QuickSelect</strong></td>
+<td><strong>O(n)</strong></td>
+<td>O(n²)</td>
+<td>O(1)</td>
+<td>Find Kth element (unsorted)</td>
+</tr>
+<tr>
+<td>QuickSelect (Randomized)</td>
+<td>O(n)</td>
+<td>O(n²) low prob</td>
+<td>O(1)</td>
+<td>Better average performance</td>
+</tr>
+<tr>
+<td>Heap (Min/Max)</td>
+<td>O(n log k)</td>
+<td>O(n log k)</td>
+<td>O(k)</td>
+<td>Online/streaming data</td>
+</tr>
+<tr>
+<td>Full Sort</td>
+<td>O(n log n)</td>
+<td>O(n log n)</td>
+<td>O(1) or O(n)</td>
+<td>Need sorted array anyway</td>
+</tr>
+<tr>
+<td>Counting Sort</td>
+<td>O(n + k)</td>
+<td>O(n + k)</td>
+<td>O(k)</td>
+<td>Small integer range</td>
+</tr>
+</tbody>
+</table>
+<p><strong>When to Use QuickSelect:</strong></p>
+<ul>
+<li>✅ Need exactly Kth element, don’t need full sort</li>
+<li>✅ Can modify input array (in-place)</li>
+<li>✅ Offline algorithm (all data available)</li>
+<li>✅ Large dataset where O(n) vs O(n log n) matters</li>
+</ul>
+<p><strong>When NOT to Use QuickSelect:</strong></p>
+<ul>
+<li>❌ Need all K elements in sorted order → Use heap or full sort</li>
+<li>❌ Online/streaming data → Use heap</li>
+<li>❌ Cannot modify input array → Use heap</li>
+<li>❌ Worst-case guarantee needed → Use Median of Medians (O(n) worst-case)</li>
+</ul>
+<hr>
+<h4 id="interview-tips" tabindex="-1"><a class="header-anchor" href="#interview-tips"><span>Interview Tips</span></a></h4>
+<p><strong>1. Common Mistakes:</strong></p>
+<ul>
+<li>Forgetting to convert “Kth largest” → “(n - k)th smallest”</li>
+<li>Off-by-one errors with 0-indexed vs 1-indexed k</li>
+<li>Not handling left == right base case</li>
+<li>Infinite recursion when partition doesn’t move pivot</li>
+</ul>
+<p><strong>2. Optimization Techniques:</strong></p>
+<ul>
+<li><strong>Randomized pivot</strong>: Reduces worst-case probability</li>
+<li><strong>Median-of-three</strong>: Choose median of first, middle, last elements as pivot</li>
+<li><strong>Iterative version</strong>: Avoid stack overflow for very large arrays</li>
+<li><strong>Tail recursion</strong>: Only recurse into smaller partition</li>
+</ul>
+<p><strong>3. Complexity Analysis:</strong></p>
+<pre><code>Best/Average Case: O(n + n/2 + n/4 + ... + 1) = O(2n) = O(n)
+
+Worst Case (bad pivots every time):
+  O(n + (n-1) + (n-2) + ... + 1) = O(n²)
+
+With randomized pivot:
+  Worst case O(n²) probability → near zero for large n
+</code></pre>
+<p><strong>4. Interview Talking Points:</strong></p>
+<ul>
+<li>“QuickSelect is like QuickSort but only recurses into one partition”</li>
+<li>“Average O(n) is better than O(n log k) heap for finding single Kth element”</li>
+<li>“Trade-off: Modifies array vs. heap keeps original”</li>
+<li>“Randomized pivot gives O(n) with high probability”</li>
+</ul>
+<p><strong>5. Follow-up Questions:</strong></p>
+<ul>
+<li>Q: “What if we need all K elements sorted?”
+<ul>
+<li>A: Use heap (O(n log k)) or partial QuickSort</li>
+</ul>
+</li>
+<li>Q: “What if array is read-only?”
+<ul>
+<li>A: Copy to new array or use heap</li>
+</ul>
+</li>
+<li>Q: “Can we guarantee O(n) worst-case?”
+<ul>
+<li>A: Yes, using Median of Medians algorithm (complex, rarely asked)</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h4 id="advanced-median-of-medians-o-n-worst-case" tabindex="-1"><a class="header-anchor" href="#advanced-median-of-medians-o-n-worst-case"><span>Advanced: Median of Medians (O(n) Worst-Case)</span></a></h4>
+<pre><code class="language-python">def findKthLargest_median_of_medians(nums, k):
+    &quot;&quot;&quot;
+    Guaranteed O(n) worst-case using Median of Medians pivot selection.
+    More complex but theoretically optimal.
+
+    Time: O(n) worst-case
+    Space: O(log n) recursion
+    &quot;&quot;&quot;
+    def median_of_medians(left, right):
+        &quot;&quot;&quot;Find approximate median for good pivot.&quot;&quot;&quot;
+        if right - left &lt; 5:
+            return sorted(nums[left:right + 1])[len(nums[left:right + 1]) // 2]
+
+        # Divide into groups of 5, find median of each
+        medians = []
+        for i in range(left, right + 1, 5):
+            sub_right = min(i + 4, right)
+            median = sorted(nums[i:sub_right + 1])[(sub_right - i) // 2]
+            medians.append(median)
+
+        # Recursively find median of medians
+        return median_of_medians_list(medians)
+
+    def partition(left, right, pivot_value):
+        # Partition around pivot_value
+        # ... implementation ...
+        pass
+
+    # Main quickselect with median of medians pivot
+    # ... implementation ...
+    pass
+</code></pre>
+<p><strong>Note:</strong> Median of Medians is rarely implemented in interviews due to complexity. Randomized QuickSelect is preferred in practice.</p>
+<hr>
+<h2 id="1-general-form" tabindex="-1"><a class="header-anchor" href="#1-general-form"><span>1) General form</span></a></h2>
+<h3 id="1-1-basic-op" tabindex="-1"><a class="header-anchor" href="#1-1-basic-op"><span>1-1) Basic OP</span></a></h3>
+<h4 id="1-1-1-reverse-array" tabindex="-1"><a class="header-anchor" href="#1-1-1-reverse-array"><span>1-1-1 : Reverse Array</span></a></h4>
+<pre><code class="language-java">// java
+void reverse(int[] nums){
+
+    int left = 0;
+    int right = nums.length - 1
+
+    while (left &lt; right){
+
+        int tmp = nums(left);
+        nums(left) = nums(right)
+        nums(right) = tmp;
+        
+        left += 1;
+        right -= 1;
+    }
+}
+</code></pre>
+<h4 id="1-1-6-binary-search" tabindex="-1"><a class="header-anchor" href="#1-1-6-binary-search"><span>1-1-6: <a href="binary_search.html">binary search</a></span></a></h4>
+<h4 id="1-1-7-sliding-window" tabindex="-1"><a class="header-anchor" href="#1-1-7-sliding-window"><span>1-1-7: <a href="sliding_window.html">sliding window</a></span></a></h4>
+<h2 id="2-lc-example" tabindex="-1"><a class="header-anchor" href="#2-lc-example"><span>2) LC Example</span></a></h2>
+<h3 id="2-1-remove-element" tabindex="-1"><a class="header-anchor" href="#2-1-remove-element"><span>2-1) Remove Element</span></a></h3>
+<pre><code class="language-python"># python
+# basic
+class Solution(object):
+    def removeElement(self, nums, val):
+        length = 0
+        for i in range(len(nums)):
+            if nums[i] != val:
+                nums[length] = nums[i]
+                length += 1
+        return length
+</code></pre>
+<pre><code class="language-python"># LC 026 : Remove Duplicates from Sorted Array
+# https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Array/remove-duplicates-from-sorted-array.py
+# V0
+# IDEA : 2 POINTERS: i, j
+class Solution(object):
+    def removeDuplicates(self, nums):
+        # edge case
+        if not nums:
+            return
+        i = 0
+        for j in range(1, len(nums)):
+            &quot;&quot;&quot;
+            NOTE !!!
+             -&gt; note this condition
+             -&gt; we HAVE to swap i+1, j once nums[i], nums[j] are different
+             -&gt; so we MAKE SURE there is no duplicate
+            &quot;&quot;&quot;
+            if nums[j] != nums[i]:
+                nums[i+1], nums[j] = nums[j], nums[i+1]
+                i += 1
+
+        #print (&quot;nums = &quot; + str(nums))
+        return i+1
+
+# V0'
+# IDEA : 2 POINTERS
+# HAVE A POINTER j STARTS FROM 0 AND THE OTHER POINTER i GO THROUGH nums
+#  -&gt; IF A[i] != A[j]
+#     -&gt; THEN SWITCH A[i] AND A[j+1]
+#     -&gt; and j += 1
+# *** NOTE : it's swith A[j+1] (j+1) with A[i]
+# DEMO 1 
+# A = [1,1,1,2,3]
+# s = Solution()
+# s.removeDuplicates(A)
+# [1, 1, 1, 2, 3]
+# [1, 1, 1, 2, 3]
+# [1, 1, 1, 2, 3]
+# [1, 2, 1, 1, 3]
+# [1, 2, 3, 1, 1]
+#
+# DEMO 2
+# A = [1,2,2,3,4]
+# s = Solution()
+# s.removeDuplicates(A)
+# A = [1, 2, 2, 3, 4]
+# A = [1, 2, 2, 3, 4]
+# A = [1, 2, 2, 3, 4]
+# A = [1, 2, 2, 3, 4]
+# A = [1, 2, 3, 2, 4]
+# -&gt; A = [1, 2, 3, 4, 2]
+class Solution:
+    def removeDuplicates(self, A):
+        if len(A) == 0:
+            return 0
+        j = 0
+        for i in range(0, len(A)):
+            ###  NOTE : below condition
+            if A[i] != A[j]:
+                A[i], A[j+1] = A[j+1], A[i]
+                j = j + 1
+        return j+1
+</code></pre>
+<pre><code class="language-python"># LC 283 move-zeroes
+# V0
+class Solution(object):
+    def moveZeroes(self, nums):
+        y = 0
+        for x in range(len(nums)):
+            if nums[x] != 0:
+                nums[x], nums[y] = nums[y], nums[x]
+                y += 1
+        return nums
+
+# V0'
+class Solution(object):
+    def moveZeroes(self, nums):
+        # edge case
+        if not nums:
+            return
+        j = 0
+        for i in range(1, len(nums)):
+            # if nums[j] = 0, swap with nums[i]
+            if nums[j] == 0:
+                if nums[i] != 0:
+                    nums[j], nums[i] = nums[i], nums[j]
+                    j += 1
+            # if nums[j] != 0, then move j (j+=1) for searching next 0
+            else:
+                j += 1
+        return nums
+</code></pre>
+<pre><code class="language-python"># LC 080 : Remove Duplicates from Sorted Array II
+# V0
+# IDEA : 2 POINTERS
+#### NOTE : THE nums already ordering
+# DEMO
+# example 1
+# nums = [1,1,1,2,2,3]
+#           i j
+#           i   j
+#        [1,1,2,1,2,3]
+#             i   j
+#        [1,1,2,2,1,3]
+#               i   j
+#
+# example 2
+# nums = [0,0,1,1,1,1,2,3,3] 
+#           i j
+#        [0,0,1,1,1,1,2,3,3]
+#             i j
+#        [0,0,1,1,1,1,2,3,3]
+#               i j
+#        [0,0,1,1,1,1,2,3,3]
+#               i   j
+#               i     j
+#        [0,0,1,1,2,1,1,3,3]
+#                 i     j  
+#        [0,0,1,1,2,3,1,1,3]
+#                   i     j
+#        [0,0,1,1,2,3,3,1,1]
+class Solution:
+    def removeDuplicates(self, nums):
+        if len(nums) &lt; 3:
+            return len(nums)
+
+        ### NOTE : slow starts from 1
+        slow = 1
+        ### NOTE : fast starts from 2
+        for fast in range(2, len(nums)):
+            &quot;&quot;&quot;
+            NOTE : BELOW CONDITION
+
+            1) nums[slow] != nums[fast]: for adding &quot;1st&quot; element
+            2) nums[slow] != nums[slow-1] : for adding &quot;2nd&quot; element
+            &quot;&quot;&quot;
+            if nums[slow] != nums[fast] or nums[slow] != nums[slow-1]:
+                # both of below op are OK
+                #nums[slow+1] = nums[fast]
+                nums[slow+1], nums[fast] = nums[fast], nums[slow+1] 
+                slow += 1
+        return slow+1
+</code></pre>
+<h3 id="2-2-longest-palindromic-substring" tabindex="-1"><a class="header-anchor" href="#2-2-longest-palindromic-substring"><span>2-2) Longest Palindromic Substring</span></a></h3>
+<pre><code class="language-python"># LC 005 Longest Palindromic Substring
+# V0
+# IDEA : TWO POINTERS
+# -&gt; DEAL WITH odd, even len cases
+#  -&gt; step 1) for loop on idx 
+#  -&gt; step 2) and start from &quot;center&quot; 
+#  -&gt; step 3) and do a while loop
+#  -&gt; step 4) check if len of sub str &gt; 1
+# https://leetcode.com/problems/longest-palindromic-substring/discuss/1025355/Easy-to-understand-solution-with-O(n2)-time-complexity
+# Time complexity = best case O(n) to worse case O(n^2)
+# Space complexity = O(1) if not considering the space complexity for result, as all the comparison happens in place.
+class Solution:
+    # The logic I have used is very simple, iterate over each character in the array and assming that its the center of a palindrome step in either direction to see how far you can go by keeping the property of palindrome true. The trick is that the palindrome can be of odd or even length and in each case the center will be different.
+    # For odd length palindrome i am considering the index being iterating on is the center, thereby also catching the scenario of a palindrome with a length of 1.
+    # For even length palindrome I am considering the index being iterating over and the next element on the left is the center.
+    def longestPalindrome(self, s):
+
+        if len(s) &lt;= 1:
+            return s
+
+        res = []
+
+        for idx in range(len(s)):
+        
+            &quot;&quot;&quot;
+            # CASE 1) : odd len
+            # Check for odd length palindrome with idx at its center
+
+            -&gt; NOTE : the only difference (between odd, even len)
+            
+            -&gt; NOTE !!!  : 2 idx : left = right = idx
+            &quot;&quot;&quot;
+            left = right = idx
+            # note the condition !!!
+            while left &gt;= 0 and right &lt; len(s) and s[left] == s[right]:
+                if right - left + 1 &gt; len(res):
+                    res = s[left:right + 1]
+                left -= 1
+                right += 1
+              
+            &quot;&quot;&quot;&quot;
+            # CASE 2) : even len  
+            # Check for even length palindrome with idx and idx-1 as its center
+
+            -&gt; NOTE : the only difference (between odd, even len)
+
+            -&gt; NOTE !!!  : 2 idx : left = idx - 1,  right = idx
+            &quot;&quot;&quot;
+            left = idx - 1
+            right = idx
+            # note the condition !!!
+            while left &gt;= 0 and right &lt; len(s) and s[left] == s[right]:
+                if right - left + 1 &gt; len(res):
+                    res = s[left:right + 1]
+                left -= 1
+                right += 1
+
+        return res
+
+# V0'
+# IDEA : TWO POINTER + RECURSION
+# https://leetcode.com/problems/longest-palindromic-substring/discuss/1057629/Python.-Super-simple-and-easy-understanding-solution.-O(n2).
+class Solution:
+    def longestPalindrome(self, s):
+        res = &quot;&quot;
+        length = len(s)
+        def helper(left, right):
+            while left &gt;= 0 and right &lt; length and s[left] == s[right]:
+                left -= 1
+                right += 1      
+            return s[left + 1 : right]
+        
+        for index in range(len(s)):
+            res = max(helper(index, index), helper(index, index + 1), res, key = len)           
+        return res
+</code></pre>
+<h3 id="2-3-container-with-most-water" tabindex="-1"><a class="header-anchor" href="#2-3-container-with-most-water"><span>2-3) Container With Most Water</span></a></h3>
+<pre><code class="language-python"># LC 11 Container With Most Water
+# V0 
+# IDEA : TWO POINTERS 
+class Solution(object):
+    def maxArea(self, height):
+        ans = 0
+        l = 0
+        r = len(height) - 1
+        while l &lt; r:
+            ans = max(ans, min(height[l], height[r]) * (r - l))
+            if height[l] &lt; height[r]:
+                l += 1
+            else:
+                r -= 1
+        return ans
+</code></pre>
+<h3 id="2-4-longest-consecutive-sequence" tabindex="-1"><a class="header-anchor" href="#2-4-longest-consecutive-sequence"><span>2-4) Longest Consecutive Sequence</span></a></h3>
+<pre><code class="language-python"># LC 128 Longest Consecutive Sequence
+
+# V0
+# IDEA : sliding window
+class Solution(object):
+    def longestConsecutive(self, nums):
+        # edge case
+        if not nums:
+            return 0
+        nums = list(set(nums))
+        # if len(nums) == 1: # not necessary
+        #     return 1
+        # sort first
+        nums.sort()
+        res = 0
+        l = 0
+        r = 1
+        &quot;&quot;&quot;
+        NOTE !!!
+
+        Sliding window here :
+            condition :  l, r are still in list (r &lt; len(nums) and l &lt; len(nums))
+
+            2 cases
+
+                case 1) nums[r] != nums[r-1] + 1
+                    -&gt; means not continous, 
+                        -&gt; so we need to move r to right (1 idx)
+                        -&gt; and MOVE l to r - 1, since it's NOT possible to have any continous subarray within [l, r] anymore
+                case 2) nums[r] == nums[r-1] + 1
+                        -&gt; means there is continous subarray currently, so we keep moving r to right (r+=1) and get current max sub array length (res = max(res, r-l+1))
+        &quot;&quot;&quot;
+        while r &lt; len(nums) and l &lt; len(nums):
+            # case 1)
+            if nums[r] != nums[r-1] + 1:
+                r += 1
+                l = (r-1)
+            # case 2)
+            else:
+                res = max(res, r-l+1)
+                r += 1
+        # edge case : if res == 0, means no continous array (with len &gt; 1), so we return 1 (a single alphabet can be recognized as a &quot;continous assay&quot;, and its len = 1)
+        return res if res &gt; 1 else 1
+
+# V0'
+# IDEA : SORTING + 2 POINTERS
+class Solution(object):
+    def longestConsecutive(self, nums):
+        # edge case
+        if not nums:
+            return 0
+
+        nums.sort()
+        cur_len = 1
+        max_len = 1
+        #print (&quot;nums = &quot; + str(nums))
+
+        # NOTE : start from idx = 1
+        for i in range(1, len(nums)):
+            ### NOTE : start from nums[i] != nums[i-1] case
+            if nums[i] != nums[i-1]:
+                ### NOTE : if nums[i] == nums[i-1]+1 : cur_len += 1
+                if nums[i] == nums[i-1]+1:
+                    cur_len += 1
+                ### NOTE : if nums[i] != nums[i-1]+1 : get max len, and reset cur_lent as 1
+                else:
+                    max_len = max(max_len, cur_len)
+                    cur_len = 1
+        # check max len again
+        return max(max_len, cur_len)
+</code></pre>
+<h3 id="2-6-palindromic-substrings" tabindex="-1"><a class="header-anchor" href="#2-6-palindromic-substrings"><span>2-6) Palindromic Substrings</span></a></h3>
+<pre><code class="language-python"># LC 647. Palindromic Substrings
+# V0'
+# IDEA : TWO POINTERS
+# https://leetcode.com/problems/palindromic-substrings/discuss/1041760/Python-Easy-Solution-Beats-85
+# https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/String/longest-palindromic-substring.py
+class Solution:
+    def countSubstrings(self, s):
+        ans = 0    
+        for i in range(len(s)):
+            # odd
+            ans += self.helper(s, i, i)
+            # even
+            ans += self.helper(s, i, i + 1)  
+        return ans
+        
+    def helper(self, s, l, r):     
+        ans = 0    
+        while l &gt;= 0 and r &lt; len(s) and s[l] == s[r]:
+            l -= 1
+            r += 1
+            ans += 1          
+        return ans
+
+# V0
+# IDEA : BRUTE FORCE
+class Solution(object):
+    def countSubstrings(self, s):
+        count = 0
+        # NOTE: since i from 0 to len(s) - 1, so for j we need to &quot;+1&quot; then can get go throgh all elements in str
+        for i in range(len(s)):
+            # Note : for j we need to &quot;+1&quot;
+            for j in range(i+1, len(s)+1):
+                if s[i:j] == s[i:j][::-1]:
+                    count += 1
+        return count
+
+# V0''
+# IDEA : TWO POINTERS (similar as LC 005)
+class Solution(object):
+    def countSubstrings(self, s):
+        count = 0
+        for i in range(len(s)):
+            # for every single character
+            count += 1
+            
+            # case 1) palindromic substrings length is odd 
+            left = i - 1
+            right = i + 1
+            while left &gt;= 0 and right &lt; len(s) and s[left] == s[right]:
+                count += 1
+                left -= 1
+                right += 1
+
+            # case 2) palindromic substrings length is even 
+            left = i - 1
+            right = i
+            while left &gt;= 0 and right &lt; len(s) and s[left] == s[right]:
+                count += 1
+                left -= 1
+                right += 1
+
+        return count
+</code></pre>
+<h3 id="2-7-sum-of-subarray-ranges" tabindex="-1"><a class="header-anchor" href="#2-7-sum-of-subarray-ranges"><span>2-7) Sum of Subarray Ranges</span></a></h3>
+<pre><code class="language-python"># LC 2104. Sum of Subarray Ranges
+# V0
+# IDEA : BRUTE FORCE
+class Solution:
+    def subArrayRanges(self, nums):
+        res = 0
+        for i in range(len(nums)):
+            curMin = float(&quot;inf&quot;)
+            curMax = -float(&quot;inf&quot;)
+            for j in range(i, len(nums)):
+                curMin = min(curMin, nums[j])
+                curMax = max(curMax, nums[j])
+                res += curMax - curMin
+        return res
+
+# V0'
+# IDEA : INCREASING STACK
+class Solution:
+    def subArrayRanges(self, A0):
+        res = 0
+        inf = float('inf')
+        A = [-inf] + A0 + [-inf]
+        s = []
+        for i, x in enumerate(A):
+            while s and A[s[-1]] &gt; x:
+                j = s.pop()
+                k = s[-1]
+                res -= A[j] * (i - j) * (j - k)
+            s.append(i)
+            
+        A = [inf] + A0 + [inf]
+        s = []
+        for i, x in enumerate(A):
+            while s and A[s[-1]] &lt; x:
+                j = s.pop()
+                k = s[-1]
+                res += A[j] * (i - j) * (j - k)
+            s.append(i)
+        return res
+</code></pre>
+<h3 id="2-8-trapping-rain-water" tabindex="-1"><a class="header-anchor" href="#2-8-trapping-rain-water"><span>2-8) Trapping Rain Water</span></a></h3>
+<pre><code class="language-python"># LC 42. Trapping Rain Water
+# NOTE : there is also 2 scan, dp approaches
+# V0'
+# IDEA : TWO POINTERS 
+# IDEA : CORE
+#     -&gt; step 1) use left_max, right_mex : record &quot;highest&quot; &quot;wall&quot; in left, right handside at current idx
+#     -&gt; step 2) 
+#                case 2-1) if height[left] &lt; height[right] : 
+#                   -&gt; all left passed idx's height is LOWER than height[right]
+#                   -&gt; so the &quot;short&quot; wall MUST on left
+#                   -&gt; and since we record left_max, so we can get trap amount based on left_max, height[left]
+#                
+#                case 2-2) if height[left] &gt; height[right]
+#                   -&gt; .... (similar as above)
+class Solution:
+    def trap(self, height):
+ 
+        if not height:
+            return 0
+
+        left_max = right_max = res = 0
+        left, right = 0, len(height) - 1
+ 
+        while left &lt; right:
+            if height[left] &lt; height[right]:  # left pointer op
+                if height[left] &lt; left_max:
+                    res += left_max - height[left]
+                else:
+                    left_max = height[left]
+                left += 1  # move left pointer 
+            else:
+                if height[right] &lt; right_max:  # right pointer op
+                    res += right_max - height[right]
+                else:
+                    right_max = height[right]
+                right -= 1  # move right pointer 
+        return res
+</code></pre>
+<h3 id="2-9-next-permutation" tabindex="-1"><a class="header-anchor" href="#2-9-next-permutation"><span>2-9) Next Permutation</span></a></h3>
+<pre><code class="language-python"># LC 31. Next Permutation
+# V0
+class Solution:
+    def nextPermutation(self, nums):
+        i = j = len(nums)-1
+        while i &gt; 0 and nums[i-1] &gt;= nums[i]:
+            i -= 1
+        if i == 0:   # nums are in descending order
+            nums.reverse()
+            return 
+        k = i - 1    # find the last &quot;ascending&quot; position
+        while nums[j] &lt;= nums[k]:
+            j -= 1
+        nums[k], nums[j] = nums[j], nums[k]  
+        l, r = k+1, len(nums)-1  # reverse the second part
+        while l &lt; r:
+            nums[l], nums[r] = nums[r], nums[l]
+            l +=1
+            r -= 1
+
+# V0'
+class Solution(object):
+    def nextPermutation(self, num):
+        k, l = -1, 0
+        for i in range(len(num) - 1):
+            if num[i] &lt; num[i + 1]:
+                k = i
+
+        if k == -1:
+            num.reverse()
+            return
+
+        for i in range(k + 1, len(num)):
+            if num[i] &gt; num[k]:
+                l = i
+        num[k], num[l] = num[l], num[k]
+        num[k + 1:] = num[:k:-1] ### dounle check here ###
+</code></pre>
+<h3 id="2-10-valid-palindrome-ii-palindrome-with-one-deletion" tabindex="-1"><a class="header-anchor" href="#2-10-valid-palindrome-ii-palindrome-with-one-deletion"><span>2-10) Valid Palindrome II (Palindrome with One Deletion)</span></a></h3>
+<p><strong>Pattern: Two Pointers with Mismatch Handling</strong></p>
+<ul>
+<li>Check palindrome from both ends</li>
+<li>On first mismatch, try TWO possibilities:
+<ol>
+<li>Skip left character (check <code>s[l+1...r]</code>)</li>
+<li>Skip right character (check <code>s[l...r-1]</code>)</li>
+</ol>
+</li>
+<li>If EITHER works, return true</li>
+<li>Use helper function to check palindrome in range</li>
+</ul>
+<p><strong>Key Insight:</strong></p>
+<ul>
+<li>Don’t remove character and create new string (O(N) space)</li>
+<li>Instead, use pointers to check substring in-place (O(1) space)</li>
+</ul>
+<pre><code class="language-java">// java
+// LC 680. Valid Palindrome II
+/**
+ * Pattern: Palindrome with at most 1 deletion allowed
+ *
+ * Example:
+ *   s = &quot;abca&quot;
+ *
+ *   [a b c a]    l=0, r=3, s[l]=a, s[r]=a, match! l++, r--
+ *    l     r
+ *
+ *   [a b c a]    l=1, r=2, s[l]=b, s[r]=c, MISMATCH!
+ *      l r       Try: skip b (check &quot;ca&quot;) OR skip c (check &quot;ba&quot;)
+ *                     &quot;ca&quot; is NOT palindrome
+ *                     &quot;ba&quot; is NOT palindrome
+ *                BUT we need to check full substring!
+ *
+ *   Actually for &quot;abca&quot;:
+ *   - Try skip l: check &quot;cba&quot; -&gt; isPali(&quot;abca&quot;, 2, 3) = true (just &quot;a&quot;)
+ *   - OR skip r: check &quot;aba&quot; -&gt; isPali(&quot;abca&quot;, 1, 2) = true (just &quot;b&quot;)
+ *
+ *   Either works -&gt; return true
+ *
+ * Time: O(N), Space: O(1)
+ */
+public boolean validPalindrome(String s) {
+    int l = 0;
+    int r = s.length() - 1;
+
+    while (l &lt; r) {
+        if (s.charAt(l) != s.charAt(r)) {
+            /** NOTE !!!
+             *
+             *  On mismatch, try BOTH possibilities:
+             *    1. Skip left char  -&gt; check s[l+1...r]
+             *    2. Skip right char -&gt; check s[l...r-1]
+             *
+             *  If EITHER is palindrome, we can make it work with 1 deletion
+             */
+            return isPalindrome(s, l + 1, r) || isPalindrome(s, l, r - 1);
+        }
+        l++;
+        r--;
+    }
+
+    return true; // Already a perfect palindrome
+}
+
+/** NOTE !!!
+ *
+ *  Helper function with left, right pointers as parameters
+ *  Checks if substring s[l...r] is palindrome
+ *  NO new string created - check in place!
+ */
+private boolean isPalindrome(String s, int l, int r) {
+    while (l &lt; r) {
+        if (s.charAt(l) != s.charAt(r)) {
+            return false;
+        }
+        l++;
+        r--;
+    }
+    return true;
+}
+</code></pre>
+<pre><code class="language-python"># python
+# LC 680. Valid Palindrome II
+class Solution:
+    def validPalindrome(self, s):
+
+        l, r = 0, len(s) - 1
+
+        while l &lt; r:
+            if s[l] != s[r]:
+                &quot;&quot;&quot;
+                # NOTE this !!!!
+                -&gt; On mismatch, try skipping left OR right character
+                -&gt; Check if either resulting substring is palindrome
+                &quot;&quot;&quot;
+                skip_left = s[l+1:r+1]   # skip s[l]
+                skip_right = s[l:r]      # skip s[r]
+                # NOTE this !!!!
+                return skip_left == skip_left[::-1] or skip_right == skip_right[::-1]
+            else:
+                l += 1
+                r -= 1
+
+        return True
+</code></pre>
+<p><strong>Common Mistakes:</strong></p>
+<ul>
+<li>❌ Creating new strings (O(N) space and time)</li>
+<li>❌ Only trying to skip one side</li>
+<li>✅ Use helper with pointers (O(1) space)</li>
+<li>✅ Try BOTH skip possibilities</li>
+</ul>
+<p><strong>Similar Problems:</strong></p>
+<ul>
+<li>LC 680 Valid Palindrome II (this pattern)</li>
+<li>LC 125 Valid Palindrome</li>
+<li>LC 1216 Valid Palindrome III (k deletions allowed - DP)</li>
+<li>LC 234 Palindrome Linked List</li>
+</ul>
+<h3 id="2-11-merge-sorted-array" tabindex="-1"><a class="header-anchor" href="#2-11-merge-sorted-array"><span>2-11) Merge Sorted Array</span></a></h3>
+<pre><code class="language-python"># LC 88. Merge Sorted Array
+# V0
+# IDEA : 2 pointers
+### NOTE : we need to merge the sorted arrat to nums1 with IN PLACE (CAN'T USE EXTRA CACHE)
+# -&gt; SO WE START FROM RIGHT HAND SIDE (biggeest element) to LEFT HAND SIDE (smallest element)
+# -&gt; Then paste the remain elements
+class Solution(object):
+    def merge(self, nums1, m, nums2, n):
+        ### NOTE : we define 2 pointers (p, q) here
+        p, q = m-1, n-1
+        ### NOTE : the while loop conditions
+        while p &gt;= 0 and q &gt;= 0:
+            if nums1[p] &gt; nums2[q]:
+                #***** NOTE : WE START FROM p+q+1 index, since that's the count of non-zero elements in nums1, and nums2
+                nums1[p+q+1] = nums1[p]
+                p = p-1
+            else:
+                ### NOTE WE START FROM p+q+1 index, reason same as above
+                nums1[p+q+1] = nums2[q]
+                q = q-1
+        # if there're still elements in nums2, we just replace the ones in nums1[:q+1] with them (nums2[:q+1])
+        nums1[:q+1] = nums2[:q+1]
+</code></pre>
+<h3 id="2-12-interval-list-intersections" tabindex="-1"><a class="header-anchor" href="#2-12-interval-list-intersections"><span>2-12) Interval List Intersections</span></a></h3>
+<pre><code class="language-java">// java
+// LC 986
+    public int[][] intervalIntersection_1(int[][] firstList, int[][] secondList) {
+        if (firstList.length == 0 || secondList.length == 0)
+            return new int[0][0];
+    /**
+     *  NOTE !!!!
+     *   - i and j are pointers used to iterate through
+     *      `firstList` and `secondList` respectively.
+     *
+     *   - `startMax` and `endMin` are used to compute
+     *     the `intersection` of the current intervals
+     *     from firstList and secondList.
+     *
+     *   - ans is a list to store the resulting intersection intervals.
+     */
+        int i = 0;
+        int j = 0;
+        int startMax = 0, endMin = 0;
+        List&lt;int[]&gt; ans = new ArrayList&lt;&gt;();
+
+    /**
+     *
+     *   - The loop continues as long as
+     *      there are intervals remaining in `BOTH lists`.
+     *
+     *   - `startMax` is the maximum of the `START points` of the two
+     *     intervals (firstList[i] and secondList[j]).
+     *       -&gt; This ensures the intersection starts no earlier than both intervals.
+     *
+     *   - `endMin` is the minimum of the `END points` of the two intervals.
+     *
+     *   - This ensures the intersection ends no later than the earlier of
+     *     the two intervals.
+     *
+     */
+    while (i &lt; firstList.length &amp;&amp; j &lt; secondList.length) {
+      startMax = Math.max(firstList[i][0], secondList[j][0]);
+      endMin = Math.min(firstList[i][1], secondList[j][1]);
+
+      // you have end greater than start and you already know that this interval is
+      // surrounded with startMin and endMax so this must be the intersection
+      /**
+       *
+       *  - If endMin &gt;= startMax, it means there is an intersection between the two intervals.
+       *    -&gt;  Add the intersection [startMax, endMin] to the result list.
+       */
+      if (endMin &gt;= startMax) {
+        ans.add(new int[] {startMax, endMin});
+      }
+
+      // the interval with min end has been covered completely and have no chance to
+      // intersect with any other interval so move that list's pointer
+      /**
+       * - Since the intervals are sorted and disjoint:
+       *    - If the interval from firstList ends first (or at the same time), increment i.
+       *    - If the interval from secondList ends first (or at the same time), increment j.
+       *    -&gt; This ensures that the interval which has been fully processed is skipped, moving to the next potential candidate for intersection.
+       *
+       */
+      if (endMin == firstList[i][1]) i++;
+      if (endMin == secondList[j][1]) j++;
+        }
+
+        return ans.toArray(new int[ans.size()][2]);
+    }
+</code></pre>
+<h3 id="2-13-sort-colors-dutch-national-flag" tabindex="-1"><a class="header-anchor" href="#2-13-sort-colors-dutch-national-flag"><span>2-13) Sort Colors (Dutch National Flag)</span></a></h3>
+<p><strong>Pattern: Three-Way Partitioning with Two Pointers</strong></p>
+<ul>
+<li>Use three pointers: left (0s), mid (current), right (2s)</li>
+<li>Partition array into three sections</li>
+<li>Single pass solution</li>
+</ul>
+<pre><code class="language-java">// java
+// LC 75. Sort Colors
+/**
+ * Pattern: Dutch National Flag - Three-way partitioning
+ *
+ * Goal: Sort array with only 0, 1, 2 in one pass
+ *
+ * Pointers:
+ *   - left: boundary for 0s (everything before left is 0)
+ *   - mid: current element being examined
+ *   - right: boundary for 2s (everything after right is 2)
+ *
+ * Example:
+ *   nums = [2,0,2,1,1,0]
+ *
+ *   [2,0,2,1,1,0]    mid=0, nums[mid]=2, swap with right, right--
+ *    l           r   [0,0,2,1,1,2]
+ *    m
+ *
+ *   [0,0,2,1,1,2]    mid=0, nums[mid]=0, swap with left, left++, mid++
+ *    l         r
+ *    m
+ *
+ *   [0,0,2,1,1,2]    mid=1, nums[mid]=0, swap with left, left++, mid++
+ *      l       r
+ *      m
+ *
+ *   [0,0,2,1,1,2]    mid=2, nums[mid]=2, swap with right, right--
+ *        l     r
+ *        m
+ *
+ *   [0,0,1,1,2,2]    mid=2, nums[mid]=1, mid++
+ *        l   r
+ *        m
+ *
+ *   [0,0,1,1,2,2]    mid=3, nums[mid]=1, mid++
+ *        l r
+ *          m
+ *
+ *   mid &gt; right, done!
+ *
+ * Time: O(N), Space: O(1)
+ */
+public void sortColors(int[] nums) {
+    int left = 0;           // Next position for 0
+    int mid = 0;            // Current examining position
+    int right = nums.length - 1;  // Next position for 2
+
+    while (mid &lt;= right) {
+        if (nums[mid] == 0) {
+            // Found 0, swap to left
+            swap(nums, left, mid);
+            left++;
+            mid++;
+        } else if (nums[mid] == 2) {
+            // Found 2, swap to right
+            // NOTE: Don't increment mid yet, need to check swapped element
+            swap(nums, mid, right);
+            right--;
+        } else {
+            // Found 1, just move mid
+            mid++;
+        }
+    }
+}
+
+private void swap(int[] nums, int i, int j) {
+    int temp = nums[i];
+    nums[i] = nums[j];
+    nums[j] = temp;
+}
+</code></pre>
+<p><strong>Similar Problems:</strong></p>
+<ul>
+<li>LC 75 Sort Colors (this pattern)</li>
+<li>LC 26 Remove Duplicates from Sorted Array</li>
+<li>LC 80 Remove Duplicates from Sorted Array II</li>
+<li>LC 283 Move Zeroes</li>
+</ul>
+<h3 id="2-14-3sum" tabindex="-1"><a class="header-anchor" href="#2-14-3sum"><span>2-14) 3Sum</span></a></h3>
+<p><strong>Pattern: Two Pointers with Fixed First Element</strong></p>
+<ul>
+<li>Fix first element, use two pointers for remaining two</li>
+<li>Avoid duplicates by skipping same values</li>
+<li>Sort array first</li>
+</ul>
+<pre><code class="language-java">// java
+// LC 15. 3Sum
+/**
+ * Pattern: Fixed element + Two pointers
+ *
+ * Steps:
+ *   1. Sort array
+ *   2. Fix first element (i)
+ *   3. Use two pointers (l, r) to find remaining two elements
+ *   4. Skip duplicates
+ *
+ * Example:
+ *   nums = [-1,0,1,2,-1,-4]
+ *   After sort: [-4,-1,-1,0,1,2]
+ *
+ *   i=0, nums[i]=-4, l=1, r=5
+ *   [-4,-1,-1,0,1,2]
+ *     i  l       r    sum=-4+-1+2=-3 &lt; 0, l++
+ *
+ *   i=1, nums[i]=-1, l=2, r=5
+ *   [-4,-1,-1,0,1,2]
+ *        i  l     r   sum=-1+-1+2=0, found! [-1,-1,2]
+ *                     l++, r--, skip duplicates
+ *
+ *   [-4,-1,-1,0,1,2]
+ *        i    l r     sum=-1+0+1=0, found! [-1,0,1]
+ *
+ * Time: O(N^2), Space: O(1) excluding result
+ */
+public List&lt;List&lt;Integer&gt;&gt; threeSum(int[] nums) {
+    List&lt;List&lt;Integer&gt;&gt; result = new ArrayList&lt;&gt;();
+    Arrays.sort(nums);
+
+    for (int i = 0; i &lt; nums.length - 2; i++) {
+        // Skip duplicates for first element
+        if (i &gt; 0 &amp;&amp; nums[i] == nums[i - 1]) {
+            continue;
+        }
+
+        int left = i + 1;
+        int right = nums.length - 1;
+        int target = -nums[i];
+
+        while (left &lt; right) {
+            int sum = nums[left] + nums[right];
+
+            if (sum == target) {
+                result.add(Arrays.asList(nums[i], nums[left], nums[right]));
+
+                // Skip duplicates for second element
+                while (left &lt; right &amp;&amp; nums[left] == nums[left + 1]) {
+                    left++;
+                }
+                // Skip duplicates for third element
+                while (left &lt; right &amp;&amp; nums[right] == nums[right - 1]) {
+                    right--;
+                }
+
+                left++;
+                right--;
+            } else if (sum &lt; target) {
+                left++;
+            } else {
+                right--;
+            }
+        }
+    }
+
+    return result;
+}
+</code></pre>
+<p><strong>Similar Problems:</strong></p>
+<ul>
+<li>LC 15 3Sum (this pattern)</li>
+<li>LC 16 3Sum Closest</li>
+<li>LC 18 4Sum</li>
+<li>LC 259 3Sum Smaller</li>
+<li>LC 1 Two Sum</li>
+</ul>
+<h3 id="2-15-reverse-string-reverse-words" tabindex="-1"><a class="header-anchor" href="#2-15-reverse-string-reverse-words"><span>2-15) Reverse String / Reverse Words</span></a></h3>
+<p><strong>Pattern: In-place Reversal with Two Pointers</strong></p>
+<pre><code class="language-java">// java
+// LC 344. Reverse String
+/**
+ * Pattern: Swap from both ends moving toward center
+ *
+ * Example:
+ *   s = ['h','e','l','l','o']
+ *
+ *   ['h','e','l','l','o']
+ *     l           r       swap, l++, r--
+ *
+ *   ['o','e','l','l','h']
+ *       l       r         swap, l++, r--
+ *
+ *   ['o','l','l','e','h']
+ *           l r           l &gt;= r, done!
+ *
+ * Time: O(N), Space: O(1)
+ */
+public void reverseString(char[] s) {
+    int left = 0;
+    int right = s.length - 1;
+
+    while (left &lt; right) {
+        char temp = s[left];
+        s[left] = s[right];
+        s[right] = temp;
+        left++;
+        right--;
+    }
+}
+</code></pre>
+<p><strong>Similar Problems:</strong></p>
+<ul>
+<li>LC 344 Reverse String</li>
+<li>LC 345 Reverse Vowels of a String</li>
+<li>LC 541 Reverse String II</li>
+<li>LC 186 Reverse Words in a String II</li>
+<li>LC 151 Reverse Words in a String</li>
+</ul>
+<h3 id="2-16-shortest-palindrome-find-longest-palindromic-prefix" tabindex="-1"><a class="header-anchor" href="#2-16-shortest-palindrome-find-longest-palindromic-prefix"><span>2-16) Shortest Palindrome (Find Longest Palindromic Prefix)</span></a></h3>
+<p><strong>Pattern: Scan from right, track left pointer to find longest palindromic prefix</strong></p>
+<p><strong>Core Idea:</strong></p>
+<ul>
+<li>Find the longest prefix of <code>s</code> that is already a palindrome</li>
+<li>Reverse the remaining suffix and prepend it to <code>s</code></li>
+<li>Use two pointers: <code>j</code> anchored at 0 (left), <code>i</code> scans right-to-left</li>
+<li>When <code>s[i] == s[j]</code>, advance <code>j</code> — after the scan <code>s[0..j-1]</code> is the matched prefix</li>
+<li>If <code>j &lt; n</code>, recurse on <code>s[0..j]</code> and sandwich the non-palindrome suffix around it</li>
+</ul>
+<p><strong>Dry Run — <code>s = &quot;aacecaaa&quot;</code>:</strong></p>
+<pre><code>i scans right-to-left, j starts at 0
+
+i=7 s[7]='a' == s[0]='a'  -&gt; j=1
+i=6 s[6]='a' == s[1]='a'  -&gt; j=2
+i=5 s[5]='a' != s[2]='c'  -&gt; skip
+i=4 s[4]='c' == s[2]='c'  -&gt; j=3
+i=3 s[3]='e' != s[3]='e'  -&gt; j=4  (wait — equal!) -&gt; j=4
+i=2 s[2]='c' != s[4]='c'  -&gt; j=5  -&gt; j=5
+i=1 s[1]='a' != s[5]='a'  -&gt; j=6
+i=0 s[0]='a' != s[6]='a'  -&gt; j=7
+
+j == n? No (j=7 &lt; 8). suffix = s.substring(7) = &quot;a&quot;
+reversed(&quot;a&quot;) + shortestPalindrome(&quot;aacecaa&quot;) + &quot;a&quot;
+</code></pre>
+<p><strong>Key Insight — why does <code>j</code> track the prefix?</strong></p>
+<pre><code>Scanning i from right to left acts like a &quot;sieve&quot;:
+- Every time s[i] matches s[j], j advances one step right
+- After the full scan, s[0..j-1] is the longest possible palindromic prefix
+  (not a strict palindrome proof, but works with the recursive structure)
+- The characters NOT in the prefix (s[j..n-1]) form the suffix that
+  must be reversed and prepended to make the whole string a palindrome
+</code></pre>
+<pre><code class="language-java">// java
+// LC 214. Shortest Palindrome
+/**
+ * Pattern: Find longest palindromic prefix via right-to-left scan
+ *
+ * Step 1: Scan i from n-1 to 0, advance j when s[i] == s[j]
+ * Step 2: j is now the length of the &quot;matched&quot; prefix
+ * Step 3: suffix  = s.substring(j)        (non-palindrome tail)
+ *         prefix  = reverse(suffix)        (chars to prepend)
+ * Step 4: return prefix + shortestPalindrome(s[0..j]) + suffix
+ *
+ * Time: O(N^2) average (O(N) per recursion level, O(N) depth)
+ * Space: O(N) recursion stack
+ *
+ * Example 1: s = &quot;aacecaaa&quot; -&gt; &quot;aaacecaaa&quot;
+ * Example 2: s = &quot;abcd&quot;     -&gt; &quot;dcbabcd&quot;
+ */
+public String shortestPalindrome(String s) {
+    if (s == null || s.length() &lt;= 1) return s;
+
+    int j = 0;
+
+    /** NOTE !!!
+     *  Scan from the RIGHT end toward left.
+     *  j tracks how far into s we've &quot;matched&quot; from the front.
+     */
+    for (int i = s.length() - 1; i &gt;= 0; i--) {
+        if (s.charAt(i) == s.charAt(j)) {
+            j++;
+        }
+    }
+
+    // Whole string is already a palindrome
+    if (j == s.length()) return s;
+
+    // suffix is the part NOT covered by the palindromic prefix
+    String suffix = s.substring(j);
+    String prefix = new StringBuilder(suffix).reverse().toString();
+
+    /** NOTE !!!
+     *  Recurse on s[0..j] to handle the inner part,
+     *  then sandwich the current suffix around it.
+     */
+    return prefix + shortestPalindrome(s.substring(0, j)) + suffix;
+}
+</code></pre>
+<pre><code class="language-java">// java
+// LC 214. Shortest Palindrome — KMP approach (O(N) time)
+/**
+ * IDEA: KMP Prefix Table
+ *
+ * Combine s + &quot;#&quot; + reverse(s) into one string.
+ * The KMP prefix table's last value gives the length of the
+ * longest palindromic prefix of s.
+ *
+ * Time: O(N), Space: O(N)
+ */
+public String shortestPalindromeKMP(String s) {
+    String rev = new StringBuilder(s).reverse().toString();
+    String combined = s + &quot;#&quot; + rev;
+    int[] table = buildPrefixTable(combined);
+
+    int palindromeLen = table[combined.length() - 1];
+    String suffix = new StringBuilder(s.substring(palindromeLen)).reverse().toString();
+    return suffix + s;
+}
+
+private int[] buildPrefixTable(String s) {
+    int[] table = new int[s.length()];
+    int len = 0;
+    for (int i = 1; i &lt; s.length(); i++) {
+        while (len &gt; 0 &amp;&amp; s.charAt(i) != s.charAt(len))
+            len = table[len - 1];
+        if (s.charAt(i) == s.charAt(len))
+            len++;
+        table[i] = len;
+    }
+    return table;
+}
+</code></pre>
+<p><strong>Brute-force version (TLE on large inputs):</strong></p>
+<pre><code class="language-java">// java — O(N^2) brute force
+// Find largest i such that s[0..i] is a palindrome, then prepend reverse(s[i+1..n-1])
+public String shortestPalindromeBrute(String s) {
+    int n = s.length();
+    if (n &lt;= 1) return s;
+    int end = 0;
+    for (int i = n - 1; i &gt;= 0; i--) {
+        if (isPalindrome(s, 0, i)) { end = i; break; }
+    }
+    String suffix = s.substring(end + 1);
+    return new StringBuilder(suffix).reverse() + s;
+}
+
+private boolean isPalindrome(String s, int l, int r) {
+    while (l &lt; r) {
+        if (s.charAt(l++) != s.charAt(r--)) return false;
+    }
+    return true;
+}
+</code></pre>
+<p><strong>Pointer Movement Comparison:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Approach</th>
+<th>Left pointer <code>j</code></th>
+<th>Right pointer <code>i</code></th>
+<th>When <code>j</code> advances</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Right-to-left scan</td>
+<td>Anchored at 0, moves right</td>
+<td>Scans n-1 → 0</td>
+<td><code>s[i] == s[j]</code></td>
+</tr>
+<tr>
+<td>Brute force isPalindrome</td>
+<td>Expands from both ends</td>
+<td>Starts at n-1, decrements</td>
+<td>Always (matching chars)</td>
+</tr>
+<tr>
+<td>KMP</td>
+<td>N/A — uses prefix table</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Similar Problems:</strong></p>
+<ul>
+<li>LC 214 Shortest Palindrome (this pattern)</li>
+<li>LC 5 Longest Palindromic Substring (expand from center)</li>
+<li>LC 647 Palindromic Substrings (expand from center)</li>
+<li>LC 680 Valid Palindrome II (skip one char)</li>
+<li>LC 516 Longest Palindromic Subsequence (DP)</li>
+<li>LC 132 Palindrome Partitioning II (DP + palindrome check)</li>
+<li>LC 336 Palindrome Pairs (hash map + palindrome prefix/suffix)</li>
+</ul>
+<h2 id="3-classic-lc-problems-summary" tabindex="-1"><a class="header-anchor" href="#3-classic-lc-problems-summary"><span>3) Classic LC Problems Summary</span></a></h2>
+<h3 id="easy" tabindex="-1"><a class="header-anchor" href="#easy"><span>Easy:</span></a></h3>
+<ul>
+<li>LC 26 Remove Duplicates from Sorted Array</li>
+<li>LC 27 Remove Element</li>
+<li>LC 125 Valid Palindrome</li>
+<li>LC 283 Move Zeroes</li>
+<li>LC 344 Reverse String</li>
+<li>LC 345 Reverse Vowels of a String</li>
+<li>LC 349 Intersection of Two Arrays</li>
+<li>LC 350 Intersection of Two Arrays II</li>
+<li>LC 392 Is Subsequence</li>
+<li>LC 680 Valid Palindrome II</li>
+<li>LC 844 Backspace String Compare</li>
+<li>LC 977 Squares of a Sorted Array</li>
+</ul>
+<h3 id="medium" tabindex="-1"><a class="header-anchor" href="#medium"><span>Medium:</span></a></h3>
+<ul>
+<li>LC 3 Longest Substring Without Repeating Characters (Sliding Window)</li>
+<li>LC 5 Longest Palindromic Substring</li>
+<li>LC 11 Container With Most Water</li>
+<li>LC 15 3Sum</li>
+<li>LC 16 3Sum Closest</li>
+<li>LC 18 4Sum</li>
+<li>LC 75 Sort Colors (Dutch National Flag)</li>
+<li>LC 80 Remove Duplicates from Sorted Array II</li>
+<li>LC 86 Partition List</li>
+<li>LC 88 Merge Sorted Array</li>
+<li>LC 142 Linked List Cycle II</li>
+<li>LC 167 Two Sum II - Input Array Is Sorted</li>
+<li>LC 209 Minimum Size Subarray Sum (Sliding Window)</li>
+<li>LC 287 Find the Duplicate Number</li>
+<li>LC 567 Permutation in String (Sliding Window)</li>
+<li>LC 647 Palindromic Substrings</li>
+<li>LC 713 Subarray Product Less Than K</li>
+<li>LC 881 Boats to Save People</li>
+<li>LC 986 Interval List Intersections</li>
+<li>LC 1023 Camelcase Matching</li>
+</ul>
+<h3 id="hard" tabindex="-1"><a class="header-anchor" href="#hard"><span>Hard:</span></a></h3>
+<ul>
+<li>LC 42 Trapping Rain Water</li>
+<li>LC 76 Minimum Window Substring (Sliding Window)</li>
+<li>LC 214 Shortest Palindrome</li>
+<li>LC 828 Count Unique Characters of All Substrings</li>
+</ul>
+<h2 id="4-two-pointers-cheat-sheet" tabindex="-1"><a class="header-anchor" href="#4-two-pointers-cheat-sheet"><span>4) Two Pointers Cheat Sheet</span></a></h2>
+<table>
+<thead>
+<tr>
+<th>Pattern</th>
+<th>When to Use</th>
+<th>Example Problems</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Opposite Direction</strong></td>
+<td>Sorted array, palindrome check</td>
+<td>LC 167, LC 344, LC 125</td>
+</tr>
+<tr>
+<td><strong>Same Direction (Fast-Slow)</strong></td>
+<td>Remove duplicates, cycle detection</td>
+<td>LC 26, LC 27, LC 142</td>
+</tr>
+<tr>
+<td><strong>Sliding Window</strong></td>
+<td>Subarray/substring problems</td>
+<td>LC 3, LC 76, LC 209</td>
+</tr>
+<tr>
+<td><strong>Merge Two Lists</strong></td>
+<td>Merge sorted arrays/lists</td>
+<td>LC 88, LC 21</td>
+</tr>
+<tr>
+<td><strong>Partition</strong></td>
+<td>Rearrange elements</td>
+<td>LC 75, LC 86</td>
+</tr>
+<tr>
+<td><strong>Palindrome with Deletion</strong></td>
+<td>Allow k changes</td>
+<td>LC 680, LC 1216</td>
+</tr>
+<tr>
+<td><strong>Fixed + Two Pointers</strong></td>
+<td>Sum problems (3Sum, 4Sum)</td>
+<td>LC 15, LC 16, LC 18</td>
+</tr>
+<tr>
+<td><strong>Subsequence Matching</strong></td>
+<td>Check if one string is subsequence of another</td>
+<td>LC 392, LC 524, LC 792</td>
+</tr>
+<tr>
+<td><strong>Pattern Match with Constraints</strong></td>
+<td>Subsequence + character type validation</td>
+<td>LC 1023</td>
+</tr>
+<tr>
+<td><strong>Longest Palindromic Prefix</strong></td>
+<td>Find longest palindromic prefix, prepend reversed suffix</td>
+<td>LC 214, LC 336</td>
+</tr>
+</tbody>
+</table>
+
+      </div>
+      <div class="cheatsheet-footer">
+        <a href="../cheatsheets.html" class="back-link">← Back to Cheat Sheets</a>
+        <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/2_pointers.md" class="github-edit" target="_blank">
+          Edit on GitHub →
+        </a>
+      </div>
+    <nav class="prev-next"><span></span><a href="2_pointers_linkedlist.html" class="next-link">2 Pointers Linkedlist →</a></nav>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>CS_basics - Computer Science Fundamentals & Interview Preparation</p>
+      <p>
+        <a href="https://github.com/yennanliu/CS_basics">GitHub</a> •
+        <a href="https://github.com/yennanliu/CS_basics/tree/master/doc">Documentation</a> •
+        <a href="https://github.com/yennanliu/CS_basics/issues">Report Issues</a>
+      </p>
+    </div>
+  </footer>
+</body>
+</html>

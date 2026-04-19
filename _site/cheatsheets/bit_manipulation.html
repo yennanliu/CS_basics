@@ -1,0 +1,451 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bit Manipulation - CS_basics</title>
+  <meta name="description" content="Computer Science fundamentals: algorithms, data structures, system design, and LeetCode solutions">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>CS</text></svg>">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="../vendor/fonts.css">
+  <link rel="stylesheet" href="../vendor/highlight/github-dark.min.css">
+  <script src="../vendor/highlight/highlight.min.js"></script>
+  <script>
+  // Apply theme before render to prevent flash
+  (function() {
+    var saved = localStorage.getItem('theme');
+    if (saved === 'dark' || (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      document.documentElement.setAttribute('data-theme', 'dark');
+    }
+  })();
+  </script>
+  <script>document.addEventListener('DOMContentLoaded', function() {
+    hljs.highlightAll();
+    document.querySelectorAll('pre code').forEach(function(codeEl) {
+      var pre = codeEl.parentElement;
+      var lang = '';
+      var cls = codeEl.className || '';
+      var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
+      if (m) lang = m[1];
+      var wrapper = document.createElement('div');
+      wrapper.className = 'code-block-wrapper';
+      pre.parentNode.insertBefore(wrapper, pre);
+      var header = document.createElement('div');
+      header.className = 'code-block-header';
+      if (lang) {
+        var label = document.createElement('span');
+        label.className = 'code-lang-label';
+        label.textContent = lang;
+        header.appendChild(label);
+      } else {
+        header.appendChild(document.createElement('span'));
+      }
+      var btn = document.createElement('button');
+      btn.className = 'copy-btn';
+      btn.textContent = 'Copy';
+      btn.addEventListener('click', function() {
+        navigator.clipboard.writeText(codeEl.textContent).then(function() {
+          btn.textContent = 'Copied!';
+          btn.classList.add('copied');
+          setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+        });
+      });
+      header.appendChild(btn);
+      wrapper.appendChild(header);
+      wrapper.appendChild(pre);
+    });
+    document.querySelectorAll('table').forEach(function(table) {
+      if (!table.parentElement.classList.contains('table-wrap')) {
+        var wrapper = document.createElement('div');
+        wrapper.className = 'table-wrap';
+        table.parentNode.insertBefore(wrapper, table);
+        wrapper.appendChild(table);
+      }
+    });
+    // Reading progress bar
+    var progressBar = document.getElementById('reading-progress');
+    if (progressBar) {
+      window.addEventListener('scroll', function() {
+        var winScroll = document.documentElement.scrollTop;
+        var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        progressBar.style.width = height > 0 ? (winScroll / height * 100) + '%' : '0%';
+      });
+    }
+    // Dark mode toggle
+    var toggle = document.getElementById('theme-toggle');
+    if (toggle) {
+      var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      toggle.textContent = isDark ? '☀️' : '🌙';
+      toggle.addEventListener('click', function() {
+        var dark = document.documentElement.getAttribute('data-theme') === 'dark';
+        if (dark) {
+          document.documentElement.removeAttribute('data-theme');
+          localStorage.setItem('theme', 'light');
+          toggle.textContent = '🌙';
+        } else {
+          document.documentElement.setAttribute('data-theme', 'dark');
+          localStorage.setItem('theme', 'dark');
+          toggle.textContent = '☀️';
+        }
+      });
+    }
+  });</script>
+</head>
+<body>
+  <div class="progress-container"><div class="progress-bar" id="reading-progress"></div></div>
+  <nav class="navbar">
+    <div class="container">
+      <div class="nav-brand">
+        <span class="nav-icon">💻</span>
+        <span class="nav-title">CS_basics</span>
+      </div>
+      <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+      <div class="nav-links">
+        <a href="../index.html" class="">Home</a>
+        <a href="../cheatsheets.html" class="active">Cheat Sheets</a>
+        <a href="../patterns.html" class="">Pattern Recognition</a>
+        <a href="../faqs.html" class="">FAQs</a>
+        <a href="../resources.html" class="">Resources</a>
+        <a href="../lc-explorer.html" class="">LC Explorer</a>
+        <a href="../lc-random-picker.html" class="">🎲 Random Picker</a>
+        <a href="../algo_demo/index.html" class="">Visualizer</a>
+        <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">&#127769;</button>
+        <a href="https://github.com/yennanliu/CS_basics" target="_blank" class="github-link" aria-label="GitHub">
+          <svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor">
+            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container">
+    <div class="content">
+      
+      <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">Bit Manipulation</span></nav>
+      <div class="cheatsheet-header">
+        <h1>Bit Manipulation</h1>
+        <span class="last-updated">Last updated: Feb 23, 2024</span>
+      </div>
+      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#0-concept">0) Concept</a></li><li class="toc-sub"><a href="#0-1-types">0-1) Types</a></li><li class="toc-sub"><a href="#0-2-pattern">0-2) Pattern</a></li><li><a href="#1-general-form">1) General form</a></li><li class="toc-sub"><a href="#1-1-basic-op">1-1) Basic OP</a></li><li><a href="#2-lc-example">2) LC Example</a></li><li class="toc-sub"><a href="#2-1-gray-code">2-1) Gray Code</a></li><li class="toc-sub"><a href="#2-2-reverse-bits">2-2) Reverse Bits</a></li><li class="toc-sub"><a href="#2-3-power-of-two">2-3) Power of Two</a></li><li class="toc-sub"><a href="#2-4-add-binary">2-4) Add Binary</a></li><li class="toc-sub"><a href="#2-5-sum-of-two-integers">2-5) Sum of Two Integers</a></li></ul></div>
+      <div class="cheatsheet-content">
+        <h1 id="bit-manipulation" tabindex="-1"><a class="header-anchor" href="#bit-manipulation"><span>Bit Manipulation</span></a></h1>
+<h2 id="0-concept" tabindex="-1"><a class="header-anchor" href="#0-concept"><span>0) Concept</span></a></h2>
+<ul>
+<li>
+<p>Base</p>
+<ul>
+<li><a href="https://leetcode.com/explore/learn/card/bit-manipulation/669/bit-manipulation-concepts/4494/">Ref</a></li>
+<li>The actual value of a base-X number is determined by each digit and its location.</li>
+<li>example :
+<ul>
+<li>123.45 (base 10) = 1 * 10^2 + 2 * 10^1 + 3 * 10^0 + 4 * 10^(-1) + 5 * 10^(-2)</li>
+<li>720.5 (base 8) = 7 * 8^2 + 2 * 8^1 + 0 * 8^0 + 5 * 8^(-1)</li>
+</ul>
+</li>
+<li>In computer science, the binary system is most commonly used. It has two digits: 0, and 1. Octal (base-8) and hexadecimal (base 16) are also commonly used. Octal has eight digits: 0, 1, 2, 3, 4, 5, 6, and 7.</li>
+</ul>
+</li>
+<li>
+<p><a href="http://web.ntnu.edu.tw/~algo/Bit.html">bit VS byte VS char</a></p>
+<ul>
+<li>basic
+<ul>
+<li>bit : binary number (use 2 as base : 0, 1)</li>
+<li>Hexadecimal Number : use 16 as base : 0123456789abcdef (lower, upper case are same)</li>
+</ul>
+</li>
+<li>byte : 8 bytes (字節)</li>
+<li>char : 16 bytes (字符)</li>
+<li>ref:
+<ul>
+<li><a href="https://github.com/yennanliu/JavaHelloWorld/blob/main/src/main/java/Advances/IOFlow/demo1.java#L25">java example</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>ref</p>
+<ul>
+<li><a href="https://github.com/yennanliu/CS_basics/blob/master/doc/bit_manipulation.md">bit_manipulation.md</a></li>
+<li><a href="https://www.runoob.com/python/python-operators.html">python-operators.html</a></li>
+<li><a href="https://steveyang.blog/2022/07/02/leetcode-easy-bitwise-xor-summary/">leetcode-easy-bitwise-xor-summary</a></li>
+</ul>
+</li>
+</ul>
+<p align="center"><img src="../doc/pic/bit_basic1.png" ></p>
+<p align="center"><img src="../doc/pic/bit_basic2.png" ></p>
+<h3 id="0-1-types" tabindex="-1"><a class="header-anchor" href="#0-1-types"><span>0-1) Types</span></a></h3>
+<h3 id="0-2-pattern" tabindex="-1"><a class="header-anchor" href="#0-2-pattern"><span>0-2) Pattern</span></a></h3>
+<h2 id="1-general-form" tabindex="-1"><a class="header-anchor" href="#1-general-form"><span>1) General form</span></a></h2>
+<h3 id="1-1-basic-op" tabindex="-1"><a class="header-anchor" href="#1-1-basic-op"><span>1-1) Basic OP</span></a></h3>
+<h2 id="2-lc-example" tabindex="-1"><a class="header-anchor" href="#2-lc-example"><span>2) LC Example</span></a></h2>
+<h3 id="2-1-gray-code" tabindex="-1"><a class="header-anchor" href="#2-1-gray-code"><span>2-1) Gray Code</span></a></h3>
+<pre><code class="language-python"># LC 89 Gray Code
+# V0
+# IDEA : bit op
+# https://blog.csdn.net/qqxx6661/article/details/78371259
+# DEMO
+# i = 0 bin(i) = 0b0 bin(i &gt;&gt; 1) = 0b0 bin(i &gt;&gt; 1) ^ i  = 0b0
+# i = 1 bin(i) = 0b1 bin(i &gt;&gt; 1) = 0b0 bin(i &gt;&gt; 1) ^ i  = 0b1
+# i = 2 bin(i) = 0b10 bin(i &gt;&gt; 1) = 0b1 bin(i &gt;&gt; 1) ^ i  = 0b11
+# i = 3 bin(i) = 0b11 bin(i &gt;&gt; 1) = 0b1 bin(i &gt;&gt; 1) ^ i  = 0b10
+# i = 4 bin(i) = 0b100 bin(i &gt;&gt; 1) = 0b10 bin(i &gt;&gt; 1) ^ i  = 0b110
+# i = 5 bin(i) = 0b101 bin(i &gt;&gt; 1) = 0b10 bin(i &gt;&gt; 1) ^ i  = 0b111
+# i = 6 bin(i) = 0b110 bin(i &gt;&gt; 1) = 0b11 bin(i &gt;&gt; 1) ^ i  = 0b101
+# i = 7 bin(i) = 0b111 bin(i &gt;&gt; 1) = 0b11 bin(i &gt;&gt; 1) ^ i  = 0b100
+# i = 8 bin(i) = 0b1000 bin(i &gt;&gt; 1) = 0b100 bin(i &gt;&gt; 1) ^ i  = 0b1100
+# i = 9 bin(i) = 0b1001 bin(i &gt;&gt; 1) = 0b100 bin(i &gt;&gt; 1) ^ i  = 0b1101
+# i = 10 bin(i) = 0b1010 bin(i &gt;&gt; 1) = 0b101 bin(i &gt;&gt; 1) ^ i  = 0b1111
+# i = 11 bin(i) = 0b1011 bin(i &gt;&gt; 1) = 0b101 bin(i &gt;&gt; 1) ^ i  = 0b1110
+# i = 12 bin(i) = 0b1100 bin(i &gt;&gt; 1) = 0b110 bin(i &gt;&gt; 1) ^ i  = 0b1010
+# i = 13 bin(i) = 0b1101 bin(i &gt;&gt; 1) = 0b110 bin(i &gt;&gt; 1) ^ i  = 0b1011
+# i = 14 bin(i) = 0b1110 bin(i &gt;&gt; 1) = 0b111 bin(i &gt;&gt; 1) ^ i  = 0b1001
+# i = 15 bin(i) = 0b1111 bin(i &gt;&gt; 1) = 0b111 bin(i &gt;&gt; 1) ^ i  = 0b1000
+class Solution(object):
+    def grayCode(self, n):
+        res = []
+        size = 2**n
+        for i in range(size):
+            print (&quot;i = &quot; + str(i) + &quot; bin(i) = &quot; + str(bin(i)) + &quot; bin(i &gt;&gt; 1) = &quot; + str(bin(i &gt;&gt; 1))  + &quot; bin(i &gt;&gt; 1) ^ i  = &quot; + str( bin((i &gt;&gt; 1) ^ i) )  )
+            &quot;&quot;&quot;
+            NOTE : 
+              step 1) we move 1 digit right in every iteration (i &gt;&gt; 1), for keep adding space
+              step 2) we do (i &gt;&gt; 1) ^ i. for getting &quot;inverse&quot; binary code with i
+              step 3) append and return the result 
+            &quot;&quot;&quot;
+            res.append((i &gt;&gt; 1) ^ i)
+        return res
+
+# V1'
+# https://ithelp.ithome.com.tw/articles/10213273
+# DEMO
+# In [23]: add=1
+
+# In [24]: add = add &lt;&lt; 1
+
+# In [25]: add
+# Out[25]: 2
+
+# In [26]: add = add &lt;&lt; 1
+
+# In [27]: add
+# Out[27]: 4
+
+# In [28]: add = add &lt;&lt; 1
+
+# In [29]: add
+# Out[29]: 8
+
+# In [30]: add = add &lt;&lt; 1
+
+# In [31]: add
+# Out[31]: 16
+
+# In [32]: add = add &lt;&lt; 1
+
+# In [33]: add
+# Out[33]: 32
+#
+class Solution:
+    def grayCode(self, n):
+        res = [0]
+        add = 1
+        for _ in range(n):
+            for i in range(add):
+                res.append(res[add - 1 - i] + add);
+            add &lt;&lt;= 1
+        return res
+</code></pre>
+<h3 id="2-2-reverse-bits" tabindex="-1"><a class="header-anchor" href="#2-2-reverse-bits"><span>2-2) Reverse Bits</span></a></h3>
+<pre><code class="language-python"># 190. Reverse Bits
+# V0
+class Solution:
+    def reverseBits(self, n):
+        s = bin(n)[2:]
+        s = &quot;0&quot;*(32 - len(s)) + s
+        t = s[::-1]
+        return int(t,2)
+
+# V0'
+# DEMO
+# n = 10100101000001111010011100
+# n =       10100101000001111010011100
+class Solution:
+    def reverseBits(self, n):
+        n = bin(n)[2:]         # convert to binary, and remove the usual 0b prefix
+        print (&quot;n = &quot; + str(n))
+        n = '%32s' % n         # print number into a pre-formatted string with space-padding
+        print (&quot;n = &quot; + str(n))
+        n = n.replace(' ','0') # Convert the useful space-padding into zeros
+        # Now we have a  proper binary representation, so we can make the final transformation
+        return int(n[::-1],2)
+
+# V0'' 
+class Solution(object):
+    def reverseBits(self, n):
+        #b = bin(n)[:1:-1]
+        b = bin(n)[2:][::-1]
+        return int(b + '0'*(32-len(b)), 2)
+</code></pre>
+<h3 id="2-3-power-of-two" tabindex="-1"><a class="header-anchor" href="#2-3-power-of-two"><span>2-3) Power of Two</span></a></h3>
+<pre><code class="language-python"># LC 231. Power of Two
+# NOTE : there is also brute force approach
+# V0'
+# IDEA : BIT OP
+# IDEA : Bitwise operators : Turn off the Rightmost 1-bit
+# https://leetcode.com/problems/power-of-two/solution/
+class Solution(object):
+    def isPowerOfTwo(self, n):
+        if n == 0:
+            return False
+        return n &amp; (n - 1) == 0
+</code></pre>
+<h3 id="2-4-add-binary" tabindex="-1"><a class="header-anchor" href="#2-4-add-binary"><span>2-4) Add Binary</span></a></h3>
+<pre><code class="language-python"># LC 67. Add Binary
+# V0
+# IDEA : Bit-by-Bit Computation
+class Solution:
+    def addBinary(self, a, b):
+        n = max(len(a), len(b))
+        &quot;&quot;&quot;
+        NOTE : zfill syntax
+            -&gt; fill n-1 &quot;0&quot; to a string at beginning
+
+            example :
+                In [10]: x = '1'
+
+                In [11]: x.zfill(2)
+                Out[11]: '01'
+
+                In [12]: x.zfill(3)
+                Out[12]: '001'
+
+                In [13]: x.zfill(4)
+                Out[13]: '0001'
+
+                In [14]: x.zfill(10)
+                Out[14]: '0000000001'
+        &quot;&quot;&quot;
+        a, b = a.zfill(n), b.zfill(n)
+        
+        carry = 0
+        answer = []
+        for i in range(n - 1, -1, -1):
+            if a[i] == '1':
+                carry += 1
+            if b[i] == '1':
+                carry += 1
+                
+            if carry % 2 == 1:
+                answer.append('1')
+            else:
+                answer.append('0')
+            
+            carry //= 2
+        
+        if carry == 1:
+            answer.append('1')
+        answer.reverse()
+        
+        return ''.join(answer)
+
+# V0''''
+# IDEA : py default
+class Solution:
+    def addBinary(self, a, b) -&gt; str:
+        return '{0:b}'.format(int(a, 2) + int(b, 2))
+
+# V0''''
+# IDEA : Bit Manipulation
+class Solution:
+    def addBinary(self, a, b) -&gt; str:
+        x, y = int(a, 2), int(b, 2)
+        while y:
+            answer = x ^ y
+            carry = (x &amp; y) &lt;&lt; 1
+            x, y = answer, carry
+        return bin(x)[2:]
+</code></pre>
+<h3 id="2-5-sum-of-two-integers" tabindex="-1"><a class="header-anchor" href="#2-5-sum-of-two-integers"><span>2-5) Sum of Two Integers</span></a></h3>
+<pre><code class="language-python"># 371. Sum of Two Integers
+# V0'
+# https://blog.csdn.net/fuxuemingzhu/article/details/79379939
+#########
+# XOR op:
+#########
+# https://stackoverflow.com/questions/14526584/what-does-the-xor-operator-do
+# XOR is a binary operation, it stands for &quot;exclusive or&quot;, that is to say the resulting bit evaluates to one if only exactly one of the bits is set.
+# -&gt; XOR : RETURN 1 if only one &quot;1&quot;, return 0 else 
+# -&gt; XOR extra : Exclusive or or exclusive disjunction is a logical operation that is true if and only if its arguments differ. It is symbolized by the prefix operator J and by the infix operators XOR, EOR, EXOR, ⊻, ⩒, ⩛, ⊕, ↮, and ≢. Wikipedia
+# a | b | a ^ b
+# --|---|------
+# 0 | 0 | 0
+# 0 | 1 | 1
+# 1 | 0 | 1
+# 1 | 1 | 0
+# This operation is performed between every two corresponding bits of a number.
+# Example: 7 ^ 10
+# In binary: 0111 ^ 1010
+#   0111
+# ^ 1010
+# ======
+#   1101 = 13
+class Solution(object):
+    def getSum(self, a, b):
+        &quot;&quot;&quot;
+        :type a: int
+        :type b: int
+        :rtype: int
+        &quot;&quot;&quot;
+        # 32 bits integer max
+        MAX = 2**31-1  #0x7FFFFFFF
+        # 32 bits interger min
+        MIN = 2**31    #0x80000000
+        # mask to get last 32 bits
+        mask = 2**32-1 #0xFFFFFFFF
+        while b != 0:
+            # ^ get different bits and &amp; gets double 1s, &lt;&lt; moves carry
+            a, b = (a ^ b) &amp; mask, ((a &amp; b) &lt;&lt; 1) &amp; mask
+        # if a is negative, get a's 32 bits complement positive first
+        # then get 32-bit positive's Python complement negative
+        return a if a &lt;= MAX else ~(a ^ mask)
+
+# V0'
+# https://blog.csdn.net/fuxuemingzhu/article/details/79379939
+class Solution():
+    def getSum(self, a, b):
+        MAX = 2**31-1  #0x7fffffff
+        MIN = 2**31    #0x80000000
+        mask = 2**32-1 #0xFFFFFFFF
+        while b != 0:
+            a, b = (a ^ b) &amp; mask, ((a &amp; b) &lt;&lt; 1)
+        return a if a &lt;= MAX else ~(a ^ mask)
+</code></pre>
+
+      </div>
+      <div class="cheatsheet-footer">
+        <a href="../cheatsheets.html" class="back-link">← Back to Cheat Sheets</a>
+        <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/bit_manipulation.md" class="github-edit" target="_blank">
+          Edit on GitHub →
+        </a>
+      </div>
+    <nav class="prev-next"><a href="binary_tree.html" class="prev-link">← Binary Tree</a><a href="bst.html" class="next-link">Bst →</a></nav>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>CS_basics - Computer Science Fundamentals & Interview Preparation</p>
+      <p>
+        <a href="https://github.com/yennanliu/CS_basics">GitHub</a> •
+        <a href="https://github.com/yennanliu/CS_basics/tree/master/doc">Documentation</a> •
+        <a href="https://github.com/yennanliu/CS_basics/issues">Report Issues</a>
+      </p>
+    </div>
+  </footer>
+</body>
+</html>

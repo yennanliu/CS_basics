@@ -1020,6 +1020,21 @@ public class Workspace25 {
     }
 
 
+    // LC 865
+    // 12.39 - 49 pm
+    /**
+     *
+     *
+     *
+     */
+    public TreeNode subtreeWithAllDeepest(TreeNode root) {
+
+        return null;
+    }
+
+
+
+
 
 
 

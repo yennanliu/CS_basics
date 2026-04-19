@@ -1,0 +1,5310 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dfs - CS_basics</title>
+  <meta name="description" content="Computer Science fundamentals: algorithms, data structures, system design, and LeetCode solutions">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>CS</text></svg>">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="../vendor/fonts.css">
+  <link rel="stylesheet" href="../vendor/highlight/github-dark.min.css">
+  <script src="../vendor/highlight/highlight.min.js"></script>
+  <script>
+  // Apply theme before render to prevent flash
+  (function() {
+    var saved = localStorage.getItem('theme');
+    if (saved === 'dark' || (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      document.documentElement.setAttribute('data-theme', 'dark');
+    }
+  })();
+  </script>
+  <script>document.addEventListener('DOMContentLoaded', function() {
+    hljs.highlightAll();
+    document.querySelectorAll('pre code').forEach(function(codeEl) {
+      var pre = codeEl.parentElement;
+      var lang = '';
+      var cls = codeEl.className || '';
+      var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
+      if (m) lang = m[1];
+      var wrapper = document.createElement('div');
+      wrapper.className = 'code-block-wrapper';
+      pre.parentNode.insertBefore(wrapper, pre);
+      var header = document.createElement('div');
+      header.className = 'code-block-header';
+      if (lang) {
+        var label = document.createElement('span');
+        label.className = 'code-lang-label';
+        label.textContent = lang;
+        header.appendChild(label);
+      } else {
+        header.appendChild(document.createElement('span'));
+      }
+      var btn = document.createElement('button');
+      btn.className = 'copy-btn';
+      btn.textContent = 'Copy';
+      btn.addEventListener('click', function() {
+        navigator.clipboard.writeText(codeEl.textContent).then(function() {
+          btn.textContent = 'Copied!';
+          btn.classList.add('copied');
+          setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+        });
+      });
+      header.appendChild(btn);
+      wrapper.appendChild(header);
+      wrapper.appendChild(pre);
+    });
+    document.querySelectorAll('table').forEach(function(table) {
+      if (!table.parentElement.classList.contains('table-wrap')) {
+        var wrapper = document.createElement('div');
+        wrapper.className = 'table-wrap';
+        table.parentNode.insertBefore(wrapper, table);
+        wrapper.appendChild(table);
+      }
+    });
+    // Reading progress bar
+    var progressBar = document.getElementById('reading-progress');
+    if (progressBar) {
+      window.addEventListener('scroll', function() {
+        var winScroll = document.documentElement.scrollTop;
+        var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        progressBar.style.width = height > 0 ? (winScroll / height * 100) + '%' : '0%';
+      });
+    }
+    // Dark mode toggle
+    var toggle = document.getElementById('theme-toggle');
+    if (toggle) {
+      var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      toggle.textContent = isDark ? '☀️' : '🌙';
+      toggle.addEventListener('click', function() {
+        var dark = document.documentElement.getAttribute('data-theme') === 'dark';
+        if (dark) {
+          document.documentElement.removeAttribute('data-theme');
+          localStorage.setItem('theme', 'light');
+          toggle.textContent = '🌙';
+        } else {
+          document.documentElement.setAttribute('data-theme', 'dark');
+          localStorage.setItem('theme', 'dark');
+          toggle.textContent = '☀️';
+        }
+      });
+    }
+  });</script>
+</head>
+<body>
+  <div class="progress-container"><div class="progress-bar" id="reading-progress"></div></div>
+  <nav class="navbar">
+    <div class="container">
+      <div class="nav-brand">
+        <span class="nav-icon">💻</span>
+        <span class="nav-title">CS_basics</span>
+      </div>
+      <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+      <div class="nav-links">
+        <a href="../index.html" class="">Home</a>
+        <a href="../cheatsheets.html" class="active">Cheat Sheets</a>
+        <a href="../patterns.html" class="">Pattern Recognition</a>
+        <a href="../faqs.html" class="">FAQs</a>
+        <a href="../resources.html" class="">Resources</a>
+        <a href="../lc-explorer.html" class="">LC Explorer</a>
+        <a href="../lc-random-picker.html" class="">🎲 Random Picker</a>
+        <a href="../algo_demo/index.html" class="">Visualizer</a>
+        <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">&#127769;</button>
+        <a href="https://github.com/yennanliu/CS_basics" target="_blank" class="github-link" aria-label="GitHub">
+          <svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor">
+            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container">
+    <div class="content">
+      
+      <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">Dfs</span></nav>
+      <div class="cheatsheet-header">
+        <h1>Dfs</h1>
+        <span class="last-updated">Last updated: Mar 30, 2026</span>
+      </div>
+      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#overview">Overview</a></li><li class="toc-sub"><a href="#key-properties">Key Properties</a></li><li class="toc-sub"><a href="#references">References</a></li><li><a href="#problem-categories">Problem Categories</a></li><li class="toc-sub"><a href="#pattern-1-tree-traversal">Pattern 1: Tree Traversal</a></li><li class="toc-sub"><a href="#pattern-2-path-problems">Pattern 2: Path Problems</a></li><li class="toc-sub"><a href="#pattern-3-graph-traversal">Pattern 3: Graph Traversal</a></li><li class="toc-sub"><a href="#pattern-4-backtracking">Pattern 4: Backtracking</a></li><li class="toc-sub"><a href="#pattern-5-tree-modification">Pattern 5: Tree Modification</a></li><li class="toc-sub"><a href="#pattern-6-subtree-problems-lca-lowest-common-ancestor">Pattern 6: Subtree Problems &amp; LCA (Lowest Common Ancestor)</a></li><li class="toc-sub"><a href="#pattern-7-boundary-elimination-2-pass-dfs">Pattern 7: Boundary Elimination (2-Pass DFS)</a></li><li class="toc-sub"><a href="#pattern-8-path-signatures-shape-encoding">Pattern 8: Path Signatures (Shape Encoding)</a></li><li class="toc-sub"><a href="#pattern-9-dfs-with-validation-sub-component-detection">Pattern 9: DFS with Validation (Sub-Component Detection)</a></li><li class="toc-sub"><a href="#pattern-10-bidirectional-graph-with-direction-tracking">Pattern 10: Bidirectional Graph with Direction Tracking</a></li><li class="toc-sub"><a href="#pattern-11-component-pair-counting-unreachable-pairs">Pattern 11: Component Pair Counting (Unreachable Pairs)</a></li><li class="toc-sub"><a href="#pattern-12-weighted-graph-dfs-division-ratio-queries">Pattern 12: Weighted Graph DFS (Division/Ratio Queries)</a></li><li><a href="#templates-algorithms">Templates &amp; Algorithms</a></li><li class="toc-sub"><a href="#template-comparison-table">Template Comparison Table</a></li><li class="toc-sub"><a href="#universal-dfs-template">Universal DFS Template</a></li><li class="toc-sub"><a href="#template-1-tree-traversal">Template 1: Tree Traversal</a></li><li class="toc-sub"><a href="#template-2-graph-dfs">Template 2: Graph DFS</a></li><li class="toc-sub"><a href="#template-3-path-finding">Template 3: Path Finding</a></li><li class="toc-sub"><a href="#template-4-backtracking">Template 4: Backtracking</a></li><li class="toc-sub"><a href="#template-5-tree-modification">Template 5: Tree Modification</a></li><li class="toc-sub"><a href="#template-6-bottom-up-dfs">Template 6: Bottom-up DFS</a></li><li class="toc-sub"><a href="#template-7-2-pass-dfs-boundary-elimination">Template 7: 2-Pass DFS (Boundary Elimination)</a></li><li class="toc-sub"><a href="#template-8-path-signature-shape-encoding">Template 8: Path Signature (Shape Encoding)</a></li><li class="toc-sub"><a href="#template-9-dfs-with-validation-sub-component-detection">Template 9: DFS with Validation (Sub-Component Detection)</a></li><li class="toc-sub"><a href="#template-10-bidirectional-graph-with-direction-tracking">Template 10: Bidirectional Graph with Direction Tracking</a></li><li class="toc-sub"><a href="#template-11-component-pair-counting-unreachable-pairs">Template 11: Component Pair Counting (Unreachable Pairs)</a></li><li class="toc-sub"><a href="#0-3-tricks">0-3) Tricks</a></li><li><a href="#problems-by-pattern">Problems by Pattern</a></li><li class="toc-sub"><a href="#pattern-based-problem-classification">Pattern-Based Problem Classification</a></li><li class="toc-sub"><a href="#complete-problem-list-by-difficulty">Complete Problem List by Difficulty</a></li><li class="toc-sub"><a href="#1-1-basic-op">1-1) Basic OP</a></li><li><a href="#2-lc-example">2) LC Example</a></li><li class="toc-sub"><a href="#2-1-validate-binary-search-tree">2-1) Validate Binary Search Tree</a></li><li class="toc-sub"><a href="#2-2-insert-into-a-binary-search-tree">2-2) Insert into a Binary Search Tree</a></li><li class="toc-sub"><a href="#2-3-delete-node-in-a-bst">2-3) Delete Node in a BST</a></li><li class="toc-sub"><a href="#2-4-find-duplicate-subtrees">2-4) Find Duplicate Subtrees</a></li><li class="toc-sub"><a href="#2-5-trim-a-bst">2-5) Trim a BST</a></li><li class="toc-sub"><a href="#2-6-maximum-width-of-binary-tree">2-6) Maximum Width of Binary Tree</a></li><li class="toc-sub"><a href="#2-7-equal-tree-partition">2-7) Equal Tree Partition</a></li><li class="toc-sub"><a href="#2-8-split-bst">2-8) Split BST</a></li><li class="toc-sub"><a href="#2-9-evaluate-division">2-9) Evaluate Division</a></li><li class="toc-sub"><a href="#2-10-most-frequent-subtree-sum">2-10) Most Frequent Subtree Sum</a></li><li class="toc-sub"><a href="#2-11-convert-bst-to-greater-tree">2-11) Convert BST to Greater Tree</a></li><li class="toc-sub"><a href="#2-12-number-of-islands">2-12) Number of Islands</a></li><li class="toc-sub"><a href="#2-13-max-area-of-island">2-13) Max Area of Island</a></li><li class="toc-sub"><a href="#2-14-binary-tree-paths">2-14) Binary Tree Paths</a></li><li class="toc-sub"><a href="#2-15-lowest-common-ancestor-of-a-binary-tree">2-15) Lowest Common Ancestor of a Binary Tree</a></li><li class="toc-sub"><a href="#2-16-path-sum">2-16) Path Sum</a></li><li class="toc-sub"><a href="#2-17-path-sum-ii">2-17) Path Sum II</a></li><li class="toc-sub"><a href="#2-7-clone-graph">2-7) Clone graph</a></li><li class="toc-sub"><a href="#2-8-sentence-similarity-ii">2-8) Sentence Similarity II</a></li><li class="toc-sub"><a href="#2-9-concatenated-words">2-9) Concatenated Words</a></li><li class="toc-sub"><a href="#2-10-maximum-product-of-splitted-binary-tree">2-10) Maximum Product of Splitted Binary Tree</a></li><li class="toc-sub"><a href="#2-11-serialize-and-deserialize-binary-tree">2-11) Serialize and Deserialize Binary Tree</a></li><li class="toc-sub"><a href="#2-12-serialize-and-deserialize-bst">2-12) Serialize and Deserialize BST</a></li><li class="toc-sub"><a href="#2-12-number-of-closed-islands-2-pass-dfs">2-12) Number of Closed Islands (2-Pass DFS)</a></li><li class="toc-sub"><a href="#2-13-pacific-atlantic-water-flow">2-13) Pacific Atlantic Water Flow</a></li><li class="toc-sub"><a href="#2-12-minesweeper">2-12) Minesweeper</a></li><li class="toc-sub"><a href="#2-13-k-th-largest-perfect-subtree-size-in-binary-tree">2-13) K-th Largest Perfect Subtree Size in Binary Tree</a></li><li><a href="#pattern-selection-strategy">Pattern Selection Strategy</a></li><li class="toc-sub"><a href="#decision-framework">Decision Framework</a></li><li><a href="#summary-quick-reference">Summary &amp; Quick Reference</a></li><li class="toc-sub"><a href="#complexity-quick-reference">Complexity Quick Reference</a></li><li class="toc-sub"><a href="#template-quick-reference">Template Quick Reference</a></li><li class="toc-sub"><a href="#common-patterns-tricks">Common Patterns &amp; Tricks</a></li><li class="toc-sub"><a href="#problem-solving-steps">Problem-Solving Steps</a></li><li class="toc-sub"><a href="#common-mistakes-tips">Common Mistakes &amp; Tips</a></li><li class="toc-sub"><a href="#interview-tips">Interview Tips</a></li><li class="toc-sub"><a href="#critical-dfs-early-return-pattern-path-finding">⚠️ CRITICAL: DFS Early Return Pattern (Path Finding)</a></li><li class="toc-sub"><a href="#concrete-example-why-early-return-matters">📊 Concrete Example: Why Early Return Matters</a></li><li class="toc-sub"><a href="#key-insights">🎯 Key Insights</a></li><li class="toc-sub"><a href="#when-to-use-each-pattern">📝 When to Use Each Pattern</a></li><li class="toc-sub"><a href="#real-implementation-reference">🔍 Real Implementation Reference</a></li><li class="toc-sub"><a href="#related-topics">Related Topics</a></li><li class="toc-sub"><a href="#2-14-number-of-distinct-islands">2-14) Number of Distinct Islands</a></li><li class="toc-sub"><a href="#java-implementation-notes">Java Implementation Notes</a></li><li class="toc-sub"><a href="#python-implementation-notes">Python Implementation Notes</a></li><li><a href="#quick-decision-tree-which-dfs-pattern-to-use">Quick Decision Tree: Which DFS Pattern to Use?</a></li><li class="toc-sub"><a href="#decision-flowchart">Decision Flowchart</a></li><li class="toc-sub"><a href="#quick-pattern-selection-table">Quick Pattern Selection Table</a></li><li class="toc-sub"><a href="#recognition-patterns-by-keywords">Recognition Patterns by Keywords</a></li><li class="toc-sub"><a href="#quick-decision-examples">Quick Decision Examples</a></li><li class="toc-sub"><a href="#pro-tips-for-pattern-selection">Pro Tips for Pattern Selection</a></li></ul></div>
+      <div class="cheatsheet-content">
+        <h1 id="dfs-depth-first-search" tabindex="-1"><a class="header-anchor" href="#dfs-depth-first-search"><span>DFS (Depth-First Search)</span></a></h1>
+<h2 id="overview" tabindex="-1"><a class="header-anchor" href="#overview"><span>Overview</span></a></h2>
+<p><strong>Depth-First Search (DFS)</strong> is a graph/tree traversal algorithm that explores as far as possible along each branch before backtracking. It uses recursion or a stack to maintain the traversal path.</p>
+<h3 id="key-properties" tabindex="-1"><a class="header-anchor" href="#key-properties"><span>Key Properties</span></a></h3>
+<ul>
+<li><strong>Time Complexity</strong>: O(V + E) for graphs, O(n) for trees</li>
+<li><strong>Space Complexity</strong>: O(h) for recursion stack, where h = height</li>
+<li><strong>Core Idea</strong>: Go deep before going wide</li>
+<li><strong>Data Structure</strong>: Stack (implicit via recursion or explicit)</li>
+<li><strong>When to Use</strong>: Path finding, cycle detection, topological sort, tree traversal, backtracking problems</li>
+</ul>
+<h3 id="references" tabindex="-1"><a class="header-anchor" href="#references"><span>References</span></a></h3>
+<ul>
+<li><a href="https://www.cs.usfca.edu/~galles/visualization/DFS.html">DFS Visualization</a></li>
+<li><a href="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/dfs_vs_bfs.png">DFS vs BFS Comparison</a></li>
+<li><a href="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/dfs_2.png">Tree Traversal Animations</a></li>
+</ul>
+<h2 id="problem-categories" tabindex="-1"><a class="header-anchor" href="#problem-categories"><span>Problem Categories</span></a></h2>
+<h3 id="pattern-1-tree-traversal" tabindex="-1"><a class="header-anchor" href="#pattern-1-tree-traversal"><span><strong>Pattern 1: Tree Traversal</strong></span></a></h3>
+<ul>
+<li><strong>Description</strong>: Visit all nodes in specific order (preorder, inorder, postorder)</li>
+<li><strong>Recognition</strong>: “Traverse”, “visit all”, “print tree”, “serialize”</li>
+<li><strong>Examples</strong>: LC 94, LC 144, LC 145, LC 297, LC 449</li>
+<li><strong>Template</strong>: Use Tree Traversal Template</li>
+</ul>
+<h3 id="pattern-2-path-problems" tabindex="-1"><a class="header-anchor" href="#pattern-2-path-problems"><span><strong>Pattern 2: Path Problems</strong></span></a></h3>
+<ul>
+<li><strong>Description</strong>: Find paths with specific properties in trees/graphs</li>
+<li><strong>Recognition</strong>: “Path sum”, “root to leaf”, “all paths”, “longest path”</li>
+<li><strong>Examples</strong>: LC 112, LC 113, LC 257, LC 124, LC 543</li>
+<li><strong>Template</strong>: Use Path Template with backtracking</li>
+</ul>
+<h3 id="pattern-3-graph-traversal" tabindex="-1"><a class="header-anchor" href="#pattern-3-graph-traversal"><span><strong>Pattern 3: Graph Traversal</strong></span></a></h3>
+<ul>
+<li><strong>Description</strong>: Explore graphs, find components, detect cycles</li>
+<li><strong>Recognition</strong>: “Connected components”, “islands”, “cycle detection”</li>
+<li><strong>Examples</strong>: LC 200, LC 695, LC 133, LC 207, LC 210</li>
+<li><strong>Template</strong>: Use Graph DFS Template</li>
+</ul>
+<h3 id="pattern-4-backtracking" tabindex="-1"><a class="header-anchor" href="#pattern-4-backtracking"><span><strong>Pattern 4: Backtracking</strong></span></a></h3>
+<ul>
+<li><strong>Description</strong>: Try all possibilities, undo choices</li>
+<li><strong>Recognition</strong>: “All combinations”, “permutations”, “subsets”</li>
+<li><strong>Examples</strong>: LC 46, LC 78, LC 39, LC 17</li>
+<li><strong>Template</strong>: Use Backtracking Template</li>
+</ul>
+<h3 id="pattern-5-tree-modification" tabindex="-1"><a class="header-anchor" href="#pattern-5-tree-modification"><span><strong>Pattern 5: Tree Modification</strong></span></a></h3>
+<ul>
+<li><strong>Description</strong>: Modify tree structure or values during traversal</li>
+<li><strong>Recognition</strong>: “Delete”, “insert”, “trim”, “convert”</li>
+<li><strong>Examples</strong>: LC 450, LC 701, LC 669, LC 538</li>
+<li><strong>Template</strong>: Use Modification Template</li>
+</ul>
+<h3 id="pattern-6-subtree-problems-lca-lowest-common-ancestor" tabindex="-1"><a class="header-anchor" href="#pattern-6-subtree-problems-lca-lowest-common-ancestor"><span><strong>Pattern 6: Subtree Problems &amp; LCA (Lowest Common Ancestor)</strong></span></a></h3>
+<ul>
+<li><strong>Description</strong>: Process subtrees and aggregate results bottom-up; find the lowest common ancestor of target nodes</li>
+<li><strong>Recognition</strong>: “Subtree sum”, “duplicate subtrees”, “LCA”, “smallest subtree containing”, “lowest common ancestor”, “deepest leaves”</li>
+<li><strong>Examples</strong>: LC 508, LC 652, LC 236, LC 663, LC 865, LC 1123</li>
+<li><strong>Template</strong>: Use Bottom-up Template</li>
+<li><strong>When to Use LCA Approach</strong>:
+<ul>
+<li>Two (or more) target nodes exist in different subtrees and you need the first node that “sees” both sides</li>
+<li>“Smallest subtree that contains [condition X]” — this is LCA in disguise</li>
+<li>Targets may be <strong>given</strong> (LC 236: find LCA of p, q) or <strong>implicit</strong> (LC 865/1123: all nodes at max depth)</li>
+</ul>
+</li>
+<li><strong>Core Idea (Post-Order / Bottom-Up)</strong>:
+<ol>
+<li>Recurse left and right subtrees first (post-order)</li>
+<li>Each subtree returns a <code>(node, depth/info)</code> pair upward</li>
+<li>At each node, compare left vs right results:
+<ul>
+<li><strong>Left deeper</strong> → answer is in the left subtree, propagate left result up</li>
+<li><strong>Right deeper</strong> → answer is in the right subtree, propagate right result up</li>
+<li><strong>Equal depth</strong> → current node is the LCA (deepest paths meet here), return current node</li>
+</ul>
+</li>
+<li>The root of the recursion holds the final answer</li>
+</ol>
+</li>
+<li><strong>Key Variants</strong>:
+<ul>
+<li><strong>Standard LCA (LC 236)</strong>: Targets p, q are given; return first node that sees both in different subtrees</li>
+<li><strong>Depth-Based LCA (LC 865/1123)</strong>: Targets are discovered (deepest nodes); use depth comparison to find where deepest paths converge</li>
+<li><strong>Paint + Answer (LC 865 Editorial V1)</strong>: Two-pass — first DFS computes all depths, second DFS finds the subtree containing all max-depth nodes</li>
+<li><strong>BFS + Parent Map (LC 865 V0-4)</strong>: BFS to find deepest level, then walk parents upward until all converge to one node</li>
+</ul>
+</li>
+<li><strong>Similar Classic LC Problems</strong>:
+<ul>
+<li>LC 236 - Lowest Common Ancestor of a Binary Tree (standard LCA)</li>
+<li>LC 235 - Lowest Common Ancestor of a Binary Search Tree (BST property optimization)</li>
+<li>LC 865 - Smallest Subtree with all the Deepest Nodes (depth-based LCA)</li>
+<li>LC 1123 - Lowest Common Ancestor of Deepest Leaves (same as LC 865)</li>
+<li>LC 1644 - Lowest Common Ancestor of a Binary Tree II (nodes may not exist)</li>
+<li>LC 1650 - Lowest Common Ancestor of a Binary Tree III (with parent pointers)</li>
+<li>LC 1676 - Lowest Common Ancestor of a Binary Tree IV (multiple target nodes)</li>
+</ul>
+</li>
+</ul>
+<h3 id="pattern-7-boundary-elimination-2-pass-dfs" tabindex="-1"><a class="header-anchor" href="#pattern-7-boundary-elimination-2-pass-dfs"><span><strong>Pattern 7: Boundary Elimination (2-Pass DFS)</strong></span></a></h3>
+<ul>
+<li><strong>Description</strong>: Eliminate boundary-connected cells first, then process interior</li>
+<li><strong>Recognition</strong>: “Closed islands”, “surrounded regions”, “captured pieces”</li>
+<li><strong>Examples</strong>: LC 1254, LC 130, LC 417</li>
+<li><strong>Template</strong>: Use 2-Pass DFS Template</li>
+</ul>
+<h3 id="pattern-8-path-signatures-shape-encoding" tabindex="-1"><a class="header-anchor" href="#pattern-8-path-signatures-shape-encoding"><span><strong>Pattern 8: Path Signatures (Shape Encoding)</strong></span></a></h3>
+<ul>
+<li><strong>Description</strong>: Encode the shape/structure of islands or subtrees using unique path signatures</li>
+<li><strong>Recognition</strong>: “Distinct islands”, “unique shapes”, “count different structures”, “same shape after translation”</li>
+<li><strong>Key Technique</strong>: Record directional movements during DFS traversal to create a canonical signature</li>
+<li><strong>Examples</strong>: LC 694, LC 711, LC 652</li>
+<li><strong>Template</strong>: Use Path Signature Template</li>
+<li><strong>Important Notes</strong>:
+<ul>
+<li><strong>Canonical Traversal Order</strong>: Always visit neighbors in the same fixed order (e.g., Down, Up, Right, Left)</li>
+<li><strong>Starting Point Normalization</strong>: Start DFS from top-left-most cell to ensure consistent signatures</li>
+<li><strong>Delimiter Usage</strong>: Use delimiters (like ‘O’ for “Out”) when backtracking to distinguish different shapes</li>
+<li><strong>Relative Encoding</strong>: Record relative positions or directional movements, not absolute coordinates</li>
+</ul>
+</li>
+</ul>
+<h3 id="pattern-9-dfs-with-validation-sub-component-detection" tabindex="-1"><a class="header-anchor" href="#pattern-9-dfs-with-validation-sub-component-detection"><span><strong>Pattern 9: DFS with Validation (Sub-Component Detection)</strong></span></a></h3>
+<ul>
+<li><strong>Description</strong>: Traverse one grid/graph structure while validating against another reference structure</li>
+<li><strong>Recognition</strong>: “Sub-islands”, “subset validation”, “component matching”, “inclusion checking”</li>
+<li><strong>Key Technique</strong>: DFS traversal with boolean flag that tracks whether ALL cells satisfy a condition</li>
+<li><strong>Examples</strong>: LC 1905 (Count Sub Islands)</li>
+<li><strong>Template</strong>: Use DFS Validation Template</li>
+<li><strong>Important Notes</strong>:
+<ul>
+<li><strong>Boolean Flag Propagation</strong>: Use <code>res = dfs(...) &amp;&amp; res</code> pattern to accumulate validation results</li>
+<li><strong>Mark Visited</strong>: Mark visited cells in the traversal grid to avoid revisiting</li>
+<li><strong>Short-circuit Optimization</strong>: Can optimize by returning early if validation fails</li>
+<li><strong>Two-Grid Comparison</strong>: One grid for traversal structure, another for validation condition</li>
+</ul>
+</li>
+</ul>
+<h3 id="pattern-10-bidirectional-graph-with-direction-tracking" tabindex="-1"><a class="header-anchor" href="#pattern-10-bidirectional-graph-with-direction-tracking"><span><strong>Pattern 10: Bidirectional Graph with Direction Tracking</strong></span></a></h3>
+<ul>
+<li><strong>Description</strong>: Build undirected graph representation of a directed graph, track original edge directions during DFS traversal</li>
+<li><strong>Recognition</strong>: “Reorder edges”, “reverse routes”, “make paths lead to”, “minimum edge reversals”, “orient edges”</li>
+<li><strong>Key Technique</strong>: Store direction metadata (flag) for each edge in bidirectional adjacency list, count edges needing reversal during DFS</li>
+<li><strong>Examples</strong>: LC 1466 (Reorder Routes to Make All Paths Lead to the City Zero)</li>
+<li><strong>Template</strong>: Use Bidirectional Direction Tracking Template</li>
+<li><strong>Important Notes</strong>:
+<ul>
+<li><strong>Bidirectional Graph Construction</strong>: Add both directions for each edge, but mark original direction with flag</li>
+<li><strong>Direction Flag</strong>: Use 1 for edges in original direction, 0 for reverse direction</li>
+<li><strong>Count During Traversal</strong>: Increment counter when traversing an edge with flag=1 (wrong direction)</li>
+<li><strong>Tree Property</strong>: Works well with tree structures (n-1 edges for n nodes)</li>
+<li><strong>From Root</strong>: Always start DFS from the target node (the node all paths should lead to)</li>
+</ul>
+</li>
+</ul>
+<h3 id="pattern-11-component-pair-counting-unreachable-pairs" tabindex="-1"><a class="header-anchor" href="#pattern-11-component-pair-counting-unreachable-pairs"><span><strong>Pattern 11: Component Pair Counting (Unreachable Pairs)</strong></span></a></h3>
+<ul>
+<li><strong>Description</strong>: Count pairs of nodes that cannot reach each other in a graph with multiple disconnected components</li>
+<li><strong>Recognition</strong>: “Unreachable pairs”, “count disconnected pairs”, “pairs in different components”, “isolated node pairs”</li>
+<li><strong>Key Technique</strong>: Find all components using DFS/Union-Find, then count pairs between different components using cumulative multiplication</li>
+<li><strong>Examples</strong>: LC 2316 (Count Unreachable Pairs of Nodes in an Undirected Graph)</li>
+<li><strong>Template</strong>: Use Component Pair Counting Template</li>
+<li><strong>Important Notes</strong>:
+<ul>
+<li><strong>Two Counting Approaches</strong>:
+<ul>
+<li>Forward: <code>componentSize × nodesProcessed</code> (nodes already seen)</li>
+<li>Backward: <code>componentSize × (n - componentSize - processed)</code> (remaining nodes)</li>
+</ul>
+</li>
+<li><strong>Avoid Double Counting</strong>: Only count pairs between different components once</li>
+<li><strong>Mathematical Optimization</strong>: O(components) instead of O(n²) brute force</li>
+<li><strong>Component Discovery</strong>: Use DFS or Union-Find to identify all components</li>
+<li><strong>Cumulative Tracking</strong>: Keep running sum of processed nodes to calculate pairs efficiently</li>
+</ul>
+</li>
+</ul>
+<h3 id="pattern-12-weighted-graph-dfs-division-ratio-queries" tabindex="-1"><a class="header-anchor" href="#pattern-12-weighted-graph-dfs-division-ratio-queries"><span><strong>Pattern 12: Weighted Graph DFS (Division/Ratio Queries)</strong></span></a></h3>
+<ul>
+<li><strong>Description</strong>: Build a weighted directed graph where edge weights represent ratios/division results, then DFS to compute transitive ratios between any two connected nodes</li>
+<li><strong>Recognition</strong>: “Evaluate division”, “exchange rates”, “currency conversion”, “ratio queries”, “transitive relationships with weights”</li>
+<li><strong>Key Technique</strong>: Model equations as a bidirectional weighted graph (<code>Map&lt;String, Map&lt;String, Double&gt;&gt;</code>), DFS with accumulated product along the path</li>
+<li><strong>Examples</strong>: LC 399 (Evaluate Division), LC 1101 (The Earliest Moment When Everyone Become Friends - variant), LC 721 (Accounts Merge - graph grouping variant)</li>
+<li><strong>Template</strong>: Use Weighted Graph DFS Template</li>
+<li><strong>Core Algorithm Idea</strong>:
+<ol>
+<li><strong>Graph Construction</strong>: For each equation <code>a / b = val</code>, add edge <code>a → b</code> with weight <code>val</code> and edge <code>b → a</code> with weight <code>1/val</code></li>
+<li><strong>Query Processing</strong>: For query <code>c / d</code>, DFS from <code>c</code> to <code>d</code>, multiplying edge weights along the path</li>
+<li><strong>Product Accumulation</strong>: Pass a running product through DFS; when target is reached, the product is the answer</li>
+<li><strong>Alternative</strong>: Union-Find with ratio tracking (store <code>node → root</code> ratio for O(α(n)) queries)</li>
+</ol>
+</li>
+<li><strong>Important Notes</strong>:
+<ul>
+<li><strong>Bidirectional Edges</strong>: Always store both <code>a→b</code> and <code>b→a</code> with reciprocal weights</li>
+<li><strong>Visited Set</strong>: Reset per query to allow independent path exploration</li>
+<li><strong>Early Termination</strong>: If either node not in graph, return -1.0 immediately</li>
+<li><strong>Self-Division</strong>: If <code>start == end</code> and node exists in graph, return 1.0</li>
+<li><strong>Product vs Additive</strong>: Unlike shortest-path problems, this uses multiplicative accumulation</li>
+</ul>
+</li>
+<li><strong>Similar Classic LC Problems</strong>:
+<ul>
+<li>LC 399 - Evaluate Division (canonical weighted graph DFS)</li>
+<li>LC 1976 - Number of Ways to Arrive at Destination (weighted graph traversal)</li>
+<li>LC 787 - Cheapest Flights Within K Stops (weighted graph with constraints)</li>
+<li>LC 743 - Network Delay Time (weighted graph exploration)</li>
+<li>LC 1334 - Find the City With the Smallest Number of Neighbors at a Threshold Distance</li>
+</ul>
+</li>
+</ul>
+<h2 id="templates-algorithms" tabindex="-1"><a class="header-anchor" href="#templates-algorithms"><span>Templates &amp; Algorithms</span></a></h2>
+<h3 id="template-comparison-table" tabindex="-1"><a class="header-anchor" href="#template-comparison-table"><span>Template Comparison Table</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>Template Type</th>
+<th>Use Case</th>
+<th>Key Operation</th>
+<th>Time</th>
+<th>Space</th>
+<th>When to Use</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Tree Traversal</strong></td>
+<td>Visit all nodes</td>
+<td>Recursive/Stack</td>
+<td>O(n)</td>
+<td>O(h)</td>
+<td>Tree problems</td>
+</tr>
+<tr>
+<td><strong>Graph DFS</strong></td>
+<td>Explore graph</td>
+<td>Visited set</td>
+<td>O(V+E)</td>
+<td>O(V)</td>
+<td>Graph exploration</td>
+</tr>
+<tr>
+<td><strong>Backtracking</strong></td>
+<td>Try all paths</td>
+<td>Undo choices</td>
+<td>O(b^d)</td>
+<td>O(d)</td>
+<td>Combinatorial</td>
+</tr>
+<tr>
+<td><strong>Path Finding</strong></td>
+<td>Find specific paths</td>
+<td>Track path</td>
+<td>O(n)</td>
+<td>O(h)</td>
+<td>Path problems</td>
+</tr>
+<tr>
+<td><strong>Modification</strong></td>
+<td>Change structure</td>
+<td>Update nodes</td>
+<td>O(n)</td>
+<td>O(h)</td>
+<td>Tree editing</td>
+</tr>
+<tr>
+<td><strong>Bottom-up</strong></td>
+<td>Aggregate info</td>
+<td>Post-order</td>
+<td>O(n)</td>
+<td>O(h)</td>
+<td>Subtree problems</td>
+</tr>
+<tr>
+<td><strong>2-Pass DFS</strong></td>
+<td>Boundary elimination</td>
+<td>Two-phase flood</td>
+<td>O(m×n)</td>
+<td>O(m×n)</td>
+<td>Closed/surrounded regions</td>
+</tr>
+<tr>
+<td><strong>Path Signature</strong></td>
+<td>Encode shapes</td>
+<td>Directional tracking</td>
+<td>O(m×n)</td>
+<td>O(m×n)</td>
+<td>Distinct shape counting</td>
+</tr>
+<tr>
+<td><strong>DFS Validation</strong></td>
+<td>Component validation</td>
+<td>Boolean flag propagation</td>
+<td>O(m×n)</td>
+<td>O(m×n)</td>
+<td>Sub-component detection</td>
+</tr>
+<tr>
+<td><strong>Bidirectional Direction</strong></td>
+<td>Track edge direction</td>
+<td>Bidirectional + flags</td>
+<td>O(V+E)</td>
+<td>O(V+E)</td>
+<td>Edge reorientation/reversal</td>
+</tr>
+<tr>
+<td><strong>Component Pair Counting</strong></td>
+<td>Count unreachable pairs</td>
+<td>Cumulative multiplication</td>
+<td>O(V+E)</td>
+<td>O(V)</td>
+<td>Disconnected component pairs</td>
+</tr>
+<tr>
+<td><strong>Weighted Graph DFS</strong></td>
+<td>Ratio/division queries</td>
+<td>Product accumulation</td>
+<td>O(Q*(V+E))</td>
+<td>O(V+E)</td>
+<td>Transitive ratio computation</td>
+</tr>
+</tbody>
+</table>
+<h3 id="universal-dfs-template" tabindex="-1"><a class="header-anchor" href="#universal-dfs-template"><span>Universal DFS Template</span></a></h3>
+<pre><code class="language-python">def dfs(node, visited=None):
+    &quot;&quot;&quot;
+    Universal DFS template for trees and graphs
+    Can be adapted for various problems
+    &quot;&quot;&quot;
+    # Base case
+    if not node or (visited and node in visited):
+        return
+    
+    # Mark as visited (for graphs)
+    if visited is not None:
+        visited.add(node)
+    
+    # Process current node (pre-order position)
+    process(node)
+    
+    # Recursive calls
+    for neighbor in get_neighbors(node):
+        dfs(neighbor, visited)
+    
+    # Post-order processing if needed
+    # process_after(node)
+</code></pre>
+<h3 id="template-1-tree-traversal" tabindex="-1"><a class="header-anchor" href="#template-1-tree-traversal"><span>Template 1: Tree Traversal</span></a></h3>
+<pre><code class="language-python"># Preorder: Root -&gt; Left -&gt; Right
+def preorder(root):
+    if not root:
+        return []
+    return [root.val] + preorder(root.left) + preorder(root.right)
+
+# Inorder: Left -&gt; Root -&gt; Right  
+def inorder(root):
+    if not root:
+        return []
+    return inorder(root.left) + [root.val] + inorder(root.right)
+
+# Postorder: Left -&gt; Right -&gt; Root
+def postorder(root):
+    if not root:
+        return []
+    return postorder(root.left) + postorder(root.right) + [root.val]
+
+# Iterative with Stack
+def dfs_iterative(root):
+    if not root:
+        return []
+    
+    stack = [root]
+    result = []
+    
+    while stack:
+        node = stack.pop()
+        result.append(node.val)
+        # Add right first so left is processed first (LIFO)
+        if node.right:
+            stack.append(node.right)
+        if node.left:
+            stack.append(node.left)
+    
+    return result
+</code></pre>
+<h3 id="template-2-graph-dfs" tabindex="-1"><a class="header-anchor" href="#template-2-graph-dfs"><span>Template 2: Graph DFS</span></a></h3>
+<pre><code class="language-python">def dfs_graph(graph, start):
+    &quot;&quot;&quot;
+    DFS for graph with cycle handling
+    &quot;&quot;&quot;
+    visited = set()
+    result = []
+    
+    def dfs(node):
+        if node in visited:
+            return
+        
+        visited.add(node)
+        result.append(node)
+        
+        for neighbor in graph[node]:
+            dfs(neighbor)
+    
+    dfs(start)
+    return result
+
+# For detecting cycles
+def has_cycle(graph):
+    visited = set()
+    rec_stack = set()
+    
+    def dfs(node):
+        visited.add(node)
+        rec_stack.add(node)
+        
+        for neighbor in graph[node]:
+            if neighbor not in visited:
+                if dfs(neighbor):
+                    return True
+            elif neighbor in rec_stack:
+                return True
+        
+        rec_stack.remove(node)
+        return False
+    
+    for node in graph:
+        if node not in visited:
+            if dfs(node):
+                return True
+    return False
+</code></pre>
+<h3 id="template-3-path-finding" tabindex="-1"><a class="header-anchor" href="#template-3-path-finding"><span>Template 3: Path Finding</span></a></h3>
+<p><strong>📚 Related Patterns</strong>: For comprehensive path problem patterns with multiple variations (path sum, max path, consecutive sequences, prefix sum technique), see <strong><a href="http://bst.md">bst.md</a> Template 7 (Path Problems)</strong> which provides 7 detailed path patterns with full implementations.</p>
+<pre><code class="language-python">def find_paths(root, target):
+    &quot;&quot;&quot;
+    Find all root-to-leaf paths with sum = target
+    &quot;&quot;&quot;
+    def dfs(node, curr_sum, path, result):
+        if not node:
+            return
+        
+        # Update current state
+        curr_sum += node.val
+        path.append(node.val)
+        
+        # Check if leaf and target met
+        if not node.left and not node.right:
+            if curr_sum == target:
+                result.append(path[:])
+        
+        # Explore children
+        dfs(node.left, curr_sum, path, result)
+        dfs(node.right, curr_sum, path, result)
+        
+        # Backtrack
+        path.pop()
+    
+    result = []
+    dfs(root, 0, [], result)
+    return result
+</code></pre>
+<h3 id="template-4-backtracking" tabindex="-1"><a class="header-anchor" href="#template-4-backtracking"><span>Template 4: Backtracking</span></a></h3>
+<pre><code class="language-python">def backtrack_template(candidates, target):
+    &quot;&quot;&quot;
+    General backtracking template
+    &quot;&quot;&quot;
+    def backtrack(start, path, remaining):
+        # Base case - found solution
+        if remaining == 0:
+            result.append(path[:])
+            return
+        
+        # Try all possibilities
+        for i in range(start, len(candidates)):
+            if candidates[i] &gt; remaining:
+                continue
+            
+            # Make choice
+            path.append(candidates[i])
+            
+            # Recurse
+            backtrack(i, path, remaining - candidates[i])
+            
+            # Undo choice (backtrack)
+            path.pop()
+    
+    result = []
+    backtrack(0, [], target)
+    return result
+</code></pre>
+<h3 id="template-5-tree-modification" tabindex="-1"><a class="header-anchor" href="#template-5-tree-modification"><span>Template 5: Tree Modification</span></a></h3>
+<pre><code class="language-python">def modify_tree(root, condition):
+    &quot;&quot;&quot;
+    Modify tree structure based on condition
+    &quot;&quot;&quot;
+    if not root:
+        return None
+    
+    # Recursively modify subtrees first
+    root.left = modify_tree(root.left, condition)
+    root.right = modify_tree(root.right, condition)
+    
+    # Modify current node based on condition
+    if not condition(root):
+        # Example: delete node, return child
+        if not root.left:
+            return root.right
+        if not root.right:
+            return root.left
+        # Handle two children case
+        # ... (find successor/predecessor)
+    
+    return root
+</code></pre>
+<h3 id="template-6-bottom-up-dfs" tabindex="-1"><a class="header-anchor" href="#template-6-bottom-up-dfs"><span>Template 6: Bottom-up DFS</span></a></h3>
+<pre><code class="language-python">def bottom_up_dfs(root):
+    &quot;&quot;&quot;
+    Process subtrees first, then current node
+    Useful for subtree problems
+    &quot;&quot;&quot;
+    def dfs(node):
+        if not node:
+            return 0  # or base value
+
+        # Process subtrees first
+        left_result = dfs(node.left)
+        right_result = dfs(node.right)
+
+        # Process current node using subtree results
+        current_result = process(node, left_result, right_result)
+
+        # Update global result if needed
+        self.global_result = max(self.global_result, current_result)
+
+        return current_result
+
+    self.global_result = 0
+    dfs(root)
+    return self.global_result
+</code></pre>
+<h3 id="template-7-2-pass-dfs-boundary-elimination" tabindex="-1"><a class="header-anchor" href="#template-7-2-pass-dfs-boundary-elimination"><span>Template 7: 2-Pass DFS (Boundary Elimination)</span></a></h3>
+<pre><code class="language-python">def two_pass_dfs(grid):
+    &quot;&quot;&quot;
+    Two-pass approach for grid problems
+    Pass 1: Eliminate boundary-connected cells
+    Pass 2: Count/process remaining valid cells
+    Common for &quot;closed&quot; or &quot;surrounded&quot; problems
+    &quot;&quot;&quot;
+    if not grid or not grid[0]:
+        return 0
+
+    rows, cols = len(grid), len(grid[0])
+
+    def flood(r, c):
+        &quot;&quot;&quot;Mark cell and all connected cells as visited&quot;&quot;&quot;
+        if r &lt; 0 or r &gt;= rows or c &lt; 0 or c &gt;= cols or grid[r][c] != target:
+            return
+        grid[r][c] = marked  # Mark as visited
+        # Visit 4 neighbors
+        flood(r + 1, c)
+        flood(r - 1, c)
+        flood(r, c + 1)
+        flood(r, c - 1)
+
+    # Pass 1: Eliminate boundary-connected cells
+    # Top and bottom borders
+    for c in range(cols):
+        flood(0, c)
+        flood(rows - 1, c)
+
+    # Left and right borders
+    for r in range(rows):
+        flood(r, 0)
+        flood(r, cols - 1)
+
+    # Pass 2: Count/process remaining valid cells
+    count = 0
+    for r in range(rows):
+        for c in range(cols):
+            if grid[r][c] == target:
+                count += 1
+                flood(r, c)  # Mark to avoid double counting
+
+    return count
+</code></pre>
+<pre><code class="language-java">// Java implementation
+public int twoPassDFS(int[][] grid) {
+    if (grid == null || grid.length == 0) {
+        return 0;
+    }
+
+    int rows = grid.length;
+    int cols = grid[0].length;
+
+    // Pass 1: Eliminate boundary-connected cells
+    for (int c = 0; c &lt; cols; c++) {
+        flood(grid, 0, c);           // Top border
+        flood(grid, rows - 1, c);    // Bottom border
+    }
+
+    for (int r = 0; r &lt; rows; r++) {
+        flood(grid, r, 0);           // Left border
+        flood(grid, r, cols - 1);    // Right border
+    }
+
+    // Pass 2: Count remaining valid cells
+    int count = 0;
+    for (int r = 1; r &lt; rows - 1; r++) {
+        for (int c = 1; c &lt; cols - 1; c++) {
+            if (grid[r][c] == 0) {
+                count++;
+                flood(grid, r, c);
+            }
+        }
+    }
+
+    return count;
+}
+
+private void flood(int[][] grid, int r, int c) {
+    int rows = grid.length;
+    int cols = grid[0].length;
+
+    if (r &lt; 0 || r &gt;= rows || c &lt; 0 || c &gt;= cols || grid[r][c] == 1) {
+        return;
+    }
+
+    grid[r][c] = 1;  // Mark as visited
+
+    // Visit 4 neighbors
+    int[][] dirs = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
+    for (int[] dir : dirs) {
+        flood(grid, r + dir[0], c + dir[1]);
+    }
+}
+</code></pre>
+<h3 id="template-8-path-signature-shape-encoding" tabindex="-1"><a class="header-anchor" href="#template-8-path-signature-shape-encoding"><span>Template 8: Path Signature (Shape Encoding)</span></a></h3>
+<pre><code class="language-python">def count_distinct_shapes(grid):
+    &quot;&quot;&quot;
+    Count distinct island shapes using path signatures
+    Key: Encode each island's shape as a unique string
+    &quot;&quot;&quot;
+    if not grid or not grid[0]:
+        return 0
+
+    rows, cols = len(grid), len(grid[0])
+    unique_shapes = set()
+
+    def dfs(r, c, r0, c0, path):
+        &quot;&quot;&quot;
+        DFS with path signature encoding
+        r0, c0: Starting position for relative encoding
+        path: StringBuilder to record the shape signature
+        &quot;&quot;&quot;
+        if r &lt; 0 or r &gt;= rows or c &lt; 0 or c &gt;= cols or grid[r][c] != 1:
+            return
+
+        # Mark as visited
+        grid[r][c] = 0
+
+        # Encode relative position
+        path.append(f&quot;({r - r0},{c - c0})&quot;)
+
+        # Visit neighbors in FIXED order (critical for consistency)
+        dfs(r + 1, c, r0, c0, path)  # Down
+        dfs(r - 1, c, r0, c0, path)  # Up
+        dfs(r, c + 1, r0, c0, path)  # Right
+        dfs(r, c - 1, r0, c0, path)  # Left
+
+    # Iterate through grid in fixed order (top-left to bottom-right)
+    for r in range(rows):
+        for c in range(cols):
+            if grid[r][c] == 1:
+                path = []
+                dfs(r, c, r, c, path)  # Start with (r, c) as origin
+                unique_shapes.add(tuple(path))
+
+    return len(unique_shapes)
+</code></pre>
+<pre><code class="language-java">// Java implementation with directional encoding
+public int numDistinctIslands(int[][] grid) {
+    if (grid == null || grid.length == 0 || grid[0].length == 0) {
+        return 0;
+    }
+
+    Set&lt;String&gt; uniqueIslandShapes = new HashSet&lt;&gt;();
+    int rows = grid.length;
+    int cols = grid[0].length;
+
+    // Iterate through every cell in the grid
+    for (int r = 0; r &lt; rows; r++) {
+        for (int c = 0; c &lt; cols; c++) {
+            // Start DFS only on unvisited land cells
+            if (grid[r][c] == 1) {
+                StringBuilder pathSignature = new StringBuilder();
+                // Start DFS from (r, c). 'S' marks the start
+                dfs(grid, r, c, pathSignature, 'S');
+
+                if (pathSignature.length() &gt; 0) {
+                    uniqueIslandShapes.add(pathSignature.toString());
+                }
+            }
+        }
+    }
+
+    return uniqueIslandShapes.size();
+}
+
+/**
+ * DFS with directional encoding
+ * Records the direction taken to reach each cell
+ * Uses 'O' delimiter when backtracking
+ */
+private void dfs(int[][] grid, int r, int c, StringBuilder path, char direction) {
+    int rows = grid.length;
+    int cols = grid[0].length;
+
+    // Base cases: Out of bounds or water/visited
+    if (r &lt; 0 || r &gt;= rows || c &lt; 0 || c &gt;= cols || grid[r][c] == 0) {
+        return;
+    }
+
+    // 1. Mark as visited by setting to 0
+    grid[r][c] = 0;
+
+    // 2. Record the direction taken to reach this cell
+    path.append(direction);
+
+    // 3. Recurse in FIXED order (Down, Up, Right, Left)
+    dfs(grid, r + 1, c, path, 'D');  // Down
+    dfs(grid, r - 1, c, path, 'U');  // Up
+    dfs(grid, r, c + 1, path, 'R');  // Right
+    dfs(grid, r, c - 1, path, 'L');  // Left
+
+    // 4. Add delimiter when backtracking
+    // This distinguishes different branch structures
+    path.append('O');
+}
+</code></pre>
+<pre><code class="language-java">// Alternative: Relative coordinate encoding
+public int numDistinctIslands_v2(int[][] grid) {
+    if (grid == null || grid.length == 0) return 0;
+    int rows = grid.length, cols = grid[0].length;
+    boolean[][] seen = new boolean[rows][cols];
+    Set&lt;String&gt; shapes = new HashSet&lt;&gt;();
+
+    for (int r = 0; r &lt; rows; r++) {
+        for (int c = 0; c &lt; cols; c++) {
+            if (!seen[r][c] &amp;&amp; grid[r][c] == 1) {
+                StringBuilder sb = new StringBuilder();
+                dfs(grid, seen, r, c, r, c, sb);
+                shapes.add(sb.toString());
+            }
+        }
+    }
+    return shapes.size();
+}
+
+/**
+ * DFS with relative coordinate encoding
+ * Records relative positions from starting point
+ */
+private void dfs(int[][] grid, boolean[][] seen, int r0, int c0, int r, int c, StringBuilder sb) {
+    int rows = grid.length, cols = grid[0].length;
+    if (r &lt; 0 || r &gt;= rows || c &lt; 0 || c &gt;= cols) return;
+    if (seen[r][c] || grid[r][c] != 1) return;
+
+    seen[r][c] = true;
+    // Record relative position from origin (r0, c0)
+    sb.append((r - r0)).append('_').append((c - c0)).append(',');
+
+    // Visit in fixed order
+    dfs(grid, seen, r0, c0, r + 1, c, sb);
+    dfs(grid, seen, r0, c0, r - 1, c, sb);
+    dfs(grid, seen, r0, c0, r, c + 1, sb);
+    dfs(grid, seen, r0, c0, r, c - 1, sb);
+}
+</code></pre>
+<p><strong>Key Concepts for Path Signatures:</strong></p>
+<ol>
+<li>
+<p><strong>Canonical Traversal Order</strong></p>
+<ul>
+<li>Always check neighbors in the same fixed sequence (e.g., D, U, R, L)</li>
+<li>This ensures identical shapes produce identical signatures</li>
+</ul>
+</li>
+<li>
+<p><strong>Starting Point Normalization</strong></p>
+<ul>
+<li>Grid traversal in fixed order (top-to-bottom, left-to-right)</li>
+<li>The first land cell encountered becomes the origin</li>
+<li>All coordinates are relative to this origin</li>
+</ul>
+</li>
+<li>
+<p><strong>Why Delimiters Matter</strong></p>
+<pre><code>Shape 1:  11      Shape 2:   1
+           1                11
+
+Without delimiter: &quot;SDRO&quot;  vs &quot;SDRO&quot;  (Same - Wrong!)
+With delimiter:    &quot;SDOO&quot;  vs &quot;SDRO&quot;  (Different - Correct!)
+</code></pre>
+</li>
+<li>
+<p><strong>Consistency Guarantees</strong></p>
+<ul>
+<li>Same shape → Same signature (always)</li>
+<li>Different shapes → Different signatures</li>
+<li>Translation invariant (position doesn’t matter)</li>
+<li>Rotation/reflection sensitive (as required)</li>
+</ul>
+</li>
+<li>
+<p><strong>Pass-by-Reference Pattern: Using StringBuilder for Path Recording</strong> ⭐</p>
+<p><strong>Key Insight</strong>: StringBuilder is a <strong>reference type</strong> (not a primitive). When passed to a function, changes made inside persist after the function returns.</p>
+<pre><code class="language-java">// Pattern: Create placeholder → Pass to DFS → Use modified result
+
+Set&lt;String&gt; uniqueIslands = new HashSet&lt;&gt;();
+
+for (int r = 0; r &lt; rows; r++) {
+    for (int c = 0; c &lt; cols; c++) {
+        if (grid[r][c] == 1) {
+            // 1. Create empty StringBuilder placeholder
+            StringBuilder pathSignature = new StringBuilder();
+
+            // 2. Pass to DFS — DFS will modify it in place
+            dfs(grid, r, c, pathSignature, 'S');
+
+            // 3. After DFS returns, pathSignature is populated
+            //    Add the modified result to set
+            if (pathSignature.length() &gt; 0) {
+                uniqueIslands.add(pathSignature.toString());
+            }
+        }
+    }
+}
+
+private void dfs(int[][] grid, int r, int c, StringBuilder path, char direction) {
+    // Base case
+    if (r &lt; 0 || r &gt;= rows || c &lt; 0 || c &gt;= cols || grid[r][c] == 0) {
+        return;
+    }
+
+    // Mark as visited
+    grid[r][c] = 0;
+
+    // ✅ MODIFY the reference: append to StringBuilder
+    //    This change persists in the caller's pathSignature object
+    path.append(direction);
+
+    // Explore neighbors in fixed order
+    dfs(grid, r + 1, c, path, 'D');  // Down
+    dfs(grid, r - 1, c, path, 'U');  // Up
+    dfs(grid, r, c + 1, path, 'R');  // Right
+    dfs(grid, r, c - 1, path, 'L');  // Left
+
+    // Backtrack: remove the character added in this call
+    path.append('O');  // Backtrack marker
+}
+</code></pre>
+<p><strong>Why This Works:</strong></p>
+<pre><code>Memory Model:
+
+Main stack frame:
+├── pathSignature = StringBuilder{} (heap object at address 0x1000)
+└── call dfs(..., pathSignature, 'S')
+
+    DFS stack frame 1:
+    ├── path = reference to 0x1000 (SAME object!)
+    ├── path.append('S')  → 0x1000 now contains &quot;S&quot;
+    └── call dfs(..., path, 'D')
+
+        DFS stack frame 2:
+        ├── path = reference to 0x1000 (still SAME object!)
+        ├── path.append('D')  → 0x1000 now contains &quot;SD&quot;
+        └── return
+
+    Back in frame 1:
+    ├── path.append('O')  → 0x1000 now contains &quot;SDO&quot;
+    └── return
+
+Back in main:
+└── pathSignature = StringBuilder{&quot;SDO&quot;}  ✅ (modified!)
+</code></pre>
+<p><strong>Contrast with Primitives:</strong></p>
+<pre><code class="language-java">// ❌ WRONG: Primitive won't persist changes
+private void dfs(int curSum) {
+    curSum++;  // Only affects local copy
+}
+
+int mySum = 5;
+dfs(mySum);
+System.out.println(mySum);  // Still 5, NOT 6!
+
+// ✅ CORRECT: Use reference type or return value
+private void dfs(StringBuilder path) {
+    path.append('D');  // Affects original StringBuilder
+}
+
+StringBuilder myPath = new StringBuilder();
+dfs(myPath);
+System.out.println(myPath);  // Modified! ✅
+</code></pre>
+<p><strong>Common Reference Types for This Pattern:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Modifiable?</th>
+<th>Use Case</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>StringBuilder</code></td>
+<td>✅ Yes (<code>append</code>, <code>setCharAt</code>, <code>deleteCharAt</code>)</td>
+<td>Build strings incrementally</td>
+</tr>
+<tr>
+<td><code>List&lt;T&gt;</code></td>
+<td>✅ Yes (<code>add</code>, <code>remove</code>, <code>set</code>)</td>
+<td>Collect results or paths</td>
+</tr>
+<tr>
+<td><code>int[]</code> / <code>char[]</code></td>
+<td>✅ Yes (<code>arr[i] = value</code>)</td>
+<td>Modify array elements</td>
+</tr>
+<tr>
+<td><code>Map&lt;K, V&gt;</code></td>
+<td>✅ Yes (<code>put</code>, <code>remove</code>)</td>
+<td>Track frequency/state</td>
+</tr>
+<tr>
+<td><code>int</code> / <code>long</code> (primitives)</td>
+<td>❌ No</td>
+<td>Only pass-by-value</td>
+</tr>
+<tr>
+<td><code>String</code></td>
+<td>❌ No (immutable)</td>
+<td>Use StringBuilder instead</td>
+</tr>
+</tbody>
+</table>
+</li>
+</ol>
+<h3 id="template-9-dfs-with-validation-sub-component-detection" tabindex="-1"><a class="header-anchor" href="#template-9-dfs-with-validation-sub-component-detection"><span>Template 9: DFS with Validation (Sub-Component Detection)</span></a></h3>
+<pre><code class="language-java">/**
+ * Pattern: DFS traversal on one grid while validating against another grid
+ * Use case: Count sub-islands, validate subset components, inclusion checking
+ * Key insight: Use boolean flag propagation to track whether ALL cells satisfy condition
+ *
+ * Time: O(m × n) - visit each cell once
+ * Space: O(m × n) - recursion stack + visited set
+ */
+public int countSubComponents(int[][] grid1, int[][] grid2) {
+    if (grid2 == null || grid2.length == 0) {
+        return 0;
+    }
+
+    int rows = grid2.length;
+    int cols = grid2[0].length;
+    Set&lt;Integer&gt; visited = new HashSet&lt;&gt;();
+    int count = 0;
+
+    // Iterate through grid2 to find all components
+    for (int r = 0; r &lt; rows; r++) {
+        for (int c = 0; c &lt; cols; c++) {
+            int flatCoord = r * cols + c;
+
+            // Start DFS on unvisited land cells in grid2
+            if (grid2[r][c] == 1 &amp;&amp; !visited.contains(flatCoord)) {
+                // DFS returns true if ALL cells in this component exist in grid1
+                if (dfsValidate(grid1, grid2, r, c, visited)) {
+                    count++;
+                }
+            }
+        }
+    }
+
+    return count;
+}
+
+/**
+ * DFS with validation: Check if entire component in grid2 is subset of grid1
+ * Returns true only if ALL cells in the component satisfy the condition
+ */
+private boolean dfsValidate(int[][] grid1, int[][] grid2, int r, int c, Set&lt;Integer&gt; visited) {
+    int rows = grid2.length;
+    int cols = grid2[0].length;
+    int flatCoord = r * cols + c;
+
+    // Base cases
+    if (r &lt; 0 || r &gt;= rows || c &lt; 0 || c &gt;= cols
+        || grid2[r][c] == 0 || visited.contains(flatCoord)) {
+        return true; // Empty/visited cells don't violate the condition
+    }
+
+    // Mark as visited
+    visited.add(flatCoord);
+
+    // Initialize result as true
+    boolean isValid = true;
+
+    // Check condition: Does this cell exist in grid1?
+    if (grid1[r][c] == 0) {
+        isValid = false; // Found a cell in grid2 that's NOT in grid1
+    }
+
+    // CRITICAL: Use &amp;&amp; with res to propagate validation through entire component
+    // Must visit ALL neighbors even if isValid is false (to mark them as visited)
+    isValid = dfsValidate(grid1, grid2, r - 1, c, visited) &amp;&amp; isValid;
+    isValid = dfsValidate(grid1, grid2, r + 1, c, visited) &amp;&amp; isValid;
+    isValid = dfsValidate(grid1, grid2, r, c - 1, visited) &amp;&amp; isValid;
+    isValid = dfsValidate(grid1, grid2, r, c + 1, visited) &amp;&amp; isValid;
+
+    return isValid;
+}
+</code></pre>
+<p><strong>Python Implementation:</strong></p>
+<pre><code class="language-python">def count_sub_components(grid1, grid2):
+    &quot;&quot;&quot;
+    Count components in grid2 that are completely contained in grid1
+    &quot;&quot;&quot;
+    if not grid2 or not grid2[0]:
+        return 0
+
+    rows, cols = len(grid2), len(grid2[0])
+    visited = set()
+    count = 0
+
+    def dfs(r, c):
+        &quot;&quot;&quot;
+        DFS with validation
+        Returns True if entire component is valid
+        &quot;&quot;&quot;
+        # Base cases
+        if (r &lt; 0 or r &gt;= rows or c &lt; 0 or c &gt;= cols
+            or grid2[r][c] == 0 or (r, c) in visited):
+            return True
+
+        visited.add((r, c))
+
+        # Check condition
+        is_valid = True
+        if grid1[r][c] == 0:
+            is_valid = False
+
+        # Visit all neighbors (must visit ALL even if invalid)
+        is_valid = dfs(r - 1, c) and is_valid
+        is_valid = dfs(r + 1, c) and is_valid
+        is_valid = dfs(r, c - 1) and is_valid
+        is_valid = dfs(r, c + 1) and is_valid
+
+        return is_valid
+
+    # Main loop
+    for r in range(rows):
+        for c in range(cols):
+            if grid2[r][c] == 1 and (r, c) not in visited:
+                if dfs(r, c):
+                    count += 1
+
+    return count
+</code></pre>
+<p><strong>Concrete Example: LC 1905 - Count Sub Islands</strong></p>
+<pre><code>Problem: Count islands in grid2 that are completely contained in grid1
+
+grid1: [[1,1,1,0,0],    grid2: [[1,1,1,0,0],
+        [0,1,1,1,1],            [0,0,1,0,0],
+        [0,0,0,0,0],            [0,1,0,0,0],
+        [1,0,0,0,0],            [1,0,1,1,0],
+        [1,1,0,1,1]]            [0,1,0,1,0]]
+
+Analysis:
+- Island 1 in grid2 (top-left): Cells (0,0), (0,1), (0,2), (1,2)
+  → Check grid1: All exist? YES → Count it ✓
+
+- Island 2 in grid2 (middle): Cells (2,1)
+  → Check grid1: (2,1) = 0 → NOT a sub-island ✗
+
+- Island 3 in grid2 (bottom): Cells (3,0), (3,2), (3,3), (4,1), (4,3)
+  → Check grid1: (3,0) = 1, but (4,1) = 1... complex shape
+  → Some cells don't match → NOT a sub-island ✗
+
+Result: 1 sub-island (only the first one)
+
+Key Insight:
+- Must traverse ENTIRE island in grid2
+- Check EVERY cell against grid1
+- Return true only if ALL cells pass validation
+</code></pre>
+<p><strong>Why Boolean Propagation Works:</strong></p>
+<pre><code class="language-java">// CORRECT: Visit all neighbors, accumulate results
+res = dfs(r - 1, c) &amp;&amp; res;
+res = dfs(r + 1, c) &amp;&amp; res;
+res = dfs(r, c - 1) &amp;&amp; res;
+res = dfs(r, c + 1) &amp;&amp; res;
+
+// WRONG: Short-circuits, doesn't visit all cells
+if (!dfs(r - 1, c)) return false;  // Stops early, leaves cells unvisited!
+</code></pre>
+<p><strong>Pattern Characteristics:</strong></p>
+<ul>
+<li><strong>Two Data Sources</strong>: One for structure (grid2), one for validation (grid1)</li>
+<li><strong>Complete Traversal</strong>: Must visit entire component, cannot short-circuit</li>
+<li><strong>Boolean Accumulation</strong>: Use <code>res = dfs(...) &amp;&amp; res</code> pattern</li>
+<li><strong>Visited Tracking</strong>: Essential to avoid infinite loops and double-counting</li>
+<li><strong>Total Time</strong>: O(m × n) - each cell visited once</li>
+<li><strong>Total Space</strong>: O(m × n) - recursion stack + visited set</li>
+</ul>
+<p><strong>When to Use This Pattern:</strong></p>
+<ul>
+<li>Validate that one component is subset of another</li>
+<li>Check if structure A is completely contained in structure B</li>
+<li>Count valid sub-components with specific properties</li>
+<li>Two-grid comparison problems</li>
+</ul>
+<p><strong>Key Variations:</strong></p>
+<ol>
+<li><strong>Early Termination</strong>: Mark entire component as invalid if one cell fails</li>
+<li><strong>Flip Validation</strong>: Check grid2 cells DON’T exist in grid1 (inverse problem)</li>
+<li><strong>Multiple Grids</strong>: Validate against multiple reference grids</li>
+<li><strong>Weighted Validation</strong>: Sum values during traversal, check threshold</li>
+</ol>
+<p><strong>Similar Problems:</strong></p>
+<ul>
+<li>LC 1905: Count Sub Islands (two grids, subset validation)</li>
+<li>LC 200: Number of Islands (single grid, basic DFS)</li>
+<li>LC 695: Max Area of Island (single grid, count cells)</li>
+<li>LC 463: Island Perimeter (single grid, count edges)</li>
+<li>LC 827: Making A Large Island (grid modification, max area)</li>
+</ul>
+<h3 id="template-10-bidirectional-graph-with-direction-tracking" tabindex="-1"><a class="header-anchor" href="#template-10-bidirectional-graph-with-direction-tracking"><span>Template 10: Bidirectional Graph with Direction Tracking</span></a></h3>
+<pre><code class="language-java">/**
+ * Pattern: Build bidirectional graph with direction flags, count edge reversals via DFS
+ * Use case: Reorder edges, reverse routes, make all paths lead to a target node
+ * Key insight: Treat directed graph as undirected for traversal, but track original directions
+ *
+ * Time: O(V + E) - visit each node and edge once
+ * Space: O(V + E) - adjacency list + visited array
+ */
+public int minReorder(int n, int[][] connections) {
+    // Build bidirectional adjacency list with direction flags
+    // Map: city -&gt; List of [neighbor, direction_flag]
+    // direction_flag: 1 if original direction (needs reversal)
+    // direction_flag: 0 if reverse direction (correct direction)
+    Map&lt;Integer, List&lt;int[]&gt;&gt; adj = new HashMap&lt;&gt;();
+    for (int i = 0; i &lt; n; i++) {
+        adj.put(i, new ArrayList&lt;&gt;());
+    }
+
+    for (int[] c : connections) {
+        int from = c[0];
+        int to = c[1];
+
+        // Original direction: from -&gt; to (flag = 1, needs reversal)
+        adj.get(from).add(new int[]{to, 1});
+
+        // Reverse direction: to -&gt; from (flag = 0, correct direction)
+        adj.get(to).add(new int[]{from, 0});
+    }
+
+    boolean[] visited = new boolean[n];
+    int[] count = {0}; // Use array to pass by reference
+
+    // Start DFS from target node (city 0)
+    dfsCountReversals(0, adj, visited, count);
+
+    return count[0];
+}
+
+/**
+ * DFS to count edges that need reversal
+ * Increment count when traversing edge with flag=1 (wrong direction)
+ */
+private void dfsCountReversals(int node, Map&lt;Integer, List&lt;int[]&gt;&gt; adj,
+                                boolean[] visited, int[] count) {
+    visited[node] = true;
+
+    for (int[] edge : adj.get(node)) {
+        int neighbor = edge[0];
+        int directionFlag = edge[1];
+
+        if (!visited[neighbor]) {
+            // If flag = 1, edge points away from target (needs reversal)
+            if (directionFlag == 1) {
+                count[0]++;
+            }
+            dfsCountReversals(neighbor, adj, visited, count);
+        }
+    }
+}
+</code></pre>
+<p><strong>Python Implementation:</strong></p>
+<pre><code class="language-python">def min_reorder(n, connections):
+    &quot;&quot;&quot;
+    Count minimum edge reversals to make all paths lead to node 0
+    &quot;&quot;&quot;
+    # Build bidirectional graph with direction flags
+    adj = {i: [] for i in range(n)}
+
+    for src, dst in connections:
+        # Original direction: src -&gt; dst (flag=1, needs reversal)
+        adj[src].append((dst, 1))
+        # Reverse direction: dst -&gt; src (flag=0, correct)
+        adj[dst].append((src, 0))
+
+    visited = set()
+    count = [0]
+
+    def dfs(node):
+        visited.add(node)
+
+        for neighbor, flag in adj[node]:
+            if neighbor not in visited:
+                # If flag=1, edge points away from 0 (needs reversal)
+                if flag == 1:
+                    count[0] += 1
+                dfs(neighbor)
+
+    dfs(0)  # Start from target node
+    return count[0]
+</code></pre>
+<p><strong>Key Concepts:</strong></p>
+<ol>
+<li>
+<p><strong>Bidirectional Graph Construction</strong></p>
+<ul>
+<li>Add both directions for each edge</li>
+<li>Original direction gets flag=1 (needs reversal)</li>
+<li>Reverse direction gets flag=0 (already correct)</li>
+</ul>
+</li>
+<li>
+<p><strong>Why This Works</strong></p>
+<pre><code>Example: connections = [[0,1],[1,3],[2,3],[4,0],[4,5]]
+
+Original directed graph (edges point away from 0):
+0 -&gt; 1 -&gt; 3
+2 -&gt; 3
+4 -&gt; 0, 4 -&gt; 5
+
+Need to reverse: 0-&gt;1, 1-&gt;3, 4-&gt;5 (3 reversals)
+
+During DFS from 0:
+- Visit 1: used edge 0-&gt;1 (flag=1) → count++
+- Visit 3: used edge 1-&gt;3 (flag=1) → count++
+- Visit 2: used edge 2-&gt;3 (flag=0) → no count
+- Visit 4: used edge 4-&gt;0 (flag=0) → no count
+- Visit 5: used edge 4-&gt;5 (flag=1) → count++
+Total = 3
+</code></pre>
+</li>
+<li>
+<p><strong>Direction Flag Logic</strong></p>
+<ul>
+<li>Flag=1: Edge in original direction (current-&gt;neighbor)
+<ul>
+<li>Means we’re using an edge pointing away from root</li>
+<li>Must be reversed</li>
+</ul>
+</li>
+<li>Flag=0: Edge in reverse direction (neighbor-&gt;current)
+<ul>
+<li>Means original edge pointed toward root</li>
+<li>Already correct</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>Tree Property</strong></p>
+<ul>
+<li>Works perfectly for tree structures (n-1 edges)</li>
+<li>Every node reachable from root</li>
+<li>No cycles to worry about</li>
+</ul>
+</li>
+</ol>
+<p><strong>Pattern Characteristics:</strong></p>
+<ul>
+<li><strong>Graph Type</strong>: Tree or directed graph</li>
+<li><strong>Key Technique</strong>: Bidirectional representation with metadata</li>
+<li><strong>DFS Start</strong>: Always from target node</li>
+<li><strong>Count Condition</strong>: Edges with flag=1 need reversal</li>
+<li><strong>Visited Tracking</strong>: Essential for tree traversal</li>
+<li><strong>Time Complexity</strong>: O(V + E) - linear</li>
+<li><strong>Space Complexity</strong>: O(V + E) - adjacency list</li>
+</ul>
+<p><strong>When to Use This Pattern:</strong></p>
+<ul>
+<li>“Reorder routes/edges to make all paths lead to X”</li>
+<li>“Minimum edge reversals to connect all nodes to root”</li>
+<li>“Orient edges so all nodes can reach target”</li>
+<li>Tree/graph problems requiring edge direction changes</li>
+<li>Counting necessary modifications to edge directions</li>
+</ul>
+<p><strong>Similar Problems:</strong></p>
+<ul>
+<li>LC 1466: Reorder Routes to Make All Paths Lead to the City Zero</li>
+<li>LC 1568: Minimum Number of Days to Disconnect Island (related graph modification)</li>
+<li>LC 1579: Remove Max Number of Edges to Keep Graph Fully Traversable (edge orientation)</li>
+</ul>
+<h3 id="template-11-component-pair-counting-unreachable-pairs" tabindex="-1"><a class="header-anchor" href="#template-11-component-pair-counting-unreachable-pairs"><span>Template 11: Component Pair Counting (Unreachable Pairs)</span></a></h3>
+<pre><code class="language-java">/**
+ * Pattern: Count pairs of nodes that cannot reach each other across different components
+ * Use case: Count unreachable/disconnected pairs, isolated node pairs
+ * Key insight: For each component, multiply its size by nodes in OTHER components
+ *
+ * Time: O(V + E) - DFS to find all components
+ * Space: O(V) - visited array + adjacency list
+ */
+
+// Approach 1: DFS with Forward Counting (count against already processed)
+public long countUnreachablePairs_DFS_Forward(int n, int[][] edges) {
+    // Build adjacency list
+    List&lt;Integer&gt;[] adj = new ArrayList[n];
+    for (int i = 0; i &lt; n; i++) {
+        adj[i] = new ArrayList&lt;&gt;();
+    }
+    for (int[] edge : edges) {
+        adj[edge[0]].add(edge[1]);
+        adj[edge[1]].add(edge[0]);
+    }
+
+    boolean[] visited = new boolean[n];
+    long totalUnreachablePairs = 0;
+    long nodesProcessed = 0; // Track nodes in components already processed
+
+    // Find each component and count pairs
+    for (int i = 0; i &lt; n; i++) {
+        if (!visited[i]) {
+            // DFS to find component size
+            long componentSize = dfs(i, adj, visited);
+
+            /**
+             * KEY TRICK: Forward counting
+             * Each node in current component is unreachable from
+             * ALL nodes in previous components
+             *
+             * Formula: componentSize × nodesProcessed
+             * - componentSize: nodes in current component
+             * - nodesProcessed: nodes in all previous components
+             */
+            totalUnreachablePairs += componentSize * nodesProcessed;
+
+            // Update processed count
+            nodesProcessed += componentSize;
+        }
+    }
+
+    return totalUnreachablePairs;
+}
+
+private long dfs(int node, List&lt;Integer&gt;[] adj, boolean[] visited) {
+    visited[node] = true;
+    long count = 1;
+
+    for (int neighbor : adj[node]) {
+        if (!visited[neighbor]) {
+            count += dfs(neighbor, adj, visited);
+        }
+    }
+
+    return count;
+}
+
+// Approach 2: Union-Find with Backward Counting (count against remaining unprocessed)
+public long countUnreachablePairs_UnionFind_Backward(int n, int[][] edges) {
+    // Initialize Union-Find
+    int[] parent = new int[n];
+    int[] rank = new int[n];
+    for (int i = 0; i &lt; n; i++) {
+        parent[i] = i;
+    }
+
+    // Union all edges
+    for (int[] edge : edges) {
+        union(edge[0], edge[1], parent, rank);
+    }
+
+    // Count component sizes
+    Map&lt;Integer, Integer&gt; sizeMap = new HashMap&lt;&gt;();
+    for (int i = 0; i &lt; n; i++) {
+        int root = find(i, parent);
+        sizeMap.put(root, sizeMap.getOrDefault(root, 0) + 1);
+    }
+
+    long result = 0;
+    long processed = 0;
+
+    /**
+     * KEY TRICK: Backward counting
+     * For each component, count pairs with ALL remaining unprocessed nodes
+     *
+     * Formula: size × (n - size - processed)
+     * - size: nodes in current component
+     * - n: total nodes
+     * - processed: nodes in components already counted
+     * - (n - size - processed): nodes in OTHER components not yet counted
+     *
+     * This avoids double counting by only counting forward to remaining components
+     */
+    for (int size : sizeMap.values()) {
+        result += size * (n - size - processed);
+        processed += size;
+    }
+
+    return result;
+}
+
+private int find(int x, int[] parent) {
+    if (parent[x] != x) {
+        parent[x] = find(parent[x], parent); // Path compression
+    }
+    return parent[x];
+}
+
+private void union(int x, int y, int[] parent, int[] rank) {
+    int rootX = find(x, parent);
+    int rootY = find(y, parent);
+
+    if (rootX != rootY) {
+        // Union by rank
+        if (rank[rootX] &lt; rank[rootY]) {
+            parent[rootX] = rootY;
+        } else if (rank[rootX] &gt; rank[rootY]) {
+            parent[rootY] = rootX;
+        } else {
+            parent[rootY] = rootX;
+            rank[rootX]++;
+        }
+    }
+}
+
+// Approach 3: Alternative - Count total pairs minus reachable pairs
+public long countUnreachablePairs_Alternative(int n, int[][] edges) {
+    // Build adjacency list
+    List&lt;List&lt;Integer&gt;&gt; adj = new ArrayList&lt;&gt;();
+    for (int i = 0; i &lt; n; i++) {
+        adj.add(new ArrayList&lt;&gt;());
+    }
+    for (int[] edge : edges) {
+        adj.get(edge[0]).add(edge[1]);
+        adj.get(edge[1]).add(edge[0]);
+    }
+
+    /**
+     * Total possible pairs = n × (n-1) / 2
+     * Reachable pairs = sum of (componentSize × (componentSize-1) / 2) for each component
+     * Unreachable pairs = Total - Reachable
+     */
+    long totalPairs = (long) n * (n - 1) / 2;
+    boolean[] visited = new boolean[n];
+
+    for (int i = 0; i &lt; n; i++) {
+        if (!visited[i]) {
+            long size = dfsCount(i, adj, visited);
+            // Subtract reachable pairs within this component
+            totalPairs -= (size * (size - 1)) / 2;
+        }
+    }
+
+    return totalPairs;
+}
+
+private long dfsCount(int node, List&lt;List&lt;Integer&gt;&gt; adj, boolean[] visited) {
+    visited[node] = true;
+    long count = 1;
+
+    for (int neighbor : adj.get(node)) {
+        if (!visited[neighbor]) {
+            count += dfsCount(neighbor, adj, visited);
+        }
+    }
+
+    return count;
+}
+</code></pre>
+<p><strong>Python Implementation:</strong></p>
+<pre><code class="language-python">def count_unreachable_pairs_dfs(n, edges):
+    &quot;&quot;&quot;
+    Count unreachable pairs using DFS with forward counting
+    &quot;&quot;&quot;
+    # Build adjacency list
+    adj = [[] for _ in range(n)]
+    for u, v in edges:
+        adj[u].append(v)
+        adj[v].append(u)
+
+    visited = [False] * n
+    total_pairs = 0
+    processed = 0
+
+    def dfs(node):
+        &quot;&quot;&quot;DFS to count component size&quot;&quot;&quot;
+        visited[node] = True
+        count = 1
+        for neighbor in adj[node]:
+            if not visited[neighbor]:
+                count += dfs(neighbor)
+        return count
+
+    # Find each component
+    for i in range(n):
+        if not visited[i]:
+            component_size = dfs(i)
+
+            # Key trick: multiply by already processed nodes
+            total_pairs += component_size * processed
+            processed += component_size
+
+    return total_pairs
+
+
+def count_unreachable_pairs_uf(n, edges):
+    &quot;&quot;&quot;
+    Count unreachable pairs using Union-Find with backward counting
+    &quot;&quot;&quot;
+    # Initialize Union-Find
+    parent = list(range(n))
+
+    def find(x):
+        if parent[x] != x:
+            parent[x] = find(parent[x])
+        return parent[x]
+
+    def union(x, y):
+        root_x, root_y = find(x), find(y)
+        if root_x != root_y:
+            parent[root_x] = root_y
+
+    # Union all edges
+    for u, v in edges:
+        union(u, v)
+
+    # Count component sizes
+    from collections import Counter
+    size_map = Counter(find(i) for i in range(n))
+
+    result = 0
+    processed = 0
+
+    # Key trick: count against remaining unprocessed nodes
+    for size in size_map.values():
+        result += size * (n - size - processed)
+        processed += size
+
+    return result
+</code></pre>
+<p><strong>Key Concepts:</strong></p>
+<ol>
+<li>
+<p><strong>Two Counting Approaches</strong></p>
+<pre><code>Forward Counting (Approach 1):
+- Component 1 (size=3): 3 × 0 = 0
+- Component 2 (size=2): 2 × 3 = 6
+- Component 3 (size=4): 4 × 5 = 20
+- Total: 26
+
+Backward Counting (Approach 2):
+- Component 1 (size=3): 3 × (9-3-0) = 18
+- Component 2 (size=2): 2 × (9-2-3) = 8
+- Component 3 (size=4): 4 × (9-4-5) = 0
+- Total: 26
+
+Both give same result, different order of calculation
+</code></pre>
+</li>
+<li>
+<p><strong>Why This Works</strong></p>
+<ul>
+<li>Nodes in different components CANNOT reach each other</li>
+<li>Each pair of nodes from different components = 1 unreachable pair</li>
+<li>Multiplication counts all such cross-component pairs efficiently</li>
+<li>Avoid O(n²) brute force by tracking cumulative counts</li>
+</ul>
+</li>
+<li>
+<p><strong>Visualization</strong></p>
+<pre><code>Example: n=7, components=[3,2,2]
+
+Component A: {0,1,2}  (size=3)
+Component B: {3,4}     (size=2)
+Component C: {5,6}     (size=2)
+
+Unreachable pairs:
+- A-B: 3×2 = 6 pairs
+- A-C: 3×2 = 6 pairs
+- B-C: 2×2 = 4 pairs
+Total: 16 pairs
+
+Forward: 3×0 + 2×3 + 2×5 = 0+6+10 = 16 ✓
+Backward: 3×4 + 2×2 + 2×0 = 12+4+0 = 16 ✓
+</code></pre>
+</li>
+<li>
+<p><strong>Common Pitfalls</strong></p>
+<ul>
+<li><strong>Double Counting</strong>: Must only count each pair once</li>
+<li><strong>Component Discovery</strong>: Must visit ALL nodes to find all components</li>
+<li><strong>Overflow</strong>: Use <code>long</code> for large n (up to 10^5 nodes → ~10^10 pairs)</li>
+<li><strong>Edge Cases</strong>: Single component (return 0), no edges (return n×(n-1)/2)</li>
+</ul>
+</li>
+</ol>
+<p><strong>Pattern Characteristics:</strong></p>
+<ul>
+<li><strong>Graph Type</strong>: Undirected graph with multiple components</li>
+<li><strong>Key Insight</strong>: Unreachable = different components</li>
+<li><strong>Optimization</strong>: Cumulative multiplication instead of nested loops</li>
+<li><strong>Component Finding</strong>: DFS, BFS, or Union-Find all work</li>
+<li><strong>Time Complexity</strong>: O(V + E) - linear in graph size</li>
+<li><strong>Space Complexity</strong>: O(V) - visited tracking or parent array</li>
+</ul>
+<p><strong>When to Use This Pattern:</strong></p>
+<ul>
+<li>“Count pairs of nodes that cannot reach each other”</li>
+<li>“Number of unreachable/disconnected node pairs”</li>
+<li>“Pairs from different components”</li>
+<li>“Isolated groups” with pair counting</li>
+<li>Graph connectivity with counting requirement</li>
+</ul>
+<p><strong>Similar Problems:</strong></p>
+<ul>
+<li>LC 2316: Count Unreachable Pairs of Nodes in an Undirected Graph</li>
+<li>LC 323: Number of Connected Components in an Undirected Graph (component counting)</li>
+<li>LC 547: Number of Provinces (similar component detection)</li>
+<li>LC 684: Redundant Connection (Union-Find with components)</li>
+<li>LC 1135: Connecting Cities With Minimum Cost (MST with component awareness)</li>
+</ul>
+<p><strong>Variations:</strong></p>
+<ol>
+<li><strong>Weighted Pairs</strong>: Count with node weights instead of simple counting</li>
+<li><strong>Conditional Pairs</strong>: Only count pairs satisfying additional constraints</li>
+<li><strong>Dynamic Components</strong>: Add/remove edges and update count incrementally</li>
+<li><strong>K-Component Pairs</strong>: Count pairs from components of specific size k</li>
+</ol>
+<hr>
+<ul>
+<li>Assign sub tree to node, then return updated node at final stage (Important !!!)</li>
+</ul>
+<pre><code class="language-java">// java
+// LC 199
+private TreeNode _dfs(TreeNode node){
+
+    if (node == null){
+        return null;
+    }
+
+    /** NOTE !!! no need to create global node, but can define inside the method */
+    TreeNode root2 = node;
+    root2.left = this._dfs(node.left);
+    root2.right = this._dfs(node.right);
+
+    /** NOTE !!! we need to return root as final step */
+    return root2;
+}
+</code></pre>
+<ul>
+<li>Modify tree <code>in place</code>  (Important !!!)</li>
+</ul>
+<pre><code class="language-java">// java
+// LC 701
+
+// ...
+public TreeNode insertIntoBST(TreeNode root, int val){
+    // ...
+
+    insertNodeHelper(root, val);
+    return root;
+}
+
+public void insertNodeHelper(TreeNode root, int val) {
+    // ...
+    if(...){
+        root.left = new TreeNode(val);
+    }else{
+        root.right = new TreeNode(val);
+    }
+
+    // ...
+    return root;
+}
+
+// ... 
+</code></pre>
+<ul>
+<li>Tree transversal (DFS)</li>
+</ul>
+<pre><code class="language-python"># python
+# form I : tree transversal
+def dfs(root, target):
+
+    if root.val == target:
+       # do sth
+
+    if root.val &lt; target:
+       dfs(root.left, target)
+       # do sth
+
+    if root.val &gt; target:
+       dfs(root.right, target)
+       # do sth
+</code></pre>
+<ul>
+<li>Tree value moddify (DFS)</li>
+</ul>
+<pre><code class="language-python"># form II : modify values in tree
+
+# 669 Trim a Binary Search Tree
+class Solution:
+    def trimBST(self, root, L, R):
+        if not root:
+            return 
+        # NOTICE HERE 
+        # SINCE IT'S BST
+        # SO if root.val &lt; L, THE root.right MUST LARGER THAN L
+        # SO USE self.trimBST(root.right, L, R) TO FIND THE NEXT &quot;VALIDATE&quot; ROOT AFTER TRIM
+        # THE REASON USE self.trimBST(root.right, L, R) IS THAT MAYBE NEXT ROOT IS TRIMMED AS WELL, SO KEEP FINDING VIA RECURSION
+        if root.val &lt; L:
+            return self.trimBST(root.right, L, R)
+        # NOTICE HERE 
+        # SINCE IT'S BST
+        # SO if root.val &gt; R, THE root.left MUST SMALLER THAN R
+        # SO USE self.trimBST(root.left, L, R) TO FIND THE NEXT &quot;VALIDATE&quot; ROOT AFTER TRIM
+        if root.val &gt; R:
+            return self.trimBST(root.left, L, R)
+        root.left = self.trimBST(root.left, L, R)
+        root.right = self.trimBST(root.right, L, R)
+        return root 
+
+# 701 Insert into a Binary Search Tree
+class Solution(object):
+    def insertIntoBST(self, root, val):
+        &quot;&quot;&quot;
+        NOTE !!!
+            1) we ALWAYS do op first, then do recursive
+                -&gt; e.g.
+                        ...
+                        if not root: 
+                            return TreeNode(val)
+                        if root.val &lt; val:
+                            root.right = self.insertIntoBST(root.right, val)
+                        ...
+        &quot;&quot;&quot;
+        if not root: 
+            return TreeNode(val)
+
+        if root.val &lt; val: 
+            root.right = self.insertIntoBST(root.right, val)
+
+        elif root.val &gt; val: 
+            root.left = self.insertIntoBST(root.left, val)
+
+        return root
+</code></pre>
+<pre><code class="language-python"># form III : check if a value exist in the BST
+
+def dfs(root, value):
+    if not root:
+        return False
+    if root.val == value:
+        return True
+    if root.val &gt; value:
+        return dfs(root.left, value) 
+    if root.val &lt; value:
+        return dfs(root.right, value)
+</code></pre>
+<pre><code class="language-python"># form IV : check if duplicated nodes in tree
+# LC 652
+# python
+m = collections.defaultdict(int)
+# m is collection for record visited nodes
+def dfs(root, m, res):
+    if not root:
+        return &quot;#&quot;
+
+    ### NOTE : we get path via below, so we can know duplicated nodes
+    path = root.val + &quot;-&quot; + self.dfs(root.left, m, res) + &quot;-&quot; + self.dfs(root.right, m, res)
+
+    if m[path] == 1:
+        res.append(path)
+
+    m[path] += 1
+    return path
+</code></pre>
+<ul>
+<li>
+<p>Grpah transversal (DFS)</p>
+</li>
+<li>
+<p>Transversal in 4 directions (up, down, left, right)</p>
+</li>
+</ul>
+<pre><code class="language-java">// java
+// LC 200
+
+/** NOTE !!!! BELOW approach has same effect */
+
+// V1
+
+// private boolean _is_island(char[][] grid, int x, int y, boolean[][] seen){}
+
+// ....
+_is_island(grid, x+1, y, seen);
+_is_island(grid, x-1, y, seen);
+_is_island(grid, x, y+1, seen);
+_is_island(grid, x, y-1, seen);
+// ....
+
+// V2
+// private boolean _is_island_2(char[][] grid, int x, int y, boolean[][] seen) {}
+
+int[][] directions = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
+
+for (int[] dir : directions) {
+    int newX = x + dir[0];
+    int newY = y + dir[1];
+    _is_island(grid, newX, newY, seen);
+}
+</code></pre>
+<h3 id="0-3-tricks" tabindex="-1"><a class="header-anchor" href="#0-3-tricks"><span>0-3) Tricks</span></a></h3>
+<pre><code class="language-python"># we don't need to declare y,z in func, but we can use them in the func directly
+# and can get the returned value as well, this trick is being used a lot in the dfs
+def test():
+    def func(x):
+        print (&quot;x = &quot; + str(x) + &quot; y = &quot; + str(y))
+        for i in range(3):
+            z.append(i)
+
+    x = 0
+    y = 100
+    z = []
+    func(x)
+test()
+print (z)
+</code></pre>
+<h2 id="problems-by-pattern" tabindex="-1"><a class="header-anchor" href="#problems-by-pattern"><span>Problems by Pattern</span></a></h2>
+<h3 id="pattern-based-problem-classification" tabindex="-1"><a class="header-anchor" href="#pattern-based-problem-classification"><span>Pattern-Based Problem Classification</span></a></h3>
+<h4 id="pattern-1-tree-traversal-problems" tabindex="-1"><a class="header-anchor" href="#pattern-1-tree-traversal-problems"><span><strong>Pattern 1: Tree Traversal Problems</strong></span></a></h4>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC #</th>
+<th>Difficulty</th>
+<th>Key Technique</th>
+<th>Template</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Binary Tree Inorder Traversal</td>
+<td>94</td>
+<td>Easy</td>
+<td>Stack/Recursion</td>
+<td>Template 1</td>
+</tr>
+<tr>
+<td>Binary Tree Preorder Traversal</td>
+<td>144</td>
+<td>Easy</td>
+<td>Stack/Recursion</td>
+<td>Template 1</td>
+</tr>
+<tr>
+<td>Binary Tree Postorder Traversal</td>
+<td>145</td>
+<td>Easy</td>
+<td>Stack/Recursion</td>
+<td>Template 1</td>
+</tr>
+<tr>
+<td>Serialize and Deserialize Binary Tree</td>
+<td>297</td>
+<td>Hard</td>
+<td>DFS encoding</td>
+<td>Template 1</td>
+</tr>
+<tr>
+<td>Serialize and Deserialize BST</td>
+<td>449</td>
+<td>Medium</td>
+<td>BST property</td>
+<td>Template 1</td>
+</tr>
+<tr>
+<td>Binary Tree Paths</td>
+<td>257</td>
+<td>Easy</td>
+<td>Path tracking</td>
+<td>Template 3</td>
+</tr>
+<tr>
+<td>Same Tree</td>
+<td>100</td>
+<td>Easy</td>
+<td>Simultaneous DFS</td>
+<td>Template 1</td>
+</tr>
+</tbody>
+</table>
+<h4 id="pattern-2-path-problems-1" tabindex="-1"><a class="header-anchor" href="#pattern-2-path-problems-1"><span><strong>Pattern 2: Path Problems</strong></span></a></h4>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC #</th>
+<th>Difficulty</th>
+<th>Key Technique</th>
+<th>Template</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Path Sum</td>
+<td>112</td>
+<td>Easy</td>
+<td>DFS traversal</td>
+<td>Template 3</td>
+</tr>
+<tr>
+<td>Path Sum II</td>
+<td>113</td>
+<td>Medium</td>
+<td>Backtracking</td>
+<td>Template 3</td>
+</tr>
+<tr>
+<td>Binary Tree Maximum Path Sum</td>
+<td>124</td>
+<td>Hard</td>
+<td>Global max</td>
+<td>Template 6</td>
+</tr>
+<tr>
+<td>Diameter of Binary Tree</td>
+<td>543</td>
+<td>Easy</td>
+<td>Bottom-up</td>
+<td>Template 6</td>
+</tr>
+<tr>
+<td>Longest Univalue Path</td>
+<td>687</td>
+<td>Medium</td>
+<td>Bottom-up</td>
+<td>Template 6</td>
+</tr>
+<tr>
+<td>Sum Root to Leaf Numbers</td>
+<td>129</td>
+<td>Medium</td>
+<td>Path tracking</td>
+<td>Template 3</td>
+</tr>
+</tbody>
+</table>
+<h4 id="pattern-3-graph-traversal-problems" tabindex="-1"><a class="header-anchor" href="#pattern-3-graph-traversal-problems"><span><strong>Pattern 3: Graph Traversal Problems</strong></span></a></h4>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC #</th>
+<th>Difficulty</th>
+<th>Key Technique</th>
+<th>Template</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Number of Islands</td>
+<td>200</td>
+<td>Medium</td>
+<td>Grid DFS</td>
+<td>Template 2</td>
+</tr>
+<tr>
+<td>Max Area of Island</td>
+<td>695</td>
+<td>Medium</td>
+<td>Grid DFS</td>
+<td>Template 2</td>
+</tr>
+<tr>
+<td>Clone Graph</td>
+<td>133</td>
+<td>Medium</td>
+<td>HashMap</td>
+<td>Template 2</td>
+</tr>
+<tr>
+<td>Course Schedule</td>
+<td>207</td>
+<td>Medium</td>
+<td>Cycle detection</td>
+<td>Template 2</td>
+</tr>
+<tr>
+<td>Course Schedule II</td>
+<td>210</td>
+<td>Medium</td>
+<td>Topological sort</td>
+<td>Template 2</td>
+</tr>
+<tr>
+<td>Pacific Atlantic Water Flow</td>
+<td>417</td>
+<td>Medium</td>
+<td>Multi-source</td>
+<td>Template 2</td>
+</tr>
+<tr>
+<td>Evaluate Division</td>
+<td>399</td>
+<td>Medium</td>
+<td>Graph traversal</td>
+<td>Template 2</td>
+</tr>
+<tr>
+<td>Minesweeper</td>
+<td>529</td>
+<td>Medium</td>
+<td>Grid exploration</td>
+<td>Template 2</td>
+</tr>
+</tbody>
+</table>
+<h4 id="pattern-4-backtracking-problems" tabindex="-1"><a class="header-anchor" href="#pattern-4-backtracking-problems"><span><strong>Pattern 4: Backtracking Problems</strong></span></a></h4>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC #</th>
+<th>Difficulty</th>
+<th>Key Technique</th>
+<th>Template</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Permutations</td>
+<td>46</td>
+<td>Medium</td>
+<td>Backtrack</td>
+<td>Template 4</td>
+</tr>
+<tr>
+<td>Subsets</td>
+<td>78</td>
+<td>Medium</td>
+<td>Backtrack</td>
+<td>Template 4</td>
+</tr>
+<tr>
+<td>Combination Sum</td>
+<td>39</td>
+<td>Medium</td>
+<td>Backtrack</td>
+<td>Template 4</td>
+</tr>
+<tr>
+<td>Letter Combinations</td>
+<td>17</td>
+<td>Medium</td>
+<td>Backtrack</td>
+<td>Template 4</td>
+</tr>
+<tr>
+<td>Generate Parentheses</td>
+<td>22</td>
+<td>Medium</td>
+<td>Backtrack</td>
+<td>Template 4</td>
+</tr>
+<tr>
+<td>Word Search</td>
+<td>79</td>
+<td>Medium</td>
+<td>Grid backtrack</td>
+<td>Template 4</td>
+</tr>
+<tr>
+<td>N-Queens</td>
+<td>51</td>
+<td>Hard</td>
+<td>Backtrack</td>
+<td>Template 4</td>
+</tr>
+</tbody>
+</table>
+<h4 id="pattern-5-tree-modification-problems" tabindex="-1"><a class="header-anchor" href="#pattern-5-tree-modification-problems"><span><strong>Pattern 5: Tree Modification Problems</strong></span></a></h4>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC #</th>
+<th>Difficulty</th>
+<th>Key Technique</th>
+<th>Template</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Delete Node in BST</td>
+<td>450</td>
+<td>Medium</td>
+<td>BST delete</td>
+<td>Template 5</td>
+</tr>
+<tr>
+<td>Insert into BST</td>
+<td>701</td>
+<td>Medium</td>
+<td>BST insert</td>
+<td>Template 5</td>
+</tr>
+<tr>
+<td>Trim a Binary Search Tree</td>
+<td>669</td>
+<td>Medium</td>
+<td>Conditional trim</td>
+<td>Template 5</td>
+</tr>
+<tr>
+<td>Convert BST to Greater Tree</td>
+<td>538</td>
+<td>Medium</td>
+<td>Reverse inorder</td>
+<td>Template 5</td>
+</tr>
+<tr>
+<td>Invert Binary Tree</td>
+<td>226</td>
+<td>Easy</td>
+<td>Tree swap</td>
+<td>Template 5</td>
+</tr>
+<tr>
+<td>Flatten Binary Tree</td>
+<td>114</td>
+<td>Medium</td>
+<td>In-place modify</td>
+<td>Template 5</td>
+</tr>
+</tbody>
+</table>
+<h4 id="pattern-6-subtree-aggregation-problems" tabindex="-1"><a class="header-anchor" href="#pattern-6-subtree-aggregation-problems"><span><strong>Pattern 6: Subtree &amp; Aggregation Problems</strong></span></a></h4>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC #</th>
+<th>Difficulty</th>
+<th>Key Technique</th>
+<th>Template</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Most Frequent Subtree Sum</td>
+<td>508</td>
+<td>Medium</td>
+<td>HashMap</td>
+<td>Template 6</td>
+</tr>
+<tr>
+<td>Find Duplicate Subtrees</td>
+<td>652</td>
+<td>Medium</td>
+<td>Serialization</td>
+<td>Template 6</td>
+</tr>
+<tr>
+<td>Lowest Common Ancestor</td>
+<td>236</td>
+<td>Medium</td>
+<td>Bottom-up</td>
+<td>Template 6</td>
+</tr>
+<tr>
+<td>Equal Tree Partition</td>
+<td>663</td>
+<td>Medium</td>
+<td>Subtree sum</td>
+<td>Template 6</td>
+</tr>
+<tr>
+<td>Maximum Product of Splitted Tree</td>
+<td>1339</td>
+<td>Medium</td>
+<td>All sums</td>
+<td>Template 6</td>
+</tr>
+<tr>
+<td>Validate Binary Search Tree</td>
+<td>98</td>
+<td>Medium</td>
+<td>Min/Max bounds</td>
+<td>Template 1</td>
+</tr>
+<tr>
+<td>Split BST</td>
+<td>776</td>
+<td>Medium</td>
+<td>Recursive split</td>
+<td>Template 5</td>
+</tr>
+</tbody>
+</table>
+<h4 id="pattern-7-boundary-elimination-2-pass-dfs-1" tabindex="-1"><a class="header-anchor" href="#pattern-7-boundary-elimination-2-pass-dfs-1"><span><strong>Pattern 7: Boundary Elimination (2-Pass DFS)</strong></span></a></h4>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC #</th>
+<th>Difficulty</th>
+<th>Key Technique</th>
+<th>Template</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Number of Closed Islands</td>
+<td>1254</td>
+<td>Medium</td>
+<td>Boundary flood</td>
+<td>Template 7</td>
+</tr>
+<tr>
+<td>Surrounded Regions</td>
+<td>130</td>
+<td>Medium</td>
+<td>Border elimination</td>
+<td>Template 7</td>
+</tr>
+<tr>
+<td>Pacific Atlantic Water Flow</td>
+<td>417</td>
+<td>Medium</td>
+<td>Two oceans</td>
+<td>Template 7</td>
+</tr>
+<tr>
+<td>Number of Enclaves</td>
+<td>1020</td>
+<td>Medium</td>
+<td>Border-connected</td>
+<td>Template 7</td>
+</tr>
+</tbody>
+</table>
+<h4 id="pattern-8-path-signatures-shape-encoding-1" tabindex="-1"><a class="header-anchor" href="#pattern-8-path-signatures-shape-encoding-1"><span><strong>Pattern 8: Path Signatures (Shape Encoding)</strong></span></a></h4>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC #</th>
+<th>Difficulty</th>
+<th>Key Technique</th>
+<th>Template</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Number of Distinct Islands</td>
+<td>694</td>
+<td>Medium</td>
+<td>Directional encoding</td>
+<td>Template 8</td>
+</tr>
+<tr>
+<td>Number of Distinct Islands II</td>
+<td>711</td>
+<td>Hard</td>
+<td>Handle rotations/reflections</td>
+<td>Template 8</td>
+</tr>
+<tr>
+<td>Find Duplicate Subtrees</td>
+<td>652</td>
+<td>Medium</td>
+<td>Tree serialization</td>
+<td>Template 8</td>
+</tr>
+<tr>
+<td>Most Frequent Subtree Sum</td>
+<td>508</td>
+<td>Medium</td>
+<td>Subtree signature</td>
+<td>Template 8</td>
+</tr>
+</tbody>
+</table>
+<h4 id="pattern-9-dfs-with-validation-sub-component-detection-1" tabindex="-1"><a class="header-anchor" href="#pattern-9-dfs-with-validation-sub-component-detection-1"><span><strong>Pattern 9: DFS with Validation (Sub-Component Detection)</strong></span></a></h4>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC #</th>
+<th>Difficulty</th>
+<th>Key Technique</th>
+<th>Template</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Count Sub Islands</td>
+<td>1905</td>
+<td>Medium</td>
+<td>Boolean flag propagation</td>
+<td>Template 9</td>
+</tr>
+<tr>
+<td>Number of Islands</td>
+<td>200</td>
+<td>Medium</td>
+<td>Basic component counting</td>
+<td>Template 2</td>
+</tr>
+<tr>
+<td>Max Area of Island</td>
+<td>695</td>
+<td>Medium</td>
+<td>Component size tracking</td>
+<td>Template 2</td>
+</tr>
+<tr>
+<td>Island Perimeter</td>
+<td>463</td>
+<td>Easy</td>
+<td>Edge counting</td>
+<td>Template 2</td>
+</tr>
+<tr>
+<td>Making A Large Island</td>
+<td>827</td>
+<td>Hard</td>
+<td>Component merging</td>
+<td>Template 2</td>
+</tr>
+</tbody>
+</table>
+<h4 id="pattern-10-bidirectional-graph-with-direction-tracking-1" tabindex="-1"><a class="header-anchor" href="#pattern-10-bidirectional-graph-with-direction-tracking-1"><span><strong>Pattern 10: Bidirectional Graph with Direction Tracking</strong></span></a></h4>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC #</th>
+<th>Difficulty</th>
+<th>Key Technique</th>
+<th>Template</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Reorder Routes to Make All Paths Lead to the City Zero</td>
+<td>1466</td>
+<td>Medium</td>
+<td>Bidirectional graph + direction flags</td>
+<td>Template 10</td>
+</tr>
+<tr>
+<td>Minimum Number of Days to Disconnect Island</td>
+<td>1568</td>
+<td>Hard</td>
+<td>Graph modification (related)</td>
+<td>-</td>
+</tr>
+<tr>
+<td>Remove Max Number of Edges to Keep Graph Fully Traversable</td>
+<td>1579</td>
+<td>Hard</td>
+<td>Edge orientation (related)</td>
+<td>-</td>
+</tr>
+</tbody>
+</table>
+<h4 id="pattern-11-component-pair-counting-unreachable-pairs-1" tabindex="-1"><a class="header-anchor" href="#pattern-11-component-pair-counting-unreachable-pairs-1"><span><strong>Pattern 11: Component Pair Counting (Unreachable Pairs)</strong></span></a></h4>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC #</th>
+<th>Difficulty</th>
+<th>Key Technique</th>
+<th>Template</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Count Unreachable Pairs of Nodes in an Undirected Graph</td>
+<td>2316</td>
+<td>Medium</td>
+<td>Component counting + cumulative multiplication</td>
+<td>Template 11</td>
+</tr>
+<tr>
+<td>Number of Connected Components in an Undirected Graph</td>
+<td>323</td>
+<td>Medium</td>
+<td>Basic component counting</td>
+<td>Template 2</td>
+</tr>
+<tr>
+<td>Number of Provinces</td>
+<td>547</td>
+<td>Medium</td>
+<td>Component detection</td>
+<td>Template 2</td>
+</tr>
+</tbody>
+</table>
+<h3 id="complete-problem-list-by-difficulty" tabindex="-1"><a class="header-anchor" href="#complete-problem-list-by-difficulty"><span>Complete Problem List by Difficulty</span></a></h3>
+<h4 id="easy-problems-foundation" tabindex="-1"><a class="header-anchor" href="#easy-problems-foundation"><span>Easy Problems (Foundation)</span></a></h4>
+<ul>
+<li>LC 94: Binary Tree Inorder Traversal - Basic DFS</li>
+<li>LC 100: Same Tree - Parallel DFS</li>
+<li>LC 101: Symmetric Tree - Mirror DFS</li>
+<li>LC 104: Maximum Depth - Simple recursion</li>
+<li>LC 112: Path Sum - Path tracking</li>
+<li>LC 144: Binary Tree Preorder Traversal - Stack usage</li>
+<li>LC 145: Binary Tree Postorder Traversal - Stack manipulation</li>
+<li>LC 226: Invert Binary Tree - Tree modification</li>
+<li>LC 257: Binary Tree Paths - Path collection</li>
+<li>LC 543: Diameter of Binary Tree - Global max pattern</li>
+<li>LC 572: Subtree of Another Tree - Tree matching</li>
+</ul>
+<h4 id="medium-problems-core" tabindex="-1"><a class="header-anchor" href="#medium-problems-core"><span>Medium Problems (Core)</span></a></h4>
+<ul>
+<li>LC 98: Validate BST - Bounds checking</li>
+<li>LC 113: Path Sum II - Backtracking paths</li>
+<li>LC 130: Surrounded Regions - Boundary elimination</li>
+<li>LC 133: Clone Graph - HashMap + DFS</li>
+<li>LC 200: Number of Islands - Grid DFS</li>
+<li>LC 207: Course Schedule - Cycle detection</li>
+<li>LC 210: Course Schedule II - Topological sort</li>
+<li>LC 236: Lowest Common Ancestor - Bottom-up DFS</li>
+<li>LC 297: Serialize/Deserialize Tree - DFS encoding</li>
+<li>LC 399: Evaluate Division - Graph DFS</li>
+<li>LC 417: Pacific Atlantic Water Flow - Multi-source DFS</li>
+<li>LC 450: Delete Node in BST - Tree restructuring</li>
+<li>LC 449: Serialize/Deserialize BST - BST property</li>
+<li>LC 472: Concatenated Words - Word break DFS</li>
+<li>LC 508: Most Frequent Subtree Sum - Aggregation</li>
+<li>LC 529: Minesweeper - Grid exploration</li>
+<li>LC 538: Convert BST to Greater Tree - Reverse inorder</li>
+<li>LC 652: Find Duplicate Subtrees - Serialization</li>
+<li>LC 663: Equal Tree Partition - Subtree sums</li>
+<li>LC 669: Trim BST - Conditional modification</li>
+<li>LC 695: Max Area of Island - Connected component</li>
+<li>LC 701: Insert into BST - BST insertion</li>
+<li>LC 1466: Reorder Routes to Make All Paths Lead to the City Zero - Bidirectional graph with direction tracking</li>
+<li>LC 1905: Count Sub Islands - DFS with validation</li>
+<li>LC 2316: Count Unreachable Pairs of Nodes in an Undirected Graph - Component pair counting</li>
+<li>LC 737: Sentence Similarity II - Graph connectivity</li>
+<li>LC 776: Split BST - Advanced manipulation</li>
+<li>LC 1020: Number of Enclaves - Boundary elimination</li>
+<li>LC 1254: Number of Closed Islands - 2-Pass DFS</li>
+<li>LC 1339: Maximum Product of Splitted Tree - All subtree sums</li>
+</ul>
+<h4 id="hard-problems-advanced" tabindex="-1"><a class="header-anchor" href="#hard-problems-advanced"><span>Hard Problems (Advanced)</span></a></h4>
+<ul>
+<li>LC 124: Binary Tree Maximum Path Sum - Global optimization</li>
+<li>LC 297: Serialize and Deserialize Binary Tree - Complex encoding</li>
+<li>LC 51: N-Queens - Complex backtracking</li>
+<li>LC 329: Longest Increasing Path in Matrix - Memoized DFS</li>
+<li>LC 3319: K-th Largest Perfect Subtree - Complex aggregation</li>
+</ul>
+<h3 id="1-1-basic-op" tabindex="-1"><a class="header-anchor" href="#1-1-basic-op"><span>1-1) Basic OP</span></a></h3>
+<h4 id="1-1-1-add-1-to-all-node-value-in-binary-tree" tabindex="-1"><a class="header-anchor" href="#1-1-1-add-1-to-all-node-value-in-binary-tree"><span>1-1-1) Add 1 to all node.value in Binary tree?</span></a></h4>
+<pre><code class="language-python"># Example) Add 1 to all node.value in Binary tree?
+def dfs(root):
+    if not root:
+        return 
+    root.val += 1 
+    dfs(root.left)
+    dfs(root.right)
+</code></pre>
+<h4 id="1-1-2-check-if-2-binary-tree-are-the-same" tabindex="-1"><a class="header-anchor" href="#1-1-2-check-if-2-binary-tree-are-the-same"><span>1-1-2) check if 2 Binary tree are the same</span></a></h4>
+<pre><code class="language-python"># Example) check if 2 Binary tree are the same ? 
+def dfs(root1, root2):
+    if root1 == root2 == None:
+        return True 
+    if root1 is not None and root2 is None:
+        return False 
+    if root1 is None and root2 is not None:
+        return False 
+    else:
+        if root1.val != root2.value:
+            return False 
+    return dfs(root1.left, root2.left) \
+           and dfs(root1.right, root2.right)
+</code></pre>
+<h4 id="1-1-3-check-if-a-value-exist-in-the-bst" tabindex="-1"><a class="header-anchor" href="#1-1-3-check-if-a-value-exist-in-the-bst"><span>1-1-3) check if a value exist in the BST</span></a></h4>
+<pre><code class="language-python"># Example) check if a value exist in the BST
+def dfs(root, value):
+    if not root:
+        return False
+    if root.val == value:
+        return True
+    return dfs(root.left, value) or dfs(root.right, value)
+
+# optimized : BST prpoerty :  root.right &gt; root.val &gt; root.left
+def dfs(root, value):
+    if not root:
+        return False
+    if root.val == value:
+        return True
+    if root.val &gt; value:
+        return dfs(root.left, value) 
+    if root.val &lt; value:
+        return dfs(root.right, value)
+</code></pre>
+<h4 id="1-1-4-get-sum-of-sub-tree" tabindex="-1"><a class="header-anchor" href="#1-1-4-get-sum-of-sub-tree"><span>1-1-4) get sum of sub tree</span></a></h4>
+<pre><code class="language-python"># get sum of sub tree
+# LC 508 Most Frequent Subtree Sum
+def get_sum(root):
+    if not root:
+        return 0
+    ### NOTE THIS !!!
+    #  -&gt; we need to do get_sum(root.left), get_sum(root.right) on the same time
+    s = get_sum(root.left) + root.val + get_sum(root.right)
+    res.append(s)
+    return s
+</code></pre>
+<h4 id="1-1-5-get-aggregated-sum-for-every-node-in-tree" tabindex="-1"><a class="header-anchor" href="#1-1-5-get-aggregated-sum-for-every-node-in-tree"><span>1-1-5) get <code>aggregated sum</code> for every node in tree</span></a></h4>
+<pre><code class="language-python"># LC 663 Equal Tree Partition
+# LC 508 Most Frequent Subtree Sum
+seen = []
+def _sum(root):
+    if not root:
+        return 0
+    seen.append( root.val + _sum(root.left) + _sum(root.right) )
+</code></pre>
+<h4 id="1-1-6-convert-bst-to-greater-tree" tabindex="-1"><a class="header-anchor" href="#1-1-6-convert-bst-to-greater-tree"><span>1-1-6) Convert BST to Greater Tree</span></a></h4>
+<pre><code class="language-python"># Convert BST to Greater Tree 
+# LC 538
+_sum = 0
+def dfs(root):
+    dfs(root.right)
+    _sum += root.val
+    root.val = _sum
+    dfs(root.left)
+</code></pre>
+<h4 id="1-1-7-serialize-and-deserialize-binary-tree" tabindex="-1"><a class="header-anchor" href="#1-1-7-serialize-and-deserialize-binary-tree"><span>1-1-7) Serialize and Deserialize Binary Tree</span></a></h4>
+<pre><code class="language-python"># LC 297. Serialize and Deserialize Binary Tree
+# please check below 2) LC Example
+# V0
+# IDRA : DFS
+class Codec:
+
+    def serialize(self, root):
+        &quot;&quot;&quot; Encodes a tree to a single string.
+        :type root: TreeNode
+        :rtype: str
+        &quot;&quot;&quot;
+        def rserialize(root, string):
+            &quot;&quot;&quot; a recursive helper function for the serialize() function.&quot;&quot;&quot;
+            # check base case
+            if root is None:
+                string += 'None,'
+            else:
+                string += str(root.val) + ','
+                string = rserialize(root.left, string)
+                string = rserialize(root.right, string)
+            return string
+        
+        return rserialize(root, '')    
+
+    def deserialize(self, data):
+        &quot;&quot;&quot;Decodes your encoded data to tree.
+        :type data: str
+        :rtype: TreeNode
+        &quot;&quot;&quot;
+        def rdeserialize(l):
+            &quot;&quot;&quot; a recursive helper function for deserialization.&quot;&quot;&quot;
+            if l[0] == 'None':
+                l.pop(0)
+                return None
+                
+            root = TreeNode(l[0])
+            l.pop(0)
+            root.left = rdeserialize(l)
+            root.right = rdeserialize(l)
+            return root
+
+        data_list = data.split(',')
+        root = rdeserialize(data_list)
+        return root
+</code></pre>
+<pre><code class="language-java">// java
+// LC 297
+public class Codec{
+    public String serialize(TreeNode root) {
+
+        /** NOTE !!!
+         *
+         *     if root == null, return &quot;#&quot;
+         */
+        if (root == null){
+            return &quot;#&quot;;
+        }
+
+        /** NOTE !!! return result via pre-order, split with &quot;,&quot; */
+        return root.val + &quot;,&quot; + serialize(root.left) + &quot;,&quot; + serialize(root.right);
+    }
+
+    public TreeNode deserialize(String data) {
+
+        /** NOTE !!!
+         *
+         *   1) init queue and append serialize output
+         *   2) even use queue, but helper func still using DFS
+         */
+        Queue&lt;String&gt; queue = new LinkedList&lt;&gt;(Arrays.asList(data.split(&quot;,&quot;)));
+        return helper(queue);
+    }
+
+    private TreeNode helper(Queue&lt;String&gt; queue) {
+
+        // get val from queue first
+        String s = queue.poll();
+
+        if (s.equals(&quot;#&quot;)){
+            return null;
+        }
+        /** NOTE !!! init current node  */
+        TreeNode root = new TreeNode(Integer.valueOf(s));
+        /** NOTE !!!
+         *
+         *    since serialize is &quot;pre-order&quot;,
+         *    deserialize we use &quot;pre-order&quot; as well
+         *    e.g. root -&gt; left sub tree -&gt; right sub tree
+         *    -&gt; so we get sub tree via below :
+         *
+         *       root.left = helper(queue);
+         *       root.right = helper(queue);
+         *
+         */
+        root.left = helper(queue);
+        root.right = helper(queue);
+        /** NOTE !!! don't forget to return final deserialize result  */
+        return root;
+    }
+}
+</code></pre>
+<h4 id="1-1-8-serialize-and-deserialize-bst" tabindex="-1"><a class="header-anchor" href="#1-1-8-serialize-and-deserialize-bst"><span>1-1-8) Serialize and Deserialize BST</span></a></h4>
+<pre><code class="language-python"># LC 449. Serialize and Deserialize BST
+# please check below 2) LC Example
+# NOTE : there is also a bfs approach
+# V1'
+# IDEA : BST property
+# https://leetcode.com/problems/serialize-and-deserialize-bst/discuss/212043/Python-solution
+class Codec:
+
+    def serialize(self, root):
+        &quot;&quot;&quot;Encodes a tree to a single string.
+        
+        :type root: TreeNode
+        :rtype: str
+        &quot;&quot;&quot;
+        def dfs(root):
+            if not root:
+                return 
+            res.append(str(root.val) + &quot;,&quot;)
+            dfs(root.left)
+            dfs(root.right)
+            
+        res = []
+        dfs(root)
+        return &quot;&quot;.join(res)
+
+    def deserialize(self, data):
+        &quot;&quot;&quot;Decodes your encoded data to tree.
+        
+        :type data: str
+        :rtype: TreeNode
+        &quot;&quot;&quot;
+        lst = data.split(&quot;,&quot;)
+        lst.pop()
+        stack = []
+        head = None
+        for n in lst:
+            n = int(n)
+            if not head:
+                head = TreeNode(n)
+                stack.append(head)
+            else:
+                node = TreeNode(n)
+                if n &lt; stack[-1].val:
+                    stack[-1].left = node
+                else:
+                    while stack and stack[-1].val &lt; n: 
+                        u = stack.pop()
+                    u.right = node
+                stack.append(node)
+        return head
+</code></pre>
+<h4 id="1-1-9-find-longest-distance-between-nodes" tabindex="-1"><a class="header-anchor" href="#1-1-9-find-longest-distance-between-nodes"><span>1-1-9) find longest distance between nodes</span></a></h4>
+<pre><code class="language-java">// java
+// LC 543 Diameter of Binary Tree
+// V1
+// IDEA : DFS
+// https://leetcode.com/problems/diameter-of-binary-tree/editorial/
+
+int diameter;
+
+public int diameterOfBinaryTree_2(TreeNode root) {
+    diameter = 0;
+    longestPath(root);
+    return diameter;
+}
+private int longestPath(TreeNode node){
+    if(node == null) return 0;
+    // recursively find the longest path in
+    // both left child and right child
+    int leftPath = longestPath(node.left);
+    int rightPath = longestPath(node.right);
+
+    // update the diameter if left_path plus right_path is larger
+    diameter = Math.max(diameter, leftPath + rightPath);
+
+    // return the longest one between left_path and right_path;
+    // remember to add 1 for the path connecting the node and its parent
+    return Math.max(leftPath, rightPath) + 1;
+}
+</code></pre>
+<h4 id="1-1-10-compare-node-val-with-path" tabindex="-1"><a class="header-anchor" href="#1-1-10-compare-node-val-with-path"><span>1-1-10) Compare node val with path</span></a></h4>
+<pre><code class="language-java">// java
+// LC 1448
+
+private void dfsCheckGoodNode(TreeNode node, int maxSoFar) {
+    if (node == null)
+        return;
+
+    // Check if the current node is good
+    if (node.val &gt;= maxSoFar) {
+        res++;
+        maxSoFar = node.val; // Update max value seen so far
+    }
+
+    // Recur for left and right children
+    dfsCheckGoodNode(node.left, maxSoFar);
+    dfsCheckGoodNode(node.right, maxSoFar);
+}
+</code></pre>
+<h2 id="2-lc-example" tabindex="-1"><a class="header-anchor" href="#2-lc-example"><span>2) LC Example</span></a></h2>
+<h3 id="2-1-validate-binary-search-tree" tabindex="-1"><a class="header-anchor" href="#2-1-validate-binary-search-tree"><span>2-1) Validate Binary Search Tree</span></a></h3>
+<pre><code class="language-python"># 098 Validate Binary Search Tree
+### NOTE : there is also bfs solution
+# https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Recursion/validate-binary-search-tree.py
+class Solution(object):
+    def isValidBST(self, root):
+        return self.valid(root, float('-inf'), float('inf'))
+        
+    def valid(self, root, min_, max_):
+        if not root: return True
+        if root.val &gt;= max_ or root.val &lt;= min_:
+            return False
+        return self.valid(root.left, min_, root.val) and self.valid(root.right, root.val, max_)
+</code></pre>
+<h3 id="2-2-insert-into-a-binary-search-tree" tabindex="-1"><a class="header-anchor" href="#2-2-insert-into-a-binary-search-tree"><span>2-2) Insert into a Binary Search Tree</span></a></h3>
+<pre><code class="language-java">// java
+// LC 701
+
+public TreeNode insertIntoBST_0_1(TreeNode root, int val) {
+    if (root == null) {
+        return new TreeNode(val);
+    }
+
+    /** 
+     *  NOTE !!! 
+     *  
+     *   via below, we can still `MODIFY root value`,
+     *   even it's not declared as a global variable
+     *   
+     *   -&gt; e.g. we have root as input,
+     *      within `insertNodeHelper` method,
+     *      we append `new sub tree` to root as its left, right sub tree
+     *
+     */
+    insertNodeHelper(root, val); // helper modifies the tree in-place
+    return root;
+}
+
+public void insertNodeHelper(TreeNode root, int val) {
+    if (val &lt; root.val) {
+        if (root.left == null) {
+            root.left = new TreeNode(val);
+        } else {
+            /** NOTE !!!
+             * 
+             *  no need to return val,
+             *  since we `append sub tree` to root directly
+             *  in the method (e.g. root.left == ..., root.right = ...)
+             */
+            insertNodeHelper(root.left, val);
+        }
+    } else {
+        if (root.right == null) {
+            root.right = new TreeNode(val);
+        } else {
+            insertNodeHelper(root.right, val);
+        }
+    }
+}
+</code></pre>
+<pre><code class="language-python"># 701 Insert into a Binary Search Tree
+
+# VO : recursion + dfs
+class Solution(object):
+    def insertIntoBST(self, root, val):
+        if not root: 
+            return TreeNode(val)
+        if root.val &lt; val: 
+            root.right = self.insertIntoBST(root.right, val);
+        elif root.val &gt; val: 
+            root.left = self.insertIntoBST(root.left, val);
+        return(root)
+</code></pre>
+<p>`</p>
+<h3 id="2-3-delete-node-in-a-bst" tabindex="-1"><a class="header-anchor" href="#2-3-delete-node-in-a-bst"><span>2-3) Delete Node in a BST</span></a></h3>
+<pre><code class="language-python"># 450 Delete Node in a BST
+# V0
+# IDEA : RECURSION + BST PROPERTY
+#### 2 CASES :
+#   -&gt; CASE 1 : root.val == key and NO right subtree 
+#                -&gt; swap root and root.left, return root.left
+#   -&gt; CASE 2 : root.val == key and THERE IS right subtree
+#                -&gt; 1) go to 1st RIGHT sub tree
+#                -&gt; 2) iterate to deepest LEFT subtree
+#                -&gt; 3) swap root and  `deepest LEFT subtree` then return root
+class Solution(object):
+    def deleteNode(self, root, key):
+        if not root: return None
+        if root.val == key:
+            # case 1 : NO right subtree 
+            if not root.right:
+                left = root.left
+                return left
+            # case 2 : THERE IS right subtree
+            else:
+                ### NOTE : find min in &quot;right&quot; sub-tree
+                #           -&gt; because BST property, we ONLY go to 1st right tree (make sure we find the min of right sub-tree)
+                #           -&gt; then go to deepest left sub-tree
+                right = root.right
+                while right.left:
+                    right = right.left
+                ### NOTE : we need to swap root, right ON THE SAME TIME
+                root.val, right.val = right.val, root.val
+        root.left = self.deleteNode(root.left, key)
+        root.right = self.deleteNode(root.right, key)
+        return root
+</code></pre>
+<pre><code class="language-java">// java
+// LC 450
+// V0
+// IDEA: DFS + BST property
+/**
+ *
+ * (when found a node to delete)
+ *
+ *    // Case 1: No children
+ *
+ *    // Case 2: One child
+ *
+ *    // Case 3: Two children
+ *
+ */
+/**
+ *
+ *  Summary of Deletion Strategy:
+ *
+ *
+ *  | Case         | Description        | What Happens                                  |
+ * |--------------|--------------------|-----------------------------------------------|
+ * | Leaf         | No children         | Return `null`                                 |
+ * | One Child    | One child           | Replace node with its child                   |
+ * | Two Children | Both children       | Replace with in-order successor, then delete the successor |
+ *
+ *
+ *  `in-order successor`:  Left → root → Right
+ */
+
+public TreeNode deleteNode(TreeNode root, int key) {
+    return deleteNodeHelper_0(root, key);
+}
+
+private TreeNode deleteNodeHelper_0(TreeNode root, int key) {
+    if (root == null) {
+        return null;
+    }
+
+    /**
+     * CASE 1)  NOT found a node to delete
+     */
+    if (key &lt; root.val) {
+        // search in left subtree
+        /**
+         *  NOTE !!!
+         *
+         *   we assign `left sub tree` as res from deleteNodeHelper_0(root.left, key)
+         *
+         *   -&gt; NOT return `deleteNodeHelper_0(root.left, key)`
+         *      as res directly, since it deleteNodeHelper_0
+         *      could NOT be a null val, we need it to assign root.left,
+         *      so we can keep `whole BST info`
+         */
+        root.left = deleteNodeHelper_0(root.left, key);
+    } else if (key &gt; root.val) {
+        // search in right subtree
+        /**
+         *  NOTE !!!
+         *
+         *   we assign `right sub tree` as res from deleteNodeHelper_0(root.right, key)
+         */
+        root.right = deleteNodeHelper_0(root.right, key);
+    }
+    /**
+     * CASE 2)  Found a node to delete
+     */
+    else {
+        // Case 1: No left child
+        if (root.left == null) {
+            return root.right;
+        }
+
+        // Case 2: No right child
+        if (root.right == null) {
+            return root.left;
+        }
+
+        /**
+         *  NOTE !!!! below
+         *
+         *  step 1) find `min` val  (`sub right tree`)
+         *  step 2) set root val as min val
+         *  step 3)  delete the `min` val node from sub right tree
+         *             - `recursively` call `deleteNodeHelper`
+         *
+         */
+        // Case 3: Two children → find inorder successor
+        /**
+         *  NOTE !!!
+         *
+         *   we need to find a `min` tree from `sub right tree`
+         *   as a node to `swap` with current node.
+         *
+         *   Reason:
+         *      since it is a BST, so  `left &lt; root &lt; right`.
+         *      so after swapping `min` from sub right tree.
+         *      with current node
+         *          -&gt; the tree `remains` BST.
+         *          we DON'T have to do any further modification.
+         *
+         */
+        TreeNode minNode = findMin_0(root.right);
+        root.val = minNode.val; // copy value
+        root.right = deleteNodeHelper(root.right, minNode.val); // delete successor
+    }
+
+    return root;
+}
+
+private TreeNode findMin_0(TreeNode node) {
+    while (node.left != null) {
+        node = node.left;
+    }
+    return node;
+}
+</code></pre>
+<h3 id="2-4-find-duplicate-subtrees" tabindex="-1"><a class="header-anchor" href="#2-4-find-duplicate-subtrees"><span>2-4) Find Duplicate Subtrees</span></a></h3>
+<pre><code class="language-python"># 652 Find Duplicate Subtrees
+import collections
+class Solution(object):
+    def findDuplicateSubtrees(self, root):
+        res = []
+        m = collections.defaultdict(int)
+        self.dfs(root, m, res)
+        return res
+
+    def dfs(self, root, m, res):
+        if not root:
+            return '#'
+        path = str(root.val) + '-' + self.dfs(root.left, m, res) + '-' + self.dfs(root.right, m, res)
+        if m[path] == 1:
+            res.append(root) 
+        m[path] += 1
+        return path
+</code></pre>
+<h3 id="2-5-trim-a-bst" tabindex="-1"><a class="header-anchor" href="#2-5-trim-a-bst"><span>2-5) Trim a BST</span></a></h3>
+<pre><code class="language-python"># 669 Trim a Binary Search Tree
+class Solution:
+    def trimBST(self, root, L, R):
+        if not root:
+            return None
+        if root.val &gt; R:
+            return self.trimBST(root.left, L, R)
+        elif root.val &lt; L:
+            return self.trimBST(root.right, L, R)
+        else:
+            root.left = self.trimBST(root.left, L, R)
+            root.right = self.trimBST(root.right, L, R)
+            return root
+</code></pre>
+<h3 id="2-6-maximum-width-of-binary-tree" tabindex="-1"><a class="header-anchor" href="#2-6-maximum-width-of-binary-tree"><span>2-6) Maximum Width of Binary Tree</span></a></h3>
+<pre><code class="language-python"># 662 Maximum Width of Binary Tree
+class Solution(object):
+    def widthOfBinaryTree(self, root):
+        self.ans = 0
+        left = {}
+        def dfs(node, depth = 0, pos = 0):
+            if node:
+                left.setdefault(depth, pos)
+                self.ans = max(self.ans, pos - left[depth] + 1)
+                dfs(node.left, depth + 1, pos * 2)
+                dfs(node.right, depth + 1, pos * 2 + 1)
+
+        dfs(root)
+        return self.ans
+</code></pre>
+<h3 id="2-7-equal-tree-partition" tabindex="-1"><a class="header-anchor" href="#2-7-equal-tree-partition"><span>2-7) Equal Tree Partition</span></a></h3>
+<pre><code class="language-python"># 663 Equal Tree Partition
+# V0
+# IDEA : DFS + cache
+class Solution(object):
+    def checkEqualTree(self, root):
+        seen = []
+
+        def sum_(node):
+            if not node: return 0
+            seen.append(sum_(node.left) + sum_(node.right) + node.val)
+            return seen[-1]
+
+        sum_(root)
+        #print (&quot;seen = &quot; + str(seen))
+        return seen[-1] / 2.0 in seen[:-1]
+
+# V0'
+class Solution(object):
+    def checkEqualTree(self, root):
+        seen = []
+
+        def sum_(node):
+            if not node: return 0
+            seen.append(sum_(node.left) + sum_(node.right) + node.val)
+            return seen[-1]
+            
+        total = sum_(root)
+        seen.pop()
+        return total / 2.0 in seen
+</code></pre>
+<h3 id="2-8-split-bst" tabindex="-1"><a class="header-anchor" href="#2-8-split-bst"><span>2-8) Split BST</span></a></h3>
+<pre><code class="language-python"># 776 Split BST
+# V0
+# IDEA : BST properties (left &lt; root &lt; right) + recursion
+# https://blog.csdn.net/magicbean2/article/details/79679927
+# https://www.itdaan.com/tw/d58594b92742689b5769f9827365e8b4
+### STEPS
+#  -&gt; 1) check whether root.val &gt; or &lt; V
+#     -&gt; if root.val &gt; V : 
+#           - NO NEED TO MODIFY ALL RIGHT SUB TREE
+#           - BUT NEED TO re-connect nodes in LEFT SUB TREE WHICH IS BIGGER THAN V (root.left = right)
+#     -&gt; if root.val &lt; V : 
+#           - NO NEED TO MODIFY ALL LEFT SUB TREE
+#           - BUT NEED TO re-connect nodes in RIGHT SUB TREE WHICH IS SMALLER THAN V (root.right = left)
+# -&gt; 2) return result
+class Solution(object):
+    def splitBST(self, root, V):
+        if not root: return [None, None]
+        ### NOTE : if root.val &lt;= V
+        if root.val &gt; V:
+            left, right = self.splitBST(root.left, V)
+            root.left = right
+            return [left, root]
+        ### NOTE : if root.val &gt; V
+        else:
+            left, right = self.splitBST(root.right, V)
+            root.right = left
+            return [root, right]
+</code></pre>
+<h3 id="2-9-evaluate-division" tabindex="-1"><a class="header-anchor" href="#2-9-evaluate-division"><span>2-9) Evaluate Division</span></a></h3>
+<pre><code class="language-python"># 399 Evaluate Division
+# there is also an &quot;union find&quot; solution
+class Solution:
+    def calcEquation(self, equations, values, queries):
+        from collections import defaultdict
+        # build graph
+        graph = defaultdict(dict)
+        for (x, y), v in zip(equations, values):
+            graph[x][y] = v
+            graph[y][x] = 1.0/v
+        ans = [self.dfs(x, y, graph, set()) for (x, y) in queries]
+        return ans
+
+    def dfs(self, x, y, graph, visited):
+        if not graph:
+            return
+        if x not in graph or y not in graph:
+            return -1
+        if x == y:
+            return 1
+        visited.add(x)
+        for n in graph[x]:
+            if n in visited:
+                continue
+            visited.add(n)
+            d = self.dfs(n, y, graph, visited)
+            if d &gt; 0:
+                return d * graph[x][n]
+        return -1.0
+</code></pre>
+<pre><code class="language-java">// java
+// V1
+// IDEA: DFS
+// https://leetcode.com/problems/evaluate-division/solutions/3543256/image-explanation-easiest-concise-comple-okpu/
+public double[] calcEquation_1(List&lt;List&lt;String&gt;&gt; equations, double[] values, List&lt;List&lt;String&gt;&gt; queries) {
+    HashMap&lt;String, HashMap&lt;String, Double&gt;&gt; gr = buildGraph(equations, values);
+    double[] finalAns = new double[queries.size()];
+
+    for (int i = 0; i &lt; queries.size(); i++) {
+        String dividend = queries.get(i).get(0);
+        String divisor = queries.get(i).get(1);
+
+        /** NOTE !!!
+         *
+         *  either dividend nor divisor NOT in graph, return -1.0 directly
+         */
+        if (!gr.containsKey(dividend) || !gr.containsKey(divisor)) {
+            finalAns[i] = -1.0;
+        } else {
+
+            /** NOTE !!!
+             *
+             *  we use `vis` to check if element already visited
+             *  (to avoid repeat accessing)
+             *  `vis` init again in every loop
+             */
+
+            HashSet&lt;String&gt; vis = new HashSet&lt;&gt;();
+            /**
+             *  NOTE !!!
+             *
+             *   we init `ans` and pass it to dfs method
+             *   (but dfs method return NOTHING)
+             *   -&gt; `ans` is init, and pass into dfs,
+             *   -&gt; so `ans` value is updated during dfs recursion run
+             *   -&gt; and after dfs run completed, we get the result `ans` value
+             */
+            double[] ans = { -1.0 };
+            double temp = 1.0;
+            dfs(dividend, divisor, gr, vis, ans, temp);
+            finalAns[i] = ans[0];
+        }
+    }
+
+    return finalAns;
+}
+
+/** NOTE !!! below dfs method */
+public void dfs(String node, String dest, HashMap&lt;String, HashMap&lt;String, Double&gt;&gt; gr, HashSet&lt;String&gt; vis,
+                double[] ans, double temp) {
+
+    /** NOTE !!! we use `vis` to check if element already visited */
+    if (vis.contains(node))
+        return;
+
+    vis.add(node);
+    if (node.equals(dest)) {
+        ans[0] = temp;
+        return;
+    }
+
+    for (Map.Entry&lt;String, Double&gt; entry : gr.get(node).entrySet()) {
+        String ne = entry.getKey();
+        double val = entry.getValue();
+        /** NOTE !!! update temp as `temp * val` */
+        dfs(ne, dest, gr, vis, ans, temp * val);
+    }
+}
+
+public HashMap&lt;String, HashMap&lt;String, Double&gt;&gt; buildGraph(List&lt;List&lt;String&gt;&gt; equations, double[] values) {
+    HashMap&lt;String, HashMap&lt;String, Double&gt;&gt; gr = new HashMap&lt;&gt;();
+
+    for (int i = 0; i &lt; equations.size(); i++) {
+        String dividend = equations.get(i).get(0);
+        String divisor = equations.get(i).get(1);
+        double value = values[i];
+
+        gr.putIfAbsent(dividend, new HashMap&lt;&gt;());
+        gr.putIfAbsent(divisor, new HashMap&lt;&gt;());
+
+        gr.get(dividend).put(divisor, value);
+        gr.get(divisor).put(dividend, 1.0 / value);
+    }
+
+    return gr;
+}
+</code></pre>
+<h3 id="2-10-most-frequent-subtree-sum" tabindex="-1"><a class="header-anchor" href="#2-10-most-frequent-subtree-sum"><span>2-10) Most Frequent Subtree Sum</span></a></h3>
+<pre><code class="language-python"># LC 508 Most Frequent Subtree Sum
+# V0
+# IDEA : DFS + TREE
+class Solution(object):
+    def findFrequentTreeSum(self, root):
+        &quot;&quot;&quot;
+        ### NOTE : this trick : get sum of sub tree
+        # LC 663 Equal Tree Partition
+        &quot;&quot;&quot;
+        def get_sum(root):
+            if not root:
+                return 0
+            s = get_sum(root.left) + root.val + get_sum(root.right)
+            res.append(s)
+            return s
+
+        if not root:
+            return []
+        res = []
+        get_sum(root)
+        counts = collections.Counter(res)
+        _max = max(counts.values())
+        return [x for x in counts if counts[x] == _max]
+
+# V0'
+# IDEA : DFS + COUNTER
+from collections import Counter
+class Solution(object):
+    def findFrequentTreeSum(self, root):
+        def helper(root, d):
+            if not root:
+                return 0
+            left = helper(root.left, d)
+            right = helper(root.right, d)
+            subtreeSum = left + right + root.val
+            d[subtreeSum] = d.get(subtreeSum, 0) + 1
+            return subtreeSum      
+        d = {}
+        helper(root, d)
+        mostFreq = 0
+        ans = []
+        print (&quot;d = &quot; + str(d))
+        _max_cnt = max(d.values())
+        ans = []
+        return [x for x in d if d[x] == _max_cnt]
+</code></pre>
+<h3 id="2-11-convert-bst-to-greater-tree" tabindex="-1"><a class="header-anchor" href="#2-11-convert-bst-to-greater-tree"><span>2-11) Convert BST to Greater Tree</span></a></h3>
+<pre><code class="language-python"># LC 538 Convert BST to Greater Tree
+# V0
+# IDEA : DFS + recursion
+#      -&gt; NOTE : via DFS, the op will being executed in `INVERSE` order (last visit will be run first, then previous, then ...)
+#      -&gt; e.g. node1 -&gt; node2 -&gt; ... nodeN
+#      -&gt;      will run nodeN -&gt; nodeN-1 ... node1
+class Solution(object):
+
+    def convertBST(self, root):
+        self.sum = 0
+        self.dfs(root)
+        return root
+
+    def dfs(self, node):
+        if not node: 
+            return
+        #print (&quot;node.val = &quot; + str(node.val))
+        self.dfs(node.right)
+        self.sum += node.val
+        node.val = self.sum
+        self.dfs(node.left)
+
+# V0'
+# NOTE : the implementation difference on cur VS self.cur
+# 1) if cur : we need to ssign output of help() func to cur
+# 2) if self.cur : no need to assign, plz check V0 as reference
+class Solution(object):
+    def convertBST(self, root):
+        def help(cur, root):
+            if not root:
+                ### NOTE : if not root, still need to return cur
+                return cur
+            ### NOTE : need to assign output of help() func to cur
+            cur = help(cur, root.right)
+            cur += root.val
+            root.val = cur
+            ### NOTE : need to assign output of help() func to cur
+            cur = help(cur, root.left)
+            ### NOTE : need to return cur
+            return cur
+
+        if not root:
+            return
+
+        cur = 0
+        help(cur, root)
+        return root
+</code></pre>
+<h3 id="2-12-number-of-islands" tabindex="-1"><a class="header-anchor" href="#2-12-number-of-islands"><span>2-12) Number of Islands</span></a></h3>
+<pre><code class="language-python"># LC 200 Number of Islands, check LC 694, 711 as well
+# V0 
+# IDEA : DFS
+class Solution(object):
+    def numIslands(self, grid):
+        def dfs(grid, item):
+            if grid[item[0]][item[1]] == &quot;0&quot;:
+                return
+
+            ### NOTE : MAKE grid[item[0]][item[1]] = 0 -&gt; avoid visit again
+            grid[item[0]][item[1]] = 0
+            moves = [(0,1),(0,-1),(1,0),(-1,0)]
+            for move in moves:
+                _x = item[0] + move[0]
+                _y = item[1] + move[1]
+                ### NOTE : the boundary
+                #       -&gt; _x &lt; l, _y &lt; w
+                if 0 &lt;= _x &lt; l and 0 &lt;= _y &lt; w and grid[_x][_y] != 0:
+                    dfs(grid, [_x, _y])
+  
+        if not grid:
+            return 0
+        res = 0
+        l = len(grid)
+        w = len(grid[0])
+        for i in range(l):
+            for j in range(w):
+                if grid[i][j] == &quot;1&quot;:
+                    ### NOTE : we go through every &quot;1&quot; in grids, and run dfs once
+                    #         -&gt; once dfs completed, we make res += 1 in each iteration
+                    dfs(grid, [i,j])
+                    res += 1
+        return res
+</code></pre>
+<h3 id="2-13-max-area-of-island" tabindex="-1"><a class="header-anchor" href="#2-13-max-area-of-island"><span>2-13) Max Area of Island</span></a></h3>
+<pre><code class="language-python"># LC 695. Max Area of Island
+# V1
+# https://blog.csdn.net/fuxuemingzhu/article/details/79182435
+# IDEA : DFS 
+# * PLEASE NOTE THAT IT IS NEEDED TO GO THROUGH EVERY ELEMENT IN THE GRID 
+#   AND RUN THE DFS WITH IN THIS PROBLEM
+class Solution(object):
+    def maxAreaOfIsland(self, grid):
+        &quot;&quot;&quot;
+        :type grid: List[List[int]]
+        :rtype: int
+        &quot;&quot;&quot;
+        self.res = 0
+        self.island = 0
+        M, N = len(grid), len(grid[0])
+        for i in range(M):
+            for j in range(N):
+                if grid[i][j]:
+                    self.dfs(grid, i, j)
+                    self.res = max(self.res, self.island)
+                    self.island = 0
+        return self.res
+    
+    def dfs(self, grid, i, j): # ensure grid[i][j] == 1
+        M, N = len(grid), len(grid[0])
+        grid[i][j] = 0
+        self.island += 1
+        dirs = [(0, 1), (0, -1), (-1, 0), (1, 0)]
+        for d in dirs:
+            x, y = i + d[0], j + d[1]
+            if 0 &lt;= x &lt; M and 0 &lt;= y &lt; N and grid[x][y]:
+                self.dfs(grid, x, y)
+</code></pre>
+<h3 id="2-14-binary-tree-paths" tabindex="-1"><a class="header-anchor" href="#2-14-binary-tree-paths"><span>2-14) Binary Tree Paths</span></a></h3>
+<pre><code class="language-python"># LC 257. Binary Tree Paths
+# V0 
+# IDEA : DFS 
+class Solution:
+    # @param {TreeNode} root
+    # @return {string[]}
+    def binaryTreePaths(self, root):
+        res, path_list = [], []
+        self.dfs(root, path_list, res)
+        return res
+
+    def dfs(self, root, path_list, res):
+        if not root:
+            return
+        path_list.append(str(root.val))
+        if not root.left and not root.right:
+            res.append('-&gt;'.join(path_list))
+        if root.left:
+            self.dfs(root.left, path_list, res)
+        if root.right:
+            self.dfs(root.right, path_list, res)
+        path_list.pop()
+</code></pre>
+<h3 id="2-15-lowest-common-ancestor-of-a-binary-tree" tabindex="-1"><a class="header-anchor" href="#2-15-lowest-common-ancestor-of-a-binary-tree"><span>2-15) Lowest Common Ancestor of a Binary Tree</span></a></h3>
+<pre><code class="language-python"># LC 236 Lowest Common Ancestor of a Binary Tree
+# V0
+# IDEA : RECURSION + POST ORDER TRANSVERSAL
+class Solution(object):
+    def lowestCommonAncestor(self, root, p, q):
+
+        ### NOTE here
+        # if not root or find p in tree or find q in tree
+        # -&gt; then we quit the recursion and return root
+
+        ### NOTE : we compare `p == root` and  `q == root`
+        if not root or p == root or q == root:
+            return root
+        ### NOTE here
+        #  -&gt; not root.left, root.right, BUT left, right
+        left = self.lowestCommonAncestor(root.left, p, q)
+        right = self.lowestCommonAncestor(root.right, p, q)
+
+        ### NOTE here
+        # find q and p on the same time -&gt; LCA is the current node (root)
+        # if left and right -&gt; p, q MUST in left, right sub tree respectively
+
+        ### NOTE : if left and right, means this root is OK for next recursive
+        if left and right:
+            return root
+        ### NOTE here
+        # if p, q both in left sub tree or both in right sub tree
+        return left if left else right
+</code></pre>
+<h3 id="2-16-path-sum" tabindex="-1"><a class="header-anchor" href="#2-16-path-sum"><span>2-16) Path Sum</span></a></h3>
+<pre><code class="language-python"># LC 112 Path Sum
+# V0
+# IDEA : DFS 
+class Solution(object):
+    def hasPathSum(self, root, sum):
+        if not root:
+            return False
+        if not root.left and not root.right:
+            return True if sum == root.val else False
+        else:
+            return self.hasPathSum(root.left, sum-root.val) or self.hasPathSum(root.right, sum-root.val)
+</code></pre>
+<h3 id="2-17-path-sum-ii" tabindex="-1"><a class="header-anchor" href="#2-17-path-sum-ii"><span>2-17) Path Sum II</span></a></h3>
+<pre><code class="language-python"># LC 113 Path Sum II
+# V0
+# IDEA : DFS
+class Solution(object):
+    def pathSum(self, root, sum):
+        if not root: return []
+        res = []
+        self.dfs(root, sum, res, [root.val])
+        return res
+
+    def dfs(self, root, target, res, path):
+        if not root: return
+        if sum(path) == target and not root.left and not root.right:
+            res.append(path)
+            return
+        if root.left:
+            self.dfs(root.left, target, res, path + [root.left.val])
+        if root.right:
+            self.dfs(root.right, target, res, path + [root.right.val])
+</code></pre>
+<pre><code class="language-java">// java
+// LC 113
+// V0
+// IDEA : DFS + backtracking
+// NOTE !!! we have res attr, so can use this.res collect result
+private List&lt;List&lt;Integer&gt;&gt; res = new ArrayList&lt;&gt;();
+
+public List&lt;List&lt;Integer&gt;&gt; pathSum(TreeNode root, int targetSum) {
+
+    if (root == null){
+        return this.res;
+    }
+
+    List&lt;Integer&gt; cur = new ArrayList&lt;&gt;();
+    getPath(root, cur, targetSum);
+    return this.res;
+}
+
+ private void getPath(TreeNode root, List&lt;Integer&gt; cur, int targetSum){
+
+    // return directly if root is null (not possible to go further, so just quit directly)
+    if (root == null){
+        return;
+    }
+
+    // NOTE !!! we add val to cache here instead of while calling method recursively ( e.g. getPath(root.left, cur, targetSum - root.val))
+    //          -&gt; so we just need to backtrack (cancel last operation) once (e.g. cur.remove(cur.size() - 1);)
+    //          -&gt; please check V0' for example with backtrack in recursively step
+    cur.add(root.val);
+
+    if (root.left == null &amp;&amp; root.right == null &amp;&amp; targetSum == root.val){
+        this.res.add(new ArrayList&lt;&gt;(cur));
+    }else{
+        // NOTE !!! we update targetSum here (e.g. targetSum - root.val)
+        getPath(root.left, cur, targetSum - root.val);
+        getPath(root.right, cur, targetSum - root.val);
+    }
+
+     // NOTE !!! we do backtrack here (cancel previous adding to cur)
+     cur.remove(cur.size() - 1);
+}
+</code></pre>
+<h3 id="2-7-clone-graph" tabindex="-1"><a class="header-anchor" href="#2-7-clone-graph"><span>2-7) Clone graph</span></a></h3>
+<pre><code class="language-python"># 133 Clone graph
+# note : there is also a BFS solution
+# V0
+# IDEA : DFS
+# NOTE :
+#  -&gt; 1) we init node via : node_copy = Node(node.val, [])
+#  -&gt; 2) we copy graph via dict
+class Solution(object):
+    def cloneGraph(self, node):
+        &quot;&quot;&quot;
+        :type node: Node
+        :rtype: Node
+        &quot;&quot;&quot;
+        node_copy = self.dfs(node, dict())
+        return node_copy
+    
+    def dfs(self, node, hashd):
+        if not node: return None
+        if node in hashd: return hashd[node]
+        node_copy = Node(node.val, [])
+        hashd[node] = node_copy
+        for n in node.neighbors:
+            n_copy = self.dfs(n, hashd)
+            if n_copy:
+                node_copy.neighbors.append(n_copy)
+        return node_copy
+</code></pre>
+<h3 id="2-8-sentence-similarity-ii" tabindex="-1"><a class="header-anchor" href="#2-8-sentence-similarity-ii"><span>2-8) Sentence Similarity II</span></a></h3>
+<pre><code class="language-python"># LC 737. Sentence Similarity II
+# NOTE : there is also union-find solution
+# V0
+# IDEA : DFS
+from collections import defaultdict
+class Solution(object):
+    def areSentencesSimilarTwo(self, sentence1, sentence2, similarPairs):
+        # helper func
+        def dfs(w1, w2, visited):
+            for j in d[w2]:
+                if w1 == w2:
+                    return True
+                elif j not in visited:
+                    visited.add(j)
+                    if dfs(w1, j, visited):
+                        return True
+            return False
+        
+        # edge case
+        if len(sentence1) != len(sentence2):
+            return False
+      
+        d = defaultdict(list)
+        for a, b in similarPairs:
+            d[a].append(b)
+            d[b].append(a)
+            
+        for i in range(len(sentence1)):
+            visited =  set([sentence2[i]])
+            if sentence1[i] != sentence2[i] and not dfs(sentence1[i],  sentence2[i], visited):
+                return False
+        return True
+</code></pre>
+<h3 id="2-9-concatenated-words" tabindex="-1"><a class="header-anchor" href="#2-9-concatenated-words"><span>2-9) Concatenated Words</span></a></h3>
+<pre><code class="language-python"># LC 472. Concatenated Words
+# V1
+# http://bookshadow.com/weblog/2016/12/18/leetcode-concatenated-words/
+# IDEA : DFS 
+class Solution(object):
+    def findAllConcatenatedWordsInADict(self, words):
+        &quot;&quot;&quot;
+        :type words: List[str]
+        :rtype: List[str]
+        &quot;&quot;&quot;
+        ans = []
+        self.wordSet = set(words)
+        for word in words:
+            self.wordSet.remove(word) # avoid the search process find itself (word) when search all word in words  
+            if self.search(word):
+                ans.append(word)
+            self.wordSet.add(word)    # add the word back for next search with new &quot;word&quot;
+        return ans
+
+    def search(self, word):
+        if word in self.wordSet:
+            return True
+        for idx in range(1, len(word)):
+            if word[:idx] in self.wordSet and self.search(word[idx:]):
+                return True
+        return False
+</code></pre>
+<h3 id="2-10-maximum-product-of-splitted-binary-tree" tabindex="-1"><a class="header-anchor" href="#2-10-maximum-product-of-splitted-binary-tree"><span>2-10) Maximum Product of Splitted Binary Tree</span></a></h3>
+<pre><code class="language-python"># LC 1339. Maximum Product of Splitted Binary Tree
+# V0
+# IDEA : DFS
+class Solution(object):
+    def maxProduct(self, root):
+        all_sums = []
+
+        def tree_sum(subroot):
+            if subroot is None: return 0
+            left_sum = tree_sum(subroot.left)
+            right_sum = tree_sum(subroot.right)
+            total_sum = left_sum + right_sum + subroot.val
+            all_sums.append(total_sum)
+            return total_sum
+
+        total = tree_sum(root)
+        best = 0
+        for s in all_sums:
+            best = max(best, s * (total - s))   
+        return best % (10 ** 9 + 7)
+</code></pre>
+<h3 id="2-11-serialize-and-deserialize-binary-tree" tabindex="-1"><a class="header-anchor" href="#2-11-serialize-and-deserialize-binary-tree"><span>2-11) Serialize and Deserialize Binary Tree</span></a></h3>
+<pre><code class="language-python"># LC 297. Serialize and Deserialize Binary Tree
+# V0
+# IDRA : DFS
+class Codec:
+
+    def serialize(self, root):
+        &quot;&quot;&quot; Encodes a tree to a single string.
+        :type root: TreeNode
+        :rtype: str
+        &quot;&quot;&quot;
+        def rserialize(root, string):
+            &quot;&quot;&quot; a recursive helper function for the serialize() function.&quot;&quot;&quot;
+            # check base case
+            if root is None:
+                string += 'None,'
+            else:
+                string += str(root.val) + ','
+                string = rserialize(root.left, string)
+                string = rserialize(root.right, string)
+            return string
+        
+        return rserialize(root, '')    
+
+    def deserialize(self, data):
+        &quot;&quot;&quot;Decodes your encoded data to tree.
+        :type data: str
+        :rtype: TreeNode
+        &quot;&quot;&quot;
+        def rdeserialize(l):
+            &quot;&quot;&quot; a recursive helper function for deserialization.&quot;&quot;&quot;
+            if l[0] == 'None':
+                l.pop(0)
+                return None
+                
+            root = TreeNode(l[0])
+            l.pop(0)
+            root.left = rdeserialize(l)
+            root.right = rdeserialize(l)
+            return root
+
+        data_list = data.split(',')
+        root = rdeserialize(data_list)
+        return root
+
+# V1
+# IDEA : same as LC 297
+# https://leetcode.com/problems/serialize-and-deserialize-bst/discuss/93283/Python-solution-using-BST-property
+class Codec:
+
+    def serialize(self, root):
+        vals = []
+        self._preorder(root, vals)
+        return ','.join(vals)
+        
+    def _preorder(self, node, vals):
+        if node:
+            vals.append(str(node.val))
+            self._preorder(node.left, vals)
+            self._preorder(node.right, vals)
+        
+    def deserialize(self, data):
+        vals = collections.deque(map(int, data.split(','))) if data else []
+        return self._build(vals, -float('inf'), float('inf'))
+
+    def _build(self, vals, minVal, maxVal):
+        if vals and minVal &lt; vals[0] &lt; maxVal:
+            val = vals.popleft()
+            root = TreeNode(val)
+            root.left = self._build(vals, minVal, val)
+            root.right = self._build(vals, val, maxVal)
+            return root
+        else:
+            return None
+</code></pre>
+<h3 id="2-12-serialize-and-deserialize-bst" tabindex="-1"><a class="header-anchor" href="#2-12-serialize-and-deserialize-bst"><span>2-12) Serialize and Deserialize BST</span></a></h3>
+<pre><code class="language-python"># LC 449. Serialize and Deserialize BST
+# V0
+# IDEA : BFS + queue op
+class Codec:
+    def serialize(self, root):
+        if not root:
+            return '{}'
+
+        res = [root.val]
+        q = [root]
+
+        while q:
+            new_q = []
+            for i in range(len(q)):
+                tmp = q.pop(0)
+                if tmp.left:
+                    q.append(tmp.left)
+                    res.extend( [tmp.left.val] )
+                else:
+                    res.append('#')
+                if tmp.right:
+                    q.append(tmp.right)
+                    res.extend( [tmp.right.val] )
+                else:
+                    res.append('#')
+
+        while res and res[-1] == '#':
+                    res.pop()
+
+        return '{' + ','.join(map(str, res)) + '}' 
+
+
+    def deserialize(self, data):
+        if data == '{}':
+            return
+
+        nodes = [ TreeNode(x) for x in data[1:-1].split(&quot;,&quot;) ]
+        root = nodes.pop(0)
+        p = [root]
+        while p:
+            new_p = []
+            for n in p:
+                if nodes:
+                    left_node = nodes.pop(0)
+                    if left_node.val != '#':
+                        n.left = left_node
+                        new_p.append(n.left)
+                    else:
+                        n.left = None
+                if nodes:
+                    right_node = nodes.pop(0)
+                    if right_node.val != '#':
+                        n.right = right_node
+                        new_p.append(n.right)
+                    else:
+                        n.right = None
+            p = new_p 
+             
+        return root
+
+# V1
+# IDEA : same as LC 297
+# https://leetcode.com/problems/serialize-and-deserialize-bst/discuss/93283/Python-solution-using-BST-property
+class Codec:
+
+    def serialize(self, root):
+        vals = []
+        self._preorder(root, vals)
+        return ','.join(vals)
+        
+    def _preorder(self, node, vals):
+        if node:
+            vals.append(str(node.val))
+            self._preorder(node.left, vals)
+            self._preorder(node.right, vals)
+        
+    def deserialize(self, data):
+        vals = collections.deque(map(int, data.split(','))) if data else []
+        return self._build(vals, -float('inf'), float('inf'))
+
+    def _build(self, vals, minVal, maxVal):
+        if vals and minVal &lt; vals[0] &lt; maxVal:
+            val = vals.popleft()
+            root = TreeNode(val)
+            root.left = self._build(vals, minVal, val)
+            root.right = self._build(vals, val, maxVal)
+            return root
+        else:
+            return None
+</code></pre>
+<h3 id="2-12-number-of-closed-islands-2-pass-dfs" tabindex="-1"><a class="header-anchor" href="#2-12-number-of-closed-islands-2-pass-dfs"><span>2-12) Number of Closed Islands (2-Pass DFS)</span></a></h3>
+<pre><code class="language-java">// java
+// LC 1254
+// V0
+// IDEA: 2-Pass DFS (Boundary Elimination)
+/**
+ * Algorithm:
+ * Pass 1: Start from all boundary cells and flood-fill to eliminate
+ *         all islands connected to the boundary (these cannot be closed)
+ * Pass 2: Count remaining land cells as closed islands
+ *
+ * Time: O(m×n), Space: O(m×n) for recursion stack
+ */
+public int closedIsland(int[][] grid) {
+    if (grid == null || grid.length == 0) {
+        return 0;
+    }
+
+    int rows = grid.length;
+    int cols = grid[0].length;
+
+    // Pass 1: Eliminate boundary-connected islands
+    // Flood top and bottom borders
+    for (int c = 0; c &lt; cols; c++) {
+        flood(grid, 0, c);           // Top border
+        flood(grid, rows - 1, c);    // Bottom border
+    }
+
+    // Flood left and right borders
+    for (int r = 0; r &lt; rows; r++) {
+        flood(grid, r, 0);           // Left border
+        flood(grid, r, cols - 1);    // Right border
+    }
+
+    // Pass 2: Count closed islands
+    int count = 0;
+    for (int r = 1; r &lt; rows - 1; r++) {
+        for (int c = 1; c &lt; cols - 1; c++) {
+            if (grid[r][c] == 0) {
+                count++;
+                flood(grid, r, c);  // Mark entire island
+            }
+        }
+    }
+
+    return count;
+}
+
+private void flood(int[][] grid, int r, int c) {
+    int rows = grid.length;
+    int cols = grid[0].length;
+
+    // Base case: out of bounds or water
+    if (r &lt; 0 || r &gt;= rows || c &lt; 0 || c &gt;= cols || grid[r][c] == 1) {
+        return;
+    }
+
+    grid[r][c] = 1;  // Mark land as water (visited)
+
+    // Flood 4-directionally
+    flood(grid, r + 1, c);
+    flood(grid, r - 1, c);
+    flood(grid, r, c + 1);
+    flood(grid, r, c - 1);
+}
+</code></pre>
+<pre><code class="language-python"># python
+# LC 1254
+def closedIsland(grid):
+    &quot;&quot;&quot;
+    2-Pass DFS approach
+    &quot;&quot;&quot;
+    if not grid or not grid[0]:
+        return 0
+
+    rows, cols = len(grid), len(grid[0])
+
+    def flood(r, c):
+        if r &lt; 0 or r &gt;= rows or c &lt; 0 or c &gt;= cols or grid[r][c] == 1:
+            return
+        grid[r][c] = 1
+        flood(r + 1, c)
+        flood(r - 1, c)
+        flood(r, c + 1)
+        flood(r, c - 1)
+
+    # Pass 1: Eliminate boundary islands
+    for c in range(cols):
+        flood(0, c)
+        flood(rows - 1, c)
+
+    for r in range(rows):
+        flood(r, 0)
+        flood(r, cols - 1)
+
+    # Pass 2: Count closed islands
+    count = 0
+    for r in range(1, rows - 1):
+        for c in range(1, cols - 1):
+            if grid[r][c] == 0:
+                count += 1
+                flood(r, c)
+
+    return count
+</code></pre>
+<h3 id="2-13-pacific-atlantic-water-flow" tabindex="-1"><a class="header-anchor" href="#2-13-pacific-atlantic-water-flow"><span>2-13) Pacific Atlantic Water Flow</span></a></h3>
+<pre><code class="language-java">// java
+// LC 417
+// V0
+// IDEA : DFS (fixed by GPT)
+
+public List&lt;List&lt;Integer&gt;&gt; pacificAtlantic(int[][] heights) {
+
+    if (heights == null || heights.length == 0 || heights[0].length == 0) {
+        return new ArrayList&lt;&gt;();
+    }
+
+    int l = heights.length;
+    int w = heights[0].length;
+
+    /**
+     *
+     * The pacificReachable and atlanticReachable arrays are used to keep track
+     * of which cells in the matrix can reach the Pacific and Atlantic oceans, respectively.
+     *
+     *
+     * - pacificReachable[i][j] will be true if water
+     *   can flow from cell (i, j) to the Pacific Ocean.
+     *   The Pacific Ocean is on the top and left edges of the matrix.
+     *
+     * - atlanticReachable[i][j] will be true if water
+     *   can flow from cell (i, j) to the Atlantic Ocean.
+     *   The Atlantic Ocean is on the bottom and right edges of the matrix.
+     *
+     *
+     * NOTE !!!!
+     *
+     * The pacificReachable and atlanticReachable arrays serve a dual purpose:
+     *
+     * Tracking Reachability: They track whether each cell can reach the respective ocean.
+     *
+     * Tracking Visited Cells: They also help in tracking whether a cell has already
+     *                         been visited during the depth-first search (DFS)
+     *                         to prevent redundant work and infinite loops.
+     *
+     *
+     *   NOTE !!!
+     *
+     *    we use `boolean[][]` to track if a cell is reachable
+     */
+    boolean[][] pacificReachable = new boolean[l][w];
+    boolean[][] atlanticReachable = new boolean[l][w];
+
+    // check on x-axis
+    /**
+     *  NOTE !!!
+     *
+     *   we loop EVERY `cell` at x-axis  ( (x_1, 0), (x_2, 0), .... (x_1, l - 1), (x_2, l - 1) ... )
+     *
+     */
+    for (int x = 0; x &lt; w; x++) {
+        dfs(heights, pacificReachable, 0, x);
+        dfs(heights, atlanticReachable, l - 1, x);
+    }
+
+    // check on y-axis
+    /**
+     *  NOTE !!!
+     *
+     *   we loop EVERY `cell` at y-axis  (  (0, y_1), (0, y_2), .... (w-1, y_1), (w-1, y_2), ... )
+     *
+     */
+    for (int y = 0; y &lt; l; y++) {
+        dfs(heights, pacificReachable, y, 0);
+        dfs(heights, atlanticReachable, y, w - 1);
+    }
+
+    List&lt;List&lt;Integer&gt;&gt; commonCells = new ArrayList&lt;&gt;();
+    for (int i = 0; i &lt; l; i++) {
+        for (int j = 0; j &lt; w; j++) {
+            if (pacificReachable[i][j] &amp;&amp; atlanticReachable[i][j]) {
+                commonCells.add(Arrays.asList(i, j));
+            }
+        }
+    }
+    return commonCells;
+}
+
+/**
+ *  NOTE !!!
+ *
+ *   this dfs func return NOTHING,
+ *   e.g. it updates the matrix value `in place`
+ *
+ *   example:  we pass `pacificReachable` as param to dfs,
+ *             it modifies values in pacificReachable in place,
+ *             but NOT return pacificReachable as response
+ */
+private void dfs(int[][] heights, boolean[][] reachable, int y, int x) {
+
+    int l = heights.length;
+    int w = heights[0].length;
+
+    reachable[y][x] = true;
+
+    int[][] directions = new int[][]{{0, 1}, {1, 0}, {-1, 0}, {0, -1}};
+    for (int[] dir : directions) {
+        int newY = y + dir[0];
+        int newX = x + dir[1];
+
+        /**
+         *  NOTE !!!  only meet below conditions, then do recursion call
+         *
+         *  1. newX, newY still in range
+         *  2. newX, newY is still not reachable (!reachable[newY][newX])
+         *  3. heights[newY][newX] &gt;= heights[y][x]
+         *
+         *
+         *  NOTE !!!
+         *
+         *  The condition !reachable[newY][newX] in the dfs function
+         *  ensures that each cell is only processed once
+         *
+         *  1. Avoid Infinite Loops
+         *  2. Efficiency
+         *  3. Correctness
+         *
+         *
+         *  NOTE !!! &quot;inverse&quot; comparison
+         *
+         *  we use the &quot;inverse&quot; comparison, e.g.  heights[newY][newX] &gt;= heights[y][x]
+         *  so we start from &quot;cur point&quot; (heights[y][x]), and compare with &quot;next point&quot; (heights[newY][newX])
+         *  if &quot;next point&quot; is &quot;higher&quot; than &quot;cur point&quot;  (e.g. heights[newY][newX] &gt;= heights[y][x])
+         *  -&gt; then means water at &quot;next point&quot; can flow to &quot;cur point&quot;
+         *  -&gt; then we keep track back to next point of then &quot;next point&quot;
+         *  -&gt; repeat ...
+         */
+        if (newY &gt;= 0 &amp;&amp; newY &lt; l &amp;&amp; newX &gt;= 0 &amp;&amp; newX &lt; w &amp;&amp; !reachable[newY][newX] &amp;&amp; heights[newY][newX] &gt;= heights[y][x]) {
+            dfs(heights, reachable, newY, newX);
+        }
+    }
+} 
+</code></pre>
+<h3 id="2-12-minesweeper" tabindex="-1"><a class="header-anchor" href="#2-12-minesweeper"><span>2-12) Minesweeper</span></a></h3>
+<pre><code class="language-java">// java
+// LC 529
+
+// (there is also BFS solution)
+
+// V1
+// IDEA: DFS + ARRAY OP (GPT)
+public char[][] updateBoard_1(char[][] board, int[] click) {
+    int rows = board.length;
+    int cols = board[0].length;
+
+    int x = click[0], y = click[1];
+
+    // Edge case: 1x1 grid
+    if (rows == 1 &amp;&amp; cols == 1) {
+        if (board[0][0] == 'M') {
+            board[0][0] = 'X';
+        } else {
+            board[0][0] = 'B'; // Fix: properly set 'B' if it's 'E'
+        }
+        return board;
+    }
+
+    // If a mine is clicked, mark as 'X'
+    if (board[x][y] == 'M') {
+        board[x][y] = 'X';
+        return board;
+    }
+
+    // Otherwise, reveal cells recursively
+    reveal_1(board, x, y);
+    return board;
+}
+
+private void reveal_1(char[][] board, int x, int y) {
+    int rows = board.length;
+    int cols = board[0].length;
+
+// Boundary check and already revealed check
+/** NOTE !!!
+ *
+ *  - 1) 'E' represents an unrevealed empty square,
+ *
+ *  - 2) board[x][y] != 'E'
+ *      -&gt; ensures that we only process unrevealed empty cells ('E')
+ *         and avoid unnecessary recursion.
+ *
+ *   - 3) board[x][y] != 'E'
+ *   •  Avoids re-processing non-‘E’ cells
+ *   •  The board can have:
+ *      •   'M' → Mine (already handled separately)
+ *      •   'X' → Clicked mine (game over case)
+ *      •   'B' → Blank (already processed)
+ *      •   '1' to '8' → Number (already processed)
+ *  •   If a cell is not 'E', it means:
+ *      •   It has already been processed
+ *      •   It does not need further expansion
+ *  •   This prevents infinite loops and redundant checks.
+ *
+ *
+ *  - 4) example:
+ *
+ *     input:
+ *          E E E
+ *          E M E
+ *          E E E
+ *
+ *   Click at (0,0)
+ *      1.  We call reveal(board, 0, 0), which:
+ *          •   Counts 1 mine nearby → Updates board[0][0] = '1'
+ *          •   Does NOT recurse further, avoiding unnecessary work.
+ *
+ *      What If We Didn’t Check board[x][y] != 'E'?
+ *          •   It might try to expand into already processed cells, leading to redundant computations or infinite recursion.
+ *
+ */
+if (x &lt; 0 || x &gt;= rows || y &lt; 0 || y &gt;= cols || board[x][y] != 'E') {
+        return;
+    }
+
+    // Directions for 8 neighbors
+    int[][] directions = {
+            { -1, -1 }, { -1, 0 }, { -1, 1 },
+            { 0, -1 }, { 0, 1 },
+            { 1, -1 }, { 1, 0 }, { 1, 1 }
+    };
+
+    // Count adjacent mines
+    int mineCount = 0;
+    for (int[] dir : directions) {
+        int newX = x + dir[0];
+        int newY = y + dir[1];
+        if (newX &gt;= 0 &amp;&amp; newX &lt; rows &amp;&amp; newY &gt;= 0 &amp;&amp; newY &lt; cols &amp;&amp; board[newX][newY] == 'M') {
+            mineCount++;
+        }
+    }
+
+    // If there are adjacent mines, show count
+    if (mineCount &gt; 0) {
+        board[x][y] = (char) ('0' + mineCount);
+    } else {
+        // Otherwise, reveal this cell and recurse on neighbors
+        board[x][y] = 'B';
+        for (int[] dir : directions) {
+            reveal_1(board, x + dir[0], y + dir[1]);
+        }
+    }
+}
+</code></pre>
+<h3 id="2-13-k-th-largest-perfect-subtree-size-in-binary-tree" tabindex="-1"><a class="header-anchor" href="#2-13-k-th-largest-perfect-subtree-size-in-binary-tree"><span>2-13) K-th Largest Perfect Subtree Size in Binary Tree</span></a></h3>
+<pre><code class="language-java">// java
+// LC 3319
+
+// V0-1
+// IDEA: DFS (fixed by gpt)
+//  Time Complexity: O(N log N)
+//  Space Complexity: O(N)
+/**
+*  Objective recap:
+*
+*   We want to:
+*    •   Find all perfect binary subtrees in the given tree.
+*    •   A perfect binary tree is one where:
+*        •   Every node has 0 or 2 children (i.e., full),
+*        •   All leaf nodes are at the `same depth`.
+*    •   Return the k-th largest size among these perfect subtrees.
+*    •   If there are fewer than k perfect subtrees, return -1.
+*
+*/
+// This is a class-level list that stores the sizes of all perfect subtrees we discover during traversal.
+List&lt;Integer&gt; perfectSizes = new ArrayList&lt;&gt;();
+
+public int kthLargestPerfectSubtree_0_1(TreeNode root, int k) {
+    dfs(root);
+    if (perfectSizes.size() &lt; k)
+        return -1;
+
+    Collections.sort(perfectSizes, Collections.reverseOrder());
+    return perfectSizes.get(k - 1);
+}
+
+// Helper class to store information about each subtree
+/**
+*
+* It returns a helper object SubtreeInfo, which contains:
+*    •   height: depth of the subtree rooted at node.
+*    •   size: number of nodes in the subtree.
+*    •   isPerfect: boolean indicating whether this subtree is perfect.
+*
+*/
+private static class SubtreeInfo {
+    int height;
+    int size;
+    boolean isPerfect;
+
+    SubtreeInfo(int height, int size, boolean isPerfect) {
+        this.height = height;
+        this.size = size;
+        this.isPerfect = isPerfect;
+    }
+}
+
+/**
+* Inside dfs():
+*    1.  Base case:
+*        •   If node == null, we return a SubtreeInfo with height 0, size 0, and isPerfect = true.
+*    2.  Recurse on left and right children.
+*    3.  Check if the subtree rooted at this node is perfect:
+*
+*/
+private SubtreeInfo dfs(TreeNode node) {
+    if (node == null) {
+        return new SubtreeInfo(0, 0, true);
+    }
+
+    SubtreeInfo left = dfs(node.left);
+    SubtreeInfo right = dfs(node.right);
+
+/**  NOTE !!!  below logic:
+ *
+ * This ensures:
+ *  •   Both left and right subtrees are perfect.
+ *  •   Their `heights` are the same → leaves are at the `same level`.
+ */
+boolean isPerfect = left.isPerfect &amp;&amp; right.isPerfect
+        &amp;&amp; (left.height == right.height);
+
+
+    int size = left.size + right.size + 1;
+    int height = Math.max(left.height, right.height) + 1;
+
+    /**
+     *  NOTE !!!
+     *
+     *  If the current subtree is perfect, we record its size:
+     *
+     */
+    if (isPerfect) {
+        perfectSizes.add(size);
+    }
+
+    return new SubtreeInfo(height, size, isPerfect);
+}
+</code></pre>
+<h2 id="pattern-selection-strategy" tabindex="-1"><a class="header-anchor" href="#pattern-selection-strategy"><span>Pattern Selection Strategy</span></a></h2>
+<pre><code>DFS Problem Analysis Flowchart:
+
+1. Is it a tree/graph traversal problem?
+   ├── YES → Check structure type
+   │   ├── Tree? → Use Tree Templates (1, 3, 5, 6)
+   │   │   ├── Need specific order? → Template 1 (Traversal)
+   │   │   ├── Need paths? → Template 3 (Path Finding)
+   │   │   ├── Need to modify? → Template 5 (Modification)
+   │   │   └── Need subtree info? → Template 6 (Bottom-up)
+   │   └── Graph? → Use Graph Template (2)
+   │       ├── Has cycles? → Add visited set
+   │       ├── Need all paths? → Track path
+   │       └── Multi-source? → Start from all sources
+   └── NO → Continue to 2
+
+2. Is it a combinatorial problem?
+   ├── YES → Use Backtracking Template (4)
+   │   ├── Permutations? → Swap elements
+   │   ├── Combinations? → Start index
+   │   ├── Subsets? → Include/exclude
+   │   └── Constraint satisfaction? → Check validity
+   └── NO → Continue to 3
+
+3. Does it require exploring all possibilities?
+   ├── YES → Use DFS with appropriate state tracking
+   │   ├── Grid problem? → 4-directional DFS
+   │   ├── String problem? → Index-based DFS
+   │   └── Decision tree? → Choice-based DFS
+   └── NO → Consider different algorithm
+
+4. Special considerations:
+   ├── Need shortest path? → Consider BFS instead
+   ├── Has optimal substructure? → Consider DP
+   └── Need all solutions? → DFS with backtracking
+</code></pre>
+<h3 id="decision-framework" tabindex="-1"><a class="header-anchor" href="#decision-framework"><span>Decision Framework</span></a></h3>
+<ol>
+<li><strong>Identify problem type</strong>: Tree, graph, grid, or combinatorial</li>
+<li><strong>Choose template</strong>: Match problem requirements to template</li>
+<li><strong>Handle state</strong>: Decide what to track (visited, path, sum)</li>
+<li><strong>Optimize</strong>: Consider memoization, pruning, early termination</li>
+</ol>
+<h2 id="summary-quick-reference" tabindex="-1"><a class="header-anchor" href="#summary-quick-reference"><span>Summary &amp; Quick Reference</span></a></h2>
+<h3 id="complexity-quick-reference" tabindex="-1"><a class="header-anchor" href="#complexity-quick-reference"><span>Complexity Quick Reference</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>Pattern</th>
+<th>Time Complexity</th>
+<th>Space Complexity</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Tree Traversal</td>
+<td>O(n)</td>
+<td>O(h)</td>
+<td>h = height</td>
+</tr>
+<tr>
+<td>Graph DFS</td>
+<td>O(V + E)</td>
+<td>O(V)</td>
+<td>V = vertices, E = edges</td>
+</tr>
+<tr>
+<td>Grid DFS</td>
+<td>O(m × n)</td>
+<td>O(m × n)</td>
+<td>m×n grid</td>
+</tr>
+<tr>
+<td>Backtracking</td>
+<td>O(b^d)</td>
+<td>O(d)</td>
+<td>b = branching, d = depth</td>
+</tr>
+<tr>
+<td>Path Finding</td>
+<td>O(n)</td>
+<td>O(h)</td>
+<td>May need O(n) for all paths</td>
+</tr>
+<tr>
+<td>Bottom-up</td>
+<td>O(n)</td>
+<td>O(h)</td>
+<td>Single pass with aggregation</td>
+</tr>
+</tbody>
+</table>
+<h3 id="template-quick-reference" tabindex="-1"><a class="header-anchor" href="#template-quick-reference"><span>Template Quick Reference</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>Template</th>
+<th>Best For</th>
+<th>Avoid When</th>
+<th>Key Pattern</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Tree Traversal</td>
+<td>Visiting all nodes</td>
+<td>Need shortest path</td>
+<td>Pre/in/post order</td>
+</tr>
+<tr>
+<td>Graph DFS</td>
+<td>Connected components</td>
+<td>Has negative cycles</td>
+<td>Visited set</td>
+</tr>
+<tr>
+<td>Path Finding</td>
+<td>Root-to-leaf paths</td>
+<td>Any path works</td>
+<td>Track &amp; backtrack</td>
+</tr>
+<tr>
+<td>Backtracking</td>
+<td>All combinations</td>
+<td>Single solution needed</td>
+<td>Make/unmake choice</td>
+</tr>
+<tr>
+<td>Modification</td>
+<td>Tree editing</td>
+<td>Read-only required</td>
+<td>Bottom-up update</td>
+</tr>
+<tr>
+<td>Bottom-up</td>
+<td>Subtree aggregation</td>
+<td>Simple traversal</td>
+<td>Post-order return</td>
+</tr>
+</tbody>
+</table>
+<h3 id="common-patterns-tricks" tabindex="-1"><a class="header-anchor" href="#common-patterns-tricks"><span>Common Patterns &amp; Tricks</span></a></h3>
+<h4 id="pattern-global-variable-for-optimization" tabindex="-1"><a class="header-anchor" href="#pattern-global-variable-for-optimization"><span><strong>Pattern: Global Variable for Optimization</strong></span></a></h4>
+<pre><code class="language-python">class Solution:
+    def maxPathSum(self, root):
+        self.max_sum = float('-inf')
+        
+        def dfs(node):
+            if not node:
+                return 0
+            left = max(0, dfs(node.left))
+            right = max(0, dfs(node.right))
+            self.max_sum = max(self.max_sum, left + right + node.val)
+            return max(left, right) + node.val
+        
+        dfs(root)
+        return self.max_sum
+</code></pre>
+<h4 id="pattern-path-tracking-with-backtracking" tabindex="-1"><a class="header-anchor" href="#pattern-path-tracking-with-backtracking"><span><strong>Pattern: Path Tracking with Backtracking</strong></span></a></h4>
+<pre><code class="language-python">def all_paths(root):
+    result = []
+    
+    def dfs(node, path):
+        if not node:
+            return
+        
+        path.append(node.val)  # Make choice
+        
+        if not node.left and not node.right:
+            result.append(path[:])  # Found complete path
+        
+        dfs(node.left, path)
+        dfs(node.right, path)
+        
+        path.pop()  # Unmake choice (backtrack)
+    
+    dfs(root, [])
+    return result
+</code></pre>
+<h4 id="pattern-grid-dfs-with-directions" tabindex="-1"><a class="header-anchor" href="#pattern-grid-dfs-with-directions"><span><strong>Pattern: Grid DFS with Directions</strong></span></a></h4>
+<pre><code class="language-python">def grid_dfs(grid, x, y, visited):
+    if x &lt; 0 or x &gt;= len(grid) or y &lt; 0 or y &gt;= len(grid[0]):
+        return
+    if (x, y) in visited or grid[x][y] == 0:
+        return
+    
+    visited.add((x, y))
+    
+    # 4-directional movement
+    directions = [(0, 1), (1, 0), (0, -1), (-1, 0)]
+    for dx, dy in directions:
+        grid_dfs(grid, x + dx, y + dy, visited)
+</code></pre>
+<h3 id="problem-solving-steps" tabindex="-1"><a class="header-anchor" href="#problem-solving-steps"><span>Problem-Solving Steps</span></a></h3>
+<ol>
+<li><strong>Identify pattern</strong>: Tree, graph, backtracking, or path</li>
+<li><strong>Choose template</strong>: Select appropriate DFS template</li>
+<li><strong>Track state</strong>: Visited set, path list, or global variable</li>
+<li><strong>Handle base cases</strong>: Null nodes, boundaries, target found</li>
+<li><strong>Test edge cases</strong>: Empty input, single node, cycles</li>
+</ol>
+<h3 id="common-mistakes-tips" tabindex="-1"><a class="header-anchor" href="#common-mistakes-tips"><span>Common Mistakes &amp; Tips</span></a></h3>
+<p><strong>🚫 Common Mistakes:</strong></p>
+<ul>
+<li><strong>Forgetting visited set</strong>: Infinite loops in graphs</li>
+<li><strong>Not backtracking</strong>: Incorrect paths in combinatorial problems</li>
+<li><strong>Wrong traversal order</strong>: Using preorder when postorder needed</li>
+<li><strong>Modifying while traversing</strong>: Can break iteration</li>
+<li><strong>Not handling null</strong>: NullPointerException</li>
+<li><strong>⚠️ CRITICAL: Not returning immediately when path found</strong>: When searching for a path in DFS, must return true immediately when found (see detailed explanation below)</li>
+</ul>
+<p><strong>✅ Best Practices:</strong></p>
+<ul>
+<li><strong>Use visited set for graphs</strong>: Prevent cycles</li>
+<li><strong>Clone paths</strong>: <code>path[:]</code> when storing results</li>
+<li><strong>Check boundaries first</strong>: In grid problems</li>
+<li><strong>Use meaningful names</strong>: <code>visited</code> not <code>v</code></li>
+<li><strong>Consider iterative</strong>: For deep recursion</li>
+</ul>
+<h3 id="interview-tips" tabindex="-1"><a class="header-anchor" href="#interview-tips"><span>Interview Tips</span></a></h3>
+<ol>
+<li><strong>Clarify problem type</strong>: Tree or graph? Cycles possible?</li>
+<li><strong>State approach</strong>: “I’ll use DFS because…”</li>
+<li><strong>Discuss complexity</strong>: Time and space analysis</li>
+<li><strong>Handle edge cases</strong>: Empty, single element, cycles</li>
+<li><strong>Optimize if needed</strong>: Memoization, pruning</li>
+</ol>
+<hr>
+<h3 id="critical-dfs-early-return-pattern-path-finding" tabindex="-1"><a class="header-anchor" href="#critical-dfs-early-return-pattern-path-finding"><span>⚠️ CRITICAL: DFS Early Return Pattern (Path Finding)</span></a></h3>
+<p><strong>Problem</strong>: When searching for a path in DFS, what’s the difference between these two approaches?</p>
+<h4 id="wrong-approach-not-checking-return-value" tabindex="-1"><a class="header-anchor" href="#wrong-approach-not-checking-return-value"><span>❌ WRONG Approach: Not Checking Return Value</span></a></h4>
+<pre><code class="language-java">private boolean dfsPathVisitor(int node, int destination, Map&lt;Integer, List&lt;Integer&gt;&gt; map, boolean[] visited) {
+    if (node == destination) return true;
+
+    visited[node] = true;
+
+    for (int next : map.get(node)) {
+        if (!visited[next]) {
+            // ❌ WRONG: Ignoring return value - continues searching even after path found!
+            dfsPathVisitor(next, destination, map, visited);
+        }
+    }
+
+    return false;  // Will ALWAYS return false (except for direct hits)
+}
+</code></pre>
+<h4 id="correct-approach-early-return-on-success" tabindex="-1"><a class="header-anchor" href="#correct-approach-early-return-on-success"><span>✅ CORRECT Approach: Early Return on Success</span></a></h4>
+<pre><code class="language-java">private boolean dfsPathVisitor(int node, int destination, Map&lt;Integer, List&lt;Integer&gt;&gt; map, boolean[] visited) {
+    if (node == destination) return true;
+
+    visited[node] = true;
+
+    for (int next : map.get(node)) {
+        if (!visited[next]) {
+            // ✅ CORRECT: Return immediately when path found!
+            if (dfsPathVisitor(next, destination, map, visited)) {
+                return true;
+            }
+        }
+    }
+
+    return false;  // Only return false if ALL paths explored
+}
+</code></pre>
+<hr>
+<h3 id="concrete-example-why-early-return-matters" tabindex="-1"><a class="header-anchor" href="#concrete-example-why-early-return-matters"><span>📊 Concrete Example: Why Early Return Matters</span></a></h3>
+<p><strong>Test Case:</strong></p>
+<pre><code>Graph: 0 -- 1 -- 2 -- 3
+       |         |
+       4 -------- 5
+
+Adjacency List:
+0: [1, 4]
+1: [0, 2]
+2: [1, 3, 5]
+3: [2]
+4: [0, 5]
+5: [2, 4]
+
+Task: Find path from 0 to 3
+</code></pre>
+<hr>
+<h4 id="scenario-1-wrong-without-early-return" tabindex="-1"><a class="header-anchor" href="#scenario-1-wrong-without-early-return"><span>Scenario 1: ❌ WRONG (Without Early Return)</span></a></h4>
+<p><strong>Call Stack Trace:</strong></p>
+<pre><code>1. dfsPathVisitor(0, 3, ..., visited=[])
+   → visited = [0]
+   → Loop neighbors: [1, 4]
+
+   2. dfsPathVisitor(1, 3, ..., visited=[0])  // First neighbor
+      → visited = [0, 1]
+      → Loop neighbors: [0, 2]  (skip 0, already visited)
+
+      3. dfsPathVisitor(2, 3, ..., visited=[0,1])
+         → visited = [0, 1, 2]
+         → Loop neighbors: [1, 3, 5]  (skip 1)
+
+         4. dfsPathVisitor(3, 3, ..., visited=[0,1,2])
+            → ✅ Found! Returns TRUE
+
+         ← Returns TRUE to level 3
+
+      ← But level 2 IGNORES the return value!
+      ← Continues checking neighbor 5
+
+      5. dfsPathVisitor(5, 3, ..., visited=[0,1,2])
+         → visited = [0, 1, 2, 5]
+         → Loop neighbors: [2, 4]  (both visited)
+         ← Returns FALSE
+
+      ← Level 2 finishes loop, returns FALSE
+
+   ← Level 1 receives FALSE from neighbor 1
+
+   6. dfsPathVisitor(4, 3, ..., visited=[0,1,2,5])  // Second neighbor
+      → visited = [0, 1, 2, 5, 4]
+      → Loop neighbors: [0, 5]  (both visited)
+      ← Returns FALSE
+
+   ← Level 0 finishes loop, returns FALSE
+
+❌ FINAL RESULT: FALSE (Path exists but not detected!)
+</code></pre>
+<p><strong>Why it fails:</strong></p>
+<ul>
+<li>Found destination at step 4 (returned TRUE)</li>
+<li>But parent call at step 3 <strong>ignored</strong> the TRUE result</li>
+<li>Continued exploring other neighbors unnecessarily</li>
+<li>Eventually returned FALSE because other paths didn’t reach destination</li>
+</ul>
+<hr>
+<h4 id="scenario-2-correct-with-early-return" tabindex="-1"><a class="header-anchor" href="#scenario-2-correct-with-early-return"><span>Scenario 2: ✅ CORRECT (With Early Return)</span></a></h4>
+<p><strong>Call Stack Trace:</strong></p>
+<pre><code>1. dfsPathVisitor(0, 3, ..., visited=[])
+   → visited = [0]
+   → Loop neighbors: [1, 4]
+
+   2. dfsPathVisitor(1, 3, ..., visited=[0])  // First neighbor
+      → visited = [0, 1]
+      → Loop neighbors: [0, 2]  (skip 0)
+
+      3. dfsPathVisitor(2, 3, ..., visited=[0,1])
+         → visited = [0, 1, 2]
+         → Loop neighbors: [1, 3, 5]  (skip 1)
+
+         4. dfsPathVisitor(3, 3, ..., visited=[0,1,2])
+            → ✅ Found! Returns TRUE
+
+         ← Returns TRUE to level 3
+
+      ← Level 2 checks: if (TRUE) return true;  ✅
+      ← Returns TRUE immediately (skips remaining neighbors!)
+
+   ← Level 1 checks: if (TRUE) return true;  ✅
+   ← Returns TRUE immediately (skips neighbor 4!)
+
+✅ FINAL RESULT: TRUE (Correct!)
+</code></pre>
+<p><strong>Why it works:</strong></p>
+<ul>
+<li>Found destination at step 4 (returned TRUE)</li>
+<li>Parent call at step 3 <strong>checked</strong> the return value</li>
+<li>Immediately returned TRUE without exploring other paths</li>
+<li>Propagated TRUE all the way back to the root</li>
+</ul>
+<hr>
+<h3 id="key-insights" tabindex="-1"><a class="header-anchor" href="#key-insights"><span>🎯 Key Insights</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>Aspect</th>
+<th>❌ Without Early Return</th>
+<th>✅ With Early Return</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Correctness</strong></td>
+<td>❌ Returns FALSE even when path exists</td>
+<td>✅ Returns TRUE when path found</td>
+</tr>
+<tr>
+<td><strong>Efficiency</strong></td>
+<td>Explores ALL paths unnecessarily</td>
+<td>Stops immediately upon finding path</td>
+</tr>
+<tr>
+<td><strong>Time Complexity</strong></td>
+<td>O(V + E) always (full traversal)</td>
+<td>O(V + E) worst case, but often much better</td>
+</tr>
+<tr>
+<td><strong>Use Case</strong></td>
+<td>Collecting ALL paths/results</td>
+<td>Finding ANY path (exists/not exists)</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h3 id="when-to-use-each-pattern" tabindex="-1"><a class="header-anchor" href="#when-to-use-each-pattern"><span>📝 When to Use Each Pattern</span></a></h3>
+<h4 id="pattern-1-early-return-path-existence-check" tabindex="-1"><a class="header-anchor" href="#pattern-1-early-return-path-existence-check"><span>Pattern 1: Early Return (Path Existence Check)</span></a></h4>
+<pre><code class="language-java">// Use when: &quot;Does path exist?&quot; &quot;Can we reach?&quot; &quot;Is there a route?&quot;
+if (dfs(next)) {
+    return true;  // Found one path - that's enough!
+}
+</code></pre>
+<p><strong>Examples:</strong> LC 1971 (Path Exists), LC 797 (All Paths), LC 79 (Word Search)</p>
+<h4 id="pattern-2-continue-without-return-collecting-all-results" tabindex="-1"><a class="header-anchor" href="#pattern-2-continue-without-return-collecting-all-results"><span>Pattern 2: Continue Without Return (Collecting All Results)</span></a></h4>
+<pre><code class="language-java">// Use when: &quot;Find ALL paths&quot; &quot;Count all solutions&quot; &quot;Collect all combinations&quot;
+dfs(next);  // Don't return early - need to explore all branches
+</code></pre>
+<p><strong>Examples:</strong> LC 257 (All Root-to-Leaf Paths), LC 113 (Path Sum II), LC 22 (Generate Parentheses)</p>
+<hr>
+<h3 id="real-implementation-reference" tabindex="-1"><a class="header-anchor" href="#real-implementation-reference"><span>🔍 Real Implementation Reference</span></a></h3>
+<p>From <strong>LC 1971 - Find if Path Exists in Graph</strong>:</p>
+<pre><code class="language-java">private boolean dfsPathVisitor(int node, int destination,
+                                Map&lt;Integer, List&lt;Integer&gt;&gt; map,
+                                boolean[] visited) {
+    // Base case: destination reached
+    if (node == destination)
+        return true;
+
+    // Mark current node as visited
+    visited[node] = true;
+
+    // Visit neighbors
+    for (int next : map.get(node)) {
+        if (!visited[next]) {
+            // ✅ CRITICAL: Check return value and return immediately if path found
+            if (dfsPathVisitor(next, destination, map, visited)) {
+                return true;
+            }
+
+            // ❌ WRONG PATTERN (commented out):
+            // if (!dfsPathVisitor(next, destination, map, visited)) {
+            //     return false;  // This would fail for graphs with multiple paths!
+            // }
+        }
+    }
+
+    return false;  // Only return false if ALL neighbors failed
+}
+</code></pre>
+<p><strong>Key Rule:</strong></p>
+<ul>
+<li><strong>Return TRUE eagerly</strong> (as soon as found)</li>
+<li><strong>Return FALSE lazily</strong> (only after exhausting all options)</li>
+</ul>
+<hr>
+<h3 id="related-topics" tabindex="-1"><a class="header-anchor" href="#related-topics"><span>Related Topics</span></a></h3>
+<ul>
+<li><strong>BFS</strong>: When shortest path needed</li>
+<li><strong>Dynamic Programming</strong>: Overlapping subproblems</li>
+<li><strong>Backtracking</strong>: Subset of DFS for combinations</li>
+<li><strong>Union Find</strong>: Alternative for connectivity</li>
+<li><strong>Topological Sort</strong>: DFS application for dependencies</li>
+</ul>
+<h3 id="2-14-number-of-distinct-islands" tabindex="-1"><a class="header-anchor" href="#2-14-number-of-distinct-islands"><span>2-14) Number of Distinct Islands</span></a></h3>
+<pre><code class="language-java">// java
+// LC 694
+// V0
+// IDEA: DFS + Path Signatures (Directional Encoding)
+/**
+ * Problem: Count distinct island shapes (translation-invariant)
+ *
+ * Key Insight: Two islands are the same if one can be translated (NOT rotated/reflected) to match the other
+ *
+ * Solution Approach:
+ * 1. For each island, generate a unique &quot;path signature&quot; encoding its shape
+ * 2. Use a HashSet to count distinct signatures
+ * 3. Signature must be translation-invariant but rotation/reflection-sensitive
+ *
+ * Critical Implementation Details:
+ * - Canonical traversal order (always D, U, R, L)
+ * - Starting point normalization (top-left via grid iteration order)
+ * - Backtracking delimiter ('O') to distinguish shapes
+ */
+public int numDistinctIslands(int[][] grid) {
+    if (grid == null || grid.length == 0 || grid[0].length == 0) {
+        return 0;
+    }
+
+    Set&lt;String&gt; uniqueIslandShapes = new HashSet&lt;&gt;();
+    int rows = grid.length;
+    int cols = grid[0].length;
+
+    // Iterate through grid in fixed order (top-to-bottom, left-to-right)
+    // This ensures the starting point for each island is always the top-left-most cell
+    for (int r = 0; r &lt; rows; r++) {
+        for (int c = 0; c &lt; cols; c++) {
+            // Start DFS only on unvisited land cells
+            if (grid[r][c] == 1) {
+                StringBuilder pathSignature = new StringBuilder();
+                // 'S' marks the start position
+                dfs(grid, r, c, pathSignature, 'S');
+
+                if (pathSignature.length() &gt; 0) {
+                    uniqueIslandShapes.add(pathSignature.toString());
+                }
+            }
+        }
+    }
+
+    return uniqueIslandShapes.size();
+}
+
+/**
+ * DFS with directional encoding
+ *
+ * @param grid The grid, modified in-place (cells set to 0 when visited)
+ * @param r Current row
+ * @param c Current column
+ * @param path StringBuilder to build the signature
+ * @param direction Direction taken to arrive at (r, c)
+ */
+private void dfs(int[][] grid, int r, int c, StringBuilder path, char direction) {
+    int rows = grid.length;
+    int cols = grid[0].length;
+
+    // Base Case 1: Out of bounds
+    if (r &lt; 0 || r &gt;= rows || c &lt; 0 || c &gt;= cols) {
+        return;
+    }
+
+    // Base Case 2: Water (0) or already visited land (already marked as 0)
+    if (grid[r][c] == 0) {
+        return;
+    }
+
+    // 1. Mark the current cell as visited by setting it to water (0)
+    // This prevents double counting and replaces the need for a separate visited array
+    grid[r][c] = 0;
+
+    // 2. Record the direction of movement into this cell
+    path.append(direction);
+
+    // 3. Recurse into neighbors in FIXED order (critical for consistency!)
+    // The order must always be the same to ensure identical islands produce identical signatures
+    dfs(grid, r + 1, c, path, 'D');  // Down
+    dfs(grid, r - 1, c, path, 'U');  // Up
+    dfs(grid, r, c + 1, path, 'R');  // Right
+    dfs(grid, r, c - 1, path, 'L');  // Left
+
+    // 4. Crucial Step: Add an &quot;Out&quot; (O) delimiter when returning from this cell
+    // This marks the end of a branch and distinguishes shapes that follow different paths
+    // Without this, different shapes could produce the same signature!
+    path.append('O');
+}
+</code></pre>
+<pre><code class="language-java">// V1
+// IDEA: Alternative approach using relative coordinates
+/**
+ * Instead of directional encoding, record relative positions from the starting point
+ */
+public int numDistinctIslands_v2(int[][] grid) {
+    if (grid == null || grid.length == 0) return 0;
+    int rows = grid.length, cols = grid[0].length;
+    boolean[][] seen = new boolean[rows][cols];
+    Set&lt;String&gt; shapes = new HashSet&lt;&gt;();
+
+    for (int r = 0; r &lt; rows; r++) {
+        for (int c = 0; c &lt; cols; c++) {
+            if (!seen[r][c] &amp;&amp; grid[r][c] == 1) {
+                StringBuilder sb = new StringBuilder();
+                // Pass starting coordinates (r, c) as origin
+                dfsRelative(grid, seen, r, c, r, c, sb);
+                shapes.add(sb.toString());
+            }
+        }
+    }
+    return shapes.size();
+}
+
+/**
+ * DFS that records relative coordinates from origin (r0, c0)
+ */
+private void dfsRelative(int[][] grid, boolean[][] seen, int r0, int c0, int r, int c, StringBuilder sb) {
+    int rows = grid.length, cols = grid[0].length;
+    if (r &lt; 0 || r &gt;= rows || c &lt; 0 || c &gt;= cols) return;
+    if (seen[r][c] || grid[r][c] != 1) return;
+
+    seen[r][c] = true;
+    // Record relative position: (r - r0, c - c0)
+    // This makes the signature translation-invariant
+    sb.append((r - r0)).append('_').append((c - c0)).append(',');
+
+    // Visit in fixed order (critical!)
+    dfsRelative(grid, seen, r0, c0, r + 1, c, sb);
+    dfsRelative(grid, seen, r0, c0, r - 1, c, sb);
+    dfsRelative(grid, seen, r0, c0, r, c + 1, sb);
+    dfsRelative(grid, seen, r0, c0, r, c - 1, sb);
+}
+</code></pre>
+<pre><code class="language-python"># python
+# LC 694
+# V0
+# IDEA: DFS + Path Signatures
+def numDistinctIslands(grid):
+    &quot;&quot;&quot;
+    Count distinct island shapes using directional path encoding
+
+    Example:
+    Input: grid = [[1,1,0,0,0],
+                   [1,1,0,0,0],
+                   [0,0,0,1,1],
+                   [0,0,0,1,1]]
+    Output: 1
+    Explanation: Both islands have the same shape
+
+    The path signature for both islands would be: &quot;SDROO&quot; or similar
+    &quot;&quot;&quot;
+    if not grid or not grid[0]:
+        return 0
+
+    rows, cols = len(grid), len(grid[0])
+    unique_shapes = set()
+
+    def dfs(r, c, direction, path):
+        # Out of bounds or water/visited
+        if r &lt; 0 or r &gt;= rows or c &lt; 0 or c &gt;= cols or grid[r][c] != 1:
+            return
+
+        # Mark as visited
+        grid[r][c] = 0
+
+        # Record direction
+        path.append(direction)
+
+        # Visit in fixed order: Down, Up, Right, Left
+        dfs(r + 1, c, 'D', path)
+        dfs(r - 1, c, 'U', path)
+        dfs(r, c + 1, 'R', path)
+        dfs(r, c - 1, 'L', path)
+
+        # Add backtrack delimiter
+        path.append('O')
+
+    # Process each island
+    for r in range(rows):
+        for c in range(cols):
+            if grid[r][c] == 1:
+                path = []
+                dfs(r, c, 'S', path)  # 'S' for start
+                unique_shapes.add(tuple(path))
+
+    return len(unique_shapes)
+</code></pre>
+<p><strong>Why This Works:</strong></p>
+<ol>
+<li>
+<p><strong>Starting Point Normalization</strong></p>
+<ul>
+<li>Grid iteration is top-to-bottom, left-to-right</li>
+<li>First land cell encountered is always the top-left-most cell of the island</li>
+<li>This guarantees the same starting point for identical shapes</li>
+</ul>
+</li>
+<li>
+<p><strong>Canonical Traversal Order</strong></p>
+<ul>
+<li>Always check: Down (D), Up (U), Right ®, Left (L) in that order</li>
+<li>Same shape always produces same sequence of directions</li>
+</ul>
+</li>
+<li>
+<p><strong>Backtrack Delimiter (‘O’)</strong></p>
+<pre><code>Example showing why delimiter is needed:
+
+Shape A:  11     Path without 'O': SDRO
+           1     Path with 'O':    SDROO
+
+Shape B:   1     Path without 'O': SDRO (Same as A - WRONG!)
+          11     Path with 'O':    SDORO (Different - CORRECT!)
+</code></pre>
+</li>
+<li>
+<p><strong>Translation Invariance</strong></p>
+<ul>
+<li>Only records directions/relative positions, not absolute coordinates</li>
+<li>Islands with same shape but different positions → same signature</li>
+</ul>
+</li>
+</ol>
+<p><strong>Time Complexity:</strong> O(m × n) where m = rows, n = cols
+<strong>Space Complexity:</strong> O(m × n) for recursion stack and HashSet</p>
+<h3 id="java-implementation-notes" tabindex="-1"><a class="header-anchor" href="#java-implementation-notes"><span>Java Implementation Notes</span></a></h3>
+<pre><code class="language-java">// Java DFS with Stack
+Stack&lt;TreeNode&gt; stack = new Stack&lt;&gt;();
+stack.push(root);
+while (!stack.isEmpty()) {
+    TreeNode node = stack.pop();
+    // Process node
+    if (node.right != null) stack.push(node.right);
+    if (node.left != null) stack.push(node.left);
+}
+
+// Graph DFS with adjacency list
+void dfs(int node, boolean[] visited, List&lt;List&lt;Integer&gt;&gt; adj) {
+    visited[node] = true;
+    for (int neighbor : adj.get(node)) {
+        if (!visited[neighbor]) {
+            dfs(neighbor, visited, adj);
+        }
+    }
+}
+</code></pre>
+<h3 id="python-implementation-notes" tabindex="-1"><a class="header-anchor" href="#python-implementation-notes"><span>Python Implementation Notes</span></a></h3>
+<pre><code class="language-python"># Using collections.deque as stack
+from collections import deque
+stack = deque([root])
+while stack:
+    node = stack.pop()  # pop() for stack behavior
+    # Process node
+
+# Graph representation
+graph = defaultdict(list)  # Adjacency list
+visited = set()  # Track visited nodes
+
+# Recursion limit for deep trees
+import sys
+sys.setrecursionlimit(10000)
+</code></pre>
+<hr>
+<h2 id="quick-decision-tree-which-dfs-pattern-to-use" tabindex="-1"><a class="header-anchor" href="#quick-decision-tree-which-dfs-pattern-to-use"><span>Quick Decision Tree: Which DFS Pattern to Use?</span></a></h2>
+<h3 id="decision-flowchart" tabindex="-1"><a class="header-anchor" href="#decision-flowchart"><span>Decision Flowchart</span></a></h3>
+<pre><code>START: What are you trying to do with the graph/tree?
+│
+├─ Need to VISIT ALL NODES in specific order?
+│  │
+│  ├─ Yes, in preorder/inorder/postorder → Pattern 1 (Tree Traversal)
+│  │                                        Examples: LC 94, 144, 145
+│  │
+│  └─ Yes, but need to TRY ALL COMBINATIONS → Pattern 4 (Backtracking)
+│                                              Examples: LC 46, 78, 39, 17
+│
+├─ Working with PATHS in tree/graph?
+│  │
+│  ├─ Need specific path with sum/property → Pattern 2 (Path Problems)
+│  │                                          Examples: LC 112, 113, 257
+│  │
+│  └─ Need to AGGREGATE from subtrees → Pattern 6 (Subtree Problems)
+│                                        Examples: LC 508, 652, 236
+│
+├─ Working with GRAPH structure?
+│  │
+│  ├─ Need to find components/islands → Pattern 3 (Graph Traversal)
+│  │                                     Examples: LC 200, 695, 133
+│  │
+│  ├─ Need to eliminate boundary first → Pattern 7 (Boundary Elimination)
+│  │                                      Examples: LC 1254, 130, 417
+│  │
+│  ├─ Need to identify unique shapes → Pattern 8 (Path Signatures)
+│  │                                    Examples: LC 694, 711, 652
+│  │
+│  ├─ Need to validate sub-components → Pattern 9 (DFS with Validation)
+│  │                                     Examples: LC 1905
+│  │
+│  ├─ Need to count edge reversals → Pattern 10 (Bidirectional Direction Tracking)
+│  │                                  Examples: LC 1466
+│  │
+│  └─ Need to count unreachable pairs → Pattern 11 (Component Pair Counting)
+│                                        Examples: LC 2316
+│
+└─ Need to MODIFY tree structure?
+   │
+   └─ Delete/insert/trim nodes → Pattern 5 (Tree Modification)
+                                  Examples: LC 450, 701, 669
+</code></pre>
+<h3 id="quick-pattern-selection-table" tabindex="-1"><a class="header-anchor" href="#quick-pattern-selection-table"><span>Quick Pattern Selection Table</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>Problem Type</th>
+<th>Recognition Keywords</th>
+<th>Template</th>
+<th>Example Problems</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Tree Traversal</strong></td>
+<td>“traverse”, “visit all”, “serialize”</td>
+<td>Pattern 1</td>
+<td>LC 94, 144, 145, 297</td>
+</tr>
+<tr>
+<td><strong>Path Sum/Finding</strong></td>
+<td>“path sum”, “root to leaf”, “all paths”</td>
+<td>Pattern 2</td>
+<td>LC 112, 113, 257, 124</td>
+</tr>
+<tr>
+<td><strong>Islands/Components</strong></td>
+<td>“islands”, “connected components”, “regions”</td>
+<td>Pattern 3</td>
+<td>LC 200, 695, 133</td>
+</tr>
+<tr>
+<td><strong>Combinations/Permutations</strong></td>
+<td>“all combinations”, “permutations”, “subsets”</td>
+<td>Pattern 4</td>
+<td>LC 46, 78, 39, 17</td>
+</tr>
+<tr>
+<td><strong>Tree Modification</strong></td>
+<td>“delete”, “insert”, “trim”, “convert”</td>
+<td>Pattern 5</td>
+<td>LC 450, 701, 669</td>
+</tr>
+<tr>
+<td><strong>Subtree Aggregation</strong></td>
+<td>“subtree sum”, “duplicate subtrees”, “LCA”</td>
+<td>Pattern 6</td>
+<td>LC 508, 652, 236</td>
+</tr>
+<tr>
+<td><strong>Closed Regions</strong></td>
+<td>“closed islands”, “surrounded regions”, “captured”</td>
+<td>Pattern 7</td>
+<td>LC 1254, 130, 417</td>
+</tr>
+<tr>
+<td><strong>Distinct Shapes</strong></td>
+<td>“distinct islands”, “unique shapes”, “same shape”</td>
+<td>Pattern 8</td>
+<td>LC 694, 711, 652</td>
+</tr>
+<tr>
+<td><strong>Sub-component Check</strong></td>
+<td>“sub-islands”, “subset validation”, “inclusion”</td>
+<td>Pattern 9</td>
+<td>LC 1905</td>
+</tr>
+<tr>
+<td><strong>Edge Direction</strong></td>
+<td>“reorder edges”, “reverse routes”, “orient edges”</td>
+<td>Pattern 10</td>
+<td>LC 1466</td>
+</tr>
+<tr>
+<td><strong>Unreachable Pairs</strong></td>
+<td>“unreachable pairs”, “disconnected nodes”</td>
+<td>Pattern 11</td>
+<td>LC 2316</td>
+</tr>
+</tbody>
+</table>
+<h3 id="recognition-patterns-by-keywords" tabindex="-1"><a class="header-anchor" href="#recognition-patterns-by-keywords"><span>Recognition Patterns by Keywords</span></a></h3>
+<p><strong>Tree-focused keywords</strong> → Patterns 1, 2, 5, 6</p>
+<ul>
+<li>“traverse”, “preorder”, “inorder”, “postorder”</li>
+<li>“path sum”, “root to leaf”, “longest path”</li>
+<li>“delete node”, “insert”, “trim”, “convert BST”</li>
+<li>“subtree”, “duplicate”, “LCA”</li>
+</ul>
+<p><strong>Graph-focused keywords</strong> → Patterns 3, 7, 8, 9, 10, 11</p>
+<ul>
+<li>“islands”, “connected components”, “explore graph”</li>
+<li>“closed”, “surrounded”, “boundary”, “escape”</li>
+<li>“distinct”, “unique shapes”, “same structure”</li>
+<li>“sub-island”, “validate subset”</li>
+<li>“reorder”, “reverse direction”, “make paths lead to”</li>
+<li>“unreachable”, “count pairs”</li>
+</ul>
+<p><strong>Backtracking keywords</strong> → Pattern 4</p>
+<ul>
+<li>“all combinations”, “permutations”, “subsets”</li>
+<li>“generate all”, “find all solutions”</li>
+</ul>
+<h3 id="quick-decision-examples" tabindex="-1"><a class="header-anchor" href="#quick-decision-examples"><span>Quick Decision Examples</span></a></h3>
+<ol>
+<li>
+<p><strong>“Find all root-to-leaf paths”</strong></p>
+<ul>
+<li>Keywords: “root to leaf”, “paths”</li>
+<li>Decision: Pattern 2 (Path Problems)</li>
+<li>Template: Path DFS with backtracking</li>
+</ul>
+</li>
+<li>
+<p><strong>“Count number of closed islands”</strong></p>
+<ul>
+<li>Keywords: “closed”, “islands”</li>
+<li>Decision: Pattern 7 (Boundary Elimination)</li>
+<li>Template: 2-Pass DFS (eliminate boundary first)</li>
+</ul>
+</li>
+<li>
+<p><strong>“Find number of distinct islands”</strong></p>
+<ul>
+<li>Keywords: “distinct”, “islands”</li>
+<li>Decision: Pattern 8 (Path Signatures)</li>
+<li>Template: DFS with path encoding</li>
+</ul>
+</li>
+<li>
+<p><strong>“Generate all permutations”</strong></p>
+<ul>
+<li>Keywords: “all permutations”, “generate”</li>
+<li>Decision: Pattern 4 (Backtracking)</li>
+<li>Template: Backtracking with visited tracking</li>
+</ul>
+</li>
+<li>
+<p><strong>“Find lowest common ancestor”</strong></p>
+<ul>
+<li>Keywords: “LCA”, “ancestor”</li>
+<li>Decision: Pattern 6 (Subtree Problems)</li>
+<li>Template: Bottom-up DFS with result aggregation</li>
+</ul>
+</li>
+</ol>
+<h3 id="pro-tips-for-pattern-selection" tabindex="-1"><a class="header-anchor" href="#pro-tips-for-pattern-selection"><span>Pro Tips for Pattern Selection</span></a></h3>
+<ul>
+<li><strong>Two-pass problems</strong>: If you need to eliminate something first (boundary, edges), use Pattern 7 or 10</li>
+<li><strong>Shape comparison</strong>: If comparing structures/shapes, use Pattern 8 (Path Signatures)</li>
+<li><strong>Validation against reference</strong>: If checking one structure against another, use Pattern 9</li>
+<li><strong>Bottom-up aggregation</strong>: If answer depends on processing children first, use Pattern 6</li>
+<li><strong>Try all possibilities</strong>: If problem asks for “all” solutions/combinations, use Pattern 4 (Backtracking)</li>
+<li><strong>Edge directions matter</strong>: If working with directed edges in undirected representation, use Pattern 10</li>
+</ul>
+<hr>
+<p><strong>Must-Know Problems for Interviews</strong>: LC 94, 104, 112, 113, 124, 200, 236, 297, 399, 694
+<strong>Advanced Problems</strong>: LC 124, 297, 329, 472, 652, 694, 711
+<strong>Path Signature Pattern</strong>: LC 694 (Distinct Islands), LC 711 (Distinct Islands II), LC 652 (Find Duplicate Subtrees)
+<strong>Keywords</strong>: DFS, depth-first search, recursion, tree traversal, graph traversal, backtracking, path signatures, shape encoding</p>
+
+      </div>
+      <div class="cheatsheet-footer">
+        <a href="../cheatsheets.html" class="back-link">← Back to Cheat Sheets</a>
+        <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/dfs.md" class="github-edit" target="_blank">
+          Edit on GitHub →
+        </a>
+      </div>
+    <nav class="prev-next"><a href="design.html" class="prev-link">← Design</a><a href="diff_toposort_quickunion.html" class="next-link">Diff Toposort Quickunion →</a></nav>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>CS_basics - Computer Science Fundamentals & Interview Preparation</p>
+      <p>
+        <a href="https://github.com/yennanliu/CS_basics">GitHub</a> •
+        <a href="https://github.com/yennanliu/CS_basics/tree/master/doc">Documentation</a> •
+        <a href="https://github.com/yennanliu/CS_basics/issues">Report Issues</a>
+      </p>
+    </div>
+  </footer>
+</body>
+</html>

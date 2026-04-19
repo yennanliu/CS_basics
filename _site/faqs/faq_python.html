@@ -1,0 +1,401 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Faq Python - CS_basics</title>
+  <meta name="description" content="Computer Science fundamentals: algorithms, data structures, system design, and LeetCode solutions">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>CS</text></svg>">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="../vendor/fonts.css">
+  <link rel="stylesheet" href="../vendor/highlight/github-dark.min.css">
+  <script src="../vendor/highlight/highlight.min.js"></script>
+  <script>
+  // Apply theme before render to prevent flash
+  (function() {
+    var saved = localStorage.getItem('theme');
+    if (saved === 'dark' || (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      document.documentElement.setAttribute('data-theme', 'dark');
+    }
+  })();
+  </script>
+  <script>document.addEventListener('DOMContentLoaded', function() {
+    hljs.highlightAll();
+    document.querySelectorAll('pre code').forEach(function(codeEl) {
+      var pre = codeEl.parentElement;
+      var lang = '';
+      var cls = codeEl.className || '';
+      var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
+      if (m) lang = m[1];
+      var wrapper = document.createElement('div');
+      wrapper.className = 'code-block-wrapper';
+      pre.parentNode.insertBefore(wrapper, pre);
+      var header = document.createElement('div');
+      header.className = 'code-block-header';
+      if (lang) {
+        var label = document.createElement('span');
+        label.className = 'code-lang-label';
+        label.textContent = lang;
+        header.appendChild(label);
+      } else {
+        header.appendChild(document.createElement('span'));
+      }
+      var btn = document.createElement('button');
+      btn.className = 'copy-btn';
+      btn.textContent = 'Copy';
+      btn.addEventListener('click', function() {
+        navigator.clipboard.writeText(codeEl.textContent).then(function() {
+          btn.textContent = 'Copied!';
+          btn.classList.add('copied');
+          setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+        });
+      });
+      header.appendChild(btn);
+      wrapper.appendChild(header);
+      wrapper.appendChild(pre);
+    });
+    document.querySelectorAll('table').forEach(function(table) {
+      if (!table.parentElement.classList.contains('table-wrap')) {
+        var wrapper = document.createElement('div');
+        wrapper.className = 'table-wrap';
+        table.parentNode.insertBefore(wrapper, table);
+        wrapper.appendChild(table);
+      }
+    });
+    // Reading progress bar
+    var progressBar = document.getElementById('reading-progress');
+    if (progressBar) {
+      window.addEventListener('scroll', function() {
+        var winScroll = document.documentElement.scrollTop;
+        var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        progressBar.style.width = height > 0 ? (winScroll / height * 100) + '%' : '0%';
+      });
+    }
+    // Dark mode toggle
+    var toggle = document.getElementById('theme-toggle');
+    if (toggle) {
+      var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      toggle.textContent = isDark ? '☀️' : '🌙';
+      toggle.addEventListener('click', function() {
+        var dark = document.documentElement.getAttribute('data-theme') === 'dark';
+        if (dark) {
+          document.documentElement.removeAttribute('data-theme');
+          localStorage.setItem('theme', 'light');
+          toggle.textContent = '🌙';
+        } else {
+          document.documentElement.setAttribute('data-theme', 'dark');
+          localStorage.setItem('theme', 'dark');
+          toggle.textContent = '☀️';
+        }
+      });
+    }
+  });</script>
+</head>
+<body>
+  <div class="progress-container"><div class="progress-bar" id="reading-progress"></div></div>
+  <nav class="navbar">
+    <div class="container">
+      <div class="nav-brand">
+        <span class="nav-icon">💻</span>
+        <span class="nav-title">CS_basics</span>
+      </div>
+      <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+      <div class="nav-links">
+        <a href="../index.html" class="">Home</a>
+        <a href="../cheatsheets.html" class="">Cheat Sheets</a>
+        <a href="../patterns.html" class="">Pattern Recognition</a>
+        <a href="../faqs.html" class="active">FAQs</a>
+        <a href="../resources.html" class="">Resources</a>
+        <a href="../lc-explorer.html" class="">LC Explorer</a>
+        <a href="../lc-random-picker.html" class="">🎲 Random Picker</a>
+        <a href="../algo_demo/index.html" class="">Visualizer</a>
+        <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">&#127769;</button>
+        <a href="https://github.com/yennanliu/CS_basics" target="_blank" class="github-link" aria-label="GitHub">
+          <svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor">
+            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container">
+    <div class="content">
+      
+      <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../faqs.html">FAQs</a> <span class="sep">›</span> <span class="current">Faq Python</span></nav>
+      <div class="cheatsheet-header">
+        <h1>Faq Python</h1>
+        <span class="last-updated">Last updated: Feb 23, 2024</span>
+      </div>
+      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#concept">Concept</a></li><li class="toc-sub"><a href="#5-in-python-select-from-which-data-structure-is-faster">5) In python, select from which data structure is faster?</a></li><li class="toc-sub"><a href="#6-explain-cursor-in-python">6) Explain cursor in python?</a></li><li><a href="#string">String</a></li><li><a href="#defaultdict">Defaultdict</a></li><li><a href="#subarray">Subarray</a></li></ul></div>
+      <div class="cheatsheet-content">
+        <h1 id="python-faq" tabindex="-1"><a class="header-anchor" href="#python-faq"><span>Python FAQ</span></a></h1>
+<h2 id="concept" tabindex="-1"><a class="header-anchor" href="#concept"><span>Concept</span></a></h2>
+<h4 id="1-range-vs-xrange" tabindex="-1"><a class="header-anchor" href="#1-range-vs-xrange"><span>1) Range VS Xrange ?</span></a></h4>
+<ul>
+<li>
+<p>The only difference is that range returns a Python list object and xrange returns an xrange object. It means that xrange doesn’t actually generate a static list at run-time like range does. It creates the values as you need them with a special technique called yielding. This technique is used with a type of object known as generators.</p>
+</li>
+<li>
+<p>That means that if you have a really gigantic range you’d like to generate a list for, say one billion, xrange is the function to use. This is especially true if you have a really memory sensitive system such as a cell phone that you are working with, as range will use as much memory as it can to create your array of integers, which can result in a MemoryError and crash your program. It’s a memory hungry beast.</p>
+</li>
+<li>
+<p>That being said, if you’d like to iterate over the list multiple times, it’s probably better to use range. This is because xrange has to generate an integer object every time you access an index, whereas range is a static list and the integers are already “there” to use.</p>
+</li>
+<li>
+<p><a href="https://www.pythoncentral.io/how-to-use-pythons-xrange-and-range/">https://www.pythoncentral.io/how-to-use-pythons-xrange-and-range/</a></p>
+</li>
+</ul>
+<h4 id="2-decorator-in-python" tabindex="-1"><a class="header-anchor" href="#2-decorator-in-python"><span>2) Decorator in python ?</span></a></h4>
+<ul>
+<li>
+<p>Decorator : it takes a function as an argument and defines and returns a new function that uses the one it was passed. That pattern is common to almost all decorators. The @decorator notation is simply a special syntax to call an existing function, passing the new function as an argument, and use the return value to replace the new function.</p>
+</li>
+<li>
+<p>In short, Decorator is the way pass 1 function as an argument into another function then to another brand new function. (below example)</p>
+</li>
+</ul>
+<pre><code class="language-python">
+def decorator(fn):
+    def inner(n):
+        return fn(n) + 1
+    return inner
+
+# Decorator style 1)
+# this is what decorator readlly does 
+def f(n):
+    return n + 1
+f = decorator(f) # pass f as arg into decorator as brand new function
+
+# Decorator style 2)
+# or we can write it formally
+@decorator
+def f(n):
+    return n + 1
+
+</code></pre>
+<pre><code class="language-python"># more detailed example
+def wrap_with_prints(fn):
+    # This will only happen when a function decorated
+    # with @wrap_with_prints is defined
+    print('wrap_with_prints runs only once')
+ 
+    def wrapped():
+        # This will happen each time just before
+        # the decorated function is called
+        print('About to run %s' % fn.__name__)
+        # Here is where the wrapper calls the decorated function
+        fn()
+        # This will happen each time just after
+        # the decorated function is called
+        print('Done running %s' % fn.__name__)
+ 
+    return wrapped
+ 
+@wrap_with_prints
+def func_to_decorate():
+    print('Running the function that was decorated.')
+ 
+func_to_decorate()
+
+# output 
+# wrap_with_prints runs only once
+# About to run func_to_decorate
+# Running the function that was decorated.
+# Done running func_to_decorate
+
+</code></pre>
+<ul>
+<li><a href="https://www.pythoncentral.io/python-decorators-overview/">https://www.pythoncentral.io/python-decorators-overview/</a></li>
+</ul>
+<h4 id="3-generators-yield-method-in-python" tabindex="-1"><a class="header-anchor" href="#3-generators-yield-method-in-python"><span>3) Generators (yield method) in python ?</span></a></h4>
+<ul>
+<li>The idea of generators is to calculate a series of results one-by-one on demand (on the fly). In the simplest case, a generator can be used as a list, where each element is calculated lazily. Lets compare a list and a generator that do the same thing - return powers of two:</li>
+</ul>
+<pre><code class="language-python">
+&gt;&gt;&gt; # First, we define a list
+&gt;&gt;&gt; the_list = [2**x for x in range(5)]
+&gt;&gt;&gt;
+&gt;&gt;&gt; # Type check: yes, it's a list
+&gt;&gt;&gt; type(the_list)
+&lt;class 'list'&gt;
+&gt;&gt;&gt;
+&gt;&gt;&gt; # Iterate over items and print them
+&gt;&gt;&gt; for element in the_list:
+...     print(element)
+...
+1
+2
+4
+8
+16
+&gt;&gt;&gt;
+&gt;&gt;&gt; # How about the length?
+&gt;&gt;&gt; len(the_list)
+5
+&gt;&gt;&gt;
+&gt;&gt;&gt; # Ok, now a generator.
+&gt;&gt;&gt; # As easy as list comprehensions, but with '()' instead of '[]':
+&gt;&gt;&gt; the_generator = (x+x for x in range(3))
+&gt;&gt;&gt;
+&gt;&gt;&gt; # Type check: yes, it's a generator
+&gt;&gt;&gt; type(the_generator)
+&lt;class 'generator'&gt;
+&gt;&gt;&gt;
+&gt;&gt;&gt; # Iterate over items and print them
+&gt;&gt;&gt; for element in the_generator:
+...     print(element)
+...
+0
+2
+4
+&gt;&gt;&gt;
+&gt;&gt;&gt; # Everything looks the same, but the length...
+&gt;&gt;&gt; len(the_generator)
+Traceback (most recent call last):
+  File &quot;&quot;, line 1, in
+TypeError: object of type 'generator' has no len()
+
+</code></pre>
+<ul>
+<li>
+<p>Iterating over the list and the generator looks completely the same. However, although the <code>generator</code> is iterable, <code>it is not a collection</code>, and thus has no length. Collections (lists, tuples, sets, etc) keep all values in memory and we can access them whenever needed.<code>A generator calculates the values on the fly and forgets them</code>, so it does not have any overview about the own result set.</p>
+</li>
+<li>
+<p>Generators are especially useful for memory-intensive tasks, where there is no need to keep all of the elements of a memory-heavy list accessible at the same time. Calculating a series of values one-by-one can also be useful in situations where the complete result is never needed, yielding intermediate results to the caller until some requirement is satisfied and further processing stops.</p>
+</li>
+<li>
+<p><a href="https://www.pythoncentral.io/python-generators-and-yield-keyword/">https://www.pythoncentral.io/python-generators-and-yield-keyword/</a></p>
+</li>
+</ul>
+<h4 id="4-list-comprehensions" tabindex="-1"><a class="header-anchor" href="#4-list-comprehensions"><span>4) list comprehensions ?</span></a></h4>
+<ul>
+<li>
+<p>List comprehensions provide a concise way to create lists.  It consists of brackets containing an expression followed by a for clause, then
+zero or more for or if clauses. The expressions can be anything, meaning you can
+put in all kinds of objects in lists.  The result will be a new list resulting from evaluating the expression in the context of the for and if clauses which follow it.</p>
+</li>
+<li>
+<p>The list comprehension always returns a result list.</p>
+</li>
+</ul>
+<pre><code class="language-python">
+# for loop append to a list 
+new_list = []
+for i in old_list:
+    if filter(i):
+        new_list.append(expressions(i))
+
+# via list comprehensions  (for loop append to a list )
+new_list = [expression(i) for i in old_list if filter(i)]
+
+</code></pre>
+<ul>
+<li><a href="https://www.pythonforbeginners.com/basics/list-comprehensions-in-python">https://www.pythonforbeginners.com/basics/list-comprehensions-in-python</a></li>
+</ul>
+<h3 id="5-in-python-select-from-which-data-structure-is-faster" tabindex="-1"><a class="header-anchor" href="#5-in-python-select-from-which-data-structure-is-faster"><span>5) In python, select from which data structure is faster?</span></a></h3>
+<p><code>select item from a list</code> or <code>select key from a dict</code>
+-&gt; <code>select key from a dict</code> is faster</p>
+<h3 id="6-explain-cursor-in-python" tabindex="-1"><a class="header-anchor" href="#6-explain-cursor-in-python"><span>6) Explain <code>cursor</code> in python?</span></a></h3>
+<p>e.g. explain why <code>open(my_file.txt)</code> can only fetch file once?
+-&gt;</p>
+<h2 id="string" tabindex="-1"><a class="header-anchor" href="#string"><span>String</span></a></h2>
+<h4 id="1-write-a-func-return-all-indexes-for-a-substring-exist-in-a-string" tabindex="-1"><a class="header-anchor" href="#1-write-a-func-return-all-indexes-for-a-substring-exist-in-a-string"><span>1) Write a func return all indexes for a substring exist in a string.</span></a></h4>
+<ul>
+<li>i.e. <code>x = '99023430990999', y = '99'. The func should return [0, 8, 11, 12]</code></li>
+</ul>
+<pre><code class="language-python">
+def findall(x, y):
+    '''Yields all the positions of
+    the pattern p in the string s.'''
+    # python find module 
+    # https://www.w3schools.com/python/ref_string_find.asp
+    # string.find(value, start, end)
+    # start : Optional. Where to start the search. Default is 0
+    # end: Optional. Where to end the search. Default is to the end of the string
+    # so s.find(p, i+1) means to find the next elment 
+    i = x.find(y)
+    while i != -1:
+        yield i
+        i = x.find(y, i+1)
+
+
+def findall_2(x, y):
+    res = []
+    i = x.find(y)
+    while i != -1:
+         res.append(i)
+         i = x.find(y, i+1)
+    return res 
+
+# demo 1 
+# x = '99023430990999'
+# y = '99'
+# [i for i in findall(x, y)]
+# demo 2 
+# x = '195378678'
+# y = '78'
+# [i for i in findall(x, y)]
+
+</code></pre>
+<h2 id="defaultdict" tabindex="-1"><a class="header-anchor" href="#defaultdict"><span>Defaultdict</span></a></h2>
+<h4 id="1-given-an-array-richer-1-0-2-1-3-1-3-7-4-3-5-3-6-3-with-the-form-ppl-richer-ppl" tabindex="-1"><a class="header-anchor" href="#1-given-an-array-richer-1-0-2-1-3-1-3-7-4-3-5-3-6-3-with-the-form-ppl-richer-ppl"><span>1) Given an array : richer = [[1,0],[2,1],[3,1],[3,7],[4,3],[5,3],[6,3]] with the form :[ppl, richer ppl]</span></a></h4>
+<p><code>(i.e.:</code>0&gt;1<code>,</code>1&gt;2<code>,</code>1&gt;3<code>...) </code>Find the list
+of ppl with ppl that richer than them?</p>
+<pre><code class="language-python">richer = [[1,0],[2,1],[3,1],[3,7],[4,3],[5,3],[6,3]]
+import collections 
+ppl_richer = collections.defaultdict(list)
+for i, j in richer:
+    #ppl_richer[j].append(i)
+    ppl_richer[i].append(j)
+
+print (ppl_richer)
+#&gt;&gt;&gt; defaultdict(&lt;class 'list'&gt;, {1: [0], 2: [1], 3: [1, 7], 4: [3], 5: [3], 6: [3]})
+
+
+</code></pre>
+<h2 id="subarray" tabindex="-1"><a class="header-anchor" href="#subarray"><span>Subarray</span></a></h2>
+<h4 id="1-find-the-sub-array-as-list-by-multiple" tabindex="-1"><a class="header-anchor" href="#1-find-the-sub-array-as-list-by-multiple"><span>1) Find the sub-array as list by multiple?</span></a></h4>
+<pre><code class="language-python">
+array = [ i for i in range(31) ]
+multiple_2 = array[2::2]
+multiple_3 = array[3::3]
+multiple_5 = array[5::5]
+
+# In [42]: multiple_2
+# Out[42]: [2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30]
+
+# In [43]: multiple_3
+# Out[43]: [3, 6, 9, 12, 15, 18, 21, 24, 27, 30]
+
+# In [44]: multiple_5
+# Out[44]: [5, 10, 15, 20, 25, 30]
+
+</code></pre>
+
+      </div>
+      <div class="cheatsheet-footer">
+        <a href="../faqs.html" class="back-link">← Back to FAQs</a>
+        <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/faq/faq_python.md" class="github-edit" target="_blank">
+          Edit on GitHub →
+        </a>
+      </div>
+    <nav class="prev-next"><a href="faq_performance_tune.html" class="prev-link">← Faq Performance Tune</a><a href="faq_software_runtime.html" class="next-link">Faq Software Runtime →</a></nav>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>CS_basics - Computer Science Fundamentals & Interview Preparation</p>
+      <p>
+        <a href="https://github.com/yennanliu/CS_basics">GitHub</a> •
+        <a href="https://github.com/yennanliu/CS_basics/tree/master/doc">Documentation</a> •
+        <a href="https://github.com/yennanliu/CS_basics/issues">Report Issues</a>
+      </p>
+    </div>
+  </footer>
+</body>
+</html>

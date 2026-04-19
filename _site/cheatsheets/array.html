@@ -1,0 +1,1778 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Array - CS_basics</title>
+  <meta name="description" content="Computer Science fundamentals: algorithms, data structures, system design, and LeetCode solutions">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>CS</text></svg>">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="../vendor/fonts.css">
+  <link rel="stylesheet" href="../vendor/highlight/github-dark.min.css">
+  <script src="../vendor/highlight/highlight.min.js"></script>
+  <script>
+  // Apply theme before render to prevent flash
+  (function() {
+    var saved = localStorage.getItem('theme');
+    if (saved === 'dark' || (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      document.documentElement.setAttribute('data-theme', 'dark');
+    }
+  })();
+  </script>
+  <script>document.addEventListener('DOMContentLoaded', function() {
+    hljs.highlightAll();
+    document.querySelectorAll('pre code').forEach(function(codeEl) {
+      var pre = codeEl.parentElement;
+      var lang = '';
+      var cls = codeEl.className || '';
+      var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
+      if (m) lang = m[1];
+      var wrapper = document.createElement('div');
+      wrapper.className = 'code-block-wrapper';
+      pre.parentNode.insertBefore(wrapper, pre);
+      var header = document.createElement('div');
+      header.className = 'code-block-header';
+      if (lang) {
+        var label = document.createElement('span');
+        label.className = 'code-lang-label';
+        label.textContent = lang;
+        header.appendChild(label);
+      } else {
+        header.appendChild(document.createElement('span'));
+      }
+      var btn = document.createElement('button');
+      btn.className = 'copy-btn';
+      btn.textContent = 'Copy';
+      btn.addEventListener('click', function() {
+        navigator.clipboard.writeText(codeEl.textContent).then(function() {
+          btn.textContent = 'Copied!';
+          btn.classList.add('copied');
+          setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+        });
+      });
+      header.appendChild(btn);
+      wrapper.appendChild(header);
+      wrapper.appendChild(pre);
+    });
+    document.querySelectorAll('table').forEach(function(table) {
+      if (!table.parentElement.classList.contains('table-wrap')) {
+        var wrapper = document.createElement('div');
+        wrapper.className = 'table-wrap';
+        table.parentNode.insertBefore(wrapper, table);
+        wrapper.appendChild(table);
+      }
+    });
+    // Reading progress bar
+    var progressBar = document.getElementById('reading-progress');
+    if (progressBar) {
+      window.addEventListener('scroll', function() {
+        var winScroll = document.documentElement.scrollTop;
+        var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        progressBar.style.width = height > 0 ? (winScroll / height * 100) + '%' : '0%';
+      });
+    }
+    // Dark mode toggle
+    var toggle = document.getElementById('theme-toggle');
+    if (toggle) {
+      var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      toggle.textContent = isDark ? '☀️' : '🌙';
+      toggle.addEventListener('click', function() {
+        var dark = document.documentElement.getAttribute('data-theme') === 'dark';
+        if (dark) {
+          document.documentElement.removeAttribute('data-theme');
+          localStorage.setItem('theme', 'light');
+          toggle.textContent = '🌙';
+        } else {
+          document.documentElement.setAttribute('data-theme', 'dark');
+          localStorage.setItem('theme', 'dark');
+          toggle.textContent = '☀️';
+        }
+      });
+    }
+  });</script>
+</head>
+<body>
+  <div class="progress-container"><div class="progress-bar" id="reading-progress"></div></div>
+  <nav class="navbar">
+    <div class="container">
+      <div class="nav-brand">
+        <span class="nav-icon">💻</span>
+        <span class="nav-title">CS_basics</span>
+      </div>
+      <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+      <div class="nav-links">
+        <a href="../index.html" class="">Home</a>
+        <a href="../cheatsheets.html" class="active">Cheat Sheets</a>
+        <a href="../patterns.html" class="">Pattern Recognition</a>
+        <a href="../faqs.html" class="">FAQs</a>
+        <a href="../resources.html" class="">Resources</a>
+        <a href="../lc-explorer.html" class="">LC Explorer</a>
+        <a href="../lc-random-picker.html" class="">🎲 Random Picker</a>
+        <a href="../algo_demo/index.html" class="">Visualizer</a>
+        <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">&#127769;</button>
+        <a href="https://github.com/yennanliu/CS_basics" target="_blank" class="github-link" aria-label="GitHub">
+          <svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor">
+            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container">
+    <div class="content">
+      
+      <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">Array</span></nav>
+      <div class="cheatsheet-header">
+        <h1>Array</h1>
+        <span class="last-updated">Last updated: Mar 31, 2026</span>
+      </div>
+      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#0-concept">0) Concept</a></li><li class="toc-sub"><a href="#0-1-types">0-1) Types</a></li><li class="toc-sub"><a href="#0-2-pattern">0-2) Pattern</a></li><li><a href="#1-general-form">1) General form</a></li><li class="toc-sub"><a href="#1-1-basic-op">1-1) Basic OP</a></li><li class="toc-sub"><a href="#1-2-special-array-algorithms">1-2) Special Array Algorithms</a></li><li><a href="#2-lc-example">2) LC Example</a></li><li class="toc-sub"><a href="#2-1-queue-reconstruction-by-height">2-1) Queue Reconstruction by Height</a></li><li class="toc-sub"><a href="#2-2-product-of-array-except-self">2-2) Product of Array Except Self</a></li><li class="toc-sub"><a href="#2-3-maximum-swap">2-3) Maximum Swap</a></li><li class="toc-sub"><a href="#2-7-best-time-to-buy-and-sell-stock">2-7) Best Time to Buy and Sell Stock</a></li><li class="toc-sub"><a href="#2-8-bulb-switcher-iii">2-8) Bulb Switcher III</a></li><li class="toc-sub"><a href="#2-9-robot-bounded-in-circle">2-9) Robot Bounded In Circle</a></li><li class="toc-sub"><a href="#2-10-maximum-length-of-subarray-with-positive-product">2-10) Maximum Length of Subarray With Positive Product</a></li><li class="toc-sub"><a href="#2-11-corporate-flight-bookings">2-11) Corporate Flight Bookings</a></li><li class="toc-sub"><a href="#2-12-first-missing-positive">2-12) First Missing Positive</a></li><li class="toc-sub"><a href="#2-13-increasing-triplet-subsequence">2-13) Increasing Triplet Subsequence</a></li><li class="toc-sub"><a href="#2-14-first-missing-positive">2-14) First Missing Positive</a></li><li class="toc-sub"><a href="#2-15-rotate-array">2-15) Rotate Array</a></li><li class="toc-sub"><a href="#2-16-flatten-2d-vector">2-16) Flatten 2D Vector</a></li><li class="toc-sub"><a href="#2-17-maximize-distance-to-closest-person">2-17) Maximize Distance to Closest Person</a></li></ul></div>
+      <div class="cheatsheet-content">
+        <h1 id="array" tabindex="-1"><a class="header-anchor" href="#array"><span>Array</span></a></h1>
+<blockquote>
+<p>Basic linear data structure</p>
+</blockquote>
+<h2 id="0-concept" tabindex="-1"><a class="header-anchor" href="#0-concept"><span>0) Concept</span></a></h2>
+<ul>
+<li><a href="https://cloud.tencent.com/developer/article/1672332">Java Array</a>
+<ul>
+<li>Low level : continuous blocks in memory space</li>
+</ul>
+</li>
+</ul>
+<h3 id="0-1-types" tabindex="-1"><a class="header-anchor" href="#0-1-types"><span>0-1) Types</span></a></h3>
+<ul>
+<li>
+<p>Types</p>
+<ul>
+<li><a href="greedy.html">greedy.md</a></li>
+<li><a href="matrix.html">matrix.md</a></li>
+</ul>
+</li>
+<li>
+<p>Algorithm</p>
+<ul>
+<li>index op</li>
+<li>array op</li>
+<li>sorting</li>
+<li><a href="binary_search.html">binary search</a></li>
+<li><a href="2_pointers.html">2 pointers</a>
+<ul>
+<li>fast-slow pointers</li>
+<li>left-right pointers</li>
+</ul>
+</li>
+<li><a href="sliding_window.html">sliding window</a></li>
+<li><a href="prefix_sum.html">prefix sum</a></li>
+<li><a href="diffence_array.html">difference array</a></li>
+<li><a href="kadane_algo.html">Kadane algo</a></li>
+</ul>
+</li>
+<li>
+<p>Data structure</p>
+<ul>
+<li>dict</li>
+<li>set</li>
+<li>array</li>
+</ul>
+</li>
+</ul>
+<h3 id="0-2-pattern" tabindex="-1"><a class="header-anchor" href="#0-2-pattern"><span>0-2) Pattern</span></a></h3>
+<h2 id="1-general-form" tabindex="-1"><a class="header-anchor" href="#1-general-form"><span>1) General form</span></a></h2>
+<h3 id="1-1-basic-op" tabindex="-1"><a class="header-anchor" href="#1-1-basic-op"><span>1-1) Basic OP</span></a></h3>
+<h4 id="1-1-0-split-array" tabindex="-1"><a class="header-anchor" href="#1-1-0-split-array"><span>1-1-0) Split Array</span></a></h4>
+<pre><code class="language-python"># python_trick.html
+
+#-----------------------------------------------------------------------------------------------------
+# example 7 : itertools.islice : slice on iterator
+#-----------------------------------------------------------------------------------------------------
+# https://docs.python.org/3/library/itertools.html#itertools.islice
+# syntax : itertools.islice(seq, [start,] stop [, step])
+
+In [6]:  x = itertools.islice(range(10), 0, 9, 2)
+
+In [7]: print (list(x))
+[0, 2, 4, 6, 8]
+
+
+In [18]: y = itertools.islice(range(10), 0, 10, 3)
+    ...: print (list(y))
+[0, 3, 6, 9]
+</code></pre>
+<h4 id="1-1-1-insert-into-array" tabindex="-1"><a class="header-anchor" href="#1-1-1-insert-into-array"><span>1-1-1) Insert into Array</span></a></h4>
+<pre><code class="language-python">p=[[7, 0], [7, 1], [6, 1], [5, 0], [5, 2], [4, 4]]
+Out[27]: [[7, 0], [7, 1], [6, 1], [5, 0], [5, 2], [4, 4]]
+In [28]: p.insert(1, [6,1])
+In [29]: p
+Out[29]: [[7, 0], [6, 1], [7, 1], [6, 1], [5, 0], [5, 2], [4, 4]]
+</code></pre>
+<h4 id="1-1-2-delete-from-array" tabindex="-1"><a class="header-anchor" href="#1-1-2-delete-from-array"><span>1-1-2) Delete from Array</span></a></h4>
+<pre><code class="language-python">p=[[7, 0], [7, 1], [6, 1], [5, 0], [5, 2], [4, 4]]
+
+In [4]: p
+Out[4]: [[7, 0], [7, 1], [6, 1], [5, 0], [5, 2], [4, 4]]
+
+In [5]: p.remove([7, 1])
+
+In [6]: p
+Out[6]: [[7, 0], [6, 1], [5, 0], [5, 2], [4, 4]]
+</code></pre>
+<h4 id="1-1-3-check-if-element-in-array" tabindex="-1"><a class="header-anchor" href="#1-1-3-check-if-element-in-array"><span>1-1-3) check if element in Array</span></a></h4>
+<pre><code class="language-python">In [7]: p
+Out[7]: [[7, 0], [6, 1], [5, 0], [5, 2], [4, 4]]
+
+In [8]: [7,0] in p
+Out[8]: True
+</code></pre>
+<h4 id="1-1-4-append-to-array-head-tail" tabindex="-1"><a class="header-anchor" href="#1-1-4-append-to-array-head-tail"><span>1-1-4) append to array (head, tail)</span></a></h4>
+<pre><code class="language-python"># tail
+In [9]: p
+Out[9]: [[7, 0], [6, 1], [5, 0], [5, 2], [4, 4]]
+
+In [10]: p.append([0,0])
+
+In [11]: p
+Out[11]: [[7, 0], [6, 1], [5, 0], [5, 2], [4, 4], [0, 0]]
+</code></pre>
+<h4 id="1-1-5-sort-array" tabindex="-1"><a class="header-anchor" href="#1-1-5-sort-array"><span>1-1-5) Sort Array*****</span></a></h4>
+<pre><code class="language-python"># Pattern :
+# V1
+_array.sort(key = lambda x : &lt;your_sorting_func&gt;)
+
+# V2
+sorted(_array, key = lambda x : &lt;your_sorting_func&gt;)
+
+# 049  Group Anagrams
+strs = [&quot;eat&quot;,&quot;tea&quot;,&quot;tan&quot;,&quot;ate&quot;,&quot;nat&quot;,&quot;bat&quot;]
+strs.sort(key = lambda x : ''.join(sorted(x)) )
+print (strs)
+# ['bat', 'eat', 'tea', 'ate', 'tan', 'nat']
+
+### NOTE can use this as well
+sorted(strs, key = lambda x : ''.join(sorted(x)))
+</code></pre>
+<h4 id="1-1-6-flatten-array" tabindex="-1"><a class="header-anchor" href="#1-1-6-flatten-array"><span>1-1-6) Flatten Array</span></a></h4>
+<pre><code class="language-python"># LC 341
+# V0
+class NestedIterator(object):
+
+    def __init__(self, nestedList):
+
+        self.queue = []
+        
+        def getAll(nests):
+            for nest in nests:
+                if nest.isInteger():
+                    self.queue.append(nest.getInteger())
+                else:
+                    getAll(nest.getList())
+        getAll(nestedList)
+
+    def next(self):
+
+        return self.queue.pop(0)
+
+    def hasNext(self):
+
+        return len(self.queue)
+
+# default py
+# V1
+def flatten_array(_array):
+    r = []
+    def helper(_array):
+        for i in _array:
+            if type(i) == int:
+                print (i)
+                r.append(i)
+            else:
+                helper(i)
+
+    helper(_array)
+    return r
+    
+_input = [1,0, [1,2,[4,[5,[6,[7]]]]]]#[1,[4,[6]]] #[[1,1],2,[1,1]]
+
+res = flatten_array(_input)
+print (&quot;res = &quot; + str(res))
+
+# V2
+# https://stackoverflow.com/questions/2158395/flatten-an-irregular-list-of-lists
+def flatten(L):
+    for item in L:
+        try:
+            yield from flatten(item)
+        except TypeError:
+            yield item
+
+r2 = flatten(_input)
+r2_ = [x for x in r2]
+print (r2_)
+
+# V3
+def flatten2(L):
+    for item in L:
+        try:
+            yield from flatten2(item)
+        except:
+            yield item
+
+r3 = flatten2(_input)
+r3_ = [x for x in r3]
+print (r3_)
+</code></pre>
+<pre><code class="language-java">// java
+// algorithm book (labu) p.355
+//------------------------------------------
+// implement NestedInteger data structure
+//------------------------------------------
+public class NestedInteger {
+    private Integer val;
+    private List&lt;NestedInteger&gt; list;
+
+    public NestedInteger(Integer val){
+        this.val = val;
+        this.list = null;
+    }
+
+    public NestedInteger(List&lt;NestedInteger&gt; list){
+        this.list = list;
+        this.val = null;
+    }
+
+    // if saved value is integer, return true, else false
+    public boolean isIntger(){
+        return val != null;
+    }
+
+    // if saved value is integer, return it, else return null
+    public Integer getInteger(){
+        return this.val;
+    }
+
+    // if saved value is array, return it, else return null
+    public List&lt;NestedInteger&gt; getList(){
+        return this.list;
+    }
+
+}
+</code></pre>
+<pre><code class="language-java">// java
+// LC 341
+// algorithm book (labu) p.357
+//-----------------------------------------------------------
+// NestedInteger solution V1 :  via tree algorithm
+//-----------------------------------------------------------
+class NestedIterator implements Iterator&lt;Integer&gt;{
+
+    private Iterator&lt;Integer&gt; it;
+
+    public NestedInteger(List&lt;NestedInteger&gt; nestedList){
+        // save flatten result
+        List&lt;Integer&gt; result = new LinkedList&lt;&gt;();
+
+        for (NestedInteger node: nestedList){
+            // start from each node and proceed
+            traverse(node, result);
+        }
+
+        // get result's iterator
+        this.it = result.iterator();
+    }
+
+    public Integer next(){
+        return it.next();
+    }
+
+    public boolean hasNext(){
+        return it.hasNext();
+    }
+
+    // traverse tree with root as root, and add nodes to result array
+    private void traverse(NestedInteger root, List&lt;Integer&gt; result){
+        if (root.isIntger()){
+            // arrive root node
+            result.add(root.getInteger());
+            return;
+        }
+
+        // traverse framework
+        for (NestedInteger child: root.getList()){
+            traverse(child, result);
+        }
+    }
+}
+</code></pre>
+<pre><code class="language-java">// java
+// LC 341
+// algorithm book (labu) p.358
+//-----------------------------------------------------------
+// NestedInteger solution V2 :  via lazy calling
+//-----------------------------------------------------------
+public class NestedIterator implements Iterator&lt;Integer&gt;{
+
+    private LinkedList&lt;NestedInteger&gt; list;
+
+    public NestedInteger(List&lt;NestedInteger&gt; nestedList){
+        // use LinkedList, for good performance in below op
+        list = new LinkedList&lt;&gt;(nestedList);
+    }
+
+    public Integer next(){
+        // hasNext method make sure 1st element must be Integer type
+        return list.remove(0).getInteger();
+    }
+
+    public boolean hasNext(){
+        // for loop split elements in array until 1st element is Integer type
+        while (!list.isEmpty() &amp;&amp; list.get(0).isIntger()){
+            // when 1st element is array type, go into the loop
+            List&lt;NestedInteger&gt; first = list.remove(0).getList();
+            // flatten 1st array, and add to &quot;start&quot; in ordering
+            for (int i = first.size() - 1; i &gt;= 0; i--){
+                list.addFirst(first.get(i));
+            }  
+        }
+        return !list.isEmpty();
+    }
+}
+</code></pre>
+<h4 id="1-1-7-sort-array-with-2-keys" tabindex="-1"><a class="header-anchor" href="#1-1-7-sort-array-with-2-keys"><span>1-1-7) Sort array with 2 keys</span></a></h4>
+<pre><code class="language-python">y = [[7,0], [4,4], [7,1], [5,0], [6,1], [5,2]]
+print (y)
+y.sort(key = lambda x : (-x[0], x[1]))
+print (y)
+# [[7, 0], [4, 4], [7, 1], [5, 0], [6, 1], [5, 2]]
+# [[7, 0], [7, 1], [6, 1], [5, 0], [5, 2], [4, 4]]
+</code></pre>
+<h4 id="1-1-8-go-through-2-arrays-length-could-be-different" tabindex="-1"><a class="header-anchor" href="#1-1-8-go-through-2-arrays-length-could-be-different"><span>1-1-8) go through 2 arrays (length could be different)</span></a></h4>
+<pre><code class="language-python">#--------------------
+# example 1
+#--------------------
+
+# 2 array : s,t
+# len(s) = 10, len(t) = 7
+# or
+# len(s) = 10, len(t) = 11
+if len(s) &gt; len(t):
+    s,t  = t,s
+
+for i in range(len(s)):
+    print (s[i], t[i])
+
+
+#--------------------
+# example 2
+#--------------------
+# LC 165
+class Solution:
+    def compareVersion(self, version1: str, version2: str) -&gt; int:
+        nums1 = version1.split('.')
+        nums2 = version2.split('.')
+        n1, n2 = len(nums1), len(nums2)
+        
+        # NOTE here !!!
+        # compare versions
+        for i in range(max(n1, n2)):
+            i1 = int(nums1[i]) if i &lt; n1 else 0
+            i2 = int(nums2[i]) if i &lt; n2 else 0
+            if i1 != i2:
+                return 1 if i1 &gt; i2 else -1
+        
+        # the versions are equal
+        return 0
+</code></pre>
+<h4 id="1-1-9-shallow-deep-copy" tabindex="-1"><a class="header-anchor" href="#1-1-9-shallow-deep-copy"><span>1-1-9) shallow, deep copy</span></a></h4>
+<pre><code class="language-python"># LC 670
+# V0'
+# IDEA : BRUTE FORCE
+# NOTE : there is also 2 pointers solution : 
+#        -&gt; https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Array/maximum-swap.py#L49
+# NOTE : ans = A[:]
+#        A[:] is a `shallow copy` syntax in python,
+#        it will copy &quot;parent obj&quot; (not child obj) to the other instance
+#        so the changes (&quot;parent obj&quot; only) in original instance will NOT affect the copied instance
+# https://stackoverflow.com/questions/4081561/what-is-the-difference-between-list-and-list-in-python
+# https://github.com/yennanliu/til#20210923
+class Solution(object):
+    def maximumSwap(self, num):
+        A = list(str(num))
+        ans = A[:]
+        for i in range(len(A)):
+            for j in range(i+1, len(A)):
+                A[i], A[j] = A[j], A[i]
+                if A &gt; ans: 
+                    ans = A[:]
+                A[i], A[j] = A[j], A[i]
+
+        return int(&quot;&quot;.join(ans))
+</code></pre>
+<hr>
+<h3 id="1-2-special-array-algorithms" tabindex="-1"><a class="header-anchor" href="#1-2-special-array-algorithms"><span>1-2) Special Array Algorithms</span></a></h3>
+<h4 id="1-2-1-boyer-moore-majority-vote-algorithm" tabindex="-1"><a class="header-anchor" href="#1-2-1-boyer-moore-majority-vote-algorithm"><span>1-2-1) Boyer-Moore Majority Vote Algorithm</span></a></h4>
+<p><strong>Concept:</strong></p>
+<ul>
+<li>Find element(s) appearing more than ⌊n/k⌋ times in an array</li>
+<li><strong>Key Idea</strong>: Pair different elements and cancel them out</li>
+<li>Majority element survives cancellation</li>
+<li><strong>Two-phase</strong>: (1) Find candidates, (2) Verify counts</li>
+<li><strong>Space</strong>: O(k) for k-1 candidates</li>
+</ul>
+<p><strong>When to Use:</strong></p>
+<ul>
+<li>“Find majority element” → element appearing &gt; n/2 times</li>
+<li>“Find all elements appearing more than n/3 times”</li>
+<li>“Heavy hitters” or “frequent elements” problems</li>
+<li>Need O(1) space (better than HashMap O(n))</li>
+</ul>
+<p><strong>Related:</strong> See <a href="https://github.com/yennanliu/CS_basics/blob/master/streaming_algorithms.md">streaming_algorithms.md</a> for detailed explanation.</p>
+<hr>
+<h5 id="pattern-1-standard-majority-element-n-2-lc-169" tabindex="-1"><a class="header-anchor" href="#pattern-1-standard-majority-element-n-2-lc-169"><span><strong>Pattern 1: Standard Majority Element (&gt; n/2) - LC 169</strong></span></a></h5>
+<p><strong>Algorithm:</strong></p>
+<ul>
+<li>Maintain one candidate and count</li>
+<li>When count=0, select new candidate</li>
+<li>Increment count for same element, decrement for different</li>
+<li>Majority element survives</li>
+</ul>
+<pre><code class="language-python"># Python - LC 169
+def majorityElement(nums):
+    &quot;&quot;&quot;
+    Find element appearing &gt; n/2 times
+    Time: O(n)
+    Space: O(1)
+    &quot;&quot;&quot;
+    candidate = None
+    count = 0
+
+    # Phase 1: Find candidate
+    for num in nums:
+        if count == 0:
+            candidate = num
+            count = 1
+        elif num == candidate:
+            count += 1
+        else:
+            count -= 1  # Cancel out
+
+    # Phase 2: Verify (can skip if majority guaranteed)
+    # return candidate
+
+    # If not guaranteed, verify:
+    if nums.count(candidate) &gt; len(nums) // 2:
+        return candidate
+    return None
+</code></pre>
+<pre><code class="language-java">// Java - LC 169
+// V0
+// IDEA: Boyer-Moore Majority Vote
+/**
+ * Key Insight:
+ * - Pair different elements and cancel them out
+ * - Majority element will survive cancellation
+ * - Works because majority element appears &gt; n/2 times
+ *
+ * Time: O(n)
+ * Space: O(1)
+ */
+public int majorityElement(int[] nums) {
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
+    int candidate = nums[0];
+    int count = 1;
+
+    // Phase 1: Find candidate by cancellation
+    for (int i = 1; i &lt; nums.length; i++) {
+        if (count == 0) {
+            // Start new candidate when count reaches 0
+            candidate = nums[i];
+            count = 1;
+        } else if (nums[i] == candidate) {
+            // Same element: increment count
+            count++;
+        } else {
+            // Different element: cancel out
+            count--;
+        }
+    }
+
+    // Phase 2: Verify (optional if majority guaranteed)
+    // If problem guarantees majority exists, return candidate directly
+    return candidate;
+
+    // Otherwise, verify:
+    // int actualCount = 0;
+    // for (int num : nums) {
+    //     if (num == candidate) actualCount++;
+    // }
+    // return actualCount &gt; nums.length / 2 ? candidate : -1;
+}
+</code></pre>
+<p><strong>Example Trace:</strong> <code>nums = [2,2,1,1,1,2,2]</code></p>
+<pre><code>Index | num | candidate | count | Action
+--------------------------------------------
+  0   |  2  |     2     |   1   | Initialize
+  1   |  2  |     2     |   2   | Same, increment
+  2   |  1  |     2     |   1   | Different, decrement
+  3   |  1  |     2     |   0   | Different, decrement
+  4   |  1  |     1     |   1   | Count=0, new candidate
+  5   |  2  |     1     |   0   | Different, decrement
+  6   |  2  |     2     |   1   | Count=0, new candidate
+
+Result: 2 (appears 4 times &gt; 7/2 = 3.5)
+</code></pre>
+<hr>
+<h5 id="pattern-2-elements-appearing-n-3-times-lc-229" tabindex="-1"><a class="header-anchor" href="#pattern-2-elements-appearing-n-3-times-lc-229"><span><strong>Pattern 2: Elements Appearing &gt; n/3 Times - LC 229</strong></span></a></h5>
+<p><strong>Key Insight:</strong> At most 2 elements can appear more than n/3 times.</p>
+<p><strong>Algorithm:</strong></p>
+<ul>
+<li>Maintain two candidates and two counts</li>
+<li>Cancellation requires decrementing both counts</li>
+<li>Must verify both candidates in phase 2</li>
+</ul>
+<pre><code class="language-python"># Python - LC 229
+def majorityElement(nums):
+    &quot;&quot;&quot;
+    Find all elements appearing &gt; n/3 times
+    Time: O(n)
+    Space: O(1)
+    &quot;&quot;&quot;
+    # Phase 1: Find up to 2 candidates
+    candidate1, candidate2 = None, None
+    count1, count2 = 0, 0
+
+    for num in nums:
+        if num == candidate1:
+            count1 += 1
+        elif num == candidate2:
+            count2 += 1
+        elif count1 == 0:
+            candidate1, count1 = num, 1
+        elif count2 == 0:
+            candidate2, count2 = num, 1
+        else:
+            # Different from both: cancel out
+            count1 -= 1
+            count2 -= 1
+
+    # Phase 2: Verify candidates
+    result = []
+    for candidate in [candidate1, candidate2]:
+        if candidate is not None and nums.count(candidate) &gt; len(nums) // 3:
+            result.append(candidate)
+
+    return result
+</code></pre>
+<pre><code class="language-java">// Java - LC 229
+// V0
+// IDEA: Boyer-Moore Majority Vote (Generalized)
+/**
+ * Key Insight:
+ * - At most 2 elements can appear &gt; n/3 times
+ * - Use 2 candidates and 2 counts
+ * - Cancellation decrements both counts
+ * - MUST verify both candidates
+ *
+ * Time: O(n)
+ * Space: O(1)
+ */
+public List&lt;Integer&gt; majorityElement(int[] nums) {
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
+    int candidate1 = 0, candidate2 = 0;
+    int count1 = 0, count2 = 0;
+
+    // Phase 1: Find up to 2 candidates
+    for (int num : nums) {
+        if (num == candidate1) {
+            count1++;
+        } else if (num == candidate2) {
+            count2++;
+        } else if (count1 == 0) {
+            candidate1 = num;
+            count1 = 1;
+        } else if (count2 == 0) {
+            candidate2 = num;
+            count2 = 1;
+        } else {
+            // Different from both: cancel out
+            count1--;
+            count2--;
+        }
+    }
+
+    // Phase 2: Verify candidates (REQUIRED!)
+    count1 = 0;
+    count2 = 0;
+    for (int num : nums) {
+        if (num == candidate1) count1++;
+        else if (num == candidate2) count2++;
+    }
+
+    List&lt;Integer&gt; result = new ArrayList&lt;&gt;();
+    if (count1 &gt; nums.length / 3) result.add(candidate1);
+    if (count2 &gt; nums.length / 3) result.add(candidate2);
+
+    return result;
+}
+</code></pre>
+<p><strong>Example Trace:</strong> <code>nums = [3,2,3]</code></p>
+<pre><code>Index | num | c1 | cnt1 | c2 | cnt2 | Action
+-------------------------------------------------
+  0   |  3  | 3  |  1   | 0  |  0   | Set candidate1
+  1   |  2  | 3  |  1   | 2  |  1   | Set candidate2
+  2   |  3  | 3  |  2   | 2  |  1   | Match candidate1
+
+Verification:
+- candidate1=3: appears 2 times &gt; 3/3 = 1 ✓
+- candidate2=2: appears 1 time ≤ 3/3 = 1 ✗
+
+Result: [3]
+</code></pre>
+<hr>
+<h5 id="pattern-3-generalized-k-majority-n-k-times" tabindex="-1"><a class="header-anchor" href="#pattern-3-generalized-k-majority-n-k-times"><span><strong>Pattern 3: Generalized k-Majority (&gt; n/k times)</strong></span></a></h5>
+<p><strong>Concept:</strong> For elements appearing more than n/k times, at most k-1 candidates exist.</p>
+<pre><code class="language-java">// Generalized Boyer-Moore for n/k threshold
+import java.util.*;
+
+class BoyerMooreGeneralized {
+    /**
+     * Find all elements appearing &gt; n/k times
+     * time = O(N × k)
+     * space = O(k)
+     */
+    public List&lt;Integer&gt; majorityElement(int[] nums, int k) {
+        // At most k-1 candidates for n/k threshold
+        Map&lt;Integer, Integer&gt; candidates = new HashMap&lt;&gt;();
+
+        // Phase 1: Find up to k-1 candidates
+        for (int num : nums) {
+            if (candidates.containsKey(num)) {
+                candidates.put(num, candidates.get(num) + 1);
+            } else if (candidates.size() &lt; k - 1) {
+                candidates.put(num, 1);
+            } else {
+                // Decrement all counts (cancellation)
+                List&lt;Integer&gt; toRemove = new ArrayList&lt;&gt;();
+                for (Map.Entry&lt;Integer, Integer&gt; entry : candidates.entrySet()) {
+                    int count = entry.getValue() - 1;
+                    if (count == 0) {
+                        toRemove.add(entry.getKey());
+                    } else {
+                        candidates.put(entry.getKey(), count);
+                    }
+                }
+                for (int key : toRemove) {
+                    candidates.remove(key);
+                }
+            }
+        }
+
+        // Phase 2: Verify all candidates
+        Map&lt;Integer, Integer&gt; counts = new HashMap&lt;&gt;();
+        for (int num : nums) {
+            if (candidates.containsKey(num)) {
+                counts.put(num, counts.getOrDefault(num, 0) + 1);
+            }
+        }
+
+        List&lt;Integer&gt; result = new ArrayList&lt;&gt;();
+        for (Map.Entry&lt;Integer, Integer&gt; entry : counts.entrySet()) {
+            if (entry.getValue() &gt; nums.length / k) {
+                result.add(entry.getKey());
+            }
+        }
+
+        return result;
+    }
+}
+</code></pre>
+<hr>
+<h4 id="boyer-moore-common-mistakes-tips" tabindex="-1"><a class="header-anchor" href="#boyer-moore-common-mistakes-tips"><span><strong>Boyer-Moore: Common Mistakes &amp; Tips</strong></span></a></h4>
+<p><strong>🚫 Common Mistakes:</strong></p>
+<ol>
+<li>
+<p><strong>Missing Verification Phase</strong></p>
+<pre><code class="language-java">// ❌ WRONG: Assuming candidate is always majority
+return candidate;
+
+// ✅ CORRECT: Verify count (if not guaranteed)
+int actualCount = 0;
+for (int num : nums) {
+    if (num == candidate) actualCount++;
+}
+return actualCount &gt; nums.length / 2 ? candidate : -1;
+</code></pre>
+</li>
+<li>
+<p><strong>Wrong Cancellation Logic for LC 229</strong></p>
+<pre><code class="language-java">// ❌ WRONG: Only checking candidate1
+if (num != candidate1) count1--;
+
+// ✅ CORRECT: Check both, reset on count=0
+if (num == candidate1) {
+    count1++;
+} else if (num == candidate2) {
+    count2++;
+} else if (count1 == 0) {
+    candidate1 = num; count1 = 1;
+} else if (count2 == 0) {
+    candidate2 = num; count2 = 1;
+} else {
+    count1--; count2--;
+}
+</code></pre>
+</li>
+<li>
+<p><strong>Not Handling Duplicate Candidates (LC 229)</strong></p>
+<pre><code class="language-java">// ❌ WRONG: candidate1 and candidate2 can be same initially
+
+// ✅ CORRECT: Check candidate1 first, then candidate2
+if (num == candidate1) count1++;
+else if (num == candidate2) count2++;
+// ... rest of logic
+</code></pre>
+</li>
+</ol>
+<p><strong>💡 Interview Tips:</strong></p>
+<ol>
+<li>
+<p><strong>When to Use:</strong></p>
+<ul>
+<li>“Find majority element” keywords</li>
+<li>Need O(1) space (vs HashMap O(n))</li>
+<li>Guaranteed majority exists</li>
+</ul>
+</li>
+<li>
+<p><strong>Talking Points:</strong></p>
+<ul>
+<li>“Pairing and cancellation eliminates non-majority elements”</li>
+<li>“At most k-1 elements can appear more than n/k times”</li>
+<li>“Two-phase: find candidates, then verify”</li>
+</ul>
+</li>
+<li>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time: O(n) single pass (+ O(n) for verification = O(n) total)</li>
+<li>Space: O(1) for standard, O(k) for generalized</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h4 id="related-leetcode-problems" tabindex="-1"><a class="header-anchor" href="#related-leetcode-problems"><span><strong>Related LeetCode Problems:</strong></span></a></h4>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>Difficulty</th>
+<th>Threshold</th>
+<th>Candidates</th>
+<th>Verify?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>LC 169</td>
+<td>Easy</td>
+<td>&gt; n/2</td>
+<td>1</td>
+<td>Optional*</td>
+</tr>
+<tr>
+<td>LC 229</td>
+<td>Medium</td>
+<td>&gt; n/3</td>
+<td>2</td>
+<td>Required</td>
+</tr>
+<tr>
+<td>General</td>
+<td>-</td>
+<td>&gt; n/k</td>
+<td>k-1</td>
+<td>Required</td>
+</tr>
+</tbody>
+</table>
+<p>*Optional if problem guarantees majority element exists.</p>
+<hr>
+<p><strong>Summary:</strong></p>
+<ul>
+<li>✅ Boyer-Moore: O(n) time, O(1) space majority finding</li>
+<li>✅ Key insight: Cancellation eliminates non-majority elements</li>
+<li>✅ Two-phase: (1) Find candidates, (2) Verify counts</li>
+<li>✅ For &gt; n/2: 1 candidate, for &gt; n/3: 2 candidates, for &gt; n/k: k-1 candidates</li>
+<li>✅ Alternative: HashMap O(n) space for exact counts</li>
+</ul>
+<hr>
+<h4 id="1-2-2-frequency-array-running-count" tabindex="-1"><a class="header-anchor" href="#1-2-2-frequency-array-running-count"><span>1-2-2) Frequency Array + Running Count</span></a></h4>
+<p><strong>Concept:</strong></p>
+<ul>
+<li>Track element occurrences using a frequency array (when values are bounded, e.g., 1 to n)</li>
+<li>Use array index as hash key for O(1) lookups</li>
+<li>Maintain a running count that updates as conditions are met</li>
+<li><strong>Key Insight</strong>: When frequency reaches a threshold, trigger an action</li>
+</ul>
+<p><strong>When to Use:</strong></p>
+<ul>
+<li>Values are bounded/constrained (e.g., permutations with values 1 to n)</li>
+<li>Need to track “seen in both” or “appeared k times” conditions</li>
+<li>Prefix-based counting problems</li>
+<li>Real-time/streaming count updates</li>
+</ul>
+<p><strong>Related:</strong> Useful for permutation problems, prefix arrays, and intersection counting.</p>
+<hr>
+<h5 id="pattern-prefix-common-array-lc-2657" tabindex="-1"><a class="header-anchor" href="#pattern-prefix-common-array-lc-2657"><span><strong>Pattern: Prefix Common Array (LC 2657)</strong></span></a></h5>
+<p><strong>Problem:</strong> Given two permutations A and B of length n, find C where C[i] = count of numbers present at or before index i in both A and B.</p>
+<p><strong>Algorithm:</strong></p>
+<ul>
+<li>Use frequency array of size n+1 (since values are 1 to n)</li>
+<li>For each index, process A[i] and B[i]</li>
+<li>When any element’s frequency reaches 2, it’s common (seen in both arrays)</li>
+<li>Increment running count and store in result</li>
+</ul>
+<pre><code class="language-python"># Python - LC 2657
+def findThePrefixCommonArray(A, B):
+    &quot;&quot;&quot;
+    Find prefix common array using frequency counting.
+
+    Key Insight:
+    - Each number appears at most twice total (once in A, once in B)
+    - When count[x] == 2, x has been seen in both arrays → common element
+
+    Time: O(n)
+    Space: O(n)
+    &quot;&quot;&quot;
+    n = len(A)
+    res = [0] * n
+    count = [0] * (n + 1)  # values are 1..n
+    common = 0
+
+    for i in range(n):
+        # Process element from A
+        count[A[i]] += 1
+        if count[A[i]] == 2:
+            common += 1
+
+        # Process element from B
+        count[B[i]] += 1
+        if count[B[i]] == 2:
+            common += 1
+
+        res[i] = common
+
+    return res
+</code></pre>
+<pre><code class="language-java">// Java - LC 2657
+// V0
+// IDEA: Frequency Array + Running Count
+/**
+ * Core Insight:
+ * - Each number appears at most twice total (once in A, once in B)
+ * - When frequency[x] == 2, x is present in both arrays → common element
+ * - Running count tracks cumulative common elements
+ *
+ * Why This Works:
+ * - Permutation guarantee: each value 1..n appears exactly once in each array
+ * - Processing both arrays simultaneously at each index
+ * - frequency[x] can only be 0, 1, or 2
+ * - frequency[x] == 2 means: seen once in A AND once in B
+ *
+ * Time: O(n) - single pass through both arrays
+ * Space: O(n) - frequency array of size n+1
+ */
+public int[] findThePrefixCommonArray(int[] A, int[] B) {
+    int n = A.length;
+    int[] res = new int[n];
+
+    // Since values are 1 to n, use array as hash map
+    int[] frequency = new int[n + 1];
+    int commonCount = 0;
+
+    for (int i = 0; i &lt; n; i++) {
+        // Process element from A
+        frequency[A[i]]++;
+        if (frequency[A[i]] == 2) {
+            commonCount++;  // Now seen in both arrays
+        }
+
+        // Process element from B
+        frequency[B[i]]++;
+        if (frequency[B[i]] == 2) {
+            commonCount++;  // Now seen in both arrays
+        }
+
+        // Store current prefix common count
+        res[i] = commonCount;
+    }
+
+    return res;
+}
+</code></pre>
+<p><strong>Example Trace:</strong> <code>A = [1,3,2,4], B = [3,1,2,4]</code></p>
+<pre><code>Index | A[i] | B[i] | frequency (after)     | commonCount | Action
+----------------------------------------------------------------------
+  0   |  1   |  3   | [0,1,0,1,0]           |     0       | freq[1]=1, freq[3]=1
+  1   |  3   |  1   | [0,2,0,2,0]           |     2       | freq[3]=2 ✓, freq[1]=2 ✓
+  2   |  2   |  2   | [0,2,2,2,0]           |     3       | freq[2]=1, then freq[2]=2 ✓
+  3   |  4   |  4   | [0,2,2,2,2]           |     4       | freq[4]=1, then freq[4]=2 ✓
+
+Result: [0, 2, 3, 4]
+</code></pre>
+<hr>
+<h5 id="generalized-pattern-frequency-threshold-detection" tabindex="-1"><a class="header-anchor" href="#generalized-pattern-frequency-threshold-detection"><span><strong>Generalized Pattern: Frequency Threshold Detection</strong></span></a></h5>
+<p>Use this pattern when you need to detect when elements reach a specific count threshold:</p>
+<pre><code class="language-java">// Generalized frequency threshold pattern
+/**
+ * Detect when elements reach threshold k
+ * Useful for: intersection counting, duplicate detection, k-frequency problems
+ */
+public void frequencyThresholdPattern(int[] arr1, int[] arr2, int maxVal, int threshold) {
+    int[] frequency = new int[maxVal + 1];
+    int count = 0;
+
+    for (int i = 0; i &lt; arr1.length; i++) {
+        // Process from first source
+        frequency[arr1[i]]++;
+        if (frequency[arr1[i]] == threshold) {
+            count++;  // Element reached threshold
+        }
+
+        // Process from second source (if applicable)
+        frequency[arr2[i]]++;
+        if (frequency[arr2[i]] == threshold) {
+            count++;
+        }
+
+        // Use count as needed...
+    }
+}
+</code></pre>
+<hr>
+<h4 id="frequency-array-running-count-common-mistakes-tips" tabindex="-1"><a class="header-anchor" href="#frequency-array-running-count-common-mistakes-tips"><span><strong>Frequency Array + Running Count: Common Mistakes &amp; Tips</strong></span></a></h4>
+<p><strong>🚫 Common Mistakes:</strong></p>
+<ol>
+<li>
+<p><strong>Wrong Array Size</strong></p>
+<pre><code class="language-java">// ❌ WRONG: Off-by-one for 1-indexed values
+int[] frequency = new int[n];  // Can't access frequency[n]
+
+// ✅ CORRECT: Size n+1 for values 1..n
+int[] frequency = new int[n + 1];
+</code></pre>
+</li>
+<li>
+<p><strong>Checking Threshold Before Increment</strong></p>
+<pre><code class="language-java">// ❌ WRONG: Check before increment misses the transition
+if (frequency[x] == 2) count++;
+frequency[x]++;
+
+// ✅ CORRECT: Increment first, then check
+frequency[x]++;
+if (frequency[x] == 2) count++;
+</code></pre>
+</li>
+<li>
+<p><strong>Not Handling Same Element in Both Arrays at Same Index</strong></p>
+<pre><code class="language-java">// For A[i] == B[i] case, frequency goes 0→1→2 in same iteration
+// This is handled correctly by processing A[i] then B[i] separately
+</code></pre>
+</li>
+</ol>
+<p><strong>💡 Interview Tips:</strong></p>
+<ol>
+<li>
+<p><strong>When to Use:</strong></p>
+<ul>
+<li>“Permutation” or “values 1 to n” keywords</li>
+<li>“Prefix” or “running” count requirements</li>
+<li>“Common elements” or “intersection” problems</li>
+<li>Need O(1) lookup with bounded values</li>
+</ul>
+</li>
+<li>
+<p><strong>Talking Points:</strong></p>
+<ul>
+<li>“Array index as hash key gives O(1) lookup”</li>
+<li>“Frequency threshold detection for condition triggers”</li>
+<li>“Running count avoids recomputation”</li>
+</ul>
+</li>
+<li>
+<p><strong>Complexity:</strong></p>
+<ul>
+<li>Time: O(n) single pass</li>
+<li>Space: O(n) or O(max_value) for frequency array</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h4 id="related-leetcode-problems-1" tabindex="-1"><a class="header-anchor" href="#related-leetcode-problems-1"><span><strong>Related LeetCode Problems:</strong></span></a></h4>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>Difficulty</th>
+<th>Pattern Variant</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>LC 2657</td>
+<td>Medium</td>
+<td>Prefix common array (frequency == 2)</td>
+</tr>
+<tr>
+<td>LC 349</td>
+<td>Easy</td>
+<td>Intersection of two arrays (frequency &gt;= 1 in both)</td>
+</tr>
+<tr>
+<td>LC 350</td>
+<td>Easy</td>
+<td>Intersection with duplicates</td>
+</tr>
+<tr>
+<td>LC 442</td>
+<td>Medium</td>
+<td>Find duplicates (frequency == 2, in-place)</td>
+</tr>
+<tr>
+<td>LC 448</td>
+<td>Easy</td>
+<td>Find missing numbers (frequency == 0)</td>
+</tr>
+<tr>
+<td>LC 645</td>
+<td>Easy</td>
+<td>Set mismatch (frequency == 2 and == 0)</td>
+</tr>
+<tr>
+<td>LC 1</td>
+<td>Easy</td>
+<td>Two Sum (complement frequency check)</td>
+</tr>
+<tr>
+<td>LC 217</td>
+<td>Easy</td>
+<td>Contains duplicate (frequency &gt;= 2)</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<p><strong>Summary:</strong></p>
+<ul>
+<li>✅ Frequency Array: Use array index as hash for bounded values (O(1) lookup)</li>
+<li>✅ Running Count: Maintain cumulative count, update on threshold</li>
+<li>✅ Key Insight: frequency[x] == k means x appeared k times across sources</li>
+<li>✅ Best for: Permutations, prefix problems, intersection counting</li>
+<li>✅ Alternative: HashMap for unbounded/sparse values</li>
+</ul>
+<hr>
+<h2 id="2-lc-example" tabindex="-1"><a class="header-anchor" href="#2-lc-example"><span>2) LC Example</span></a></h2>
+<h3 id="2-1-queue-reconstruction-by-height" tabindex="-1"><a class="header-anchor" href="#2-1-queue-reconstruction-by-height"><span>2-1) Queue Reconstruction by Height</span></a></h3>
+<pre><code class="language-python"># LC 406 Queue Reconstruction by Height
+class Solution(object):
+    def reconstructQueue(self, people):
+        people.sort(key = lambda x : (-x[0], x[1]))
+        res = []
+        for p in people:
+        &quot;&quot;&quot;
+        py insert syntax
+        # syntax : 
+        # python_trick.html#1-6-insert-into-array-in-place
+
+        # arr.insert(&lt;index&gt;,&lt;value&gt;)
+        &quot;&quot;&quot;
+            res.insert(p[1], p)
+        return res
+</code></pre>
+<h3 id="2-2-product-of-array-except-self" tabindex="-1"><a class="header-anchor" href="#2-2-product-of-array-except-self"><span>2-2) Product of Array Except Self</span></a></h3>
+<pre><code class="language-python"># 238 Product of Array Except Self
+# IDEA : 
+# SINCE output[i] = (x0 * x1 * ... * xi-1) * (xi+1 * .... * xn-1)
+# -&gt; SO DO A 2 LOOP
+# -&gt; 1ST LOOP : GO THROGH THE ARRAY (-&gt;) : (x0 * x1 * ... * xi-1)
+# -&gt; 2ND LOOP : GO THROGH THE ARRAY (&lt;-) : (xi+1 * .... * xn-1)
+# e.g.
+# given [1,2,3,4], return [24,12,8,6].
+# -&gt; output = [2*3*4, 1,1,1]  &lt;-- 2*3*4    (right of 1: 2,3,4)
+# -&gt; output = [2*3*4, 1*3*4,1,1] &lt;-- 1*3*4 (left of 2 :1, right of 2: 3,4)
+# -&gt; output = [2*3*4, 1*3*4,1*2*4,1] &lt;-- 1*2*4 (left of 3: 1,2 right of 3 : 4)
+# -&gt; output = [2*3*4, 1*3*4,1*2*4,1*2*3] &lt;-- 1*2*3 (left of 4 : 1,2,3)
+# -&gt; final output  = [2*3*4, 1*3*4,1*2*4,1*2*3] = [24,12,8,6]
+class Solution:
+    def productExceptSelf(self, nums):
+        size = len(nums)
+        output = [1] * size
+        left = 1
+        for x in range(size - 1):
+            left *= nums[x]
+            output[x + 1] *= left
+        right = 1
+        for x in range(size - 1, 0, -1):
+            right *= nums[x]
+            output[x - 1] *= right
+        return output
+</code></pre>
+<h3 id="2-3-maximum-swap" tabindex="-1"><a class="header-anchor" href="#2-3-maximum-swap"><span>2-3) Maximum Swap</span></a></h3>
+<pre><code class="language-python"># 670 Maximum Swap
+class Solution(object):
+    def maximumSwap(self, num):
+        &quot;&quot;&quot;
+        :type num: int
+        :rtype: int
+        &quot;&quot;&quot;
+        # BE AWARE OF IT 
+        digits = list(str(num))
+        left, right = 0, 0
+        max_idx = len(digits)-1
+        for i in range(len(digits))[::-1]:
+            # BE AWARE OF IT 
+            if digits[i] &gt; digits[max_idx]:
+                max_idx = i
+            # BE AWARE OF IT  
+            # if current digit &gt; current max digit -&gt; swap them 
+            elif digits[max_idx] &gt; digits[i]:
+                left, right = i, max_idx        # if current max digit &gt; current digit -&gt; save current max digit to right idnex, and save current index to left
+        digits[left], digits[right] = digits[right], digits[left] # swap left and right when loop finished 
+        return int(&quot;&quot;.join(digits))
+</code></pre>
+<h3 id="2-7-best-time-to-buy-and-sell-stock" tabindex="-1"><a class="header-anchor" href="#2-7-best-time-to-buy-and-sell-stock"><span>2-7) Best Time to Buy and Sell Stock</span></a></h3>
+<pre><code class="language-python"># LC 121 Best Time to Buy and Sell Stock
+# V0
+# IDEA : array op + problem understanding
+class Solution(object):
+    def maxProfit(self, prices):
+        if len(prices) == 0:
+            return 0
+        ### NOTE : we define 1st minPrice as prices[0]
+        minPrice = prices[0]
+        maxProfit = 0
+        ### NOTE : we only loop prices ONCE
+        for p in prices:
+            # only if p &lt; minPrice, we get minPrice
+            if p &lt; minPrice:
+                minPrice = p
+            ### NOTE : only if p - minPrice &gt; maxProfit, we get maxProfit
+            elif p - minPrice &gt; maxProfit:
+                maxProfit = p - minPrice
+        return maxProfit
+</code></pre>
+<h3 id="2-8-bulb-switcher-iii" tabindex="-1"><a class="header-anchor" href="#2-8-bulb-switcher-iii"><span>2-8) Bulb Switcher III</span></a></h3>
+<pre><code class="language-python"># LC 1375. Bulb Switcher III
+# V0
+class Solution:
+    def numTimesAllBlue(self, light):
+        max_bulb_ind = 0
+        count = 0
+        turnedon_bulb = 0
+        
+        for bulb in light:
+            max_bulb_ind = max(max_bulb_ind,bulb)
+            turnedon_bulb += 1
+            if turnedon_bulb == max_bulb_ind:
+                count += 1
+        
+        return count
+</code></pre>
+<h3 id="2-9-robot-bounded-in-circle" tabindex="-1"><a class="header-anchor" href="#2-9-robot-bounded-in-circle"><span>2-9) Robot Bounded In Circle</span></a></h3>
+<pre><code class="language-python"># LC 1041. Robot Bounded In Circle
+# V0
+# IDEA : math + array
+class Solution:
+    def isRobotBounded(self, instructions):
+        &quot;&quot;&quot;
+        NOTE !!! we make direction as below
+
+         c == 'L':  move LEFT : [0,-1]
+         c == 'R':  move RIGHT : [0,1]
+        &quot;&quot;&quot;
+        dirs = [[0,1], [1,0], [0,-1], [-1,0]]
+        x = 0;
+        y = 0;
+        idx = 0;
+        for c in instructions:
+            print (&quot;c = &quot; + str(c) + &quot; idx = &quot; + str(idx))
+            &quot;&quot;&quot;
+            NOTE !!! since we need to verify if robot back to start point
+                -&gt; we use (idx + k)  % 4 for detecting cyclic cases
+            &quot;&quot;&quot;
+            if c == 'L':
+                idx = (idx + 3) % 4
+            elif c == 'R':
+                idx = (idx + 1) % 4
+            elif c == 'G':
+                x = x + dirs[idx][0]
+                y = y + dirs[idx][1]
+        return (x == 0 and y ==0) or idx !=0
+</code></pre>
+<h3 id="2-10-maximum-length-of-subarray-with-positive-product" tabindex="-1"><a class="header-anchor" href="#2-10-maximum-length-of-subarray-with-positive-product"><span>2-10) Maximum Length of Subarray With Positive Product</span></a></h3>
+<pre><code class="language-python"># LC 1567 Maximum Length of Subarray With Positive Product
+
+# V0
+class Solution:
+    def getMaxLen(self, nums):
+        first_neg, zero = None, -1
+        mx = neg = 0
+        for i,v in enumerate(nums):
+            if v == 0:
+                first_neg, zero, neg = None, i, 0
+                continue
+            if v &lt; 0:
+                neg += 1
+                if first_neg == None:
+                    first_neg = i
+            j = zero if not neg % 2 else first_neg if first_neg != None else 10**9
+            mx = max(mx, i-j)
+        return mx
+
+# V0'
+# IDEA : 2 POINTERS
+class Solution:
+    def getMaxLen(self, nums):
+        res = 0
+        k = -1 # most recent 0
+        j = -1 # first negative after most recent 0
+        cnt = 0 # count of negatives after most recent 0
+        for i, n in enumerate(nums):
+            if n == 0:
+                k = i
+                j = i
+                cnt = 0
+            elif n &lt; 0:
+                cnt += 1
+                if cnt % 2 == 0:
+                    res = max(res, i - k)
+                else:
+                    if cnt == 1:
+                        j = i
+                    else:
+                        res = max(res, i - j)        
+            else:
+                if cnt % 2 == 0:
+                    res = max(res, i - k)
+                else:
+                    res = max(res, i - j)
+        return res
+</code></pre>
+<h3 id="2-11-corporate-flight-bookings" tabindex="-1"><a class="header-anchor" href="#2-11-corporate-flight-bookings"><span>2-11) Corporate Flight Bookings</span></a></h3>
+<pre><code class="language-python"># LC 1109. Corporate Flight Bookings
+# V1
+# IDEA : ARRAY + prefix sum
+# https://leetcode.com/problems/corporate-flight-bookings/discuss/328856/JavaC%2B%2BPython-Sweep-Line
+# IDEA :
+# Set the change of seats for each day.
+# If booking = [i, j, k],
+# it needs k more seat on ith day,
+# and we don't need these seats on j+1th day.
+# We accumulate these changes then we have the result that we want.
+# Complexity
+# Time O(booking + N) for one pass on bookings
+# Space O(N) for the result
+class Solution:
+    def corpFlightBookings(self, bookings, n):
+        res = [0] * (n + 1)
+        for i, j, k in bookings:
+            res[i - 1] += k
+            res[j] -= k
+        for i in range(1, n):
+            res[i] += res[i - 1]
+        return res[:-1]
+
+# V1''
+# IDEA : ARRAY
+# https://leetcode.com/problems/corporate-flight-bookings/discuss/328893/Short-python-solution
+# IDEA : Simply use two arrays to keep track of how many bookings are added for every flight.
+class Solution:
+    def corpFlightBookings(self, bookings: List[List[int]], n: int) -&gt; List[int]:        
+        opens = [0]*n
+        closes = [0]*n
+        
+        for e in bookings:
+            opens[e[0]-1] += e[2]
+            closes[e[1]-1] += e[2]
+            
+        ret, tmp = [0]*n, 0
+        for i in range(n):
+            tmp += opens[i]
+            ret[i] = tmp
+            tmp -= closes[i]
+            
+        return ret
+</code></pre>
+<h3 id="2-12-first-missing-positive" tabindex="-1"><a class="header-anchor" href="#2-12-first-missing-positive"><span>2-12) First Missing Positive</span></a></h3>
+<pre><code class="language-python"># LC 41. First Missing Positive
+# V1'
+# IDEA :  Index as a hash key.
+# https://leetcode.com/problems/first-missing-positive/solution/
+# /doc/pic/first-missing-positive.png
+class Solution:
+    def firstMissingPositive(self, nums: List[int]) -&gt; int:
+        n = len(nums)
+
+        # Base case.
+        if 1 not in nums:
+            return 1
+
+        # Replace negative numbers, zeros,
+        # and numbers larger than n by 1s.
+        # After this convertion nums will contain
+        # only positive numbers.
+        for i in range(n):
+            if nums[i] &lt;= 0 or nums[i] &gt; n:
+                nums[i] = 1
+
+        # Use index as a hash key and number sign as a presence detector.
+        # For example, if nums[1] is negative that means that number `1`
+        # is present in the array.
+        # If nums[2] is positive - number 2 is missing.
+        for i in range(n):
+            a = abs(nums[i])
+            # If you meet number a in the array - change the sign of a-th element.
+            # Be careful with duplicates : do it only once.
+            if a == n:
+                nums[0] = - abs(nums[0])
+            else:
+                nums[a] = - abs(nums[a])
+
+        # Now the index of the first positive number
+        # is equal to first missing positive.
+        for i in range(1, n):
+            if nums[i] &gt; 0:
+                return i
+
+        if nums[0] &gt; 0:
+            return n
+
+        return n + 1
+</code></pre>
+<pre><code class="language-java">// java
+// LC 41. First Missing Positive
+// V0
+// IDEA: CYCLIC SORT
+/**
+ * Cyclic Sort Pattern:
+ * Place each positive number x at its &quot;correct&quot; index (x - 1)
+ *
+ * Key idea:
+ * - For a valid positive integer x (1 &lt;= x &lt;= n), it should be at index x-1
+ * - Example: number 3 should be at nums[2], number 1 should be at nums[0]
+ *
+ * Algorithm:
+ * 1. For each position i, keep swapping nums[i] to its correct position
+ *    until nums[i] is already at the right place or out of range
+ * 2. After sorting, scan for the first index i where nums[i] != i + 1
+ * 3. That index + 1 is the first missing positive
+ *
+ * Example: nums = [3, 4, -1, 1]
+ * Step 1: Place 3 at index 2 → [-1, 4, 3, 1]
+ * Step 2: Place 4 at index 3 → [-1, 1, 3, 4]
+ * Step 3: Place 1 at index 0 → [1, -1, 3, 4]
+ * Step 4: Scan → nums[1] = -1 ≠ 2, return 2
+ *
+ * Time: O(N) - each element is swapped at most once
+ * Space: O(1) - in-place sorting
+ */
+public int firstMissingPositive(int[] nums) {
+    int n = nums.length;
+
+    // 1. &quot;Cyclic Sort&quot;: Place each number x at index x - 1
+    // Example: nums[i] = 3 should be at nums[2]
+    for (int i = 0; i &lt; n; i++) {
+        while (nums[i] &gt; 0 &amp;&amp; nums[i] &lt;= n &amp;&amp; nums[nums[i] - 1] != nums[i]) {
+            // Swap nums[i] with the element at its target index
+            int temp = nums[nums[i] - 1];
+            nums[nums[i] - 1] = nums[i];
+            nums[i] = temp;
+        }
+    }
+
+    // 2. Scan for the first index where the number is wrong
+    for (int i = 0; i &lt; n; i++) {
+        if (nums[i] != i + 1) {
+            return i + 1; // Found the missing positive!
+        }
+    }
+
+    // 3. If all numbers 1 to n are present, the answer is n + 1
+    return n + 1;
+}
+</code></pre>
+<h3 id="2-13-increasing-triplet-subsequence" tabindex="-1"><a class="header-anchor" href="#2-13-increasing-triplet-subsequence"><span>2-13) Increasing Triplet Subsequence</span></a></h3>
+<pre><code class="language-python"># LC 334 Increasing Triplet Subsequence
+# V0
+# IDEA : MAINTAIN var first, second
+#        AND GO THROUGH nums to check if there exists x (on the right hand side of a, b )
+#        such that x &gt; second &gt; first
+class Solution(object):
+    def increasingTriplet(self, nums):
+        &quot;&quot;&quot;
+        NOTE !!! we init first, second as POSITIVE float('inf')
+        &quot;&quot;&quot;
+        first = float('inf')
+        second = float('inf')
+        # loop with normal ordering
+        for num in nums:
+            if num &lt;= first:     # min num
+                first = num
+            elif num &lt;= second:  # 2nd min num
+                second = num
+            else:                # 3rd min num
+                return True      
+        return False
+</code></pre>
+<h3 id="2-14-first-missing-positive" tabindex="-1"><a class="header-anchor" href="#2-14-first-missing-positive"><span>2-14) First Missing Positive</span></a></h3>
+<pre><code class="language-python"># LC 41. First Missing Positive
+# V0
+# IDEA : for loop + while loop + problem understanding
+class Solution:
+    def firstMissingPositive(self, nums):
+        for i, n in enumerate(nums):
+            if n &lt; 0:
+                continue
+            else:
+                while n &lt;= len(nums) and n &gt; 0:
+                    tmp = nums[n-1]
+                    nums[n-1] = float('inf')
+                    n = tmp
+        for i in range(len(nums)):
+            if nums[i] != float('inf'):
+                return i+1
+            
+        return len(nums)+1
+</code></pre>
+<h3 id="2-15-rotate-array" tabindex="-1"><a class="header-anchor" href="#2-15-rotate-array"><span>2-15) Rotate Array</span></a></h3>
+<pre><code class="language-python"># LC 189. Rotate Array
+# V0
+# IDEA : pop + insert
+class Solution(object):
+    def rotate(self, nums, k):
+        _len = len(nums)
+        k = k % _len
+        while k &gt; 0:
+            tmp = nums.pop(-1)
+            nums.insert(0, tmp)
+            k -= 1
+
+# V0'
+# IDEA : SLICE (in place)
+class Solution(object):
+    def rotate(self, nums, k):
+        # edge case
+        if k == 0 or not nums or len(nums) == 1:
+            return nums
+        ### NOTE this
+        k = k % len(nums)
+        if k == 0:
+            return nums
+        &quot;&quot;&quot;
+        NOTE this !!!!
+        &quot;&quot;&quot;
+        nums[:k], nums[k:] = nums[-k:], nums[:-k]
+        return nums
+</code></pre>
+<pre><code class="language-java">// java
+// LC 189. Rotate Array
+// V0
+// IDEA: REVERSE ARRAY (3-reverse trick)
+/**
+ * The 3-reverse trick:
+ * 1. Reverse the entire array
+ * 2. Reverse the first k elements
+ * 3. Reverse the remaining elements
+ *
+ * Example: nums = [1,2,3,4,5,6,7], k = 3
+ * Step 1: Reverse entire array → [7,6,5,4,3,2,1]
+ * Step 2: Reverse first k=3 elements → [5,6,7,4,3,2,1]
+ * Step 3: Reverse remaining elements → [5,6,7,1,2,3,4]
+ *
+ * Time: O(N) - each element is reversed twice
+ * Space: O(1) - in-place rotation
+ */
+public void rotate(int[] nums, int k) {
+    if (nums == null || nums.length &lt;= 1)
+        return;
+
+    int n = nums.length;
+    // Step 1: Handle cases where k &gt; n
+    k = k % n;
+    if (k == 0)
+        return;
+
+    // Step 2: Apply the 3-reverse trick
+    // 1. Reverse the whole array
+    reverse(nums, 0, n - 1);
+    // 2. Reverse the first k elements (0 to k-1)
+    reverse(nums, 0, k - 1);
+    // 3. Reverse the rest (k to n-1)
+    reverse(nums, k, n - 1);
+}
+
+private void reverse(int[] nums, int start, int end) {
+    while (start &lt; end) {
+        int temp = nums[start];
+        nums[start] = nums[end];
+        nums[end] = temp;
+        start++;
+        end--;
+    }
+}
+</code></pre>
+<h3 id="2-16-flatten-2d-vector" tabindex="-1"><a class="header-anchor" href="#2-16-flatten-2d-vector"><span>2-16) Flatten 2D Vector</span></a></h3>
+<pre><code class="language-python"># LC 251. Flatten 2D Vector
+# V0
+# IDEA : ARRAY OP
+class Vector2D:
+
+    def __init__(self, v):
+        # We need to iterate over the 2D vector, getting all the integers
+        # out of it and putting them into the nums list.
+        self.nums = []
+        for inner_list in v:
+            for num in inner_list:
+                self.nums.append(num)
+        # We'll keep position 1 behind the next number to return.
+        self.position = -1
+
+    def next(self):
+        # Move up to the current element and return it.
+        self.position += 1
+        return self.nums[self.position]
+
+    def hasNext(self):
+        # If the next position is a valid index of nums, return True.
+        return self.position + 1 &lt; len(self.nums)
+</code></pre>
+<h3 id="2-17-maximize-distance-to-closest-person" tabindex="-1"><a class="header-anchor" href="#2-17-maximize-distance-to-closest-person"><span>2-17) Maximize Distance to Closest Person</span></a></h3>
+<pre><code class="language-java">// java
+// LC 849. Maximize Distance to Closest Person
+
+// V0-1
+// IDEA (fixed by gpt)
+/**
+*  IDEA :
+*
+*  Explanation of the Code:
+*    1.  Initial Setup:
+*        •   lastOccupied keeps track of the index of the last seat occupied by a person.
+*        •   maxDistance is initialized to 0 to store the maximum distance found.
+*
+*    2.  Iterate Through the Array:
+*        •   When a seat is occupied (seats[i] == 1):
+*        •   If it’s the first occupied seat, calculate the distance from the start of the array to this seat (i).
+*        •   Otherwise, calculate the middle distance between the current and the last occupied seat using (i - lastOccupied) / 2.
+*
+*    3.  Check the Last Segment:
+*        •   If the last seat is empty, calculate the distance from the last occupied seat to the end of the array (seats.length - 1 - lastOccupied).
+*
+*    4.  Return the Maximum Distance:
+*        •   The value of maxDistance at the end of the loop is the answer.
+*
+*
+* Example :
+*  input : seats = [1, 0, 0, 0, 1, 0, 1]
+*
+*   Execution Steps:
+*    1.  First occupied seat at index 0 → Distance to start = 0.
+*    2.  Second occupied seat at index 4 → Middle distance = (4 - 0) / 2 = 2.
+*    3.  Third occupied seat at index 6 → Middle distance = (6 - 4) / 2 = 1.
+*    4.  No empty seats after the last occupied seat.
+*    5.  maxDistance = 2.
+*
+*  output:  2
+*
+*/
+/**
+*  Cases
+*
+*  Case 1)  0001  ( all &quot;0&quot; till meat first &quot;1&quot;)
+*  Case 2)  1001001 (all &quot;0&quot; are enclosed by &quot;1&quot;)
+*  Case 3)  1001000 (there are &quot;0&quot; that NOT enclosed by &quot;1&quot; on the right hand side)
+*
+*/
+public int maxDistToClosest_0_1(int[] seats) {
+    int maxDistance = 0;
+    int lastOccupied = -1;
+
+    // Traverse the array to calculate maximum distances
+    for (int i = 0; i &lt; seats.length; i++) {
+        /** NOTE !!! handle the seat val == 1 cases */
+        if (seats[i] == 1) {
+            if (lastOccupied == -1) {
+                // Handle the case where the `first` occupied seat is found
+                /**
+                 * NOTE !!!
+                 *
+                 *  for handling below case:
+                 *
+                 *    e.g. :  0001
+                 *
+                 *  (so, elements are all &quot;0&quot; till first visit &quot;1&quot;)
+                 *  in this case, we still can get put a person to seat, and get distance
+                 *
+                 */
+                maxDistance = i; // Distance from the start to the first occupied seat
+            } else {
+                // Calculate the distance to the closest person for the middle segment
+                /** NOTE !!! need to divided by 2, since the person need to seat at `middle` seat */
+                maxDistance = Math.max(maxDistance, (i - lastOccupied) / 2);
+            }
+            lastOccupied = i;
+        }
+    }
+
+    // Handle the case where the last segment is empty
+   /**
+    *  NOTE !!!
+    *
+    *   the condition is actually quite straightforward,
+    *   just need to check if the last element in array is &quot;0&quot;
+    *   if is &quot;0&quot;, means the array is NOT enclosed by &quot;1&quot;
+    *   then we need to handle such case
+    *   (example as below)
+    *
+    *   e.g.  100010000
+    *
+    */
+    if (seats[seats.length - 1] == 0) {
+        maxDistance = Math.max(maxDistance, seats.length - 1 - lastOccupied);
+    }
+
+    return maxDistance;
+}
+</code></pre>
+
+      </div>
+      <div class="cheatsheet-footer">
+        <a href="../cheatsheets.html" class="back-link">← Back to Cheat Sheets</a>
+        <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/array.md" class="github-edit" target="_blank">
+          Edit on GitHub →
+        </a>
+      </div>
+    <nav class="prev-next"><a href="advanced_string_algorithms.html" class="prev-link">← Advanced String Algorithms</a><a href="array_overlap_explaination.html" class="next-link">Array Overlap Explaination →</a></nav>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>CS_basics - Computer Science Fundamentals & Interview Preparation</p>
+      <p>
+        <a href="https://github.com/yennanliu/CS_basics">GitHub</a> •
+        <a href="https://github.com/yennanliu/CS_basics/tree/master/doc">Documentation</a> •
+        <a href="https://github.com/yennanliu/CS_basics/issues">Report Issues</a>
+      </p>
+    </div>
+  </footer>
+</body>
+</html>

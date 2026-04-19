@@ -1,0 +1,1464 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Streaming Algorithms - CS_basics</title>
+  <meta name="description" content="Computer Science fundamentals: algorithms, data structures, system design, and LeetCode solutions">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>CS</text></svg>">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="../vendor/fonts.css">
+  <link rel="stylesheet" href="../vendor/highlight/github-dark.min.css">
+  <script src="../vendor/highlight/highlight.min.js"></script>
+  <script>
+  // Apply theme before render to prevent flash
+  (function() {
+    var saved = localStorage.getItem('theme');
+    if (saved === 'dark' || (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      document.documentElement.setAttribute('data-theme', 'dark');
+    }
+  })();
+  </script>
+  <script>document.addEventListener('DOMContentLoaded', function() {
+    hljs.highlightAll();
+    document.querySelectorAll('pre code').forEach(function(codeEl) {
+      var pre = codeEl.parentElement;
+      var lang = '';
+      var cls = codeEl.className || '';
+      var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
+      if (m) lang = m[1];
+      var wrapper = document.createElement('div');
+      wrapper.className = 'code-block-wrapper';
+      pre.parentNode.insertBefore(wrapper, pre);
+      var header = document.createElement('div');
+      header.className = 'code-block-header';
+      if (lang) {
+        var label = document.createElement('span');
+        label.className = 'code-lang-label';
+        label.textContent = lang;
+        header.appendChild(label);
+      } else {
+        header.appendChild(document.createElement('span'));
+      }
+      var btn = document.createElement('button');
+      btn.className = 'copy-btn';
+      btn.textContent = 'Copy';
+      btn.addEventListener('click', function() {
+        navigator.clipboard.writeText(codeEl.textContent).then(function() {
+          btn.textContent = 'Copied!';
+          btn.classList.add('copied');
+          setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+        });
+      });
+      header.appendChild(btn);
+      wrapper.appendChild(header);
+      wrapper.appendChild(pre);
+    });
+    document.querySelectorAll('table').forEach(function(table) {
+      if (!table.parentElement.classList.contains('table-wrap')) {
+        var wrapper = document.createElement('div');
+        wrapper.className = 'table-wrap';
+        table.parentNode.insertBefore(wrapper, table);
+        wrapper.appendChild(table);
+      }
+    });
+    // Reading progress bar
+    var progressBar = document.getElementById('reading-progress');
+    if (progressBar) {
+      window.addEventListener('scroll', function() {
+        var winScroll = document.documentElement.scrollTop;
+        var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        progressBar.style.width = height > 0 ? (winScroll / height * 100) + '%' : '0%';
+      });
+    }
+    // Dark mode toggle
+    var toggle = document.getElementById('theme-toggle');
+    if (toggle) {
+      var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      toggle.textContent = isDark ? '☀️' : '🌙';
+      toggle.addEventListener('click', function() {
+        var dark = document.documentElement.getAttribute('data-theme') === 'dark';
+        if (dark) {
+          document.documentElement.removeAttribute('data-theme');
+          localStorage.setItem('theme', 'light');
+          toggle.textContent = '🌙';
+        } else {
+          document.documentElement.setAttribute('data-theme', 'dark');
+          localStorage.setItem('theme', 'dark');
+          toggle.textContent = '☀️';
+        }
+      });
+    }
+  });</script>
+</head>
+<body>
+  <div class="progress-container"><div class="progress-bar" id="reading-progress"></div></div>
+  <nav class="navbar">
+    <div class="container">
+      <div class="nav-brand">
+        <span class="nav-icon">💻</span>
+        <span class="nav-title">CS_basics</span>
+      </div>
+      <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+      <div class="nav-links">
+        <a href="../index.html" class="">Home</a>
+        <a href="../cheatsheets.html" class="active">Cheat Sheets</a>
+        <a href="../patterns.html" class="">Pattern Recognition</a>
+        <a href="../faqs.html" class="">FAQs</a>
+        <a href="../resources.html" class="">Resources</a>
+        <a href="../lc-explorer.html" class="">LC Explorer</a>
+        <a href="../lc-random-picker.html" class="">🎲 Random Picker</a>
+        <a href="../algo_demo/index.html" class="">Visualizer</a>
+        <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">&#127769;</button>
+        <a href="https://github.com/yennanliu/CS_basics" target="_blank" class="github-link" aria-label="GitHub">
+          <svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor">
+            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container">
+    <div class="content">
+      
+      <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">Streaming Algorithms</span></nav>
+      <div class="cheatsheet-header">
+        <h1>Streaming Algorithms</h1>
+        <span class="last-updated">Last updated: Feb 28, 2026</span>
+      </div>
+      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#0-concept">0) Concept</a></li><li class="toc-sub"><a href="#0-0-why-streaming-algorithms">0-0) Why Streaming Algorithms?</a></li><li class="toc-sub"><a href="#0-1-types">0-1) Types</a></li><li class="toc-sub"><a href="#0-2-when-to-use-each-algorithm">0-2) When to Use Each Algorithm</a></li><li><a href="#1-algorithm-templates">1) Algorithm Templates</a></li><li class="toc-sub"><a href="#1-1-reservoir-sampling-lc-382-398">1-1) Reservoir Sampling (LC 382, 398)</a></li><li class="toc-sub"><a href="#1-2-boyer-moore-majority-vote-lc-169-229">1-2) Boyer-Moore Majority Vote (LC 169, 229)</a></li><li class="toc-sub"><a href="#1-3-count-min-sketch-frequency-estimation">1-3) Count-Min Sketch - Frequency Estimation</a></li><li class="toc-sub"><a href="#1-4-bloom-filter-membership-testing">1-4) Bloom Filter - Membership Testing</a></li><li><a href="#2-leetcode-problems-by-pattern">2) LeetCode Problems by Pattern</a></li><li class="toc-sub"><a href="#2-1-reservoir-sampling">2-1) Reservoir Sampling</a></li><li class="toc-sub"><a href="#2-2-boyer-moore-majority-vote">2-2) Boyer-Moore Majority Vote</a></li><li class="toc-sub"><a href="#2-3-count-min-sketch-conceptual">2-3) Count-Min Sketch (Conceptual)</a></li><li class="toc-sub"><a href="#2-4-bloom-filter-conceptual">2-4) Bloom Filter (Conceptual)</a></li><li class="toc-sub"><a href="#2-5-related-streaming-problems">2-5) Related Streaming Problems</a></li><li><a href="#3-common-mistakes-edge-cases">3) Common Mistakes &amp; Edge Cases</a></li><li class="toc-sub"><a href="#common-mistakes">🚫 Common Mistakes</a></li><li class="toc-sub"><a href="#edge-cases">⚠️ Edge Cases</a></li><li><a href="#4-interview-tips-complexity-analysis">4) Interview Tips &amp; Complexity Analysis</a></li><li class="toc-sub"><a href="#interview-strategy">💡 Interview Strategy</a></li><li class="toc-sub"><a href="#complexity-analysis">📊 Complexity Analysis</a></li><li class="toc-sub"><a href="#interview-talking-points">🎯 Interview Talking Points</a></li><li class="toc-sub"><a href="#optimization-techniques">🔧 Optimization Techniques</a></li><li class="toc-sub"><a href="#related-topics">📚 Related Topics</a></li><li><a href="#5-complete-code-examples">5) Complete Code Examples</a></li><li class="toc-sub"><a href="#example-1-weighted-reservoir-sampling-lc-528">Example 1: Weighted Reservoir Sampling (LC 528)</a></li><li class="toc-sub"><a href="#example-2-stream-median-related-problem-lc-295">Example 2: Stream Median (Related Problem LC 295)</a></li><li><a href="#summary">Summary</a></li></ul></div>
+      <div class="cheatsheet-content">
+        <h1 id="streaming-algorithms" tabindex="-1"><a class="header-anchor" href="#streaming-algorithms"><span>Streaming Algorithms</span></a></h1>
+<ul>
+<li>Process data streams with limited memory</li>
+<li>When to use: Data too large to store, online processing, random sampling, frequency estimation</li>
+<li>Key LeetCode problems: LC 382, 398 (Reservoir Sampling), LC 169, 229 (Majority Element), LC 528 (Random Pick with Weight)</li>
+<li>Core techniques: Reservoir sampling, probabilistic data structures, approximate counting</li>
+<li>Space-time tradeoff: Trade accuracy for memory efficiency</li>
+</ul>
+<p><strong>Time Complexity:</strong> O(1) per element processed (streaming)
+<strong>Space Complexity:</strong> O(k) or O(log n) typically, independent of stream size</p>
+<h2 id="0-concept" tabindex="-1"><a class="header-anchor" href="#0-concept"><span>0) Concept</span></a></h2>
+<h3 id="0-0-why-streaming-algorithms" tabindex="-1"><a class="header-anchor" href="#0-0-why-streaming-algorithms"><span>0-0) Why Streaming Algorithms?</span></a></h3>
+<p><strong>Problem:</strong> Traditional algorithms assume entire dataset fits in memory</p>
+<ul>
+<li><strong>Streaming Context</strong>: Data arrives continuously, too large to store</li>
+<li><strong>Memory Constraint</strong>: Limited space, must process elements once</li>
+<li><strong>Requirements</strong>: Make decisions with incomplete information</li>
+</ul>
+<p><strong>Key Characteristics:</strong></p>
+<ul>
+<li><strong>Single Pass</strong>: Process each element at most once</li>
+<li><strong>Sublinear Space</strong>: Memory &lt;&lt; data size</li>
+<li><strong>Approximate Results</strong>: Trade exactness for efficiency (except Reservoir Sampling)</li>
+<li><strong>Online Processing</strong>: Results available anytime</li>
+</ul>
+<h3 id="0-1-types" tabindex="-1"><a class="header-anchor" href="#0-1-types"><span>0-1) Types</span></a></h3>
+<h4 id="1-reservoir-sampling-uniform-random-sampling" tabindex="-1"><a class="header-anchor" href="#1-reservoir-sampling-uniform-random-sampling"><span>1. <strong>Reservoir Sampling</strong> - Uniform Random Sampling</span></a></h4>
+<ul>
+<li><strong>Purpose</strong>: Select k random elements from stream of unknown size</li>
+<li><strong>Guarantee</strong>: Each element has exactly k/n probability of selection</li>
+<li><strong>Space</strong>: O(k) for k samples</li>
+<li><strong>Applications</strong>: Random sampling, shuffling, fairness in selection</li>
+</ul>
+<h4 id="2-morris-counter-approximate-counting" tabindex="-1"><a class="header-anchor" href="#2-morris-counter-approximate-counting"><span>2. <strong>Morris Counter</strong> - Approximate Counting</span></a></h4>
+<ul>
+<li><strong>Purpose</strong>: Count large numbers with small memory</li>
+<li><strong>Space</strong>: O(log log n) instead of O(log n)</li>
+<li><strong>Trade-off</strong>: Approximate count with expected value n</li>
+<li><strong>Applications</strong>: Large-scale counting, memory-constrained systems</li>
+</ul>
+<h4 id="3-boyer-moore-majority-vote-heavy-hitters" tabindex="-1"><a class="header-anchor" href="#3-boyer-moore-majority-vote-heavy-hitters"><span>3. <strong>Boyer-Moore Majority Vote</strong> - Heavy Hitters</span></a></h4>
+<ul>
+<li><strong>Purpose</strong>: Find element(s) appearing &gt; n/k times</li>
+<li><strong>Space</strong>: O(k) for top-k elements</li>
+<li><strong>Applications</strong>: Majority element, top-k frequent elements</li>
+<li><strong>Variants</strong>: Standard (k=2), Generalized (arbitrary k)</li>
+</ul>
+<h4 id="4-count-min-sketch-frequency-estimation" tabindex="-1"><a class="header-anchor" href="#4-count-min-sketch-frequency-estimation"><span>4. <strong>Count-Min Sketch</strong> - Frequency Estimation</span></a></h4>
+<ul>
+<li><strong>Purpose</strong>: Estimate frequency of elements in stream</li>
+<li><strong>Space</strong>: O(w × d) hash table, w×d &lt;&lt; n</li>
+<li><strong>Guarantee</strong>: Overestimate by at most εn with probability 1-δ</li>
+<li><strong>Applications</strong>: Network traffic analysis, query frequency</li>
+</ul>
+<h4 id="5-bloom-filter-membership-testing" tabindex="-1"><a class="header-anchor" href="#5-bloom-filter-membership-testing"><span>5. <strong>Bloom Filter</strong> - Membership Testing</span></a></h4>
+<ul>
+<li><strong>Purpose</strong>: Test if element is in set (probabilistic)</li>
+<li><strong>Space</strong>: O(m) bits, m &lt;&lt; n</li>
+<li><strong>Guarantee</strong>: No false negatives, false positives with probability p</li>
+<li><strong>Applications</strong>: Cache filtering, spell checking, malware detection</li>
+</ul>
+<h3 id="0-2-when-to-use-each-algorithm" tabindex="-1"><a class="header-anchor" href="#0-2-when-to-use-each-algorithm"><span>0-2) When to Use Each Algorithm</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>Algorithm</th>
+<th>Use Case</th>
+<th>Space</th>
+<th>Accuracy</th>
+<th>Output</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Reservoir Sampling</td>
+<td>Random k samples</td>
+<td>O(k)</td>
+<td>Exact</td>
+<td>k elements</td>
+</tr>
+<tr>
+<td>Morris Counter</td>
+<td>Count stream size</td>
+<td>O(log log n)</td>
+<td>Approximate</td>
+<td>~count</td>
+</tr>
+<tr>
+<td>Boyer-Moore</td>
+<td>Majority element</td>
+<td>O(k)</td>
+<td>Exact if exists</td>
+<td>Candidates</td>
+</tr>
+<tr>
+<td>Count-Min Sketch</td>
+<td>Frequency estimation</td>
+<td>O(w×d)</td>
+<td>Approximate</td>
+<td>~frequency</td>
+</tr>
+<tr>
+<td>Bloom Filter</td>
+<td>Set membership</td>
+<td>O(m)</td>
+<td>False positives</td>
+<td>yes/no</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Recognition Keywords:</strong></p>
+<ul>
+<li>“Random sample”, “shuffle”, “fairness” → <strong>Reservoir Sampling</strong></li>
+<li>“Majority element”, “appears more than n/k times” → <strong>Boyer-Moore</strong></li>
+<li>“Estimate frequency”, “approximate count” → <strong>Count-Min Sketch</strong></li>
+<li>“Check membership”, “seen before?” → <strong>Bloom Filter</strong></li>
+<li>“Limited memory”, “one pass”, “streaming data” → <strong>Any streaming algorithm</strong></li>
+</ul>
+<hr>
+<h2 id="1-algorithm-templates" tabindex="-1"><a class="header-anchor" href="#1-algorithm-templates"><span>1) Algorithm Templates</span></a></h2>
+<h3 id="1-1-reservoir-sampling-lc-382-398" tabindex="-1"><a class="header-anchor" href="#1-1-reservoir-sampling-lc-382-398"><span>1-1) Reservoir Sampling (LC 382, 398)</span></a></h3>
+<p><strong>Algorithm Overview:</strong></p>
+<ul>
+<li>Maintain reservoir of k elements</li>
+<li>For element at index i (i ≥ k):
+<ul>
+<li>Generate random j ∈ [0, i]</li>
+<li>If j &lt; k, replace reservoir[j] with current element</li>
+</ul>
+</li>
+<li><strong>Proof</strong>: Element at index i has k/i chance to enter, k/(i+1) to stay → k/n final probability</li>
+</ul>
+<p><strong>Template 1: Single Random Element (k=1)</strong></p>
+<pre><code class="language-java">// LC 382 - Linked List Random Node
+class Solution {
+    private ListNode head;
+    private Random random;
+
+    public Solution(ListNode head) {
+        this.head = head;
+        this.random = new Random();
+    }
+
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
+    public int getRandom() {
+        ListNode cur = head;
+        int result = cur.val;
+        int count = 1;
+
+        // Process stream: for each element i, include with prob 1/i
+        while (cur != null) {
+            // Generate random in [0, count-1], replace if 0
+            if (random.nextInt(count) == 0) {
+                result = cur.val;
+            }
+            count++;
+            cur = cur.next;
+        }
+        return result;
+    }
+}
+</code></pre>
+<pre><code class="language-python"># Python implementation
+import random
+
+class Solution:
+    def __init__(self, head: ListNode):
+        self.head = head
+
+    def getRandom(self) -&gt; int:
+        cur = self.head
+        result = cur.val
+        count = 1
+
+        cur = cur.next
+        while cur:
+            count += 1
+            # Include current element with probability 1/count
+            if random.randint(1, count) == count:
+                result = cur.val
+            cur = cur.next
+
+        return result
+</code></pre>
+<p><strong>Template 2: k Random Elements</strong></p>
+<pre><code class="language-java">// LC 398 - Random Pick Index (variant: pick from array with duplicates)
+class Solution {
+    private int[] nums;
+    private Random random;
+
+    public Solution(int[] nums) {
+        this.nums = nums;
+        this.random = new Random();
+    }
+
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
+    public int pick(int target) {
+        int result = -1;
+        int count = 0;
+
+        for (int i = 0; i &lt; nums.length; i++) {
+            if (nums[i] == target) {
+                count++;
+                // Replace with probability 1/count
+                if (random.nextInt(count) == 0) {
+                    result = i;
+                }
+            }
+        }
+        return result;
+    }
+}
+</code></pre>
+<p><strong>Template 3: General k-Reservoir Sampling</strong></p>
+<pre><code class="language-java">class ReservoirSampling {
+    private int k;
+    private int[] reservoir;
+    private Random random;
+    private int count; // Elements seen so far
+
+    public ReservoirSampling(int k) {
+        this.k = k;
+        this.reservoir = new int[k];
+        this.random = new Random();
+        this.count = 0;
+    }
+
+    /**
+     * time = O(1) per element
+     * space = O(k)
+     */
+    public void add(int val) {
+        if (count &lt; k) {
+            // Fill reservoir first
+            reservoir[count] = val;
+        } else {
+            // Generate random index in [0, count]
+            int j = random.nextInt(count + 1);
+            if (j &lt; k) {
+                // Replace element in reservoir
+                reservoir[j] = val;
+            }
+        }
+        count++;
+    }
+
+    public int[] getSample() {
+        return Arrays.copyOf(reservoir, Math.min(k, count));
+    }
+}
+</code></pre>
+<pre><code class="language-python"># Python k-reservoir sampling
+import random
+
+class ReservoirSampling:
+    def __init__(self, k: int):
+        self.k = k
+        self.reservoir = []
+        self.count = 0
+
+    def add(self, val: int) -&gt; None:
+        &quot;&quot;&quot;Time: O(1), Space: O(k)&quot;&quot;&quot;
+        if self.count &lt; self.k:
+            self.reservoir.append(val)
+        else:
+            # Random index in [0, count]
+            j = random.randint(0, self.count)
+            if j &lt; self.k:
+                self.reservoir[j] = val
+        self.count += 1
+
+    def get_sample(self) -&gt; list:
+        return self.reservoir[:]
+</code></pre>
+<p><strong>Key Insight:</strong> Probability math ensures uniform distribution</p>
+<ul>
+<li>Element i enters with probability k/i</li>
+<li>Stays with probability: (1 - k/(i+1)) × (1 - k/(i+2)) × … × (1 - k/n)</li>
+<li>Final probability: k/i × i/(i+1) × (i+1)/(i+2) × … × (n-1)/n = k/n ✓</li>
+</ul>
+<hr>
+<h3 id="1-2-boyer-moore-majority-vote-lc-169-229" tabindex="-1"><a class="header-anchor" href="#1-2-boyer-moore-majority-vote-lc-169-229"><span>1-2) Boyer-Moore Majority Vote (LC 169, 229)</span></a></h3>
+<p><strong>Algorithm Overview:</strong></p>
+<ul>
+<li>Find element(s) appearing more than ⌊n/k⌋ times</li>
+<li><strong>Key Idea</strong>: Pair different elements and cancel them out</li>
+<li>Majority element will survive cancellation</li>
+<li><strong>Two-phase</strong>: (1) Find candidates, (2) Verify counts</li>
+</ul>
+<p><strong>Template 1: Standard Majority Element (&gt; n/2)</strong></p>
+<pre><code class="language-java">// LC 169 - Majority Element
+class Solution {
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
+    public int majorityElement(int[] nums) {
+        int candidate = nums[0];
+        int count = 1;
+
+        // Phase 1: Find candidate
+        for (int i = 1; i &lt; nums.length; i++) {
+            if (count == 0) {
+                candidate = nums[i];
+                count = 1;
+            } else if (nums[i] == candidate) {
+                count++;
+            } else {
+                count--; // Cancel out different element
+            }
+        }
+
+        // Phase 2: Verify (not needed if majority guaranteed)
+        // If not guaranteed, count candidate appearances
+        return candidate;
+    }
+}
+</code></pre>
+<pre><code class="language-python"># Python implementation
+def majorityElement(nums: list[int]) -&gt; int:
+    &quot;&quot;&quot;Time: O(n), Space: O(1)&quot;&quot;&quot;
+    candidate = None
+    count = 0
+
+    # Phase 1: Find candidate
+    for num in nums:
+        if count == 0:
+            candidate = num
+            count = 1
+        elif num == candidate:
+            count += 1
+        else:
+            count -= 1
+
+    return candidate
+</code></pre>
+<p><strong>Template 2: Generalized - Elements Appearing &gt; n/3 Times (LC 229)</strong></p>
+<pre><code class="language-java">// LC 229 - Majority Element II (&gt; n/3)
+class Solution {
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
+    public List&lt;Integer&gt; majorityElement(int[] nums) {
+        // At most 2 elements can appear &gt; n/3 times
+        int candidate1 = 0, candidate2 = 0;
+        int count1 = 0, count2 = 0;
+
+        // Phase 1: Find candidates (at most k-1 candidates for n/k)
+        for (int num : nums) {
+            if (num == candidate1) {
+                count1++;
+            } else if (num == candidate2) {
+                count2++;
+            } else if (count1 == 0) {
+                candidate1 = num;
+                count1 = 1;
+            } else if (count2 == 0) {
+                candidate2 = num;
+                count2 = 1;
+            } else {
+                // Different from both: cancel out
+                count1--;
+                count2--;
+            }
+        }
+
+        // Phase 2: Verify candidates
+        count1 = 0;
+        count2 = 0;
+        for (int num : nums) {
+            if (num == candidate1) count1++;
+            else if (num == candidate2) count2++;
+        }
+
+        List&lt;Integer&gt; result = new ArrayList&lt;&gt;();
+        if (count1 &gt; nums.length / 3) result.add(candidate1);
+        if (count2 &gt; nums.length / 3) result.add(candidate2);
+
+        return result;
+    }
+}
+</code></pre>
+<pre><code class="language-python"># Python - Majority Element II
+def majorityElement(nums: list[int]) -&gt; list[int]:
+    &quot;&quot;&quot;Time: O(n), Space: O(1)&quot;&quot;&quot;
+    # Phase 1: Find up to 2 candidates
+    candidate1, candidate2 = None, None
+    count1, count2 = 0, 0
+
+    for num in nums:
+        if num == candidate1:
+            count1 += 1
+        elif num == candidate2:
+            count2 += 1
+        elif count1 == 0:
+            candidate1, count1 = num, 1
+        elif count2 == 0:
+            candidate2, count2 = num, 1
+        else:
+            count1 -= 1
+            count2 -= 1
+
+    # Phase 2: Verify
+    result = []
+    for candidate in [candidate1, candidate2]:
+        if nums.count(candidate) &gt; len(nums) // 3:
+            result.append(candidate)
+
+    return result
+</code></pre>
+<p><strong>Generalized Template: Top k-1 Elements (&gt; n/k)</strong></p>
+<pre><code class="language-java">class BoyerMooreGeneralized {
+    /**
+     * Find elements appearing &gt; n/k times
+     * time = O(N * k)
+     * space = O(k)
+     */
+    public List&lt;Integer&gt; majorityElement(int[] nums, int k) {
+        // Can have at most k-1 elements appearing &gt; n/k times
+        Map&lt;Integer, Integer&gt; candidates = new HashMap&lt;&gt;();
+
+        // Phase 1: Find candidates
+        for (int num : nums) {
+            if (candidates.containsKey(num)) {
+                candidates.put(num, candidates.get(num) + 1);
+            } else if (candidates.size() &lt; k - 1) {
+                candidates.put(num, 1);
+            } else {
+                // Decrement all counts (cancellation)
+                List&lt;Integer&gt; toRemove = new ArrayList&lt;&gt;();
+                for (Map.Entry&lt;Integer, Integer&gt; entry : candidates.entrySet()) {
+                    int count = entry.getValue() - 1;
+                    if (count == 0) {
+                        toRemove.add(entry.getKey());
+                    } else {
+                        candidates.put(entry.getKey(), count);
+                    }
+                }
+                for (int key : toRemove) {
+                    candidates.remove(key);
+                }
+            }
+        }
+
+        // Phase 2: Verify candidates
+        Map&lt;Integer, Integer&gt; counts = new HashMap&lt;&gt;();
+        for (int num : nums) {
+            if (candidates.containsKey(num)) {
+                counts.put(num, counts.getOrDefault(num, 0) + 1);
+            }
+        }
+
+        List&lt;Integer&gt; result = new ArrayList&lt;&gt;();
+        for (Map.Entry&lt;Integer, Integer&gt; entry : counts.entrySet()) {
+            if (entry.getValue() &gt; nums.length / k) {
+                result.add(entry.getKey());
+            }
+        }
+
+        return result;
+    }
+}
+</code></pre>
+<hr>
+<h3 id="1-3-count-min-sketch-frequency-estimation" tabindex="-1"><a class="header-anchor" href="#1-3-count-min-sketch-frequency-estimation"><span>1-3) Count-Min Sketch - Frequency Estimation</span></a></h3>
+<p><strong>Algorithm Overview:</strong></p>
+<ul>
+<li>Probabilistic data structure for frequency estimation</li>
+<li>Uses d hash functions and w counters per hash</li>
+<li>Query: return minimum count across all hash functions</li>
+<li><strong>Guarantee</strong>: Overestimates by at most εn with probability 1-δ</li>
+<li><strong>Parameters</strong>: w = ⌈e/ε⌉, d = ⌈ln(1/δ)⌉</li>
+</ul>
+<p><strong>Template:</strong></p>
+<pre><code class="language-java">class CountMinSketch {
+    private int[][] count; // d × w matrix
+    private int d; // Number of hash functions
+    private int w; // Width of each row
+    private long[] hashA, hashB; // Hash parameters
+    private static final long PRIME = 2147483647L; // Large prime
+
+    /**
+     * Constructor
+     * epsilon: error tolerance (e.g., 0.01 for 1% error)
+     * delta: failure probability (e.g., 0.01 for 99% confidence)
+     */
+    public CountMinSketch(double epsilon, double delta) {
+        this.w = (int) Math.ceil(Math.E / epsilon);
+        this.d = (int) Math.ceil(Math.log(1.0 / delta));
+        this.count = new int[d][w];
+
+        // Initialize hash functions: h(x) = ((a*x + b) % p) % w
+        Random random = new Random();
+        hashA = new long[d];
+        hashB = new long[d];
+        for (int i = 0; i &lt; d; i++) {
+            hashA[i] = random.nextInt(Integer.MAX_VALUE);
+            hashB[i] = random.nextInt(Integer.MAX_VALUE);
+        }
+    }
+
+    private int hash(int item, int i) {
+        // Hash function i
+        long hash = ((hashA[i] * item + hashB[i]) % PRIME) % w;
+        return (int) hash;
+    }
+
+    /**
+     * Add item to sketch
+     * time = O(d)
+     * space = O(1)
+     */
+    public void add(int item) {
+        for (int i = 0; i &lt; d; i++) {
+            int index = hash(item, i);
+            count[i][index]++;
+        }
+    }
+
+    /**
+     * Estimate frequency of item
+     * time = O(d)
+     * space = O(1)
+     * Returns: estimated count (may overestimate, never underestimate)
+     */
+    public int estimateCount(int item) {
+        int minCount = Integer.MAX_VALUE;
+        for (int i = 0; i &lt; d; i++) {
+            int index = hash(item, i);
+            minCount = Math.min(minCount, count[i][index]);
+        }
+        return minCount;
+    }
+
+    /**
+     * Get space usage
+     */
+    public int getSpace() {
+        return d * w; // Number of counters
+    }
+}
+</code></pre>
+<pre><code class="language-python"># Python Count-Min Sketch
+import math
+import random
+
+class CountMinSketch:
+    def __init__(self, epsilon: float, delta: float):
+        &quot;&quot;&quot;
+        epsilon: error tolerance
+        delta: failure probability
+        &quot;&quot;&quot;
+        self.w = math.ceil(math.e / epsilon)
+        self.d = math.ceil(math.log(1.0 / delta))
+        self.count = [[0] * self.w for _ in range(self.d)]
+
+        # Initialize hash parameters
+        PRIME = 2147483647
+        self.hash_a = [random.randint(1, PRIME-1) for _ in range(self.d)]
+        self.hash_b = [random.randint(0, PRIME-1) for _ in range(self.d)]
+        self.PRIME = PRIME
+
+    def _hash(self, item: int, i: int) -&gt; int:
+        &quot;&quot;&quot;Hash function i&quot;&quot;&quot;
+        return ((self.hash_a[i] * item + self.hash_b[i]) % self.PRIME) % self.w
+
+    def add(self, item: int) -&gt; None:
+        &quot;&quot;&quot;Time: O(d), Space: O(1)&quot;&quot;&quot;
+        for i in range(self.d):
+            index = self._hash(item, i)
+            self.count[i][index] += 1
+
+    def estimate_count(self, item: int) -&gt; int:
+        &quot;&quot;&quot;Time: O(d), Returns estimated frequency&quot;&quot;&quot;
+        return min(self.count[i][self._hash(item, i)] for i in range(self.d))
+</code></pre>
+<p><strong>Usage Example:</strong></p>
+<pre><code class="language-java">// Track top-k frequent elements in stream
+CountMinSketch cms = new CountMinSketch(0.01, 0.01); // 1% error, 99% confidence
+
+// Process stream
+for (int item : stream) {
+    cms.add(item);
+}
+
+// Query frequencies
+int freq = cms.estimateCount(42); // Estimated frequency of item 42
+</code></pre>
+<hr>
+<h3 id="1-4-bloom-filter-membership-testing" tabindex="-1"><a class="header-anchor" href="#1-4-bloom-filter-membership-testing"><span>1-4) Bloom Filter - Membership Testing</span></a></h3>
+<p><strong>Algorithm Overview:</strong></p>
+<ul>
+<li>Bit array of m bits, k hash functions</li>
+<li><strong>Insert</strong>: Set k bits to 1 using k hash functions</li>
+<li><strong>Query</strong>: Check if all k bits are 1</li>
+<li><strong>Guarantee</strong>: No false negatives, false positive rate ≈ (1 - e^(-kn/m))^k</li>
+<li><strong>Optimal k</strong>: (m/n) × ln(2)</li>
+</ul>
+<p><strong>Template:</strong></p>
+<pre><code class="language-java">class BloomFilter {
+    private BitSet bitSet;
+    private int m; // Bit array size
+    private int k; // Number of hash functions
+    private long[] hashSeeds;
+
+    /**
+     * Constructor
+     * expectedElements: expected number of elements
+     * falsePositiveRate: desired false positive probability (e.g., 0.01)
+     */
+    public BloomFilter(int expectedElements, double falsePositiveRate) {
+        // Optimal m: -(n * ln(p)) / (ln(2)^2)
+        this.m = (int) Math.ceil(
+            -(expectedElements * Math.log(falsePositiveRate)) / Math.pow(Math.log(2), 2)
+        );
+
+        // Optimal k: (m/n) * ln(2)
+        this.k = (int) Math.ceil((m / (double) expectedElements) * Math.log(2));
+
+        this.bitSet = new BitSet(m);
+
+        // Initialize hash seeds
+        Random random = new Random();
+        hashSeeds = new long[k];
+        for (int i = 0; i &lt; k; i++) {
+            hashSeeds[i] = random.nextLong();
+        }
+    }
+
+    private int hash(String item, int i) {
+        long hash = hashSeeds[i];
+        for (char c : item.toCharArray()) {
+            hash = hash * 31 + c;
+        }
+        return Math.abs((int) (hash % m));
+    }
+
+    /**
+     * Add item to filter
+     * time = O(k)
+     * space = O(1)
+     */
+    public void add(String item) {
+        for (int i = 0; i &lt; k; i++) {
+            int index = hash(item, i);
+            bitSet.set(index);
+        }
+    }
+
+    /**
+     * Check if item might be in set
+     * time = O(k)
+     * space = O(1)
+     * Returns: true if might exist (possible false positive)
+     *          false if definitely not in set (no false negative)
+     */
+    public boolean mightContain(String item) {
+        for (int i = 0; i &lt; k; i++) {
+            int index = hash(item, i);
+            if (!bitSet.get(index)) {
+                return false; // Definitely not in set
+            }
+        }
+        return true; // Might be in set
+    }
+
+    /**
+     * Get expected false positive rate
+     */
+    public double getFalsePositiveRate(int insertedElements) {
+        return Math.pow(1 - Math.exp(-k * insertedElements / (double) m), k);
+    }
+}
+</code></pre>
+<pre><code class="language-python"># Python Bloom Filter
+import math
+import mmh3  # MurmurHash3 (install: pip install mmh3)
+from bitarray import bitarray  # (install: pip install bitarray)
+
+class BloomFilter:
+    def __init__(self, expected_elements: int, false_positive_rate: float):
+        &quot;&quot;&quot;
+        expected_elements: expected number of items
+        false_positive_rate: desired false positive probability
+        &quot;&quot;&quot;
+        # Optimal m
+        self.m = math.ceil(
+            -(expected_elements * math.log(false_positive_rate)) / (math.log(2) ** 2)
+        )
+
+        # Optimal k
+        self.k = math.ceil((self.m / expected_elements) * math.log(2))
+
+        self.bit_array = bitarray(self.m)
+        self.bit_array.setall(0)
+
+    def add(self, item: str) -&gt; None:
+        &quot;&quot;&quot;Time: O(k)&quot;&quot;&quot;
+        for i in range(self.k):
+            index = mmh3.hash(item, i) % self.m
+            self.bit_array[index] = 1
+
+    def might_contain(self, item: str) -&gt; bool:
+        &quot;&quot;&quot;Time: O(k), False positives possible, no false negatives&quot;&quot;&quot;
+        for i in range(self.k):
+            index = mmh3.hash(item, i) % self.m
+            if not self.bit_array[index]:
+                return False  # Definitely not in set
+        return True  # Might be in set
+</code></pre>
+<p><strong>Usage Example:</strong></p>
+<pre><code class="language-java">// Check if URL has been visited
+BloomFilter bf = new BloomFilter(10000, 0.01); // 10k URLs, 1% false positive
+
+// Add URLs
+bf.add(&quot;https://example.com&quot;);
+bf.add(&quot;https://google.com&quot;);
+
+// Query
+if (bf.mightContain(&quot;https://example.com&quot;)) {
+    // Might be visited (99% confident)
+}
+
+if (!bf.mightContain(&quot;https://new-site.com&quot;)) {
+    // Definitely NOT visited (100% sure)
+}
+</code></pre>
+<hr>
+<h2 id="2-leetcode-problems-by-pattern" tabindex="-1"><a class="header-anchor" href="#2-leetcode-problems-by-pattern"><span>2) LeetCode Problems by Pattern</span></a></h2>
+<h3 id="2-1-reservoir-sampling" tabindex="-1"><a class="header-anchor" href="#2-1-reservoir-sampling"><span>2-1) Reservoir Sampling</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>Difficulty</th>
+<th>Pattern</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>LC 382</td>
+<td>Medium</td>
+<td>Single random (k=1)</td>
+<td>Linked list, unknown length</td>
+</tr>
+<tr>
+<td>LC 398</td>
+<td>Medium</td>
+<td>Weighted sampling</td>
+<td>Array with duplicates</td>
+</tr>
+<tr>
+<td>LC 528</td>
+<td>Medium</td>
+<td>Weighted random</td>
+<td>Prefix sum + binary search</td>
+</tr>
+<tr>
+<td>LC 519</td>
+<td>Medium</td>
+<td>Random 2D matrix</td>
+<td>Reset and shuffle</td>
+</tr>
+</tbody>
+</table>
+<p><strong>LC 382 - Linked List Random Node</strong></p>
+<ul>
+<li>Unknown list length</li>
+<li>O(n) time per call, O(1) space</li>
+<li>Classic reservoir sampling k=1</li>
+</ul>
+<p><strong>LC 398 - Random Pick Index</strong></p>
+<ul>
+<li>Multiple occurrences of target</li>
+<li>Uniform selection among duplicates</li>
+<li>Reservoir sampling variant</li>
+</ul>
+<h3 id="2-2-boyer-moore-majority-vote" tabindex="-1"><a class="header-anchor" href="#2-2-boyer-moore-majority-vote"><span>2-2) Boyer-Moore Majority Vote</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>Difficulty</th>
+<th>Threshold</th>
+<th>Candidates</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>LC 169</td>
+<td>Easy</td>
+<td>&gt; n/2</td>
+<td>1 candidate</td>
+</tr>
+<tr>
+<td>LC 229</td>
+<td>Medium</td>
+<td>&gt; n/3</td>
+<td>2 candidates</td>
+</tr>
+<tr>
+<td>-</td>
+<td>-</td>
+<td>&gt; n/k</td>
+<td>k-1 candidates</td>
+</tr>
+</tbody>
+</table>
+<p><strong>LC 169 - Majority Element</strong></p>
+<ul>
+<li>Guaranteed majority exists</li>
+<li>Single candidate suffices</li>
+<li>No verification phase needed</li>
+</ul>
+<p><strong>LC 229 - Majority Element II</strong></p>
+<ul>
+<li>Up to 2 elements can appear &gt; n/3 times</li>
+<li>Must verify candidates</li>
+<li>Two-phase algorithm essential</li>
+</ul>
+<h3 id="2-3-count-min-sketch-conceptual" tabindex="-1"><a class="header-anchor" href="#2-3-count-min-sketch-conceptual"><span>2-3) Count-Min Sketch (Conceptual)</span></a></h3>
+<p><strong>Applications (Not direct LC problems):</strong></p>
+<ul>
+<li><strong>Top K Frequent Elements</strong> (LC 347) - Can use CMS + min-heap</li>
+<li><strong>Kth Largest Element in Stream</strong> (LC 703) - Related streaming problem</li>
+<li><strong>Data Stream as Disjoint Intervals</strong> (LC 352) - Stream processing</li>
+</ul>
+<p><strong>When to Apply:</strong></p>
+<ul>
+<li>Large streams where HashMap exceeds memory</li>
+<li>Approximate answers acceptable</li>
+<li>Need frequency estimates, not exact counts</li>
+</ul>
+<h3 id="2-4-bloom-filter-conceptual" tabindex="-1"><a class="header-anchor" href="#2-4-bloom-filter-conceptual"><span>2-4) Bloom Filter (Conceptual)</span></a></h3>
+<p><strong>Applications (Not direct LC problems):</strong></p>
+<ul>
+<li><strong>Contains Duplicate</strong> (LC 217) - Can use BF for space optimization</li>
+<li><strong>First Unique Character</strong> (LC 387) - Variant: use BF as pre-filter</li>
+<li><strong>Design HashMap</strong> (LC 706) - Can add BF layer for optimization</li>
+</ul>
+<p><strong>When to Apply:</strong></p>
+<ul>
+<li>Membership queries on large sets</li>
+<li>False positives acceptable</li>
+<li>Space-critical applications (e.g., web crawlers)</li>
+</ul>
+<h3 id="2-5-related-streaming-problems" tabindex="-1"><a class="header-anchor" href="#2-5-related-streaming-problems"><span>2-5) Related Streaming Problems</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>Difficulty</th>
+<th>Pattern</th>
+<th>Algorithm</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>LC 295</td>
+<td>Hard</td>
+<td>Data stream median</td>
+<td>Two heaps</td>
+</tr>
+<tr>
+<td>LC 346</td>
+<td>Easy</td>
+<td>Moving average</td>
+<td>Sliding window + queue</td>
+</tr>
+<tr>
+<td>LC 352</td>
+<td>Hard</td>
+<td>Disjoint intervals</td>
+<td>TreeMap/BST</td>
+</tr>
+<tr>
+<td>LC 703</td>
+<td>Easy</td>
+<td>Kth largest in stream</td>
+<td>Min-heap</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="3-common-mistakes-edge-cases" tabindex="-1"><a class="header-anchor" href="#3-common-mistakes-edge-cases"><span>3) Common Mistakes &amp; Edge Cases</span></a></h2>
+<h3 id="common-mistakes" tabindex="-1"><a class="header-anchor" href="#common-mistakes"><span>🚫 Common Mistakes</span></a></h3>
+<h4 id="reservoir-sampling" tabindex="-1"><a class="header-anchor" href="#reservoir-sampling"><span>Reservoir Sampling:</span></a></h4>
+<ol>
+<li>
+<p><strong>Wrong Probability Calculation</strong></p>
+<pre><code class="language-java">// ❌ WRONG: This is NOT uniform
+if (random.nextInt(i + 1) &lt; k) { // Incorrect for k=1
+    reservoir[...] = element;
+}
+
+// ✅ CORRECT: For k=1
+if (random.nextInt(count) == 0) {
+    result = element;
+}
+</code></pre>
+</li>
+<li>
+<p><strong>Forgetting to Update Count</strong></p>
+<pre><code class="language-java">// ❌ WRONG: Count not incremented
+while (cur != null) {
+    if (random.nextInt(count) == 0) result = cur.val;
+    cur = cur.next; // Forgot: count++
+}
+</code></pre>
+</li>
+<li>
+<p><strong>Off-by-One in Random Range</strong></p>
+<pre><code class="language-java">// ❌ WRONG: random.nextInt(count + 1) for decision
+// ✅ CORRECT: random.nextInt(count) for k=1
+</code></pre>
+</li>
+</ol>
+<h4 id="boyer-moore" tabindex="-1"><a class="header-anchor" href="#boyer-moore"><span>Boyer-Moore:</span></a></h4>
+<ol>
+<li>
+<p><strong>Missing Verification Phase</strong></p>
+<pre><code class="language-java">// ❌ WRONG: Assuming candidate is always majority
+return candidate; // What if no majority exists?
+
+// ✅ CORRECT: Verify count
+int actualCount = 0;
+for (int num : nums) {
+    if (num == candidate) actualCount++;
+}
+return actualCount &gt; nums.length / 2 ? candidate : -1;
+</code></pre>
+</li>
+<li>
+<p><strong>Wrong Cancellation Logic</strong></p>
+<pre><code class="language-java">// ❌ WRONG: Only decrement candidate's count
+if (num != candidate) count--;
+
+// ✅ CORRECT: Check count == 0 to reset
+if (count == 0) {
+    candidate = num;
+    count = 1;
+}
+</code></pre>
+</li>
+<li>
+<p><strong>For LC 229: Not Handling Same Candidates</strong></p>
+<pre><code class="language-java">// ❌ WRONG: candidate1 and candidate2 can be same initially
+
+// ✅ CORRECT: Check candidate1 first, then candidate2
+if (num == candidate1) count1++;
+else if (num == candidate2) count2++;
+</code></pre>
+</li>
+</ol>
+<h4 id="count-min-sketch" tabindex="-1"><a class="header-anchor" href="#count-min-sketch"><span>Count-Min Sketch:</span></a></h4>
+<ol>
+<li>
+<p><strong>Using Max Instead of Min</strong></p>
+<pre><code class="language-java">// ❌ WRONG: Taking maximum (gives wrong estimate)
+int max = Arrays.stream(counts).max().getAsInt();
+
+// ✅ CORRECT: Taking minimum (minimizes overestimation)
+int min = Arrays.stream(counts).min().getAsInt();
+</code></pre>
+</li>
+<li>
+<p><strong>Insufficient Hash Functions</strong></p>
+<ul>
+<li>Too few hash functions → high collision rate</li>
+<li>Rule of thumb: d ≥ 3 for reasonable accuracy</li>
+</ul>
+</li>
+</ol>
+<h4 id="bloom-filter" tabindex="-1"><a class="header-anchor" href="#bloom-filter"><span>Bloom Filter:</span></a></h4>
+<ol>
+<li>
+<p><strong>Resetting Bits on Delete</strong></p>
+<pre><code class="language-java">// ❌ WRONG: Bloom filters don't support deletion
+public void delete(String item) {
+    for (int i = 0; i &lt; k; i++) {
+        bitSet.clear(hash(item, i)); // Breaks other items!
+    }
+}
+
+// ✅ CORRECT: Use Counting Bloom Filter for deletions
+</code></pre>
+</li>
+<li>
+<p><strong>Ignoring False Positive Rate</strong></p>
+<ul>
+<li>Too small bit array → high false positive rate</li>
+<li>Calculate optimal m and k based on expected elements</li>
+</ul>
+</li>
+</ol>
+<h3 id="edge-cases" tabindex="-1"><a class="header-anchor" href="#edge-cases"><span>⚠️ Edge Cases</span></a></h3>
+<ol>
+<li>
+<p><strong>Empty Stream</strong></p>
+<ul>
+<li>Reservoir: Return empty or throw exception</li>
+<li>Boyer-Moore: No majority element</li>
+<li>Bloom Filter: All queries return false</li>
+</ul>
+</li>
+<li>
+<p><strong>Single Element</strong></p>
+<ul>
+<li>Reservoir: Always return that element</li>
+<li>Boyer-Moore: Single element is majority</li>
+</ul>
+</li>
+<li>
+<p><strong>All Elements Same</strong></p>
+<ul>
+<li>Boyer-Moore: Single candidate with count = n</li>
+<li>Reservoir: Any element is representative</li>
+</ul>
+</li>
+<li>
+<p><strong>Stream Size Unknown</strong></p>
+<ul>
+<li>Reservoir Sampling handles this naturally</li>
+<li>Count-Min Sketch: May need to adjust parameters dynamically</li>
+</ul>
+</li>
+<li>
+<p><strong>Integer Overflow</strong></p>
+<ul>
+<li>Count-Min Sketch: Use long for large counts</li>
+<li>Hash functions: Use proper modulo arithmetic</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h2 id="4-interview-tips-complexity-analysis" tabindex="-1"><a class="header-anchor" href="#4-interview-tips-complexity-analysis"><span>4) Interview Tips &amp; Complexity Analysis</span></a></h2>
+<h3 id="interview-strategy" tabindex="-1"><a class="header-anchor" href="#interview-strategy"><span>💡 Interview Strategy</span></a></h3>
+<h4 id="when-to-use-streaming-algorithms" tabindex="-1"><a class="header-anchor" href="#when-to-use-streaming-algorithms"><span>When to Use Streaming Algorithms:</span></a></h4>
+<p><strong>Recognition Patterns:</strong></p>
+<ol>
+<li><strong>“Process data stream”</strong> → Streaming algorithm</li>
+<li><strong>“Limited memory”</strong> or <strong>“O(1) space”</strong> → Streaming</li>
+<li><strong>“Unknown size”</strong> or <strong>“infinite stream”</strong> → Reservoir Sampling</li>
+<li><strong>“Majority element”</strong> → Boyer-Moore</li>
+<li><strong>“Approximate count/frequency”</strong> → Count-Min Sketch</li>
+<li><strong>“Have you seen before?”</strong> → Bloom Filter</li>
+</ol>
+<h4 id="problem-solving-framework" tabindex="-1"><a class="header-anchor" href="#problem-solving-framework"><span>Problem-Solving Framework:</span></a></h4>
+<pre><code>1. Identify constraint: Memory vs Accuracy
+   ├─ Exact answer needed? → Reservoir Sampling or Boyer-Moore
+   └─ Approximate OK? → Count-Min Sketch or Bloom Filter
+
+2. Determine stream characteristics:
+   ├─ Need random samples? → Reservoir Sampling
+   ├─ Need heavy hitters? → Boyer-Moore
+   ├─ Need frequency estimates? → Count-Min Sketch
+   └─ Need membership tests? → Bloom Filter
+
+3. Consider space-time tradeoff:
+   ├─ More space → Better accuracy
+   └─ Less space → More approximation error
+</code></pre>
+<h3 id="complexity-analysis" tabindex="-1"><a class="header-anchor" href="#complexity-analysis"><span>📊 Complexity Analysis</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>Algorithm</th>
+<th>Time (per element)</th>
+<th>Space</th>
+<th>Accuracy</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Reservoir Sampling</td>
+<td>O(1)</td>
+<td>O(k)</td>
+<td>Exact</td>
+</tr>
+<tr>
+<td>Boyer-Moore</td>
+<td>O(1)</td>
+<td>O(k)</td>
+<td>Exact (if exists)</td>
+</tr>
+<tr>
+<td>Count-Min Sketch</td>
+<td>O(d)</td>
+<td>O(w × d)</td>
+<td>ε-approximate</td>
+</tr>
+<tr>
+<td>Bloom Filter</td>
+<td>O(k)</td>
+<td>O(m) bits</td>
+<td>False positives</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Space Comparisons:</strong></p>
+<ul>
+<li><strong>HashMap</strong>: O(n) - exact counts for all elements</li>
+<li><strong>Count-Min Sketch</strong>: O(w × d) where w × d &lt;&lt; n</li>
+<li><strong>Bloom Filter</strong>: O(m) bits, m = O(n log(1/p))</li>
+</ul>
+<p><strong>Typical Parameters:</strong></p>
+<ul>
+<li><strong>Count-Min Sketch</strong>: w = 1000, d = 5 → 5KB for millions of elements</li>
+<li><strong>Bloom Filter</strong>: 10 bits per element for 1% false positive rate</li>
+</ul>
+<h3 id="interview-talking-points" tabindex="-1"><a class="header-anchor" href="#interview-talking-points"><span>🎯 Interview Talking Points</span></a></h3>
+<ol>
+<li>
+<p><strong>Why Reservoir Sampling Works:</strong></p>
+<ul>
+<li>“Each element has equal probability k/n of being selected”</li>
+<li>“Prove by induction: P(element i selected) = k/i × (i/(i+1)) × … × (n-1)/n = k/n”</li>
+</ul>
+</li>
+<li>
+<p><strong>Boyer-Moore Intuition:</strong></p>
+<ul>
+<li>“Pair up different elements and cancel them”</li>
+<li>“Majority element survives cancellation”</li>
+<li>“At most k-1 elements can appear more than n/k times”</li>
+</ul>
+</li>
+<li>
+<p><strong>Count-Min Sketch Trade-off:</strong></p>
+<ul>
+<li>“Trade space for accuracy: w and d control error bounds”</li>
+<li>“Never underestimates (only overestimates due to collisions)”</li>
+<li>“Minimum across hash functions reduces overestimation”</li>
+</ul>
+</li>
+<li>
+<p><strong>Bloom Filter Properties:</strong></p>
+<ul>
+<li>“False positives possible, false negatives impossible”</li>
+<li>“Can’t delete items (unless using Counting Bloom Filter)”</li>
+<li>“Space-efficient: ~10 bits per element for 1% FP rate”</li>
+</ul>
+</li>
+</ol>
+<h3 id="optimization-techniques" tabindex="-1"><a class="header-anchor" href="#optimization-techniques"><span>🔧 Optimization Techniques</span></a></h3>
+<ol>
+<li>
+<p><strong>Reservoir Sampling:</strong></p>
+<ul>
+<li>Use <code>random.nextInt(count++)</code> idiom for cleaner code</li>
+<li>For weighted sampling: Use prefix sum + binary search</li>
+</ul>
+</li>
+<li>
+<p><strong>Boyer-Moore:</strong></p>
+<ul>
+<li>For k=2 (majority &gt; n/2): Skip verification if guaranteed</li>
+<li>For k=3 (&gt; n/3): Track exactly 2 candidates</li>
+<li>For general k: Use HashMap with size k-1</li>
+</ul>
+</li>
+<li>
+<p><strong>Count-Min Sketch:</strong></p>
+<ul>
+<li>Conservative Update: Only increment minimum count</li>
+<li>Use faster hash functions (MurmurHash, CityHash)</li>
+<li>Adjust w and d based on accuracy requirements</li>
+</ul>
+</li>
+<li>
+<p><strong>Bloom Filter:</strong></p>
+<ul>
+<li>Choose hash functions that minimize correlation</li>
+<li>Consider Counting Bloom Filter for deletions</li>
+<li>Use bit-level operations for space efficiency</li>
+</ul>
+</li>
+</ol>
+<h3 id="related-topics" tabindex="-1"><a class="header-anchor" href="#related-topics"><span>📚 Related Topics</span></a></h3>
+<ul>
+<li><strong>Sampling</strong>: Stratified sampling, importance sampling</li>
+<li><strong>Approximate Algorithms</strong>: HyperLogLog (cardinality estimation)</li>
+<li><strong>Probabilistic</strong>: Skip lists, treaps</li>
+<li><strong>Streaming</strong>: Misra-Gries algorithm, Space Saving algorithm</li>
+<li><strong>Online Algorithms</strong>: Competitive analysis, adversarial models</li>
+</ul>
+<hr>
+<h2 id="5-complete-code-examples" tabindex="-1"><a class="header-anchor" href="#5-complete-code-examples"><span>5) Complete Code Examples</span></a></h2>
+<h3 id="example-1-weighted-reservoir-sampling-lc-528" tabindex="-1"><a class="header-anchor" href="#example-1-weighted-reservoir-sampling-lc-528"><span>Example 1: Weighted Reservoir Sampling (LC 528)</span></a></h3>
+<pre><code class="language-java">// LC 528 - Random Pick with Weight
+class Solution {
+    private int[] prefixSum;
+    private Random random;
+
+    /**
+     * time = O(N) for constructor
+     * space = O(N)
+     */
+    public Solution(int[] w) {
+        prefixSum = new int[w.length];
+        prefixSum[0] = w[0];
+        for (int i = 1; i &lt; w.length; i++) {
+            prefixSum[i] = prefixSum[i - 1] + w[i];
+        }
+        random = new Random();
+    }
+
+    /**
+     * time = O(log N) using binary search
+     * space = O(1)
+     */
+    public int pickIndex() {
+        int target = random.nextInt(prefixSum[prefixSum.length - 1]) + 1;
+        // Binary search for target in prefixSum
+        int left = 0, right = prefixSum.length - 1;
+        while (left &lt; right) {
+            int mid = left + (right - left) / 2;
+            if (prefixSum[mid] &lt; target) {
+                left = mid + 1;
+            } else {
+                right = mid;
+            }
+        }
+        return left;
+    }
+}
+</code></pre>
+<h3 id="example-2-stream-median-related-problem-lc-295" tabindex="-1"><a class="header-anchor" href="#example-2-stream-median-related-problem-lc-295"><span>Example 2: Stream Median (Related Problem LC 295)</span></a></h3>
+<pre><code class="language-java">// LC 295 - Find Median from Data Stream
+class MedianFinder {
+    private PriorityQueue&lt;Integer&gt; maxHeap; // Lower half
+    private PriorityQueue&lt;Integer&gt; minHeap; // Upper half
+
+    public MedianFinder() {
+        maxHeap = new PriorityQueue&lt;&gt;((a, b) -&gt; b - a);
+        minHeap = new PriorityQueue&lt;&gt;();
+    }
+
+    /**
+     * time = O(log N)
+     * space = O(N)
+     */
+    public void addNum(int num) {
+        // Add to max heap first
+        maxHeap.offer(num);
+
+        // Balance: move largest from max to min
+        minHeap.offer(maxHeap.poll());
+
+        // Maintain size property: maxHeap.size &gt;= minHeap.size
+        if (maxHeap.size() &lt; minHeap.size()) {
+            maxHeap.offer(minHeap.poll());
+        }
+    }
+
+    /**
+     * time = O(1)
+     * space = O(1)
+     */
+    public double findMedian() {
+        if (maxHeap.size() &gt; minHeap.size()) {
+            return maxHeap.peek();
+        }
+        return (maxHeap.peek() + minHeap.peek()) / 2.0;
+    }
+}
+</code></pre>
+<hr>
+<h2 id="summary" tabindex="-1"><a class="header-anchor" href="#summary"><span>Summary</span></a></h2>
+<p><strong>Core Streaming Algorithms:</strong></p>
+<ol>
+<li>✅ <strong>Reservoir Sampling</strong> - Uniform random sampling from stream</li>
+<li>✅ <strong>Boyer-Moore</strong> - Find majority/heavy hitters (exact)</li>
+<li>✅ <strong>Count-Min Sketch</strong> - Frequency estimation (approximate)</li>
+<li>✅ <strong>Bloom Filter</strong> - Membership testing (probabilistic)</li>
+</ol>
+<p><strong>Key Takeaways:</strong></p>
+<ul>
+<li>Streaming algorithms trade accuracy for space efficiency</li>
+<li>Reservoir Sampling: Exact, O(k) space for k samples</li>
+<li>Boyer-Moore: Exact for heavy hitters, O(k) space</li>
+<li>Count-Min Sketch: Approximate, tunable error bounds</li>
+<li>Bloom Filter: No false negatives, space-efficient</li>
+</ul>
+<p><strong>Interview Focus:</strong></p>
+<ul>
+<li>Understand probability proofs (especially Reservoir Sampling)</li>
+<li>Know when to use each algorithm</li>
+<li>Master two-phase verification (Boyer-Moore)</li>
+<li>Explain space-accuracy tradeoffs</li>
+</ul>
+<p><strong>Practice Problems:</strong></p>
+<ul>
+<li>Start with LC 382, 398 (Reservoir Sampling)</li>
+<li>Master LC 169, 229 (Boyer-Moore)</li>
+<li>Understand LC 295, 703 (Stream + Heap)</li>
+<li>Study hash-based designs (LC 706, 705)</li>
+</ul>
+
+      </div>
+      <div class="cheatsheet-footer">
+        <a href="../cheatsheets.html" class="back-link">← Back to Cheat Sheets</a>
+        <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/streaming_algorithms.md" class="github-edit" target="_blank">
+          Edit on GitHub →
+        </a>
+      </div>
+    <nav class="prev-next"><a href="stock_trading.html" class="prev-link">← Stock Trading</a><a href="string.html" class="next-link">String →</a></nav>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>CS_basics - Computer Science Fundamentals & Interview Preparation</p>
+      <p>
+        <a href="https://github.com/yennanliu/CS_basics">GitHub</a> •
+        <a href="https://github.com/yennanliu/CS_basics/tree/master/doc">Documentation</a> •
+        <a href="https://github.com/yennanliu/CS_basics/issues">Report Issues</a>
+      </p>
+    </div>
+  </footer>
+</body>
+</html>

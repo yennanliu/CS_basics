@@ -1,0 +1,1638 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Queue - CS_basics</title>
+  <meta name="description" content="Computer Science fundamentals: algorithms, data structures, system design, and LeetCode solutions">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>CS</text></svg>">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="../vendor/fonts.css">
+  <link rel="stylesheet" href="../vendor/highlight/github-dark.min.css">
+  <script src="../vendor/highlight/highlight.min.js"></script>
+  <script>
+  // Apply theme before render to prevent flash
+  (function() {
+    var saved = localStorage.getItem('theme');
+    if (saved === 'dark' || (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      document.documentElement.setAttribute('data-theme', 'dark');
+    }
+  })();
+  </script>
+  <script>document.addEventListener('DOMContentLoaded', function() {
+    hljs.highlightAll();
+    document.querySelectorAll('pre code').forEach(function(codeEl) {
+      var pre = codeEl.parentElement;
+      var lang = '';
+      var cls = codeEl.className || '';
+      var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
+      if (m) lang = m[1];
+      var wrapper = document.createElement('div');
+      wrapper.className = 'code-block-wrapper';
+      pre.parentNode.insertBefore(wrapper, pre);
+      var header = document.createElement('div');
+      header.className = 'code-block-header';
+      if (lang) {
+        var label = document.createElement('span');
+        label.className = 'code-lang-label';
+        label.textContent = lang;
+        header.appendChild(label);
+      } else {
+        header.appendChild(document.createElement('span'));
+      }
+      var btn = document.createElement('button');
+      btn.className = 'copy-btn';
+      btn.textContent = 'Copy';
+      btn.addEventListener('click', function() {
+        navigator.clipboard.writeText(codeEl.textContent).then(function() {
+          btn.textContent = 'Copied!';
+          btn.classList.add('copied');
+          setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+        });
+      });
+      header.appendChild(btn);
+      wrapper.appendChild(header);
+      wrapper.appendChild(pre);
+    });
+    document.querySelectorAll('table').forEach(function(table) {
+      if (!table.parentElement.classList.contains('table-wrap')) {
+        var wrapper = document.createElement('div');
+        wrapper.className = 'table-wrap';
+        table.parentNode.insertBefore(wrapper, table);
+        wrapper.appendChild(table);
+      }
+    });
+    // Reading progress bar
+    var progressBar = document.getElementById('reading-progress');
+    if (progressBar) {
+      window.addEventListener('scroll', function() {
+        var winScroll = document.documentElement.scrollTop;
+        var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        progressBar.style.width = height > 0 ? (winScroll / height * 100) + '%' : '0%';
+      });
+    }
+    // Dark mode toggle
+    var toggle = document.getElementById('theme-toggle');
+    if (toggle) {
+      var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      toggle.textContent = isDark ? '☀️' : '🌙';
+      toggle.addEventListener('click', function() {
+        var dark = document.documentElement.getAttribute('data-theme') === 'dark';
+        if (dark) {
+          document.documentElement.removeAttribute('data-theme');
+          localStorage.setItem('theme', 'light');
+          toggle.textContent = '🌙';
+        } else {
+          document.documentElement.setAttribute('data-theme', 'dark');
+          localStorage.setItem('theme', 'dark');
+          toggle.textContent = '☀️';
+        }
+      });
+    }
+  });</script>
+</head>
+<body>
+  <div class="progress-container"><div class="progress-bar" id="reading-progress"></div></div>
+  <nav class="navbar">
+    <div class="container">
+      <div class="nav-brand">
+        <span class="nav-icon">💻</span>
+        <span class="nav-title">CS_basics</span>
+      </div>
+      <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+      <div class="nav-links">
+        <a href="../index.html" class="">Home</a>
+        <a href="../cheatsheets.html" class="active">Cheat Sheets</a>
+        <a href="../patterns.html" class="">Pattern Recognition</a>
+        <a href="../faqs.html" class="">FAQs</a>
+        <a href="../resources.html" class="">Resources</a>
+        <a href="../lc-explorer.html" class="">LC Explorer</a>
+        <a href="../lc-random-picker.html" class="">🎲 Random Picker</a>
+        <a href="../algo_demo/index.html" class="">Visualizer</a>
+        <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">&#127769;</button>
+        <a href="https://github.com/yennanliu/CS_basics" target="_blank" class="github-link" aria-label="GitHub">
+          <svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor">
+            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container">
+    <div class="content">
+      
+      <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">Queue</span></nav>
+      <div class="cheatsheet-header">
+        <h1>Queue</h1>
+        <span class="last-updated">Last updated: Sep 2, 2025</span>
+      </div>
+      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#overview">Overview</a></li><li class="toc-sub"><a href="#key-properties">Key Properties</a></li><li class="toc-sub"><a href="#implementation-options">Implementation Options</a></li><li class="toc-sub"><a href="#references">References</a></li><li><a href="#problem-categories">Problem Categories</a></li><li class="toc-sub"><a href="#pattern-1-bfs-level-order-traversal">Pattern 1: BFS &amp; Level-Order Traversal</a></li><li class="toc-sub"><a href="#pattern-2-sliding-window-with-queue">Pattern 2: Sliding Window with Queue</a></li><li class="toc-sub"><a href="#pattern-3-design-queue-variants">Pattern 3: Design Queue Variants</a></li><li class="toc-sub"><a href="#pattern-4-monotonic-queue">Pattern 4: Monotonic Queue</a></li><li class="toc-sub"><a href="#pattern-5-stream-processing">Pattern 5: Stream Processing</a></li><li class="toc-sub"><a href="#pattern-6-task-scheduling-simulation">Pattern 6: Task Scheduling &amp; Simulation</a></li><li><a href="#templates-algorithms">Templates &amp; Algorithms</a></li><li class="toc-sub"><a href="#template-comparison-table">Template Comparison Table</a></li><li class="toc-sub"><a href="#template-1-basic-queue-operations">Template 1: Basic Queue Operations</a></li><li class="toc-sub"><a href="#template-2-level-order-bfs-pattern">Template 2: Level-Order BFS Pattern</a></li><li class="toc-sub"><a href="#template-3-circular-queue-pattern">Template 3: Circular Queue Pattern</a></li><li class="toc-sub"><a href="#template-4-monotonic-queue-pattern">Template 4: Monotonic Queue Pattern</a></li><li class="toc-sub"><a href="#template-5-queue-using-stacks-pattern">Template 5: Queue Using Stacks Pattern</a></li><li class="toc-sub"><a href="#template-6-stream-processing-pattern">Template 6: Stream Processing Pattern</a></li><li><a href="#problems-by-pattern">Problems by Pattern</a></li><li class="toc-sub"><a href="#pattern-based-problem-tables">Pattern-Based Problem Tables</a></li><li><a href="#pattern-selection-strategy">Pattern Selection Strategy</a></li><li><a href="#basic-operations-reference">Basic Operations Reference</a></li><li class="toc-sub"><a href="#python-collections-deque">Python collections.deque</a></li><li class="toc-sub"><a href="#java-queue-deque-operations">Java Queue &amp; Deque Operations</a></li><li><a href="#summary-quick-reference">Summary &amp; Quick Reference</a></li><li class="toc-sub"><a href="#complexity-quick-reference">Complexity Quick Reference</a></li><li class="toc-sub"><a href="#template-quick-reference">Template Quick Reference</a></li><li class="toc-sub"><a href="#common-patterns-tricks">Common Patterns &amp; Tricks</a></li><li class="toc-sub"><a href="#problem-solving-steps">Problem-Solving Steps</a></li><li class="toc-sub"><a href="#common-mistakes-tips">Common Mistakes &amp; Tips</a></li><li class="toc-sub"><a href="#interview-tips">Interview Tips</a></li><li class="toc-sub"><a href="#advanced-techniques">Advanced Techniques</a></li><li class="toc-sub"><a href="#related-topics">Related Topics</a></li><li><a href="#lc-examples">LC Examples</a></li><li class="toc-sub"><a href="#2-1-sliding-window-maximum">2-1) Sliding Window Maximum</a></li><li class="toc-sub"><a href="#2-2-design-circular-queue">2-2) Design Circular Queue</a></li></ul></div>
+      <div class="cheatsheet-content">
+        <h1 id="queue-data-structure" tabindex="-1"><a class="header-anchor" href="#queue-data-structure"><span>Queue Data Structure</span></a></h1>
+<p><img src="../doc/pic/queue2.png"></p></p>
+<p><img src="../doc/pic/stack_vs_queue.png"></p></p>
+<h2 id="overview" tabindex="-1"><a class="header-anchor" href="#overview"><span>Overview</span></a></h2>
+<p><strong>Queue</strong> is a linear data structure that follows the First In First Out (FIFO) principle. Elements are added at the rear (enqueue) and removed from the front (dequeue), similar to a real-world queue or line.</p>
+<h3 id="key-properties" tabindex="-1"><a class="header-anchor" href="#key-properties"><span>Key Properties</span></a></h3>
+<ul>
+<li><strong>Time Complexity</strong>:
+<ul>
+<li>Enqueue: O(1)</li>
+<li>Dequeue: O(1) for linked list, O(n) for array</li>
+<li>Peek/Front: O(1)</li>
+<li>Search: O(n)</li>
+</ul>
+</li>
+<li><strong>Space Complexity</strong>: O(n)</li>
+<li><strong>Core Idea</strong>: First element added is the first to be removed (FIFO)</li>
+<li><strong>When to Use</strong>: BFS traversal, level-order processing, task scheduling, buffering</li>
+</ul>
+<h3 id="implementation-options" tabindex="-1"><a class="header-anchor" href="#implementation-options"><span>Implementation Options</span></a></h3>
+<ul>
+<li><strong>Array-based</strong>: Fixed size, circular buffer for efficiency</li>
+<li><strong>Linked List</strong>: Dynamic size, efficient operations</li>
+<li><strong>Deque</strong>: Double-ended queue for both ends access</li>
+<li><strong>Priority Queue</strong>: Elements processed by priority (covered separately)</li>
+</ul>
+<h3 id="references" tabindex="-1"><a class="header-anchor" href="#references"><span>References</span></a></h3>
+<ul>
+<li><a href="https://docs.oracle.com/javase/8/docs/api/java/util/Queue.html">Java Queue Interface</a></li>
+<li><a href="https://docs.python.org/3/library/collections.html#collections.deque">Python collections.deque</a></li>
+<li><a href="https://www.geeksforgeeks.org/difference-between-stack-and-queue-data-structures/">Queue vs Stack Comparison</a></li>
+</ul>
+<h2 id="problem-categories" tabindex="-1"><a class="header-anchor" href="#problem-categories"><span>Problem Categories</span></a></h2>
+<h3 id="pattern-1-bfs-level-order-traversal" tabindex="-1"><a class="header-anchor" href="#pattern-1-bfs-level-order-traversal"><span><strong>Pattern 1: BFS &amp; Level-Order Traversal</strong></span></a></h3>
+<ul>
+<li><strong>Description</strong>: Layer-by-layer processing in trees and graphs</li>
+<li><strong>Examples</strong>: LC 102, 103, 107, 199, 513, 515, 637</li>
+<li><strong>Pattern</strong>: Process all nodes at current level before next level</li>
+</ul>
+<h3 id="pattern-2-sliding-window-with-queue" tabindex="-1"><a class="header-anchor" href="#pattern-2-sliding-window-with-queue"><span><strong>Pattern 2: Sliding Window with Queue</strong></span></a></h3>
+<ul>
+<li><strong>Description</strong>: Maintaining window state with FIFO ordering</li>
+<li><strong>Examples</strong>: LC 239, 346, 362, 933, 1438</li>
+<li><strong>Pattern</strong>: Use deque for O(1) operations at both ends</li>
+</ul>
+<h3 id="pattern-3-design-queue-variants" tabindex="-1"><a class="header-anchor" href="#pattern-3-design-queue-variants"><span><strong>Pattern 3: Design Queue Variants</strong></span></a></h3>
+<ul>
+<li><strong>Description</strong>: Implementing queue with constraints or special features</li>
+<li><strong>Examples</strong>: LC 225, 232, 622, 641, 1670</li>
+<li><strong>Pattern</strong>: Use stacks, arrays, or linked lists with specific logic</li>
+</ul>
+<h3 id="pattern-4-monotonic-queue" tabindex="-1"><a class="header-anchor" href="#pattern-4-monotonic-queue"><span><strong>Pattern 4: Monotonic Queue</strong></span></a></h3>
+<ul>
+<li><strong>Description</strong>: Maintaining increasing/decreasing order in queue</li>
+<li><strong>Examples</strong>: LC 239, 862, 907, 1425, 1696</li>
+<li><strong>Pattern</strong>: Remove elements that break monotonic property</li>
+</ul>
+<h3 id="pattern-5-stream-processing" tabindex="-1"><a class="header-anchor" href="#pattern-5-stream-processing"><span><strong>Pattern 5: Stream Processing</strong></span></a></h3>
+<ul>
+<li><strong>Description</strong>: Processing continuous data streams</li>
+<li><strong>Examples</strong>: LC 346, 352, 362, 703, 933</li>
+<li><strong>Pattern</strong>: Fixed-size window or time-based eviction</li>
+</ul>
+<h3 id="pattern-6-task-scheduling-simulation" tabindex="-1"><a class="header-anchor" href="#pattern-6-task-scheduling-simulation"><span><strong>Pattern 6: Task Scheduling &amp; Simulation</strong></span></a></h3>
+<ul>
+<li><strong>Description</strong>: Simulating real-world queuing systems</li>
+<li><strong>Examples</strong>: LC 621, 1429, 1834, 2073</li>
+<li><strong>Pattern</strong>: Process tasks in order with constraints</li>
+</ul>
+<h2 id="templates-algorithms" tabindex="-1"><a class="header-anchor" href="#templates-algorithms"><span>Templates &amp; Algorithms</span></a></h2>
+<h3 id="template-comparison-table" tabindex="-1"><a class="header-anchor" href="#template-comparison-table"><span>Template Comparison Table</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>Template Type</th>
+<th>Use Case</th>
+<th>Implementation</th>
+<th>Complexity</th>
+<th>When to Use</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Basic Queue</strong></td>
+<td>Simple FIFO</td>
+<td>Array/LinkedList</td>
+<td>O(1) ops</td>
+<td>General queue operations</td>
+</tr>
+<tr>
+<td><strong>Circular Queue</strong></td>
+<td>Fixed size buffer</td>
+<td>Array with pointers</td>
+<td>O(1) ops</td>
+<td>Bounded buffer, ring buffer</td>
+</tr>
+<tr>
+<td><strong>Deque</strong></td>
+<td>Both ends access</td>
+<td>Double linked list</td>
+<td>O(1) ops</td>
+<td>Sliding window, palindrome</td>
+</tr>
+<tr>
+<td><strong>Monotonic Queue</strong></td>
+<td>Order maintenance</td>
+<td>Deque with logic</td>
+<td>O(1) amortized</td>
+<td>Max/min in window</td>
+</tr>
+<tr>
+<td><strong>Queue with Stacks</strong></td>
+<td>Queue using stacks</td>
+<td>Two stacks</td>
+<td>O(1) amortized</td>
+<td>Interview problems</td>
+</tr>
+<tr>
+<td><strong>Level-Order BFS</strong></td>
+<td>Tree/graph traversal</td>
+<td>Queue + size tracking</td>
+<td>O(n)</td>
+<td>Layer processing</td>
+</tr>
+</tbody>
+</table>
+<h3 id="template-1-basic-queue-operations" tabindex="-1"><a class="header-anchor" href="#template-1-basic-queue-operations"><span>Template 1: Basic Queue Operations</span></a></h3>
+<pre><code class="language-python"># Python - Using collections.deque (recommended)
+from collections import deque
+
+class Queue:
+    def __init__(self):
+        self.queue = deque()
+    
+    def enqueue(self, item):
+        self.queue.append(item)  # Add to rear
+    
+    def dequeue(self):
+        if not self.is_empty():
+            return self.queue.popleft()  # Remove from front
+        return None
+    
+    def front(self):
+        if not self.is_empty():
+            return self.queue[0]
+        return None
+    
+    def is_empty(self):
+        return len(self.queue) == 0
+    
+    def size(self):
+        return len(self.queue)
+
+# Using list (less efficient for dequeue)
+class SimpleQueue:
+    def __init__(self):
+        self.queue = []
+    
+    def enqueue(self, item):
+        self.queue.append(item)
+    
+    def dequeue(self):
+        if self.queue:
+            return self.queue.pop(0)  # O(n) operation
+        return None
+</code></pre>
+<pre><code class="language-java">// Java - Using LinkedList
+import java.util.*;
+
+class Queue&lt;T&gt; {
+    private LinkedList&lt;T&gt; queue;
+    
+    public Queue() {
+        queue = new LinkedList&lt;&gt;();
+    }
+    
+    public void enqueue(T item) {
+        queue.addLast(item);  // Add to rear
+    }
+    
+    public T dequeue() {
+        if (!isEmpty()) {
+            return queue.removeFirst();  // Remove from front
+        }
+        return null;
+    }
+    
+    public T front() {
+        if (!isEmpty()) {
+            return queue.getFirst();
+        }
+        return null;
+    }
+    
+    public boolean isEmpty() {
+        return queue.isEmpty();
+    }
+    
+    public int size() {
+        return queue.size();
+    }
+}
+
+// Using Java Queue interface
+Queue&lt;Integer&gt; queue = new LinkedList&lt;&gt;();
+queue.offer(1);  // enqueue
+queue.poll();    // dequeue
+queue.peek();    // front
+</code></pre>
+<h3 id="template-2-level-order-bfs-pattern" tabindex="-1"><a class="header-anchor" href="#template-2-level-order-bfs-pattern"><span>Template 2: Level-Order BFS Pattern</span></a></h3>
+<pre><code class="language-python"># Python - Tree level-order traversal
+def levelOrder(root):
+    if not root:
+        return []
+    
+    result = []
+    queue = deque([root])
+    
+    while queue:
+        level_size = len(queue)
+        current_level = []
+        
+        # Process all nodes at current level
+        for _ in range(level_size):
+            node = queue.popleft()
+            current_level.append(node.val)
+            
+            if node.left:
+                queue.append(node.left)
+            if node.right:
+                queue.append(node.right)
+        
+        result.append(current_level)
+    
+    return result
+
+# Graph BFS with distance
+def bfs(graph, start):
+    visited = set([start])
+    queue = deque([(start, 0)])  # (node, distance)
+    
+    while queue:
+        node, dist = queue.popleft()
+        
+        for neighbor in graph[node]:
+            if neighbor not in visited:
+                visited.add(neighbor)
+                queue.append((neighbor, dist + 1))
+    
+    return visited
+</code></pre>
+<pre><code class="language-java">// Java - Level-order traversal
+public List&lt;List&lt;Integer&gt;&gt; levelOrder(TreeNode root) {
+    List&lt;List&lt;Integer&gt;&gt; result = new ArrayList&lt;&gt;();
+    if (root == null) return result;
+    
+    Queue&lt;TreeNode&gt; queue = new LinkedList&lt;&gt;();
+    queue.offer(root);
+    
+    while (!queue.isEmpty()) {
+        int levelSize = queue.size();
+        List&lt;Integer&gt; currentLevel = new ArrayList&lt;&gt;();
+        
+        for (int i = 0; i &lt; levelSize; i++) {
+            TreeNode node = queue.poll();
+            currentLevel.add(node.val);
+            
+            if (node.left != null) {
+                queue.offer(node.left);
+            }
+            if (node.right != null) {
+                queue.offer(node.right);
+            }
+        }
+        
+        result.add(currentLevel);
+    }
+    
+    return result;
+}
+</code></pre>
+<h3 id="template-3-circular-queue-pattern" tabindex="-1"><a class="header-anchor" href="#template-3-circular-queue-pattern"><span>Template 3: Circular Queue Pattern</span></a></h3>
+<pre><code class="language-python"># Python - Fixed size circular queue
+class CircularQueue:
+    def __init__(self, k):
+        self.queue = [0] * k
+        self.capacity = k
+        self.head = 0
+        self.count = 0
+    
+    def enqueue(self, value):
+        if self.is_full():
+            return False
+        
+        # Calculate tail position
+        tail = (self.head + self.count) % self.capacity
+        self.queue[tail] = value
+        self.count += 1
+        return True
+    
+    def dequeue(self):
+        if self.is_empty():
+            return False
+        
+        self.head = (self.head + 1) % self.capacity
+        self.count -= 1
+        return True
+    
+    def front(self):
+        if self.is_empty():
+            return -1
+        return self.queue[self.head]
+    
+    def rear(self):
+        if self.is_empty():
+            return -1
+        tail = (self.head + self.count - 1) % self.capacity
+        return self.queue[tail]
+    
+    def is_empty(self):
+        return self.count == 0
+    
+    def is_full(self):
+        return self.count == self.capacity
+</code></pre>
+<pre><code class="language-java">// Java - Circular Queue
+class CircularQueue {
+    private int[] queue;
+    private int head;
+    private int count;
+    private int capacity;
+    
+    public CircularQueue(int k) {
+        queue = new int[k];
+        capacity = k;
+        head = 0;
+        count = 0;
+    }
+    
+    public boolean enqueue(int value) {
+        if (isFull()) return false;
+        
+        int tail = (head + count) % capacity;
+        queue[tail] = value;
+        count++;
+        return true;
+    }
+    
+    public boolean dequeue() {
+        if (isEmpty()) return false;
+        
+        head = (head + 1) % capacity;
+        count--;
+        return true;
+    }
+    
+    public int front() {
+        if (isEmpty()) return -1;
+        return queue[head];
+    }
+    
+    public int rear() {
+        if (isEmpty()) return -1;
+        int tail = (head + count - 1) % capacity;
+        return queue[tail];
+    }
+    
+    public boolean isEmpty() {
+        return count == 0;
+    }
+    
+    public boolean isFull() {
+        return count == capacity;
+    }
+}
+</code></pre>
+<h3 id="template-4-monotonic-queue-pattern" tabindex="-1"><a class="header-anchor" href="#template-4-monotonic-queue-pattern"><span>Template 4: Monotonic Queue Pattern</span></a></h3>
+<pre><code class="language-python"># Python - Monotonic decreasing queue for sliding window maximum
+class MonotonicQueue:
+    def __init__(self):
+        self.queue = deque()
+    
+    def push(self, val):
+        # Remove smaller elements from rear
+        while self.queue and self.queue[-1] &lt; val:
+            self.queue.pop()
+        self.queue.append(val)
+    
+    def pop(self, val):
+        # Remove if it's the front element
+        if self.queue and self.queue[0] == val:
+            self.queue.popleft()
+    
+    def max(self):
+        # Front is always the maximum
+        return self.queue[0] if self.queue else None
+
+# Sliding window maximum
+def maxSlidingWindow(nums, k):
+    from collections import deque
+    
+    dq = deque()  # Store indices
+    result = []
+    
+    for i in range(len(nums)):
+        # Remove indices outside window
+        while dq and dq[0] &lt;= i - k:
+            dq.popleft()
+        
+        # Remove smaller elements
+        while dq and nums[dq[-1]] &lt;= nums[i]:
+            dq.pop()
+        
+        dq.append(i)
+        
+        # Add to result after first window
+        if i &gt;= k - 1:
+            result.append(nums[dq[0]])
+    
+    return result
+</code></pre>
+<pre><code class="language-java">// Java - Monotonic Queue
+class MonotonicQueue {
+    private LinkedList&lt;Integer&gt; queue;
+    
+    public MonotonicQueue() {
+        queue = new LinkedList&lt;&gt;();
+    }
+    
+    public void push(int val) {
+        // Remove smaller elements from rear
+        while (!queue.isEmpty() &amp;&amp; queue.getLast() &lt; val) {
+            queue.pollLast();
+        }
+        queue.addLast(val);
+    }
+    
+    public void pop(int val) {
+        // Remove if it's the front element
+        if (!queue.isEmpty() &amp;&amp; queue.getFirst() == val) {
+            queue.pollFirst();
+        }
+    }
+    
+    public int max() {
+        return queue.isEmpty() ? -1 : queue.getFirst();
+    }
+}
+
+// Sliding window maximum
+public int[] maxSlidingWindow(int[] nums, int k) {
+    Deque&lt;Integer&gt; dq = new LinkedList&lt;&gt;();
+    int[] result = new int[nums.length - k + 1];
+    int idx = 0;
+    
+    for (int i = 0; i &lt; nums.length; i++) {
+        // Remove indices outside window
+        while (!dq.isEmpty() &amp;&amp; dq.peekFirst() &lt;= i - k) {
+            dq.pollFirst();
+        }
+        
+        // Remove smaller elements
+        while (!dq.isEmpty() &amp;&amp; nums[dq.peekLast()] &lt;= nums[i]) {
+            dq.pollLast();
+        }
+        
+        dq.offerLast(i);
+        
+        // Add to result after first window
+        if (i &gt;= k - 1) {
+            result[idx++] = nums[dq.peekFirst()];
+        }
+    }
+    
+    return result;
+}
+</code></pre>
+<h3 id="template-5-queue-using-stacks-pattern" tabindex="-1"><a class="header-anchor" href="#template-5-queue-using-stacks-pattern"><span>Template 5: Queue Using Stacks Pattern</span></a></h3>
+<pre><code class="language-python"># Python - Implement queue using two stacks
+class MyQueue:
+    def __init__(self):
+        self.in_stack = []   # For enqueue
+        self.out_stack = []  # For dequeue
+    
+    def push(self, x):
+        self.in_stack.append(x)
+    
+    def pop(self):
+        self.peek()  # Ensure out_stack has elements
+        return self.out_stack.pop()
+    
+    def peek(self):
+        if not self.out_stack:
+            # Transfer all from in_stack to out_stack
+            while self.in_stack:
+                self.out_stack.append(self.in_stack.pop())
+        return self.out_stack[-1] if self.out_stack else None
+    
+    def empty(self):
+        return len(self.in_stack) == 0 and len(self.out_stack) == 0
+</code></pre>
+<pre><code class="language-java">// Java - Queue using stacks
+class MyQueue {
+    private Stack&lt;Integer&gt; inStack;
+    private Stack&lt;Integer&gt; outStack;
+    
+    public MyQueue() {
+        inStack = new Stack&lt;&gt;();
+        outStack = new Stack&lt;&gt;();
+    }
+    
+    public void push(int x) {
+        inStack.push(x);
+    }
+    
+    public int pop() {
+        peek();  // Ensure outStack has elements
+        return outStack.pop();
+    }
+    
+    public int peek() {
+        if (outStack.isEmpty()) {
+            // Transfer all from inStack to outStack
+            while (!inStack.isEmpty()) {
+                outStack.push(inStack.pop());
+            }
+        }
+        return outStack.peek();
+    }
+    
+    public boolean empty() {
+        return inStack.isEmpty() &amp;&amp; outStack.isEmpty();
+    }
+}
+</code></pre>
+<h3 id="template-6-stream-processing-pattern" tabindex="-1"><a class="header-anchor" href="#template-6-stream-processing-pattern"><span>Template 6: Stream Processing Pattern</span></a></h3>
+<pre><code class="language-python"># Python - Moving average from data stream
+class MovingAverage:
+    def __init__(self, size):
+        self.queue = deque()
+        self.window_sum = 0
+        self.size = size
+    
+    def next(self, val):
+        self.queue.append(val)
+        self.window_sum += val
+        
+        if len(self.queue) &gt; self.size:
+            removed = self.queue.popleft()
+            self.window_sum -= removed
+        
+        return self.window_sum / len(self.queue)
+
+# Hit counter for last 5 minutes
+class HitCounter:
+    def __init__(self):
+        self.queue = deque()
+    
+    def hit(self, timestamp):
+        self.queue.append(timestamp)
+    
+    def getHits(self, timestamp):
+        # Remove hits older than 5 minutes (300 seconds)
+        while self.queue and self.queue[0] &lt;= timestamp - 300:
+            self.queue.popleft()
+        return len(self.queue)
+</code></pre>
+<pre><code class="language-java">// Java - Moving average
+class MovingAverage {
+    private Queue&lt;Integer&gt; queue;
+    private int windowSum;
+    private int size;
+    
+    public MovingAverage(int size) {
+        queue = new LinkedList&lt;&gt;();
+        this.size = size;
+        windowSum = 0;
+    }
+    
+    public double next(int val) {
+        queue.offer(val);
+        windowSum += val;
+        
+        if (queue.size() &gt; size) {
+            windowSum -= queue.poll();
+        }
+        
+        return (double) windowSum / queue.size();
+    }
+}
+</code></pre>
+<h2 id="problems-by-pattern" tabindex="-1"><a class="header-anchor" href="#problems-by-pattern"><span>Problems by Pattern</span></a></h2>
+<h3 id="pattern-based-problem-tables" tabindex="-1"><a class="header-anchor" href="#pattern-based-problem-tables"><span>Pattern-Based Problem Tables</span></a></h3>
+<h4 id="bfs-level-order-problems" tabindex="-1"><a class="header-anchor" href="#bfs-level-order-problems"><span><strong>BFS &amp; Level-Order Problems</strong></span></a></h4>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC #</th>
+<th>Key Technique</th>
+<th>Difficulty</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Binary Tree Level Order Traversal</td>
+<td>102</td>
+<td>Queue + level tracking</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Binary Tree Zigzag Level Order</td>
+<td>103</td>
+<td>Queue + direction flag</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Binary Tree Level Order II</td>
+<td>107</td>
+<td>Queue + reverse result</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Binary Tree Right Side View</td>
+<td>199</td>
+<td>Queue + last in level</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Find Bottom Left Tree Value</td>
+<td>513</td>
+<td>Queue + track level</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Find Largest Value in Each Tree Row</td>
+<td>515</td>
+<td>Queue + max per level</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Average of Levels in Binary Tree</td>
+<td>637</td>
+<td>Queue + sum per level</td>
+<td>Easy</td>
+</tr>
+<tr>
+<td>Maximum Width of Binary Tree</td>
+<td>662</td>
+<td>Queue + position encoding</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Populating Next Right Pointers</td>
+<td>116</td>
+<td>Queue + level connection</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>N-ary Tree Level Order Traversal</td>
+<td>429</td>
+<td>Queue + multiple children</td>
+<td>Medium</td>
+</tr>
+</tbody>
+</table>
+<h4 id="sliding-window-queue-problems" tabindex="-1"><a class="header-anchor" href="#sliding-window-queue-problems"><span><strong>Sliding Window Queue Problems</strong></span></a></h4>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC #</th>
+<th>Key Technique</th>
+<th>Difficulty</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Sliding Window Maximum</td>
+<td>239</td>
+<td>Monotonic deque</td>
+<td>Hard</td>
+</tr>
+<tr>
+<td>Moving Average from Data Stream</td>
+<td>346</td>
+<td>Fixed size queue</td>
+<td>Easy</td>
+</tr>
+<tr>
+<td>Design Hit Counter</td>
+<td>362</td>
+<td>Time-based eviction</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Number of Recent Calls</td>
+<td>933</td>
+<td>Time window queue</td>
+<td>Easy</td>
+</tr>
+<tr>
+<td>Longest Subarray Absolute Diff</td>
+<td>1438</td>
+<td>Two deques (min/max)</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Jump Game VI</td>
+<td>1696</td>
+<td>DP + monotonic queue</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Constrained Subsequence Sum</td>
+<td>1425</td>
+<td>DP + monotonic queue</td>
+<td>Hard</td>
+</tr>
+</tbody>
+</table>
+<h4 id="design-queue-problems" tabindex="-1"><a class="header-anchor" href="#design-queue-problems"><span><strong>Design Queue Problems</strong></span></a></h4>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC #</th>
+<th>Key Technique</th>
+<th>Difficulty</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Implement Stack using Queues</td>
+<td>225</td>
+<td>Two queues or rotation</td>
+<td>Easy</td>
+</tr>
+<tr>
+<td>Implement Queue using Stacks</td>
+<td>232</td>
+<td>Two stacks</td>
+<td>Easy</td>
+</tr>
+<tr>
+<td>Design Circular Queue</td>
+<td>622</td>
+<td>Array with pointers</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Design Circular Deque</td>
+<td>641</td>
+<td>Double-ended circular</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Design Front Middle Back Queue</td>
+<td>1670</td>
+<td>Two deques balance</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Design Most Recently Used Queue</td>
+<td>1756</td>
+<td>Deque + set</td>
+<td>Medium</td>
+</tr>
+</tbody>
+</table>
+<h4 id="monotonic-queue-problems" tabindex="-1"><a class="header-anchor" href="#monotonic-queue-problems"><span><strong>Monotonic Queue Problems</strong></span></a></h4>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC #</th>
+<th>Key Technique</th>
+<th>Difficulty</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Sliding Window Maximum</td>
+<td>239</td>
+<td>Decreasing monotonic</td>
+<td>Hard</td>
+</tr>
+<tr>
+<td>Shortest Subarray with Sum K</td>
+<td>862</td>
+<td>Prefix sum + monotonic</td>
+<td>Hard</td>
+</tr>
+<tr>
+<td>Sum of Subarray Minimums</td>
+<td>907</td>
+<td>Monotonic stack/queue</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Maximum Score of Good Subarray</td>
+<td>1793</td>
+<td>Monotonic boundaries</td>
+<td>Hard</td>
+</tr>
+<tr>
+<td>Jump Game VI</td>
+<td>1696</td>
+<td>DP + monotonic queue</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Longest Continuous Subarray</td>
+<td>1438</td>
+<td>Two monotonic queues</td>
+<td>Medium</td>
+</tr>
+</tbody>
+</table>
+<h4 id="stream-processing-problems" tabindex="-1"><a class="header-anchor" href="#stream-processing-problems"><span><strong>Stream Processing Problems</strong></span></a></h4>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC #</th>
+<th>Key Technique</th>
+<th>Difficulty</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Moving Average from Data Stream</td>
+<td>346</td>
+<td>Fixed window</td>
+<td>Easy</td>
+</tr>
+<tr>
+<td>Data Stream as Disjoint Intervals</td>
+<td>352</td>
+<td>Interval merging</td>
+<td>Hard</td>
+</tr>
+<tr>
+<td>Design Hit Counter</td>
+<td>362</td>
+<td>Time-based queue</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Logger Rate Limiter</td>
+<td>359</td>
+<td>Time window</td>
+<td>Easy</td>
+</tr>
+<tr>
+<td>Number of Recent Calls</td>
+<td>933</td>
+<td>Time window</td>
+<td>Easy</td>
+</tr>
+<tr>
+<td>Finding MK Average</td>
+<td>1825</td>
+<td>Multiple queues</td>
+<td>Hard</td>
+</tr>
+</tbody>
+</table>
+<h4 id="task-scheduling-problems" tabindex="-1"><a class="header-anchor" href="#task-scheduling-problems"><span><strong>Task Scheduling Problems</strong></span></a></h4>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC #</th>
+<th>Key Technique</th>
+<th>Difficulty</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Task Scheduler</td>
+<td>621</td>
+<td>Queue + cooling time</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Design a Number Container</td>
+<td>2349</td>
+<td>Queue per number</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Time Needed to Buy Tickets</td>
+<td>2073</td>
+<td>Queue simulation</td>
+<td>Easy</td>
+</tr>
+<tr>
+<td>Single-Threaded CPU</td>
+<td>1834</td>
+<td>Queue + priority queue</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Number of Visible People in Queue</td>
+<td>1944</td>
+<td>Monotonic stack</td>
+<td>Hard</td>
+</tr>
+</tbody>
+</table>
+<h2 id="pattern-selection-strategy" tabindex="-1"><a class="header-anchor" href="#pattern-selection-strategy"><span>Pattern Selection Strategy</span></a></h2>
+<pre><code>Problem Analysis Flowchart:
+
+1. Is it a tree/graph traversal problem?
+   ├── YES → Use BFS with Queue
+   │         ├── Level-order → Track level size
+   │         └── Shortest path → Track distance
+   └── NO → Continue to 2
+
+2. Do you need to maintain window order?
+   ├── YES → Use Sliding Window Queue
+   │         ├── Max/Min → Monotonic queue
+   │         └── Fixed size → Regular queue
+   └── NO → Continue to 3
+
+3. Is it a design problem?
+   ├── YES → Choose appropriate structure
+   │         ├── Fixed size → Circular queue
+   │         ├── Both ends → Deque
+   │         └── Stack behavior → Queue with rotation
+   └── NO → Continue to 4
+
+4. Need monotonic property?
+   ├── YES → Use Monotonic Queue
+   │         ├── Increasing → Remove larger from rear
+   │         └── Decreasing → Remove smaller from rear
+   └── NO → Continue to 5
+
+5. Processing data stream?
+   ├── YES → Use Stream Processing
+   │         ├── Time window → Remove old entries
+   │         └── Count window → Fixed size queue
+   └── NO → Use basic queue operations
+</code></pre>
+<h2 id="basic-operations-reference" tabindex="-1"><a class="header-anchor" href="#basic-operations-reference"><span>Basic Operations Reference</span></a></h2>
+<h3 id="python-collections-deque" tabindex="-1"><a class="header-anchor" href="#python-collections-deque"><span>Python collections.deque</span></a></h3>
+<pre><code class="language-python">from collections import deque
+
+# Create deque
+dq = deque()
+dq = deque([1, 2, 3])
+dq = deque(maxlen=10)  # Fixed size
+
+# Add elements
+dq.append(4)       # Add to right: [1,2,3,4]
+dq.appendleft(0)   # Add to left: [0,1,2,3,4]
+dq.extend([5,6])   # Extend right: [0,1,2,3,4,5,6]
+dq.extendleft([-2,-1]) # Extend left: [-1,-2,0,1,2,3,4,5,6]
+
+# Remove elements
+val = dq.pop()     # Remove from right
+val = dq.popleft() # Remove from left
+
+# Access elements
+first = dq[0]      # Access by index
+last = dq[-1]      # Last element
+
+# Other operations
+dq.rotate(2)       # Rotate right by 2
+dq.rotate(-1)      # Rotate left by 1
+dq.reverse()       # Reverse in-place
+dq.clear()         # Remove all elements
+
+# Check state
+size = len(dq)
+is_empty = len(dq) == 0
+count = dq.count(value)
+index = dq.index(value)
+</code></pre>
+<h3 id="java-queue-deque-operations" tabindex="-1"><a class="header-anchor" href="#java-queue-deque-operations"><span>Java Queue &amp; Deque Operations</span></a></h3>
+<pre><code class="language-java">import java.util.*;
+
+// Queue interface (FIFO)
+Queue&lt;Integer&gt; queue = new LinkedList&lt;&gt;();
+queue.offer(1);    // Add to rear (returns boolean)
+queue.add(2);      // Add to rear (throws exception)
+Integer val = queue.poll();  // Remove from front (returns null)
+val = queue.remove();        // Remove from front (throws exception)
+val = queue.peek();          // View front (returns null)
+val = queue.element();       // View front (throws exception)
+
+// Deque interface (double-ended)
+Deque&lt;Integer&gt; deque = new LinkedList&lt;&gt;();
+// or ArrayDeque for better performance
+Deque&lt;Integer&gt; deque = new ArrayDeque&lt;&gt;();
+
+// Add operations
+deque.addFirst(1);     // Add to front
+deque.addLast(2);      // Add to rear
+deque.offerFirst(0);   // Add to front (returns boolean)
+deque.offerLast(3);    // Add to rear (returns boolean)
+
+// Remove operations
+val = deque.removeFirst(); // Remove from front
+val = deque.removeLast();  // Remove from rear
+val = deque.pollFirst();   // Remove from front (returns null)
+val = deque.pollLast();    // Remove from rear (returns null)
+
+// Peek operations
+val = deque.peekFirst();   // View front
+val = deque.peekLast();    // View rear
+val = deque.getFirst();    // View front (throws exception)
+val = deque.getLast();     // View rear (throws exception)
+
+// Stack operations on Deque
+deque.push(5);         // Push to front (stack top)
+val = deque.pop();     // Pop from front (stack top)
+</code></pre>
+<h2 id="summary-quick-reference" tabindex="-1"><a class="header-anchor" href="#summary-quick-reference"><span>Summary &amp; Quick Reference</span></a></h2>
+<h3 id="complexity-quick-reference" tabindex="-1"><a class="header-anchor" href="#complexity-quick-reference"><span>Complexity Quick Reference</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>Operation</th>
+<th>Array Queue</th>
+<th>Linked Queue</th>
+<th>Deque</th>
+<th>Circular Queue</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Enqueue</td>
+<td>O(1)</td>
+<td>O(1)</td>
+<td>O(1)</td>
+<td>O(1)</td>
+</tr>
+<tr>
+<td>Dequeue</td>
+<td>O(n)</td>
+<td>O(1)</td>
+<td>O(1)</td>
+<td>O(1)</td>
+</tr>
+<tr>
+<td>Peek Front</td>
+<td>O(1)</td>
+<td>O(1)</td>
+<td>O(1)</td>
+<td>O(1)</td>
+</tr>
+<tr>
+<td>Peek Rear</td>
+<td>O(1)</td>
+<td>O(1)</td>
+<td>O(1)</td>
+<td>O(1)</td>
+</tr>
+<tr>
+<td>Space</td>
+<td>O(n)</td>
+<td>O(n)</td>
+<td>O(n)</td>
+<td>O(k) fixed</td>
+</tr>
+</tbody>
+</table>
+<h3 id="template-quick-reference" tabindex="-1"><a class="header-anchor" href="#template-quick-reference"><span>Template Quick Reference</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>Template</th>
+<th>Pattern</th>
+<th>Key Code</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>BFS</strong></td>
+<td>Level processing</td>
+<td><code>for _ in range(level_size)</code></td>
+</tr>
+<tr>
+<td><strong>Circular</strong></td>
+<td>Fixed buffer</td>
+<td><code>(head + count) % capacity</code></td>
+</tr>
+<tr>
+<td><strong>Monotonic</strong></td>
+<td>Order maintenance</td>
+<td><code>while q and q[-1] &lt; val: q.pop()</code></td>
+</tr>
+<tr>
+<td><strong>Two Stacks</strong></td>
+<td>Queue simulation</td>
+<td><code>if not out: transfer from in</code></td>
+</tr>
+<tr>
+<td><strong>Sliding</strong></td>
+<td>Window tracking</td>
+<td><code>if i &gt;= k-1: result.append()</code></td>
+</tr>
+<tr>
+<td><strong>Stream</strong></td>
+<td>Time/count window</td>
+<td><code>while old: queue.popleft()</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="common-patterns-tricks" tabindex="-1"><a class="header-anchor" href="#common-patterns-tricks"><span>Common Patterns &amp; Tricks</span></a></h3>
+<h4 id="level-order-processing" tabindex="-1"><a class="header-anchor" href="#level-order-processing"><span><strong>Level-Order Processing</strong></span></a></h4>
+<pre><code class="language-python"># Process nodes level by level
+level_size = len(queue)
+for _ in range(level_size):
+    node = queue.popleft()
+    # Process node
+    # Add children
+</code></pre>
+<h4 id="circular-index-calculation" tabindex="-1"><a class="header-anchor" href="#circular-index-calculation"><span><strong>Circular Index Calculation</strong></span></a></h4>
+<pre><code class="language-python"># Wrap around in circular buffer
+tail_index = (head + count) % capacity
+next_index = (current + 1) % capacity
+</code></pre>
+<h4 id="monotonic-property-maintenance" tabindex="-1"><a class="header-anchor" href="#monotonic-property-maintenance"><span><strong>Monotonic Property Maintenance</strong></span></a></h4>
+<pre><code class="language-python"># Decreasing monotonic queue
+while queue and queue[-1] &lt; new_val:
+    queue.pop()
+queue.append(new_val)
+</code></pre>
+<h4 id="two-stack-queue-optimization" tabindex="-1"><a class="header-anchor" href="#two-stack-queue-optimization"><span><strong>Two-Stack Queue Optimization</strong></span></a></h4>
+<pre><code class="language-python"># Amortized O(1) operations
+if not out_stack:
+    while in_stack:
+        out_stack.append(in_stack.pop())
+</code></pre>
+<h3 id="problem-solving-steps" tabindex="-1"><a class="header-anchor" href="#problem-solving-steps"><span>Problem-Solving Steps</span></a></h3>
+<ol>
+<li>
+<p><strong>Identify Queue Usage</strong></p>
+<ul>
+<li>FIFO processing needed?</li>
+<li>Level-by-level traversal?</li>
+<li>Sliding window with order?</li>
+<li>Stream processing?</li>
+</ul>
+</li>
+<li>
+<p><strong>Choose Implementation</strong></p>
+<ul>
+<li>Simple queue → deque or LinkedList</li>
+<li>Fixed size → Circular queue</li>
+<li>Both ends → Deque</li>
+<li>Priority → Priority Queue (separate DS)</li>
+</ul>
+</li>
+<li>
+<p><strong>Handle Edge Cases</strong></p>
+<ul>
+<li>Empty queue operations</li>
+<li>Full queue (for bounded queues)</li>
+<li>Single element scenarios</li>
+<li>Wraparound in circular queues</li>
+</ul>
+</li>
+<li>
+<p><strong>Optimize Operations</strong></p>
+<ul>
+<li>Use deque for O(1) operations</li>
+<li>Circular buffer for fixed size</li>
+<li>Two stacks for interview problems</li>
+<li>Monotonic for min/max queries</li>
+</ul>
+</li>
+</ol>
+<h3 id="common-mistakes-tips" tabindex="-1"><a class="header-anchor" href="#common-mistakes-tips"><span>Common Mistakes &amp; Tips</span></a></h3>
+<p><strong>🚫 Common Mistakes:</strong></p>
+<ul>
+<li>Using list.pop(0) in Python (O(n) operation)</li>
+<li>Forgetting to track level size in BFS</li>
+<li>Not handling circular wraparound correctly</li>
+<li>Mixing up queue.poll() vs queue.remove() in Java</li>
+<li>Not maintaining monotonic property correctly</li>
+</ul>
+<p><strong>✅ Best Practices:</strong></p>
+<ul>
+<li>Always use collections.deque in Python</li>
+<li>Use ArrayDeque over LinkedList in Java for better performance</li>
+<li>Track queue size explicitly for level-order</li>
+<li>Clear old elements in sliding window</li>
+<li>Use modulo for circular indexing</li>
+</ul>
+<h3 id="interview-tips" tabindex="-1"><a class="header-anchor" href="#interview-tips"><span>Interview Tips</span></a></h3>
+<ol>
+<li>
+<p><strong>Clarify Requirements</strong></p>
+<ul>
+<li>Fixed or dynamic size?</li>
+<li>Need access to both ends?</li>
+<li>Thread safety required?</li>
+<li>Space constraints?</li>
+</ul>
+</li>
+<li>
+<p><strong>BFS vs DFS Decision</strong></p>
+<ul>
+<li>BFS → Shortest path, level-order</li>
+<li>DFS → Path finding, backtracking</li>
+<li>Queue for BFS, Stack for DFS</li>
+</ul>
+</li>
+<li>
+<p><strong>Implementation Choice</strong></p>
+<ul>
+<li>Python: Always prefer deque</li>
+<li>Java: ArrayDeque for performance</li>
+<li>Consider circular for bounded problems</li>
+</ul>
+</li>
+<li>
+<p><strong>Common Follow-ups</strong></p>
+<ul>
+<li>Make it thread-safe</li>
+<li>Handle multiple producers/consumers</li>
+<li>Implement with different constraints</li>
+<li>Optimize space/time complexity</li>
+</ul>
+</li>
+</ol>
+<h3 id="advanced-techniques" tabindex="-1"><a class="header-anchor" href="#advanced-techniques"><span>Advanced Techniques</span></a></h3>
+<h4 id="lock-free-queue" tabindex="-1"><a class="header-anchor" href="#lock-free-queue"><span><strong>Lock-Free Queue</strong></span></a></h4>
+<ul>
+<li>Used in concurrent programming</li>
+<li>Compare-and-swap operations</li>
+<li>Michael &amp; Scott algorithm</li>
+</ul>
+<h4 id="priority-deque" tabindex="-1"><a class="header-anchor" href="#priority-deque"><span><strong>Priority Deque</strong></span></a></h4>
+<ul>
+<li>Combines priority queue and deque</li>
+<li>Double-ended priority queue</li>
+<li>Interval heap implementation</li>
+</ul>
+<h4 id="persistent-queue" tabindex="-1"><a class="header-anchor" href="#persistent-queue"><span><strong>Persistent Queue</strong></span></a></h4>
+<ul>
+<li>Immutable queue with versioning</li>
+<li>Functional programming style</li>
+<li>Uses two stacks internally</li>
+</ul>
+<h3 id="related-topics" tabindex="-1"><a class="header-anchor" href="#related-topics"><span>Related Topics</span></a></h3>
+<ul>
+<li><strong>Stack</strong>: LIFO vs FIFO comparison</li>
+<li><strong>Priority Queue</strong>: Ordered processing</li>
+<li><strong>BFS</strong>: Primary application of queues</li>
+<li><strong>Circular Buffer</strong>: Fixed-size queue implementation</li>
+<li><strong>Producer-Consumer</strong>: Classic queue application</li>
+</ul>
+<h2 id="lc-examples" tabindex="-1"><a class="header-anchor" href="#lc-examples"><span>LC Examples</span></a></h2>
+<h3 id="2-1-sliding-window-maximum" tabindex="-1"><a class="header-anchor" href="#2-1-sliding-window-maximum"><span>2-1) Sliding Window Maximum</span></a></h3>
+<pre><code class="language-python"># LC 239 Sliding Window Maximum (hard)
+# V1
+# http://bookshadow.com/weblog/2015/07/18/leetcode-sliding-window-maximum/
+# IDEA : DEQUE
+class Solution:
+    def maxSlidingWindow(self, nums, k):
+        dq = collections.deque()
+        ans = []
+        for i in range(len(nums)):
+            while dq and nums[dq[-1]] &lt;= nums[i]:
+                dq.pop()
+            dq.append(i)
+            if dq[0] == i - k:
+                dq.popleft()
+            if i &gt;= k - 1:
+                ans.append(nums[dq[0]])
+        return ans
+</code></pre>
+<pre><code class="language-java">// LC 239 Sliding Window Maximum (hard)
+// algorithm book (labu) p. 278, p.281
+// java
+
+// monotonic queue
+class MonotonicQueue{
+
+    // init queue
+    LinkedList&lt;Integer&gt; q = new LinkedList&lt;&gt;();
+    
+    // add element to queue tail
+    public void push(int n){
+        while (!q.isEmpty() &amp;&amp; q.getLast() &lt; n){
+            q.pollLast();
+        }
+        q.addLast(n);
+    }
+
+    // return current max value in queue
+    public int max(){
+        return q.getFirst();
+    }
+
+    // if head element is n, delete it
+    public void pop(int n){
+        if (n == q.getFirst()){
+            q.pollLast();
+        }
+    }
+}
+
+/* main func */
+int[] maxSlidingWindow([int] nums, int k){
+    MonotonicQueue window = new MonotonicQueue();
+    List&lt;Integer&gt; res = new ArrayList&lt;&gt;();
+
+    for (int i = 0; i &lt; nums.length; i++){
+        if (i &lt; k - 1){
+            // insert k - 1 elements in the window
+            window.push(nums[i]);
+        }else{
+            // window move forward, add new element
+            window.push(nums[i]);
+            // record current max element in the window
+            res.add(window.max());
+            // move out element
+            window.pop(nums[i - k + 1]);
+        }
+    }
+
+    // transform res to int[] array as answer form
+    int[] arr = new int[res.size()];
+    for (int i = 0; i &lt; res.size(); i ++){
+        arr[i] = res.get(i);
+    }
+    return arr;
+}
+</code></pre>
+<h3 id="2-2-design-circular-queue" tabindex="-1"><a class="header-anchor" href="#2-2-design-circular-queue"><span>2-2) Design Circular Queue</span></a></h3>
+<pre><code class="language-python"># LC 622. Design Circular Queue
+# V0 
+# IDEA : ARRAY
+# https://leetcode.com/problems/design-circular-queue/solution/
+
+# NOTE !!! when `circular`, -&gt; think about `fixed_idx = idx % len`
+
+class MyCircularQueue:
+
+    def __init__(self, k):
+        &quot;&quot;&quot;
+        Initialize your data structure here. Set the size of the queue to be k.
+        &quot;&quot;&quot;
+        self.queue = [0]*k
+        self.headIndex = 0
+        self.count = 0
+        self.capacity = k
+
+    def enQueue(self, value):
+        &quot;&quot;&quot;
+        Insert an element into the circular queue. Return true if the operation is successful.
+        &quot;&quot;&quot;
+        if self.count == self.capacity:
+            return False
+        self.queue[(self.headIndex + self.count) % self.capacity] = value
+        self.count += 1
+        return True
+
+    def deQueue(self):
+        &quot;&quot;&quot;
+        Delete an element from the circular queue. Return true if the operation is successful.
+        &quot;&quot;&quot;
+        if self.count == 0:
+            return False
+        self.headIndex = (self.headIndex + 1) % self.capacity
+        self.count -= 1
+        return True
+
+    def Front(self):
+        &quot;&quot;&quot;
+        Get the front item from the queue.
+        &quot;&quot;&quot;
+        if self.count == 0:
+            return -1
+        return self.queue[self.headIndex]
+
+    def Rear(self):
+        &quot;&quot;&quot;
+        Get the last item from the queue.
+        &quot;&quot;&quot;
+        # empty queue
+        if self.count == 0:
+            return -1
+        return self.queue[(self.headIndex + self.count - 1) % self.capacity]
+
+    def isEmpty(self):
+        &quot;&quot;&quot;
+        Checks whether the circular queue is empty or not.
+        &quot;&quot;&quot;
+        return self.count == 0
+
+    def isFull(self):
+        &quot;&quot;&quot;
+        Checks whether the circular queue is full or not.
+        &quot;&quot;&quot;
+        return self.count == self.capacity
+
+# V0'
+# IDEA : LINKED LIST
+# https://leetcode.com/problems/design-circular-queue/solution/
+class Node:
+    def __init__(self, value, nextNode=None):
+        self.value = value
+        self.next = nextNode
+
+class MyCircularQueue:
+
+    def __init__(self, k):
+        &quot;&quot;&quot;
+        Initialize your data structure here. Set the size of the queue to be k.
+        &quot;&quot;&quot;
+        self.capacity = k
+        self.head = None
+        self.tail = None
+        self.count = 0
+
+    def enQueue(self, value):
+        &quot;&quot;&quot;
+        Insert an element into the circular queue. Return true if the operation is successful.
+        &quot;&quot;&quot;
+        if self.count == self.capacity:
+            return False
+        
+        if self.count == 0:
+            self.head = Node(value)
+            self.tail = self.head
+        else:
+            newNode = Node(value)
+            self.tail.next = newNode
+            self.tail = newNode
+        self.count += 1
+        return True
+
+
+    def deQueue(self):
+        &quot;&quot;&quot;
+        Delete an element from the circular queue. Return true if the operation is successful.
+        &quot;&quot;&quot;
+        if self.count == 0:
+            return False
+        self.head = self.head.next
+        self.count -= 1
+        return True
+
+
+    def Front(self):
+        &quot;&quot;&quot;
+        Get the front item from the queue.
+        &quot;&quot;&quot;
+        if self.count == 0:
+            return -1
+        return self.head.value
+
+    def Rear(self):
+        &quot;&quot;&quot;
+        Get the last item from the queue.
+        &quot;&quot;&quot;
+        # empty queue
+        if self.count == 0:
+            return -1
+        return self.tail.value
+    
+    def isEmpty(self):
+        &quot;&quot;&quot;
+        Checks whether the circular queue is empty or not.
+        &quot;&quot;&quot;
+        return self.count == 0
+
+    def isFull(self):
+        &quot;&quot;&quot;
+        Checks whether the circular queue is full or not.
+        &quot;&quot;&quot;
+        return self.count == self.capacity
+</code></pre>
+
+      </div>
+      <div class="cheatsheet-footer">
+        <a href="../cheatsheets.html" class="back-link">← Back to Cheat Sheets</a>
+        <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/queue.md" class="github-edit" target="_blank">
+          Edit on GitHub →
+        </a>
+      </div>
+    <nav class="prev-next"><a href="python_trick.html" class="prev-link">← Python Trick</a><a href="recursion.html" class="next-link">Recursion →</a></nav>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>CS_basics - Computer Science Fundamentals & Interview Preparation</p>
+      <p>
+        <a href="https://github.com/yennanliu/CS_basics">GitHub</a> •
+        <a href="https://github.com/yennanliu/CS_basics/tree/master/doc">Documentation</a> •
+        <a href="https://github.com/yennanliu/CS_basics/issues">Report Issues</a>
+      </p>
+    </div>
+  </footer>
+</body>
+</html>

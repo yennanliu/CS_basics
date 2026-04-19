@@ -1,0 +1,411 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Collection - CS_basics</title>
+  <meta name="description" content="Computer Science fundamentals: algorithms, data structures, system design, and LeetCode solutions">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>CS</text></svg>">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="../vendor/fonts.css">
+  <link rel="stylesheet" href="../vendor/highlight/github-dark.min.css">
+  <script src="../vendor/highlight/highlight.min.js"></script>
+  <script>
+  // Apply theme before render to prevent flash
+  (function() {
+    var saved = localStorage.getItem('theme');
+    if (saved === 'dark' || (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      document.documentElement.setAttribute('data-theme', 'dark');
+    }
+  })();
+  </script>
+  <script>document.addEventListener('DOMContentLoaded', function() {
+    hljs.highlightAll();
+    document.querySelectorAll('pre code').forEach(function(codeEl) {
+      var pre = codeEl.parentElement;
+      var lang = '';
+      var cls = codeEl.className || '';
+      var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
+      if (m) lang = m[1];
+      var wrapper = document.createElement('div');
+      wrapper.className = 'code-block-wrapper';
+      pre.parentNode.insertBefore(wrapper, pre);
+      var header = document.createElement('div');
+      header.className = 'code-block-header';
+      if (lang) {
+        var label = document.createElement('span');
+        label.className = 'code-lang-label';
+        label.textContent = lang;
+        header.appendChild(label);
+      } else {
+        header.appendChild(document.createElement('span'));
+      }
+      var btn = document.createElement('button');
+      btn.className = 'copy-btn';
+      btn.textContent = 'Copy';
+      btn.addEventListener('click', function() {
+        navigator.clipboard.writeText(codeEl.textContent).then(function() {
+          btn.textContent = 'Copied!';
+          btn.classList.add('copied');
+          setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+        });
+      });
+      header.appendChild(btn);
+      wrapper.appendChild(header);
+      wrapper.appendChild(pre);
+    });
+    document.querySelectorAll('table').forEach(function(table) {
+      if (!table.parentElement.classList.contains('table-wrap')) {
+        var wrapper = document.createElement('div');
+        wrapper.className = 'table-wrap';
+        table.parentNode.insertBefore(wrapper, table);
+        wrapper.appendChild(table);
+      }
+    });
+    // Reading progress bar
+    var progressBar = document.getElementById('reading-progress');
+    if (progressBar) {
+      window.addEventListener('scroll', function() {
+        var winScroll = document.documentElement.scrollTop;
+        var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        progressBar.style.width = height > 0 ? (winScroll / height * 100) + '%' : '0%';
+      });
+    }
+    // Dark mode toggle
+    var toggle = document.getElementById('theme-toggle');
+    if (toggle) {
+      var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      toggle.textContent = isDark ? '☀️' : '🌙';
+      toggle.addEventListener('click', function() {
+        var dark = document.documentElement.getAttribute('data-theme') === 'dark';
+        if (dark) {
+          document.documentElement.removeAttribute('data-theme');
+          localStorage.setItem('theme', 'light');
+          toggle.textContent = '🌙';
+        } else {
+          document.documentElement.setAttribute('data-theme', 'dark');
+          localStorage.setItem('theme', 'dark');
+          toggle.textContent = '☀️';
+        }
+      });
+    }
+  });</script>
+</head>
+<body>
+  <div class="progress-container"><div class="progress-bar" id="reading-progress"></div></div>
+  <nav class="navbar">
+    <div class="container">
+      <div class="nav-brand">
+        <span class="nav-icon">💻</span>
+        <span class="nav-title">CS_basics</span>
+      </div>
+      <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+      <div class="nav-links">
+        <a href="../index.html" class="">Home</a>
+        <a href="../cheatsheets.html" class="active">Cheat Sheets</a>
+        <a href="../patterns.html" class="">Pattern Recognition</a>
+        <a href="../faqs.html" class="">FAQs</a>
+        <a href="../resources.html" class="">Resources</a>
+        <a href="../lc-explorer.html" class="">LC Explorer</a>
+        <a href="../lc-random-picker.html" class="">🎲 Random Picker</a>
+        <a href="../algo_demo/index.html" class="">Visualizer</a>
+        <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">&#127769;</button>
+        <a href="https://github.com/yennanliu/CS_basics" target="_blank" class="github-link" aria-label="GitHub">
+          <svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor">
+            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container">
+    <div class="content">
+      
+      <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">Collection</span></nav>
+      <div class="cheatsheet-header">
+        <h1>Collection</h1>
+        <span class="last-updated">Last updated: Feb 23, 2024</span>
+      </div>
+      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#0-concept">0) Concept</a></li><li class="toc-sub"><a href="#0-1-types">0-1) Types</a></li><li class="toc-sub"><a href="#0-2-pattern">0-2) Pattern</a></li><li><a href="#1-general-form">1) General form</a></li><li class="toc-sub"><a href="#1-4-ordereddict-hashmap-linked-list">1-4) OrderedDict  ( hashmap + linked list)</a></li><li><a href="#2-lc-example">2) LC Example</a></li><li class="toc-sub"><a href="#2-1-custom-sort-string">2-1) Custom Sort String</a></li></ul></div>
+      <div class="cheatsheet-content">
+        <h1 id="collection" tabindex="-1"><a class="header-anchor" href="#collection"><span>Collection</span></a></h1>
+<h2 id="0-concept" tabindex="-1"><a class="header-anchor" href="#0-concept"><span>0) Concept</span></a></h2>
+<h3 id="0-1-types" tabindex="-1"><a class="header-anchor" href="#0-1-types"><span>0-1) Types</span></a></h3>
+<ul>
+<li>
+<p>Types</p>
+</li>
+<li>
+<p>Algorithm</p>
+<ul>
+<li>dict/collections op
+<ul>
+<li>collections.Counter</li>
+<li>collections.Counter().most_common()</li>
+</ul>
+</li>
+<li>sort</li>
+<li>get most freq</li>
+<li>get sub-string with validated alphabets</li>
+<li>custom sort
+<ul>
+<li>LC 791</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>Data structure</p>
+<ul>
+<li>dict</li>
+<li>set</li>
+<li>array</li>
+</ul>
+</li>
+</ul>
+<h3 id="0-2-pattern" tabindex="-1"><a class="header-anchor" href="#0-2-pattern"><span>0-2) Pattern</span></a></h3>
+<h2 id="1-general-form" tabindex="-1"><a class="header-anchor" href="#1-general-form"><span>1) General form</span></a></h2>
+<h4 id="1-0-get-element-if-existed-in-collecitons-custom-sort" tabindex="-1"><a class="header-anchor" href="#1-0-get-element-if-existed-in-collecitons-custom-sort"><span>1-0) get element if existed in collecitons (custom sort)</span></a></h4>
+<pre><code class="language-python"># LC 791. Custom Sort String
+# ...
+s_map = Counter(s)
+res = &quot;&quot;
+for o in order:
+    if o in s_map:
+        res += (o * s_map[o])
+        del s_map[o]
+for s in s_map:
+    res += (s * s_map[s])
+# ...
+</code></pre>
+<h4 id="1-1-collection-counter" tabindex="-1"><a class="header-anchor" href="#1-1-collection-counter"><span>1-1) collection.Counter</span></a></h4>
+<pre><code class="language-python">import collections
+s = ['a','b','c','c']
+c= collections.Counter(s)
+print (c)
+print (c.keys())
+print (c.values())
+</code></pre>
+<h4 id="1-2-important-method-most-common" tabindex="-1"><a class="header-anchor" href="#1-2-important-method-most-common"><span>1-2) Important method - most_common()</span></a></h4>
+<pre><code class="language-python"># 451 Sort Characters By Frequency
+import collections
+s = ['a','b','c','c']
+count = collections.Counter(s).most_common()
+for item, freq in count:
+    print (item, freq)   
+#c 2
+#a 1
+#b 1
+</code></pre>
+<h4 id="1-3-collection-defaultdict-int-list" tabindex="-1"><a class="header-anchor" href="#1-3-collection-defaultdict-int-list"><span>1-3) collection.defaultdict (int, list…)</span></a></h4>
+<pre><code class="language-python">import collections
+s = ['a','b','c','c']
+count = collections.defaultdict(int)
+for i in s:
+    count[i] += 1 
+
+print (count)
+print (dict(count))
+</code></pre>
+<pre><code class="language-python">import collections
+s=[('yellow', 1), ('blue', 2), ('yellow', 3), ('blue', 4), ('red', 1)]
+count = collections.defaultdict(list)
+for k, v in s:
+    count[k].append(v)
+
+print (count)
+print (count.keys())
+print (count.values())
+print(count.items())
+</code></pre>
+<h4 id="1-3-collection-update" tabindex="-1"><a class="header-anchor" href="#1-3-collection-update"><span>1-3) collection.update()</span></a></h4>
+<pre><code class="language-python"># LC # 554 rick Wall
+import collections
+In [87]: _counter = collections.Counter()
+
+In [88]: _counter
+Out[88]: Counter()
+
+In [89]: _counter.update([1])
+
+In [90]: _counter
+Out[90]: Counter({1: 1})
+
+In [91]: _counter.update([1])
+
+In [92]: _counter
+Out[92]: Counter({1: 2})
+
+In [93]: _counter.update([2])
+
+In [94]: _counter
+Out[94]: Counter({1: 2, 2: 1})
+</code></pre>
+<h3 id="1-4-ordereddict-hashmap-linked-list" tabindex="-1"><a class="header-anchor" href="#1-4-ordereddict-hashmap-linked-list"><span>1-4) <code>OrderedDict </code> ( hashmap + linked list)</span></a></h3>
+<pre><code class="language-python"># LC 146 LRU Cache
+
+# There is a structure called ordered dictionary, it combines behind both hashmap and linked list. In Python this structure is called OrderedDict and in Java LinkedHashMap.
+
+# https://docs.python.org/3/library/collections.html#collections.OrderedDict
+# https://codertw.com/%E7%A8%8B%E5%BC%8F%E8%AA%9E%E8%A8%80/367557/
+# https://www.w3help.cc/a/202107/420653.html
+
+&quot;&quot;&quot;
+
+# OrderedDict = hashmap + linked list
+# CAN make dict ordering (default dict is NOT ordering)
+# Return an instance of a dict subclass that has methods specialized for rearranging dictionary order
+
+* popitem(last=True)
+    The popitem() method for ordered dictionaries returns and removes a (key, value) pair. The pairs are returned in LIFO order if last is true or FIFO order if false.
+
+* move_to_end(key, last=True)
+    Move an existing key to either end of an ordered dictionary. The item is moved to the right end if last is true (the default) or to the beginning if last is false. Raises KeyError if the key does not exist:
+
+&quot;&quot;&quot;
+
+#----------------------------
+# example 0
+#----------------------------
+
+# default dict
+In [34]: d = {}
+    ...: d['a'] = 'A'
+    ...: d['b'] = 'B'
+    ...: d['c'] = 'C'
+    ...: d['d'] = 'D'
+    ...: d['e'] = 'E'
+    ...:
+    ...: for k, v in d.items():
+    ...:     print (k, v)
+    ...:
+# NON ordering
+a A
+b B
+c C
+d D
+e E
+
+# OrderedDict
+In [35]: from collections import OrderedDict
+    ...: d = OrderedDict()
+    ...: d['a'] = 'A'
+    ...: d['b'] = 'B'
+    ...: d['c'] = 'C'
+    ...: d['d'] = 'D'
+    ...: d['e'] = 'E'
+    ...:
+    ...: for k, v in d.items():
+    ...:     print (k, v)
+    ...:
+
+# ordering !!!
+a A
+b B
+c C
+d D
+e E
+
+
+#----------------------------
+# example 1
+#----------------------------
+In [28]:  d = OrderedDict.fromkeys('abcde')
+
+In [29]: d
+Out[29]: OrderedDict([('a', None), ('b', None), ('c', None), ('d', None), ('e', None)])
+
+In [30]: d.move_to_end('b')
+
+In [31]: &quot;&quot;.join(d)
+Out[31]: 'acdeb'
+
+In [32]:
+
+In [32]: d.move_to_end('b', last=False)
+
+In [33]: &quot;&quot;.join(d)
+Out[33]: 'bacde'
+
+#----------------------------
+# example 2
+#----------------------------
+class LastUpdatedOrderedDict(OrderedDict):
+    'Store items in the order the keys were last added'
+
+    def __setitem__(self, key, value):
+        super().__setitem__(key, value)
+        self.move_to_end(key)
+
+#----------------------------
+# example 3
+#----------------------------
+from time import time
+
+class TimeBoundedLRU:
+    &quot;LRU Cache that invalidates and refreshes old entries.&quot;
+
+    def __init__(self, func, maxsize=128, maxage=30):
+        self.cache = OrderedDict()      # { args : (timestamp, result)}
+        self.func = func
+        self.maxsize = maxsize
+        self.maxage = maxage
+
+    def __call__(self, *args):
+        if args in self.cache:
+            self.cache.move_to_end(args)
+            timestamp, result = self.cache[args]
+            if time() - timestamp &lt;= self.maxage:
+                return result
+        result = self.func(*args)
+        self.cache[args] = time(), result
+        if len(self.cache) &gt; self.maxsize:
+            self.cache.popitem(0)
+        return result
+</code></pre>
+<h2 id="2-lc-example" tabindex="-1"><a class="header-anchor" href="#2-lc-example"><span>2) LC Example</span></a></h2>
+<h3 id="2-1-custom-sort-string" tabindex="-1"><a class="header-anchor" href="#2-1-custom-sort-string"><span>2-1) Custom Sort String</span></a></h3>
+<pre><code class="language-python"># LC 791. Custom Sort String
+# V0
+# IDEA : COUNTER
+from collections import Counter
+class Solution(object):
+    def customSortString(self, order, s):
+        s_map = Counter(s)
+        res = &quot;&quot;
+        for o in order:
+            if o in s_map:
+                res += (o * s_map[o])
+                del s_map[o]
+        for s in s_map:
+            res += s * s_map[s]
+        return res
+</code></pre>
+
+      </div>
+      <div class="cheatsheet-footer">
+        <a href="../cheatsheets.html" class="back-link">← Back to Cheat Sheets</a>
+        <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/Collection.md" class="github-edit" target="_blank">
+          Edit on GitHub →
+        </a>
+      </div>
+    <nav class="prev-next"><a href="Bellman-Ford.html" class="prev-link">← Bellman-Ford</a><a href="Dijkstra.html" class="next-link">Dijkstra →</a></nav>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>CS_basics - Computer Science Fundamentals & Interview Preparation</p>
+      <p>
+        <a href="https://github.com/yennanliu/CS_basics">GitHub</a> •
+        <a href="https://github.com/yennanliu/CS_basics/tree/master/doc">Documentation</a> •
+        <a href="https://github.com/yennanliu/CS_basics/issues">Report Issues</a>
+      </p>
+    </div>
+  </footer>
+</body>
+</html>

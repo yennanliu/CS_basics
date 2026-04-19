@@ -1,0 +1,222 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Postgre - CS_basics</title>
+  <meta name="description" content="Computer Science fundamentals: algorithms, data structures, system design, and LeetCode solutions">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>CS</text></svg>">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="../vendor/fonts.css">
+  <link rel="stylesheet" href="../vendor/highlight/github-dark.min.css">
+  <script src="../vendor/highlight/highlight.min.js"></script>
+  <script>
+  // Apply theme before render to prevent flash
+  (function() {
+    var saved = localStorage.getItem('theme');
+    if (saved === 'dark' || (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      document.documentElement.setAttribute('data-theme', 'dark');
+    }
+  })();
+  </script>
+  <script>document.addEventListener('DOMContentLoaded', function() {
+    hljs.highlightAll();
+    document.querySelectorAll('pre code').forEach(function(codeEl) {
+      var pre = codeEl.parentElement;
+      var lang = '';
+      var cls = codeEl.className || '';
+      var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
+      if (m) lang = m[1];
+      var wrapper = document.createElement('div');
+      wrapper.className = 'code-block-wrapper';
+      pre.parentNode.insertBefore(wrapper, pre);
+      var header = document.createElement('div');
+      header.className = 'code-block-header';
+      if (lang) {
+        var label = document.createElement('span');
+        label.className = 'code-lang-label';
+        label.textContent = lang;
+        header.appendChild(label);
+      } else {
+        header.appendChild(document.createElement('span'));
+      }
+      var btn = document.createElement('button');
+      btn.className = 'copy-btn';
+      btn.textContent = 'Copy';
+      btn.addEventListener('click', function() {
+        navigator.clipboard.writeText(codeEl.textContent).then(function() {
+          btn.textContent = 'Copied!';
+          btn.classList.add('copied');
+          setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+        });
+      });
+      header.appendChild(btn);
+      wrapper.appendChild(header);
+      wrapper.appendChild(pre);
+    });
+    document.querySelectorAll('table').forEach(function(table) {
+      if (!table.parentElement.classList.contains('table-wrap')) {
+        var wrapper = document.createElement('div');
+        wrapper.className = 'table-wrap';
+        table.parentNode.insertBefore(wrapper, table);
+        wrapper.appendChild(table);
+      }
+    });
+    // Reading progress bar
+    var progressBar = document.getElementById('reading-progress');
+    if (progressBar) {
+      window.addEventListener('scroll', function() {
+        var winScroll = document.documentElement.scrollTop;
+        var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        progressBar.style.width = height > 0 ? (winScroll / height * 100) + '%' : '0%';
+      });
+    }
+    // Dark mode toggle
+    var toggle = document.getElementById('theme-toggle');
+    if (toggle) {
+      var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      toggle.textContent = isDark ? '☀️' : '🌙';
+      toggle.addEventListener('click', function() {
+        var dark = document.documentElement.getAttribute('data-theme') === 'dark';
+        if (dark) {
+          document.documentElement.removeAttribute('data-theme');
+          localStorage.setItem('theme', 'light');
+          toggle.textContent = '🌙';
+        } else {
+          document.documentElement.setAttribute('data-theme', 'dark');
+          localStorage.setItem('theme', 'dark');
+          toggle.textContent = '☀️';
+        }
+      });
+    }
+  });</script>
+</head>
+<body>
+  <div class="progress-container"><div class="progress-bar" id="reading-progress"></div></div>
+  <nav class="navbar">
+    <div class="container">
+      <div class="nav-brand">
+        <span class="nav-icon">💻</span>
+        <span class="nav-title">CS_basics</span>
+      </div>
+      <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+      <div class="nav-links">
+        <a href="../index.html" class="">Home</a>
+        <a href="../cheatsheets.html" class="">Cheat Sheets</a>
+        <a href="../patterns.html" class="">Pattern Recognition</a>
+        <a href="../faqs.html" class="active">FAQs</a>
+        <a href="../resources.html" class="">Resources</a>
+        <a href="../lc-explorer.html" class="">LC Explorer</a>
+        <a href="../lc-random-picker.html" class="">🎲 Random Picker</a>
+        <a href="../algo_demo/index.html" class="">Visualizer</a>
+        <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">&#127769;</button>
+        <a href="https://github.com/yennanliu/CS_basics" target="_blank" class="github-link" aria-label="GitHub">
+          <svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor">
+            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container">
+    <div class="content">
+      
+      <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../faqs.html">FAQs</a> <span class="sep">›</span> <span class="current">Postgre</span></nav>
+      <div class="cheatsheet-header">
+        <h1>Postgre</h1>
+        <span class="last-updated">Last updated: Mar 15, 2024</span>
+      </div>
+      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#postgresql-cheatsheet">PostgreSQL Cheatsheet</a></li><li class="toc-sub"><a href="#1-array-to-string-array-to-str">1) array_to_string : array to str</a></li><li class="toc-sub"><a href="#2-cast-type-transform">2) cast : type transform</a></li><li class="toc-sub"><a href="#2-to-char-type-transform">2’) to_char : type transform</a></li><li class="toc-sub"><a href="#3-concat-merge-str">3) Concat : merge str</a></li><li class="toc-sub"><a href="#4-substring-get-sub-str">4) substring : get sub str</a></li><li class="toc-sub"><a href="#5-row-number-get-row-num-user-defined">5) row_number() : get row num (user defined)</a></li><li class="toc-sub"><a href="#6-array-agg-make-elements-to-array">6) array_agg : make elements to array</a></li><li class="toc-sub"><a href="#7-array-transform-result-to-array">7) array : transform result to array</a></li><li class="toc-sub"><a href="#8-ceil-num-get-int-bigger-one">8) ceil(num) : get int, (bigger one)</a></li><li class="toc-sub"><a href="#9-floor-num-get-int-smaller-one">9) floor(num) : get int, (smaller one)</a></li><li class="toc-sub"><a href="#10-round-numeric-int">10) round(numeric,int)</a></li><li class="toc-sub"><a href="#11-age-timestamp1-timestamp2">11) age(timestamp1,timestamp2)</a></li><li class="toc-sub"><a href="#12-date-trunc-text-timestamp">12) date_trunc(text,timestamp)</a></li><li class="toc-sub"><a href="#13-date-part-text-timestamp">13) date_part(text,timestamp)</a></li></ul></div>
+      <div class="cheatsheet-content">
+        <h2 id="postgresql-cheatsheet" tabindex="-1"><a class="header-anchor" href="#postgresql-cheatsheet"><span>PostgreSQL Cheatsheet</span></a></h2>
+<ul>
+<li>Ref
+<ul>
+<li><a href="https://www.163.com/dy/article/G0F041FP0538QE50.html">https://www.163.com/dy/article/G0F041FP0538QE50.html</a></li>
+<li><a href="https://www.itread01.com/content/1546958947.html">https://www.itread01.com/content/1546958947.html</a></li>
+<li><a href="https://www.runoob.com/postgresql/postgresql-syntax.html">https://www.runoob.com/postgresql/postgresql-syntax.html</a></li>
+</ul>
+</li>
+</ul>
+<h3 id="1-array-to-string-array-to-str" tabindex="-1"><a class="header-anchor" href="#1-array-to-string-array-to-str"><span>1) array_to_string : array to str</span></a></h3>
+<pre><code class="language-sql">select array_to_string(array[1,2,3], ',');
+# 123
+</code></pre>
+<h3 id="2-cast-type-transform" tabindex="-1"><a class="header-anchor" href="#2-cast-type-transform"><span>2) cast : type transform</span></a></h3>
+<pre><code class="language-sql">select cast(id as varchar) from student;
+</code></pre>
+<h3 id="2-to-char-type-transform" tabindex="-1"><a class="header-anchor" href="#2-to-char-type-transform"><span>2’) to_char : type transform</span></a></h3>
+<pre><code class="language-sql">select to_char(write_date, 'yyyy-MM-dd hh24:MI:ss') from student
+</code></pre>
+<h3 id="3-concat-merge-str" tabindex="-1"><a class="header-anchor" href="#3-concat-merge-str"><span>3) Concat : merge str</span></a></h3>
+<pre><code class="language-sql">select
+concat('student:id=', cast(s.id as varchar), 'name:',s.name, 'class:',ci.name)
+from student as s
+</code></pre>
+<h3 id="4-substring-get-sub-str" tabindex="-1"><a class="header-anchor" href="#4-substring-get-sub-str"><span>4) substring : get sub str</span></a></h3>
+<pre><code class="language-sql">select substring('abcd',1,2); 
+# ab
+</code></pre>
+<h3 id="5-row-number-get-row-num-user-defined" tabindex="-1"><a class="header-anchor" href="#5-row-number-get-row-num-user-defined"><span>5) row_number() : get row num (user defined)</span></a></h3>
+<pre><code class="language-sql">select
+ROW_NUMBER() OVER (ORDER BY id desc) AS sequence_number,
+id,name
+from
+student
+</code></pre>
+<h3 id="6-array-agg-make-elements-to-array" tabindex="-1"><a class="header-anchor" href="#6-array-agg-make-elements-to-array"><span>6) array_agg : make elements to array</span></a></h3>
+<pre><code class="language-sql">select array_agg(name order by name asc) from student
+</code></pre>
+<h3 id="7-array-transform-result-to-array" tabindex="-1"><a class="header-anchor" href="#7-array-transform-result-to-array"><span>7) array : transform result to array</span></a></h3>
+<pre><code class="language-sql">SELECT array(SELECT &quot;name&quot; FROM student);
+</code></pre>
+<h3 id="8-ceil-num-get-int-bigger-one" tabindex="-1"><a class="header-anchor" href="#8-ceil-num-get-int-bigger-one"><span>8) ceil(num) : get int, (bigger one)</span></a></h3>
+<pre><code class="language-sql">SELECT ceil(35.7)
+#36
+</code></pre>
+<h3 id="9-floor-num-get-int-smaller-one" tabindex="-1"><a class="header-anchor" href="#9-floor-num-get-int-smaller-one"><span>9) floor(num) : get int, (smaller one)</span></a></h3>
+<pre><code class="language-sql">SELECT floor(35.7)
+#35
+</code></pre>
+<h3 id="10-round-numeric-int" tabindex="-1"><a class="header-anchor" href="#10-round-numeric-int"><span>10) round(numeric,int)</span></a></h3>
+<h3 id="11-age-timestamp1-timestamp2" tabindex="-1"><a class="header-anchor" href="#11-age-timestamp1-timestamp2"><span>11) age(timestamp1,timestamp2)</span></a></h3>
+<h3 id="12-date-trunc-text-timestamp" tabindex="-1"><a class="header-anchor" href="#12-date-trunc-text-timestamp"><span>12) date_trunc(text,timestamp)</span></a></h3>
+<pre><code class="language-sql">select date_trunc('day',current_timestamp),date_trunc('hour',current_timestamp);
+--       date_trunc      |      date_trunc      
+-- ------------------------+------------------------
+-- 2018-09-16 00:00:00+08 | 2018-09-16 11:00:00+08
+</code></pre>
+<h3 id="13-date-part-text-timestamp" tabindex="-1"><a class="header-anchor" href="#13-date-part-text-timestamp"><span>13) date_part(text,timestamp)</span></a></h3>
+<pre><code class="language-sql">select date_part('hour',now()),date_part('minute',now()),date_part('month',now());
+date_part | date_part | date_part 
+-- -----------+-----------+-----------
+--         11 |        10 |        9
+</code></pre>
+
+      </div>
+      <div class="cheatsheet-footer">
+        <a href="../faqs.html" class="back-link">← Back to FAQs</a>
+        <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/faq/db/postgre.md" class="github-edit" target="_blank">
+          Edit on GitHub →
+        </a>
+      </div>
+    <nav class="prev-next"><a href="db_faq_redshift.html" class="prev-link">← Faq Redshift</a><a href="faq_Airflow.html" class="next-link">Faq Airflow →</a></nav>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>CS_basics - Computer Science Fundamentals & Interview Preparation</p>
+      <p>
+        <a href="https://github.com/yennanliu/CS_basics">GitHub</a> •
+        <a href="https://github.com/yennanliu/CS_basics/tree/master/doc">Documentation</a> •
+        <a href="https://github.com/yennanliu/CS_basics/issues">Report Issues</a>
+      </p>
+    </div>
+  </footer>
+</body>
+</html>

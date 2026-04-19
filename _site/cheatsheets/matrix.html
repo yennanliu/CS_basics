@@ -1,0 +1,2125 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Matrix - CS_basics</title>
+  <meta name="description" content="Computer Science fundamentals: algorithms, data structures, system design, and LeetCode solutions">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>CS</text></svg>">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="../vendor/fonts.css">
+  <link rel="stylesheet" href="../vendor/highlight/github-dark.min.css">
+  <script src="../vendor/highlight/highlight.min.js"></script>
+  <script>
+  // Apply theme before render to prevent flash
+  (function() {
+    var saved = localStorage.getItem('theme');
+    if (saved === 'dark' || (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      document.documentElement.setAttribute('data-theme', 'dark');
+    }
+  })();
+  </script>
+  <script>document.addEventListener('DOMContentLoaded', function() {
+    hljs.highlightAll();
+    document.querySelectorAll('pre code').forEach(function(codeEl) {
+      var pre = codeEl.parentElement;
+      var lang = '';
+      var cls = codeEl.className || '';
+      var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
+      if (m) lang = m[1];
+      var wrapper = document.createElement('div');
+      wrapper.className = 'code-block-wrapper';
+      pre.parentNode.insertBefore(wrapper, pre);
+      var header = document.createElement('div');
+      header.className = 'code-block-header';
+      if (lang) {
+        var label = document.createElement('span');
+        label.className = 'code-lang-label';
+        label.textContent = lang;
+        header.appendChild(label);
+      } else {
+        header.appendChild(document.createElement('span'));
+      }
+      var btn = document.createElement('button');
+      btn.className = 'copy-btn';
+      btn.textContent = 'Copy';
+      btn.addEventListener('click', function() {
+        navigator.clipboard.writeText(codeEl.textContent).then(function() {
+          btn.textContent = 'Copied!';
+          btn.classList.add('copied');
+          setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+        });
+      });
+      header.appendChild(btn);
+      wrapper.appendChild(header);
+      wrapper.appendChild(pre);
+    });
+    document.querySelectorAll('table').forEach(function(table) {
+      if (!table.parentElement.classList.contains('table-wrap')) {
+        var wrapper = document.createElement('div');
+        wrapper.className = 'table-wrap';
+        table.parentNode.insertBefore(wrapper, table);
+        wrapper.appendChild(table);
+      }
+    });
+    // Reading progress bar
+    var progressBar = document.getElementById('reading-progress');
+    if (progressBar) {
+      window.addEventListener('scroll', function() {
+        var winScroll = document.documentElement.scrollTop;
+        var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        progressBar.style.width = height > 0 ? (winScroll / height * 100) + '%' : '0%';
+      });
+    }
+    // Dark mode toggle
+    var toggle = document.getElementById('theme-toggle');
+    if (toggle) {
+      var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      toggle.textContent = isDark ? '☀️' : '🌙';
+      toggle.addEventListener('click', function() {
+        var dark = document.documentElement.getAttribute('data-theme') === 'dark';
+        if (dark) {
+          document.documentElement.removeAttribute('data-theme');
+          localStorage.setItem('theme', 'light');
+          toggle.textContent = '🌙';
+        } else {
+          document.documentElement.setAttribute('data-theme', 'dark');
+          localStorage.setItem('theme', 'dark');
+          toggle.textContent = '☀️';
+        }
+      });
+    }
+  });</script>
+</head>
+<body>
+  <div class="progress-container"><div class="progress-bar" id="reading-progress"></div></div>
+  <nav class="navbar">
+    <div class="container">
+      <div class="nav-brand">
+        <span class="nav-icon">💻</span>
+        <span class="nav-title">CS_basics</span>
+      </div>
+      <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+      <div class="nav-links">
+        <a href="../index.html" class="">Home</a>
+        <a href="../cheatsheets.html" class="active">Cheat Sheets</a>
+        <a href="../patterns.html" class="">Pattern Recognition</a>
+        <a href="../faqs.html" class="">FAQs</a>
+        <a href="../resources.html" class="">Resources</a>
+        <a href="../lc-explorer.html" class="">LC Explorer</a>
+        <a href="../lc-random-picker.html" class="">🎲 Random Picker</a>
+        <a href="../algo_demo/index.html" class="">Visualizer</a>
+        <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">&#127769;</button>
+        <a href="https://github.com/yennanliu/CS_basics" target="_blank" class="github-link" aria-label="GitHub">
+          <svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor">
+            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container">
+    <div class="content">
+      
+      <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">Matrix</span></nav>
+      <div class="cheatsheet-header">
+        <h1>Matrix</h1>
+        <span class="last-updated">Last updated: Mar 15, 2026</span>
+      </div>
+      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#overview">Overview</a></li><li class="toc-sub"><a href="#key-properties">Key Properties</a></li><li class="toc-sub"><a href="#problem-categories">Problem Categories</a></li><li><a href="#templates-algorithms">Templates &amp; Algorithms</a></li><li class="toc-sub"><a href="#template-comparison-table">Template Comparison Table</a></li><li class="toc-sub"><a href="#universal-matrix-template">Universal Matrix Template</a></li><li class="toc-sub"><a href="#pattern-specific-templates">Pattern-Specific Templates</a></li><li class="toc-sub"><a href="#essential-matrix-properties">Essential Matrix Properties</a></li><li><a href="#problems-by-pattern">Problems by Pattern</a></li><li class="toc-sub"><a href="#pattern-based-problem-classification">Pattern-Based Problem Classification</a></li><li class="toc-sub"><a href="#additional-matrix-problems-by-difficulty">Additional Matrix Problems by Difficulty</a></li><li class="toc-sub"><a href="#pattern-selection-strategy">Pattern Selection Strategy</a></li><li class="toc-sub"><a href="#implementation-decision-tree">Implementation Decision Tree</a></li><li><a href="#code-examples-implementations">Code Examples &amp; Implementations</a></li><li class="toc-sub"><a href="#advanced-example-1-set-matrix-zeroes-lc-73">Advanced Example 1: Set Matrix Zeroes (LC 73)</a></li><li class="toc-sub"><a href="#advanced-example-2-search-2d-matrix-ii-lc-240">Advanced Example 2: Search 2D Matrix II (LC 240)</a></li><li class="toc-sub"><a href="#advanced-example-3-image-smoother-lc-661">Advanced Example 3: Image Smoother (LC 661)</a></li><li><a href="#summary-quick-reference">Summary &amp; Quick Reference</a></li><li class="toc-sub"><a href="#complexity-quick-reference">Complexity Quick Reference</a></li><li class="toc-sub"><a href="#template-quick-reference">Template Quick Reference</a></li><li class="toc-sub"><a href="#common-patterns-tricks">Common Patterns &amp; Tricks</a></li><li class="toc-sub"><a href="#problem-solving-steps">Problem-Solving Steps</a></li><li class="toc-sub"><a href="#common-mistakes-tips">Common Mistakes &amp; Tips</a></li><li class="toc-sub"><a href="#interview-tips">Interview Tips</a></li><li class="toc-sub"><a href="#related-topics">Related Topics</a></li><li class="toc-sub"><a href="#additional-resources">Additional Resources</a></li><li><a href="#lc-examples">LC Examples</a></li><li class="toc-sub"><a href="#2-1-spiral-matrix-lc-54-pattern-traversal">2-1) Spiral Matrix (LC 54) — Pattern: Traversal</a></li><li class="toc-sub"><a href="#2-2-rotate-image-lc-48-pattern-transformation">2-2) Rotate Image (LC 48) — Pattern: Transformation</a></li><li class="toc-sub"><a href="#2-3-search-a-2d-matrix-lc-74-pattern-search-binary-search">2-3) Search a 2D Matrix (LC 74) — Pattern: Search (Binary Search)</a></li><li class="toc-sub"><a href="#2-4-search-a-2d-matrix-ii-lc-240-pattern-search-elimination">2-4) Search a 2D Matrix II (LC 240) — Pattern: Search (Elimination)</a></li><li class="toc-sub"><a href="#2-5-set-matrix-zeroes-lc-73-pattern-modification">2-5) Set Matrix Zeroes (LC 73) — Pattern: Modification</a></li><li class="toc-sub"><a href="#2-6-number-of-islands-lc-200-pattern-dfs-bfs-on-matrix">2-6) Number of Islands (LC 200) — Pattern: DFS/BFS on Matrix</a></li><li class="toc-sub"><a href="#2-7-minimum-path-sum-lc-64-pattern-matrix-path-dp">2-7) Minimum Path Sum (LC 64) — Pattern: Matrix Path DP</a></li><li class="toc-sub"><a href="#2-8-maximal-square-lc-221-pattern-2d-dp">2-8) Maximal Square (LC 221) — Pattern: 2D DP</a></li><li class="toc-sub"><a href="#2-9-game-of-life-lc-289-pattern-in-place-state-transition">2-9) Game of Life (LC 289) — Pattern: In-Place State Transition</a></li><li class="toc-sub"><a href="#2-10-matrix-block-sum-lc-1314-pattern-2d-prefix-sum">2-10) Matrix Block Sum (LC 1314) — Pattern: 2D Prefix Sum</a></li></ul></div>
+      <div class="cheatsheet-content">
+        <h1 id="matrix-data-structure" tabindex="-1"><a class="header-anchor" href="#matrix-data-structure"><span>Matrix Data Structure</span></a></h1>
+<h2 id="overview" tabindex="-1"><a class="header-anchor" href="#overview"><span>Overview</span></a></h2>
+<p><strong>Matrix</strong> is a 2-dimensional array data structure that stores elements in rows and columns. It’s fundamental for solving problems involving grids, images, game boards, and mathematical computations.</p>
+<h3 id="key-properties" tabindex="-1"><a class="header-anchor" href="#key-properties"><span>Key Properties</span></a></h3>
+<ul>
+<li><strong>Time Complexity</strong>:
+<ul>
+<li>Access: O(1)</li>
+<li>Traversal: O(m*n) where m=rows, n=columns</li>
+<li>Search: O(m<em>n) for unsorted, O(log(m</em>n)) for sorted matrices</li>
+</ul>
+</li>
+<li><strong>Space Complexity</strong>: O(m*n) for storage</li>
+<li><strong>Core Idea</strong>: Elements accessed via [row][column] indexing</li>
+<li><strong>When to Use</strong>: Grid-based problems, 2D transformations, path finding, dynamic programming on grids</li>
+</ul>
+<h3 id="problem-categories" tabindex="-1"><a class="header-anchor" href="#problem-categories"><span>Problem Categories</span></a></h3>
+<h4 id="pattern-1-matrix-traversal" tabindex="-1"><a class="header-anchor" href="#pattern-1-matrix-traversal"><span><strong>Pattern 1: Matrix Traversal</strong></span></a></h4>
+<ul>
+<li><strong>Description</strong>: Navigate through matrix elements using specific patterns (spiral, diagonal, zigzag)</li>
+<li><strong>Examples</strong>: LC 54, 59, 498, 885</li>
+<li><strong>Key Pattern</strong>: Boundary-based movement with direction changes</li>
+</ul>
+<h4 id="pattern-2-matrix-transformation" tabindex="-1"><a class="header-anchor" href="#pattern-2-matrix-transformation"><span><strong>Pattern 2: Matrix Transformation</strong></span></a></h4>
+<ul>
+<li><strong>Description</strong>: Rotate, transpose, or flip matrices in-place or create new ones</li>
+<li><strong>Examples</strong>: LC 48, 867, 189, 1886</li>
+<li><strong>Key Pattern</strong>: Mathematical coordinate mapping</li>
+</ul>
+<h4 id="pattern-3-matrix-search" tabindex="-1"><a class="header-anchor" href="#pattern-3-matrix-search"><span><strong>Pattern 3: Matrix Search</strong></span></a></h4>
+<ul>
+<li><strong>Description</strong>: Find elements in sorted or partially sorted 2D matrices</li>
+<li><strong>Examples</strong>: LC 74, 240, 378, 668</li>
+<li><strong>Key Pattern</strong>: Binary search variants or elimination-based search</li>
+</ul>
+<h4 id="pattern-4-matrix-modification" tabindex="-1"><a class="header-anchor" href="#pattern-4-matrix-modification"><span><strong>Pattern 4: Matrix Modification</strong></span></a></h4>
+<ul>
+<li><strong>Description</strong>: Update matrix elements based on conditions (set zeros, smooth values)</li>
+<li><strong>Examples</strong>: LC 73, 661, 289, 1314</li>
+<li><strong>Key Pattern</strong>: Two-pass or auxiliary space approaches</li>
+</ul>
+<h4 id="pattern-5-matrix-multiplication-operations" tabindex="-1"><a class="header-anchor" href="#pattern-5-matrix-multiplication-operations"><span><strong>Pattern 5: Matrix Multiplication &amp; Operations</strong></span></a></h4>
+<ul>
+<li><strong>Description</strong>: Mathematical operations between matrices or matrix computations</li>
+<li><strong>Examples</strong>: LC 311, 348, 1572, 1351</li>
+<li><strong>Key Pattern</strong>: Triple nested loops for multiplication, optimization for sparse matrices</li>
+</ul>
+<h4 id="pattern-6-matrix-path-dynamic-programming" tabindex="-1"><a class="header-anchor" href="#pattern-6-matrix-path-dynamic-programming"><span><strong>Pattern 6: Matrix Path &amp; Dynamic Programming</strong></span></a></h4>
+<ul>
+<li><strong>Description</strong>: Find paths, count paths, or optimize values through matrix traversal</li>
+<li><strong>Examples</strong>: LC 62, 63, 64, 120, 931</li>
+<li><strong>Key Pattern</strong>: DP state transitions based on adjacent cells</li>
+</ul>
+<h2 id="templates-algorithms" tabindex="-1"><a class="header-anchor" href="#templates-algorithms"><span>Templates &amp; Algorithms</span></a></h2>
+<h3 id="template-comparison-table" tabindex="-1"><a class="header-anchor" href="#template-comparison-table"><span>Template Comparison Table</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>Template Type</th>
+<th>Use Case</th>
+<th>Key Structure</th>
+<th>When to Use</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Matrix Traversal</strong></td>
+<td>Spiral, diagonal movement</td>
+<td>Boundary tracking + direction vectors</td>
+<td>Ordered element processing</td>
+</tr>
+<tr>
+<td><strong>Matrix Transformation</strong></td>
+<td>Rotate, transpose, flip</td>
+<td>Mathematical coordinate mapping</td>
+<td>In-place modifications</td>
+</tr>
+<tr>
+<td><strong>Matrix Search</strong></td>
+<td>Find target in sorted matrix</td>
+<td>Binary search or elimination</td>
+<td>Sorted/partially sorted matrices</td>
+</tr>
+<tr>
+<td><strong>Matrix Modification</strong></td>
+<td>Set zeros, smooth values</td>
+<td>Two-pass or auxiliary tracking</td>
+<td>Conditional element updates</td>
+</tr>
+<tr>
+<td><strong>Matrix Multiplication</strong></td>
+<td>Dot product operations</td>
+<td>Triple nested loops</td>
+<td>Mathematical computations</td>
+</tr>
+<tr>
+<td><strong>2D Prefix Sum</strong></td>
+<td>Range sum queries</td>
+<td>Build prefix + O(1) query</td>
+<td>Block sums, submatrix sums</td>
+</tr>
+<tr>
+<td><strong>Matrix Path DP</strong></td>
+<td>Path counting, min/max path</td>
+<td>DP state transitions</td>
+<td>Optimization problems on grids</td>
+</tr>
+</tbody>
+</table>
+<h3 id="universal-matrix-template" tabindex="-1"><a class="header-anchor" href="#universal-matrix-template"><span>Universal Matrix Template</span></a></h3>
+<pre><code class="language-python">def solve_matrix_problem(matrix):
+    if not matrix or not matrix[0]:
+        return default_result
+    
+    rows, cols = len(matrix), len(matrix[0])
+    
+    # Initialize result structure
+    result = initialize_result(rows, cols)
+    
+    # Main processing loop
+    for i in range(rows):
+        for j in range(cols):
+            # Process current cell
+            process_cell(matrix, i, j, result)
+    
+    return result
+
+def process_cell(matrix, row, col, result):
+    # Template for cell processing
+    # - Check boundaries
+    # - Apply logic
+    # - Update result
+    pass
+</code></pre>
+<h3 id="pattern-specific-templates" tabindex="-1"><a class="header-anchor" href="#pattern-specific-templates"><span>Pattern-Specific Templates</span></a></h3>
+<h4 id="template-1-matrix-traversal-spiral-diagonal" tabindex="-1"><a class="header-anchor" href="#template-1-matrix-traversal-spiral-diagonal"><span>Template 1: Matrix Traversal (Spiral/Diagonal)</span></a></h4>
+<pre><code class="language-python">def spiral_traversal(matrix):
+    if not matrix or not matrix[0]:
+        return []
+    
+    result = []
+    rows, cols = len(matrix), len(matrix[0])
+    
+    # Define boundaries
+    top, bottom = 0, rows - 1
+    left, right = 0, cols - 1
+    
+    while top &lt;= bottom and left &lt;= right:
+        # Right movement
+        for j in range(left, right + 1):
+            result.append(matrix[top][j])
+        top += 1
+        
+        # Down movement  
+        for i in range(top, bottom + 1):
+            result.append(matrix[i][right])
+        right -= 1
+        
+        # Left movement (if still valid row)
+        if top &lt;= bottom:
+            for j in range(right, left - 1, -1):
+                result.append(matrix[bottom][j])
+            bottom -= 1
+        
+        # Up movement (if still valid column)
+        if left &lt;= right:
+            for i in range(bottom, top - 1, -1):
+                result.append(matrix[i][left])
+            left += 1
+    
+    return result
+</code></pre>
+<h4 id="template-2-matrix-transformation-rotate-transpose" tabindex="-1"><a class="header-anchor" href="#template-2-matrix-transformation-rotate-transpose"><span>Template 2: Matrix Transformation (Rotate/Transpose)</span></a></h4>
+<pre><code class="language-python">def rotate_matrix_90_clockwise(matrix):
+    &quot;&quot;&quot;
+    Two-step approach: Transpose + Reverse rows
+    &quot;&quot;&quot;
+    n = len(matrix)
+    
+    # Step 1: Transpose matrix (swap matrix[i][j] with matrix[j][i])
+    for i in range(n):
+        for j in range(i + 1, n):  # Start from i+1 to avoid double swap
+            matrix[i][j], matrix[j][i] = matrix[j][i], matrix[i][j]
+    
+    # Step 2: Reverse each row
+    for i in range(n):
+        matrix[i].reverse()
+    
+    return matrix
+
+def transpose_matrix(matrix):
+    &quot;&quot;&quot;
+    Create new matrix with swapped dimensions
+    &quot;&quot;&quot;
+    if not matrix or not matrix[0]:
+        return []
+    
+    rows, cols = len(matrix), len(matrix[0])
+    result = [[0] * rows for _ in range(cols)]
+    
+    for i in range(rows):
+        for j in range(cols):
+            result[j][i] = matrix[i][j]
+    
+    return result
+</code></pre>
+<h4 id="template-3-matrix-search" tabindex="-1"><a class="header-anchor" href="#template-3-matrix-search"><span>Template 3: Matrix Search</span></a></h4>
+<pre><code class="language-python">def search_matrix_binary(matrix, target):
+    &quot;&quot;&quot;
+    Binary search on sorted matrix (treat as 1D array)
+    &quot;&quot;&quot;
+    if not matrix or not matrix[0]:
+        return False
+    
+    rows, cols = len(matrix), len(matrix[0])
+    left, right = 0, rows * cols - 1
+    
+    while left &lt;= right:
+        mid = (left + right) // 2
+        mid_row, mid_col = mid // cols, mid % cols
+        mid_val = matrix[mid_row][mid_col]
+        
+        if mid_val == target:
+            return True
+        elif mid_val &lt; target:
+            left = mid + 1
+        else:
+            right = mid - 1
+    
+    return False
+
+def search_matrix_elimination(matrix, target):
+    &quot;&quot;&quot;
+    Search in row-wise and column-wise sorted matrix
+    Start from top-right or bottom-left corner
+    &quot;&quot;&quot;
+    if not matrix or not matrix[0]:
+        return False
+    
+    rows, cols = len(matrix), len(matrix[0])
+    row, col = 0, cols - 1  # Start from top-right
+    
+    while row &lt; rows and col &gt;= 0:
+        if matrix[row][col] == target:
+            return True
+        elif matrix[row][col] &gt; target:
+            col -= 1  # Move left
+        else:
+            row += 1  # Move down
+    
+    return False
+</code></pre>
+<h4 id="template-4-matrix-modification" tabindex="-1"><a class="header-anchor" href="#template-4-matrix-modification"><span>Template 4: Matrix Modification</span></a></h4>
+<pre><code class="language-python">def set_matrix_zeros(matrix):
+    &quot;&quot;&quot;
+    Set entire row and column to zero if any element is zero
+    &quot;&quot;&quot;
+    if not matrix or not matrix[0]:
+        return
+    
+    rows, cols = len(matrix), len(matrix[0])
+    
+    # Use first row and column as markers
+    first_row_zero = any(matrix[0][j] == 0 for j in range(cols))
+    first_col_zero = any(matrix[i][0] == 0 for i in range(rows))
+    
+    # Mark zeros in first row and column
+    for i in range(1, rows):
+        for j in range(1, cols):
+            if matrix[i][j] == 0:
+                matrix[0][j] = 0  # Mark column
+                matrix[i][0] = 0  # Mark row
+    
+    # Set zeros based on markers
+    for i in range(1, rows):
+        for j in range(1, cols):
+            if matrix[0][j] == 0 or matrix[i][0] == 0:
+                matrix[i][j] = 0
+    
+    # Handle first row and column
+    if first_row_zero:
+        for j in range(cols):
+            matrix[0][j] = 0
+    if first_col_zero:
+        for i in range(rows):
+            matrix[i][0] = 0
+</code></pre>
+<h4 id="template-5-matrix-multiplication" tabindex="-1"><a class="header-anchor" href="#template-5-matrix-multiplication"><span>Template 5: Matrix Multiplication</span></a></h4>
+<pre><code class="language-python">def multiply_matrices(A, B):
+    &quot;&quot;&quot;
+    Standard matrix multiplication: C[i][j] = sum(A[i][k] * B[k][j])
+    &quot;&quot;&quot;
+    if not A or not A[0] or not B or not B[0]:
+        return []
+    
+    rows_A, cols_A = len(A), len(A[0])
+    rows_B, cols_B = len(B), len(B[0])
+    
+    if cols_A != rows_B:
+        return []  # Invalid dimensions
+    
+    result = [[0] * cols_B for _ in range(rows_A)]
+    
+    for i in range(rows_A):
+        for j in range(cols_B):
+            for k in range(cols_A):
+                result[i][j] += A[i][k] * B[k][j]
+    
+    return result
+
+def multiply_sparse_matrices(A, B):
+    &quot;&quot;&quot;
+    Optimized multiplication for sparse matrices
+    &quot;&quot;&quot;
+    if not A or not A[0] or not B or not B[0]:
+        return []
+    
+    rows_A, cols_A = len(A), len(A[0])
+    rows_B, cols_B = len(B), len(B[0])
+    result = [[0] * cols_B for _ in range(rows_A)]
+    
+    for i in range(rows_A):
+        for k in range(cols_A):
+            if A[i][k] != 0:  # Skip if zero
+                for j in range(cols_B):
+                    result[i][j] += A[i][k] * B[k][j]
+    
+    return result
+</code></pre>
+<h4 id="template-6-2d-prefix-sum-range-sum-query" tabindex="-1"><a class="header-anchor" href="#template-6-2d-prefix-sum-range-sum-query"><span>Template 6: 2D Prefix Sum (Range Sum Query)</span></a></h4>
+<pre><code class="language-python">def build_prefix_sum_2d(mat):
+    &quot;&quot;&quot;
+    Build 2D prefix sum matrix for O(1) range sum queries.
+
+    Key Formula:
+    - Build: pref[i+1][j+1] = mat[i][j] + pref[i][j+1] + pref[i+1][j] - pref[i][j]
+    - Query: sum(r1,c1 to r2,c2) = pref[r2+1][c2+1] - pref[r1][c2+1] - pref[r2+1][c1] + pref[r1][c1]
+
+    Time: O(m*n) build, O(1) query
+    Space: O(m*n)
+    &quot;&quot;&quot;
+    if not mat or not mat[0]:
+        return []
+
+    m, n = len(mat), len(mat[0])
+
+    # Size (m+1) x (n+1) for easier boundary handling (row 0 and col 0 are zeros)
+    pref = [[0] * (n + 1) for _ in range(m + 1)]
+
+    # Build prefix sum
+    for i in range(m):
+        for j in range(n):
+            pref[i + 1][j + 1] = mat[i][j] + pref[i][j + 1] + pref[i + 1][j] - pref[i][j]
+
+    return pref
+
+def range_sum_2d(pref, r1, c1, r2, c2):
+    &quot;&quot;&quot;
+    Get sum of rectangle from (r1,c1) to (r2,c2) inclusive.
+
+    Visual explanation:
+    ┌───────────────────┐
+    │   A    │    B     │
+    │────────┼──────────│ ← r1
+    │   C    │ TARGET   │
+    │────────┼──────────│ ← r2
+    └───────────────────┘
+              c1       c2
+
+    TARGET = Total - A - C + TopLeft (since TopLeft subtracted twice)
+           = pref[r2+1][c2+1] - pref[r1][c2+1] - pref[r2+1][c1] + pref[r1][c1]
+    &quot;&quot;&quot;
+    return pref[r2 + 1][c2 + 1] - pref[r1][c2 + 1] - pref[r2 + 1][c1] + pref[r1][c1]
+
+
+def matrix_block_sum(mat, k):
+    &quot;&quot;&quot;
+    LC 1314: For each cell, return sum of all elements within k distance.
+    &quot;&quot;&quot;
+    m, n = len(mat), len(mat[0])
+    pref = build_prefix_sum_2d(mat)
+    res = [[0] * n for _ in range(m)]
+
+    for i in range(m):
+        for j in range(n):
+            # Clamp boundaries
+            r1 = max(0, i - k)
+            c1 = max(0, j - k)
+            r2 = min(m - 1, i + k)
+            c2 = min(n - 1, j + k)
+
+            res[i][j] = range_sum_2d(pref, r1, c1, r2, c2)
+
+    return res
+</code></pre>
+<h4 id="template-7-matrix-path-dp" tabindex="-1"><a class="header-anchor" href="#template-7-matrix-path-dp"><span>Template 7: Matrix Path DP</span></a></h4>
+<pre><code class="language-python">def min_path_sum(grid):
+    &quot;&quot;&quot;
+    Find minimum path sum from top-left to bottom-right
+    &quot;&quot;&quot;
+    if not grid or not grid[0]:
+        return 0
+    
+    rows, cols = len(grid), len(grid[0])
+    
+    # Initialize DP table (can modify grid in-place to save space)
+    dp = [[0] * cols for _ in range(rows)]
+    dp[0][0] = grid[0][0]
+    
+    # Fill first row
+    for j in range(1, cols):
+        dp[0][j] = dp[0][j-1] + grid[0][j]
+    
+    # Fill first column
+    for i in range(1, rows):
+        dp[i][0] = dp[i-1][0] + grid[i][0]
+    
+    # Fill rest of the table
+    for i in range(1, rows):
+        for j in range(1, cols):
+            dp[i][j] = grid[i][j] + min(dp[i-1][j], dp[i][j-1])
+    
+    return dp[rows-1][cols-1]
+
+def unique_paths(m, n):
+    &quot;&quot;&quot;
+    Count unique paths from top-left to bottom-right
+    &quot;&quot;&quot;
+    dp = [[1] * n for _ in range(m)]
+    
+    for i in range(1, m):
+        for j in range(1, n):
+            dp[i][j] = dp[i-1][j] + dp[i][j-1]
+    
+    return dp[m-1][n-1]
+</code></pre>
+<h3 id="essential-matrix-properties" tabindex="-1"><a class="header-anchor" href="#essential-matrix-properties"><span>Essential Matrix Properties</span></a></h3>
+<h4 id="diagonal-properties" tabindex="-1"><a class="header-anchor" href="#diagonal-properties"><span>Diagonal Properties</span></a></h4>
+<h5 id="primary-diagonal-main-diagonal" tabindex="-1"><a class="header-anchor" href="#primary-diagonal-main-diagonal"><span>Primary Diagonal (Main Diagonal)</span></a></h5>
+<ul>
+<li><strong>Formula</strong>: <code>matrix[i][i]</code> — row index equals column index</li>
+<li><strong>Property</strong>: For position (i,j), <code>i - j = constant</code> (always 0 for main diagonal)</li>
+<li><strong>Direction</strong>: Top-left → Bottom-right</li>
+<li><strong>Elements</strong>: (0,0), (1,1), (2,2), …, (n-1,n-1)</li>
+</ul>
+<h5 id="secondary-diagonal-anti-diagonal" tabindex="-1"><a class="header-anchor" href="#secondary-diagonal-anti-diagonal"><span>Secondary Diagonal (Anti-Diagonal)</span></a></h5>
+<ul>
+<li><strong>Formula</strong>: <code>matrix[i][n - 1 - i]</code> — row + column = n - 1</li>
+<li><strong>Property</strong>: For position (i,j), <code>i + j = n - 1</code></li>
+<li><strong>Direction</strong>: Top-right → Bottom-left</li>
+<li><strong>Elements</strong>: (0,n-1), (1,n-2), (2,n-3), …, (n-1,0)</li>
+</ul>
+<h5 id="visual-example-4-4-matrix-n-4" tabindex="-1"><a class="header-anchor" href="#visual-example-4-4-matrix-n-4"><span>Visual Example (4×4 Matrix, n=4)</span></a></h5>
+<pre><code class="language-text">Primary Diagonal (i, i):           Secondary Diagonal (i, n-1-i):
+
+      Col 0   Col 1   Col 2   Col 3        Col 0   Col 1   Col 2   Col 3
+Row 0 [ X ]   [ . ]   [ . ]   [ . ]  Row 0 [ . ]   [ . ]   [ . ]   [ X ]  ← (0, 3)
+Row 1 [ . ]   [ X ]   [ . ]   [ . ]  Row 1 [ . ]   [ . ]   [ X ]   [ . ]  ← (1, 2)
+Row 2 [ . ]   [ . ]   [ X ]   [ . ]  Row 2 [ . ]   [ X ]   [ . ]   [ . ]  ← (2, 1)
+Row 3 [ . ]   [ . ]   [ . ]   [ X ]  Row 3 [ X ]   [ . ]   [ . ]   [ . ]  ← (3, 0)
+        ↓       ↓       ↓       ↓
+      (0,0)   (1,1)   (2,2)   (3,3)
+
+Both Diagonals Together:
+      Col 0   Col 1   Col 2   Col 3
+Row 0 [ P ]   [ . ]   [ . ]   [ S ]    P = Primary, S = Secondary
+Row 1 [ . ]   [ P ]   [ S ]   [ . ]
+Row 2 [ . ]   [ S ]   [ P ]   [ . ]
+Row 3 [ S ]   [ . ]   [ . ]   [ P ]
+</code></pre>
+<h5 id="edge-case-odd-sized-matrix-diagonals-intersect" tabindex="-1"><a class="header-anchor" href="#edge-case-odd-sized-matrix-diagonals-intersect"><span>Edge Case: Odd-Sized Matrix (Diagonals Intersect)</span></a></h5>
+<p>When matrix size <code>n</code> is <strong>odd</strong>, the primary and secondary diagonals <strong>intersect</strong> at the center cell.</p>
+<pre><code class="language-text">3×3 Matrix (n=3):
+      Col 0   Col 1   Col 2
+Row 0 [ P ]   [ . ]   [ S ]    (0,0) and (0,2)
+Row 1 [ . ]   [P&amp;S]   [ . ]    (1,1) is BOTH primary AND secondary!
+Row 2 [ S ]   [ . ]   [ P ]    (2,0) and (2,2)
+
+Center cell (1,1): i=1, i=1 (primary) AND n-1-i=3-1-1=1 (secondary)
+</code></pre>
+<p><strong>Important</strong>: When iterating both diagonals, avoid double-counting the center cell!</p>
+<h5 id="diagonal-access-template-python" tabindex="-1"><a class="header-anchor" href="#diagonal-access-template-python"><span>Diagonal Access Template (Python)</span></a></h5>
+<pre><code class="language-python">def get_diagonal_elements(matrix):
+    &quot;&quot;&quot;
+    Get all elements on both diagonals of a square matrix.
+    &quot;&quot;&quot;
+    if not matrix or not matrix[0]:
+        return []
+
+    n = len(matrix)
+    elements = set()  # Use set to avoid double-counting center in odd-sized matrix
+
+    for i in range(n):
+        # Primary diagonal: (i, i)
+        elements.add(matrix[i][i])
+
+        # Secondary diagonal: (i, n - 1 - i)
+        elements.add(matrix[i][n - 1 - i])
+
+    return list(elements)
+
+def process_diagonals(matrix):
+    &quot;&quot;&quot;
+    Process both diagonals with explicit handling of intersection.
+    &quot;&quot;&quot;
+    n = len(matrix)
+    result = 0
+
+    for i in range(n):
+        # Process primary diagonal
+        result = process(matrix[i][i], result)
+
+        # Process secondary diagonal (skip if same as primary to avoid double-processing)
+        if i != n - 1 - i:  # Not the center cell
+            result = process(matrix[i][n - 1 - i], result)
+
+    return result
+</code></pre>
+<h5 id="diagonal-access-template-java" tabindex="-1"><a class="header-anchor" href="#diagonal-access-template-java"><span>Diagonal Access Template (Java)</span></a></h5>
+<pre><code class="language-java">// From LC 2614 - Prime In Diagonal
+public int diagonalPrime(int[][] nums) {
+    int n = nums.length;
+    int maxPrime = 0;
+
+    for (int i = 0; i &lt; n; i++) {
+        // 1. Primary Diagonal: (i, i)
+        int val1 = nums[i][i];
+        if (val1 &gt; maxPrime &amp;&amp; isPrime(val1)) {
+            maxPrime = val1;
+        }
+
+        // 2. Secondary Diagonal: (i, n - 1 - i)
+        int val2 = nums[i][n - 1 - i];
+        if (val2 &gt; maxPrime &amp;&amp; isPrime(val2)) {
+            maxPrime = val2;
+        }
+    }
+    return maxPrime;
+}
+</code></pre>
+<h5 id="diagonal-coordinate-summary-table" tabindex="-1"><a class="header-anchor" href="#diagonal-coordinate-summary-table"><span>Diagonal Coordinate Summary Table</span></a></h5>
+<table>
+<thead>
+<tr>
+<th>Diagonal Type</th>
+<th>Cell Format</th>
+<th>Property</th>
+<th>Direction</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Primary</strong></td>
+<td><code>(i, i)</code></td>
+<td><code>row == col</code></td>
+<td>↘ (top-left to bottom-right)</td>
+</tr>
+<tr>
+<td><strong>Secondary</strong></td>
+<td><code>(i, n-1-i)</code></td>
+<td><code>row + col == n-1</code></td>
+<td>↙ (top-right to bottom-left)</td>
+</tr>
+</tbody>
+</table>
+<h5 id="related-problems" tabindex="-1"><a class="header-anchor" href="#related-problems"><span>Related Problems</span></a></h5>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC #</th>
+<th>Diagonal Usage</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Prime In Diagonal</td>
+<td>2614</td>
+<td>Find max prime on any diagonal</td>
+</tr>
+<tr>
+<td>Diagonal Traverse</td>
+<td>498</td>
+<td>Traverse all diagonals</td>
+</tr>
+<tr>
+<td>Matrix Diagonal Sum</td>
+<td>1572</td>
+<td>Sum of both diagonals</td>
+</tr>
+<tr>
+<td>Toeplitz Matrix</td>
+<td>766</td>
+<td>Check diagonal constancy</td>
+</tr>
+<tr>
+<td>Sort Matrix Diagonally</td>
+<td>1329</td>
+<td>Sort each diagonal independently</td>
+</tr>
+</tbody>
+</table>
+<h4 id="coordinate-system" tabindex="-1"><a class="header-anchor" href="#coordinate-system"><span>Coordinate System</span></a></h4>
+<pre><code class="language-python"># Standard matrix indexing: matrix[row][col]
+# For matrix[i][j]:
+# - i represents row (vertical position)
+# - j represents column (horizontal position)
+
+# Direction vectors for 4-directional movement
+directions = [(0,1), (1,0), (0,-1), (-1,0)]  # right, down, left, up
+
+# Direction vectors for 8-directional movement  
+directions_8 = [(0,1), (1,0), (0,-1), (-1,0), (1,1), (1,-1), (-1,1), (-1,-1)]
+
+# Boundary checking
+def is_valid(row, col, rows, cols):
+    return 0 &lt;= row &lt; rows and 0 &lt;= col &lt; cols
+</code></pre>
+<h2 id="problems-by-pattern" tabindex="-1"><a class="header-anchor" href="#problems-by-pattern"><span>Problems by Pattern</span></a></h2>
+<h3 id="pattern-based-problem-classification" tabindex="-1"><a class="header-anchor" href="#pattern-based-problem-classification"><span>Pattern-Based Problem Classification</span></a></h3>
+<h4 id="pattern-1-matrix-traversal-problems" tabindex="-1"><a class="header-anchor" href="#pattern-1-matrix-traversal-problems"><span><strong>Pattern 1: Matrix Traversal Problems</strong></span></a></h4>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC #</th>
+<th>Key Technique</th>
+<th>Difficulty</th>
+<th>Template Used</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Spiral Matrix</td>
+<td>54</td>
+<td>Boundary tracking with 4 directions</td>
+<td>Medium</td>
+<td>Traversal Template</td>
+</tr>
+<tr>
+<td>Spiral Matrix II</td>
+<td>59</td>
+<td>Fill matrix in spiral order</td>
+<td>Medium</td>
+<td>Traversal Template</td>
+</tr>
+<tr>
+<td>Diagonal Traverse</td>
+<td>498</td>
+<td>Direction alternation with boundary handling</td>
+<td>Medium</td>
+<td>Traversal Template</td>
+</tr>
+<tr>
+<td>Walking Robot Simulation</td>
+<td>885</td>
+<td>Direction vectors + obstacle checking</td>
+<td>Easy</td>
+<td>Traversal Template</td>
+</tr>
+<tr>
+<td>Spiral Matrix III</td>
+<td>885</td>
+<td>Expanding spiral with bounds checking</td>
+<td>Medium</td>
+<td>Traversal Template</td>
+</tr>
+<tr>
+<td>Matrix Cells in Distance Order</td>
+<td>1030</td>
+<td>Manhattan distance sorting</td>
+<td>Easy</td>
+<td>Traversal Template</td>
+</tr>
+<tr>
+<td>Shift 2D Grid</td>
+<td>1260</td>
+<td>Circular array shifting in 2D</td>
+<td>Easy</td>
+<td>Traversal Template</td>
+</tr>
+</tbody>
+</table>
+<h4 id="pattern-2-matrix-transformation-problems" tabindex="-1"><a class="header-anchor" href="#pattern-2-matrix-transformation-problems"><span><strong>Pattern 2: Matrix Transformation Problems</strong></span></a></h4>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC #</th>
+<th>Key Technique</th>
+<th>Difficulty</th>
+<th>Template Used</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Rotate Image</td>
+<td>48</td>
+<td>Transpose + reverse rows</td>
+<td>Medium</td>
+<td>Transformation Template</td>
+</tr>
+<tr>
+<td>Transpose Matrix</td>
+<td>867</td>
+<td>Swap rows and columns</td>
+<td>Easy</td>
+<td>Transformation Template</td>
+</tr>
+<tr>
+<td>Flip Image</td>
+<td>832</td>
+<td>Horizontal flip + bit inversion</td>
+<td>Easy</td>
+<td>Transformation Template</td>
+</tr>
+<tr>
+<td>Flipping an Image</td>
+<td>832</td>
+<td>Row reversal with bit operations</td>
+<td>Easy</td>
+<td>Transformation Template</td>
+</tr>
+<tr>
+<td>Rotate Array</td>
+<td>189</td>
+<td>Array rotation using reversal</td>
+<td>Medium</td>
+<td>Transformation Template</td>
+</tr>
+<tr>
+<td>Determine Whether Matrix Can Be Obtained by Rotation</td>
+<td>1886</td>
+<td>Multiple 90° rotations</td>
+<td>Easy</td>
+<td>Transformation Template</td>
+</tr>
+</tbody>
+</table>
+<h4 id="pattern-3-matrix-search-problems" tabindex="-1"><a class="header-anchor" href="#pattern-3-matrix-search-problems"><span><strong>Pattern 3: Matrix Search Problems</strong></span></a></h4>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC #</th>
+<th>Key Technique</th>
+<th>Difficulty</th>
+<th>Template Used</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Search a 2D Matrix</td>
+<td>74</td>
+<td>Binary search on flattened matrix</td>
+<td>Medium</td>
+<td>Search Template (Binary)</td>
+</tr>
+<tr>
+<td>Search a 2D Matrix II</td>
+<td>240</td>
+<td>Elimination from top-right corner</td>
+<td>Medium</td>
+<td>Search Template (Elimination)</td>
+</tr>
+<tr>
+<td>Kth Smallest Element in Sorted Matrix</td>
+<td>378</td>
+<td>Binary search on value range</td>
+<td>Medium</td>
+<td>Search Template (Binary)</td>
+</tr>
+<tr>
+<td>Find K Pairs with Smallest Sums</td>
+<td>373</td>
+<td>Priority queue with matrix properties</td>
+<td>Medium</td>
+<td>Search Template</td>
+</tr>
+<tr>
+<td>Shortest Distance from All Buildings</td>
+<td>317</td>
+<td>BFS from each building</td>
+<td>Hard</td>
+<td>Search Template</td>
+</tr>
+<tr>
+<td>Count Negative Numbers in Sorted Matrix</td>
+<td>1351</td>
+<td>Binary search or elimination</td>
+<td>Easy</td>
+<td>Search Template</td>
+</tr>
+<tr>
+<td>Find a Peak Element II</td>
+<td>1901</td>
+<td>Binary search on 2D peak</td>
+<td>Medium</td>
+<td>Search Template</td>
+</tr>
+<tr>
+<td>Median in a Row-Wise Sorted Matrix</td>
+<td>-</td>
+<td>Binary search on median value</td>
+<td>Medium</td>
+<td>Search Template</td>
+</tr>
+</tbody>
+</table>
+<h4 id="pattern-4-matrix-modification-problems" tabindex="-1"><a class="header-anchor" href="#pattern-4-matrix-modification-problems"><span><strong>Pattern 4: Matrix Modification Problems</strong></span></a></h4>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC #</th>
+<th>Key Technique</th>
+<th>Difficulty</th>
+<th>Template Used</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Set Matrix Zeroes</td>
+<td>73</td>
+<td>In-place marking using first row/column</td>
+<td>Medium</td>
+<td>Modification Template</td>
+</tr>
+<tr>
+<td>Image Smoother</td>
+<td>661</td>
+<td>8-directional averaging</td>
+<td>Easy</td>
+<td>Modification Template</td>
+</tr>
+<tr>
+<td>Game of Life</td>
+<td>289</td>
+<td>In-place state transitions</td>
+<td>Medium</td>
+<td>Modification Template</td>
+</tr>
+<tr>
+<td>Range Sum Query 2D - Mutable</td>
+<td>308</td>
+<td>Segment tree or binary indexed tree</td>
+<td>Hard</td>
+<td>Modification Template</td>
+</tr>
+<tr>
+<td>Bomb Enemy</td>
+<td>361</td>
+<td>DP with obstacle handling</td>
+<td>Medium</td>
+<td>Modification Template</td>
+</tr>
+<tr>
+<td>Shortest Distance from All Buildings</td>
+<td>317</td>
+<td>BFS with distance accumulation</td>
+<td>Hard</td>
+<td>Modification Template</td>
+</tr>
+<tr>
+<td>Max Area of Island</td>
+<td>695</td>
+<td>DFS with visited marking</td>
+<td>Medium</td>
+<td>Modification Template</td>
+</tr>
+<tr>
+<td>Number of Islands</td>
+<td>200</td>
+<td>DFS/BFS with grid modification</td>
+<td>Medium</td>
+<td>Modification Template</td>
+</tr>
+</tbody>
+</table>
+<h4 id="pattern-5-matrix-multiplication-operations-1" tabindex="-1"><a class="header-anchor" href="#pattern-5-matrix-multiplication-operations-1"><span><strong>Pattern 5: Matrix Multiplication &amp; Operations</strong></span></a></h4>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC #</th>
+<th>Key Technique</th>
+<th>Difficulty</th>
+<th>Template Used</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Sparse Matrix Multiplication</td>
+<td>311</td>
+<td>Skip zeros optimization</td>
+<td>Medium</td>
+<td>Multiplication Template</td>
+</tr>
+<tr>
+<td>Design Tic-Tac-Toe</td>
+<td>348</td>
+<td>Row/column/diagonal sum tracking</td>
+<td>Medium</td>
+<td>Operations Template</td>
+</tr>
+<tr>
+<td>Matrix Diagonal Sum</td>
+<td>1572</td>
+<td>Main + anti-diagonal sum</td>
+<td>Easy</td>
+<td>Operations Template</td>
+</tr>
+<tr>
+<td>Count Negative Numbers in Sorted Matrix</td>
+<td>1351</td>
+<td>Efficient counting in sorted matrix</td>
+<td>Easy</td>
+<td>Operations Template</td>
+</tr>
+<tr>
+<td>Lucky Numbers in a Matrix</td>
+<td>1380</td>
+<td>Row min + column max</td>
+<td>Easy</td>
+<td>Operations Template</td>
+</tr>
+<tr>
+<td>Maximum Side Length of Square</td>
+<td>1292</td>
+<td>2D prefix sum + binary search</td>
+<td>Medium</td>
+<td>Operations Template</td>
+</tr>
+<tr>
+<td>Range Sum Query 2D Immutable</td>
+<td>304</td>
+<td>2D prefix sum</td>
+<td>Medium</td>
+<td>Operations Template</td>
+</tr>
+<tr>
+<td>Minimum Falling Path Sum</td>
+<td>931</td>
+<td>DP with adjacent cell transitions</td>
+<td>Medium</td>
+<td>Operations Template</td>
+</tr>
+</tbody>
+</table>
+<h4 id="pattern-6-matrix-path-dynamic-programming-1" tabindex="-1"><a class="header-anchor" href="#pattern-6-matrix-path-dynamic-programming-1"><span><strong>Pattern 6: Matrix Path &amp; Dynamic Programming</strong></span></a></h4>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC #</th>
+<th>Key Technique</th>
+<th>Difficulty</th>
+<th>Template Used</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Unique Paths</td>
+<td>62</td>
+<td>DP counting paths</td>
+<td>Medium</td>
+<td>Path DP Template</td>
+</tr>
+<tr>
+<td>Unique Paths II</td>
+<td>63</td>
+<td>DP with obstacles</td>
+<td>Medium</td>
+<td>Path DP Template</td>
+</tr>
+<tr>
+<td>Minimum Path Sum</td>
+<td>64</td>
+<td>DP with cost optimization</td>
+<td>Medium</td>
+<td>Path DP Template</td>
+</tr>
+<tr>
+<td>Triangle</td>
+<td>120</td>
+<td>DP on triangular matrix</td>
+<td>Medium</td>
+<td>Path DP Template</td>
+</tr>
+<tr>
+<td>Minimum Falling Path Sum</td>
+<td>931</td>
+<td>DP with adjacent constraints</td>
+<td>Medium</td>
+<td>Path DP Template</td>
+</tr>
+<tr>
+<td>Cherry Pickup</td>
+<td>741</td>
+<td>3D DP for round trip</td>
+<td>Hard</td>
+<td>Path DP Template</td>
+</tr>
+<tr>
+<td>Dungeon Game</td>
+<td>174</td>
+<td>Reverse DP from destination</td>
+<td>Hard</td>
+<td>Path DP Template</td>
+</tr>
+<tr>
+<td>Minimum Path Sum</td>
+<td>64</td>
+<td>Basic grid DP</td>
+<td>Medium</td>
+<td>Path DP Template</td>
+</tr>
+<tr>
+<td>Maximum Path Sum</td>
+<td>124</td>
+<td>Tree DP adapted to grid</td>
+<td>Hard</td>
+<td>Path DP Template</td>
+</tr>
+<tr>
+<td>Path with Maximum Gold</td>
+<td>1219</td>
+<td>DFS with backtracking</td>
+<td>Medium</td>
+<td>Path DP Template</td>
+</tr>
+</tbody>
+</table>
+<h3 id="additional-matrix-problems-by-difficulty" tabindex="-1"><a class="header-anchor" href="#additional-matrix-problems-by-difficulty"><span>Additional Matrix Problems by Difficulty</span></a></h3>
+<h4 id="easy-problems-foundation" tabindex="-1"><a class="header-anchor" href="#easy-problems-foundation"><span><strong>Easy Problems (Foundation)</strong></span></a></h4>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC #</th>
+<th>Pattern</th>
+<th>Key Learning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Reshape the Matrix</td>
+<td>566</td>
+<td>Transformation</td>
+<td>1D to 2D conversion</td>
+</tr>
+<tr>
+<td>Toeplitz Matrix</td>
+<td>766</td>
+<td>Pattern Recognition</td>
+<td>Diagonal property checking</td>
+</tr>
+<tr>
+<td>Available Captures for Rook</td>
+<td>999</td>
+<td>Traversal</td>
+<td>Direction-based movement</td>
+</tr>
+<tr>
+<td>Find Winner on a Tic Tac Toe Game</td>
+<td>1275</td>
+<td>Operations</td>
+<td>Game state evaluation</td>
+</tr>
+<tr>
+<td>Cells with Odd Values in Matrix</td>
+<td>1252</td>
+<td>Modification</td>
+<td>Index-based updates</td>
+</tr>
+<tr>
+<td>Matrix Block Sum</td>
+<td>1314</td>
+<td><strong>2D Prefix Sum</strong></td>
+<td>Build prefix, O(1) range query</td>
+</tr>
+<tr>
+<td>Sum of All Odd Length Subarrays</td>
+<td>1588</td>
+<td>Operations</td>
+<td>Subarray contribution</td>
+</tr>
+</tbody>
+</table>
+<h4 id="medium-problems-core-skills" tabindex="-1"><a class="header-anchor" href="#medium-problems-core-skills"><span><strong>Medium Problems (Core Skills)</strong></span></a></h4>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC #</th>
+<th>Pattern</th>
+<th>Key Learning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Valid Sudoku</td>
+<td>36</td>
+<td>Validation</td>
+<td>Set operations for uniqueness</td>
+</tr>
+<tr>
+<td>Word Search</td>
+<td>79</td>
+<td>DFS/Backtracking</td>
+<td>Path exploration with backtracking</td>
+</tr>
+<tr>
+<td>Surrounded Regions</td>
+<td>130</td>
+<td>DFS/BFS</td>
+<td>Boundary-based region identification</td>
+</tr>
+<tr>
+<td>Rotate Array</td>
+<td>189</td>
+<td>Transformation</td>
+<td>Multiple rotation techniques</td>
+</tr>
+<tr>
+<td>Maximal Square</td>
+<td>221</td>
+<td>DP</td>
+<td>2D DP for shape optimization</td>
+</tr>
+<tr>
+<td>Longest Increasing Path in Matrix</td>
+<td>329</td>
+<td>DFS + Memoization</td>
+<td>DAG longest path</td>
+</tr>
+<tr>
+<td>Island Perimeter</td>
+<td>463</td>
+<td>Traversal</td>
+<td>Boundary counting</td>
+</tr>
+<tr>
+<td>Pacific Atlantic Water Flow</td>
+<td>417</td>
+<td>DFS</td>
+<td>Multi-source reachability</td>
+</tr>
+</tbody>
+</table>
+<h4 id="hard-problems-advanced-techniques" tabindex="-1"><a class="header-anchor" href="#hard-problems-advanced-techniques"><span><strong>Hard Problems (Advanced Techniques)</strong></span></a></h4>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC #</th>
+<th>Pattern</th>
+<th>Key Learning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Sudoku Solver</td>
+<td>37</td>
+<td>Backtracking</td>
+<td>Constraint satisfaction</td>
+</tr>
+<tr>
+<td>N-Queens</td>
+<td>51</td>
+<td>Backtracking</td>
+<td>Complex constraint checking</td>
+</tr>
+<tr>
+<td>The Maze III</td>
+<td>499</td>
+<td>Dijkstra/BFS</td>
+<td>Shortest path with direction</td>
+</tr>
+<tr>
+<td>Robot Room Cleaner</td>
+<td>489</td>
+<td>DFS</td>
+<td>Unknown grid exploration</td>
+</tr>
+<tr>
+<td>Minimum Number of Taps</td>
+<td>1326</td>
+<td>Greedy/DP</td>
+<td>Interval covering optimization</td>
+</tr>
+<tr>
+<td>Cherry Pickup II</td>
+<td>1463</td>
+<td>3D DP</td>
+<td>Multi-agent path optimization</td>
+</tr>
+<tr>
+<td>Largest Rectangle in Histogram</td>
+<td>84</td>
+<td>Stack</td>
+<td>Histogram-based optimization</td>
+</tr>
+</tbody>
+</table>
+<h3 id="pattern-selection-strategy" tabindex="-1"><a class="header-anchor" href="#pattern-selection-strategy"><span>Pattern Selection Strategy</span></a></h3>
+<pre><code>Matrix Problem Analysis Flowchart:
+
+1. Is the problem about traversing matrix in a specific order?
+   ├── YES → Use Matrix Traversal Template
+   │   ├── Spiral order? → Boundary tracking approach
+   │   ├── Diagonal order? → Direction alternation approach
+   │   └── Custom order? → Direction vectors approach
+   └── NO → Continue to 2
+
+2. Does the problem require matrix transformation (rotate, flip, transpose)?
+   ├── YES → Use Matrix Transformation Template
+   │   ├── Rotate 90°? → Transpose + reverse rows
+   │   ├── General rotation? → Mathematical coordinate mapping
+   │   └── Transpose? → Swap (i,j) with (j,i)
+   └── NO → Continue to 3
+
+3. Is it a search problem in a sorted/partially sorted matrix?
+   ├── YES → Use Matrix Search Template
+   │   ├── Fully sorted (row-wise + col-wise)? → Binary search as 1D array
+   │   ├── Row-wise and column-wise sorted? → Elimination approach
+   │   └── Partially sorted? → Modified binary search
+   └── NO → Continue to 4
+
+4. Does the problem modify matrix elements based on conditions?
+   ├── YES → Use Matrix Modification Template
+   │   ├── Set zeros? → Use first row/column as markers
+   │   ├── Smooth/average? → 8-directional neighbor processing
+   │   └── State transitions? → Two-pass or auxiliary space
+   └── NO → Continue to 5
+
+5. Is it a mathematical operation between matrices?
+   ├── YES → Use Matrix Multiplication Template
+   │   ├── Standard multiplication? → Triple nested loop
+   │   ├── Sparse matrices? → Skip-zero optimization
+   │   └── Special operations? → Customize based on operation
+   └── NO → Continue to 6
+
+6. Is it about finding paths or optimizing values through the matrix?
+   ├── YES → Use Matrix Path DP Template
+   │   ├── Count paths? → DP with path counting
+   │   ├── Min/Max path cost? → DP with optimization
+   │   └── Complex constraints? → DFS + memoization
+   └── NO → Use Universal Matrix Template
+</code></pre>
+<h3 id="implementation-decision-tree" tabindex="-1"><a class="header-anchor" href="#implementation-decision-tree"><span>Implementation Decision Tree</span></a></h3>
+<h4 id="step-1-problem-classification" tabindex="-1"><a class="header-anchor" href="#step-1-problem-classification"><span><strong>Step 1: Problem Classification</strong></span></a></h4>
+<ol>
+<li><strong>Read the problem carefully</strong> and identify key requirements</li>
+<li><strong>Determine the input constraints</strong> (matrix size, value ranges)</li>
+<li><strong>Identify the expected output</strong> (modified matrix, single value, list)</li>
+<li><strong>Look for keywords</strong>: traverse, rotate, search, modify, multiply, path</li>
+</ol>
+<h4 id="step-2-pattern-recognition" tabindex="-1"><a class="header-anchor" href="#step-2-pattern-recognition"><span><strong>Step 2: Pattern Recognition</strong></span></a></h4>
+<ol>
+<li><strong>Traversal indicators</strong>: “spiral”, “diagonal”, “clockwise”, “order”</li>
+<li><strong>Transformation indicators</strong>: “rotate”, “transpose”, “flip”, “mirror”</li>
+<li><strong>Search indicators</strong>: “find”, “search”, “locate”, “sorted matrix”</li>
+<li><strong>Modification indicators</strong>: “set”, “update”, “smooth”, “change”</li>
+<li><strong>Math operation indicators</strong>: “multiply”, “sum”, “product”, “diagonal”</li>
+<li><strong>Path/DP indicators</strong>: “path”, “minimum”, “maximum”, “count”, “ways”</li>
+</ol>
+<h4 id="step-3-template-selection" tabindex="-1"><a class="header-anchor" href="#step-3-template-selection"><span><strong>Step 3: Template Selection</strong></span></a></h4>
+<ol>
+<li><strong>Choose the most specific template</strong> that matches the pattern</li>
+<li><strong>Adapt the template</strong> to problem-specific requirements</li>
+<li><strong>Consider edge cases</strong>: empty matrix, single element, rectangular vs square</li>
+<li><strong>Optimize for constraints</strong>: in-place vs extra space, time complexity</li>
+</ol>
+<h2 id="code-examples-implementations" tabindex="-1"><a class="header-anchor" href="#code-examples-implementations"><span>Code Examples &amp; Implementations</span></a></h2>
+<h3 id="advanced-example-1-set-matrix-zeroes-lc-73" tabindex="-1"><a class="header-anchor" href="#advanced-example-1-set-matrix-zeroes-lc-73"><span>Advanced Example 1: Set Matrix Zeroes (LC 73)</span></a></h3>
+<pre><code class="language-python">def setZeroes(matrix):
+    &quot;&quot;&quot;
+    Set entire row and column to zero if element is zero
+    Time: O(m*n), Space: O(1)
+    &quot;&quot;&quot;
+    if not matrix or not matrix[0]:
+        return
+    
+    rows, cols = len(matrix), len(matrix[0])
+    
+    # Check if first row and column need to be zero
+    first_row_zero = any(matrix[0][j] == 0 for j in range(cols))
+    first_col_zero = any(matrix[i][0] == 0 for i in range(rows))
+    
+    # Use first row and column as markers
+    for i in range(1, rows):
+        for j in range(1, cols):
+            if matrix[i][j] == 0:
+                matrix[0][j] = 0
+                matrix[i][0] = 0
+    
+    # Set zeros based on markers
+    for i in range(1, rows):
+        for j in range(1, cols):
+            if matrix[0][j] == 0 or matrix[i][0] == 0:
+                matrix[i][j] = 0
+    
+    # Handle first row and column
+    if first_row_zero:
+        for j in range(cols):
+            matrix[0][j] = 0
+    if first_col_zero:
+        for i in range(rows):
+            matrix[i][0] = 0
+</code></pre>
+<h3 id="advanced-example-2-search-2d-matrix-ii-lc-240" tabindex="-1"><a class="header-anchor" href="#advanced-example-2-search-2d-matrix-ii-lc-240"><span>Advanced Example 2: Search 2D Matrix II (LC 240)</span></a></h3>
+<pre><code class="language-python">def searchMatrix(matrix, target):
+    &quot;&quot;&quot;
+    Search in row-wise and column-wise sorted matrix
+    Time: O(m+n), Space: O(1)
+    &quot;&quot;&quot;
+    if not matrix or not matrix[0]:
+        return False
+    
+    rows, cols = len(matrix), len(matrix[0])
+    row, col = 0, cols - 1  # Start from top-right
+    
+    while row &lt; rows and col &gt;= 0:
+        current = matrix[row][col]
+        if current == target:
+            return True
+        elif current &gt; target:
+            col -= 1  # Eliminate current column
+        else:
+            row += 1  # Eliminate current row
+    
+    return False
+</code></pre>
+<h3 id="advanced-example-3-image-smoother-lc-661" tabindex="-1"><a class="header-anchor" href="#advanced-example-3-image-smoother-lc-661"><span>Advanced Example 3: Image Smoother (LC 661)</span></a></h3>
+<pre><code class="language-python">def imageSmoother(M):
+    &quot;&quot;&quot;
+    Smooth image by averaging 8-connected neighbors
+    Time: O(m*n), Space: O(m*n)
+    &quot;&quot;&quot;
+    if not M or not M[0]:
+        return []
+    
+    rows, cols = len(M), len(M[0])
+    result = [[0] * cols for _ in range(rows)]
+    
+    # 8-directional + current cell
+    directions = [(di, dj) for di in [-1, 0, 1] for dj in [-1, 0, 1]]
+    
+    for i in range(rows):
+        for j in range(cols):
+            total = 0
+            count = 0
+            
+            for di, dj in directions:
+                ni, nj = i + di, j + dj
+                if 0 &lt;= ni &lt; rows and 0 &lt;= nj &lt; cols:
+                    total += M[ni][nj]
+                    count += 1
+            
+            result[i][j] = total // count
+    
+    return result
+</code></pre>
+<h2 id="summary-quick-reference" tabindex="-1"><a class="header-anchor" href="#summary-quick-reference"><span>Summary &amp; Quick Reference</span></a></h2>
+<h3 id="complexity-quick-reference" tabindex="-1"><a class="header-anchor" href="#complexity-quick-reference"><span>Complexity Quick Reference</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>Operation</th>
+<th>Time Complexity</th>
+<th>Space Complexity</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Matrix Access</strong></td>
+<td>O(1)</td>
+<td>O(1)</td>
+<td>Direct indexing</td>
+</tr>
+<tr>
+<td><strong>Full Traversal</strong></td>
+<td>O(m*n)</td>
+<td>O(1)</td>
+<td>Visit every element</td>
+</tr>
+<tr>
+<td><strong>Spiral Traversal</strong></td>
+<td>O(m*n)</td>
+<td>O(1)</td>
+<td>Boundary tracking</td>
+</tr>
+<tr>
+<td><strong>Binary Search (Sorted)</strong></td>
+<td>O(log(m*n))</td>
+<td>O(1)</td>
+<td>Treat as 1D array</td>
+</tr>
+<tr>
+<td><strong>Elimination Search</strong></td>
+<td>O(m+n)</td>
+<td>O(1)</td>
+<td>Start from corner</td>
+</tr>
+<tr>
+<td><strong>Matrix Rotation</strong></td>
+<td>O(m*n)</td>
+<td>O(1)</td>
+<td>Transpose + reverse</td>
+</tr>
+<tr>
+<td><strong>Matrix Multiplication</strong></td>
+<td>O(m<em>n</em>p)</td>
+<td>O(m*p)</td>
+<td>Standard algorithm</td>
+</tr>
+<tr>
+<td><strong>Sparse Multiplication</strong></td>
+<td>O(m<em>n</em>k)</td>
+<td>O(m*p)</td>
+<td>k = average non-zeros per row</td>
+</tr>
+<tr>
+<td><strong>2D Prefix Sum Build</strong></td>
+<td>O(m*n)</td>
+<td>O(m*n)</td>
+<td>One-time preprocessing</td>
+</tr>
+<tr>
+<td><strong>2D Prefix Sum Query</strong></td>
+<td>O(1)</td>
+<td>O(1)</td>
+<td>After preprocessing</td>
+</tr>
+<tr>
+<td><strong>DP Path Problems</strong></td>
+<td>O(m*n)</td>
+<td>O(m*n) or O(n)</td>
+<td>Can optimize space</td>
+</tr>
+</tbody>
+</table>
+<h3 id="template-quick-reference" tabindex="-1"><a class="header-anchor" href="#template-quick-reference"><span>Template Quick Reference</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>Template</th>
+<th>Pattern</th>
+<th>Key Code Structure</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Universal</strong></td>
+<td>General processing</td>
+<td><code>for i in range(rows): for j in range(cols):</code></td>
+</tr>
+<tr>
+<td><strong>Traversal</strong></td>
+<td>Spiral/Diagonal</td>
+<td>Boundary tracking with direction vectors</td>
+</tr>
+<tr>
+<td><strong>Transformation</strong></td>
+<td>Rotate/Transpose</td>
+<td>Mathematical coordinate mapping</td>
+</tr>
+<tr>
+<td><strong>Search</strong></td>
+<td>Find elements</td>
+<td>Binary search or elimination approach</td>
+</tr>
+<tr>
+<td><strong>Modification</strong></td>
+<td>Update elements</td>
+<td>Two-pass or auxiliary space techniques</td>
+</tr>
+<tr>
+<td><strong>Multiplication</strong></td>
+<td>Math operations</td>
+<td>Triple nested loop with optimizations</td>
+</tr>
+<tr>
+<td><strong>2D Prefix Sum</strong></td>
+<td>Range sum queries</td>
+<td>Build (m+1)×(n+1) prefix, query O(1)</td>
+</tr>
+<tr>
+<td><strong>Path DP</strong></td>
+<td>Optimization</td>
+<td>DP state transitions between adjacent cells</td>
+</tr>
+</tbody>
+</table>
+<h3 id="common-patterns-tricks" tabindex="-1"><a class="header-anchor" href="#common-patterns-tricks"><span>Common Patterns &amp; Tricks</span></a></h3>
+<h4 id="boundary-tracking-spiral" tabindex="-1"><a class="header-anchor" href="#boundary-tracking-spiral"><span><strong>Boundary Tracking (Spiral)</strong></span></a></h4>
+<pre><code class="language-python">top, bottom = 0, rows - 1
+left, right = 0, cols - 1
+while top &lt;= bottom and left &lt;= right:
+    # Process boundaries and update them
+</code></pre>
+<h4 id="direction-vectors" tabindex="-1"><a class="header-anchor" href="#direction-vectors"><span><strong>Direction Vectors</strong></span></a></h4>
+<pre><code class="language-python"># 4-directional movement
+directions = [(0,1), (1,0), (0,-1), (-1,0)]
+# 8-directional movement  
+directions = [(di,dj) for di in [-1,0,1] for dj in [-1,0,1]]
+</code></pre>
+<h4 id="in-place-modifications" tabindex="-1"><a class="header-anchor" href="#in-place-modifications"><span><strong>In-Place Modifications</strong></span></a></h4>
+<pre><code class="language-python"># Use first row/column as markers
+first_row_zero = any(matrix[0][j] == 0 for j in range(cols))
+first_col_zero = any(matrix[i][0] == 0 for i in range(rows))
+</code></pre>
+<h4 id="coordinate-transformation" tabindex="-1"><a class="header-anchor" href="#coordinate-transformation"><span><strong>Coordinate Transformation</strong></span></a></h4>
+<pre><code class="language-python"># 90° clockwise rotation: (i,j) → (j, n-1-i)
+# Transpose: (i,j) → (j,i)
+# Flip horizontal: (i,j) → (i, n-1-j)
+</code></pre>
+<h4 id="matrix-to-1d-index-conversion" tabindex="-1"><a class="header-anchor" href="#matrix-to-1d-index-conversion"><span><strong>Matrix to 1D Index Conversion</strong></span></a></h4>
+<pre><code class="language-python"># Matrix[row][col] → index = row * cols + col
+# Index → row = index // cols, col = index % cols
+</code></pre>
+<h3 id="problem-solving-steps" tabindex="-1"><a class="header-anchor" href="#problem-solving-steps"><span>Problem-Solving Steps</span></a></h3>
+<ol>
+<li>
+<p><strong>Understand the Problem</strong></p>
+<ul>
+<li>Identify input format (matrix dimensions, constraints)</li>
+<li>Determine output requirements (modified matrix, values, coordinates)</li>
+<li>Look for special properties (sorted, sparse, square vs rectangular)</li>
+</ul>
+</li>
+<li>
+<p><strong>Choose the Right Pattern</strong></p>
+<ul>
+<li>Use the decision flowchart to identify the pattern</li>
+<li>Select the most specific template that matches</li>
+<li>Consider time/space complexity requirements</li>
+</ul>
+</li>
+<li>
+<p><strong>Handle Edge Cases</strong></p>
+<ul>
+<li>Empty matrix: <code>if not matrix or not matrix[0]:</code></li>
+<li>Single element: special handling for 1x1 matrices</li>
+<li>Rectangular matrices: different row and column counts</li>
+</ul>
+</li>
+<li>
+<p><strong>Optimize for Constraints</strong></p>
+<ul>
+<li>In-place vs extra space based on requirements</li>
+<li>Choose appropriate algorithm based on matrix size</li>
+<li>Consider sparse matrix optimizations when applicable</li>
+</ul>
+</li>
+</ol>
+<h3 id="common-mistakes-tips" tabindex="-1"><a class="header-anchor" href="#common-mistakes-tips"><span>Common Mistakes &amp; Tips</span></a></h3>
+<p><strong>🚫 Common Mistakes:</strong></p>
+<ul>
+<li><strong>Index confusion</strong>: Mixing up <code>matrix[row][col]</code> vs <code>matrix[col][row]</code></li>
+<li><strong>Boundary errors</strong>: Off-by-one errors in range calculations</li>
+<li><strong>Direction mistakes</strong>: Incorrect direction vector calculations</li>
+<li><strong>In-place modification</strong>: Modifying matrix while reading (use markers)</li>
+<li><strong>Edge case neglect</strong>: Not handling empty or single-element matrices</li>
+<li><strong>Coordinate transformation errors</strong>: Incorrect rotation/transpose formulas</li>
+</ul>
+<p><strong>✅ Best Practices:</strong></p>
+<ul>
+<li><strong>Always check bounds</strong>: Use <code>0 &lt;= i &lt; rows and 0 &lt;= j &lt; cols</code></li>
+<li><strong>Use meaningful names</strong>: <code>rows, cols</code> instead of <code>m, n</code></li>
+<li><strong>Handle edge cases first</strong>: Check for empty/invalid input</li>
+<li><strong>Draw examples</strong>: Visualize transformations on small matrices</li>
+<li><strong>Use direction vectors</strong>: More readable than hardcoded movements</li>
+<li><strong>Consider space optimization</strong>: In-place modifications when possible</li>
+<li><strong>Test with different shapes</strong>: Square, rectangular, single row/column</li>
+</ul>
+<h3 id="interview-tips" tabindex="-1"><a class="header-anchor" href="#interview-tips"><span>Interview Tips</span></a></h3>
+<ol>
+<li>
+<p><strong>Clarify Matrix Properties</strong></p>
+<ul>
+<li>Ask about matrix dimensions and constraints</li>
+<li>Confirm if modification in-place is allowed</li>
+<li>Check if matrix is guaranteed to be non-empty</li>
+</ul>
+</li>
+<li>
+<p><strong>Start with Brute Force</strong></p>
+<ul>
+<li>Implement the straightforward O(m*n) solution first</li>
+<li>Then optimize based on specific problem constraints</li>
+<li>Explain your approach clearly before coding</li>
+</ul>
+</li>
+<li>
+<p><strong>Trace Through Examples</strong></p>
+<ul>
+<li>Use small matrices (2x2, 3x3) to verify logic</li>
+<li>Walk through boundary conditions step-by-step</li>
+<li>Check your algorithm with edge cases</li>
+</ul>
+</li>
+<li>
+<p><strong>Optimize Systematically</strong></p>
+<ul>
+<li>Identify bottlenecks in your initial solution</li>
+<li>Consider mathematical properties for optimizations</li>
+<li>Discuss space-time tradeoffs with the interviewer</li>
+</ul>
+</li>
+<li>
+<p><strong>Common Interview Patterns</strong></p>
+<ul>
+<li><strong>Matrix traversal</strong>: Focus on boundary management</li>
+<li><strong>Matrix transformation</strong>: Know rotation/transpose patterns</li>
+<li><strong>Matrix search</strong>: Master binary search and elimination approaches</li>
+<li><strong>Matrix DP</strong>: Understand state transitions and space optimization</li>
+</ul>
+</li>
+</ol>
+<h3 id="related-topics" tabindex="-1"><a class="header-anchor" href="#related-topics"><span>Related Topics</span></a></h3>
+<ul>
+<li><strong>Arrays</strong>: Matrix is a 2D extension of array concepts</li>
+<li><strong>Dynamic Programming</strong>: Many matrix problems use DP patterns</li>
+<li><strong>Graph Algorithms</strong>: Matrix can represent graphs (adjacency matrix)</li>
+<li><strong>Binary Search</strong>: Essential for sorted matrix search problems</li>
+<li><strong>Backtracking</strong>: Used in matrix exploration problems (N-Queens, Sudoku)</li>
+<li><strong>String Processing</strong>: Matrix problems often involve pattern matching</li>
+<li><strong>Greedy Algorithms</strong>: Some matrix optimization problems use greedy approach</li>
+</ul>
+<h3 id="additional-resources" tabindex="-1"><a class="header-anchor" href="#additional-resources"><span>Additional Resources</span></a></h3>
+<ul>
+<li><strong>Visualization Tools</strong>: <a href="http://Draw.io">Draw.io</a> for matrix transformation visualization</li>
+<li><strong>Practice Platforms</strong>: LeetCode matrix problems by difficulty</li>
+<li><strong>Mathematical Background</strong>: Linear algebra for advanced matrix operations</li>
+<li><strong>Algorithm Analysis</strong>: Big-O notation for matrix algorithm complexity</li>
+</ul>
+<h2 id="lc-examples" tabindex="-1"><a class="header-anchor" href="#lc-examples"><span>LC Examples</span></a></h2>
+<h3 id="2-1-spiral-matrix-lc-54-pattern-traversal" tabindex="-1"><a class="header-anchor" href="#2-1-spiral-matrix-lc-54-pattern-traversal"><span>2-1) Spiral Matrix (LC 54) — Pattern: Traversal</span></a></h3>
+<blockquote>
+<p>Traverse matrix in spiral order using boundary pointers.</p>
+</blockquote>
+<pre><code class="language-python"># LC 54 - Spiral Matrix
+# V0
+# IDEA : 4 cases: right, down, left, up + boundary condition
+class Solution(object):
+    def spiralOrder(self, matrix):
+        if not matrix:
+            return []
+        res = []
+        left, right = 0, len(matrix[0]) - 1
+        top, bottom = 0, len(matrix) - 1
+        while left &lt;= right and top &lt;= bottom:
+            # right
+            for j in range(left, right + 1):
+                res.append(matrix[top][j])
+            # down
+            for i in range(top + 1, bottom):
+                res.append(matrix[i][right])
+            # left
+            for j in range(left, right + 1)[::-1]:
+                if top &lt; bottom:
+                    res.append(matrix[bottom][j])
+            # up
+            for i in range(top + 1, bottom)[::-1]:
+                if left &lt; right:
+                    res.append(matrix[i][left])
+            left += 1
+            right -= 1
+            top += 1
+            bottom -= 1
+        return res
+</code></pre>
+<hr>
+<h3 id="2-2-rotate-image-lc-48-pattern-transformation" tabindex="-1"><a class="header-anchor" href="#2-2-rotate-image-lc-48-pattern-transformation"><span>2-2) Rotate Image (LC 48) — Pattern: Transformation</span></a></h3>
+<blockquote>
+<p>Rotate matrix 90° clockwise in-place: Transpose then reverse each row.</p>
+</blockquote>
+<pre><code class="language-python"># LC 48 - Rotate Image
+# V0
+# IDEA : TRANSPOSE (i,j -&gt; j,i) -&gt; REVERSE each row
+class Solution(object):
+    def rotate(self, matrix):
+        if not matrix:
+            return
+        l = len(matrix)
+        w = len(matrix[0])
+        # Step 1: Transpose — swap matrix[i][j] with matrix[j][i]
+        for i in range(l):
+            for j in range(i + 1, w):
+                matrix[i][j], matrix[j][i] = matrix[j][i], matrix[i][j]
+        # Step 2: Reverse each row
+        for i in range(l):
+            matrix[i] = matrix[i][::-1]
+        return matrix
+</code></pre>
+<hr>
+<h3 id="2-3-search-a-2d-matrix-lc-74-pattern-search-binary-search" tabindex="-1"><a class="header-anchor" href="#2-3-search-a-2d-matrix-lc-74-pattern-search-binary-search"><span>2-3) Search a 2D Matrix (LC 74) — Pattern: Search (Binary Search)</span></a></h3>
+<blockquote>
+<p>Treat the fully sorted matrix as a 1D array and binary search.</p>
+</blockquote>
+<pre><code class="language-python"># LC 74 - Search a 2D Matrix
+# V0
+# IDEA : BINARY SEARCH — treat matrix as flat sorted array
+# Time: O(log(m*n)), Space: O(1)
+class Solution(object):
+    def searchMatrix(self, matrix, target):
+        if not matrix:
+            return False
+        m, n = len(matrix), len(matrix[0])
+        left, right = 0, m * n - 1
+        while left &lt;= right:
+            mid = (left + right) // 2
+            val = matrix[mid // n][mid % n]
+            if val == target:
+                return True
+            elif val &lt; target:
+                left = mid + 1
+            else:
+                right = mid - 1
+        return False
+</code></pre>
+<hr>
+<h3 id="2-4-search-a-2d-matrix-ii-lc-240-pattern-search-elimination" tabindex="-1"><a class="header-anchor" href="#2-4-search-a-2d-matrix-ii-lc-240-pattern-search-elimination"><span>2-4) Search a 2D Matrix II (LC 240) — Pattern: Search (Elimination)</span></a></h3>
+<blockquote>
+<p>Start from top-right corner; eliminate a row or column each step.</p>
+</blockquote>
+<pre><code class="language-python"># LC 240 - Search a 2D Matrix II
+# V0
+# IDEA : Start from top-right, eliminate row/col each iteration
+# Time: O(m+n), Space: O(1)
+class Solution:
+    def searchMatrix(self, matrix, target):
+        if not matrix or not matrix[0]:
+            return False
+        row, col = 0, len(matrix[0]) - 1
+        while row &lt; len(matrix) and col &gt;= 0:
+            if matrix[row][col] == target:
+                return True
+            elif matrix[row][col] &lt; target:
+                row += 1      # eliminate current row
+            else:
+                col -= 1      # eliminate current column
+        return False
+</code></pre>
+<hr>
+<h3 id="2-5-set-matrix-zeroes-lc-73-pattern-modification" tabindex="-1"><a class="header-anchor" href="#2-5-set-matrix-zeroes-lc-73-pattern-modification"><span>2-5) Set Matrix Zeroes (LC 73) — Pattern: Modification</span></a></h3>
+<blockquote>
+<p>Mark which rows/columns need zeroing, then apply in two passes.</p>
+</blockquote>
+<pre><code class="language-python"># LC 73 - Set Matrix Zeroes
+# V0
+# IDEA : collect zero positions first, then set rows/cols to 0
+# Time: O(m*n), Space: O(m+n)
+class Solution(object):
+    def setZeroes(self, matrix):
+        if not matrix:
+            return
+        l, w = len(matrix), len(matrix[0])
+        x_zeros = set()  # columns to zero
+        y_zeros = set()  # rows to zero
+        for i in range(l):
+            for j in range(w):
+                if matrix[i][j] == 0:
+                    x_zeros.add(j)
+                    y_zeros.add(i)
+        # zero entire rows
+        for i in y_zeros:
+            matrix[i] = [0] * w
+        # zero entire columns
+        for j in x_zeros:
+            for i in range(l):
+                matrix[i][j] = 0
+</code></pre>
+<hr>
+<h3 id="2-6-number-of-islands-lc-200-pattern-dfs-bfs-on-matrix" tabindex="-1"><a class="header-anchor" href="#2-6-number-of-islands-lc-200-pattern-dfs-bfs-on-matrix"><span>2-6) Number of Islands (LC 200) — Pattern: DFS/BFS on Matrix</span></a></h3>
+<blockquote>
+<p>Count connected components of '1’s by DFS-sinking each island.</p>
+</blockquote>
+<pre><code class="language-python"># LC 200 - Number of Islands
+# V0
+# IDEA : DFS — sink each visited land cell to '0'
+# Time: O(m*n), Space: O(m*n) recursion stack
+class Solution(object):
+    def numIslands(self, grid):
+        def dfs(grid, x, y):
+            if grid[y][x] == &quot;0&quot;:
+                return
+            grid[y][x] = &quot;0&quot;
+            for dx, dy in [(0,1),(0,-1),(1,0),(-1,0)]:
+                nx, ny = x + dx, y + dy
+                if 0 &lt;= nx &lt; w and 0 &lt;= ny &lt; l and grid[ny][nx] == &quot;1&quot;:
+                    dfs(grid, nx, ny)
+        if not grid:
+            return 0
+        l, w = len(grid), len(grid[0])
+        count = 0
+        for i in range(l):
+            for j in range(w):
+                if grid[i][j] == &quot;1&quot;:
+                    count += 1
+                    dfs(grid, j, i)
+        return count
+</code></pre>
+<hr>
+<h3 id="2-7-minimum-path-sum-lc-64-pattern-matrix-path-dp" tabindex="-1"><a class="header-anchor" href="#2-7-minimum-path-sum-lc-64-pattern-matrix-path-dp"><span>2-7) Minimum Path Sum (LC 64) — Pattern: Matrix Path DP</span></a></h3>
+<blockquote>
+<p>DP where each cell accumulates the minimum cost to reach it.</p>
+</blockquote>
+<pre><code class="language-python"># LC 64 - Minimum Path Sum
+# V0
+# IDEA : DP — dp[i][j] = grid[i][j] + min(dp[i-1][j], dp[i][j-1])
+# Time: O(m*n), Space: O(1) (modify grid in-place)
+class Solution:
+    def minPathSum(self, grid):
+        if not grid:
+            return 0
+        m, n = len(grid), len(grid[0])
+        # fill first column
+        for i in range(1, m):
+            grid[i][0] += grid[i-1][0]
+        # fill first row
+        for j in range(1, n):
+            grid[0][j] += grid[0][j-1]
+        # fill rest
+        for i in range(1, m):
+            for j in range(1, n):
+                grid[i][j] += min(grid[i-1][j], grid[i][j-1])
+        return grid[-1][-1]
+</code></pre>
+<hr>
+<h3 id="2-8-maximal-square-lc-221-pattern-2d-dp" tabindex="-1"><a class="header-anchor" href="#2-8-maximal-square-lc-221-pattern-2d-dp"><span>2-8) Maximal Square (LC 221) — Pattern: 2D DP</span></a></h3>
+<blockquote>
+<p><code>dp[i][j]</code> = side length of largest square with bottom-right at (i,j).</p>
+</blockquote>
+<pre><code class="language-python"># LC 221 - Maximal Square
+# V0
+# IDEA : DP — dp[i][j] = min(dp[i-1][j], dp[i][j-1], dp[i-1][j-1]) + 1
+# Time: O(m*n), Space: O(m*n)
+class Solution:
+    def maximalSquare(self, matrix):
+        if not matrix:
+            return 0
+        m, n = len(matrix), len(matrix[0])
+        dp = [[0] * n for _ in range(m)]
+        ans = 0
+        for i in range(m):
+            for j in range(n):
+                dp[i][j] = int(matrix[i][j])
+                if i and j and dp[i][j]:
+                    dp[i][j] = min(dp[i-1][j-1], dp[i][j-1], dp[i-1][j]) + 1
+                ans = max(ans, dp[i][j])
+        return ans * ans
+</code></pre>
+<hr>
+<h3 id="2-9-game-of-life-lc-289-pattern-in-place-state-transition" tabindex="-1"><a class="header-anchor" href="#2-9-game-of-life-lc-289-pattern-in-place-state-transition"><span>2-9) Game of Life (LC 289) — Pattern: In-Place State Transition</span></a></h3>
+<blockquote>
+<p>Simulate next state for all cells simultaneously using 8-neighbor rules.</p>
+</blockquote>
+<pre><code class="language-python"># LC 289 - Game of Life
+# V0
+# IDEA : copy board, apply all 4 rules using 8-directional neighbors
+# Time: O(m*n), Space: O(m*n)
+class Solution:
+    def gameOfLife(self, board) -&gt; None:
+        neighbors = [(1,0),(1,-1),(0,-1),(-1,-1),(-1,0),(-1,1),(0,1),(1,1)]
+        rows, cols = len(board), len(board[0])
+        copy_board = [[board[r][c] for c in range(cols)] for r in range(rows)]
+        for row in range(rows):
+            for col in range(cols):
+                live_neighbors = sum(
+                    copy_board[row + dr][col + dc]
+                    for dr, dc in neighbors
+                    if 0 &lt;= row + dr &lt; rows and 0 &lt;= col + dc &lt; cols
+                )
+                # Rule 1 &amp; 3: live cell dies
+                if copy_board[row][col] == 1 and (live_neighbors &lt; 2 or live_neighbors &gt; 3):
+                    board[row][col] = 0
+                # Rule 4: dead cell becomes alive
+                elif copy_board[row][col] == 0 and live_neighbors == 3:
+                    board[row][col] = 1
+</code></pre>
+<hr>
+<h3 id="2-10-matrix-block-sum-lc-1314-pattern-2d-prefix-sum" tabindex="-1"><a class="header-anchor" href="#2-10-matrix-block-sum-lc-1314-pattern-2d-prefix-sum"><span>2-10) Matrix Block Sum (LC 1314) — Pattern: 2D Prefix Sum</span></a></h3>
+<blockquote>
+<p>Build 2D prefix sum matrix, then query O(1) for each cell’s block sum.</p>
+</blockquote>
+<pre><code class="language-java">// LC 1314 - Matrix Block Sum
+// V0
+// IDEA: 2D Prefix Sum (Summed-Area Table)
+// Time: O(m*n), Space: O(m*n)
+
+/**
+ * Key Insight:
+ * - Without prefix sum: O(m*n*k²) — for each cell, scan k×k block
+ * - With prefix sum: O(m*n) build + O(1) per query
+ *
+ * Formula:
+ * - Build:  pref[i+1][j+1] = mat[i][j] + pref[i][j+1] + pref[i+1][j] - pref[i][j]
+ * - Query:  sum = pref[r2+1][c2+1] - pref[r1][c2+1] - pref[r2+1][c1] + pref[r1][c1]
+ *
+ * The +1 offset allows pref[0][j] and pref[i][0] to be zero padding,
+ * preventing IndexOutOfBounds when querying edges.
+ */
+public int[][] matrixBlockSum(int[][] mat, int k) {
+    int m = mat.length;
+    int n = mat[0].length;
+
+    // 1. Build 2D prefix sum matrix (size m+1 x n+1)
+    int[][] pref = new int[m + 1][n + 1];
+    for (int i = 0; i &lt; m; i++) {
+        for (int j = 0; j &lt; n; j++) {
+            pref[i + 1][j + 1] = mat[i][j]
+                    + pref[i][j + 1]      // top
+                    + pref[i + 1][j]      // left
+                    - pref[i][j];         // top-left (subtracted twice)
+        }
+    }
+
+    int[][] res = new int[m][n];
+
+    // 2. Calculate sum for each block [i-k, j-k] to [i+k, j+k]
+    for (int i = 0; i &lt; m; i++) {
+        for (int j = 0; j &lt; n; j++) {
+            // Clamp boundaries to valid matrix indices
+            int r1 = Math.max(0, i - k);
+            int c1 = Math.max(0, j - k);
+            int r2 = Math.min(m - 1, i + k);
+            int c2 = Math.min(n - 1, j + k);
+
+            // Query using prefix sum formula (adjust for 1-based pref)
+            res[i][j] = pref[r2 + 1][c2 + 1]
+                    - pref[r1][c2 + 1]    // subtract top region
+                    - pref[r2 + 1][c1]    // subtract left region
+                    + pref[r1][c1];       // add back top-left (double subtracted)
+        }
+    }
+
+    return res;
+}
+</code></pre>
+<p><strong>Visual Explanation of 2D Prefix Sum Query:</strong></p>
+<pre><code>For rectangle (r1,c1) to (r2,c2):
+
+     0    c1        c2   n
+   ┌──────┬─────────┬────┐
+ 0 │      │    A    │    │
+   │      │         │    │
+r1 ├──────┼─────────┼────┤
+   │      │         │    │
+   │  C   │ TARGET  │    │
+   │      │         │    │
+r2 ├──────┼─────────┼────┤
+   │      │         │    │
+ m └──────┴─────────┴────┘
+
+TARGET = pref[r2+1][c2+1] - A - C + TopLeft
+       = pref[r2+1][c2+1] - pref[r1][c2+1] - pref[r2+1][c1] + pref[r1][c1]
+</code></pre>
+<p><strong>Similar Problems:</strong></p>
+<ul>
+<li>LC 304: Range Sum Query 2D - Immutable (same 2D prefix sum)</li>
+<li>LC 308: Range Sum Query 2D - Mutable (needs segment tree / BIT)</li>
+<li>LC 1292: Maximum Side Length of Square (2D prefix sum + binary search)</li>
+</ul>
+
+      </div>
+      <div class="cheatsheet-footer">
+        <a href="../cheatsheets.html" class="back-link">← Back to Cheat Sheets</a>
+        <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/matrix.md" class="github-edit" target="_blank">
+          Edit on GitHub →
+        </a>
+      </div>
+    <nav class="prev-next"><a href="math.html" class="prev-link">← Math</a><a href="monotonic_queue.html" class="next-link">Monotonic Queue →</a></nav>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>CS_basics - Computer Science Fundamentals & Interview Preparation</p>
+      <p>
+        <a href="https://github.com/yennanliu/CS_basics">GitHub</a> •
+        <a href="https://github.com/yennanliu/CS_basics/tree/master/doc">Documentation</a> •
+        <a href="https://github.com/yennanliu/CS_basics/issues">Report Issues</a>
+      </p>
+    </div>
+  </footer>
+</body>
+</html>

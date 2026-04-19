@@ -1,0 +1,334 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Redis Info - CS_basics</title>
+  <meta name="description" content="Computer Science fundamentals: algorithms, data structures, system design, and LeetCode solutions">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>CS</text></svg>">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="../vendor/fonts.css">
+  <link rel="stylesheet" href="../vendor/highlight/github-dark.min.css">
+  <script src="../vendor/highlight/highlight.min.js"></script>
+  <script>
+  // Apply theme before render to prevent flash
+  (function() {
+    var saved = localStorage.getItem('theme');
+    if (saved === 'dark' || (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      document.documentElement.setAttribute('data-theme', 'dark');
+    }
+  })();
+  </script>
+  <script>document.addEventListener('DOMContentLoaded', function() {
+    hljs.highlightAll();
+    document.querySelectorAll('pre code').forEach(function(codeEl) {
+      var pre = codeEl.parentElement;
+      var lang = '';
+      var cls = codeEl.className || '';
+      var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
+      if (m) lang = m[1];
+      var wrapper = document.createElement('div');
+      wrapper.className = 'code-block-wrapper';
+      pre.parentNode.insertBefore(wrapper, pre);
+      var header = document.createElement('div');
+      header.className = 'code-block-header';
+      if (lang) {
+        var label = document.createElement('span');
+        label.className = 'code-lang-label';
+        label.textContent = lang;
+        header.appendChild(label);
+      } else {
+        header.appendChild(document.createElement('span'));
+      }
+      var btn = document.createElement('button');
+      btn.className = 'copy-btn';
+      btn.textContent = 'Copy';
+      btn.addEventListener('click', function() {
+        navigator.clipboard.writeText(codeEl.textContent).then(function() {
+          btn.textContent = 'Copied!';
+          btn.classList.add('copied');
+          setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+        });
+      });
+      header.appendChild(btn);
+      wrapper.appendChild(header);
+      wrapper.appendChild(pre);
+    });
+    document.querySelectorAll('table').forEach(function(table) {
+      if (!table.parentElement.classList.contains('table-wrap')) {
+        var wrapper = document.createElement('div');
+        wrapper.className = 'table-wrap';
+        table.parentNode.insertBefore(wrapper, table);
+        wrapper.appendChild(table);
+      }
+    });
+    // Reading progress bar
+    var progressBar = document.getElementById('reading-progress');
+    if (progressBar) {
+      window.addEventListener('scroll', function() {
+        var winScroll = document.documentElement.scrollTop;
+        var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        progressBar.style.width = height > 0 ? (winScroll / height * 100) + '%' : '0%';
+      });
+    }
+    // Dark mode toggle
+    var toggle = document.getElementById('theme-toggle');
+    if (toggle) {
+      var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      toggle.textContent = isDark ? '☀️' : '🌙';
+      toggle.addEventListener('click', function() {
+        var dark = document.documentElement.getAttribute('data-theme') === 'dark';
+        if (dark) {
+          document.documentElement.removeAttribute('data-theme');
+          localStorage.setItem('theme', 'light');
+          toggle.textContent = '🌙';
+        } else {
+          document.documentElement.setAttribute('data-theme', 'dark');
+          localStorage.setItem('theme', 'dark');
+          toggle.textContent = '☀️';
+        }
+      });
+    }
+  });</script>
+</head>
+<body>
+  <div class="progress-container"><div class="progress-bar" id="reading-progress"></div></div>
+  <nav class="navbar">
+    <div class="container">
+      <div class="nav-brand">
+        <span class="nav-icon">💻</span>
+        <span class="nav-title">CS_basics</span>
+      </div>
+      <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+      <div class="nav-links">
+        <a href="../index.html" class="">Home</a>
+        <a href="../cheatsheets.html" class="">Cheat Sheets</a>
+        <a href="../patterns.html" class="">Pattern Recognition</a>
+        <a href="../faqs.html" class="active">FAQs</a>
+        <a href="../resources.html" class="">Resources</a>
+        <a href="../lc-explorer.html" class="">LC Explorer</a>
+        <a href="../lc-random-picker.html" class="">🎲 Random Picker</a>
+        <a href="../algo_demo/index.html" class="">Visualizer</a>
+        <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">&#127769;</button>
+        <a href="https://github.com/yennanliu/CS_basics" target="_blank" class="github-link" aria-label="GitHub">
+          <svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor">
+            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container">
+    <div class="content">
+      
+      <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../faqs.html">FAQs</a> <span class="sep">›</span> <span class="current">Redis Info</span></nav>
+      <div class="cheatsheet-header">
+        <h1>Redis Info</h1>
+        <span class="last-updated">Last updated: May 7, 2025</span>
+      </div>
+      <div class="toc"><h2>Table of Contents</h2><ul><li class="toc-sub"><a href="#1-what-is-redis">1. What is Redis?</a></li><li class="toc-sub"><a href="#2-common-use-cases">2. Common Use Cases</a></li><li class="toc-sub"><a href="#3-core-redis-commands">3. Core Redis Commands</a></li><li class="toc-sub"><a href="#4-advanced-redis-features">4. Advanced Redis Features</a></li><li class="toc-sub"><a href="#5-redis-data-expiration-and-eviction-policies">5. Redis Data Expiration and Eviction Policies</a></li><li class="toc-sub"><a href="#6-redis-performance-considerations">6. Redis Performance Considerations</a></li><li class="toc-sub"><a href="#7-redis-clients-and-integration">7. Redis Clients and Integration</a></li><li class="toc-sub"><a href="#8-best-practices-for-redis">8. Best Practices for Redis</a></li><li class="toc-sub"><a href="#9-security-considerations">9. Security Considerations</a></li><li class="toc-sub"><a href="#conclusion">Conclusion</a></li></ul></div>
+      <div class="cheatsheet-content">
+        <p>Redis is a powerful, open-source in-memory data structure store that is widely used in modern backend systems.
+It is often utilized for caching, session storage, real-time analytics, and messaging systems, among other use cases.
+As a backend engineer, understanding Redis is crucial for optimizing performance and building scalable systems.</p>
+<p>Here’s an outline of Redis knowledge a backend engineer should know:</p>
+<hr>
+<h3 id="1-what-is-redis" tabindex="-1"><a class="header-anchor" href="#1-what-is-redis"><span>1. <strong>What is Redis?</strong></span></a></h3>
+<ul>
+<li><strong>In-memory database</strong>: Redis stores all data in RAM, providing extremely fast read and write operations.</li>
+<li><strong>Key-value store</strong>: Redis is primarily a key-value store, though it supports more complex data structures.</li>
+<li><strong>Data structures</strong>: Redis supports strings, lists, sets, sorted sets, hashes, bitmaps, hyperloglogs, and geospatial indexes.</li>
+<li><strong>Persistence options</strong>: Redis can be configured for persistence using RDB snapshots and AOF logs, or it can be used purely as an in-memory cache.</li>
+<li><strong>Single-threaded</strong>: Redis runs on a single thread to handle requests, which makes it fast and efficient for many use cases.</li>
+</ul>
+<hr>
+<h3 id="2-common-use-cases" tabindex="-1"><a class="header-anchor" href="#2-common-use-cases"><span>2. <strong>Common Use Cases</strong></span></a></h3>
+<ul>
+<li><strong>Caching</strong>: Storing frequently accessed data in Redis can reduce database load and improve response time (e.g., caching web pages or database query results).</li>
+<li><strong>Session management</strong>: Redis is often used to store user sessions (e.g., JWT tokens, user login data).</li>
+<li><strong>Real-time analytics</strong>: Redis is great for real-time data processing like counters, leaderboard ranking, etc.</li>
+<li><strong>Pub/Sub messaging</strong>: Redis provides a simple publish/subscribe mechanism for event-driven architectures.</li>
+<li><strong>Queues</strong>: Redis is frequently used for task queues where jobs are processed asynchronously.</li>
+<li><strong>Rate limiting</strong>: Redis can be used to implement rate-limiting algorithms like the token bucket or leaky bucket.</li>
+</ul>
+<hr>
+<h3 id="3-core-redis-commands" tabindex="-1"><a class="header-anchor" href="#3-core-redis-commands"><span>3. <strong>Core Redis Commands</strong></span></a></h3>
+<ul>
+<li>
+<p><strong>Strings</strong>: The most basic data type in Redis.</p>
+<ul>
+<li><code>SET key value</code></li>
+<li><code>GET key</code></li>
+<li><code>INCR key</code> (Increment a numeric value stored at key)</li>
+</ul>
+</li>
+<li>
+<p><strong>Lists</strong>: Ordered collection of elements, often used as queues or stacks.</p>
+<ul>
+<li><code>LPUSH key value</code> (Push to the left)</li>
+<li><code>RPUSH key value</code> (Push to the right)</li>
+<li><code>LPOP key</code> (Pop from the left)</li>
+<li><code>RPOP key</code> (Pop from the right)</li>
+<li><code>LRANGE key start stop</code> (Get elements in a range)</li>
+</ul>
+</li>
+<li>
+<p><strong>Sets</strong>: Unordered collection of unique elements.</p>
+<ul>
+<li><code>SADD key member</code> (Add member to set)</li>
+<li><code>SREM key member</code> (Remove member from set)</li>
+<li><code>SMEMBERS key</code> (Get all members of the set)</li>
+</ul>
+</li>
+<li>
+<p><strong>Sorted Sets</strong>: A set of elements where each element is associated with a score, useful for leaderboards.</p>
+<ul>
+<li><code>ZADD key score member</code> (Add member with a score)</li>
+<li><code>ZRANGE key start stop</code> (Get members in a score range)</li>
+</ul>
+</li>
+<li>
+<p><strong>Hashes</strong>: Maps of fields and values, similar to a dictionary in Python or a JSON object.</p>
+<ul>
+<li><code>HSET key field value</code> (Set field in hash)</li>
+<li><code>HGET key field</code> (Get value for field)</li>
+<li><code>HGETALL key</code> (Get all fields and values)</li>
+</ul>
+</li>
+<li>
+<p><strong>Bitmaps</strong>: Stores bits, great for tracking binary data like user flags.</p>
+<ul>
+<li><code>SETBIT key offset value</code> (Set a bit at offset)</li>
+<li><code>GETBIT key offset</code> (Get the bit at offset)</li>
+</ul>
+</li>
+<li>
+<p><strong>HyperLogLogs</strong>: Probabilistic data structure used for counting unique items.</p>
+<ul>
+<li><code>PFADD key element</code> (Add an element to the HyperLogLog)</li>
+<li><code>PFCOUNT key</code> (Get the approximate count of unique elements)</li>
+</ul>
+</li>
+<li>
+<p><strong>Geospatial</strong>: Redis supports storing geospatial data (e.g., locations).</p>
+<ul>
+<li><code>GEOADD key longitude latitude member</code></li>
+<li><code>GEODIST key member1 member2</code> (Calculate distance between two members)</li>
+<li><code>GEORADIUS key longitude latitude radius</code> (Get members in a radius)</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 id="4-advanced-redis-features" tabindex="-1"><a class="header-anchor" href="#4-advanced-redis-features"><span>4. <strong>Advanced Redis Features</strong></span></a></h3>
+<ul>
+<li>
+<p><strong>Persistence</strong>:</p>
+<ul>
+<li><strong>RDB (Redis Database)</strong>: Snapshot-based persistence (saves data at specific intervals).</li>
+<li><strong>AOF (Append-Only File)</strong>: Logs every write operation received by Redis (provides durability but may be slower).</li>
+<li><strong>Hybrid approach</strong>: Combining RDB and AOF for durability and performance.</li>
+</ul>
+</li>
+<li>
+<p><strong>Replication</strong>: Redis supports master-slave replication, enabling data redundancy and horizontal scaling.</p>
+<ul>
+<li>Master node handles write operations.</li>
+<li>Slave nodes replicate data and serve read requests.</li>
+</ul>
+</li>
+<li>
+<p><strong>Sharding</strong>: Redis supports partitioning data across multiple Redis instances, which allows horizontal scaling.</p>
+</li>
+<li>
+<p><strong>Sentinel</strong>: Provides high availability and automatic failover. Redis Sentinel monitors your Redis servers and handles failover in case of a master node failure.</p>
+</li>
+<li>
+<p><strong>Cluster</strong>: Redis Cluster enables distributed Redis with automatic sharding, fault tolerance, and replication across multiple nodes.</p>
+</li>
+</ul>
+<hr>
+<h3 id="5-redis-data-expiration-and-eviction-policies" tabindex="-1"><a class="header-anchor" href="#5-redis-data-expiration-and-eviction-policies"><span>5. <strong>Redis Data Expiration and Eviction Policies</strong></span></a></h3>
+<ul>
+<li>
+<p><strong>TTL (Time To Live)</strong>: Redis allows you to set an expiration time for keys with commands like <code>SETEX</code> and <code>EXPIRE</code>.</p>
+<ul>
+<li><code>SETEX key seconds value</code> (Set key with expiration time)</li>
+<li><code>EXPIRE key seconds</code> (Set expiration for an existing key)</li>
+<li><code>TTL key</code> (Get remaining time to live for a key)</li>
+</ul>
+</li>
+<li>
+<p><strong>Eviction Policies</strong>: Redis has several eviction policies when it runs out of memory:</p>
+<ul>
+<li><code>noeviction</code>: No eviction, returns error on write when memory is full.</li>
+<li><code>allkeys-lru</code>: Evict the least recently used (LRU) keys.</li>
+<li><code>volatile-lru</code>: Evict the least recently used keys with an expiration set.</li>
+<li><code>allkeys-random</code>: Evict random keys.</li>
+<li><code>volatile-random</code>: Evict random keys with expiration set.</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 id="6-redis-performance-considerations" tabindex="-1"><a class="header-anchor" href="#6-redis-performance-considerations"><span>6. <strong>Redis Performance Considerations</strong></span></a></h3>
+<ul>
+<li><strong>In-memory store</strong>: Redis is fast because all data is stored in memory. However, it’s important to ensure that your Redis instance has enough memory for the expected workload.</li>
+<li><strong>Pipelining</strong>: To improve performance for bulk operations, Redis supports pipelining, where multiple commands are sent to the server in one go without waiting for a response after each command.</li>
+<li><strong>Connection pooling</strong>: Redis clients support connection pooling, which helps manage multiple connections to Redis, especially in high-load environments.</li>
+<li><strong>Asynchronous Operations</strong>: Redis supports asynchronous commands that don’t block the client, allowing for more efficient resource utilization.</li>
+</ul>
+<hr>
+<h3 id="7-redis-clients-and-integration" tabindex="-1"><a class="header-anchor" href="#7-redis-clients-and-integration"><span>7. <strong>Redis Clients and Integration</strong></span></a></h3>
+<ul>
+<li>Redis can be integrated with most backend technologies through a variety of official and community-supported clients (e.g., <strong>Jedis</strong> and <strong>Lettuce</strong> for Java, <strong>redis-py</strong> for Python, <strong>node-redis</strong> for Node.js).</li>
+<li><strong>Connection Pooling</strong>: Most clients support connection pooling to manage multiple connections to Redis efficiently.</li>
+<li><strong>Cluster Clients</strong>: For working with Redis Cluster, there are clients that support automatic redirection to the correct node.</li>
+</ul>
+<hr>
+<h3 id="8-best-practices-for-redis" tabindex="-1"><a class="header-anchor" href="#8-best-practices-for-redis"><span>8. <strong>Best Practices for Redis</strong></span></a></h3>
+<ul>
+<li><strong>Data Modeling</strong>: Properly choose the right data structure (string, list, set, sorted set, etc.) based on your use case.</li>
+<li><strong>Expiration/TTL</strong>: Set expiration times for keys that are only relevant for a certain period (e.g., session data, cache).</li>
+<li><strong>Avoid blocking commands</strong>: Be mindful of commands like <code>BLPOP</code>, <code>BRPOP</code>, and <code>BRPOPLPUSH</code> which block the client and may lead to performance issues in a high-concurrency scenario.</li>
+<li><strong>Backups and Persistence</strong>: Consider the trade-offs between persistence (RDB and AOF) and performance.</li>
+<li><strong>Replication and High Availability</strong>: Set up replication or Redis Sentinel for fault tolerance and to ensure availability during failovers.</li>
+<li><strong>Monitoring and Logging</strong>: Use Redis monitoring tools like <code>MONITOR</code>, <code>INFO</code>, and external tools (e.g., RedisInsight, Prometheus) to track performance and memory usage.</li>
+<li><strong>Use Redis as a Cache, Not a Primary Data Store</strong>: Redis is ideal as a cache or for ephemeral data but should not be used as the primary source of truth for critical data (unless persistence is a strict requirement).</li>
+</ul>
+<hr>
+<h3 id="9-security-considerations" tabindex="-1"><a class="header-anchor" href="#9-security-considerations"><span>9. <strong>Security Considerations</strong></span></a></h3>
+<ul>
+<li><strong>Authentication</strong>: Use password-based authentication to restrict access to Redis (<code>requirepass</code> in Redis config).</li>
+<li><strong>Network Security</strong>: Use firewalls and virtual private networks (VPNs) to restrict Redis access to trusted IPs.</li>
+<li><strong>SSL/TLS Encryption</strong>: Redis supports SSL/TLS encryption for secure communication between clients and servers, especially in cloud environments.</li>
+</ul>
+<hr>
+<h3 id="conclusion" tabindex="-1"><a class="header-anchor" href="#conclusion"><span>Conclusion</span></a></h3>
+<p>Understanding Redis and its features is essential for backend engineers, especially when dealing with performance optimization, caching, real-time analytics, or distributed systems. Redis is a versatile tool, and knowing how to leverage its different data structures and persistence options can significantly improve system performance and scalability.</p>
+
+      </div>
+      <div class="cheatsheet-footer">
+        <a href="../faqs.html" class="back-link">← Back to FAQs</a>
+        <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/faq/redis/redis_info.md" class="github-edit" target="_blank">
+          Edit on GitHub →
+        </a>
+      </div>
+    <nav class="prev-next"><a href="redis_redis_backend.html" class="prev-link">← Redis Backend</a><a href="redis_redis_leaderboard.html" class="next-link">Redis Leaderboard →</a></nav>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>CS_basics - Computer Science Fundamentals & Interview Preparation</p>
+      <p>
+        <a href="https://github.com/yennanliu/CS_basics">GitHub</a> •
+        <a href="https://github.com/yennanliu/CS_basics/tree/master/doc">Documentation</a> •
+        <a href="https://github.com/yennanliu/CS_basics/issues">Report Issues</a>
+      </p>
+    </div>
+  </footer>
+</body>
+</html>

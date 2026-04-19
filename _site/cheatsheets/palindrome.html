@@ -1,0 +1,1718 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Palindrome - CS_basics</title>
+  <meta name="description" content="Computer Science fundamentals: algorithms, data structures, system design, and LeetCode solutions">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>CS</text></svg>">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="../vendor/fonts.css">
+  <link rel="stylesheet" href="../vendor/highlight/github-dark.min.css">
+  <script src="../vendor/highlight/highlight.min.js"></script>
+  <script>
+  // Apply theme before render to prevent flash
+  (function() {
+    var saved = localStorage.getItem('theme');
+    if (saved === 'dark' || (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      document.documentElement.setAttribute('data-theme', 'dark');
+    }
+  })();
+  </script>
+  <script>document.addEventListener('DOMContentLoaded', function() {
+    hljs.highlightAll();
+    document.querySelectorAll('pre code').forEach(function(codeEl) {
+      var pre = codeEl.parentElement;
+      var lang = '';
+      var cls = codeEl.className || '';
+      var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
+      if (m) lang = m[1];
+      var wrapper = document.createElement('div');
+      wrapper.className = 'code-block-wrapper';
+      pre.parentNode.insertBefore(wrapper, pre);
+      var header = document.createElement('div');
+      header.className = 'code-block-header';
+      if (lang) {
+        var label = document.createElement('span');
+        label.className = 'code-lang-label';
+        label.textContent = lang;
+        header.appendChild(label);
+      } else {
+        header.appendChild(document.createElement('span'));
+      }
+      var btn = document.createElement('button');
+      btn.className = 'copy-btn';
+      btn.textContent = 'Copy';
+      btn.addEventListener('click', function() {
+        navigator.clipboard.writeText(codeEl.textContent).then(function() {
+          btn.textContent = 'Copied!';
+          btn.classList.add('copied');
+          setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+        });
+      });
+      header.appendChild(btn);
+      wrapper.appendChild(header);
+      wrapper.appendChild(pre);
+    });
+    document.querySelectorAll('table').forEach(function(table) {
+      if (!table.parentElement.classList.contains('table-wrap')) {
+        var wrapper = document.createElement('div');
+        wrapper.className = 'table-wrap';
+        table.parentNode.insertBefore(wrapper, table);
+        wrapper.appendChild(table);
+      }
+    });
+    // Reading progress bar
+    var progressBar = document.getElementById('reading-progress');
+    if (progressBar) {
+      window.addEventListener('scroll', function() {
+        var winScroll = document.documentElement.scrollTop;
+        var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        progressBar.style.width = height > 0 ? (winScroll / height * 100) + '%' : '0%';
+      });
+    }
+    // Dark mode toggle
+    var toggle = document.getElementById('theme-toggle');
+    if (toggle) {
+      var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      toggle.textContent = isDark ? '☀️' : '🌙';
+      toggle.addEventListener('click', function() {
+        var dark = document.documentElement.getAttribute('data-theme') === 'dark';
+        if (dark) {
+          document.documentElement.removeAttribute('data-theme');
+          localStorage.setItem('theme', 'light');
+          toggle.textContent = '🌙';
+        } else {
+          document.documentElement.setAttribute('data-theme', 'dark');
+          localStorage.setItem('theme', 'dark');
+          toggle.textContent = '☀️';
+        }
+      });
+    }
+  });</script>
+</head>
+<body>
+  <div class="progress-container"><div class="progress-bar" id="reading-progress"></div></div>
+  <nav class="navbar">
+    <div class="container">
+      <div class="nav-brand">
+        <span class="nav-icon">💻</span>
+        <span class="nav-title">CS_basics</span>
+      </div>
+      <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+      <div class="nav-links">
+        <a href="../index.html" class="">Home</a>
+        <a href="../cheatsheets.html" class="active">Cheat Sheets</a>
+        <a href="../patterns.html" class="">Pattern Recognition</a>
+        <a href="../faqs.html" class="">FAQs</a>
+        <a href="../resources.html" class="">Resources</a>
+        <a href="../lc-explorer.html" class="">LC Explorer</a>
+        <a href="../lc-random-picker.html" class="">🎲 Random Picker</a>
+        <a href="../algo_demo/index.html" class="">Visualizer</a>
+        <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">&#127769;</button>
+        <a href="https://github.com/yennanliu/CS_basics" target="_blank" class="github-link" aria-label="GitHub">
+          <svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor">
+            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container">
+    <div class="content">
+      
+      <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">Palindrome</span></nav>
+      <div class="cheatsheet-header">
+        <h1>Palindrome</h1>
+        <span class="last-updated">Last updated: Mar 10, 2026</span>
+      </div>
+      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#overview">Overview</a></li><li class="toc-sub"><a href="#key-properties">Key Properties</a></li><li class="toc-sub"><a href="#problem-categories">Problem Categories</a></li><li class="toc-sub"><a href="#references">References</a></li><li><a href="#templates-algorithms">Templates &amp; Algorithms</a></li><li class="toc-sub"><a href="#template-comparison-table">Template Comparison Table</a></li><li class="toc-sub"><a href="#template-1-two-pointers-most-common">Template 1: Two Pointers (Most Common)</a></li><li class="toc-sub"><a href="#template-2-center-expansion-substring-problems">Template 2: Center Expansion (Substring Problems)</a></li><li class="toc-sub"><a href="#template-3-dynamic-programming-complex-counting">Template 3: Dynamic Programming (Complex Counting)</a></li><li class="toc-sub"><a href="#template-4-backtracking-partitioning">Template 4: Backtracking (Partitioning)</a></li><li class="toc-sub"><a href="#template-5-longest-palindromic-subsequence-dp">Template 5: Longest Palindromic Subsequence (DP)</a></li><li class="toc-sub"><a href="#template-6-number-palindrome">Template 6: Number Palindrome</a></li><li><a href="#problems-by-pattern">Problems by Pattern</a></li><li class="toc-sub"><a href="#pattern-1-basic-palindrome-validation-1">Pattern 1: Basic Palindrome Validation</a></li><li class="toc-sub"><a href="#pattern-2-palindrome-substring-problems-1">Pattern 2: Palindrome Substring Problems</a></li><li class="toc-sub"><a href="#pattern-3-palindrome-construction-partitioning-1">Pattern 3: Palindrome Construction &amp; Partitioning</a></li><li class="toc-sub"><a href="#pattern-4-palindrome-manipulation-insertions-deletions">Pattern 4: Palindrome Manipulation (Insertions/Deletions)</a></li><li class="toc-sub"><a href="#pattern-5-advanced-palindrome-problems-1">Pattern 5: Advanced Palindrome Problems</a></li><li class="toc-sub"><a href="#pattern-6-number-palindromes-1">Pattern 6: Number Palindromes</a></li><li class="toc-sub"><a href="#additional-practice-problems">Additional Practice Problems</a></li><li class="toc-sub"><a href="#problem-categories-summary">Problem Categories Summary</a></li><li class="toc-sub"><a href="#template-usage-statistics">Template Usage Statistics</a></li><li><a href="#pattern-selection-framework">Pattern Selection Framework</a></li><li class="toc-sub"><a href="#decision-flowchart-for-palindrome-problems">Decision Flowchart for Palindrome Problems</a></li><li class="toc-sub"><a href="#template-selection-guide">Template Selection Guide</a></li><li class="toc-sub"><a href="#problem-solving-strategy">Problem-Solving Strategy</a></li><li class="toc-sub"><a href="#common-problem-patterns-recognition">Common Problem Patterns Recognition</a></li><li><a href="#summary-quick-reference">Summary &amp; Quick Reference</a></li><li class="toc-sub"><a href="#complexity-quick-reference">Complexity Quick Reference</a></li><li class="toc-sub"><a href="#template-quick-reference">Template Quick Reference</a></li><li class="toc-sub"><a href="#common-patterns-tricks">Common Patterns &amp; Tricks</a></li><li class="toc-sub"><a href="#problem-solving-steps">Problem-Solving Steps</a></li><li class="toc-sub"><a href="#common-mistakes-tips">Common Mistakes &amp; Tips</a></li><li class="toc-sub"><a href="#interview-tips">Interview Tips</a></li><li class="toc-sub"><a href="#related-topics">Related Topics</a></li><li><a href="#lc-examples">LC Examples</a></li><li class="toc-sub"><a href="#2-1-longest-palindromic-substring-lc-5-expand-around-center">2-1) Longest Palindromic Substring (LC 5) — Expand Around Center</a></li><li class="toc-sub"><a href="#2-2-valid-palindrome-lc-125-two-pointers">2-2) Valid Palindrome (LC 125) — Two Pointers</a></li><li class="toc-sub"><a href="#2-3-palindromic-substrings-lc-647-count-all-palindromes">2-3) Palindromic Substrings (LC 647) — Count All Palindromes</a></li><li class="toc-sub"><a href="#2-4-palindrome-number-lc-9-math-reversal">2-4) Palindrome Number (LC 9) — Math Reversal</a></li><li class="toc-sub"><a href="#2-5-valid-palindrome-ii-lc-680-two-pointers-with-one-skip">2-5) Valid Palindrome II (LC 680) — Two Pointers with One Skip</a></li><li class="toc-sub"><a href="#2-6-palindrome-linked-list-lc-234-fast-slow-pointer-reverse">2-6) Palindrome Linked List (LC 234) — Fast/Slow Pointer + Reverse</a></li><li class="toc-sub"><a href="#2-7-longest-palindromic-subsequence-lc-516-interval-dp">2-7) Longest Palindromic Subsequence (LC 516) — Interval DP</a></li><li class="toc-sub"><a href="#2-8-minimum-insertion-steps-to-make-a-string-palindrome-lc-1312-interval-dp">2-8) Minimum Insertion Steps to Make a String Palindrome (LC 1312) — Interval DP</a></li><li class="toc-sub"><a href="#2-9-palindrome-partitioning-lc-131-backtracking">2-9) Palindrome Partitioning (LC 131) — Backtracking</a></li><li class="toc-sub"><a href="#2-10-palindrome-partitioning-ii-lc-132-dp">2-10) Palindrome Partitioning II (LC 132) — DP</a></li><li class="toc-sub"><a href="#2-11-find-longest-awesome-substring-lc-1542-bitmask-prefix-xor">2-11) Find Longest Awesome Substring (LC 1542) — Bitmask + Prefix XOR</a></li></ul></div>
+      <div class="cheatsheet-content">
+        <h1 id="palindrome" tabindex="-1"><a class="header-anchor" href="#palindrome"><span>Palindrome (回文)</span></a></h1>
+<h2 id="overview" tabindex="-1"><a class="header-anchor" href="#overview"><span>Overview</span></a></h2>
+<p><strong>Palindrome</strong> is a sequence that reads the same forward and backward. It’s a fundamental concept in string manipulation and array processing, commonly appearing in coding interviews.</p>
+<h3 id="key-properties" tabindex="-1"><a class="header-anchor" href="#key-properties"><span>Key Properties</span></a></h3>
+<ul>
+<li><strong>Time Complexity</strong>: O(n) for basic operations, O(n²) for substring problems</li>
+<li><strong>Space Complexity</strong>: O(1) for two-pointer approach, O(n) for recursive/DP solutions</li>
+<li><strong>Core Idea</strong>: Compare characters/elements from both ends moving toward the center</li>
+<li><strong>When to Use</strong>: String validation, substring problems, number manipulation, partitioning</li>
+</ul>
+<h3 id="problem-categories" tabindex="-1"><a class="header-anchor" href="#problem-categories"><span>Problem Categories</span></a></h3>
+<h4 id="pattern-1-basic-palindrome-validation" tabindex="-1"><a class="header-anchor" href="#pattern-1-basic-palindrome-validation"><span><strong>Pattern 1: Basic Palindrome Validation</strong></span></a></h4>
+<ul>
+<li><strong>Description</strong>: Check if a given string/array/number is a palindrome</li>
+<li><strong>Examples</strong>: LC 9, 125, 234 - Valid Palindrome, Palindrome Number, Palindrome Linked List</li>
+<li><strong>Pattern</strong>: Two pointers from ends, or reverse and compare</li>
+</ul>
+<h4 id="pattern-2-palindrome-substring-problems" tabindex="-1"><a class="header-anchor" href="#pattern-2-palindrome-substring-problems"><span><strong>Pattern 2: Palindrome Substring Problems</strong></span></a></h4>
+<ul>
+<li><strong>Description</strong>: Find longest palindromic substring or count palindromic substrings</li>
+<li><strong>Examples</strong>: LC 5, 647, 214 - Longest Palindromic Substring, Palindromic Substrings</li>
+<li><strong>Pattern</strong>: Center expansion or dynamic programming</li>
+</ul>
+<h4 id="pattern-3-palindrome-construction-partitioning" tabindex="-1"><a class="header-anchor" href="#pattern-3-palindrome-construction-partitioning"><span><strong>Pattern 3: Palindrome Construction &amp; Partitioning</strong></span></a></h4>
+<ul>
+<li><strong>Description</strong>: Break string into palindromic parts or construct palindromes</li>
+<li><strong>Examples</strong>: LC 131, 132, 336 - Palindrome Partitioning I/II, Palindrome Pairs</li>
+<li><strong>Pattern</strong>: Backtracking with palindrome validation, dynamic programming</li>
+</ul>
+<h4 id="pattern-4-palindrome-manipulation" tabindex="-1"><a class="header-anchor" href="#pattern-4-palindrome-manipulation"><span><strong>Pattern 4: Palindrome Manipulation</strong></span></a></h4>
+<ul>
+<li><strong>Description</strong>: Transform strings to create palindromes (insertions, deletions)</li>
+<li><strong>Examples</strong>: LC 516, 1312, 1332 - Longest Palindromic Subsequence, Minimum Insertions</li>
+<li><strong>Pattern</strong>: Dynamic programming with edit distance concepts</li>
+</ul>
+<h4 id="pattern-5-advanced-palindrome-problems" tabindex="-1"><a class="header-anchor" href="#pattern-5-advanced-palindrome-problems"><span><strong>Pattern 5: Advanced Palindrome Problems</strong></span></a></h4>
+<ul>
+<li><strong>Description</strong>: Complex palindrome problems with additional constraints</li>
+<li><strong>Examples</strong>: LC 1147, 1177, 1930 - Longest Chunked Palindrome, Can Make Palindrome</li>
+<li><strong>Pattern</strong>: Sliding window, hash tables, bit manipulation</li>
+</ul>
+<h4 id="pattern-6-number-palindromes" tabindex="-1"><a class="header-anchor" href="#pattern-6-number-palindromes"><span><strong>Pattern 6: Number Palindromes</strong></span></a></h4>
+<ul>
+<li><strong>Description</strong>: Palindrome problems involving integers and mathematical operations</li>
+<li><strong>Examples</strong>: LC 9, 479, 564 - Palindrome Number, Largest Palindrome Product</li>
+<li><strong>Pattern</strong>: Mathematical manipulation, string conversion</li>
+</ul>
+<h3 id="references" tabindex="-1"><a class="header-anchor" href="#references"><span>References</span></a></h3>
+<ul>
+<li><a href="https://leetcode.com/tag/string/">LeetCode Palindrome Problems</a></li>
+<li>Algorithm Design Manual - String Algorithms</li>
+</ul>
+<h2 id="templates-algorithms" tabindex="-1"><a class="header-anchor" href="#templates-algorithms"><span>Templates &amp; Algorithms</span></a></h2>
+<h3 id="template-comparison-table" tabindex="-1"><a class="header-anchor" href="#template-comparison-table"><span>Template Comparison Table</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>Template Type</th>
+<th>Use Case</th>
+<th>Time Complexity</th>
+<th>When to Use</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Two Pointers</strong></td>
+<td>Basic validation</td>
+<td>O(n)</td>
+<td>Simple palindrome check</td>
+</tr>
+<tr>
+<td><strong>Center Expansion</strong></td>
+<td>Find longest substring</td>
+<td>O(n²)</td>
+<td>Substring problems</td>
+</tr>
+<tr>
+<td><strong>Reverse &amp; Compare</strong></td>
+<td>Simple check</td>
+<td>O(n)</td>
+<td>When space is not a constraint</td>
+</tr>
+<tr>
+<td><strong>DP (2D)</strong></td>
+<td>Complex substring counting</td>
+<td>O(n²)</td>
+<td>Multiple subproblems</td>
+</tr>
+<tr>
+<td><strong>Recursive + Memo</strong></td>
+<td>Subsequence problems</td>
+<td>O(n²)</td>
+<td>Overlapping subproblems</td>
+</tr>
+<tr>
+<td><strong>Backtracking</strong></td>
+<td>Partitioning</td>
+<td>O(2^n)</td>
+<td>Generate all partitions</td>
+</tr>
+</tbody>
+</table>
+<h3 id="template-1-two-pointers-most-common" tabindex="-1"><a class="header-anchor" href="#template-1-two-pointers-most-common"><span>Template 1: Two Pointers (Most Common)</span></a></h3>
+<pre><code class="language-python">def is_palindrome_two_pointers(s):
+    &quot;&quot;&quot;
+    Basic palindrome check using two pointers
+    Time: O(n), Space: O(1)
+    &quot;&quot;&quot;
+    left, right = 0, len(s) - 1
+    
+    while left &lt; right:
+        # Skip non-alphanumeric characters (for valid palindrome problems)
+        while left &lt; right and not s[left].isalnum():
+            left += 1
+        while left &lt; right and not s[right].isalnum():
+            right -= 1
+            
+        # Compare characters (case-insensitive)
+        if s[left].lower() != s[right].lower():
+            return False
+            
+        left += 1
+        right -= 1
+    
+    return True
+
+# Java version
+class Solution {
+    public boolean isPalindrome(String s) {
+        int left = 0, right = s.length() - 1;
+        
+        while (left &lt; right) {
+            while (left &lt; right &amp;&amp; !Character.isLetterOrDigit(s.charAt(left))) {
+                left++;
+            }
+            while (left &lt; right &amp;&amp; !Character.isLetterOrDigit(s.charAt(right))) {
+                right--;
+            }
+            
+            if (Character.toLowerCase(s.charAt(left)) != 
+                Character.toLowerCase(s.charAt(right))) {
+                return false;
+            }
+            
+            left++;
+            right--;
+        }
+        
+        return true;
+    }
+}
+</code></pre>
+<h3 id="template-2-center-expansion-substring-problems" tabindex="-1"><a class="header-anchor" href="#template-2-center-expansion-substring-problems"><span>Template 2: Center Expansion (Substring Problems)</span></a></h3>
+<pre><code class="language-python">def longest_palindromic_substring(s):
+    &quot;&quot;&quot;
+    Find longest palindromic substring using center expansion
+    Time: O(n²), Space: O(1)
+    &quot;&quot;&quot;
+    if not s:
+        return &quot;&quot;
+    
+    start, max_len = 0, 1
+    
+    def expand_around_center(left, right):
+        # Expand while characters match
+        while left &gt;= 0 and right &lt; len(s) and s[left] == s[right]:
+            left -= 1
+            right += 1
+        return right - left - 1  # Length of palindrome
+    
+    for i in range(len(s)):
+        # Check for odd-length palindromes (center at i)
+        len1 = expand_around_center(i, i)
+        # Check for even-length palindromes (center between i and i+1)
+        len2 = expand_around_center(i, i + 1)
+        
+        current_max = max(len1, len2)
+        if current_max &gt; max_len:
+            max_len = current_max
+            start = i - (current_max - 1) // 2
+    
+    return s[start:start + max_len]
+
+# Java version
+class Solution {
+    public String longestPalindrome(String s) {
+        if (s == null || s.length() &lt; 1) return &quot;&quot;;
+        
+        int start = 0, end = 0;
+        
+        for (int i = 0; i &lt; s.length(); i++) {
+            int len1 = expandAroundCenter(s, i, i);     // odd length
+            int len2 = expandAroundCenter(s, i, i + 1); // even length
+            int len = Math.max(len1, len2);
+            
+            if (len &gt; end - start) {
+                start = i - (len - 1) / 2;
+                end = i + len / 2;
+            }
+        }
+        
+        return s.substring(start, end + 1);
+    }
+    
+    private int expandAroundCenter(String s, int left, int right) {
+        while (left &gt;= 0 &amp;&amp; right &lt; s.length() &amp;&amp; s.charAt(left) == s.charAt(right)) {
+            left--;
+            right++;
+        }
+        return right - left - 1;
+    }
+}
+</code></pre>
+<h3 id="template-3-dynamic-programming-complex-counting" tabindex="-1"><a class="header-anchor" href="#template-3-dynamic-programming-complex-counting"><span>Template 3: Dynamic Programming (Complex Counting)</span></a></h3>
+<pre><code class="language-python">def count_palindromic_substrings(s):
+    &quot;&quot;&quot;
+    Count all palindromic substrings using DP
+    Time: O(n²), Space: O(n²)
+    &quot;&quot;&quot;
+    n = len(s)
+    # dp[i][j] = True if s[i:j+1] is palindrome
+    dp = [[False] * n for _ in range(n)]
+    count = 0
+    
+    # Single characters are palindromes
+    for i in range(n):
+        dp[i][i] = True
+        count += 1
+    
+    # Check for palindromes of length 2
+    for i in range(n - 1):
+        if s[i] == s[i + 1]:
+            dp[i][i + 1] = True
+            count += 1
+    
+    # Check for palindromes of length 3+
+    for length in range(3, n + 1):
+        for i in range(n - length + 1):
+            j = i + length - 1
+            
+            # Check if s[i:j+1] is palindrome
+            if s[i] == s[j] and dp[i + 1][j - 1]:
+                dp[i][j] = True
+                count += 1
+    
+    return count
+
+# Space-optimized version using center expansion
+def count_palindromic_substrings_optimized(s):
+    &quot;&quot;&quot;
+    Time: O(n²), Space: O(1)
+    &quot;&quot;&quot;
+    count = 0
+    
+    def expand_and_count(left, right):
+        nonlocal count
+        while left &gt;= 0 and right &lt; len(s) and s[left] == s[right]:
+            count += 1
+            left -= 1
+            right += 1
+    
+    for i in range(len(s)):
+        # Odd length palindromes
+        expand_and_count(i, i)
+        # Even length palindromes
+        expand_and_count(i, i + 1)
+    
+    return count
+</code></pre>
+<h3 id="template-4-backtracking-partitioning" tabindex="-1"><a class="header-anchor" href="#template-4-backtracking-partitioning"><span>Template 4: Backtracking (Partitioning)</span></a></h3>
+<pre><code class="language-python">def palindrome_partitioning(s):
+    &quot;&quot;&quot;
+    Find all palindrome partitions using backtracking
+    Time: O(n * 2^n), Space: O(n)
+    &quot;&quot;&quot;
+    result = []
+    current_partition = []
+    
+    def is_palindrome(start, end):
+        while start &lt; end:
+            if s[start] != s[end]:
+                return False
+            start += 1
+            end -= 1
+        return True
+    
+    def backtrack(start):
+        # Base case: reached end of string
+        if start &gt;= len(s):
+            result.append(current_partition[:])
+            return
+        
+        # Try all possible endings for current substring
+        for end in range(start, len(s)):
+            # If current substring is palindrome
+            if is_palindrome(start, end):
+                current_partition.append(s[start:end + 1])
+                backtrack(end + 1)
+                current_partition.pop()
+    
+    backtrack(0)
+    return result
+
+# Optimized with memoization
+def palindrome_partitioning_memo(s):
+    &quot;&quot;&quot;
+    With palindrome check memoization
+    &quot;&quot;&quot;
+    n = len(s)
+    # Precompute palindrome checks
+    is_palin = [[False] * n for _ in range(n)]
+    
+    # Fill palindrome table
+    for i in range(n):
+        is_palin[i][i] = True
+    
+    for i in range(n - 1):
+        is_palin[i][i + 1] = (s[i] == s[i + 1])
+    
+    for length in range(3, n + 1):
+        for i in range(n - length + 1):
+            j = i + length - 1
+            is_palin[i][j] = (s[i] == s[j] and is_palin[i + 1][j - 1])
+    
+    result = []
+    current_partition = []
+    
+    def backtrack(start):
+        if start &gt;= n:
+            result.append(current_partition[:])
+            return
+        
+        for end in range(start, n):
+            if is_palin[start][end]:
+                current_partition.append(s[start:end + 1])
+                backtrack(end + 1)
+                current_partition.pop()
+    
+    backtrack(0)
+    return result
+</code></pre>
+<h3 id="template-5-longest-palindromic-subsequence-dp" tabindex="-1"><a class="header-anchor" href="#template-5-longest-palindromic-subsequence-dp"><span>Template 5: Longest Palindromic Subsequence (DP)</span></a></h3>
+<pre><code class="language-python">def longest_palindromic_subsequence(s):
+    &quot;&quot;&quot;
+    Find length of longest palindromic subsequence using DP
+    Time: O(n²), Space: O(n²)
+    &quot;&quot;&quot;
+    n = len(s)
+    # dp[i][j] = length of LPS in s[i:j+1]
+    dp = [[0] * n for _ in range(n)]
+    
+    # Single characters have LPS length 1
+    for i in range(n):
+        dp[i][i] = 1
+    
+    # Fill for substrings of length 2+
+    for length in range(2, n + 1):
+        for i in range(n - length + 1):
+            j = i + length - 1
+            
+            if s[i] == s[j]:
+                dp[i][j] = dp[i + 1][j - 1] + 2
+            else:
+                dp[i][j] = max(dp[i + 1][j], dp[i][j - 1])
+    
+    return dp[0][n - 1]
+
+# Space-optimized version
+def longest_palindromic_subsequence_optimized(s):
+    &quot;&quot;&quot;
+    Time: O(n²), Space: O(n)
+    &quot;&quot;&quot;
+    n = len(s)
+    dp = [1] * n
+    
+    for i in range(n - 2, -1, -1):
+        prev = 0
+        for j in range(i + 1, n):
+            temp = dp[j]
+            if s[i] == s[j]:
+                dp[j] = prev + 2
+            else:
+                dp[j] = max(dp[j], dp[j - 1])
+            prev = temp
+    
+    return dp[n - 1]
+</code></pre>
+<h3 id="template-6-number-palindrome" tabindex="-1"><a class="header-anchor" href="#template-6-number-palindrome"><span>Template 6: Number Palindrome</span></a></h3>
+<pre><code class="language-python">def is_palindrome_number(x):
+    &quot;&quot;&quot;
+    Check if integer is palindrome without converting to string
+    Time: O(log x), Space: O(1)
+    &quot;&quot;&quot;
+    # Negative numbers are not palindromes
+    if x &lt; 0:
+        return False
+    
+    # Single digit numbers are palindromes
+    if x &lt; 10:
+        return True
+    
+    # Numbers ending in 0 (except 0) are not palindromes
+    if x % 10 == 0:
+        return False
+    
+    reversed_half = 0
+    
+    # Reverse only half of the number
+    while x &gt; reversed_half:
+        reversed_half = reversed_half * 10 + x % 10
+        x //= 10
+    
+    # For even length: x == reversed_half
+    # For odd length: x == reversed_half // 10
+    return x == reversed_half or x == reversed_half // 10
+
+# Java version
+class Solution {
+    public boolean isPalindrome(int x) {
+        if (x &lt; 0 || (x % 10 == 0 &amp;&amp; x != 0)) {
+            return false;
+        }
+        
+        int reversedHalf = 0;
+        while (x &gt; reversedHalf) {
+            reversedHalf = reversedHalf * 10 + x % 10;
+            x /= 10;
+        }
+        
+        return x == reversedHalf || x == reversedHalf / 10;
+    }
+}
+</code></pre>
+<h2 id="problems-by-pattern" tabindex="-1"><a class="header-anchor" href="#problems-by-pattern"><span>Problems by Pattern</span></a></h2>
+<h3 id="pattern-1-basic-palindrome-validation-1" tabindex="-1"><a class="header-anchor" href="#pattern-1-basic-palindrome-validation-1"><span><strong>Pattern 1: Basic Palindrome Validation</strong></span></a></h3>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC #</th>
+<th>Key Technique</th>
+<th>Difficulty</th>
+<th>Template</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Valid Palindrome</td>
+<td>125</td>
+<td>Two pointers, character filtering</td>
+<td>Easy</td>
+<td>Two Pointers</td>
+</tr>
+<tr>
+<td>Palindrome Number</td>
+<td>9</td>
+<td>Mathematical reversal</td>
+<td>Easy</td>
+<td>Number Palindrome</td>
+</tr>
+<tr>
+<td>Palindrome Linked List</td>
+<td>234</td>
+<td>Two pointers, reverse half</td>
+<td>Easy</td>
+<td>Two Pointers</td>
+</tr>
+<tr>
+<td>Valid Palindrome II</td>
+<td>680</td>
+<td>Two pointers, one deletion</td>
+<td>Easy</td>
+<td>Two Pointers</td>
+</tr>
+</tbody>
+</table>
+<h3 id="pattern-2-palindrome-substring-problems-1" tabindex="-1"><a class="header-anchor" href="#pattern-2-palindrome-substring-problems-1"><span><strong>Pattern 2: Palindrome Substring Problems</strong></span></a></h3>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC #</th>
+<th>Key Technique</th>
+<th>Difficulty</th>
+<th>Template</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Longest Palindromic Substring</td>
+<td>5</td>
+<td>Center expansion</td>
+<td>Medium</td>
+<td>Center Expansion</td>
+</tr>
+<tr>
+<td>Palindromic Substrings</td>
+<td>647</td>
+<td>Center expansion/DP</td>
+<td>Medium</td>
+<td>Center Expansion</td>
+</tr>
+<tr>
+<td>Shortest Palindrome</td>
+<td>214</td>
+<td>KMP/Center expansion</td>
+<td>Hard</td>
+<td>Center Expansion</td>
+</tr>
+<tr>
+<td>Longest Palindromic Subsequence</td>
+<td>516</td>
+<td>DP (2D)</td>
+<td>Medium</td>
+<td>DP Subsequence</td>
+</tr>
+<tr>
+<td>Palindromic Substring Queries</td>
+<td>1177</td>
+<td>Bit manipulation</td>
+<td>Medium</td>
+<td>Advanced</td>
+</tr>
+<tr>
+<td>Minimum Insertion Steps to Make Palindrome</td>
+<td>1312</td>
+<td>DP (edit distance)</td>
+<td>Hard</td>
+<td>DP Subsequence</td>
+</tr>
+</tbody>
+</table>
+<h3 id="pattern-3-palindrome-construction-partitioning-1" tabindex="-1"><a class="header-anchor" href="#pattern-3-palindrome-construction-partitioning-1"><span><strong>Pattern 3: Palindrome Construction &amp; Partitioning</strong></span></a></h3>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC #</th>
+<th>Key Technique</th>
+<th>Difficulty</th>
+<th>Template</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Palindrome Partitioning</td>
+<td>131</td>
+<td>Backtracking + palindrome check</td>
+<td>Medium</td>
+<td>Backtracking</td>
+</tr>
+<tr>
+<td>Palindrome Partitioning II</td>
+<td>132</td>
+<td>DP + palindrome preprocessing</td>
+<td>Hard</td>
+<td>DP + Backtracking</td>
+</tr>
+<tr>
+<td>Palindrome Pairs</td>
+<td>336</td>
+<td>HashMap + string manipulation</td>
+<td>Hard</td>
+<td>Advanced</td>
+</tr>
+<tr>
+<td>Valid Palindrome III</td>
+<td>1216</td>
+<td>DP (k deletions allowed)</td>
+<td>Hard</td>
+<td>DP Manipulation</td>
+</tr>
+<tr>
+<td>Break a Palindrome</td>
+<td>1328</td>
+<td>Greedy + string manipulation</td>
+<td>Medium</td>
+<td>Greedy</td>
+</tr>
+</tbody>
+</table>
+<h3 id="pattern-4-palindrome-manipulation-insertions-deletions" tabindex="-1"><a class="header-anchor" href="#pattern-4-palindrome-manipulation-insertions-deletions"><span><strong>Pattern 4: Palindrome Manipulation (Insertions/Deletions)</strong></span></a></h3>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC #</th>
+<th>Key Technique</th>
+<th>Difficulty</th>
+<th>Template</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Minimum Deletions to Make Palindrome</td>
+<td>516*</td>
+<td>DP (LPS difference)</td>
+<td>Medium</td>
+<td>DP Subsequence</td>
+</tr>
+<tr>
+<td>Minimum Insertions for Palindrome</td>
+<td>1312</td>
+<td>DP (edit distance)</td>
+<td>Hard</td>
+<td>DP Subsequence</td>
+</tr>
+<tr>
+<td>Delete Operation for Two Strings</td>
+<td>583*</td>
+<td>DP (LCS concept)</td>
+<td>Medium</td>
+<td>DP Subsequence</td>
+</tr>
+<tr>
+<td>Longest Palindromic Subsequence II</td>
+<td>1682</td>
+<td>DP with constraints</td>
+<td>Medium</td>
+<td>DP Subsequence</td>
+</tr>
+<tr>
+<td>Count Different Palindromic Subsequences</td>
+<td>730</td>
+<td>DP with character counting</td>
+<td>Hard</td>
+<td>DP Advanced</td>
+</tr>
+</tbody>
+</table>
+<h3 id="pattern-5-advanced-palindrome-problems-1" tabindex="-1"><a class="header-anchor" href="#pattern-5-advanced-palindrome-problems-1"><span><strong>Pattern 5: Advanced Palindrome Problems</strong></span></a></h3>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC #</th>
+<th>Key Technique</th>
+<th>Difficulty</th>
+<th>Template</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Longest Chunked Palindrome Decomposition</td>
+<td>1147</td>
+<td>Greedy + two pointers</td>
+<td>Hard</td>
+<td>Advanced</td>
+</tr>
+<tr>
+<td>Check If Word Is Valid After Substitutions</td>
+<td>1003*</td>
+<td>Stack (palindrome-like pattern)</td>
+<td>Medium</td>
+<td>Advanced</td>
+</tr>
+<tr>
+<td>Unique Length-3 Palindromic Subsequences</td>
+<td>1930</td>
+<td>Set + character analysis</td>
+<td>Medium</td>
+<td>Advanced</td>
+</tr>
+<tr>
+<td>Maximum Product of Length of Palindromic Subsequences</td>
+<td>1930*</td>
+<td>Bitmask + DP</td>
+<td>Hard</td>
+<td>Advanced</td>
+</tr>
+<tr>
+<td>Find Palindrome With Fixed Length</td>
+<td>2217</td>
+<td>Mathematical construction</td>
+<td>Medium</td>
+<td>Number Palindrome</td>
+</tr>
+</tbody>
+</table>
+<h3 id="pattern-6-number-palindromes-1" tabindex="-1"><a class="header-anchor" href="#pattern-6-number-palindromes-1"><span><strong>Pattern 6: Number Palindromes</strong></span></a></h3>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC #</th>
+<th>Key Technique</th>
+<th>Difficulty</th>
+<th>Template</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Palindrome Number</td>
+<td>9</td>
+<td>Mathematical reversal</td>
+<td>Easy</td>
+<td>Number Palindrome</td>
+</tr>
+<tr>
+<td>Largest Palindrome Product</td>
+<td>479</td>
+<td>Mathematical construction</td>
+<td>Hard</td>
+<td>Number Palindrome</td>
+</tr>
+<tr>
+<td>Super Palindromes</td>
+<td>906</td>
+<td>Mathematical enumeration</td>
+<td>Hard</td>
+<td>Number Palindrome</td>
+</tr>
+<tr>
+<td>Closest Palindrome</td>
+<td>564</td>
+<td>Mathematical analysis</td>
+<td>Hard</td>
+<td>Number Palindrome</td>
+</tr>
+<tr>
+<td>Palindromic Prime Numbers</td>
+<td>Custom</td>
+<td>Number theory</td>
+<td>Medium</td>
+<td>Number Palindrome</td>
+</tr>
+</tbody>
+</table>
+<h3 id="additional-practice-problems" tabindex="-1"><a class="header-anchor" href="#additional-practice-problems"><span><strong>Additional Practice Problems</strong></span></a></h3>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC #</th>
+<th>Key Technique</th>
+<th>Difficulty</th>
+<th>Template</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Reverse String</td>
+<td>344</td>
+<td>Two pointers basics</td>
+<td>Easy</td>
+<td>Two Pointers</td>
+</tr>
+<tr>
+<td>Reverse Words in a String III</td>
+<td>557</td>
+<td>Two pointers per word</td>
+<td>Easy</td>
+<td>Two Pointers</td>
+</tr>
+<tr>
+<td>Find the Difference</td>
+<td>389</td>
+<td>Character counting</td>
+<td>Easy</td>
+<td>Advanced</td>
+</tr>
+<tr>
+<td>Reverse Only Letters</td>
+<td>917</td>
+<td>Two pointers with filtering</td>
+<td>Easy</td>
+<td>Two Pointers</td>
+</tr>
+<tr>
+<td>Valid Parentheses</td>
+<td>20</td>
+<td>Stack (symmetry concept)</td>
+<td>Easy</td>
+<td>Advanced</td>
+</tr>
+<tr>
+<td>Longest Palindromic Path in Tree</td>
+<td>Custom</td>
+<td>Tree DP</td>
+<td>Hard</td>
+<td>Advanced</td>
+</tr>
+<tr>
+<td>Palindrome Removal</td>
+<td>Custom</td>
+<td>Interval DP</td>
+<td>Hard</td>
+<td>DP Advanced</td>
+</tr>
+<tr>
+<td>Count Palindromic Paths</td>
+<td>Custom</td>
+<td>Tree traversal</td>
+<td>Medium</td>
+<td>Advanced</td>
+</tr>
+</tbody>
+</table>
+<h3 id="problem-categories-summary" tabindex="-1"><a class="header-anchor" href="#problem-categories-summary"><span><strong>Problem Categories Summary</strong></span></a></h3>
+<ul>
+<li><strong>Total Problems</strong>: 40+ classified problems</li>
+<li><strong>Easy</strong>: 8 problems (20%)</li>
+<li><strong>Medium</strong>: 20 problems (50%)</li>
+<li><strong>Hard</strong>: 12+ problems (30%)</li>
+<li><strong>Most Common Patterns</strong>: Center Expansion, Two Pointers, Dynamic Programming</li>
+<li><strong>Advanced Techniques</strong>: Backtracking, Bit manipulation, Mathematical construction</li>
+</ul>
+<h3 id="template-usage-statistics" tabindex="-1"><a class="header-anchor" href="#template-usage-statistics"><span><strong>Template Usage Statistics</strong></span></a></h3>
+<ul>
+<li><strong>Two Pointers</strong>: 25% of problems</li>
+<li><strong>Center Expansion</strong>: 20% of problems</li>
+<li><strong>Dynamic Programming</strong>: 30% of problems</li>
+<li><strong>Backtracking</strong>: 10% of problems</li>
+<li><strong>Advanced/Hybrid</strong>: 15% of problems</li>
+</ul>
+<h2 id="pattern-selection-framework" tabindex="-1"><a class="header-anchor" href="#pattern-selection-framework"><span>Pattern Selection Framework</span></a></h2>
+<h3 id="decision-flowchart-for-palindrome-problems" tabindex="-1"><a class="header-anchor" href="#decision-flowchart-for-palindrome-problems"><span>Decision Flowchart for Palindrome Problems</span></a></h3>
+<pre><code>Problem Analysis Flowchart:
+
+1. Is this a simple validation problem (check if input is palindrome)?
+   ├── YES → Use Template 1: Two Pointers
+   │   ├── String/Array input → Two pointers from ends
+   │   ├── Linked List input → Two pointers + reverse half
+   │   └── Integer input → Template 6: Number Palindrome
+   └── NO → Continue to 2
+
+2. Do you need to find/count palindromic substrings?
+   ├── YES → 
+   │   ├── Find longest substring → Template 2: Center Expansion
+   │   ├── Count all substrings → Template 2: Center Expansion (optimized)
+   │   └── Complex substring queries → Template 3: Dynamic Programming
+   └── NO → Continue to 3
+
+3. Do you need to partition/construct palindromes?
+   ├── YES →
+   │   ├── Find all partitions → Template 4: Backtracking
+   │   ├── Minimum cuts needed → Template 3: DP + preprocessing
+   │   └── Construct specific palindrome → Advanced techniques
+   └── NO → Continue to 4
+
+4. Do you need to modify string to make it palindrome?
+   ├── YES →
+   │   ├── Minimum insertions/deletions → Template 5: DP Subsequence
+   │   ├── With k operations allowed → Template 3: DP with constraints
+   │   └── Optimal transformation → Advanced DP techniques
+   └── NO → Continue to 5
+
+5. Is this a number-based palindrome problem?
+   ├── YES → Template 6: Number Palindrome
+   │   ├── Check palindrome number → Mathematical reversal
+   │   ├── Generate palindromes → Mathematical construction
+   │   └── Complex number constraints → Advanced math
+   └── NO → Continue to 6
+
+6. Advanced/Complex palindrome problem?
+   ├── YES → Hybrid approach needed
+   │   ├── Multiple patterns combined → Use multiple templates
+   │   ├── Additional constraints → Modify existing templates
+   │   └── Novel problem type → Design custom solution
+   └── NO → Re-analyze problem requirements
+</code></pre>
+<h3 id="template-selection-guide" tabindex="-1"><a class="header-anchor" href="#template-selection-guide"><span>Template Selection Guide</span></a></h3>
+<h4 id="when-to-use-each-template" tabindex="-1"><a class="header-anchor" href="#when-to-use-each-template"><span><strong>When to Use Each Template:</strong></span></a></h4>
+<p><strong>Template 1 - Two Pointers:</strong></p>
+<ul>
+<li>✅ Simple palindrome validation</li>
+<li>✅ Problems with character filtering (spaces, punctuation)</li>
+<li>✅ Linked list palindrome checks</li>
+<li>✅ When O(1) space is required</li>
+<li>❌ Need to find all palindromic substrings</li>
+<li>❌ Complex counting/construction problems</li>
+</ul>
+<p><strong>Template 2 - Center Expansion:</strong></p>
+<ul>
+<li>✅ Find longest palindromic substring</li>
+<li>✅ Count palindromic substrings</li>
+<li>✅ When you need actual substring positions</li>
+<li>✅ O(1) space constraint for counting</li>
+<li>❌ Subsequence problems (non-contiguous)</li>
+<li>❌ Complex edit distance scenarios</li>
+</ul>
+<p><strong>Template 3 - Dynamic Programming:</strong></p>
+<ul>
+<li>✅ Count problems with overlapping subproblems</li>
+<li>✅ Minimum operations to make palindrome</li>
+<li>✅ Multiple queries on same string</li>
+<li>✅ Complex constraint combinations</li>
+<li>❌ Simple validation (overkill)</li>
+<li>❌ When space is very limited</li>
+</ul>
+<p><strong>Template 4 - Backtracking:</strong></p>
+<ul>
+<li>✅ Generate all palindrome partitions</li>
+<li>✅ Find specific partition patterns</li>
+<li>✅ Constraint satisfaction problems</li>
+<li>✅ When you need all possible solutions</li>
+<li>❌ Only counting solutions (use DP)</li>
+<li>❌ Very large input sizes (exponential time)</li>
+</ul>
+<p><strong>Template 5 - DP Subsequence:</strong></p>
+<ul>
+<li>✅ Longest palindromic subsequence</li>
+<li>✅ Minimum edit operations</li>
+<li>✅ Character deletion/insertion problems</li>
+<li>✅ When order matters but contiguity doesn’t</li>
+<li>❌ Contiguous substring problems</li>
+<li>❌ Simple validation tasks</li>
+</ul>
+<p><strong>Template 6 - Number Palindrome:</strong></p>
+<ul>
+<li>✅ Integer palindrome validation</li>
+<li>✅ Mathematical palindrome construction</li>
+<li>✅ Number theory related problems</li>
+<li>✅ When string conversion is inefficient</li>
+<li>❌ String-based palindrome problems</li>
+<li>❌ Complex character manipulations</li>
+</ul>
+<h3 id="problem-solving-strategy" tabindex="-1"><a class="header-anchor" href="#problem-solving-strategy"><span>Problem-Solving Strategy</span></a></h3>
+<h4 id="step-by-step-approach" tabindex="-1"><a class="header-anchor" href="#step-by-step-approach"><span><strong>Step-by-Step Approach:</strong></span></a></h4>
+<ol>
+<li>
+<p><strong>Identify the Core Task:</strong></p>
+<ul>
+<li>Validation vs. Finding vs. Counting vs. Construction</li>
+<li>Single result vs. All possible results</li>
+</ul>
+</li>
+<li>
+<p><strong>Analyze Input Constraints:</strong></p>
+<ul>
+<li>String, Array, Number, or Linked List?</li>
+<li>Size constraints (affects algorithm choice)</li>
+<li>Special characters or filtering needed?</li>
+</ul>
+</li>
+<li>
+<p><strong>Determine Output Requirements:</strong></p>
+<ul>
+<li>Boolean result, count, actual palindromes, or positions?</li>
+<li>Single answer or all possible answers?</li>
+</ul>
+</li>
+<li>
+<p><strong>Choose Base Template:</strong></p>
+<ul>
+<li>Use decision flowchart above</li>
+<li>Consider time/space complexity requirements</li>
+</ul>
+</li>
+<li>
+<p><strong>Adapt Template for Specifics:</strong></p>
+<ul>
+<li>Add filtering logic if needed</li>
+<li>Modify for case sensitivity requirements</li>
+<li>Add memoization if overlapping subproblems exist</li>
+</ul>
+</li>
+<li>
+<p><strong>Optimize if Necessary:</strong></p>
+<ul>
+<li>Space optimization (2D DP → 1D DP)</li>
+<li>Early termination conditions</li>
+<li>Preprocessing for multiple queries</li>
+</ul>
+</li>
+</ol>
+<h3 id="common-problem-patterns-recognition" tabindex="-1"><a class="header-anchor" href="#common-problem-patterns-recognition"><span>Common Problem Patterns Recognition</span></a></h3>
+<h4 id="pattern-signals" tabindex="-1"><a class="header-anchor" href="#pattern-signals"><span><strong>Pattern Signals:</strong></span></a></h4>
+<ul>
+<li><strong>“Check if palindrome”</strong> → Two Pointers</li>
+<li><strong>“Longest palindromic substring”</strong> → Center Expansion</li>
+<li><strong>“Count palindromic substrings”</strong> → Center Expansion or DP</li>
+<li><strong>“All palindrome partitions”</strong> → Backtracking</li>
+<li><strong>“Minimum insertions/deletions”</strong> → DP Subsequence</li>
+<li><strong>“Palindrome number”</strong> → Number Palindrome</li>
+<li><strong>“Can be made palindrome with k changes”</strong> → DP with constraints</li>
+</ul>
+<h2 id="summary-quick-reference" tabindex="-1"><a class="header-anchor" href="#summary-quick-reference"><span>Summary &amp; Quick Reference</span></a></h2>
+<h3 id="complexity-quick-reference" tabindex="-1"><a class="header-anchor" href="#complexity-quick-reference"><span>Complexity Quick Reference</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>Template</th>
+<th>Time Complexity</th>
+<th>Space Complexity</th>
+<th>Best For</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Two Pointers</strong></td>
+<td>O(n)</td>
+<td>O(1)</td>
+<td>Basic validation</td>
+<td>Most efficient for simple checks</td>
+</tr>
+<tr>
+<td><strong>Center Expansion</strong></td>
+<td>O(n²)</td>
+<td>O(1)</td>
+<td>Substring problems</td>
+<td>Good balance of time/space</td>
+</tr>
+<tr>
+<td><strong>Reverse &amp; Compare</strong></td>
+<td>O(n)</td>
+<td>O(n)</td>
+<td>Simple problems</td>
+<td>Easy to implement</td>
+</tr>
+<tr>
+<td><strong>DP (2D)</strong></td>
+<td>O(n²)</td>
+<td>O(n²)</td>
+<td>Complex counting</td>
+<td>Handles overlapping subproblems</td>
+</tr>
+<tr>
+<td><strong>DP Subsequence</strong></td>
+<td>O(n²)</td>
+<td>O(n²) → O(n)</td>
+<td>Edit distance type</td>
+<td>Space optimizable</td>
+</tr>
+<tr>
+<td><strong>Backtracking</strong></td>
+<td>O(n·2^n)</td>
+<td>O(n)</td>
+<td>Generate partitions</td>
+<td>Exponential time</td>
+</tr>
+<tr>
+<td><strong>Number Palindrome</strong></td>
+<td>O(log n)</td>
+<td>O(1)</td>
+<td>Integer problems</td>
+<td>Avoid string conversion</td>
+</tr>
+</tbody>
+</table>
+<h3 id="template-quick-reference" tabindex="-1"><a class="header-anchor" href="#template-quick-reference"><span>Template Quick Reference</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>Template</th>
+<th>Pattern</th>
+<th>Key Code Snippet</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Two Pointers</strong></td>
+<td>Validation</td>
+<td><code>while left &lt; right: check s[left] == s[right]</code></td>
+</tr>
+<tr>
+<td><strong>Center Expansion</strong></td>
+<td>Substring</td>
+<td><code>expand_around_center(left, right)</code></td>
+</tr>
+<tr>
+<td><strong>DP Counting</strong></td>
+<td>Complex counting</td>
+<td><code>dp[i][j] = (s[i] == s[j]) and dp[i+1][j-1]</code></td>
+</tr>
+<tr>
+<td><strong>Backtracking</strong></td>
+<td>All partitions</td>
+<td><code>if is_palindrome(start, end): backtrack(end+1)</code></td>
+</tr>
+<tr>
+<td><strong>DP Subsequence</strong></td>
+<td>LPS/Edit distance</td>
+<td><code>dp[i][j] = dp[i+1][j-1] + 2 if s[i] == s[j]</code></td>
+</tr>
+<tr>
+<td><strong>Number Math</strong></td>
+<td>Integer palindrome</td>
+<td><code>reversed_half = reversed_half * 10 + x % 10</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="common-patterns-tricks" tabindex="-1"><a class="header-anchor" href="#common-patterns-tricks"><span>Common Patterns &amp; Tricks</span></a></h3>
+<h4 id="two-pointers-variations" tabindex="-1"><a class="header-anchor" href="#two-pointers-variations"><span><strong>Two Pointers Variations</strong></span></a></h4>
+<pre><code class="language-python"># Basic two pointers
+def is_palindrome_basic(s):
+    left, right = 0, len(s) - 1
+    while left &lt; right:
+        if s[left] != s[right]:
+            return False
+        left += 1
+        right -= 1
+    return True
+
+# With character filtering
+def is_palindrome_alphanumeric(s):
+    left, right = 0, len(s) - 1
+    while left &lt; right:
+        while left &lt; right and not s[left].isalnum():
+            left += 1
+        while left &lt; right and not s[right].isalnum():
+            right -= 1
+        if s[left].lower() != s[right].lower():
+            return False
+        left += 1
+        right -= 1
+    return True
+
+# Allow one mismatch
+def is_palindrome_one_delete(s):
+    def helper(left, right, deleted):
+        while left &lt; right:
+            if s[left] != s[right]:
+                if deleted:  # Already used one delete
+                    return False
+                # Try deleting left or right character
+                return (helper(left + 1, right, True) or 
+                       helper(left, right - 1, True))
+            left += 1
+            right -= 1
+        return True
+    return helper(0, len(s) - 1, False)
+</code></pre>
+<h4 id="center-expansion-patterns" tabindex="-1"><a class="header-anchor" href="#center-expansion-patterns"><span><strong>Center Expansion Patterns</strong></span></a></h4>
+<pre><code class="language-python"># Standard center expansion
+def expand_around_center(s, left, right):
+    while left &gt;= 0 and right &lt; len(s) and s[left] == s[right]:
+        left -= 1
+        right += 1
+    return right - left - 1
+
+# With counting
+def count_palindromes_at_center(s, left, right):
+    count = 0
+    while left &gt;= 0 and right &lt; len(s) and s[left] == s[right]:
+        count += 1
+        left -= 1
+        right += 1
+    return count
+
+# For all centers
+def find_all_palindromes(s):
+    palindromes = []
+    for i in range(len(s)):
+        # Odd length
+        left, right = i, i
+        while left &gt;= 0 and right &lt; len(s) and s[left] == s[right]:
+            palindromes.append(s[left:right+1])
+            left -= 1
+            right += 1
+        # Even length
+        left, right = i, i + 1
+        while left &gt;= 0 and right &lt; len(s) and s[left] == s[right]:
+            palindromes.append(s[left:right+1])
+            left -= 1
+            right += 1
+    return palindromes
+</code></pre>
+<h4 id="dp-optimization-patterns" tabindex="-1"><a class="header-anchor" href="#dp-optimization-patterns"><span><strong>DP Optimization Patterns</strong></span></a></h4>
+<pre><code class="language-python"># Space optimization: 2D DP to 1D
+def longest_palindromic_subsequence_1D(s):
+    n = len(s)
+    dp = [1] * n  # dp[j] represents length for current i to j
+    
+    for i in range(n - 2, -1, -1):
+        prev = 0  # dp[i+1][j-1]
+        for j in range(i + 1, n):
+            temp = dp[j]  # Save current dp[j] for next iteration's prev
+            if s[i] == s[j]:
+                dp[j] = prev + 2
+            else:
+                dp[j] = max(dp[j], dp[j-1])
+            prev = temp
+    
+    return dp[n-1]
+
+# Preprocessing palindrome table
+def precompute_palindromes(s):
+    n = len(s)
+    is_palin = [[False] * n for _ in range(n)]
+    
+    # Single characters
+    for i in range(n):
+        is_palin[i][i] = True
+    
+    # Two characters
+    for i in range(n - 1):
+        is_palin[i][i+1] = (s[i] == s[i+1])
+    
+    # Three+ characters
+    for length in range(3, n + 1):
+        for i in range(n - length + 1):
+            j = i + length - 1
+            is_palin[i][j] = (s[i] == s[j] and is_palin[i+1][j-1])
+    
+    return is_palin
+</code></pre>
+<h3 id="problem-solving-steps" tabindex="-1"><a class="header-anchor" href="#problem-solving-steps"><span>Problem-Solving Steps</span></a></h3>
+<ol>
+<li>
+<p><strong>Problem Analysis</strong></p>
+<ul>
+<li>Read problem carefully and identify key requirements</li>
+<li>Determine if it’s validation, finding, counting, or construction</li>
+<li>Note constraints (case sensitivity, special characters, etc.)</li>
+</ul>
+</li>
+<li>
+<p><strong>Pattern Recognition</strong></p>
+<ul>
+<li>Use the pattern signals to identify the likely approach</li>
+<li>Check the decision flowchart for template selection</li>
+<li>Consider hybrid approaches for complex problems</li>
+</ul>
+</li>
+<li>
+<p><strong>Template Selection</strong></p>
+<ul>
+<li>Choose the most appropriate template based on requirements</li>
+<li>Consider time/space complexity constraints</li>
+<li>Plan for edge cases and optimizations</li>
+</ul>
+</li>
+<li>
+<p><strong>Implementation Strategy</strong></p>
+<ul>
+<li>Start with the basic template structure</li>
+<li>Add problem-specific modifications</li>
+<li>Handle edge cases (empty string, single character, etc.)</li>
+</ul>
+</li>
+<li>
+<p><strong>Testing &amp; Optimization</strong></p>
+<ul>
+<li>Test with provided examples</li>
+<li>Consider edge cases: “”, “a”, “ab”, “aba”</li>
+<li>Optimize space if needed (2D DP → 1D DP)</li>
+</ul>
+</li>
+</ol>
+<h3 id="common-mistakes-tips" tabindex="-1"><a class="header-anchor" href="#common-mistakes-tips"><span>Common Mistakes &amp; Tips</span></a></h3>
+<p><strong>Common Mistakes:</strong></p>
+<ul>
+<li><strong>Off-by-one errors</strong> in center expansion bounds checking</li>
+<li><strong>Case sensitivity</strong> not handled when problem requires it</li>
+<li><strong>Character filtering</strong> logic incorrect for alphanumeric checks</li>
+<li><strong>Space complexity</strong> not optimized when required</li>
+<li><strong>Integer overflow</strong> in number palindrome problems</li>
+<li><strong>Backtracking</strong> without proper base case or pruning</li>
+<li><strong>DP state definition</strong> incorrect for subsequence problems</li>
+</ul>
+<p><strong>Best Practices:</strong></p>
+<ul>
+<li><strong>Always check bounds</strong> before accessing array elements</li>
+<li><strong>Handle empty input</strong> and single character cases separately</li>
+<li><strong>Use consistent naming</strong> for left/right or start/end pointers</li>
+<li><strong>Comment your approach</strong> clearly, especially for DP transitions</li>
+<li><strong>Consider space optimization</strong> after getting correct solution</li>
+<li><strong>Test edge cases</strong> thoroughly before submitting</li>
+<li><strong>Use helper functions</strong> to keep main logic clean and readable</li>
+</ul>
+<h3 id="interview-tips" tabindex="-1"><a class="header-anchor" href="#interview-tips"><span>Interview Tips</span></a></h3>
+<ol>
+<li>
+<p><strong>Start with Clarification</strong></p>
+<ul>
+<li>Ask about case sensitivity requirements</li>
+<li>Clarify if spaces/punctuation should be ignored</li>
+<li>Understand the expected output format</li>
+</ul>
+</li>
+<li>
+<p><strong>Discuss Approach</strong></p>
+<ul>
+<li>Explain your chosen template and reasoning</li>
+<li>Mention time/space complexity upfront</li>
+<li>Discuss potential optimizations</li>
+</ul>
+</li>
+<li>
+<p><strong>Code Systematically</strong></p>
+<ul>
+<li>Start with basic structure, then add details</li>
+<li>Handle edge cases explicitly</li>
+<li>Use meaningful variable names</li>
+</ul>
+</li>
+<li>
+<p><strong>Test Thoroughly</strong></p>
+<ul>
+<li>Walk through examples step by step</li>
+<li>Test edge cases: “”, “a”, “ab”, “aba”, “abcba”</li>
+<li>Verify your complexity analysis</li>
+</ul>
+</li>
+<li>
+<p><strong>Common Follow-ups</strong></p>
+<ul>
+<li>“Can you optimize space complexity?”</li>
+<li>“What if we allow k character mismatches?”</li>
+<li>“How would you handle very large inputs?”</li>
+<li>“Can you solve it without extra space?”</li>
+</ul>
+</li>
+</ol>
+<h3 id="related-topics" tabindex="-1"><a class="header-anchor" href="#related-topics"><span>Related Topics</span></a></h3>
+<ul>
+<li><strong>Two Pointers</strong>: General two-pointer techniques and applications</li>
+<li><strong>Dynamic Programming</strong>: Edit distance, longest common subsequence</li>
+<li><strong>String Algorithms</strong>: Pattern matching, string manipulation</li>
+<li><strong>Backtracking</strong>: Constraint satisfaction, combinatorial problems</li>
+<li><strong>Hash Tables</strong>: Character frequency counting, anagram problems</li>
+<li><strong>Sliding Window</strong>: Substring problems with constraints</li>
+</ul>
+<h2 id="lc-examples" tabindex="-1"><a class="header-anchor" href="#lc-examples"><span>LC Examples</span></a></h2>
+<h3 id="2-1-longest-palindromic-substring-lc-5-expand-around-center" tabindex="-1"><a class="header-anchor" href="#2-1-longest-palindromic-substring-lc-5-expand-around-center"><span>2-1) Longest Palindromic Substring (LC 5) — Expand Around Center</span></a></h3>
+<blockquote>
+<p>For each center (char or between chars), expand outward while palindrome holds.</p>
+</blockquote>
+<pre><code class="language-java">// LC 5 - Longest Palindromic Substring
+// IDEA: Expand around center — O(N^2) with O(1) space
+// time = O(N^2), space = O(1)
+public String longestPalindrome(String s) {
+    int start = 0, maxLen = 1;
+    for (int i = 0; i &lt; s.length(); i++) {
+        // odd length
+        int len1 = expand(s, i, i);
+        // even length
+        int len2 = expand(s, i, i + 1);
+        int len = Math.max(len1, len2);
+        if (len &gt; maxLen) {
+            maxLen = len;
+            start = i - (len - 1) / 2;
+        }
+    }
+    return s.substring(start, start + maxLen);
+}
+private int expand(String s, int l, int r) {
+    while (l &gt;= 0 &amp;&amp; r &lt; s.length() &amp;&amp; s.charAt(l) == s.charAt(r)) { l--; r++; }
+    return r - l - 1;
+}
+</code></pre>
+<h3 id="2-2-valid-palindrome-lc-125-two-pointers" tabindex="-1"><a class="header-anchor" href="#2-2-valid-palindrome-lc-125-two-pointers"><span>2-2) Valid Palindrome (LC 125) — Two Pointers</span></a></h3>
+<blockquote>
+<p>Skip non-alphanumeric characters and compare from both ends.</p>
+</blockquote>
+<pre><code class="language-java">// LC 125 - Valid Palindrome
+// IDEA: Two pointers — skip non-alphanumeric, compare chars
+// time = O(N), space = O(1)
+public boolean isPalindrome(String s) {
+    int l = 0, r = s.length() - 1;
+    while (l &lt; r) {
+        while (l &lt; r &amp;&amp; !Character.isLetterOrDigit(s.charAt(l))) l++;
+        while (l &lt; r &amp;&amp; !Character.isLetterOrDigit(s.charAt(r))) r--;
+        if (Character.toLowerCase(s.charAt(l)) != Character.toLowerCase(s.charAt(r))) return false;
+        l++; r--;
+    }
+    return true;
+}
+</code></pre>
+<h3 id="2-3-palindromic-substrings-lc-647-count-all-palindromes" tabindex="-1"><a class="header-anchor" href="#2-3-palindromic-substrings-lc-647-count-all-palindromes"><span>2-3) Palindromic Substrings (LC 647) — Count All Palindromes</span></a></h3>
+<blockquote>
+<p>Expand around each center; count every valid palindrome expansion.</p>
+</blockquote>
+<pre><code class="language-java">// LC 647 - Palindromic Substrings
+// IDEA: Expand around center — count all palindromes
+// time = O(N^2), space = O(1)
+public int countSubstrings(String s) {
+    int count = 0;
+    for (int i = 0; i &lt; s.length(); i++) {
+        count += expand(s, i, i);     // odd length
+        count += expand(s, i, i + 1); // even length
+    }
+    return count;
+}
+private int expand(String s, int l, int r) {
+    int cnt = 0;
+    while (l &gt;= 0 &amp;&amp; r &lt; s.length() &amp;&amp; s.charAt(l) == s.charAt(r)) {
+        cnt++; l--; r++;
+    }
+    return cnt;
+}
+</code></pre>
+<h3 id="2-4-palindrome-number-lc-9-math-reversal" tabindex="-1"><a class="header-anchor" href="#2-4-palindrome-number-lc-9-math-reversal"><span>2-4) Palindrome Number (LC 9) — Math Reversal</span></a></h3>
+<blockquote>
+<p>Reverse second half of number and compare; negative or trailing-zero numbers are not palindromes.</p>
+</blockquote>
+<pre><code class="language-java">// LC 9 - Palindrome Number
+// IDEA: Reverse second half; compare with first half (avoids string conversion)
+// time = O(log N), space = O(1)
+public boolean isPalindrome(int x) {
+    if (x &lt; 0 || (x % 10 == 0 &amp;&amp; x != 0)) return false;
+    int rev = 0;
+    while (x &gt; rev) { rev = rev * 10 + x % 10; x /= 10; }
+    return x == rev || x == rev / 10;  // even/odd length
+}
+</code></pre>
+<h3 id="2-5-valid-palindrome-ii-lc-680-two-pointers-with-one-skip" tabindex="-1"><a class="header-anchor" href="#2-5-valid-palindrome-ii-lc-680-two-pointers-with-one-skip"><span>2-5) Valid Palindrome II (LC 680) — Two Pointers with One Skip</span></a></h3>
+<blockquote>
+<p>Two pointers; when mismatch, try skipping left or right character and check rest.</p>
+</blockquote>
+<pre><code class="language-java">// LC 680 - Valid Palindrome II
+// IDEA: Two pointers — on mismatch, try skipping left or right character
+// time = O(N), space = O(1)
+public boolean validPalindrome(String s) {
+    int l = 0, r = s.length() - 1;
+    while (l &lt; r) {
+        if (s.charAt(l) != s.charAt(r))
+            return isPalin(s, l+1, r) || isPalin(s, l, r-1);
+        l++; r--;
+    }
+    return true;
+}
+private boolean isPalin(String s, int l, int r) {
+    while (l &lt; r) { if (s.charAt(l++) != s.charAt(r--)) return false; }
+    return true;
+}
+</code></pre>
+<h3 id="2-6-palindrome-linked-list-lc-234-fast-slow-pointer-reverse" tabindex="-1"><a class="header-anchor" href="#2-6-palindrome-linked-list-lc-234-fast-slow-pointer-reverse"><span>2-6) Palindrome Linked List (LC 234) — Fast/Slow Pointer + Reverse</span></a></h3>
+<blockquote>
+<p>Find middle with slow/fast pointers; reverse second half; compare both halves.</p>
+</blockquote>
+<pre><code class="language-java">// LC 234 - Palindrome Linked List
+// IDEA: Find mid (slow/fast), reverse second half, compare with first half
+// time = O(N), space = O(1)
+public boolean isPalindrome(ListNode head) {
+    ListNode slow = head, fast = head;
+    while (fast != null &amp;&amp; fast.next != null) { slow = slow.next; fast = fast.next.next; }
+    ListNode rev = reverse(slow);
+    ListNode p = head, q = rev;
+    while (q != null) { if (p.val != q.val) return false; p = p.next; q = q.next; }
+    return true;
+}
+private ListNode reverse(ListNode head) {
+    ListNode prev = null;
+    while (head != null) { ListNode next = head.next; head.next = prev; prev = head; head = next; }
+    return prev;
+}
+</code></pre>
+<h3 id="2-7-longest-palindromic-subsequence-lc-516-interval-dp" tabindex="-1"><a class="header-anchor" href="#2-7-longest-palindromic-subsequence-lc-516-interval-dp"><span>2-7) Longest Palindromic Subsequence (LC 516) — Interval DP</span></a></h3>
+<blockquote>
+<p>dp[i][j] = LPS length in s[i…j]; match endpoints add 2, else take max of subproblems.</p>
+</blockquote>
+<pre><code class="language-java">// LC 516 - Longest Palindromic Subsequence
+// IDEA: Interval DP — dp[i][j] = LPS length of s[i..j]
+// time = O(N^2), space = O(N^2)
+public int longestPalindromeSubseq(String s) {
+    int n = s.length();
+    int[][] dp = new int[n][n];
+    for (int i = 0; i &lt; n; i++) dp[i][i] = 1;
+    for (int len = 2; len &lt;= n; len++)
+        for (int i = 0; i &lt;= n - len; i++) {
+            int j = i + len - 1;
+            dp[i][j] = s.charAt(i) == s.charAt(j)
+                ? dp[i+1][j-1] + 2
+                : Math.max(dp[i+1][j], dp[i][j-1]);
+        }
+    return dp[0][n-1];
+}
+</code></pre>
+<h3 id="2-8-minimum-insertion-steps-to-make-a-string-palindrome-lc-1312-interval-dp" tabindex="-1"><a class="header-anchor" href="#2-8-minimum-insertion-steps-to-make-a-string-palindrome-lc-1312-interval-dp"><span>2-8) Minimum Insertion Steps to Make a String Palindrome (LC 1312) — Interval DP</span></a></h3>
+<blockquote>
+<p>Minimum insertions = N − LPS length; equivalent to inserting to make palindrome.</p>
+</blockquote>
+<pre><code class="language-java">// LC 1312 - Minimum Insertion Steps to Make String Palindrome
+// IDEA: minInsertions = s.length() - LPS(s)
+// time = O(N^2), space = O(N^2)
+public int minInsertions(String s) {
+    int n = s.length();
+    int[][] dp = new int[n][n];
+    for (int len = 2; len &lt;= n; len++)
+        for (int i = 0; i &lt;= n - len; i++) {
+            int j = i + len - 1;
+            dp[i][j] = s.charAt(i) == s.charAt(j)
+                ? dp[i+1][j-1]
+                : Math.min(dp[i+1][j], dp[i][j-1]) + 1;
+        }
+    return dp[0][n-1];
+}
+</code></pre>
+<h3 id="2-9-palindrome-partitioning-lc-131-backtracking" tabindex="-1"><a class="header-anchor" href="#2-9-palindrome-partitioning-lc-131-backtracking"><span>2-9) Palindrome Partitioning (LC 131) — Backtracking</span></a></h3>
+<blockquote>
+<p>DFS with backtracking; at each index try all palindromic prefixes as next partition.</p>
+</blockquote>
+<pre><code class="language-java">// LC 131 - Palindrome Partitioning
+// IDEA: Backtracking — at each position try all palindromic prefixes; recurse on suffix
+// time = O(N * 2^N), space = O(N)
+public List&lt;List&lt;String&gt;&gt; partition(String s) {
+    List&lt;List&lt;String&gt;&gt; res = new ArrayList&lt;&gt;();
+    backtrack(s, 0, new ArrayList&lt;&gt;(), res);
+    return res;
+}
+private void backtrack(String s, int start, List&lt;String&gt; path, List&lt;List&lt;String&gt;&gt; res) {
+    if (start == s.length()) { res.add(new ArrayList&lt;&gt;(path)); return; }
+    for (int end = start + 1; end &lt;= s.length(); end++) {
+        String sub = s.substring(start, end);
+        if (isPalin(sub)) {
+            path.add(sub);
+            backtrack(s, end, path, res);
+            path.remove(path.size() - 1);
+        }
+    }
+}
+private boolean isPalin(String s) {
+    int l = 0, r = s.length() - 1;
+    while (l &lt; r) if (s.charAt(l++) != s.charAt(r--)) return false;
+    return true;
+}
+</code></pre>
+<h3 id="2-10-palindrome-partitioning-ii-lc-132-dp" tabindex="-1"><a class="header-anchor" href="#2-10-palindrome-partitioning-ii-lc-132-dp"><span>2-10) Palindrome Partitioning II (LC 132) — DP</span></a></h3>
+<blockquote>
+<p>dp[i] = minimum cuts for s[0…i]; precompute palindrome table or expand-around-center.</p>
+</blockquote>
+<pre><code class="language-java">// LC 132 - Palindrome Partitioning II
+// IDEA: DP — dp[i] = min cuts for s[0..i]; precompute isPalin table
+// time = O(N^2), space = O(N^2)
+public int minCut(String s) {
+    int n = s.length();
+    boolean[][] isPalin = new boolean[n][n];
+    for (int i = n-1; i &gt;= 0; i--)
+        for (int j = i; j &lt; n; j++)
+            isPalin[i][j] = s.charAt(i) == s.charAt(j) &amp;&amp; (j - i &lt; 2 || isPalin[i+1][j-1]);
+    int[] dp = new int[n];
+    Arrays.fill(dp, Integer.MAX_VALUE);
+    for (int i = 0; i &lt; n; i++) {
+        if (isPalin[0][i]) { dp[i] = 0; continue; }
+        for (int j = 1; j &lt;= i; j++)
+            if (isPalin[j][i]) dp[i] = Math.min(dp[i], dp[j-1] + 1);
+    }
+    return dp[n-1];
+}
+</code></pre>
+<h3 id="2-11-find-longest-awesome-substring-lc-1542-bitmask-prefix-xor" tabindex="-1"><a class="header-anchor" href="#2-11-find-longest-awesome-substring-lc-1542-bitmask-prefix-xor"><span>2-11) Find Longest Awesome Substring (LC 1542) — Bitmask + Prefix XOR</span></a></h3>
+<blockquote>
+<p>Awesome = at most one character with odd frequency; track prefix XOR states.</p>
+</blockquote>
+<pre><code class="language-java">// LC 1542 - Find Longest Awesome Substring
+// IDEA: Prefix XOR bitmask; awesome substring iff XOR has at most 1 set bit
+// time = O(10 * N), space = O(1024)
+public int longestAwesome(String s) {
+    int[] seen = new int[1024];
+    Arrays.fill(seen, s.length());
+    seen[0] = -1;
+    int prefix = 0, ans = 0;
+    for (int i = 0; i &lt; s.length(); i++) {
+        prefix ^= 1 &lt;&lt; (s.charAt(i) - '0');
+        if (seen[prefix] &lt;= s.length()) ans = Math.max(ans, i - seen[prefix]);
+        else seen[prefix] = i;
+        for (int d = 0; d &lt;= 9; d++) {  // try one odd-count digit
+            int mask = prefix ^ (1 &lt;&lt; d);
+            if (seen[mask] &lt;= s.length()) ans = Math.max(ans, i - seen[mask]);
+        }
+    }
+    return ans;
+}
+</code></pre>
+<ul>
+<li><strong>Tree Algorithms</strong>: Path problems, symmetric tree validation</li>
+</ul>
+
+      </div>
+      <div class="cheatsheet-footer">
+        <a href="../cheatsheets.html" class="back-link">← Back to Cheat Sheets</a>
+        <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/palindrome.md" class="github-edit" target="_blank">
+          Edit on GitHub →
+        </a>
+      </div>
+    <nav class="prev-next"><a href="n_sum.html" class="prev-link">← N Sum</a><a href="prefix_sum.html" class="next-link">Prefix Sum →</a></nav>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>CS_basics - Computer Science Fundamentals & Interview Preparation</p>
+      <p>
+        <a href="https://github.com/yennanliu/CS_basics">GitHub</a> •
+        <a href="https://github.com/yennanliu/CS_basics/tree/master/doc">Documentation</a> •
+        <a href="https://github.com/yennanliu/CS_basics/issues">Report Issues</a>
+      </p>
+    </div>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,1047 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Floyd-Warshall - CS_basics</title>
+  <meta name="description" content="Computer Science fundamentals: algorithms, data structures, system design, and LeetCode solutions">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>CS</text></svg>">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="../vendor/fonts.css">
+  <link rel="stylesheet" href="../vendor/highlight/github-dark.min.css">
+  <script src="../vendor/highlight/highlight.min.js"></script>
+  <script>
+  // Apply theme before render to prevent flash
+  (function() {
+    var saved = localStorage.getItem('theme');
+    if (saved === 'dark' || (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      document.documentElement.setAttribute('data-theme', 'dark');
+    }
+  })();
+  </script>
+  <script>document.addEventListener('DOMContentLoaded', function() {
+    hljs.highlightAll();
+    document.querySelectorAll('pre code').forEach(function(codeEl) {
+      var pre = codeEl.parentElement;
+      var lang = '';
+      var cls = codeEl.className || '';
+      var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
+      if (m) lang = m[1];
+      var wrapper = document.createElement('div');
+      wrapper.className = 'code-block-wrapper';
+      pre.parentNode.insertBefore(wrapper, pre);
+      var header = document.createElement('div');
+      header.className = 'code-block-header';
+      if (lang) {
+        var label = document.createElement('span');
+        label.className = 'code-lang-label';
+        label.textContent = lang;
+        header.appendChild(label);
+      } else {
+        header.appendChild(document.createElement('span'));
+      }
+      var btn = document.createElement('button');
+      btn.className = 'copy-btn';
+      btn.textContent = 'Copy';
+      btn.addEventListener('click', function() {
+        navigator.clipboard.writeText(codeEl.textContent).then(function() {
+          btn.textContent = 'Copied!';
+          btn.classList.add('copied');
+          setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+        });
+      });
+      header.appendChild(btn);
+      wrapper.appendChild(header);
+      wrapper.appendChild(pre);
+    });
+    document.querySelectorAll('table').forEach(function(table) {
+      if (!table.parentElement.classList.contains('table-wrap')) {
+        var wrapper = document.createElement('div');
+        wrapper.className = 'table-wrap';
+        table.parentNode.insertBefore(wrapper, table);
+        wrapper.appendChild(table);
+      }
+    });
+    // Reading progress bar
+    var progressBar = document.getElementById('reading-progress');
+    if (progressBar) {
+      window.addEventListener('scroll', function() {
+        var winScroll = document.documentElement.scrollTop;
+        var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        progressBar.style.width = height > 0 ? (winScroll / height * 100) + '%' : '0%';
+      });
+    }
+    // Dark mode toggle
+    var toggle = document.getElementById('theme-toggle');
+    if (toggle) {
+      var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      toggle.textContent = isDark ? '☀️' : '🌙';
+      toggle.addEventListener('click', function() {
+        var dark = document.documentElement.getAttribute('data-theme') === 'dark';
+        if (dark) {
+          document.documentElement.removeAttribute('data-theme');
+          localStorage.setItem('theme', 'light');
+          toggle.textContent = '🌙';
+        } else {
+          document.documentElement.setAttribute('data-theme', 'dark');
+          localStorage.setItem('theme', 'dark');
+          toggle.textContent = '☀️';
+        }
+      });
+    }
+  });</script>
+</head>
+<body>
+  <div class="progress-container"><div class="progress-bar" id="reading-progress"></div></div>
+  <nav class="navbar">
+    <div class="container">
+      <div class="nav-brand">
+        <span class="nav-icon">💻</span>
+        <span class="nav-title">CS_basics</span>
+      </div>
+      <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+      <div class="nav-links">
+        <a href="../index.html" class="">Home</a>
+        <a href="../cheatsheets.html" class="active">Cheat Sheets</a>
+        <a href="../patterns.html" class="">Pattern Recognition</a>
+        <a href="../faqs.html" class="">FAQs</a>
+        <a href="../resources.html" class="">Resources</a>
+        <a href="../lc-explorer.html" class="">LC Explorer</a>
+        <a href="../lc-random-picker.html" class="">🎲 Random Picker</a>
+        <a href="../algo_demo/index.html" class="">Visualizer</a>
+        <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">&#127769;</button>
+        <a href="https://github.com/yennanliu/CS_basics" target="_blank" class="github-link" aria-label="GitHub">
+          <svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor">
+            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container">
+    <div class="content">
+      
+      <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">Floyd-Warshall</span></nav>
+      <div class="cheatsheet-header">
+        <h1>Floyd-Warshall</h1>
+        <span class="last-updated">Last updated: Nov 8, 2025</span>
+      </div>
+      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#overview">Overview</a></li><li class="toc-sub"><a href="#key-properties">Key Properties</a></li><li class="toc-sub"><a href="#core-characteristics">Core Characteristics</a></li><li class="toc-sub"><a href="#references">References</a></li><li><a href="#problem-categories">Problem Categories</a></li><li class="toc-sub"><a href="#category-1-classic-all-pairs-shortest-path">Category 1: Classic All-Pairs Shortest Path</a></li><li class="toc-sub"><a href="#category-2-transitive-closure">Category 2: Transitive Closure</a></li><li class="toc-sub"><a href="#category-3-negative-cycle-detection">Category 3: Negative Cycle Detection</a></li><li class="toc-sub"><a href="#category-4-minimax-maximin-path">Category 4: Minimax/Maximin Path</a></li><li class="toc-sub"><a href="#category-5-graph-diameter-and-metrics">Category 5: Graph Diameter and Metrics</a></li><li><a href="#templates-algorithms">Templates &amp; Algorithms</a></li><li class="toc-sub"><a href="#template-comparison-table">Template Comparison Table</a></li><li class="toc-sub"><a href="#template-1-basic-floyd-warshall">Template 1: Basic Floyd-Warshall</a></li><li class="toc-sub"><a href="#template-2-floyd-warshall-with-path-reconstruction">Template 2: Floyd-Warshall with Path Reconstruction</a></li><li class="toc-sub"><a href="#template-3-transitive-closure-reachability">Template 3: Transitive Closure (Reachability)</a></li><li class="toc-sub"><a href="#template-4-negative-cycle-detection">Template 4: Negative Cycle Detection</a></li><li class="toc-sub"><a href="#template-5-minimax-path-bottleneck">Template 5: Minimax Path (Bottleneck)</a></li><li class="toc-sub"><a href="#template-6-space-optimized-version">Template 6: Space-Optimized Version</a></li><li><a href="#algorithm-comparison">Algorithm Comparison</a></li><li class="toc-sub"><a href="#floyd-warshall-vs-dijkstra-vs-bellman-ford">Floyd-Warshall vs Dijkstra vs Bellman-Ford</a></li><li class="toc-sub"><a href="#when-to-use-which-algorithm">When to Use Which Algorithm</a></li><li class="toc-sub"><a href="#practical-comparison-table">Practical Comparison Table</a></li><li class="toc-sub"><a href="#complexity-comparison-examples">Complexity Comparison Examples</a></li><li><a href="#lc-examples">LC Examples</a></li><li class="toc-sub"><a href="#example-1-find-the-city-with-the-smallest-number-of-neighbors-lc-1334">Example 1: Find the City With the Smallest Number of Neighbors (LC 1334)</a></li><li class="toc-sub"><a href="#example-2-course-schedule-iv-lc-1462">Example 2: Course Schedule IV (LC 1462)</a></li><li class="toc-sub"><a href="#example-3-network-delay-time-alternative-solution-lc-743">Example 3: Network Delay Time Alternative Solution (LC 743)</a></li><li class="toc-sub"><a href="#example-4-graph-connectivity-with-threshold-lc-1627">Example 4: Graph Connectivity With Threshold (LC 1627)</a></li><li class="toc-sub"><a href="#example-5-shortest-path-visiting-all-nodes-lc-847">Example 5: Shortest Path Visiting All Nodes (LC 847)</a></li><li><a href="#problems-by-pattern">Problems by Pattern</a></li><li class="toc-sub"><a href="#all-pairs-shortest-path-problems">All-Pairs Shortest Path Problems</a></li><li class="toc-sub"><a href="#transitive-closure-problems">Transitive Closure Problems</a></li><li class="toc-sub"><a href="#minimax-maximin-problems">Minimax/Maximin Problems</a></li><li class="toc-sub"><a href="#graph-metrics-problems">Graph Metrics Problems</a></li><li><a href="#decision-framework">Decision Framework</a></li><li class="toc-sub"><a href="#when-to-use-floyd-warshall">When to Use Floyd-Warshall</a></li><li class="toc-sub"><a href="#implementation-checklist">Implementation Checklist</a></li><li><a href="#summary-quick-reference">Summary &amp; Quick Reference</a></li><li class="toc-sub"><a href="#time-space-complexity">Time/Space Complexity</a></li><li class="toc-sub"><a href="#key-code-patterns">Key Code Patterns</a></li><li class="toc-sub"><a href="#common-variations">Common Variations</a></li><li class="toc-sub"><a href="#common-mistakes-tips">Common Mistakes &amp; Tips</a></li><li class="toc-sub"><a href="#interview-tips">Interview Tips</a></li><li class="toc-sub"><a href="#when-to-mention-floyd-warshall-in-interview">When to Mention Floyd-Warshall in Interview</a></li><li class="toc-sub"><a href="#related-algorithms">Related Algorithms</a></li></ul></div>
+      <div class="cheatsheet-content">
+        <h1 id="floyd-warshall-algorithm" tabindex="-1"><a class="header-anchor" href="#floyd-warshall-algorithm"><span>Floyd-Warshall Algorithm</span></a></h1>
+<h2 id="overview" tabindex="-1"><a class="header-anchor" href="#overview"><span>Overview</span></a></h2>
+<p><strong>Floyd-Warshall algorithm</strong> is a dynamic programming algorithm that solves the all-pairs shortest path problem. It finds the shortest paths between all pairs of vertices in a weighted graph, even with negative edge weights (but no negative cycles).</p>
+<h3 id="key-properties" tabindex="-1"><a class="header-anchor" href="#key-properties"><span>Key Properties</span></a></h3>
+<ul>
+<li><strong>Time Complexity</strong>: O(V³) where V is the number of vertices</li>
+<li><strong>Space Complexity</strong>: O(V²) for distance matrix</li>
+<li><strong>Core Idea</strong>: Dynamic programming with intermediate vertices</li>
+<li><strong>When to Use</strong>: All-pairs shortest path, can handle negative weights</li>
+<li><strong>Limitation</strong>: <code>Cannot</code> handle <code>negative cycles</code> (detects them but doesn’t work with them)</li>
+</ul>
+<h3 id="core-characteristics" tabindex="-1"><a class="header-anchor" href="#core-characteristics"><span>Core Characteristics</span></a></h3>
+<ul>
+<li><strong>Dynamic Programming</strong>: Builds solution incrementally using intermediate vertices</li>
+<li><strong>Matrix-Based</strong>: Uses adjacency matrix representation</li>
+<li><strong>Simple Implementation</strong>: Three nested loops</li>
+<li><strong>Versatile</strong>: Works with negative weights, detects negative cycles</li>
+<li><strong>Path Reconstruction</strong>: Can track paths with predecessor matrix</li>
+</ul>
+<h3 id="references" tabindex="-1"><a class="header-anchor" href="#references"><span>References</span></a></h3>
+<ul>
+<li><a href="https://www.cs.usfca.edu/~galles/visualization/Floyd.html">Floyd-Warshall Visualization</a></li>
+<li><a href="https://cp-algorithms.com/graph/all-pair-shortest-path-floyd-warshall.html">CP Algorithms - Floyd-Warshall</a></li>
+<li><a href="https://github.com/yennanliu/CS_basics/blob/master/Dijkstra.md">Dijkstra Cheatsheet</a> - For single-source comparison</li>
+<li><a href="https://github.com/yennanliu/CS_basics/blob/master/Bellman-Ford.md">Bellman-Ford Cheatsheet</a> - For single-source with negative weights</li>
+</ul>
+<h2 id="problem-categories" tabindex="-1"><a class="header-anchor" href="#problem-categories"><span>Problem Categories</span></a></h2>
+<h3 id="category-1-classic-all-pairs-shortest-path" tabindex="-1"><a class="header-anchor" href="#category-1-classic-all-pairs-shortest-path"><span><strong>Category 1: Classic All-Pairs Shortest Path</strong></span></a></h3>
+<ul>
+<li><strong>Description</strong>: Find shortest paths between all pairs of vertices</li>
+<li><strong>Examples</strong>: LC 1334 (Find City with Smallest Number), LC 1462 (Course Schedule IV)</li>
+<li><strong>Pattern</strong>: Direct application of Floyd-Warshall</li>
+</ul>
+<h3 id="category-2-transitive-closure" tabindex="-1"><a class="header-anchor" href="#category-2-transitive-closure"><span><strong>Category 2: Transitive Closure</strong></span></a></h3>
+<ul>
+<li><strong>Description</strong>: Determine reachability between all pairs of vertices</li>
+<li><strong>Examples</strong>: LC 1462 (Course Schedule IV), Graph connectivity problems</li>
+<li><strong>Pattern</strong>: Boolean version of Floyd-Warshall</li>
+</ul>
+<h3 id="category-3-negative-cycle-detection" tabindex="-1"><a class="header-anchor" href="#category-3-negative-cycle-detection"><span><strong>Category 3: Negative Cycle Detection</strong></span></a></h3>
+<ul>
+<li><strong>Description</strong>: Detect if graph contains negative cycles</li>
+<li><strong>Examples</strong>: Arbitrage detection, negative weight cycles</li>
+<li><strong>Pattern</strong>: Check diagonal after Floyd-Warshall</li>
+</ul>
+<h3 id="category-4-minimax-maximin-path" tabindex="-1"><a class="header-anchor" href="#category-4-minimax-maximin-path"><span><strong>Category 4: Minimax/Maximin Path</strong></span></a></h3>
+<ul>
+<li><strong>Description</strong>: Find path that minimizes maximum edge or maximizes minimum edge</li>
+<li><strong>Examples</strong>: LC 1334 (threshold problems), bottleneck shortest path</li>
+<li><strong>Pattern</strong>: Modified Floyd-Warshall with different operation</li>
+</ul>
+<h3 id="category-5-graph-diameter-and-metrics" tabindex="-1"><a class="header-anchor" href="#category-5-graph-diameter-and-metrics"><span><strong>Category 5: Graph Diameter and Metrics</strong></span></a></h3>
+<ul>
+<li><strong>Description</strong>: Find longest shortest path, graph center, radius</li>
+<li><strong>Examples</strong>: Network diameter, graph eccentricity</li>
+<li><strong>Pattern</strong>: Post-process Floyd-Warshall results</li>
+</ul>
+<h2 id="templates-algorithms" tabindex="-1"><a class="header-anchor" href="#templates-algorithms"><span>Templates &amp; Algorithms</span></a></h2>
+<h3 id="template-comparison-table" tabindex="-1"><a class="header-anchor" href="#template-comparison-table"><span>Template Comparison Table</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>Template Type</th>
+<th>Use Case</th>
+<th>Operation</th>
+<th>When to Use</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Basic Floyd-Warshall</strong></td>
+<td>All-pairs shortest path</td>
+<td>min(dist[i][j], dist[i][k]+dist[k][j])</td>
+<td>Standard shortest paths</td>
+</tr>
+<tr>
+<td><strong>Transitive Closure</strong></td>
+<td>Reachability</td>
+<td>dist[i][j] OR (dist[i][k] AND dist[k][j])</td>
+<td>Boolean connectivity</td>
+</tr>
+<tr>
+<td><strong>Minimax Path</strong></td>
+<td>Bottleneck path</td>
+<td>min(dist[i][j], max(dist[i][k], dist[k][j]))</td>
+<td>Capacity/bandwidth</td>
+</tr>
+<tr>
+<td><strong>Path Reconstruction</strong></td>
+<td>Track actual paths</td>
+<td>Predecessor matrix</td>
+<td>Need actual path</td>
+</tr>
+<tr>
+<td><strong>Negative Cycle</strong></td>
+<td>Detect cycles</td>
+<td>Check dist[i][i] &lt; 0</td>
+<td>Arbitrage, cycle detection</td>
+</tr>
+</tbody>
+</table>
+<h3 id="template-1-basic-floyd-warshall" tabindex="-1"><a class="header-anchor" href="#template-1-basic-floyd-warshall"><span>Template 1: Basic Floyd-Warshall</span></a></h3>
+<pre><code class="language-python">def floyd_warshall(n, edges):
+    &quot;&quot;&quot;
+    Find shortest paths between all pairs of vertices
+    n: number of vertices (0-indexed)
+    edges: list of (u, v, weight)
+    Returns: distance matrix
+    &quot;&quot;&quot;
+    # Initialize distance matrix
+    dist = [[float('inf')] * n for _ in range(n)]
+
+    # Distance from vertex to itself is 0
+    for i in range(n):
+        dist[i][i] = 0
+
+    # Add edges
+    for u, v, w in edges:
+        dist[u][v] = w
+        # For undirected graph, add reverse edge:
+        # dist[v][u] = w
+
+    # Floyd-Warshall: try all intermediate vertices
+    for k in range(n):
+        for i in range(n):
+            for j in range(n):
+                if dist[i][k] + dist[k][j] &lt; dist[i][j]:
+                    dist[i][j] = dist[i][k] + dist[k][j]
+
+    return dist
+</code></pre>
+<h3 id="template-2-floyd-warshall-with-path-reconstruction" tabindex="-1"><a class="header-anchor" href="#template-2-floyd-warshall-with-path-reconstruction"><span>Template 2: Floyd-Warshall with Path Reconstruction</span></a></h3>
+<pre><code class="language-python">def floyd_warshall_with_path(n, edges):
+    &quot;&quot;&quot;
+    Find shortest paths and reconstruct actual paths
+    Returns: (distance matrix, next vertex matrix)
+    &quot;&quot;&quot;
+    dist = [[float('inf')] * n for _ in range(n)]
+    next_vertex = [[None] * n for _ in range(n)]
+
+    # Initialize
+    for i in range(n):
+        dist[i][i] = 0
+        next_vertex[i][i] = i
+
+    for u, v, w in edges:
+        dist[u][v] = w
+        next_vertex[u][v] = v
+
+    # Floyd-Warshall
+    for k in range(n):
+        for i in range(n):
+            for j in range(n):
+                if dist[i][k] + dist[k][j] &lt; dist[i][j]:
+                    dist[i][j] = dist[i][k] + dist[k][j]
+                    next_vertex[i][j] = next_vertex[i][k]
+
+    return dist, next_vertex
+
+def reconstruct_path(next_vertex, u, v):
+    &quot;&quot;&quot;Reconstruct path from u to v&quot;&quot;&quot;
+    if next_vertex[u][v] is None:
+        return []
+
+    path = [u]
+    while u != v:
+        u = next_vertex[u][v]
+        path.append(u)
+    return path
+</code></pre>
+<h3 id="template-3-transitive-closure-reachability" tabindex="-1"><a class="header-anchor" href="#template-3-transitive-closure-reachability"><span>Template 3: Transitive Closure (Reachability)</span></a></h3>
+<pre><code class="language-python">def transitive_closure(n, edges):
+    &quot;&quot;&quot;
+    Determine if there's a path between every pair of vertices
+    Returns: boolean reachability matrix
+    &quot;&quot;&quot;
+    reach = [[False] * n for _ in range(n)]
+
+    # Initialize: vertex can reach itself
+    for i in range(n):
+        reach[i][i] = True
+
+    # Mark direct edges
+    for u, v in edges:
+        reach[u][v] = True
+
+    # Floyd-Warshall for reachability
+    for k in range(n):
+        for i in range(n):
+            for j in range(n):
+                reach[i][j] = reach[i][j] or (reach[i][k] and reach[k][j])
+
+    return reach
+</code></pre>
+<h3 id="template-4-negative-cycle-detection" tabindex="-1"><a class="header-anchor" href="#template-4-negative-cycle-detection"><span>Template 4: Negative Cycle Detection</span></a></h3>
+<pre><code class="language-python">def detect_negative_cycle(n, edges):
+    &quot;&quot;&quot;
+    Detect if graph contains negative cycle
+    Returns: (has_negative_cycle, distance_matrix)
+    &quot;&quot;&quot;
+    dist = [[float('inf')] * n for _ in range(n)]
+
+    for i in range(n):
+        dist[i][i] = 0
+
+    for u, v, w in edges:
+        dist[u][v] = w
+
+    # Floyd-Warshall
+    for k in range(n):
+        for i in range(n):
+            for j in range(n):
+                if dist[i][k] + dist[k][j] &lt; dist[i][j]:
+                    dist[i][j] = dist[i][k] + dist[k][j]
+
+    # Check diagonal for negative values
+    has_negative_cycle = any(dist[i][i] &lt; 0 for i in range(n))
+
+    return has_negative_cycle, dist
+</code></pre>
+<h3 id="template-5-minimax-path-bottleneck" tabindex="-1"><a class="header-anchor" href="#template-5-minimax-path-bottleneck"><span>Template 5: Minimax Path (Bottleneck)</span></a></h3>
+<pre><code class="language-python">def floyd_warshall_minimax(n, edges):
+    &quot;&quot;&quot;
+    Find path that minimizes the maximum edge weight
+    Useful for capacity/bandwidth problems
+    &quot;&quot;&quot;
+    # Initialize with infinity (no path)
+    dist = [[float('inf')] * n for _ in range(n)]
+
+    for i in range(n):
+        dist[i][i] = 0
+
+    for u, v, w in edges:
+        dist[u][v] = w
+
+    # Floyd-Warshall with minimax operation
+    for k in range(n):
+        for i in range(n):
+            for j in range(n):
+                # Minimize the maximum edge on path
+                dist[i][j] = min(dist[i][j], max(dist[i][k], dist[k][j]))
+
+    return dist
+</code></pre>
+<h3 id="template-6-space-optimized-version" tabindex="-1"><a class="header-anchor" href="#template-6-space-optimized-version"><span>Template 6: Space-Optimized Version</span></a></h3>
+<pre><code class="language-python">def floyd_warshall_optimized(n, edges):
+    &quot;&quot;&quot;
+    Space-optimized: use single matrix (in-place update)
+    &quot;&quot;&quot;
+    dist = [[float('inf')] * n for _ in range(n)]
+
+    for i in range(n):
+        dist[i][i] = 0
+
+    for u, v, w in edges:
+        dist[u][v] = min(dist[u][v], w)  # Handle multiple edges
+
+    # In-place updates are safe due to intermediate vertex property
+    for k in range(n):
+        for i in range(n):
+            for j in range(n):
+                dist[i][j] = min(dist[i][j], dist[i][k] + dist[k][j])
+
+    return dist
+</code></pre>
+<h2 id="algorithm-comparison" tabindex="-1"><a class="header-anchor" href="#algorithm-comparison"><span>Algorithm Comparison</span></a></h2>
+<h3 id="floyd-warshall-vs-dijkstra-vs-bellman-ford" tabindex="-1"><a class="header-anchor" href="#floyd-warshall-vs-dijkstra-vs-bellman-ford"><span>Floyd-Warshall vs Dijkstra vs Bellman-Ford</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>Floyd-Warshall</th>
+<th>Dijkstra</th>
+<th>Bellman-Ford</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Problem Type</strong></td>
+<td>All-pairs shortest path</td>
+<td>Single-source shortest path</td>
+<td>Single-source shortest path</td>
+</tr>
+<tr>
+<td><strong>Time Complexity</strong></td>
+<td>O(V³)</td>
+<td>O((V+E) log V)</td>
+<td>O(V·E)</td>
+</tr>
+<tr>
+<td><strong>Space Complexity</strong></td>
+<td>O(V²)</td>
+<td>O(V)</td>
+<td>O(V)</td>
+</tr>
+<tr>
+<td><strong>Negative Weights</strong></td>
+<td>✅ Yes</td>
+<td>❌ No</td>
+<td>✅ Yes</td>
+</tr>
+<tr>
+<td><strong>Negative Cycles</strong></td>
+<td>Detects</td>
+<td>N/A</td>
+<td>Detects</td>
+</tr>
+<tr>
+<td><strong>Implementation</strong></td>
+<td>Very simple (3 loops)</td>
+<td>Moderate (priority queue)</td>
+<td>Simple (2 loops)</td>
+</tr>
+<tr>
+<td><strong>Graph Type</strong></td>
+<td>Dense graphs preferred</td>
+<td>Sparse graphs preferred</td>
+<td>Any</td>
+</tr>
+<tr>
+<td><strong>Output</strong></td>
+<td>All-pairs distances</td>
+<td>Single-source distances</td>
+<td>Single-source distances</td>
+</tr>
+<tr>
+<td><strong>Best Use Case</strong></td>
+<td>Small graphs, all-pairs</td>
+<td>Large sparse graphs</td>
+<td>Negative weights, cycle detection</td>
+</tr>
+</tbody>
+</table>
+<h3 id="when-to-use-which-algorithm" tabindex="-1"><a class="header-anchor" href="#when-to-use-which-algorithm"><span>When to Use Which Algorithm</span></a></h3>
+<pre><code>Algorithm Selection Flowchart:
+
+1. Need all-pairs shortest paths?
+   ├── YES → Consider Floyd-Warshall
+   │   ├── Small graph (V ≤ 400)? → Use Floyd-Warshall
+   │   └── Large graph? → Run Dijkstra/Bellman-Ford V times
+   └── NO → Single-source problem → Continue to 2
+
+2. Are there negative edge weights?
+   ├── YES → Use Bellman-Ford (or SPFA)
+   └── NO → Use Dijkstra
+
+3. Is graph dense (E ≈ V²)?
+   ├── YES → Consider Floyd-Warshall for all-pairs
+   └── NO → Dijkstra is more efficient
+</code></pre>
+<h3 id="practical-comparison-table" tabindex="-1"><a class="header-anchor" href="#practical-comparison-table"><span>Practical Comparison Table</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>Scenario</th>
+<th>Best Algorithm</th>
+<th>Reason</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Small complete graph, all-pairs</td>
+<td>Floyd-Warshall</td>
+<td>O(V³) is acceptable, simple code</td>
+</tr>
+<tr>
+<td>Large sparse graph, single-source</td>
+<td>Dijkstra</td>
+<td>O((V+E) log V) much faster</td>
+</tr>
+<tr>
+<td>Negative weights, single-source</td>
+<td>Bellman-Ford</td>
+<td>Only algorithm that handles it</td>
+</tr>
+<tr>
+<td>Transitive closure</td>
+<td>Floyd-Warshall</td>
+<td>Natural DP formulation</td>
+</tr>
+<tr>
+<td>Grid shortest path</td>
+<td>Dijkstra</td>
+<td>Graph is implicit, sparse</td>
+</tr>
+<tr>
+<td>Network diameter</td>
+<td>Floyd-Warshall</td>
+<td>Need all-pairs anyway</td>
+</tr>
+<tr>
+<td>Path with constraints</td>
+<td>Dijkstra (modified)</td>
+<td>Flexible state tracking</td>
+</tr>
+<tr>
+<td>Arbitrage detection</td>
+<td>Floyd-Warshall</td>
+<td>Need cycle detection, all-pairs</td>
+</tr>
+</tbody>
+</table>
+<h3 id="complexity-comparison-examples" tabindex="-1"><a class="header-anchor" href="#complexity-comparison-examples"><span>Complexity Comparison Examples</span></a></h3>
+<p>For a graph with V=1000 vertices and E=5000 edges:</p>
+<table>
+<thead>
+<tr>
+<th>Algorithm</th>
+<th>Operations</th>
+<th>Relative Speed</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Floyd-Warshall</td>
+<td>1,000,000,000</td>
+<td>Baseline (slowest)</td>
+</tr>
+<tr>
+<td>Dijkstra (V times)</td>
+<td>~50,000 × log(1000) × 1000</td>
+<td>~20x faster</td>
+</tr>
+<tr>
+<td>Dijkstra (single)</td>
+<td>~5,000 × log(1000)</td>
+<td>~20,000x faster</td>
+</tr>
+<tr>
+<td>Bellman-Ford</td>
+<td>1000 × 5000 = 5,000,000</td>
+<td>~200x faster</td>
+</tr>
+</tbody>
+</table>
+<h2 id="lc-examples" tabindex="-1"><a class="header-anchor" href="#lc-examples"><span>LC Examples</span></a></h2>
+<h3 id="example-1-find-the-city-with-the-smallest-number-of-neighbors-lc-1334" tabindex="-1"><a class="header-anchor" href="#example-1-find-the-city-with-the-smallest-number-of-neighbors-lc-1334"><span>Example 1: Find the City With the Smallest Number of Neighbors (LC 1334)</span></a></h3>
+<pre><code class="language-python"># LC 1334 - Find the City With the Smallest Number of Neighbors at a Threshold Distance
+# Classic Floyd-Warshall application
+
+def findTheCity(n, edges, distanceThreshold):
+    &quot;&quot;&quot;
+    Find city with smallest number of reachable cities within threshold
+    &quot;&quot;&quot;
+    # Initialize distance matrix
+    dist = [[float('inf')] * n for _ in range(n)]
+
+    for i in range(n):
+        dist[i][i] = 0
+
+    for u, v, w in edges:
+        dist[u][v] = w
+        dist[v][u] = w  # Undirected graph
+
+    # Floyd-Warshall
+    for k in range(n):
+        for i in range(n):
+            for j in range(n):
+                dist[i][j] = min(dist[i][j], dist[i][k] + dist[k][j])
+
+    # Count reachable cities for each city
+    min_reachable = float('inf')
+    result_city = -1
+
+    for i in range(n):
+        reachable = sum(1 for j in range(n) if i != j and dist[i][j] &lt;= distanceThreshold)
+        if reachable &lt;= min_reachable:
+            min_reachable = reachable
+            result_city = i
+
+    return result_city
+</code></pre>
+<h3 id="example-2-course-schedule-iv-lc-1462" tabindex="-1"><a class="header-anchor" href="#example-2-course-schedule-iv-lc-1462"><span>Example 2: Course Schedule IV (LC 1462)</span></a></h3>
+<pre><code class="language-python"># LC 1462 - Course Schedule IV
+# Transitive closure problem
+
+def checkIfPrerequisite(numCourses, prerequisites, queries):
+    &quot;&quot;&quot;
+    Determine if course A is a prerequisite of course B (direct or indirect)
+    &quot;&quot;&quot;
+    n = numCourses
+    # is_prereq[i][j] = True if i is prerequisite of j
+    is_prereq = [[False] * n for _ in range(n)]
+
+    # Mark direct prerequisites
+    for pre, course in prerequisites:
+        is_prereq[pre][course] = True
+
+    # Floyd-Warshall for transitive closure
+    for k in range(n):
+        for i in range(n):
+            for j in range(n):
+                if is_prereq[i][k] and is_prereq[k][j]:
+                    is_prereq[i][j] = True
+
+    # Answer queries
+    return [is_prereq[u][v] for u, v in queries]
+</code></pre>
+<h3 id="example-3-network-delay-time-alternative-solution-lc-743" tabindex="-1"><a class="header-anchor" href="#example-3-network-delay-time-alternative-solution-lc-743"><span>Example 3: Network Delay Time Alternative Solution (LC 743)</span></a></h3>
+<pre><code class="language-python"># LC 743 - Network Delay Time
+# Can use Floyd-Warshall but Dijkstra is more efficient
+
+def networkDelayTime(times, n, k):
+    &quot;&quot;&quot;
+    Floyd-Warshall approach (overkill for single-source)
+    &quot;&quot;&quot;
+    dist = [[float('inf')] * n for _ in range(n)]
+
+    for i in range(n):
+        dist[i][i] = 0
+
+    for u, v, w in times:
+        dist[u-1][v-1] = w  # Convert to 0-indexed
+
+    # Floyd-Warshall
+    for mid in range(n):
+        for i in range(n):
+            for j in range(n):
+                dist[i][j] = min(dist[i][j], dist[i][mid] + dist[mid][j])
+
+    # Find max distance from source k-1
+    k_idx = k - 1
+    max_dist = max(dist[k_idx])
+
+    return max_dist if max_dist != float('inf') else -1
+</code></pre>
+<h3 id="example-4-graph-connectivity-with-threshold-lc-1627" tabindex="-1"><a class="header-anchor" href="#example-4-graph-connectivity-with-threshold-lc-1627"><span>Example 4: Graph Connectivity With Threshold (LC 1627)</span></a></h3>
+<pre><code class="language-python"># LC 1627 - Graph Connectivity With Threshold
+# Union-Find is better, but Floyd-Warshall works
+
+def areConnected(n, threshold, queries):
+    &quot;&quot;&quot;
+    Determine if cities are connected via intermediate cities &gt; threshold
+    &quot;&quot;&quot;
+    # Build graph: cities connected if gcd &gt; threshold
+    edges = []
+    for gcd_val in range(threshold + 1, n + 1):
+        # All multiples of gcd_val are connected
+        multiples = list(range(gcd_val, n + 1, gcd_val))
+        for i in range(len(multiples) - 1):
+            edges.append((multiples[i], multiples[i + 1]))
+
+    # Floyd-Warshall for connectivity
+    connected = [[False] * (n + 1) for _ in range(n + 1)]
+
+    for i in range(n + 1):
+        connected[i][i] = True
+
+    for u, v in edges:
+        connected[u][v] = connected[v][u] = True
+
+    for k in range(1, n + 1):
+        for i in range(1, n + 1):
+            for j in range(1, n + 1):
+                if connected[i][k] and connected[k][j]:
+                    connected[i][j] = True
+
+    return [connected[u][v] for u, v in queries]
+</code></pre>
+<h3 id="example-5-shortest-path-visiting-all-nodes-lc-847" tabindex="-1"><a class="header-anchor" href="#example-5-shortest-path-visiting-all-nodes-lc-847"><span>Example 5: Shortest Path Visiting All Nodes (LC 847)</span></a></h3>
+<pre><code class="language-python"># LC 847 - Shortest Path Visiting All Nodes
+# Use BFS with bitmask, but Floyd-Warshall for preprocessing
+
+def shortestPathLength(graph):
+    &quot;&quot;&quot;
+    Floyd-Warshall to precompute all-pairs distances,
+    then use DP/BFS to find shortest path visiting all nodes
+    &quot;&quot;&quot;
+    n = len(graph)
+
+    # Build distance matrix using Floyd-Warshall
+    dist = [[float('inf')] * n for _ in range(n)]
+    for i in range(n):
+        dist[i][i] = 0
+        for j in graph[i]:
+            dist[i][j] = 1
+
+    for k in range(n):
+        for i in range(n):
+            for j in range(n):
+                dist[i][j] = min(dist[i][j], dist[i][k] + dist[k][j])
+
+    # Now use BFS with bitmask (actual solution)
+    # ... (rest of solution uses dist matrix)
+
+    # Simplified return for template
+    return 0
+</code></pre>
+<h2 id="problems-by-pattern" tabindex="-1"><a class="header-anchor" href="#problems-by-pattern"><span>Problems by Pattern</span></a></h2>
+<h3 id="all-pairs-shortest-path-problems" tabindex="-1"><a class="header-anchor" href="#all-pairs-shortest-path-problems"><span><strong>All-Pairs Shortest Path Problems</strong></span></a></h3>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC #</th>
+<th>Key Technique</th>
+<th>Difficulty</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Find the City With Smallest Number</td>
+<td>1334</td>
+<td>Direct Floyd-Warshall</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Network Delay Time</td>
+<td>743</td>
+<td>Overkill but works</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Minimum Weighted Subgraph</td>
+<td>2203</td>
+<td>Three sources</td>
+<td>Hard</td>
+</tr>
+<tr>
+<td>Shortest Path in Undirected Graph</td>
+<td>1976</td>
+<td>All-pairs distances</td>
+<td>Medium</td>
+</tr>
+</tbody>
+</table>
+<h3 id="transitive-closure-problems" tabindex="-1"><a class="header-anchor" href="#transitive-closure-problems"><span><strong>Transitive Closure Problems</strong></span></a></h3>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC #</th>
+<th>Key Technique</th>
+<th>Difficulty</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Course Schedule IV</td>
+<td>1462</td>
+<td>Boolean Floyd-Warshall</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Graph Connectivity</td>
+<td>1627</td>
+<td>Reachability matrix</td>
+<td>Hard</td>
+</tr>
+<tr>
+<td>Evaluate Division</td>
+<td>399</td>
+<td>Weighted transitive closure</td>
+<td>Medium</td>
+</tr>
+</tbody>
+</table>
+<h3 id="minimax-maximin-problems" tabindex="-1"><a class="header-anchor" href="#minimax-maximin-problems"><span><strong>Minimax/Maximin Problems</strong></span></a></h3>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC #</th>
+<th>Key Technique</th>
+<th>Difficulty</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Path With Minimum Effort</td>
+<td>1631</td>
+<td>Modified Floyd-Warshall</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Swim in Rising Water</td>
+<td>778</td>
+<td>Minimax path</td>
+<td>Hard</td>
+</tr>
+<tr>
+<td>Minimum Score of a Path</td>
+<td>2492</td>
+<td>Modified operation</td>
+<td>Medium</td>
+</tr>
+</tbody>
+</table>
+<h3 id="graph-metrics-problems" tabindex="-1"><a class="header-anchor" href="#graph-metrics-problems"><span><strong>Graph Metrics Problems</strong></span></a></h3>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC #</th>
+<th>Key Technique</th>
+<th>Difficulty</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Graph Diameter</td>
+<td>N/A</td>
+<td>Max of all-pairs</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Center of Star Graph</td>
+<td>1791</td>
+<td>Post-process distances</td>
+<td>Easy</td>
+</tr>
+<tr>
+<td>Tree Diameter</td>
+<td>1522</td>
+<td>All-pairs in tree</td>
+<td>Medium</td>
+</tr>
+</tbody>
+</table>
+<h2 id="decision-framework" tabindex="-1"><a class="header-anchor" href="#decision-framework"><span>Decision Framework</span></a></h2>
+<h3 id="when-to-use-floyd-warshall" tabindex="-1"><a class="header-anchor" href="#when-to-use-floyd-warshall"><span>When to Use Floyd-Warshall</span></a></h3>
+<p>✅ <strong>Use Floyd-Warshall when:</strong></p>
+<ul>
+<li>Need all-pairs shortest paths</li>
+<li>Graph is small (V ≤ 400-500)</li>
+<li>Need transitive closure</li>
+<li>Need to detect negative cycles</li>
+<li>Graph is dense (E ≈ V²)</li>
+<li>Implementation simplicity is priority</li>
+<li>Need to answer multiple queries about different pairs</li>
+</ul>
+<p>❌ <strong>Don’t use Floyd-Warshall when:</strong></p>
+<ul>
+<li>Only need single-source shortest path (use Dijkstra/Bellman-Ford)</li>
+<li>Graph is very large (V &gt; 1000)</li>
+<li>Graph is sparse (use Dijkstra V times)</li>
+<li>Memory is constrained (O(V²) space)</li>
+<li>Need fastest path finding (Dijkstra is faster for single-source)</li>
+</ul>
+<h3 id="implementation-checklist" tabindex="-1"><a class="header-anchor" href="#implementation-checklist"><span>Implementation Checklist</span></a></h3>
+<pre><code class="language-python"># Floyd-Warshall Implementation Checklist:
+
+# 1. Initialize distance matrix
+dist = [[float('inf')] * n for _ in range(n)]
+for i in range(n): dist[i][i] = 0
+
+# 2. Add edges
+for u, v, w in edges: dist[u][v] = w
+
+# 3. Three nested loops (ORDER MATTERS: k must be outer)
+for k in range(n):           # Intermediate vertex
+    for i in range(n):       # Source
+        for j in range(n):   # Destination
+            dist[i][j] = min(dist[i][j], dist[i][k] + dist[k][j])
+
+# 4. Check for negative cycles (optional)
+has_neg_cycle = any(dist[i][i] &lt; 0 for i in range(n))
+
+# 5. Handle disconnected components
+# dist[i][j] == float('inf') means no path
+</code></pre>
+<h2 id="summary-quick-reference" tabindex="-1"><a class="header-anchor" href="#summary-quick-reference"><span>Summary &amp; Quick Reference</span></a></h2>
+<h3 id="time-space-complexity" tabindex="-1"><a class="header-anchor" href="#time-space-complexity"><span>Time/Space Complexity</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>Aspect</th>
+<th>Complexity</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Time</td>
+<td>O(V³)</td>
+<td>Three nested loops</td>
+</tr>
+<tr>
+<td>Space</td>
+<td>O(V²)</td>
+<td>Distance matrix</td>
+</tr>
+<tr>
+<td>Preprocessing</td>
+<td>O(E)</td>
+<td>Build adjacency matrix</td>
+</tr>
+<tr>
+<td>Query Time</td>
+<td>O(1)</td>
+<td>After preprocessing</td>
+</tr>
+</tbody>
+</table>
+<h3 id="key-code-patterns" tabindex="-1"><a class="header-anchor" href="#key-code-patterns"><span>Key Code Patterns</span></a></h3>
+<pre><code class="language-python"># Pattern 1: Basic shortest path
+dist[i][j] = min(dist[i][j], dist[i][k] + dist[k][j])
+
+# Pattern 2: Transitive closure (reachability)
+reach[i][j] = reach[i][j] or (reach[i][k] and reach[k][j])
+
+# Pattern 3: Minimax (bottleneck)
+dist[i][j] = min(dist[i][j], max(dist[i][k], dist[k][j]))
+
+# Pattern 4: Maximum capacity
+capacity[i][j] = max(capacity[i][j], min(capacity[i][k], capacity[k][j]))
+
+# Pattern 5: Negative cycle detection
+has_neg_cycle = any(dist[i][i] &lt; 0 for i in range(n))
+</code></pre>
+<h3 id="common-variations" tabindex="-1"><a class="header-anchor" href="#common-variations"><span>Common Variations</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>Variation</th>
+<th>Modification</th>
+<th>Use Case</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Standard</strong></td>
+<td>min(dist[i][j], dist[i][k]+dist[k][j])</td>
+<td>Shortest paths</td>
+</tr>
+<tr>
+<td><strong>Longest Path</strong></td>
+<td>max(dist[i][j], dist[i][k]+dist[k][j])</td>
+<td>Critical paths</td>
+</tr>
+<tr>
+<td><strong>Minimax</strong></td>
+<td>min(dist[i][j], max(dist[i][k], dist[k][j]))</td>
+<td>Bottleneck paths</td>
+</tr>
+<tr>
+<td><strong>Maximin</strong></td>
+<td>max(dist[i][j], min(dist[i][k], dist[k][j]))</td>
+<td>Widest paths</td>
+</tr>
+<tr>
+<td><strong>Boolean</strong></td>
+<td>OR/AND operations</td>
+<td>Reachability</td>
+</tr>
+</tbody>
+</table>
+<h3 id="common-mistakes-tips" tabindex="-1"><a class="header-anchor" href="#common-mistakes-tips"><span>Common Mistakes &amp; Tips</span></a></h3>
+<p><strong>🚫 Common Mistakes:</strong></p>
+<ul>
+<li>Wrong loop order (k must be outermost)</li>
+<li>Forgetting to initialize diagonal to 0</li>
+<li>Not handling undirected graphs (both directions)</li>
+<li>Checking for negative cycles incorrectly</li>
+<li>Using Floyd-Warshall for single-source on large graphs</li>
+</ul>
+<p><strong>✅ Best Practices:</strong></p>
+<ul>
+<li>Always use k as outer loop (intermediate vertex)</li>
+<li>Initialize dist[i][i] = 0 before adding edges</li>
+<li>For undirected graphs, add both directions</li>
+<li>Check diagonal for negative values to detect cycles</li>
+<li>Consider space optimization if only final distances needed</li>
+<li>Use Dijkstra if only single-source is needed</li>
+</ul>
+<h3 id="interview-tips" tabindex="-1"><a class="header-anchor" href="#interview-tips"><span>Interview Tips</span></a></h3>
+<ol>
+<li><strong>Identify the problem type</strong>: Clarify if single-source or all-pairs</li>
+<li><strong>Mention time/space complexity</strong>: O(V³) time, O(V²) space upfront</li>
+<li><strong>Compare with alternatives</strong>: Discuss when Dijkstra/Bellman-Ford better</li>
+<li><strong>Edge cases</strong>: Disconnected components, negative cycles, self-loops</li>
+<li><strong>Optimization opportunities</strong>: Can we use Dijkstra V times instead?</li>
+</ol>
+<h3 id="when-to-mention-floyd-warshall-in-interview" tabindex="-1"><a class="header-anchor" href="#when-to-mention-floyd-warshall-in-interview"><span>When to Mention Floyd-Warshall in Interview</span></a></h3>
+<ul>
+<li>“We need all-pairs shortest paths” → Floyd-Warshall</li>
+<li>“Graph is small (&lt; 500 vertices)” → Floyd-Warshall feasible</li>
+<li>“Need transitive closure” → Floyd-Warshall is natural</li>
+<li>“Can handle negative weights?” → Yes, unlike Dijkstra</li>
+<li>“What about larger graphs?” → Run Dijkstra V times or use Johnson’s</li>
+</ul>
+<h3 id="related-algorithms" tabindex="-1"><a class="header-anchor" href="#related-algorithms"><span>Related Algorithms</span></a></h3>
+<ul>
+<li><strong><a href="https://github.com/yennanliu/CS_basics/blob/master/Dijkstra.md">Dijkstra</a></strong>: Single-source, faster for sparse graphs, no negative weights</li>
+<li><strong><a href="https://github.com/yennanliu/CS_basics/blob/master/Bellman-Ford.md">Bellman-Ford</a></strong>: Single-source, handles negative weights, slower</li>
+<li><strong>Johnson’s Algorithm</strong>: All-pairs using reweighting + Dijkstra, O(V²logV + VE)</li>
+<li><strong>Warshall’s Algorithm</strong>: Boolean version for transitive closure</li>
+<li><strong>Path Matrix Multiplication</strong>: Alternative O(V³logV) approach</li>
+</ul>
+
+      </div>
+      <div class="cheatsheet-footer">
+        <a href="../cheatsheets.html" class="back-link">← Back to Cheat Sheets</a>
+        <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/Floyd-Warshall.md" class="github-edit" target="_blank">
+          Edit on GitHub →
+        </a>
+      </div>
+    <nav class="prev-next"><a href="Dijkstra.html" class="prev-link">← Dijkstra</a><a href="add_x_sum.html" class="next-link">Add X Sum →</a></nav>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>CS_basics - Computer Science Fundamentals & Interview Preparation</p>
+      <p>
+        <a href="https://github.com/yennanliu/CS_basics">GitHub</a> •
+        <a href="https://github.com/yennanliu/CS_basics/tree/master/doc">Documentation</a> •
+        <a href="https://github.com/yennanliu/CS_basics/issues">Report Issues</a>
+      </p>
+    </div>
+  </footer>
+</body>
+</html>

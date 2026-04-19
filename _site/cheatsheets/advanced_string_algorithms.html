@@ -1,0 +1,1084 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Advanced String Algorithms - CS_basics</title>
+  <meta name="description" content="Computer Science fundamentals: algorithms, data structures, system design, and LeetCode solutions">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>CS</text></svg>">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="../vendor/fonts.css">
+  <link rel="stylesheet" href="../vendor/highlight/github-dark.min.css">
+  <script src="../vendor/highlight/highlight.min.js"></script>
+  <script>
+  // Apply theme before render to prevent flash
+  (function() {
+    var saved = localStorage.getItem('theme');
+    if (saved === 'dark' || (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      document.documentElement.setAttribute('data-theme', 'dark');
+    }
+  })();
+  </script>
+  <script>document.addEventListener('DOMContentLoaded', function() {
+    hljs.highlightAll();
+    document.querySelectorAll('pre code').forEach(function(codeEl) {
+      var pre = codeEl.parentElement;
+      var lang = '';
+      var cls = codeEl.className || '';
+      var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
+      if (m) lang = m[1];
+      var wrapper = document.createElement('div');
+      wrapper.className = 'code-block-wrapper';
+      pre.parentNode.insertBefore(wrapper, pre);
+      var header = document.createElement('div');
+      header.className = 'code-block-header';
+      if (lang) {
+        var label = document.createElement('span');
+        label.className = 'code-lang-label';
+        label.textContent = lang;
+        header.appendChild(label);
+      } else {
+        header.appendChild(document.createElement('span'));
+      }
+      var btn = document.createElement('button');
+      btn.className = 'copy-btn';
+      btn.textContent = 'Copy';
+      btn.addEventListener('click', function() {
+        navigator.clipboard.writeText(codeEl.textContent).then(function() {
+          btn.textContent = 'Copied!';
+          btn.classList.add('copied');
+          setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+        });
+      });
+      header.appendChild(btn);
+      wrapper.appendChild(header);
+      wrapper.appendChild(pre);
+    });
+    document.querySelectorAll('table').forEach(function(table) {
+      if (!table.parentElement.classList.contains('table-wrap')) {
+        var wrapper = document.createElement('div');
+        wrapper.className = 'table-wrap';
+        table.parentNode.insertBefore(wrapper, table);
+        wrapper.appendChild(table);
+      }
+    });
+    // Reading progress bar
+    var progressBar = document.getElementById('reading-progress');
+    if (progressBar) {
+      window.addEventListener('scroll', function() {
+        var winScroll = document.documentElement.scrollTop;
+        var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        progressBar.style.width = height > 0 ? (winScroll / height * 100) + '%' : '0%';
+      });
+    }
+    // Dark mode toggle
+    var toggle = document.getElementById('theme-toggle');
+    if (toggle) {
+      var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      toggle.textContent = isDark ? '☀️' : '🌙';
+      toggle.addEventListener('click', function() {
+        var dark = document.documentElement.getAttribute('data-theme') === 'dark';
+        if (dark) {
+          document.documentElement.removeAttribute('data-theme');
+          localStorage.setItem('theme', 'light');
+          toggle.textContent = '🌙';
+        } else {
+          document.documentElement.setAttribute('data-theme', 'dark');
+          localStorage.setItem('theme', 'dark');
+          toggle.textContent = '☀️';
+        }
+      });
+    }
+  });</script>
+</head>
+<body>
+  <div class="progress-container"><div class="progress-bar" id="reading-progress"></div></div>
+  <nav class="navbar">
+    <div class="container">
+      <div class="nav-brand">
+        <span class="nav-icon">💻</span>
+        <span class="nav-title">CS_basics</span>
+      </div>
+      <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+      <div class="nav-links">
+        <a href="../index.html" class="">Home</a>
+        <a href="../cheatsheets.html" class="active">Cheat Sheets</a>
+        <a href="../patterns.html" class="">Pattern Recognition</a>
+        <a href="../faqs.html" class="">FAQs</a>
+        <a href="../resources.html" class="">Resources</a>
+        <a href="../lc-explorer.html" class="">LC Explorer</a>
+        <a href="../lc-random-picker.html" class="">🎲 Random Picker</a>
+        <a href="../algo_demo/index.html" class="">Visualizer</a>
+        <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">&#127769;</button>
+        <a href="https://github.com/yennanliu/CS_basics" target="_blank" class="github-link" aria-label="GitHub">
+          <svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor">
+            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container">
+    <div class="content">
+      
+      <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">Advanced String Algorithms</span></nav>
+      <div class="cheatsheet-header">
+        <h1>Advanced String Algorithms</h1>
+        <span class="last-updated">Last updated: Sep 29, 2025</span>
+      </div>
+      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#overview">Overview</a></li><li class="toc-sub"><a href="#key-properties">Key Properties</a></li><li class="toc-sub"><a href="#core-characteristics">Core Characteristics</a></li><li><a href="#problem-categories">Problem Categories</a></li><li class="toc-sub"><a href="#category-1-pattern-matching">Category 1: Pattern Matching</a></li><li class="toc-sub"><a href="#category-2-palindrome-problems">Category 2: Palindrome Problems</a></li><li class="toc-sub"><a href="#category-3-string-periodicity">Category 3: String Periodicity</a></li><li class="toc-sub"><a href="#category-4-suffix-based-problems">Category 4: Suffix-Based Problems</a></li><li><a href="#templates-algorithms">Templates &amp; Algorithms</a></li><li class="toc-sub"><a href="#template-comparison-table">Template Comparison Table</a></li><li class="toc-sub"><a href="#template-1-kmp-knuth-morris-pratt-algorithm">Template 1: KMP (Knuth-Morris-Pratt) Algorithm</a></li><li class="toc-sub"><a href="#template-2-manacher-s-algorithm">Template 2: Manacher’s Algorithm</a></li><li class="toc-sub"><a href="#template-3-z-algorithm">Template 3: Z-Algorithm</a></li><li class="toc-sub"><a href="#template-4-advanced-rolling-hash">Template 4: Advanced Rolling Hash</a></li><li class="toc-sub"><a href="#template-5-suffix-array-construction">Template 5: Suffix Array Construction</a></li><li><a href="#problems-by-pattern">Problems by Pattern</a></li><li class="toc-sub"><a href="#pattern-matching-problems">Pattern Matching Problems</a></li><li class="toc-sub"><a href="#palindrome-problems">Palindrome Problems</a></li><li class="toc-sub"><a href="#advanced-string-problems">Advanced String Problems</a></li><li><a href="#lc-examples">LC Examples</a></li><li class="toc-sub"><a href="#1-find-index-of-first-occurrence-lc-28">1. Find Index of First Occurrence (LC 28)</a></li><li class="toc-sub"><a href="#2-longest-palindromic-substring-lc-5">2. Longest Palindromic Substring (LC 5)</a></li><li class="toc-sub"><a href="#3-longest-duplicate-substring-lc-1044">3. Longest Duplicate Substring (LC 1044)</a></li><li><a href="#advanced-techniques">Advanced Techniques</a></li><li class="toc-sub"><a href="#multiple-pattern-matching">Multiple Pattern Matching</a></li><li class="toc-sub"><a href="#string-hashing-optimizations">String Hashing Optimizations</a></li><li><a href="#performance-optimization-tips">Performance Optimization Tips</a></li><li class="toc-sub"><a href="#algorithm-selection-guide">Algorithm Selection Guide</a></li><li><a href="#summary-quick-reference">Summary &amp; Quick Reference</a></li><li class="toc-sub"><a href="#algorithm-complexity-comparison">Algorithm Complexity Comparison</a></li><li class="toc-sub"><a href="#common-mistakes-tips">Common Mistakes &amp; Tips</a></li><li class="toc-sub"><a href="#interview-tips">Interview Tips</a></li></ul></div>
+      <div class="cheatsheet-content">
+        <h1 id="advanced-string-algorithms" tabindex="-1"><a class="header-anchor" href="#advanced-string-algorithms"><span>Advanced String Algorithms</span></a></h1>
+<h2 id="overview" tabindex="-1"><a class="header-anchor" href="#overview"><span>Overview</span></a></h2>
+<p><strong>Advanced String Algorithms</strong> encompass sophisticated techniques for string processing beyond basic operations. These algorithms provide optimal solutions for pattern matching, palindrome detection, and complex string manipulations with theoretical guarantees.</p>
+<h3 id="key-properties" tabindex="-1"><a class="header-anchor" href="#key-properties"><span>Key Properties</span></a></h3>
+<ul>
+<li><strong>Time Complexity</strong>: Often O(n) or O(n + m) for optimal algorithms</li>
+<li><strong>Space Complexity</strong>: O(n) for preprocessing structures</li>
+<li><strong>Core Idea</strong>: Preprocess strings to enable fast queries and pattern matching</li>
+<li><strong>When to Use</strong>: Complex string patterns, multiple queries, optimization needed</li>
+<li><strong>Key Algorithms</strong>: KMP, Manacher’s, Z-Algorithm, Rolling Hash, Suffix Arrays</li>
+</ul>
+<h3 id="core-characteristics" tabindex="-1"><a class="header-anchor" href="#core-characteristics"><span>Core Characteristics</span></a></h3>
+<ul>
+<li><strong>Preprocessing</strong>: Build auxiliary structures for fast operations</li>
+<li><strong>Pattern Recognition</strong>: Identify repeating structures and patterns</li>
+<li><strong>Linear Time</strong>: Achieve optimal time complexity through clever techniques</li>
+<li><strong>Multiple Queries</strong>: Efficient for repeated operations on same string</li>
+<li><strong>Theoretical Foundation</strong>: Based on deep string theory and automata</li>
+</ul>
+<h2 id="problem-categories" tabindex="-1"><a class="header-anchor" href="#problem-categories"><span>Problem Categories</span></a></h2>
+<h3 id="category-1-pattern-matching" tabindex="-1"><a class="header-anchor" href="#category-1-pattern-matching"><span><strong>Category 1: Pattern Matching</strong></span></a></h3>
+<ul>
+<li><strong>Description</strong>: Find occurrences of pattern in text efficiently</li>
+<li><strong>Examples</strong>: LC 28 (Find Index of First Occurrence), LC 459 (Repeated Substring Pattern)</li>
+<li><strong>Pattern</strong>: KMP, Z-Algorithm, Rolling Hash for O(n + m) solutions</li>
+</ul>
+<h3 id="category-2-palindrome-problems" tabindex="-1"><a class="header-anchor" href="#category-2-palindrome-problems"><span><strong>Category 2: Palindrome Problems</strong></span></a></h3>
+<ul>
+<li><strong>Description</strong>: Find all palindromes or longest palindromic substrings</li>
+<li><strong>Examples</strong>: LC 5 (Longest Palindromic Substring), LC 647 (Palindromic Substrings)</li>
+<li><strong>Pattern</strong>: Manacher’s Algorithm for O(n) palindrome detection</li>
+</ul>
+<h3 id="category-3-string-periodicity" tabindex="-1"><a class="header-anchor" href="#category-3-string-periodicity"><span><strong>Category 3: String Periodicity</strong></span></a></h3>
+<ul>
+<li><strong>Description</strong>: Detect repeating patterns and string periods</li>
+<li><strong>Examples</strong>: LC 459 (Repeated Substring Pattern), LC 1316 (Distinct Echo Substrings)</li>
+<li><strong>Pattern</strong>: Period detection using failure function or Z-array</li>
+</ul>
+<h3 id="category-4-suffix-based-problems" tabindex="-1"><a class="header-anchor" href="#category-4-suffix-based-problems"><span><strong>Category 4: Suffix-Based Problems</strong></span></a></h3>
+<ul>
+<li><strong>Description</strong>: Problems involving string suffixes and lexicographic ordering</li>
+<li><strong>Examples</strong>: LC 1044 (Longest Duplicate Substring), LC 1316 (Distinct Echo Substrings)</li>
+<li><strong>Pattern</strong>: Suffix arrays, longest common prefix, rolling hash</li>
+</ul>
+<h2 id="templates-algorithms" tabindex="-1"><a class="header-anchor" href="#templates-algorithms"><span>Templates &amp; Algorithms</span></a></h2>
+<h3 id="template-comparison-table" tabindex="-1"><a class="header-anchor" href="#template-comparison-table"><span>Template Comparison Table</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>Algorithm</th>
+<th>Use Case</th>
+<th>Time Complexity</th>
+<th>Space Complexity</th>
+<th>When to Use</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>KMP</strong></td>
+<td>Pattern matching</td>
+<td>O(n + m)</td>
+<td>O(m)</td>
+<td>Single pattern search</td>
+</tr>
+<tr>
+<td><strong>Manacher’s</strong></td>
+<td>All palindromes</td>
+<td>O(n)</td>
+<td>O(n)</td>
+<td>Palindrome problems</td>
+</tr>
+<tr>
+<td><strong>Z-Algorithm</strong></td>
+<td>String matching</td>
+<td>O(n)</td>
+<td>O(n)</td>
+<td>Pattern matching variants</td>
+</tr>
+<tr>
+<td><strong>Rolling Hash</strong></td>
+<td>Substring comparison</td>
+<td>O(n)</td>
+<td>O(1)</td>
+<td>Multiple pattern search</td>
+</tr>
+</tbody>
+</table>
+<h3 id="template-1-kmp-knuth-morris-pratt-algorithm" tabindex="-1"><a class="header-anchor" href="#template-1-kmp-knuth-morris-pratt-algorithm"><span>Template 1: KMP (Knuth-Morris-Pratt) Algorithm</span></a></h3>
+<pre><code class="language-python">def kmp_search(text, pattern):
+    &quot;&quot;&quot;KMP algorithm for pattern matching&quot;&quot;&quot;
+
+    def compute_failure_function(pattern):
+        &quot;&quot;&quot;Compute failure function (partial match table)&quot;&quot;&quot;
+        m = len(pattern)
+        failure = [0] * m
+        j = 0
+
+        for i in range(1, m):
+            while j &gt; 0 and pattern[i] != pattern[j]:
+                j = failure[j - 1]
+
+            if pattern[i] == pattern[j]:
+                j += 1
+
+            failure[i] = j
+
+        return failure
+
+    if not pattern:
+        return 0
+
+    n, m = len(text), len(pattern)
+    failure = compute_failure_function(pattern)
+    matches = []
+
+    j = 0  # Index for pattern
+    for i in range(n):  # Index for text
+        while j &gt; 0 and text[i] != pattern[j]:
+            j = failure[j - 1]
+
+        if text[i] == pattern[j]:
+            j += 1
+
+        if j == m:
+            matches.append(i - m + 1)
+            j = failure[j - 1]
+
+    return matches
+
+def kmp_pattern_matching_template():
+    &quot;&quot;&quot;Template for various KMP applications&quot;&quot;&quot;
+
+    def find_first_occurrence(text, pattern):
+        &quot;&quot;&quot;Find first occurrence of pattern in text&quot;&quot;&quot;
+        matches = kmp_search(text, pattern)
+        return matches[0] if matches else -1
+
+    def count_occurrences(text, pattern):
+        &quot;&quot;&quot;Count all occurrences of pattern&quot;&quot;&quot;
+        return len(kmp_search(text, pattern))
+
+    def is_substring_pattern(text, pattern):
+        &quot;&quot;&quot;Check if pattern exists in text&quot;&quot;&quot;
+        return len(kmp_search(text, pattern)) &gt; 0
+
+    def repeated_string_pattern(s):
+        &quot;&quot;&quot;Check if string is made of repeated pattern (LC 459)&quot;&quot;&quot;
+        n = len(s)
+        failure = compute_failure_function(s + s)
+
+        # Check if s is a rotation of itself in s+s
+        return failure[-1] != 0 and n % (n - failure[-1]) == 0
+
+    return {
+        'find_first': find_first_occurrence,
+        'count': count_occurrences,
+        'exists': is_substring_pattern,
+        'repeated': repeated_string_pattern
+    }
+</code></pre>
+<h3 id="template-2-manacher-s-algorithm" tabindex="-1"><a class="header-anchor" href="#template-2-manacher-s-algorithm"><span>Template 2: Manacher’s Algorithm</span></a></h3>
+<pre><code class="language-python">def manacher_algorithm(s):
+    &quot;&quot;&quot;Manacher's algorithm to find all palindromes in O(n)&quot;&quot;&quot;
+
+    def preprocess(s):
+        &quot;&quot;&quot;Preprocess string to handle even-length palindromes&quot;&quot;&quot;
+        # Transform &quot;abba&quot; -&gt; &quot;^#a#b#b#a#$&quot;
+        result = &quot;^&quot;
+        for c in s:
+            result += &quot;#&quot; + c
+        result += &quot;#$&quot;
+        return result
+
+    processed = preprocess(s)
+    n = len(processed)
+    p = [0] * n  # p[i] = radius of palindrome centered at i
+    center = right = 0
+
+    for i in range(1, n - 1):
+        # Mirror of i with respect to center
+        mirror = 2 * center - i
+
+        # If i is within the right boundary, use previously computed values
+        if i &lt; right:
+            p[i] = min(right - i, p[mirror])
+
+        # Try to expand palindrome centered at i
+        while processed[i + p[i] + 1] == processed[i - p[i] - 1]:
+            p[i] += 1
+
+        # If palindrome centered at i extends past right, adjust center and right
+        if i + p[i] &gt; right:
+            center, right = i, i + p[i]
+
+    return p, processed
+
+def manacher_applications():
+    &quot;&quot;&quot;Various applications of Manacher's algorithm&quot;&quot;&quot;
+
+    def longest_palindromic_substring(s):
+        &quot;&quot;&quot;Find longest palindromic substring (LC 5)&quot;&quot;&quot;
+        if not s:
+            return &quot;&quot;
+
+        p, processed = manacher_algorithm(s)
+        max_len = 0
+        center_index = 0
+
+        for i in range(1, len(p) - 1):
+            if p[i] &gt; max_len:
+                max_len = p[i]
+                center_index = i
+
+        # Convert back to original string coordinates
+        start = (center_index - max_len) // 2
+        return s[start:start + max_len]
+
+    def count_palindromic_substrings(s):
+        &quot;&quot;&quot;Count all palindromic substrings (LC 647)&quot;&quot;&quot;
+        if not s:
+            return 0
+
+        p, processed = manacher_algorithm(s)
+        count = 0
+
+        for i in range(1, len(p) - 1):
+            # Each palindrome of radius r contributes (r+1)/2 palindromes
+            count += (p[i] + 1) // 2
+
+        return count
+
+    def is_palindrome_range(s, left, right):
+        &quot;&quot;&quot;Check if substring s[left:right+1] is palindrome&quot;&quot;&quot;
+        p, processed = manacher_algorithm(s)
+
+        # Convert to processed string coordinates
+        center = left + right + 2
+        radius = right - left
+
+        return p[center] &gt;= radius
+
+    def all_palindromic_substrings(s):
+        &quot;&quot;&quot;Get all palindromic substrings with their positions&quot;&quot;&quot;
+        p, processed = manacher_algorithm(s)
+        palindromes = []
+
+        for i in range(1, len(p) - 1):
+            for r in range(p[i] + 1):
+                # Convert back to original coordinates
+                start = (i - r - 1) // 2
+                end = (i + r - 1) // 2
+                if start &lt;= end:
+                    palindromes.append((start, end, s[start:end + 1]))
+
+        return palindromes
+
+    return {
+        'longest': longest_palindromic_substring,
+        'count': count_palindromic_substrings,
+        'is_palindrome': is_palindrome_range,
+        'all_palindromes': all_palindromic_substrings
+    }
+</code></pre>
+<h3 id="template-3-z-algorithm" tabindex="-1"><a class="header-anchor" href="#template-3-z-algorithm"><span>Template 3: Z-Algorithm</span></a></h3>
+<pre><code class="language-python">def z_algorithm(s):
+    &quot;&quot;&quot;Z-algorithm: compute Z array where Z[i] = length of longest substring
+    starting from s[i] which is also a prefix of s&quot;&quot;&quot;
+
+    n = len(s)
+    z = [0] * n
+    left = right = 0
+
+    for i in range(1, n):
+        if i &lt;= right:
+            # Use previously computed values
+            z[i] = min(right - i + 1, z[i - left])
+
+        # Try to extend match
+        while i + z[i] &lt; n and s[z[i]] == s[i + z[i]]:
+            z[i] += 1
+
+        # Update window if we extended past right boundary
+        if i + z[i] - 1 &gt; right:
+            left, right = i, i + z[i] - 1
+
+    return z
+
+def z_algorithm_applications():
+    &quot;&quot;&quot;Applications of Z-algorithm&quot;&quot;&quot;
+
+    def pattern_search_z(text, pattern):
+        &quot;&quot;&quot;Pattern searching using Z-algorithm&quot;&quot;&quot;
+        combined = pattern + &quot;$&quot; + text
+        z = z_algorithm(combined)
+        pattern_len = len(pattern)
+        matches = []
+
+        for i in range(pattern_len + 1, len(combined)):
+            if z[i] == pattern_len:
+                matches.append(i - pattern_len - 1)
+
+        return matches
+
+    def find_all_occurrences(s, pattern):
+        &quot;&quot;&quot;Find all occurrences of pattern in string&quot;&quot;&quot;
+        return pattern_search_z(s, pattern)
+
+    def longest_prefix_suffix(s):
+        &quot;&quot;&quot;Find longest prefix which is also suffix&quot;&quot;&quot;
+        z = z_algorithm(s)
+        n = len(s)
+
+        for i in range(n - 1, 0, -1):
+            if z[i] == n - i:
+                return s[:n - i]
+
+        return &quot;&quot;
+
+    def period_detection(s):
+        &quot;&quot;&quot;Find the period of string using Z-algorithm&quot;&quot;&quot;
+        z = z_algorithm(s)
+        n = len(s)
+
+        for period in range(1, n):
+            if period + z[period] == n:
+                return period
+
+        return n  # String has no period shorter than itself
+
+    return {
+        'search': pattern_search_z,
+        'find_all': find_all_occurrences,
+        'prefix_suffix': longest_prefix_suffix,
+        'period': period_detection
+    }
+</code></pre>
+<h3 id="template-4-advanced-rolling-hash" tabindex="-1"><a class="header-anchor" href="#template-4-advanced-rolling-hash"><span>Template 4: Advanced Rolling Hash</span></a></h3>
+<pre><code class="language-python">class RollingHash:
+    &quot;&quot;&quot;Advanced rolling hash for string problems&quot;&quot;&quot;
+
+    def __init__(self, s, base=256, mod=10**9 + 7):
+        self.s = s
+        self.n = len(s)
+        self.base = base
+        self.mod = mod
+
+        # Precompute hash values and powers
+        self.hash_values = [0] * (self.n + 1)
+        self.base_powers = [1] * (self.n + 1)
+
+        for i in range(self.n):
+            self.hash_values[i + 1] = (self.hash_values[i] * base + ord(s[i])) % mod
+            self.base_powers[i + 1] = (self.base_powers[i] * base) % mod
+
+    def get_hash(self, left, right):
+        &quot;&quot;&quot;Get hash of substring s[left:right+1]&quot;&quot;&quot;
+        length = right - left + 1
+        result = (self.hash_values[right + 1] -
+                 self.hash_values[left] * self.base_powers[length]) % self.mod
+        return result if result &gt;= 0 else result + self.mod
+
+    def compare_substrings(self, l1, r1, l2, r2):
+        &quot;&quot;&quot;Compare two substrings using hash values&quot;&quot;&quot;
+        return (r1 - l1 == r2 - l2 and
+                self.get_hash(l1, r1) == self.get_hash(l2, r2))
+
+    def longest_duplicate_substring(self):
+        &quot;&quot;&quot;Find longest duplicate substring (LC 1044)&quot;&quot;&quot;
+        def has_duplicate_of_length(length):
+            seen_hashes = set()
+            for i in range(self.n - length + 1):
+                substring_hash = self.get_hash(i, i + length - 1)
+                if substring_hash in seen_hashes:
+                    return i
+                seen_hashes.add(substring_hash)
+            return -1
+
+        # Binary search on length
+        left, right = 0, self.n - 1
+        result_start = -1
+
+        while left &lt;= right:
+            mid = (left + right) // 2
+            start_pos = has_duplicate_of_length(mid)
+
+            if start_pos != -1:
+                result_start = start_pos
+                left = mid + 1
+            else:
+                right = mid - 1
+
+        return self.s[result_start:result_start + right] if result_start != -1 else &quot;&quot;
+
+    def distinct_echo_substrings(self):
+        &quot;&quot;&quot;Count distinct echo substrings (LC 1316)&quot;&quot;&quot;
+        seen = set()
+        count = 0
+
+        for i in range(self.n):
+            for j in range(i + 1, self.n, 2):  # Only even lengths
+                mid = (i + j) // 2
+                if self.compare_substrings(i, mid, mid + 1, j):
+                    substring_hash = self.get_hash(i, j)
+                    if substring_hash not in seen:
+                        seen.add(substring_hash)
+                        count += 1
+
+        return count
+</code></pre>
+<h3 id="template-5-suffix-array-construction" tabindex="-1"><a class="header-anchor" href="#template-5-suffix-array-construction"><span>Template 5: Suffix Array Construction</span></a></h3>
+<pre><code class="language-python">def suffix_array_construction(s):
+    &quot;&quot;&quot;Construct suffix array using counting sort (O(n log n))&quot;&quot;&quot;
+
+    def counting_sort(arr, key_func, max_val):
+        &quot;&quot;&quot;Stable counting sort&quot;&quot;&quot;
+        count = [0] * (max_val + 1)
+        for item in arr:
+            count[key_func(item)] += 1
+
+        for i in range(1, len(count)):
+            count[i] += count[i - 1]
+
+        result = [0] * len(arr)
+        for i in range(len(arr) - 1, -1, -1):
+            key = key_func(arr[i])
+            count[key] -= 1
+            result[count[key]] = arr[i]
+
+        return result
+
+    n = len(s)
+    if n == 0:
+        return []
+
+    # Initial ranking based on first character
+    suffixes = list(range(n))
+    rank = [ord(c) for c in s]
+
+    k = 1
+    while k &lt; n:
+        # Sort by (rank[i], rank[i + k])
+        def sort_key(i):
+            return (rank[i], rank[i + k] if i + k &lt; n else -1)
+
+        # Find maximum rank for counting sort
+        max_rank = max(rank) + 1
+
+        # Sort by second key first, then by first key
+        suffixes = counting_sort(suffixes, lambda i: rank[i + k] if i + k &lt; n else -1, max_rank)
+        suffixes = counting_sort(suffixes, lambda i: rank[i], max_rank)
+
+        # Update ranks
+        new_rank = [0] * n
+        for i in range(1, n):
+            if (rank[suffixes[i]], rank[suffixes[i] + k] if suffixes[i] + k &lt; n else -1) == \
+               (rank[suffixes[i - 1]], rank[suffixes[i - 1] + k] if suffixes[i - 1] + k &lt; n else -1):
+                new_rank[suffixes[i]] = new_rank[suffixes[i - 1]]
+            else:
+                new_rank[suffixes[i]] = i
+
+        rank = new_rank
+        k *= 2
+
+    return suffixes
+
+def lcp_array(s, suffix_array):
+    &quot;&quot;&quot;Compute LCP (Longest Common Prefix) array&quot;&quot;&quot;
+    n = len(s)
+    if n == 0:
+        return []
+
+    # Inverse of suffix array
+    rank = [0] * n
+    for i in range(n):
+        rank[suffix_array[i]] = i
+
+    lcp = [0] * (n - 1)
+    h = 0
+
+    for i in range(n):
+        if rank[i] &gt; 0:
+            j = suffix_array[rank[i] - 1]
+            while i + h &lt; n and j + h &lt; n and s[i + h] == s[j + h]:
+                h += 1
+            lcp[rank[i] - 1] = h
+            if h &gt; 0:
+                h -= 1
+
+    return lcp
+</code></pre>
+<h2 id="problems-by-pattern" tabindex="-1"><a class="header-anchor" href="#problems-by-pattern"><span>Problems by Pattern</span></a></h2>
+<h3 id="pattern-matching-problems" tabindex="-1"><a class="header-anchor" href="#pattern-matching-problems"><span><strong>Pattern Matching Problems</strong></span></a></h3>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC #</th>
+<th>Best Algorithm</th>
+<th>Time Complexity</th>
+<th>Difficulty</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Find Index of First Occurrence</td>
+<td>28</td>
+<td>KMP</td>
+<td>O(n + m)</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Repeated Substring Pattern</td>
+<td>459</td>
+<td>KMP/Z-Algorithm</td>
+<td>O(n)</td>
+<td>Easy</td>
+</tr>
+<tr>
+<td>Shortest Palindrome</td>
+<td>214</td>
+<td>KMP + Reverse</td>
+<td>O(n)</td>
+<td>Hard</td>
+</tr>
+</tbody>
+</table>
+<h3 id="palindrome-problems" tabindex="-1"><a class="header-anchor" href="#palindrome-problems"><span><strong>Palindrome Problems</strong></span></a></h3>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC #</th>
+<th>Best Algorithm</th>
+<th>Time Complexity</th>
+<th>Difficulty</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Longest Palindromic Substring</td>
+<td>5</td>
+<td>Manacher’s</td>
+<td>O(n)</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Palindromic Substrings</td>
+<td>647</td>
+<td>Manacher’s</td>
+<td>O(n)</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Shortest Palindrome</td>
+<td>214</td>
+<td>Manacher’s/KMP</td>
+<td>O(n)</td>
+<td>Hard</td>
+</tr>
+</tbody>
+</table>
+<h3 id="advanced-string-problems" tabindex="-1"><a class="header-anchor" href="#advanced-string-problems"><span><strong>Advanced String Problems</strong></span></a></h3>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC #</th>
+<th>Best Algorithm</th>
+<th>Time Complexity</th>
+<th>Difficulty</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Longest Duplicate Substring</td>
+<td>1044</td>
+<td>Rolling Hash + Binary Search</td>
+<td>O(n log n)</td>
+<td>Hard</td>
+</tr>
+<tr>
+<td>Distinct Echo Substrings</td>
+<td>1316</td>
+<td>Rolling Hash</td>
+<td>O(n²)</td>
+<td>Hard</td>
+</tr>
+<tr>
+<td>Find All Anagrams</td>
+<td>438</td>
+<td>Rolling Hash</td>
+<td>O(n)</td>
+<td>Medium</td>
+</tr>
+</tbody>
+</table>
+<h2 id="lc-examples" tabindex="-1"><a class="header-anchor" href="#lc-examples"><span>LC Examples</span></a></h2>
+<h3 id="1-find-index-of-first-occurrence-lc-28" tabindex="-1"><a class="header-anchor" href="#1-find-index-of-first-occurrence-lc-28"><span>1. Find Index of First Occurrence (LC 28)</span></a></h3>
+<pre><code class="language-python">def strStr(haystack, needle):
+    &quot;&quot;&quot;KMP implementation for string search&quot;&quot;&quot;
+    if not needle:
+        return 0
+
+    def compute_lps(pattern):
+        &quot;&quot;&quot;Compute Longest Prefix Suffix array&quot;&quot;&quot;
+        m = len(pattern)
+        lps = [0] * m
+        length = 0
+        i = 1
+
+        while i &lt; m:
+            if pattern[i] == pattern[length]:
+                length += 1
+                lps[i] = length
+                i += 1
+            else:
+                if length != 0:
+                    length = lps[length - 1]
+                else:
+                    lps[i] = 0
+                    i += 1
+
+        return lps
+
+    n, m = len(haystack), len(needle)
+    lps = compute_lps(needle)
+
+    i = j = 0
+    while i &lt; n:
+        if haystack[i] == needle[j]:
+            i += 1
+            j += 1
+
+        if j == m:
+            return i - j
+        elif i &lt; n and haystack[i] != needle[j]:
+            if j != 0:
+                j = lps[j - 1]
+            else:
+                i += 1
+
+    return -1
+</code></pre>
+<h3 id="2-longest-palindromic-substring-lc-5" tabindex="-1"><a class="header-anchor" href="#2-longest-palindromic-substring-lc-5"><span>2. Longest Palindromic Substring (LC 5)</span></a></h3>
+<pre><code class="language-python">def longestPalindrome(s):
+    &quot;&quot;&quot;Manacher's algorithm for longest palindromic substring&quot;&quot;&quot;
+    if not s:
+        return &quot;&quot;
+
+    # Preprocess string
+    processed = &quot;^#&quot; + &quot;#&quot;.join(s) + &quot;#$&quot;
+    n = len(processed)
+    p = [0] * n
+    center = right = 0
+
+    for i in range(1, n - 1):
+        mirror = 2 * center - i
+
+        if i &lt; right:
+            p[i] = min(right - i, p[mirror])
+
+        # Try to expand
+        while processed[i + p[i] + 1] == processed[i - p[i] - 1]:
+            p[i] += 1
+
+        # Update center and right boundary
+        if i + p[i] &gt; right:
+            center, right = i, i + p[i]
+
+    # Find longest palindrome
+    max_len = 0
+    center_index = 0
+    for i in range(1, n - 1):
+        if p[i] &gt; max_len:
+            max_len = p[i]
+            center_index = i
+
+    start = (center_index - max_len) // 2
+    return s[start:start + max_len]
+</code></pre>
+<h3 id="3-longest-duplicate-substring-lc-1044" tabindex="-1"><a class="header-anchor" href="#3-longest-duplicate-substring-lc-1044"><span>3. Longest Duplicate Substring (LC 1044)</span></a></h3>
+<pre><code class="language-python">def longestDupSubstring(s):
+    &quot;&quot;&quot;Rolling hash with binary search&quot;&quot;&quot;
+
+    def has_duplicate(length):
+        base = 256
+        mod = 2**63 - 1
+        base_power = pow(base, length, mod)
+
+        current_hash = 0
+        for i in range(length):
+            current_hash = (current_hash * base + ord(s[i])) % mod
+
+        seen = {current_hash}
+
+        for i in range(length, len(s)):
+            # Remove leftmost character and add rightmost
+            current_hash = (current_hash - ord(s[i - length]) * base_power) % mod
+            current_hash = (current_hash * base + ord(s[i])) % mod
+
+            if current_hash in seen:
+                return i - length + 1
+            seen.add(current_hash)
+
+        return -1
+
+    left, right = 0, len(s) - 1
+    result_start = 0
+
+    while left &lt;= right:
+        mid = (left + right) // 2
+        start_pos = has_duplicate(mid)
+
+        if start_pos != -1:
+            result_start = start_pos
+            left = mid + 1
+        else:
+            right = mid - 1
+
+    return s[result_start:result_start + right] if right &gt; 0 else &quot;&quot;
+</code></pre>
+<h2 id="advanced-techniques" tabindex="-1"><a class="header-anchor" href="#advanced-techniques"><span>Advanced Techniques</span></a></h2>
+<h3 id="multiple-pattern-matching" tabindex="-1"><a class="header-anchor" href="#multiple-pattern-matching"><span>Multiple Pattern Matching</span></a></h3>
+<pre><code class="language-python">class AhoCorasick:
+    &quot;&quot;&quot;Aho-Corasick algorithm for multiple pattern matching&quot;&quot;&quot;
+
+    def __init__(self):
+        self.trie = {}
+        self.failure = {}
+        self.output = {}
+
+    def add_pattern(self, pattern, pattern_id):
+        &quot;&quot;&quot;Add pattern to trie&quot;&quot;&quot;
+        node = self.trie
+        for char in pattern:
+            if char not in node:
+                node[char] = {}
+            node = node[char]
+        node['$'] = pattern_id
+
+    def build_failure_function(self):
+        &quot;&quot;&quot;Build failure function for Aho-Corasick&quot;&quot;&quot;
+        from collections import deque
+
+        queue = deque()
+        self.failure[id(self.trie)] = self.trie
+
+        # Initialize first level
+        for char, child in self.trie.items():
+            if char != '$':
+                self.failure[id(child)] = self.trie
+                queue.append((child, char))
+
+        # Build failure links using BFS
+        while queue:
+            current, char = queue.popleft()
+            current_id = id(current)
+
+            for next_char, next_node in current.items():
+                if next_char == '$':
+                    continue
+
+                queue.append((next_node, next_char))
+
+                # Find failure link
+                failure_node = self.failure[current_id]
+                while failure_node != self.trie and next_char not in failure_node:
+                    failure_node = self.failure[id(failure_node)]
+
+                if next_char in failure_node:
+                    self.failure[id(next_node)] = failure_node[next_char]
+                else:
+                    self.failure[id(next_node)] = self.trie
+
+    def search_all(self, text):
+        &quot;&quot;&quot;Find all pattern occurrences in text&quot;&quot;&quot;
+        current = self.trie
+        results = []
+
+        for i, char in enumerate(text):
+            # Follow failure links
+            while current != self.trie and char not in current:
+                current = self.failure[id(current)]
+
+            if char in current:
+                current = current[char]
+
+                # Check for matches
+                temp = current
+                while temp != self.trie:
+                    if '$' in temp:
+                        pattern_id = temp['$']
+                        results.append((i, pattern_id))
+                    temp = self.failure[id(temp)]
+
+        return results
+</code></pre>
+<h3 id="string-hashing-optimizations" tabindex="-1"><a class="header-anchor" href="#string-hashing-optimizations"><span>String Hashing Optimizations</span></a></h3>
+<pre><code class="language-python">class DoubleHash:
+    &quot;&quot;&quot;Double hashing to reduce collision probability&quot;&quot;&quot;
+
+    def __init__(self, s):
+        self.s = s
+        self.n = len(s)
+
+        # Two different bases and moduli
+        self.base1, self.mod1 = 257, 10**9 + 7
+        self.base2, self.mod2 = 263, 10**9 + 9
+
+        self.hash1 = [0] * (self.n + 1)
+        self.hash2 = [0] * (self.n + 1)
+        self.pow1 = [1] * (self.n + 1)
+        self.pow2 = [1] * (self.n + 1)
+
+        for i in range(self.n):
+            self.hash1[i + 1] = (self.hash1[i] * self.base1 + ord(s[i])) % self.mod1
+            self.hash2[i + 1] = (self.hash2[i] * self.base2 + ord(s[i])) % self.mod2
+            self.pow1[i + 1] = (self.pow1[i] * self.base1) % self.mod1
+            self.pow2[i + 1] = (self.pow2[i] * self.base2) % self.mod2
+
+    def get_hash(self, left, right):
+        &quot;&quot;&quot;Get double hash of substring&quot;&quot;&quot;
+        length = right - left + 1
+        h1 = (self.hash1[right + 1] - self.hash1[left] * self.pow1[length]) % self.mod1
+        h2 = (self.hash2[right + 1] - self.hash2[left] * self.pow2[length]) % self.mod2
+        return (h1, h2)
+</code></pre>
+<h2 id="performance-optimization-tips" tabindex="-1"><a class="header-anchor" href="#performance-optimization-tips"><span>Performance Optimization Tips</span></a></h2>
+<h3 id="algorithm-selection-guide" tabindex="-1"><a class="header-anchor" href="#algorithm-selection-guide"><span>Algorithm Selection Guide</span></a></h3>
+<pre><code class="language-python">def choose_string_algorithm(problem_characteristics):
+    &quot;&quot;&quot;Guide for choosing optimal string algorithm&quot;&quot;&quot;
+
+    if problem_characteristics['type'] == 'pattern_matching':
+        if problem_characteristics['single_pattern']:
+            return &quot;KMP or Z-Algorithm&quot;
+        else:
+            return &quot;Aho-Corasick&quot;
+
+    elif problem_characteristics['type'] == 'palindromes':
+        if problem_characteristics['all_palindromes']:
+            return &quot;Manacher's Algorithm&quot;
+        else:
+            return &quot;Expand around centers&quot;
+
+    elif problem_characteristics['type'] == 'substring_queries':
+        if problem_characteristics['many_queries']:
+            return &quot;Rolling Hash or Suffix Array&quot;
+        else:
+            return &quot;Simple comparison&quot;
+
+    elif problem_characteristics['type'] == 'string_matching':
+        if problem_characteristics['approximate']:
+            return &quot;Edit distance DP&quot;
+        else:
+            return &quot;KMP or Rolling Hash&quot;
+</code></pre>
+<h2 id="summary-quick-reference" tabindex="-1"><a class="header-anchor" href="#summary-quick-reference"><span>Summary &amp; Quick Reference</span></a></h2>
+<h3 id="algorithm-complexity-comparison" tabindex="-1"><a class="header-anchor" href="#algorithm-complexity-comparison"><span>Algorithm Complexity Comparison</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>Algorithm</th>
+<th>Time Complexity</th>
+<th>Space Complexity</th>
+<th>Best Use Case</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>KMP</td>
+<td>O(n + m)</td>
+<td>O(m)</td>
+<td>Single pattern search</td>
+</tr>
+<tr>
+<td>Manacher’s</td>
+<td>O(n)</td>
+<td>O(n)</td>
+<td>All palindromes</td>
+</tr>
+<tr>
+<td>Z-Algorithm</td>
+<td>O(n)</td>
+<td>O(n)</td>
+<td>Pattern matching variants</td>
+</tr>
+<tr>
+<td>Rolling Hash</td>
+<td>O(n)</td>
+<td>O(1) amortized</td>
+<td>Multiple queries</td>
+</tr>
+<tr>
+<td>Suffix Array</td>
+<td>O(n log n)</td>
+<td>O(n)</td>
+<td>Complex string operations</td>
+</tr>
+</tbody>
+</table>
+<h3 id="common-mistakes-tips" tabindex="-1"><a class="header-anchor" href="#common-mistakes-tips"><span>Common Mistakes &amp; Tips</span></a></h3>
+<p><strong>🚫 Common Mistakes:</strong></p>
+<ul>
+<li>Not handling empty strings or patterns</li>
+<li>Off-by-one errors in index calculations</li>
+<li>Hash collision issues with single hash</li>
+<li>Incorrect failure function computation</li>
+</ul>
+<p><strong>✅ Best Practices:</strong></p>
+<ul>
+<li>Always validate input strings</li>
+<li>Use double hashing for collision resistance</li>
+<li>Preprocess strings when multiple queries expected</li>
+<li>Choose algorithm based on problem constraints</li>
+<li>Test with edge cases and long strings</li>
+</ul>
+<h3 id="interview-tips" tabindex="-1"><a class="header-anchor" href="#interview-tips"><span>Interview Tips</span></a></h3>
+<ol>
+<li><strong>Identify the core requirement</strong>: Pattern matching, palindromes, or queries</li>
+<li><strong>Choose optimal algorithm</strong>: Based on time/space constraints</li>
+<li><strong>Handle edge cases</strong>: Empty strings, single characters</li>
+<li><strong>Consider preprocessing</strong>: For multiple queries</li>
+<li><strong>Implement carefully</strong>: Index management is critical</li>
+<li><strong>Test thoroughly</strong>: With various string lengths and patterns</li>
+</ol>
+<p>This comprehensive advanced string algorithms cheatsheet covers the most sophisticated techniques for optimal string processing and pattern matching.</p>
+
+      </div>
+      <div class="cheatsheet-footer">
+        <a href="../cheatsheets.html" class="back-link">← Back to Cheat Sheets</a>
+        <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/advanced_string_algorithms.md" class="github-edit" target="_blank">
+          Edit on GitHub →
+        </a>
+      </div>
+    <nav class="prev-next"><a href="advanced_simulation.html" class="prev-link">← Advanced Simulation</a><a href="array.html" class="next-link">Array →</a></nav>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>CS_basics - Computer Science Fundamentals & Interview Preparation</p>
+      <p>
+        <a href="https://github.com/yennanliu/CS_basics">GitHub</a> •
+        <a href="https://github.com/yennanliu/CS_basics/tree/master/doc">Documentation</a> •
+        <a href="https://github.com/yennanliu/CS_basics/issues">Report Issues</a>
+      </p>
+    </div>
+  </footer>
+</body>
+</html>

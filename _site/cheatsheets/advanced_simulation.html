@@ -1,0 +1,959 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Advanced Simulation - CS_basics</title>
+  <meta name="description" content="Computer Science fundamentals: algorithms, data structures, system design, and LeetCode solutions">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>CS</text></svg>">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="../vendor/fonts.css">
+  <link rel="stylesheet" href="../vendor/highlight/github-dark.min.css">
+  <script src="../vendor/highlight/highlight.min.js"></script>
+  <script>
+  // Apply theme before render to prevent flash
+  (function() {
+    var saved = localStorage.getItem('theme');
+    if (saved === 'dark' || (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      document.documentElement.setAttribute('data-theme', 'dark');
+    }
+  })();
+  </script>
+  <script>document.addEventListener('DOMContentLoaded', function() {
+    hljs.highlightAll();
+    document.querySelectorAll('pre code').forEach(function(codeEl) {
+      var pre = codeEl.parentElement;
+      var lang = '';
+      var cls = codeEl.className || '';
+      var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
+      if (m) lang = m[1];
+      var wrapper = document.createElement('div');
+      wrapper.className = 'code-block-wrapper';
+      pre.parentNode.insertBefore(wrapper, pre);
+      var header = document.createElement('div');
+      header.className = 'code-block-header';
+      if (lang) {
+        var label = document.createElement('span');
+        label.className = 'code-lang-label';
+        label.textContent = lang;
+        header.appendChild(label);
+      } else {
+        header.appendChild(document.createElement('span'));
+      }
+      var btn = document.createElement('button');
+      btn.className = 'copy-btn';
+      btn.textContent = 'Copy';
+      btn.addEventListener('click', function() {
+        navigator.clipboard.writeText(codeEl.textContent).then(function() {
+          btn.textContent = 'Copied!';
+          btn.classList.add('copied');
+          setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+        });
+      });
+      header.appendChild(btn);
+      wrapper.appendChild(header);
+      wrapper.appendChild(pre);
+    });
+    document.querySelectorAll('table').forEach(function(table) {
+      if (!table.parentElement.classList.contains('table-wrap')) {
+        var wrapper = document.createElement('div');
+        wrapper.className = 'table-wrap';
+        table.parentNode.insertBefore(wrapper, table);
+        wrapper.appendChild(table);
+      }
+    });
+    // Reading progress bar
+    var progressBar = document.getElementById('reading-progress');
+    if (progressBar) {
+      window.addEventListener('scroll', function() {
+        var winScroll = document.documentElement.scrollTop;
+        var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        progressBar.style.width = height > 0 ? (winScroll / height * 100) + '%' : '0%';
+      });
+    }
+    // Dark mode toggle
+    var toggle = document.getElementById('theme-toggle');
+    if (toggle) {
+      var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      toggle.textContent = isDark ? '☀️' : '🌙';
+      toggle.addEventListener('click', function() {
+        var dark = document.documentElement.getAttribute('data-theme') === 'dark';
+        if (dark) {
+          document.documentElement.removeAttribute('data-theme');
+          localStorage.setItem('theme', 'light');
+          toggle.textContent = '🌙';
+        } else {
+          document.documentElement.setAttribute('data-theme', 'dark');
+          localStorage.setItem('theme', 'dark');
+          toggle.textContent = '☀️';
+        }
+      });
+    }
+  });</script>
+</head>
+<body>
+  <div class="progress-container"><div class="progress-bar" id="reading-progress"></div></div>
+  <nav class="navbar">
+    <div class="container">
+      <div class="nav-brand">
+        <span class="nav-icon">💻</span>
+        <span class="nav-title">CS_basics</span>
+      </div>
+      <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+      <div class="nav-links">
+        <a href="../index.html" class="">Home</a>
+        <a href="../cheatsheets.html" class="active">Cheat Sheets</a>
+        <a href="../patterns.html" class="">Pattern Recognition</a>
+        <a href="../faqs.html" class="">FAQs</a>
+        <a href="../resources.html" class="">Resources</a>
+        <a href="../lc-explorer.html" class="">LC Explorer</a>
+        <a href="../lc-random-picker.html" class="">🎲 Random Picker</a>
+        <a href="../algo_demo/index.html" class="">Visualizer</a>
+        <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">&#127769;</button>
+        <a href="https://github.com/yennanliu/CS_basics" target="_blank" class="github-link" aria-label="GitHub">
+          <svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor">
+            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container">
+    <div class="content">
+      
+      <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">Advanced Simulation</span></nav>
+      <div class="cheatsheet-header">
+        <h1>Advanced Simulation</h1>
+        <span class="last-updated">Last updated: Sep 29, 2025</span>
+      </div>
+      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#overview">Overview</a></li><li class="toc-sub"><a href="#key-properties">Key Properties</a></li><li class="toc-sub"><a href="#core-characteristics">Core Characteristics</a></li><li><a href="#problem-categories">Problem Categories</a></li><li class="toc-sub"><a href="#category-1-robot-movement-simulation">Category 1: Robot/Movement Simulation</a></li><li class="toc-sub"><a href="#category-2-game-process-simulation">Category 2: Game/Process Simulation</a></li><li class="toc-sub"><a href="#category-3-system-environment-simulation">Category 3: System/Environment Simulation</a></li><li><a href="#templates-algorithms">Templates &amp; Algorithms</a></li><li class="toc-sub"><a href="#template-comparison-table">Template Comparison Table</a></li><li class="toc-sub"><a href="#template-1-robot-movement-simulation">Template 1: Robot Movement Simulation</a></li><li class="toc-sub"><a href="#template-2-state-machine-simulation">Template 2: State Machine Simulation</a></li><li class="toc-sub"><a href="#template-3-event-queue-simulation">Template 3: Event Queue Simulation</a></li><li class="toc-sub"><a href="#template-4-grid-world-simulation">Template 4: Grid World Simulation</a></li><li><a href="#problems-by-pattern">Problems by Pattern</a></li><li class="toc-sub"><a href="#robot-movement-problems">Robot Movement Problems</a></li><li class="toc-sub"><a href="#game-simulation-problems">Game Simulation Problems</a></li><li class="toc-sub"><a href="#system-simulation-problems">System Simulation Problems</a></li><li><a href="#lc-examples">LC Examples</a></li><li class="toc-sub"><a href="#1-walking-robot-simulation-ii-lc-2069">1. Walking Robot Simulation II (LC 2069)</a></li><li class="toc-sub"><a href="#2-time-to-cross-a-bridge-lc-2532">2. Time to Cross a Bridge (LC 2532)</a></li><li class="toc-sub"><a href="#3-number-of-spaces-cleaning-robot-cleaned-lc-2061">3. Number of Spaces Cleaning Robot Cleaned (LC 2061)</a></li><li><a href="#advanced-techniques">Advanced Techniques</a></li><li class="toc-sub"><a href="#cycle-detection-in-simulations">Cycle Detection in Simulations</a></li><li class="toc-sub"><a href="#state-compression-techniques">State Compression Techniques</a></li><li class="toc-sub"><a href="#optimization-strategies">Optimization Strategies</a></li><li><a href="#performance-optimization-tips">Performance Optimization Tips</a></li><li class="toc-sub"><a href="#memory-management">Memory Management</a></li><li><a href="#summary-quick-reference">Summary &amp; Quick Reference</a></li><li class="toc-sub"><a href="#common-simulation-patterns">Common Simulation Patterns</a></li><li class="toc-sub"><a href="#time-complexity-guide">Time Complexity Guide</a></li><li class="toc-sub"><a href="#common-mistakes-tips">Common Mistakes &amp; Tips</a></li><li class="toc-sub"><a href="#interview-tips">Interview Tips</a></li></ul></div>
+      <div class="cheatsheet-content">
+        <h1 id="advanced-simulation" tabindex="-1"><a class="header-anchor" href="#advanced-simulation"><span>Advanced Simulation</span></a></h1>
+<h2 id="overview" tabindex="-1"><a class="header-anchor" href="#overview"><span>Overview</span></a></h2>
+<p><strong>Simulation</strong> problems require step-by-step execution of a process, following specific rules and state transitions. These problems test your ability to model real-world scenarios, manage complex state, and implement precise logic flow.</p>
+<h3 id="key-properties" tabindex="-1"><a class="header-anchor" href="#key-properties"><span>Key Properties</span></a></h3>
+<ul>
+<li><strong>Time Complexity</strong>: Often O(steps × operations) where steps is simulation length</li>
+<li><strong>Space Complexity</strong>: O(state_size) for maintaining current state</li>
+<li><strong>Core Idea</strong>: Model the process accurately and execute step by step</li>
+<li><strong>When to Use</strong>: Process simulation, robot movement, game mechanics, state machines</li>
+<li><strong>Key Skills</strong>: State management, rule implementation, edge case handling</li>
+</ul>
+<h3 id="core-characteristics" tabindex="-1"><a class="header-anchor" href="#core-characteristics"><span>Core Characteristics</span></a></h3>
+<ul>
+<li><strong>State Tracking</strong>: Maintain current system state accurately</li>
+<li><strong>Rule Following</strong>: Implement precise rules and transitions</li>
+<li><strong>Step-by-Step</strong>: Execute process incrementally</li>
+<li><strong>Edge Case Handling</strong>: Boundary conditions and special states</li>
+<li><strong>Optimization</strong>: Detect cycles, precompute, or mathematical shortcuts</li>
+</ul>
+<h2 id="problem-categories" tabindex="-1"><a class="header-anchor" href="#problem-categories"><span>Problem Categories</span></a></h2>
+<h3 id="category-1-robot-movement-simulation" tabindex="-1"><a class="header-anchor" href="#category-1-robot-movement-simulation"><span><strong>Category 1: Robot/Movement Simulation</strong></span></a></h3>
+<ul>
+<li><strong>Description</strong>: Simulate robot movement following commands</li>
+<li><strong>Examples</strong>: LC 2061 (Robot Cleaning), LC 2069 (Walking Robot Simulation), LC 657 (Robot Return to Origin)</li>
+<li><strong>Pattern</strong>: Track position, direction, and state changes</li>
+</ul>
+<h3 id="category-2-game-process-simulation" tabindex="-1"><a class="header-anchor" href="#category-2-game-process-simulation"><span><strong>Category 2: Game/Process Simulation</strong></span></a></h3>
+<ul>
+<li><strong>Description</strong>: Simulate game rules or multi-step processes</li>
+<li><strong>Examples</strong>: LC 2532 (Time to Cross Bridge), LC 1823 (Find Winner of Circular Game), LC 874 (Walking Robot Simulation)</li>
+<li><strong>Pattern</strong>: State machine with rule-based transitions</li>
+</ul>
+<h3 id="category-3-system-environment-simulation" tabindex="-1"><a class="header-anchor" href="#category-3-system-environment-simulation"><span><strong>Category 3: System/Environment Simulation</strong></span></a></h3>
+<ul>
+<li><strong>Description</strong>: Model complex systems with multiple components</li>
+<li><strong>Examples</strong>: LC 1701 (Average Waiting Time), LC 1603 (Design Parking System)</li>
+<li><strong>Pattern</strong>: Component interaction and resource management</li>
+</ul>
+<h2 id="templates-algorithms" tabindex="-1"><a class="header-anchor" href="#templates-algorithms"><span>Templates &amp; Algorithms</span></a></h2>
+<h3 id="template-comparison-table" tabindex="-1"><a class="header-anchor" href="#template-comparison-table"><span>Template Comparison Table</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>Template Type</th>
+<th>Use Case</th>
+<th>Time Complexity</th>
+<th>When to Use</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Basic Movement</strong></td>
+<td>Robot navigation</td>
+<td>O(steps)</td>
+<td>Simple movement simulation</td>
+</tr>
+<tr>
+<td><strong>State Machine</strong></td>
+<td>Game mechanics</td>
+<td>O(steps × rules)</td>
+<td>Rule-based processes</td>
+</tr>
+<tr>
+<td><strong>Event Queue</strong></td>
+<td>System simulation</td>
+<td>O(events log events)</td>
+<td>Timeline-based simulation</td>
+</tr>
+<tr>
+<td><strong>Grid World</strong></td>
+<td>2D environment</td>
+<td>O(steps)</td>
+<td>Spatial simulation</td>
+</tr>
+</tbody>
+</table>
+<h3 id="template-1-robot-movement-simulation" tabindex="-1"><a class="header-anchor" href="#template-1-robot-movement-simulation"><span>Template 1: Robot Movement Simulation</span></a></h3>
+<pre><code class="language-python">class RobotSimulation:
+    &quot;&quot;&quot;Template for robot movement simulation&quot;&quot;&quot;
+
+    def __init__(self):
+        # Robot state
+        self.x = 0
+        self.y = 0
+        self.direction = 0  # 0: North, 1: East, 2: South, 3: West
+
+        # Direction vectors: North, East, South, West
+        self.dx = [0, 1, 0, -1]
+        self.dy = [1, 0, -1, 0]
+
+    def turn_left(self):
+        &quot;&quot;&quot;Turn robot left (counterclockwise)&quot;&quot;&quot;
+        self.direction = (self.direction - 1) % 4
+
+    def turn_right(self):
+        &quot;&quot;&quot;Turn robot right (clockwise)&quot;&quot;&quot;
+        self.direction = (self.direction + 1) % 4
+
+    def move_forward(self, steps=1):
+        &quot;&quot;&quot;Move robot forward by steps&quot;&quot;&quot;
+        for _ in range(steps):
+            new_x = self.x + self.dx[self.direction]
+            new_y = self.y + self.dy[self.direction]
+
+            # Check if move is valid (implement based on problem constraints)
+            if self.is_valid_position(new_x, new_y):
+                self.x = new_x
+                self.y = new_y
+            else:
+                break  # Stop on obstacle
+
+    def is_valid_position(self, x, y):
+        &quot;&quot;&quot;Check if position is valid (override based on problem)&quot;&quot;&quot;
+        return True  # Default: all positions valid
+
+    def execute_commands(self, commands):
+        &quot;&quot;&quot;Execute a sequence of commands&quot;&quot;&quot;
+        for command in commands:
+            if command == 'L':
+                self.turn_left()
+            elif command == 'R':
+                self.turn_right()
+            elif command == 'G':
+                self.move_forward()
+            # Add more commands as needed
+
+        return (self.x, self.y)
+</code></pre>
+<h3 id="template-2-state-machine-simulation" tabindex="-1"><a class="header-anchor" href="#template-2-state-machine-simulation"><span>Template 2: State Machine Simulation</span></a></h3>
+<pre><code class="language-python">class StateMachineSimulation:
+    &quot;&quot;&quot;Template for state machine based simulation&quot;&quot;&quot;
+
+    def __init__(self, initial_state):
+        self.current_state = initial_state
+        self.state_history = [initial_state]
+        self.step_count = 0
+
+        # Define state transition rules (override in subclasses)
+        self.transition_rules = {}
+
+    def add_transition(self, from_state, event, to_state, action=None):
+        &quot;&quot;&quot;Add a state transition rule&quot;&quot;&quot;
+        if from_state not in self.transition_rules:
+            self.transition_rules[from_state] = {}
+        self.transition_rules[from_state][event] = (to_state, action)
+
+    def process_event(self, event):
+        &quot;&quot;&quot;Process an event and transition state&quot;&quot;&quot;
+        if (self.current_state in self.transition_rules and
+            event in self.transition_rules[self.current_state]):
+
+            next_state, action = self.transition_rules[self.current_state][event]
+
+            # Execute action if provided
+            if action:
+                action()
+
+            # Transition to next state
+            self.current_state = next_state
+            self.state_history.append(next_state)
+            self.step_count += 1
+
+            return True
+        return False
+
+    def simulate_steps(self, events):
+        &quot;&quot;&quot;Simulate multiple steps with events&quot;&quot;&quot;
+        results = []
+        for event in events:
+            success = self.process_event(event)
+            results.append({
+                'event': event,
+                'success': success,
+                'state': self.current_state,
+                'step': self.step_count
+            })
+        return results
+
+    def detect_cycle(self):
+        &quot;&quot;&quot;Detect if we've entered a cycle&quot;&quot;&quot;
+        seen_states = {}
+        for i, state in enumerate(self.state_history):
+            if state in seen_states:
+                cycle_start = seen_states[state]
+                cycle_length = i - cycle_start
+                return cycle_start, cycle_length
+            seen_states[state] = i
+        return None, 0
+</code></pre>
+<h3 id="template-3-event-queue-simulation" tabindex="-1"><a class="header-anchor" href="#template-3-event-queue-simulation"><span>Template 3: Event Queue Simulation</span></a></h3>
+<pre><code class="language-python">import heapq
+from collections import defaultdict
+
+class EventQueueSimulation:
+    &quot;&quot;&quot;Template for timeline-based simulation with events&quot;&quot;&quot;
+
+    def __init__(self):
+        self.current_time = 0
+        self.event_queue = []  # Min-heap: (time, event_type, event_data)
+        self.system_state = {}
+
+    def schedule_event(self, time, event_type, event_data):
+        &quot;&quot;&quot;Schedule an event to happen at specific time&quot;&quot;&quot;
+        heapq.heappush(self.event_queue, (time, event_type, event_data))
+
+    def process_event(self, event_type, event_data):
+        &quot;&quot;&quot;Process a specific event type (override in subclasses)&quot;&quot;&quot;
+        # Default implementation - override for specific event types
+        pass
+
+    def simulate_until(self, end_time):
+        &quot;&quot;&quot;Run simulation until specified time&quot;&quot;&quot;
+        results = []
+
+        while self.event_queue and self.event_queue[0][0] &lt;= end_time:
+            event_time, event_type, event_data = heapq.heappop(self.event_queue)
+
+            # Update current time
+            self.current_time = event_time
+
+            # Process the event
+            result = self.process_event(event_type, event_data)
+            results.append({
+                'time': event_time,
+                'type': event_type,
+                'data': event_data,
+                'result': result
+            })
+
+        return results
+
+    def get_state_at_time(self, time):
+        &quot;&quot;&quot;Get system state at specific time&quot;&quot;&quot;
+        # Save current state
+        saved_time = self.current_time
+        saved_queue = self.event_queue.copy()
+        saved_state = self.system_state.copy()
+
+        # Simulate to target time
+        self.simulate_until(time)
+        result_state = self.system_state.copy()
+
+        # Restore state
+        self.current_time = saved_time
+        self.event_queue = saved_queue
+        self.system_state = saved_state
+
+        return result_state
+</code></pre>
+<h3 id="template-4-grid-world-simulation" tabindex="-1"><a class="header-anchor" href="#template-4-grid-world-simulation"><span>Template 4: Grid World Simulation</span></a></h3>
+<pre><code class="language-python">class GridWorldSimulation:
+    &quot;&quot;&quot;Template for 2D grid-based simulation&quot;&quot;&quot;
+
+    def __init__(self, rows, cols):
+        self.rows = rows
+        self.cols = cols
+        self.grid = [[0 for _ in range(cols)] for _ in range(rows)]
+        self.entities = {}  # Track entities and their positions
+
+        # Direction mappings
+        self.directions = {
+            'UP': (-1, 0),
+            'DOWN': (1, 0),
+            'LEFT': (0, -1),
+            'RIGHT': (0, 1)
+        }
+
+    def is_valid_position(self, row, col):
+        &quot;&quot;&quot;Check if position is within grid bounds&quot;&quot;&quot;
+        return 0 &lt;= row &lt; self.rows and 0 &lt;= col &lt; self.cols
+
+    def is_free_position(self, row, col):
+        &quot;&quot;&quot;Check if position is free (no obstacles)&quot;&quot;&quot;
+        return (self.is_valid_position(row, col) and
+                self.grid[row][col] == 0)
+
+    def add_entity(self, entity_id, row, col):
+        &quot;&quot;&quot;Add entity to specific position&quot;&quot;&quot;
+        if self.is_free_position(row, col):
+            self.entities[entity_id] = (row, col)
+            self.grid[row][col] = entity_id
+            return True
+        return False
+
+    def move_entity(self, entity_id, direction):
+        &quot;&quot;&quot;Move entity in specified direction&quot;&quot;&quot;
+        if entity_id not in self.entities:
+            return False
+
+        curr_row, curr_col = self.entities[entity_id]
+        dr, dc = self.directions[direction]
+        new_row, new_col = curr_row + dr, curr_col + dc
+
+        if self.is_free_position(new_row, new_col):
+            # Clear old position
+            self.grid[curr_row][curr_col] = 0
+            # Set new position
+            self.grid[new_row][new_col] = entity_id
+            self.entities[entity_id] = (new_row, new_col)
+            return True
+        return False
+
+    def simulate_moves(self, entity_id, moves):
+        &quot;&quot;&quot;Simulate sequence of moves for entity&quot;&quot;&quot;
+        path = [self.entities.get(entity_id)]
+
+        for move in moves:
+            success = self.move_entity(entity_id, move)
+            if success:
+                path.append(self.entities[entity_id])
+            else:
+                break  # Stop on invalid move
+
+        return path
+
+    def get_neighbors(self, row, col, include_diagonal=False):
+        &quot;&quot;&quot;Get valid neighbor positions&quot;&quot;&quot;
+        neighbors = []
+        directions = [(0,1), (0,-1), (1,0), (-1,0)]
+        if include_diagonal:
+            directions.extend([(1,1), (1,-1), (-1,1), (-1,-1)])
+
+        for dr, dc in directions:
+            new_row, new_col = row + dr, col + dc
+            if self.is_valid_position(new_row, new_col):
+                neighbors.append((new_row, new_col))
+
+        return neighbors
+</code></pre>
+<h2 id="problems-by-pattern" tabindex="-1"><a class="header-anchor" href="#problems-by-pattern"><span>Problems by Pattern</span></a></h2>
+<h3 id="robot-movement-problems" tabindex="-1"><a class="header-anchor" href="#robot-movement-problems"><span><strong>Robot Movement Problems</strong></span></a></h3>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC #</th>
+<th>Key Technique</th>
+<th>Difficulty</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Robot Return to Origin</td>
+<td>657</td>
+<td>Simple position tracking</td>
+<td>Easy</td>
+</tr>
+<tr>
+<td>Walking Robot Simulation</td>
+<td>874</td>
+<td>Direction + obstacle handling</td>
+<td>Easy</td>
+</tr>
+<tr>
+<td>Walking Robot Simulation II</td>
+<td>2069</td>
+<td>Circular path optimization</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Number of Spaces Cleaning Robot Cleaned</td>
+<td>2061</td>
+<td>Grid traversal simulation</td>
+<td>Medium</td>
+</tr>
+</tbody>
+</table>
+<h3 id="game-simulation-problems" tabindex="-1"><a class="header-anchor" href="#game-simulation-problems"><span><strong>Game Simulation Problems</strong></span></a></h3>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC #</th>
+<th>Key Technique</th>
+<th>Difficulty</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Find Winner of Circular Game</td>
+<td>1823</td>
+<td>Josephus problem simulation</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Time to Cross a Bridge</td>
+<td>2532</td>
+<td>Priority queue simulation</td>
+<td>Hard</td>
+</tr>
+<tr>
+<td>Snakes and Ladders</td>
+<td>909</td>
+<td>BFS + board simulation</td>
+<td>Medium</td>
+</tr>
+</tbody>
+</table>
+<h3 id="system-simulation-problems" tabindex="-1"><a class="header-anchor" href="#system-simulation-problems"><span><strong>System Simulation Problems</strong></span></a></h3>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC #</th>
+<th>Key Technique</th>
+<th>Difficulty</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Design Parking System</td>
+<td>1603</td>
+<td>Resource management</td>
+<td>Easy</td>
+</tr>
+<tr>
+<td>Average Waiting Time</td>
+<td>1701</td>
+<td>Queue simulation</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Design Phone Directory</td>
+<td>379</td>
+<td>State management</td>
+<td>Medium</td>
+</tr>
+</tbody>
+</table>
+<h2 id="lc-examples" tabindex="-1"><a class="header-anchor" href="#lc-examples"><span>LC Examples</span></a></h2>
+<h3 id="1-walking-robot-simulation-ii-lc-2069" tabindex="-1"><a class="header-anchor" href="#1-walking-robot-simulation-ii-lc-2069"><span>1. Walking Robot Simulation II (LC 2069)</span></a></h3>
+<pre><code class="language-python">class Robot:
+    &quot;&quot;&quot;Optimized robot simulation with circular path detection&quot;&quot;&quot;
+
+    def __init__(self, width, height):
+        self.width = width
+        self.height = height
+
+        # Robot state
+        self.pos = 0  # Position on perimeter (0 to perimeter-1)
+        self.direction = 0  # 0: East, 1: North, 2: West, 3: South
+
+        # Calculate perimeter and key positions
+        self.perimeter = 2 * (width + height - 2)
+        self.corners = [0, width - 1, width + height - 2, 2 * width + height - 3]
+
+        # Direction names
+        self.dir_names = [&quot;East&quot;, &quot;North&quot;, &quot;West&quot;, &quot;South&quot;]
+
+    def position_to_coords(self, pos):
+        &quot;&quot;&quot;Convert perimeter position to (x, y) coordinates&quot;&quot;&quot;
+        if pos &lt; self.width:  # Bottom edge
+            return [pos, 0]
+        elif pos &lt; self.width + self.height - 1:  # Right edge
+            return [self.width - 1, pos - self.width + 1]
+        elif pos &lt; 2 * self.width + self.height - 2:  # Top edge
+            return [2 * self.width + self.height - 3 - pos, self.height - 1]
+        else:  # Left edge
+            return [0, 2 * self.width + 2 * self.height - 4 - pos]
+
+    def step(self, num):
+        &quot;&quot;&quot;Move robot num steps&quot;&quot;&quot;
+        if num == 0:
+            return
+
+        # Handle full loops
+        num = num % self.perimeter if self.perimeter &gt; 0 else 0
+
+        self.pos = (self.pos + num) % self.perimeter
+
+        # Update direction if at corner
+        if self.pos in self.corners and num &gt; 0:
+            self.direction = (self.corners.index(self.pos) + 1) % 4
+
+    def getPos(self):
+        &quot;&quot;&quot;Get current position&quot;&quot;&quot;
+        return self.position_to_coords(self.pos)
+
+    def getDir(self):
+        &quot;&quot;&quot;Get current direction&quot;&quot;&quot;
+        return self.dir_names[self.direction]
+</code></pre>
+<h3 id="2-time-to-cross-a-bridge-lc-2532" tabindex="-1"><a class="header-anchor" href="#2-time-to-cross-a-bridge-lc-2532"><span>2. Time to Cross a Bridge (LC 2532)</span></a></h3>
+<pre><code class="language-python">import heapq
+
+def findCrossingTime(n, k, time):
+    &quot;&quot;&quot;Simulate workers crossing bridge with priority queues&quot;&quot;&quot;
+
+    # Priority queues: (efficiency, worker_id)
+    left_wait = [(time[i][0] + time[i][2], i) for i in range(k)]
+    right_wait = []
+    left_work = []  # (available_time, efficiency, worker_id)
+    right_work = []
+
+    heapq.heapify(left_wait)
+
+    boxes_left = n
+    boxes_right = 0
+    current_time = 0
+
+    def move_available_workers(current_time):
+        # Move workers from work to wait queues when they become available
+        while left_work and left_work[0][0] &lt;= current_time:
+            _, eff, worker_id = heapq.heappop(left_work)
+            heapq.heappush(left_wait, (eff, worker_id))
+
+        while right_work and right_work[0][0] &lt;= current_time:
+            _, eff, worker_id = heapq.heappop(right_work)
+            heapq.heappush(right_wait, (eff, worker_id))
+
+    while boxes_right &lt; n:
+        move_available_workers(current_time)
+
+        # Priority: right to left &gt; left to right
+        if right_wait and boxes_right &gt; 0:
+            # Worker crosses from right to left
+            eff, worker_id = heapq.heappop(right_wait)
+            current_time += time[worker_id][3]
+
+            # Worker goes to put box and work on left
+            work_end_time = current_time + time[worker_id][2]
+            heapq.heappush(left_work, (work_end_time, eff, worker_id))
+            boxes_right -= 1
+
+        elif left_wait and boxes_left &gt; 0:
+            # Worker crosses from left to right
+            eff, worker_id = heapq.heappop(left_wait)
+            current_time += time[worker_id][1]
+
+            # Worker goes to pick box and work on right
+            work_end_time = current_time + time[worker_id][0]
+            heapq.heappush(right_work, (work_end_time, eff, worker_id))
+            boxes_left -= 1
+            boxes_right += 1
+
+        else:
+            # No workers available, advance time to next available worker
+            next_time = float('inf')
+            if left_work:
+                next_time = min(next_time, left_work[0][0])
+            if right_work:
+                next_time = min(next_time, right_work[0][0])
+            current_time = next_time
+
+    return current_time
+</code></pre>
+<h3 id="3-number-of-spaces-cleaning-robot-cleaned-lc-2061" tabindex="-1"><a class="header-anchor" href="#3-number-of-spaces-cleaning-robot-cleaned-lc-2061"><span>3. Number of Spaces Cleaning Robot Cleaned (LC 2061)</span></a></h3>
+<pre><code class="language-python">def numberOfCleanRooms(room):
+    &quot;&quot;&quot;Simulate robot cleaning with cycle detection&quot;&quot;&quot;
+    m, n = len(room), len(room[0])
+
+    # Robot starts at (0, 0) facing right
+    x, y, direction = 0, 0, 0
+
+    # Directions: right, down, left, up
+    dx = [0, 1, 0, -1]
+    dy = [1, 0, -1, 0]
+
+    cleaned = set()
+    visited_states = set()  # (x, y, direction)
+
+    while True:
+        # Clean current position
+        cleaned.add((x, y))
+
+        # Check if we've been in this state before (cycle detection)
+        state = (x, y, direction)
+        if state in visited_states:
+            break
+        visited_states.add(state)
+
+        # Try to move forward
+        next_x = x + dx[direction]
+        next_y = y + dy[direction]
+
+        # Check if next position is valid and not blocked
+        if (0 &lt;= next_x &lt; m and 0 &lt;= next_y &lt; n and
+            room[next_x][next_y] == 0):
+            # Move forward
+            x, y = next_x, next_y
+        else:
+            # Turn right (clockwise)
+            direction = (direction + 1) % 4
+
+    return len(cleaned)
+</code></pre>
+<h2 id="advanced-techniques" tabindex="-1"><a class="header-anchor" href="#advanced-techniques"><span>Advanced Techniques</span></a></h2>
+<h3 id="cycle-detection-in-simulations" tabindex="-1"><a class="header-anchor" href="#cycle-detection-in-simulations"><span>Cycle Detection in Simulations</span></a></h3>
+<pre><code class="language-python">def detect_simulation_cycle(state_sequence):
+    &quot;&quot;&quot;Detect cycles in simulation using Floyd's algorithm&quot;&quot;&quot;
+
+    def get_next_state(state):
+        # Implement state transition logic
+        pass
+
+    # Floyd's cycle detection
+    slow = fast = initial_state
+
+    # Phase 1: Detect if cycle exists
+    while True:
+        slow = get_next_state(slow)
+        fast = get_next_state(get_next_state(fast))
+        if slow == fast:
+            break
+
+    # Phase 2: Find cycle start
+    slow = initial_state
+    while slow != fast:
+        slow = get_next_state(slow)
+        fast = get_next_state(fast)
+
+    # Phase 3: Find cycle length
+    cycle_length = 1
+    current = get_next_state(slow)
+    while current != slow:
+        current = get_next_state(current)
+        cycle_length += 1
+
+    return slow, cycle_length
+</code></pre>
+<h3 id="state-compression-techniques" tabindex="-1"><a class="header-anchor" href="#state-compression-techniques"><span>State Compression Techniques</span></a></h3>
+<pre><code class="language-python">class StateCompression:
+    &quot;&quot;&quot;Techniques for compressing simulation states&quot;&quot;&quot;
+
+    def hash_state(self, state):
+        &quot;&quot;&quot;Create hash for complex state objects&quot;&quot;&quot;
+        # For tuples/lists
+        return hash(tuple(state) if isinstance(state, list) else state)
+
+    def compress_grid_state(self, grid):
+        &quot;&quot;&quot;Compress 2D grid into single value&quot;&quot;&quot;
+        # Bit manipulation for binary grids
+        result = 0
+        for i, row in enumerate(grid):
+            for j, val in enumerate(row):
+                if val:
+                    result |= (1 &lt;&lt; (i * len(row) + j))
+        return result
+
+    def compress_position_direction(self, x, y, direction, max_x, max_y):
+        &quot;&quot;&quot;Compress position and direction into single value&quot;&quot;&quot;
+        return x * max_y * 4 + y * 4 + direction
+</code></pre>
+<h3 id="optimization-strategies" tabindex="-1"><a class="header-anchor" href="#optimization-strategies"><span>Optimization Strategies</span></a></h3>
+<pre><code class="language-python">class SimulationOptimizations:
+    &quot;&quot;&quot;Various optimization techniques for simulations&quot;&quot;&quot;
+
+    def precompute_cycles(self, initial_states):
+        &quot;&quot;&quot;Precompute common cycles for faster simulation&quot;&quot;&quot;
+        cycle_cache = {}
+        for state in initial_states:
+            if state not in cycle_cache:
+                cycle_start, cycle_length = self.detect_cycle(state)
+                cycle_cache[state] = (cycle_start, cycle_length)
+        return cycle_cache
+
+    def mathematical_shortcuts(self, steps, cycle_length, cycle_start_pos):
+        &quot;&quot;&quot;Use math to skip repetitive cycles&quot;&quot;&quot;
+        if steps &lt;= cycle_start_pos:
+            return steps
+
+        remaining_steps = steps - cycle_start_pos
+        full_cycles = remaining_steps // cycle_length
+        final_position = remaining_steps % cycle_length
+
+        return cycle_start_pos + final_position
+
+    def parallel_simulation(self, entities):
+        &quot;&quot;&quot;Simulate multiple entities in parallel&quot;&quot;&quot;
+        # Use threading or multiprocessing for independent entities
+        pass
+</code></pre>
+<h2 id="performance-optimization-tips" tabindex="-1"><a class="header-anchor" href="#performance-optimization-tips"><span>Performance Optimization Tips</span></a></h2>
+<h3 id="memory-management" tabindex="-1"><a class="header-anchor" href="#memory-management"><span>Memory Management</span></a></h3>
+<pre><code class="language-python">def memory_optimization_techniques():
+    &quot;&quot;&quot;Optimize memory usage in simulations&quot;&quot;&quot;
+
+    # 1. Use generators for large sequences
+    def simulate_steps_generator(initial_state, max_steps):
+        current_state = initial_state
+        for step in range(max_steps):
+            yield current_state
+            current_state = get_next_state(current_state)
+
+    # 2. Limit history tracking
+    def limited_history_simulation(state, max_history=1000):
+        history = []
+        while True:
+            history.append(state)
+            if len(history) &gt; max_history:
+                history.pop(0)  # Remove oldest
+            state = get_next_state(state)
+
+    # 3. Use bitwise operations for boolean states
+    def bitwise_state_management(width, height):
+        state = 0  # Single integer instead of 2D array
+        # Set bit: state |= (1 &lt;&lt; (row * width + col))
+        # Check bit: (state &gt;&gt; (row * width + col)) &amp; 1
+        # Clear bit: state &amp;= ~(1 &lt;&lt; (row * width + col))
+</code></pre>
+<h2 id="summary-quick-reference" tabindex="-1"><a class="header-anchor" href="#summary-quick-reference"><span>Summary &amp; Quick Reference</span></a></h2>
+<h3 id="common-simulation-patterns" tabindex="-1"><a class="header-anchor" href="#common-simulation-patterns"><span>Common Simulation Patterns</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>Pattern</th>
+<th>Template</th>
+<th>Use Case</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Robot Movement</strong></td>
+<td>Position + direction tracking</td>
+<td>Navigation problems</td>
+<td>Walking robot</td>
+</tr>
+<tr>
+<td><strong>State Machine</strong></td>
+<td>Rule-based transitions</td>
+<td>Game mechanics</td>
+<td>Josephus problem</td>
+</tr>
+<tr>
+<td><strong>Event Queue</strong></td>
+<td>Timeline simulation</td>
+<td>System modeling</td>
+<td>Bridge crossing</td>
+</tr>
+<tr>
+<td><strong>Grid World</strong></td>
+<td>2D environment</td>
+<td>Spatial problems</td>
+<td>Robot cleaning</td>
+</tr>
+</tbody>
+</table>
+<h3 id="time-complexity-guide" tabindex="-1"><a class="header-anchor" href="#time-complexity-guide"><span>Time Complexity Guide</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>Problem Type</th>
+<th>Time Complexity</th>
+<th>Space Complexity</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Basic Movement</td>
+<td>O(steps)</td>
+<td>O(1)</td>
+<td>Simple position tracking</td>
+</tr>
+<tr>
+<td>State Machine</td>
+<td>O(steps × rules)</td>
+<td>O(states)</td>
+<td>Rule complexity matters</td>
+</tr>
+<tr>
+<td>Event Simulation</td>
+<td>O(events log events)</td>
+<td>O(events)</td>
+<td>Priority queue overhead</td>
+</tr>
+<tr>
+<td>Grid Simulation</td>
+<td>O(steps × grid_ops)</td>
+<td>O(grid_size)</td>
+<td>Grid operation complexity</td>
+</tr>
+</tbody>
+</table>
+<h3 id="common-mistakes-tips" tabindex="-1"><a class="header-anchor" href="#common-mistakes-tips"><span>Common Mistakes &amp; Tips</span></a></h3>
+<p><strong>🚫 Common Mistakes:</strong></p>
+<ul>
+<li>Not handling boundary conditions properly</li>
+<li>Missing cycle detection for infinite loops</li>
+<li>Inefficient state representation</li>
+<li>Forgetting to update all state variables</li>
+</ul>
+<p><strong>✅ Best Practices:</strong></p>
+<ul>
+<li>Always validate moves/transitions before applying</li>
+<li>Implement cycle detection for potentially infinite simulations</li>
+<li>Use appropriate data structures for state representation</li>
+<li>Consider mathematical shortcuts for repetitive patterns</li>
+<li>Test edge cases thoroughly</li>
+</ul>
+<h3 id="interview-tips" tabindex="-1"><a class="header-anchor" href="#interview-tips"><span>Interview Tips</span></a></h3>
+<ol>
+<li><strong>Model the problem accurately</strong>: Understand all rules and constraints</li>
+<li><strong>Design clean state representation</strong>: Easy to update and compare</li>
+<li><strong>Implement cycle detection</strong>: Prevent infinite loops</li>
+<li><strong>Consider optimization</strong>: Mathematical shortcuts, precomputation</li>
+<li><strong>Handle edge cases</strong>: Boundaries, invalid states, empty inputs</li>
+<li><strong>Test systematically</strong>: Trace through examples step by step</li>
+</ol>
+<p>This comprehensive simulation cheatsheet covers the essential patterns and techniques for solving complex process modeling problems efficiently.</p>
+
+      </div>
+      <div class="cheatsheet-footer">
+        <a href="../cheatsheets.html" class="back-link">← Back to Cheat Sheets</a>
+        <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/advanced_simulation.md" class="github-edit" target="_blank">
+          Edit on GitHub →
+        </a>
+      </div>
+    <nav class="prev-next"><a href="advanced_divide_and_conquer.html" class="prev-link">← Advanced Divide And Conquer</a><a href="advanced_string_algorithms.html" class="next-link">Advanced String Algorithms →</a></nav>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>CS_basics - Computer Science Fundamentals & Interview Preparation</p>
+      <p>
+        <a href="https://github.com/yennanliu/CS_basics">GitHub</a> •
+        <a href="https://github.com/yennanliu/CS_basics/tree/master/doc">Documentation</a> •
+        <a href="https://github.com/yennanliu/CS_basics/issues">Report Issues</a>
+      </p>
+    </div>
+  </footer>
+</body>
+</html>

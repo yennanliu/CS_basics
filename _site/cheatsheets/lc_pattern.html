@@ -1,0 +1,1338 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lc Pattern - CS_basics</title>
+  <meta name="description" content="Computer Science fundamentals: algorithms, data structures, system design, and LeetCode solutions">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>CS</text></svg>">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="../vendor/fonts.css">
+  <link rel="stylesheet" href="../vendor/highlight/github-dark.min.css">
+  <script src="../vendor/highlight/highlight.min.js"></script>
+  <script>
+  // Apply theme before render to prevent flash
+  (function() {
+    var saved = localStorage.getItem('theme');
+    if (saved === 'dark' || (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      document.documentElement.setAttribute('data-theme', 'dark');
+    }
+  })();
+  </script>
+  <script>document.addEventListener('DOMContentLoaded', function() {
+    hljs.highlightAll();
+    document.querySelectorAll('pre code').forEach(function(codeEl) {
+      var pre = codeEl.parentElement;
+      var lang = '';
+      var cls = codeEl.className || '';
+      var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
+      if (m) lang = m[1];
+      var wrapper = document.createElement('div');
+      wrapper.className = 'code-block-wrapper';
+      pre.parentNode.insertBefore(wrapper, pre);
+      var header = document.createElement('div');
+      header.className = 'code-block-header';
+      if (lang) {
+        var label = document.createElement('span');
+        label.className = 'code-lang-label';
+        label.textContent = lang;
+        header.appendChild(label);
+      } else {
+        header.appendChild(document.createElement('span'));
+      }
+      var btn = document.createElement('button');
+      btn.className = 'copy-btn';
+      btn.textContent = 'Copy';
+      btn.addEventListener('click', function() {
+        navigator.clipboard.writeText(codeEl.textContent).then(function() {
+          btn.textContent = 'Copied!';
+          btn.classList.add('copied');
+          setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+        });
+      });
+      header.appendChild(btn);
+      wrapper.appendChild(header);
+      wrapper.appendChild(pre);
+    });
+    document.querySelectorAll('table').forEach(function(table) {
+      if (!table.parentElement.classList.contains('table-wrap')) {
+        var wrapper = document.createElement('div');
+        wrapper.className = 'table-wrap';
+        table.parentNode.insertBefore(wrapper, table);
+        wrapper.appendChild(table);
+      }
+    });
+    // Reading progress bar
+    var progressBar = document.getElementById('reading-progress');
+    if (progressBar) {
+      window.addEventListener('scroll', function() {
+        var winScroll = document.documentElement.scrollTop;
+        var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        progressBar.style.width = height > 0 ? (winScroll / height * 100) + '%' : '0%';
+      });
+    }
+    // Dark mode toggle
+    var toggle = document.getElementById('theme-toggle');
+    if (toggle) {
+      var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      toggle.textContent = isDark ? '☀️' : '🌙';
+      toggle.addEventListener('click', function() {
+        var dark = document.documentElement.getAttribute('data-theme') === 'dark';
+        if (dark) {
+          document.documentElement.removeAttribute('data-theme');
+          localStorage.setItem('theme', 'light');
+          toggle.textContent = '🌙';
+        } else {
+          document.documentElement.setAttribute('data-theme', 'dark');
+          localStorage.setItem('theme', 'dark');
+          toggle.textContent = '☀️';
+        }
+      });
+    }
+  });</script>
+</head>
+<body>
+  <div class="progress-container"><div class="progress-bar" id="reading-progress"></div></div>
+  <nav class="navbar">
+    <div class="container">
+      <div class="nav-brand">
+        <span class="nav-icon">💻</span>
+        <span class="nav-title">CS_basics</span>
+      </div>
+      <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+      <div class="nav-links">
+        <a href="../index.html" class="">Home</a>
+        <a href="../cheatsheets.html" class="active">Cheat Sheets</a>
+        <a href="../patterns.html" class="">Pattern Recognition</a>
+        <a href="../faqs.html" class="">FAQs</a>
+        <a href="../resources.html" class="">Resources</a>
+        <a href="../lc-explorer.html" class="">LC Explorer</a>
+        <a href="../lc-random-picker.html" class="">🎲 Random Picker</a>
+        <a href="../algo_demo/index.html" class="">Visualizer</a>
+        <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">&#127769;</button>
+        <a href="https://github.com/yennanliu/CS_basics" target="_blank" class="github-link" aria-label="GitHub">
+          <svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor">
+            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container">
+    <div class="content">
+      
+      <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">Lc Pattern</span></nav>
+      <div class="cheatsheet-header">
+        <h1>Lc Pattern</h1>
+        <span class="last-updated">Last updated: Sep 29, 2025</span>
+      </div>
+      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#1-arrays-strings">🔹 1. Arrays &amp; Strings</a></li><li class="toc-sub"><a href="#two-pointers">Two Pointers</a></li><li class="toc-sub"><a href="#sliding-window">Sliding Window</a></li><li class="toc-sub"><a href="#prefix-sum-difference-array">Prefix Sum &amp; Difference Array</a></li><li class="toc-sub"><a href="#binary-search">Binary Search</a></li><li class="toc-sub"><a href="#sorting-greedy">Sorting + Greedy</a></li><li class="toc-sub"><a href="#string-algorithms">String Algorithms</a></li><li><a href="#2-linked-list">🔹 2. Linked List</a></li><li class="toc-sub"><a href="#reversal-patterns">Reversal Patterns</a></li><li class="toc-sub"><a href="#cycle-detection-fast-slow-pointers">Cycle Detection &amp; Fast/Slow Pointers</a></li><li class="toc-sub"><a href="#merge-sort">Merge &amp; Sort</a></li><li class="toc-sub"><a href="#dummy-head-technique">Dummy Head Technique</a></li><li class="toc-sub"><a href="#advanced-operations">Advanced Operations</a></li><li><a href="#3-binary-trees">🔹 3. Binary Trees</a></li><li class="toc-sub"><a href="#dfs-traversal-patterns">DFS Traversal Patterns</a></li><li class="toc-sub"><a href="#bfs-level-order-patterns">BFS / Level Order Patterns</a></li><li class="toc-sub"><a href="#tree-construction-divide-conquer">Tree Construction (Divide &amp; Conquer)</a></li><li class="toc-sub"><a href="#binary-search-tree-patterns">Binary Search Tree Patterns</a></li><li class="toc-sub"><a href="#tree-dp-bottom-up">Tree DP (Bottom-Up)</a></li><li class="toc-sub"><a href="#path-ancestor-problems">Path &amp; Ancestor Problems</a></li><li class="toc-sub"><a href="#tree-modification">Tree Modification</a></li><li><a href="#4-graphs">🔹 4. Graphs</a></li><li class="toc-sub"><a href="#graph-traversal">Graph Traversal</a></li><li class="toc-sub"><a href="#union-find-disjoint-set-union">Union-Find (Disjoint Set Union)</a></li><li class="toc-sub"><a href="#topological-sort">Topological Sort</a></li><li class="toc-sub"><a href="#shortest-path-algorithms">Shortest Path Algorithms</a></li><li class="toc-sub"><a href="#advanced-graph-patterns">Advanced Graph Patterns</a></li><li class="toc-sub"><a href="#grid-based-graph-problems">Grid-Based Graph Problems</a></li><li class="toc-sub"><a href="#special-graph-types">Special Graph Types</a></li><li><a href="#5-dynamic-programming-dp">🔹 5. Dynamic Programming (DP)</a></li><li class="toc-sub"><a href="#1d-linear-dp">1D Linear DP</a></li><li class="toc-sub"><a href="#2d-grid-dp">2D Grid DP</a></li><li class="toc-sub"><a href="#knapsack-patterns">Knapsack Patterns</a></li><li class="toc-sub"><a href="#string-dp">String DP</a></li><li class="toc-sub"><a href="#interval-dp">Interval DP</a></li><li class="toc-sub"><a href="#state-compression-dp-bitmask">State Compression DP (Bitmask)</a></li><li class="toc-sub"><a href="#advanced-dp-patterns">Advanced DP Patterns</a></li><li class="toc-sub"><a href="#dp-optimization-techniques">DP Optimization Techniques</a></li><li><a href="#6-backtracking">🔹 6. Backtracking</a></li><li class="toc-sub"><a href="#subsets-combinations">Subsets &amp; Combinations</a></li><li class="toc-sub"><a href="#permutations">Permutations</a></li><li class="toc-sub"><a href="#grid-board-problems">Grid &amp; Board Problems</a></li><li class="toc-sub"><a href="#string-partitioning">String Partitioning</a></li><li class="toc-sub"><a href="#constraint-satisfaction">Constraint Satisfaction</a></li><li class="toc-sub"><a href="#advanced-backtracking">Advanced Backtracking</a></li><li class="toc-sub"><a href="#pruning-techniques">Pruning Techniques</a></li><li class="toc-sub"><a href="#backtracking-templates">Backtracking Templates</a></li><li><a href="#7-heaps-priority-queues">🔹 7. Heaps &amp; Priority Queues</a></li><li class="toc-sub"><a href="#top-k-problems">Top-K Problems</a></li><li class="toc-sub"><a href="#merge-multiple-sorted-structures">Merge Multiple Sorted Structures</a></li><li class="toc-sub"><a href="#data-stream-online-algorithms">Data Stream &amp; Online Algorithms</a></li><li class="toc-sub"><a href="#scheduling-intervals">Scheduling &amp; Intervals</a></li><li class="toc-sub"><a href="#graph-algorithms-with-heaps">Graph Algorithms with Heaps</a></li><li class="toc-sub"><a href="#advanced-heap-techniques">Advanced Heap Techniques</a></li><li><a href="#8-hashing-counting">🔹 8. Hashing &amp; Counting</a></li><li class="toc-sub"><a href="#frequency-maps">Frequency Maps</a></li><li class="toc-sub"><a href="#prefix-hash-rolling-hash">Prefix Hash / Rolling Hash</a></li><li class="toc-sub"><a href="#hashset-for-seen-states">HashSet for Seen States</a></li><li class="toc-sub"><a href="#hash-based-data-structures">Hash-based Data Structures</a></li><li class="toc-sub"><a href="#advanced-hashing-techniques">Advanced Hashing Techniques</a></li><li><a href="#9-advanced-patterns">🔹 9. Advanced Patterns</a></li><li class="toc-sub"><a href="#monotonic-stack-queue">Monotonic Stack / Queue</a></li><li class="toc-sub"><a href="#greedy-algorithms-with-sorting">Greedy Algorithms with Sorting</a></li><li class="toc-sub"><a href="#binary-indexed-tree-bit-segment-tree">Binary Indexed Tree (BIT) / Segment Tree</a></li><li class="toc-sub"><a href="#union-find-disjoint-set-union-1">Union-Find (Disjoint Set Union)</a></li><li class="toc-sub"><a href="#trie-prefix-tree">Trie (Prefix Tree)</a></li><li class="toc-sub"><a href="#advanced-graph-algorithms">Advanced Graph Algorithms</a></li><li class="toc-sub"><a href="#string-algorithms-1">String Algorithms</a></li><li class="toc-sub"><a href="#mathematical-number-theory">Mathematical &amp; Number Theory</a></li><li class="toc-sub"><a href="#game-theory">Game Theory</a></li></ul></div>
+      <div class="cheatsheet-content">
+        <h1 id="leetcode-pattern-guide" tabindex="-1"><a class="header-anchor" href="#leetcode-pattern-guide"><span>LeetCode Pattern Guide</span></a></h1>
+<p>⸻</p>
+<h2 id="1-arrays-strings" tabindex="-1"><a class="header-anchor" href="#1-arrays-strings"><span>🔹 1. Arrays &amp; Strings</span></a></h2>
+<h3 id="two-pointers" tabindex="-1"><a class="header-anchor" href="#two-pointers"><span><strong>Two Pointers</strong></span></a></h3>
+<ul>
+<li><strong>Opposite Ends</strong>: Move from both ends toward center
+<ul>
+<li>LC 1: Two Sum (sorted), LC 15: 3Sum, LC 42: Trapping Rain Water</li>
+<li>LC 125: Valid Palindrome, LC 167: Two Sum II</li>
+</ul>
+</li>
+<li><strong>Fast/Slow Pointers</strong>: Different speeds for cycle detection
+<ul>
+<li>LC 141: Linked List Cycle, LC 142: Cycle II, LC 287: Find Duplicate</li>
+<li>LC 26: Remove Duplicates, LC 80: Remove Duplicates II</li>
+</ul>
+</li>
+<li><strong>Same Direction</strong>: Both pointers move in same direction
+<ul>
+<li>LC 283: Move Zeros, LC 75: Sort Colors, LC 11: Container With Water</li>
+</ul>
+</li>
+</ul>
+<h3 id="sliding-window" tabindex="-1"><a class="header-anchor" href="#sliding-window"><span><strong>Sliding Window</strong></span></a></h3>
+<ul>
+<li><strong>Fixed Size Window</strong>: Constant window size
+<ul>
+<li>LC 643: Max Average Subarray, LC 1456: Max Vowels in Substring</li>
+<li>LC 424: Longest Repeating Character Replacement</li>
+</ul>
+</li>
+<li><strong>Variable Size Window</strong>: Expand/shrink based on conditions
+<ul>
+<li>LC 3: Longest Substring Without Repeating, LC 76: Minimum Window Substring</li>
+<li>LC 209: Minimum Size Subarray Sum, LC 904: Fruit Into Baskets</li>
+</ul>
+</li>
+<li><strong>Template</strong>: Expand right, shrink left when invalid</li>
+</ul>
+<h3 id="prefix-sum-difference-array" tabindex="-1"><a class="header-anchor" href="#prefix-sum-difference-array"><span><strong>Prefix Sum &amp; Difference Array</strong></span></a></h3>
+<ul>
+<li><strong>Prefix Sum</strong>: Efficient subarray sum calculations
+<ul>
+<li>LC 560: Subarray Sum Equals K, LC 523: Continuous Subarray Sum</li>
+<li>LC 325: Maximum Size Subarray Sum Equals K</li>
+</ul>
+</li>
+<li><strong>2D Prefix Sum</strong>: Matrix range sum queries
+<ul>
+<li>LC 304: Range Sum Query 2D, LC 1314: Matrix Block Sum</li>
+</ul>
+</li>
+<li><strong>Difference Array</strong>: Range updates in O(1)
+<ul>
+<li>LC 1109: Corporate Flight Bookings, LC 370: Range Addition</li>
+</ul>
+</li>
+</ul>
+<h3 id="binary-search" tabindex="-1"><a class="header-anchor" href="#binary-search"><span><strong>Binary Search</strong></span></a></h3>
+<ul>
+<li><strong>Classic Search</strong>: Find target in sorted array
+<ul>
+<li>LC 704: Binary Search, LC 35: Search Insert Position</li>
+<li>LC 34: Find First/Last Position, LC 33: Search in Rotated Array</li>
+</ul>
+</li>
+<li><strong>Binary Search on Answer</strong>: Search answer space
+<ul>
+<li>LC 875: Koko Eating Bananas, LC 1011: Ship Packages in D Days</li>
+<li>LC 410: Split Array Largest Sum, LC 774: Minimize Max Distance</li>
+</ul>
+</li>
+<li><strong>Matrix Binary Search</strong>: 2D sorted matrix
+<ul>
+<li>LC 74: Search 2D Matrix, LC 240: Search 2D Matrix II</li>
+</ul>
+</li>
+</ul>
+<h3 id="sorting-greedy" tabindex="-1"><a class="header-anchor" href="#sorting-greedy"><span><strong>Sorting + Greedy</strong></span></a></h3>
+<ul>
+<li><strong>Intervals</strong>: Merge, schedule, non-overlapping
+<ul>
+<li>LC 56: Merge Intervals, LC 57: Insert Interval</li>
+<li>LC 435: Non-overlapping Intervals, LC 252: Meeting Rooms</li>
+</ul>
+</li>
+<li><strong>Array Pairing</strong>: Optimal matching strategies
+<ul>
+<li>LC 455: Assign Cookies, LC 881: Boats to Save People</li>
+<li>LC 870: Advantage Shuffle, LC 976: Largest Perimeter Triangle</li>
+</ul>
+</li>
+</ul>
+<h3 id="string-algorithms" tabindex="-1"><a class="header-anchor" href="#string-algorithms"><span><strong>String Algorithms</strong></span></a></h3>
+<ul>
+<li><strong>Pattern Matching</strong>: KMP, Rabin-Karp, Z-algorithm
+<ul>
+<li>LC 28: Implement strStr(), LC 214: Shortest Palindrome</li>
+</ul>
+</li>
+<li><strong>Palindromes</strong>: Center expansion, Manacher’s algorithm
+<ul>
+<li>LC 5: Longest Palindromic Substring, LC 647: Palindromic Substrings</li>
+</ul>
+</li>
+</ul>
+<p>⸻</p>
+<h2 id="2-linked-list" tabindex="-1"><a class="header-anchor" href="#2-linked-list"><span>🔹 2. Linked List</span></a></h2>
+<h3 id="reversal-patterns" tabindex="-1"><a class="header-anchor" href="#reversal-patterns"><span><strong>Reversal Patterns</strong></span></a></h3>
+<ul>
+<li><strong>Basic Reversal</strong>: Iterative and recursive approaches
+<ul>
+<li>LC 206: Reverse Linked List, LC 92: Reverse Linked List II</li>
+</ul>
+</li>
+<li><strong>Group Reversal</strong>: Reverse in groups of k
+<ul>
+<li>LC 25: Reverse Nodes in k-Group, LC 24: Swap Nodes in Pairs</li>
+</ul>
+</li>
+<li><strong>Conditional Reversal</strong>: Reverse based on conditions
+<ul>
+<li>LC 2130: Maximum Twin Sum, LC 143: Reorder List</li>
+</ul>
+</li>
+</ul>
+<h3 id="cycle-detection-fast-slow-pointers" tabindex="-1"><a class="header-anchor" href="#cycle-detection-fast-slow-pointers"><span><strong>Cycle Detection &amp; Fast/Slow Pointers</strong></span></a></h3>
+<ul>
+<li><strong>Floyd’s Algorithm</strong>: Detect cycle and find cycle start
+<ul>
+<li>LC 141: Linked List Cycle, LC 142: Linked List Cycle II</li>
+</ul>
+</li>
+<li><strong>Middle Element</strong>: Find middle using fast/slow pointers
+<ul>
+<li>LC 876: Middle of Linked List, LC 234: Palindrome Linked List</li>
+</ul>
+</li>
+<li><strong>Remove Nth Node</strong>: Use gap between fast/slow pointers
+<ul>
+<li>LC 19: Remove Nth Node from End</li>
+</ul>
+</li>
+</ul>
+<h3 id="merge-sort" tabindex="-1"><a class="header-anchor" href="#merge-sort"><span><strong>Merge &amp; Sort</strong></span></a></h3>
+<ul>
+<li><strong>Two List Merge</strong>: Merge two sorted lists
+<ul>
+<li>LC 21: Merge Two Sorted Lists, LC 1669: Merge In Between</li>
+</ul>
+</li>
+<li><strong>Multiple List Merge</strong>: Use heap or divide &amp; conquer
+<ul>
+<li>LC 23: Merge k Sorted Lists</li>
+</ul>
+</li>
+<li><strong>List Sorting</strong>: Sort linked list efficiently
+<ul>
+<li>LC 148: Sort List (merge sort), LC 147: Insertion Sort List</li>
+</ul>
+</li>
+</ul>
+<h3 id="dummy-head-technique" tabindex="-1"><a class="header-anchor" href="#dummy-head-technique"><span><strong>Dummy Head Technique</strong></span></a></h3>
+<ul>
+<li><strong>Node Removal</strong>: Easier deletion with dummy head
+<ul>
+<li>LC 203: Remove Linked List Elements, LC 83: Remove Duplicates</li>
+</ul>
+</li>
+<li><strong>List Construction</strong>: Build result list with dummy head
+<ul>
+<li>LC 2: Add Two Numbers, LC 445: Add Two Numbers II</li>
+</ul>
+</li>
+<li><strong>Partition</strong>: Split list based on criteria
+<ul>
+<li>LC 86: Partition List, LC 725: Split Linked List in Parts</li>
+</ul>
+</li>
+</ul>
+<h3 id="advanced-operations" tabindex="-1"><a class="header-anchor" href="#advanced-operations"><span><strong>Advanced Operations</strong></span></a></h3>
+<ul>
+<li><strong>Deep Copy</strong>: Clone complex linked structures
+<ul>
+<li>LC 138: Copy List with Random Pointer</li>
+</ul>
+</li>
+<li><strong>Intersection</strong>: Find intersection of two lists
+<ul>
+<li>LC 160: Intersection of Two Linked Lists</li>
+</ul>
+</li>
+<li><strong>Design</strong>: Implement linked list based structures
+<ul>
+<li>LC 146: LRU Cache, LC 460: LFU Cache</li>
+</ul>
+</li>
+</ul>
+<p>⸻</p>
+<h2 id="3-binary-trees" tabindex="-1"><a class="header-anchor" href="#3-binary-trees"><span>🔹 3. Binary Trees</span></a></h2>
+<h3 id="dfs-traversal-patterns" tabindex="-1"><a class="header-anchor" href="#dfs-traversal-patterns"><span><strong>DFS Traversal Patterns</strong></span></a></h3>
+<ul>
+<li><strong>Preorder</strong>: Root → Left → Right (top-down)
+<ul>
+<li>LC 144: Binary Tree Preorder, LC 257: Binary Tree Paths</li>
+<li>LC 112: Path Sum, LC 113: Path Sum II</li>
+</ul>
+</li>
+<li><strong>Inorder</strong>: Left → Root → Right (BST sorted order)
+<ul>
+<li>LC 94: Binary Tree Inorder, LC 98: Validate BST</li>
+<li>LC 230: Kth Smallest in BST, LC 285: Inorder Successor</li>
+</ul>
+</li>
+<li><strong>Postorder</strong>: Left → Right → Root (bottom-up)
+<ul>
+<li>LC 145: Binary Tree Postorder, LC 543: Diameter of Tree</li>
+<li>LC 124: Binary Tree Maximum Path Sum</li>
+</ul>
+</li>
+</ul>
+<h3 id="bfs-level-order-patterns" tabindex="-1"><a class="header-anchor" href="#bfs-level-order-patterns"><span><strong>BFS / Level Order Patterns</strong></span></a></h3>
+<ul>
+<li><strong>Level-by-Level</strong>: Process nodes level by level
+<ul>
+<li>LC 102: Level Order Traversal, LC 107: Level Order II</li>
+<li>LC 199: Right Side View, LC 515: Find Largest Value</li>
+</ul>
+</li>
+<li><strong>Zigzag Traversal</strong>: Alternate left-right, right-left
+<ul>
+<li>LC 103: Binary Tree Zigzag Traversal</li>
+</ul>
+</li>
+<li><strong>Connect Pointers</strong>: Link nodes at same level
+<ul>
+<li>LC 116: Populating Next Right Pointers, LC 117: Populating Next Right II</li>
+</ul>
+</li>
+</ul>
+<h3 id="tree-construction-divide-conquer" tabindex="-1"><a class="header-anchor" href="#tree-construction-divide-conquer"><span><strong>Tree Construction (Divide &amp; Conquer)</strong></span></a></h3>
+<ul>
+<li><strong>From Traversals</strong>: Build tree from inorder/preorder/postorder
+<ul>
+<li>LC 105: Construct from Preorder/Inorder, LC 106: Construct from Inorder/Postorder</li>
+<li>LC 889: Construct from Preorder/Postorder</li>
+</ul>
+</li>
+<li><strong>From Special Arrays</strong>: Build tree from other representations
+<ul>
+<li>LC 108: Convert Sorted Array to BST, LC 109: Convert Sorted List to BST</li>
+<li>LC 297: Serialize/Deserialize Binary Tree</li>
+</ul>
+</li>
+</ul>
+<h3 id="binary-search-tree-patterns" tabindex="-1"><a class="header-anchor" href="#binary-search-tree-patterns"><span><strong>Binary Search Tree Patterns</strong></span></a></h3>
+<ul>
+<li><strong>BST Validation</strong>: Check BST property
+<ul>
+<li>LC 98: Validate BST, LC 99: Recover BST</li>
+</ul>
+</li>
+<li><strong>BST Search &amp; Insert</strong>: Utilize BST property
+<ul>
+<li>LC 700: Search in BST, LC 701: Insert into BST</li>
+<li>LC 450: Delete Node in BST</li>
+</ul>
+</li>
+<li><strong>BST Statistics</strong>: Find kth element, closest value
+<ul>
+<li>LC 230: Kth Smallest, LC 272: Closest BST Values</li>
+</ul>
+</li>
+<li><strong>LCA in BST</strong>: Leverage BST ordering
+<ul>
+<li>LC 235: LCA in BST, LC 270: Closest BST Value</li>
+</ul>
+</li>
+</ul>
+<h3 id="tree-dp-bottom-up" tabindex="-1"><a class="header-anchor" href="#tree-dp-bottom-up"><span><strong>Tree DP (Bottom-Up)</strong></span></a></h3>
+<ul>
+<li><strong>Subtree Properties</strong>: Calculate properties from children
+<ul>
+<li>LC 543: Diameter of Tree, LC 124: Maximum Path Sum</li>
+<li>LC 687: Longest Univalue Path, LC 968: Binary Tree Cameras</li>
+</ul>
+</li>
+<li><strong>House Robber</strong>: Optimal selection with constraints
+<ul>
+<li>LC 337: House Robber III</li>
+</ul>
+</li>
+<li><strong>Tree Coloring</strong>: Assign colors/states optimally
+<ul>
+<li>LC 979: Distribute Coins, LC 1145: Binary Tree Coloring Game</li>
+</ul>
+</li>
+</ul>
+<h3 id="path-ancestor-problems" tabindex="-1"><a class="header-anchor" href="#path-ancestor-problems"><span><strong>Path &amp; Ancestor Problems</strong></span></a></h3>
+<ul>
+<li><strong>Root to Leaf Paths</strong>: All paths from root to leaves
+<ul>
+<li>LC 257: Binary Tree Paths, LC 113: Path Sum II</li>
+</ul>
+</li>
+<li><strong>Any Path</strong>: Paths between any two nodes
+<ul>
+<li>LC 124: Binary Tree Maximum Path Sum, LC 687: Longest Univalue Path</li>
+</ul>
+</li>
+<li><strong>Lowest Common Ancestor</strong>: Find LCA of two nodes
+<ul>
+<li>LC 236: LCA of Binary Tree, LC 1644: LCA II, LC 1650: LCA III</li>
+</ul>
+</li>
+</ul>
+<h3 id="tree-modification" tabindex="-1"><a class="header-anchor" href="#tree-modification"><span><strong>Tree Modification</strong></span></a></h3>
+<ul>
+<li><strong>Tree Flattening</strong>: Convert tree to linked list structure
+<ul>
+<li>LC 114: Flatten Binary Tree, LC 430: Flatten Multilevel List</li>
+</ul>
+</li>
+<li><strong>Tree Mirroring</strong>: Mirror or invert tree
+<ul>
+<li>LC 226: Invert Binary Tree, LC 951: Flip Equivalent Trees</li>
+</ul>
+</li>
+<li><strong>Pruning</strong>: Remove subtrees based on conditions
+<ul>
+<li>LC 814: Binary Tree Pruning, LC 1325: Delete Leaves with Given Value</li>
+</ul>
+</li>
+</ul>
+<p>⸻</p>
+<h2 id="4-graphs" tabindex="-1"><a class="header-anchor" href="#4-graphs"><span>🔹 4. Graphs</span></a></h2>
+<h3 id="graph-traversal" tabindex="-1"><a class="header-anchor" href="#graph-traversal"><span><strong>Graph Traversal</strong></span></a></h3>
+<ul>
+<li><strong>BFS (Breadth-First Search)</strong>: Level-by-level exploration
+<ul>
+<li>LC 200: Number of Islands, LC 994: Rotting Oranges</li>
+<li>LC 127: Word Ladder, LC 815: Bus Routes</li>
+<li><strong>Shortest Path</strong> (unweighted): LC 1091: Shortest Path in Binary Matrix</li>
+</ul>
+</li>
+<li><strong>DFS (Depth-First Search)</strong>: Go deep then backtrack
+<ul>
+<li>LC 695: Max Area of Island, LC 130: Surrounded Regions</li>
+<li>LC 417: Pacific Atlantic Water Flow, LC 79: Word Search</li>
+<li><strong>Connected Components</strong>: LC 323: Number of Connected Components</li>
+</ul>
+</li>
+</ul>
+<h3 id="union-find-disjoint-set-union" tabindex="-1"><a class="header-anchor" href="#union-find-disjoint-set-union"><span><strong>Union-Find (Disjoint Set Union)</strong></span></a></h3>
+<ul>
+<li><strong>Basic Union-Find</strong>: Connect components dynamically
+<ul>
+<li>LC 200: Number of Islands, LC 547: Number of Provinces</li>
+<li>LC 684: Redundant Connection, LC 685: Redundant Connection II</li>
+</ul>
+</li>
+<li><strong>Union by Rank + Path Compression</strong>: Optimized operations
+<ul>
+<li>LC 721: Accounts Merge, LC 990: Satisfiability of Equality Equations</li>
+</ul>
+</li>
+<li><strong>Applications</strong>: Minimum Spanning Tree, cycle detection
+<ul>
+<li>LC 1135: Connecting Cities, LC 1584: Min Cost to Connect Points</li>
+</ul>
+</li>
+</ul>
+<h3 id="topological-sort" tabindex="-1"><a class="header-anchor" href="#topological-sort"><span><strong>Topological Sort</strong></span></a></h3>
+<ul>
+<li><strong>Kahn’s Algorithm (BFS)</strong>: Indegree-based approach
+<ul>
+<li>LC 207: Course Schedule, LC 210: Course Schedule II</li>
+<li>LC 269: Alien Dictionary, LC 1136: Parallel Courses</li>
+</ul>
+</li>
+<li><strong>DFS-based</strong>: Detect cycles and generate topological order
+<ul>
+<li>LC 802: Find Eventual Safe States</li>
+</ul>
+</li>
+<li><strong>Applications</strong>: Task scheduling, dependency resolution</li>
+</ul>
+<h3 id="shortest-path-algorithms" tabindex="-1"><a class="header-anchor" href="#shortest-path-algorithms"><span><strong>Shortest Path Algorithms</strong></span></a></h3>
+<ul>
+<li><strong>Dijkstra’s Algorithm</strong>: Single-source shortest path (non-negative weights)
+<ul>
+<li>LC 743: Network Delay Time, LC 787: Cheapest Flights Within K Stops</li>
+<li>LC 1631: Path With Minimum Effort, LC 1514: Path with Maximum Probability</li>
+</ul>
+</li>
+<li><strong>Bellman-Ford</strong>: Handle negative edge weights
+<ul>
+<li>Detect negative cycles, shortest path with constraints</li>
+</ul>
+</li>
+<li><strong>Floyd-Warshall</strong>: All-pairs shortest paths
+<ul>
+<li>LC 1334: Find City With Smallest Number of Neighbors</li>
+</ul>
+</li>
+</ul>
+<h3 id="advanced-graph-patterns" tabindex="-1"><a class="header-anchor" href="#advanced-graph-patterns"><span><strong>Advanced Graph Patterns</strong></span></a></h3>
+<ul>
+<li><strong>Bipartite Graph</strong>: Two-coloring using BFS/DFS
+<ul>
+<li>LC 785: Is Graph Bipartite, LC 886: Possible Bipartition</li>
+</ul>
+</li>
+<li><strong>Minimum Spanning Tree</strong>: Kruskal’s and Prim’s algorithms
+<ul>
+<li>LC 1135: Connecting Cities, LC 1584: Min Cost to Connect All Points</li>
+</ul>
+</li>
+<li><strong>Strongly Connected Components</strong>: Tarjan’s and Kosaraju’s algorithms
+<ul>
+<li>Find bridges and articulation points</li>
+</ul>
+</li>
+<li><strong>Maximum Flow</strong>: Ford-Fulkerson, Edmonds-Karp
+<ul>
+<li>Network flow problems, bipartite matching</li>
+</ul>
+</li>
+</ul>
+<h3 id="grid-based-graph-problems" tabindex="-1"><a class="header-anchor" href="#grid-based-graph-problems"><span><strong>Grid-Based Graph Problems</strong></span></a></h3>
+<ul>
+<li><strong>Island Problems</strong>: Connected components in 2D grid
+<ul>
+<li>LC 200: Number of Islands, LC 695: Max Area of Island</li>
+<li>LC 305: Number of Islands II (Union-Find)</li>
+</ul>
+</li>
+<li><strong>Path Finding in Grid</strong>: BFS for shortest path
+<ul>
+<li>LC 1091: Shortest Path in Binary Matrix, LC 542: 01 Matrix</li>
+<li>LC 934: Shortest Bridge, LC 1293: Shortest Path in Grid with Obstacles</li>
+</ul>
+</li>
+</ul>
+<h3 id="special-graph-types" tabindex="-1"><a class="header-anchor" href="#special-graph-types"><span><strong>Special Graph Types</strong></span></a></h3>
+<ul>
+<li><strong>Tree Graphs</strong>: No cycles, n-1 edges for n nodes
+<ul>
+<li>LC 310: Minimum Height Trees, LC 1245: Tree Diameter</li>
+</ul>
+</li>
+<li><strong>DAG (Directed Acyclic Graph)</strong>: Topological sort possible
+<ul>
+<li>LC 329: Longest Increasing Path in Matrix</li>
+</ul>
+</li>
+<li><strong>Complete Graphs</strong>: Every pair of vertices connected
+<ul>
+<li>Traveling salesman variants, Hamiltonian paths</li>
+</ul>
+</li>
+</ul>
+<p>⸻</p>
+<h2 id="5-dynamic-programming-dp" tabindex="-1"><a class="header-anchor" href="#5-dynamic-programming-dp"><span>🔹 5. Dynamic Programming (DP)</span></a></h2>
+<h3 id="1d-linear-dp" tabindex="-1"><a class="header-anchor" href="#1d-linear-dp"><span><strong>1D Linear DP</strong></span></a></h3>
+<ul>
+<li><strong>Fibonacci Variants</strong>: Classic sequence problems
+<ul>
+<li>LC 70: Climbing Stairs, LC 198: House Robber, LC 213: House Robber II</li>
+<li>LC 91: Decode Ways, LC 264: Ugly Number II</li>
+</ul>
+</li>
+<li><strong>Decision DP</strong>: Include/exclude current element
+<ul>
+<li>LC 198: House Robber, LC 152: Maximum Product Subarray</li>
+<li>LC 53: Maximum Subarray (Kadane’s Algorithm)</li>
+</ul>
+</li>
+<li><strong>Counting DP</strong>: Count ways to achieve target
+<ul>
+<li>LC 62: Unique Paths, LC 70: Climbing Stairs, LC 96: Unique BSTs</li>
+</ul>
+</li>
+</ul>
+<h3 id="2d-grid-dp" tabindex="-1"><a class="header-anchor" href="#2d-grid-dp"><span><strong>2D Grid DP</strong></span></a></h3>
+<ul>
+<li><strong>Path Counting</strong>: Count paths in matrix
+<ul>
+<li>LC 62: Unique Paths, LC 63: Unique Paths II</li>
+<li>LC 64: Minimum Path Sum, LC 120: Triangle</li>
+</ul>
+</li>
+<li><strong>Matrix Optimization</strong>: Find optimal submatrix
+<ul>
+<li>LC 221: Maximal Square, LC 85: Maximal Rectangle</li>
+<li>LC 1277: Count Square Submatrices with All Ones</li>
+</ul>
+</li>
+<li><strong>2D Decision</strong>: DP on 2D state space
+<ul>
+<li>LC 174: Dungeon Game, LC 741: Cherry Pickup</li>
+</ul>
+</li>
+</ul>
+<h3 id="knapsack-patterns" tabindex="-1"><a class="header-anchor" href="#knapsack-patterns"><span><strong>Knapsack Patterns</strong></span></a></h3>
+<ul>
+<li><strong>0/1 Knapsack</strong>: Each item used once
+<ul>
+<li>LC 416: Partition Equal Subset Sum, LC 494: Target Sum</li>
+<li>LC 1049: Last Stone Weight II</li>
+</ul>
+</li>
+<li><strong>Unbounded Knapsack</strong>: Items can be reused
+<ul>
+<li>LC 322: Coin Change, LC 518: Coin Change II</li>
+<li>LC 279: Perfect Squares, LC 377: Combination Sum IV</li>
+</ul>
+</li>
+<li><strong>Multi-dimensional Knapsack</strong>: Multiple constraints
+<ul>
+<li>LC 474: Ones and Zeroes, LC 879: Profitable Schemes</li>
+</ul>
+</li>
+</ul>
+<h3 id="string-dp" tabindex="-1"><a class="header-anchor" href="#string-dp"><span><strong>String DP</strong></span></a></h3>
+<ul>
+<li><strong>Edit Distance</strong>: String transformation
+<ul>
+<li>LC 72: Edit Distance, LC 583: Delete Operation for Two Strings</li>
+<li>LC 712: Minimum ASCII Delete Sum, LC 97: Interleaving String</li>
+</ul>
+</li>
+<li><strong>Longest Common Subsequence (LCS)</strong>:
+<ul>
+<li>LC 1143: Longest Common Subsequence, LC 1035: Uncrossed Lines</li>
+<li>LC 300: Longest Increasing Subsequence</li>
+</ul>
+</li>
+<li><strong>Palindromes</strong>: Palindromic substrings and subsequences
+<ul>
+<li>LC 5: Longest Palindromic Substring, LC 516: Longest Palindromic Subsequence</li>
+<li>LC 131: Palindrome Partitioning, LC 132: Palindrome Partitioning II</li>
+</ul>
+</li>
+<li><strong>Word Break</strong>: String segmentation
+<ul>
+<li>LC 139: Word Break, LC 140: Word Break II</li>
+</ul>
+</li>
+</ul>
+<h3 id="interval-dp" tabindex="-1"><a class="header-anchor" href="#interval-dp"><span><strong>Interval DP</strong></span></a></h3>
+<ul>
+<li><strong>Matrix Chain</strong>: Optimal parenthesization
+<ul>
+<li>LC 312: Burst Balloons, LC 1000: Minimum Cost to Merge Stones</li>
+</ul>
+</li>
+<li><strong>Range Queries</strong>: Optimize over intervals
+<ul>
+<li>LC 877: Stone Game, LC 1039: Minimum Score Triangulation</li>
+</ul>
+</li>
+<li><strong>Palindromic Ranges</strong>: Check palindromes in ranges
+<ul>
+<li>LC 1312: Minimum Insertion Steps to Make String Palindrome</li>
+</ul>
+</li>
+</ul>
+<h3 id="state-compression-dp-bitmask" tabindex="-1"><a class="header-anchor" href="#state-compression-dp-bitmask"><span><strong>State Compression DP (Bitmask)</strong></span></a></h3>
+<ul>
+<li><strong>Traveling Salesman</strong>: Visit all states
+<ul>
+<li>LC 943: Find Shortest Superstring, LC 980: Unique Paths III</li>
+</ul>
+</li>
+<li><strong>Subset DP</strong>: Track which elements are used
+<ul>
+<li>LC 691: Stickers to Spell Word, LC 1125: Smallest Sufficient Team</li>
+</ul>
+</li>
+<li><strong>Graph State</strong>: Track visited nodes
+<ul>
+<li>LC 847: Shortest Path Visiting All Nodes</li>
+</ul>
+</li>
+</ul>
+<h3 id="advanced-dp-patterns" tabindex="-1"><a class="header-anchor" href="#advanced-dp-patterns"><span><strong>Advanced DP Patterns</strong></span></a></h3>
+<ul>
+<li><strong>Tree DP</strong>: DP on tree structures
+<ul>
+<li>LC 337: House Robber III, LC 968: Binary Tree Cameras</li>
+<li>LC 124: Binary Tree Maximum Path Sum</li>
+</ul>
+</li>
+<li><strong>Digit DP</strong>: DP on number digits
+<ul>
+<li>Count numbers with certain properties</li>
+</ul>
+</li>
+<li><strong>Probability DP</strong>: Expected value calculations
+<ul>
+<li>LC 808: Soup Servings, LC 837: New 21 Game</li>
+</ul>
+</li>
+<li><strong>Game Theory DP</strong>: Minimax with optimal play
+<ul>
+<li>LC 292: Nim Game, LC 464: Can I Win, LC 486: Predict the Winner</li>
+</ul>
+</li>
+</ul>
+<h3 id="dp-optimization-techniques" tabindex="-1"><a class="header-anchor" href="#dp-optimization-techniques"><span><strong>DP Optimization Techniques</strong></span></a></h3>
+<ul>
+<li><strong>Space Optimization</strong>: Reduce from 2D to 1D
+<ul>
+<li>Rolling array, only keep necessary states</li>
+</ul>
+</li>
+<li><strong>Monotonic Queue/Stack</strong>: Optimize range queries
+<ul>
+<li>LC 239: Sliding Window Maximum with DP</li>
+</ul>
+</li>
+<li><strong>Matrix Exponentiation</strong>: Fast computation of recurrence
+<ul>
+<li>For large Fibonacci-like sequences</li>
+</ul>
+</li>
+</ul>
+<p>⸻</p>
+<h2 id="6-backtracking" tabindex="-1"><a class="header-anchor" href="#6-backtracking"><span>🔹 6. Backtracking</span></a></h2>
+<h3 id="subsets-combinations" tabindex="-1"><a class="header-anchor" href="#subsets-combinations"><span><strong>Subsets &amp; Combinations</strong></span></a></h3>
+<ul>
+<li><strong>Subsets</strong>: Generate all possible subsets
+<ul>
+<li>LC 78: Subsets, LC 90: Subsets II (with duplicates)</li>
+<li>LC 320: Generalized Abbreviation</li>
+</ul>
+</li>
+<li><strong>Combinations</strong>: Choose k elements from n
+<ul>
+<li>LC 77: Combinations, LC 39: Combination Sum</li>
+<li>LC 40: Combination Sum II, LC 216: Combination Sum III</li>
+</ul>
+</li>
+<li><strong>Template</strong>: Use start index to avoid duplicates</li>
+</ul>
+<h3 id="permutations" tabindex="-1"><a class="header-anchor" href="#permutations"><span><strong>Permutations</strong></span></a></h3>
+<ul>
+<li><strong>Basic Permutations</strong>: All arrangements
+<ul>
+<li>LC 46: Permutations, LC 47: Permutations II (with duplicates)</li>
+<li>LC 31: Next Permutation, LC 60: Permutation Sequence</li>
+</ul>
+</li>
+<li><strong>Conditional Permutations</strong>: With constraints
+<ul>
+<li>LC 996: Number of Squareful Arrays</li>
+</ul>
+</li>
+<li><strong>No start index needed</strong> - use visited array</li>
+</ul>
+<h3 id="grid-board-problems" tabindex="-1"><a class="header-anchor" href="#grid-board-problems"><span><strong>Grid &amp; Board Problems</strong></span></a></h3>
+<ul>
+<li><strong>N-Queens</strong>: Place queens without conflicts
+<ul>
+<li>LC 51: N-Queens, LC 52: N-Queens II</li>
+</ul>
+</li>
+<li><strong>Word Search</strong>: Find words in grid
+<ul>
+<li>LC 79: Word Search, LC 212: Word Search II (Trie)</li>
+</ul>
+</li>
+<li><strong>Path Finding</strong>: Explore all paths
+<ul>
+<li>LC 980: Unique Paths III, LC 1219: Path with Maximum Gold</li>
+</ul>
+</li>
+</ul>
+<h3 id="string-partitioning" tabindex="-1"><a class="header-anchor" href="#string-partitioning"><span><strong>String Partitioning</strong></span></a></h3>
+<ul>
+<li><strong>Palindrome Partitioning</strong>: Split into palindromes
+<ul>
+<li>LC 131: Palindrome Partitioning, LC 132: Palindrome Partitioning II</li>
+</ul>
+</li>
+<li><strong>IP Address</strong>: Generate valid IP addresses
+<ul>
+<li>LC 93: Restore IP Addresses</li>
+</ul>
+</li>
+<li><strong>Word Break</strong>: Split string using dictionary
+<ul>
+<li>LC 140: Word Break II</li>
+</ul>
+</li>
+</ul>
+<h3 id="constraint-satisfaction" tabindex="-1"><a class="header-anchor" href="#constraint-satisfaction"><span><strong>Constraint Satisfaction</strong></span></a></h3>
+<ul>
+<li><strong>Sudoku</strong>: Fill grid with constraints
+<ul>
+<li>LC 37: Sudoku Solver</li>
+</ul>
+</li>
+<li><strong>Expression</strong>: Generate target expressions
+<ul>
+<li>LC 282: Expression Add Operators, LC 241: Different Ways to Add Parentheses</li>
+</ul>
+</li>
+<li><strong>Parentheses</strong>: Generate valid combinations
+<ul>
+<li>LC 22: Generate Parentheses</li>
+</ul>
+</li>
+</ul>
+<h3 id="advanced-backtracking" tabindex="-1"><a class="header-anchor" href="#advanced-backtracking"><span><strong>Advanced Backtracking</strong></span></a></h3>
+<ul>
+<li><strong>Game Playing</strong>: Optimal strategy
+<ul>
+<li>LC 464: Can I Win, LC 294: Flip Game II</li>
+</ul>
+</li>
+<li><strong>Scheduling</strong>: Assign tasks optimally
+<ul>
+<li>LC 698: Partition to K Equal Sum Subsets</li>
+</ul>
+</li>
+<li><strong>Graph Coloring</strong>: Color nodes without conflicts
+<ul>
+<li>Extension of N-Queens concept</li>
+</ul>
+</li>
+</ul>
+<h3 id="pruning-techniques" tabindex="-1"><a class="header-anchor" href="#pruning-techniques"><span><strong>Pruning Techniques</strong></span></a></h3>
+<ul>
+<li><strong>Constraint Pruning</strong>: Early termination on invalid states
+<ul>
+<li>Check bounds before recursive calls</li>
+</ul>
+</li>
+<li><strong>Bound Pruning</strong>: Use upper/lower bounds
+<ul>
+<li>LC 39: Combination Sum (sort + break when sum exceeds)</li>
+</ul>
+</li>
+<li><strong>Symmetry Pruning</strong>: Skip equivalent states
+<ul>
+<li>LC 40: Combination Sum II (skip duplicates at same level)</li>
+</ul>
+</li>
+<li><strong>Memoization</strong>: Cache results for repeated states
+<ul>
+<li>Convert backtracking to dynamic programming</li>
+</ul>
+</li>
+</ul>
+<h3 id="backtracking-templates" tabindex="-1"><a class="header-anchor" href="#backtracking-templates"><span><strong>Backtracking Templates</strong></span></a></h3>
+<ul>
+<li><strong>Choice-based</strong>: Make choice → recurse → undo</li>
+<li><strong>Index-based</strong>: Process each position sequentially</li>
+<li><strong>State-based</strong>: Track current state and modify it</li>
+</ul>
+<p>⸻</p>
+<h2 id="7-heaps-priority-queues" tabindex="-1"><a class="header-anchor" href="#7-heaps-priority-queues"><span>🔹 7. Heaps &amp; Priority Queues</span></a></h2>
+<h3 id="top-k-problems" tabindex="-1"><a class="header-anchor" href="#top-k-problems"><span><strong>Top-K Problems</strong></span></a></h3>
+<ul>
+<li><strong>Kth Largest/Smallest</strong>: Use heap to maintain k elements
+<ul>
+<li>LC 215: Kth Largest Element, LC 703: Kth Largest in Stream</li>
+<li>LC 973: K Closest Points to Origin, LC 692: Top K Frequent Words</li>
+</ul>
+</li>
+<li><strong>Frequency-based</strong>: Combine counting with heap
+<ul>
+<li>LC 347: Top K Frequent Elements, LC 451: Sort Characters by Frequency</li>
+</ul>
+</li>
+<li><strong>Min-heap for largest, max-heap for smallest</strong></li>
+</ul>
+<h3 id="merge-multiple-sorted-structures" tabindex="-1"><a class="header-anchor" href="#merge-multiple-sorted-structures"><span><strong>Merge Multiple Sorted Structures</strong></span></a></h3>
+<ul>
+<li><strong>Merge k Sorted Lists</strong>: Use heap to track current minimums
+<ul>
+<li>LC 23: Merge k Sorted Lists, LC 378: Kth Smallest in Sorted Matrix</li>
+</ul>
+</li>
+<li><strong>Merge Intervals</strong>: Sort + heap for overlapping intervals
+<ul>
+<li>LC 253: Meeting Rooms II, LC 1229: Meeting Scheduler</li>
+</ul>
+</li>
+<li><strong>Merge k Arrays</strong>: Extension of merge k lists
+<ul>
+<li>LC 632: Smallest Range Covering Elements</li>
+</ul>
+</li>
+</ul>
+<h3 id="data-stream-online-algorithms" tabindex="-1"><a class="header-anchor" href="#data-stream-online-algorithms"><span><strong>Data Stream &amp; Online Algorithms</strong></span></a></h3>
+<ul>
+<li><strong>Median Maintenance</strong>: Two heaps (max-heap + min-heap)
+<ul>
+<li>LC 295: Find Median from Data Stream</li>
+<li>LC 480: Sliding Window Median</li>
+</ul>
+</li>
+<li><strong>Running Statistics</strong>: Maintain statistics as data arrives
+<ul>
+<li>Running kth largest, running average</li>
+</ul>
+</li>
+<li><strong>Stream Processing</strong>: Handle infinite data streams</li>
+</ul>
+<h3 id="scheduling-intervals" tabindex="-1"><a class="header-anchor" href="#scheduling-intervals"><span><strong>Scheduling &amp; Intervals</strong></span></a></h3>
+<ul>
+<li><strong>Task Scheduling</strong>: Optimize task execution
+<ul>
+<li>LC 621: Task Scheduler, LC 358: Rearrange String k Distance Apart</li>
+</ul>
+</li>
+<li><strong>Meeting Rooms</strong>: Schedule meetings optimally
+<ul>
+<li>LC 252: Meeting Rooms, LC 253: Meeting Rooms II</li>
+</ul>
+</li>
+<li><strong>CPU Scheduling</strong>: Process scheduling algorithms
+<ul>
+<li>LC 1834: Single-Threaded CPU</li>
+</ul>
+</li>
+</ul>
+<h3 id="graph-algorithms-with-heaps" tabindex="-1"><a class="header-anchor" href="#graph-algorithms-with-heaps"><span><strong>Graph Algorithms with Heaps</strong></span></a></h3>
+<ul>
+<li><strong>Dijkstra’s Algorithm</strong>: Shortest path using min-heap
+<ul>
+<li>LC 743: Network Delay Time, LC 787: Cheapest Flights</li>
+</ul>
+</li>
+<li><em><em>A</em> Search</em>*: Heuristic search with priority queue</li>
+<li><strong>MST (Prim’s Algorithm)</strong>: Minimum spanning tree
+<ul>
+<li>LC 1584: Min Cost to Connect All Points</li>
+</ul>
+</li>
+</ul>
+<h3 id="advanced-heap-techniques" tabindex="-1"><a class="header-anchor" href="#advanced-heap-techniques"><span><strong>Advanced Heap Techniques</strong></span></a></h3>
+<ul>
+<li><strong>Lazy Deletion</strong>: Mark elements as deleted instead of removing</li>
+<li><strong>Multi-level Heaps</strong>: Heap of heaps for complex structures</li>
+<li><strong>Custom Comparators</strong>: Define custom ordering rules
+<ul>
+<li>Lambda functions, custom objects</li>
+</ul>
+</li>
+<li><strong>Heap + Hash Map</strong>: Combine for O(log n) updates
+<ul>
+<li>LC 355: Design Twitter, LC 146: LRU Cache with heap</li>
+</ul>
+</li>
+</ul>
+<p>⸻</p>
+<h2 id="8-hashing-counting" tabindex="-1"><a class="header-anchor" href="#8-hashing-counting"><span>🔹 8. Hashing &amp; Counting</span></a></h2>
+<h3 id="frequency-maps" tabindex="-1"><a class="header-anchor" href="#frequency-maps"><span><strong>Frequency Maps</strong></span></a></h3>
+<ul>
+<li><strong>Character/Element Counting</strong>: Count occurrences for analysis
+<ul>
+<li>LC 242: Valid Anagram, LC 383: Ransom Note, LC 387: First Unique Character</li>
+<li>LC 169: Majority Element, LC 229: Majority Element II</li>
+</ul>
+</li>
+<li><strong>Group by Frequency</strong>: Categorize elements by count
+<ul>
+<li>LC 49: Group Anagrams, LC 347: Top K Frequent Elements</li>
+<li>LC 451: Sort Characters by Frequency</li>
+</ul>
+</li>
+<li><strong>Anagram Detection</strong>: Use frequency maps or sorted strings
+<ul>
+<li>LC 438: Find All Anagrams in a String, LC 567: Permutation in String</li>
+</ul>
+</li>
+<li><strong>Template</strong>: <code>Counter()</code> or manual dictionary counting</li>
+</ul>
+<h3 id="prefix-hash-rolling-hash" tabindex="-1"><a class="header-anchor" href="#prefix-hash-rolling-hash"><span><strong>Prefix Hash / Rolling Hash</strong></span></a></h3>
+<ul>
+<li><strong>String Pattern Matching</strong>: Rabin-Karp algorithm
+<ul>
+<li>LC 28: Find the Index of First Occurrence, LC 459: Repeated Substring Pattern</li>
+</ul>
+</li>
+<li><strong>Substring Problems</strong>: Efficient hash-based comparison
+<ul>
+<li>LC 187: Repeated DNA Sequences, LC 1044: Longest Duplicate Substring</li>
+</ul>
+</li>
+<li><strong>Rolling Window Hash</strong>: Update hash incrementally
+<ul>
+<li>LC 1316: Distinct Echo Substrings, LC 1554: Strings Differ by One Character</li>
+</ul>
+</li>
+<li><strong>Polynomial Hash</strong>: Base-power hashing for strings
+<ul>
+<li>Use prime modulus to reduce collisions</li>
+</ul>
+</li>
+</ul>
+<h3 id="hashset-for-seen-states" tabindex="-1"><a class="header-anchor" href="#hashset-for-seen-states"><span><strong>HashSet for Seen States</strong></span></a></h3>
+<ul>
+<li><strong>Cycle Detection</strong>: Track visited states
+<ul>
+<li>LC 202: Happy Number, LC 141: Linked List Cycle</li>
+<li>LC 287: Find the Duplicate Number</li>
+</ul>
+</li>
+<li><strong>Duplicate Detection</strong>: Fast O(1) lookups
+<ul>
+<li>LC 217: Contains Duplicate, LC 219: Contains Duplicate II</li>
+<li>LC 128: Longest Consecutive Sequence</li>
+</ul>
+</li>
+<li><strong>Path Tracking</strong>: Remember visited positions
+<ul>
+<li>LC 36: Valid Sudoku, LC 694: Number of Distinct Islands</li>
+</ul>
+</li>
+<li><strong>State Space Search</strong>: Avoid revisiting states
+<ul>
+<li>LC 127: Word Ladder, LC 752: Open the Lock</li>
+</ul>
+</li>
+</ul>
+<h3 id="hash-based-data-structures" tabindex="-1"><a class="header-anchor" href="#hash-based-data-structures"><span><strong>Hash-based Data Structures</strong></span></a></h3>
+<ul>
+<li><strong>HashMap for Relationships</strong>: Key-value mappings
+<ul>
+<li>LC 1: Two Sum, LC 454: 4Sum II, LC 525: Contiguous Array</li>
+<li>LC 560: Subarray Sum Equals K, LC 523: Continuous Subarray Sum</li>
+</ul>
+</li>
+<li><strong>Hash + Index Tracking</strong>: Position-based problems
+<ul>
+<li>LC 409: Longest Palindrome, LC 290: Word Pattern</li>
+<li>LC 205: Isomorphic Strings, LC 890: Find and Replace Pattern</li>
+</ul>
+</li>
+<li><strong>Prefix Sum + Hash</strong>: Cumulative sum with frequency
+<ul>
+<li>LC 930: Binary Subarrays with Sum, LC 974: Subarray Sums Divisible by K</li>
+</ul>
+</li>
+</ul>
+<h3 id="advanced-hashing-techniques" tabindex="-1"><a class="header-anchor" href="#advanced-hashing-techniques"><span><strong>Advanced Hashing Techniques</strong></span></a></h3>
+<ul>
+<li><strong>Multi-key Hashing</strong>: Combine multiple attributes
+<ul>
+<li>LC 356: Line Reflection, LC 447: Number of Boomerangs</li>
+</ul>
+</li>
+<li><strong>Custom Hash Functions</strong>: Problem-specific hashing
+<ul>
+<li>Coordinate hashing for 2D problems</li>
+<li>String normalization for pattern matching</li>
+</ul>
+</li>
+<li><strong>Hash Collision Handling</strong>: Manage hash conflicts
+<ul>
+<li>Double hashing, separate chaining considerations</li>
+</ul>
+</li>
+</ul>
+<p>⸻</p>
+<h2 id="9-advanced-patterns" tabindex="-1"><a class="header-anchor" href="#9-advanced-patterns"><span>🔹 9. Advanced Patterns</span></a></h2>
+<h3 id="monotonic-stack-queue" tabindex="-1"><a class="header-anchor" href="#monotonic-stack-queue"><span><strong>Monotonic Stack / Queue</strong></span></a></h3>
+<ul>
+<li><strong>Next Greater/Smaller Element</strong>: Stack-based pattern
+<ul>
+<li>LC 496: Next Greater Element I, LC 503: Next Greater Element II</li>
+<li>LC 739: Daily Temperatures, LC 901: Online Stock Span</li>
+</ul>
+</li>
+<li><strong>Largest Rectangle</strong>: Stack for histogram problems
+<ul>
+<li>LC 84: Largest Rectangle in Histogram, LC 85: Maximal Rectangle</li>
+</ul>
+</li>
+<li><strong>Sliding Window Maximum</strong>: Deque-based pattern
+<ul>
+<li>LC 239: Sliding Window Maximum, LC 1438: Longest Subarray with Difference ≤ K</li>
+</ul>
+</li>
+<li><strong>Monotonic Property</strong>: Maintain increasing/decreasing order
+<ul>
+<li>LC 402: Remove K Digits, LC 321: Create Maximum Number</li>
+</ul>
+</li>
+</ul>
+<h3 id="greedy-algorithms-with-sorting" tabindex="-1"><a class="header-anchor" href="#greedy-algorithms-with-sorting"><span><strong>Greedy Algorithms with Sorting</strong></span></a></h3>
+<ul>
+<li><strong>Interval Scheduling</strong>: Sort by end time for optimal selection
+<ul>
+<li>LC 435: Non-overlapping Intervals, LC 452: Minimum Number of Arrows</li>
+<li>LC 253: Meeting Rooms II, LC 1024: Video Stitching</li>
+</ul>
+</li>
+<li><strong>Fractional Knapsack</strong>: Sort by value-to-weight ratio
+<ul>
+<li>LC 134: Gas Station, LC 135: Candy</li>
+</ul>
+</li>
+<li><strong>Activity Selection</strong>: Choose maximum non-overlapping activities
+<ul>
+<li>LC 646: Maximum Length of Pair Chain</li>
+</ul>
+</li>
+<li><strong>Lexicographic Ordering</strong>: String/array construction
+<ul>
+<li>LC 316: Remove Duplicate Letters, LC 1081: Smallest Subsequence</li>
+</ul>
+</li>
+</ul>
+<h3 id="binary-indexed-tree-bit-segment-tree" tabindex="-1"><a class="header-anchor" href="#binary-indexed-tree-bit-segment-tree"><span><strong>Binary Indexed Tree (BIT) / Segment Tree</strong></span></a></h3>
+<ul>
+<li><strong>Range Sum Queries</strong>: Efficient prefix sums
+<ul>
+<li>LC 307: Range Sum Query - Mutable, LC 308: Range Sum Query 2D</li>
+</ul>
+</li>
+<li><strong>Inversion Count</strong>: Count inversions in array
+<ul>
+<li>LC 315: Count of Smaller Numbers After Self</li>
+<li>LC 493: Reverse Pairs, LC 327: Count of Range Sum</li>
+</ul>
+</li>
+<li><strong>Coordinate Compression</strong>: Handle large coordinate ranges
+<ul>
+<li>LC 218: The Skyline Problem (with Fenwick Tree)</li>
+</ul>
+</li>
+<li><strong>Range Updates</strong>: Lazy propagation for updates
+<ul>
+<li>Segment tree with range increment/decrement</li>
+</ul>
+</li>
+</ul>
+<h3 id="union-find-disjoint-set-union-1" tabindex="-1"><a class="header-anchor" href="#union-find-disjoint-set-union-1"><span><strong>Union-Find (Disjoint Set Union)</strong></span></a></h3>
+<ul>
+<li><strong>Connected Components</strong>: Group elements into components
+<ul>
+<li>LC 200: Number of Islands, LC 305: Number of Islands II</li>
+<li>LC 547: Number of Provinces, LC 684: Redundant Connection</li>
+</ul>
+</li>
+<li><strong>Path Compression</strong>: Optimize find operations
+<ul>
+<li>LC 721: Accounts Merge, LC 737: Sentence Similarity II</li>
+</ul>
+</li>
+<li><strong>Union by Rank</strong>: Balance tree height
+<ul>
+<li>LC 1101: The Earliest Moment When Everyone Become Friends</li>
+</ul>
+</li>
+<li><strong>Minimum Spanning Tree</strong>: Kruskal’s algorithm
+<ul>
+<li>LC 1135: Connecting Cities, LC 1584: Min Cost to Connect All Points</li>
+</ul>
+</li>
+</ul>
+<h3 id="trie-prefix-tree" tabindex="-1"><a class="header-anchor" href="#trie-prefix-tree"><span><strong>Trie (Prefix Tree)</strong></span></a></h3>
+<ul>
+<li><strong>Word Search &amp; Storage</strong>: Efficient prefix operations
+<ul>
+<li>LC 208: Implement Trie, LC 211: Design Add and Search Words</li>
+<li>LC 212: Word Search II, LC 472: Concatenated Words</li>
+</ul>
+</li>
+<li><strong>Prefix Matching</strong>: Find words with common prefixes
+<ul>
+<li>LC 14: Longest Common Prefix, LC 421: Maximum XOR</li>
+</ul>
+</li>
+<li><strong>Autocomplete</strong>: Suggest completions
+<ul>
+<li>LC 642: Design Search Autocomplete System</li>
+</ul>
+</li>
+<li><strong>XOR Trie</strong>: Binary trie for XOR problems
+<ul>
+<li>LC 421: Maximum XOR of Two Numbers</li>
+<li>LC 1707: Maximum XOR With an Element From Array</li>
+</ul>
+</li>
+</ul>
+<h3 id="advanced-graph-algorithms" tabindex="-1"><a class="header-anchor" href="#advanced-graph-algorithms"><span><strong>Advanced Graph Algorithms</strong></span></a></h3>
+<ul>
+<li><strong>Topological Sort</strong>: Order nodes in DAG
+<ul>
+<li>LC 207: Course Schedule, LC 210: Course Schedule II</li>
+<li>LC 269: Alien Dictionary, LC 329: Longest Increasing Path</li>
+</ul>
+</li>
+<li><strong>Tarjan’s Algorithm</strong>: Find strongly connected components
+<ul>
+<li>LC 1192: Critical Connections in a Network</li>
+</ul>
+</li>
+<li><strong>Bipartite Matching</strong>: Maximum matching in bipartite graphs
+<ul>
+<li>Hungarian algorithm, König’s theorem applications</li>
+</ul>
+</li>
+<li><strong>Network Flow</strong>: Max flow min cut problems
+<ul>
+<li>Ford-Fulkerson, Edmonds-Karp algorithms</li>
+</ul>
+</li>
+</ul>
+<h3 id="string-algorithms-1" tabindex="-1"><a class="header-anchor" href="#string-algorithms-1"><span><strong>String Algorithms</strong></span></a></h3>
+<ul>
+<li><strong>KMP (Knuth-Morris-Pratt)</strong>: Pattern matching with failure function
+<ul>
+<li>LC 28: Find Index of First Occurrence</li>
+</ul>
+</li>
+<li><strong>Manacher’s Algorithm</strong>: Find all palindromes in O(n)
+<ul>
+<li>LC 5: Longest Palindromic Substring optimization</li>
+</ul>
+</li>
+<li><strong>Z-Algorithm</strong>: String matching and pattern finding
+<ul>
+<li>Linear time string matching</li>
+</ul>
+</li>
+<li><strong>Suffix Arrays</strong>: Advanced string processing
+<ul>
+<li>LC 1044: Longest Duplicate Substring (advanced approach)</li>
+</ul>
+</li>
+</ul>
+<h3 id="mathematical-number-theory" tabindex="-1"><a class="header-anchor" href="#mathematical-number-theory"><span><strong>Mathematical &amp; Number Theory</strong></span></a></h3>
+<ul>
+<li><strong>Fast Exponentiation</strong>: Compute powers efficiently
+<ul>
+<li>LC 50: Pow(x, n), LC 372: Super Pow</li>
+</ul>
+</li>
+<li><strong>Extended Euclidean Algorithm</strong>: Solve Diophantine equations
+<ul>
+<li>LC 365: Water and Jug Problem</li>
+</ul>
+</li>
+<li><strong>Sieve of Eratosthenes</strong>: Prime number generation
+<ul>
+<li>LC 204: Count Primes, LC 279: Perfect Squares</li>
+</ul>
+</li>
+<li><strong>Matrix Exponentiation</strong>: Fast computation of recurrences
+<ul>
+<li>Fibonacci sequence, linear recurrence relations</li>
+</ul>
+</li>
+</ul>
+<h3 id="game-theory" tabindex="-1"><a class="header-anchor" href="#game-theory"><span><strong>Game Theory</strong></span></a></h3>
+<ul>
+<li><strong>Minimax Algorithm</strong>: Optimal strategy in zero-sum games
+<ul>
+<li>LC 464: Can I Win, LC 486: Predict the Winner</li>
+</ul>
+</li>
+<li><strong>Nim Game</strong>: XOR-based winning strategy
+<ul>
+<li>LC 292: Nim Game, LC 294: Flip Game II</li>
+</ul>
+</li>
+<li><strong>Dynamic Programming on Games</strong>: Game state analysis
+<ul>
+<li>LC 877: Stone Game, LC 1140: Stone Game II</li>
+</ul>
+</li>
+</ul>
+
+      </div>
+      <div class="cheatsheet-footer">
+        <a href="../cheatsheets.html" class="back-link">← Back to Cheat Sheets</a>
+        <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/lc_pattern.md" class="github-edit" target="_blank">
+          Edit on GitHub →
+        </a>
+      </div>
+    <nav class="prev-next"><a href="lc_category.html" class="prev-link">← Lc Category</a><a href="linked_list.html" class="next-link">Linked List →</a></nav>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>CS_basics - Computer Science Fundamentals & Interview Preparation</p>
+      <p>
+        <a href="https://github.com/yennanliu/CS_basics">GitHub</a> •
+        <a href="https://github.com/yennanliu/CS_basics/tree/master/doc">Documentation</a> •
+        <a href="https://github.com/yennanliu/CS_basics/issues">Report Issues</a>
+      </p>
+    </div>
+  </footer>
+</body>
+</html>

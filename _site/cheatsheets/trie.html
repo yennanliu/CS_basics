@@ -1,0 +1,1230 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Trie - CS_basics</title>
+  <meta name="description" content="Computer Science fundamentals: algorithms, data structures, system design, and LeetCode solutions">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>CS</text></svg>">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="../vendor/fonts.css">
+  <link rel="stylesheet" href="../vendor/highlight/github-dark.min.css">
+  <script src="../vendor/highlight/highlight.min.js"></script>
+  <script>
+  // Apply theme before render to prevent flash
+  (function() {
+    var saved = localStorage.getItem('theme');
+    if (saved === 'dark' || (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      document.documentElement.setAttribute('data-theme', 'dark');
+    }
+  })();
+  </script>
+  <script>document.addEventListener('DOMContentLoaded', function() {
+    hljs.highlightAll();
+    document.querySelectorAll('pre code').forEach(function(codeEl) {
+      var pre = codeEl.parentElement;
+      var lang = '';
+      var cls = codeEl.className || '';
+      var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
+      if (m) lang = m[1];
+      var wrapper = document.createElement('div');
+      wrapper.className = 'code-block-wrapper';
+      pre.parentNode.insertBefore(wrapper, pre);
+      var header = document.createElement('div');
+      header.className = 'code-block-header';
+      if (lang) {
+        var label = document.createElement('span');
+        label.className = 'code-lang-label';
+        label.textContent = lang;
+        header.appendChild(label);
+      } else {
+        header.appendChild(document.createElement('span'));
+      }
+      var btn = document.createElement('button');
+      btn.className = 'copy-btn';
+      btn.textContent = 'Copy';
+      btn.addEventListener('click', function() {
+        navigator.clipboard.writeText(codeEl.textContent).then(function() {
+          btn.textContent = 'Copied!';
+          btn.classList.add('copied');
+          setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+        });
+      });
+      header.appendChild(btn);
+      wrapper.appendChild(header);
+      wrapper.appendChild(pre);
+    });
+    document.querySelectorAll('table').forEach(function(table) {
+      if (!table.parentElement.classList.contains('table-wrap')) {
+        var wrapper = document.createElement('div');
+        wrapper.className = 'table-wrap';
+        table.parentNode.insertBefore(wrapper, table);
+        wrapper.appendChild(table);
+      }
+    });
+    // Reading progress bar
+    var progressBar = document.getElementById('reading-progress');
+    if (progressBar) {
+      window.addEventListener('scroll', function() {
+        var winScroll = document.documentElement.scrollTop;
+        var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        progressBar.style.width = height > 0 ? (winScroll / height * 100) + '%' : '0%';
+      });
+    }
+    // Dark mode toggle
+    var toggle = document.getElementById('theme-toggle');
+    if (toggle) {
+      var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      toggle.textContent = isDark ? '☀️' : '🌙';
+      toggle.addEventListener('click', function() {
+        var dark = document.documentElement.getAttribute('data-theme') === 'dark';
+        if (dark) {
+          document.documentElement.removeAttribute('data-theme');
+          localStorage.setItem('theme', 'light');
+          toggle.textContent = '🌙';
+        } else {
+          document.documentElement.setAttribute('data-theme', 'dark');
+          localStorage.setItem('theme', 'dark');
+          toggle.textContent = '☀️';
+        }
+      });
+    }
+  });</script>
+</head>
+<body>
+  <div class="progress-container"><div class="progress-bar" id="reading-progress"></div></div>
+  <nav class="navbar">
+    <div class="container">
+      <div class="nav-brand">
+        <span class="nav-icon">💻</span>
+        <span class="nav-title">CS_basics</span>
+      </div>
+      <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+      <div class="nav-links">
+        <a href="../index.html" class="">Home</a>
+        <a href="../cheatsheets.html" class="active">Cheat Sheets</a>
+        <a href="../patterns.html" class="">Pattern Recognition</a>
+        <a href="../faqs.html" class="">FAQs</a>
+        <a href="../resources.html" class="">Resources</a>
+        <a href="../lc-explorer.html" class="">LC Explorer</a>
+        <a href="../lc-random-picker.html" class="">🎲 Random Picker</a>
+        <a href="../algo_demo/index.html" class="">Visualizer</a>
+        <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">&#127769;</button>
+        <a href="https://github.com/yennanliu/CS_basics" target="_blank" class="github-link" aria-label="GitHub">
+          <svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor">
+            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container">
+    <div class="content">
+      
+      <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">Trie</span></nav>
+      <div class="cheatsheet-header">
+        <h1>Trie</h1>
+        <span class="last-updated">Last updated: Sep 2, 2025</span>
+      </div>
+      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#0-concept">0) Concept</a></li><li class="toc-sub"><a href="#0-1-types">0-1) Types</a></li><li class="toc-sub"><a href="#0-2-pattern">0-2) Pattern</a></li><li class="toc-sub"><a href="#template-2-trie-with-array-fixed-alphabet">Template 2: Trie with Array (Fixed Alphabet)</a></li><li class="toc-sub"><a href="#template-3-trie-with-wildcard-support">Template 3: Trie with Wildcard Support</a></li><li class="toc-sub"><a href="#template-4-autocomplete-trie">Template 4: Autocomplete Trie</a></li><li class="toc-sub"><a href="#template-5-binary-trie-xor-problems">Template 5: Binary Trie (XOR Problems)</a></li><li class="toc-sub"><a href="#template-6-trie-with-delete-operation">Template 6: Trie with Delete Operation</a></li><li><a href="#1-general-form">1) General form</a></li><li class="toc-sub"><a href="#1-1-basic-op">1-1) Basic OP</a></li><li><a href="#2-lc-example">2) LC Example</a></li><li class="toc-sub"><a href="#2-1-implement-trie-prefix-tree">2-1) Implement Trie (Prefix Tree)</a></li><li class="toc-sub"><a href="#2-2-add-and-search-word-data-structure-design">2-2) Add and Search Word - Data structure design</a></li><li class="toc-sub"><a href="#2-3-search-suggestions-system">2-3) Search Suggestions System</a></li><li class="toc-sub"><a href="#2-4-word-search">2-4) Word Search</a></li><li class="toc-sub"><a href="#2-5-word-search-ii">2-5) Word Search II</a></li></ul></div>
+      <div class="cheatsheet-content">
+        <h1 id="trie" tabindex="-1"><a class="header-anchor" href="#trie"><span>Trie</span></a></h1>
+<blockquote>
+<p>Whenever we come across questions with multiple strings, it is best to think if Trie can help us.</p>
+</blockquote>
+<ul>
+<li><a href="https://leetcode.com/problems/search-suggestions-system/solution/">https://leetcode.com/problems/search-suggestions-system/solution/</a></li>
+</ul>
+<h2 id="0-concept" tabindex="-1"><a class="header-anchor" href="#0-concept"><span>0) Concept</span></a></h2>
+<ul>
+<li><a href="https://blog.csdn.net/fuxuemingzhu/article/details/79388432">https://blog.csdn.net/fuxuemingzhu/article/details/79388432</a></li>
+<li>tree + dict
+<ul>
+<li><code>put Node into dict</code> (e.g. defaultdict(Node))</li>
+</ul>
+</li>
+</ul>
+<p><img src="../doc/pic/trie_1.png" ></p>
+<p><img src="../doc/pic/trie_2.png" ></p>
+<h3 id="0-1-types" tabindex="-1"><a class="header-anchor" href="#0-1-types"><span>0-1) Types</span></a></h3>
+<h3 id="0-2-pattern" tabindex="-1"><a class="header-anchor" href="#0-2-pattern"><span>0-2) Pattern</span></a></h3>
+<pre><code class="language-python">class TrieNode:
+    def __init__(self):
+        self.children = {}  # HashMap for flexible alphabet
+        self.is_end = False
+        self.word = None    # Store complete word (optional)
+
+class Trie:
+    def __init__(self):
+        self.root = TrieNode()
+    
+    def insert(self, word: str) -&gt; None:
+        &quot;&quot;&quot;Insert word into trie. Time: O(m), Space: O(m)&quot;&quot;&quot;
+        node = self.root
+        for char in word:
+            if char not in node.children:
+                node.children[char] = TrieNode()
+            node = node.children[char]
+        node.is_end = True
+        node.word = word  # Store for easy retrieval
+    
+    def search(self, word: str) -&gt; bool:
+        &quot;&quot;&quot;Search for exact word. Time: O(m)&quot;&quot;&quot;
+        node = self.root
+        for char in word:
+            if char not in node.children:
+                return False
+            node = node.children[char]
+        return node.is_end
+    
+    def startsWith(self, prefix: str) -&gt; bool:
+        &quot;&quot;&quot;Check if any word starts with prefix. Time: O(p)&quot;&quot;&quot;
+        node = self.root
+        for char in prefix:
+            if char not in node.children:
+                return False
+            node = node.children[char]
+        return True
+
+# Java version
+class TrieNode {
+    Map&lt;Character, TrieNode&gt; children;
+    boolean isEnd;
+    String word;
+    
+    public TrieNode() {
+        children = new HashMap&lt;&gt;();
+        isEnd = false;
+        word = null;
+    }
+}
+
+class Trie {
+    private TrieNode root;
+    
+    public Trie() {
+        root = new TrieNode();
+    }
+    
+    public void insert(String word) {
+        TrieNode node = root;
+        for (char c : word.toCharArray()) {
+            node.children.putIfAbsent(c, new TrieNode());
+            node = node.children.get(c);
+        }
+        node.isEnd = true;
+        node.word = word;
+    }
+    
+    public boolean search(String word) {
+        TrieNode node = root;
+        for (char c : word.toCharArray()) {
+            if (!node.children.containsKey(c)) {
+                return false;
+            }
+            node = node.children.get(c);
+        }
+        return node.isEnd;
+    }
+    
+    public boolean startsWith(String prefix) {
+        TrieNode node = root;
+        for (char c : prefix.toCharArray()) {
+            if (!node.children.containsKey(c)) {
+                return false;
+            }
+            node = node.children.get(c);
+        }
+        return true;
+    }
+}
+</code></pre>
+<h3 id="template-2-trie-with-array-fixed-alphabet" tabindex="-1"><a class="header-anchor" href="#template-2-trie-with-array-fixed-alphabet"><span>Template 2: Trie with Array (Fixed Alphabet)</span></a></h3>
+<pre><code class="language-python">class TrieNode:
+    def __init__(self):
+        self.children = [None] * 26  # For lowercase letters only
+        self.is_end = False
+
+class Trie:
+    def __init__(self):
+        self.root = TrieNode()
+    
+    def insert(self, word: str) -&gt; None:
+        node = self.root
+        for char in word:
+            idx = ord(char) - ord('a')
+            if not node.children[idx]:
+                node.children[idx] = TrieNode()
+            node = node.children[idx]
+        node.is_end = True
+    
+    def search(self, word: str) -&gt; bool:
+        node = self._search_prefix(word)
+        return node is not None and node.is_end
+    
+    def startsWith(self, prefix: str) -&gt; bool:
+        return self._search_prefix(prefix) is not None
+    
+    def _search_prefix(self, prefix: str) -&gt; TrieNode:
+        node = self.root
+        for char in prefix:
+            idx = ord(char) - ord('a')
+            if not node.children[idx]:
+                return None
+            node = node.children[idx]
+        return node
+
+# Java version
+class TrieNode {
+    TrieNode[] children;
+    boolean isEnd;
+    
+    public TrieNode() {
+        children = new TrieNode[26];
+        isEnd = false;
+    }
+}
+</code></pre>
+<h3 id="template-3-trie-with-wildcard-support" tabindex="-1"><a class="header-anchor" href="#template-3-trie-with-wildcard-support"><span>Template 3: Trie with Wildcard Support</span></a></h3>
+<pre><code class="language-python">class WildcardTrie:
+    def __init__(self):
+        self.root = TrieNode()
+    
+    def insert(self, word: str) -&gt; None:
+        node = self.root
+        for char in word:
+            if char not in node.children:
+                node.children[char] = TrieNode()
+            node = node.children[char]
+        node.is_end = True
+    
+    def search(self, word: str) -&gt; bool:
+        &quot;&quot;&quot;Search with '.' as wildcard for any character&quot;&quot;&quot;
+        return self._dfs_search(word, 0, self.root)
+    
+    def _dfs_search(self, word: str, index: int, node: TrieNode) -&gt; bool:
+        if index == len(word):
+            return node.is_end
+        
+        char = word[index]
+        if char == '.':
+            # Try all possible children
+            for child in node.children.values():
+                if self._dfs_search(word, index + 1, child):
+                    return True
+            return False
+        else:
+            if char not in node.children:
+                return False
+            return self._dfs_search(word, index + 1, node.children[char])
+
+# Java version
+public boolean search(String word) {
+    return dfsSearch(word, 0, root);
+}
+
+private boolean dfsSearch(String word, int index, TrieNode node) {
+    if (index == word.length()) {
+        return node.isEnd;
+    }
+    
+    char c = word.charAt(index);
+    if (c == '.') {
+        for (TrieNode child : node.children.values()) {
+            if (dfsSearch(word, index + 1, child)) {
+                return true;
+            }
+        }
+        return false;
+    } else {
+        if (!node.children.containsKey(c)) {
+            return false;
+        }
+        return dfsSearch(word, index + 1, node.children.get(c));
+    }
+}
+</code></pre>
+<h3 id="template-4-autocomplete-trie" tabindex="-1"><a class="header-anchor" href="#template-4-autocomplete-trie"><span>Template 4: Autocomplete Trie</span></a></h3>
+<pre><code class="language-python">class AutocompleteTrie:
+    def __init__(self):
+        self.root = TrieNode()
+    
+    def insert(self, word: str) -&gt; None:
+        node = self.root
+        for char in word:
+            if char not in node.children:
+                node.children[char] = TrieNode()
+            node = node.children[char]
+        node.is_end = True
+        node.word = word
+    
+    def search_prefix(self, prefix: str, limit: int = 3) -&gt; List[str]:
+        &quot;&quot;&quot;Return up to 'limit' words with given prefix&quot;&quot;&quot;
+        node = self.root
+        
+        # Navigate to prefix end
+        for char in prefix:
+            if char not in node.children:
+                return []
+            node = node.children[char]
+        
+        # Collect all words with this prefix
+        results = []
+        self._dfs_collect(node, results, limit)
+        return results
+    
+    def _dfs_collect(self, node: TrieNode, results: List[str], limit: int):
+        if len(results) &gt;= limit:
+            return
+        
+        if node.is_end:
+            results.append(node.word)
+        
+        # Traverse in lexicographical order
+        for char in sorted(node.children.keys()):
+            self._dfs_collect(node.children[char], results, limit)
+
+# Java version with priority queue for top suggestions
+class AutocompleteTrie {
+    class TrieNode {
+        Map&lt;Character, TrieNode&gt; children = new HashMap&lt;&gt;();
+        Map&lt;String, Integer&gt; counts = new HashMap&lt;&gt;();  // Word -&gt; frequency
+    }
+    
+    public List&lt;String&gt; getTopSuggestions(String prefix, int k) {
+        TrieNode node = root;
+        for (char c : prefix.toCharArray()) {
+            if (!node.children.containsKey(c)) {
+                return new ArrayList&lt;&gt;();
+            }
+            node = node.children.get(c);
+        }
+        
+        // Use heap to get top k
+        PriorityQueue&lt;Map.Entry&lt;String, Integer&gt;&gt; pq = new PriorityQueue&lt;&gt;(
+            (a, b) -&gt; b.getValue() - a.getValue()
+        );
+        pq.addAll(node.counts.entrySet());
+        
+        List&lt;String&gt; result = new ArrayList&lt;&gt;();
+        while (!pq.isEmpty() &amp;&amp; result.size() &lt; k) {
+            result.add(pq.poll().getKey());
+        }
+        return result;
+    }
+}
+</code></pre>
+<h3 id="template-5-binary-trie-xor-problems" tabindex="-1"><a class="header-anchor" href="#template-5-binary-trie-xor-problems"><span>Template 5: Binary Trie (XOR Problems)</span></a></h3>
+<pre><code class="language-python">class BinaryTrie:
+    class Node:
+        def __init__(self):
+            self.children = [None, None]  # 0 and 1
+            self.count = 0
+    
+    def __init__(self):
+        self.root = self.Node()
+    
+    def insert(self, num: int) -&gt; None:
+        &quot;&quot;&quot;Insert number as 32-bit binary&quot;&quot;&quot;
+        node = self.root
+        for i in range(31, -1, -1):
+            bit = (num &gt;&gt; i) &amp; 1
+            if not node.children[bit]:
+                node.children[bit] = self.Node()
+            node = node.children[bit]
+            node.count += 1
+    
+    def find_max_xor(self, num: int) -&gt; int:
+        &quot;&quot;&quot;Find maximum XOR with num&quot;&quot;&quot;
+        node = self.root
+        max_xor = 0
+        
+        for i in range(31, -1, -1):
+            bit = (num &gt;&gt; i) &amp; 1
+            # Try to go opposite direction for max XOR
+            toggled = 1 - bit
+            
+            if node.children[toggled] and node.children[toggled].count &gt; 0:
+                max_xor |= (1 &lt;&lt; i)
+                node = node.children[toggled]
+            else:
+                node = node.children[bit]
+        
+        return max_xor
+    
+    def remove(self, num: int) -&gt; None:
+        &quot;&quot;&quot;Remove number from trie&quot;&quot;&quot;
+        node = self.root
+        for i in range(31, -1, -1):
+            bit = (num &gt;&gt; i) &amp; 1
+            node = node.children[bit]
+            node.count -= 1
+
+# Java version
+class BinaryTrie {
+    class Node {
+        Node[] children = new Node[2];
+        int count = 0;
+    }
+    
+    private Node root = new Node();
+    
+    public void insert(int num) {
+        Node node = root;
+        for (int i = 31; i &gt;= 0; i--) {
+            int bit = (num &gt;&gt; i) &amp; 1;
+            if (node.children[bit] == null) {
+                node.children[bit] = new Node();
+            }
+            node = node.children[bit];
+            node.count++;
+        }
+    }
+    
+    public int findMaxXor(int num) {
+        Node node = root;
+        int maxXor = 0;
+        
+        for (int i = 31; i &gt;= 0; i--) {
+            int bit = (num &gt;&gt; i) &amp; 1;
+            int toggled = 1 - bit;
+            
+            if (node.children[toggled] != null &amp;&amp; node.children[toggled].count &gt; 0) {
+                maxXor |= (1 &lt;&lt; i);
+                node = node.children[toggled];
+            } else {
+                node = node.children[bit];
+            }
+        }
+        
+        return maxXor;
+    }
+}
+</code></pre>
+<h3 id="template-6-trie-with-delete-operation" tabindex="-1"><a class="header-anchor" href="#template-6-trie-with-delete-operation"><span>Template 6: Trie with Delete Operation</span></a></h3>
+<pre><code class="language-java">// java
+// LC 208 (Modified)
+    // V0
+    // IDEA : https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Tree/implement-trie-prefix-tree.py#L49
+    // modified by GPT
+    class TrieNode {
+
+        /** NOTE !!!!
+         *
+         *  Define children as map structure:
+         *
+         *   Map&lt;String, TrieNode&gt;
+         *
+         *  -&gt; string : current &quot;element&quot;
+         *  -&gt; TrieNode : the child object
+         *
+         */
+        Map&lt;String, TrieNode&gt; children;
+        boolean isWord;
+
+        public TrieNode() {
+            children = new HashMap&lt;&gt;();
+            isWord = false;
+        }
+    }
+
+    /**
+     *  NOTE !!!
+     *
+     *  Define 2 classes
+     *
+     *   1) TrieNode
+     *   2) Trie
+     *
+     */
+    class Trie {
+        TrieNode root;
+
+        public Trie() {
+
+            root = new TrieNode();
+        }
+
+        public void insert(String word) {
+            /**
+             *  NOTE !!! get current node first
+             */
+            TrieNode cur = root;
+            for (String c : word.split(&quot;&quot;)) {
+                cur.children.putIfAbsent(c, new TrieNode());
+                // move node to its child
+                cur = cur.children.get(c);
+            }
+            cur.isWord = true;
+        }
+
+        public boolean search(String word) {
+            /**
+             *  NOTE !!! get current node first
+             */
+            TrieNode cur = root;
+            for (String c : word.split(&quot;&quot;)) {
+                cur = cur.children.get(c);
+                if (cur == null) {
+                    return false;
+                }
+            }
+            return cur.isWord;
+        }
+
+        public boolean startsWith(String prefix) {
+            /**
+             *  NOTE !!! get current node first
+             */
+            TrieNode cur = root;
+            for (String c : prefix.split(&quot;&quot;)) {
+                cur = cur.children.get(c);
+                if (cur == null) {
+                    return false;
+                }
+            }
+            return true;
+        }
+    }
+</code></pre>
+<pre><code class="language-python"># python
+
+#--------------------------
+# V1
+#--------------------------
+
+from collections import defaultdict
+### NOTE : need to define our Node
+class Node():
+
+    def __init__(self):
+        &quot;&quot;&quot;
+        NOTE : we use defaultdict(Node) as our trie data structure
+
+        -&gt; use defaultdict
+            - key : every character from word
+            - value : Node (Node type)
+
+        and link children with parent Node via defaultdict
+        &quot;&quot;&quot;
+        self.children = defaultdict(Node)
+        self.isword = False
+
+# implement basic methods
+class Trie():
+
+    def __init__(self):
+        self.root = Node()
+
+    def insert(self, word):
+        ### NOTE : we always start from below
+        cur = self.root
+        for w in word:
+            cur = cur.children[w] # same as self.root.defaultdict[w]
+        cur.isword = True
+
+    def search(self, word):
+        ### NOTE : we always start from below
+        cur = self.root
+        for w in word:
+            cur = cur.children.get(w)
+            if not cur:
+                return False
+        ### NOTE : need to check if isword
+        return cur.isword
+
+    def startsWith(self, prefix):
+        ### NOTE : we always start from below
+        cur = self.root
+        for p in prefix:
+            cur = cur.children.get(p)
+            if not cur:
+                return False
+        return True
+</code></pre>
+<h2 id="1-general-form" tabindex="-1"><a class="header-anchor" href="#1-general-form"><span>1) General form</span></a></h2>
+<h3 id="1-1-basic-op" tabindex="-1"><a class="header-anchor" href="#1-1-basic-op"><span>1-1) Basic OP</span></a></h3>
+<h2 id="2-lc-example" tabindex="-1"><a class="header-anchor" href="#2-lc-example"><span>2) LC Example</span></a></h2>
+<h3 id="2-1-implement-trie-prefix-tree" tabindex="-1"><a class="header-anchor" href="#2-1-implement-trie-prefix-tree"><span>2-1) Implement Trie (Prefix Tree)</span></a></h3>
+<pre><code class="language-python"># 208. Implement Trie (Prefix Tree)
+# V0
+# IDEA : trie concept :  dict + tree
+# https://blog.csdn.net/fuxuemingzhu/article/details/79388432
+### NOTE : we need implement Node class
+from collections import defaultdict
+class Node(object):
+    def __init__(self):
+        ### NOTE : we use defaultdict as dict
+        # TODO : make a default py dict version
+        self.children = defaultdict(Node)
+        self.isword = False
+        
+class Trie(object):
+
+    def __init__(self):
+        &quot;&quot;&quot;
+        Initialize your data structure here.
+        &quot;&quot;&quot;
+        ### NOTE : we use the Node class we implement above
+        self.root = Node()
+
+    def insert(self, word):
+        current = self.root
+        for w in word:
+            current = current.children[w]
+        ### NOTE : if insert OP completed, mark isword attr as true
+        current.isword = True
+
+    def search(self, word):
+        current = self.root
+        for w in word:
+            current = current.children.get(w)
+            if current == None:
+                return False
+        ### NOTE : we need to check if isword atts is true (check if word terminated here as well)
+        return current.isword
+
+    def startsWith(self, prefix):
+        current = self.root
+        for w in prefix:
+            current = current.children.get(w)
+            if current == None:
+                return False
+        ### NOTE : we don't need to check isword here, since it is &quot;startsWith&quot;
+        return True
+</code></pre>
+<pre><code class="language-java">// java
+// LC 208
+// V1
+// https://leetcode.com/problems/implement-trie-prefix-tree/editorial/
+class TrieNode {
+
+    // R links to node children
+    private TrieNode[] links;
+
+    private final int R = 26;
+
+    private boolean isEnd;
+
+    public TrieNode() {
+        links = new TrieNode[R];
+    }
+
+    public boolean containsKey(char ch) {
+        return links[ch -'a'] != null;
+    }
+    public TrieNode get(char ch) {
+        return links[ch -'a'];
+    }
+    public void put(char ch, TrieNode node) {
+        links[ch -'a'] = node;
+    }
+    public void setEnd() {
+        isEnd = true;
+    }
+    public boolean isEnd() {
+        return isEnd;
+    }
+}
+
+class Trie2 {
+    private TrieNode root;
+
+    public Trie2() {
+        root = new TrieNode();
+    }
+
+    // Inserts a word into the trie.
+    public void insert(String word) {
+        TrieNode node = root;
+        for (int i = 0; i &lt; word.length(); i++) {
+            char currentChar = word.charAt(i);
+            if (!node.containsKey(currentChar)) {
+                node.put(currentChar, new TrieNode());
+            }
+            node = node.get(currentChar);
+        }
+        node.setEnd();
+    }
+
+
+    // search a prefix or whole key in trie and
+    // returns the node where search ends
+    private TrieNode searchPrefix(String word) {
+        TrieNode node = root;
+        for (int i = 0; i &lt; word.length(); i++) {
+            char curLetter = word.charAt(i);
+            if (node.containsKey(curLetter)) {
+                node = node.get(curLetter);
+            } else {
+                return null;
+            }
+        }
+        return node;
+    }
+
+    // Returns if the word is in the trie.
+    public boolean search(String word) {
+        TrieNode node = searchPrefix(word);
+        return node != null &amp;&amp; node.isEnd();
+    }
+
+    // Returns if there is any word in the trie
+    // that starts with the given prefix.
+    public boolean startsWith(String prefix) {
+        TrieNode node = searchPrefix(prefix);
+        return node != null;
+    }
+
+}
+</code></pre>
+<h3 id="2-2-add-and-search-word-data-structure-design" tabindex="-1"><a class="header-anchor" href="#2-2-add-and-search-word-data-structure-design"><span>2-2) Add and Search Word - Data structure design</span></a></h3>
+<pre><code class="language-python"># LC 211 Add and Search Word - Data structure design
+# V0
+from collections import defaultdict
+class Node(object):
+    def __init__(self):
+        self.children = defaultdict(Node)
+        self.isword = False
+        
+class WordDictionary(object):
+
+    def __init__(self):
+        self.root = Node()
+
+    def addWord(self, word):
+        current = self.root
+        for w in word:
+            _next = current.children[w]
+            current = _next
+        current.isword = True
+
+    def search(self, word):
+        return self.match(word, 0, self.root)
+    
+    def match(self, word, index, root):
+        &quot;&quot;&quot;
+        NOTE : match is a helper func (for search)
+
+          - deal with 2 cases
+          -   1) word[index] != '.'
+          -   2) word[index] == '.'
+        &quot;&quot;&quot;
+        # note the edge cases
+        if root == None:
+            return False
+        if index == len(word):
+            return root.isword
+        # CASE 1: word[index] != '.'
+        if word[index] != '.':
+            return root != None and self.match(word, index + 1, root.children.get(word[index]))
+        # CASE 2: word[index] == '.'
+        else:
+            for child in root.children.values():
+                if self.match(word, index + 1, child):
+                    return True
+        return False
+</code></pre>
+<pre><code class="language-java">// java
+// LC 211
+
+// V1
+// IDEA : TRIE
+// https://leetcode.com/problems/design-add-and-search-words-data-structure/editorial/
+class TrieNode {
+    Map&lt;Character, TrieNode&gt; children = new HashMap();
+    boolean word = false;
+    public TrieNode() {}
+}
+
+class WordDictionary2 {
+    TrieNode trie;
+
+    /** Initialize your data structure here. */
+    public WordDictionary2() {
+        trie = new TrieNode();
+    }
+
+    /** Adds a word into the data structure. */
+    public void addWord(String word) {
+        TrieNode node = trie;
+
+        for (char ch : word.toCharArray()) {
+            if (!node.children.containsKey(ch)) {
+                node.children.put(ch, new TrieNode());
+            }
+            node = node.children.get(ch);
+        }
+        node.word = true;
+    }
+
+    /** Returns if the word is in the node. */
+    public boolean searchInNode(String word, TrieNode node) {
+        for (int i = 0; i &lt; word.length(); ++i) {
+            char ch = word.charAt(i);
+            if (!node.children.containsKey(ch)) {
+                // if the current character is '.'
+                // check all possible nodes at this level
+                if (ch == '.') {
+                    for (char x : node.children.keySet()) {
+                        TrieNode child = node.children.get(x);
+                        /** NOTE !!!
+                         *  -&gt; if &quot;.&quot;, we HAVE to go through all nodes in next levels
+                         *  -&gt; and check if any of them is valid
+                         *  -&gt; so we need to RECURSIVELY call searchInNode method with &quot;i+1&quot; sub string
+                         */
+                        if (searchInNode(word.substring(i + 1), child)) {
+                            return true;
+                        }
+                    }
+                }
+                // if no nodes lead to answer
+                // or the current character != '.'
+                return false;
+            } else {
+                // if the character is found
+                // go down to the next level in trie
+                node = node.children.get(ch);
+            }
+        }
+        return node.word;
+    }
+
+    /** Returns if the word is in the data structure. A word could contain the dot character '.' to represent any one letter. */
+    public boolean search(String word) {
+        return searchInNode(word, trie);
+    }
+}
+</code></pre>
+<h3 id="2-3-search-suggestions-system" tabindex="-1"><a class="header-anchor" href="#2-3-search-suggestions-system"><span>2-3) Search Suggestions System</span></a></h3>
+<pre><code class="language-python"># LC 1268. Search Suggestions System
+# V1
+# IDEA : TRIE
+# https://leetcode.com/problems/search-suggestions-system/discuss/436183/Python-Trie-Solution
+class TrieNode:
+    def __init__(self):
+        self.children = dict()
+        self.words = []
+
+class Trie:
+    def __init__(self):
+        self.root = TrieNode()
+    
+    def insert(self, word):
+        node = self.root
+        for char in word:
+            if char not in node.children:
+                node.children[char] = TrieNode()
+            node = node.children[char]
+            node.words.append(word)
+            node.words.sort()
+            while len(node.words) &gt; 3:
+                node.words.pop()
+    
+    def search(self, word):
+        res = []
+        node = self.root
+        for char in word:
+            if char not in node.children:
+                break
+            node = node.children[char]
+            res.append(node.words[:])
+        l_remain = len(word) - len(res)
+        for _ in range(l_remain):
+            res.append([])
+        return res
+
+class Solution:
+    def suggestedProducts(self, products: List[str], searchWord: str):
+        trie = Trie()
+        for prod in products:
+            trie.insert(prod)
+        return trie.search(searchWord)
+</code></pre>
+<pre><code class="language-java">// IDEA : trie + dfs
+// https://leetcode.com/problems/search-suggestions-system/solution/
+// Custom class Trie with function to get 3 words starting with given prefix
+class Trie {
+
+    // Node definition of a trie
+    class Node {
+        boolean isWord = false;
+        List&lt;Node&gt; children = Arrays.asList(new Node[26]);
+    };
+    Node Root, curr;
+    List&lt;String&gt; resultBuffer;
+
+    // Runs a DFS on trie starting with given prefix and adds all the words in the resultBuffer, limiting result size to 3
+    void dfsWithPrefix(Node curr, String word) {
+        if (resultBuffer.size() == 3)
+            return;
+        if (curr.isWord)
+            resultBuffer.add(word);
+
+        // Run DFS on all possible paths.
+        for (char c = 'a'; c &lt;= 'z'; c++)
+            if (curr.children.get(c - 'a') != null)
+                dfsWithPrefix(curr.children.get(c - 'a'), word + c);
+    }
+    Trie() {
+        Root = new Node();
+    }
+
+    // Inserts the string in trie.
+    void insert(String s) {
+
+        // Points curr to the root of trie.
+        curr = Root;
+        for (char c : s.toCharArray()) {
+            if (curr.children.get(c - 'a') == null)
+                curr.children.set(c - 'a', new Node());
+            curr = curr.children.get(c - 'a');
+        }
+
+        // Mark this node as a completed word.
+        curr.isWord = true;
+    }
+    List&lt;String&gt; getWordsStartingWith(String prefix) {
+        curr = Root;
+        resultBuffer = new ArrayList&lt;String&gt;();
+        // Move curr to the end of prefix in its trie representation.
+        for (char c : prefix.toCharArray()) {
+            if (curr.children.get(c - 'a') == null)
+                return resultBuffer;
+            curr = curr.children.get(c - 'a');
+        }
+        dfsWithPrefix(curr, prefix);
+        return resultBuffer;
+    }
+};
+class Solution {
+    List&lt;List&lt;String&gt;&gt; suggestedProducts(String[] products,
+                                         String searchWord) {
+        Trie trie = new Trie();
+        List&lt;List&lt;String&gt;&gt; result = new ArrayList&lt;&gt;();
+        // Add all words to trie.
+        for (String w : products)
+            trie.insert(w);
+        String prefix = new String();
+        for (char c : searchWord.toCharArray()) {
+            prefix += c;
+            result.add(trie.getWordsStartingWith(prefix));
+        }
+        return result;
+    }
+};
+</code></pre>
+<h3 id="2-4-word-search" tabindex="-1"><a class="header-anchor" href="#2-4-word-search"><span>2-4) Word Search</span></a></h3>
+<pre><code class="language-python"># LC 79. Word Search
+# V0
+# IDEA : DFS + backtracking
+class Solution(object):
+ 
+    def exist(self, board, word):
+        ### NOTE : construct the visited matrix
+        visited = [[False for j in range(len(board[0]))] for i in range(len(board))]
+
+        &quot;&quot;&quot;
+        NOTE !!!! : we visit every element in board and trigger the dfs
+        &quot;&quot;&quot;
+        for i in range(len(board)):
+            for j in range(len(board[0])):
+                if self.dfs(board, word, 0, i, j, visited):
+                    return True
+
+        return False
+
+    def dfs(self, board, word, cur, i, j, visited):
+        # if &quot;not false&quot; till cur == len(word), means we already found the wprd in board
+        if cur == len(word):
+            return True
+
+        ### NOTE this condition
+        # 1) if idx out of range
+        # 2) if already visited
+        # 3) if board[i][j] != word[cur] -&gt; not possible to be as same as word
+        if i &lt; 0 or i &gt;= len(board) or j &lt; 0 or j &gt;= len(board[0]) or visited[i][j] or board[i][j] != word[cur]:
+            return False
+
+        # NOTE THIS !! : mark as visited
+        visited[i][j] = True
+        ### NOTE THIS TRICK (run the existRecu on 4 directions on the same time)
+        result = self.dfs(board, word, cur + 1, i + 1, j, visited) or\
+                 self.dfs(board, word, cur + 1, i - 1, j, visited) or\
+                 self.dfs(board, word, cur + 1, i, j + 1, visited) or\
+                 self.dfs(board, word, cur + 1, i, j - 1, visited)
+        # mark as non-visited
+        visited[i][j] = False
+
+        return result
+</code></pre>
+<h3 id="2-5-word-search-ii" tabindex="-1"><a class="header-anchor" href="#2-5-word-search-ii"><span>2-5) Word Search II</span></a></h3>
+<pre><code class="language-python"># LC 212. Word Search II
+
+# V0
+# IDEA : DFS + trie
+# DEMO
+# &gt;&gt;&gt; words = ['oath', 'pea', 'eat', 'rain'], trie = {'o': {'a': {'t': {'h': {'#': None}}}}, 'p': {'e': {'a': {'#': None}}}, 'e': {'a': {'t': {'#': None}}}, 'r': {'a': {'i': {'n': {'#': None}}}}}
+class Solution(object):
+    def checkList(self, board, row, col, word, trie, rList):
+        if row&lt;0 or row&gt;=len(board) or col&lt;0 or col&gt;=len(board[0]) or board[row][col] == '.' or board[row][col] not in trie:
+            return
+        c = board[row][col]
+        _word= word + c
+        if '#' in trie[c]: 
+            rList.add(_word)
+            if len(trie[c]) == 1:
+                return # if next node is empty, return as no there is no need to search further
+        board[row][col] = '.'
+        self.checkList(board, row-1, col, _word, trie[c], rList) #up
+        self.checkList(board, row+1, col, _word, trie[c], rList) #down
+        self.checkList(board, row, col-1, _word, trie[c], rList) #left
+        self.checkList(board, row, col+1, _word, trie[c], rList) #right
+        board[row][col] = c
+    
+    def findWords(self, board, words):
+        if not board or not words:
+            return []
+        # building Trie
+        trie, rList = {}, set()
+        for word in words:
+            t = trie
+            for c in word:
+                if c not in t:
+                    t[c] = {}
+                t = t[c]
+            t['#'] = None
+        #print (&quot;&gt;&gt;&gt; words = {}, trie = {}&quot;.format(words, trie))
+        for row in range(len(board)):
+            for col in range(len(board[0])):
+                if board[row][col] in trie:
+                    self.checkList(board, row, col, &quot;&quot;, trie, rList)
+        return list(rList)
+
+# V1
+# IDEA : Backtracking with Trie
+# https://leetcode.com/problems/word-search-ii/solution/
+class Solution:
+    def findWords(self, board, words):
+        WORD_KEY = '$'
+        
+        trie = {}
+        for word in words:
+            node = trie
+            for letter in word:
+                # retrieve the next node; If not found, create a empty node.
+                node = node.setdefault(letter, {})
+            # mark the existence of a word in trie node
+            node[WORD_KEY] = word
+        
+        rowNum = len(board)
+        colNum = len(board[0])
+        
+        matchedWords = []
+        
+        def backtracking(row, col, parent):    
+            
+            letter = board[row][col]
+            currNode = parent[letter]
+            
+            # check if we find a match of word
+            word_match = currNode.pop(WORD_KEY, False)
+            if word_match:
+                # also we removed the matched word to avoid duplicates,
+                #   as well as avoiding using set() for results.
+                matchedWords.append(word_match)
+            
+            # Before the EXPLORATION, mark the cell as visited 
+            board[row][col] = '#'
+            
+            # Explore the neighbors in 4 directions, i.e. up, right, down, left
+            for (rowOffset, colOffset) in [(-1, 0), (0, 1), (1, 0), (0, -1)]:
+                newRow, newCol = row + rowOffset, col + colOffset     
+                if newRow &lt; 0 or newRow &gt;= rowNum or newCol &lt; 0 or newCol &gt;= colNum:
+                    continue
+                if not board[newRow][newCol] in currNode:
+                    continue
+                backtracking(newRow, newCol, currNode)
+        
+            # End of EXPLORATION, we restore the cell
+            board[row][col] = letter
+        
+            # Optimization: incrementally remove the matched leaf node in Trie.
+            if not currNode:
+                parent.pop(letter)
+
+        for row in range(rowNum):
+            for col in range(colNum):
+                # starting from each of the cells
+                if board[row][col] in trie:
+                    backtracking(row, col, trie)
+        
+        return matchedWords
+
+# V1'
+# IDEA : DFS + trie
+# https://leetcode.com/problems/word-search-ii/discuss/59808/Python-DFS-362ms
+class Solution(object):
+    def checkList(self, board, row, col, word, trie, rList):
+        if row&lt;0 or row&gt;=len(board) or col&lt;0 or col&gt;=len(board[0]) or board[row][col] == '.' or board[row][col] not in trie: return
+        c = board[row][col]
+        _word= word + c
+        if '#' in trie[c]: 
+            rList.add(_word)
+            if len(trie[c]) == 1: return # if next node is empty, return as no there is no need to search further
+        board[row][col] = '.'
+        self.checkList(board, row-1, col, _word, trie[c], rList) #up
+        self.checkList(board, row+1, col, _word, trie[c], rList) #down
+        self.checkList(board, row, col-1, _word, trie[c], rList) #left
+        self.checkList(board, row, col+1, _word, trie[c], rList) #right
+        board[row][col] = c
+    
+    def findWords(self, board, words):
+        &quot;&quot;&quot;
+        :type board: List[List[str]]
+        :type words: List[str]
+        :rtype: List[str]
+        &quot;&quot;&quot;
+        if not board or not words: return []
+        # building Trie
+        trie, rList = {}, set()
+        for word in words:
+            t = trie
+            for c in word:
+                if c not in t: t[c] = {}
+                t = t[c]
+            t['#'] = None
+        for row in range(len(board)):
+            for col in range(len(board[0])):
+                if board[row][col] not in trie: continue
+                self.checkList(board, row, col, &quot;&quot;, trie, rList)
+        return list(rList)
+</code></pre>
+
+      </div>
+      <div class="cheatsheet-footer">
+        <a href="../cheatsheets.html" class="back-link">← Back to Cheat Sheets</a>
+        <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/trie.md" class="github-edit" target="_blank">
+          Edit on GitHub →
+        </a>
+      </div>
+    <nav class="prev-next"><a href="tree_backtrack.html" class="prev-link">← Tree Backtrack</a><a href="union_find.html" class="next-link">Union Find →</a></nav>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>CS_basics - Computer Science Fundamentals & Interview Preparation</p>
+      <p>
+        <a href="https://github.com/yennanliu/CS_basics">GitHub</a> •
+        <a href="https://github.com/yennanliu/CS_basics/tree/master/doc">Documentation</a> •
+        <a href="https://github.com/yennanliu/CS_basics/issues">Report Issues</a>
+      </p>
+    </div>
+  </footer>
+</body>
+</html>

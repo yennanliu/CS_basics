@@ -101,11 +101,8 @@ jobs:
           echo "Copied algo_demo to _site/algo_demo"
         fi
 
-    - name: Build LeetCode Explorer page
+    - name: Build LeetCode data (JSON only)
       run: node build-leetcode.js
-
-    - name: Ensure navigation pages exist
-      run: node ensure-nav-pages.js
 
     - name: Upload artifact
       uses: actions/upload-pages-artifact@v3

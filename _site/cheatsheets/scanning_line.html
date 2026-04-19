@@ -1,0 +1,1370 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Scanning Line - CS_basics</title>
+  <meta name="description" content="Computer Science fundamentals: algorithms, data structures, system design, and LeetCode solutions">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>CS</text></svg>">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="../vendor/fonts.css">
+  <link rel="stylesheet" href="../vendor/highlight/github-dark.min.css">
+  <script src="../vendor/highlight/highlight.min.js"></script>
+  <script>
+  // Apply theme before render to prevent flash
+  (function() {
+    var saved = localStorage.getItem('theme');
+    if (saved === 'dark' || (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      document.documentElement.setAttribute('data-theme', 'dark');
+    }
+  })();
+  </script>
+  <script>document.addEventListener('DOMContentLoaded', function() {
+    hljs.highlightAll();
+    document.querySelectorAll('pre code').forEach(function(codeEl) {
+      var pre = codeEl.parentElement;
+      var lang = '';
+      var cls = codeEl.className || '';
+      var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
+      if (m) lang = m[1];
+      var wrapper = document.createElement('div');
+      wrapper.className = 'code-block-wrapper';
+      pre.parentNode.insertBefore(wrapper, pre);
+      var header = document.createElement('div');
+      header.className = 'code-block-header';
+      if (lang) {
+        var label = document.createElement('span');
+        label.className = 'code-lang-label';
+        label.textContent = lang;
+        header.appendChild(label);
+      } else {
+        header.appendChild(document.createElement('span'));
+      }
+      var btn = document.createElement('button');
+      btn.className = 'copy-btn';
+      btn.textContent = 'Copy';
+      btn.addEventListener('click', function() {
+        navigator.clipboard.writeText(codeEl.textContent).then(function() {
+          btn.textContent = 'Copied!';
+          btn.classList.add('copied');
+          setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+        });
+      });
+      header.appendChild(btn);
+      wrapper.appendChild(header);
+      wrapper.appendChild(pre);
+    });
+    document.querySelectorAll('table').forEach(function(table) {
+      if (!table.parentElement.classList.contains('table-wrap')) {
+        var wrapper = document.createElement('div');
+        wrapper.className = 'table-wrap';
+        table.parentNode.insertBefore(wrapper, table);
+        wrapper.appendChild(table);
+      }
+    });
+    // Reading progress bar
+    var progressBar = document.getElementById('reading-progress');
+    if (progressBar) {
+      window.addEventListener('scroll', function() {
+        var winScroll = document.documentElement.scrollTop;
+        var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        progressBar.style.width = height > 0 ? (winScroll / height * 100) + '%' : '0%';
+      });
+    }
+    // Dark mode toggle
+    var toggle = document.getElementById('theme-toggle');
+    if (toggle) {
+      var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      toggle.textContent = isDark ? '☀️' : '🌙';
+      toggle.addEventListener('click', function() {
+        var dark = document.documentElement.getAttribute('data-theme') === 'dark';
+        if (dark) {
+          document.documentElement.removeAttribute('data-theme');
+          localStorage.setItem('theme', 'light');
+          toggle.textContent = '🌙';
+        } else {
+          document.documentElement.setAttribute('data-theme', 'dark');
+          localStorage.setItem('theme', 'dark');
+          toggle.textContent = '☀️';
+        }
+      });
+    }
+  });</script>
+</head>
+<body>
+  <div class="progress-container"><div class="progress-bar" id="reading-progress"></div></div>
+  <nav class="navbar">
+    <div class="container">
+      <div class="nav-brand">
+        <span class="nav-icon">💻</span>
+        <span class="nav-title">CS_basics</span>
+      </div>
+      <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+      <div class="nav-links">
+        <a href="../index.html" class="">Home</a>
+        <a href="../cheatsheets.html" class="active">Cheat Sheets</a>
+        <a href="../patterns.html" class="">Pattern Recognition</a>
+        <a href="../faqs.html" class="">FAQs</a>
+        <a href="../resources.html" class="">Resources</a>
+        <a href="../lc-explorer.html" class="">LC Explorer</a>
+        <a href="../lc-random-picker.html" class="">🎲 Random Picker</a>
+        <a href="../algo_demo/index.html" class="">Visualizer</a>
+        <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">&#127769;</button>
+        <a href="https://github.com/yennanliu/CS_basics" target="_blank" class="github-link" aria-label="GitHub">
+          <svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor">
+            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container">
+    <div class="content">
+      
+      <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">Scanning Line</span></nav>
+      <div class="cheatsheet-header">
+        <h1>Scanning Line</h1>
+        <span class="last-updated">Last updated: Sep 30, 2025</span>
+      </div>
+      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#overview">Overview</a></li><li class="toc-sub"><a href="#key-properties">Key Properties</a></li><li class="toc-sub"><a href="#algorithm-principle">Algorithm Principle</a></li><li class="toc-sub"><a href="#references">References</a></li><li><a href="#problem-categories">Problem Categories</a></li><li class="toc-sub"><a href="#pattern-1-interval-overlap">Pattern 1: Interval Overlap</a></li><li class="toc-sub"><a href="#pattern-2-skyline-problems">Pattern 2: Skyline Problems</a></li><li class="toc-sub"><a href="#pattern-3-calendar-booking">Pattern 3: Calendar Booking</a></li><li class="toc-sub"><a href="#pattern-4-employee-free-time">Pattern 4: Employee Free Time</a></li><li class="toc-sub"><a href="#pattern-5-range-updates">Pattern 5: Range Updates</a></li><li class="toc-sub"><a href="#pattern-6-geometric-intersection">Pattern 6: Geometric Intersection</a></li><li><a href="#templates-algorithms">Templates &amp; Algorithms</a></li><li class="toc-sub"><a href="#template-comparison-table">Template Comparison Table</a></li><li class="toc-sub"><a href="#template-1-basic-interval-overlap">Template 1: Basic Interval Overlap</a></li><li class="toc-sub"><a href="#template-2-weighted-interval-overlap">Template 2: Weighted Interval Overlap</a></li><li class="toc-sub"><a href="#template-3-skyline-problem">Template 3: Skyline Problem</a></li><li class="toc-sub"><a href="#template-4-calendar-booking">Template 4: Calendar Booking</a></li><li class="toc-sub"><a href="#template-5-difference-array-pattern">Template 5: Difference Array Pattern</a></li><li class="toc-sub"><a href="#template-6-interval-merge-with-sweep">Template 6: Interval Merge with Sweep</a></li><li><a href="#problems-by-pattern">Problems by Pattern</a></li><li class="toc-sub"><a href="#pattern-based-problem-tables">Pattern-Based Problem Tables</a></li><li><a href="#pattern-selection-strategy">Pattern Selection Strategy</a></li><li><a href="#summary-quick-reference">Summary &amp; Quick Reference</a></li><li class="toc-sub"><a href="#complexity-quick-reference">Complexity Quick Reference</a></li><li class="toc-sub"><a href="#template-quick-reference">Template Quick Reference</a></li><li class="toc-sub"><a href="#common-patterns-tricks">Common Patterns &amp; Tricks</a></li><li class="toc-sub"><a href="#problem-solving-steps">Problem-Solving Steps</a></li><li class="toc-sub"><a href="#common-mistakes-tips">Common Mistakes &amp; Tips</a></li><li class="toc-sub"><a href="#interview-tips">Interview Tips</a></li><li class="toc-sub"><a href="#advanced-techniques">Advanced Techniques</a></li><li class="toc-sub"><a href="#related-topics">Related Topics</a></li><li><a href="#lc-examples">LC Examples</a></li><li class="toc-sub"><a href="#2-1-meeting-rooms-ii">2-1) Meeting Rooms II</a></li><li class="toc-sub"><a href="#2-2-brightest-position-on-street">2-2) Brightest Position on Street</a></li><li class="toc-sub"><a href="#2-2-my-calendar-ii">2-2) My Calendar II</a></li></ul></div>
+      <div class="cheatsheet-content">
+        <h1 id="scanning-line-line-sweep-algorithm" tabindex="-1"><a class="header-anchor" href="#scanning-line-line-sweep-algorithm"><span>Scanning Line (Line Sweep) Algorithm</span></a></h1>
+<h2 id="overview" tabindex="-1"><a class="header-anchor" href="#overview"><span>Overview</span></a></h2>
+<p><strong>Scanning Line</strong> (also known as Line Sweep or Sweep Line) is an algorithmic paradigm that processes geometric objects by imagining a vertical line sweeping across the plane from left to right, processing events as they occur.</p>
+<p>Key: transform <code>change</code> to <code>event</code>, so we can handle the <code>changed state</code> via program, instead of dealing with <code>continouous info</code>.</p>
+<p align="center"><img src="../doc/pic/scanning_line.png" ></p>
+<h3 id="key-properties" tabindex="-1"><a class="header-anchor" href="#key-properties"><span>Key Properties</span></a></h3>
+<ul>
+<li><strong>Time Complexity</strong>: O(n log n) for sorting + O(n) for processing</li>
+<li><strong>Space Complexity</strong>: O(n) for storing events</li>
+<li><strong>Core Idea</strong>: Convert interval problems into event-based processing</li>
+<li><strong>When to Use</strong>: Interval overlaps, skyline problems, calendar conflicts, geometric intersections</li>
+</ul>
+<h3 id="algorithm-principle" tabindex="-1"><a class="header-anchor" href="#algorithm-principle"><span>Algorithm Principle</span></a></h3>
+<ol>
+<li>Convert intervals into events (start/end points)</li>
+<li>Sort events by position (and type if at same position)</li>
+<li>Process events in order while maintaining state</li>
+<li>Track maximum/minimum or other statistics during sweep</li>
+</ol>
+<h3 id="references" tabindex="-1"><a class="header-anchor" href="#references"><span>References</span></a></h3>
+<ul>
+<li><a href="https://web.ntnu.edu.tw/~algo/Point2.html">NTNU Algorithm Notes</a></li>
+<li><a href="https://hackmd.io/@meyr543/SkrRZCwfj">Line Sweep Tutorial</a></li>
+<li><a href="https://www.cs.princeton.edu/~rs/AlgsDS07/">Computational Geometry</a></li>
+</ul>
+<h2 id="problem-categories" tabindex="-1"><a class="header-anchor" href="#problem-categories"><span>Problem Categories</span></a></h2>
+<h3 id="pattern-1-interval-overlap" tabindex="-1"><a class="header-anchor" href="#pattern-1-interval-overlap"><span><strong>Pattern 1: Interval Overlap</strong></span></a></h3>
+<ul>
+<li><strong>Description</strong>: Finding maximum overlapping intervals at any point</li>
+<li><strong>Examples</strong>: LC 253, 1094, 2021, 2848</li>
+<li><strong>Pattern</strong>: Track active intervals using counter</li>
+</ul>
+<h3 id="pattern-2-skyline-problems" tabindex="-1"><a class="header-anchor" href="#pattern-2-skyline-problems"><span><strong>Pattern 2: Skyline Problems</strong></span></a></h3>
+<ul>
+<li><strong>Description</strong>: Computing visible outline from overlapping rectangles</li>
+<li><strong>Examples</strong>: LC 218, 850, 391</li>
+<li><strong>Pattern</strong>: Process building start/end with heights</li>
+</ul>
+<h3 id="pattern-3-calendar-booking" tabindex="-1"><a class="header-anchor" href="#pattern-3-calendar-booking"><span><strong>Pattern 3: Calendar Booking</strong></span></a></h3>
+<ul>
+<li><strong>Description</strong>: Managing calendar events and conflicts</li>
+<li><strong>Examples</strong>: LC 729, 731, 732, 1851</li>
+<li><strong>Pattern</strong>: Track booking counts at each time point</li>
+</ul>
+<h3 id="pattern-4-employee-free-time" tabindex="-1"><a class="header-anchor" href="#pattern-4-employee-free-time"><span><strong>Pattern 4: Employee Free Time</strong></span></a></h3>
+<ul>
+<li><strong>Description</strong>: Finding common free time across schedules</li>
+<li><strong>Examples</strong>: LC 759, 986, 1229</li>
+<li><strong>Pattern</strong>: Merge intervals then find gaps</li>
+</ul>
+<h3 id="pattern-5-range-updates" tabindex="-1"><a class="header-anchor" href="#pattern-5-range-updates"><span><strong>Pattern 5: Range Updates</strong></span></a></h3>
+<ul>
+<li><strong>Description</strong>: Applying updates to ranges efficiently</li>
+<li><strong>Examples</strong>: LC 370, 1109, 1893, 2251</li>
+<li><strong>Pattern</strong>: Difference array with sweep line</li>
+</ul>
+<h3 id="pattern-6-geometric-intersection" tabindex="-1"><a class="header-anchor" href="#pattern-6-geometric-intersection"><span><strong>Pattern 6: Geometric Intersection</strong></span></a></h3>
+<ul>
+<li><strong>Description</strong>: Finding intersections of geometric objects</li>
+<li><strong>Examples</strong>: LC 836, 223, 391, 850</li>
+<li><strong>Pattern</strong>: Sort by x-coordinate, track y-intervals</li>
+</ul>
+<h2 id="templates-algorithms" tabindex="-1"><a class="header-anchor" href="#templates-algorithms"><span>Templates &amp; Algorithms</span></a></h2>
+<h3 id="template-comparison-table" tabindex="-1"><a class="header-anchor" href="#template-comparison-table"><span>Template Comparison Table</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>Template Type</th>
+<th>Use Case</th>
+<th>Event Types</th>
+<th>Complexity</th>
+<th>When to Use</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Basic Sweep</strong></td>
+<td>Count overlaps</td>
+<td>Start/End</td>
+<td>O(n log n)</td>
+<td>Meeting rooms, intervals</td>
+</tr>
+<tr>
+<td><strong>Weighted Sweep</strong></td>
+<td>Sum of overlaps</td>
+<td>Start/End + value</td>
+<td>O(n log n)</td>
+<td>Brightness, bandwidth</td>
+</tr>
+<tr>
+<td><strong>Skyline</strong></td>
+<td>Height tracking</td>
+<td>Start/End + height</td>
+<td>O(n log n)</td>
+<td>Building outline</td>
+</tr>
+<tr>
+<td><strong>Difference Array</strong></td>
+<td>Range updates</td>
+<td>Update points</td>
+<td>O(n)</td>
+<td>Batch updates</td>
+</tr>
+<tr>
+<td><strong>Interval Merge</strong></td>
+<td>Combine intervals</td>
+<td>Start/End</td>
+<td>O(n log n)</td>
+<td>Free time, union</td>
+</tr>
+<tr>
+<td><strong>2D Sweep</strong></td>
+<td>Rectangle area</td>
+<td>X and Y events</td>
+<td>O(n² log n)</td>
+<td>Area calculation</td>
+</tr>
+</tbody>
+</table>
+<h3 id="template-1-basic-interval-overlap" tabindex="-1"><a class="header-anchor" href="#template-1-basic-interval-overlap"><span>Template 1: Basic Interval Overlap</span></a></h3>
+<pre><code class="language-python"># Python - Count maximum overlapping intervals
+def maxOverlap(intervals):
+    events = []
+    
+    # Create events for each interval
+    for start, end in intervals:
+        events.append((start, 1))   # Start event
+        events.append((end, -1))     # End event
+    
+    # Sort events (by time, then by type)
+    events.sort(key=lambda x: (x[0], -x[1]))  # Process start before end at same time
+    
+    # Sweep through events
+    max_overlap = 0
+    current_overlap = 0
+    
+    for time, delta in events:
+        current_overlap += delta
+        max_overlap = max(max_overlap, current_overlap)
+    
+    return max_overlap
+
+# With position tracking
+def maxOverlapPosition(intervals):
+    events = []
+    for start, end in intervals:
+        events.append((start, 1))
+        events.append((end, -1))
+    
+    events.sort(key=lambda x: (x[0], -x[1]))
+    
+    max_overlap = 0
+    max_position = 0
+    current_overlap = 0
+    
+    for time, delta in events:
+        current_overlap += delta
+        if current_overlap &gt; max_overlap:
+            max_overlap = current_overlap
+            max_position = time
+    
+    return max_overlap, max_position
+</code></pre>
+<pre><code class="language-java">// Java - Maximum interval overlap
+public int maxOverlap(int[][] intervals) {
+    List&lt;int[]&gt; events = new ArrayList&lt;&gt;();
+    
+    // Create events
+    for (int[] interval : intervals) {
+        events.add(new int[]{interval[0], 1});   // Start
+        events.add(new int[]{interval[1], -1});  // End
+    }
+    
+    // Sort events
+    Collections.sort(events, (a, b) -&gt; {
+        if (a[0] != b[0]) return a[0] - b[0];
+        return b[1] - a[1];  // Start before end
+    });
+    
+    // Sweep
+    int maxOverlap = 0;
+    int currentOverlap = 0;
+    
+    for (int[] event : events) {
+        currentOverlap += event[1];
+        maxOverlap = Math.max(maxOverlap, currentOverlap);
+    }
+    
+    return maxOverlap;
+}
+</code></pre>
+<h3 id="template-2-weighted-interval-overlap" tabindex="-1"><a class="header-anchor" href="#template-2-weighted-interval-overlap"><span>Template 2: Weighted Interval Overlap</span></a></h3>
+<pre><code class="language-python"># Python - Sum of overlapping values (e.g., brightness)
+def maxWeightedOverlap(weighted_intervals):
+    events = []
+    
+    # weighted_intervals: [(start, end, weight)]
+    for start, end, weight in weighted_intervals:
+        events.append((start, weight))   # Add weight
+        events.append((end, -weight))    # Remove weight
+    
+    events.sort()
+    
+    max_weight = 0
+    current_weight = 0
+    result_position = 0
+    
+    for position, delta in events:
+        current_weight += delta
+        if current_weight &gt; max_weight:
+            max_weight = current_weight
+            result_position = position
+    
+    return max_weight, result_position
+
+# Track all positions with their weights
+def allWeightedPositions(weighted_intervals):
+    from collections import defaultdict
+    events = defaultdict(int)
+    
+    for start, end, weight in weighted_intervals:
+        events[start] += weight
+        events[end] -= weight
+    
+    sorted_positions = sorted(events.keys())
+    positions_weights = {}
+    current_weight = 0
+    
+    for pos in sorted_positions:
+        current_weight += events[pos]
+        positions_weights[pos] = current_weight
+    
+    return positions_weights
+</code></pre>
+<pre><code class="language-java">// Java - Weighted intervals
+public int maxWeightedOverlap(int[][] weightedIntervals) {
+    // weightedIntervals: [start, end, weight]
+    TreeMap&lt;Integer, Integer&gt; events = new TreeMap&lt;&gt;();
+    
+    for (int[] interval : weightedIntervals) {
+        events.put(interval[0], 
+                  events.getOrDefault(interval[0], 0) + interval[2]);
+        events.put(interval[1], 
+                  events.getOrDefault(interval[1], 0) - interval[2]);
+    }
+    
+    int maxWeight = 0;
+    int currentWeight = 0;
+    
+    for (int delta : events.values()) {
+        currentWeight += delta;
+        maxWeight = Math.max(maxWeight, currentWeight);
+    }
+    
+    return maxWeight;
+}
+</code></pre>
+<h3 id="template-3-skyline-problem" tabindex="-1"><a class="header-anchor" href="#template-3-skyline-problem"><span>Template 3: Skyline Problem</span></a></h3>
+<pre><code class="language-python"># Python - Building skyline
+def getSkyline(buildings):
+    events = []
+    
+    # buildings: [[left, right, height]]
+    for left, right, height in buildings:
+        events.append((left, -height))  # Start (negative for max heap)
+        events.append((right, height))  # End
+    
+    events.sort(key=lambda x: (x[0], x[1]))
+    
+    result = []
+    heights = [0]  # Ground level
+    
+    import heapq
+    for x, h in events:
+        if h &lt; 0:  # Building start
+            heapq.heappush(heights, h)
+        else:  # Building end
+            heights.remove(-h)
+            heapq.heapify(heights)
+        
+        # Check if max height changed
+        max_h = -heights[0]
+        if not result or result[-1][1] != max_h:
+            result.append([x, max_h])
+    
+    return result
+</code></pre>
+<pre><code class="language-java">// Java - Skyline
+public List&lt;List&lt;Integer&gt;&gt; getSkyline(int[][] buildings) {
+    List&lt;int[]&gt; events = new ArrayList&lt;&gt;();
+    
+    for (int[] b : buildings) {
+        events.add(new int[]{b[0], -b[2]});  // Start
+        events.add(new int[]{b[1], b[2]});   // End
+    }
+    
+    Collections.sort(events, (a, b) -&gt; {
+        if (a[0] != b[0]) return a[0] - b[0];
+        return a[1] - b[1];
+    });
+    
+    List&lt;List&lt;Integer&gt;&gt; result = new ArrayList&lt;&gt;();
+    TreeMap&lt;Integer, Integer&gt; heights = new TreeMap&lt;&gt;();
+    heights.put(0, 1);  // Ground
+    
+    for (int[] event : events) {
+        int x = event[0], h = event[1];
+        
+        if (h &lt; 0) {  // Start
+            heights.put(-h, heights.getOrDefault(-h, 0) + 1);
+        } else {  // End
+            if (heights.get(h) == 1) {
+                heights.remove(h);
+            } else {
+                heights.put(h, heights.get(h) - 1);
+            }
+        }
+        
+        int maxH = heights.lastKey();
+        if (result.isEmpty() || 
+            result.get(result.size() - 1).get(1) != maxH) {
+            result.add(Arrays.asList(x, maxH));
+        }
+    }
+    
+    return result;
+}
+</code></pre>
+<h3 id="template-4-calendar-booking" tabindex="-1"><a class="header-anchor" href="#template-4-calendar-booking"><span>Template 4: Calendar Booking</span></a></h3>
+<pre><code class="language-python"># Python - Calendar with multiple bookings
+class MyCalendarTwo:
+    def __init__(self):
+        self.events = []  # List of (time, delta)
+    
+    def book(self, start, end):
+        # Temporarily add new booking
+        self.events.append((start, 1))
+        self.events.append((end, -1))
+        self.events.sort()
+        
+        # Check if triple booking
+        booked = 0
+        for time, delta in self.events:
+            booked += delta
+            if booked &gt;= 3:
+                # Remove the temporary booking
+                self.events.remove((start, 1))
+                self.events.remove((end, -1))
+                return False
+        
+        return True
+</code></pre>
+<pre><code class="language-java">// Java - Calendar booking
+class MyCalendarTwo {
+    List&lt;int[]&gt; events;
+    
+    public MyCalendarTwo() {
+        events = new ArrayList&lt;&gt;();
+    }
+    
+    public boolean book(int start, int end) {
+        events.add(new int[]{start, 1});
+        events.add(new int[]{end, -1});
+        
+        Collections.sort(events, (a, b) -&gt; {
+            if (a[0] != b[0]) return a[0] - b[0];
+            return a[1] - b[1];
+        });
+        
+        int booked = 0;
+        for (int[] event : events) {
+            booked += event[1];
+            if (booked &gt;= 3) {
+                events.remove(new int[]{start, 1});
+                events.remove(new int[]{end, -1});
+                return false;
+            }
+        }
+        
+        return true;
+    }
+}
+</code></pre>
+<h3 id="template-5-difference-array-pattern" tabindex="-1"><a class="header-anchor" href="#template-5-difference-array-pattern"><span>Template 5: Difference Array Pattern</span></a></h3>
+<pre><code class="language-python"># Python - Range addition using sweep line
+def rangeAddition(length, updates):
+    # updates: [[start, end, inc]]
+    diff = [0] * (length + 1)
+    
+    for start, end, inc in updates:
+        diff[start] += inc
+        diff[end + 1] -= inc
+    
+    # Sweep to get final values
+    result = [0] * length
+    current = 0
+    for i in range(length):
+        current += diff[i]
+        result[i] = current
+    
+    return result
+
+# 2D range addition
+def rangeAddition2D(m, n, updates):
+    diff = [[0] * (n + 1) for _ in range(m + 1)]
+    
+    for r1, c1, r2, c2, inc in updates:
+        diff[r1][c1] += inc
+        diff[r1][c2 + 1] -= inc
+        diff[r2 + 1][c1] -= inc
+        diff[r2 + 1][c2 + 1] += inc
+    
+    # 2D prefix sum
+    result = [[0] * n for _ in range(m)]
+    for i in range(m):
+        for j in range(n):
+            result[i][j] = diff[i][j]
+            if i &gt; 0:
+                result[i][j] += result[i-1][j]
+            if j &gt; 0:
+                result[i][j] += result[i][j-1]
+            if i &gt; 0 and j &gt; 0:
+                result[i][j] -= result[i-1][j-1]
+    
+    return result
+</code></pre>
+<h3 id="template-6-interval-merge-with-sweep" tabindex="-1"><a class="header-anchor" href="#template-6-interval-merge-with-sweep"><span>Template 6: Interval Merge with Sweep</span></a></h3>
+<pre><code class="language-python"># Python - Merge overlapping intervals using sweep
+def mergeIntervals(intervals):
+    if not intervals:
+        return []
+    
+    events = []
+    for start, end in intervals:
+        events.append((start, 1))
+        events.append((end, -1))
+    
+    events.sort(key=lambda x: (x[0], -x[1]))
+    
+    merged = []
+    active = 0
+    start = 0
+    
+    for time, delta in events:
+        if active == 0 and delta == 1:
+            start = time  # New interval starts
+        
+        active += delta
+        
+        if active == 0:  # Interval ends
+            merged.append([start, time])
+    
+    return merged
+</code></pre>
+<h2 id="problems-by-pattern" tabindex="-1"><a class="header-anchor" href="#problems-by-pattern"><span>Problems by Pattern</span></a></h2>
+<h3 id="pattern-based-problem-tables" tabindex="-1"><a class="header-anchor" href="#pattern-based-problem-tables"><span>Pattern-Based Problem Tables</span></a></h3>
+<h4 id="interval-overlap-problems" tabindex="-1"><a class="header-anchor" href="#interval-overlap-problems"><span><strong>Interval Overlap Problems</strong></span></a></h4>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC #</th>
+<th>Key Technique</th>
+<th>Difficulty</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Meeting Rooms II</td>
+<td>253</td>
+<td>Basic sweep line</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Car Pooling</td>
+<td>1094</td>
+<td>Capacity tracking</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Brightest Position on Street</td>
+<td>2021</td>
+<td>Weighted intervals</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Maximum Population Year</td>
+<td>1854</td>
+<td>Year range counting</td>
+<td>Easy</td>
+</tr>
+<tr>
+<td>Maximum Sum Obtained</td>
+<td>2848</td>
+<td>Points on line</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Describe the Painting</td>
+<td>1943</td>
+<td>Segment merging</td>
+<td>Medium</td>
+</tr>
+</tbody>
+</table>
+<h4 id="skyline-problems" tabindex="-1"><a class="header-anchor" href="#skyline-problems"><span><strong>Skyline Problems</strong></span></a></h4>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC #</th>
+<th>Key Technique</th>
+<th>Difficulty</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>The Skyline Problem</td>
+<td>218</td>
+<td>Height tracking</td>
+<td>Hard</td>
+</tr>
+<tr>
+<td>Rectangle Area II</td>
+<td>850</td>
+<td>2D sweep</td>
+<td>Hard</td>
+</tr>
+<tr>
+<td>Perfect Rectangle</td>
+<td>391</td>
+<td>Corner counting</td>
+<td>Hard</td>
+</tr>
+<tr>
+<td>Falling Squares</td>
+<td>699</td>
+<td>Segment tree + sweep</td>
+<td>Hard</td>
+</tr>
+</tbody>
+</table>
+<h4 id="calendar-booking-problems" tabindex="-1"><a class="header-anchor" href="#calendar-booking-problems"><span><strong>Calendar Booking Problems</strong></span></a></h4>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC #</th>
+<th>Key Technique</th>
+<th>Difficulty</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>My Calendar I</td>
+<td>729</td>
+<td>No overlap check</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>My Calendar II</td>
+<td>731</td>
+<td>Double booking</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>My Calendar III</td>
+<td>732</td>
+<td>K-booking</td>
+<td>Hard</td>
+</tr>
+<tr>
+<td>Minimum Interval to Include Query</td>
+<td>1851</td>
+<td>Query + sweep</td>
+<td>Hard</td>
+</tr>
+</tbody>
+</table>
+<h4 id="employee-schedule-problems" tabindex="-1"><a class="header-anchor" href="#employee-schedule-problems"><span><strong>Employee Schedule Problems</strong></span></a></h4>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC #</th>
+<th>Key Technique</th>
+<th>Difficulty</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Employee Free Time</td>
+<td>759</td>
+<td>Interval gaps</td>
+<td>Hard</td>
+</tr>
+<tr>
+<td>Interval List Intersections</td>
+<td>986</td>
+<td>Two pointers</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Meeting Scheduler</td>
+<td>1229</td>
+<td>Common slots</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Remove Covered Intervals</td>
+<td>1288</td>
+<td>Sorting + sweep</td>
+<td>Medium</td>
+</tr>
+</tbody>
+</table>
+<h4 id="range-update-problems" tabindex="-1"><a class="header-anchor" href="#range-update-problems"><span><strong>Range Update Problems</strong></span></a></h4>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC #</th>
+<th>Key Technique</th>
+<th>Difficulty</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Range Addition</td>
+<td>370</td>
+<td>Difference array</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Corporate Flight Bookings</td>
+<td>1109</td>
+<td>Difference array</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Plates Between Candles</td>
+<td>2055</td>
+<td>Prefix + binary search</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Count Integers in Intervals</td>
+<td>2276</td>
+<td>Interval merge</td>
+<td>Hard</td>
+</tr>
+</tbody>
+</table>
+<h4 id="geometric-problems" tabindex="-1"><a class="header-anchor" href="#geometric-problems"><span><strong>Geometric Problems</strong></span></a></h4>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC #</th>
+<th>Key Technique</th>
+<th>Difficulty</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Rectangle Overlap</td>
+<td>836</td>
+<td>2D overlap</td>
+<td>Easy</td>
+</tr>
+<tr>
+<td>Rectangle Area</td>
+<td>223</td>
+<td>Area calculation</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Number of Airplanes in Sky</td>
+<td>391</td>
+<td>Time points</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Line Reflection</td>
+<td>356</td>
+<td>Coordinate mapping</td>
+<td>Medium</td>
+</tr>
+</tbody>
+</table>
+<h2 id="pattern-selection-strategy" tabindex="-1"><a class="header-anchor" href="#pattern-selection-strategy"><span>Pattern Selection Strategy</span></a></h2>
+<pre><code>Problem Analysis Flowchart:
+
+1. Are you counting overlapping intervals?
+   ├── YES → Use Basic Sweep Line
+   │         ├── Fixed capacity? → Track current count
+   │         └── Variable weight? → Track weighted sum
+   └── NO → Continue to 2
+
+2. Is it about building heights/skyline?
+   ├── YES → Use Skyline Template
+   │         ├── 1D skyline → Height events
+   │         └── 2D rectangles → Coordinate compression
+   └── NO → Continue to 3
+
+3. Managing calendar/bookings?
+   ├── YES → Use Calendar Template
+   │         ├── Single booking → Simple overlap
+   │         ├── Double booking → Count = 2 check
+   │         └── K-booking → Count = K check
+   └── NO → Continue to 4
+
+4. Finding free time/gaps?
+   ├── YES → Use Interval Merge
+   │         ├── Merge all intervals
+   │         └── Find gaps between merged
+   └── NO → Continue to 5
+
+5. Batch range updates?
+   ├── YES → Use Difference Array
+   │         ├── 1D ranges → Simple difference
+   │         └── 2D ranges → 2D difference
+   └── NO → Use appropriate combination
+</code></pre>
+<h2 id="summary-quick-reference" tabindex="-1"><a class="header-anchor" href="#summary-quick-reference"><span>Summary &amp; Quick Reference</span></a></h2>
+<h3 id="complexity-quick-reference" tabindex="-1"><a class="header-anchor" href="#complexity-quick-reference"><span>Complexity Quick Reference</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>Operation</th>
+<th>Time Complexity</th>
+<th>Space</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Event Creation</td>
+<td>O(n)</td>
+<td>O(n)</td>
+<td>2 events per interval</td>
+</tr>
+<tr>
+<td>Event Sorting</td>
+<td>O(n log n)</td>
+<td>O(1)</td>
+<td>Dominant operation</td>
+</tr>
+<tr>
+<td>Sweep Processing</td>
+<td>O(n)</td>
+<td>O(1)</td>
+<td>Single pass</td>
+</tr>
+<tr>
+<td>With TreeMap/Heap</td>
+<td>O(n log n)</td>
+<td>O(n)</td>
+<td>For skyline problems</td>
+</tr>
+<tr>
+<td>Difference Array</td>
+<td>O(n + m)</td>
+<td>O(m)</td>
+<td>m = range size</td>
+</tr>
+<tr>
+<td>2D Sweep</td>
+<td>O(n² log n)</td>
+<td>O(n²)</td>
+<td>Rectangle problems</td>
+</tr>
+</tbody>
+</table>
+<h3 id="template-quick-reference" tabindex="-1"><a class="header-anchor" href="#template-quick-reference"><span>Template Quick Reference</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>Template</th>
+<th>Pattern</th>
+<th>Key Code</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Basic Sweep</strong></td>
+<td>Count overlaps</td>
+<td><code>events.sort(); count += delta</code></td>
+</tr>
+<tr>
+<td><strong>Weighted</strong></td>
+<td>Sum values</td>
+<td><code>weight += delta * value</code></td>
+</tr>
+<tr>
+<td><strong>Skyline</strong></td>
+<td>Track heights</td>
+<td><code>heapq for max height</code></td>
+</tr>
+<tr>
+<td><strong>Calendar</strong></td>
+<td>Booking conflicts</td>
+<td><code>if count &gt;= k: reject</code></td>
+</tr>
+<tr>
+<td><strong>Difference</strong></td>
+<td>Range updates</td>
+<td><code>diff[start]++; diff[end+1]--</code></td>
+</tr>
+<tr>
+<td><strong>Merge</strong></td>
+<td>Combine intervals</td>
+<td><code>if active==0: new interval</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="common-patterns-tricks" tabindex="-1"><a class="header-anchor" href="#common-patterns-tricks"><span>Common Patterns &amp; Tricks</span></a></h3>
+<h4 id="event-ordering-rule" tabindex="-1"><a class="header-anchor" href="#event-ordering-rule"><span><strong>Event Ordering Rule</strong></span></a></h4>
+<pre><code class="language-python"># Critical: Handle events at same position correctly
+# Start before End at same position
+events.sort(key=lambda x: (x[0], -x[1]))
+# OR End before Start (depends on problem)
+events.sort(key=lambda x: (x[0], x[1]))
+</code></pre>
+<h4 id="interval-to-events-conversion" tabindex="-1"><a class="header-anchor" href="#interval-to-events-conversion"><span><strong>Interval to Events Conversion</strong></span></a></h4>
+<pre><code class="language-python"># Standard conversion
+for start, end in intervals:
+    events.append((start, +1))  # Enter
+    events.append((end, -1))     # Exit
+    
+# Inclusive vs Exclusive endpoints
+events.append((end, -1))     # Exclusive end
+events.append((end+1, -1))   # Inclusive end
+</code></pre>
+<h4 id="maximum-tracking-pattern" tabindex="-1"><a class="header-anchor" href="#maximum-tracking-pattern"><span><strong>Maximum Tracking Pattern</strong></span></a></h4>
+<pre><code class="language-python">max_value = 0
+current = 0
+max_position = 0
+
+for pos, delta in events:
+    current += delta
+    if current &gt; max_value:
+        max_value = current
+        max_position = pos
+</code></pre>
+<h4 id="skyline-height-management" tabindex="-1"><a class="header-anchor" href="#skyline-height-management"><span><strong>Skyline Height Management</strong></span></a></h4>
+<pre><code class="language-python"># Use negative for max heap in Python
+import heapq
+heights = [0]  # Ground level
+heapq.heappush(heights, -height)  # Add
+max_height = -heights[0]           # Get max
+</code></pre>
+<h3 id="problem-solving-steps" tabindex="-1"><a class="header-anchor" href="#problem-solving-steps"><span>Problem-Solving Steps</span></a></h3>
+<ol>
+<li>
+<p><strong>Identify Event Types</strong></p>
+<ul>
+<li>What marks the start of an interval?</li>
+<li>What marks the end?</li>
+<li>Are there other event types?</li>
+</ul>
+</li>
+<li>
+<p><strong>Design Event Structure</strong></p>
+<ul>
+<li>Position/time</li>
+<li>Event type (start/end)</li>
+<li>Additional data (value, id, etc.)</li>
+</ul>
+</li>
+<li>
+<p><strong>Determine Sort Order</strong></p>
+<ul>
+<li>Primary: By position/time</li>
+<li>Secondary: Start vs End handling</li>
+<li>Tertiary: By value if needed</li>
+</ul>
+</li>
+<li>
+<p><strong>Process Events</strong></p>
+<ul>
+<li>Maintain running state</li>
+<li>Update maximum/minimum</li>
+<li>Check constraints</li>
+</ul>
+</li>
+<li>
+<p><strong>Handle Edge Cases</strong></p>
+<ul>
+<li>Same position events</li>
+<li>Empty intervals</li>
+<li>Single point intervals</li>
+<li>Overlapping endpoints</li>
+</ul>
+</li>
+</ol>
+<h3 id="common-mistakes-tips" tabindex="-1"><a class="header-anchor" href="#common-mistakes-tips"><span>Common Mistakes &amp; Tips</span></a></h3>
+<p><strong>🚫 Common Mistakes:</strong></p>
+<ul>
+<li>Wrong event ordering at same position</li>
+<li>Off-by-one errors with inclusive/exclusive ends</li>
+<li>Not handling empty interval list</li>
+<li>Forgetting to track position of maximum</li>
+<li>Using wrong data structure for height tracking</li>
+</ul>
+<p><strong>✅ Best Practices:</strong></p>
+<ul>
+<li>Always clarify inclusive vs exclusive intervals</li>
+<li>Use TreeMap/TreeSet for dynamic height queries</li>
+<li>Consider difference array for range updates</li>
+<li>Test with overlapping endpoints</li>
+<li>Visualize the sweep line movement</li>
+</ul>
+<h3 id="interview-tips" tabindex="-1"><a class="header-anchor" href="#interview-tips"><span>Interview Tips</span></a></h3>
+<ol>
+<li>
+<p><strong>Problem Recognition</strong></p>
+<ul>
+<li>&quot;Maximum overlapping&quot; → Sweep line</li>
+<li>&quot;Skyline/outline&quot; → Height tracking</li>
+<li>&quot;Free time&quot; → Merge then find gaps</li>
+<li>&quot;Range updates&quot; → Difference array</li>
+</ul>
+</li>
+<li>
+<p><strong>Clarify Requirements</strong></p>
+<ul>
+<li>Are intervals inclusive or exclusive?</li>
+<li>Can intervals have zero length?</li>
+<li>How to handle same-position events?</li>
+<li>Is the answer count or specific intervals?</li>
+</ul>
+</li>
+<li>
+<p><strong>Optimization Opportunities</strong></p>
+<ul>
+<li>Coordinate compression for large ranges</li>
+<li>Segment tree for dynamic updates</li>
+<li>Binary search for point queries</li>
+<li>Lazy propagation for range updates</li>
+</ul>
+</li>
+<li>
+<p><strong>Common Follow-ups</strong></p>
+<ul>
+<li>Handle dynamic interval additions</li>
+<li>Query at specific points</li>
+<li>Find k-th largest overlap</li>
+<li>Support interval modifications</li>
+</ul>
+</li>
+</ol>
+<h3 id="advanced-techniques" tabindex="-1"><a class="header-anchor" href="#advanced-techniques"><span>Advanced Techniques</span></a></h3>
+<h4 id="coordinate-compression" tabindex="-1"><a class="header-anchor" href="#coordinate-compression"><span><strong>Coordinate Compression</strong></span></a></h4>
+<pre><code class="language-python"># Compress large coordinate space
+coords = set()
+for start, end in intervals:
+    coords.add(start)
+    coords.add(end)
+coord_map = {v: i for i, v in enumerate(sorted(coords))}
+</code></pre>
+<h4 id="segment-tree-integration" tabindex="-1"><a class="header-anchor" href="#segment-tree-integration"><span><strong>Segment Tree Integration</strong></span></a></h4>
+<ul>
+<li>Use for dynamic updates</li>
+<li>Query range maximum/minimum</li>
+<li>Lazy propagation for efficiency</li>
+</ul>
+<h4 id="persistent-data-structure" tabindex="-1"><a class="header-anchor" href="#persistent-data-structure"><span><strong>Persistent Data Structure</strong></span></a></h4>
+<ul>
+<li>Track history of changes</li>
+<li>Query at any timestamp</li>
+<li>Useful for temporal databases</li>
+</ul>
+<h3 id="related-topics" tabindex="-1"><a class="header-anchor" href="#related-topics"><span>Related Topics</span></a></h3>
+<ul>
+<li><strong>Interval Problems</strong>: Merge, insert, remove intervals</li>
+<li><strong>Greedy Algorithms</strong>: Activity selection</li>
+<li><strong>Computational Geometry</strong>: Line intersection</li>
+<li><strong>Data Stream</strong>: Processing events in order</li>
+<li><strong>Difference Array</strong>: Efficient range updates</li>
+</ul>
+<h2 id="lc-examples" tabindex="-1"><a class="header-anchor" href="#lc-examples"><span>LC Examples</span></a></h2>
+<h3 id="2-1-meeting-rooms-ii" tabindex="-1"><a class="header-anchor" href="#2-1-meeting-rooms-ii"><span>2-1) Meeting Rooms II</span></a></h3>
+<pre><code class="language-python"># LC 253 Meeting Rooms II
+# NOTE : there're also priority queue, sorting approaches
+
+# V0
+# IDEA : SCANNING LINE : Sort all time points and label the start and end points. Move a vertical line from left to right.
+class Solution:
+     def minMeetingRooms(self, intervals):
+            lst = []
+            &quot;&quot;&quot;
+            NOTE THIS !!!
+            &quot;&quot;&quot;
+            for start, end in intervals:
+                lst.append((start, 1))
+                lst.append((end, -1))
+            # all of below sort work
+            #lst.sort()
+            lst.sort(key = lambda x : [x[0], x[1]])
+            res, curr_rooms = 0, 0
+            for t, n in lst:
+                curr_rooms += n
+                res = max(res, curr_rooms)
+            return res
+
+# V0''
+# IDEA : SCANNING LINE
+# Step 1 : split intervals to points, and label start, end point
+# Step 2 : reorder the points
+# Step 3 : go through every point, if start : result + 1, if end : result -1, and record the maximum result in every iteration
+class Solution:
+    def minMeetingRooms(self, intervals):
+        if intervals is None or len(intervals) == 0:
+            return 0
+
+        tmp = []
+
+        # set up start and end points 
+        for inter in intervals:
+            tmp.append((inter[0], True))
+            tmp.append((inter[1], False))
+
+        # sort 
+        tmp = sorted(tmp, key=lambda v: (v[0], v[1]))
+
+        n = 0
+        max_num = 0
+        for arr in tmp:
+            # start point +1 
+            if arr[1]:
+                n += 1
+            # end point -1 
+            else:
+                n -= 1 # release the meeting room
+            max_num = max(n, max_num)
+        return max_num
+</code></pre>
+<h3 id="2-2-brightest-position-on-street" tabindex="-1"><a class="header-anchor" href="#2-2-brightest-position-on-street"><span>2-2) Brightest Position on Street</span></a></h3>
+<pre><code class="language-python"># LC 2021. Brightest Position on Street
+# V0
+# IDEA : Scanning line, LC 253 MEETING ROOM II
+class Solution:
+    def brightestPosition(self, lights: List[List[int]]) -&gt; int:
+        # light range array
+        light_r = []
+        for p,r in lights:
+            light_r.append((p-r,'start'))
+            light_r.append((p+r+1,'end'))
+        light_r.sort(key = lambda x:x[0])
+        # focus on the boundary of light range 
+        
+        bright = collections.defaultdict(int)
+        power = 0
+        for l in light_r:
+            if 'start' in l:
+                power += 1
+            else:
+                power -= 1
+            bright[l[0]] = power # NOTE : we update &quot;power&quot; in each iteration
+                
+        list_bright = list(bright.values())
+        list_position = list(bright.keys())
+        
+        max_bright = max(list_bright)
+        max_bright_index = list_bright.index(max_bright)
+        
+        return list_position[max_bright_index]
+
+# V0'
+# IDEA : Scanning line, meeting room
+from collections import defaultdict
+class Solution(object):
+    def brightestPosition(self, lights):
+        # edge case
+        if not lights:
+            return
+        _lights = []
+        for x in lights:
+            &quot;&quot;&quot;
+            NOTE this !!!
+             -&gt; 1) scanning line trick
+             -&gt; 2) we add 1 to idx for close session (_lights.append([x[0]+x[1]+1, -1]))
+            &quot;&quot;&quot;
+            _lights.append([x[0]-x[1], 1])
+            _lights.append([x[0]+x[1]+1, -1])
+        _lights.sort(key = lambda x : x)
+        #print (&quot;_lights = &quot; + str(_lights))
+        d = defaultdict(int)
+        up = 0
+        for a, b in _lights:
+            if b == 1:
+                up += 1
+            else:
+                up -= 1
+            d[a] = up
+        print (&quot;d = &quot; + str(d))
+        _max = max(d.values())
+        res = [i for i in d if d[i] == _max]
+        #print (&quot;res = &quot; + str(res))
+        return min (res)
+
+# V1
+# IDEA : LC 253 MEETING ROOM II
+# https://leetcode.com/problems/brightest-position-on-street/discuss/1494005/Python%3A-Basically-meeting-room-II
+# IDEA :
+# So, the only difference in this problem in comparison to meeting room II is that we have to convert our input into intervals, which is straightforward and basically suggested to use by the first example. So, here is my code and here is meeting rooms II https://leetcode.com/problems/meeting-rooms-ii/
+class Solution:
+    def brightestPosition(self, lights: List[List[int]]) -&gt; int:
+        intervals, heap, res, best = [], [], 0, 0
+        for x, y in lights:
+            intervals.append([x-y, x+y])
+            
+        intervals.sort()
+
+        for left, right in intervals:            
+            while heap and heap[0] &lt; left: 
+                heappop(heap)
+            heappush(heap, right)
+            if len(heap) &gt; best:
+                best = len(heap)
+                res = left
+        return res
+</code></pre>
+<h3 id="2-2-my-calendar-ii" tabindex="-1"><a class="header-anchor" href="#2-2-my-calendar-ii"><span>2-2) My Calendar II</span></a></h3>
+<pre><code class="language-java">// java
+// LC 731
+// V0
+// IDEA: SCANNING LINE + CUSTOM SORTING (fixed by gpt)
+class MyCalendarTwo {
+
+  // Attributes
+  /**
+   * NOTE !!!
+   *
+   *
+   * statusList: {time, status, curBooked}
+   * time: start time or end time
+   * status: 1 for start, -1 for end
+   */
+  List&lt;Integer[]&gt; statusList;
+
+  // Constructor
+  public MyCalendarTwo() {
+      this.statusList = new ArrayList&lt;&gt;();
+  }
+
+  public boolean book(int startTime, int endTime) {
+
+      // Create intervals
+      /**
+       * NOTE !!!
+       *
+       * 1) we can init array at once as `new Inteter[] {a,b,c};
+       * 2) we init curStart, curEnd array at first
+       */
+      Integer[] curStart = new Integer[] { startTime, 1, 0 }; // {time, status, placeholder}
+      Integer[] curEnd = new Integer[] { endTime, -1, 0 }; // {time, status, placeholder}
+
+      // Temporarily add them to the list for simulation
+      /**
+       * NOTE !!!
+       *
+       * -&gt; we add curStart, curEnd to statusList directly
+       * -&gt; if new time is `over 2 times overlap`, we can REMOVE them
+       *    from statusList and return `false` in this method,
+       *    and we can keep this method running and validate the
+       *    other input (startTime, endTime)
+       */
+      statusList.add(curStart);
+      statusList.add(curEnd);
+
+      // Sort by time, then by status (start before end)
+      /**
+       * NOTE !!!
+       *
+       *  custom sorting
+       *
+       *  -&gt; so, sort time first,
+       *  if time are equal, then sort on `status` (0 or 1),
+       *  `open` goes first, `close` goes next
+       */
+      statusList.sort((x, y) -&gt; {
+          if (!x[0].equals(y[0])) {
+              return x[0] - y[0];
+          }
+          return x[1] - y[1]; // start (+1) comes before end (-1)
+      });
+
+      // Scanning line to check overlaps
+      int curBooked = 0;
+      for (Integer[] interval : statusList) {
+          curBooked += interval[1];
+          if (curBooked &gt;= 3) {
+              // Remove the temporary intervals
+              /**
+               * NOTE !!!
+               *
+               *  if overlap &gt; 2, we just remove the new added times,
+               *  and return false as method response
+               */
+              statusList.remove(curStart);
+              statusList.remove(curEnd);
+              return false; // Booking not allowed
+          }
+      }
+
+      // Booking is valid, keep the intervals
+      return true;
+  }
+}
+</code></pre>
+
+      </div>
+      <div class="cheatsheet-footer">
+        <a href="../cheatsheets.html" class="back-link">← Back to Cheat Sheets</a>
+        <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/scanning_line.md" class="github-edit" target="_blank">
+          Edit on GitHub →
+        </a>
+      </div>
+    <nav class="prev-next"><a href="recursion_to_dp.html" class="prev-link">← Recursion To Dp</a><a href="segment_tree.html" class="next-link">Segment Tree →</a></nav>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>CS_basics - Computer Science Fundamentals & Interview Preparation</p>
+      <p>
+        <a href="https://github.com/yennanliu/CS_basics">GitHub</a> •
+        <a href="https://github.com/yennanliu/CS_basics/tree/master/doc">Documentation</a> •
+        <a href="https://github.com/yennanliu/CS_basics/issues">Report Issues</a>
+      </p>
+    </div>
+  </footer>
+</body>
+</html>

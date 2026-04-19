@@ -1,0 +1,1969 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Linked List - CS_basics</title>
+  <meta name="description" content="Computer Science fundamentals: algorithms, data structures, system design, and LeetCode solutions">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>CS</text></svg>">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="../vendor/fonts.css">
+  <link rel="stylesheet" href="../vendor/highlight/github-dark.min.css">
+  <script src="../vendor/highlight/highlight.min.js"></script>
+  <script>
+  // Apply theme before render to prevent flash
+  (function() {
+    var saved = localStorage.getItem('theme');
+    if (saved === 'dark' || (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      document.documentElement.setAttribute('data-theme', 'dark');
+    }
+  })();
+  </script>
+  <script>document.addEventListener('DOMContentLoaded', function() {
+    hljs.highlightAll();
+    document.querySelectorAll('pre code').forEach(function(codeEl) {
+      var pre = codeEl.parentElement;
+      var lang = '';
+      var cls = codeEl.className || '';
+      var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
+      if (m) lang = m[1];
+      var wrapper = document.createElement('div');
+      wrapper.className = 'code-block-wrapper';
+      pre.parentNode.insertBefore(wrapper, pre);
+      var header = document.createElement('div');
+      header.className = 'code-block-header';
+      if (lang) {
+        var label = document.createElement('span');
+        label.className = 'code-lang-label';
+        label.textContent = lang;
+        header.appendChild(label);
+      } else {
+        header.appendChild(document.createElement('span'));
+      }
+      var btn = document.createElement('button');
+      btn.className = 'copy-btn';
+      btn.textContent = 'Copy';
+      btn.addEventListener('click', function() {
+        navigator.clipboard.writeText(codeEl.textContent).then(function() {
+          btn.textContent = 'Copied!';
+          btn.classList.add('copied');
+          setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+        });
+      });
+      header.appendChild(btn);
+      wrapper.appendChild(header);
+      wrapper.appendChild(pre);
+    });
+    document.querySelectorAll('table').forEach(function(table) {
+      if (!table.parentElement.classList.contains('table-wrap')) {
+        var wrapper = document.createElement('div');
+        wrapper.className = 'table-wrap';
+        table.parentNode.insertBefore(wrapper, table);
+        wrapper.appendChild(table);
+      }
+    });
+    // Reading progress bar
+    var progressBar = document.getElementById('reading-progress');
+    if (progressBar) {
+      window.addEventListener('scroll', function() {
+        var winScroll = document.documentElement.scrollTop;
+        var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        progressBar.style.width = height > 0 ? (winScroll / height * 100) + '%' : '0%';
+      });
+    }
+    // Dark mode toggle
+    var toggle = document.getElementById('theme-toggle');
+    if (toggle) {
+      var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      toggle.textContent = isDark ? '☀️' : '🌙';
+      toggle.addEventListener('click', function() {
+        var dark = document.documentElement.getAttribute('data-theme') === 'dark';
+        if (dark) {
+          document.documentElement.removeAttribute('data-theme');
+          localStorage.setItem('theme', 'light');
+          toggle.textContent = '🌙';
+        } else {
+          document.documentElement.setAttribute('data-theme', 'dark');
+          localStorage.setItem('theme', 'dark');
+          toggle.textContent = '☀️';
+        }
+      });
+    }
+  });</script>
+</head>
+<body>
+  <div class="progress-container"><div class="progress-bar" id="reading-progress"></div></div>
+  <nav class="navbar">
+    <div class="container">
+      <div class="nav-brand">
+        <span class="nav-icon">💻</span>
+        <span class="nav-title">CS_basics</span>
+      </div>
+      <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+      <div class="nav-links">
+        <a href="../index.html" class="">Home</a>
+        <a href="../cheatsheets.html" class="active">Cheat Sheets</a>
+        <a href="../patterns.html" class="">Pattern Recognition</a>
+        <a href="../faqs.html" class="">FAQs</a>
+        <a href="../resources.html" class="">Resources</a>
+        <a href="../lc-explorer.html" class="">LC Explorer</a>
+        <a href="../lc-random-picker.html" class="">🎲 Random Picker</a>
+        <a href="../algo_demo/index.html" class="">Visualizer</a>
+        <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">&#127769;</button>
+        <a href="https://github.com/yennanliu/CS_basics" target="_blank" class="github-link" aria-label="GitHub">
+          <svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor">
+            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container">
+    <div class="content">
+      
+      <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">Linked List</span></nav>
+      <div class="cheatsheet-header">
+        <h1>Linked List</h1>
+        <span class="last-updated">Last updated: Mar 6, 2026</span>
+      </div>
+      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#0-concept">0) Concept</a></li><li class="toc-sub"><a href="#0-1-types">0-1) Types</a></li><li class="toc-sub"><a href="#0-2-pattern">0-2) Pattern</a></li><li><a href="#1-general-form">1) General form</a></li><li class="toc-sub"><a href="#1-1-basic-op">1-1) Basic OP</a></li><li><a href="#2-lc-example">2) LC Example</a></li><li class="toc-sub"><a href="#2-1-palindrome-linked-list">2-1) palindrome-linked-list</a></li><li class="toc-sub"><a href="#2-2-merge-two-sorted-lists">2-2) Merge Two Sorted Lists</a></li><li class="toc-sub"><a href="#2-2-merge-k-sorted-lists">2-2’) Merge K Sorted Lists</a></li><li class="toc-sub"><a href="#2-3-reverse-linked-list">2-3) Reverse Linked List</a></li><li class="toc-sub"><a href="#2-4-reverse-linked-list-ii">2-4) Reverse Linked List II</a></li><li class="toc-sub"><a href="#2-5-copy-list-with-random-pointer">2-5) Copy List with Random Pointer</a></li><li class="toc-sub"><a href="#2-6-intersection-of-two-linked-lists">2-6) Intersection of Two Linked Lists</a></li><li class="toc-sub"><a href="#2-7-split-linked-list-in-parts">2-7) Split Linked List in Parts</a></li><li class="toc-sub"><a href="#2-7-remove-nth-node-from-end-of-list">2-7) Remove Nth Node From End of List</a></li><li class="toc-sub"><a href="#2-8-reorder-list">2-8) Reorder List</a></li><li class="toc-sub"><a href="#2-9-swap-nodes-in-pairs">2-9) Swap Nodes in Pairs</a></li><li class="toc-sub"><a href="#2-10-plus-one-linked-list">2-10) Plus One Linked List</a></li><li class="toc-sub"><a href="#2-11-linked-list-components">2-11) Linked List Components</a></li></ul></div>
+      <div class="cheatsheet-content">
+        <h1 id="linked-list" tabindex="-1"><a class="header-anchor" href="#linked-list"><span>Linked List</span></a></h1>
+<h2 id="0-concept" tabindex="-1"><a class="header-anchor" href="#0-concept"><span>0) Concept</span></a></h2>
+<ul>
+<li>
+<p><a href="https://github.com/labuladong/fucking-algorithm/blob/master/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E7%B3%BB%E5%88%97/%E9%80%92%E5%BD%92%E5%8F%8D%E8%BD%AC%E9%93%BE%E8%A1%A8%E7%9A%84%E4%B8%80%E9%83%A8%E5%88%86.md">fucking algorithm : reverse part of linked list</a></p>
+</li>
+<li>
+<p><a href="https://github.com/labuladong/fucking-algorithm/blob/master/%E9%AB%98%E9%A2%91%E9%9D%A2%E8%AF%95%E7%B3%BB%E5%88%97/k%E4%B8%AA%E4%B8%80%E7%BB%84%E5%8F%8D%E8%BD%AC%E9%93%BE%E8%A1%A8.md">fucking algorithm : reverse k set of linked list</a></p>
+</li>
+<li>
+<p><a href="https://github.com/labuladong/fucking-algorithm/blob/master/%E9%AB%98%E9%A2%91%E9%9D%A2%E8%AF%95%E7%B3%BB%E5%88%97/%E5%88%A4%E6%96%AD%E5%9B%9E%E6%96%87%E9%93%BE%E8%A1%A8.md">fucking algorithm : check palindrome linked list</a></p>
+</li>
+<li>
+<p>Use “pseudo head node” 虛擬頭節點</p>
+<ul>
+<li><a href="https://youtu.be/Y4oQJklHxVo?t=1111">代碼隨想錄: LC 203 Remove Linked List Elements</a></li>
+</ul>
+</li>
+<li>
+<p>When delete node from linked list, we need to be at “previous” node, then can delete NEXT node</p>
+<ul>
+<li>so, need to be at <code>cur</code> node, than can <code>cur.next</code> node</li>
+</ul>
+<pre><code class="language-python"># python
+# https://youtu.be/Y4oQJklHxVo?t=965
+cur.next = cur.next.next
+</code></pre>
+</li>
+</ul>
+<pre><code class="language-python"># python
+# Definition for singly-linked list.
+class ListNode(object):
+    def __init__(self, val=0, next=None):
+        self.val = val
+        self.next = next
+</code></pre>
+<pre><code class="language-java">// java
+
+// Single Linkedlist
+
+public class ListNode{
+
+    // attr
+    public int val;
+    public ListNode next;
+
+    // constructor
+    public ListNode(){
+
+    }
+
+    public ListNode(int val){
+        this.val = val;
+    }
+
+    ListNode(int val, ListNode next){
+        this.val = val;
+        this.next = next;
+    }
+
+}
+
+// init a ListNode
+ListNode node1 = new ListNode(1);
+ListNode node2 = new ListNode(2);
+ListNode node3 = new ListNode(3);
+
+// motify node's value
+node1.val = 0;
+
+// connect nodes
+node1.next = node2;
+node2.next = node3;
+</code></pre>
+<pre><code class="language-java">// java
+
+// Double linked list
+
+// LC 146
+
+public class Node {
+    int key;
+    int val;
+    Node prev;
+    Node next;
+
+    public Node(int key, int val) {
+        this.key = key;
+        this.val = val;
+        this.prev = null;
+        this.next = null;
+    }
+}
+</code></pre>
+<h3 id="0-1-types" tabindex="-1"><a class="header-anchor" href="#0-1-types"><span>0-1) Types</span></a></h3>
+<ul>
+<li>Linked list</li>
+<li>Cycle linked list</li>
+<li>Bi-direction linked list</li>
+<li>Double Linked list
+<ul>
+<li>LC 146</li>
+</ul>
+</li>
+<li>Others
+<ul>
+<li>LC 138 :</li>
+</ul>
+<pre><code class="language-python">dic = dict()
+m = n = head
+dic[m] = Node(m.val)
+</code></pre>
+<ul>
+<li>LC 208 :</li>
+<li><a href="trie.html">trie</a></li>
+</ul>
+<pre><code class="language-python">self.children = defaultdict(Node)
+</code></pre>
+</li>
+<li>problem types
+<ul>
+<li>reverse
+<ul>
+<li>reverse linked list
+<ul>
+<li>LC 206</li>
+</ul>
+</li>
+<li>reverse linked list within start, end point
+<ul>
+<li>LC 92, LC 25</li>
+</ul>
+</li>
+<li>reverse part of linked list</li>
+<li>reverse k set of linked list</li>
+</ul>
+</li>
+<li>merge
+<ul>
+<li>merge 2 linked list</li>
+</ul>
+</li>
+<li>check
+<ul>
+<li>check cyclic linked list</li>
+<li>check beginning of cyclic linked list</li>
+</ul>
+</li>
+<li>remove N th node
+<ul>
+<li>Remove Nth Node From End of List - LC 19</li>
+</ul>
+</li>
+<li>combinations
+<ul>
+<li>combinations of above cases</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="0-2-pattern" tabindex="-1"><a class="header-anchor" href="#0-2-pattern"><span>0-2) Pattern</span></a></h3>
+<h4 id="dummy-head-technique" tabindex="-1"><a class="header-anchor" href="#dummy-head-technique"><span><strong>Dummy Head Technique</strong></span></a></h4>
+<p><strong>Definition</strong>: Create a dummy/pseudo head node that points to the actual head, making it easier to handle edge cases and node removal operations.</p>
+<p><strong>When to Use</strong>:</p>
+<ul>
+<li>Removing nodes from the beginning of the list</li>
+<li>When the head node might be modified</li>
+<li>Simplifying edge case handling</li>
+<li>Operations that need to track the previous node</li>
+</ul>
+<p><strong>Time Complexity</strong>: O(n) - same as without dummy head
+<strong>Space Complexity</strong>: O(1) - only one extra node</p>
+<p><strong>Template Pattern</strong>:</p>
+<pre><code class="language-python">def linked_list_operation(head):
+    # Create dummy head
+    dummy = ListNode(0)
+    dummy.next = head
+
+    # Use prev to track previous node
+    prev = dummy
+    curr = head
+
+    while curr:
+        # Perform operations
+        if condition:
+            # Remove current node
+            prev.next = curr.next
+        else:
+            prev = curr
+        curr = curr.next
+
+    # Return new head (dummy.next)
+    return dummy.next
+</code></pre>
+<p><strong>Advantages</strong>:</p>
+<ul>
+<li>Eliminates need for special handling of head node</li>
+<li>Simplifies code logic</li>
+<li>Reduces edge case bugs</li>
+<li>Consistent prev pointer throughout traversal</li>
+</ul>
+<p><strong>Common Use Cases</strong>:</p>
+<p><strong>1. Remove Nth Node From End (LC 19)</strong>:</p>
+<pre><code class="language-python">def removeNthFromEnd(self, head, n):
+    dummy = ListNode(0)
+    dummy.next = head
+    fast = slow = dummy
+
+    # Move fast n+1 steps ahead
+    for _ in range(n + 1):
+        fast = fast.next
+
+    # Move both until fast reaches end
+    while fast:
+        fast = fast.next
+        slow = slow.next
+
+    # Remove nth node
+    slow.next = slow.next.next
+    return dummy.next
+</code></pre>
+<p><strong>2. Remove Duplicates (LC 83)</strong>:</p>
+<pre><code class="language-python">def deleteDuplicates(self, head):
+    dummy = ListNode(0)
+    dummy.next = head
+    prev = dummy
+
+    while head and head.next:
+        if head.val == head.next.val:
+            # Skip all duplicates
+            val = head.val
+            while head and head.val == val:
+                head = head.next
+            prev.next = head
+        else:
+            prev = head
+            head = head.next
+
+    return dummy.next
+</code></pre>
+<p><strong>3. Merge Two Sorted Lists (LC 21)</strong>:</p>
+<pre><code class="language-python">def mergeTwoLists(self, l1, l2):
+    dummy = ListNode(0)
+    current = dummy
+
+    while l1 and l2:
+        if l1.val &lt;= l2.val:
+            current.next = l1
+            l1 = l1.next
+        else:
+            current.next = l2
+            l2 = l2.next
+        current = current.next
+
+    # Attach remaining nodes
+    current.next = l1 or l2
+    return dummy.next
+</code></pre>
+<p><strong>4. Partition List (LC 86)</strong>:</p>
+<pre><code class="language-python">def partition(self, head, x):
+    before_dummy = ListNode(0)
+    after_dummy = ListNode(0)
+    before = before_dummy
+    after = after_dummy
+
+    while head:
+        if head.val &lt; x:
+            before.next = head
+            before = before.next
+        else:
+            after.next = head
+            after = after.next
+        head = head.next
+
+    # Connect the two parts
+    after.next = None
+    before.next = after_dummy.next
+    return before_dummy.next
+</code></pre>
+<p><strong>5. Add Two Numbers (LC 2)</strong>:</p>
+<pre><code class="language-python">def addTwoNumbers(self, l1, l2):
+    dummy = ListNode(0)
+    current = dummy
+    carry = 0
+
+    while l1 or l2 or carry:
+        val1 = l1.val if l1 else 0
+        val2 = l2.val if l2 else 0
+
+        total = val1 + val2 + carry
+        carry = total // 10
+        current.next = ListNode(total % 10)
+
+        current = current.next
+        l1 = l1.next if l1 else None
+        l2 = l2.next if l2 else None
+
+    return dummy.next
+</code></pre>
+<p><strong>Java Implementation</strong>:</p>
+<pre><code class="language-java">public ListNode removeElements(ListNode head, int val) {
+    ListNode dummy = new ListNode(0);
+    dummy.next = head;
+    ListNode current = dummy;
+
+    while (current.next != null) {
+        if (current.next.val == val) {
+            current.next = current.next.next;
+        } else {
+            current = current.next;
+        }
+    }
+
+    return dummy.next;
+}
+</code></pre>
+<p><strong>Key Benefits of Dummy Head</strong>:</p>
+<table>
+<thead>
+<tr>
+<th>Aspect</th>
+<th>Without Dummy</th>
+<th>With Dummy</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Edge Cases</strong></td>
+<td>Complex head handling</td>
+<td>Unified approach</td>
+</tr>
+<tr>
+<td><strong>Code Length</strong></td>
+<td>More conditional logic</td>
+<td>Cleaner, shorter</td>
+</tr>
+<tr>
+<td><strong>Bug Probability</strong></td>
+<td>Higher (edge cases)</td>
+<td>Lower (consistent)</td>
+</tr>
+<tr>
+<td><strong>Readability</strong></td>
+<td>Harder to follow</td>
+<td>More intuitive</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Related Problems</strong>:</p>
+<ul>
+<li>LC 19: Remove Nth Node From End of List</li>
+<li>LC 21: Merge Two Sorted Lists</li>
+<li>LC 83: Remove Duplicates from Sorted List</li>
+<li>LC 86: Partition List</li>
+<li>LC 203: Remove Linked List Elements</li>
+<li>LC 328: Odd Even Linked List</li>
+</ul>
+<hr>
+<h4 id="remove-elements-by-value-pattern" tabindex="-1"><a class="header-anchor" href="#remove-elements-by-value-pattern"><span><strong>Remove Elements by Value Pattern</strong></span></a></h4>
+<p><strong>Definition</strong>: Remove all nodes from a linked list that match a specific value. Uses dummy head and a “look ahead” technique where the current pointer examines <code>curr.next</code> rather than <code>curr</code> itself.</p>
+<p><strong>Core Concept</strong>:</p>
+<ul>
+<li><strong>Key Insight</strong>: When we find a node to remove, we ONLY update the pointer connection (<code>curr.next = curr.next.next</code>), but the <code>curr</code> pointer itself does NOT move forward</li>
+<li>This allows handling consecutive matching nodes (e.g., <code>[6,6,6,3]</code> with val=6)</li>
+<li>Only move <code>curr</code> forward when <code>curr.next.val != val</code></li>
+</ul>
+<p><strong>When to Use</strong>:</p>
+<ul>
+<li>Removing nodes by value from anywhere in the list</li>
+<li>Handling cases where head node(s) might need removal</li>
+<li>Removing consecutive duplicate values</li>
+</ul>
+<p><strong>Time Complexity</strong>: O(n)
+<strong>Space Complexity</strong>: O(1)</p>
+<p><strong>Template Pattern</strong>:</p>
+<pre><code class="language-java">// Java
+public ListNode removeElements(ListNode head, int val) {
+    // 1. Create dummy node pointing to head
+    ListNode dummy = new ListNode(0);
+    dummy.next = head;
+
+    // 2. Use curr pointer (starts at dummy, looks ahead)
+    ListNode curr = dummy;
+
+    // 3. Look ahead at NEXT node
+    while (curr.next != null) {
+        if (curr.next.val == val) {
+            // Found match - skip the next node
+            // NOTE: curr does NOT move!
+            curr.next = curr.next.next;
+        } else {
+            // No match - move pointer forward
+            curr = curr.next;
+        }
+    }
+
+    // 4. Return actual head
+    return dummy.next;
+}
+</code></pre>
+<pre><code class="language-python"># Python
+def removeElements(self, head: ListNode, val: int) -&gt; ListNode:
+    dummy = ListNode(0)
+    dummy.next = head
+    curr = dummy
+
+    while curr.next:
+        if curr.next.val == val:
+            curr.next = curr.next.next  # skip, don't move curr
+        else:
+            curr = curr.next  # move forward
+
+    return dummy.next
+</code></pre>
+<p><strong>Dry Run Example</strong> (<code>[6,6,6,3]</code>, val=6):</p>
+<pre><code>Initial: dummy -&gt; 6 -&gt; 6 -&gt; 6 -&gt; 3, curr at dummy
+
+Step 1: curr.next.val = 6 (match!)
+  Action: curr.next = curr.next.next
+  Result: dummy -&gt; 6 -&gt; 6 -&gt; 3 (curr STAYS at dummy)
+
+Step 2: curr.next.val = 6 (match!)
+  Action: curr.next = curr.next.next
+  Result: dummy -&gt; 6 -&gt; 3 (curr STAYS at dummy)
+
+Step 3: curr.next.val = 6 (match!)
+  Action: curr.next = curr.next.next
+  Result: dummy -&gt; 3 (curr STAYS at dummy)
+
+Step 4: curr.next.val = 3 (no match)
+  Action: curr = curr.next
+  Result: curr moves to node 3
+
+Step 5: curr.next = null, exit loop
+Return: dummy.next = [3]
+</code></pre>
+<p><strong>Why This Works for Consecutive Matches</strong>:</p>
+<table>
+<thead>
+<tr>
+<th>Scenario</th>
+<th>Without “stay in place”</th>
+<th>With “stay in place”</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>[6,6,3]</code> val=6</td>
+<td>Would skip second 6</td>
+<td>Catches all 6s</td>
+</tr>
+<tr>
+<td>Head removal</td>
+<td>Needs special case</td>
+<td>Handled uniformly</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Similar LC Problems</strong>:</p>
+<ul>
+<li>LC 203: Remove Linked List Elements (exact pattern)</li>
+<li>LC 83: Remove Duplicates from Sorted List (similar, compare adjacent)</li>
+<li>LC 82: Remove Duplicates from Sorted List II (remove all duplicates)</li>
+<li>LC 237: Delete Node in a Linked List (different - no access to prev)</li>
+<li>LC 1474: Delete N Nodes After M Nodes (pattern variation)</li>
+<li>LC 2487: Remove Nodes From Linked List (stack-based variation)</li>
+</ul>
+<hr>
+<h2 id="1-general-form" tabindex="-1"><a class="header-anchor" href="#1-general-form"><span>1) General form</span></a></h2>
+<pre><code class="language-java">// java
+// single Linklist
+public class ListNode {
+    int val;
+    ListNode next;
+    ListNode(int x) { val = x; }
+}
+</code></pre>
+<pre><code class="language-python"># python
+class Node:
+  &quot;&quot;&quot;
+  # constructor
+  # A single node of a singly linked list
+  &quot;&quot;&quot;
+  def __init__(self, data=None, next=None): 
+    self.data = data
+    self.next = next
+
+class LinkedList:
+  &quot;&quot;&quot;
+  # A Linked List class with a single head node
+  &quot;&quot;&quot;
+  def __init__(self):  
+    self.head = Node()
+
+  def get_length(self):
+    &quot;&quot;&quot;
+    # get list length method for the linked list
+    i.e. 
+       before : 1 -&gt; 2 -&gt; 3
+       after  : 3
+    &quot;&quot;&quot;
+    current = self.head
+    length = 0 
+    while current:
+        current = current.next
+        length += 1 
+    return length
+
+  def get_tail(self):
+    &quot;&quot;&quot;
+    # get list tail method for the linked list
+    i.e. 
+       before : a -&gt; b -&gt; c
+       after  : c
+    &quot;&quot;&quot;
+    current = self.head
+    while current:
+        current = current.next
+    return current
+
+  def print(self):
+    &quot;&quot;&quot;
+    # print method for the linked list
+    i.e. 
+       before : 1 -&gt; 2 -&gt; 3
+       after  : 1 2 3 
+    &quot;&quot;&quot;
+    current = self.head
+    while current:
+      print (current.data)
+      current = current.next
+
+  def append(self, data):
+    &quot;&quot;&quot;
+    # append method that append a new item at the end of the linkedlist 
+    i.e. 
+         before :  1 -&gt; 2 -&gt; 3
+         after  :  1 -&gt; 2 -&gt; 3 -&gt; 4
+    &quot;&quot;&quot;
+    newNode = Node(data)
+    if self.head:
+      current = self.head
+      while current.next:
+        current = current.next
+      current.next = newNode
+    else:
+      self.head = newNode
+  
+  def prepend(self, data):
+    &quot;&quot;&quot;
+    # append method that append a new item at the head of the linkedlist 
+    i.e. 
+         before :  1 -&gt; 2 -&gt; 3
+         after  :  0 -&gt; 1 -&gt; 2 -&gt; 3
+    &quot;&quot;&quot;
+    newNode = Node(data)
+    if self.head:
+        current = self.head
+        self.head = newNode
+        newNode.next = current
+        current = current.next
+    else:
+        self.head = newNode
+
+  def insert(self, idx, data):
+    &quot;&quot;&quot;
+    # append method that append a new item within the linkedlist 
+    i.e. 
+         before :  1 -&gt; 2 -&gt; 3
+         insert(1, 2.5)
+         after  :  1 -&gt; 2 -&gt; 2.5 -&gt; 3
+         before :  1 -&gt; 2 -&gt; 3
+         insert(0, 0)
+         after  :  0 -&gt; 1 -&gt; 2 -&gt; 3
+         before :  1 -&gt; 2 -&gt; 3
+         insert(2, 4)
+         after  :  1 -&gt; 2 -&gt; 3 -&gt; 4
+    &quot;&quot;&quot;
+    current = self.head
+    ll_length = self.get_length()
+
+    if idx &lt; 0 or idx &gt; self.get_length():
+      print (&quot;idx out of linkedlist range, idx : {}&quot;.format(idx))
+      return
+    elif idx == 0:
+        self.prepend(data)
+    elif idx == ll_length:
+        self.append(data)
+    else:
+        newNode = Node(data)
+        current = self.head
+        cur_idx = 0 
+        while cur_idx &lt; idx-1:
+            current = current.next
+            cur_idx += 1 
+        newNode.next = current.next
+        current.next = newNode
+
+  def remove(self, idx):
+    &quot;&quot;&quot;
+    # remove method for the linked list
+    i.e. 
+       before : 1 -&gt; 2 -&gt; 3
+       remove(1) 
+       after  : 1 -&gt; 3
+       before : 1 -&gt; 2 -&gt; 3
+       remove(2) 
+       after  : 1 -&gt; 2
+       before : 1 -&gt; 2 -&gt; 3
+       remove(0) 
+       after  : 2 -&gt; 3
+    &quot;&quot;&quot;
+    if idx &lt; 0 or idx &gt; self.get_length():
+        print (&quot;idx out of linkedlist range, idx : {}&quot;.format(idx))
+        return 
+    elif idx == 0:
+        current = self.head
+        self.head = current.next
+    elif idx == self.get_length():
+        current = self.head
+        cur_idx = 0
+        while cur_idx &lt; idx -1:
+            current = current.next
+            cur_idx += 1
+        current.next = None
+    else:
+        current = self.head
+        cur_idx = 0 
+        while cur_idx &lt; idx - 1:
+            current = current.next
+            cur_idx += 1 
+        next_ = current.next.next
+        current.next = next_
+        current = next_ 
+
+  def reverse(self): 
+    &quot;&quot;&quot;
+    https://www.youtube.com/watch?v=D7y_hoT_YZI
+
+    # reverse method for the linked list
+    # https://www.geeksforgeeks.org/python-program-for-reverse-a-linked-list/
+    i.e. 
+     before : 1 -&gt; 2 -&gt; 3
+     after  : 3 -&gt; 2 -&gt; 1 
+    &quot;&quot;&quot;
+    prev = None
+    current = self.head 
+    while(current is not None): 
+        next_ = current.next
+        current.next = prev 
+        prev = current 
+        current = next_
+    self.head = prev 
+
+</code></pre>
+<h3 id="1-1-basic-op" tabindex="-1"><a class="header-anchor" href="#1-1-basic-op"><span>1-1) Basic OP</span></a></h3>
+<h4 id="1-1-0-remove-nth-node-from-end" tabindex="-1"><a class="header-anchor" href="#1-1-0-remove-nth-node-from-end"><span>1-1-0) Remove Nth node from end</span></a></h4>
+<pre><code class="language-java">// java
+// LC 19
+
+// ...
+ListNode dummy = new ListNode(0);
+dummy.next = head;
+ListNode fast = dummy;
+ListNode slow = dummy;
+
+for (int i = 1; i &lt;= n+1; i++){
+    //System.out.println(&quot;i = &quot; + i);
+    fast = fast.next;
+}
+
+// move fast and slow pointers on the same time
+while (fast != null){
+    fast = fast.next;
+    slow = slow.next;
+}
+
+// NOTE here
+slow.next = slow.next.next;
+// ...
+</code></pre>
+<h4 id="1-1-1-transversal-linked-list" tabindex="-1"><a class="header-anchor" href="#1-1-1-transversal-linked-list"><span>1-1-1) transversal linked list</span></a></h4>
+<h4 id="1-1-2-plus-one-on-linked-list" tabindex="-1"><a class="header-anchor" href="#1-1-2-plus-one-on-linked-list"><span>1-1-2) plus one on linked list</span></a></h4>
+<h4 id="1-1-3-reverse-linked-list-iteration" tabindex="-1"><a class="header-anchor" href="#1-1-3-reverse-linked-list-iteration"><span>1-1-3) Reverse linked list (iteration)</span></a></h4>
+<pre><code class="language-python"># python
+#-------------------------
+# iteration
+#-------------------------
+# LC 206
+
+# V0
+# IDEA : Linkedlist basics
+# https://www.youtube.com/watch?v=D7y_hoT_YZI
+# STEPS)
+# -&gt; STEP 1) cache &quot;next&quot;
+# -&gt; STEP 2) point head.next to prev
+# -&gt; STEP 3) move prev to head
+# -&gt; STEP 4) move head to &quot;next&quot;
+class Solution(object):
+    def reverseList(self, head):
+        # edge case
+        if not head:
+            return
+        prev = None
+        while head:
+            # cache &quot;next&quot;
+            tmp = head.next
+            # point head.next to prev
+            head.next = prev
+            # move prev to head (for next iteration)
+            prev = head
+            # move head to &quot;next&quot; (for next iteration)
+            head = tmp
+        # NOTE!!! we return prev
+        return prev
+</code></pre>
+<pre><code class="language-java">// java
+//---------------------------
+// iteration
+//---------------------------
+// LC 206
+// V0
+public ListNode reverseList(ListNode head) {
+
+    if (head == null) {
+        return null;
+    }
+
+    ListNode _prev = null;
+
+    while (head != null) {
+        /**
+         *  NOTE !!!!
+         *
+         *   4 operations
+         *
+         *    step 1) cache next
+         *    step 2) point cur to prev
+         *    step 3) move prev to cur
+         *    step 4) move cur to next
+         *
+         */
+        ListNode _next = head.next;
+        head.next = _prev;
+        _prev = head;
+        head = _next;
+    }
+
+    // NOTE!!! we return _prev here, since it's now &quot;new head&quot;
+    return _prev;
+
+}
+</code></pre>
+<h4 id="1-1-4-reverse-linked-list-recursion" tabindex="-1"><a class="header-anchor" href="#1-1-4-reverse-linked-list-recursion"><span>1-1-4) Reverse linked list (recursion)</span></a></h4>
+<pre><code class="language-java">// java
+//---------------------------
+// recursion
+//---------------------------
+// LC 206
+// algorithm book (labu) p.290
+// IDEA : Recursive
+// https://leetcode.com/problems/reverse-linked-list/editorial/
+// https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/LeetCodeJava/LinkedList/ReverseLinkedList.java
+// same as above 
+</code></pre>
+<h4 id="1-1-5-reverse-nodes-in-a-b-linked-list-iteration" tabindex="-1"><a class="header-anchor" href="#1-1-5-reverse-nodes-in-a-b-linked-list-iteration"><span>1-1-5) Reverse <em>nodes in [a,b]</em>  linked list (iteration)</span></a></h4>
+<pre><code class="language-java">// java
+//---------------------------
+// iteration
+//---------------------------
+// algorithm book (labu) p.298
+ListNode reverse(ListNode a, Listnode b){
+    ListNode pre, cur, nxt;
+    pre = null;
+    cur = a;
+    nxt = a;
+    /** THE ONLY DIFFERENCE (reverse nodes VS reverse nodes in [a,b]) */
+    while (cur != b){
+        nxt = cur.next;
+        // reverse on each node
+        cur.next = pre;
+        // update pointer
+        pre = cur;
+        cur = nxt;
+    }
+
+    // return reversed nodes
+    return pre;
+}
+</code></pre>
+<h4 id="1-1-6-reverse-nodes-in-k-group-linked-list-iteration" tabindex="-1"><a class="header-anchor" href="#1-1-6-reverse-nodes-in-k-group-linked-list-iteration"><span>1-1-6) Reverse <em>nodes in k group</em>  linked list (iteration)</span></a></h4>
+<pre><code class="language-java">// java
+//---------------------------
+// iteration
+//---------------------------
+// LC 25
+// algorithm book (labu) p.298
+ListNode reverse(ListNode a, Listnode b){
+    ListNode pre, cur, nxt;
+    pre = null;
+    cur = a;
+    nxt = a;
+    /** THE ONLY DIFFERENCE (reverse first N nodes VS reverse nodes in [a,b]) */
+    while (cur != b){
+        nxt = cur.next;
+        // reverse on each node
+        cur.next = pre;
+        // update pointer
+        pre = cur;
+        cur = nxt;
+    }
+
+    // return reversed nodes
+    return pre;
+}
+
+ListNode reverseKGroup(ListNode head, int k){
+    if (head == null) return null;
+    // inverval [a,b] has k to-reverse elements
+    ListNode a, b;
+    a = b = head;
+    for (int i = 0; i &lt; k; i++){
+        // not enough elements (amount &lt; k), no need to reverse -&gt; base case
+        if (b == null) return head;
+        b = b.next;
+    }
+    // reverse k elements
+    ListNode newHead = reverse(a,b);
+    // reverse remaining nodes, and connect with head
+    a.next = reverseKGroup(b,k);
+    return newHead;
+}
+</code></pre>
+<pre><code class="language-python"># LC 025
+class Solution:
+    def reverseKGroup(self, head, k):
+        # help func
+        # check if # of sub nodes still &gt; k
+        def check(head, k):
+            ans = 0
+            while head:
+                ans += 1
+                if ans &gt;= k:
+                    return True
+                head = head.next
+            return False
+
+        # edge case
+        if not head:
+            return
+        d = dummy = ListNode(None)
+        pre = None
+        preHead = curHead = head
+        while check(curHead, k):
+            for _ in range(k):
+                # reverse linked list
+                tmp = curHead.next
+                curHead.next = pre
+                pre = curHead
+                curHead = tmp
+            # reverse linked list
+            # ???
+            dummy.next = pre
+            dummy = preHead
+            preHead.next = curHead
+            preHead = curHead
+        return d.next
+</code></pre>
+<h4 id="1-1-7-reverse-first-n-linked-list-recursion" tabindex="-1"><a class="header-anchor" href="#1-1-7-reverse-first-n-linked-list-recursion"><span>1-1-7) Reverse <em>first N</em>  linked list (recursion)</span></a></h4>
+<pre><code class="language-java">//---------------------------
+// recursion
+//---------------------------
+// java
+// algorithm book (labu) p.293
+
+// &quot;postorder&quot; node
+ListNode successor = null;
+
+// reverse first N node (from head), and return new head
+ListNode reverseN(ListNode head, int n){
+    if (n == 1){
+        // record n + 1 nodes, will be used in following steps
+        successor = head.next;
+        return head;
+    }
+
+    // set head.next as start point, return first n - 1 nodes
+    ListNode last = reverseN(head.next, n-1);
+
+    head.next.next = head;
+    // connect reversed head node and following nodes
+    head.next = successor;
+    return last;
+}
+</code></pre>
+<h4 id="1-1-8-reverse-middle-n-nodes-in-linked-list-start-end-as-interval-recursion" tabindex="-1"><a class="header-anchor" href="#1-1-8-reverse-middle-n-nodes-in-linked-list-start-end-as-interval-recursion"><span>1-1-8) Reverse <em>middle N nodes</em> in linked list (<em>start, end</em> as interval) (recursion)</span></a></h4>
+<pre><code class="language-java">// java
+//---------------------------
+// recursion
+//---------------------------
+// algorithm book (labu) p.293
+
+// &quot;postorder&quot; node
+ListNode successor = null;
+
+// reverse first N node (from head), and return new head
+ListNode reverseN(ListNode head, int n){
+    if (n == 1){
+        // record n + 1 nodes, will be used in following steps
+        successor = head.next;
+        return head;
+    }
+
+// reverse nodes in index = m to index = n
+ListNode reverseBetween(ListNode head, int m, int n){
+    // base case
+    if (m == 1){
+        return reverseN(head, n);
+    }
+
+    // for head.next, the op is reverse interval : [m-1, n-1]
+    // will trigger base case when when meet reverse start point
+    head.next = reverseBetween(head.next, m - 1, n - 1);
+    return head;
+</code></pre>
+<h4 id="1-1-9-delete-node" tabindex="-1"><a class="header-anchor" href="#1-1-9-delete-node"><span>1-1-9) delete node</span></a></h4>
+<h4 id="1-1-10-swap-node" tabindex="-1"><a class="header-anchor" href="#1-1-10-swap-node"><span>1-1-10) swap node</span></a></h4>
+<h4 id="1-1-11-add-2-linked-list" tabindex="-1"><a class="header-anchor" href="#1-1-11-add-2-linked-list"><span>1-1-11) add 2 linked list</span></a></h4>
+<pre><code class="language-python"># LC 002
+class Solution(object):
+    def addTwoNumbers(self, l1, l2):
+        &quot;&quot;&quot;
+        NOTE :
+         1. we init linkedlist via ListNode()
+         2. we NEED make extra head refer same linkedlist, since we need to return beginning of linkedlist of this func, while res will meet &quot;tail&quot; at the end of while loop
+        &quot;&quot;&quot;
+        head = res = ListNode()
+        plus = 0
+        tmp = 0
+        while l1 or l2:
+            tmp += plus
+            plus = 0
+            if l1:
+                tmp += l1.val
+                l1 = l1.next
+            if l2:
+                tmp += l2.val
+                l2 = l2.next
+            if tmp &gt; 9:
+                tmp -= 10
+                plus = 1
+
+            res.next = ListNode(tmp)
+            res = res.next
+            tmp = 0
+        ### NOTE : need to deal with case : l1, l2 are completed, but still &quot;remaining&quot; plus
+        if plus != 0:
+            res.next = ListNode(plus)
+            res = res.next
+        #print (&quot;res = &quot; + str(res))
+        #print (&quot;head = &quot; + str(head))
+        return head.next
+</code></pre>
+<pre><code class="language-python"># LC 445 Add Two Numbers II
+# V0
+# IDEA : string + linked list
+# DEMO
+# input :
+# [7,2,4,3]
+# [5,6,4]
+# intermedia output : 
+# l1_num = 7243
+# l2_num = 564
+class Solution:
+    def addTwoNumbers(self, l1, l2):
+        if not l1 and not l2:
+            return None
+
+        l1_num = 0
+        while l1:
+            l1_num = l1_num * 10 + l1.val
+            l1 = l1.next
+
+        l2_num = 0
+        while l2:
+            l2_num = l2_num * 10 + l2.val
+            l2 = l2.next
+
+        print (&quot;l1_num = &quot; + str(l1_num))
+        print (&quot;l2_num = &quot; + str(l2_num))
+
+
+        ### NOTE : trick here :
+        #    -&gt; get int format of 2 linked list first (l1, l2)
+        #    -&gt; then sum them (l1_num + l2_num)
+        lsum = l1_num + l2_num
+
+        head = ListNode(None)
+        cur = head
+        ### NOTE : go thrpigh the linked list int sum, append each digit to ListNode and return it
+        for istr in str(lsum):
+            cur.next = ListNode(int(istr))
+            cur = cur.next
+        # NOTE : need to return head (but not cur, since cur already meet the end of ListNode)
+        return head.next
+</code></pre>
+<h4 id="1-1-12-find-linked-list-middle-point" tabindex="-1"><a class="header-anchor" href="#1-1-12-find-linked-list-middle-point"><span>1-1-12) Find linked list middle point</span></a></h4>
+<pre><code class="language-java">// algorithm book p. 286
+// java
+Listnode slow, fast;
+slow = fast = head;
+while (fast &amp;&amp; fast.next){
+    fast = fast.next.next;
+    slow = slow.next;
+}
+// slow pointer will be linked list middle point
+
+// if element count in linked list is odd (TO VERIFY)
+if (fast != null){
+    slow = slow.next;
+}
+</code></pre>
+<pre><code class="language-python"># LC 876 Middle of the Linked List
+# V0
+# IDEA : fast, slow pointers + linkedlist
+class Solution(object):
+    def middleNode(self, head):
+        # edge case
+        if not head:
+            return
+        s = f = head
+        while f and f.next:
+            # if not f:
+            #     break
+            f = f.next.next
+            s = s.next
+        return s
+</code></pre>
+<h2 id="2-lc-example" tabindex="-1"><a class="header-anchor" href="#2-lc-example"><span>2) LC Example</span></a></h2>
+<h3 id="2-1-palindrome-linked-list" tabindex="-1"><a class="header-anchor" href="#2-1-palindrome-linked-list"><span>2-1) palindrome-linked-list</span></a></h3>
+<pre><code class="language-python"># LC 234 : palindrome-linked-list
+# V0
+# IDEA : LINKED LIST -&gt; LIST
+# EXAMPLE INPUT :
+# [1,2,2,1]
+# WHILE GO THROUGH :
+# head = ListNode{val: 2, next: ListNode{val: 2, next: ListNode{val: 1, next: None}}}
+# head = ListNode{val: 2, next: ListNode{val: 1, next: None}}
+# head = ListNode{val: 1, next: None}
+class Solution(object):
+    def isPalindrome(self, head):
+        ### NOTE : THE CONDITION
+        if not head or not head.next:
+            return True
+        r = []
+        ### NOTE : THE CONDITION
+        while head:
+            r.append(head.val)
+            head = head.next
+        return r == r[::-1]
+</code></pre>
+<h3 id="2-2-merge-two-sorted-lists" tabindex="-1"><a class="header-anchor" href="#2-2-merge-two-sorted-lists"><span>2-2) Merge Two Sorted Lists</span></a></h3>
+<pre><code class="language-python"># LC 021
+# V0
+# IDEA : LOOP 2 LINKED LISTS
+class Solution(object):
+    def mergeTwoLists(self, l1, l2):
+        if not l1 or not l2:
+            return l1 or l2
+        ### NOTICE THIS
+        #   -&gt; we init head, and cur
+        #   -&gt; use cur for `link` op
+        #   -&gt; and return the `head.next`
+        head = cur = ListNode(0)
+        while l1 and l2:
+            if l1.val &lt; l2.val:
+                &quot;&quot;&quot;
+                ### NOTE
+                 1) assign node to cur.next !!! (not cur)
+                 2) assign node rather than node.val
+                &quot;&quot;&quot; 
+                cur.next = l1
+                l1 = l1.next
+            else:
+                &quot;&quot;&quot;
+                ### NOTE
+                 1) assign node to cur.next !!! (not cur)
+                 2) assign node rather than node.val
+                &quot;&quot;&quot; 
+                cur.next = l2
+                l2 = l2.next
+            # note this
+            cur = cur.next
+        ### NOTE this (in case either l1 or l2 is remaining so we need to append one of them to cur)
+        cur.next = l1 or l2
+        ### NOTICE THIS : we return head.next
+        return head.next
+</code></pre>
+<h3 id="2-2-merge-k-sorted-lists" tabindex="-1"><a class="header-anchor" href="#2-2-merge-k-sorted-lists"><span>2-2’) Merge K Sorted Lists</span></a></h3>
+<pre><code class="language-python"># LC 023 Merge k sorted lists
+# V0
+# IDEA : LC 021 Merge Two Sorted Lists + implement mergeTwoLists on every 2 linedlist
+# linked_list.html#1-1-6-reverse-nodes-in-k-group--linked-list-iteration
+class Solution(object):
+    def mergeKLists(self, lists):
+        if len(lists) == 0:
+            return
+        if len(lists) == 1:
+            return lists[0]
+        
+        _init_list = lists[0]
+        for _list in lists[1:]:
+            tmp = self.mergeTwoLists(_init_list, _list)
+            _init_list = tmp
+        return tmp
+
+    # LC 021 : https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Linked_list/merge-two-sorted-lists.py
+    def mergeTwoLists(self, l1, l2):
+
+        if not l1 or not l2:
+            return l1 or l2
+            
+        res = head = ListNode()
+        while l1 and l2:
+            if l1.val &lt; l2.val:
+                res.next = l1
+                l1 = l1.next
+            else:
+                res.next = l2
+                l2 = l2.next
+            res = res.next
+
+        if l1 or l2:
+            res.next = l1 or l2
+
+        return head.next
+</code></pre>
+<h3 id="2-3-reverse-linked-list" tabindex="-1"><a class="header-anchor" href="#2-3-reverse-linked-list"><span>2-3) Reverse Linked List</span></a></h3>
+<pre><code class="language-python"># LC 206
+class Solution(object):
+    def reverseList(self, head):
+        # edge case
+        if not head:
+            return
+        prev = None
+        while head:
+            # cache &quot;next&quot;
+            tmp = head.next
+            # point head.next to prev
+            head.next = prev
+            # move prev to head
+            prev = head
+            # move head to &quot;next&quot;
+            head = tmp
+        return prev
+</code></pre>
+<h3 id="2-4-reverse-linked-list-ii" tabindex="-1"><a class="header-anchor" href="#2-4-reverse-linked-list-ii"><span>2-4) Reverse Linked List II</span></a></h3>
+<pre><code class="language-java">// java
+
+  // V0-1
+  // IDEA: LINKED LIST OP (iteration 1)
+  // https://neetcode.io/solutions/reverse-linked-list-ii
+  // https://youtu.be/RF_M9tX4Eag?si=vTfAtfbmGwzsmtpi
+  public ListNode reverseBetween_0_1(ListNode head, int left, int right) {
+      ListNode dummy = new ListNode(0);
+      dummy.next = head;
+      ListNode leftPrev = dummy, cur = head;
+
+      for (int i = 0; i &lt; left - 1; i++) {
+          leftPrev = cur;
+          cur = cur.next;
+      }
+
+      ListNode prev = null;
+      for (int i = 0; i &lt; right - left + 1; i++) {
+          ListNode tmpNext = cur.next;
+          cur.next = prev;
+          prev = cur;
+          cur = tmpNext;
+      }
+
+      leftPrev.next.next = cur;
+      leftPrev.next = prev;
+
+      return dummy.next;
+  }
+</code></pre>
+<pre><code class="language-python"># LC 92 Reverse Linked List II
+# V1
+# IDEA : Iterative Link Reversal
+# https://leetcode.com/problems/reverse-linked-list-ii/solution/
+class Solution:
+    def reverseBetween(self, head, m, n):
+
+        # Empty list
+        if not head:
+            return None
+
+        # Move the two pointers until they reach the proper starting point
+        # in the list.
+        cur, prev = head, None
+        while m &gt; 1:
+            prev = cur
+            cur = cur.next
+            m, n = m - 1, n - 1
+
+        # The two pointers that will fix the final connections.
+        tail, con = cur, prev
+
+        # Iteratively reverse the nodes until n becomes 0.
+        while n:
+            third = cur.next
+            cur.next = prev
+            prev = cur
+            cur = third
+            n -= 1
+
+        # Adjust the final connections as explained in the algorithm
+        if con:
+            con.next = prev
+        else:
+            head = prev
+        tail.next = cur
+        return head
+</code></pre>
+<h3 id="2-5-copy-list-with-random-pointer" tabindex="-1"><a class="header-anchor" href="#2-5-copy-list-with-random-pointer"><span>2-5) Copy List with Random Pointer</span></a></h3>
+<pre><code class="language-python"># LC 138. Copy List with Random Pointer
+# V0
+# IDEA : 
+#   step 1) make 2 objects (m, n) refer to same instance (head)
+#   step 2) go through m, and set up the dict
+#   step 3) go through n, and get the random pointer via the dict we set up in step 2)
+class Node(object):
+    def __init__(self, val, next, random):
+        self.val = val
+        self.next = next
+        self.random = random
+
+class Solution:
+    def copyRandomList(self, head):
+        dic = dict()
+        ### NOTE : make m, and n refer to same instance (head)
+        m = n = head
+        while m:
+            ### NOTE : the value in dict is Node type (LinkedList)
+            dic[m] = Node(m.val)
+            m = m.next
+        while n:
+            dic[n].next = dic.get(n.next)
+            dic[n].random = dic.get(n.random)
+            n = n.next
+        return dic.get(head)
+</code></pre>
+<pre><code class="language-java">// java
+// NOTE : there is also recursive solution
+// LC 138
+// V2
+// IDEA :  Iterative with O(N) Space
+// https://leetcode.com/problems/copy-list-with-random-pointer/editorial/
+// Visited dictionary to hold old node reference as &quot;key&quot; and new node reference as the &quot;value&quot;
+HashMap&lt;Node, Node&gt; visited = new HashMap&lt;Node, Node&gt;();
+
+public Node getClonedNode(Node node) {
+    // If the node exists then
+    if (node != null) {
+        // Check if the node is in the visited dictionary
+        if (this.visited.containsKey(node)) {
+            // If its in the visited dictionary then return the new node reference from the dictionary
+            return this.visited.get(node);
+        } else {
+            // Otherwise create a new node, add to the dictionary and return it
+            this.visited.put(node, new Node(node.val, null, null));
+            return this.visited.get(node);
+        }
+    }
+    return null;
+}
+
+public Node copyRandomList_3(Node head) {
+
+    if (head == null) {
+        return null;
+    }
+
+    Node oldNode = head;
+
+    // Creating the new head node.
+    Node newNode = new Node(oldNode.val);
+    this.visited.put(oldNode, newNode);
+
+    // Iterate on the linked list until all nodes are cloned.
+    while (oldNode != null) {
+        // Get the clones of the nodes referenced by random and next pointers.
+        newNode.random = this.getClonedNode(oldNode.random);
+        newNode.next = this.getClonedNode(oldNode.next);
+
+        // Move one step ahead in the linked list.
+        oldNode = oldNode.next;
+        newNode = newNode.next;
+    }
+    return this.visited.get(head);
+}
+</code></pre>
+<h3 id="2-6-intersection-of-two-linked-lists" tabindex="-1"><a class="header-anchor" href="#2-6-intersection-of-two-linked-lists"><span>2-6) Intersection of Two Linked Lists</span></a></h3>
+<pre><code class="language-python"># LC 160 Intersection of Two Linked Lists
+# V0
+# IDEA : if the given 2 linked list have intersection, then 
+#        they must overlap in SOMEWHERE if we go through
+#        each of them in the same length
+#        -&gt; e.g.
+#             process1 : headA -&gt; headB -&gt; headA ...
+#             process2 : headB -&gt; headA -&gt; headB ...
+class Solution(object):
+    def getIntersectionNode(self, headA, headB):
+        if not headA or not headB:
+            return None
+        p, q = headA, headB
+        while p and q and p != q:
+            p = p.next
+            q = q.next
+            if p == q:
+                return p
+            if not p:
+                p = headB
+            if not q:
+                q = headA
+        return p
+</code></pre>
+<h3 id="2-7-split-linked-list-in-parts" tabindex="-1"><a class="header-anchor" href="#2-7-split-linked-list-in-parts"><span>2-7) Split Linked List in Parts</span></a></h3>
+<pre><code class="language-python"># LC 725. Split Linked List in Parts
+# V0
+# IDEA : LINKED LIST OP + mod op
+class Solution(object):
+    def splitListToParts(self, head, k):
+        # NO need to deal with edge case !!!
+        # get linked list length
+        _len = 0
+        _head = cur = head
+        while _head:
+            _len += 1
+            _head = _head.next
+        # init res
+        res = [None] * k
+        ### NOTE : we loop over k
+        for i in range(k):
+            &quot;&quot;&quot;
+            2 cases
+
+            case 1) i &lt; (_len % k) : there is &quot;remainder&quot; ((_len % k)), so we need to add extra 1
+                    -&gt; _cnt_elem = (_len // k) + 1
+            case 2) i == (_len % k) : there is NO &quot;remainder&quot;
+                    -&gt; _cnt_elem = (_len // k)
+            &quot;&quot;&quot;
+            # NOTE THIS !!!
+            _cnt_elem = (_len // k) + (1 if i &lt; (_len % k) else 0)
+            ### NOTE : we loop over _cnt_elem (length of each &quot;split&quot; linkedlist)
+            for j in range(_cnt_elem):
+                &quot;&quot;&quot;
+                3 cases
+                 1) j == 0                (begin of sub linked list)
+                 2) j == _cnt_elem - 1    (end of sub linked list)
+                 3) 0 &lt; j &lt; _cnt_elem - 1 (middle within sub linked list)
+                &quot;&quot;&quot;
+                # NOTE THIS !!!
+                # NOTE we need keep if - else in BELOW ORDER !!
+                #  -&gt; j == 0, j == _cnt_elem - 1, else
+                if j == 0:
+                    res[i] = cur
+                ### NOTE this !!! : 
+                #    -&gt; IF (but not elif)
+                #    -&gt; since we also need to deal with j == 0 and j == _cnt_elem - 1 case
+                if j == _cnt_elem - 1:  # note this !!!
+                    # get next first
+                    tmp = cur.next
+                    # point cur.next to None
+                    cur.next = None
+                    # move cur to next (tmp) for op in next i (for i in range(k))
+                    cur = tmp
+                else:
+                    cur = cur.next
+        #print (&quot;res = &quot; + str(res))
+        return res
+</code></pre>
+<h3 id="2-7-remove-nth-node-from-end-of-list" tabindex="-1"><a class="header-anchor" href="#2-7-remove-nth-node-from-end-of-list"><span>2-7) Remove Nth Node From End of List</span></a></h3>
+<pre><code class="language-python"># LC 19. Remove Nth Node From End of List
+# NOTE : there is (two pass algorithm) approach
+# V0
+# IDEA : FAST-SLOW POINTERS (One pass algorithm)
+# IDEA :
+#   step 1) we move fast pointers n+1 steps -&gt; so slow, fast pointers has n distance (n+1-1 == n)
+#   step 2) we move fast, and slow pointers till fast pointer meet the end
+#   step 3) then we point slow.next to slow.next.next (same as we remove n node)
+#   step 4) we return new_head.next as final result
+class Solution(object):
+    def removeNthFromEnd(self, head, n):
+        new_head = ListNode(0)
+        new_head.next = head
+        fast = slow = new_head
+        for i in range(n+1):
+            fast = fast.next
+        while fast:
+            fast = fast.next
+            slow = slow.next
+        slow.next = slow.next.next
+        return new_head.next
+</code></pre>
+<pre><code class="language-java">// java
+    public ListNode removeNthFromEnd(ListNode head, int n) {
+
+        if (head == null){
+            return head;
+        }
+
+        if (head.next == null &amp;&amp; head.val == n){
+            return null;
+        }
+
+        // move fast pointer only with n+1 step
+        // 2 cases:
+        //   - 1) node count is even
+        //   - 2) node count is odd
+        /** NOTE !! we init dummy pointer, and let fast, slow pointers point to it */
+        ListNode dummy = new ListNode(0);
+        dummy.next = head;
+        // NOTE here
+        ListNode fast = dummy;
+        ListNode slow = dummy;
+        /**
+         *  Explanation V1:
+         *
+         *   -&gt; So we have fast, and slow pointer,
+         *   if we move fast N steps first,
+         *   then slow starts to move
+         *      -&gt; fast, slow has N step difference
+         *      -&gt; what's more, when fast reach the end,
+         *      -&gt; fast, slow STILL has N step difference
+         *      -&gt; and slow has N step difference with the end,
+         *      -&gt; so we can remove N th pointer accordingly
+         *
+         *  Explanation V2:
+         *
+         *
+         *   // NOTE !!! we let fast pointer move N+1 step first
+         *   // so once fast pointers reach the end after fast, slow pointers move together
+         *   // we are sure that slow pointer is at N-1 node
+         *   // so All we need to do is :
+         *   // point slow.next to slow.next.next
+         *   // then we remove N node from linked list
+         */
+        for (int i = 1; i &lt;= n+1; i++){
+            //System.out.println(&quot;i = &quot; + i);
+            fast = fast.next;
+        }
+
+        // move fast and slow pointers on the same time
+        while (fast != null){
+            fast = fast.next;
+            slow = slow.next;
+        }
+
+        // NOTE here
+        slow.next = slow.next.next;
+        // NOTE !!! we return dummy.next instead of slow
+        return dummy.next;
+    }
+</code></pre>
+<pre><code class="language-java">// java
+    // V0
+    // IDEA : get len of linkedlist, and re-point node
+    public ListNode removeNthFromEnd_0(ListNode head, int n) {
+
+        if (head.next == null){
+            return null;
+        }
+
+        // below op is optional
+//        if (head.next.next == null){
+//            if (n == 1){
+//                return new ListNode(head.val);
+//            }
+//            return new ListNode(head.next.val);
+//        }
+
+        // get len
+        int len = 0;
+        ListNode head_ = head;
+        while (head_ != null){
+            head_ = head_.next;
+            len += 1;
+        }
+
+        ListNode root = new ListNode();
+        /** NOTE !!! root_ is the actual final result */
+        ListNode root_ = root;
+
+        // if n == len
+        if (n == len){
+            head = head.next;
+            root.next = head;
+            root = root.next;
+        }
+
+        /**
+         *  IDEA: get length of linked list,
+         *        then if want to delete n node from the end of linked list,
+         *        -&gt; then we need to stop at &quot;len - n&quot; idx,
+         *        -&gt; and reconnect &quot;len - n&quot; idx to &quot;len -n + 2&quot; idx
+         *        -&gt; (which equals delete &quot;n&quot; idx node
+         *
+         *
+         *  Consider linked list below :
+         *
+         *   0, 1, 2 , 3, 4 .... k-2, k-1, k
+         *
+         *   if n = 1, then &quot;k-1&quot; is the node to be removed.
+         *   -&gt; so we find &quot;k-2&quot; node, and re-connect it to &quot;k&quot; node
+         */
+        /** NOTE !!!
+         *
+         *  idx is the index, that we &quot;stop&quot;,  and re-connect
+         *  from idx to its next next node (which is the actual &quot;delete&quot; node op
+         */
+        int idx = len - n; // NOTE !!! this
+        while (idx &gt; 0){
+            root.next = head;
+            root = root.next;
+            head = head.next;
+            idx -= 1;
+        }
+
+        ListNode next = head.next;
+        root.next = next;
+
+        return root_.next;
+    }
+</code></pre>
+<h3 id="2-8-reorder-list" tabindex="-1"><a class="header-anchor" href="#2-8-reorder-list"><span>2-8) Reorder List</span></a></h3>
+<pre><code class="language-java">// java
+    public void reorderList(ListNode head) {
+        // Edge case: empty or single node list
+        if (head == null || head.next == null) {
+            return;
+        }
+
+        // Step 1: Find the middle node
+        ListNode slow = head, fast = head;
+        while (fast != null &amp;&amp; fast.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+
+        // Step 2: Reverse the second half of the list
+        /** NOTE !!!
+         *
+         *  reverse on `slow.next` node
+         */
+        ListNode secondHalf = reverseNode_(slow.next);
+        /** NOTE !!!
+         *
+         *  `cut off` slow node's next nodes via point it to null node
+         *  (if not cut off, then in merge step, we will merge duplicated nodes
+         */
+        slow.next = null; // Break the list into two halves
+
+        // Step 3: Merge two halves
+        ListNode firstHalf = head;
+        while (secondHalf != null) {
+
+            // NOTE !!! cache `next node` before any op
+            ListNode _nextFirstHalf = firstHalf.next;
+            ListNode _nextSecondHalf = secondHalf.next;
+
+            // NOTE !!! point first node to second node, then point second node to first node's next node
+            firstHalf.next = secondHalf;
+            secondHalf.next = _nextFirstHalf;
+
+            // NOTE !!! move both node to `next` node
+            firstHalf = _nextFirstHalf;
+            secondHalf = _nextSecondHalf;
+        }
+    }
+
+    // Helper function to reverse a linked list
+    private ListNode reverseNode_(ListNode head) {
+        ListNode prev = null;
+        while (head != null) {
+            ListNode next = head.next;
+            head.next = prev;
+            prev = head;
+            head = next;
+        }
+        return prev;
+    }
+</code></pre>
+<pre><code class="language-python"># LC 143. Reorder List
+# V0
+# IDEA : Reverse the Second Part of the List and Merge Two Sorted Lists
+class Solution:
+    def reorderList(self, head):
+        if not head:
+            return 
+        
+        # find the middle of linked list [Problem 876]
+        # in 1-&gt;2-&gt;3-&gt;4-&gt;5-&gt;6 find 4 
+        slow = fast = head
+        while fast and fast.next:
+            slow = slow.next
+            fast = fast.next.next 
+            
+        # reverse the second part of the list [Problem 206]
+        # convert 1-&gt;2-&gt;3-&gt;4-&gt;5-&gt;6 into 1-&gt;2-&gt;3-&gt;4 and 6-&gt;5-&gt;4
+        # reverse the second half in-place
+        prev, curr = None, slow
+        while curr:
+            tmp = curr.next
+            
+            curr.next = prev
+            prev = curr
+            curr = tmp    
+
+        # merge two sorted linked lists [Problem 21]
+        # merge 1-&gt;2-&gt;3-&gt;4 and 6-&gt;5-&gt;4 into 1-&gt;6-&gt;2-&gt;5-&gt;3-&gt;4
+        first, second = head, prev
+        while second.next:
+            tmp = first.next
+            first.next = second
+            first = tmp
+            
+            tmp = second.next
+            second.next = first
+            second = tmp
+
+# V0'
+# IDEA : Reverse the Second Part of the List and Merge Two Sorted Lists (simplified code from V1)
+class Solution:
+    def reorderList(self, head):
+        if not head:
+            return 
+        
+        # find the middle of linked list [Problem 876]
+        # in 1-&gt;2-&gt;3-&gt;4-&gt;5-&gt;6 find 4 
+        slow = fast = head
+        while fast and fast.next:
+            slow = slow.next
+            fast = fast.next.next 
+            
+        # reverse the second part of the list [Problem 206]
+        # convert 1-&gt;2-&gt;3-&gt;4-&gt;5-&gt;6 into 1-&gt;2-&gt;3-&gt;4 and 6-&gt;5-&gt;4
+        # reverse the second half in-place
+        prev, curr = None, slow
+        while curr:
+            curr.next, prev, curr = prev, curr, curr.next       
+
+        # merge two sorted linked lists [Problem 21]
+        # merge 1-&gt;2-&gt;3-&gt;4 and 6-&gt;5-&gt;4 into 1-&gt;6-&gt;2-&gt;5-&gt;3-&gt;4
+        first, second = head, prev
+        while second.next:
+            first.next, first = second, first.next
+            second.next, second = first, second.next
+
+# V0'''
+class Solution:
+    def reorderList(self, head):
+        if head is None:
+            return head
+
+        #find mid
+        slow = head
+        fast = head
+        while fast.next and fast.next.next:
+            slow = slow.next
+            fast = fast.next.next
+        mid = slow
+
+        #cut in the mid
+        left = head
+        right = mid.next
+        if right is None:
+            return head
+        mid.next = None
+
+        #reverse right half
+        cursor = right.next
+        right.next = None
+        while cursor:
+            next = cursor.next
+            cursor.next = right
+            right = cursor
+            cursor = next
+        
+        #merge left and right
+        dummy = ListNode(0)
+        while left or right:
+            if left is not None:
+                dummy.next = left
+                left = left.next
+                dummy = dummy.next
+            if right is not None:
+                dummy.next = right
+                right = right.next
+                dummy = dummy.next
+        return head
+</code></pre>
+<h3 id="2-9-swap-nodes-in-pairs" tabindex="-1"><a class="header-anchor" href="#2-9-swap-nodes-in-pairs"><span>2-9) Swap Nodes in Pairs</span></a></h3>
+<pre><code class="language-python"># LC 24. Swap Nodes in Pairs
+# V0 
+# IDEA : LINKED LIST
+# NOTE : 
+#   1) define 2 node via : n1, n2 = head.next, head.next.next
+#   2) START THE PROCESS FROM &quot;RIGHT HAND SIDE&quot;,
+#      i.e. : n1.next = n2.next ( connect n1 to next node) -&gt; connect n2 to n1 (n2.next = n1) -&gt; connect dummy to n2 (head.next = n2)
+#   3) THEN MOVE HEAD FORWARD (head = n1)
+class Solution:
+    def swapPairs(self, head):
+        if not head or not head.next:
+            return head
+        dummy = ListNode(0)
+        dummy.next = head
+        head = dummy
+        while head.next and head.next.next:
+            n1, n2 = head.next, head.next.next
+            n1.next = n2.next
+            n2.next = n1
+            head.next = n2      
+            head = n1
+        return dummy.next
+</code></pre>
+<h3 id="2-10-plus-one-linked-list" tabindex="-1"><a class="header-anchor" href="#2-10-plus-one-linked-list"><span>2-10) Plus One Linked List</span></a></h3>
+<pre><code class="language-java">// java
+// LC 369
+// V1
+// IDEA : LINKED LIST OP (gpt)
+/**
+*  Step 1) reverse linked list
+*  Step 2) plus 1, bring `carry` to next digit if curSum &gt; 9, ... repeat for all nodes
+*  Step 3) reverse linked list again
+*/
+public ListNode plusOne_1(ListNode head) {
+if (head == null) return new ListNode(1); // Handle edge case
+
+// Reverse the linked list
+head = reverseList(head);
+
+// Add one to the reversed list
+ListNode current = head;
+int carry = 1; // Start with adding one
+
+while (current != null &amp;&amp; carry &gt; 0) {
+  int sum = current.val + carry;
+  current.val = sum % 10; // Update the current node value
+  carry = sum / 10; // Calculate carry for the next node
+  if (current.next == null &amp;&amp; carry &gt; 0) {
+    current.next = new ListNode(carry); // Add a new node for carry
+    carry = 0; // No more carry after this
+  }
+  current = current.next;
+}
+
+// Reverse the list back to original order
+return reverseList(head);
+}
+
+// Utility to reverse a linked list
+private ListNode reverseList(ListNode head) {
+ListNode prev = null;
+ListNode current = head;
+
+while (current != null) {
+  ListNode next = current.next; // Save the next node
+  current.next = prev; // Reverse the link
+  prev = current; // Move prev forward
+  current = next; // Move current forward
+}
+
+return prev;
+}
+</code></pre>
+<h3 id="2-11-linked-list-components" tabindex="-1"><a class="header-anchor" href="#2-11-linked-list-components"><span>2-11) Linked List Components</span></a></h3>
+<pre><code class="language-java">// java
+// LC 817
+    // V1
+    // IDEA: set, linkedlist (gpt)
+    public int numComponents_1(ListNode head, int[] nums) {
+        // Convert nums array to a HashSet for O(1) lookups
+        Set&lt;Integer&gt; numsSet = new HashSet&lt;&gt;();
+        for (int num : nums) {
+            numsSet.add(num);
+        }
+
+        int count = 0;
+        boolean inComponent = false;
+
+        // Traverse the linked list
+        while (head != null) {
+            if (numsSet.contains(head.val)) {
+                // Start a new component if not already in one
+                if (!inComponent) {
+                    count++;
+                    inComponent = true;
+                }
+            } else {
+                // End the current component
+                inComponent = false;
+            }
+            head = head.next;
+        }
+
+        return count;
+    }
+</code></pre>
+
+      </div>
+      <div class="cheatsheet-footer">
+        <a href="../cheatsheets.html" class="back-link">← Back to Cheat Sheets</a>
+        <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/linked_list.md" class="github-edit" target="_blank">
+          Edit on GitHub →
+        </a>
+      </div>
+    <nav class="prev-next"><a href="lc_pattern.html" class="prev-link">← Lc Pattern</a><a href="math.html" class="next-link">Math →</a></nav>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>CS_basics - Computer Science Fundamentals & Interview Preparation</p>
+      <p>
+        <a href="https://github.com/yennanliu/CS_basics">GitHub</a> •
+        <a href="https://github.com/yennanliu/CS_basics/tree/master/doc">Documentation</a> •
+        <a href="https://github.com/yennanliu/CS_basics/issues">Report Issues</a>
+      </p>
+    </div>
+  </footer>
+</body>
+</html>

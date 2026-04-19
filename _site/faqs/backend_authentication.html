@@ -1,0 +1,404 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Authentication - CS_basics</title>
+  <meta name="description" content="Computer Science fundamentals: algorithms, data structures, system design, and LeetCode solutions">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>CS</text></svg>">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="../vendor/fonts.css">
+  <link rel="stylesheet" href="../vendor/highlight/github-dark.min.css">
+  <script src="../vendor/highlight/highlight.min.js"></script>
+  <script>
+  // Apply theme before render to prevent flash
+  (function() {
+    var saved = localStorage.getItem('theme');
+    if (saved === 'dark' || (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      document.documentElement.setAttribute('data-theme', 'dark');
+    }
+  })();
+  </script>
+  <script>document.addEventListener('DOMContentLoaded', function() {
+    hljs.highlightAll();
+    document.querySelectorAll('pre code').forEach(function(codeEl) {
+      var pre = codeEl.parentElement;
+      var lang = '';
+      var cls = codeEl.className || '';
+      var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
+      if (m) lang = m[1];
+      var wrapper = document.createElement('div');
+      wrapper.className = 'code-block-wrapper';
+      pre.parentNode.insertBefore(wrapper, pre);
+      var header = document.createElement('div');
+      header.className = 'code-block-header';
+      if (lang) {
+        var label = document.createElement('span');
+        label.className = 'code-lang-label';
+        label.textContent = lang;
+        header.appendChild(label);
+      } else {
+        header.appendChild(document.createElement('span'));
+      }
+      var btn = document.createElement('button');
+      btn.className = 'copy-btn';
+      btn.textContent = 'Copy';
+      btn.addEventListener('click', function() {
+        navigator.clipboard.writeText(codeEl.textContent).then(function() {
+          btn.textContent = 'Copied!';
+          btn.classList.add('copied');
+          setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+        });
+      });
+      header.appendChild(btn);
+      wrapper.appendChild(header);
+      wrapper.appendChild(pre);
+    });
+    document.querySelectorAll('table').forEach(function(table) {
+      if (!table.parentElement.classList.contains('table-wrap')) {
+        var wrapper = document.createElement('div');
+        wrapper.className = 'table-wrap';
+        table.parentNode.insertBefore(wrapper, table);
+        wrapper.appendChild(table);
+      }
+    });
+    // Reading progress bar
+    var progressBar = document.getElementById('reading-progress');
+    if (progressBar) {
+      window.addEventListener('scroll', function() {
+        var winScroll = document.documentElement.scrollTop;
+        var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        progressBar.style.width = height > 0 ? (winScroll / height * 100) + '%' : '0%';
+      });
+    }
+    // Dark mode toggle
+    var toggle = document.getElementById('theme-toggle');
+    if (toggle) {
+      var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      toggle.textContent = isDark ? '☀️' : '🌙';
+      toggle.addEventListener('click', function() {
+        var dark = document.documentElement.getAttribute('data-theme') === 'dark';
+        if (dark) {
+          document.documentElement.removeAttribute('data-theme');
+          localStorage.setItem('theme', 'light');
+          toggle.textContent = '🌙';
+        } else {
+          document.documentElement.setAttribute('data-theme', 'dark');
+          localStorage.setItem('theme', 'dark');
+          toggle.textContent = '☀️';
+        }
+      });
+    }
+  });</script>
+</head>
+<body>
+  <div class="progress-container"><div class="progress-bar" id="reading-progress"></div></div>
+  <nav class="navbar">
+    <div class="container">
+      <div class="nav-brand">
+        <span class="nav-icon">💻</span>
+        <span class="nav-title">CS_basics</span>
+      </div>
+      <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+      <div class="nav-links">
+        <a href="../index.html" class="">Home</a>
+        <a href="../cheatsheets.html" class="">Cheat Sheets</a>
+        <a href="../patterns.html" class="">Pattern Recognition</a>
+        <a href="../faqs.html" class="active">FAQs</a>
+        <a href="../resources.html" class="">Resources</a>
+        <a href="../lc-explorer.html" class="">LC Explorer</a>
+        <a href="../lc-random-picker.html" class="">🎲 Random Picker</a>
+        <a href="../algo_demo/index.html" class="">Visualizer</a>
+        <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">&#127769;</button>
+        <a href="https://github.com/yennanliu/CS_basics" target="_blank" class="github-link" aria-label="GitHub">
+          <svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor">
+            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container">
+    <div class="content">
+      
+      <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../faqs.html">FAQs</a> <span class="sep">›</span> <span class="current">Authentication</span></nav>
+      <div class="cheatsheet-header">
+        <h1>Authentication</h1>
+        <span class="last-updated">Last updated: Apr 16, 2026</span>
+      </div>
+      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#">目錄</a></li><li><a href="#1-session">1. Session（傳統方式）</a></li><li class="toc-sub"><a href="#-1">運作流程</a></li><li class="toc-sub"><a href="#session">Session 儲存位置</a></li><li class="toc-sub"><a href="#cookie">Cookie 安全設定</a></li><li class="toc-sub"><a href="#node-js-express-redis">程式碼範例（Node.js + Express + Redis）</a></li><li class="toc-sub"><a href="#session-1">Session 的優缺點</a></li><li><a href="#2-jwt-json-web-token">2. JWT（JSON Web Token）</a></li><li class="toc-sub"><a href="#-2">結構</a></li><li class="toc-sub"><a href="#-3">標準流程</a></li><li class="toc-sub"><a href="#token">雙 Token 機制（推薦實作）</a></li><li class="toc-sub"><a href="#node-js">程式碼範例（Node.js）</a></li><li class="toc-sub"><a href="#jwt">JWT 的優缺點</a></li><li class="toc-sub"><a href="#-4">安全注意事項</a></li><li><a href="#3-session-vs-jwt">3. Session vs JWT 比較</a></li><li><a href="#4">4. 如何選擇？</a></li></ul></div>
+      <div class="cheatsheet-content">
+        <h1 id="session-jwt" tabindex="-1"><a class="header-anchor" href="#session-jwt"><span>認證機制：Session 與 JWT</span></a></h1>
+<h2 id="" tabindex="-1"><a class="header-anchor" href="#"><span>目錄</span></a></h2>
+<ol>
+<li><a href="#1-session%E5%82%B3%E7%B5%B1%E6%96%B9%E5%BC%8F">Session（傳統方式）</a></li>
+<li><a href="#2-jwtjson-web-token">JWT（JSON Web Token）</a></li>
+<li><a href="#3-session-vs-jwt-%E6%AF%94%E8%BC%83">Session vs JWT 比較</a></li>
+<li><a href="#4-%E5%A6%82%E4%BD%95%E9%81%B8%E6%93%87">如何選擇？</a></li>
+</ol>
+<hr>
+<h2 id="1-session" tabindex="-1"><a class="header-anchor" href="#1-session"><span>1. Session（傳統方式）</span></a></h2>
+<h3 id="-1" tabindex="-1"><a class="header-anchor" href="#-1"><span>運作流程</span></a></h3>
+<ol>
+<li><strong>登入驗證</strong>：使用者提交帳密，伺服器驗證正確</li>
+<li><strong>建立 Session</strong>：
+<ul>
+<li>伺服器在後端生成一個唯一的 <strong>Session ID</strong>（隨機不可預測的字串）</li>
+<li>將使用者資訊（如 <code>user_id</code>、<code>role</code>）存入儲存媒介，並與 ID 綁定</li>
+</ul>
+</li>
+<li><strong>發送 Cookie</strong>：伺服器透過 <code>Set-Cookie</code> Header 將 Session ID 傳給瀏覽器</li>
+<li><strong>後續請求</strong>：瀏覽器自動帶上 Cookie，伺服器取 ID 查後端確認身份</li>
+</ol>
+<h3 id="session" tabindex="-1"><a class="header-anchor" href="#session"><span>Session 儲存位置</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>儲存媒介</th>
+<th>說明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Memory（記憶體）</strong></td>
+<td>最簡單，但重啟後資料消失，無法跨伺服器</td>
+</tr>
+<tr>
+<td><strong>Redis（推薦）</strong></td>
+<td>速度快，支援 TTL，適合分散式系統</td>
+</tr>
+<tr>
+<td><strong>Database</strong></td>
+<td>最穩定，但頻繁讀寫會造成壓力</td>
+</tr>
+</tbody>
+</table>
+<h3 id="cookie" tabindex="-1"><a class="header-anchor" href="#cookie"><span>Cookie 安全設定</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>設定參數</th>
+<th>說明</th>
+<th>防禦攻擊</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>HttpOnly</strong></td>
+<td>JavaScript 無法讀取 Cookie</td>
+<td>XSS 攻擊</td>
+</tr>
+<tr>
+<td><strong>Secure</strong></td>
+<td>只在 HTTPS 下傳輸</td>
+<td>中間人攻擊</td>
+</tr>
+<tr>
+<td><strong>SameSite</strong></td>
+<td>設為 <code>Lax</code> 或 <code>Strict</code></td>
+<td>CSRF 攻擊</td>
+</tr>
+<tr>
+<td><strong>Max-Age / Expires</strong></td>
+<td>設定有效期</td>
+<td>降低裝置遺失風險</td>
+</tr>
+</tbody>
+</table>
+<h3 id="node-js-express-redis" tabindex="-1"><a class="header-anchor" href="#node-js-express-redis"><span>程式碼範例（Node.js + Express + Redis）</span></a></h3>
+<pre><code class="language-javascript">const session = require('express-session');
+const RedisStore = require('connect-redis')(session);
+const { createClient } = require('redis');
+
+let redisClient = createClient({ legacyMode: true });
+redisClient.connect();
+
+app.use(session({
+  store: new RedisStore({ client: redisClient }),
+  secret: 'your_super_secret_key',
+  resave: false,
+  saveUninitialized: false,
+  cookie: {
+    httpOnly: true,
+    secure: true,         // 正式環境啟用
+    sameSite: 'lax',
+    maxAge: 1000 * 60 * 30  // 30 分鐘
+  }
+}));
+
+app.post('/login', (req, res) =&gt; {
+  req.session.userId = 'user_123';
+  res.send('Logged in!');
+});
+</code></pre>
+<h3 id="session-1" tabindex="-1"><a class="header-anchor" href="#session-1"><span>Session 的優缺點</span></a></h3>
+<p><strong>優點：</strong></p>
+<ul>
+<li>掌控權高：可即時從後端刪除 Session，強制登出</li>
+<li>資料安全：敏感資料留在伺服器，前端只拿 ID</li>
+</ul>
+<p><strong>缺點：</strong></p>
+<ul>
+<li>伺服器壓力：使用者增多時，記憶體消耗增加</li>
+<li>擴展麻煩：分散式架構需額外的 Redis 來共享 Session</li>
+</ul>
+<hr>
+<h2 id="2-jwt-json-web-token" tabindex="-1"><a class="header-anchor" href="#2-jwt-json-web-token"><span>2. JWT（JSON Web Token）</span></a></h2>
+<h3 id="-2" tabindex="-1"><a class="header-anchor" href="#-2"><span>結構</span></a></h3>
+<p>JWT 由三部分組成，以 <code>.</code> 分隔：<code>xxxxx.yyyyy.zzzzz</code></p>
+<ol>
+<li><strong>Header（標頭）</strong>：標註 token 類型（JWT）與加密演算法（如 HS256）</li>
+<li><strong>Payload（負載）</strong>：存放非敏感使用者資料（如 <code>userId</code>、<code>role</code>、<code>exp</code> 過期時間）</li>
+<li><strong>Signature（簽章）</strong>：伺服器用私鑰對前兩部分進行雜湊運算</li>
+</ol>
+<pre><code>Signature = HMACSHA256(base64(Header) + &quot;.&quot; + base64(Payload), SecretKey)
+</code></pre>
+<blockquote>
+<p>Payload 只是 Base64 編碼，<strong>任何人都能解碼</strong>。絕對不要存密碼等敏感資料！</p>
+</blockquote>
+<h3 id="-3" tabindex="-1"><a class="header-anchor" href="#-3"><span>標準流程</span></a></h3>
+<ol>
+<li><strong>登入</strong>：使用者送出帳密</li>
+<li><strong>簽發 Token</strong>：伺服器驗證成功後，生成 JWT 回傳給前端</li>
+<li><strong>前端儲存</strong>：存放在 <code>HttpOnly Cookie</code>（較安全）或 <code>localStorage</code>（方便但較不安全）</li>
+<li><strong>請求驗證</strong>：前端在 Header 加入 <code>Authorization: Bearer &lt;token&gt;</code></li>
+<li><strong>伺服器校驗</strong>：伺服器用 Secret Key 重新計算簽章，若一致且未過期，則視為合法</li>
+</ol>
+<h3 id="token" tabindex="-1"><a class="header-anchor" href="#token"><span>雙 Token 機制（推薦實作）</span></a></h3>
+<p>單一 JWT 的致命傷：<strong>發出去就收不回</strong>。實務上通常使用雙 Token：</p>
+<ul>
+<li><strong>Access Token（短效）</strong>：有效期約 15 分鐘，用來請求 API</li>
+<li><strong>Refresh Token（長效）</strong>：有效期約 7～30 天，存於資料庫或 Redis</li>
+<li>當 Access Token 過期，前端拿 Refresh Token 換新的 Access Token</li>
+<li><strong>優點</strong>：想登出時只需從資料庫刪除 Refresh Token，帳號在 15 分鐘後徹底失效</li>
+</ul>
+<h3 id="node-js" tabindex="-1"><a class="header-anchor" href="#node-js"><span>程式碼範例（Node.js）</span></a></h3>
+<pre><code class="language-javascript">const jwt = require('jsonwebtoken');
+const SECRET_KEY = 'your_super_safe_secret_key';
+
+// 簽發 Token（Login 時執行）
+function generateToken(user) {
+  return jwt.sign(
+    { id: user.id, role: user.role },   // Payload
+    SECRET_KEY,                          // 私鑰
+    { expiresIn: '1h' }                  // 1 小時過期
+  );
+}
+
+// 驗證 Token（Middleware）
+function verifyToken(req, res, next) {
+  const authHeader = req.headers['authorization'];
+  const token = authHeader &amp;&amp; authHeader.split(' ')[1];
+
+  if (!token) return res.sendStatus(401);
+
+  jwt.verify(token, SECRET_KEY, (err, decodedUser) =&gt; {
+    if (err) return res.sendStatus(403);
+    req.user = decodedUser;
+    next();
+  });
+}
+</code></pre>
+<h3 id="jwt" tabindex="-1"><a class="header-anchor" href="#jwt"><span>JWT 的優缺點</span></a></h3>
+<p><strong>優點：</strong></p>
+<ul>
+<li>效能好：伺服器不需查資料庫，直接解析 Token 即可驗證</li>
+<li>跨平台/微服務：不同服務間不需共享 Session 也能驗證身份</li>
+</ul>
+<p><strong>缺點：</strong></p>
+<ul>
+<li>無法即時撤銷：除非做黑名單機制，否則在過期前難以主動撤銷</li>
+<li>體積較大：每次請求都要傳送整串 Token</li>
+</ul>
+<h3 id="-4" tabindex="-1"><a class="header-anchor" href="#-4"><span>安全注意事項</span></a></h3>
+<ol>
+<li><strong>別存敏感資料</strong>：Payload 是 Base64，任何人都能解碼</li>
+<li><strong>指定演算法</strong>：驗證時明確指定（如 <code>algorithms: ['HS256']</code>），防止 <code>none</code> 攻擊</li>
+<li><strong>防 XSS</strong>：建議存放在 <code>HttpOnly Cookie</code>，而非 <code>localStorage</code></li>
+<li><strong>檢查過期 <code>exp</code></strong>：務必驗證 Payload 中的 <code>exp</code> 欄位</li>
+</ol>
+<hr>
+<h2 id="3-session-vs-jwt" tabindex="-1"><a class="header-anchor" href="#3-session-vs-jwt"><span>3. Session vs JWT 比較</span></a></h2>
+<table>
+<thead>
+<tr>
+<th>特性</th>
+<th>Session</th>
+<th>JWT</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>儲存位置</strong></td>
+<td>伺服器端（Redis、DB）</td>
+<td>客戶端（Token 自帶資訊）</td>
+</tr>
+<tr>
+<td><strong>狀態性</strong></td>
+<td>Stateful（有狀態）</td>
+<td>Stateless（無狀態）</td>
+</tr>
+<tr>
+<td><strong>擴充性</strong></td>
+<td>較難（多台伺服器需同步）</td>
+<td>極佳（適合微服務）</td>
+</tr>
+<tr>
+<td><strong>安全控制</strong></td>
+<td>高（可即時撤銷）</td>
+<td>較低（過期前難以撤銷）</td>
+</tr>
+<tr>
+<td><strong>頻寬消耗</strong></td>
+<td>小（只傳 Session ID）</td>
+<td>較大（含使用者資料與簽名）</td>
+</tr>
+<tr>
+<td><strong>主要攻擊</strong></td>
+<td>Session Hijacking</td>
+<td>XSS、Token 外洩</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="4" tabindex="-1"><a class="header-anchor" href="#4"><span>4. 如何選擇？</span></a></h2>
+<p><strong>選擇 Session，如果：</strong></p>
+<ul>
+<li>開發傳統 Web 單體應用</li>
+<li>需要對登入狀態有<strong>絕對控制權</strong>（如銀行、高安全性後台）</li>
+<li>不想處理複雜的 Token 刷新機制</li>
+</ul>
+<p><strong>選擇 JWT，如果：</strong></p>
+<ul>
+<li>架構是 <strong>SPA（React/Vue）</strong> 或<strong>行動裝置 App</strong></li>
+<li>有<strong>微服務</strong>需求，多個系統需共用登入狀態</li>
+<li>希望水平擴張伺服器，不想處理 Session 同步問題</li>
+</ul>
+
+      </div>
+      <div class="cheatsheet-footer">
+        <a href="../faqs.html" class="back-link">← Back to FAQs</a>
+        <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/faq/backend/authentication.md" class="github-edit" target="_blank">
+          Edit on GitHub →
+        </a>
+      </div>
+    <nav class="prev-next"><span></span><a href="backend_be_programming_notes.html" class="next-link">Be Programming Notes →</a></nav>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>CS_basics - Computer Science Fundamentals & Interview Preparation</p>
+      <p>
+        <a href="https://github.com/yennanliu/CS_basics">GitHub</a> •
+        <a href="https://github.com/yennanliu/CS_basics/tree/master/doc">Documentation</a> •
+        <a href="https://github.com/yennanliu/CS_basics/issues">Report Issues</a>
+      </p>
+    </div>
+  </footer>
+</body>
+</html>

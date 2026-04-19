@@ -1,0 +1,641 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Jvm - CS_basics</title>
+  <meta name="description" content="Computer Science fundamentals: algorithms, data structures, system design, and LeetCode solutions">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>CS</text></svg>">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="../vendor/fonts.css">
+  <link rel="stylesheet" href="../vendor/highlight/github-dark.min.css">
+  <script src="../vendor/highlight/highlight.min.js"></script>
+  <script>
+  // Apply theme before render to prevent flash
+  (function() {
+    var saved = localStorage.getItem('theme');
+    if (saved === 'dark' || (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      document.documentElement.setAttribute('data-theme', 'dark');
+    }
+  })();
+  </script>
+  <script>document.addEventListener('DOMContentLoaded', function() {
+    hljs.highlightAll();
+    document.querySelectorAll('pre code').forEach(function(codeEl) {
+      var pre = codeEl.parentElement;
+      var lang = '';
+      var cls = codeEl.className || '';
+      var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
+      if (m) lang = m[1];
+      var wrapper = document.createElement('div');
+      wrapper.className = 'code-block-wrapper';
+      pre.parentNode.insertBefore(wrapper, pre);
+      var header = document.createElement('div');
+      header.className = 'code-block-header';
+      if (lang) {
+        var label = document.createElement('span');
+        label.className = 'code-lang-label';
+        label.textContent = lang;
+        header.appendChild(label);
+      } else {
+        header.appendChild(document.createElement('span'));
+      }
+      var btn = document.createElement('button');
+      btn.className = 'copy-btn';
+      btn.textContent = 'Copy';
+      btn.addEventListener('click', function() {
+        navigator.clipboard.writeText(codeEl.textContent).then(function() {
+          btn.textContent = 'Copied!';
+          btn.classList.add('copied');
+          setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+        });
+      });
+      header.appendChild(btn);
+      wrapper.appendChild(header);
+      wrapper.appendChild(pre);
+    });
+    document.querySelectorAll('table').forEach(function(table) {
+      if (!table.parentElement.classList.contains('table-wrap')) {
+        var wrapper = document.createElement('div');
+        wrapper.className = 'table-wrap';
+        table.parentNode.insertBefore(wrapper, table);
+        wrapper.appendChild(table);
+      }
+    });
+    // Reading progress bar
+    var progressBar = document.getElementById('reading-progress');
+    if (progressBar) {
+      window.addEventListener('scroll', function() {
+        var winScroll = document.documentElement.scrollTop;
+        var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        progressBar.style.width = height > 0 ? (winScroll / height * 100) + '%' : '0%';
+      });
+    }
+    // Dark mode toggle
+    var toggle = document.getElementById('theme-toggle');
+    if (toggle) {
+      var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      toggle.textContent = isDark ? '☀️' : '🌙';
+      toggle.addEventListener('click', function() {
+        var dark = document.documentElement.getAttribute('data-theme') === 'dark';
+        if (dark) {
+          document.documentElement.removeAttribute('data-theme');
+          localStorage.setItem('theme', 'light');
+          toggle.textContent = '🌙';
+        } else {
+          document.documentElement.setAttribute('data-theme', 'dark');
+          localStorage.setItem('theme', 'dark');
+          toggle.textContent = '☀️';
+        }
+      });
+    }
+  });</script>
+</head>
+<body>
+  <div class="progress-container"><div class="progress-bar" id="reading-progress"></div></div>
+  <nav class="navbar">
+    <div class="container">
+      <div class="nav-brand">
+        <span class="nav-icon">💻</span>
+        <span class="nav-title">CS_basics</span>
+      </div>
+      <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+      <div class="nav-links">
+        <a href="../index.html" class="">Home</a>
+        <a href="../cheatsheets.html" class="">Cheat Sheets</a>
+        <a href="../patterns.html" class="">Pattern Recognition</a>
+        <a href="../faqs.html" class="active">FAQs</a>
+        <a href="../resources.html" class="">Resources</a>
+        <a href="../lc-explorer.html" class="">LC Explorer</a>
+        <a href="../lc-random-picker.html" class="">🎲 Random Picker</a>
+        <a href="../algo_demo/index.html" class="">Visualizer</a>
+        <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">&#127769;</button>
+        <a href="https://github.com/yennanliu/CS_basics" target="_blank" class="github-link" aria-label="GitHub">
+          <svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor">
+            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container">
+    <div class="content">
+      
+      <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../faqs.html">FAQs</a> <span class="sep">›</span> <span class="current">Jvm</span></nav>
+      <div class="cheatsheet-header">
+        <h1>Jvm</h1>
+        <span class="last-updated">Last updated: Feb 23, 2024</span>
+      </div>
+      <div class="toc"><h2>Table of Contents</h2><ul><li class="toc-sub"><a href="#1-jvm-internal-storage">1) JVM internal storage ?</a></li><li class="toc-sub"><a href="#2-difference-between-jvm-heap-stack">2) Difference between JVM heap, stack ?</a></li><li class="toc-sub"><a href="#3-explain-jvm-gc-gc-strategy-algorithm">3) Explain JVM GC ? GC strategy ? algorithm ?</a></li><li class="toc-sub"><a href="#3-explain-gc-s-stop-the-world">3’) Explain GC’s ”stop-the-world” ?</a></li><li class="toc-sub"><a href="#3-explain-type-of-gc-collector">3’') Explain type of GC collector ?</a></li><li class="toc-sub"><a href="#4-how-to-get-memory-in-java-program-heap-usage-percentage">4) how to get memory in java program, heap usage percentage (%) ?</a></li><li class="toc-sub"><a href="#5-explain-classloader">5) Explain classLoader ?</a></li><li class="toc-sub"><a href="#6-explain-memory-leakage">6) Explain memory leakage ?</a></li><li class="toc-sub"><a href="#7-does-memory-leakage-happen-in-java-how">7) does memory leakage happen in java ? how ?</a></li><li class="toc-sub"><a href="#8-difference-between-serial-and-parallel-gc">8) Difference between Serial and Parallel GC  ?</a></li><li class="toc-sub"><a href="#9-thread-progress-program">9) Thread, progress, program ?</a></li><li class="toc-sub"><a href="#10-explain-jvm-reflection-dynamic-proxy">10) Explain JVM reflection ? dynamic proxy ?</a></li><li class="toc-sub"><a href="#11-explain-jvm-instance-creation-steps">11) Explain JVM instance creation steps ?</a></li><li class="toc-sub"><a href="#12-explain-jvm-instance-life-cycle">12) Explain JVM instance life cycle ?</a></li><li class="toc-sub"><a href="#13-explain-jvm-instance-structure">13) Explain JVM instance structure ?</a></li><li class="toc-sub"><a href="#14-common-jvm-command">14) Common JVM command ?</a></li><li class="toc-sub"><a href="#15-common-jvm-tune-command">15) Common JVM tune command ?</a></li><li class="toc-sub"><a href="#16-common-jvm-tune-parameter">16) Common JVM tune parameter ?</a></li><li class="toc-sub"><a href="#17-what-s-int-length-in-64-bit-jvm">17) What’s int length in 64 bit JVM ?</a></li><li class="toc-sub"><a href="#18-difference-between-weakreference-and-softreference-and-phantomreference">18) Difference between WeakReference and SoftReference  and PhantomReference ?</a></li><li class="toc-sub"><a href="#19-explain-xx-usecompressedoops">19) Explain  -XX:+UseCompressedOops ?</a></li><li class="toc-sub"><a href="#20-what-s-max-heap-storage-in-32-bit-jvm-and-64-bit-jvm">20) What’s max heap storage in 32 bit JVM and 64 bit JVM ?</a></li><li class="toc-sub"><a href="#21-difference-between-jre-jdk-and-jit">21) Difference between JRE, JDK and JIT ?</a></li><li><a href="#ref">Ref</a></li></ul></div>
+      <div class="cheatsheet-content">
+        <h1 id="jvm-faq" tabindex="-1"><a class="header-anchor" href="#jvm-faq"><span>JVM FAQ</span></a></h1>
+<h3 id="1-jvm-internal-storage" tabindex="-1"><a class="header-anchor" href="#1-jvm-internal-storage"><span>1) JVM internal storage ?</span></a></h3>
+<ul>
+<li>JVM internal storage
+<ul>
+<li><code>part 1) Thread local</code>
+<ul>
+<li>program counter :
+<ul>
+<li>(no OutOfMemoryError), every thread has its own counter</li>
+</ul>
+</li>
+<li>VM stack (<code>thread stack</code>)
+<ul>
+<li>serves for java method</li>
+<li>will create a <code>stack frame</code> when every method run.</li>
+<li>stack frame storges : <code>local var, op stack, Dynamic Linking, method returned val, Dispatch Exception ...</code></li>
+<li>each method from <code>called -&gt; completed</code> mapping the process : <code>push-to-stack -&gt; pop-from-stack</code> (no matter method runs success or not)</li>
+<li>stack frame : storage intermedia/result information.</li>
+</ul>
+</li>
+<li>native method stack
+<ul>
+<li>serves for native method</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><code>part 2) Thread shared</code>
+<ul>
+<li>java heap</li>
+<li>method area (Non-heap memory)</li>
+</ul>
+</li>
+<li><code>part 3) Direct memory (not managed by JVM GC)</code>
+<img src="../doc/pic/jvm_storage_1.jpeg">
+<img src="../doc/pic/jvm_storage_2.jpeg">
+<img src="../doc/pic/jvm_storage_3.png">
+<img src="../doc/pic/jvm_storage_4.jpeg"></li>
+</ul>
+</li>
+<li>Ref
+<ul>
+<li><a href="https://copyfuture.com/blogs-details/20210918043412580m">https://copyfuture.com/blogs-details/20210918043412580m</a></li>
+<li><a href="https://cloud.tencent.com/developer/article/1648836">https://cloud.tencent.com/developer/article/1648836</a></li>
+<li><a href="https://learn.lianglianglee.com/%E6%96%87%E7%AB%A0/%E9%9D%A2%E8%AF%95%E6%9C%80%E5%B8%B8%E8%A2%AB%E9%97%AE%E7%9A%84%20Java%20%E5%90%8E%E7%AB%AF%E9%A2%98.md">https://learn.lianglianglee.com/文章/面试最常被问的 Java 后端题.md</a></li>
+</ul>
+</li>
+</ul>
+<h3 id="2-difference-between-jvm-heap-stack" tabindex="-1"><a class="header-anchor" href="#2-difference-between-jvm-heap-stack"><span>2) Difference between JVM heap, stack ?</span></a></h3>
+<ul>
+<li>JVM <code>stack</code>
+<ul>
+<li>storage stack frame, local var</li>
+<li>smaller than heap in general</li>
+<li>NOT shared by different threads. used by local thread only</li>
+</ul>
+</li>
+<li>JVM <code>heap</code>
+<ul>
+<li>storage class</li>
+<li>shared by all threads in JVM</li>
+</ul>
+</li>
+<li>Ref
+<ul>
+<li><a href="https://github.com/yennanliu/JavaHelloWorld">https://github.com/yennanliu/JavaHelloWorld</a></li>
+</ul>
+</li>
+</ul>
+<h3 id="3-explain-jvm-gc-gc-strategy-algorithm" tabindex="-1"><a class="header-anchor" href="#3-explain-jvm-gc-gc-strategy-algorithm"><span>3) Explain JVM GC ? GC strategy ? algorithm ?</span></a></h3>
+<ul>
+<li>
+<img src="../doc/pic//gc1.png">
+</li>
+<li>
+<p>5W1H</p>
+<ul>
+<li>Where ?
+<ul>
+<li>JVM heap</li>
+</ul>
+</li>
+<li>Why ?
+<ul>
+<li>prevent <code>memory leakage</code>. in order to use memory efficiently</li>
+</ul>
+</li>
+<li>What ?
+<ul>
+<li>GC “recycle” object which NOT used anymore</li>
+</ul>
+</li>
+<li>When ?
+<ul>
+<li>Reference counting : remove when “reference count = 0”. But NOT working when “cyclic reference”</li>
+<li>Tracing : tranverse (“dependence tree”) from GC root, if not in visited list, means not used, then remove them</li>
+<li>Escape analysis</li>
+</ul>
+</li>
+<li>HOW ? (GC remove algorithm)
+<ul>
+<li>
+<p><code>Mark-Sweep</code></p>
+<ul>
+<li>mark the to-clean area</li>
+<li>pros:
+<ul>
+<li>easy understand, implement</li>
+</ul>
+</li>
+<li>cons:
+<ul>
+<li>low efficiency</li>
+<li>will cause “space fragments” -&gt; hard to maintain the “continuous storage space”
+<img src="../doc/pic//mark_sweep.png"></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><code>Mark-Compact</code></p>
+<ul>
+<li>mark the to-clean area, merge/move them altogether, then clean</li>
+<li>pros:
+<ul>
+<li>can keep “continuous storage space”</li>
+</ul>
+</li>
+<li>cons:
+<ul>
+<li>spend extra time/resource on “merge/move” op
+<img src="../doc/pic//mark_compact.png"></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><code>Mark-Copy</code></p>
+<ul>
+<li>split memory space to 50%, 50%. Only use 50% each time, move “to-clean instance” to the other 50% when clean</li>
+<li>pros:
+<ul>
+<li>fast, easy to implement, not cause  “space fragments”</li>
+</ul>
+</li>
+<li>cons:
+<ul>
+<li>Only 50% of memory space can be used everytime</li>
+<li>will cause more frequent GC
+<img src="../doc/pic//mark_copy.png"></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><code>Generation collection</code></p>
+<ul>
+<li>implement above algorithm to young, old generation seperately</li>
+<li>after Java 1.3</li>
+<li>mechanisms:
+<ul>
+<li>step 1) new instances storaged in Young Generation, when it’s full, will trigger minor GC</li>
+<li>step 2) move survived instances to FromSpace (survivor 0).</li>
+<li>step 3) when FromSpace full, trigger minor GC</li>
+<li>step 4) move survived instances to ToSpace (survivor 1).</li>
+<li>…</li>
+<li>step 5) move still-survived instances to Old Generation</li>
+</ul>
+</li>
+<li>Young Generation
+<ul>
+<li>(Eden：FromSpace：ToSpace = 8:1:1 by default)</li>
+<li>“minor GC”</li>
+<li>Eden : storage “new” instances</li>
+<li>Survivor
+<ul>
+<li>FromSpace (Survivor0)</li>
+<li>ToSpace (Survivor1) :
+<ul>
+<li>continuous memory</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Old Generation
+<ul>
+<li>Old Space : storage “long life cycle” instances</li>
+<li>“major GC”</li>
+</ul>
+</li>
+<li>permanent generation
+<ul>
+<li>AKA “method area”. (after Java 8, this space moved to “MetaSpace”, not use JVM memory anymore, but local memory)</li>
+<li>storage class, string…</li>
+<li>there is also GC here. “major GC”</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>properties:</p>
+<ul>
+<li>GC process is a <code>local priority</code>, <code>independent</code> thread</li>
+<li>JVM GC is an automatic mechanism. we can also manually trigger it : <code>System.gc();</code> (but NOT recommended)</li>
+</ul>
+</li>
+<li>
+<p>Ref</p>
+<ul>
+<li><a href="https://www.jyt0532.com/2020/03/12/garbage-collector/">https://www.jyt0532.com/2020/03/12/garbage-collector/</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Garbage_collection_(computer_science)">https://en.wikipedia.org/wiki/Garbage_collection_(computer_science)</a></li>
+<li><a href="https://www.twblogs.net/a/5e50bb8cbd9eee21167e504f">https://www.twblogs.net/a/5e50bb8cbd9eee21167e504f</a></li>
+<li><a href="https://www.alexleo.click/java-%E5%96%9D%E6%9D%AF%E5%92%96%E5%95%A1%EF%BC%8C%E8%81%8A%E9%BB%9E-gc%EF%BC%88%E4%B8%80%EF%BC%89-%E5%9F%BA%E7%A4%8E%E6%A6%82%E5%BF%B5/">https://www.alexleo.click/java-喝杯咖啡，聊點-gc（一）-基礎概念/</a></li>
+<li><a href="https://iter01.com/542065.html">https://iter01.com/542065.html</a></li>
+</ul>
+</li>
+</ul>
+<h3 id="3-explain-gc-s-stop-the-world" tabindex="-1"><a class="header-anchor" href="#3-explain-gc-s-stop-the-world"><span>3’) Explain GC’s ”stop-the-world” ?</span></a></h3>
+<h3 id="3-explain-type-of-gc-collector" tabindex="-1"><a class="header-anchor" href="#3-explain-type-of-gc-collector"><span>3’') Explain type of GC collector ?</span></a></h3>
+<ul>
+<li>Serial collector
+<ul>
+<li>will cause “stop-the-world”</li>
+<li>only ONE thread</li>
+</ul>
+</li>
+<li>Parallel collector
+<ul>
+<li>will cause “stop-the-world”</li>
+<li>can have MUTI thread</li>
+</ul>
+</li>
+<li>Parallel Old collector</li>
+<li>Parnew collector</li>
+<li>CMS collector</li>
+<li>G1 collector</li>
+<li>Ref
+<ul>
+<li><a href="https://cloud.tencent.com/developer/article/1648836">https://cloud.tencent.com/developer/article/1648836</a></li>
+</ul>
+</li>
+</ul>
+<h3 id="4-how-to-get-memory-in-java-program-heap-usage-percentage" tabindex="-1"><a class="header-anchor" href="#4-how-to-get-memory-in-java-program-heap-usage-percentage"><span>4) how to get memory in java program, heap usage percentage (%) ?</span></a></h3>
+<ul>
+<li><code>java.lang.Runtime</code>    : get remaining memory, all memory, max heap memory</li>
+<li><code>Runtime.freeMemory()</code> : get remain memory in binary</li>
+<li><code>Runtime.totalMemory()</code>: get total memory in binary</li>
+<li><code>Runtime.maxMemory() </code> : get max memory in binary</li>
+</ul>
+<h3 id="5-explain-classloader" tabindex="-1"><a class="header-anchor" href="#5-explain-classloader"><span>5) Explain classLoader ?</span></a></h3>
+<ul>
+<li>Implemented by <code>ClassLoader</code> class (and its sub class)</li>
+<li>Load <code>.class</code> files to JVM</li>
+<li>Steps:
+<ul>
+<li>Bootstrap class loader -&gt; ExtClassLoader -&gt; AppClassLoader (loader step)</li>
+</ul>
+</li>
+<li>Tyeps
+<ul>
+<li><code>BootstrapClassLoader</code>
+<ul>
+<li>implemented by c/c++. we CAN’T access them (but they do exist!).</li>
+<li>load core java classes under <code>JAVA_HOME/jre/lib</code> (jre path) (defined by <code>sun.boot.class.path</code>)</li>
+<li>run after JVM launch</li>
+</ul>
+</li>
+<li>ExtensionClassLoader
+<ul>
+<li>we can access them (but seldom do that)</li>
+<li>load jar class under <code>JAVA_HOME/lib/ext</code> (defined by <code>java.ext.dirs</code>)</li>
+<li>run after Bootstrap class loader</li>
+</ul>
+</li>
+<li>AppClassLoader
+<ul>
+<li>load classes in application, e.g. test class, 3rd party class…</li>
+<li>load jar under <code>Classpath</code> (defined by <code>java.class.path</code>) or <code>-cp</code> or <code>-classpath</code></li>
+<li>run after ExtClassLoader</li>
+</ul>
+</li>
+<li><code>User defined classLoader</code>
+<ul>
+<li>TODO</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Steps (inside classLoader):
+<ul>
+<li>load -&gt; connect -&gt; class init</li>
+<li>Explain:
+<ul>
+<li>load:
+<ul>
+<li>load <code>.class</code> file to memory (create a binary array read .class), and create the corresponding class instance</li>
+</ul>
+</li>
+<li>connect
+<ul>
+<li>validate, prepare, and extract/load are included.</li>
+<li>validate : check if loaded class will “harm” JVM</li>
+<li>prepare : give default init val to static val.</li>
+<li>extract : modify “sign reference” to “direct reference”</li>
+</ul>
+</li>
+<li>class init:
+<ul>
+<li>if there is parent class which is not init yet -&gt; init this parent class first</li>
+<li>init “init code” in class in order
+<img src="../doc/pic//class_load_step.jpeg"></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Important methods
+<ul>
+<li>loadClass() : load target class, will check if current ClassLoader or its parent already have it. If not, will call findClass()</li>
+<li>findClass() : can load user-defined class</li>
+<li>defineClass() : when findClass() get class, defineClass() will transfrom such class to .class instance</li>
+</ul>
+</li>
+<li>Pics
+<img src="../doc/pic//classloader1.png">
+<img src="../doc/pic//classloader2.png"></li>
+<li>Ref
+<ul>
+<li><a href="https://www.baeldung.com/java-classloaders">https://www.baeldung.com/java-classloaders</a></li>
+<li><a href="https://www.javatpoint.com/classloader-in-java">https://www.javatpoint.com/classloader-in-java</a></li>
+<li><a href="https://juejin.cn/post/6844904005580111879">https://juejin.cn/post/6844904005580111879</a></li>
+<li><a href="https://blog.csdn.net/briblue/article/details/54973413">https://blog.csdn.net/briblue/article/details/54973413</a></li>
+<li><a href="https://kknews.cc/zh-tw/code/8zvokbq.html">https://kknews.cc/zh-tw/code/8zvokbq.html</a></li>
+<li><a href="https://kknews.cc/tech/34pn9ba.html">https://kknews.cc/tech/34pn9ba.html</a></li>
+<li><a href="https://openhome.cc/Gossip/JavaGossip-V2/IntroduceClassLoader.htm#:~:text=Bootstrap%20Loader%E6%98%AF%E7%94%B1C,lib%2Fext%20%E7%9B%AE%E9%8C%84%E4%B8%8B%E7%9A%84">https://openhome.cc/Gossip/JavaGossip-V2/IntroduceClassLoader.htm#:~:text=Bootstrap Loader是由C,lib%2Fext 目錄下的</a></li>
+<li><a href="https://www.youtube.com/watch?v=oHM_fVXnPTE&amp;list=PLmOn9nNkQxJH0qBIrtV6otI0Ep4o2q67A&amp;index=660">https://www.youtube.com/watch?v=oHM_fVXnPTE&amp;list=PLmOn9nNkQxJH0qBIrtV6otI0Ep4o2q67A&amp;index=660</a></li>
+</ul>
+</li>
+</ul>
+<h3 id="6-explain-memory-leakage" tabindex="-1"><a class="header-anchor" href="#6-explain-memory-leakage"><span>6) Explain <code>memory leakage</code> ?</span></a></h3>
+<ul>
+<li><a href="http://cloudtu.github.io/blog/2011/12/java-memory-leak.html">http://cloudtu.github.io/blog/2011/12/java-memory-leak.html</a></li>
+<li><a href="https://www.baeldung.com/java-memory-leaks">https://www.baeldung.com/java-memory-leaks</a></li>
+<li><a href="https://stackify.com/memory-leaks-java/">https://stackify.com/memory-leaks-java/</a></li>
+</ul>
+<h3 id="7-does-memory-leakage-happen-in-java-how" tabindex="-1"><a class="header-anchor" href="#7-does-memory-leakage-happen-in-java-how"><span>7) does <code>memory leakage</code> happen in java ? how ?</span></a></h3>
+<ul>
+<li>Yes, it may happen in users self defined data structure</li>
+<li>example ?</li>
+<li>how ?</li>
+<li>Ref
+<ul>
+<li><a href="https://cloud.tencent.com/developer/article/1648836">https://cloud.tencent.com/developer/article/1648836</a></li>
+</ul>
+</li>
+</ul>
+<h3 id="8-difference-between-serial-and-parallel-gc" tabindex="-1"><a class="header-anchor" href="#8-difference-between-serial-and-parallel-gc"><span>8) Difference between Serial and Parallel GC  ?</span></a></h3>
+<ul>
+<li>Ref
+<ul>
+<li><a href="https://www.alexleo.click/java-%E5%96%9D%E6%9D%AF%E5%92%96%E5%95%A1%EF%BC%8C%E8%81%8A%E9%BB%9E-gc%EF%BC%88%E4%B8%80%EF%BC%89-%E5%9F%BA%E7%A4%8E%E6%A6%82%E5%BF%B5/">https://www.alexleo.click/java-喝杯咖啡，聊點-gc（一）-基礎概念/</a></li>
+</ul>
+</li>
+</ul>
+<h3 id="9-thread-progress-program" tabindex="-1"><a class="header-anchor" href="#9-thread-progress-program"><span>9) Thread, progress, program ?</span></a></h3>
+<ul>
+<li><a href="https://oldmo860617.medium.com/%E9%80%B2%E7%A8%8B-%E7%B7%9A%E7%A8%8B-%E5%8D%94%E7%A8%8B-%E5%82%BB%E5%82%BB%E5%88%86%E5%BE%97%E6%B8%85%E6%A5%9A-a09b95bd68dd">https://oldmo860617.medium.com/進程-線程-協程-傻傻分得清楚-a09b95bd68dd</a></li>
+</ul>
+<h3 id="10-explain-jvm-reflection-dynamic-proxy" tabindex="-1"><a class="header-anchor" href="#10-explain-jvm-reflection-dynamic-proxy"><span>10) Explain JVM <code>reflection</code> ? <code>dynamic proxy</code> ?</span></a></h3>
+<h3 id="11-explain-jvm-instance-creation-steps" tabindex="-1"><a class="header-anchor" href="#11-explain-jvm-instance-creation-steps"><span>11) Explain JVM instance creation steps ?</span></a></h3>
+<ul>
+<li>Ref
+<ul>
+<li><a href="https://github.com/Homiss/Java-interview-questions/blob/master/JVM/JVM%E9%9D%A2%E8%AF%95%E9%A2%98.md">https://github.com/Homiss/Java-interview-questions/blob/master/JVM/JVM面试题.md</a></li>
+</ul>
+</li>
+</ul>
+<h3 id="12-explain-jvm-instance-life-cycle" tabindex="-1"><a class="header-anchor" href="#12-explain-jvm-instance-life-cycle"><span>12) Explain JVM instance life cycle ?</span></a></h3>
+<h3 id="13-explain-jvm-instance-structure" tabindex="-1"><a class="header-anchor" href="#13-explain-jvm-instance-structure"><span>13) Explain JVM instance structure ?</span></a></h3>
+<h3 id="14-common-jvm-command" tabindex="-1"><a class="header-anchor" href="#14-common-jvm-command"><span>14) Common JVM command ?</span></a></h3>
+<ul>
+<li>jps
+<ul>
+<li>JVM Process Status Tool, show all system’s hotspot threads in JVM</li>
+</ul>
+</li>
+<li>jstat
+<ul>
+<li>JVM statistics Monitoring. Monitor JVM running status, can show class loading, inner memory GC, JIT</li>
+</ul>
+</li>
+<li>jmap
+<ul>
+<li>JVM Memory Map. For creating heap dump doc</li>
+</ul>
+</li>
+<li>jhat
+<ul>
+<li>JVM Heap Analysis. Use with jmap. analyze jmap’s dump output. there is a HTTP/HTML server in jhat, can view view browser</li>
+</ul>
+</li>
+<li>jstack
+<ul>
+<li>Create current JVM thread shanshot</li>
+</ul>
+</li>
+<li>jinfo
+<ul>
+<li>JVM Configuration Info. Check/modify JVM running parameters in real-time</li>
+</ul>
+</li>
+</ul>
+<h3 id="15-common-jvm-tune-command" tabindex="-1"><a class="header-anchor" href="#15-common-jvm-tune-command"><span>15) Common JVM tune command ?</span></a></h3>
+<ul>
+<li>jconsole
+<ul>
+<li>Java Monitoring and Management Console</li>
+<li>java default too, for memory, thread, GC monitoring</li>
+</ul>
+</li>
+<li>jvisualvm
+<ul>
+<li>JDK default too, can record memory/thread/ snapshot, monitor GC</li>
+</ul>
+</li>
+<li>MAT
+<ul>
+<li>Memory Analyzer Tool</li>
+<li>analyze JVM heap usage, can find memory leakage, usage</li>
+</ul>
+</li>
+<li>GChisto
+<ul>
+<li>analyze GC log tool</li>
+</ul>
+</li>
+</ul>
+<h3 id="16-common-jvm-tune-parameter" tabindex="-1"><a class="header-anchor" href="#16-common-jvm-tune-parameter"><span>16) Common JVM tune parameter ?</span></a></h3>
+<ul>
+<li><code>Xms</code> : min of java heap</li>
+<li><code>Xmx</code> : max of java heap</li>
+<li><code>-XX:NewSize</code> : new generation size</li>
+<li><code>XX:NewRatio</code> : new generation pct VS old generation pct</li>
+<li><code>XX:SurvivorRatio</code> : Eden pct VS survivor pct</li>
+</ul>
+<h3 id="17-what-s-int-length-in-64-bit-jvm" tabindex="-1"><a class="header-anchor" href="#17-what-s-int-length-in-64-bit-jvm"><span>17) What’s int length in 64 bit JVM ?</span></a></h3>
+<ul>
+<li>Not relative to platform. <code>Int length is a fixed value. It's always 34 bit</code></li>
+</ul>
+<h3 id="18-difference-between-weakreference-and-softreference-and-phantomreference" tabindex="-1"><a class="header-anchor" href="#18-difference-between-weakreference-and-softreference-and-phantomreference"><span>18) Difference between WeakReference and SoftReference  and PhantomReference ?</span></a></h3>
+<h3 id="19-explain-xx-usecompressedoops" tabindex="-1"><a class="header-anchor" href="#19-explain-xx-usecompressedoops"><span>19) Explain <code> -XX:+UseCompressedOops</code> ?</span></a></h3>
+<h3 id="20-what-s-max-heap-storage-in-32-bit-jvm-and-64-bit-jvm" tabindex="-1"><a class="header-anchor" href="#20-what-s-max-heap-storage-in-32-bit-jvm-and-64-bit-jvm"><span>20) What’s max heap storage in 32 bit JVM and 64 bit JVM ?</span></a></h3>
+<ul>
+<li>theoretically
+<ul>
+<li>32 bit : <code>2**32</code> max heap storage</li>
+<li>64 bit : <code>2**64</code> max heap storage</li>
+</ul>
+</li>
+</ul>
+<h3 id="21-difference-between-jre-jdk-and-jit" tabindex="-1"><a class="header-anchor" href="#21-difference-between-jre-jdk-and-jit"><span>21) Difference between JRE, JDK and JIT ?</span></a></h3>
+<ul>
+<li>JRE : java run-time</li>
+<li>JDK : java development kit : java dev tool. JRE is included in it</li>
+<li>JIT : java in time compilation</li>
+</ul>
+<h2 id="ref" tabindex="-1"><a class="header-anchor" href="#ref"><span>Ref</span></a></h2>
+<ul>
+<li><a href="https://javaguide.cn/java/jvm/memory-area.html#%E5%AF%B9%E8%B1%A1%E7%9A%84%E5%88%9B%E5%BB%BA">https://javaguide.cn/java/jvm/memory-area.html#对象的创建</a></li>
+<li><a href="https://dunwu.github.io/javacore/#%F0%9F%93%96-%E5%86%85%E5%AE%B9">https://dunwu.github.io/javacore/#📖-内容</a></li>
+<li><a href="https://www.jyt0532.com/2020/03/14/epilogue/">https://www.jyt0532.com/2020/03/14/epilogue/</a></li>
+<li><a href="https://cloud.tencent.com/developer/article/1648836">https://cloud.tencent.com/developer/article/1648836</a></li>
+<li><a href="https://iter01.com/565257.html">https://iter01.com/565257.html</a></li>
+<li><a href="https://www.51cto.com/article/670305.html">https://www.51cto.com/article/670305.html</a></li>
+</ul>
+
+      </div>
+      <div class="cheatsheet-footer">
+        <a href="../faqs.html" class="back-link">← Back to FAQs</a>
+        <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/faq/java/jvm.md" class="github-edit" target="_blank">
+          Edit on GitHub →
+        </a>
+      </div>
+    <nav class="prev-next"><a href="java_jmm.html" class="prev-link">← Jmm</a><a href="kafka_faq_kafka.html" class="next-link">Faq Kafka →</a></nav>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>CS_basics - Computer Science Fundamentals & Interview Preparation</p>
+      <p>
+        <a href="https://github.com/yennanliu/CS_basics">GitHub</a> •
+        <a href="https://github.com/yennanliu/CS_basics/tree/master/doc">Documentation</a> •
+        <a href="https://github.com/yennanliu/CS_basics/issues">Report Issues</a>
+      </p>
+    </div>
+  </footer>
+</body>
+</html>

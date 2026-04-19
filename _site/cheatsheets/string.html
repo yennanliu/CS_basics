@@ -1,0 +1,3123 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>String - CS_basics</title>
+  <meta name="description" content="Computer Science fundamentals: algorithms, data structures, system design, and LeetCode solutions">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>CS</text></svg>">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="../vendor/fonts.css">
+  <link rel="stylesheet" href="../vendor/highlight/github-dark.min.css">
+  <script src="../vendor/highlight/highlight.min.js"></script>
+  <script>
+  // Apply theme before render to prevent flash
+  (function() {
+    var saved = localStorage.getItem('theme');
+    if (saved === 'dark' || (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      document.documentElement.setAttribute('data-theme', 'dark');
+    }
+  })();
+  </script>
+  <script>document.addEventListener('DOMContentLoaded', function() {
+    hljs.highlightAll();
+    document.querySelectorAll('pre code').forEach(function(codeEl) {
+      var pre = codeEl.parentElement;
+      var lang = '';
+      var cls = codeEl.className || '';
+      var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
+      if (m) lang = m[1];
+      var wrapper = document.createElement('div');
+      wrapper.className = 'code-block-wrapper';
+      pre.parentNode.insertBefore(wrapper, pre);
+      var header = document.createElement('div');
+      header.className = 'code-block-header';
+      if (lang) {
+        var label = document.createElement('span');
+        label.className = 'code-lang-label';
+        label.textContent = lang;
+        header.appendChild(label);
+      } else {
+        header.appendChild(document.createElement('span'));
+      }
+      var btn = document.createElement('button');
+      btn.className = 'copy-btn';
+      btn.textContent = 'Copy';
+      btn.addEventListener('click', function() {
+        navigator.clipboard.writeText(codeEl.textContent).then(function() {
+          btn.textContent = 'Copied!';
+          btn.classList.add('copied');
+          setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+        });
+      });
+      header.appendChild(btn);
+      wrapper.appendChild(header);
+      wrapper.appendChild(pre);
+    });
+    document.querySelectorAll('table').forEach(function(table) {
+      if (!table.parentElement.classList.contains('table-wrap')) {
+        var wrapper = document.createElement('div');
+        wrapper.className = 'table-wrap';
+        table.parentNode.insertBefore(wrapper, table);
+        wrapper.appendChild(table);
+      }
+    });
+    // Reading progress bar
+    var progressBar = document.getElementById('reading-progress');
+    if (progressBar) {
+      window.addEventListener('scroll', function() {
+        var winScroll = document.documentElement.scrollTop;
+        var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        progressBar.style.width = height > 0 ? (winScroll / height * 100) + '%' : '0%';
+      });
+    }
+    // Dark mode toggle
+    var toggle = document.getElementById('theme-toggle');
+    if (toggle) {
+      var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      toggle.textContent = isDark ? '☀️' : '🌙';
+      toggle.addEventListener('click', function() {
+        var dark = document.documentElement.getAttribute('data-theme') === 'dark';
+        if (dark) {
+          document.documentElement.removeAttribute('data-theme');
+          localStorage.setItem('theme', 'light');
+          toggle.textContent = '🌙';
+        } else {
+          document.documentElement.setAttribute('data-theme', 'dark');
+          localStorage.setItem('theme', 'dark');
+          toggle.textContent = '☀️';
+        }
+      });
+    }
+  });</script>
+</head>
+<body>
+  <div class="progress-container"><div class="progress-bar" id="reading-progress"></div></div>
+  <nav class="navbar">
+    <div class="container">
+      <div class="nav-brand">
+        <span class="nav-icon">💻</span>
+        <span class="nav-title">CS_basics</span>
+      </div>
+      <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+      <div class="nav-links">
+        <a href="../index.html" class="">Home</a>
+        <a href="../cheatsheets.html" class="active">Cheat Sheets</a>
+        <a href="../patterns.html" class="">Pattern Recognition</a>
+        <a href="../faqs.html" class="">FAQs</a>
+        <a href="../resources.html" class="">Resources</a>
+        <a href="../lc-explorer.html" class="">LC Explorer</a>
+        <a href="../lc-random-picker.html" class="">🎲 Random Picker</a>
+        <a href="../algo_demo/index.html" class="">Visualizer</a>
+        <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">&#127769;</button>
+        <a href="https://github.com/yennanliu/CS_basics" target="_blank" class="github-link" aria-label="GitHub">
+          <svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor">
+            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container">
+    <div class="content">
+      
+      <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">String</span></nav>
+      <div class="cheatsheet-header">
+        <h1>String</h1>
+        <span class="last-updated">Last updated: Mar 23, 2026</span>
+      </div>
+      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#overview">Overview</a></li><li class="toc-sub"><a href="#key-properties">Key Properties</a></li><li class="toc-sub"><a href="#common-operations">Common Operations</a></li><li><a href="#problem-categories">Problem Categories</a></li><li class="toc-sub"><a href="#pattern-1-two-pointers">Pattern 1: Two Pointers</a></li><li class="toc-sub"><a href="#pattern-2-sliding-window">Pattern 2: Sliding Window</a></li><li class="toc-sub"><a href="#pattern-3-string-matching">Pattern 3: String Matching</a></li><li class="toc-sub"><a href="#pattern-4-palindrome">Pattern 4: Palindrome</a></li><li class="toc-sub"><a href="#pattern-5-string-transformation">Pattern 5: String Transformation</a></li><li class="toc-sub"><a href="#pattern-6-string-dp">Pattern 6: String DP</a></li><li class="toc-sub"><a href="#pattern-7-incremental-prefix-validation">Pattern 7: Incremental Prefix Validation</a></li><li><a href="#templates-algorithms">Templates &amp; Algorithms</a></li><li class="toc-sub"><a href="#template-comparison-table">Template Comparison Table</a></li><li class="toc-sub"><a href="#template-1-two-pointers-pattern">Template 1: Two Pointers Pattern</a></li><li class="toc-sub"><a href="#template-2-sliding-window-pattern">Template 2: Sliding Window Pattern</a></li><li class="toc-sub"><a href="#template-3-string-pattern-matching-kmp">Template 3: String Pattern Matching (KMP)</a></li><li class="toc-sub"><a href="#template-4-palindrome-patterns">Template 4: Palindrome Patterns</a></li><li class="toc-sub"><a href="#template-5-string-transformation">Template 5: String Transformation</a></li><li class="toc-sub"><a href="#template-6-string-dp">Template 6: String DP</a></li><li class="toc-sub"><a href="#template-7-incremental-prefix-validation">Template 7: Incremental Prefix Validation</a></li><li><a href="#basic-string-operations">Basic String Operations</a></li><li class="toc-sub"><a href="#python-string-operations">Python String Operations</a></li><li class="toc-sub"><a href="#java-string-operations">Java String Operations</a></li><li class="toc-sub"><a href="#string-manipulation-tricks">String Manipulation Tricks</a></li><li><a href="#problems-by-pattern">Problems by Pattern</a></li><li class="toc-sub"><a href="#pattern-based-problem-tables">Pattern-Based Problem Tables</a></li><li><a href="#pattern-selection-strategy">Pattern Selection Strategy</a></li><li><a href="#summary-quick-reference">Summary &amp; Quick Reference</a></li><li class="toc-sub"><a href="#complexity-quick-reference">Complexity Quick Reference</a></li><li class="toc-sub"><a href="#template-quick-reference">Template Quick Reference</a></li><li class="toc-sub"><a href="#common-patterns-tricks">Common Patterns &amp; Tricks</a></li><li class="toc-sub"><a href="#problem-solving-steps">Problem-Solving Steps</a></li><li class="toc-sub"><a href="#common-mistakes-tips">Common Mistakes &amp; Tips</a></li><li class="toc-sub"><a href="#interview-tips-1">Interview Tips</a></li><li class="toc-sub"><a href="#advanced-techniques">Advanced Techniques</a></li><li class="toc-sub"><a href="#related-topics">Related Topics</a></li><li><a href="#2-lc-example">2) LC Example</a></li><li class="toc-sub"><a href="#2-1-compare-version-number">2-1) Compare Version Number</a></li><li class="toc-sub"><a href="#2-2-add-two-numbers-ii-decode-string">2-2) Add Two Numbers II,  Decode String</a></li><li class="toc-sub"><a href="#2-3-count-and-say">2-3) Count and say</a></li><li class="toc-sub"><a href="#2-4-monotone-increasing-digits">2-4) Monotone Increasing Digits</a></li><li class="toc-sub"><a href="#2-5-validate-ip-address">2-5) Validate IP Address</a></li><li class="toc-sub"><a href="#2-6-string-to-integer-atoi">2-6) String to Integer (atoi)</a></li><li class="toc-sub"><a href="#2-7-license-key-formatting">2-7) License Key Formatting</a></li><li class="toc-sub"><a href="#2-8-repeated-string-match">2-8) Repeated String Match</a></li><li class="toc-sub"><a href="#2-9-count-binary-substrings">2-9) Count Binary Substrings</a></li><li class="toc-sub"><a href="#2-10-roman-to-integer">2-10) Roman to Integer</a></li><li class="toc-sub"><a href="#2-11-ount-unique-characters-of-all-substrings-of-a-given-string">2-11) ount Unique Characters of All Substrings of a Given String</a></li><li class="toc-sub"><a href="#2-12-palindromic-substrings">2-12) Palindromic Substrings</a></li><li class="toc-sub"><a href="#2-13-repeated-substring-pattern">2-13) Repeated Substring Pattern</a></li><li class="toc-sub"><a href="#2-14-reverse-only-letters">2-14) Reverse Only Letters</a></li><li class="toc-sub"><a href="#2-15-verifying-an-alien-dictionary">2-15) Verifying an Alien Dictionary</a></li><li class="toc-sub"><a href="#2-16-longest-word-in-dictionary-through-deleting">2-16) Longest Word in Dictionary through Deleting</a></li></ul></div>
+      <div class="cheatsheet-content">
+        <h1 id="string-algorithms-manipulation" tabindex="-1"><a class="header-anchor" href="#string-algorithms-manipulation"><span>String Algorithms &amp; Manipulation</span></a></h1>
+<h2 id="overview" tabindex="-1"><a class="header-anchor" href="#overview"><span>Overview</span></a></h2>
+<p><strong>String algorithms</strong> encompass techniques for processing, searching, and manipulating text data. These are fundamental in text processing, pattern matching, parsing, and many coding interview problems.</p>
+<h3 id="key-properties" tabindex="-1"><a class="header-anchor" href="#key-properties"><span>Key Properties</span></a></h3>
+<ul>
+<li><strong>Immutability</strong>: Strings are immutable in many languages (Python, Java)</li>
+<li><strong>Time Complexity</strong>: Often O(n) for traversal, O(n²) for naive comparisons</li>
+<li><strong>Space Complexity</strong>: O(n) for most transformations</li>
+<li><strong>Core Techniques</strong>: Two pointers, sliding window, hashing, pattern matching</li>
+<li><strong>When to Use</strong>: Text processing, pattern matching, parsing, validation</li>
+</ul>
+<h3 id="common-operations" tabindex="-1"><a class="header-anchor" href="#common-operations"><span>Common Operations</span></a></h3>
+<ul>
+<li><strong>Searching</strong>: Finding substrings, pattern matching</li>
+<li><strong>Manipulation</strong>: Reverse, rotate, transform</li>
+<li><strong>Validation</strong>: Palindromes, anagrams, valid formats</li>
+<li><strong>Parsing</strong>: Split, tokenize, extract</li>
+<li><strong>Comparison</strong>: Lexicographic ordering, edit distance</li>
+</ul>
+<h2 id="problem-categories" tabindex="-1"><a class="header-anchor" href="#problem-categories"><span>Problem Categories</span></a></h2>
+<h3 id="pattern-1-two-pointers" tabindex="-1"><a class="header-anchor" href="#pattern-1-two-pointers"><span><strong>Pattern 1: Two Pointers</strong></span></a></h3>
+<ul>
+<li><strong>Description</strong>: Process string from both ends or with fast/slow pointers</li>
+<li><strong>Examples</strong>: LC 125, 344, 345, 680, 917</li>
+<li><strong>Pattern</strong>: Start/end pointers meeting in middle</li>
+</ul>
+<h3 id="pattern-2-sliding-window" tabindex="-1"><a class="header-anchor" href="#pattern-2-sliding-window"><span><strong>Pattern 2: Sliding Window</strong></span></a></h3>
+<ul>
+<li><strong>Description</strong>: Find substring with specific properties</li>
+<li><strong>Examples</strong>: LC 3, 76, 159, 340, 424, 567</li>
+<li><strong>Pattern</strong>: Expand window, contract when condition met</li>
+</ul>
+<h3 id="pattern-3-string-matching" tabindex="-1"><a class="header-anchor" href="#pattern-3-string-matching"><span><strong>Pattern 3: String Matching</strong></span></a></h3>
+<ul>
+<li><strong>Description</strong>: Find pattern in text (KMP, Rabin-Karp)</li>
+<li><strong>Examples</strong>: LC 28, 214, 459, 686, 796</li>
+<li><strong>Pattern</strong>: Pattern preprocessing or rolling hash</li>
+</ul>
+<h3 id="pattern-4-palindrome" tabindex="-1"><a class="header-anchor" href="#pattern-4-palindrome"><span><strong>Pattern 4: Palindrome</strong></span></a></h3>
+<ul>
+<li><strong>Description</strong>: Check or find palindromic substrings</li>
+<li><strong>Examples</strong>: LC 5, 125, 131, 409, 516, 647</li>
+<li><strong>Pattern</strong>: Expand from center or DP</li>
+</ul>
+<h3 id="pattern-5-string-transformation" tabindex="-1"><a class="header-anchor" href="#pattern-5-string-transformation"><span><strong>Pattern 5: String Transformation</strong></span></a></h3>
+<ul>
+<li><strong>Description</strong>: Convert between string formats</li>
+<li><strong>Examples</strong>: LC 6, 8, 12, 13, 38, 443</li>
+<li><strong>Pattern</strong>: Parse and rebuild with rules</li>
+</ul>
+<h3 id="pattern-6-string-dp" tabindex="-1"><a class="header-anchor" href="#pattern-6-string-dp"><span><strong>Pattern 6: String DP</strong></span></a></h3>
+<ul>
+<li><strong>Description</strong>: Dynamic programming on strings</li>
+<li><strong>Examples</strong>: LC 10, 44, 72, 115, 583, 1143</li>
+<li><strong>Pattern</strong>: 2D DP table for string comparison</li>
+</ul>
+<h3 id="pattern-7-incremental-prefix-validation" tabindex="-1"><a class="header-anchor" href="#pattern-7-incremental-prefix-validation"><span><strong>Pattern 7: Incremental Prefix Validation</strong></span></a></h3>
+<ul>
+<li><strong>Description</strong>: Validate words can be built character-by-character from prefixes</li>
+<li><strong>Examples</strong>: LC 720</li>
+<li><strong>Pattern</strong>: Sort words + HashSet to track buildable words + check immediate prefix</li>
+<li><strong>Key Trick</strong>: Only need to check if <code>word.substring(0, word.length() - 1)</code> exists</li>
+</ul>
+<h2 id="templates-algorithms" tabindex="-1"><a class="header-anchor" href="#templates-algorithms"><span>Templates &amp; Algorithms</span></a></h2>
+<h3 id="template-comparison-table" tabindex="-1"><a class="header-anchor" href="#template-comparison-table"><span>Template Comparison Table</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>Template Type</th>
+<th>Use Case</th>
+<th>Complexity</th>
+<th>When to Use</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Two Pointers</strong></td>
+<td>Palindrome, reverse</td>
+<td>O(n)</td>
+<td>Both ends processing</td>
+</tr>
+<tr>
+<td><strong>Sliding Window</strong></td>
+<td>Substring problems</td>
+<td>O(n)</td>
+<td>Continuous subarray</td>
+</tr>
+<tr>
+<td><strong>KMP</strong></td>
+<td>Pattern matching</td>
+<td>O(n+m)</td>
+<td>Exact pattern search</td>
+</tr>
+<tr>
+<td><strong>Rolling Hash</strong></td>
+<td>Pattern/duplicate</td>
+<td>O(n)</td>
+<td>Multiple pattern search</td>
+</tr>
+<tr>
+<td><strong>Trie</strong></td>
+<td>Prefix matching</td>
+<td>O(m)</td>
+<td>Multiple string search</td>
+</tr>
+<tr>
+<td><strong>DP</strong></td>
+<td>Edit distance</td>
+<td>O(n²)</td>
+<td>String comparison</td>
+</tr>
+<tr>
+<td><strong>Prefix Validation</strong></td>
+<td>Word building validation</td>
+<td>O(n log n)</td>
+<td>Check all prefixes exist</td>
+</tr>
+</tbody>
+</table>
+<h3 id="template-1-two-pointers-pattern" tabindex="-1"><a class="header-anchor" href="#template-1-two-pointers-pattern"><span>Template 1: Two Pointers Pattern</span></a></h3>
+<pre><code class="language-python"># Python - Two pointers for palindrome
+def isPalindrome(s):
+    left, right = 0, len(s) - 1
+    
+    while left &lt; right:
+        # Skip non-alphanumeric
+        while left &lt; right and not s[left].isalnum():
+            left += 1
+        while left &lt; right and not s[right].isalnum():
+            right -= 1
+        
+        if s[left].lower() != s[right].lower():
+            return False
+        
+        left += 1
+        right -= 1
+    
+    return True
+
+# Reverse string/array in-place
+def reverseString(s):
+    left, right = 0, len(s) - 1
+    
+    while left &lt; right:
+        s[left], s[right] = s[right], s[left]
+        left += 1
+        right -= 1
+    
+    return s
+
+# Valid palindrome with one deletion
+def validPalindrome(s):
+    def checkPalindrome(s, left, right):
+        while left &lt; right:
+            if s[left] != s[right]:
+                return False
+            left += 1
+            right -= 1
+        return True
+    
+    left, right = 0, len(s) - 1
+    
+    while left &lt; right:
+        if s[left] != s[right]:
+            # Try deleting either character
+            return (checkPalindrome(s, left + 1, right) or 
+                   checkPalindrome(s, left, right - 1))
+        left += 1
+        right -= 1
+    
+    return True
+</code></pre>
+<pre><code class="language-java">// Java - Two pointers
+public boolean isPalindrome(String s) {
+    int left = 0, right = s.length() - 1;
+    
+    while (left &lt; right) {
+        while (left &lt; right &amp;&amp; !Character.isLetterOrDigit(s.charAt(left))) {
+            left++;
+        }
+        while (left &lt; right &amp;&amp; !Character.isLetterOrDigit(s.charAt(right))) {
+            right--;
+        }
+        
+        if (Character.toLowerCase(s.charAt(left)) != 
+            Character.toLowerCase(s.charAt(right))) {
+            return false;
+        }
+        
+        left++;
+        right--;
+    }
+    
+    return true;
+}
+</code></pre>
+<h3 id="template-2-sliding-window-pattern" tabindex="-1"><a class="header-anchor" href="#template-2-sliding-window-pattern"><span>Template 2: Sliding Window Pattern</span></a></h3>
+<pre><code class="language-python"># Python - Variable size sliding window
+def longestSubstringKDistinct(s, k):
+    if k == 0:
+        return 0
+    
+    window = {}
+    left = 0
+    max_len = 0
+    
+    for right in range(len(s)):
+        # Expand window
+        window[s[right]] = window.get(s[right], 0) + 1
+        
+        # Contract window if needed
+        while len(window) &gt; k:
+            window[s[left]] -= 1
+            if window[s[left]] == 0:
+                del window[s[left]]
+            left += 1
+        
+        max_len = max(max_len, right - left + 1)
+    
+    return max_len
+
+# Minimum window substring
+def minWindow(s, t):
+    from collections import Counter
+    
+    need = Counter(t)
+    window = {}
+    
+    left = 0
+    min_len = float('inf')
+    min_start = 0
+    formed = 0
+    required = len(need)
+    
+    for right in range(len(s)):
+        char = s[right]
+        window[char] = window.get(char, 0) + 1
+        
+        if char in need and window[char] == need[char]:
+            formed += 1
+        
+        while formed == required and left &lt;= right:
+            # Update result
+            if right - left + 1 &lt; min_len:
+                min_len = right - left + 1
+                min_start = left
+            
+            # Contract window
+            char = s[left]
+            window[char] -= 1
+            if char in need and window[char] &lt; need[char]:
+                formed -= 1
+            left += 1
+    
+    return s[min_start:min_start + min_len] if min_len != float('inf') else &quot;&quot;
+</code></pre>
+<pre><code class="language-java">// Java - Sliding window
+public int lengthOfLongestSubstringKDistinct(String s, int k) {
+    if (k == 0) return 0;
+    
+    Map&lt;Character, Integer&gt; window = new HashMap&lt;&gt;();
+    int left = 0;
+    int maxLen = 0;
+    
+    for (int right = 0; right &lt; s.length(); right++) {
+        char c = s.charAt(right);
+        window.put(c, window.getOrDefault(c, 0) + 1);
+        
+        while (window.size() &gt; k) {
+            char leftChar = s.charAt(left);
+            window.put(leftChar, window.get(leftChar) - 1);
+            if (window.get(leftChar) == 0) {
+                window.remove(leftChar);
+            }
+            left++;
+        }
+        
+        maxLen = Math.max(maxLen, right - left + 1);
+    }
+    
+    return maxLen;
+}
+</code></pre>
+<h3 id="template-3-string-pattern-matching-kmp" tabindex="-1"><a class="header-anchor" href="#template-3-string-pattern-matching-kmp"><span>Template 3: String Pattern Matching (KMP)</span></a></h3>
+<pre><code class="language-python"># Python - KMP pattern matching
+def KMP(text, pattern):
+    if not pattern:
+        return 0
+    
+    # Build LPS array
+    def buildLPS(pattern):
+        lps = [0] * len(pattern)
+        length = 0
+        i = 1
+        
+        while i &lt; len(pattern):
+            if pattern[i] == pattern[length]:
+                length += 1
+                lps[i] = length
+                i += 1
+            else:
+                if length != 0:
+                    length = lps[length - 1]
+                else:
+                    lps[i] = 0
+                    i += 1
+        return lps
+    
+    lps = buildLPS(pattern)
+    i = j = 0
+    
+    while i &lt; len(text):
+        if text[i] == pattern[j]:
+            i += 1
+            j += 1
+        
+        if j == len(pattern):
+            return i - j  # Pattern found
+        elif i &lt; len(text) and text[i] != pattern[j]:
+            if j != 0:
+                j = lps[j - 1]
+            else:
+                i += 1
+    
+    return -1  # Pattern not found
+
+# Rolling hash (Rabin-Karp)
+def rabinKarp(text, pattern):
+    if len(pattern) &gt; len(text):
+        return -1
+    
+    base = 256
+    prime = 101
+    pattern_hash = 0
+    text_hash = 0
+    h = 1
+    
+    # Calculate h = base^(m-1) % prime
+    for i in range(len(pattern) - 1):
+        h = (h * base) % prime
+    
+    # Calculate initial hashes
+    for i in range(len(pattern)):
+        pattern_hash = (base * pattern_hash + ord(pattern[i])) % prime
+        text_hash = (base * text_hash + ord(text[i])) % prime
+    
+    # Slide pattern over text
+    for i in range(len(text) - len(pattern) + 1):
+        if pattern_hash == text_hash:
+            # Check characters one by one
+            if text[i:i + len(pattern)] == pattern:
+                return i
+        
+        # Calculate hash for next window
+        if i &lt; len(text) - len(pattern):
+            text_hash = (base * (text_hash - ord(text[i]) * h) + 
+                        ord(text[i + len(pattern)])) % prime
+            if text_hash &lt; 0:
+                text_hash += prime
+    
+    return -1
+</code></pre>
+<h3 id="template-4-palindrome-patterns" tabindex="-1"><a class="header-anchor" href="#template-4-palindrome-patterns"><span>Template 4: Palindrome Patterns</span></a></h3>
+<pre><code class="language-python"># Python - Expand from center
+def longestPalindrome(s):
+    if not s:
+        return &quot;&quot;
+    
+    def expandFromCenter(left, right):
+        while left &gt;= 0 and right &lt; len(s) and s[left] == s[right]:
+            left -= 1
+            right += 1
+        return right - left - 1
+    
+    start = 0
+    max_len = 0
+    
+    for i in range(len(s)):
+        # Odd length palindrome
+        len1 = expandFromCenter(i, i)
+        # Even length palindrome
+        len2 = expandFromCenter(i, i + 1)
+        
+        curr_len = max(len1, len2)
+        if curr_len &gt; max_len:
+            max_len = curr_len
+            start = i - (curr_len - 1) // 2
+    
+    return s[start:start + max_len]
+
+# Count palindromic substrings
+def countSubstrings(s):
+    count = 0
+    
+    def expandFromCenter(left, right):
+        nonlocal count
+        while left &gt;= 0 and right &lt; len(s) and s[left] == s[right]:
+            count += 1
+            left -= 1
+            right += 1
+    
+    for i in range(len(s)):
+        expandFromCenter(i, i)      # Odd length
+        expandFromCenter(i, i + 1)  # Even length
+
+    return count
+</code></pre>
+<hr>
+<h4 id="template-4-1-manacher-s-algorithm-o-n-palindrome-detection" tabindex="-1"><a class="header-anchor" href="#template-4-1-manacher-s-algorithm-o-n-palindrome-detection"><span>Template 4.1: Manacher’s Algorithm (O(n) Palindrome Detection)</span></a></h4>
+<p><strong>Core Concept:</strong>
+Manacher’s algorithm finds the longest palindromic substring in <strong>linear time O(n)</strong> by avoiding redundant comparisons using previously computed palindrome information.</p>
+<p><strong>Key Insight:</strong></p>
+<ul>
+<li>Standard expand-from-center: O(n²) worst case</li>
+<li>Manacher’s: O(n) by reusing palindrome boundaries</li>
+<li>Uses concept of “mirror” positions across palindrome center</li>
+</ul>
+<p><strong>Why It’s Faster:</strong></p>
+<pre><code>Standard approach: Check each center independently → O(n²)
+Manacher's: Use already-found palindromes to skip comparisons → O(n)
+
+Example: If we know s[5..15] is palindrome with center at 10:
+When checking position 12, we can use info from mirror position 8!
+</code></pre>
+<p><strong>Algorithm Overview:</strong></p>
+<ol>
+<li>Transform string to handle even/odd lengths uniformly: “aba” → “#a#b#a#”</li>
+<li>For each position, maintain:
+<ul>
+<li><code>P[i]</code>: radius of palindrome centered at i</li>
+<li><code>C</code>: center of rightmost palindrome found</li>
+<li><code>R</code>: right boundary of rightmost palindrome</li>
+</ul>
+</li>
+<li>Use mirror property to initialize <code>P[i]</code> when <code>i &lt; R</code></li>
+<li>Expand from <code>i</code> only when necessary</li>
+</ol>
+<hr>
+<h5 id="python-implementation" tabindex="-1"><a class="header-anchor" href="#python-implementation"><span>Python Implementation</span></a></h5>
+<pre><code class="language-python"># Manacher's Algorithm - Longest Palindromic Substring
+def longestPalindrome_manacher(s):
+    &quot;&quot;&quot;
+    Find longest palindromic substring using Manacher's algorithm.
+
+    Time: O(n) - each position expanded at most once
+    Space: O(n) - for transformed string and P array
+
+    Returns: longest palindromic substring
+    &quot;&quot;&quot;
+    if not s:
+        return &quot;&quot;
+
+    # Step 1: Transform string to handle even/odd uniformly
+    # &quot;aba&quot; → &quot;#a#b#a#&quot;
+    # &quot;abba&quot; → &quot;#a#b#b#a#&quot;
+    T = '#'.join('^{}$'.format(s))
+    n = len(T)
+    P = [0] * n  # P[i] = radius of palindrome centered at i
+    C = R = 0    # Center and right boundary of current rightmost palindrome
+
+    # Step 2: Fill P array using mirror property
+    for i in range(1, n - 1):
+        # Mirror of i across center C
+        mirror = 2 * C - i
+
+        # Initialize P[i] using mirror when i &lt; R
+        if i &lt; R:
+            P[i] = min(R - i, P[mirror])
+
+        # Try to expand palindrome centered at i
+        try:
+            while T[i + P[i] + 1] == T[i - P[i] - 1]:
+                P[i] += 1
+        except IndexError:
+            pass
+
+        # Update center and right boundary if palindrome extends beyond R
+        if i + P[i] &gt; R:
+            C, R = i, i + P[i]
+
+    # Step 3: Find longest palindrome
+    max_len, center_idx = max((length, idx) for idx, length in enumerate(P))
+
+    # Step 4: Extract substring from original string
+    start = (center_idx - max_len) // 2
+    return s[start:start + max_len]
+
+# Alternative: Find all palindrome radii
+def manacher_array(s):
+    &quot;&quot;&quot;
+    Compute palindrome radius array using Manacher's algorithm.
+
+    Returns: P array where P[i] = radius at position i in transformed string
+    &quot;&quot;&quot;
+    T = '#'.join('^{}$'.format(s))
+    n = len(T)
+    P = [0] * n
+    C = R = 0
+
+    for i in range(1, n - 1):
+        mirror = 2 * C - i
+
+        if i &lt; R:
+            P[i] = min(R - i, P[mirror])
+
+        # Expand palindrome
+        try:
+            while T[i + P[i] + 1] == T[i - P[i] - 1]:
+                P[i] += 1
+        except IndexError:
+            pass
+
+        # Update C and R
+        if i + P[i] &gt; R:
+            C, R = i, i + P[i]
+
+    return P
+
+# Count all palindromic substrings - O(n)
+def countSubstrings_manacher(s):
+    &quot;&quot;&quot;
+    Count all palindromic substrings in O(n) time.
+
+    Each P[i] represents a palindrome of radius P[i]
+    Number of palindromes centered at i = (P[i] + 1) // 2
+    &quot;&quot;&quot;
+    P = manacher_array(s)
+
+    # Each radius P[i] contributes (P[i] + 1) // 2 palindromes
+    # Example: radius 3 in &quot;#a#b#a#&quot; → palindromes: &quot;a&quot;, &quot;aba&quot;
+    return sum((p + 1) // 2 for p in P)
+</code></pre>
+<h5 id="java-implementation" tabindex="-1"><a class="header-anchor" href="#java-implementation"><span>Java Implementation</span></a></h5>
+<pre><code class="language-java">// LC 5 - Longest Palindromic Substring (Manacher's)
+/**
+ * time = O(N)
+ * space = O(N)
+ */
+class Solution {
+    public String longestPalindrome(String s) {
+        if (s == null || s.length() == 0) return &quot;&quot;;
+
+        // Transform string: &quot;aba&quot; → &quot;^#a#b#a#$&quot;
+        StringBuilder T = new StringBuilder(&quot;^&quot;);
+        for (char c : s.toCharArray()) {
+            T.append(&quot;#&quot;).append(c);
+        }
+        T.append(&quot;#$&quot;);
+
+        int n = T.length();
+        int[] P = new int[n];  // Palindrome radius array
+        int C = 0, R = 0;      // Center and right boundary
+
+        // Compute palindrome radii
+        for (int i = 1; i &lt; n - 1; i++) {
+            int mirror = 2 * C - i;
+
+            // Initialize P[i] using mirror
+            if (i &lt; R) {
+                P[i] = Math.min(R - i, P[mirror]);
+            }
+
+            // Try to expand palindrome at i
+            while (T.charAt(i + P[i] + 1) == T.charAt(i - P[i] - 1)) {
+                P[i]++;
+            }
+
+            // Update center and right boundary
+            if (i + P[i] &gt; R) {
+                C = i;
+                R = i + P[i];
+            }
+        }
+
+        // Find longest palindrome
+        int maxLen = 0;
+        int centerIndex = 0;
+        for (int i = 1; i &lt; n - 1; i++) {
+            if (P[i] &gt; maxLen) {
+                maxLen = P[i];
+                centerIndex = i;
+            }
+        }
+
+        // Extract substring from original string
+        int start = (centerIndex - maxLen) / 2;
+        return s.substring(start, start + maxLen);
+    }
+}
+</code></pre>
+<hr>
+<h5 id="visual-example-step-by-step-walkthrough" tabindex="-1"><a class="header-anchor" href="#visual-example-step-by-step-walkthrough"><span>Visual Example: Step-by-Step Walkthrough</span></a></h5>
+<pre><code>Input: s = &quot;babcbabcbaccba&quot;
+
+Step 1: Transform string
+s = &quot;babcbabcbaccba&quot;
+T = &quot;^#b#a#b#c#b#a#b#c#b#a#c#c#b#a#$&quot;
+     0 1 2 3 4 5 6 7 8 9...
+
+Step 2: Compute P array (palindrome radii)
+
+i=1 (T[1]='#'):
+  mirror=2*0-1=-1 (outside)
+  Expand: '#b#' → P[1]=1
+  Update: C=1, R=2
+
+i=2 (T[2]='b'):
+  mirror=2*1-2=0
+  i&lt;R (2&lt;2 False), P[2]=0
+  Expand: 'b' → no match → P[2]=0
+
+i=3 (T[3]='#'):
+  mirror=2*1-3=-1
+  Expand: '#b#a#b#' → P[3]=3
+  Update: C=3, R=6
+
+i=7 (T[7]='c'):
+  mirror=2*3-7=-1
+  Expand: 'c' → P[7]=0
+
+i=9 (T[9]='#'):
+  Inside previous palindrome
+  mirror=2*3-9=-3
+  Can use mirror info!
+  P[9] = min(R-9, P[mirror])
+       = min(6-9, P[-3]) → initialize, then expand
+
+... continue for all positions
+
+Final P array:
+Position: 0  1  2  3  4  5  6  7  8  9 10 11 12 ...
+T:        ^  #  b  #  a  #  b  #  c  #  b  #  a  ...
+P:        0  1  0  3  0  1  0  7  0  1  0  3  0  ...
+
+Maximum: P[7]=7 (center at position 7)
+Longest palindrome: &quot;babcbab&quot; (length 7)
+</code></pre>
+<hr>
+<h5 id="mirror-property-explanation" tabindex="-1"><a class="header-anchor" href="#mirror-property-explanation"><span>Mirror Property Explanation</span></a></h5>
+<pre><code>Key Concept: If we know palindrome boundaries, we can use symmetry!
+
+Example:
+    Center C=10, Right boundary R=15
+    Current position i=13
+    Mirror position i'=7 (mirror of 13 across 10)
+
+    Left Boundary      Center      Right Boundary
+          |              |              |
+    ...  7 ...          10 ...         13 ... 15
+         i'                            i      R
+
+If P[i']=2 (palindrome of radius 2 at position 7):
+Then P[i] &gt;= min(R-i, P[i']) = min(15-13, 2) = min(2, 2) = 2
+
+Why? Because everything inside the large palindrome is mirrored!
+
+We still need to try expanding beyond this initial value,
+but we skip redundant comparisons within the mirror region.
+</code></pre>
+<hr>
+<h5 id="complexity-analysis" tabindex="-1"><a class="header-anchor" href="#complexity-analysis"><span>Complexity Analysis</span></a></h5>
+<p><strong>Time Complexity: O(n)</strong></p>
+<pre><code>Each character is visited at most twice:
+1. Once when updating C and R (moving R forward)
+2. Once when checking as center i
+
+Key insight: R only moves forward, never backward
+Total expansions across all positions ≤ n
+</code></pre>
+<p><strong>Space Complexity: O(n)</strong></p>
+<pre><code>- Transformed string T: O(n)
+- Palindrome array P: O(n)
+- Total: O(n)
+</code></pre>
+<p><strong>Comparison:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Approach</th>
+<th>Time</th>
+<th>Space</th>
+<th>When to Use</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Expand from Center</strong></td>
+<td><strong>O(n²)</strong></td>
+<td><strong>O(1)</strong></td>
+<td>Simple, short code, small strings</td>
+</tr>
+<tr>
+<td><strong>Manacher’s Algorithm</strong></td>
+<td><strong>O(n)</strong></td>
+<td><strong>O(n)</strong></td>
+<td>Large strings, optimal complexity required</td>
+</tr>
+<tr>
+<td><strong>DP (2D array)</strong></td>
+<td>O(n²)</td>
+<td>O(n²)</td>
+<td>Need all palindrome info</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h5 id="classic-leetcode-problems" tabindex="-1"><a class="header-anchor" href="#classic-leetcode-problems"><span>Classic LeetCode Problems</span></a></h5>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC#</th>
+<th>Difficulty</th>
+<th>Manacher’s Benefit</th>
+<th>Standard Approach</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Longest Palindromic Substring</strong></td>
+<td><strong>5</strong></td>
+<td><strong>Medium</strong></td>
+<td><strong>O(n) vs O(n²)</strong></td>
+<td>Expand from center</td>
+</tr>
+<tr>
+<td>Palindromic Substrings</td>
+<td>647</td>
+<td>Medium</td>
+<td>O(n) counting</td>
+<td>O(n²) expand</td>
+</tr>
+<tr>
+<td>Shortest Palindrome</td>
+<td>214</td>
+<td>Hard</td>
+<td>O(n) prefix check</td>
+<td>O(n²) KMP</td>
+</tr>
+<tr>
+<td>Longest Palindromic Subsequence</td>
+<td>516</td>
+<td>Medium</td>
+<td>Not applicable</td>
+<td>DP O(n²)</td>
+</tr>
+<tr>
+<td>Palindrome Partitioning</td>
+<td>131</td>
+<td>Medium</td>
+<td>O(n) palindrome check</td>
+<td>O(n²) precompute</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h5 id="interview-tips" tabindex="-1"><a class="header-anchor" href="#interview-tips"><span>Interview Tips</span></a></h5>
+<p><strong>1. Recognition:</strong></p>
+<pre><code>Follow-up: &quot;Can you do better than O(n²)?&quot;
+→ Think Manacher's algorithm for palindrome problems
+
+Interviewer: &quot;What's the optimal time complexity?&quot;
+→ O(n) with Manacher's for longest palindrome
+</code></pre>
+<p><strong>2. When to Use:</strong></p>
+<pre><code>✅ Large input strings (n &gt; 10,000)
+✅ Follow-up asks for O(n) solution
+✅ Need to find longest palindrome
+✅ Want to show advanced knowledge
+
+❌ Short strings (expand from center is simpler)
+❌ Need all palindromic substrings (Manacher's doesn't help much)
+❌ Interview time is limited (complex implementation)
+</code></pre>
+<p><strong>3. Common Mistakes:</strong></p>
+<ul>
+<li>Off-by-one errors in mirror calculation: <code>mirror = 2*C - i</code></li>
+<li>Forgetting boundary markers ‘^’ and ‘$’ to avoid index checks</li>
+<li>Wrong extraction from transformed string back to original</li>
+<li>Not updating C and R correctly</li>
+</ul>
+<p><strong>4. Simplified Implementation:</strong></p>
+<pre><code class="language-python"># Minimal Manacher's (easier to code in interview)
+def longestPalindrome(s):
+    T = '#'.join('^{}$'.format(s))
+    n = len(T)
+    P, C, R = [0]*n, 0, 0
+
+    for i in range(1, n-1):
+        if i &lt; R:
+            P[i] = min(R-i, P[2*C-i])
+
+        while T[i+P[i]+1] == T[i-P[i]-1]:
+            P[i] += 1
+
+        if i + P[i] &gt; R:
+            C, R = i, i + P[i]
+
+    max_len, idx = max((l, i) for i, l in enumerate(P))
+    return s[(idx-max_len)//2:(idx+max_len)//2]
+</code></pre>
+<p><strong>5. Talking Points:</strong></p>
+<ul>
+<li>“Manacher’s uses mirror symmetry to avoid redundant expansions”</li>
+<li>“Each position expanded at most once → amortized O(n)”</li>
+<li>“Transform string to handle even/odd lengths uniformly”</li>
+<li>“Trade-off: O(n) time for O(n) space and implementation complexity”</li>
+</ul>
+<p><strong>6. Alternative for Interviews:</strong></p>
+<pre><code>If time is limited, mention Manacher's exists but implement O(n²):
+&quot;The optimal O(n) solution uses Manacher's algorithm, but
+I'll implement the O(n²) expand-from-center approach which
+is more straightforward and works well for most cases.&quot;
+
+Then demonstrate understanding by explaining Manacher's concept.
+</code></pre>
+<hr>
+<h5 id="advanced-why-manacher-s-works-proof-sketch" tabindex="-1"><a class="header-anchor" href="#advanced-why-manacher-s-works-proof-sketch"><span>Advanced: Why Manacher’s Works (Proof Sketch)</span></a></h5>
+<p><strong>Claim</strong>: Total number of character comparisons is O(n).</p>
+<p><strong>Proof</strong>:</p>
+<pre><code>Let R be the right boundary of the rightmost palindrome found.
+
+Key observations:
+1. R never decreases (only moves forward or stays same)
+2. R can increase by at most n total across all iterations
+3. Each expansion at position i increases R by at most the expansion amount
+
+For position i:
+- If i &gt;= R: We expand from scratch
+  → These expansions increase R
+
+- If i &lt; R: We use P[mirror] to skip known palindrome
+  → We only expand beyond R
+  → These expansions also increase R
+
+Since R increases from 0 to at most n, and each character
+comparison increases R by 1, total comparisons ≤ n.
+
+Therefore, time complexity is O(n). □
+</code></pre>
+<hr>
+<h3 id="template-5-string-transformation" tabindex="-1"><a class="header-anchor" href="#template-5-string-transformation"><span>Template 5: String Transformation</span></a></h3>
+<pre><code class="language-python"># Python - String to integer (atoi)
+def myAtoi(s):
+    s = s.strip()
+    if not s:
+        return 0
+    
+    sign = 1
+    idx = 0
+    
+    if s[0] in ['+', '-']:
+        sign = -1 if s[0] == '-' else 1
+        idx = 1
+    
+    num = 0
+    while idx &lt; len(s) and s[idx].isdigit():
+        num = num * 10 + int(s[idx])
+        idx += 1
+    
+    num *= sign
+    
+    # Handle overflow
+    INT_MAX = 2**31 - 1
+    INT_MIN = -2**31
+    
+    if num &gt; INT_MAX:
+        return INT_MAX
+    if num &lt; INT_MIN:
+        return INT_MIN
+    
+    return num
+
+# Integer to Roman
+def intToRoman(num):
+    values = [1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1]
+    symbols = [&quot;M&quot;, &quot;CM&quot;, &quot;D&quot;, &quot;CD&quot;, &quot;C&quot;, &quot;XC&quot;, &quot;L&quot;, &quot;XL&quot;, &quot;X&quot;, &quot;IX&quot;, &quot;V&quot;, &quot;IV&quot;, &quot;I&quot;]
+    
+    result = []
+    for i, val in enumerate(values):
+        count = num // val
+        if count:
+            result.append(symbols[i] * count)
+            num -= val * count
+    
+    return ''.join(result)
+</code></pre>
+<h3 id="template-6-string-dp" tabindex="-1"><a class="header-anchor" href="#template-6-string-dp"><span>Template 6: String DP</span></a></h3>
+<pre><code class="language-python"># Python - Edit distance
+def minDistance(word1, word2):
+    m, n = len(word1), len(word2)
+    dp = [[0] * (n + 1) for _ in range(m + 1)]
+    
+    # Initialize base cases
+    for i in range(m + 1):
+        dp[i][0] = i
+    for j in range(n + 1):
+        dp[0][j] = j
+    
+    # Fill DP table
+    for i in range(1, m + 1):
+        for j in range(1, n + 1):
+            if word1[i-1] == word2[j-1]:
+                dp[i][j] = dp[i-1][j-1]
+            else:
+                dp[i][j] = 1 + min(
+                    dp[i-1][j],    # Delete
+                    dp[i][j-1],    # Insert
+                    dp[i-1][j-1]   # Replace
+                )
+    
+    return dp[m][n]
+
+# Longest common subsequence
+def longestCommonSubsequence(text1, text2):
+    m, n = len(text1), len(text2)
+    dp = [[0] * (n + 1) for _ in range(m + 1)]
+    
+    for i in range(1, m + 1):
+        for j in range(1, n + 1):
+            if text1[i-1] == text2[j-1]:
+                dp[i][j] = dp[i-1][j-1] + 1
+            else:
+                dp[i][j] = max(dp[i-1][j], dp[i][j-1])
+    
+    return dp[m][n]
+</code></pre>
+<h3 id="template-7-incremental-prefix-validation" tabindex="-1"><a class="header-anchor" href="#template-7-incremental-prefix-validation"><span>Template 7: Incremental Prefix Validation</span></a></h3>
+<pre><code class="language-python"># Python - LC 720 Longest Word in Dictionary
+def longestWord(words):
+    &quot;&quot;&quot;
+    Pattern: Build words incrementally by validating immediate prefix
+
+    Key Insight:
+      - A word is valid if ALL its prefixes exist in dictionary
+      - Instead of checking all prefixes, we only check the immediate prefix
+      - This works because we process words in sorted order (shorter first)
+      - If &quot;worl&quot; is valid, then &quot;wor&quot;, &quot;wo&quot;, &quot;w&quot; must already be valid
+
+    Example:
+      words = [&quot;w&quot;,&quot;wo&quot;,&quot;wor&quot;,&quot;worl&quot;,&quot;world&quot;]
+
+      After sorting: [&quot;w&quot;,&quot;wo&quot;,&quot;wor&quot;,&quot;worl&quot;,&quot;world&quot;]
+
+      Process:
+        &quot;w&quot;     -&gt; len==1, add to built, result=&quot;w&quot;
+        &quot;wo&quot;    -&gt; &quot;w&quot; in built ✓, add &quot;wo&quot;, result=&quot;wo&quot;
+        &quot;wor&quot;   -&gt; &quot;wo&quot; in built ✓, add &quot;wor&quot;, result=&quot;wor&quot;
+        &quot;worl&quot;  -&gt; &quot;wor&quot; in built ✓, add &quot;worl&quot;, result=&quot;worl&quot;
+        &quot;world&quot; -&gt; &quot;worl&quot; in built ✓, add &quot;world&quot;, result=&quot;world&quot;
+
+    Time: O(n log n) for sorting + O(n*m) for processing (m = avg word length)
+    Space: O(n*m) for storing all words in set
+    &quot;&quot;&quot;
+    if not words:
+        return &quot;&quot;
+
+    # Sort lexicographically (automatically handles tie-breaking)
+    words.sort()
+
+    built = set()
+    result = &quot;&quot;
+
+    for word in words:
+        # Word is valid if:
+        # 1. Single character (base case), OR
+        # 2. Its immediate prefix exists in built set
+        if len(word) == 1 or word[:-1] in built:
+            built.add(word)
+
+            # Update result if current word is longer
+            # (sorting ensures alphabetical order for ties)
+            if len(word) &gt; len(result):
+                result = word
+
+    return result
+
+# Alternative with explicit substring
+def longestWord_v2(words):
+    words.sort()
+    built = set()
+    result = &quot;&quot;
+
+    for word in words:
+        # Check immediate prefix: word.substring(0, word.length() - 1)
+        if len(word) == 1 or word[:len(word)-1] in built:
+            built.add(word)
+            if len(word) &gt; len(result):
+                result = word
+
+    return result
+</code></pre>
+<pre><code class="language-java">// Java - LC 720 Longest Word in Dictionary
+public String longestWord(String[] words) {
+    /**
+     * Pattern: Incremental Prefix Validation
+     *
+     * Core Trick:
+     *   word.substring(0, word.length() - 1)
+     *
+     *   Only check if the IMMEDIATE prefix exists (not all prefixes)
+     *   This works because sorting guarantees shorter words are processed first
+     *
+     * Why Sorting is Critical:
+     *   Arrays.sort(words) ensures:
+     *   1. Shorter words come before longer words (alphabetically)
+     *   2. When we reach &quot;world&quot;, &quot;worl&quot; has already been validated
+     *   3. If &quot;worl&quot; wasn't valid, it wouldn't be in builtWords
+     *
+     * Example:
+     *   Input: [&quot;a&quot;,&quot;banana&quot;,&quot;app&quot;,&quot;appl&quot;,&quot;ap&quot;,&quot;apply&quot;,&quot;apple&quot;]
+     *   After sort: [&quot;a&quot;,&quot;ap&quot;,&quot;app&quot;,&quot;appl&quot;,&quot;apple&quot;,&quot;apply&quot;,&quot;banana&quot;]
+     *
+     *   Process:
+     *     &quot;a&quot;      -&gt; len==1, add ✓
+     *     &quot;ap&quot;     -&gt; &quot;a&quot; exists ✓, add ✓
+     *     &quot;app&quot;    -&gt; &quot;ap&quot; exists ✓, add ✓
+     *     &quot;appl&quot;   -&gt; &quot;app&quot; exists ✓, add ✓
+     *     &quot;apple&quot;  -&gt; &quot;appl&quot; exists ✓, add ✓
+     *     &quot;apply&quot;  -&gt; &quot;appl&quot; exists ✓, add ✓
+     *     &quot;banana&quot; -&gt; &quot;banan&quot; NOT exists ✗, skip
+     *
+     *   Result: &quot;apple&quot; (longer and lexicographically smaller than &quot;apply&quot;)
+     *
+     * time = O(N log N) for sorting + O(N*M) for processing
+     * space = O(N*M) for HashSet storage
+     */
+    if (words == null || words.length == 0) {
+        return &quot;&quot;;
+    }
+
+    // Sort lexicographically (handles both length and alphabetical order)
+    Arrays.sort(words);
+
+    Set&lt;String&gt; built = new HashSet&lt;&gt;();
+    String result = &quot;&quot;;
+
+    for (String word : words) {
+        // Word is valid if:
+        // 1. Length == 1 (base case: single char always buildable), OR
+        // 2. Its prefix (all chars except last) exists in built set
+
+        /** NOTE !!! KEY TRICK
+         *
+         * word.substring(0, word.length() - 1)
+         *
+         * Get the immediate prefix (remove last character)
+         *
+         * Why not check ALL prefixes?
+         *   - We could do:
+         *     for (int i = 1; i &lt; word.length(); i++) {
+         *         if (!built.contains(word.substring(0, i))) return false;
+         *     }
+         *
+         *   - But that's unnecessary because:
+         *     If &quot;worl&quot; is valid, then &quot;wor&quot;, &quot;wo&quot;, &quot;w&quot; must already be valid
+         *     (due to incremental building from sorted order)
+         *
+         * Inductive Logic:
+         *   If immediate prefix exists AND is valid,
+         *   Then all shorter prefixes must also exist (by induction)
+         */
+        if (word.length() == 1 || built.contains(word.substring(0, word.length() - 1))) {
+            built.add(word);
+
+            // Update result if current word is longer
+            // (sorting ensures lexicographical order is maintained)
+            if (word.length() &gt; result.length()) {
+                result = word;
+            }
+        }
+    }
+
+    return result;
+}
+</code></pre>
+<p><strong>Key Insights:</strong></p>
+<ol>
+<li>
+<p><strong>Why Only Check Immediate Prefix:</strong></p>
+<ul>
+<li>Sorting ensures shorter words are processed first</li>
+<li>If “worl” is valid, all its prefixes (“wor”, “wo”, “w”) must already be valid</li>
+<li>This is <strong>inductive reasoning</strong>: checking immediate prefix is sufficient</li>
+</ul>
+</li>
+<li>
+<p><strong>Why Sorting Works:</strong></p>
+<pre><code>Before: [&quot;world&quot;,&quot;worl&quot;,&quot;wor&quot;,&quot;wo&quot;,&quot;w&quot;]
+After:  [&quot;w&quot;,&quot;wo&quot;,&quot;wor&quot;,&quot;worl&quot;,&quot;world&quot;]
+
+When processing &quot;world&quot;:
+  - &quot;worl&quot; has already been processed
+  - If &quot;worl&quot; is in built, all shorter prefixes are guaranteed valid
+</code></pre>
+</li>
+<li>
+<p><strong>Complexity Breakdown:</strong></p>
+<ul>
+<li>Sorting: O(N log N)</li>
+<li>Processing: O(N * M) where M = average word length</li>
+<li>Space: O(N * M) for HashSet</li>
+<li>Overall: O(N log N + N*M)</li>
+</ul>
+</li>
+<li>
+<p><strong>Similar Problems:</strong></p>
+<ul>
+<li>LC 720 Longest Word in Dictionary (this pattern)</li>
+<li>LC 745 Prefix and Suffix Search (Trie variation)</li>
+<li>LC 648 Replace Words (Trie + prefix matching)</li>
+</ul>
+</li>
+</ol>
+<h2 id="basic-string-operations" tabindex="-1"><a class="header-anchor" href="#basic-string-operations"><span>Basic String Operations</span></a></h2>
+<h3 id="python-string-operations" tabindex="-1"><a class="header-anchor" href="#python-string-operations"><span>Python String Operations</span></a></h3>
+<pre><code class="language-python"># String &lt;-&gt; List conversion
+s = &quot;abcd&quot;
+char_list = list(s)           # ['a', 'b', 'c', 'd']
+back_to_string = ''.join(char_list)  # &quot;abcd&quot;
+
+# Join with separator
+words = [&quot;hello&quot;, &quot;world&quot;]
+sentence = &quot; &quot;.join(words)    # &quot;hello world&quot;
+csv = &quot;,&quot;.join(words)         # &quot;hello,world&quot;
+
+# Reverse iteration
+s = &quot;abcd&quot;
+for i in range(len(s)-1, -1, -1):
+    print(s[i])  # d, c, b, a
+
+# String slicing
+s = &quot;abcdef&quot;
+reversed_s = s[::-1]         # &quot;fedcba&quot;
+every_other = s[::2]          # &quot;ace&quot;
+substring = s[1:4]            # &quot;bcd&quot;
+
+# Common string methods
+s = &quot;  Hello World  &quot;
+s.strip()                     # &quot;Hello World&quot;
+s.lower()                     # &quot;  hello world  &quot;
+s.upper()                     # &quot;  HELLO WORLD  &quot;
+s.replace(&quot;World&quot;, &quot;Python&quot;)  # &quot;  Hello Python  &quot;
+s.split()                     # ['Hello', 'World']
+
+# Character operations
+char = 'a'
+ord_val = ord(char)           # 97
+back_to_char = chr(97)        # 'a'
+is_alpha = char.isalpha()     # True
+is_digit = '5'.isdigit()      # True
+</code></pre>
+<h3 id="java-string-operations" tabindex="-1"><a class="header-anchor" href="#java-string-operations"><span>Java String Operations</span></a></h3>
+<pre><code class="language-java">// String operations in Java
+String s = &quot;abcd&quot;;
+
+// String to char array
+char[] chars = s.toCharArray();
+String backToString = new String(chars);
+
+// StringBuilder for mutable strings
+StringBuilder sb = new StringBuilder();
+sb.append(&quot;Hello&quot;);
+sb.append(&quot; World&quot;);
+sb.reverse();
+String result = sb.toString();
+
+// String methods
+String str = &quot;  Hello World  &quot;;
+str.trim()                    // &quot;Hello World&quot;
+str.toLowerCase()             // &quot;  hello world  &quot;
+str.toUpperCase()             // &quot;  HELLO WORLD  &quot;
+str.replace(&quot;World&quot;, &quot;Java&quot;)  // &quot;  Hello Java  &quot;
+str.substring(2, 7)           // &quot;Hello&quot;
+String[] words = str.split(&quot; &quot;);
+
+// Character operations
+char c = 'a';
+int ascii = (int) c;          // 97
+char backToChar = (char) 97;  // 'a'
+boolean isLetter = Character.isLetter(c);
+boolean isDigit = Character.isDigit('5');
+</code></pre>
+<h3 id="string-manipulation-tricks" tabindex="-1"><a class="header-anchor" href="#string-manipulation-tricks"><span>String Manipulation Tricks</span></a></h3>
+<pre><code class="language-python"># go through elements in str AVOID index out of range error
+x = '1234'
+
+for i in range(len(x)):
+    if  i == len(x)-1 or x[i] != x[i+1]:
+        print (x[i])
+</code></pre>
+<pre><code class="language-python"># string -&gt; array
+
+a = 1234
+a_array = list(str(a))
+
+In [12]: a_array
+Out[12]: ['1', '2', '3', '4']
+</code></pre>
+<pre><code class="language-java">// java
+// split string (java)
+/** NOTE !!! split string via .split(&quot;&quot;) */
+
+ for (String x : s.split(&quot;&quot;)){
+    System.out.println(x);
+ }
+</code></pre>
+<h4 id="1-8-group-sub-string" tabindex="-1"><a class="header-anchor" href="#1-8-group-sub-string"><span>1-8) Group sub-string</span></a></h4>
+<pre><code class="language-python"># LC 696. Count Binary Substrings
+# ...
+groups = [1]
+for i in range(1, len(s)):
+    &quot;&quot;&quot;
+    NOTE here !!!
+    &quot;&quot;&quot;
+    if s[i-1] != s[i]:
+        groups.append(1)
+    else:
+        groups[-1] += 1
+ans = 0
+for i in range(1, len(groups)):
+    &quot;&quot;&quot;
+    NOTE here !!!
+    &quot;&quot;&quot;
+    ans += mins(groups[i-1], groups[i])
+# ...
+</code></pre>
+<h4 id="1-9-rotate-string" tabindex="-1"><a class="header-anchor" href="#1-9-rotate-string"><span>1-9) Rotate string</span></a></h4>
+<pre><code class="language-python"># LC 796. Rotate String
+class Solution(object):
+    def rotateString(self, A, B):
+        for i in range(len(A)):
+            if A[i:] + A[:i] == B:
+                return True
+        return False
+</code></pre>
+<h2 id="problems-by-pattern" tabindex="-1"><a class="header-anchor" href="#problems-by-pattern"><span>Problems by Pattern</span></a></h2>
+<h3 id="pattern-based-problem-tables" tabindex="-1"><a class="header-anchor" href="#pattern-based-problem-tables"><span>Pattern-Based Problem Tables</span></a></h3>
+<h4 id="two-pointers-problems" tabindex="-1"><a class="header-anchor" href="#two-pointers-problems"><span><strong>Two Pointers Problems</strong></span></a></h4>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC #</th>
+<th>Key Technique</th>
+<th>Difficulty</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Valid Palindrome</td>
+<td>125</td>
+<td>Skip non-alphanumeric</td>
+<td>Easy</td>
+</tr>
+<tr>
+<td>Reverse String</td>
+<td>344</td>
+<td>Swap in-place</td>
+<td>Easy</td>
+</tr>
+<tr>
+<td>Reverse Vowels</td>
+<td>345</td>
+<td>Selective swap</td>
+<td>Easy</td>
+</tr>
+<tr>
+<td>Valid Palindrome II</td>
+<td>680</td>
+<td>One deletion allowed</td>
+<td>Easy</td>
+</tr>
+<tr>
+<td>Reverse Only Letters</td>
+<td>917</td>
+<td>Skip special chars</td>
+<td>Easy</td>
+</tr>
+<tr>
+<td>Long Pressed Name</td>
+<td>925</td>
+<td>Character matching</td>
+<td>Easy</td>
+</tr>
+<tr>
+<td>Compare Version</td>
+<td>165</td>
+<td>Split and compare</td>
+<td>Medium</td>
+</tr>
+</tbody>
+</table>
+<h4 id="sliding-window-problems" tabindex="-1"><a class="header-anchor" href="#sliding-window-problems"><span><strong>Sliding Window Problems</strong></span></a></h4>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC #</th>
+<th>Key Technique</th>
+<th>Difficulty</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Longest Substring Without Repeating</td>
+<td>3</td>
+<td>Variable window</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Minimum Window Substring</td>
+<td>76</td>
+<td>Two pointers + hash</td>
+<td>Hard</td>
+</tr>
+<tr>
+<td>Longest Substring with Two Distinct</td>
+<td>159</td>
+<td>K distinct chars</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Longest Substring with K Distinct</td>
+<td>340</td>
+<td>HashMap window</td>
+<td>Hard</td>
+</tr>
+<tr>
+<td>Max Consecutive Ones III</td>
+<td>1004</td>
+<td>At most K flips</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Character Replacement</td>
+<td>424</td>
+<td>Character replacement</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Permutation in String</td>
+<td>567</td>
+<td>Fixed window</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Find All Anagrams</td>
+<td>438</td>
+<td>Fixed size window</td>
+<td>Medium</td>
+</tr>
+</tbody>
+</table>
+<h4 id="pattern-matching-problems" tabindex="-1"><a class="header-anchor" href="#pattern-matching-problems"><span><strong>Pattern Matching Problems</strong></span></a></h4>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC #</th>
+<th>Key Technique</th>
+<th>Difficulty</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Implement strStr()</td>
+<td>28</td>
+<td>KMP/Rabin-Karp</td>
+<td>Easy</td>
+</tr>
+<tr>
+<td>Shortest Palindrome</td>
+<td>214</td>
+<td>KMP application</td>
+<td>Hard</td>
+</tr>
+<tr>
+<td>Repeated Substring Pattern</td>
+<td>459</td>
+<td>Pattern in s+s</td>
+<td>Easy</td>
+</tr>
+<tr>
+<td>Repeated String Match</td>
+<td>686</td>
+<td>Multiple concatenation</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Rotate String</td>
+<td>796</td>
+<td>Check in A+A</td>
+<td>Easy</td>
+</tr>
+<tr>
+<td>Find and Replace Pattern</td>
+<td>890</td>
+<td>Pattern mapping</td>
+<td>Medium</td>
+</tr>
+</tbody>
+</table>
+<h4 id="palindrome-problems" tabindex="-1"><a class="header-anchor" href="#palindrome-problems"><span><strong>Palindrome Problems</strong></span></a></h4>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC #</th>
+<th>Key Technique</th>
+<th>Difficulty</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Longest Palindromic Substring</td>
+<td>5</td>
+<td>Expand from center</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Palindrome Partitioning</td>
+<td>131</td>
+<td>Backtracking</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Longest Palindrome</td>
+<td>409</td>
+<td>Character counting</td>
+<td>Easy</td>
+</tr>
+<tr>
+<td>Palindromic Substrings</td>
+<td>647</td>
+<td>Expand from center</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Longest Palindromic Subsequence</td>
+<td>516</td>
+<td>DP</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Valid Palindrome III</td>
+<td>1216</td>
+<td>K deletions</td>
+<td>Hard</td>
+</tr>
+</tbody>
+</table>
+<h4 id="string-transformation-problems" tabindex="-1"><a class="header-anchor" href="#string-transformation-problems"><span><strong>String Transformation Problems</strong></span></a></h4>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC #</th>
+<th>Key Technique</th>
+<th>Difficulty</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ZigZag Conversion</td>
+<td>6</td>
+<td>Pattern simulation</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>String to Integer (atoi)</td>
+<td>8</td>
+<td>Parse with rules</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Integer to Roman</td>
+<td>12</td>
+<td>Greedy conversion</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Roman to Integer</td>
+<td>13</td>
+<td>Mapping</td>
+<td>Easy</td>
+</tr>
+<tr>
+<td>Count and Say</td>
+<td>38</td>
+<td>Iterative generation</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>String Compression</td>
+<td>443</td>
+<td>In-place modification</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Decode String</td>
+<td>394</td>
+<td>Stack</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>License Key Formatting</td>
+<td>482</td>
+<td>String building</td>
+<td>Easy</td>
+</tr>
+<tr>
+<td>Validate IP Address</td>
+<td>468</td>
+<td>Parse validation</td>
+<td>Medium</td>
+</tr>
+</tbody>
+</table>
+<h4 id="string-dp-problems" tabindex="-1"><a class="header-anchor" href="#string-dp-problems"><span><strong>String DP Problems</strong></span></a></h4>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC #</th>
+<th>Key Technique</th>
+<th>Difficulty</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Regular Expression Matching</td>
+<td>10</td>
+<td>2D DP</td>
+<td>Hard</td>
+</tr>
+<tr>
+<td>Wildcard Matching</td>
+<td>44</td>
+<td>2D DP</td>
+<td>Hard</td>
+</tr>
+<tr>
+<td>Edit Distance</td>
+<td>72</td>
+<td>Classic DP</td>
+<td>Hard</td>
+</tr>
+<tr>
+<td>Distinct Subsequences</td>
+<td>115</td>
+<td>Count subsequences</td>
+<td>Hard</td>
+</tr>
+<tr>
+<td>Delete Operations</td>
+<td>583</td>
+<td>LCS variation</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Longest Common Subsequence</td>
+<td>1143</td>
+<td>Classic DP</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Interleaving String</td>
+<td>97</td>
+<td>2D DP</td>
+<td>Hard</td>
+</tr>
+</tbody>
+</table>
+<h4 id="incremental-prefix-validation-problems" tabindex="-1"><a class="header-anchor" href="#incremental-prefix-validation-problems"><span><strong>Incremental Prefix Validation Problems</strong></span></a></h4>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC #</th>
+<th>Key Technique</th>
+<th>Difficulty</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Longest Word in Dictionary</td>
+<td>720</td>
+<td>Sort + immediate prefix check</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Implement Trie (Prefix Tree)</td>
+<td>208</td>
+<td>Trie data structure</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Replace Words</td>
+<td>648</td>
+<td>Trie + prefix matching</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Word Search II</td>
+<td>212</td>
+<td>Trie + DFS</td>
+<td>Hard</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Pattern Recognition:</strong></p>
+<ul>
+<li>Need to validate if all prefixes of a word exist</li>
+<li>Multiple words share common prefixes</li>
+<li>Building words character-by-character</li>
+<li>Dictionary-based word validation</li>
+</ul>
+<p><strong>Key Trick:</strong></p>
+<pre><code class="language-java">// Instead of checking ALL prefixes (O(M²) per word):
+for (int i = 1; i &lt; word.length(); i++) {
+    if (!dict.contains(word.substring(0, i))) return false;
+}
+
+// Only check IMMEDIATE prefix (O(M) per word):
+if (word.length() == 1 || dict.contains(word.substring(0, word.length() - 1))) {
+    // Valid!
+}
+</code></pre>
+<h2 id="pattern-selection-strategy" tabindex="-1"><a class="header-anchor" href="#pattern-selection-strategy"><span>Pattern Selection Strategy</span></a></h2>
+<pre><code>Problem Analysis Flowchart:
+
+1. Processing from both ends?
+   ├── YES → Two Pointers
+   │         ├── Palindrome check
+   │         └── Reverse operations
+   └── NO → Continue to 2
+
+2. Finding substring with property?
+   ├── YES → Sliding Window
+   │         ├── Variable size → Expand/contract
+   │         └── Fixed size → Slide window
+   └── NO → Continue to 3
+
+3. Pattern matching needed?
+   ├── YES → String Matching
+   │         ├── Single pattern → KMP
+   │         └── Multiple patterns → Trie/Hash
+   └── NO → Continue to 4
+
+4. Palindrome related?
+   ├── YES → Palindrome Techniques
+   │         ├── All palindromes → Expand center
+   │         └── Longest → DP or Manacher
+   └── NO → Continue to 5
+
+5. Format conversion?
+   ├── YES → String Transformation
+   │         ├── Parse → State machine
+   │         └── Generate → Build rules
+   └── NO → Continue to 6
+
+6. Compare/align strings?
+   ├── YES → Dynamic Programming
+   │         ├── Edit operations → Edit distance
+   │         └── Subsequence → LCS variations
+   └── NO → Continue to 7
+
+7. Validate word building from prefixes?
+   ├── YES → Incremental Prefix Validation
+   │         ├── Sort + HashSet → O(N log N)
+   │         └── Check immediate prefix only
+   └── NO → Use appropriate combination
+</code></pre>
+<h2 id="summary-quick-reference" tabindex="-1"><a class="header-anchor" href="#summary-quick-reference"><span>Summary &amp; Quick Reference</span></a></h2>
+<h3 id="complexity-quick-reference" tabindex="-1"><a class="header-anchor" href="#complexity-quick-reference"><span>Complexity Quick Reference</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>Operation</th>
+<th>Time</th>
+<th>Space</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Two Pointers</td>
+<td>O(n)</td>
+<td>O(1)</td>
+<td>Single pass</td>
+</tr>
+<tr>
+<td>Sliding Window</td>
+<td>O(n)</td>
+<td>O(k)</td>
+<td>k = window elements</td>
+</tr>
+<tr>
+<td>KMP Search</td>
+<td>O(n+m)</td>
+<td>O(m)</td>
+<td>m = pattern length</td>
+</tr>
+<tr>
+<td>Rabin-Karp</td>
+<td>O(n) avg</td>
+<td>O(1)</td>
+<td>Hash collisions</td>
+</tr>
+<tr>
+<td>Expand Center</td>
+<td>O(n²)</td>
+<td>O(1)</td>
+<td>All palindromes</td>
+</tr>
+<tr>
+<td>Edit Distance</td>
+<td>O(mn)</td>
+<td>O(mn)</td>
+<td>Can optimize to O(n)</td>
+</tr>
+<tr>
+<td>Trie Operations</td>
+<td>O(m)</td>
+<td>O(ALPHABET_SIZE * m)</td>
+<td>m = word length</td>
+</tr>
+</tbody>
+</table>
+<h3 id="template-quick-reference" tabindex="-1"><a class="header-anchor" href="#template-quick-reference"><span>Template Quick Reference</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>Template</th>
+<th>Pattern</th>
+<th>Key Code</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Two Pointers</strong></td>
+<td>Start/end meet</td>
+<td><code>while left &lt; right</code></td>
+</tr>
+<tr>
+<td><strong>Sliding Window</strong></td>
+<td>Expand/contract</td>
+<td><code>right++; while(invalid) left++</code></td>
+</tr>
+<tr>
+<td><strong>KMP</strong></td>
+<td>Failure function</td>
+<td><code>lps[i] = longest prefix suffix</code></td>
+</tr>
+<tr>
+<td><strong>Palindrome</strong></td>
+<td>Expand center</td>
+<td><code>expand(i,i); expand(i,i+1)</code></td>
+</tr>
+<tr>
+<td><strong>String DP</strong></td>
+<td>2D table</td>
+<td><code>dp[i][j] = relation</code></td>
+</tr>
+<tr>
+<td><strong>Rolling Hash</strong></td>
+<td>Hash window</td>
+<td><code>hash = (hash * base + char) % mod</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="common-patterns-tricks" tabindex="-1"><a class="header-anchor" href="#common-patterns-tricks"><span>Common Patterns &amp; Tricks</span></a></h3>
+<h4 id="ascii-case-difference-trick-char1-char2-32" tabindex="-1"><a class="header-anchor" href="#ascii-case-difference-trick-char1-char2-32"><span><strong>ASCII Case Difference Trick (|char1 - char2| == 32)</strong></span></a></h4>
+<p>A powerful trick for detecting <strong>same letter but different case</strong> (e.g., <code>'a'</code> vs <code>'A'</code>):</p>
+<pre><code>Math.abs('a' - 'A') == 32   // true
+Math.abs('z' - 'Z') == 32   // true
+Math.abs('a' - 'B') == 33   // false (different letters)
+</code></pre>
+<p><strong>Why 32?</strong> In ASCII, lowercase letters start at 97 (<code>'a'</code>) and uppercase at 65 (<code>'A'</code>). The difference is always exactly 32 for the same letter.</p>
+<p><strong>Classic Use Case: LC 1544 - Make The String Great (Stack)</strong></p>
+<blockquote>
+<p>Remove adjacent pairs where same letter but different case until no such pair remains.</p>
+</blockquote>
+<pre><code class="language-java">// Java - Stack approach using |char1 - char2| == 32
+public String makeGood(String s) {
+    Stack&lt;Character&gt; stack = new Stack&lt;&gt;();
+
+    for (char curr : s.toCharArray()) {
+        if (!stack.isEmpty()) {
+            char prev = stack.peek();
+
+            /** NOTE !!
+             *  core idea:
+             *   The &quot;Great&quot; Condition: A pair is bad if |char1 - char2| == 32.
+             *   Math.abs('a' - 'A') == 32.
+             *   This checks if they are the same letter but different case.
+             */
+            if (Math.abs(curr - prev) == 32) {
+                stack.pop(); // They cancel out — remove the pair
+                continue;    // Move to next character
+            }
+        }
+        stack.push(curr);
+    }
+
+    StringBuilder sb = new StringBuilder();
+    for (char c : stack) {
+        sb.append(c);
+    }
+    return sb.toString();
+}
+</code></pre>
+<pre><code class="language-java">// Java - StringBuilder variant (more concise)
+public String makeGood(String s) {
+    StringBuilder sb = new StringBuilder();
+    for (char c : s.toCharArray()) {
+        int len = sb.length();
+        if (len &gt; 0 &amp;&amp; Math.abs(sb.charAt(len - 1) - c) == 32) {
+            sb.deleteCharAt(len - 1); // Remove last char (cancel pair)
+        } else {
+            sb.append(c);
+        }
+    }
+    return sb.toString();
+}
+</code></pre>
+<pre><code class="language-python"># Python equivalent
+def makeGood(s: str) -&gt; str:
+    stack = []
+    for c in s:
+        if stack and abs(ord(stack[-1]) - ord(c)) == 32:
+            stack.pop()  # Cancel the pair
+        else:
+            stack.append(c)
+    return ''.join(stack)
+</code></pre>
+<p><strong>Key Insight:</strong> This trick generalizes to any problem requiring adjacent pair cancellation where pairs are defined by ASCII distance. Combine with a Stack for O(N) time, O(N) space.</p>
+<table>
+<thead>
+<tr>
+<th>Check</th>
+<th>Meaning</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Math.abs(a - b) == 32</code></td>
+<td>Same letter, different case</td>
+<td><code>'a'</code> and <code>'A'</code></td>
+</tr>
+<tr>
+<td><code>Character.toLowerCase(a) == Character.toLowerCase(b)</code></td>
+<td>Same letter (any case)</td>
+<td><code>'a'</code> and <code>'A'</code></td>
+</tr>
+<tr>
+<td><code>a == b</code></td>
+<td>Exact same character</td>
+<td><code>'a'</code> and <code>'a'</code></td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h4 id="string-building-performance" tabindex="-1"><a class="header-anchor" href="#string-building-performance"><span><strong>String Building Performance</strong></span></a></h4>
+<pre><code class="language-python"># Python: Use list and join
+result = []
+for item in items:
+    result.append(process(item))
+return ''.join(result)
+</code></pre>
+<pre><code class="language-java">// Java: Use StringBuilder
+StringBuilder sb = new StringBuilder();
+for (String item : items) {
+    sb.append(process(item));
+}
+return sb.toString();
+</code></pre>
+<h4 id="palindrome-optimization" tabindex="-1"><a class="header-anchor" href="#palindrome-optimization"><span><strong>Palindrome Optimization</strong></span></a></h4>
+<pre><code class="language-python"># Check palindrome efficiently
+def isPalindrome(s):
+    return s == s[::-1]
+
+# Expand from all centers
+for i in range(len(s)):
+    expandAroundCenter(i, i)      # Odd length
+    expandAroundCenter(i, i + 1)  # Even length
+</code></pre>
+<h3 id="problem-solving-steps" tabindex="-1"><a class="header-anchor" href="#problem-solving-steps"><span>Problem-Solving Steps</span></a></h3>
+<ol>
+<li>
+<p><strong>Identify Pattern Type</strong></p>
+<ul>
+<li>Character-by-character?</li>
+<li>Substring properties?</li>
+<li>Pattern matching?</li>
+<li>Transformation rules?</li>
+</ul>
+</li>
+<li>
+<p><strong>Choose Approach</strong></p>
+<ul>
+<li>In-place possible?</li>
+<li>Need state tracking?</li>
+<li>Multiple passes?</li>
+</ul>
+</li>
+<li>
+<p><strong>Handle Edge Cases</strong></p>
+<ul>
+<li>Empty string</li>
+<li>Single character</li>
+<li>All same characters</li>
+<li>Special characters</li>
+</ul>
+</li>
+</ol>
+<h3 id="common-mistakes-tips" tabindex="-1"><a class="header-anchor" href="#common-mistakes-tips"><span>Common Mistakes &amp; Tips</span></a></h3>
+<p><strong>🚫 Common Mistakes:</strong></p>
+<ul>
+<li>String concatenation in loop (O(n²))</li>
+<li>Off-by-one errors in substring</li>
+<li>Not handling empty strings</li>
+<li>Modifying immutable strings</li>
+<li>Character encoding issues</li>
+</ul>
+<p><strong>✅ Best Practices:</strong></p>
+<ul>
+<li>Use StringBuilder/list+join</li>
+<li>Clarify character set (ASCII/Unicode)</li>
+<li>Consider case sensitivity</li>
+<li>Test with special characters</li>
+<li>Handle overflow in conversions</li>
+</ul>
+<h3 id="interview-tips-1" tabindex="-1"><a class="header-anchor" href="#interview-tips-1"><span>Interview Tips</span></a></h3>
+<ol>
+<li>
+<p><strong>Clarify Requirements</strong></p>
+<ul>
+<li>Character set?</li>
+<li>Case sensitive?</li>
+<li>In-place allowed?</li>
+<li>Handle special chars?</li>
+</ul>
+</li>
+<li>
+<p><strong>Start Simple</strong></p>
+<ul>
+<li>Brute force first</li>
+<li>Optimize incrementally</li>
+<li>Explain trade-offs</li>
+</ul>
+</li>
+<li>
+<p><strong>Common Follow-ups</strong></p>
+<ul>
+<li>Handle Unicode</li>
+<li>Optimize space</li>
+<li>Stream processing</li>
+<li>Parallel processing</li>
+</ul>
+</li>
+</ol>
+<h3 id="advanced-techniques" tabindex="-1"><a class="header-anchor" href="#advanced-techniques"><span>Advanced Techniques</span></a></h3>
+<h4 id="suffix-array-tree" tabindex="-1"><a class="header-anchor" href="#suffix-array-tree"><span><strong>Suffix Array/Tree</strong></span></a></h4>
+<ul>
+<li>Multiple pattern search</li>
+<li>O(n log n) construction</li>
+<li>O(m + log n) search</li>
+</ul>
+<h4 id="manacher-s-algorithm" tabindex="-1"><a class="header-anchor" href="#manacher-s-algorithm"><span><strong>Manacher’s Algorithm</strong></span></a></h4>
+<ul>
+<li>All palindromes in O(n)</li>
+<li>Complex but optimal</li>
+</ul>
+<h4 id="z-algorithm" tabindex="-1"><a class="header-anchor" href="#z-algorithm"><span><strong>Z-Algorithm</strong></span></a></h4>
+<ul>
+<li>Pattern matching O(n)</li>
+<li>Similar to KMP</li>
+</ul>
+<h3 id="related-topics" tabindex="-1"><a class="header-anchor" href="#related-topics"><span>Related Topics</span></a></h3>
+<ul>
+<li><strong>Arrays</strong>: Two-pointer techniques</li>
+<li><strong>Hash Tables</strong>: Pattern counting</li>
+<li><strong>Dynamic Programming</strong>: String alignment</li>
+<li><strong>Tries</strong>: Prefix matching</li>
+<li><strong>Regular Expressions</strong>: Pattern matching</li>
+</ul>
+<h2 id="2-lc-example" tabindex="-1"><a class="header-anchor" href="#2-lc-example"><span>2) LC Example</span></a></h2>
+<h3 id="2-1-compare-version-number" tabindex="-1"><a class="header-anchor" href="#2-1-compare-version-number"><span>2-1) Compare Version Number</span></a></h3>
+<ul>
+<li>go through 2 string, keep comparing digits in eash string</li>
+</ul>
+<pre><code class="language-python"># 165 Compare Version Number
+# V0
+# IDEA : STRING + while op
+class Solution(object):
+    def compareVersion(self, version1, version2):
+        # edge case
+        if not version1 and not version2:
+            return
+        # split by &quot;.&quot; as list
+        v_1 = version1.split(&quot;.&quot;)
+        v_2 = version2.split(&quot;.&quot;)
+        # compare
+        while v_1 and v_2:
+            tmp1 = int(v_1.pop(0))
+            tmp2 = int(v_2.pop(0))
+
+            if tmp1 &gt; tmp2:
+                return 1
+            elif tmp1 &lt; tmp2:
+                return -1
+        # if v_1 remains
+        if v_1:
+            while v_1:
+                tmp1 = int(v_1.pop(0))
+                if tmp1 != 0:
+                    return 1
+        # if v_2 remains
+        if v_2:
+            while v_2:
+                tmp2 = int(v_2.pop(0))
+                if tmp2 != 0:
+                    return -1
+        return 0
+
+# V0'
+# IDEA : STRING
+class Solution(object):
+    def compareVersion(self, version1, version2):
+        v1_split = version1.split('.')
+        v2_split = version2.split('.')
+        v1_len, v2_len = len(v1_split), len(v2_split)
+        maxLen = max(v1_len, v2_len)
+        for i in range(maxLen):
+            temp1, temp2 = 0, 0
+            if i &lt; v1_len:
+                temp1 = int(v1_split[i])
+            if i &lt; v2_len:
+                temp2 = int(v2_split[i])
+            if temp1 &lt; temp2:
+                return -1
+            elif temp1 &gt; temp2:
+                return 1
+        return 0
+</code></pre>
+<h3 id="2-2-add-two-numbers-ii-decode-string" tabindex="-1"><a class="header-anchor" href="#2-2-add-two-numbers-ii-decode-string"><span>2-2) Add Two Numbers II,  Decode String</span></a></h3>
+<ul>
+<li>String -&gt; Int</li>
+</ul>
+<pre><code class="language-python"># 445 Add Two Numbers II
+# 394 Decode String
+def str_2_int(x):
+    r=0
+    for i in x:
+        r = int(r)*10 + int(i)
+        print (i, r)
+    return r
+
+def str_2_int_v2(x):
+    res = 0
+    for i in x:
+        res = (res + int(i) % 10) * 10
+    return int(res / 10)
+
+# example 1
+x=&quot;131&quot;
+r=str_2_int(x)
+print (r)
+# 1 1
+# 3 13
+# 1 131
+# 131
+
+# examle 2
+In [62]: z
+Out[62]: '5634'
+
+In [63]: ans = 0
+
+In [64]: for i in z:
+    ...:     ans = 10 * ans + int(i)
+    ...:
+
+In [65]: ans
+Out[65]: 5634
+</code></pre>
+<h3 id="2-3-count-and-say" tabindex="-1"><a class="header-anchor" href="#2-3-count-and-say"><span>2-3) Count and say</span></a></h3>
+<pre><code class="language-python"># LC 038 Count and say
+# V0
+# IDEA : ITERATION
+class Solution:
+    def countAndSay(self, n):
+        
+        val = &quot;&quot;
+        res = &quot;1&quot;
+        
+        for _ in range(n-1):
+            cnt = 1
+            for j in range(len(res)-1):
+                if res[j]==res[j+1]:
+                    cnt+=1
+                else:
+                    val += str(cnt) + res[j]
+                    cnt = 1
+            val += str(cnt)+res[-1]
+            res = val
+            val = &quot;&quot;
+        return res
+</code></pre>
+<h3 id="2-4-monotone-increasing-digits" tabindex="-1"><a class="header-anchor" href="#2-4-monotone-increasing-digits"><span>2-4) Monotone Increasing Digits</span></a></h3>
+<pre><code class="language-python"># LC 738 Monotone Increasing Digits
+class Solution:
+    def monotoneIncreasingDigits(self, N):
+        s = list(str(N));
+        ### NOTICE HERE 
+        for i in range(len(s) - 2,-1,-1):
+            # if int(s[i]) &gt; int(s[i+1]) -&gt; the string is not `monotone increase`
+            # -&gt; we need to find the next biggest int, 
+            # -&gt; so we need to make all right hand side digit as '9'
+            # -&gt; and minus current digit with 1  (s[i] = str(int(s[i]) - 1))
+            if int(s[i]) &gt; int(s[i+1]):
+                ### NOTICE HERE 
+                for j in range(i+1,len(s)):
+                    s[j] = '9'
+                s[i] = str(int(s[i]) - 1)
+        s = &quot;&quot;.join(s)        
+        return int(s) 
+</code></pre>
+<h3 id="2-5-validate-ip-address" tabindex="-1"><a class="header-anchor" href="#2-5-validate-ip-address"><span>2-5) Validate IP Address</span></a></h3>
+<pre><code class="language-python"># LC 468. Validate IP Address
+# V0
+# IDEA : Divide and Conquer
+class Solution:
+    def validate_IPv4(self, IP):
+        nums = IP.split('.')
+        for x in nums:
+            # Validate integer in range (0, 255):
+            # 1. length of chunk is between 1 and 3
+            if len(x) == 0 or len(x) &gt; 3:
+                return &quot;Neither&quot;
+            # 2. no extra leading zeros
+            # 3. only digits are allowed
+            # 4. less than 255
+            if x[0] == '0' and len(x) != 1 or not x.isdigit() or int(x) &gt; 255:
+                return &quot;Neither&quot;
+        return &quot;IPv4&quot;
+    
+    def validate_IPv6(self, IP):
+        nums = IP.split(':')
+        hexdigits = '0123456789abcdefABCDEF'
+        for x in nums:
+            # Validate hexadecimal in range (0, 2**16):
+            # 1. at least one and not more than 4 hexdigits in one chunk
+            # 2. only hexdigits are allowed: 0-9, a-f, A-F
+            if len(x) == 0 or len(x) &gt; 4 or not all(c in hexdigits for c in x):
+                return &quot;Neither&quot;
+        return &quot;IPv6&quot;
+        
+    def validIPAddress(self, IP):
+        if IP.count('.') == 3:
+            return self.validate_IPv4(IP)
+        elif IP.count(':') == 7:
+            return self.validate_IPv6(IP)
+        else:
+            return &quot;Neither&quot;
+</code></pre>
+<h3 id="2-6-string-to-integer-atoi" tabindex="-1"><a class="header-anchor" href="#2-6-string-to-integer-atoi"><span>2-6) String to Integer (atoi)</span></a></h3>
+<pre><code class="language-python"># LC 008
+# V0'
+# IDEA : string op
+class Solution(object):
+    def myAtoi(self, _str):
+        _str = _str.strip()
+        number = 0
+        flag = 1
+        print (&quot;_str = &quot; + str(_str))
+        if not _str:
+            return 0
+        if _str[0] == '-':
+            _str = _str[1:]
+            flag = -1
+        elif _str[0] == '+':
+            _str = _str[1:]
+        for c in _str:
+            #if c &gt;= '0' and c &lt;= '9':  # '3' &gt; '2' -&gt; True
+            if c in [str(x) for x in range(10)]:
+                &quot;&quot;&quot;
+                str(int) -&gt; ord demo
+
+                Example 1 :
+                In [55]: for i in range(10):
+                        ...: print (str(i) + &quot; ord = &quot; + str(ord(str(i))))
+                        ...:
+                                0 ord = 48
+                                1 ord = 49
+                                2 ord = 50
+                                3 ord = 51
+                                4 ord = 52
+                                5 ord = 53
+                                6 ord = 54
+                                7 ord = 55
+                                8 ord = 56
+                                9 ord = 57
+
+                Example 2 :
+
+                            In [62]: z
+                            Out[62]: '5634'
+
+                            In [63]: ans = 0
+
+                            In [64]: for i in z:
+                                ...:     ans = 10 * ans + int(i)
+                                ...:
+
+                            In [65]: ans
+                            Out[65]: 5634
+                &quot;&quot;&quot;
+                #number = 10*number + ord(c) - ord('0')  # _string to integer 
+                number = 10*number + int(c)  # _string to integer , above is OK as well
+            else:
+                break
+        res = flag * number
+        res = res if res &lt;= 2**31 - 1 else 2**31 - 1    # 2**31 == 2147483648
+        res = res if res &gt;= -1 * 2**31  else -1 * 2**31   # -(1)*(2**31) == - 2147483648
+        return res
+</code></pre>
+<h3 id="2-7-license-key-formatting" tabindex="-1"><a class="header-anchor" href="#2-7-license-key-formatting"><span>2-7) License Key Formatting</span></a></h3>
+<pre><code class="language-python"># LC 482. License Key Formatting
+# ref : LC 725. Split Linked List in Parts
+
+# V0
+class Solution(object):
+    def licenseKeyFormatting(self, S, K):
+        result = []
+        for i in reversed(range(len(S))):
+            if S[i] == '-':
+                continue
+            if len(result) % (K + 1) == K:
+                result += '-'
+            result += S[i].upper()
+        return &quot;&quot;.join(reversed(result))
+
+# V0'
+# IDEA : string op + brute force
+class Solution(object):
+    def licenseKeyFormatting(self, s, k):
+        # edge case
+        if not s or not k:
+            return s
+        s = s.replace(&quot;-&quot;, &quot;&quot;)
+        s_ = &quot;&quot;
+        for _ in s:
+            if _.isalpha():
+                s_ += _.upper()
+            else:
+                s_ += _
+
+        s_ = list(s_)
+        #print (&quot;s_ = &quot; + str(s_))
+        s_len = len(s)
+        remain = s_len % k
+        #res = []
+        res = &quot;&quot;
+        tmp = &quot;&quot;
+        # if s_len % k != 0
+        while remain != 0:
+            tmp += s_.pop(0)
+            remain -= 1
+        #res.append(tmp)
+        res += (tmp + &quot;-&quot;)
+        tmp = &quot;&quot;
+        # if s_len % k == 0
+        for i in range(0, len(s_), k):
+            #print (s_[i:i+k])
+            #res.append(s_[i:i+k])
+            res += (&quot;&quot;.join(s_[i:i+k]) + &quot;-&quot;)
+        return res.strip(&quot;-&quot;)
+</code></pre>
+<h3 id="2-8-repeated-string-match" tabindex="-1"><a class="header-anchor" href="#2-8-repeated-string-match"><span>2-8) Repeated String Match</span></a></h3>
+<pre><code class="language-python"># LC 686. Repeated String Match
+# V0
+# IDEA : BRUTE FORCE
+# https://leetcode.com/problems/repeated-string-match/discuss/108090/Intuitive-Python-2-liner
+# -&gt; if there is a sufficient solution, B must &quot;inside&quot; A
+# -&gt; Let n be the answer, 
+# -&gt; Let x be the theoretical lower bound, which is ceil(len(B)/len(A)).
+# -&gt; the value of n can br ONLY &quot;x&quot; or &quot;x + 1&quot;
+# -&gt; e.g. : in the case where len(B) is a multiple of len(A) like in A = &quot;abcd&quot; and B = &quot;cdabcdab&quot;) and not more. Because if B is already in A * n, B is definitely in A * (n + 1).
+# --&gt; So all we need to check whether are:
+#       -&gt; 1) B in A * x
+#         or
+#       -&gt; 2) B in A * (x+1)
+# -&gt; return -1 if above contitions are not met
+class Solution(object):
+    def repeatedStringMatch(self, A, B):
+        sa, sb = len(A), len(B)
+        x = 1
+        while (x - 1) * sa &lt;= 2 * max(sa, sb):
+            if B in A * x: 
+                return x
+            x += 1
+        return -1
+
+# V0'
+class Solution(object):
+    def repeatedStringMatch(self, a, b):
+        # edge case
+        if not a and b:
+            return -1
+        if (not a and not b) or (a == b) or (b in a):
+            return 1
+        res = 1
+        sa = len(a)
+        sb = len(b)
+        #while res * sa &lt;= 3 * max(sa, sb):  # this condition is OK as well
+        while (res-1) * sa &lt;= 2 * max(sa, sb):
+            a_ = res * a
+            if b in a_:
+                return res
+            res += 1
+        return -1
+</code></pre>
+<h3 id="2-9-count-binary-substrings" tabindex="-1"><a class="header-anchor" href="#2-9-count-binary-substrings"><span>2-9) Count Binary Substrings</span></a></h3>
+<pre><code class="language-python"># LC 696. Count Binary Substrings
+# V0 
+# IDEA :  Group By Character + continous sub-string
+# https://leetcode.com/problems/count-binary-substrings/solution/
+# https://blog.csdn.net/fuxuemingzhu/article/details/79183556
+# IDEA :
+#   -&gt; for x = “0110001111”, how many continuous &quot;0&quot; or &quot;1&quot;
+#   -&gt; [1,2,3,4]
+#   -&gt; So, if we want to find # of &quot;equal 0 and 1 sub string&quot;
+#   -&gt; all we need to do : min(3,4) = 3. e.g. (&quot;01&quot;, &quot;0011&quot;, &quot;000111&quot;)
+#   -&gt; since for every &quot;cross&quot; sub string (e.g. 0 then 1 or 1 then 0),
+#   -&gt; we can the &quot;number of same continuous 0 and 1&quot;  by min(groups[i-1], groups[i])
+class Solution(object):
+    def countBinarySubstrings(self, s):
+        groups = [1]
+        for i in range(1, len(s)):
+            if s[i-1] != s[i]:
+                groups.append(1)
+            else:
+                groups[-1] += 1
+
+        ans = 0
+        for i in range(1, len(groups)):
+            ans += min(groups[i-1], groups[i])
+        return ans
+
+# V1
+# IDEA :  Group By Character
+# https://leetcode.com/problems/count-binary-substrings/solution/
+class Solution(object):
+    def countBinarySubstrings(self, s):
+        groups = [1]
+        for i in range(1, len(s)):
+            if s[i-1] != s[i]:
+                groups.append(1)
+            else:
+                groups[-1] += 1
+
+        ans = 0
+        for i in range(1, len(groups)):
+            ans += min(groups[i-1], groups[i])
+        return ans
+
+# V1''
+# IDEA :  Linear Scan
+# https://leetcode.com/problems/count-binary-substrings/solution/
+class Solution(object):
+    def countBinarySubstrings(self, s):
+        ans, prev, cur = 0, 0, 1
+        for i in range(1, len(s)):
+            if s[i-1] != s[i]:
+                ans += min(prev, cur)
+                prev, cur = cur, 1
+            else:
+                cur += 1
+
+        return ans + min(prev, cur)
+</code></pre>
+<h3 id="2-10-roman-to-integer" tabindex="-1"><a class="header-anchor" href="#2-10-roman-to-integer"><span>2-10) Roman to Integer</span></a></h3>
+<pre><code class="language-python"># LC 13. Roman to Integer
+# V0
+class Solution(object):
+    def romanToInt(self, s):
+        # helper ref
+        roman = {&quot;I&quot;:1, &quot;V&quot;:5, &quot;X&quot;:10, &quot;L&quot;:50, &quot;C&quot;:100, &quot;D&quot;:500, &quot;M&quot;:1000}
+        # NOTE : we init res as below
+        res = roman[s[-1]]
+        N = len(s)
+        &quot;&quot;&quot;
+        2 cases:
+            case 1) XY, X &gt; Y -&gt; res = X - Y
+            case 2) XY, X &lt; Y -&gt; res = X + Y
+        &quot;&quot;&quot;
+        for i in range(N - 2, -1, -1):
+            # case 1
+            if roman[s[i]] &lt; roman[s[i + 1]]:
+                res -= roman[s[i]]
+            # case 2
+            else:
+                res += roman[s[i]]
+        return res
+</code></pre>
+<h3 id="2-11-ount-unique-characters-of-all-substrings-of-a-given-string" tabindex="-1"><a class="header-anchor" href="#2-11-ount-unique-characters-of-all-substrings-of-a-given-string"><span>2-11) ount Unique Characters of All Substrings of a Given String</span></a></h3>
+<pre><code class="language-python"># LC 828. Count Unique Characters of All Substrings of a Given String
+# V0
+class Solution(object):
+     def uniqueLetterString(self, S):
+            index = {c: [-1, -1] for c in 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'}
+            res = 0
+            for i, c in enumerate(S):
+                k, j = index[c]
+                res += (i - j) * (j - k)
+                index[c] = [j, i]
+            for c in index:
+                k, j = index[c]
+                res += (len(S) - j) * (j - k)
+            return res % (10**9 + 7)
+
+# V1
+# https://leetcode.com/problems/count-unique-characters-of-all-substrings-of-a-given-string/discuss/128952/C%2B%2BJavaPython-One-pass-O(N)
+# IDEA :
+# Let's think about how a character can be found as a unique character.
+# Think about string &quot;XAXAXXAX&quot; and focus on making the second &quot;A&quot; a unique character.
+# We can take &quot;XA(XAXX)AX&quot; and between &quot;()&quot; is our substring.
+# We can see here, to make the second &quot;A&quot; counted as a uniq character, we need to:
+# insert &quot;(&quot; somewhere between the first and second A
+# insert &quot;)&quot; somewhere between the second and third A
+# For step 1 we have &quot;A(XA&quot; and &quot;AX(A&quot;, 2 possibility.
+# For step 2 we have &quot;A)XXA&quot;, &quot;AX)XA&quot; and &quot;AXX)A&quot;, 3 possibilities.
+# So there are in total 2 * 3 = 6 ways to make the second A a unique character in a substring.
+# In other words, there are only 6 substring, in which this A contribute 1 point as unique string.
+# Instead of counting all unique characters and struggling with all possible substrings,
+# we can count for every char in S, how many ways to be found as a unique char.
+# We count and sum, and it will be out answer.
+class Solution(object):
+     def uniqueLetterString(self, S):
+            index = {c: [-1, -1] for c in string.ascii_uppercase}
+            res = 0
+            for i, c in enumerate(S):
+                k, j = index[c]
+                res += (i - j) * (j - k)
+                index[c] = [j, i]
+            for c in index:
+                k, j = index[c]
+                res += (len(S) - j) * (j - k)
+            return res % (10**9 + 7)
+</code></pre>
+<h3 id="2-12-palindromic-substrings" tabindex="-1"><a class="header-anchor" href="#2-12-palindromic-substrings"><span>2-12) Palindromic Substrings</span></a></h3>
+<pre><code class="language-python"># LC 647. Palindromic Substrings
+# V0
+# IDEA : BRUTE FORCE
+class Solution(object):
+    def countSubstrings(self, s):
+        count = 0
+        # NOTE: since i from 0 to len(s) - 1, so for j we need to &quot;+1&quot; then can get go throgh all elements in str
+        for i in range(len(s)):
+            # Note : for j we need to &quot;+1&quot;
+            for j in range(i+1, len(s)+1):
+                if s[i:j] == s[i:j][::-1]:
+                    count += 1
+        return count
+</code></pre>
+<h3 id="2-13-repeated-substring-pattern" tabindex="-1"><a class="header-anchor" href="#2-13-repeated-substring-pattern"><span>2-13) Repeated Substring Pattern</span></a></h3>
+<pre><code class="language-python"># LC 459. Repeated Substring Pattern
+# V0
+# IDEA : # only have to go through till HALF of s's length, since it's not possbile to find the SubstringPattern if len(s[:x]) &gt; size//2
+class Solution(object):
+    def repeatedSubstringPattern(self, s):
+        _len_s = len(s)
+        i = 0
+        tmp = &quot;&quot;
+        while i &lt; _len_s:
+            if i == 0:
+                multiply = 0
+            if i != 0:
+                multiply = _len_s // i
+            if multiply * tmp == s:
+                return True
+            if i &gt; _len_s // 2:
+                return False
+            tmp += s[i]
+            i += 1
+        return False
+</code></pre>
+<h3 id="2-14-reverse-only-letters" tabindex="-1"><a class="header-anchor" href="#2-14-reverse-only-letters"><span>2-14) Reverse Only Letters</span></a></h3>
+<p><strong>Pattern: Selective Character Reversal</strong></p>
+<ul>
+<li>Reverse only alphabetic characters</li>
+<li>Keep non-alphabetic characters in original positions</li>
+<li>Two approaches: Two Pointers or Stack</li>
+</ul>
+<h4 id="approach-1-two-pointers-optimal" tabindex="-1"><a class="header-anchor" href="#approach-1-two-pointers-optimal"><span>Approach 1: Two Pointers (Optimal)</span></a></h4>
+<pre><code class="language-java">// java
+// LC 917. Reverse Only Letters
+/**
+ * Pattern: Two pointers with selective swap
+ *
+ * Key Technique:
+ *   - Use Character.isLetter() to check if char is alphabetic
+ *   - Skip non-letters on both sides
+ *   - Swap only when both pointers point to letters
+ *
+ * Example:
+ *   s = &quot;ab-cd&quot;
+ *
+ *   [a,b,-,c,d]    l=0, r=4, both letters, swap
+ *    l       r     -&gt; [d,b,-,c,a]
+ *
+ *   [d,b,-,c,a]    l=1, r=3, both letters, swap
+ *      l   r       -&gt; [d,c,-,b,a]
+ *
+ *   [d,c,-,b,a]    l=2, r=2, l &gt;= r, done!
+ *        lr
+ *
+ * Example 2:
+ *   s = &quot;a-bC-dEf-ghIj&quot;
+ *
+ *   [a,-,b,C,-,d,E,f,-,g,h,I,j]
+ *    l                       r    both letters, swap
+ *   -&gt; [j,-,b,C,-,d,E,f,-,g,h,I,a]
+ *
+ *   [j,-,b,C,-,d,E,f,-,g,h,I,a]
+ *        l                   r    both letters, swap
+ *   -&gt; [j,-,I,C,-,d,E,f,-,g,h,b,a]
+ *   ... continue ...
+ *
+ * Time: O(N), Space: O(N) for char array
+ */
+public String reverseOnlyLetters(String s) {
+    // Convert to char array for easy swapping
+    char[] arr = s.toCharArray();
+    int l = 0;
+    int r = s.length() - 1;
+
+    while (l &lt; r) {
+        /** NOTE !!!
+         *
+         *  Character.isLetter() - Key method to check if char is alphabetic
+         *
+         *  IMPORTANT: Check both conditions:
+         *    1. l &lt; r (pointers haven't crossed)
+         *    2. !Character.isLetter(arr[l]) (current char is not letter)
+         */
+        // Move left pointer until it hits a letter
+        while (l &lt; r &amp;&amp; !Character.isLetter(arr[l])) {
+            l++;
+        }
+
+        // Move right pointer until it hits a letter
+        while (l &lt; r &amp;&amp; !Character.isLetter(arr[r])) {
+            r--;
+        }
+
+        // Swap the letters
+        char tmp = arr[l];
+        arr[l] = arr[r];
+        arr[r] = tmp;
+
+        // Move pointers inward
+        l++;
+        r--;
+    }
+
+    return new String(arr);
+}
+</code></pre>
+<p><strong>Character Validation Methods:</strong></p>
+<pre><code class="language-java">// java
+// Key methods for character checking
+
+char x = 'a';
+
+// Check if alphabetic letter (a-z, A-Z)
+Character.isLetter(x);         // true
+
+// Check if digit (0-9)
+Character.isDigit('5');        // true
+
+// Check if letter or digit
+Character.isLetterOrDigit(x);  // true
+
+// Check if whitespace
+Character.isWhitespace(' ');   // true
+
+// Case conversion
+Character.toLowerCase('A');    // 'a'
+Character.toUpperCase('b');    // 'B'
+</code></pre>
+<pre><code class="language-python"># python
+# Character checking methods
+
+char = 'a'
+
+# Check if alphabetic
+char.isalpha()      # True
+
+# Check if digit
+'5'.isdigit()       # True
+
+# Check if alphanumeric
+char.isalnum()      # True
+
+# Check if whitespace
+' '.isspace()       # True
+
+# Case conversion
+char.upper()        # 'A'
+char.lower()        # 'a'
+</code></pre>
+<h4 id="approach-2-stack-filo" tabindex="-1"><a class="header-anchor" href="#approach-2-stack-filo"><span>Approach 2: Stack (FILO)</span></a></h4>
+<pre><code class="language-java">// java
+// LC 917. Reverse Only Letters
+/**  IDEA: Stack-based reversal (FILO - First In Last Out)
+ *
+ *  Steps:
+ *   1. First pass: Loop over string, save only LETTERS in stack
+ *   2. Second pass: Loop over string again
+ *      - For NON-letters: append in original order
+ *      - For letters: pop from stack (reverse order due to FILO)
+ *
+ * Example:
+ *   s = &quot;ab-cd&quot;
+ *
+ *   First pass: Stack = [a, b, c, d]  (top -&gt; d)
+ *
+ *   Second pass:
+ *     i=0, 'a' is letter  -&gt; pop 'd' -&gt; result = &quot;d&quot;
+ *     i=1, 'b' is letter  -&gt; pop 'c' -&gt; result = &quot;dc&quot;
+ *     i=2, '-' NOT letter -&gt; append '-' -&gt; result = &quot;dc-&quot;
+ *     i=3, 'c' is letter  -&gt; pop 'b' -&gt; result = &quot;dc-b&quot;
+ *     i=4, 'd' is letter  -&gt; pop 'a' -&gt; result = &quot;dc-ba&quot;
+ *
+ * Time: O(N), Space: O(N) for stack
+ */
+public String reverseOnlyLetters(String s) {
+    // NOTE !!! Stack: FILO (First In, Last Out)
+    Stack&lt;Character&gt; letters = new Stack&lt;&gt;();
+
+    // First pass: Save all letters in stack
+    for (char c : s.toCharArray()) {
+        if (Character.isLetter(c)) {
+            letters.push(c);
+        }
+    }
+
+    StringBuilder ans = new StringBuilder();
+
+    // Second pass: Build result
+    for (char c : s.toCharArray()) {
+        if (Character.isLetter(c)) {
+            // For letters: pop from stack (reversed order)
+            ans.append(letters.pop());
+        } else {
+            // For non-letters: keep original position
+            ans.append(c);
+        }
+    }
+
+    return ans.toString();
+}
+</code></pre>
+<p><strong>Stack Pattern Visualization:</strong></p>
+<pre><code>Input: &quot;Test1ng-Leet=code-Q!&quot;
+
+Step 1: Build Stack (push letters only)
+Stack building:
+  T -&gt; [T]
+  e -&gt; [T, e]
+  s -&gt; [T, e, s]
+  t -&gt; [T, e, s, t]
+  (skip '1')
+  n -&gt; [T, e, s, t, n]
+  g -&gt; [T, e, s, t, n, g]
+  (skip '-')
+  L -&gt; [T, e, s, t, n, g, L]
+  ... continue ...
+
+Final Stack (bottom to top):
+  [T, e, s, t, n, g, L, e, e, t, c, o, d, e, Q]
+   ^                                          ^
+   bottom                                    top
+
+Step 2: Build Result (pop letters, keep non-letters)
+  Position 0: 'T' is letter -&gt; pop 'Q' -&gt; result = &quot;Q&quot;
+  Position 1: 'e' is letter -&gt; pop 'e' -&gt; result = &quot;Qe&quot;
+  Position 2: 's' is letter -&gt; pop 'd' -&gt; result = &quot;Qed&quot;
+  Position 3: 't' is letter -&gt; pop 'o' -&gt; result = &quot;Qedo&quot;
+  Position 4: '1' NOT letter -&gt; append '1' -&gt; result = &quot;Qedo1&quot;
+  Position 5: 'n' is letter -&gt; pop 'c' -&gt; result = &quot;Qedo1c&quot;
+  Position 6: 'g' is letter -&gt; pop 't' -&gt; result = &quot;Qedo1ct&quot;
+  Position 7: '-' NOT letter -&gt; append '-' -&gt; result = &quot;Qedo1ct-&quot;
+  ... continue ...
+
+Final: &quot;Qedo1ct-eeLg=ntse-T!&quot;
+</code></pre>
+<p><strong>Comparison:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Approach</th>
+<th>Time</th>
+<th>Space</th>
+<th>When to Use</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Two Pointers</td>
+<td>O(N)</td>
+<td>O(N)</td>
+<td>In-place modification, optimal</td>
+</tr>
+<tr>
+<td>Stack</td>
+<td>O(N)</td>
+<td>O(N)</td>
+<td>Need to preserve original, clearer logic</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Similar Problems:</strong></p>
+<ul>
+<li>LC 917 Reverse Only Letters (this pattern)</li>
+<li>LC 345 Reverse Vowels of a String (selective reversal)</li>
+<li>LC 344 Reverse String (full reversal)</li>
+<li>LC 541 Reverse String II (selective ranges)</li>
+<li>LC 151 Reverse Words in a String (word-level reversal)</li>
+</ul>
+<h3 id="2-15-verifying-an-alien-dictionary" tabindex="-1"><a class="header-anchor" href="#2-15-verifying-an-alien-dictionary"><span>2-15) Verifying an Alien Dictionary</span></a></h3>
+<p><strong>Pattern: Custom Lexicographic Order Comparison</strong></p>
+<ul>
+<li>Map each character to its rank in the alien order</li>
+<li>Compare adjacent words character by character</li>
+<li>Handle prefix case: shorter word must come first</li>
+</ul>
+<h4 id="approach-array-mapping-adjacent-word-comparison" tabindex="-1"><a class="header-anchor" href="#approach-array-mapping-adjacent-word-comparison"><span>Approach: Array Mapping + Adjacent Word Comparison</span></a></h4>
+<pre><code class="language-java">// java
+// LC 953. Verifying an Alien Dictionary
+/**
+ * Pattern: Custom order mapping + pairwise comparison
+ *
+ * Key Technique:
+ *   - Use int[26] array to map each character to its alien rank (O(1) lookup)
+ *   - Compare adjacent word pairs only (if each pair is sorted, whole list is sorted)
+ *   - On first differing character, compare their ranks to determine order
+ *   - If one word is a prefix of the other, shorter word must come first
+ *
+ * Example:
+ *   words = [&quot;hello&quot;,&quot;leetcode&quot;], order = &quot;hlabcdefgijkmnopqrstuvwxyz&quot;
+ *
+ *   Alien rank mapping:
+ *     h-&gt;0, l-&gt;1, a-&gt;2, b-&gt;3, c-&gt;4, ...
+ *
+ *   Compare &quot;hello&quot; vs &quot;leetcode&quot;:
+ *     h(rank=0) vs l(rank=1) -&gt; 0 &lt; 1 -&gt; sorted!
+ *
+ * Example 2:
+ *   words = [&quot;apple&quot;,&quot;app&quot;], order = &quot;abcdefghijklmnopqrstuvwxyz&quot;
+ *
+ *   Compare &quot;apple&quot; vs &quot;app&quot;:
+ *     a==a, p==p, p==p -&gt; all equal up to minLen
+ *     len(&quot;apple&quot;)=5 &gt; len(&quot;app&quot;)=3 -&gt; NOT sorted!
+ *     (longer word cannot come before its prefix)
+ *
+ * Time: O(M) where M = total characters across all words
+ * Space: O(1) - fixed size array of 26
+ */
+public boolean isAlienSorted(String[] words, String order) {
+    // 1. Map each character to its alien rank for O(1) lookup
+    int[] alienOrder = new int[26];
+    for (int i = 0; i &lt; order.length(); i++) {
+        alienOrder[order.charAt(i) - 'a'] = i;
+    }
+
+    // 2. Compare adjacent words
+    for (int i = 0; i &lt; words.length - 1; i++) {
+        if (!isSorted(words[i], words[i + 1], alienOrder)) {
+            return false;
+        }
+    }
+
+    return true;
+}
+
+private boolean isSorted(String w1, String w2, int[] alienOrder) {
+    int len1 = w1.length();
+    int len2 = w2.length();
+    int minLen = Math.min(len1, len2);
+
+    for (int i = 0; i &lt; minLen; i++) {
+        char c1 = w1.charAt(i);
+        char c2 = w2.charAt(i);
+
+        if (c1 != c2) {
+            // If characters differ, the first one must have a smaller rank
+            return alienOrder[c1 - 'a'] &lt; alienOrder[c2 - 'a'];
+        }
+    }
+
+    // If we reach here, one word is a prefix of the other.
+    // &quot;apple&quot; is NOT allowed to come before &quot;app&quot;.
+    // The shorter word must come first.
+    return len1 &lt;= len2;
+}
+</code></pre>
+<p><strong>Key Insights:</strong></p>
+<pre><code>Why int[26] array instead of HashMap?
+  - Characters are lowercase English letters only (a-z)
+  - alienOrder[ch - 'a'] = rank  -&gt;  O(1) lookup, no boxing overhead
+  - Classic trick: char - 'a' maps 'a'-&gt;0, 'b'-&gt;1, ..., 'z'-&gt;25
+
+Why compare only adjacent pairs?
+  - If words[0] &lt;= words[1] and words[1] &lt;= words[2], then words[0] &lt;= words[2]
+  - Transitivity means we only need N-1 comparisons
+
+Why return len1 &lt;= len2 at the end?
+  - If all characters match up to minLen, the shorter word must come first
+  - &quot;app&quot; &lt; &quot;apple&quot; in any lexicographic order
+  - &quot;apple&quot; before &quot;app&quot; is INVALID (Example 3 in problem)
+</code></pre>
+<p><strong>Similar Problems:</strong></p>
+<ul>
+<li>LC 953 Verifying an Alien Dictionary (this pattern)</li>
+<li>LC 269 Alien Dictionary (topological sort, harder)</li>
+<li>LC 242 Valid Anagram (character frequency mapping)</li>
+</ul>
+<h3 id="2-16-longest-word-in-dictionary-through-deleting" tabindex="-1"><a class="header-anchor" href="#2-16-longest-word-in-dictionary-through-deleting"><span>2-16) Longest Word in Dictionary through Deleting</span></a></h3>
+<p><strong>Pattern: Subsequence Check + Best Candidate Tracking</strong></p>
+<ul>
+<li>Check if a dictionary word can be formed by deleting characters from <code>s</code> (i.e., is a subsequence of <code>s</code>)</li>
+<li>Track the best result: longest length wins, ties broken by lexicographic order</li>
+<li>Two-pointer subsequence check is the core technique</li>
+</ul>
+<h4 id="approach-1-iterate-subsequence-check-in-place-best-tracking-optimal" tabindex="-1"><a class="header-anchor" href="#approach-1-iterate-subsequence-check-in-place-best-tracking-optimal"><span>Approach 1: Iterate + Subsequence Check + In-place Best Tracking (Optimal)</span></a></h4>
+<pre><code class="language-java">// java
+// LC 524. Longest Word in Dictionary through Deleting
+/**
+ * Pattern: Two-pointer subsequence check + greedy best tracking
+ *
+ * Core Idea:
+ *   - For each word in dictionary, check if it's a subsequence of s
+ *   - Subsequence check: two pointers, one on s and one on word
+ *     - If chars match, advance both pointers
+ *     - If not, only advance s pointer (skip/delete char from s)
+ *     - Word is subsequence if its pointer reaches the end
+ *   - Track best candidate: longer length wins, same length -&gt; smaller lexicographic order
+ *
+ * Example:
+ *   s = &quot;abpcplea&quot;, dictionary = [&quot;ale&quot;,&quot;apple&quot;,&quot;monkey&quot;,&quot;plea&quot;]
+ *
+ *   Check &quot;ale&quot;:    a-b-p-c-p-l-e-a
+ *                   ^         ^ ^       -&gt; match a,l,e -&gt; subsequence ✅ (len=3)
+ *   Check &quot;apple&quot;:  a-b-p-c-p-l-e-a
+ *                   ^ ^ ^   ^ ^         -&gt; match a,p,p,l,e -&gt; subsequence ✅ (len=5)
+ *   Check &quot;monkey&quot;: no 'm' early enough -&gt; ❌
+ *   Check &quot;plea&quot;:   a-b-p-c-p-l-e-a
+ *                       ^     ^ ^ ^     -&gt; match p,l,e,a -&gt; subsequence ✅ (len=4)
+ *
+ *   Best: &quot;apple&quot; (longest at len=5)
+ *
+ * Time: O(N * M) where N = dictionary size, M = length of s
+ * Space: O(1) extra (just pointers and result string)
+ */
+public String findLongestWord(String s, List&lt;String&gt; dictionary) {
+    String res = &quot;&quot;;
+
+    for (String word : dictionary) {
+        // 1. Check if word is a subsequence of s
+        if (isSubsequence(s, word)) {
+            // 2. Update best: longer wins, ties broken by lexicographic order
+            /**
+             * NOTE !!!
+             *
+             *  word.compareTo(res) &lt; 0 means word is lexicographically SMALLER
+             *  We want the smallest lexicographic order among same-length candidates
+             */
+            if (word.length() &gt; res.length() ||
+                    (word.length() == res.length() &amp;&amp; word.compareTo(res) &lt; 0)) {
+                res = word;
+            }
+        }
+    }
+    return res;
+}
+
+/**
+ * Two-pointer subsequence check
+ *
+ *  s = source string (we &quot;delete&quot; chars from this)
+ *  target = dictionary word (check if this is a subsequence of s)
+ *
+ *  i moves through s (always advances)
+ *  j moves through target (advances only on match)
+ */
+private boolean isSubsequence(String s, String target) {
+    int i = 0, j = 0;
+    while (i &lt; s.length() &amp;&amp; j &lt; target.length()) {
+        if (s.charAt(i) == target.charAt(j)) {
+            j++; // Match found, advance target pointer
+        }
+        i++; // Always advance source pointer
+    }
+    // If j reached end, all chars of target were found in order
+    return j == target.length();
+}
+</code></pre>
+<h4 id="approach-2-sort-first-return-first-match" tabindex="-1"><a class="header-anchor" href="#approach-2-sort-first-return-first-match"><span>Approach 2: Sort First + Return First Match</span></a></h4>
+<pre><code class="language-java">// java
+// LC 524. Longest Word in Dictionary through Deleting
+/**
+ * Pattern: Pre-sort dictionary by (length DESC, lexicographic ASC),
+ *          then return the first subsequence match
+ *
+ * Key Trick:
+ *   - Sort so that longest words come first
+ *   - Among same-length words, lexicographically smaller comes first
+ *   - First valid subsequence match IS the answer (no need to track best)
+ *
+ * Time: O(N log N * K + N * M)  where K = avg word length (for sort comparisons)
+ * Space: O(log N) for sorting
+ */
+public String findLongestWord_sort(String s, List&lt;String&gt; d) {
+    // Sort: longer first, then lexicographic order for ties
+    Collections.sort(d, (s1, s2) -&gt;
+        s2.length() != s1.length() ? s2.length() - s1.length() : s1.compareTo(s2)
+    );
+
+    for (String str : d) {
+        if (isSubsequence(s, str))
+            return str;  // First match is guaranteed to be the best
+    }
+    return &quot;&quot;;
+}
+</code></pre>
+<p><strong>Key Insights:</strong></p>
+<pre><code>Two-pointer subsequence check:
+  - i (source pointer) ALWAYS advances
+  - j (target pointer) advances ONLY on character match
+  - If j == target.length() at the end, target is a subsequence
+  - This is the same pattern as LC 392 (Is Subsequence)
+
+Best candidate selection (without sorting):
+  - word.length() &gt; res.length()  -&gt;  longer is always better
+  - word.compareTo(res) &lt; 0       -&gt;  lexicographically smaller wins ties
+  - Combined: no need to sort the dictionary at all
+
+Sorting approach trade-off:
+  - Pro: simpler logic (return first match)
+  - Con: O(N log N) sorting overhead
+  - Approach 1 (no sort) is generally preferred
+</code></pre>
+<p><strong>Similar Problems:</strong></p>
+<ul>
+<li>LC 524 Longest Word in Dictionary through Deleting (this pattern)</li>
+<li>LC 392 Is Subsequence (core two-pointer subsequence check)</li>
+<li>LC 720 Longest Word in Dictionary (prefix-based, different pattern)</li>
+<li>LC 1055 Shortest Way to Form String (subsequence with multiple passes)</li>
+</ul>
+
+      </div>
+      <div class="cheatsheet-footer">
+        <a href="../cheatsheets.html" class="back-link">← Back to Cheat Sheets</a>
+        <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/string.md" class="github-edit" target="_blank">
+          Edit on GitHub →
+        </a>
+      </div>
+    <nav class="prev-next"><a href="streaming_algorithms.html" class="prev-link">← Streaming Algorithms</a><a href="string_matching_kmp_rolling_hash.html" class="next-link">String Matching Kmp Rolling Hash →</a></nav>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>CS_basics - Computer Science Fundamentals & Interview Preparation</p>
+      <p>
+        <a href="https://github.com/yennanliu/CS_basics">GitHub</a> •
+        <a href="https://github.com/yennanliu/CS_basics/tree/master/doc">Documentation</a> •
+        <a href="https://github.com/yennanliu/CS_basics/issues">Report Issues</a>
+      </p>
+    </div>
+  </footer>
+</body>
+</html>

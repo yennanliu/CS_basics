@@ -1,0 +1,461 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Math - CS_basics</title>
+  <meta name="description" content="Computer Science fundamentals: algorithms, data structures, system design, and LeetCode solutions">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>CS</text></svg>">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="../vendor/fonts.css">
+  <link rel="stylesheet" href="../vendor/highlight/github-dark.min.css">
+  <script src="../vendor/highlight/highlight.min.js"></script>
+  <script>
+  // Apply theme before render to prevent flash
+  (function() {
+    var saved = localStorage.getItem('theme');
+    if (saved === 'dark' || (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      document.documentElement.setAttribute('data-theme', 'dark');
+    }
+  })();
+  </script>
+  <script>document.addEventListener('DOMContentLoaded', function() {
+    hljs.highlightAll();
+    document.querySelectorAll('pre code').forEach(function(codeEl) {
+      var pre = codeEl.parentElement;
+      var lang = '';
+      var cls = codeEl.className || '';
+      var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
+      if (m) lang = m[1];
+      var wrapper = document.createElement('div');
+      wrapper.className = 'code-block-wrapper';
+      pre.parentNode.insertBefore(wrapper, pre);
+      var header = document.createElement('div');
+      header.className = 'code-block-header';
+      if (lang) {
+        var label = document.createElement('span');
+        label.className = 'code-lang-label';
+        label.textContent = lang;
+        header.appendChild(label);
+      } else {
+        header.appendChild(document.createElement('span'));
+      }
+      var btn = document.createElement('button');
+      btn.className = 'copy-btn';
+      btn.textContent = 'Copy';
+      btn.addEventListener('click', function() {
+        navigator.clipboard.writeText(codeEl.textContent).then(function() {
+          btn.textContent = 'Copied!';
+          btn.classList.add('copied');
+          setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+        });
+      });
+      header.appendChild(btn);
+      wrapper.appendChild(header);
+      wrapper.appendChild(pre);
+    });
+    document.querySelectorAll('table').forEach(function(table) {
+      if (!table.parentElement.classList.contains('table-wrap')) {
+        var wrapper = document.createElement('div');
+        wrapper.className = 'table-wrap';
+        table.parentNode.insertBefore(wrapper, table);
+        wrapper.appendChild(table);
+      }
+    });
+    // Reading progress bar
+    var progressBar = document.getElementById('reading-progress');
+    if (progressBar) {
+      window.addEventListener('scroll', function() {
+        var winScroll = document.documentElement.scrollTop;
+        var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        progressBar.style.width = height > 0 ? (winScroll / height * 100) + '%' : '0%';
+      });
+    }
+    // Dark mode toggle
+    var toggle = document.getElementById('theme-toggle');
+    if (toggle) {
+      var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      toggle.textContent = isDark ? '☀️' : '🌙';
+      toggle.addEventListener('click', function() {
+        var dark = document.documentElement.getAttribute('data-theme') === 'dark';
+        if (dark) {
+          document.documentElement.removeAttribute('data-theme');
+          localStorage.setItem('theme', 'light');
+          toggle.textContent = '🌙';
+        } else {
+          document.documentElement.setAttribute('data-theme', 'dark');
+          localStorage.setItem('theme', 'dark');
+          toggle.textContent = '☀️';
+        }
+      });
+    }
+  });</script>
+</head>
+<body>
+  <div class="progress-container"><div class="progress-bar" id="reading-progress"></div></div>
+  <nav class="navbar">
+    <div class="container">
+      <div class="nav-brand">
+        <span class="nav-icon">💻</span>
+        <span class="nav-title">CS_basics</span>
+      </div>
+      <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+      <div class="nav-links">
+        <a href="../index.html" class="">Home</a>
+        <a href="../cheatsheets.html" class="active">Cheat Sheets</a>
+        <a href="../patterns.html" class="">Pattern Recognition</a>
+        <a href="../faqs.html" class="">FAQs</a>
+        <a href="../resources.html" class="">Resources</a>
+        <a href="../lc-explorer.html" class="">LC Explorer</a>
+        <a href="../lc-random-picker.html" class="">🎲 Random Picker</a>
+        <a href="../algo_demo/index.html" class="">Visualizer</a>
+        <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">&#127769;</button>
+        <a href="https://github.com/yennanliu/CS_basics" target="_blank" class="github-link" aria-label="GitHub">
+          <svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor">
+            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container">
+    <div class="content">
+      
+      <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">Math</span></nav>
+      <div class="cheatsheet-header">
+        <h1>Math</h1>
+        <span class="last-updated">Last updated: May 21, 2025</span>
+      </div>
+      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#0-concept">0) Concept</a></li><li class="toc-sub"><a href="#0-1-types">0-1) Types</a></li><li class="toc-sub"><a href="#0-2-pattern">0-2) Pattern</a></li><li><a href="#1-general-form">1) General form</a></li><li class="toc-sub"><a href="#1-1-basic-op">1-1) Basic OP</a></li><li><a href="#2-lc-example">2) LC Example</a></li><li class="toc-sub"><a href="#2-1-excel-sheet-column-title">2-1) Excel Sheet Column Title</a></li><li class="toc-sub"><a href="#2-2-solve-the-equation">2-2) Solve the Equation</a></li><li class="toc-sub"><a href="#2-3-roman-to-integer">2-3) Roman to Integer</a></li></ul></div>
+      <div class="cheatsheet-content">
+        <h1 id="math" tabindex="-1"><a class="header-anchor" href="#math"><span>Math</span></a></h1>
+<h2 id="0-concept" tabindex="-1"><a class="header-anchor" href="#0-concept"><span>0) Concept</span></a></h2>
+<h3 id="0-1-types" tabindex="-1"><a class="header-anchor" href="#0-1-types"><span>0-1) Types</span></a></h3>
+<h3 id="0-2-pattern" tabindex="-1"><a class="header-anchor" href="#0-2-pattern"><span>0-2) Pattern</span></a></h3>
+<h2 id="1-general-form" tabindex="-1"><a class="header-anchor" href="#1-general-form"><span>1) General form</span></a></h2>
+<h3 id="1-1-basic-op" tabindex="-1"><a class="header-anchor" href="#1-1-basic-op"><span>1-1) Basic OP</span></a></h3>
+<h4 id="1-1-0-transform-10-based-interger-to-n-based" tabindex="-1"><a class="header-anchor" href="#1-1-0-transform-10-based-interger-to-n-based"><span>1-1-0) transform <code>10 based interger to N based</code></span></a></h4>
+<ul>
+<li>to 4 base</li>
+<li>to 7 base …</li>
+<li><a href="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/convert_int_n_base.png">https://github.com/yennanliu/CS_basics/blob/master/doc/pic/convert_int_n_base.png</a></li>
+</ul>
+<pre><code class="language-python"># python
+# 504. Base 7
+
+# V0
+# IDEA : MATH : 10 based -&gt; 7 based
+&quot;&quot;&quot;
+### NOTE :
+    1) for negative num : transform to positive int first, do 10 based -&gt; 7 based op
+                          then add &quot;-&quot; at beginning
+    2) for positive num : do 10 based -&gt; 7 based op
+                        -&gt; keep checking if num % N == 0
+                        -&gt; if not == 0, keep do  num = num % N, and append cur result to res
+                        -&gt; reverse res
+                        -&gt; make array to string
+                        -&gt; return result
+    3) example:
+        100 (10 based) -&gt; &quot;202&quot; (7 based)
+
+        tmp = 100
+        a, b = divmod(tmp, 7)  -&gt; a = 14, b = 2,  tmp  = 14
+        a, b = divmod(tmp, 7)  -&gt; a= 2, b = 0, tmp = 2
+        a, b = divmod(tmp, 7)  -&gt; a = 0, b = 2
+
+        -&gt; so res = [2,0,2]
+&quot;&quot;&quot;
+
+# V1
+class Solution(object):
+    def convertToBase7(self, num):
+        # edge case
+        if num == 0:
+            return '0'
+        tmp = abs(num)
+        res = []
+        while tmp &gt; 0:
+            a, b = divmod(tmp, 7)
+            res.append(str(b))
+            tmp = a
+        res = res[::-1]
+        _res = &quot;&quot;.join(res)
+        if num &gt; 0:
+            return _res
+        else:
+            return &quot;-&quot; + _res
+
+# test
+#----------------
+# exmaple :
+# 7 base
+# 20 -&gt; 26
+# -100 -&gt; -202
+#----------------
+num = 20   # 26
+num = -100 # -202
+s = Solution()
+r = s.convertToBase7(num)
+print (r)
+
+# V1
+# https://www.itread01.com/content/1544603062.html
+# https://kknews.cc/code/jlv38qp.html
+class Solution(object):
+    def convertToBase7(self, num):
+        # edge case
+        if num == 0:
+            return '0'
+        tmp = abs(num)
+        res = []
+        while tmp:
+            i = tmp % 7
+            res.append(str(i))
+            tmp = tmp // 7
+        res = res[::-1]
+        _res = &quot;&quot;.join(res)
+        if num &gt; 0:
+            return _res
+        else:
+            return &quot;-&quot; + _res 
+</code></pre>
+<h4 id="1-1-0-transform-n-based-integer-to-10-based" tabindex="-1"><a class="header-anchor" href="#1-1-0-transform-n-based-integer-to-10-based"><span>1-1-0’) transform <code>N based integer to 10 based</code></span></a></h4>
+<pre><code class="language-python"># V1
+# LC 1022. Sum of Root To Leaf Binary Numbers
+def convertToBaseN(num, n):
+    return int(str(num), n)
+
+In [34]: int(&quot;100&quot;,7)
+Out[34]: 49
+
+In [35]: int(&quot;14&quot;,7)
+Out[35]: 11
+
+In [36]: int(&quot;66&quot;,7)
+Out[36]: 48
+</code></pre>
+<h4 id="1-1-1-check-prime-number" tabindex="-1"><a class="header-anchor" href="#1-1-1-check-prime-number"><span>1-1-1) check prime number</span></a></h4>
+<pre><code class="language-python"># LC 762 Prime Number of Set Bits in Binary Representation
+def check_prime(x):
+    if x &lt;= 1:
+        return False
+    for i in range(2, int(x**(0.5)+1)):
+        if x % i == 0:
+            return False
+    return True
+</code></pre>
+<h4 id="1-1-2-count-prime-number" tabindex="-1"><a class="header-anchor" href="#1-1-2-count-prime-number"><span>1-1-2) count prime number</span></a></h4>
+<pre><code class="language-python"># LC 204 Count Primes
+# V0
+# IDEA : set
+# https://leetcode.com/problems/count-primes/discuss/1343795/python%3A-sieve-of-eretosthenes
+# prime(x) : number of prime in [0, x]
+# prime(0) = 0
+# prime(1) = 0
+# prime(2) = 0
+# prime(3) = 1
+# prime(4) = 2
+# prime(5) = 3
+class Solution:
+    def countPrimes(self, n):
+        # using sieve of eretosthenes algorithm
+        if n &lt; 2: return 0
+        nonprimes = set()
+        for i in range(2, round(n**(1/2))+1):
+            if i not in nonprimes:
+                for j in range(i*i, n, i):
+                    nonprimes.add(j)
+        return n - len(nonprimes) - 2  # remove prime(1), prime(2)
+</code></pre>
+<pre><code class="language-java">// java
+// algorithm book (labu) p.362
+// V1
+int countPrimes(int n){
+    boolean[] isPrime = new boolean[n];
+
+    // init array to true
+    Arrays.fill(isPrime, true);
+
+    // prime number start from 2
+    for (int i = 2; i &lt; n; i++){
+        if (isPrime[i]){
+            // if i is prime, then i's multiple is NOT prime
+            for (int j = 2; j = 2 * i; j += i){
+                isPrime[j] = false;
+            }
+        }
+    }
+
+    int count = 0;
+    for (int i = 2; i &lt; n; i++){
+        if (isPrime[i]){
+            count ++;
+        }
+    }
+    return count;
+}
+</code></pre>
+<pre><code class="language-java">// java
+// algorithm book (labu) p.363
+// V1' (optimization)
+int countPrimes(int n){
+    boolean[] isPrime = new boolean[n];
+
+    // init array to true
+    Arrays.fill(isPrime, true);
+
+    // prime number start from 2
+    for (int i = 2; i * i  &lt; n; i++){
+        if (isPrime[i]){
+            // if i is prime, then i's multiple is NOT prime
+            /** optimize here :  make j start from i * i, instead of 2 * i */
+            // (the only difference between V1 and V1')
+            for (int j = i * i; j &lt; n; j += i){
+                isPrime[j] = false;
+            }
+        }
+    }
+
+    int count = 0;
+    for (int i = 2; i &lt; n; i++){
+        if (isPrime[i]){
+            count ++;
+        }
+    }
+    return count;
+}
+</code></pre>
+<h2 id="2-lc-example" tabindex="-1"><a class="header-anchor" href="#2-lc-example"><span>2) LC Example</span></a></h2>
+<h3 id="2-1-excel-sheet-column-title" tabindex="-1"><a class="header-anchor" href="#2-1-excel-sheet-column-title"><span>2-1) Excel Sheet Column Title</span></a></h3>
+<pre><code class="language-python"># 168 Excel Sheet Column Title
+# https://leetcode.com/problems/excel-sheet-column-title/discuss/205987/Python-Solution-with-explanation
+
+# V0
+# https://www.jianshu.com/p/591d3a2ab45d
+class Solution(object):
+    def convertToTitle(self, n):
+        tar = &quot;ABCDEFGHIJKLMNOPQRSTUVWXYZ&quot;
+        res = &quot;&quot;
+        while n &gt; 0:
+            # why (n-1) ? : idx start from 0
+            m = (n-1) % 26
+            #result += tar[m]
+            res = (tar[m] + res)
+            if m == 0:
+                # why n=n+1 ? : since there is no 0 residual (m = (n-1) % 26), so we need to &quot;pass&quot; this case
+                n = n + 1
+            n = (n-1) // 26
+        return res
+# V0'
+class Solution:
+    def convertToTitle(self, n):
+        &quot;&quot;&quot;
+        :type n: int
+        :rtype: str
+        &quot;&quot;&quot;
+        d='0ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+        res=''
+        if n&lt;=26:
+            return d[n]
+        else:
+            while n &gt; 0:
+                n,r=divmod(n,26)
+                # This is the catcha on this problem where when r==0 as a result of n%26. eg, n=52//26=2, r=52%26=0. 
+                #To get 'AZ' as known for 52, n-=1 and r+=26. Same goes to 702.
+                if r == 0:
+                    n-=1
+                    r+=26
+                res = d[r] + res
+        return res
+</code></pre>
+<h3 id="2-2-solve-the-equation" tabindex="-1"><a class="header-anchor" href="#2-2-solve-the-equation"><span>2-2) Solve the Equation</span></a></h3>
+<pre><code class="language-python"># LC 640. Solve the Equation
+# V0
+# IDEA : replace + eval + math
+# https://leetcode.com/problems/solve-the-equation/discuss/105362/Simple-2-liner-(and-more)
+# eval : The eval() method parses the expression passed to this method and runs python expression (code) within the program.
+# -&gt; https://www.runoob.com/python/python-func-eval.html
+class Solution(object):
+    def solveEquation(self, equation):
+        tmp = equation.replace('x', 'j').replace('=', '-(')
+        z = eval(tmp + &quot;)&quot; , {'j':1j})
+        # print (&quot;equation = &quot; + str(equation))
+        # print (&quot;tmp = &quot; + str(tmp))
+        # print (&quot;z = &quot; + str(z))
+        a, x = z.real, -z.imag
+        return 'x=%d' % (a / x) if x else 'No solution' if a else 'Infinite solutions'
+</code></pre>
+<h3 id="2-3-roman-to-integer" tabindex="-1"><a class="header-anchor" href="#2-3-roman-to-integer"><span>2-3) Roman to Integer</span></a></h3>
+<pre><code class="language-java">// java
+// LC 13
+
+// V0-1
+// IDEA: MAP + STR OP (fixed by gpt)
+public int romanToInt_0_1(String s) {
+    if (s == null || s.isEmpty()) {
+        return 0;
+    }
+
+    Map&lt;Character, Integer&gt; map = new HashMap&lt;&gt;();
+    map.put('I', 1);
+    map.put('V', 5);
+    map.put('X', 10);
+    map.put('L', 50);
+    map.put('C', 100);
+    map.put('D', 500);
+    map.put('M', 1000);
+
+    int total = 0;
+    int prev = 0;
+
+    /**
+     * NOTE !!!
+     *
+     * loop reversely (from  idx = s.len() - 1)
+     */
+    for (int i = s.length() - 1; i &gt;= 0; i--) {
+        int curr = map.get(s.charAt(i));
+        if (curr &lt; prev) {
+            total -= curr;
+        } else {
+            total += curr;
+        }
+        /**
+         * NOTE !!!
+         *
+         *  set `prev` as curr
+         */
+        prev = curr;
+    }
+
+    return total;
+}
+</code></pre>
+
+      </div>
+      <div class="cheatsheet-footer">
+        <a href="../cheatsheets.html" class="back-link">← Back to Cheat Sheets</a>
+        <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/math.md" class="github-edit" target="_blank">
+          Edit on GitHub →
+        </a>
+      </div>
+    <nav class="prev-next"><a href="linked_list.html" class="prev-link">← Linked List</a><a href="matrix.html" class="next-link">Matrix →</a></nav>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>CS_basics - Computer Science Fundamentals & Interview Preparation</p>
+      <p>
+        <a href="https://github.com/yennanliu/CS_basics">GitHub</a> •
+        <a href="https://github.com/yennanliu/CS_basics/tree/master/doc">Documentation</a> •
+        <a href="https://github.com/yennanliu/CS_basics/issues">Report Issues</a>
+      </p>
+    </div>
+  </footer>
+</body>
+</html>

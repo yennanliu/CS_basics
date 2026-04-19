@@ -1,0 +1,1096 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Difference Array - CS_basics</title>
+  <meta name="description" content="Computer Science fundamentals: algorithms, data structures, system design, and LeetCode solutions">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>CS</text></svg>">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="../vendor/fonts.css">
+  <link rel="stylesheet" href="../vendor/highlight/github-dark.min.css">
+  <script src="../vendor/highlight/highlight.min.js"></script>
+  <script>
+  // Apply theme before render to prevent flash
+  (function() {
+    var saved = localStorage.getItem('theme');
+    if (saved === 'dark' || (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      document.documentElement.setAttribute('data-theme', 'dark');
+    }
+  })();
+  </script>
+  <script>document.addEventListener('DOMContentLoaded', function() {
+    hljs.highlightAll();
+    document.querySelectorAll('pre code').forEach(function(codeEl) {
+      var pre = codeEl.parentElement;
+      var lang = '';
+      var cls = codeEl.className || '';
+      var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
+      if (m) lang = m[1];
+      var wrapper = document.createElement('div');
+      wrapper.className = 'code-block-wrapper';
+      pre.parentNode.insertBefore(wrapper, pre);
+      var header = document.createElement('div');
+      header.className = 'code-block-header';
+      if (lang) {
+        var label = document.createElement('span');
+        label.className = 'code-lang-label';
+        label.textContent = lang;
+        header.appendChild(label);
+      } else {
+        header.appendChild(document.createElement('span'));
+      }
+      var btn = document.createElement('button');
+      btn.className = 'copy-btn';
+      btn.textContent = 'Copy';
+      btn.addEventListener('click', function() {
+        navigator.clipboard.writeText(codeEl.textContent).then(function() {
+          btn.textContent = 'Copied!';
+          btn.classList.add('copied');
+          setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+        });
+      });
+      header.appendChild(btn);
+      wrapper.appendChild(header);
+      wrapper.appendChild(pre);
+    });
+    document.querySelectorAll('table').forEach(function(table) {
+      if (!table.parentElement.classList.contains('table-wrap')) {
+        var wrapper = document.createElement('div');
+        wrapper.className = 'table-wrap';
+        table.parentNode.insertBefore(wrapper, table);
+        wrapper.appendChild(table);
+      }
+    });
+    // Reading progress bar
+    var progressBar = document.getElementById('reading-progress');
+    if (progressBar) {
+      window.addEventListener('scroll', function() {
+        var winScroll = document.documentElement.scrollTop;
+        var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        progressBar.style.width = height > 0 ? (winScroll / height * 100) + '%' : '0%';
+      });
+    }
+    // Dark mode toggle
+    var toggle = document.getElementById('theme-toggle');
+    if (toggle) {
+      var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      toggle.textContent = isDark ? '☀️' : '🌙';
+      toggle.addEventListener('click', function() {
+        var dark = document.documentElement.getAttribute('data-theme') === 'dark';
+        if (dark) {
+          document.documentElement.removeAttribute('data-theme');
+          localStorage.setItem('theme', 'light');
+          toggle.textContent = '🌙';
+        } else {
+          document.documentElement.setAttribute('data-theme', 'dark');
+          localStorage.setItem('theme', 'dark');
+          toggle.textContent = '☀️';
+        }
+      });
+    }
+  });</script>
+</head>
+<body>
+  <div class="progress-container"><div class="progress-bar" id="reading-progress"></div></div>
+  <nav class="navbar">
+    <div class="container">
+      <div class="nav-brand">
+        <span class="nav-icon">💻</span>
+        <span class="nav-title">CS_basics</span>
+      </div>
+      <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+      <div class="nav-links">
+        <a href="../index.html" class="">Home</a>
+        <a href="../cheatsheets.html" class="active">Cheat Sheets</a>
+        <a href="../patterns.html" class="">Pattern Recognition</a>
+        <a href="../faqs.html" class="">FAQs</a>
+        <a href="../resources.html" class="">Resources</a>
+        <a href="../lc-explorer.html" class="">LC Explorer</a>
+        <a href="../lc-random-picker.html" class="">🎲 Random Picker</a>
+        <a href="../algo_demo/index.html" class="">Visualizer</a>
+        <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">&#127769;</button>
+        <a href="https://github.com/yennanliu/CS_basics" target="_blank" class="github-link" aria-label="GitHub">
+          <svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor">
+            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container">
+    <div class="content">
+      
+      <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">Difference Array</span></nav>
+      <div class="cheatsheet-header">
+        <h1>Difference Array</h1>
+        <span class="last-updated">Last updated: Sep 2, 2025</span>
+      </div>
+      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#overview">Overview</a></li><li class="toc-sub"><a href="#key-properties">Key Properties</a></li><li class="toc-sub"><a href="#references">References</a></li><li><a href="#problem-categories">Problem Categories</a></li><li class="toc-sub"><a href="#pattern-1-basic-range-updates">Pattern 1: Basic Range Updates</a></li><li class="toc-sub"><a href="#pattern-2-resource-allocation">Pattern 2: Resource Allocation</a></li><li class="toc-sub"><a href="#pattern-3-event-timeline">Pattern 3: Event Timeline</a></li><li class="toc-sub"><a href="#pattern-4-2d-difference-array">Pattern 4: 2D Difference Array</a></li><li><a href="#templates-algorithms">Templates &amp; Algorithms</a></li><li class="toc-sub"><a href="#template-comparison-table">Template Comparison Table</a></li><li class="toc-sub"><a href="#universal-difference-array-template">Universal Difference Array Template</a></li><li class="toc-sub"><a href="#template-1-basic-difference-array">Template 1: Basic Difference Array</a></li><li class="toc-sub"><a href="#template-2-resource-allocation">Template 2: Resource Allocation</a></li><li class="toc-sub"><a href="#template-3-event-timeline">Template 3: Event Timeline</a></li><li class="toc-sub"><a href="#template-4-2d-difference-array">Template 4: 2D Difference Array</a></li><li class="toc-sub"><a href="#template-5-optimized-with-coordinates-compression">Template 5: Optimized with Coordinates Compression</a></li><li><a href="#1-general-form">1) General form</a></li><li><a href="#problems-by-pattern">Problems by Pattern</a></li><li class="toc-sub"><a href="#pattern-based-problem-classification">Pattern-Based Problem Classification</a></li><li class="toc-sub"><a href="#complete-problem-list-by-difficulty">Complete Problem List by Difficulty</a></li><li class="toc-sub"><a href="#1-1-basic-op">1-1) Basic OP</a></li><li><a href="#2-lc-example">2) LC Example</a></li><li class="toc-sub"><a href="#2-1-range-addition">2-1) Range Addition</a></li><li class="toc-sub"><a href="#2-2-corporate-flight-bookings">2-2) Corporate Flight Bookings</a></li><li class="toc-sub"><a href="#2-3-car-pooling">2-3) Car Pooling</a></li><li><a href="#pattern-selection-strategy">Pattern Selection Strategy</a></li><li class="toc-sub"><a href="#decision-framework">Decision Framework</a></li><li><a href="#summary-quick-reference">Summary &amp; Quick Reference</a></li><li class="toc-sub"><a href="#complexity-quick-reference">Complexity Quick Reference</a></li><li class="toc-sub"><a href="#template-quick-reference">Template Quick Reference</a></li><li class="toc-sub"><a href="#common-patterns-tricks">Common Patterns &amp; Tricks</a></li><li class="toc-sub"><a href="#problem-solving-steps">Problem-Solving Steps</a></li><li class="toc-sub"><a href="#common-mistakes-tips">Common Mistakes &amp; Tips</a></li><li class="toc-sub"><a href="#interview-tips">Interview Tips</a></li><li class="toc-sub"><a href="#related-topics">Related Topics</a></li><li class="toc-sub"><a href="#java-implementation-notes">Java Implementation Notes</a></li><li class="toc-sub"><a href="#python-implementation-notes">Python Implementation Notes</a></li></ul></div>
+      <div class="cheatsheet-content">
+        <h1 id="difference-array" tabindex="-1"><a class="header-anchor" href="#difference-array"><span>Difference Array</span></a></h1>
+<h2 id="overview" tabindex="-1"><a class="header-anchor" href="#overview"><span>Overview</span></a></h2>
+<p><strong>Difference Array</strong> is a technique for efficiently performing range update operations on an array. Instead of updating each element individually (O(n) per update), we can perform range updates in O(1) time and reconstruct the final array in O(n) time.</p>
+<h3 id="key-properties" tabindex="-1"><a class="header-anchor" href="#key-properties"><span>Key Properties</span></a></h3>
+<ul>
+<li><strong>Time Complexity</strong>:
+<ul>
+<li>Range Update: O(1)</li>
+<li>Build Difference Array: O(n)</li>
+<li>Reconstruct Original: O(n)</li>
+<li>Multiple Updates: O(m) for m updates</li>
+</ul>
+</li>
+<li><strong>Space Complexity</strong>: O(n) for storing difference array</li>
+<li><strong>Core Idea</strong>: Store differences between consecutive elements to enable efficient range updates</li>
+<li><strong>When to Use</strong>: Multiple range update operations, interval modifications, booking systems, resource allocation</li>
+</ul>
+<h3 id="references" tabindex="-1"><a class="header-anchor" href="#references"><span>References</span></a></h3>
+<ul>
+<li><a href="https://www.geeksforgeeks.org/difference-array-range-update-query-o1/">Difference Array Visualization</a></li>
+<li><a href="https://labuladong.online/algo/data-structure/diff-array/">fucking algorithm - Difference Array</a></li>
+<li><a href="https://leetcode.com/discuss/general-discussion/1093346/">Prefix Sum vs Difference Array</a></li>
+</ul>
+<h2 id="problem-categories" tabindex="-1"><a class="header-anchor" href="#problem-categories"><span>Problem Categories</span></a></h2>
+<h3 id="pattern-1-basic-range-updates" tabindex="-1"><a class="header-anchor" href="#pattern-1-basic-range-updates"><span><strong>Pattern 1: Basic Range Updates</strong></span></a></h3>
+<ul>
+<li><strong>Description</strong>: Add/subtract a value to all elements in a range</li>
+<li><strong>Recognition</strong>: “Update range [i, j]”, “increment by val”, “modify interval”</li>
+<li><strong>Examples</strong>: LC 370, LC 1109, LC 1893</li>
+<li><strong>Template</strong>: Use Basic Difference Array Template</li>
+</ul>
+<h3 id="pattern-2-resource-allocation" tabindex="-1"><a class="header-anchor" href="#pattern-2-resource-allocation"><span><strong>Pattern 2: Resource Allocation</strong></span></a></h3>
+<ul>
+<li><strong>Description</strong>: Track resource usage across intervals</li>
+<li><strong>Recognition</strong>: “Booking”, “capacity”, “overlapping intervals”</li>
+<li><strong>Examples</strong>: LC 1094, LC 731, LC 732</li>
+<li><strong>Template</strong>: Use Resource Tracking Template</li>
+</ul>
+<h3 id="pattern-3-event-timeline" tabindex="-1"><a class="header-anchor" href="#pattern-3-event-timeline"><span><strong>Pattern 3: Event Timeline</strong></span></a></h3>
+<ul>
+<li><strong>Description</strong>: Process events happening at different times</li>
+<li><strong>Recognition</strong>: “Start/end times”, “scheduling”, “timeline”</li>
+<li><strong>Examples</strong>: LC 253, LC 1851, LC 2021</li>
+<li><strong>Template</strong>: Use Event Processing Template</li>
+</ul>
+<h3 id="pattern-4-2d-difference-array" tabindex="-1"><a class="header-anchor" href="#pattern-4-2d-difference-array"><span><strong>Pattern 4: 2D Difference Array</strong></span></a></h3>
+<ul>
+<li><strong>Description</strong>: Range updates on 2D matrices</li>
+<li><strong>Recognition</strong>: “Rectangle updates”, “2D range modifications”</li>
+<li><strong>Examples</strong>: LC 2132, LC 2536</li>
+<li><strong>Template</strong>: Use 2D Difference Array Template</li>
+</ul>
+<h2 id="templates-algorithms" tabindex="-1"><a class="header-anchor" href="#templates-algorithms"><span>Templates &amp; Algorithms</span></a></h2>
+<h3 id="template-comparison-table" tabindex="-1"><a class="header-anchor" href="#template-comparison-table"><span>Template Comparison Table</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>Template Type</th>
+<th>Use Case</th>
+<th>Update Time</th>
+<th>Query Time</th>
+<th>Space</th>
+<th>When to Use</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Basic Difference</strong></td>
+<td>Range updates</td>
+<td>O(1)</td>
+<td>O(n) rebuild</td>
+<td>O(n)</td>
+<td>Multiple range updates</td>
+</tr>
+<tr>
+<td><strong>With Prefix Sum</strong></td>
+<td>Range updates + queries</td>
+<td>O(1)</td>
+<td>O(1)</td>
+<td>O(n)</td>
+<td>Updates and queries</td>
+</tr>
+<tr>
+<td><strong>2D Difference</strong></td>
+<td>Matrix range updates</td>
+<td>O(1)</td>
+<td>O(mn) rebuild</td>
+<td>O(mn)</td>
+<td>2D range updates</td>
+</tr>
+<tr>
+<td><strong>Lazy Propagation</strong></td>
+<td>Dynamic queries</td>
+<td>O(log n)</td>
+<td>O(log n)</td>
+<td>O(n)</td>
+<td>Many queries between updates</td>
+</tr>
+</tbody>
+</table>
+<h3 id="universal-difference-array-template" tabindex="-1"><a class="header-anchor" href="#universal-difference-array-template"><span>Universal Difference Array Template</span></a></h3>
+<pre><code class="language-python">def difference_array_template(nums, updates):
+    &quot;&quot;&quot;
+    Universal template for difference array problems
+    nums: original array
+    updates: list of [start, end, value] operations
+    &quot;&quot;&quot;
+    n = len(nums)
+    # Build difference array
+    diff = [0] * n
+    diff[0] = nums[0]
+    for i in range(1, n):
+        diff[i] = nums[i] - nums[i-1]
+    
+    # Apply range updates in O(1) each
+    for start, end, val in updates:
+        diff[start] += val
+        if end + 1 &lt; n:
+            diff[end + 1] -= val
+    
+    # Reconstruct final array
+    result = [0] * n
+    result[0] = diff[0]
+    for i in range(1, n):
+        result[i] = result[i-1] + diff[i]
+    
+    return result
+</code></pre>
+<h3 id="template-1-basic-difference-array" tabindex="-1"><a class="header-anchor" href="#template-1-basic-difference-array"><span>Template 1: Basic Difference Array</span></a></h3>
+<pre><code class="language-python">class DifferenceArray:
+    def __init__(self, nums):
+        &quot;&quot;&quot;Initialize difference array from original array&quot;&quot;&quot;
+        self.n = len(nums)
+        self.diff = [0] * self.n
+        
+        # Build difference array
+        self.diff[0] = nums[0]
+        for i in range(1, self.n):
+            self.diff[i] = nums[i] - nums[i-1]
+    
+    def update(self, start, end, val):
+        &quot;&quot;&quot;Add val to all elements in range [start, end] in O(1)&quot;&quot;&quot;
+        self.diff[start] += val
+        if end + 1 &lt; self.n:
+            self.diff[end + 1] -= val
+    
+    def get_result(self):
+        &quot;&quot;&quot;Reconstruct the final array in O(n)&quot;&quot;&quot;
+        result = [0] * self.n
+        result[0] = self.diff[0]
+        for i in range(1, self.n):
+            result[i] = result[i-1] + self.diff[i]
+        return result
+</code></pre>
+<h3 id="template-2-resource-allocation" tabindex="-1"><a class="header-anchor" href="#template-2-resource-allocation"><span>Template 2: Resource Allocation</span></a></h3>
+<pre><code class="language-python">def check_resource_allocation(intervals, capacity, resource_field=2):
+    &quot;&quot;&quot;
+    Check if resource allocation is valid
+    intervals: [[start, end, resource_needed], ...]
+    capacity: maximum available resource
+    &quot;&quot;&quot;
+    # Find the range of positions
+    max_pos = max(interval[1] for interval in intervals) + 1
+    diff = [0] * max_pos
+    
+    # Apply all resource allocations
+    for interval in intervals:
+        start, end, resource = interval[0], interval[1], interval[resource_field]
+        diff[start] += resource
+        if end + 1 &lt; max_pos:
+            diff[end + 1] -= resource
+    
+    # Check if any position exceeds capacity
+    current = 0
+    for i in range(max_pos):
+        current += diff[i]
+        if current &gt; capacity:
+            return False
+    
+    return True
+</code></pre>
+<h3 id="template-3-event-timeline" tabindex="-1"><a class="header-anchor" href="#template-3-event-timeline"><span>Template 3: Event Timeline</span></a></h3>
+<pre><code class="language-python">def process_events(events):
+    &quot;&quot;&quot;
+    Process events on a timeline
+    events: [[start_time, end_time, value], ...]
+    Returns: timeline with accumulated values
+    &quot;&quot;&quot;
+    if not events:
+        return []
+    
+    # Create timeline
+    max_time = max(e[1] for e in events) + 1
+    timeline = [0] * max_time
+    
+    # Process each event
+    for start, end, value in events:
+        timeline[start] += value
+        if end + 1 &lt; max_time:
+            timeline[end + 1] -= value
+    
+    # Calculate prefix sum to get actual values
+    for i in range(1, max_time):
+        timeline[i] += timeline[i-1]
+    
+    return timeline
+</code></pre>
+<h3 id="template-4-2d-difference-array" tabindex="-1"><a class="header-anchor" href="#template-4-2d-difference-array"><span>Template 4: 2D Difference Array</span></a></h3>
+<pre><code class="language-python">class DifferenceArray2D:
+    def __init__(self, matrix):
+        &quot;&quot;&quot;Initialize 2D difference array&quot;&quot;&quot;
+        self.m, self.n = len(matrix), len(matrix[0])
+        self.diff = [[0] * self.n for _ in range(self.m)]
+        
+        # Build 2D difference array
+        for i in range(self.m):
+            for j in range(self.n):
+                self.diff[i][j] = matrix[i][j]
+                if i &gt; 0:
+                    self.diff[i][j] -= matrix[i-1][j]
+                if j &gt; 0:
+                    self.diff[i][j] -= matrix[i][j-1]
+                if i &gt; 0 and j &gt; 0:
+                    self.diff[i][j] += matrix[i-1][j-1]
+    
+    def update(self, r1, c1, r2, c2, val):
+        &quot;&quot;&quot;Add val to all elements in rectangle [r1,c1] to [r2,c2]&quot;&quot;&quot;
+        self.diff[r1][c1] += val
+        if r2 + 1 &lt; self.m:
+            self.diff[r2 + 1][c1] -= val
+        if c2 + 1 &lt; self.n:
+            self.diff[r1][c2 + 1] -= val
+        if r2 + 1 &lt; self.m and c2 + 1 &lt; self.n:
+            self.diff[r2 + 1][c2 + 1] += val
+    
+    def get_result(self):
+        &quot;&quot;&quot;Reconstruct the final 2D array&quot;&quot;&quot;
+        result = [[0] * self.n for _ in range(self.m)]
+        
+        for i in range(self.m):
+            for j in range(self.n):
+                result[i][j] = self.diff[i][j]
+                if i &gt; 0:
+                    result[i][j] += result[i-1][j]
+                if j &gt; 0:
+                    result[i][j] += result[i][j-1]
+                if i &gt; 0 and j &gt; 0:
+                    result[i][j] -= result[i-1][j-1]
+        
+        return result
+</code></pre>
+<h3 id="template-5-optimized-with-coordinates-compression" tabindex="-1"><a class="header-anchor" href="#template-5-optimized-with-coordinates-compression"><span>Template 5: Optimized with Coordinates Compression</span></a></h3>
+<pre><code class="language-python">def difference_array_compressed(updates):
+    &quot;&quot;&quot;
+    Handle large coordinate space with compression
+    updates: [[start, end, value], ...]
+    &quot;&quot;&quot;
+    # Collect all unique points
+    points = set()
+    for start, end, _ in updates:
+        points.add(start)
+        points.add(end + 1)
+    
+    # Sort and create mapping
+    sorted_points = sorted(points)
+    point_to_idx = {p: i for i, p in enumerate(sorted_points)}
+    
+    # Apply updates on compressed coordinates
+    n = len(sorted_points)
+    diff = [0] * n
+    
+    for start, end, val in updates:
+        start_idx = point_to_idx[start]
+        end_idx = point_to_idx.get(end + 1, n)
+        diff[start_idx] += val
+        if end_idx &lt; n:
+            diff[end_idx] -= val
+    
+    # Calculate values at each point
+    for i in range(1, n):
+        diff[i] += diff[i-1]
+    
+    # Return results with original coordinates
+    result = {}
+    for i, point in enumerate(sorted_points[:-1]):  # Exclude the last dummy point
+        if diff[i] != 0:
+            result[point] = diff[i]
+    
+    return result
+</code></pre>
+<h2 id="1-general-form" tabindex="-1"><a class="header-anchor" href="#1-general-form"><span>1) General form</span></a></h2>
+<pre><code class="language-java">
+// java
+// https://labuladong.online/algo/data-structure/diff-array/
+
+// 差分数组工具类
+// V1
+class Difference {
+    // 差分数组
+    private int[] diff;
+    
+    // 输入一个初始数组，区间操作将在这个数组上进行
+    public Difference(int[] nums) {
+        assert nums.length &gt; 0;
+        diff = new int[nums.length];
+        // 根据初始数组构造差分数组
+        diff[0] = nums[0];
+        for (int i = 1; i &lt; nums.length; i++) {
+            diff[i] = nums[i] - nums[i - 1];
+        }
+    }
+
+    // 给闭区间 [i, j] 增加 val（可以是负数）
+    public void increment(int i, int j, int val) {
+        diff[i] += val;
+        if (j + 1 &lt; diff.length) {
+            diff[j + 1] -= val;
+        }
+    }
+
+    // 返回结果数组
+    public int[] result() {
+        int[] res = new int[diff.length];
+        // 根据差分数组构造结果数组
+        res[0] = diff[0];
+        for (int i = 1; i &lt; diff.length; i++) {
+            res[i] = res[i - 1] + diff[i];
+        }
+        return res;
+    }
+}
+</code></pre>
+<pre><code class="language-java">// V2
+// https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/AlgorithmJava/DifferenceArray.java
+
+
+// method
+public int[] getDifferenceArray(int[][] input, int n) {
+
+/** LC 1109. Corporate Flight Bookings input : [start, end, seats]
+ *
+ *  NOTE !!!
+ *
+ *   in java, index start from 0;
+ *   but in LC 1109, index start from 1
+ *
+ */
+int[] tmp = new int[n + 1];
+for (int[] x : input) {
+  int start = x[0];
+  int end = x[1];
+  int seats = x[2];
+
+  // add
+  tmp[start] += seats;
+
+  // subtract
+  if (end + 1 &lt;= n) {
+    tmp[end + 1] -= seats;
+  }
+}
+
+for (int i = 1; i &lt; tmp.length; i++) {
+  //tmp[i] = tmp[i - 1] + tmp[i];
+    tmp[i] += tmp[i - 1];
+}
+
+return Arrays.copyOfRange(tmp, 1, n+1);
+}
+</code></pre>
+<h2 id="problems-by-pattern" tabindex="-1"><a class="header-anchor" href="#problems-by-pattern"><span>Problems by Pattern</span></a></h2>
+<h3 id="pattern-based-problem-classification" tabindex="-1"><a class="header-anchor" href="#pattern-based-problem-classification"><span>Pattern-Based Problem Classification</span></a></h3>
+<h4 id="pattern-1-basic-range-update-problems" tabindex="-1"><a class="header-anchor" href="#pattern-1-basic-range-update-problems"><span><strong>Pattern 1: Basic Range Update Problems</strong></span></a></h4>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC #</th>
+<th>Difficulty</th>
+<th>Key Technique</th>
+<th>Template</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Range Addition</td>
+<td>370</td>
+<td>Medium</td>
+<td>Basic difference array</td>
+<td>Template 1</td>
+</tr>
+<tr>
+<td>Corporate Flight Bookings</td>
+<td>1109</td>
+<td>Medium</td>
+<td>Range updates</td>
+<td>Template 1</td>
+</tr>
+<tr>
+<td>Range Addition II</td>
+<td>598</td>
+<td>Easy</td>
+<td>Minimum overlap</td>
+<td>Template 1</td>
+</tr>
+<tr>
+<td>Apply Operations to Make All Array Elements Equal to Zero</td>
+<td>2772</td>
+<td>Medium</td>
+<td>Range updates</td>
+<td>Template 1</td>
+</tr>
+</tbody>
+</table>
+<h4 id="pattern-2-resource-allocation-problems" tabindex="-1"><a class="header-anchor" href="#pattern-2-resource-allocation-problems"><span><strong>Pattern 2: Resource Allocation Problems</strong></span></a></h4>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC #</th>
+<th>Difficulty</th>
+<th>Key Technique</th>
+<th>Template</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Car Pooling</td>
+<td>1094</td>
+<td>Medium</td>
+<td>Capacity check</td>
+<td>Template 2</td>
+</tr>
+<tr>
+<td>Meeting Rooms II</td>
+<td>253</td>
+<td>Medium</td>
+<td>Timeline events</td>
+<td>Template 2</td>
+</tr>
+<tr>
+<td>My Calendar I</td>
+<td>729</td>
+<td>Medium</td>
+<td>Interval booking</td>
+<td>Template 2</td>
+</tr>
+<tr>
+<td>My Calendar II</td>
+<td>731</td>
+<td>Medium</td>
+<td>Double booking</td>
+<td>Template 2</td>
+</tr>
+<tr>
+<td>My Calendar III</td>
+<td>732</td>
+<td>Hard</td>
+<td>K-booking</td>
+<td>Template 2</td>
+</tr>
+</tbody>
+</table>
+<h4 id="pattern-3-event-timeline-problems" tabindex="-1"><a class="header-anchor" href="#pattern-3-event-timeline-problems"><span><strong>Pattern 3: Event Timeline Problems</strong></span></a></h4>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC #</th>
+<th>Difficulty</th>
+<th>Key Technique</th>
+<th>Template</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Number of Flowers in Full Bloom</td>
+<td>2251</td>
+<td>Hard</td>
+<td>Timeline query</td>
+<td>Template 3</td>
+</tr>
+<tr>
+<td>Describe the Painting</td>
+<td>2158</td>
+<td>Medium</td>
+<td>Color mixing</td>
+<td>Template 3</td>
+</tr>
+<tr>
+<td>Maximum Population Year</td>
+<td>1854</td>
+<td>Easy</td>
+<td>Timeline count</td>
+<td>Template 3</td>
+</tr>
+<tr>
+<td>Count Positions on Street With Required Brightness</td>
+<td>2021</td>
+<td>Medium</td>
+<td>Light coverage</td>
+<td>Template 3</td>
+</tr>
+</tbody>
+</table>
+<h4 id="pattern-4-2d-difference-array-problems" tabindex="-1"><a class="header-anchor" href="#pattern-4-2d-difference-array-problems"><span><strong>Pattern 4: 2D Difference Array Problems</strong></span></a></h4>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC #</th>
+<th>Difficulty</th>
+<th>Key Technique</th>
+<th>Template</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Stamping the Grid</td>
+<td>2132</td>
+<td>Hard</td>
+<td>2D range update</td>
+<td>Template 4</td>
+</tr>
+<tr>
+<td>Increment Submatrices by One</td>
+<td>2536</td>
+<td>Medium</td>
+<td>Rectangle updates</td>
+<td>Template 4</td>
+</tr>
+</tbody>
+</table>
+<h3 id="complete-problem-list-by-difficulty" tabindex="-1"><a class="header-anchor" href="#complete-problem-list-by-difficulty"><span>Complete Problem List by Difficulty</span></a></h3>
+<h4 id="easy-problems-foundation" tabindex="-1"><a class="header-anchor" href="#easy-problems-foundation"><span>Easy Problems (Foundation)</span></a></h4>
+<ul>
+<li>LC 598: Range Addition II - Find minimum affected area</li>
+<li>LC 1854: Maximum Population Year - Simple timeline</li>
+<li>LC 1893: Check if All Integers in Range Are Covered - Range coverage</li>
+</ul>
+<h4 id="medium-problems-core" tabindex="-1"><a class="header-anchor" href="#medium-problems-core"><span>Medium Problems (Core)</span></a></h4>
+<ul>
+<li>LC 370: Range Addition - Classic difference array</li>
+<li>LC 1109: Corporate Flight Bookings - Flight seat allocation</li>
+<li>LC 1094: Car Pooling - Resource capacity validation</li>
+<li>LC 253: Meeting Rooms II - Minimum rooms needed</li>
+<li>LC 729: My Calendar I - No double booking</li>
+<li>LC 731: My Calendar II - Allow one double booking</li>
+<li>LC 2021: Street Light Brightness - Range illumination</li>
+<li>LC 2158: Amount of New Area Painted - Color segments</li>
+<li>LC 2536: Increment Submatrices by One - 2D updates</li>
+<li>LC 2772: Apply Operations to Array - Make all zeros</li>
+</ul>
+<h4 id="hard-problems-advanced" tabindex="-1"><a class="header-anchor" href="#hard-problems-advanced"><span>Hard Problems (Advanced)</span></a></h4>
+<ul>
+<li>LC 732: My Calendar III - Maximum K-booking</li>
+<li>LC 2132: Stamping the Grid - 2D stamp validation</li>
+<li>LC 2251: Number of Flowers in Full Bloom - Point queries on timeline</li>
+</ul>
+<h3 id="1-1-basic-op" tabindex="-1"><a class="header-anchor" href="#1-1-basic-op"><span>1-1) Basic OP</span></a></h3>
+<h2 id="2-lc-example" tabindex="-1"><a class="header-anchor" href="#2-lc-example"><span>2) LC Example</span></a></h2>
+<h3 id="2-1-range-addition" tabindex="-1"><a class="header-anchor" href="#2-1-range-addition"><span>2-1) Range Addition</span></a></h3>
+<pre><code class="language-java">// java
+// LC 370
+
+
+// V0
+// IDEA : DIFFERENCE ARRAY
+public static int[] getModifiedArray(int length, int[][] updates) {
+
+int[] tmp = new int[length + 1]; // or new int[length]; both works
+for (int[] x : updates) {
+  int start = x[0];
+  int end = x[1];
+  int amount = x[2];
+
+  // add
+  tmp[start] += amount;
+
+  // subtract (remove the &quot;adding affect&quot; on &quot;NEXT&quot; element)
+  /**
+   * NOTE !!!
+   *
+   * &lt;p&gt;we remove the &quot;adding affect&quot; on NEXT element (e.g. end + 1)
+   */
+  if (end + 1 &lt; length) { // NOTE !!! use `end + 1`
+    tmp[end + 1] -= amount;
+  }
+}
+
+// prepare final result
+for (int i = 1; i &lt; tmp.length; i++) {
+  tmp[i] += tmp[i - 1];
+}
+
+return Arrays.copyOfRange(tmp, 0, length); // return the sub array between 0, lengh index
+}
+
+// V1
+class Solution {
+    public int[] getModifiedArray(int length, int[][] updates) {
+        // nums 初始化为全 0
+        int[] nums = new int[length];
+        // 构造差分解法
+        Difference df = new Difference(nums);
+        
+        for (int[] update : updates) {
+            int i = update[0];
+            int j = update[1];
+            int val = update[2];
+            df.increment(i, j, val);
+        }
+        
+        return df.result();
+    }
+}
+</code></pre>
+<h3 id="2-2-corporate-flight-bookings" tabindex="-1"><a class="header-anchor" href="#2-2-corporate-flight-bookings"><span>2-2) Corporate Flight Bookings</span></a></h3>
+<pre><code class="language-java">// java
+// LC 1109
+
+// V1
+class Solution {
+    public int[] corpFlightBookings(int[][] bookings, int n) {
+        // nums 初始化为全 0
+        int[] nums = new int[n];
+        // 构造差分解法
+        Difference df = new Difference(nums);
+
+        for (int[] booking : bookings) {
+            // 注意转成数组索引要减一哦
+            int i = booking[0] - 1;
+            int j = booking[1] - 1;
+            int val = booking[2];
+            // 对区间 nums[i..j] 增加 val
+            df.increment(i, j, val);
+        }
+        // 返回最终的结果数组
+        return df.result();
+    }
+}
+</code></pre>
+<h3 id="2-3-car-pooling" tabindex="-1"><a class="header-anchor" href="#2-3-car-pooling"><span>2-3) Car Pooling</span></a></h3>
+<pre><code class="language-java">// java
+// LC 1094
+// https://leetcode.com/problems/car-pooling/description/
+
+class Solution {
+    public boolean carPooling(int[][] trips, int capacity) {
+        // 最多有 1001 个车站
+        int[] nums = new int[1001];
+
+        // 构造差分解法
+        Difference df = new Difference(nums);
+
+        for (int[] trip : trips) {
+            // 乘客数量
+            int val = trip[0];
+
+            // 第 trip[1] 站乘客上车
+            int i = trip[1];
+
+            // 第 trip[2] 站乘客已经下车，
+            // 即乘客在车上的区间是 [trip[1], trip[2] - 1]
+            int j = trip[2] - 1;
+
+            // 进行区间操作
+            df.increment(i, j, val);
+        }
+
+        int[] res = df.result();
+
+        // 客车自始至终都不应该超载
+        for (int i = 0; i &lt; res.length; i++) {
+            if (capacity &lt; res[i]) {
+                return false;
+            }
+        }
+        return true;
+    }
+}
+</code></pre>
+<h2 id="pattern-selection-strategy" tabindex="-1"><a class="header-anchor" href="#pattern-selection-strategy"><span>Pattern Selection Strategy</span></a></h2>
+<pre><code>Difference Array Problem Analysis Flowchart:
+
+1. Does the problem involve range updates?
+   ├── YES → Check update pattern
+   │   ├── Multiple ranges need same update? → Use Difference Array
+   │   ├── Single element updates? → Use direct array
+   │   └── Need immediate query results? → Consider Segment Tree
+   └── NO → Not a difference array problem
+
+2. What type of range operation?
+   ├── Add/Subtract constant to range → Basic Difference Array (Template 1)
+   ├── Track resource usage → Resource Allocation (Template 2)
+   ├── Timeline/Event processing → Event Timeline (Template 3)
+   └── 2D matrix updates → 2D Difference Array (Template 4)
+
+3. Space/Time Trade-offs:
+   ├── Large coordinate space? → Use Coordinate Compression (Template 5)
+   ├── Many queries between updates? → Consider Lazy Propagation
+   └── Only final result needed? → Basic Difference Array
+
+4. Special Considerations:
+   ├── Online vs Offline → Difference array is offline
+   ├── Need range queries? → Combine with Prefix Sum
+   └── Overlapping intervals? → Check maximum overlap
+</code></pre>
+<h3 id="decision-framework" tabindex="-1"><a class="header-anchor" href="#decision-framework"><span>Decision Framework</span></a></h3>
+<ol>
+<li><strong>Identify range updates</strong>: Look for “update range [l, r]” operations</li>
+<li><strong>Count operations</strong>: Multiple updates = good for difference array</li>
+<li><strong>Check query pattern</strong>: Final result only vs intermediate queries</li>
+<li><strong>Consider alternatives</strong>: Segment tree for dynamic queries</li>
+</ol>
+<h2 id="summary-quick-reference" tabindex="-1"><a class="header-anchor" href="#summary-quick-reference"><span>Summary &amp; Quick Reference</span></a></h2>
+<h3 id="complexity-quick-reference" tabindex="-1"><a class="header-anchor" href="#complexity-quick-reference"><span>Complexity Quick Reference</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>Operation</th>
+<th>Time Complexity</th>
+<th>Space Complexity</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Build Difference Array</td>
+<td>O(n)</td>
+<td>O(n)</td>
+<td>From original array</td>
+</tr>
+<tr>
+<td>Range Update</td>
+<td>O(1)</td>
+<td>O(1)</td>
+<td>Add value to range</td>
+</tr>
+<tr>
+<td>Reconstruct Array</td>
+<td>O(n)</td>
+<td>O(1)</td>
+<td>Get final result</td>
+</tr>
+<tr>
+<td>M Updates + Reconstruct</td>
+<td>O(m + n)</td>
+<td>O(n)</td>
+<td>Total complexity</td>
+</tr>
+<tr>
+<td>2D Range Update</td>
+<td>O(1)</td>
+<td>O(1)</td>
+<td>Rectangle update</td>
+</tr>
+<tr>
+<td>2D Reconstruct</td>
+<td>O(mn)</td>
+<td>O(1)</td>
+<td>Get final matrix</td>
+</tr>
+</tbody>
+</table>
+<h3 id="template-quick-reference" tabindex="-1"><a class="header-anchor" href="#template-quick-reference"><span>Template Quick Reference</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>Template</th>
+<th>Best For</th>
+<th>Avoid When</th>
+<th>Key Pattern</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Basic Difference</td>
+<td>Multiple range updates</td>
+<td>Single updates</td>
+<td>diff[i] = arr[i] - arr[i-1]</td>
+</tr>
+<tr>
+<td>Resource Allocation</td>
+<td>Capacity constraints</td>
+<td>Unbounded resources</td>
+<td>Check max usage</td>
+</tr>
+<tr>
+<td>Event Timeline</td>
+<td>Time-based events</td>
+<td>Spatial problems</td>
+<td>Timeline array</td>
+</tr>
+<tr>
+<td>2D Difference</td>
+<td>Matrix range updates</td>
+<td>1D problems</td>
+<td>4-point update</td>
+</tr>
+<tr>
+<td>Coordinate Compression</td>
+<td>Large sparse space</td>
+<td>Dense arrays</td>
+<td>Map coordinates</td>
+</tr>
+</tbody>
+</table>
+<h3 id="common-patterns-tricks" tabindex="-1"><a class="header-anchor" href="#common-patterns-tricks"><span>Common Patterns &amp; Tricks</span></a></h3>
+<h4 id="pattern-range-update-formula" tabindex="-1"><a class="header-anchor" href="#pattern-range-update-formula"><span><strong>Pattern: Range Update Formula</strong></span></a></h4>
+<pre><code class="language-python"># To add val to range [start, end]:
+diff[start] += val
+if end + 1 &lt; n:
+    diff[end + 1] -= val
+</code></pre>
+<h4 id="pattern-off-by-one-for-intervals" tabindex="-1"><a class="header-anchor" href="#pattern-off-by-one-for-intervals"><span><strong>Pattern: Off-by-One for Intervals</strong></span></a></h4>
+<pre><code class="language-python"># If passengers get off at station x, they're on board [start, x-1]
+# If event ends at time t, it's active [start, t]
+# Be careful with inclusive/exclusive boundaries!
+
+# Car pooling example:
+for passengers, pickup, dropoff in trips:
+    diff[pickup] += passengers
+    diff[dropoff] -= passengers  # Not dropoff-1!
+</code></pre>
+<h4 id="pattern-maximum-concurrent-events" tabindex="-1"><a class="header-anchor" href="#pattern-maximum-concurrent-events"><span><strong>Pattern: Maximum Concurrent Events</strong></span></a></h4>
+<pre><code class="language-python">def max_concurrent(intervals):
+    events = []
+    for start, end in intervals:
+        events.append((start, 1))   # Start event
+        events.append((end + 1, -1)) # End event
+    
+    events.sort()
+    max_concurrent = current = 0
+    
+    for time, delta in events:
+        current += delta
+        max_concurrent = max(max_concurrent, current)
+    
+    return max_concurrent
+</code></pre>
+<h3 id="problem-solving-steps" tabindex="-1"><a class="header-anchor" href="#problem-solving-steps"><span>Problem-Solving Steps</span></a></h3>
+<ol>
+<li><strong>Identify range operations</strong>: Look for [start, end] updates</li>
+<li><strong>Initialize difference array</strong>: Usually all zeros</li>
+<li><strong>Apply updates</strong>: O(1) per update using formula</li>
+<li><strong>Reconstruct if needed</strong>: Prefix sum to get final array</li>
+<li><strong>Validate constraints</strong>: Check capacity, overlaps, etc.</li>
+</ol>
+<h3 id="common-mistakes-tips" tabindex="-1"><a class="header-anchor" href="#common-mistakes-tips"><span>Common Mistakes &amp; Tips</span></a></h3>
+<p><strong>🚫 Common Mistakes:</strong></p>
+<ul>
+<li><strong>Off-by-one errors</strong>: Careful with inclusive/exclusive ranges</li>
+<li><strong>Array bounds</strong>: Check end+1 before updating</li>
+<li><strong>Initial values</strong>: Don’t forget original array values</li>
+<li><strong>2D formula errors</strong>: Four points need correct signs</li>
+<li><strong>Overflow</strong>: Large values × many updates</li>
+</ul>
+<p><strong>✅ Best Practices:</strong></p>
+<ul>
+<li><strong>Use clear variable names</strong>: <code>start/end</code> not <code>i/j</code></li>
+<li><strong>Comment boundary logic</strong>: Explain inclusive/exclusive</li>
+<li><strong>Test edge cases</strong>: Empty ranges, full array updates</li>
+<li><strong>Consider compression</strong>: For large coordinate spaces</li>
+<li><strong>Validate early</strong>: Check impossible cases first</li>
+</ul>
+<h3 id="interview-tips" tabindex="-1"><a class="header-anchor" href="#interview-tips"><span>Interview Tips</span></a></h3>
+<ol>
+<li><strong>Recognize the pattern</strong>: “Update multiple ranges” → Difference array</li>
+<li><strong>Explain the technique</strong>: “Convert range updates to point updates”</li>
+<li><strong>Mention trade-offs</strong>: Offline processing, O(n) reconstruction</li>
+<li><strong>Know alternatives</strong>: Segment tree for online queries</li>
+<li><strong>Handle edge cases</strong>: Empty input, single element, overlapping ranges</li>
+</ol>
+<h3 id="related-topics" tabindex="-1"><a class="header-anchor" href="#related-topics"><span>Related Topics</span></a></h3>
+<ul>
+<li><strong>Prefix Sum</strong>: Opposite operation, range queries</li>
+<li><strong>Segment Tree</strong>: When need both updates and queries</li>
+<li><strong>Fenwick Tree (BIT)</strong>: Alternative for range operations</li>
+<li><strong>Sweep Line</strong>: Related technique for interval problems</li>
+<li><strong>Coordinate Compression</strong>: Handling large sparse ranges</li>
+</ul>
+<h3 id="java-implementation-notes" tabindex="-1"><a class="header-anchor" href="#java-implementation-notes"><span>Java Implementation Notes</span></a></h3>
+<pre><code class="language-java">// Java Difference Array Class
+class Difference {
+    private int[] diff;
+    
+    public Difference(int[] nums) {
+        diff = new int[nums.length];
+        diff[0] = nums[0];
+        for (int i = 1; i &lt; nums.length; i++) {
+            diff[i] = nums[i] - nums[i-1];
+        }
+    }
+    
+    public void increment(int i, int j, int val) {
+        diff[i] += val;
+        if (j + 1 &lt; diff.length) {
+            diff[j + 1] -= val;
+        }
+    }
+    
+    public int[] result() {
+        int[] res = new int[diff.length];
+        res[0] = diff[0];
+        for (int i = 1; i &lt; diff.length; i++) {
+            res[i] = res[i-1] + diff[i];
+        }
+        return res;
+    }
+}
+</code></pre>
+<h3 id="python-implementation-notes" tabindex="-1"><a class="header-anchor" href="#python-implementation-notes"><span>Python Implementation Notes</span></a></h3>
+<pre><code class="language-python"># Python class implementation
+class DifferenceArray:
+    def __init__(self, nums):
+        self.n = len(nums)
+        self.diff = [0] * self.n
+        if nums:
+            self.diff[0] = nums[0]
+            for i in range(1, self.n):
+                self.diff[i] = nums[i] - nums[i-1]
+    
+    def update(self, start, end, val):
+        self.diff[start] += val
+        if end + 1 &lt; self.n:
+            self.diff[end + 1] -= val
+    
+    def get_result(self):
+        result = [self.diff[0]]
+        for i in range(1, self.n):
+            result.append(result[-1] + self.diff[i])
+        return result
+</code></pre>
+<hr>
+<p><strong>Must-Know Problems for Interviews</strong>: LC 370, 1109, 1094, 253, 732
+<strong>Advanced Problems</strong>: LC 732, 2132, 2251
+<strong>Keywords</strong>: difference array, range update, interval modification, sweep line, prefix sum</p>
+
+      </div>
+      <div class="cheatsheet-footer">
+        <a href="../cheatsheets.html" class="back-link">← Back to Cheat Sheets</a>
+        <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/difference_array.md" class="github-edit" target="_blank">
+          Edit on GitHub →
+        </a>
+      </div>
+    <nav class="prev-next"><a href="diff_toposort_quickunion.html" class="prev-link">← Diff Toposort Quickunion</a><a href="dp.html" class="next-link">Dp →</a></nav>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>CS_basics - Computer Science Fundamentals & Interview Preparation</p>
+      <p>
+        <a href="https://github.com/yennanliu/CS_basics">GitHub</a> •
+        <a href="https://github.com/yennanliu/CS_basics/tree/master/doc">Documentation</a> •
+        <a href="https://github.com/yennanliu/CS_basics/issues">Report Issues</a>
+      </p>
+    </div>
+  </footer>
+</body>
+</html>

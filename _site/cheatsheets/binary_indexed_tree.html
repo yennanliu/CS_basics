@@ -1,0 +1,642 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Binary Indexed Tree - CS_basics</title>
+  <meta name="description" content="Computer Science fundamentals: algorithms, data structures, system design, and LeetCode solutions">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>CS</text></svg>">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="../vendor/fonts.css">
+  <link rel="stylesheet" href="../vendor/highlight/github-dark.min.css">
+  <script src="../vendor/highlight/highlight.min.js"></script>
+  <script>
+  // Apply theme before render to prevent flash
+  (function() {
+    var saved = localStorage.getItem('theme');
+    if (saved === 'dark' || (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      document.documentElement.setAttribute('data-theme', 'dark');
+    }
+  })();
+  </script>
+  <script>document.addEventListener('DOMContentLoaded', function() {
+    hljs.highlightAll();
+    document.querySelectorAll('pre code').forEach(function(codeEl) {
+      var pre = codeEl.parentElement;
+      var lang = '';
+      var cls = codeEl.className || '';
+      var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
+      if (m) lang = m[1];
+      var wrapper = document.createElement('div');
+      wrapper.className = 'code-block-wrapper';
+      pre.parentNode.insertBefore(wrapper, pre);
+      var header = document.createElement('div');
+      header.className = 'code-block-header';
+      if (lang) {
+        var label = document.createElement('span');
+        label.className = 'code-lang-label';
+        label.textContent = lang;
+        header.appendChild(label);
+      } else {
+        header.appendChild(document.createElement('span'));
+      }
+      var btn = document.createElement('button');
+      btn.className = 'copy-btn';
+      btn.textContent = 'Copy';
+      btn.addEventListener('click', function() {
+        navigator.clipboard.writeText(codeEl.textContent).then(function() {
+          btn.textContent = 'Copied!';
+          btn.classList.add('copied');
+          setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+        });
+      });
+      header.appendChild(btn);
+      wrapper.appendChild(header);
+      wrapper.appendChild(pre);
+    });
+    document.querySelectorAll('table').forEach(function(table) {
+      if (!table.parentElement.classList.contains('table-wrap')) {
+        var wrapper = document.createElement('div');
+        wrapper.className = 'table-wrap';
+        table.parentNode.insertBefore(wrapper, table);
+        wrapper.appendChild(table);
+      }
+    });
+    // Reading progress bar
+    var progressBar = document.getElementById('reading-progress');
+    if (progressBar) {
+      window.addEventListener('scroll', function() {
+        var winScroll = document.documentElement.scrollTop;
+        var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        progressBar.style.width = height > 0 ? (winScroll / height * 100) + '%' : '0%';
+      });
+    }
+    // Dark mode toggle
+    var toggle = document.getElementById('theme-toggle');
+    if (toggle) {
+      var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      toggle.textContent = isDark ? '☀️' : '🌙';
+      toggle.addEventListener('click', function() {
+        var dark = document.documentElement.getAttribute('data-theme') === 'dark';
+        if (dark) {
+          document.documentElement.removeAttribute('data-theme');
+          localStorage.setItem('theme', 'light');
+          toggle.textContent = '🌙';
+        } else {
+          document.documentElement.setAttribute('data-theme', 'dark');
+          localStorage.setItem('theme', 'dark');
+          toggle.textContent = '☀️';
+        }
+      });
+    }
+  });</script>
+</head>
+<body>
+  <div class="progress-container"><div class="progress-bar" id="reading-progress"></div></div>
+  <nav class="navbar">
+    <div class="container">
+      <div class="nav-brand">
+        <span class="nav-icon">💻</span>
+        <span class="nav-title">CS_basics</span>
+      </div>
+      <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+      <div class="nav-links">
+        <a href="../index.html" class="">Home</a>
+        <a href="../cheatsheets.html" class="active">Cheat Sheets</a>
+        <a href="../patterns.html" class="">Pattern Recognition</a>
+        <a href="../faqs.html" class="">FAQs</a>
+        <a href="../resources.html" class="">Resources</a>
+        <a href="../lc-explorer.html" class="">LC Explorer</a>
+        <a href="../lc-random-picker.html" class="">🎲 Random Picker</a>
+        <a href="../algo_demo/index.html" class="">Visualizer</a>
+        <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">&#127769;</button>
+        <a href="https://github.com/yennanliu/CS_basics" target="_blank" class="github-link" aria-label="GitHub">
+          <svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor">
+            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container">
+    <div class="content">
+      
+      <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">Binary Indexed Tree</span></nav>
+      <div class="cheatsheet-header">
+        <h1>Binary Indexed Tree</h1>
+        <span class="last-updated">Last updated: Mar 17, 2026</span>
+      </div>
+      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#lc-examples">LC Examples</a></li><li class="toc-sub"><a href="#2-1-range-sum-query-mutable-lc-307-bit-point-update-prefix-sum">2-1) Range Sum Query - Mutable (LC 307) — BIT Point Update + Prefix Sum</a></li><li class="toc-sub"><a href="#2-2-count-of-smaller-numbers-after-self-lc-315-bit-with-coordinate-compression">2-2) Count of Smaller Numbers After Self (LC 315) — BIT with Coordinate Compression</a></li><li class="toc-sub"><a href="#2-3-bit-generic-template-point-update-prefix-range-query">2-3) BIT Generic Template — Point Update + Prefix/Range Query</a></li><li class="toc-sub"><a href="#2-4-reverse-pairs-lc-493-bit-with-coordinate-compression">2-4) Reverse Pairs (LC 493) — BIT with Coordinate Compression</a></li><li class="toc-sub"><a href="#2-5-count-of-range-sum-lc-327-bit-merge-sort">2-5) Count of Range Sum (LC 327) — BIT / Merge Sort</a></li><li class="toc-sub"><a href="#2-6-queue-reconstruction-by-height-lc-406-greedy-insertion">2-6) Queue Reconstruction by Height (LC 406) — Greedy Insertion</a></li><li class="toc-sub"><a href="#2-7-range-sum-query-mutable-bit-vs-segment-tree-comparison">2-7) Range Sum Query Mutable — BIT vs Segment Tree Comparison</a></li><li class="toc-sub"><a href="#2-7-1-range-sum-query-2d-mutable-lc-308-2d-bit">2-7-1) Range Sum Query 2D - Mutable (LC 308) — 2D BIT</a></li><li class="toc-sub"><a href="#2-8-number-of-longest-increasing-subsequences-lc-673-dp">2-8) Number of Longest Increasing Subsequences (LC 673) — DP</a></li><li class="toc-sub"><a href="#2-9-create-sorted-array-through-instructions-lc-1649-bit">2-9) Create Sorted Array through Instructions (LC 1649) — BIT</a></li><li class="toc-sub"><a href="#2-10-global-and-local-inversions-lc-775-bit">2-10) Global and Local Inversions (LC 775) — BIT</a></li></ul></div>
+      <div class="cheatsheet-content">
+        <p>A Binary Indexed Tree (BIT), also known as a Fenwick Tree, is a data structure that efficiently supports both:</p>
+<p>Point updates (i.e., update an element in the array).
+Prefix sum queries (i.e., query the sum of elements from the start of the array to a given index).
+Key Features of a Binary Indexed Tree:
+Efficient Updates: You can update an element in the array in O(log n) time.
+Efficient Queries: You can compute the sum of elements in a range from the start to a given index in O(log n) time.
+How It Works:
+A BIT is built over an array and stores partial sums of the array in a tree-like structure. The array’s indexes are represented in binary form, and each position in the BIT array stores a sum of a subset of array elements, based on the binary representation of the index.</p>
+<p>Structure of the BIT:
+The underlying array is 1-indexed (or you can adapt it to 0-indexed).
+For each index i, the BIT stores the sum of a range of elements. The range size depends on the least significant set bit of the index i.
+For example:</p>
+<p>BIT[i] stores the sum of elements from index i - (i &amp; -i) + 1 to i, where i &amp; -i extracts the least significant set bit in the binary representation of i.
+Operations:</p>
+<ol>
+<li>Update Operation:
+When you want to update an element in the original array, you adjust the BIT values to reflect this update. The update is propagated to all indices that are responsible for storing sums that include the updated index.</li>
+</ol>
+<p>To update an index i in the BIT, you adjust the BIT at i and continue adjusting at i + (i &amp; -i) (i.e., move to the next index that is part of the same group) until you reach the end of the BIT.
+2. Prefix Sum Query:
+To calculate the sum of elements from index 1 to i (inclusive), you start at i and keep subtracting the least significant set bit (i &amp; -i) to move to previous elements in the BIT. The sum is computed by adding the values at these indices.</p>
+<p>Example of a Binary Indexed Tree:
+Consider an array: [3, 2, -1, 6, 5, 4].</p>
+<p>BIT Initialization: Start with a BIT array of the same length (initially all zeros) and build it by updating the BIT based on the input array.</p>
+<p>Update Operation: If you want to update an element in the original array (e.g., changing array[2] from -1 to 4), you update the relevant BIT values.</p>
+<p>Prefix Sum Query: To find the sum from index 1 to i, you sum the relevant BIT values.</p>
+<ul>
+<li>LC 307</li>
+</ul>
+<h2 id="lc-examples" tabindex="-1"><a class="header-anchor" href="#lc-examples"><span>LC Examples</span></a></h2>
+<h3 id="2-1-range-sum-query-mutable-lc-307-bit-point-update-prefix-sum" tabindex="-1"><a class="header-anchor" href="#2-1-range-sum-query-mutable-lc-307-bit-point-update-prefix-sum"><span>2-1) Range Sum Query - Mutable (LC 307) — BIT Point Update + Prefix Sum</span></a></h3>
+<blockquote>
+<p>BIT supports O(log N) point update and prefix sum query.</p>
+</blockquote>
+<pre><code class="language-java">// LC 307 - Range Sum Query - Mutable
+// IDEA: Binary Indexed Tree (Fenwick Tree)
+// time = O(log N) per update/query, space = O(N)
+class NumArray {
+    int[] bit, nums;
+    int n;
+    public NumArray(int[] nums) {
+        this.n = nums.length;
+        this.nums = new int[n];
+        this.bit = new int[n + 1];
+        for (int i = 0; i &lt; n; i++) update(i, nums[i]);
+    }
+    public void update(int i, int val) {
+        int delta = val - nums[i];
+        nums[i] = val;
+        for (int x = i + 1; x &lt;= n; x += x &amp; (-x)) bit[x] += delta;
+    }
+    public int sumRange(int left, int right) {
+        return prefixSum(right + 1) - prefixSum(left);
+    }
+    private int prefixSum(int i) {
+        int sum = 0;
+        for (int x = i; x &gt; 0; x -= x &amp; (-x)) sum += bit[x];
+        return sum;
+    }
+}
+</code></pre>
+<h3 id="2-2-count-of-smaller-numbers-after-self-lc-315-bit-with-coordinate-compression" tabindex="-1"><a class="header-anchor" href="#2-2-count-of-smaller-numbers-after-self-lc-315-bit-with-coordinate-compression"><span>2-2) Count of Smaller Numbers After Self (LC 315) — BIT with Coordinate Compression</span></a></h3>
+<blockquote>
+<p>Map values to ranks; for each element query how many smaller are already inserted.</p>
+</blockquote>
+<pre><code class="language-java">// LC 315 - Count of Smaller Numbers After Self
+// IDEA: BIT + coordinate compression — process right to left
+// time = O(N log N), space = O(N)
+public List&lt;Integer&gt; countSmaller(int[] nums) {
+    int n = nums.length;
+    int[] sorted = nums.clone();
+    Arrays.sort(sorted);
+    Map&lt;Integer, Integer&gt; rank = new HashMap&lt;&gt;();
+    int r = 1;
+    for (int v : sorted) if (!rank.containsKey(v)) rank.put(v, r++);
+    int[] bit = new int[r];
+    Integer[] result = new Integer[n];
+    for (int i = n - 1; i &gt;= 0; i--) {
+        int pos = rank.get(nums[i]);
+        result[i] = query(bit, pos - 1);
+        update(bit, pos, r - 1);
+    }
+    return Arrays.asList(result);
+}
+private void update(int[] bit, int i, int n) {
+    for (; i &lt;= n; i += i &amp; (-i)) bit[i]++;
+}
+private int query(int[] bit, int i) {
+    int sum = 0;
+    for (; i &gt; 0; i -= i &amp; (-i)) sum += bit[i];
+    return sum;
+}
+</code></pre>
+<h3 id="2-3-bit-generic-template-point-update-prefix-range-query" tabindex="-1"><a class="header-anchor" href="#2-3-bit-generic-template-point-update-prefix-range-query"><span>2-3) BIT Generic Template — Point Update + Prefix/Range Query</span></a></h3>
+<blockquote>
+<p>Reusable BIT class supporting point updates and prefix-sum queries.</p>
+</blockquote>
+<pre><code class="language-java">// BIT (Fenwick Tree) — Generic Template
+// time = O(log N) per update/query, space = O(N)
+class BIT {
+    int[] tree;
+    int n;
+    BIT(int n) { this.n = n; tree = new int[n + 1]; }
+    void update(int i, int delta) {          // 1-indexed; add delta at position i
+        for (; i &lt;= n; i += i &amp; -i) tree[i] += delta;
+    }
+    int query(int i) {                        // prefix sum [1..i]
+        int sum = 0;
+        for (; i &gt; 0; i -= i &amp; -i) sum += tree[i];
+        return sum;
+    }
+    int query(int l, int r) { return query(r) - query(l - 1); } // range [l..r]
+}
+</code></pre>
+<h3 id="2-4-reverse-pairs-lc-493-bit-with-coordinate-compression" tabindex="-1"><a class="header-anchor" href="#2-4-reverse-pairs-lc-493-bit-with-coordinate-compression"><span>2-4) Reverse Pairs (LC 493) — BIT with Coordinate Compression</span></a></h3>
+<blockquote>
+<p>For each nums[i] (right to left), count previously inserted values &lt; nums[i]; then insert 2*nums[i].</p>
+</blockquote>
+<pre><code class="language-java">// LC 493 - Reverse Pairs
+// IDEA: BIT + coordinate compression — process right to left; query then update
+// time = O(N log N), space = O(N)
+public int reversePairs(int[] nums) {
+    int n = nums.length;
+    long[] sorted = new long[2 * n];
+    for (int i = 0; i &lt; n; i++) { sorted[i] = nums[i]; sorted[n+i] = 2L * nums[i]; }
+    Arrays.sort(sorted);
+    Map&lt;Long, Integer&gt; rank = new HashMap&lt;&gt;();
+    int r = 1;
+    for (long v : sorted) if (!rank.containsKey(v)) rank.put(v, r++);
+    int[] bit = new int[r];
+    int count = 0;
+    for (int i = n - 1; i &gt;= 0; i--) {
+        count += queryBIT(bit, rank.get((long)nums[i]) - 1);
+        updateBIT(bit, rank.get(2L * nums[i]), r - 1);
+    }
+    return count;
+}
+private void updateBIT(int[] b, int i, int n) { for (; i &lt;= n; i += i&amp;-i) b[i]++; }
+private int  queryBIT(int[] b, int i)         { int s=0; for(;i&gt;0;i-=i&amp;-i) s+=b[i]; return s; }
+</code></pre>
+<h3 id="2-5-count-of-range-sum-lc-327-bit-merge-sort" tabindex="-1"><a class="header-anchor" href="#2-5-count-of-range-sum-lc-327-bit-merge-sort"><span>2-5) Count of Range Sum (LC 327) — BIT / Merge Sort</span></a></h3>
+<blockquote>
+<p>For each prefix sum, count how many previous prefix sums fall in [prefixSum-upper, prefixSum-lower].</p>
+</blockquote>
+<pre><code class="language-java">// LC 327 - Count of Range Sum (merge sort approach)
+// IDEA: Merge sort — count valid pairs during the merge step
+// time = O(N log N), space = O(N)
+public int countRangeSum(int[] nums, int lower, int upper) {
+    int n = nums.length;
+    long[] prefix = new long[n + 1];
+    for (int i = 0; i &lt; n; i++) prefix[i+1] = prefix[i] + nums[i];
+    return mergeCount(prefix, 0, n + 1, lower, upper);
+}
+private int mergeCount(long[] arr, int l, int r, int lo, int hi) {
+    if (r - l &lt;= 1) return 0;
+    int mid = (l + r) / 2;
+    int count = mergeCount(arr, l, mid, lo, hi) + mergeCount(arr, mid, r, lo, hi);
+    int j = mid, k = mid;
+    for (int i = l; i &lt; mid; i++) {
+        while (j &lt; r &amp;&amp; arr[j] - arr[i] &lt; lo) j++;
+        while (k &lt; r &amp;&amp; arr[k] - arr[i] &lt;= hi) k++;
+        count += k - j;
+    }
+    long[] tmp = Arrays.copyOfRange(arr, l, r);
+    Arrays.sort(tmp);
+    System.arraycopy(tmp, 0, arr, l, tmp.length);
+    return count;
+}
+</code></pre>
+<h3 id="2-6-queue-reconstruction-by-height-lc-406-greedy-insertion" tabindex="-1"><a class="header-anchor" href="#2-6-queue-reconstruction-by-height-lc-406-greedy-insertion"><span>2-6) Queue Reconstruction by Height (LC 406) — Greedy Insertion</span></a></h3>
+<blockquote>
+<p>Sort by height DESC (k ASC for ties); insert each person at index k — taller already placed.</p>
+</blockquote>
+<pre><code class="language-java">// LC 406 - Queue Reconstruction by Height
+// IDEA: Sort height DESC (k ASC); insert at index k — taller people already positioned
+// time = O(N^2), space = O(N)
+public int[][] reconstructQueue(int[][] people) {
+    Arrays.sort(people, (a, b) -&gt; a[0] != b[0] ? b[0] - a[0] : a[1] - b[1]);
+    List&lt;int[]&gt; res = new ArrayList&lt;&gt;();
+    for (int[] p : people) res.add(p[1], p);
+    return res.toArray(new int[res.size()][]);
+}
+</code></pre>
+<h3 id="2-7-range-sum-query-mutable-bit-vs-segment-tree-comparison" tabindex="-1"><a class="header-anchor" href="#2-7-range-sum-query-mutable-bit-vs-segment-tree-comparison"><span>2-7) Range Sum Query Mutable — BIT vs Segment Tree Comparison</span></a></h3>
+<blockquote>
+<p>BIT for point update + prefix query; Segment Tree for arbitrary range query/update.</p>
+</blockquote>
+<pre><code class="language-java">// LC 307 - Range Sum Query Mutable (BIT version)
+// IDEA: BIT — O(log N) point update and prefix sum; range via subtraction
+// time = O(log N) per update/query, space = O(N)
+class NumArray {
+    int[] bit, nums;
+    int n;
+    public NumArray(int[] nums) {
+        n = nums.length;
+        this.nums = new int[n];
+        bit = new int[n + 1];
+        for (int i = 0; i &lt; n; i++) update(i, nums[i]);
+    }
+    public void update(int i, int val) {
+        int delta = val - nums[i];
+        nums[i] = val;
+        for (int x = i + 1; x &lt;= n; x += x &amp; -x) bit[x] += delta;
+    }
+    public int sumRange(int l, int r) { return prefix(r+1) - prefix(l); }
+    private int prefix(int i) { int s=0; for(;i&gt;0;i-=i&amp;-i) s+=bit[i]; return s; }
+}
+</code></pre>
+<h3 id="2-7-1-range-sum-query-2d-mutable-lc-308-2d-bit" tabindex="-1"><a class="header-anchor" href="#2-7-1-range-sum-query-2d-mutable-lc-308-2d-bit"><span>2-7-1) Range Sum Query 2D - Mutable (LC 308) — 2D BIT</span></a></h3>
+<blockquote>
+<p>Extend BIT to 2D: O(log M * log N) per update/query on a matrix.</p>
+</blockquote>
+<h4 id="1d-bit-vs-2d-bit" tabindex="-1"><a class="header-anchor" href="#1d-bit-vs-2d-bit"><span>1D BIT vs 2D BIT</span></a></h4>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>1D BIT (LC 307)</th>
+<th>2D BIT (LC 308)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Structure</strong></td>
+<td><code>int[] bit</code> of size <code>n+1</code></td>
+<td><code>int[][] bit</code> of size <code>(m+1) x (n+1)</code></td>
+</tr>
+<tr>
+<td><strong>Update</strong></td>
+<td>Single loop: <code>i += i &amp; -i</code></td>
+<td>Nested loops: row <code>i += i &amp; -i</code>, col <code>j += j &amp; -j</code></td>
+</tr>
+<tr>
+<td><strong>Query</strong></td>
+<td>Single loop: <code>i -= i &amp; -i</code></td>
+<td>Nested loops: row <code>i -= i &amp; -i</code>, col <code>j -= j &amp; -j</code></td>
+</tr>
+<tr>
+<td><strong>Range sum</strong></td>
+<td><code>prefix(r+1) - prefix(l)</code></td>
+<td>2D inclusion-exclusion (4 terms)</td>
+</tr>
+<tr>
+<td><strong>Time</strong></td>
+<td>O(log N)</td>
+<td>O(log M * log N)</td>
+</tr>
+</tbody>
+</table>
+<h4 id="why-2d-inclusion-exclusion" tabindex="-1"><a class="header-anchor" href="#why-2d-inclusion-exclusion"><span>Why 2D Inclusion-Exclusion?</span></a></h4>
+<pre><code>To get sum of rectangle (r1,c1) to (r2,c2):
+
+  query(r2, c2)           = entire top-left block
+- query(r1-1, c2)         = remove rows above
+- query(r2, c1-1)         = remove cols to the left
++ query(r1-1, c1-1)       = add back double-subtracted corner
+
+Visual:
+
+  ┌──────────┬──────────┐
+  │  +added  │  -removed│     query(r1-1, c2) removes this top strip
+  │  back    │  (top)   │
+  ├──────────┼──────────┤  r1
+  │  -removed│ ★ TARGET │
+  │  (left)  │  REGION  │
+  └──────────┴──────────┘  r2
+            c1          c2
+
+  sum = query(r2,c2) - query(r1-1,c2) - query(r2,c1-1) + query(r1-1,c1-1)
+</code></pre>
+<p>This is the same inclusion-exclusion as 2D prefix sum (LC 304), but BIT supports <strong>mutable updates</strong>.</p>
+<h4 id="java-implementation" tabindex="-1"><a class="header-anchor" href="#java-implementation"><span>Java Implementation</span></a></h4>
+<pre><code class="language-java">// LC 308 - Range Sum Query 2D - Mutable
+// IDEA: 2D Binary Indexed Tree (Fenwick Tree)
+// time = O(log M * log N) per update/query, space = O(M * N)
+class NumMatrix {
+    private int[][] tree;  // 2D BIT (1-indexed)
+    private int[][] nums;  // original values (for computing delta)
+    private int m, n;
+
+    public NumMatrix(int[][] matrix) {
+        if (matrix.length == 0 || matrix[0].length == 0) return;
+        m = matrix.length;
+        n = matrix[0].length;
+        tree = new int[m + 1][n + 1];
+        nums = new int[m][n];
+        for (int i = 0; i &lt; m; i++)
+            for (int j = 0; j &lt; n; j++)
+                update(i, j, matrix[i][j]);
+    }
+
+    // Point update: set matrix[row][col] = val
+    public void update(int row, int col, int val) {
+        int delta = val - nums[row][col];
+        nums[row][col] = val;
+        // Propagate delta through 2D BIT (nested lowbit traversal)
+        for (int i = row + 1; i &lt;= m; i += i &amp; -i)
+            for (int j = col + 1; j &lt;= n; j += j &amp; -j)
+                tree[i][j] += delta;
+    }
+
+    // Prefix sum query: sum of (0,0) to (row,col)
+    private int query(int row, int col) {
+        int sum = 0;
+        for (int i = row + 1; i &gt; 0; i -= i &amp; -i)
+            for (int j = col + 1; j &gt; 0; j -= j &amp; -j)
+                sum += tree[i][j];
+        return sum;
+    }
+
+    // Range sum: rectangle (row1,col1) to (row2,col2)
+    public int sumRegion(int row1, int col1, int row2, int col2) {
+        // 2D inclusion-exclusion
+        return query(row2, col2)
+             - query(row1 - 1, col2)
+             - query(row2, col1 - 1)
+             + query(row1 - 1, col1 - 1);
+    }
+}
+</code></pre>
+<h4 id="alternative-row-based-1d-bit-simpler-but-slower" tabindex="-1"><a class="header-anchor" href="#alternative-row-based-1d-bit-simpler-but-slower"><span>Alternative: Row-based 1D BIT (simpler but slower)</span></a></h4>
+<pre><code class="language-java">// Each row has its own 1D BIT
+// update = O(log N), sumRegion = O(M * log N)  — slower for large M
+class NumMatrix_RowBIT {
+    private BIT[] trees;
+
+    public NumMatrix_RowBIT(int[][] matrix) {
+        int m = matrix.length, n = matrix[0].length;
+        trees = new BIT[m];
+        for (int i = 0; i &lt; m; i++) {
+            trees[i] = new BIT(n);
+            for (int j = 0; j &lt; n; j++)
+                trees[i].update(j + 1, matrix[i][j]);
+        }
+    }
+
+    public void update(int row, int col, int val) {
+        int prev = trees[row].query(col + 1) - trees[row].query(col);
+        trees[row].update(col + 1, val - prev);
+    }
+
+    public int sumRegion(int row1, int col1, int row2, int col2) {
+        int sum = 0;
+        for (int i = row1; i &lt;= row2; i++)
+            sum += trees[i].query(col2 + 1) - trees[i].query(col1);
+        return sum;
+    }
+}
+</code></pre>
+<h4 id="approach-comparison-for-lc-308" tabindex="-1"><a class="header-anchor" href="#approach-comparison-for-lc-308"><span>Approach Comparison for LC 308</span></a></h4>
+<table>
+<thead>
+<tr>
+<th>Approach</th>
+<th>Update</th>
+<th>sumRegion</th>
+<th>Space</th>
+<th>When to Use</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Brute force</strong></td>
+<td>O(1)</td>
+<td>O(M*N)</td>
+<td>O(M*N)</td>
+<td>Never (TLE)</td>
+</tr>
+<tr>
+<td><strong>Row-based 1D BIT</strong></td>
+<td>O(log N)</td>
+<td>O(M * log N)</td>
+<td>O(M*N)</td>
+<td>Few rows, many queries</td>
+</tr>
+<tr>
+<td><strong>2D BIT</strong></td>
+<td>O(log M * log N)</td>
+<td>O(log M * log N)</td>
+<td>O(M*N)</td>
+<td>Best balanced performance</td>
+</tr>
+<tr>
+<td><strong>2D Segment Tree</strong></td>
+<td>O(log M * log N)</td>
+<td>O(log M * log N)</td>
+<td>O(M*N)</td>
+<td>When need lazy propagation</td>
+</tr>
+</tbody>
+</table>
+<h4 id="related-problems" tabindex="-1"><a class="header-anchor" href="#related-problems"><span>Related Problems</span></a></h4>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC #</th>
+<th>Relation to LC 308</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Range Sum Query - Mutable</td>
+<td>307</td>
+<td>1D version of same pattern</td>
+</tr>
+<tr>
+<td>Range Sum Query 2D - Immutable</td>
+<td>304</td>
+<td>2D prefix sum (no update)</td>
+</tr>
+<tr>
+<td>Count of Smaller Numbers After Self</td>
+<td>315</td>
+<td>BIT with coordinate compression</td>
+</tr>
+<tr>
+<td>Count of Range Sum</td>
+<td>327</td>
+<td>BIT/merge sort for range counting</td>
+</tr>
+</tbody>
+</table>
+<h3 id="2-8-number-of-longest-increasing-subsequences-lc-673-dp" tabindex="-1"><a class="header-anchor" href="#2-8-number-of-longest-increasing-subsequences-lc-673-dp"><span>2-8) Number of Longest Increasing Subsequences (LC 673) — DP</span></a></h3>
+<blockquote>
+<p>Track both length and count at each position; update count when equal-length path found.</p>
+</blockquote>
+<pre><code class="language-java">// LC 673 - Number of Longest Increasing Subsequences
+// IDEA: DP — (len[i], cnt[i]) = (LIS length at i, number of such LIS)
+// time = O(N^2), space = O(N)
+public int findNumberOfLIS(int[] nums) {
+    int n = nums.length, maxLen = 0, result = 0;
+    int[] len = new int[n], cnt = new int[n];
+    for (int i = 0; i &lt; n; i++) {
+        len[i] = cnt[i] = 1;
+        for (int j = 0; j &lt; i; j++) {
+            if (nums[j] &lt; nums[i]) {
+                if (len[j] + 1 &gt; len[i]) { len[i] = len[j]+1; cnt[i] = cnt[j]; }
+                else if (len[j] + 1 == len[i]) cnt[i] += cnt[j];
+            }
+        }
+        if (len[i] &gt; maxLen) { maxLen = len[i]; result = cnt[i]; }
+        else if (len[i] == maxLen) result += cnt[i];
+    }
+    return result;
+}
+</code></pre>
+<h3 id="2-9-create-sorted-array-through-instructions-lc-1649-bit" tabindex="-1"><a class="header-anchor" href="#2-9-create-sorted-array-through-instructions-lc-1649-bit"><span>2-9) Create Sorted Array through Instructions (LC 1649) — BIT</span></a></h3>
+<blockquote>
+<p>For each instruction, cost = min(count smaller, count larger) already inserted; use BIT.</p>
+</blockquote>
+<pre><code class="language-java">// LC 1649 - Create Sorted Array through Instructions
+// IDEA: BIT on value range — count smaller and greater elements already inserted
+// time = O(N log M), space = O(M)  M = max value
+public int createSortedArray(int[] instructions) {
+    int MOD = 1_000_000_007, n = 100001;
+    int[] bit = new int[n + 1];
+    long cost = 0;
+    for (int i = 0; i &lt; instructions.length; i++) {
+        int x = instructions[i];
+        int smaller = query(bit, x - 1);
+        int larger  = i - query(bit, x);
+        cost = (cost + Math.min(smaller, larger)) % MOD;
+        update(bit, x, n);
+    }
+    return (int) cost;
+}
+private void update(int[] b, int i, int n) { for (; i &lt;= n; i += i&amp;-i) b[i]++; }
+private int  query(int[] b, int i)         { int s=0; for(;i&gt;0;i-=i&amp;-i) s+=b[i]; return s; }
+</code></pre>
+<h3 id="2-10-global-and-local-inversions-lc-775-bit" tabindex="-1"><a class="header-anchor" href="#2-10-global-and-local-inversions-lc-775-bit"><span>2-10) Global and Local Inversions (LC 775) — BIT</span></a></h3>
+<blockquote>
+<p>Global inversions &gt;= local inversions always; equal iff no non-adjacent inversion exists.</p>
+</blockquote>
+<pre><code class="language-java">// LC 775 - Global and Local Inversions
+// IDEA: Global inversions == local iff no nums[i] &gt; nums[j] for j &gt;= i+2
+// time = O(N), space = O(1)
+public boolean isIdealPermutation(int[] nums) {
+    // global == local iff every element is within 1 of its sorted position
+    for (int i = 0; i &lt; nums.length; i++)
+        if (Math.abs(nums[i] - i) &gt; 1) return false;
+    return true;
+}
+</code></pre>
+
+      </div>
+      <div class="cheatsheet-footer">
+        <a href="../cheatsheets.html" class="back-link">← Back to Cheat Sheets</a>
+        <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/binary_indexed_tree.md" class="github-edit" target="_blank">
+          Edit on GitHub →
+        </a>
+      </div>
+    <nav class="prev-next"><a href="bfs.html" class="prev-link">← Bfs</a><a href="binary_search.html" class="next-link">Binary Search →</a></nav>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>CS_basics - Computer Science Fundamentals & Interview Preparation</p>
+      <p>
+        <a href="https://github.com/yennanliu/CS_basics">GitHub</a> •
+        <a href="https://github.com/yennanliu/CS_basics/tree/master/doc">Documentation</a> •
+        <a href="https://github.com/yennanliu/CS_basics/issues">Report Issues</a>
+      </p>
+    </div>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,1772 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Greedy - CS_basics</title>
+  <meta name="description" content="Computer Science fundamentals: algorithms, data structures, system design, and LeetCode solutions">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>CS</text></svg>">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="../vendor/fonts.css">
+  <link rel="stylesheet" href="../vendor/highlight/github-dark.min.css">
+  <script src="../vendor/highlight/highlight.min.js"></script>
+  <script>
+  // Apply theme before render to prevent flash
+  (function() {
+    var saved = localStorage.getItem('theme');
+    if (saved === 'dark' || (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      document.documentElement.setAttribute('data-theme', 'dark');
+    }
+  })();
+  </script>
+  <script>document.addEventListener('DOMContentLoaded', function() {
+    hljs.highlightAll();
+    document.querySelectorAll('pre code').forEach(function(codeEl) {
+      var pre = codeEl.parentElement;
+      var lang = '';
+      var cls = codeEl.className || '';
+      var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
+      if (m) lang = m[1];
+      var wrapper = document.createElement('div');
+      wrapper.className = 'code-block-wrapper';
+      pre.parentNode.insertBefore(wrapper, pre);
+      var header = document.createElement('div');
+      header.className = 'code-block-header';
+      if (lang) {
+        var label = document.createElement('span');
+        label.className = 'code-lang-label';
+        label.textContent = lang;
+        header.appendChild(label);
+      } else {
+        header.appendChild(document.createElement('span'));
+      }
+      var btn = document.createElement('button');
+      btn.className = 'copy-btn';
+      btn.textContent = 'Copy';
+      btn.addEventListener('click', function() {
+        navigator.clipboard.writeText(codeEl.textContent).then(function() {
+          btn.textContent = 'Copied!';
+          btn.classList.add('copied');
+          setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+        });
+      });
+      header.appendChild(btn);
+      wrapper.appendChild(header);
+      wrapper.appendChild(pre);
+    });
+    document.querySelectorAll('table').forEach(function(table) {
+      if (!table.parentElement.classList.contains('table-wrap')) {
+        var wrapper = document.createElement('div');
+        wrapper.className = 'table-wrap';
+        table.parentNode.insertBefore(wrapper, table);
+        wrapper.appendChild(table);
+      }
+    });
+    // Reading progress bar
+    var progressBar = document.getElementById('reading-progress');
+    if (progressBar) {
+      window.addEventListener('scroll', function() {
+        var winScroll = document.documentElement.scrollTop;
+        var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        progressBar.style.width = height > 0 ? (winScroll / height * 100) + '%' : '0%';
+      });
+    }
+    // Dark mode toggle
+    var toggle = document.getElementById('theme-toggle');
+    if (toggle) {
+      var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      toggle.textContent = isDark ? '☀️' : '🌙';
+      toggle.addEventListener('click', function() {
+        var dark = document.documentElement.getAttribute('data-theme') === 'dark';
+        if (dark) {
+          document.documentElement.removeAttribute('data-theme');
+          localStorage.setItem('theme', 'light');
+          toggle.textContent = '🌙';
+        } else {
+          document.documentElement.setAttribute('data-theme', 'dark');
+          localStorage.setItem('theme', 'dark');
+          toggle.textContent = '☀️';
+        }
+      });
+    }
+  });</script>
+</head>
+<body>
+  <div class="progress-container"><div class="progress-bar" id="reading-progress"></div></div>
+  <nav class="navbar">
+    <div class="container">
+      <div class="nav-brand">
+        <span class="nav-icon">💻</span>
+        <span class="nav-title">CS_basics</span>
+      </div>
+      <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+      <div class="nav-links">
+        <a href="../index.html" class="">Home</a>
+        <a href="../cheatsheets.html" class="active">Cheat Sheets</a>
+        <a href="../patterns.html" class="">Pattern Recognition</a>
+        <a href="../faqs.html" class="">FAQs</a>
+        <a href="../resources.html" class="">Resources</a>
+        <a href="../lc-explorer.html" class="">LC Explorer</a>
+        <a href="../lc-random-picker.html" class="">🎲 Random Picker</a>
+        <a href="../algo_demo/index.html" class="">Visualizer</a>
+        <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">&#127769;</button>
+        <a href="https://github.com/yennanliu/CS_basics" target="_blank" class="github-link" aria-label="GitHub">
+          <svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor">
+            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container">
+    <div class="content">
+      
+      <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">Greedy</span></nav>
+      <div class="cheatsheet-header">
+        <h1>Greedy</h1>
+        <span class="last-updated">Last updated: Mar 15, 2026</span>
+      </div>
+      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#overview">Overview</a></li><li class="toc-sub"><a href="#key-properties">Key Properties</a></li><li class="toc-sub"><a href="#core-characteristics">Core Characteristics</a></li><li class="toc-sub"><a href="#greedy-vs-other-approaches">Greedy vs Other Approaches</a></li><li><a href="#problem-categories">Problem Categories</a></li><li class="toc-sub"><a href="#category-1-interval-scheduling">Category 1: Interval Scheduling</a></li><li class="toc-sub"><a href="#category-2-activity-selection">Category 2: Activity Selection</a></li><li class="toc-sub"><a href="#category-3-huffman-coding">Category 3: Huffman Coding</a></li><li class="toc-sub"><a href="#category-4-stock-trading">Category 4: Stock Trading</a></li><li class="toc-sub"><a href="#category-5-jump-game">Category 5: Jump Game</a></li><li class="toc-sub"><a href="#category-6-string-reorganization">Category 6: String Reorganization</a></li><li><a href="#templates-algorithms">Templates &amp; Algorithms</a></li><li class="toc-sub"><a href="#template-comparison-table">Template Comparison Table</a></li><li class="toc-sub"><a href="#universal-greedy-template">Universal Greedy Template</a></li><li class="toc-sub"><a href="#template-1-interval-scheduling">Template 1: Interval Scheduling</a></li><li class="toc-sub"><a href="#template-2-activity-selection-with-heap">Template 2: Activity Selection with Heap</a></li><li class="toc-sub"><a href="#template-3-greedy-accumulation">Template 3: Greedy Accumulation</a></li><li class="toc-sub"><a href="#template-4-jump-game-pattern">Template 4: Jump Game Pattern</a></li><li class="toc-sub"><a href="#template-5-string-reorganization">Template 5: String Reorganization</a></li><li class="toc-sub"><a href="#template-6-fractional-knapsack">Template 6: Fractional Knapsack</a></li><li><a href="#problems-by-pattern">Problems by Pattern</a></li><li class="toc-sub"><a href="#interval-problems">Interval Problems</a></li><li class="toc-sub"><a href="#activity-selection-problems">Activity Selection Problems</a></li><li class="toc-sub"><a href="#stock-trading-problems">Stock Trading Problems</a></li><li class="toc-sub"><a href="#jump-game-problems">Jump Game Problems</a></li><li class="toc-sub"><a href="#string-reorganization-problems">String Reorganization Problems</a></li><li class="toc-sub"><a href="#other-greedy-problems">Other Greedy Problems</a></li><li><a href="#lc-examples">LC Examples</a></li><li class="toc-sub"><a href="#2-2-jump-game">2-2) Jump Game</a></li><li class="toc-sub"><a href="#2-2-jump-game-ii">2-2’) Jump Game II</a></li><li class="toc-sub"><a href="#2-3-best-time-to-buy-and-sell-stock-ii">2-3) Best Time to Buy and Sell Stock II</a></li><li class="toc-sub"><a href="#2-4-gas-station">2-4) Gas Station</a></li><li class="toc-sub"><a href="#2-6-reorganize-string">2-6) Reorganize String</a></li><li class="toc-sub"><a href="#2-6-string-without-aaa-or-bbb">2-6’) String Without AAA or BBB</a></li><li class="toc-sub"><a href="#2-7-task-scheduler">2-7) Task Scheduler</a></li><li class="toc-sub"><a href="#2-8-maximum-units-on-a-truck">2-8) Maximum Units on a Truck</a></li><li><a href="#decision-framework">Decision Framework</a></li><li class="toc-sub"><a href="#pattern-selection-strategy">Pattern Selection Strategy</a></li><li class="toc-sub"><a href="#greedy-vs-dynamic-programming">Greedy vs Dynamic Programming</a></li><li><a href="#greedy-vs-bfs-dfs-in-graph-problems">Greedy vs BFS/DFS in Graph Problems</a></li><li class="toc-sub"><a href="#when-to-choose-decision-framework">When to Choose: Decision Framework</a></li><li class="toc-sub"><a href="#complexity-comparison">Complexity Comparison</a></li><li class="toc-sub"><a href="#problem-size-considerations">Problem Size Considerations</a></li><li class="toc-sub"><a href="#decision-checkpoints">Decision Checkpoints</a></li><li class="toc-sub"><a href="#common-graph-problem-patterns">Common Graph Problem Patterns</a></li><li class="toc-sub"><a href="#leetcode-examples-with-size-analysis">LeetCode Examples with Size Analysis</a></li><li class="toc-sub"><a href="#interview-strategy-guide">Interview Strategy Guide</a></li><li class="toc-sub"><a href="#practical-performance-benchmarks">Practical Performance Benchmarks</a></li><li class="toc-sub"><a href="#summary-algorithm-selection-matrix">Summary: Algorithm Selection Matrix</a></li><li><a href="#summary-quick-reference">Summary &amp; Quick Reference</a></li><li class="toc-sub"><a href="#complexity-quick-reference">Complexity Quick Reference</a></li><li class="toc-sub"><a href="#sorting-criteria-guide">Sorting Criteria Guide</a></li><li class="toc-sub"><a href="#common-greedy-patterns">Common Greedy Patterns</a></li><li class="toc-sub"><a href="#problem-solving-steps">Problem-Solving Steps</a></li><li class="toc-sub"><a href="#common-mistakes-tips">Common Mistakes &amp; Tips</a></li><li class="toc-sub"><a href="#proof-techniques">Proof Techniques</a></li><li class="toc-sub"><a href="#interview-tips">Interview Tips</a></li><li class="toc-sub"><a href="#classic-greedy-problems">Classic Greedy Problems</a></li><li class="toc-sub"><a href="#related-topics">Related Topics</a></li></ul></div>
+      <div class="cheatsheet-content">
+        <h1 id="greedy-algorithms" tabindex="-1"><a class="header-anchor" href="#greedy-algorithms"><span>Greedy Algorithms</span></a></h1>
+<h2 id="overview" tabindex="-1"><a class="header-anchor" href="#overview"><span>Overview</span></a></h2>
+<p><strong>Greedy algorithms</strong> make locally optimal choices at each step with the hope of finding a global optimum. They work by selecting the best available option at each decision point without reconsidering previous choices.</p>
+<h3 id="key-properties" tabindex="-1"><a class="header-anchor" href="#key-properties"><span>Key Properties</span></a></h3>
+<ul>
+<li><strong>Time Complexity</strong>: Usually O(n) or O(nlogn) with sorting</li>
+<li><strong>Space Complexity</strong>: O(1) to O(n) depending on problem</li>
+<li><strong>Core Idea</strong>: Make the locally optimal choice at each step</li>
+<li><strong>When to Use</strong>: Problems with greedy choice property and optimal substructure</li>
+<li><strong>Limitation</strong>: Doesn’t always yield globally optimal solution</li>
+</ul>
+<h3 id="core-characteristics" tabindex="-1"><a class="header-anchor" href="#core-characteristics"><span>Core Characteristics</span></a></h3>
+<ul>
+<li><strong>Greedy Choice Property</strong>: Local optimal leads to global optimal</li>
+<li><strong>Optimal Substructure</strong>: Optimal solution contains optimal sub-solutions</li>
+<li><strong>No Backtracking</strong>: Once a choice is made, it’s never reconsidered</li>
+<li><strong>Proof Required</strong>: Must prove greedy approach gives optimal result</li>
+</ul>
+<h3 id="greedy-vs-other-approaches" tabindex="-1"><a class="header-anchor" href="#greedy-vs-other-approaches"><span>Greedy vs Other Approaches</span></a></h3>
+<ul>
+<li><strong>Greedy vs DP</strong>: Greedy is optimized DP when greedy choice works</li>
+<li><strong>Greedy vs Brute Force</strong>: Much faster but may miss optimal</li>
+<li><strong>Path</strong>: Brute Force → DP → Greedy (when applicable)</li>
+</ul>
+<h2 id="problem-categories" tabindex="-1"><a class="header-anchor" href="#problem-categories"><span>Problem Categories</span></a></h2>
+<h3 id="category-1-interval-scheduling" tabindex="-1"><a class="header-anchor" href="#category-1-interval-scheduling"><span><strong>Category 1: Interval Scheduling</strong></span></a></h3>
+<ul>
+<li><strong>Description</strong>: Select maximum non-overlapping intervals</li>
+<li><strong>Examples</strong>: LC 435 (Non-overlapping), LC 452 (Burst Balloons), LC 646 (Pair Chain)</li>
+<li><strong>Pattern</strong>: Sort by end time, select earliest ending</li>
+</ul>
+<h3 id="category-2-activity-selection" tabindex="-1"><a class="header-anchor" href="#category-2-activity-selection"><span><strong>Category 2: Activity Selection</strong></span></a></h3>
+<ul>
+<li><strong>Description</strong>: Maximize number of activities or minimize resources</li>
+<li><strong>Examples</strong>: LC 621 (Task Scheduler), LC 1353 (Maximum Events)</li>
+<li><strong>Pattern</strong>: Priority queue or sorting with selection</li>
+</ul>
+<h3 id="category-3-huffman-coding" tabindex="-1"><a class="header-anchor" href="#category-3-huffman-coding"><span><strong>Category 3: Huffman Coding</strong></span></a></h3>
+<ul>
+<li><strong>Description</strong>: Build optimal prefix codes</li>
+<li><strong>Examples</strong>: LC 1167 (Min Cost to Connect Sticks)</li>
+<li><strong>Pattern</strong>: Repeatedly merge smallest elements</li>
+</ul>
+<h3 id="category-4-stock-trading" tabindex="-1"><a class="header-anchor" href="#category-4-stock-trading"><span><strong>Category 4: Stock Trading</strong></span></a></h3>
+<ul>
+<li><strong>Description</strong>: Maximize profit from transactions</li>
+<li><strong>Examples</strong>: LC 122 (Buy Sell Stock II), LC 134 (Gas Station)</li>
+<li><strong>Pattern</strong>: Accumulate positive differences</li>
+</ul>
+<h3 id="category-5-jump-game" tabindex="-1"><a class="header-anchor" href="#category-5-jump-game"><span><strong>Category 5: Jump Game</strong></span></a></h3>
+<ul>
+<li><strong>Description</strong>: Reach target with minimum steps</li>
+<li><strong>Examples</strong>: LC 55 (Jump Game), LC 45 (Jump Game II)</li>
+<li><strong>Pattern</strong>: Track maximum reachable position</li>
+</ul>
+<h3 id="category-6-string-reorganization" tabindex="-1"><a class="header-anchor" href="#category-6-string-reorganization"><span><strong>Category 6: String Reorganization</strong></span></a></h3>
+<ul>
+<li><strong>Description</strong>: Rearrange strings/characters with consecutive or distance constraints</li>
+<li><strong>Examples</strong>: LC 767 (Reorganize String), LC 984 (No AAA/BBB), LC 358 (K Distance), LC 1405 (Happy String)</li>
+<li><strong>Pattern</strong>:
+<ul>
+<li><strong>Heap approach</strong>: Always pick most frequent available character</li>
+<li><strong>Counter tracking</strong>: Track consecutive count, force switch when limit reached</li>
+</ul>
+</li>
+<li><strong>Key Insight</strong>: Greedy works because using the most frequent character first prevents getting stuck later</li>
+</ul>
+<h2 id="templates-algorithms" tabindex="-1"><a class="header-anchor" href="#templates-algorithms"><span>Templates &amp; Algorithms</span></a></h2>
+<h3 id="template-comparison-table" tabindex="-1"><a class="header-anchor" href="#template-comparison-table"><span>Template Comparison Table</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>Template Type</th>
+<th>Use Case</th>
+<th>Sorting Key</th>
+<th>When to Use</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Interval</strong></td>
+<td>Non-overlapping selection</td>
+<td>End time</td>
+<td>Meeting rooms, activities</td>
+</tr>
+<tr>
+<td><strong>Priority Queue</strong></td>
+<td>Dynamic selection</td>
+<td>Value/frequency</td>
+<td>Task scheduling</td>
+</tr>
+<tr>
+<td><strong>Two Pointers</strong></td>
+<td>Pairing/matching</td>
+<td>Various</td>
+<td>Array manipulation</td>
+</tr>
+<tr>
+<td><strong>Accumulation</strong></td>
+<td>Running sum/product</td>
+<td>None</td>
+<td>Stock, gas station</td>
+</tr>
+<tr>
+<td><strong>Jump/Reach</strong></td>
+<td>Position tracking</td>
+<td>None</td>
+<td>Jump games</td>
+</tr>
+</tbody>
+</table>
+<h3 id="universal-greedy-template" tabindex="-1"><a class="header-anchor" href="#universal-greedy-template"><span>Universal Greedy Template</span></a></h3>
+<pre><code class="language-python">def greedy_solution(items):
+    # Step 1: Sort or prepare data structure
+    items.sort(key=lambda x: x[criterion])
+    
+    # Step 2: Initialize greedy choice tracking
+    result = initial_value
+    current_state = initial_state
+    
+    # Step 3: Make greedy choices
+    for item in items:
+        if can_select(item, current_state):
+            result = update_result(result, item)
+            current_state = update_state(current_state, item)
+    
+    return result
+</code></pre>
+<h3 id="template-1-interval-scheduling" tabindex="-1"><a class="header-anchor" href="#template-1-interval-scheduling"><span>Template 1: Interval Scheduling</span></a></h3>
+<pre><code class="language-python">def interval_scheduling(intervals):
+    &quot;&quot;&quot;Select maximum non-overlapping intervals&quot;&quot;&quot;
+    if not intervals:
+        return 0
+    
+    # Sort by end time
+    intervals.sort(key=lambda x: x[1])
+    
+    count = 1
+    end = intervals[0][1]
+    
+    for i in range(1, len(intervals)):
+        if intervals[i][0] &gt;= end:
+            count += 1
+            end = intervals[i][1]
+    
+    return count
+</code></pre>
+<h3 id="template-2-activity-selection-with-heap" tabindex="-1"><a class="header-anchor" href="#template-2-activity-selection-with-heap"><span>Template 2: Activity Selection with Heap</span></a></h3>
+<pre><code class="language-python">import heapq
+
+def activity_selection_heap(tasks):
+    &quot;&quot;&quot;Select activities using priority queue&quot;&quot;&quot;
+    # Count frequency or priority
+    freq = collections.Counter(tasks)
+    
+    # Max heap (negate for min heap)
+    heap = [(-count, task) for task, count in freq.items()]
+    heapq.heapify(heap)
+    
+    result = []
+    while heap:
+        count1, task1 = heapq.heappop(heap)
+        result.append(task1)
+        
+        if heap:
+            count2, task2 = heapq.heappop(heap)
+            result.append(task2)
+            
+            # Add back if still available
+            if count1 &lt; -1:
+                heapq.heappush(heap, (count1 + 1, task1))
+            if count2 &lt; -1:
+                heapq.heappush(heap, (count2 + 1, task2))
+    
+    return result
+</code></pre>
+<h3 id="template-3-greedy-accumulation" tabindex="-1"><a class="header-anchor" href="#template-3-greedy-accumulation"><span>Template 3: Greedy Accumulation</span></a></h3>
+<pre><code class="language-python">def greedy_accumulation(prices):
+    &quot;&quot;&quot;Accumulate positive differences (stock trading)&quot;&quot;&quot;
+    profit = 0
+    
+    for i in range(1, len(prices)):
+        # Greedy: take profit whenever possible
+        if prices[i] &gt; prices[i-1]:
+            profit += prices[i] - prices[i-1]
+    
+    return profit
+</code></pre>
+<h3 id="template-4-jump-game-pattern" tabindex="-1"><a class="header-anchor" href="#template-4-jump-game-pattern"><span>Template 4: Jump Game Pattern</span></a></h3>
+<pre><code class="language-python">def jump_game(nums):
+    &quot;&quot;&quot;Check if can reach end&quot;&quot;&quot;
+    max_reach = 0
+    
+    for i in range(len(nums)):
+        if i &gt; max_reach:
+            return False
+        max_reach = max(max_reach, i + nums[i])
+        if max_reach &gt;= len(nums) - 1:
+            return True
+    
+    return True
+
+def jump_game_min_jumps(nums):
+    &quot;&quot;&quot;Minimum jumps to reach end&quot;&quot;&quot;
+    jumps = 0
+    current_end = 0
+    farthest = 0
+    
+    for i in range(len(nums) - 1):
+        farthest = max(farthest, i + nums[i])
+        
+        if i == current_end:
+            jumps += 1
+            current_end = farthest
+    
+    return jumps
+</code></pre>
+<h3 id="template-5-string-reorganization" tabindex="-1"><a class="header-anchor" href="#template-5-string-reorganization"><span>Template 5: String Reorganization</span></a></h3>
+<pre><code class="language-python">def reorganize_string(s):
+    &quot;&quot;&quot;Reorganize string so no adjacent chars are same&quot;&quot;&quot;
+    from collections import Counter
+    import heapq
+    
+    # Count frequencies
+    count = Counter(s)
+    
+    # Check if possible
+    max_count = max(count.values())
+    if max_count &gt; (len(s) + 1) // 2:
+        return &quot;&quot;
+    
+    # Max heap of frequencies
+    heap = [(-cnt, char) for char, cnt in count.items()]
+    heapq.heapify(heap)
+    
+    result = []
+    prev_count, prev_char = 0, ''
+    
+    while heap:
+        count, char = heapq.heappop(heap)
+        result.append(char)
+        
+        # Add previous back to heap
+        if prev_count &lt; 0:
+            heapq.heappush(heap, (prev_count, prev_char))
+        
+        # Update previous
+        prev_count = count + 1
+        prev_char = char
+    
+    return ''.join(result)
+</code></pre>
+<h3 id="template-6-fractional-knapsack" tabindex="-1"><a class="header-anchor" href="#template-6-fractional-knapsack"><span>Template 6: Fractional Knapsack</span></a></h3>
+<pre><code class="language-python">def fractional_knapsack(items, capacity):
+    &quot;&quot;&quot;Greedy knapsack allowing fractions&quot;&quot;&quot;
+    # items = [(value, weight), ...]
+    # Sort by value/weight ratio
+    items.sort(key=lambda x: x[0]/x[1], reverse=True)
+    
+    total_value = 0
+    remaining = capacity
+    
+    for value, weight in items:
+        if weight &lt;= remaining:
+            total_value += value
+            remaining -= weight
+        else:
+            # Take fraction
+            total_value += value * (remaining / weight)
+            break
+    
+    return total_value
+</code></pre>
+<h2 id="problems-by-pattern" tabindex="-1"><a class="header-anchor" href="#problems-by-pattern"><span>Problems by Pattern</span></a></h2>
+<h3 id="interval-problems" tabindex="-1"><a class="header-anchor" href="#interval-problems"><span><strong>Interval Problems</strong></span></a></h3>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC #</th>
+<th>Key Technique</th>
+<th>Difficulty</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Non-overlapping Intervals</td>
+<td>435</td>
+<td>Sort by end</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Minimum Arrows to Burst Balloons</td>
+<td>452</td>
+<td>Sort by end</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Maximum Length of Pair Chain</td>
+<td>646</td>
+<td>Sort by end</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Merge Intervals</td>
+<td>56</td>
+<td>Sort by start</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Meeting Rooms II</td>
+<td>253</td>
+<td>Sort + heap</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Interval List Intersections</td>
+<td>986</td>
+<td>Two pointers</td>
+<td>Medium</td>
+</tr>
+</tbody>
+</table>
+<h3 id="activity-selection-problems" tabindex="-1"><a class="header-anchor" href="#activity-selection-problems"><span><strong>Activity Selection Problems</strong></span></a></h3>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC #</th>
+<th>Key Technique</th>
+<th>Difficulty</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Task Scheduler</td>
+<td>621</td>
+<td>Frequency count</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Maximum Events Attended</td>
+<td>1353</td>
+<td>Sort + heap</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Course Schedule III</td>
+<td>630</td>
+<td>Sort + heap</td>
+<td>Hard</td>
+</tr>
+<tr>
+<td>IPO</td>
+<td>502</td>
+<td>Two heaps</td>
+<td>Hard</td>
+</tr>
+</tbody>
+</table>
+<h3 id="stock-trading-problems" tabindex="-1"><a class="header-anchor" href="#stock-trading-problems"><span><strong>Stock Trading Problems</strong></span></a></h3>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC #</th>
+<th>Key Technique</th>
+<th>Difficulty</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Buy Sell Stock II</td>
+<td>122</td>
+<td>Accumulate gains</td>
+<td>Easy</td>
+</tr>
+<tr>
+<td>Gas Station</td>
+<td>134</td>
+<td>Circular array</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Best Time with Fee</td>
+<td>714</td>
+<td>State tracking</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Container With Most Water</td>
+<td>11</td>
+<td>Two pointers</td>
+<td>Medium</td>
+</tr>
+</tbody>
+</table>
+<h3 id="jump-game-problems" tabindex="-1"><a class="header-anchor" href="#jump-game-problems"><span><strong>Jump Game Problems</strong></span></a></h3>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC #</th>
+<th>Key Technique</th>
+<th>Difficulty</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Jump Game</td>
+<td>55</td>
+<td>Track max reach</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Jump Game II</td>
+<td>45</td>
+<td>Min jumps</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Jump Game III</td>
+<td>1306</td>
+<td>BFS/DFS</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Reach a Number</td>
+<td>754</td>
+<td>Math + greedy</td>
+<td>Medium</td>
+</tr>
+</tbody>
+</table>
+<h3 id="string-reorganization-problems" tabindex="-1"><a class="header-anchor" href="#string-reorganization-problems"><span><strong>String Reorganization Problems</strong></span></a></h3>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC #</th>
+<th>Key Technique</th>
+<th>Difficulty</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Reorganize String</td>
+<td>767</td>
+<td>Max heap</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>String Without AAA or BBB</td>
+<td>984</td>
+<td>Greedy + counter tracking</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Rearrange K Distance Apart</td>
+<td>358</td>
+<td>Heap + queue</td>
+<td>Hard</td>
+</tr>
+<tr>
+<td>Task Scheduler</td>
+<td>621</td>
+<td>Frequency</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Longest Happy String</td>
+<td>1405</td>
+<td>Heap greedy</td>
+<td>Medium</td>
+</tr>
+</tbody>
+</table>
+<h3 id="other-greedy-problems" tabindex="-1"><a class="header-anchor" href="#other-greedy-problems"><span><strong>Other Greedy Problems</strong></span></a></h3>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC #</th>
+<th>Key Technique</th>
+<th>Difficulty</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Candy</td>
+<td>135</td>
+<td>Two pass</td>
+<td>Hard</td>
+</tr>
+<tr>
+<td>Assign Cookies</td>
+<td>455</td>
+<td>Two pointers</td>
+<td>Easy</td>
+</tr>
+<tr>
+<td>Maximum Units on Truck</td>
+<td>1710</td>
+<td>Sort by value</td>
+<td>Easy</td>
+</tr>
+<tr>
+<td>Boats to Save People</td>
+<td>881</td>
+<td>Two pointers</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Minimum Cost to Connect Sticks</td>
+<td>1167</td>
+<td>Min heap</td>
+<td>Medium</td>
+</tr>
+</tbody>
+</table>
+<h2 id="lc-examples" tabindex="-1"><a class="header-anchor" href="#lc-examples"><span>LC Examples</span></a></h2>
+<h3 id="2-2-jump-game" tabindex="-1"><a class="header-anchor" href="#2-2-jump-game"><span>2-2) Jump Game</span></a></h3>
+<pre><code class="language-python"># 055 Jump Game
+# V0
+class Solution(object):
+    def canJump(self, nums):
+        # edge case
+        if not nums:
+            return True
+        cur = 0
+        for i in range(len(nums)):
+            if cur &lt; i:
+                return False
+            cur = max(cur, i + nums[i])
+        return True
+</code></pre>
+<h3 id="2-2-jump-game-ii" tabindex="-1"><a class="header-anchor" href="#2-2-jump-game-ii"><span>2-2’) Jump Game II</span></a></h3>
+<pre><code class="language-python"># 045 Jump Game II
+# V0
+# IDEA : GREEDY
+&quot;&quot;&quot;
+Steps:
+    step 1) Initialize three integer variables: jumps to count the number of jumps, currentJumpEnd to mark the end of the range that we can jump to, and farthest to mark the farthest place that we can reach. Set each variable to zero
+    step 2) terate over nums. Note that we exclude the last element from our iteration because as soon as we reach the last element, we do not need to jump anymore.
+            - Update farthest to i + nums[i] if the latter is larger.
+            - If we reach currentJumpEnd, it means we finished the current jump, and can begin checking the next jump by setting currentJumpEnd = farthest.
+    step 3) return jumps
+&quot;&quot;&quot;
+class Solution:
+    def jump(self, nums: List[int]) -&gt; int:
+            jumps = 0
+            current_jump_end = 0
+            farthest = 0
+            for i in range(len(nums) - 1):
+                # we continuously find the how far we can reach in the current jump
+                farthest = max(farthest, i + nums[i])
+                # if we have come to the end of the current jump,
+                # we need to make another jump
+                if i == current_jump_end:
+                    jumps += 1
+                    current_jump_end = farthest
+            return jumps
+
+# V1
+# IDEA : GREEDY
+# https://leetcode.com/problems/jump-game-ii/discuss/1672485/Python-Greedy
+class Solution:
+    def jump(self, nums: List[int]) -&gt; int:
+        l = r = res = farthest = 0
+        while r &lt; len(nums) - 1:
+            for idx in range(l, r+1):
+                farthest = max(farthest, idx + nums[idx])
+            l = r+1
+            r = farthest 
+            res += 1
+        return res
+</code></pre>
+<h3 id="2-3-best-time-to-buy-and-sell-stock-ii" tabindex="-1"><a class="header-anchor" href="#2-3-best-time-to-buy-and-sell-stock-ii"><span>2-3) Best Time to Buy and Sell Stock II</span></a></h3>
+<pre><code class="language-python"># 122 Best Time to Buy and Sell Stock II
+class Solution:
+    def maxProfit(self, prices):
+        profit = 0
+        for i in range(0,len(prices)-1):
+            if prices[i+1] &gt; prices[i]:
+                # have to sale last stock, then buy a new one
+                # and sum up the price difference into profit
+                profit += prices[i+1] - prices[i]
+        return profit
+
+</code></pre>
+<h3 id="2-4-gas-station" tabindex="-1"><a class="header-anchor" href="#2-4-gas-station"><span>2-4) Gas Station</span></a></h3>
+<pre><code class="language-python"># 134 Gas Station
+# V0
+# IDEA : GREEDY
+# IDEA : if sum(gas) - sum(cost) &gt; 0, =&gt; THERE MUST BE A SOLUTION
+# IDEA : since it's circular (symmetry), we can maintain &quot;total&quot; (e.g. total += gas[i] - cost[i]) of (gas[i], cost[i]) for each index as their &quot;current sum&quot;
+class Solution(object):
+    def canCompleteCircuit(self, gas, cost):
+        start = remain = total = 0
+        for i in range(len(gas)):
+            remain += gas[i] - cost[i]
+            total += gas[i] - cost[i]
+            if remain &lt; 0:
+                remain = 0
+                start = i + 1
+        return -1 if total &lt; 0 else start
+</code></pre>
+<h3 id="2-6-reorganize-string" tabindex="-1"><a class="header-anchor" href="#2-6-reorganize-string"><span>2-6) Reorganize String</span></a></h3>
+<pre><code class="language-python"># LC 767. Reorganize String
+
+# V0 
+# IDEA : GREEDY + COUNTER
+# IDEA : 
+#  step 1) order exists count (big -&gt; small)
+#  step 2) select the element which is &quot;most remaining&quot; and DIFFERENT from last ans element and append such element to the end of ans
+#  step 3) if can't find such element, return &quot;&quot;
+class Solution(object):
+    def reorganizeString(self, S):
+        cnt = collections.Counter(S)
+        # Be aware of it : ans = &quot;#&quot; -&gt; not to have error in ans[-1] when first loop
+        ans = '#'
+        while cnt:
+            stop = True
+            for v, c in cnt.most_common():
+                &quot;&quot;&quot;
+                NOTE !!! trick here
+
+                1) we only compare last element in ans and current key (v), if they are different, then append
+                2) we break at the end of each for loop -&gt; MAKE SURE two adjacent characters are not the same.
+                3) we use a flag &quot;stop&quot;, to decide whether should stop while loop or not
+                &quot;&quot;&quot;
+                if v != ans[-1]:
+                    stop = False
+                    ans += v
+                    cnt[v] -= 1
+                    if not cnt[v]:
+                        del cnt[v]
+                    &quot;&quot;&quot;
+                    NOTE !!!
+                     -&gt; we BREAK right after each op, since we want to get next NEW most common element from &quot;updated&quot; cnt.most_common()
+                    &quot;&quot;&quot;
+                    break
+            # Be aware of it : if there is no valid &quot;v&quot;, then the while loop will break automatically at this condition (stop = True)
+            if stop:
+                break
+        return ans[1:] if len(ans[1:]) == len(S) else ''
+</code></pre>
+<h3 id="2-6-string-without-aaa-or-bbb" tabindex="-1"><a class="header-anchor" href="#2-6-string-without-aaa-or-bbb"><span>2-6’) String Without AAA or BBB</span></a></h3>
+<pre><code class="language-java">// LC 984. String Without AAA or BBB
+// Pattern: String Reorganization with consecutive constraint
+
+/**
+ * IDEA: Greedy with Counter Tracking
+ *
+ * Key Insight:
+ * - Track consecutive count of each character
+ * - MUST switch if consecutive count reaches 2
+ * - Otherwise, greedily pick the character with higher remaining count
+ *
+ * Decision Logic:
+ * 1. If continueB == 2 → MUST write 'a' (avoid &quot;bbb&quot;)
+ * 2. If continueA == 2 → MUST write 'b' (avoid &quot;aaa&quot;)
+ * 3. Otherwise → write the one with higher remaining count
+ */
+
+// V0: Greedy with consecutive tracking
+public String strWithout3a3b(int a, int b) {
+    StringBuilder res = new StringBuilder();
+    int continueA = 0;
+    int continueB = 0;
+
+    while (a &gt; 0 || b &gt; 0) {
+        boolean writeA = false;
+
+        // Priority 1: Must switch if 2 consecutive
+        if (continueB == 2) {
+            writeA = true;
+        } else if (continueA == 2) {
+            writeA = false;
+        } else {
+            // Priority 2: Greedy - write the one with more remaining
+            writeA = a &gt;= b;
+        }
+
+        if (writeA) {
+            res.append(&quot;a&quot;);
+            a--;
+            continueA++;
+            continueB = 0; // Reset other counter
+        } else {
+            res.append(&quot;b&quot;);
+            b--;
+            continueB++;
+            continueA = 0; // Reset other counter
+        }
+    }
+    return res.toString();
+}
+
+// V1: Using last 2 characters check (Editorial)
+public String strWithout3a3b_v1(int A, int B) {
+    StringBuilder ans = new StringBuilder();
+    while (A &gt; 0 || B &gt; 0) {
+        boolean writeA = false;
+        int L = ans.length();
+        // Check last 2 chars
+        if (L &gt;= 2 &amp;&amp; ans.charAt(L-1) == ans.charAt(L-2)) {
+            if (ans.charAt(L-1) == 'b') writeA = true;
+        } else {
+            if (A &gt;= B) writeA = true;
+        }
+
+        if (writeA) { A--; ans.append('a'); }
+        else { B--; ans.append('b'); }
+    }
+    return ans.toString();
+}
+
+// V2: PQ approach (similar to Reorganize String)
+// Max heap: always pick char with highest remaining count
+// If blocked by consecutive constraint, pick second highest
+</code></pre>
+<p><strong>Similar Problems:</strong></p>
+<ul>
+<li>LC 767: Reorganize String (no 2 adjacent same)</li>
+<li>LC 1405: Longest Happy String (max a, b, c with no 3 consecutive)</li>
+<li>LC 358: Rearrange String K Distance Apart (k distance constraint)</li>
+</ul>
+<h3 id="2-7-task-scheduler" tabindex="-1"><a class="header-anchor" href="#2-7-task-scheduler"><span>2-7) Task Scheduler</span></a></h3>
+<pre><code class="language-python"># LC 621. Task Scheduler
+# V0
+# pattern :
+#    =============================================================================
+#    -&gt; task_time = (max_mission_count - 1) * (n + 1) + (number_of_max_mission)
+#    =============================================================================
+#   
+#    -&gt; Example 1) :
+#    -&gt;  AAAABBBBCCD, n=3
+#    =&gt; THE EXPECTED tuned missions is like : ABXXABXXABXXAB
+#    -&gt; (4 - 1) * (3 + 1) + 2 = 14
+#    -&gt; 4 is the &quot;how many missions the max mission has&quot; (AAAA or BBBB)
+#    -&gt; 3 is n
+#    -&gt; 2 is &quot;how many mission have max mission count&quot; -&gt; A and B. so it's 2
+#    -&gt; in sum,
+#    -&gt; (4 - 1) * (3 + 1) is for ABXXABXXABXX
+#    -&gt; and 2 is for AB
+#
+#   -&gt; Example 2) :
+#   -&gt; AAABBB, n = 2
+#   -&gt; THE EXPECTED tuned missions is like : ABXABXAB
+#   -&gt; (3 - 1) * (2 + 1) + (2) = 8
+class Solution(object):
+    def leastInterval(self, tasks, n):
+        count = collections.Counter(tasks)
+        most = count.most_common()[0][1]
+        num_most = len([i for i, v in count.items() if v == most])
+        &quot;&quot;&quot;
+        example 1 : tasks = [&quot;A&quot;,&quot;A&quot;,&quot;A&quot;,&quot;B&quot;,&quot;B&quot;,&quot;B&quot;], n = 2
+            -&gt; we can split tasks as : A -&gt; B -&gt; idle -&gt; A -&gt; B -&gt; idle -&gt; A -&gt; B
+               -&gt; 1) so there are 3-1 group. e.g. (A -&gt; B -&gt; idle), (A -&gt; B -&gt; idle)
+                     and each group has (n+1) elements. e.g. (A -&gt; B -&gt; idle)
+               -&gt; 2) and the remain element is num_most. e.g. (A, B)
+               -&gt; 3) so total cnt = (3-1) * (2+1) + 2 = 8
+    
+        example 2 : tasks = [&quot;A&quot;,&quot;A&quot;,&quot;A&quot;,&quot;A&quot;,&quot;A&quot;,&quot;A&quot;,&quot;B&quot;,&quot;C&quot;,&quot;D&quot;,&quot;E&quot;,&quot;F&quot;,&quot;G&quot;], n = 2
+            -&gt; we can split tasks as A -&gt; B -&gt; C -&gt; A -&gt; D -&gt; E -&gt; A -&gt; F -&gt; G -&gt; A -&gt; idle -&gt; idle -&gt; A -&gt; idle -&gt; idle -&gt; A
+                -&gt; 1) so there are 6-1 group. e.g. (A -&gt; B -&gt; C), (A -&gt; D -&gt; E), (A -&gt; F -&gt; G), (A -&gt; idle -&gt; idle), (A -&gt; idle -&gt; idle)
+                      and each group has (n+1) elements. e.g. (A,B,C) .... (as above)
+                -&gt; 2) and the remain element is num_most. e.g. (A) 
+                -&gt; 3) so total cnt = (6-1)*(2+1) + 1 =  16
+        &quot;&quot;&quot;
+        time = (most - 1) * (n + 1) + num_most
+        return max(time, len(tasks)) # be aware of it 
+</code></pre>
+<h3 id="2-8-maximum-units-on-a-truck" tabindex="-1"><a class="header-anchor" href="#2-8-maximum-units-on-a-truck"><span>2-8) Maximum Units on a Truck</span></a></h3>
+<pre><code class="language-python"># LC 1710. Maximum Units on a Truck
+# V0
+# IDEA : GREEDY + sorting
+class Solution(object):
+    def maximumUnits(self, boxTypes, truckSize):
+        # boxTypes[i] = [numberOfBoxesi, numberOfUnitsPerBoxi]:
+        # edge case
+        if not boxTypes or not truckSize:
+            return 0
+        &quot;&quot;&quot;
+        NOTE : we sort on sort(key=lambda x : -x[1])
+
+            -&gt; if unit is bigger, we can get bigger aggregated result (n * unit)
+        &quot;&quot;&quot;
+        boxTypes.sort(key=lambda x : -x[1])
+        res = 0
+        for n, unit in boxTypes:
+            # case 1 : truckSize == 0, break for loop and return ans
+            if truckSize == 0:
+                break
+            # case 2 : truckSize &lt; n, we CAN'T add all n to truck, but CAN only add (truckSize * unit) amount to truck
+            elif truckSize &lt; n:
+                res += (truckSize * unit)
+                truckSize = 0
+                break
+            # case 3 : normal case, it's OK to put all (n * unit) to truck once
+            else:      
+                res += (n * unit)
+                truckSize -= n
+        return res
+
+# V1
+# IDEA : GREEDY
+# https://leetcode.com/problems/maximum-units-on-a-truck/discuss/1045318/Python-solution
+class Solution(object):
+    def maximumUnits(self, boxTypes, truckSize):
+        boxTypes.sort(key = lambda x: -x[1])
+        n = len(boxTypes)
+        result = 0
+        i = 0
+        while truckSize &gt;= boxTypes[i][0]:
+            result += boxTypes[i][1] * boxTypes[i][0]
+            truckSize -= boxTypes[i][0]
+            i += 1
+            if i == n:
+                return result
+        result += truckSize * boxTypes[i][1]
+        return result
+</code></pre>
+<h2 id="decision-framework" tabindex="-1"><a class="header-anchor" href="#decision-framework"><span>Decision Framework</span></a></h2>
+<h3 id="pattern-selection-strategy" tabindex="-1"><a class="header-anchor" href="#pattern-selection-strategy"><span>Pattern Selection Strategy</span></a></h3>
+<pre><code>Greedy Algorithm Selection Flowchart:
+
+1. Can the problem be solved greedily?
+   ├── Does local optimal lead to global optimal? → YES → Use Greedy
+   ├── Can you prove greedy correctness? → YES → Use Greedy
+   └── NO to both → Use DP or other approach
+
+2. What type of greedy pattern?
+   ├── Selection from sorted items → Interval/Activity Selection
+   ├── Maximize/minimize at each step → Accumulation Pattern
+   ├── Dynamic selection → Priority Queue/Heap
+   ├── Position/reach tracking → Jump Game Pattern
+   └── Pairing/matching → Two Pointers
+
+3. How to make greedy choice?
+   ├── Sort by what criterion?
+   │   ├── End time → Interval scheduling
+   │   ├── Start time → Merge intervals
+   │   ├── Value/weight ratio → Knapsack
+   │   └── Custom criterion → Problem specific
+   └── No sorting needed → Direct iteration
+
+4. Common greedy strategies:
+   ├── Always take the best available
+   ├── Never make a choice that blocks future options
+   ├── Minimize waste/maximize efficiency
+   └── Balance resources evenly
+</code></pre>
+<h3 id="greedy-vs-dynamic-programming" tabindex="-1"><a class="header-anchor" href="#greedy-vs-dynamic-programming"><span>Greedy vs Dynamic Programming</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>Criterion</th>
+<th>Use Greedy</th>
+<th>Use DP</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Greedy choice property</td>
+<td>✅</td>
+<td>❌</td>
+<td>Activity selection</td>
+</tr>
+<tr>
+<td>Need all sub-solutions</td>
+<td>❌</td>
+<td>✅</td>
+<td>0/1 Knapsack</td>
+</tr>
+<tr>
+<td>Can prove optimality</td>
+<td>✅</td>
+<td>-</td>
+<td>Huffman coding</td>
+</tr>
+<tr>
+<td>Overlapping subproblems</td>
+<td>❌</td>
+<td>✅</td>
+<td>Fibonacci</td>
+</tr>
+<tr>
+<td>Simple selection rule</td>
+<td>✅</td>
+<td>❌</td>
+<td>Fractional knapsack</td>
+</tr>
+</tbody>
+</table>
+<h2 id="greedy-vs-bfs-dfs-in-graph-problems" tabindex="-1"><a class="header-anchor" href="#greedy-vs-bfs-dfs-in-graph-problems"><span>Greedy vs BFS/DFS in Graph Problems</span></a></h2>
+<h3 id="when-to-choose-decision-framework" tabindex="-1"><a class="header-anchor" href="#when-to-choose-decision-framework"><span>When to Choose: Decision Framework</span></a></h3>
+<pre><code>Graph Problem Algorithm Selection:
+
+1. Problem Goal Analysis
+   ├── Find shortest path (unweighted) → BFS
+   ├── Find shortest path (weighted, all positive) → Dijkstra (Greedy)
+   ├── Find shortest path (negative weights) → Bellman-Ford (DP)
+   ├── Explore all paths/solutions → DFS
+   ├── Minimum spanning tree → Kruskal/Prim (Greedy)
+   ├── Topological sort → DFS or BFS (Kahn's)
+   └── Connectivity/reachability → DFS or BFS
+
+2. Problem Constraints Check
+   ├── Graph size (|V| + |E|) &gt; 10^5 → Favor Greedy if applicable
+   ├── Dense graph (E ≈ V²) → Consider space complexity
+   ├── Sparse graph (E ≈ V) → BFS/DFS usually fine
+   └── Special structure (DAG, tree) → Enables certain optimizations
+
+3. Correctness Requirements
+   ├── Need to explore all possibilities → DFS/BFS required
+   ├── Greedy choice property proven → Greedy is optimal
+   ├── Optimal substructure exists → Consider DP or Greedy
+   └── No optimal substructure → BFS/DFS for complete search
+</code></pre>
+<h3 id="complexity-comparison" tabindex="-1"><a class="header-anchor" href="#complexity-comparison"><span>Complexity Comparison</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>Algorithm</th>
+<th>Time Complexity</th>
+<th>Space Complexity</th>
+<th>Best Use Case</th>
+<th>Graph Size Limit</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>BFS</strong></td>
+<td>O(V + E)</td>
+<td>O(V)</td>
+<td>Shortest path (unweighted), level-order</td>
+<td>&lt; 10^6 nodes</td>
+</tr>
+<tr>
+<td><strong>DFS</strong></td>
+<td>O(V + E)</td>
+<td>O(V)</td>
+<td>Path finding, cycle detection, topological sort</td>
+<td>&lt; 10^6 nodes</td>
+</tr>
+<tr>
+<td><strong>Dijkstra (Greedy)</strong></td>
+<td>O((V + E)logV)</td>
+<td>O(V)</td>
+<td>Shortest path (weighted, positive)</td>
+<td>&lt; 10^5 nodes</td>
+</tr>
+<tr>
+<td><strong>Kruskal (Greedy)</strong></td>
+<td>O(ElogE)</td>
+<td>O(V + E)</td>
+<td>Minimum spanning tree</td>
+<td>&lt; 10^5 edges</td>
+</tr>
+<tr>
+<td><strong>Prim (Greedy)</strong></td>
+<td>O(ElogV)</td>
+<td>O(V + E)</td>
+<td>MST for dense graphs</td>
+<td>&lt; 10^5 nodes</td>
+</tr>
+</tbody>
+</table>
+<h3 id="problem-size-considerations" tabindex="-1"><a class="header-anchor" href="#problem-size-considerations"><span>Problem Size Considerations</span></a></h3>
+<h4 id="critical-thresholds" tabindex="-1"><a class="header-anchor" href="#critical-thresholds"><span>Critical Thresholds</span></a></h4>
+<p><strong>Small Scale (|V| + |E| &lt; 10^3)</strong></p>
+<ul>
+<li>✅ Any algorithm works</li>
+<li>Choose based on code simplicity</li>
+<li>Performance differences negligible</li>
+<li>Focus on correctness</li>
+</ul>
+<p><strong>Medium Scale (10^3 ≤ |V| + |E| ≤ 10^5)</strong></p>
+<ul>
+<li>⚠️ Algorithm choice matters</li>
+<li>BFS/DFS: Usually acceptable</li>
+<li>Greedy: Preferred if applicable (faster constants)</li>
+<li>Consider optimization for dense graphs</li>
+</ul>
+<p><strong>Large Scale (|V| + |E| &gt; 10^5)</strong></p>
+<ul>
+<li>🚨 Critical to choose correctly</li>
+<li>BFS/DFS: May timeout if O(V²) or O(VE)</li>
+<li>Greedy: Strongly preferred if problem allows</li>
+<li>Space complexity becomes critical</li>
+<li>Consider:
+<ul>
+<li>Memory limits (often 256MB in contests)</li>
+<li>Time limits (1-2 seconds typical)</li>
+<li>Constant factors in complexity</li>
+</ul>
+</li>
+</ul>
+<h4 id="when-graph-size-forces-greedy-choice" tabindex="-1"><a class="header-anchor" href="#when-graph-size-forces-greedy-choice"><span>When Graph Size Forces Greedy Choice</span></a></h4>
+<table>
+<thead>
+<tr>
+<th>Scenario</th>
+<th>Size Threshold</th>
+<th>Why Greedy Preferred</th>
+<th>Example Problem</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Dense graph shortest path</td>
+<td>V &gt; 10^4, E ≈ V²</td>
+<td>BFS O(V²) too slow</td>
+<td>LC 743 Network Delay Time</td>
+</tr>
+<tr>
+<td>MST in large graph</td>
+<td>E &gt; 10^5</td>
+<td>Must avoid exploring all combinations</td>
+<td>LC 1584 Min Cost Connect Points</td>
+</tr>
+<tr>
+<td>Large sparse graph</td>
+<td>V &gt; 10^5, E ≈ V</td>
+<td>Greedy O(ElogE) vs BFS O(VE)</td>
+<td>LC 1631 Path With Min Effort</td>
+</tr>
+<tr>
+<td>Real-time path finding</td>
+<td>V &gt; 10^5</td>
+<td>Need fast response</td>
+<td>Navigation systems</td>
+</tr>
+</tbody>
+</table>
+<h3 id="decision-checkpoints" tabindex="-1"><a class="header-anchor" href="#decision-checkpoints"><span>Decision Checkpoints</span></a></h3>
+<h4 id="checkpoint-1-can-greedy-work-mandatory-checks" tabindex="-1"><a class="header-anchor" href="#checkpoint-1-can-greedy-work-mandatory-checks"><span>Checkpoint 1: Can Greedy Work? (Mandatory Checks)</span></a></h4>
+<p>✅ <strong>Use Greedy if ALL are true:</strong></p>
+<ol>
+<li>
+<p><strong>Greedy choice property exists</strong></p>
+<ul>
+<li>Local optimal choice leads to global optimal</li>
+<li>Can prove via exchange argument or contradiction</li>
+</ul>
+</li>
+<li>
+<p><strong>Problem has special structure</strong></p>
+<ul>
+<li>Shortest path with non-negative weights (Dijkstra)</li>
+<li>Minimum spanning tree (Kruskal/Prim)</li>
+<li>Interval scheduling patterns</li>
+<li>Optimal substructure with greedy choice</li>
+</ul>
+</li>
+<li>
+<p><strong>Performance requirement</strong></p>
+<ul>
+<li>Large input size (&gt; 10^5)</li>
+<li>Need O(ElogV) or better complexity</li>
+</ul>
+</li>
+</ol>
+<p>❌ <strong>Cannot use Greedy if ANY are true:</strong></p>
+<ol>
+<li>Need to find ALL paths/solutions</li>
+<li>Negative edge weights exist</li>
+<li>Must backtrack or reconsider choices</li>
+<li>No proven greedy strategy exists</li>
+</ol>
+<h4 id="checkpoint-2-which-bfs-dfs-if-greedy-doesn-t-apply" tabindex="-1"><a class="header-anchor" href="#checkpoint-2-which-bfs-dfs-if-greedy-doesn-t-apply"><span>Checkpoint 2: Which BFS/DFS? (If Greedy Doesn’t Apply)</span></a></h4>
+<p><strong>Use BFS when:</strong></p>
+<ul>
+<li>✅ Need shortest path in unweighted graph</li>
+<li>✅ Want level-by-level exploration</li>
+<li>✅ Need minimum steps/moves</li>
+<li>✅ Problem asks for “nearest” or “minimum depth”</li>
+<li>📊 Complexity: O(V + E), Space: O(V) queue</li>
+</ul>
+<p><strong>Use DFS when:</strong></p>
+<ul>
+<li>✅ Need to explore all paths</li>
+<li>✅ Checking connectivity or cycles</li>
+<li>✅ Topological sorting</li>
+<li>✅ Path reconstruction required</li>
+<li>✅ Smaller space complexity acceptable (recursion stack)</li>
+<li>📊 Complexity: O(V + E), Space: O(V) call stack</li>
+</ul>
+<h4 id="checkpoint-3-performance-analysis" tabindex="-1"><a class="header-anchor" href="#checkpoint-3-performance-analysis"><span>Checkpoint 3: Performance Analysis</span></a></h4>
+<pre><code class="language-python"># Decision tree based on constraints
+def choose_algorithm(V, E, has_negative_weights, need_all_paths):
+    graph_size = V + E
+
+    if need_all_paths:
+        return &quot;DFS&quot; if V &lt; 10000 else &quot;Not feasible&quot;
+
+    if has_negative_weights:
+        return &quot;Bellman-Ford (DP)&quot; if graph_size &lt; 10^4 else &quot;Not feasible&quot;
+
+    # Shortest path problems
+    if is_weighted_graph:
+        if graph_size &gt; 10^5:
+            return &quot;Dijkstra (Greedy) - Required&quot;
+        return &quot;Dijkstra (Greedy) - Preferred&quot;
+    else:  # unweighted
+        if graph_size &gt; 10^6:
+            return &quot;Optimize or Not feasible&quot;
+        return &quot;BFS&quot;
+
+    # MST problems
+    if is_mst_problem:
+        if E &gt; 10^5:
+            return &quot;Kruskal (Greedy) - Required&quot;
+        return &quot;Kruskal/Prim (Greedy)&quot;
+</code></pre>
+<h3 id="common-graph-problem-patterns" tabindex="-1"><a class="header-anchor" href="#common-graph-problem-patterns"><span>Common Graph Problem Patterns</span></a></h3>
+<h4 id="pattern-1-shortest-path-problems" tabindex="-1"><a class="header-anchor" href="#pattern-1-shortest-path-problems"><span>Pattern 1: Shortest Path Problems</span></a></h4>
+<table>
+<thead>
+<tr>
+<th>Problem Type</th>
+<th>Size &lt; 10^3</th>
+<th>Size 10^3-10^5</th>
+<th>Size &gt; 10^5</th>
+<th>Algorithm</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Unweighted</td>
+<td>BFS</td>
+<td>BFS</td>
+<td>BFS</td>
+<td>O(V+E)</td>
+</tr>
+<tr>
+<td>Weighted (positive)</td>
+<td>Dijkstra</td>
+<td>Dijkstra</td>
+<td>Dijkstra (required)</td>
+<td>O((V+E)logV)</td>
+</tr>
+<tr>
+<td>Weighted (negative)</td>
+<td>Bellman-Ford</td>
+<td>Bellman-Ford</td>
+<td>Not feasible*</td>
+<td>O(VE)</td>
+</tr>
+<tr>
+<td>All pairs</td>
+<td>Floyd-Warshall</td>
+<td>BFS from each</td>
+<td>Not feasible</td>
+<td>O(V³)</td>
+</tr>
+</tbody>
+</table>
+<p>*For size &gt; 10^5 with negative weights, problem is typically not solvable in reasonable time</p>
+<h4 id="pattern-2-mst-problems" tabindex="-1"><a class="header-anchor" href="#pattern-2-mst-problems"><span>Pattern 2: MST Problems</span></a></h4>
+<pre><code class="language-python"># Kruskal's Algorithm (Greedy) - REQUIRED for large graphs
+def kruskal_mst(edges, n):
+    &quot;&quot;&quot;
+    When to use: ANY MST problem, especially when E &gt; 10^4
+    Time: O(E log E)
+    Space: O(V + E)
+    &quot;&quot;&quot;
+    edges.sort(key=lambda x: x[2])  # Sort by weight - GREEDY CHOICE
+    parent = list(range(n))
+
+    def find(x):
+        if parent[x] != x:
+            parent[x] = find(parent[x])
+        return parent[x]
+
+    mst_cost = 0
+    for u, v, weight in edges:
+        pu, pv = find(u), find(v)
+        if pu != pv:  # Greedy: take smallest edge that doesn't form cycle
+            parent[pu] = pv
+            mst_cost += weight
+
+    return mst_cost
+
+# Why not BFS/DFS for MST?
+# - Would need to explore all possible spanning trees: O(V^V) - INFEASIBLE
+# - Greedy approach proven optimal (cut property, cycle property)
+</code></pre>
+<h4 id="pattern-3-reachability-connectivity" tabindex="-1"><a class="header-anchor" href="#pattern-3-reachability-connectivity"><span>Pattern 3: Reachability/Connectivity</span></a></h4>
+<table>
+<thead>
+<tr>
+<th>Problem Type</th>
+<th>Best Algorithm</th>
+<th>When Size &gt; 10^5</th>
+<th>Reasoning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Can reach target?</td>
+<td>DFS or BFS</td>
+<td>Use BFS (iterative)</td>
+<td>DFS recursion may overflow</td>
+</tr>
+<tr>
+<td>Connected components</td>
+<td>DFS or Union-Find</td>
+<td>Union-Find (Greedy)</td>
+<td>O(E⍺(V)) vs O(V+E)</td>
+</tr>
+<tr>
+<td>Cycle detection</td>
+<td>DFS</td>
+<td>DFS with iterative deepening</td>
+<td>Need backtracking info</td>
+</tr>
+<tr>
+<td>Bipartite check</td>
+<td>BFS or DFS</td>
+<td>BFS preferred</td>
+<td>Better cache locality</td>
+</tr>
+</tbody>
+</table>
+<h3 id="leetcode-examples-with-size-analysis" tabindex="-1"><a class="header-anchor" href="#leetcode-examples-with-size-analysis"><span>LeetCode Examples with Size Analysis</span></a></h3>
+<h4 id="greedy-required-large-size" tabindex="-1"><a class="header-anchor" href="#greedy-required-large-size"><span>Greedy Required (Large Size)</span></a></h4>
+<p><strong>LC 743: Network Delay Time</strong></p>
+<ul>
+<li><strong>Constraint</strong>: N ≤ 100, K ≤ 6000 (edges)</li>
+<li><strong>Why Greedy</strong>: Weighted shortest path with positive weights</li>
+<li><strong>Algorithm</strong>: Dijkstra (Greedy)</li>
+<li><strong>BFS/DFS fails</strong>: Unweighted BFS gives wrong answer, DFS explores all paths (exponential)</li>
+</ul>
+<pre><code class="language-python">def networkDelayTime(times, n, k):
+    # Dijkstra - Greedy choice: always extend shortest known distance
+    graph = defaultdict(list)
+    for u, v, w in times:
+        graph[u].append((v, w))
+
+    dist = {i: float('inf') for i in range(1, n + 1)}
+    dist[k] = 0
+    heap = [(0, k)]  # (distance, node)
+
+    while heap:
+        d, node = heapq.heappop(heap)
+        if d &gt; dist[node]:
+            continue
+        for nei, weight in graph[node]:
+            new_dist = d + weight
+            if new_dist &lt; dist[nei]:  # Greedy choice
+                dist[nei] = new_dist
+                heapq.heappush(heap, (new_dist, nei))
+
+    return max(dist.values()) if max(dist.values()) &lt; float('inf') else -1
+</code></pre>
+<p><strong>LC 1584: Min Cost to Connect All Points</strong></p>
+<ul>
+<li><strong>Constraint</strong>: N ≤ 1000 points (up to 1000² edges)</li>
+<li><strong>Why Greedy</strong>: MST problem, E could be ~10^6</li>
+<li><strong>Algorithm</strong>: Kruskal or Prim (Greedy)</li>
+<li><strong>BFS/DFS fails</strong>: No clear BFS/DFS strategy exists for MST</li>
+</ul>
+<p><strong>LC 1631: Path With Minimum Effort</strong></p>
+<ul>
+<li><strong>Constraint</strong>: rows * cols ≤ 10^6</li>
+<li><strong>Why Greedy</strong>: Need minimum maximum difference (variant of shortest path)</li>
+<li><strong>Algorithm</strong>: Dijkstra with modified distance</li>
+<li><strong>BFS fails</strong>: Need to consider edge weights</li>
+</ul>
+<h4 id="bfs-dfs-optimal-small-to-medium-size" tabindex="-1"><a class="header-anchor" href="#bfs-dfs-optimal-small-to-medium-size"><span>BFS/DFS Optimal (Small to Medium Size)</span></a></h4>
+<p><strong>LC 200: Number of Islands</strong></p>
+<ul>
+<li><strong>Constraint</strong>: m * n ≤ 10^4</li>
+<li><strong>Why BFS/DFS</strong>: Simple connectivity check</li>
+<li><strong>Algorithm</strong>: DFS or BFS</li>
+<li><strong>Greedy doesn’t apply</strong>: No optimization problem, just exploration</li>
+</ul>
+<p><strong>LC 207: Course Schedule</strong></p>
+<ul>
+<li><strong>Constraint</strong>: numCourses ≤ 2000, prerequisites ≤ 5000</li>
+<li><strong>Why BFS/DFS</strong>: Cycle detection in directed graph</li>
+<li><strong>Algorithm</strong>: DFS (topological sort) or BFS (Kahn’s)</li>
+<li><strong>Greedy doesn’t apply</strong>: Must check all dependencies</li>
+</ul>
+<p><strong>LC 994: Rotting Oranges</strong></p>
+<ul>
+<li><strong>Constraint</strong>: grid size ≤ 100</li>
+<li><strong>Why BFS</strong>: Multi-source shortest path (unweighted)</li>
+<li><strong>Algorithm</strong>: BFS</li>
+<li><strong>Greedy not needed</strong>: Small size, unweighted</li>
+</ul>
+<h4 id="both-can-work-trade-offs" tabindex="-1"><a class="header-anchor" href="#both-can-work-trade-offs"><span>Both Can Work (Trade-offs)</span></a></h4>
+<p><strong>LC 785: Is Graph Bipartite?</strong></p>
+<ul>
+<li><strong>Size</strong>: Small (graph.length ≤ 100)</li>
+<li><strong>BFS approach</strong>: Color nodes level by level - O(V + E)</li>
+<li><strong>Union-Find (Greedy)</strong>: Group same-colored nodes - O(E⍺(V))</li>
+<li><strong>Choice</strong>: BFS simpler to code, Union-Find faster for dense graphs</li>
+</ul>
+<h3 id="interview-strategy-guide" tabindex="-1"><a class="header-anchor" href="#interview-strategy-guide"><span>Interview Strategy Guide</span></a></h3>
+<h4 id="quick-decision-algorithm" tabindex="-1"><a class="header-anchor" href="#quick-decision-algorithm"><span>Quick Decision Algorithm</span></a></h4>
+<pre><code>Given a graph problem in interview:
+
+Step 1: Identify problem type (30 seconds)
+├── Shortest path? → Check weights
+├── MST? → Greedy (Kruskal/Prim)
+├── All paths? → DFS
+├── Minimum steps? → BFS
+└── Connectivity? → DFS/BFS or Union-Find
+
+Step 2: Check size constraints (10 seconds)
+├── Size &gt; 10^5? → Must use optimal algorithm
+├── Dense graph? → Consider space complexity
+└── Small size? → Focus on correctness
+
+Step 3: Verify algorithm choice (20 seconds)
+├── Can I prove greedy works? → Use Greedy
+├── Need to explore all? → Use DFS
+├── Need shortest unweighted? → Use BFS
+└── Complex requirements? → Discuss trade-offs
+
+Step 4: Code and optimize (remaining time)
+</code></pre>
+<h4 id="common-mistakes-to-avoid" tabindex="-1"><a class="header-anchor" href="#common-mistakes-to-avoid"><span>Common Mistakes to Avoid</span></a></h4>
+<p>🚫 <strong>Using BFS for weighted shortest path</strong></p>
+<ul>
+<li>Problem: BFS assumes all edges equal weight</li>
+<li>Fix: Use Dijkstra (Greedy) for weighted graphs</li>
+</ul>
+<p>🚫 <strong>Using Dijkstra with negative weights</strong></p>
+<ul>
+<li>Problem: Greedy assumption breaks down</li>
+<li>Fix: Use Bellman-Ford (DP) - but check size constraints</li>
+</ul>
+<p>🚫 <strong>Using DFS for shortest path</strong></p>
+<ul>
+<li>Problem: DFS explores all paths (exponential)</li>
+<li>Fix: Use BFS (unweighted) or Dijkstra (weighted)</li>
+</ul>
+<p>🚫 <strong>Ignoring size constraints</strong></p>
+<ul>
+<li>Problem: O(V²) algorithm on 10^5 nodes → TLE</li>
+<li>Fix: Always calculate actual operations: if V=10^5, V²=10^10 (too slow)</li>
+</ul>
+<p>🚫 <strong>Assuming Greedy always works</strong></p>
+<ul>
+<li>Problem: Many graph problems need complete exploration</li>
+<li>Fix: Prove greedy property or use BFS/DFS</li>
+</ul>
+<h3 id="practical-performance-benchmarks" tabindex="-1"><a class="header-anchor" href="#practical-performance-benchmarks"><span>Practical Performance Benchmarks</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>Operations</th>
+<th>Time Limit 1s</th>
+<th>Time Limit 2s</th>
+<th>Typical Memory</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>10^6</td>
+<td>✅ Fast</td>
+<td>✅ Fast</td>
+<td>~4MB</td>
+</tr>
+<tr>
+<td>10^7</td>
+<td>✅ OK</td>
+<td>✅ Fast</td>
+<td>~40MB</td>
+</tr>
+<tr>
+<td>10^8</td>
+<td>⚠️ Tight</td>
+<td>✅ OK</td>
+<td>~400MB</td>
+</tr>
+<tr>
+<td>10^9</td>
+<td>❌ TLE</td>
+<td>⚠️ Tight</td>
+<td>~4GB (exceeds limit)</td>
+</tr>
+<tr>
+<td>10^10</td>
+<td>❌ TLE</td>
+<td>❌ TLE</td>
+<td>❌ MLE</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Key Insight</strong>:</p>
+<ul>
+<li>If your algorithm has O(V²) or O(VE) and V &gt; 10^4, consider greedy alternative</li>
+<li>If E &gt; 10^5 and you need MST, only greedy (Kruskal/Prim) will work</li>
+<li>Space complexity matters: O(V²) adjacency matrix fails when V &gt; 10^4 (100MB+)</li>
+</ul>
+<h3 id="summary-algorithm-selection-matrix" tabindex="-1"><a class="header-anchor" href="#summary-algorithm-selection-matrix"><span>Summary: Algorithm Selection Matrix</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>Problem Goal</th>
+<th>Size &lt; 10^3</th>
+<th>10^3 ≤ Size ≤ 10^5</th>
+<th>Size &gt; 10^5</th>
+<th>Algorithm</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Shortest path (unweighted)</td>
+<td>BFS</td>
+<td>BFS</td>
+<td>BFS (if feasible)</td>
+<td>O(V+E)</td>
+</tr>
+<tr>
+<td>Shortest path (weighted +)</td>
+<td>Dijkstra</td>
+<td>Dijkstra</td>
+<td>Dijkstra required</td>
+<td>O((V+E)logV)</td>
+</tr>
+<tr>
+<td>Shortest path (weighted -)</td>
+<td>Bellman-Ford</td>
+<td>Bellman-Ford</td>
+<td>Usually infeasible</td>
+<td>O(VE)</td>
+</tr>
+<tr>
+<td>MST</td>
+<td>Any greedy</td>
+<td>Kruskal/Prim</td>
+<td>Kruskal/Prim required</td>
+<td>O(ElogE)</td>
+</tr>
+<tr>
+<td>All paths</td>
+<td>DFS</td>
+<td>DFS (if small)</td>
+<td>Usually infeasible</td>
+<td>O(V! or 2^V)</td>
+</tr>
+<tr>
+<td>Connectivity</td>
+<td>BFS/DFS/UF</td>
+<td>Union-Find</td>
+<td>Union-Find</td>
+<td>O(E⍺(V))</td>
+</tr>
+<tr>
+<td>Cycle detection</td>
+<td>DFS</td>
+<td>DFS</td>
+<td>DFS</td>
+<td>O(V+E)</td>
+</tr>
+<tr>
+<td>Topological sort</td>
+<td>DFS/BFS</td>
+<td>DFS/BFS</td>
+<td>DFS/BFS</td>
+<td>O(V+E)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Bottom Line</strong>:</p>
+<ul>
+<li><strong>Size &gt; 10^5</strong> → Greedy is often required (if applicable)</li>
+<li><strong>Need optimal path</strong> → Greedy if proven, BFS/DFS otherwise</li>
+<li><strong>Need all solutions</strong> → BFS/DFS (but check if feasible)</li>
+<li><strong>When in doubt</strong> → Calculate operations: if &gt; 10^8, find better algorithm</li>
+</ul>
+<h2 id="summary-quick-reference" tabindex="-1"><a class="header-anchor" href="#summary-quick-reference"><span>Summary &amp; Quick Reference</span></a></h2>
+<h3 id="complexity-quick-reference" tabindex="-1"><a class="header-anchor" href="#complexity-quick-reference"><span>Complexity Quick Reference</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>Pattern</th>
+<th>Time Complexity</th>
+<th>Space Complexity</th>
+<th>Bottleneck</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Interval scheduling</td>
+<td>O(nlogn)</td>
+<td>O(1)</td>
+<td>Sorting</td>
+</tr>
+<tr>
+<td>Heap-based selection</td>
+<td>O(nlogn)</td>
+<td>O(n)</td>
+<td>Heap operations</td>
+</tr>
+<tr>
+<td>Two pointers</td>
+<td>O(n) or O(nlogn)</td>
+<td>O(1)</td>
+<td>Sorting if needed</td>
+</tr>
+<tr>
+<td>Direct accumulation</td>
+<td>O(n)</td>
+<td>O(1)</td>
+<td>Single pass</td>
+</tr>
+<tr>
+<td>Jump game</td>
+<td>O(n)</td>
+<td>O(1)</td>
+<td>Single pass</td>
+</tr>
+</tbody>
+</table>
+<h3 id="sorting-criteria-guide" tabindex="-1"><a class="header-anchor" href="#sorting-criteria-guide"><span>Sorting Criteria Guide</span></a></h3>
+<pre><code class="language-python"># Interval problems
+intervals.sort(key=lambda x: x[1])  # By end time
+intervals.sort(key=lambda x: x[0])  # By start time
+
+# Value optimization
+items.sort(key=lambda x: x.value/x.weight, reverse=True)  # By ratio
+
+# Custom priority
+tasks.sort(key=lambda x: (x.deadline, -x.profit))  # Multi-criteria
+</code></pre>
+<h3 id="common-greedy-patterns" tabindex="-1"><a class="header-anchor" href="#common-greedy-patterns"><span>Common Greedy Patterns</span></a></h3>
+<h4 id="exchange-argument" tabindex="-1"><a class="header-anchor" href="#exchange-argument"><span><strong>Exchange Argument</strong></span></a></h4>
+<pre><code class="language-python"># Prove: Swapping any two elements won't improve result
+def exchange_argument_proof(arr):
+    # If swapping arr[i] and arr[j] doesn't improve,
+    # then current order is optimal
+    pass
+</code></pre>
+<h4 id="greedy-stays-ahead" tabindex="-1"><a class="header-anchor" href="#greedy-stays-ahead"><span><strong>Greedy Stays Ahead</strong></span></a></h4>
+<pre><code class="language-python"># Prove: Greedy solution is at least as good at each step
+def stays_ahead_proof(greedy, other):
+    # Show: greedy[i] &gt;= other[i] for all i
+    pass
+</code></pre>
+<h4 id="matroid-theory" tabindex="-1"><a class="header-anchor" href="#matroid-theory"><span><strong>Matroid Theory</strong></span></a></h4>
+<pre><code class="language-python"># System has matroid structure if:
+# 1. Hereditary: Subset of feasible is feasible
+# 2. Exchange: Can always extend smaller feasible set
+</code></pre>
+<h3 id="problem-solving-steps" tabindex="-1"><a class="header-anchor" href="#problem-solving-steps"><span>Problem-Solving Steps</span></a></h3>
+<ol>
+<li><strong>Identify greedy potential</strong>: Look for optimal substructure</li>
+<li><strong>Define greedy choice</strong>: What to select at each step</li>
+<li><strong>Prove correctness</strong>: Exchange argument or stays ahead</li>
+<li><strong>Implement efficiently</strong>: Often requires sorting</li>
+<li><strong>Handle edge cases</strong>: Empty input, single element</li>
+<li><strong>Verify with examples</strong>: Test greedy choices</li>
+</ol>
+<h3 id="common-mistakes-tips" tabindex="-1"><a class="header-anchor" href="#common-mistakes-tips"><span>Common Mistakes &amp; Tips</span></a></h3>
+<p><strong>🚫 Common Mistakes:</strong></p>
+<ul>
+<li>Assuming greedy works without proof</li>
+<li>Wrong sorting criterion</li>
+<li>Not considering all edge cases</li>
+<li>Forgetting to handle ties</li>
+<li>Missing global constraint checks</li>
+</ul>
+<p><strong>✅ Best Practices:</strong></p>
+<ul>
+<li>Always verify greedy property first</li>
+<li>Start with small examples</li>
+<li>Consider counter-examples</li>
+<li>Use heap for dynamic selection</li>
+<li>Test with edge cases</li>
+</ul>
+<h3 id="proof-techniques" tabindex="-1"><a class="header-anchor" href="#proof-techniques"><span>Proof Techniques</span></a></h3>
+<h4 id="exchange-argument-example" tabindex="-1"><a class="header-anchor" href="#exchange-argument-example"><span><strong>Exchange Argument Example</strong></span></a></h4>
+<pre><code class="language-python"># Prove interval scheduling is optimal
+# If we swap any interval in greedy solution with another,
+# we either get same or fewer intervals
+</code></pre>
+<h4 id="greedy-stays-ahead-example" tabindex="-1"><a class="header-anchor" href="#greedy-stays-ahead-example"><span><strong>Greedy Stays Ahead Example</strong></span></a></h4>
+<pre><code class="language-python"># Prove jump game solution is minimal
+# At each position, greedy reaches at least as far
+</code></pre>
+<h3 id="interview-tips" tabindex="-1"><a class="header-anchor" href="#interview-tips"><span>Interview Tips</span></a></h3>
+<ol>
+<li><strong>Recognize patterns</strong>: Look for sorting or selection hints</li>
+<li><strong>Start with examples</strong>: Work through small cases</li>
+<li><strong>State assumptions</strong>: Clarify if greedy is applicable</li>
+<li><strong>Prove if asked</strong>: Use exchange or stays ahead</li>
+<li><strong>Code cleanly</strong>: Greedy code is usually simple</li>
+<li><strong>Optimize</strong>: Consider using heap for better complexity</li>
+</ol>
+<h3 id="classic-greedy-problems" tabindex="-1"><a class="header-anchor" href="#classic-greedy-problems"><span>Classic Greedy Problems</span></a></h3>
+<ul>
+<li><strong>Activity Selection</strong>: Choose maximum non-overlapping</li>
+<li><strong>Huffman Coding</strong>: Build optimal prefix codes</li>
+<li><strong>Kruskal’s MST</strong>: Select minimum weight edges</li>
+<li><strong>Dijkstra’s</strong>: Select minimum distance vertex</li>
+<li><strong>Fractional Knapsack</strong>: Take most valuable ratio</li>
+</ul>
+<h3 id="related-topics" tabindex="-1"><a class="header-anchor" href="#related-topics"><span>Related Topics</span></a></h3>
+<ul>
+<li><strong>Dynamic Programming</strong>: When greedy doesn’t work</li>
+<li><strong>Binary Search</strong>: For optimization problems</li>
+<li><strong>Heap/Priority Queue</strong>: For dynamic selection</li>
+<li><strong>Sorting</strong>: Often prerequisite for greedy</li>
+<li><strong>Graph Algorithms</strong>: Many use greedy (MST, shortest path)</li>
+</ul>
+
+      </div>
+      <div class="cheatsheet-footer">
+        <a href="../cheatsheets.html" class="back-link">← Back to Cheat Sheets</a>
+        <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/greedy.md" class="github-edit" target="_blank">
+          Edit on GitHub →
+        </a>
+      </div>
+    <nav class="prev-next"><a href="graph.html" class="prev-link">← Graph</a><a href="hash_map.html" class="next-link">Hash Map →</a></nav>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>CS_basics - Computer Science Fundamentals & Interview Preparation</p>
+      <p>
+        <a href="https://github.com/yennanliu/CS_basics">GitHub</a> •
+        <a href="https://github.com/yennanliu/CS_basics/tree/master/doc">Documentation</a> •
+        <a href="https://github.com/yennanliu/CS_basics/issues">Report Issues</a>
+      </p>
+    </div>
+  </footer>
+</body>
+</html>

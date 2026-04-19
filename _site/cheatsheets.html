@@ -1,102 +1,430 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Cheat Sheets - CS Basics</title>
+  <title>Cheat Sheets - CS_basics</title>
+  <meta name="description" content="Computer Science fundamentals: algorithms, data structures, system design, and LeetCode solutions">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>CS</text></svg>">
-  <style>
-    * { box-sizing: border-box; }
-    body { 
-      margin: 0; 
-      padding: 0; 
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
-      line-height: 1.6;
-      color: #333;
-      background: #f5f5f5;
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="vendor/fonts.css">
+  <link rel="stylesheet" href="vendor/highlight/github-dark.min.css">
+  <script src="vendor/highlight/highlight.min.js"></script>
+  <script>
+  // Apply theme before render to prevent flash
+  (function() {
+    var saved = localStorage.getItem('theme');
+    if (saved === 'dark' || (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      document.documentElement.setAttribute('data-theme', 'dark');
     }
-    nav {
-      background: white;
-      border-bottom: 1px solid #ddd;
-      padding: 1rem 2rem;
-      position: sticky;
-      top: 0;
-      z-index: 100;
+  })();
+  </script>
+  <script>document.addEventListener('DOMContentLoaded', function() {
+    hljs.highlightAll();
+    document.querySelectorAll('pre code').forEach(function(codeEl) {
+      var pre = codeEl.parentElement;
+      var lang = '';
+      var cls = codeEl.className || '';
+      var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
+      if (m) lang = m[1];
+      var wrapper = document.createElement('div');
+      wrapper.className = 'code-block-wrapper';
+      pre.parentNode.insertBefore(wrapper, pre);
+      var header = document.createElement('div');
+      header.className = 'code-block-header';
+      if (lang) {
+        var label = document.createElement('span');
+        label.className = 'code-lang-label';
+        label.textContent = lang;
+        header.appendChild(label);
+      } else {
+        header.appendChild(document.createElement('span'));
+      }
+      var btn = document.createElement('button');
+      btn.className = 'copy-btn';
+      btn.textContent = 'Copy';
+      btn.addEventListener('click', function() {
+        navigator.clipboard.writeText(codeEl.textContent).then(function() {
+          btn.textContent = 'Copied!';
+          btn.classList.add('copied');
+          setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+        });
+      });
+      header.appendChild(btn);
+      wrapper.appendChild(header);
+      wrapper.appendChild(pre);
+    });
+    document.querySelectorAll('table').forEach(function(table) {
+      if (!table.parentElement.classList.contains('table-wrap')) {
+        var wrapper = document.createElement('div');
+        wrapper.className = 'table-wrap';
+        table.parentNode.insertBefore(wrapper, table);
+        wrapper.appendChild(table);
+      }
+    });
+    // Reading progress bar
+    var progressBar = document.getElementById('reading-progress');
+    if (progressBar) {
+      window.addEventListener('scroll', function() {
+        var winScroll = document.documentElement.scrollTop;
+        var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        progressBar.style.width = height > 0 ? (winScroll / height * 100) + '%' : '0%';
+      });
     }
-    .nav-container {
-      max-width: 1200px;
-      margin: 0 auto;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 2rem;
+    // Dark mode toggle
+    var toggle = document.getElementById('theme-toggle');
+    if (toggle) {
+      var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      toggle.textContent = isDark ? '☀️' : '🌙';
+      toggle.addEventListener('click', function() {
+        var dark = document.documentElement.getAttribute('data-theme') === 'dark';
+        if (dark) {
+          document.documentElement.removeAttribute('data-theme');
+          localStorage.setItem('theme', 'light');
+          toggle.textContent = '🌙';
+        } else {
+          document.documentElement.setAttribute('data-theme', 'dark');
+          localStorage.setItem('theme', 'dark');
+          toggle.textContent = '☀️';
+        }
+      });
     }
-    .logo {
-      font-size: 1.3rem;
-      font-weight: 700;
-      text-decoration: none;
-      color: #333;
-    }
-    .nav-links {
-      display: flex;
-      gap: 1.5rem;
-      list-style: none;
-      margin: 0;
-      padding: 0;
-    }
-    .nav-links a {
-      color: #666;
-      text-decoration: none;
-      padding: 0.5rem 0.75rem;
-      border-bottom: 2px solid transparent;
-      transition: all 0.2s;
-    }
-    .nav-links a:hover,
-    .nav-links a.active {
-      color: #333;
-      border-bottom-color: #333;
-    }
-    .container {
-      max-width: 1200px;
-      margin: 2rem auto;
-      padding: 0 2rem;
-      background: white;
-      padding: 2rem;
-      border-radius: 8px;
-      min-height: 60vh;
-    }
-    h1 { margin-top: 0; }
-    footer {
-      text-align: center;
-      padding: 2rem;
-      color: #666;
-      font-size: 0.9rem;
-      margin-top: 4rem;
-      border-top: 1px solid #ddd;
-    }
-  </style>
+  });</script>
 </head>
 <body>
-  <nav>
-    <div class="nav-container">
-      <a href="index.html" class="logo">CS Basics</a>
+  <div class="progress-container"><div class="progress-bar" id="reading-progress"></div></div>
+  <nav class="navbar">
+    <div class="container">
+      <div class="nav-brand">
+        <span class="nav-icon">💻</span>
+        <span class="nav-title">CS_basics</span>
+      </div>
+      <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
       <div class="nav-links">
         <a href="index.html" class="">Home</a>
         <a href="cheatsheets.html" class="active">Cheat Sheets</a>
-        <a href="patterns.html" class="">Patterns</a>
+        <a href="patterns.html" class="">Pattern Recognition</a>
         <a href="faqs.html" class="">FAQs</a>
         <a href="resources.html" class="">Resources</a>
         <a href="lc-explorer.html" class="">LC Explorer</a>
         <a href="lc-random-picker.html" class="">🎲 Random Picker</a>
-        <a href="https://github.com/yennanliu/CS_basics" target="_blank">GitHub</a>
+        <a href="algo_demo/index.html" class="">Visualizer</a>
+        <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">&#127769;</button>
+        <a href="https://github.com/yennanliu/CS_basics" target="_blank" class="github-link" aria-label="GitHub">
+          <svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor">
+            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
+          </svg>
+        </a>
       </div>
     </div>
   </nav>
-  <div class="container">
-    <h1>Cheat Sheets</h1><p>Quick reference guides for algorithms and data structures. <a href="https://github.com/yennanliu/CS_basics/tree/master/doc/cheatsheet">View all on GitHub</a>.</p>
-  </div>
+
+  <main class="container">
+    <div class="content">
+      <h1>Algorithm & Data Structure Cheat Sheets</h1><p class="intro">Comprehensive collection of algorithm patterns, data structures, and problem-solving techniques.</p><h2>Core Data Structures</h2><div class="cheatsheet-grid">
+        <div class="cheatsheet-card">
+          <h3><a href="cheatsheets/Collection.html">Collection</a></h3>
+          <p><a href="cheatsheets/Collection.html" class="read-more">Read more →</a></p>
+        </div>
+        <div class="cheatsheet-card">
+          <h3><a href="cheatsheets/array.html">Array</a></h3>
+          <p><a href="cheatsheets/array.html" class="read-more">Read more →</a></p>
+        </div>
+        <div class="cheatsheet-card">
+          <h3><a href="cheatsheets/array_overlap_explaination.html">Array Overlap Explaination</a></h3>
+          <p><a href="cheatsheets/array_overlap_explaination.html" class="read-more">Read more →</a></p>
+        </div>
+        <div class="cheatsheet-card">
+          <h3><a href="cheatsheets/binary_indexed_tree.html">Binary Indexed Tree</a></h3>
+          <p><a href="cheatsheets/binary_indexed_tree.html" class="read-more">Read more →</a></p>
+        </div>
+        <div class="cheatsheet-card">
+          <h3><a href="cheatsheets/binary_tree.html">Binary Tree</a></h3>
+          <p><a href="cheatsheets/binary_tree.html" class="read-more">Read more →</a></p>
+        </div>
+        <div class="cheatsheet-card">
+          <h3><a href="cheatsheets/bst.html">Bst</a></h3>
+          <p><a href="cheatsheets/bst.html" class="read-more">Read more →</a></p>
+        </div>
+        <div class="cheatsheet-card">
+          <h3><a href="cheatsheets/difference_array.html">Difference Array</a></h3>
+          <p><a href="cheatsheets/difference_array.html" class="read-more">Read more →</a></p>
+        </div>
+        <div class="cheatsheet-card">
+          <h3><a href="cheatsheets/graph.html">Graph</a></h3>
+          <p><a href="cheatsheets/graph.html" class="read-more">Read more →</a></p>
+        </div>
+        <div class="cheatsheet-card">
+          <h3><a href="cheatsheets/hash_map.html">Hash Map</a></h3>
+          <p><a href="cheatsheets/hash_map.html" class="read-more">Read more →</a></p>
+        </div>
+        <div class="cheatsheet-card">
+          <h3><a href="cheatsheets/hashing.html">Hashing</a></h3>
+          <p><a href="cheatsheets/hashing.html" class="read-more">Read more →</a></p>
+        </div>
+        <div class="cheatsheet-card">
+          <h3><a href="cheatsheets/heap.html">Heap</a></h3>
+          <p><a href="cheatsheets/heap.html" class="read-more">Read more →</a></p>
+        </div>
+        <div class="cheatsheet-card">
+          <h3><a href="cheatsheets/linked_list.html">Linked List</a></h3>
+          <p><a href="cheatsheets/linked_list.html" class="read-more">Read more →</a></p>
+        </div>
+        <div class="cheatsheet-card">
+          <h3><a href="cheatsheets/monotonic_queue.html">Monotonic Queue</a></h3>
+          <p><a href="cheatsheets/monotonic_queue.html" class="read-more">Read more →</a></p>
+        </div>
+        <div class="cheatsheet-card">
+          <h3><a href="cheatsheets/monotonic_stack.html">Monotonic Stack</a></h3>
+          <p><a href="cheatsheets/monotonic_stack.html" class="read-more">Read more →</a></p>
+        </div>
+        <div class="cheatsheet-card">
+          <h3><a href="cheatsheets/priority_queue.html">Priority Queue</a></h3>
+          <p><a href="cheatsheets/priority_queue.html" class="read-more">Read more →</a></p>
+        </div>
+        <div class="cheatsheet-card">
+          <h3><a href="cheatsheets/queue.html">Queue</a></h3>
+          <p><a href="cheatsheets/queue.html" class="read-more">Read more →</a></p>
+        </div>
+        <div class="cheatsheet-card">
+          <h3><a href="cheatsheets/segment_tree.html">Segment Tree</a></h3>
+          <p><a href="cheatsheets/segment_tree.html" class="read-more">Read more →</a></p>
+        </div>
+        <div class="cheatsheet-card">
+          <h3><a href="cheatsheets/set.html">Set</a></h3>
+          <p><a href="cheatsheets/set.html" class="read-more">Read more →</a></p>
+        </div>
+        <div class="cheatsheet-card">
+          <h3><a href="cheatsheets/stack.html">Stack</a></h3>
+          <p><a href="cheatsheets/stack.html" class="read-more">Read more →</a></p>
+        </div>
+        <div class="cheatsheet-card">
+          <h3><a href="cheatsheets/tree.html">Tree</a></h3>
+          <p><a href="cheatsheets/tree.html" class="read-more">Read more →</a></p>
+        </div>
+        <div class="cheatsheet-card">
+          <h3><a href="cheatsheets/tree2.html">Tree2</a></h3>
+          <p><a href="cheatsheets/tree2.html" class="read-more">Read more →</a></p>
+        </div>
+        <div class="cheatsheet-card">
+          <h3><a href="cheatsheets/tree_backtrack.html">Tree Backtrack</a></h3>
+          <p><a href="cheatsheets/tree_backtrack.html" class="read-more">Read more →</a></p>
+        </div>
+        <div class="cheatsheet-card">
+          <h3><a href="cheatsheets/trie.html">Trie</a></h3>
+          <p><a href="cheatsheets/trie.html" class="read-more">Read more →</a></p>
+        </div></div><h2>Search & Sort</h2><div class="cheatsheet-grid">
+        <div class="cheatsheet-card">
+          <h3><a href="cheatsheets/bfs.html">Bfs</a></h3>
+          <p><a href="cheatsheets/bfs.html" class="read-more">Read more →</a></p>
+        </div>
+        <div class="cheatsheet-card">
+          <h3><a href="cheatsheets/binary_search.html">Binary Search</a></h3>
+          <p><a href="cheatsheets/binary_search.html" class="read-more">Read more →</a></p>
+        </div>
+        <div class="cheatsheet-card">
+          <h3><a href="cheatsheets/dfs.html">Dfs</a></h3>
+          <p><a href="cheatsheets/dfs.html" class="read-more">Read more →</a></p>
+        </div>
+        <div class="cheatsheet-card">
+          <h3><a href="cheatsheets/diff_toposort_quickunion.html">Diff Toposort Quickunion</a></h3>
+          <p><a href="cheatsheets/diff_toposort_quickunion.html" class="read-more">Read more →</a></p>
+        </div>
+        <div class="cheatsheet-card">
+          <h3><a href="cheatsheets/sort.html">Sort</a></h3>
+          <p><a href="cheatsheets/sort.html" class="read-more">Read more →</a></p>
+        </div>
+        <div class="cheatsheet-card">
+          <h3><a href="cheatsheets/topology_sorting.html">Topology Sorting</a></h3>
+          <p><a href="cheatsheets/topology_sorting.html" class="read-more">Read more →</a></p>
+        </div></div><h2>Algorithm Patterns</h2><div class="cheatsheet-grid">
+        <div class="cheatsheet-card">
+          <h3><a href="cheatsheets/2_pointers.html">2 Pointers</a></h3>
+          <p><a href="cheatsheets/2_pointers.html" class="read-more">Read more →</a></p>
+        </div>
+        <div class="cheatsheet-card">
+          <h3><a href="cheatsheets/2_pointers_linkedlist.html">2 Pointers Linkedlist</a></h3>
+          <p><a href="cheatsheets/2_pointers_linkedlist.html" class="read-more">Read more →</a></p>
+        </div>
+        <div class="cheatsheet-card">
+          <h3><a href="cheatsheets/add_x_sum.html">Add X Sum</a></h3>
+          <p><a href="cheatsheets/add_x_sum.html" class="read-more">Read more →</a></p>
+        </div>
+        <div class="cheatsheet-card">
+          <h3><a href="cheatsheets/advanced_divide_and_conquer.html">Advanced Divide And Conquer</a></h3>
+          <p><a href="cheatsheets/advanced_divide_and_conquer.html" class="read-more">Read more →</a></p>
+        </div>
+        <div class="cheatsheet-card">
+          <h3><a href="cheatsheets/backtrack.html">Backtrack</a></h3>
+          <p><a href="cheatsheets/backtrack.html" class="read-more">Read more →</a></p>
+        </div>
+        <div class="cheatsheet-card">
+          <h3><a href="cheatsheets/dp.html">Dp</a></h3>
+          <p><a href="cheatsheets/dp.html" class="read-more">Read more →</a></p>
+        </div>
+        <div class="cheatsheet-card">
+          <h3><a href="cheatsheets/dp_pattern.html">Dp Pattern</a></h3>
+          <p><a href="cheatsheets/dp_pattern.html" class="read-more">Read more →</a></p>
+        </div>
+        <div class="cheatsheet-card">
+          <h3><a href="cheatsheets/greedy.html">Greedy</a></h3>
+          <p><a href="cheatsheets/greedy.html" class="read-more">Read more →</a></p>
+        </div>
+        <div class="cheatsheet-card">
+          <h3><a href="cheatsheets/kadane_algorithm.html">Kadane Algorithm</a></h3>
+          <p><a href="cheatsheets/kadane_algorithm.html" class="read-more">Read more →</a></p>
+        </div>
+        <div class="cheatsheet-card">
+          <h3><a href="cheatsheets/n_sum.html">N Sum</a></h3>
+          <p><a href="cheatsheets/n_sum.html" class="read-more">Read more →</a></p>
+        </div>
+        <div class="cheatsheet-card">
+          <h3><a href="cheatsheets/palindrome.html">Palindrome</a></h3>
+          <p><a href="cheatsheets/palindrome.html" class="read-more">Read more →</a></p>
+        </div>
+        <div class="cheatsheet-card">
+          <h3><a href="cheatsheets/recursion.html">Recursion</a></h3>
+          <p><a href="cheatsheets/recursion.html" class="read-more">Read more →</a></p>
+        </div>
+        <div class="cheatsheet-card">
+          <h3><a href="cheatsheets/recursion_to_dp.html">Recursion To Dp</a></h3>
+          <p><a href="cheatsheets/recursion_to_dp.html" class="read-more">Read more →</a></p>
+        </div>
+        <div class="cheatsheet-card">
+          <h3><a href="cheatsheets/scanning_line.html">Scanning Line</a></h3>
+          <p><a href="cheatsheets/scanning_line.html" class="read-more">Read more →</a></p>
+        </div>
+        <div class="cheatsheet-card">
+          <h3><a href="cheatsheets/sliding_window.html">Sliding Window</a></h3>
+          <p><a href="cheatsheets/sliding_window.html" class="read-more">Read more →</a></p>
+        </div></div><h2>Advanced Topics</h2><div class="cheatsheet-grid">
+        <div class="cheatsheet-card">
+          <h3><a href="cheatsheets/advanced_simulation.html">Advanced Simulation</a></h3>
+          <p><a href="cheatsheets/advanced_simulation.html" class="read-more">Read more →</a></p>
+        </div>
+        <div class="cheatsheet-card">
+          <h3><a href="cheatsheets/prefix_sum.html">Prefix Sum</a></h3>
+          <p><a href="cheatsheets/prefix_sum.html" class="read-more">Read more →</a></p>
+        </div>
+        <div class="cheatsheet-card">
+          <h3><a href="cheatsheets/streaming_algorithms.html">Streaming Algorithms</a></h3>
+          <p><a href="cheatsheets/streaming_algorithms.html" class="read-more">Read more →</a></p>
+        </div>
+        <div class="cheatsheet-card">
+          <h3><a href="cheatsheets/union_find.html">Union Find</a></h3>
+          <p><a href="cheatsheets/union_find.html" class="read-more">Read more →</a></p>
+        </div></div><h2>Graph Algorithms</h2><div class="cheatsheet-grid">
+        <div class="cheatsheet-card">
+          <h3><a href="cheatsheets/Bellman-Ford.html">Bellman-Ford</a></h3>
+          <p><a href="cheatsheets/Bellman-Ford.html" class="read-more">Read more →</a></p>
+        </div>
+        <div class="cheatsheet-card">
+          <h3><a href="cheatsheets/Dijkstra.html">Dijkstra</a></h3>
+          <p><a href="cheatsheets/Dijkstra.html" class="read-more">Read more →</a></p>
+        </div>
+        <div class="cheatsheet-card">
+          <h3><a href="cheatsheets/Floyd-Warshall.html">Floyd-Warshall</a></h3>
+          <p><a href="cheatsheets/Floyd-Warshall.html" class="read-more">Read more →</a></p>
+        </div></div><h2>Complexity & Math</h2><div class="cheatsheet-grid">
+        <div class="cheatsheet-card">
+          <h3><a href="cheatsheets/bit_manipulation.html">Bit Manipulation</a></h3>
+          <p><a href="cheatsheets/bit_manipulation.html" class="read-more">Read more →</a></p>
+        </div>
+        <div class="cheatsheet-card">
+          <h3><a href="cheatsheets/combinatorics_math_patterns.html">Combinatorics Math Patterns</a></h3>
+          <p><a href="cheatsheets/combinatorics_math_patterns.html" class="read-more">Read more →</a></p>
+        </div>
+        <div class="cheatsheet-card">
+          <h3><a href="cheatsheets/complexity_cheatsheet.html">Complexity Cheatsheet</a></h3>
+          <p><a href="cheatsheets/complexity_cheatsheet.html" class="read-more">Read more →</a></p>
+        </div>
+        <div class="cheatsheet-card">
+          <h3><a href="cheatsheets/math.html">Math</a></h3>
+          <p><a href="cheatsheets/math.html" class="read-more">Read more →</a></p>
+        </div></div><h2>Strings & Patterns</h2><div class="cheatsheet-grid">
+        <div class="cheatsheet-card">
+          <h3><a href="cheatsheets/advanced_string_algorithms.html">Advanced String Algorithms</a></h3>
+          <p><a href="cheatsheets/advanced_string_algorithms.html" class="read-more">Read more →</a></p>
+        </div>
+        <div class="cheatsheet-card">
+          <h3><a href="cheatsheets/string.html">String</a></h3>
+          <p><a href="cheatsheets/string.html" class="read-more">Read more →</a></p>
+        </div>
+        <div class="cheatsheet-card">
+          <h3><a href="cheatsheets/string_matching_kmp_rolling_hash.html">String Matching Kmp Rolling Hash</a></h3>
+          <p><a href="cheatsheets/string_matching_kmp_rolling_hash.html" class="read-more">Read more →</a></p>
+        </div></div><h2>Specialized</h2><div class="cheatsheet-grid">
+        <div class="cheatsheet-card">
+          <h3><a href="cheatsheets/design.html">Design</a></h3>
+          <p><a href="cheatsheets/design.html" class="read-more">Read more →</a></p>
+        </div>
+        <div class="cheatsheet-card">
+          <h3><a href="cheatsheets/intervals.html">Intervals</a></h3>
+          <p><a href="cheatsheets/intervals.html" class="read-more">Read more →</a></p>
+        </div>
+        <div class="cheatsheet-card">
+          <h3><a href="cheatsheets/iterator.html">Iterator</a></h3>
+          <p><a href="cheatsheets/iterator.html" class="read-more">Read more →</a></p>
+        </div>
+        <div class="cheatsheet-card">
+          <h3><a href="cheatsheets/matrix.html">Matrix</a></h3>
+          <p><a href="cheatsheets/matrix.html" class="read-more">Read more →</a></p>
+        </div>
+        <div class="cheatsheet-card">
+          <h3><a href="cheatsheets/stock_trading.html">Stock Trading</a></h3>
+          <p><a href="cheatsheets/stock_trading.html" class="read-more">Read more →</a></p>
+        </div></div><h2>Interview Prep</h2><div class="cheatsheet-grid">
+        <div class="cheatsheet-card">
+          <h3><a href="cheatsheets/code_interview_general_cheatsheet.html">Code Interview General Cheatsheet</a></h3>
+          <p><a href="cheatsheets/code_interview_general_cheatsheet.html" class="read-more">Read more →</a></p>
+        </div>
+        <div class="cheatsheet-card">
+          <h3><a href="cheatsheets/java_trick.html">Java Trick</a></h3>
+          <p><a href="cheatsheets/java_trick.html" class="read-more">Read more →</a></p>
+        </div>
+        <div class="cheatsheet-card">
+          <h3><a href="cheatsheets/lc_category.html">Lc Category</a></h3>
+          <p><a href="cheatsheets/lc_category.html" class="read-more">Read more →</a></p>
+        </div>
+        <div class="cheatsheet-card">
+          <h3><a href="cheatsheets/lc_pattern.html">Lc Pattern</a></h3>
+          <p><a href="cheatsheets/lc_pattern.html" class="read-more">Read more →</a></p>
+        </div>
+        <div class="cheatsheet-card">
+          <h3><a href="cheatsheets/python_trick.html">Python Trick</a></h3>
+          <p><a href="cheatsheets/python_trick.html" class="read-more">Read more →</a></p>
+        </div></div><h2>Other</h2><div class="cheatsheet-grid">
+        <div class="cheatsheet-card">
+          <h3><a href="cheatsheets/complexity_drills.html">Complexity Drills</a></h3>
+          <p><a href="cheatsheets/complexity_drills.html" class="read-more">Read more →</a></p>
+        </div>
+        <div class="cheatsheet-card">
+          <h3><a href="cheatsheets/concurrency_patterns.html">Concurrency Patterns</a></h3>
+          <p><a href="cheatsheets/concurrency_patterns.html" class="read-more">Read more →</a></p>
+        </div>
+        <div class="cheatsheet-card">
+          <h3><a href="cheatsheets/shortest_path_comparison.html">Shortest Path Comparison</a></h3>
+          <p><a href="cheatsheets/shortest_path_comparison.html" class="read-more">Read more →</a></p>
+        </div></div>
+<div style="margin-top: 3rem; padding: 1.5rem; background: var(--bg-secondary); border-radius: 8px;">
+  <p><strong>💡 Tip:</strong> These cheatsheets are designed for quick reference during coding interviews and problem-solving.</p>
+  <p>View all cheatsheets on <a href="https://github.com/yennanliu/CS_basics/tree/master/doc/cheatsheet">GitHub</a>.</p>
+</div>
+    </div>
+  </main>
+
   <footer>
-    <p>&copy; 2026 CS Basics. <a href="https://github.com/yennanliu/CS_basics" style="color: #666;">Open source on GitHub</a>.</p>
+    <div class="container">
+      <p>CS_basics - Computer Science Fundamentals & Interview Preparation</p>
+      <p>
+        <a href="https://github.com/yennanliu/CS_basics">GitHub</a> •
+        <a href="https://github.com/yennanliu/CS_basics/tree/master/doc">Documentation</a> •
+        <a href="https://github.com/yennanliu/CS_basics/issues">Report Issues</a>
+      </p>
+    </div>
   </footer>
 </body>
 </html>

@@ -1,0 +1,3123 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Java Trick - CS_basics</title>
+  <meta name="description" content="Computer Science fundamentals: algorithms, data structures, system design, and LeetCode solutions">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>CS</text></svg>">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="../vendor/fonts.css">
+  <link rel="stylesheet" href="../vendor/highlight/github-dark.min.css">
+  <script src="../vendor/highlight/highlight.min.js"></script>
+  <script>
+  // Apply theme before render to prevent flash
+  (function() {
+    var saved = localStorage.getItem('theme');
+    if (saved === 'dark' || (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      document.documentElement.setAttribute('data-theme', 'dark');
+    }
+  })();
+  </script>
+  <script>document.addEventListener('DOMContentLoaded', function() {
+    hljs.highlightAll();
+    document.querySelectorAll('pre code').forEach(function(codeEl) {
+      var pre = codeEl.parentElement;
+      var lang = '';
+      var cls = codeEl.className || '';
+      var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
+      if (m) lang = m[1];
+      var wrapper = document.createElement('div');
+      wrapper.className = 'code-block-wrapper';
+      pre.parentNode.insertBefore(wrapper, pre);
+      var header = document.createElement('div');
+      header.className = 'code-block-header';
+      if (lang) {
+        var label = document.createElement('span');
+        label.className = 'code-lang-label';
+        label.textContent = lang;
+        header.appendChild(label);
+      } else {
+        header.appendChild(document.createElement('span'));
+      }
+      var btn = document.createElement('button');
+      btn.className = 'copy-btn';
+      btn.textContent = 'Copy';
+      btn.addEventListener('click', function() {
+        navigator.clipboard.writeText(codeEl.textContent).then(function() {
+          btn.textContent = 'Copied!';
+          btn.classList.add('copied');
+          setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+        });
+      });
+      header.appendChild(btn);
+      wrapper.appendChild(header);
+      wrapper.appendChild(pre);
+    });
+    document.querySelectorAll('table').forEach(function(table) {
+      if (!table.parentElement.classList.contains('table-wrap')) {
+        var wrapper = document.createElement('div');
+        wrapper.className = 'table-wrap';
+        table.parentNode.insertBefore(wrapper, table);
+        wrapper.appendChild(table);
+      }
+    });
+    // Reading progress bar
+    var progressBar = document.getElementById('reading-progress');
+    if (progressBar) {
+      window.addEventListener('scroll', function() {
+        var winScroll = document.documentElement.scrollTop;
+        var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        progressBar.style.width = height > 0 ? (winScroll / height * 100) + '%' : '0%';
+      });
+    }
+    // Dark mode toggle
+    var toggle = document.getElementById('theme-toggle');
+    if (toggle) {
+      var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      toggle.textContent = isDark ? '☀️' : '🌙';
+      toggle.addEventListener('click', function() {
+        var dark = document.documentElement.getAttribute('data-theme') === 'dark';
+        if (dark) {
+          document.documentElement.removeAttribute('data-theme');
+          localStorage.setItem('theme', 'light');
+          toggle.textContent = '🌙';
+        } else {
+          document.documentElement.setAttribute('data-theme', 'dark');
+          localStorage.setItem('theme', 'dark');
+          toggle.textContent = '☀️';
+        }
+      });
+    }
+  });</script>
+</head>
+<body>
+  <div class="progress-container"><div class="progress-bar" id="reading-progress"></div></div>
+  <nav class="navbar">
+    <div class="container">
+      <div class="nav-brand">
+        <span class="nav-icon">💻</span>
+        <span class="nav-title">CS_basics</span>
+      </div>
+      <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+      <div class="nav-links">
+        <a href="../index.html" class="">Home</a>
+        <a href="../cheatsheets.html" class="active">Cheat Sheets</a>
+        <a href="../patterns.html" class="">Pattern Recognition</a>
+        <a href="../faqs.html" class="">FAQs</a>
+        <a href="../resources.html" class="">Resources</a>
+        <a href="../lc-explorer.html" class="">LC Explorer</a>
+        <a href="../lc-random-picker.html" class="">🎲 Random Picker</a>
+        <a href="../algo_demo/index.html" class="">Visualizer</a>
+        <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">&#127769;</button>
+        <a href="https://github.com/yennanliu/CS_basics" target="_blank" class="github-link" aria-label="GitHub">
+          <svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor">
+            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container">
+    <div class="content">
+      
+      <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">Java Trick</span></nav>
+      <div class="cheatsheet-header">
+        <h1>Java Trick</h1>
+        <span class="last-updated">Last updated: Apr 4, 2026</span>
+      </div>
+      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#overview">Overview</a></li><li class="toc-sub"><a href="#references">References</a></li><li><a href="#1-core-data-structures">1) Core Data Structures</a></li><li class="toc-sub"><a href="#1-1-priority-queue-heap">1.1) Priority Queue (Heap)</a></li><li class="toc-sub"><a href="#1-2-character-operations">1.2) Character Operations</a></li><li class="toc-sub"><a href="#1-3-char-digit-to-integer-value-char-0">1.3) Char Digit to Integer Value (char - '0')</a></li><li class="toc-sub"><a href="#1-4-replace-char-at-idx-in-string">1.4) Replace char at idx in String</a></li><li><a href="#2-array-and-collection-operations">2) Array and Collection Operations</a></li><li class="toc-sub"><a href="#2-1-arrays-vs-collections-key-differences">2.1) Arrays vs Collections Key Differences</a></li><li class="toc-sub"><a href="#2-2-array-initialization-patterns">2.2) Array Initialization Patterns</a></li><li class="toc-sub"><a href="#2-2-array-initialization-patterns-1">2.2) Array Initialization Patterns</a></li><li class="toc-sub"><a href="#2-3-array-list-conversions">2.3) Array ↔ List Conversions</a></li><li class="toc-sub"><a href="#2-4-hashmap-advanced-operations">2.4) HashMap Advanced Operations</a></li><li><a href="#3-string-operations">3) String Operations</a></li><li class="toc-sub"><a href="#3-1-string-to-character-array">3.1) String to Character Array</a></li><li class="toc-sub"><a href="#1-0-1-init-a-list">1-0-1) Init a List</a></li><li class="toc-sub"><a href="#1-0-0-1-replace-list-val-at-index">1-0-0-1) Replace list val at index</a></li><li class="toc-sub"><a href="#1-0-2-append-value-to-a-2d-list">1-0-2) append value to a 2D list</a></li><li class="toc-sub"><a href="#1-0-3-paste-value-to-list-with-index">1-0-3) Paste value to List with index</a></li><li class="toc-sub"><a href="#1-0-3-reverse-list">1-0-3) Reverse List</a></li><li class="toc-sub"><a href="#1-0-4-reverse-string">1-0-4) Reverse String</a></li><li class="toc-sub"><a href="#3-2-substring-operations">3.2) Substring Operations</a></li><li class="toc-sub"><a href="#3-3-string-character-replacement">3.3) String Character Replacement</a></li><li class="toc-sub"><a href="#3-4-string-to-integer-parsing-integer-parseint">3.4) String to Integer Parsing (Integer.parseInt)</a></li><li class="toc-sub"><a href="#1-0-4-2-sort-string">1-0-4-2) Sort String</a></li><li class="toc-sub"><a href="#1-0-5-access-elements-in-a-string">1-0-5) Access elements in a String</a></li><li class="toc-sub"><a href="#1-0-6-check-if-a-str-a-can-be-formed-by-the-oter-str-b-by-deleting-some-of-characters">1-0-6) Check if a str A can be formed by the oter str B by deleting some of characters</a></li><li class="toc-sub"><a href="#1-0-7-access-element-in-stringbuilder">1-0-7) Access element in StringBuilder</a></li><li class="toc-sub"><a href="#1-0-8-update-val-with-idx-in-stringbuilder">1-0-8) Update val with idx in StringBuilder</a></li><li class="toc-sub"><a href="#1-1-swap-elements-in-char-array">1-1) Swap elements in char array</a></li><li class="toc-sub"><a href="#1-1-1-assign-value-to-an-integer-array">1-1-1) Assign value to an integer array</a></li><li class="toc-sub"><a href="#1-1-2-init-a-m-x-n-boolean-matrix">1-1-2) Init a M x N boolean matrix</a></li><li class="toc-sub"><a href="#1-1-3-access-m-x-n-boolean-matrix">1-1-3) Access M x N boolean matrix</a></li><li class="toc-sub"><a href="#1-2-char-array-to-string">1-2) Char array to String</a></li><li class="toc-sub"><a href="#1-2-1-array-to-string">1-2-1) Array to String</a></li><li class="toc-sub"><a href="#1-3-stack-to-string">1-3) Stack to String</a></li><li><a href="#4-sorting-operations">4) Sorting Operations</a></li><li class="toc-sub"><a href="#4-1-array-sorting">4.1) Array Sorting</a></li><li class="toc-sub"><a href="#4-2-in-place-vs-stream-sorting">4.2) In-Place vs Stream Sorting</a></li><li class="toc-sub"><a href="#4-3-collections-sorting">4.3) Collections Sorting</a></li><li class="toc-sub"><a href="#1-4-4-custom-sorting-list">1-4-4) Custom sorting (List)</a></li><li class="toc-sub"><a href="#1-4-4-1-custom-sort-comparator-return-value-rules">1-4-4-1) Custom Sort — Comparator Return Value Rules ⭐</a></li><li class="toc-sub"><a href="#1-4-5-sort-on-hash-map-s-key-and-value">1-4-5) Sort on Hash Map's key and value *****</a></li><li class="toc-sub"><a href="#1-4-6-sort-string-on-lexicographical-order">1-4-6) sort string on lexicographical order</a></li><li class="toc-sub"><a href="#1-5-arrays-copyofrange-get-sub-array">1-5) Arrays.copyOfRange : Get sub array</a></li><li class="toc-sub"><a href="#1-6-arrays-tostring-array-print-array-value">1-6) Arrays.toString(array): Print array value</a></li><li class="toc-sub"><a href="#1-7-put-array-into-stack">1-7) Put array into stack</a></li><li class="toc-sub"><a href="#1-7-1-loop-over-elements-in-stack">1-7-1) Loop over elements in stack</a></li><li class="toc-sub"><a href="#1-8-remove-element-in-string-stringbuilder">1-8) remove element in String (StringBuilder)</a></li><li class="toc-sub"><a href="#1-9-1-order-hashmap-by-key-treemap">1-9-1) Order HashMap by key (TreeMap)</a></li><li class="toc-sub"><a href="#1-9-2-sort-by-map-key-value">1-9-2) Sort by Map key, value</a></li><li class="toc-sub"><a href="#1-9-3-access-map-s-key-value-on-the-same-time">1-9-3) Access Map’s key, value on the same time</a></li><li class="toc-sub"><a href="#1-10-get-max-val-from-an-array">1-10) Get max val from an Array</a></li><li class="toc-sub"><a href="#1-12-get-most-freq-element-in-an-array">1-12) Get most freq element in an array</a></li><li class="toc-sub"><a href="#1-13-pair-data-structure">1-13) Pair data structure</a></li><li class="toc-sub"><a href="#1-14-k-vs-k">1-14) k++ VS k++</a></li><li class="toc-sub"><a href="#1-15-get-copy-current-object-e-g-array-list-instance">1-15) Get/copy current object (e.g. Array, List…) instance</a></li><li class="toc-sub"><a href="#1-16-equals-vs-when-to-use-which">1-16) equals() vs == — When to Use Which</a></li><li class="toc-sub"><a href="#1-16-1-check-if-a-string-is-palindrome">1-16-1) Check if a string is Palindrome</a></li><li class="toc-sub"><a href="#1-17-init-2d-array">1-17) init 2D array</a></li><li class="toc-sub"><a href="#1-18-arrays-fill-1-d">1-18) Arrays.fill (1 D)</a></li><li><a href="#5-queue-operations">5) Queue Operations</a></li><li class="toc-sub"><a href="#5-1-priority-queue-examples">5.1) Priority Queue Examples</a></li><li class="toc-sub"><a href="#1-19-1-pq-priority-queue-with-custom-logic">1-19-1) PQ (priority queue) with custom logic</a></li><li class="toc-sub"><a href="#5-2-queue-methods-add-vs-offer">5.2) Queue Methods: add() vs offer()</a></li><li class="toc-sub"><a href="#5-3-queue-removal-methods">5.3) Queue Removal Methods</a></li><li class="toc-sub"><a href="#1-20-hashmap-return-defalut-val">1-20) Hashmap return defalut val</a></li><li class="toc-sub"><a href="#2-1-init-var-modify-it-in-another-method-and-use-it-pass-by-reference-pattern">2-1) Init var, modify it in another method, and use it — Pass-by-Reference Pattern ⭐</a></li><li class="toc-sub"><a href="#2-2-get-max-min-from-3-numbers">2-2) Get max, min from 3 numbers</a></li><li class="toc-sub"><a href="#2-3-use-long-to-avoid-int-overflow">2-3) Use long to avoid int overflow</a></li><li class="toc-sub"><a href="#2-4-get-1-count-from-integer-s-binary-format">2-4) get “1” count from integer’s binary format</a></li><li class="toc-sub"><a href="#2-5-init-queue">2-5) Init Queue</a></li><li class="toc-sub"><a href="#2-6-loop-over-elements-in-map">2-6) loop over elements in map</a></li><li class="toc-sub"><a href="#2-7-treemap">2-7) TreeMap</a></li><li class="toc-sub"><a href="#2-8-random-nextint">2-8) random.nextInt</a></li><li class="toc-sub"><a href="#2-9-hashmap-track-element-count-in-order">2-9) HashMap - Track element count in order</a></li><li class="toc-sub"><a href="#3-1-primitive-type-pass-in-func">3-1) Primitive type pass in func</a></li><li class="toc-sub"><a href="#3-2-map-characters-to-idx">3-2) Map characters to idx</a></li><li class="toc-sub"><a href="#line-in-question">👇 Line in question:</a></li><li class="toc-sub"><a href="#what-s-happening">🔍 What’s happening?</a></li><li class="toc-sub"><a href="#so-what-is-c-a">🧠 So what is 'c' - 'a'?</a></li><li class="toc-sub"><a href="#why-do-we-use-this">✅ Why do we use this?</a></li><li class="toc-sub"><a href="#tl-dr">✅ TL;DR</a></li><li class="toc-sub"><a href="#6-2-character-range-iteration">6.2) Character Range Iteration</a></li><li><a href="#7-quick-reference-summary">7) Quick Reference &amp; Summary</a></li><li class="toc-sub"><a href="#7-1-most-common-patterns">7.1) Most Common Patterns</a></li><li class="toc-sub"><a href="#7-2-performance-tips">7.2) Performance Tips</a></li><li class="toc-sub"><a href="#7-3-common-leetcode-patterns">7.3) Common LeetCode Patterns</a></li><li class="toc-sub"><a href="#7-4-memory-management">7.4) Memory Management</a></li><li><a href="#8-advanced-examples-recursion-patterns">8) Advanced Examples &amp; Recursion Patterns</a></li><li class="toc-sub"><a href="#8-1-recursion-parameter-passing">8.1) Recursion Parameter Passing</a></li><li class="toc-sub"><a href="#8-2-primitive-vs-reference-types-in-recursion-backtracking-rule">8.2) Primitive vs Reference Types in Recursion — Backtracking Rule ⭐</a></li><li><a href="#9-others">9) Others</a></li><li class="toc-sub"><a href="#9-0-modifying-custom-class-fields-directly-v-field-1">9.0) Modifying Custom Class Fields Directly (v.field -= 1) ⭐</a></li><li class="toc-sub"><a href="#9-1-java-value-assign">9.1) Java value assign</a></li><li class="toc-sub"><a href="#9-2-java-re-construct-nodes">9.2) Java re-construct nodes</a></li><li class="toc-sub"><a href="#9-3-pre-calculate-perfect-squares-up-to-n">9.3) Pre-calculate Perfect Squares up to N</a></li><li class="toc-sub"><a href="#9-4-charat-returns-ascii-not-the-digit-value">9.4) charAt() Returns ASCII, NOT the Digit Value</a></li></ul></div>
+      <div class="cheatsheet-content">
+        <h1 id="java-programming-tricks-patterns" tabindex="-1"><a class="header-anchor" href="#java-programming-tricks-patterns"><span>Java Programming Tricks &amp; Patterns</span></a></h1>
+<h2 id="overview" tabindex="-1"><a class="header-anchor" href="#overview"><span>Overview</span></a></h2>
+<p>This document provides essential Java programming tricks, patterns, and best practices commonly used in competitive programming, interviews, and algorithm implementation.</p>
+<h3 id="references" tabindex="-1"><a class="header-anchor" href="#references"><span>References</span></a></h3>
+<ul>
+<li><a href="https://javaguide.cn/java/basis/syntactic-sugar.html#%E5%86%85%E9%83%A8%E7%B1%BB">Java Syntax Sugar Guide</a></li>
+<li><a href="https://javaguide.cn/java/collection/java-collection-precautions-for-use.html">Java Collections Best Practices</a></li>
+</ul>
+<h2 id="1-core-data-structures" tabindex="-1"><a class="header-anchor" href="#1-core-data-structures"><span>1) Core Data Structures</span></a></h2>
+<h3 id="1-1-priority-queue-heap" tabindex="-1"><a class="header-anchor" href="#1-1-priority-queue-heap"><span>1.1) Priority Queue (Heap)</span></a></h3>
+<p><strong>Key Concept</strong>: Java’s <code>PriorityQueue</code> is a <strong>min-heap by default</strong>.</p>
+<h4 id="min-heap-implementation" tabindex="-1"><a class="header-anchor" href="#min-heap-implementation"><span>Min-Heap Implementation</span></a></h4>
+<pre><code class="language-java">// Method 1: Default min-heap (natural ordering)
+PriorityQueue&lt;Integer&gt; minHeap = new PriorityQueue&lt;&gt;();
+
+// Method 2: Min-heap with explicit comparator
+PriorityQueue&lt;Integer&gt; minHeap2 = new PriorityQueue&lt;&gt;((o1, o2) -&gt; o1 - o2);
+
+// Method 3: Traditional comparator (verbose)
+PriorityQueue&lt;Integer&gt; minHeap3 = new PriorityQueue&lt;&gt;(new Comparator&lt;Integer&gt;() {
+    @Override
+    public int compare(Integer o1, Integer o2) {
+        return o1 - o2;  // Ascending order
+    }
+});
+</code></pre>
+<h4 id="max-heap-implementation" tabindex="-1"><a class="header-anchor" href="#max-heap-implementation"><span>Max-Heap Implementation</span></a></h4>
+<pre><code class="language-java">// Method 1: Using Collections.reverseOrder() - RECOMMENDED
+PriorityQueue&lt;Integer&gt; maxHeap = new PriorityQueue&lt;&gt;(Collections.reverseOrder());
+
+// Method 2: Custom lambda comparator
+PriorityQueue&lt;Integer&gt; maxHeap2 = new PriorityQueue&lt;&gt;((o1, o2) -&gt; o2 - o1);
+
+// Method 3: Traditional comparator
+PriorityQueue&lt;Integer&gt; maxHeap3 = new PriorityQueue&lt;&gt;(new Comparator&lt;Integer&gt;() {
+    @Override
+    public int compare(Integer o1, Integer o2) {
+        return o2 - o1;  // Descending order
+    }
+});
+</code></pre>
+<p><strong>Common Use Cases</strong>: Top-K problems, finding median, scheduling tasks</p>
+<h3 id="1-2-character-operations" tabindex="-1"><a class="header-anchor" href="#1-2-character-operations"><span>1.2) Character Operations</span></a></h3>
+<p><strong>Key Methods</strong>: <code>charAt()</code>, character comparisons, ASCII operations</p>
+<pre><code class="language-java">// Basic character access
+String s = &quot;www.google.com&quot;;
+char result = s.charAt(6);  // Returns 'g'
+
+// Character comparison in palindrome check (LC 647)
+while (l &gt;= 0 &amp;&amp; r &lt; s.length() &amp;&amp; s.charAt(l) == s.charAt(r)) {
+    l--;
+    r++;
+    count++;
+}
+
+// Character to index mapping (lowercase a-z)
+char c = 'c';
+int index = c - 'a';  // Returns 2 (c is 3rd letter, 0-indexed)
+</code></pre>
+<pre><code class="language-java">// java
+String x = &quot;abcxyz&quot;;
+for ( Character c: x.toCharArray()){
+    /** 
+     *  c = a, a - ? = 0
+     *  c = b, a - ? = -1
+     *  c = c, a - ? = -2
+     *  c = x, a - ? = -23
+     *  c = y, a - ? = -24
+     *  c = z, a - ? = -25
+     */
+    System.out.println(&quot; c = &quot; + c +
+            &quot;, a - ? = &quot; + ('a' - c)
+    );
+}
+</code></pre>
+<p><strong>Performance Note</strong>: <code>charAt(i)</code> is O(1) for strings, making it efficient for character-by-character processing.</p>
+<h3 id="1-3-char-digit-to-integer-value-char-0" tabindex="-1"><a class="header-anchor" href="#1-3-char-digit-to-integer-value-char-0"><span>1.3) Char Digit to Integer Value (<code>char - '0'</code>)</span></a></h3>
+<p><strong>Key Concept</strong>: Convert a character digit (‘0’-‘9’) to its integer value using ASCII subtraction.</p>
+<pre><code class="language-java">// Basic conversion: char digit → int value
+char c = '3';
+int value = c - '0';  // value = 3
+
+// Why it works:
+// '0' = 48 (ASCII)
+// '1' = 49
+// '2' = 50
+// '3' = 51  →  '3' - '0' = 51 - 48 = 3
+// ...
+// '9' = 57  →  '9' - '0' = 57 - 48 = 9
+</code></pre>
+<p><strong>Common Pattern: Increment/Decrement Digit Characters (LC 752 - Open the Lock)</strong></p>
+<pre><code class="language-java">// LC 752 - Open the Lock
+// Rotate lock wheel: '0' → '1' → '2' ... '9' → '0' (wrap around)
+
+String cur = &quot;0000&quot;;
+
+for (int i = 0; i &lt; 4; i++) {
+    char c = cur.charAt(i);
+
+    // Get integer value from char
+    int digit = c - '0';  // e.g., '3' → 3
+
+    // Calculate rotations with wrap-around
+    int valPlus = (digit + 1) % 10;   // 9 → 0 (wrap)
+    int valMinus = (digit - 1 + 10) % 10;  // 0 → 9 (wrap)
+
+    // Convert back to char for new string
+    char charPlus = (char) ('0' + valPlus);   // 4 → '4'
+    char charMinus = (char) ('0' + valMinus); // 2 → '2'
+
+    // Build new lock combinations
+    String str1 = cur.substring(0, i) + charPlus + cur.substring(i + 1);
+    String str2 = cur.substring(0, i) + charMinus + cur.substring(i + 1);
+}
+</code></pre>
+<p><strong>Quick Reference Table:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Operation</th>
+<th>Code</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Char → Int</td>
+<td><code>c - '0'</code></td>
+<td><code>'7' - '0'</code> → <code>7</code></td>
+</tr>
+<tr>
+<td>Int → Char</td>
+<td><code>(char)('0' + n)</code></td>
+<td><code>(char)('0' + 7)</code> → <code>'7'</code></td>
+</tr>
+<tr>
+<td>Increment (wrap)</td>
+<td><code>(digit + 1) % 10</code></td>
+<td><code>9 + 1</code> → <code>0</code></td>
+</tr>
+<tr>
+<td>Decrement (wrap)</td>
+<td><code>(digit - 1 + 10) % 10</code></td>
+<td><code>0 - 1</code> → <code>9</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Why <code>+ 10</code> in decrement?</strong></p>
+<pre><code class="language-java">// Without +10: (0 - 1) % 10 = -1  ❌ (negative!)
+// With +10:    (0 - 1 + 10) % 10 = 9  ✅
+
+// The +10 ensures the value is always positive before modulo
+int valMinus = (digit - 1 + 10) % 10;
+</code></pre>
+<p><strong>Comparison: Letter vs Digit Mapping</strong></p>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Char → Index</th>
+<th>Index → Char</th>
+<th>Range</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Letters</strong></td>
+<td><code>c - 'a'</code></td>
+<td><code>(char)('a' + i)</code></td>
+<td>‘a’-‘z’ → 0-25</td>
+</tr>
+<tr>
+<td><strong>Digits</strong></td>
+<td><code>c - '0'</code></td>
+<td><code>(char)('0' + i)</code></td>
+<td>‘0’-‘9’ → 0-9</td>
+</tr>
+</tbody>
+</table>
+<h3 id="1-4-replace-char-at-idx-in-string" tabindex="-1"><a class="header-anchor" href="#1-4-replace-char-at-idx-in-string"><span>1.4) Replace char at idx in String</span></a></h3>
+<pre><code class="language-java">// LC 127
+
+String s = &quot;abcd&quot;;
+
+char[] arr = s.toCharArray();
+
+arr[0] = 'z';
+
+String newS = new String(arr);
+
+//System.out.println(&quot;s =  &quot;  + new String());
+</code></pre>
+<h2 id="2-array-and-collection-operations" tabindex="-1"><a class="header-anchor" href="#2-array-and-collection-operations"><span>2) Array and Collection Operations</span></a></h2>
+<h3 id="2-1-arrays-vs-collections-key-differences" tabindex="-1"><a class="header-anchor" href="#2-1-arrays-vs-collections-key-differences"><span>2.1) Arrays vs Collections Key Differences</span></a></h3>
+<p><strong>Critical Distinction</strong>:</p>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Mutability</th>
+<th>Affects Original Array</th>
+<th>Best Use Case</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Arrays.asList()</code></td>
+<td><strong>Fixed-size</strong> (no add/remove)</td>
+<td>✅ <strong>Yes</strong></td>
+<td>Quick conversion for read-only operations</td>
+</tr>
+<tr>
+<td><code>new ArrayList()</code></td>
+<td><strong>Fully mutable</strong></td>
+<td>❌ <strong>No</strong></td>
+<td>When you need to modify the collection</td>
+</tr>
+</tbody>
+</table>
+<pre><code class="language-java">// Arrays.asList - Fixed size, backed by original array
+Integer[] arr = {1, 2, 3};
+List&lt;Integer&gt; list1 = Arrays.asList(arr);
+list1.set(0, 99);        // ✅ Works - modifies original array
+// list1.add(4);         // ❌ Throws UnsupportedOperationException
+
+// new ArrayList - Fully mutable, independent copy
+List&lt;Integer&gt; list2 = new ArrayList&lt;&gt;(Arrays.asList(arr));
+list2.add(4);            // ✅ Works - doesn't affect original array
+</code></pre>
+<p><strong>Recommendation</strong>: Use <code>new ArrayList&lt;&gt;(Arrays.asList(arr))</code> when you need full mutability.</p>
+<h3 id="2-2-array-initialization-patterns" tabindex="-1"><a class="header-anchor" href="#2-2-array-initialization-patterns"><span>2.2) Array Initialization Patterns</span></a></h3>
+<pre><code class="language-java">// 1D Array Initialization
+int[] arr1 = new int[5];                    // [0, 0, 0, 0, 0]
+int[] arr2 = {1, 2, 3, 4, 5};              // Direct initialization
+int[] arr3 = new int[]{1, 2, 3, 4, 5};     // Explicit initialization
+
+// 2D Array Initialization  
+int[][] matrix = new int[3][4];             // 3 rows, 4 columns (all zeros)
+int[][] matrix2 = {{1, 2}, {3, 4}, {5, 6}}; // Direct 2D initialization
+
+// Dynamic 2D array (common in LeetCode)
+int k = 4;
+int[][] result = new int[k][2];             // k rows, 2 columns each
+result[0] = new int[]{0, 1};                // Assign first row
+result[1] = new int[]{2, 3};                // Assign second row
+
+// Printing arrays
+System.out.println(Arrays.toString(arr2));      // 1D: [1, 2, 3, 4, 5]
+System.out.println(Arrays.deepToString(result)); // 2D: [[0, 1], [2, 3], [0, 0], [0, 0]]
+</code></pre>
+<h3 id="2-2-array-initialization-patterns-1" tabindex="-1"><a class="header-anchor" href="#2-2-array-initialization-patterns-1"><span>2.2) Array Initialization Patterns</span></a></h3>
+<h3 id="2-3-array-list-conversions" tabindex="-1"><a class="header-anchor" href="#2-3-array-list-conversions"><span>2.3) Array ↔ List Conversions</span></a></h3>
+<pre><code class="language-java">// Array → List Conversion
+Integer[] arr = {1, 2, 3, 4, 5};
+
+// Method 1: Fixed-size list (backed by array)
+List&lt;Integer&gt; list1 = Arrays.asList(arr);
+
+// Method 2: Mutable list (recommended)
+List&lt;Integer&gt; list2 = new ArrayList&lt;&gt;(Arrays.asList(arr));
+
+// Method 3: Using streams (Java 8+)
+List&lt;Integer&gt; list3 = Arrays.stream(arr).collect(Collectors.toList());
+
+// List → Array Conversion
+List&lt;Integer&gt; list = Arrays.asList(1, 2, 3, 4, 5);
+
+// Method 1: Traditional approach
+Integer[] arr1 = list.toArray(new Integer[list.size()]);
+
+// Method 2: Simplified (Java 8+)
+Integer[] arr2 = list.toArray(Integer[]::new);
+
+// Method 3: For primitive arrays
+int[] primitiveArr = list.stream().mapToInt(Integer::intValue).toArray();
+</code></pre>
+<p><strong>Performance Note</strong>: <code>toArray(new T[size])</code> is generally faster than <code>toArray()</code> because it avoids internal resizing.</p>
+<h3 id="2-4-hashmap-advanced-operations" tabindex="-1"><a class="header-anchor" href="#2-4-hashmap-advanced-operations"><span>2.4) HashMap Advanced Operations</span></a></h3>
+<h4 id="nested-hashmap-pattern" tabindex="-1"><a class="header-anchor" href="#nested-hashmap-pattern"><span>Nested HashMap Pattern</span></a></h4>
+<pre><code class="language-java">// Nested HashMap for complex relationships (LC 399 - Graph representation)
+HashMap&lt;String, HashMap&lt;String, Double&gt;&gt; graph = new HashMap&lt;&gt;();
+
+// Efficient way to initialize nested structure
+for (int i = 0; i &lt; equations.size(); i++) {
+    String from = equations.get(i).get(0);
+    String to = equations.get(i).get(1);
+    double value = values[i];
+    
+    // putIfAbsent prevents overwriting existing nested maps
+    graph.putIfAbsent(from, new HashMap&lt;&gt;());
+    graph.putIfAbsent(to, new HashMap&lt;&gt;());
+    
+    graph.get(from).put(to, value);
+    graph.get(to).put(from, 1.0 / value);  // Bidirectional relationship
+}
+</code></pre>
+<h4 id="essential-hashmap-methods" tabindex="-1"><a class="header-anchor" href="#essential-hashmap-methods"><span>Essential HashMap Methods</span></a></h4>
+<pre><code class="language-java">Map&lt;String, Integer&gt; map = new HashMap&lt;&gt;();
+
+// Safe operations
+map.putIfAbsent(key, defaultValue);           // Only put if key doesn't exist
+int count = map.getOrDefault(key, 0) + 1;     // Get with fallback
+map.put(key, count);                          // Update count
+
+// Atomic operations (Java 8+)
+map.merge(key, 1, Integer::sum);              // Increment counter atomically
+map.compute(key, (k, v) -&gt; v == null ? 1 : v + 1); // Custom computation
+</code></pre>
+<h4 id="elegant-map-value-update-with-putifabsent" tabindex="-1"><a class="header-anchor" href="#elegant-map-value-update-with-putifabsent"><span>Elegant Map Value Update with <code>putIfAbsent</code></span></a></h4>
+<pre><code class="language-java">// Elegant: use putIfAbsent + get (e.g. LC 399 - graph with adjacency list)
+Map&lt;String, List&lt;Node&gt;&gt; graph = new HashMap&lt;&gt;();
+for (int i = 0; i &lt; equations.size(); i++) {
+    String u = equations.get(i).get(0);
+    String v = equations.get(i).get(1);
+    double val = values[i];
+
+    graph.putIfAbsent(u, new ArrayList&lt;&gt;());
+    graph.putIfAbsent(v, new ArrayList&lt;&gt;());
+    graph.get(u).add(new Node(v, val));
+    graph.get(v).add(new Node(u, 1.0 / val));
+}
+
+// Verbose (avoid): manual containsKey check + put back
+if (!map.containsKey(ai)) {
+    map.put(ai, new ArrayList&lt;&gt;());
+}
+List&lt;MyInfo&gt; tmpList = map.get(ai);
+tmpList.add(new MyInfo(ai, bi, val));
+map.put(ai, tmpList); // unnecessary - list is already in the map
+</code></pre>
+<h2 id="3-string-operations" tabindex="-1"><a class="header-anchor" href="#3-string-operations"><span>3) String Operations</span></a></h2>
+<h3 id="3-1-string-to-character-array" tabindex="-1"><a class="header-anchor" href="#3-1-string-to-character-array"><span>3.1) String to Character Array</span></a></h3>
+<pre><code class="language-java">// Method 1: toCharArray() - Most efficient for character processing
+String s = &quot;hello&quot;;
+char[] chars = s.toCharArray();
+for (char c : chars) {
+    System.out.println(c);  // h, e, l, l, o
+}
+
+// Method 2: charAt() - Good for selective access
+for (int i = 0; i &lt; s.length(); i++) {
+    char c = s.charAt(i);
+    // Process character
+}
+
+// Method 3: split(&quot;&quot;) - Creates String array (less efficient)
+String[] chars2 = s.split(&quot;&quot;);  // [&quot;h&quot;, &quot;e&quot;, &quot;l&quot;, &quot;l&quot;, &quot;o&quot;]
+</code></pre>
+<p><strong>Performance</strong>: <code>toCharArray()</code> &gt; <code>charAt()</code> &gt; <code>split(&quot;&quot;)</code> for character iteration</p>
+<p><strong>Quick Reference: Array vs List</strong></p>
+<pre><code class="language-java">// Array - Fixed size, primitive/object types
+int[] intArray = {0, 1, 2, 3};           // Primitive array
+String[] stringArray = {&quot;a&quot;, &quot;b&quot;, &quot;c&quot;}; // Object array
+
+// List - Dynamic size, object types only
+List&lt;Integer&gt; intList = new ArrayList&lt;&gt;();   // Wrapper type required
+List&lt;String&gt; stringList = new ArrayList&lt;&gt;(); // Object type
+</code></pre>
+<h3 id="1-0-1-init-a-list" tabindex="-1"><a class="header-anchor" href="#1-0-1-init-a-list"><span>1-0-1) Init a List</span></a></h3>
+<pre><code class="language-java">// java
+
+
+// LC 102
+public static void main(String[] args) {
+
+   List&lt;Integer&gt; tmpArray = new ArrayList&lt;&gt;();
+   System.out.println(tmpArray);
+   tmpArray.add(1);
+   tmpArray.add(2);
+   System.out.println(tmpArray);
+
+   System.out.println(&quot;---&gt;&quot;);
+
+   List&lt;List&lt;Integer&gt;&gt; res = new ArrayList&lt;&gt;();
+   System.out.println(res);
+   res.add(tmpArray);
+   System.out.println(res);
+}
+
+// init a list with 2D content
+// LC 406
+
+// example 1
+List&lt;List&lt;Integer&gt;&gt; commonCells = new ArrayList&lt;&gt;();
+
+// example 2
+List&lt;int[]&gt; result = new ArrayList&lt;&gt;(); //return value
+</code></pre>
+<h3 id="1-0-0-1-replace-list-val-at-index" tabindex="-1"><a class="header-anchor" href="#1-0-0-1-replace-list-val-at-index"><span>1-0-0-1) <code>Replace</code> list val at index</span></a></h3>
+<pre><code class="language-java">// java
+
+List&lt;Integer&gt; list = new ArrayList&lt;&gt;();
+list.add(1);
+list.add(2);
+list.add(3);
+
+System.out.println(&quot;list = &quot; + list); // list = [1, 2, 3]
+
+list.set(0, 0);
+System.out.println(&quot;(after op) list = &quot; + list); // list = [0, 2, 3]
+
+// LC 24
+</code></pre>
+<h4 id="1-0-0-2-reverse-loop-over-a-list" tabindex="-1"><a class="header-anchor" href="#1-0-0-2-reverse-loop-over-a-list"><span>1-0-0-2) <code>Reverse</code> loop over a list</span></a></h4>
+<pre><code class="language-java">// java
+
+List&lt;Integer&gt; list = new ArrayList&lt;&gt;();
+list.add(1);
+list.add(2);
+list.add(3);
+
+
+/** 
+ *  NOTE !!!
+ * 
+ *  for reverse loop,
+ * 
+ *  we start from size - 1,
+ *     end at &gt;= 0
+ * 
+ */
+for(int i = list.size() - 1; i &gt;= 0; i--){
+    System.out.println(list.get(i));
+}
+
+</code></pre>
+<h3 id="1-0-2-append-value-to-a-2d-list" tabindex="-1"><a class="header-anchor" href="#1-0-2-append-value-to-a-2d-list"><span>1-0-2) append value to a 2D list</span></a></h3>
+<pre><code class="language-java">// java
+// LC 417
+
+List&lt;List&lt;Integer&gt;&gt; commonCells = new ArrayList&lt;&gt;();
+for (int i = 0; i &lt; numRows; i++) {
+    for (int j = 0; j &lt; numCols; j++) {
+
+        if (pacificReachable[i][j] &amp;&amp; atlanticReachable[i][j]) {
+
+            // NOTE code here
+             commonCells.add(Arrays.asList(i, j));
+        }
+    }
+}
+</code></pre>
+<h3 id="1-0-3-paste-value-to-list-with-index" tabindex="-1"><a class="header-anchor" href="#1-0-3-paste-value-to-list-with-index"><span>1-0-3) Paste value to List with <code>index</code></span></a></h3>
+<pre><code class="language-java">// java
+// LC 102
+public List&lt;List&lt;Integer&gt;&gt; levelOrder(TreeNode root) {
+
+    List&lt;List&lt;Integer&gt;&gt; levels = new ArrayList&lt;List&lt;Integer&gt;&gt;();
+    // ...
+    while ( !queue.isEmpty() ) {
+        // ...
+        for(int i = 0; i &lt; level_length; ++i) {
+            // fulfill the current level
+            // NOTE !!! this trick
+            levels.get(level).add(node.val);
+            // ...
+        }
+        // ...
+    }
+    // ..
+}
+</code></pre>
+<pre><code class="language-java">// java
+// ...
+
+
+/**
+*  NOTE !!!
+*
+*   via below, we can retrieve List val by idx,
+*   append new val to the existing array (with same idx)
+*
+*
+*   code breakdown:
+*
+*    •   res is a List&lt;List&lt;Integer&gt;&gt;, where each inner list represents a level of the tree.
+*    •   res.get(depth) retrieves the list at the given depth.
+*    •   .add(curRoot.val) adds the current node’s value to the corresponding depth level.
+*
+*/
+
+List&lt;List&lt;Integer&gt;&gt; res = new ArrayList&lt;&gt;();
+
+
+// insert curRoot.val to current val in list at `depth` index
+// NOTE !!! below
+res.get(depth).add(curRoot.val);
+
+
+// ...
+</code></pre>
+<h3 id="1-0-3-reverse-list" tabindex="-1"><a class="header-anchor" href="#1-0-3-reverse-list"><span>1-0-3) Reverse List</span></a></h3>
+<pre><code class="language-java">// java
+// LC 107
+
+// ...
+List&lt;List&lt;Integer&gt;&gt; levels = new ArrayList&lt;List&lt;Integer&gt;&gt;();
+Collections.reverse(levels);
+
+// NOTE : reverse != decreasing order
+// ...
+
+
+List&lt;Integer&gt; list2 = new ArrayList&lt;&gt;();
+list2.add(1);
+list2.add(2);
+list2.add(3);
+
+System.out.println(&quot;list2 = &quot; + list2); // list2 = [1, 2, 3]
+
+/** Reverse List 
+*
+*   // NOTE !!! reverse in place, e.g. NO return val
+*/
+Collections.reverse(list2);
+System.out.println(&quot;list2 = &quot; + list2); // list2 = [3, 2, 1]
+</code></pre>
+<h3 id="1-0-4-reverse-string" tabindex="-1"><a class="header-anchor" href="#1-0-4-reverse-string"><span>1-0-4) Reverse String</span></a></h3>
+<pre><code class="language-java">// java (via StringBuilder)
+// LC 567
+
+private String reverseString(String input){
+
+if (input.equals(null) || input.length() == 0){
+    return null;
+}
+
+StringBuilder builder = new StringBuilder(input).reverse();
+return builder.toString();
+} 
+</code></pre>
+<h3 id="3-2-substring-operations" tabindex="-1"><a class="header-anchor" href="#3-2-substring-operations"><span>3.2) Substring Operations</span></a></h3>
+<pre><code class="language-java">String s = &quot;hello world&quot;;
+
+// substring(start, end) - [start, end) interval
+System.out.println(s.substring(0, 1));   // &quot;h&quot;
+System.out.println(s.substring(0, 5));   // &quot;hello&quot;
+System.out.println(s.substring(6));      // &quot;world&quot; (from index 6 to end)
+System.out.println(s.substring(2, 8));   // &quot;llo wo&quot;
+
+// Common patterns
+String firstChar = s.substring(0, 1);           // First character
+String lastChar = s.substring(s.length() - 1);  // Last character
+String withoutFirst = s.substring(1);           // Remove first character
+String withoutLast = s.substring(0, s.length() - 1); // Remove last character
+</code></pre>
+<pre><code class="language-java">// java
+// LC 752. Open the Lock
+while (!q.isEmpty()) {
+    // ...
+    // process all nodes in current layer
+    for (int k = 0; k &lt; size; k++) {
+        // ...
+        // Move 4 directions (wheel rotations)
+        for (int i = 0; i &lt; 4; i++) {
+            // ...
+
+            /**  NOTE !!!  
+             *  
+             *  Instead of using stringBuilder,
+             *  we use `substring` for update string per given idx
+             */
+            String str1 = cur.substring(0, i) + valMinus + cur.substring(i + 1);
+            String str2 = cur.substring(0, i) + valPlus + cur.substring(i + 1);
+            
+            // ...
+        }
+    }
+    // ...
+}
+</code></pre>
+<p><strong>Important</strong>: <code>substring(start, end)</code> uses <strong>[start, end)</strong> interval - includes start, excludes end.</p>
+<h3 id="3-3-string-character-replacement" tabindex="-1"><a class="header-anchor" href="#3-3-string-character-replacement"><span>3.3) String Character Replacement</span></a></h3>
+<pre><code class="language-java">// Pattern: Replace character at specific index
+String original = &quot;apple&quot;;
+char[] replacements = {'1', '2', '3', '4', '5'};
+
+// Method 1: Using substring (creates new strings)
+for (int i = 0; i &lt; original.length(); i++) {
+    String modified = original.substring(0, i) + 
+                     replacements[i] + 
+                     original.substring(i + 1);
+    System.out.println(modified);
+    // Output: &quot;1pple&quot;, &quot;a2ple&quot;, &quot;ap3le&quot;, &quot;app4e&quot;, &quot;appl5&quot;
+}
+
+// Method 2: Using StringBuilder (more efficient)
+for (int i = 0; i &lt; original.length(); i++) {
+    StringBuilder sb = new StringBuilder(original);
+    sb.setCharAt(i, replacements[i]);
+    System.out.println(sb.toString());
+}
+
+// Method 3: Using char array (most efficient for multiple changes)
+char[] chars = original.toCharArray();
+chars[2] = 'X';  // Replace specific character
+String result = new String(chars);  // &quot;apXle&quot;
+</code></pre>
+<h3 id="3-4-string-to-integer-parsing-integer-parseint" tabindex="-1"><a class="header-anchor" href="#3-4-string-to-integer-parsing-integer-parseint"><span>3.4) String to Integer Parsing (<code>Integer.parseInt</code>)</span></a></h3>
+<p><strong>Key Behavior</strong>: <code>Integer.parseInt()</code> automatically strips leading zeros.</p>
+<pre><code class="language-java">// Integer.parseInt handles leading zeros automatically
+Integer.parseInt(&quot;001&quot;);    // 1
+Integer.parseInt(&quot;00001&quot;);  // 1
+Integer.parseInt(&quot;0100&quot;);   // 100
+Integer.parseInt(&quot;0&quot;);      // 0
+Integer.parseInt(&quot;42&quot;);     // 42
+</code></pre>
+<p><strong>Common Pattern: Version Number Comparison (LC 165)</strong></p>
+<pre><code class="language-java">// java
+// LC 165. Compare Version Numbers
+// Split version strings and compare revision by revision
+// Integer.parseInt handles leading zeros so &quot;1.01&quot; == &quot;1.001&quot;
+
+String[] v1 = version1.split(&quot;\\.&quot;);  // NOTE: &quot;.&quot; is regex special char, must escape
+String[] v2 = version2.split(&quot;\\.&quot;);
+
+int n = Math.max(v1.length, v2.length);
+
+for (int i = 0; i &lt; n; i++) {
+    // If index out of bounds, treat missing revision as 0
+    int num1 = (i &lt; v1.length) ? Integer.parseInt(v1[i]) : 0;
+    int num2 = (i &lt; v2.length) ? Integer.parseInt(v2[i]) : 0;
+
+    if (num1 &gt; num2) return 1;
+    if (num1 &lt; num2) return -1;
+}
+
+return 0;  // All revisions equal
+</code></pre>
+<p><strong>Key Tricks:</strong></p>
+<pre><code>1. Leading zeros handled automatically:
+   Integer.parseInt(&quot;001&quot;) == 1  ✅  (no manual stripping needed)
+
+2. Split on &quot;.&quot; requires regex escaping:
+   str.split(&quot;\\.&quot;)   ✅
+   str.split(&quot;.&quot;)     ❌  (&quot;.&quot; in regex means &quot;any character&quot;)
+
+3. Handle unequal lengths with ternary + default 0:
+   int num = (i &lt; arr.length) ? Integer.parseInt(arr[i]) : 0;
+   This treats &quot;1.0&quot; and &quot;1.0.0.0&quot; as equal
+</code></pre>
+<h3 id="1-0-4-2-sort-string" tabindex="-1"><a class="header-anchor" href="#1-0-4-2-sort-string"><span>1-0-4-2) Sort String</span></a></h3>
+<pre><code class="language-java">// java
+// LC 49
+
+/** NOTE !!!
+*
+*  We sort String via below op
+*
+*  step 1) string to char array
+*  step 2) sort char array via &quot;Arrays.sort&quot;
+*  step 3) char array to string (String x_str  = new String(x_array))
+*
+*/
+String x = &quot;cba&quot;;
+char[] x_array = x.toCharArray();
+Arrays.sort(x_array);
+String x_str  = new String(x_array);
+</code></pre>
+<h3 id="1-0-5-access-elements-in-a-string" tabindex="-1"><a class="header-anchor" href="#1-0-5-access-elements-in-a-string"><span>1-0-5) Access elements in a String</span></a></h3>
+<pre><code class="language-java">// java (via .split(&quot;&quot;))
+
+String word = &quot;heloooo 123 111&quot;;
+for (String x : word.split(&quot;&quot;)){
+System.out.println(x);
+}
+
+// LC 208
+// ..
+for (String c : word.split(&quot;&quot;)) {
+cur = cur.children.get(c);
+if (cur == null) {
+    return false;
+}
+}
+// ..
+</code></pre>
+<h3 id="1-0-6-check-if-a-str-a-can-be-formed-by-the-oter-str-b-by-deleting-some-of-characters" tabindex="-1"><a class="header-anchor" href="#1-0-6-check-if-a-str-a-can-be-formed-by-the-oter-str-b-by-deleting-some-of-characters"><span>1-0-6) Check if a <code>str A</code> can be formed by the oter <code>str B</code> by deleting some of characters</span></a></h3>
+<pre><code class="language-java">// LC 524
+private boolean canForm(String x, String s){
+
+    /** 
+     * NOTE !!!
+     * 
+     *  via below algorithm, we can check
+     *  if &quot;s&quot; can be formed by the other str
+     *  by some element deletion
+     *  
+     *  e.g.:
+     *  
+     *  check if &quot;apple&quot; can be formed by &quot;applezz&quot;
+     *  
+     *  NOTE !!!
+     *  
+     *   &quot;i&quot; as idx for s
+     *   &quot;j&quot; as idx for x  (str in dict)
+     *   
+     *   we go thorough element in &quot;s&quot;,
+     *   plus, we also check condition : i &lt; s.length() &amp;&amp; j &lt; x.length()
+     *   and once looping is completed
+     *   then we check if j == x.length(),
+     *   since ONLY when idx (j) reach 
+     *   
+     * 
+     */
+    int j = 0;
+    // V1 (below 2 approaches are both OK)
+    for (int i = 0; i &lt; s.length() &amp;&amp; j &lt; x.length(); i++){
+        // NOTE !!! if element are the same, then we move x idx (j)
+        if (x.charAt(j) == s.charAt(i))
+            j++;
+    }
+
+    // V2
+//        for (int i = 0; i &lt; y.length(); i++){
+//            if (j &gt;= x.length()){
+//                return j == x.length();
+//            }
+//            if (x.charAt(j) == y.charAt(i))
+//                j++;
+//        }
+    /** NOTE !!! 
+     * 
+     *  if j == x.length() 
+     *  -&gt; means s idx can go through,
+     *  -&gt; means s can be formed by x (str in dict)
+     */
+    return j == x.length();
+}
+</code></pre>
+<h3 id="1-0-7-access-element-in-stringbuilder" tabindex="-1"><a class="header-anchor" href="#1-0-7-access-element-in-stringbuilder"><span>1-0-7) Access element in StringBuilder</span></a></h3>
+<pre><code class="language-java">// java
+// LC 767
+
+// access element in sb vis `sb.charAt[idx]`
+
+// ...
+
+ StringBuilder sb = new StringBuilder(&quot;#&quot;);
+
+
+/** NOTE !!! below */
+if (currentChar != sb.charAt(sb.length() - 1)) {
+    // ...
+}
+// ...
+</code></pre>
+<h3 id="1-0-8-update-val-with-idx-in-stringbuilder" tabindex="-1"><a class="header-anchor" href="#1-0-8-update-val-with-idx-in-stringbuilder"><span>1-0-8) Update val with idx in StringBuilder</span></a></h3>
+<pre><code class="language-java">// java
+// LC 127
+
+// modify val with idx 
+
+// ...
+/** NOTE !!! below */
+
+StringBuilder sb = new StringBuilder(word);
+
+/** NOTE !!! StringBuilder can update val per idx */
+
+sb.setCharAt(idx, c);  // modify val to c per idx
+
+// ...
+</code></pre>
+<h3 id="1-1-swap-elements-in-char-array" tabindex="-1"><a class="header-anchor" href="#1-1-swap-elements-in-char-array"><span>1-1) Swap elements in char array</span></a></h3>
+<pre><code class="language-java">// java
+// LC 345
+// https://leetcode.com/problems/reverse-vowels-of-a-string/description/
+
+void swap(char[] chars, int x, int y) {
+    char temp = chars[x];
+    chars[x] = chars[y];
+    chars[y] = temp;
+}
+</code></pre>
+<h3 id="1-1-1-assign-value-to-an-integer-array" tabindex="-1"><a class="header-anchor" href="#1-1-1-assign-value-to-an-integer-array"><span>1-1-1) Assign value to an integer array</span></a></h3>
+<pre><code class="language-java">// java
+// LC 347
+// NOTE !! we define size when init int[]
+int[] top = new int[k];
+
+for(int i = k - 1; i &gt;= 0; --i) {
+    // assign val to int[] via below
+    top[i] = heap.poll();
+}
+</code></pre>
+<h3 id="1-1-2-init-a-m-x-n-boolean-matrix" tabindex="-1"><a class="header-anchor" href="#1-1-2-init-a-m-x-n-boolean-matrix"><span>1-1-2) Init a <code>M x N</code> boolean matrix</span></a></h3>
+<pre><code class="language-java">// java
+// LC 695
+// LC 200
+public static void main(String[] args) {
+
+
+/** 
+ *  NOTE !!!
+ *   
+ *  if `boolean[][]`, the default val is `false`
+ *  if `Boolean[][]`, the default val is `null`
+ */
+
+// ex1
+Boolean[][] x = new Boolean[3][4];
+System.out.println(x);
+System.out.println(x[0][0]); // null
+
+// ex2
+boolean[][] y = new boolean[3][4];
+System.out.println(y);
+System.out.println(y[0][0]); // false
+
+// ex3
+boolean[][] seen;
+seen = new boolean[3][4];
+
+int x = 3;
+int y = 4;
+boolean visit = boolean[y][x];
+}
+</code></pre>
+<h3 id="1-1-3-access-m-x-n-boolean-matrix" tabindex="-1"><a class="header-anchor" href="#1-1-3-access-m-x-n-boolean-matrix"><span>1-1-3) Access <code>M x N</code> boolean matrix</span></a></h3>
+<pre><code class="language-java">// java
+// LC 130
+
+// ...
+
+int l = board.length;
+int w = board[0].length;
+
+for(int i = 0; i &lt; l; i++){
+    for(int j = 0; j &lt; w; j++){
+        // NOTE !!! below
+        /**
+         *  NOTE !!!
+         *
+         *  board[y][x],
+         *
+         *  so the first is Y-coordination
+         *  and the second is X-coordination
+         *
+         */
+        if(board[i][j] == k){
+            // do sth
+        }
+    }
+}
+
+// ...
+</code></pre>
+<h3 id="1-2-char-array-to-string" tabindex="-1"><a class="header-anchor" href="#1-2-char-array-to-string"><span>1-2) Char array to String</span></a></h3>
+<ul>
+<li>so can 1) access element 2) loop over it</li>
+</ul>
+<pre><code class="language-java">// java
+// LC 345
+// https://leetcode.com/problems/reverse-vowels-of-a-string/description/
+
+// string -&gt; char array
+String s =&quot;abcd&quot;;
+char[] list = s.toCharArray();
+System.out.println(list);
+
+
+// char array -&gt; string
+char[] y = list;
+String.valueOf(list);     
+</code></pre>
+<h3 id="1-2-1-array-to-string" tabindex="-1"><a class="header-anchor" href="#1-2-1-array-to-string"><span>1-2-1) Array to String</span></a></h3>
+<pre><code class="language-java">// java
+// V1
+// https://youtu.be/xOppee_iSvo?t=206
+Integer[] data = {5, 5, 7, 8, 9, 0};
+Arrays.toString(data);
+
+
+// V2
+// LC 49
+char array [] = strs.toCharArray();
+Arrays.sort(array);
+String.valueOf(array);
+</code></pre>
+<h3 id="1-3-stack-to-string" tabindex="-1"><a class="header-anchor" href="#1-3-stack-to-string"><span>1-3) Stack to String</span></a></h3>
+<pre><code class="language-java">// java
+// LC 844
+// https://leetcode.com/problems/backspace-string-compare/editorial/
+Stack&lt;Character&gt; ans = new Stack();
+ans.push(&quot;a&quot;);
+ans.push(&quot;b&quot;);
+ans.push(&quot;c&quot;);
+
+
+String.valueOf(ans);
+</code></pre>
+<h2 id="4-sorting-operations" tabindex="-1"><a class="header-anchor" href="#4-sorting-operations"><span>4) Sorting Operations</span></a></h2>
+<h3 id="4-1-array-sorting" tabindex="-1"><a class="header-anchor" href="#4-1-array-sorting"><span>4.1) Array Sorting</span></a></h3>
+<h4 id="basic-array-sorting" tabindex="-1"><a class="header-anchor" href="#basic-array-sorting"><span>Basic Array Sorting</span></a></h4>
+<pre><code class="language-java">// Primitive arrays - natural order
+int[] numbers = {5, 2, 8, 1, 9};
+Arrays.sort(numbers);  // [1, 2, 5, 8, 9]
+
+// Object arrays with custom comparator
+String[] words = {&quot;apple&quot;, &quot;banana&quot;, &quot;cherry&quot;};
+Arrays.sort(words);                              // Natural order (lexicographic)
+Arrays.sort(words, Collections.reverseOrder());  // Reverse order
+</code></pre>
+<h4 id="2d-array-sorting" tabindex="-1"><a class="header-anchor" href="#2d-array-sorting"><span>2D Array Sorting</span></a></h4>
+<pre><code class="language-java">// Sort by first element
+int[][] intervals = {{15,20}, {0,30}, {5,10}};
+Arrays.sort(intervals, (a, b) -&gt; Integer.compare(a[0], b[0]));
+// Result: {{0,30}, {5,10}, {15,20}}
+
+// Multi-criteria sorting (primary: descending, secondary: ascending)
+Arrays.sort(people, (a, b) -&gt; {
+    if (a[0] != b[0]) {
+        return Integer.compare(b[0], a[0]);  // First element descending
+    }
+    return Integer.compare(a[1], b[1]);      // Second element ascending
+});
+
+// Traditional Comparator (more verbose but clear)
+Arrays.sort(people, new Comparator&lt;int[]&gt;() {
+    @Override
+    public int compare(int[] o1, int[] o2) {
+        return o1[0] == o2[0] ? o1[1] - o2[1] : o2[0] - o1[0];
+    }
+});
+</code></pre>
+<h3 id="4-2-in-place-vs-stream-sorting" tabindex="-1"><a class="header-anchor" href="#4-2-in-place-vs-stream-sorting"><span>4.2) In-Place vs Stream Sorting</span></a></h3>
+<p><strong>Critical Difference</strong>: Mutability and performance implications</p>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Modifies Original</th>
+<th>Performance</th>
+<th>Memory Usage</th>
+<th>Return Type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Arrays.sort(arr)</code></td>
+<td>✅ <strong>Yes</strong> (in-place)</td>
+<td><strong>Faster</strong></td>
+<td><strong>Lower</strong></td>
+<td><code>void</code></td>
+</tr>
+<tr>
+<td><code>Arrays.stream(arr).sorted()</code></td>
+<td>❌ <strong>No</strong> (creates copy)</td>
+<td><strong>Slower</strong></td>
+<td><strong>Higher</strong></td>
+<td><code>Stream&lt;T&gt;</code></td>
+</tr>
+</tbody>
+</table>
+<h4 id="in-place-sorting-recommended" tabindex="-1"><a class="header-anchor" href="#in-place-sorting-recommended"><span>In-Place Sorting (Recommended)</span></a></h4>
+<pre><code class="language-java">int[][] intervals = {{15,20}, {0,30}, {5,10}};
+
+// Sorts original array directly
+Arrays.sort(intervals, (a, b) -&gt; Integer.compare(a[0], b[0]));
+// intervals is now: {{0,30}, {5,10}, {15,20}}
+</code></pre>
+<h4 id="stream-sorting-functional-style" tabindex="-1"><a class="header-anchor" href="#stream-sorting-functional-style"><span>Stream Sorting (Functional Style)</span></a></h4>
+<pre><code class="language-java">int[][] intervals = {{15,20}, {0,30}, {5,10}};
+
+// Original array unchanged, returns sorted stream
+int[][] sorted = Arrays.stream(intervals)
+    .sorted((a, b) -&gt; Integer.compare(a[0], b[0]))
+    .toArray(int[][]::new);  // Must collect to get array
+
+// Original intervals still: {{15,20}, {0,30}, {5,10}}
+// sorted is: {{0,30}, {5,10}, {15,20}}
+</code></pre>
+<p><strong>Demonstration:</strong></p>
+<pre><code class="language-java">int[][] intervals = {{15,20}, {0,30}, {5,10}};
+System.out.println(&quot;Original: &quot; + Arrays.deepToString(intervals));
+
+// Stream sorting - original unchanged
+Arrays.stream(intervals).sorted((a,b) -&gt; Integer.compare(a[0], b[0]));
+System.out.println(&quot;After stream (no collect): &quot; + Arrays.deepToString(intervals));
+// Still: [[15, 20], [0, 30], [5, 10]]
+
+// In-place sorting - original modified
+Arrays.sort(intervals, (a,b) -&gt; Integer.compare(a[0], b[0]));
+System.out.println(&quot;After Arrays.sort: &quot; + Arrays.deepToString(intervals));
+// Now: [[0, 30], [5, 10], [15, 20]]
+</code></pre>
+<h3 id="4-3-collections-sorting" tabindex="-1"><a class="header-anchor" href="#4-3-collections-sorting"><span>4.3) Collections Sorting</span></a></h3>
+<p><strong>Key Principle</strong>:</p>
+<ul>
+<li><strong><code>Arrays.sort()</code></strong> → For arrays (primitive &amp; object types)</li>
+<li><strong><code>Collections.sort()</code></strong> → For collections (List, etc.)</li>
+</ul>
+<h4 id="list-sorting-examples" tabindex="-1"><a class="header-anchor" href="#list-sorting-examples"><span>List Sorting Examples</span></a></h4>
+<h4 id="array-sorting-object-types" tabindex="-1"><a class="header-anchor" href="#array-sorting-object-types"><span>Array Sorting (Object Types)</span></a></h4>
+<pre><code class="language-java">Integer[] numbers = {5, 5, 7, 8, 9, 0};
+
+// Ascending order (natural)
+Arrays.sort(numbers);
+
+// Descending order - Method 1 (recommended)
+Arrays.sort(numbers, Collections.reverseOrder());
+
+// Descending order - Method 2 (custom comparator)
+Arrays.sort(numbers, (a, b) -&gt; b - a);
+</code></pre>
+<h4 id="list-sorting" tabindex="-1"><a class="header-anchor" href="#list-sorting"><span>List Sorting</span></a></h4>
+<pre><code class="language-java">List&lt;Integer&gt; list = new ArrayList&lt;&gt;(Arrays.asList(3, 1, 4, 1, 5, 9));
+
+// Method 1: Collections.sort() - modifies original list
+Collections.sort(list);                              // Ascending
+Collections.sort(list, Collections.reverseOrder()); // Descending
+
+// Method 2: List.sort() - Java 8+ (preferred)
+list.sort(Integer::compareTo);                       // Ascending
+list.sort((a, b) -&gt; b - a);                         // Descending
+
+// Method 3: Stream API - creates new list
+List&lt;Integer&gt; sortedList = list.stream()
+    .sorted(Collections.reverseOrder())
+    .collect(Collectors.toList());
+</code></pre>
+<h4 id="complex-object-sorting" tabindex="-1"><a class="header-anchor" href="#complex-object-sorting"><span>Complex Object Sorting</span></a></h4>
+<pre><code class="language-java">// Multi-criteria sorting example
+List&lt;Integer[]&gt; statusList = new ArrayList&lt;&gt;();
+statusList.add(new Integer[]{1, 2});
+statusList.add(new Integer[]{1, 1});
+statusList.add(new Integer[]{2, 3});
+
+statusList.sort((x, y) -&gt; {
+    if (!x[0].equals(y[0])) {
+        return x[0] - y[0];  // Primary: first element ascending
+    }
+    return x[1] - y[1];      // Secondary: second element ascending
+});
+</code></pre>
+<p><strong>Performance Comparison:</strong></p>
+<pre><code class="language-java">// For large datasets
+List&lt;Integer&gt; largeList = /* millions of elements */;
+
+// Fastest - in-place sorting
+Collections.sort(largeList);  
+
+// Slower - creates new collection
+List&lt;Integer&gt; sorted = largeList.stream().sorted().collect(Collectors.toList());
+</code></pre>
+<h3 id="1-4-4-custom-sorting-list" tabindex="-1"><a class="header-anchor" href="#1-4-4-custom-sorting-list"><span>1-4-4) Custom sorting (List)</span></a></h3>
+<pre><code class="language-java">// java
+// LC 524
+/** NOTE !!!!
+ *
+ *  custom sorting list
+ *  via Collections.sort and new Comparator&lt;String&gt;()
+ */
+Collections.sort(collected, new Comparator&lt;String&gt;() {
+    @Override
+    public int compare(String o1, String o2) {
+        /**
+         * // First compare by length
+         * // NOTE !! inverse order, e.g. longest str at first
+         */
+        int lengthComparison = Integer.compare(o2.length(), o1.length());
+        /**
+         *  // If lengths are equal, compare lexicographically
+         *  // NOTE !!! if lengths are the same, we compare  lexicographically
+         */
+        if (lengthComparison == 0) {
+            return o1.compareTo(o2); // lexicographical order
+        }
+        return lengthComparison; // sort by length
+    }
+});
+</code></pre>
+<h3 id="1-4-4-1-custom-sort-comparator-return-value-rules" tabindex="-1"><a class="header-anchor" href="#1-4-4-1-custom-sort-comparator-return-value-rules"><span>1-4-4-1) Custom Sort — Comparator Return Value Rules ⭐</span></a></h3>
+<blockquote>
+<p><strong>Core Rule</strong>: The sign of the comparator’s return value determines element order.</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Return Value</th>
+<th>Meaning</th>
+<th>Effect</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>negative</strong> (e.g. -1)</td>
+<td>o1 &lt; o2</td>
+<td>o1 comes <strong>before</strong> o2</td>
+</tr>
+<tr>
+<td><strong>positive</strong> (e.g. +1)</td>
+<td>o1 &gt; o2</td>
+<td>o1 comes <strong>after</strong> o2</td>
+</tr>
+<tr>
+<td><strong>0</strong></td>
+<td>o1 == o2</td>
+<td>order <strong>unchanged</strong></td>
+</tr>
+</tbody>
+</table>
+<pre><code class="language-java">// LC 905 - Sort Array By Parity
+// IDEA: Custom Comparator — return -1/0/1 to control ordering
+// Even numbers before odd numbers using explicit return values
+
+// Method 1: Explicit -1 / 0 / 1 (most readable for interviews)
+Collections.sort(list, new Comparator&lt;Integer&gt;() {
+    @Override
+    public int compare(Integer o1, Integer o2) {
+        // o1 even, o2 odd  → o1 should come first  → return negative
+        if (o1 % 2 == 0 &amp;&amp; o2 % 2 == 1) return -1;
+        // o1 odd,  o2 even → o2 should come first  → return positive
+        if (o1 % 2 == 1 &amp;&amp; o2 % 2 == 0) return 1;
+        // both same parity → order unchanged
+        return 0;
+    }
+});
+
+// Method 2: Lambda shorthand — compare parity values directly (0=even, 1=odd)
+// Integer.compare(v1, v2):  returns -1 if v1 &lt; v2, 0 if equal, +1 if v1 &gt; v2
+Collections.sort(list, (o1, o2) -&gt; Integer.compare(o1 % 2, o2 % 2));
+// even(0) before odd(1) → ascending parity order = evens first ✓
+
+// Method 3: Two-pointer in-place (O(N) time, O(1) space — most efficient)
+public int[] sortArrayByParity(int[] nums) {
+    int l = 0, r = nums.length - 1;
+    while (l &lt; r) {
+        if (nums[l] % 2 &gt; nums[r] % 2) { // l is odd, r is even → swap
+            int tmp = nums[l]; nums[l] = nums[r]; nums[r] = tmp;
+        }
+        if (nums[l] % 2 == 0) l++;  // l is even → move right
+        if (nums[r] % 2 == 1) r--;  // r is odd  → move left
+    }
+    return nums;
+}
+</code></pre>
+<h4 id="comparator-mental-model" tabindex="-1"><a class="header-anchor" href="#comparator-mental-model"><span>Comparator Mental Model</span></a></h4>
+<pre><code>compare(o1, o2):
+  return NEGATIVE  →  keep o1 before o2   (o1 is &quot;smaller&quot;)
+  return POSITIVE  →  move o1 after  o2   (o1 is &quot;larger&quot;)
+  return 0         →  no change
+
+Tip: think of it as: &quot;what is o1 - o2?&quot;
+  o1 &lt; o2  →  negative  →  ascending order (small first)
+  o1 &gt; o2  →  positive  →  o2 goes first  (for descending: flip to o2 - o1)
+</code></pre>
+<h4 id="common-patterns-summary" tabindex="-1"><a class="header-anchor" href="#common-patterns-summary"><span>Common Patterns Summary</span></a></h4>
+<pre><code class="language-java">// Ascending (natural order)
+(a, b) -&gt; a - b                          // ⚠ may overflow for large ints
+(a, b) -&gt; Integer.compare(a, b)          // ✅ safe
+
+// Descending
+(a, b) -&gt; b - a                          // ⚠ may overflow
+(a, b) -&gt; Integer.compare(b, a)          // ✅ safe
+
+// Multi-criteria: primary DESC, secondary ASC
+(a, b) -&gt; a[0] != b[0] ? b[0] - a[0] : a[1] - b[1]
+
+// Custom property (e.g. sort by string length, then lexicographic)
+(s1, s2) -&gt; s1.length() != s2.length()
+    ? s2.length() - s1.length()          // longer first
+    : s1.compareTo(s2)                   // lexicographic if same length
+</code></pre>
+<h3 id="1-4-5-sort-on-hash-map-s-key-and-value" tabindex="-1"><a class="header-anchor" href="#1-4-5-sort-on-hash-map-s-key-and-value"><span>1-4-5) Sort on <code>Hash Map's key and value</code> *****</span></a></h3>
+<pre><code class="language-java">// LC 692
+
+
+// IDEA: map sorting
+HashMap&lt;String, Integer&gt; freq = new HashMap&lt;&gt;();
+for (int i = 0; i &lt; words.length; i++) {
+    freq.put(words[i], freq.getOrDefault(words[i], 0) + 1);
+}
+List&lt;String&gt; res = new ArrayList(freq.keySet());
+
+/**
+ * NOTE !!!
+ *
+ *  we directly sort over map's keySet
+ *  (with the data val, key that read from map)
+ *
+ *
+ *  example:
+ *
+ *          Collections.sort(res,
+ *                 (w1, w2) -&gt; freq.get(w1).equals(freq.get(w2)) ? w1.compareTo(w2) : freq.get(w2) - freq.get(w1));
+ */
+Collections.sort(res, (x, y) -&gt; {
+    int valDiff = freq.get(y) - freq.get(x); // sort on `value` bigger number first (decreasing order)
+    if (valDiff == 0){
+        // Sort on `key ` with `lexicographically` order (increasing order)
+        //return y.length() - x.length(); // ?
+        return x.compareTo(y);
+    }
+    return valDiff;
+});
+</code></pre>
+<h3 id="1-4-6-sort-string-on-lexicographical-order" tabindex="-1"><a class="header-anchor" href="#1-4-6-sort-string-on-lexicographical-order"><span>1-4-6) sort string on <code>lexicographical</code> order</span></a></h3>
+<pre><code class="language-java">// LC 692. Top K Frequent Words
+
+String a = &quot;abcd&quot;;
+String b = &quot;defg&quot;;
+
+// sort on lexicographical
+
+System.out.println(a.compareTo(b));
+</code></pre>
+<h3 id="1-5-arrays-copyofrange-get-sub-array" tabindex="-1"><a class="header-anchor" href="#1-5-arrays-copyofrange-get-sub-array"><span>1-5) <code>Arrays.copyOfRange</code> : Get sub array</span></a></h3>
+<pre><code class="language-java">// java
+// LC 976
+// https://leetcode.com/problems/largest-perimeter-triangle/description/
+nums = [1,2,1,10, 11, 22, 33]
+int i = 2;
+int[] tmp = Arrays.copyOfRange(nums, i, i+3);
+</code></pre>
+<h3 id="1-6-arrays-tostring-array-print-array-value" tabindex="-1"><a class="header-anchor" href="#1-6-arrays-tostring-array-print-array-value"><span>1-6) <code>Arrays.toString(array)</code>: Print <code>array</code> value</span></a></h3>
+<pre><code class="language-java">// java
+// LC 997
+
+/** 
+ *  NOTE !!!
+ * 
+ *   via `Arrays.toString()`,
+ *   we can print arrays value
+ * 
+ *  -&gt; how to remember ?
+ * 
+ *  -&gt; int[]  is `array`
+ *  -&gt; and `Arrays` is the array Util in java
+ *  -&gt; so it has toString method()
+ * 
+ * 
+ */
+
+// ...
+
+int[] toTrust = new int[n + 1];
+int[] trusted = new int[n + 1];
+
+System.out.println(&quot;&gt;&gt;&gt; toTrust = &quot; + Arrays.toString(toTrust));
+System.out.println(&quot;&gt;&gt;&gt; trusted = &quot; + Arrays.toString(trusted));
+
+// ...
+</code></pre>
+<h3 id="1-7-put-array-into-stack" tabindex="-1"><a class="header-anchor" href="#1-7-put-array-into-stack"><span>1-7) Put array into stack</span></a></h3>
+<pre><code class="language-java">// java
+// LC 739
+Stack&lt;int[]&gt; stack = new Stack&lt;&gt;();
+
+int[] init = new int[2];
+init[0]  = temperatures[0];
+init[1] = 0;
+stack.push(init);
+</code></pre>
+<h3 id="1-7-1-loop-over-elements-in-stack" tabindex="-1"><a class="header-anchor" href="#1-7-1-loop-over-elements-in-stack"><span>1-7-1) Loop over elements in stack</span></a></h3>
+<pre><code class="language-java">// java
+// LC 71
+Stack&lt;String&gt; st = new Stack&lt;&gt;();
+st.push(&quot;a&quot;);
+st.push(&quot;b&quot;);
+st.push(&quot;c&quot;);
+
+// NOTE !!! loop over elements in stack
+for(String x: st){
+    System.out.println(x);
+}
+</code></pre>
+<h3 id="1-8-remove-element-in-string-stringbuilder" tabindex="-1"><a class="header-anchor" href="#1-8-remove-element-in-string-stringbuilder"><span>1-8) remove element in String (<code>StringBuilder</code>)</span></a></h3>
+<pre><code class="language-java">// LC 22
+StringBuilder b = new StringBuilder(&quot;wefew&quot;);
+System.out.println(b.toString());
+b.deleteCharAt(2);
+System.out.println(b.toString());
+</code></pre>
+<h3 id="1-9-1-order-hashmap-by-key-treemap" tabindex="-1"><a class="header-anchor" href="#1-9-1-order-hashmap-by-key-treemap"><span>1-9-1) Order HashMap by key (<code>TreeMap</code>)</span></a></h3>
+<pre><code class="language-java">// java
+// LC 853
+// V1
+HashMap&lt;Integer, Integer&gt; map = new HashMap&lt;&gt;();
+
+for (int i = 0; i &lt; position.length; i++){
+    int p = -1 * position[i]; // for inverse sorting
+    int s = speed[i];
+    map.put(p, s);
+}
+
+// order by map key
+Map&lt;Integer, Integer&gt; tree_map = new TreeMap(map);
+</code></pre>
+<pre><code class="language-java">// java
+// LC 853
+// order Map key instead
+HashMap&lt;Integer, Integer&gt; map = new HashMap&lt;&gt;();
+Arrays.sort(map.keySet().toArray());
+</code></pre>
+<pre><code class="language-java">// java
+// LC 346
+// sort array in descending order
+Arrays.sort(tmp, (x, y) -&gt; Integer.compare(-x[1], -y[1]));
+</code></pre>
+<ul>
+<li><code>floorEntry</code> method in <code>TreeMap</code></li>
+<li><a href="https://blog.csdn.net/a1510841693/article/details/124323418">https://blog.csdn.net/a1510841693/article/details/124323418</a></li>
+<li>floorEntry() : It returns a key-value mapping associated with the greatest key less than or equal to the given key, or null if there is no such key.</li>
+</ul>
+<pre><code class="language-java">// floorEntry
+// LC 1146
+
+// ...
+ TreeMap&lt;Integer, Integer&gt;[] historyRecords;
+// ...
+public int get(int index, int snapId) {
+    return historyRecords[index].floorEntry(snapId).getValue();
+}
+// ...
+</code></pre>
+<h3 id="1-9-2-sort-by-map-key-value" tabindex="-1"><a class="header-anchor" href="#1-9-2-sort-by-map-key-value"><span>1-9-2) Sort by Map key, value</span></a></h3>
+<pre><code class="language-java">// java
+// (GPT)
+
+// Create a HashMap
+HashMap&lt;String, Integer&gt; map = new HashMap&lt;&gt;();
+map.put(&quot;apple&quot;, 5);
+map.put(&quot;banana&quot;, 2);
+map.put(&quot;cherry&quot;, 8);
+map.put(&quot;date&quot;, 1);
+
+// Print the original map
+System.out.println(&quot;Original map: &quot; + map);
+
+// Sort the map by values
+List&lt;Map.Entry&lt;String, Integer&gt;&gt; list = new ArrayList&lt;&gt;(map.entrySet());
+list.sort(Map.Entry.comparingByValue());
+
+// Create a new LinkedHashMap to preserve the order of the sorted entries
+LinkedHashMap&lt;String, Integer&gt; sortedMap = new LinkedHashMap&lt;&gt;();
+
+//        // V1 : via Entry
+//        for (Map.Entry&lt;String, Integer&gt; entry : list) {
+//            sortedMap.put(entry.getKey(), entry.getValue());
+//        }
+
+
+// V2 : via key
+
+// NOTE !!! below
+// Get the list of keys
+List&lt;String&gt; keys = new ArrayList&lt;&gt;(map.keySet());
+
+
+// NOTE !!! below
+// Sort the keys based on their corresponding values
+keys.sort((k1, k2) -&gt; map.get(k1).compareTo(map.get(k2)));
+
+/**
+ * You can modify the code to avoid using Map.Entry by converting the
+ * HashMap to a list of keys and then sorting the keys based on
+ * their corresponding values. Here is the modified version:
+ */
+for (String key : keys) {
+    sortedMap.put(key, map.get(key));
+}
+
+// Print the sorted map
+System.out.println(&quot;Sorted map: &quot; + sortedMap);
+
+</code></pre>
+<h3 id="1-9-3-access-map-s-key-value-on-the-same-time" tabindex="-1"><a class="header-anchor" href="#1-9-3-access-map-s-key-value-on-the-same-time"><span>1-9-3) Access Map’s <code>key, value</code> on the same time</span></a></h3>
+<pre><code class="language-java">// java
+// LC 501
+
+List&lt;Integer&gt; modes = new ArrayList&lt;&gt;();
+/**
+ *  NOTE !!! we use `Entry`
+ *           to access both map's key and value
+ */
+for (Map.Entry&lt;Integer, Integer&gt; entry : node_cnt.entrySet()) {
+    if (entry.getValue() == maxFreq) {
+        modes.add(entry.getKey());
+    }
+}
+        
+</code></pre>
+<h3 id="1-10-get-max-val-from-an-array" tabindex="-1"><a class="header-anchor" href="#1-10-get-max-val-from-an-array"><span>1-10) Get max val from an Array</span></a></h3>
+<pre><code class="language-java">// java
+// LC 875
+// https://stackoverflow.com/questions/1484347/finding-the-max-min-value-in-an-array-of-primitives-using-java
+int[] piles = new int[5];
+int r = Arrays.stream(piles).max().getAsInt();
+</code></pre>
+<h3 id="1-12-get-most-freq-element-in-an-array" tabindex="-1"><a class="header-anchor" href="#1-12-get-most-freq-element-in-an-array"><span>1-12) Get most freq element in an array</span></a></h3>
+<h3 id="1-13-pair-data-structure" tabindex="-1"><a class="header-anchor" href="#1-13-pair-data-structure"><span>1-13) Pair data structure</span></a></h3>
+<ul>
+<li>Pair offers a (key, value) structure</li>
+<li>offer getKey, getValue method</li>
+<li>can be used in other data structure (e.g. queue, hashmap…)</li>
+<li>available in default Java lib, or apache.common lib or other lib</li>
+</ul>
+<pre><code class="language-java">// java
+// LC 355
+// https://leetcode.com/problems/design-twitter/solutions/2720611/java-simple-hashmap-stack/
+
+// https://blog.csdn.net/neweastsun/article/details/80294811
+// https://blog.51cto.com/u_5650011/5386895
+
+/** 
+* 
+* 
+* 
+*/
+// init
+Pair&lt;Integer, String&gt; p1 = new Pair&lt;&gt;(1, &quot;one&quot;);
+// get key
+Integer k1 = p1.getKey();
+// get value
+String v1 = p1.getValue();
+
+// use with other data structure
+Queue&lt;Pair&lt;Integer, String&gt;&gt; q = new LinkedList&lt;&gt;();
+q.add(p1);
+</code></pre>
+<ul>
+<li>Or, you can define your own pair data structure:</li>
+</ul>
+<pre><code class="language-java">// java
+public class MyPair&lt;U, V&gt; {
+
+public U first;
+public V second;
+
+MyPair(U first, V second){
+    this.first = first;
+    this.second = second;
+}
+
+// getter
+
+// setter
+}
+</code></pre>
+<h3 id="1-14-k-vs-k" tabindex="-1"><a class="header-anchor" href="#1-14-k-vs-k"><span>1-14) k++ VS k++</span></a></h3>
+<pre><code class="language-java">// java
+// LC 78
+
+/** NOTE HERE !!!
+*
+*  ++i : i+1 first,  then do op
+*  i++ : do op first, then i+1
+*
+*/
+</code></pre>
+<h3 id="1-15-get-copy-current-object-e-g-array-list-instance" tabindex="-1"><a class="header-anchor" href="#1-15-get-copy-current-object-e-g-array-list-instance"><span>1-15) Get/copy current object (e.g. Array, List…) instance</span></a></h3>
+<pre><code class="language-java">// java
+// LC 46
+List&lt;List&lt;Integer&gt;&gt; ans = new ArrayList&lt;&gt;();
+List&lt;Integer&gt; cur = new ArrayList&lt;&gt;();
+//...
+ans.add(new ArrayList&lt;&gt;(cur));
+//...
+</code></pre>
+<h3 id="1-16-equals-vs-when-to-use-which" tabindex="-1"><a class="header-anchor" href="#1-16-equals-vs-when-to-use-which"><span>1-16) <code>equals()</code> vs <code>==</code> — When to Use Which</span></a></h3>
+<blockquote>
+<p><strong>Core Rule</strong>: <code>==</code> compares <strong>references</strong> (are they the same object?). <code>equals()</code> compares <strong>content</strong> (do they have the same value?).</p>
+</blockquote>
+<h4 id="the-rule" tabindex="-1"><a class="header-anchor" href="#the-rule"><span>The Rule</span></a></h4>
+<pre><code>==        → compares memory addresses (reference identity)
+equals()  → compares logical content (value equality)
+</code></pre>
+<h4 id="comparing-collections-list-set-map" tabindex="-1"><a class="header-anchor" href="#comparing-collections-list-set-map"><span>Comparing Collections (List, Set, Map)</span></a></h4>
+<pre><code class="language-java">// LC 872 — Leaf-Similar Trees
+List&lt;Integer&gt; list1 = new ArrayList&lt;&gt;();
+List&lt;Integer&gt; list2 = new ArrayList&lt;&gt;();
+
+getLeafSeq(root1, list1);
+getLeafSeq(root2, list2);
+
+/** NOTE !!!
+ *
+ *  Use `equals()` to compare two lists by content.
+ *  `==` would check if they are the SAME object (always false here).
+ */
+list1 == list2        // ❌ false — different objects, even if same content
+list1.equals(list2)   // ✅ true  — compares element-by-element
+</code></pre>
+<h4 id="comparing-strings" tabindex="-1"><a class="header-anchor" href="#comparing-strings"><span>Comparing Strings</span></a></h4>
+<pre><code class="language-java">String a = new String(&quot;hello&quot;);
+String b = new String(&quot;hello&quot;);
+
+a == b          // ❌ false — different objects
+a.equals(b)     // ✅ true  — same content
+
+// BUT: string literals from pool may share reference
+String c = &quot;hello&quot;;
+String d = &quot;hello&quot;;
+c == d          // ✅ true (same pooled object) — but DON'T rely on this!
+c.equals(d)     // ✅ true — always use this
+</code></pre>
+<h4 id="comparing-wrapper-types-integer-long-etc" tabindex="-1"><a class="header-anchor" href="#comparing-wrapper-types-integer-long-etc"><span>Comparing Wrapper Types (Integer, Long, etc.)</span></a></h4>
+<pre><code class="language-java">Integer x = 127;
+Integer y = 127;
+x == y          // ✅ true (cached: -128 to 127)
+
+Integer a = 128;
+Integer b = 128;
+a == b          // ❌ false — outside cache range, different objects!
+a.equals(b)     // ✅ true  — always correct
+
+// SAFE alternative for null-safe comparison
+Objects.equals(a, b)  // ✅ handles null without NPE
+</code></pre>
+<h4 id="comparing-primitives" tabindex="-1"><a class="header-anchor" href="#comparing-primitives"><span>Comparing Primitives</span></a></h4>
+<pre><code class="language-java">int i = 5;
+int j = 5;
+i == j          // ✅ correct — primitives have no .equals()
+                // Primitives are ALWAYS compared by value with ==
+</code></pre>
+<h4 id="summary-table" tabindex="-1"><a class="header-anchor" href="#summary-table"><span>Summary Table</span></a></h4>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Use <code>==</code></th>
+<th>Use <code>equals()</code></th>
+<th>Pitfall</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>int</code>, <code>long</code>, <code>char</code>, … (primitives)</td>
+<td><strong>Yes</strong></td>
+<td>N/A (no method)</td>
+<td>None</td>
+</tr>
+<tr>
+<td><code>String</code></td>
+<td><strong>No</strong></td>
+<td><strong>Yes</strong></td>
+<td>Literals may share ref, but don’t rely on it</td>
+</tr>
+<tr>
+<td><code>Integer</code>, <code>Long</code>, … (wrappers)</td>
+<td><strong>No</strong></td>
+<td><strong>Yes</strong></td>
+<td><code>==</code> works for -128…127 only (cache)</td>
+</tr>
+<tr>
+<td><code>List</code>, <code>Set</code>, <code>Map</code></td>
+<td><strong>No</strong></td>
+<td><strong>Yes</strong></td>
+<td><code>==</code> checks identity, not content</td>
+</tr>
+<tr>
+<td>Custom objects</td>
+<td><strong>No</strong></td>
+<td><strong>Yes</strong> (if overridden)</td>
+<td>Default <code>equals()</code> is same as <code>==</code></td>
+</tr>
+<tr>
+<td><code>null</code> check</td>
+<td><strong>Yes</strong> (<code>x == null</code>)</td>
+<td><strong>No</strong> (NPE!)</td>
+<td>Always use <code>==</code> for null check</td>
+</tr>
+</tbody>
+</table>
+<h4 id="interview-quick-rule" tabindex="-1"><a class="header-anchor" href="#interview-quick-rule"><span>Interview Quick Rule</span></a></h4>
+<pre><code>Q: &quot;Should I use == or equals()?&quot;
+
+→ Is it a primitive (int, long, boolean, char, double)?
+  YES → use ==
+
+→ Is it checking for null?
+  YES → use ==  (x == null)
+
+→ Everything else (String, Integer, List, Object...)?
+  → use equals()
+  → use Objects.equals(a, b) if either could be null
+</code></pre>
+<h3 id="1-16-1-check-if-a-string-is-palindrome" tabindex="-1"><a class="header-anchor" href="#1-16-1-check-if-a-string-is-palindrome"><span>1-16-1) Check if a string is Palindrome</span></a></h3>
+<pre><code class="language-java">// java
+// LC 131
+boolean isPalindrome(String s, int low, int high) {
+while (low &lt; high) {
+    if (s.charAt(low++) != s.charAt(high--)) return false;
+}
+return true;
+}   
+</code></pre>
+<h3 id="1-17-init-2d-array" tabindex="-1"><a class="header-anchor" href="#1-17-init-2d-array"><span>1-17) init 2D array</span></a></h3>
+<pre><code class="language-java">// java
+// LC 417
+public int[][] DIRECTIONS = new int[][]{{0, 1}, {1, 0}, {-1, 0}, {0, -1}};
+</code></pre>
+<h3 id="1-18-arrays-fill-1-d" tabindex="-1"><a class="header-anchor" href="#1-18-arrays-fill-1-d"><span>1-18) Arrays.fill (1 D)</span></a></h3>
+<pre><code class="language-java">// java
+// LC 300
+
+/** NOTE !!! ONLY work for 1 D (since array is 1 dimension) */
+int[] dp = new int[10];
+
+// fill op
+Arrays.fill(dp,1);
+</code></pre>
+<h2 id="5-queue-operations" tabindex="-1"><a class="header-anchor" href="#5-queue-operations"><span>5) Queue Operations</span></a></h2>
+<h3 id="5-1-priority-queue-examples" tabindex="-1"><a class="header-anchor" href="#5-1-priority-queue-examples"><span>5.1) Priority Queue Examples</span></a></h3>
+<pre><code class="language-java">// Min-heap (default) - smallest element first
+PriorityQueue&lt;Integer&gt; minHeap = new PriorityQueue&lt;&gt;();
+minHeap.addAll(Arrays.asList(5, 10, 1, 3));
+while (!minHeap.isEmpty()) {
+    System.out.print(minHeap.poll() + &quot; &quot;);  // Output: 1 3 5 10
+}
+
+// Max-heap - largest element first
+PriorityQueue&lt;Integer&gt; maxHeap = new PriorityQueue&lt;&gt;(Collections.reverseOrder());
+maxHeap.addAll(Arrays.asList(5, 10, 1, 3));
+while (!maxHeap.isEmpty()) {
+    System.out.print(maxHeap.poll() + &quot; &quot;);  // Output: 10 5 3 1
+}
+</code></pre>
+<h3 id="1-19-1-pq-priority-queue-with-custom-logic" tabindex="-1"><a class="header-anchor" href="#1-19-1-pq-priority-queue-with-custom-logic"><span>1-19-1) PQ (priority queue) with custom logic</span></a></h3>
+<pre><code class="language-java">// java
+// LC 347
+// ...
+
+// Step 1. Count the frequency of each element
+Map&lt;Integer, Integer&gt; countMap = new HashMap&lt;&gt;();
+for (int num : nums) {
+countMap.put(num, countMap.getOrDefault(num, 0) + 1);
+}
+
+/** NOTE !!! how to init PQ below */
+// Step 2. Use a Min-Heap (Priority Queue) to keep track of top K elements
+PriorityQueue&lt;Map.Entry&lt;Integer, Integer&gt;&gt; heap = new PriorityQueue&lt;&gt;(
+    (a, b) -&gt; a.getValue() - b.getValue()
+);
+
+// ...
+</code></pre>
+<h3 id="5-2-queue-methods-add-vs-offer" tabindex="-1"><a class="header-anchor" href="#5-2-queue-methods-add-vs-offer"><span>5.2) Queue Methods: <code>add()</code> vs <code>offer()</code></span></a></h3>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Failure Behavior</th>
+<th>Return Type</th>
+<th>Best Use Case</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>add(e)</code></td>
+<td><strong>Throws exception</strong></td>
+<td><code>boolean</code></td>
+<td>When failure should stop execution</td>
+</tr>
+<tr>
+<td><code>offer(e)</code></td>
+<td><strong>Returns false</strong></td>
+<td><code>boolean</code></td>
+<td>When you want graceful failure handling</td>
+</tr>
+</tbody>
+</table>
+<pre><code class="language-java">Queue&lt;Integer&gt; queue = new LinkedList&lt;&gt;();
+
+// add() - throws exception on failure
+try {
+    queue.add(42);      // Returns true if successful
+} catch (IllegalStateException e) {
+    // Handle capacity exceeded
+}
+
+// offer() - returns false on failure (preferred for bounded queues)
+if (queue.offer(42)) {
+    System.out.println(&quot;Element added successfully&quot;);
+} else {
+    System.out.println(&quot;Queue is full&quot;);
+}
+</code></pre>
+<p><strong>Recommendation</strong>: Use <code>offer()</code> for bounded queues, <code>add()</code> for unlimited queues like <code>LinkedList</code>.</p>
+<h3 id="5-3-queue-removal-methods" tabindex="-1"><a class="header-anchor" href="#5-3-queue-removal-methods"><span>5.3) Queue Removal Methods</span></a></h3>
+<pre><code class="language-java">// java
+
+// In Java, the remove() method is commonly used with various types of collections such as Queue, List, and Set. When used with a Queue, the remove() method is used to remove and return the front element of the queue.
+
+/*
+
+ boolean remove(Object o);
+
+
+
+- Purpose:
+    - Removes the first occurrence of the specified element from the queue. If the element exists in the queue, it is removed. If it doesn't exist, the queue remains unchanged.
+
+- Return Type:
+    - Returns true if the element was successfully removed.
+
+    - Returns false if the element was not found in the queue (i.e., the queue remains unchanged).
+
+- Throws:
+    - It may throw a NullPointerException if you pass null as an argument and the queue does not permit null elements (this depends on the specific implementation of Queue).
+
+
+*/
+
+
+// Create a Queue (LinkedList implements Queue)
+Queue&lt;Integer&gt; queue = new LinkedList&lt;&gt;();
+
+// Add elements to the Queue
+queue.add(10);
+queue.add(20);
+queue.add(30);
+queue.add(7);  // Adding element 7
+queue.add(40);
+
+System.out.println(&quot;Original queue: &quot; + queue);
+
+// Remove element 7 from the queue
+boolean removed = queue.remove(7);  // Removes the first occurrence of 7
+
+// Print the result of removal
+System.out.println(&quot;Was element 7 removed? &quot; + removed);  // true
+
+// Print the modified queue
+System.out.println(&quot;Queue after removal of 7: &quot; + queue);
+
+// Try to remove element 7 again
+removed = queue.remove(7);  // Element 7 no longer exists in the queue
+
+// Print the result of trying to remove 7 again
+System.out.println(&quot;Was element 7 removed again? &quot; + removed);  // false
+
+System.out.println(&quot;queue: &quot; + queue); // queue: [10, 20, 30, 40]
+
+queue.remove();
+System.out.println(&quot;queue: &quot; + queue); // queue: [20, 30, 40]
+</code></pre>
+<h3 id="1-20-hashmap-return-defalut-val" tabindex="-1"><a class="header-anchor" href="#1-20-hashmap-return-defalut-val"><span>1-20) Hashmap return defalut val</span></a></h3>
+<pre><code class="language-java">
+// LC 424
+// NOTE : map.getOrDefault(key,0) syntax :  if can find key, return its value, else, return default 0
+map.put(key, map.getOrDefault(key,0)+1);
+
+
+// e.g.
+map.getOrDefault(key,0)
+</code></pre>
+<h1 id="2-other-tricks" tabindex="-1"><a class="header-anchor" href="#2-other-tricks"><span>2) Other tricks</span></a></h1>
+<h3 id="2-1-init-var-modify-it-in-another-method-and-use-it-pass-by-reference-pattern" tabindex="-1"><a class="header-anchor" href="#2-1-init-var-modify-it-in-another-method-and-use-it-pass-by-reference-pattern"><span>2-1) Init var, modify it in another method, and use it — Pass-by-Reference Pattern ⭐</span></a></h3>
+<blockquote>
+<p><strong>Core Concept</strong>: Reference types (StringBuilder, List, int[], Map, etc.) are passed by <strong>reference</strong>, not by value. Changes made inside a function persist after the function returns.</p>
+</blockquote>
+<h4 id="pattern-1-stringbuilder-for-path-string-building-lc-694" tabindex="-1"><a class="header-anchor" href="#pattern-1-stringbuilder-for-path-string-building-lc-694"><span>Pattern 1: StringBuilder for Path/String Building (LC 694)</span></a></h4>
+<pre><code class="language-java">// LC 694 - Number of Distinct Islands
+// Pattern: Create placeholder → Pass to DFS → Use modified result
+
+Set&lt;String&gt; uniqueIslands = new HashSet&lt;&gt;();
+
+for (int r = 0; r &lt; rows; r++) {
+    for (int c = 0; c &lt; cols; c++) {
+        if (grid[r][c] == 1) {
+            // Step 1: Create empty StringBuilder
+            StringBuilder pathSignature = new StringBuilder();
+
+            // Step 2: Pass to DFS — it will modify pathSignature in place
+            /** NOTE !!!
+             *  We pass `pathSignature` as a reference.
+             *  DFS will call pathSignature.append(...)
+             *  These changes PERSIST after DFS returns
+             */
+            dfs(grid, r, c, pathSignature, 'S');
+
+            // Step 3: After DFS returns, pathSignature is populated
+            if (pathSignature.length() &gt; 0) {
+                uniqueIslands.add(pathSignature.toString());
+            }
+        }
+    }
+}
+
+private void dfs(int[][] grid, int r, int c, StringBuilder path, char direction) {
+    // Base case
+    if (r &lt; 0 || r &gt;= rows || c &lt; 0 || c &gt;= cols || grid[r][c] == 0) {
+        return;
+    }
+
+    grid[r][c] = 0;
+
+    // ✅ MODIFY the passed reference
+    // This directly modifies the caller's StringBuilder object
+    path.append(direction);
+
+    // Explore neighbors
+    dfs(grid, r + 1, c, path, 'D');
+    dfs(grid, r - 1, c, path, 'U');
+    dfs(grid, r, c + 1, path, 'R');
+    dfs(grid, r, c - 1, path, 'L');
+
+    // Backtrack: undo the append
+    path.append('O');
+}
+</code></pre>
+<p><strong>Memory Model:</strong></p>
+<pre><code>Main thread:
+pathSignature = StringBuilder{} at memory address 0x1000
+
+    Call dfs(..., pathSignature, 'S')
+    ├── path parameter = reference to 0x1000
+    ├── path.append('S')  → modifies object at 0x1000 → &quot;S&quot;
+    │
+    ├── Call dfs(..., path, 'D')
+    │   ├── path parameter = reference to 0x1000 (SAME object!)
+    │   ├── path.append('D')  → modifies object at 0x1000 → &quot;SD&quot;
+    │   ├── path.append('O')  → modifies object at 0x1000 → &quot;SDO&quot;
+    │   └── return
+    │
+    ├── path.append('O')  → modifies object at 0x1000 → &quot;SDOO&quot;
+    └── return
+
+Back in main:
+pathSignature = StringBuilder{&quot;SDOO&quot;}  ✅ (MODIFIED!)
+</code></pre>
+<h4 id="pattern-2-list-for-collecting-results-lc-113-path-sum-ii" tabindex="-1"><a class="header-anchor" href="#pattern-2-list-for-collecting-results-lc-113-path-sum-ii"><span>Pattern 2: List for Collecting Results (LC 113 Path Sum II)</span></a></h4>
+<pre><code class="language-java">// LC 113 - Path Sum II
+// Similar pattern but with List&lt;Integer&gt; for path collection
+
+public List&lt;List&lt;Integer&gt;&gt; pathSum(TreeNode root, int targetSum) {
+    List&lt;List&lt;Integer&gt;&gt; result = new ArrayList&lt;&gt;();
+    List&lt;Integer&gt; path = new ArrayList&lt;&gt;();
+    dfs(root, targetSum, path, result);
+    return result;
+}
+
+private void dfs(TreeNode node, int remain, List&lt;Integer&gt; path, List&lt;List&lt;Integer&gt;&gt; result) {
+    if (node == null) return;
+
+    // Modify the passed List
+    path.add(node.val);
+
+    if (node.left == null &amp;&amp; node.right == null &amp;&amp; remain == node.val) {
+        // Snapshot the path before backtracking
+        result.add(new ArrayList&lt;&gt;(path));
+    } else {
+        dfs(node.left, remain - node.val, path, result);
+        dfs(node.right, remain - node.val, path, result);
+    }
+
+    // Backtrack: undo the add
+    path.remove(path.size() - 1);
+}
+</code></pre>
+<p><strong>Key Difference from Primitives:</strong></p>
+<pre><code class="language-java">// ❌ PRIMITIVE: Changes don't persist
+private void addToSum(int currentSum) {
+    currentSum += 5;  // Only affects local copy
+}
+int mySum = 10;
+addToSum(mySum);
+System.out.println(mySum);  // Still 10, NOT 15!
+
+// ✅ REFERENCE: Changes persist
+private void addToList(List&lt;Integer&gt; list) {
+    list.add(5);  // Affects the original list object
+}
+List&lt;Integer&gt; myList = new ArrayList&lt;&gt;();
+addToList(myList);
+System.out.println(myList);  // [5] ✅ MODIFIED!
+</code></pre>
+<h4 id="pattern-3-general-pattern-create-pass-modify-use" tabindex="-1"><a class="header-anchor" href="#pattern-3-general-pattern-create-pass-modify-use"><span>Pattern 3: General Pattern — Create, Pass, Modify, Use</span></a></h4>
+<pre><code class="language-java">// Generic template for this pattern:
+
+public Type method() {
+    // 1. Create placeholder (reference type)
+    SomeRefType placeholder = new SomeRefType();
+
+    // 2. Pass to helper function
+    helperFunction(placeholder, otherParams);
+
+    // 3. Use modified result
+    return placeholder;  // or use directly
+}
+
+private void helperFunction(SomeRefType data, OtherParams...) {
+    // Modify the reference — changes persist in caller
+    data.modify(...);
+
+    // Recurse if needed
+    helperFunction(data, newParams);
+
+    // Undo if backtracking required
+    data.undo(...);
+}
+</code></pre>
+<h4 id="common-reference-types-for-this-pattern" tabindex="-1"><a class="header-anchor" href="#common-reference-types-for-this-pattern"><span>Common Reference Types for This Pattern</span></a></h4>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Modification Methods</th>
+<th>Backtrack Required?</th>
+<th>Use Case</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>StringBuilder</code></td>
+<td><code>append(x)</code>, <code>setCharAt(i, c)</code>, <code>deleteCharAt(i)</code></td>
+<td>✅ Yes</td>
+<td>String building with backtracking</td>
+</tr>
+<tr>
+<td><code>List&lt;T&gt;</code></td>
+<td><code>add(x)</code>, <code>remove(i)</code>, <code>set(i, x)</code></td>
+<td>✅ Yes</td>
+<td>Path/result collection</td>
+</tr>
+<tr>
+<td><code>int[]</code> / <code>char[]</code></td>
+<td><code>arr[i] = value</code></td>
+<td>✅ Yes</td>
+<td>Array modification</td>
+</tr>
+<tr>
+<td><code>Map&lt;K,V&gt;</code></td>
+<td><code>put(k, v)</code>, <code>remove(k)</code></td>
+<td>✅ Yes</td>
+<td>Frequency tracking</td>
+</tr>
+<tr>
+<td><code>Queue&lt;T&gt;</code></td>
+<td><code>add(x)</code>, <code>poll()</code>, <code>offer(x)</code></td>
+<td>✅ Maybe</td>
+<td>BFS level-by-level</td>
+</tr>
+<tr>
+<td><code>Set&lt;T&gt;</code></td>
+<td><code>add(x)</code>, <code>remove(x)</code></td>
+<td>✅ Yes</td>
+<td>Visited tracking</td>
+</tr>
+<tr>
+<td>Primitive <code>int</code>, <code>long</code></td>
+<td>N/A (pass-by-value)</td>
+<td>❌ No</td>
+<td>Only for return or instance vars</td>
+</tr>
+<tr>
+<td><code>String</code></td>
+<td>N/A (immutable)</td>
+<td>❌ No</td>
+<td>Use StringBuilder instead</td>
+</tr>
+</tbody>
+</table>
+<p><strong>When to Backtrack:</strong></p>
+<pre><code>Rule: If the parameter is a reference type that gets MODIFIED, you must UNDO the modification.
+
+Path/List building:  path.add(val) → must do path.remove(...)
+StringBuilder:       sb.append(...) → must do sb.deleteCharAt(...)
+Array modification:  arr[i] = val   → must do arr[i] = oldVal
+Map/Set:             data.add(x)    → must do data.remove(x)
+
+Primitives:          No backtrack needed (they're copied)
+</code></pre>
+<h4 id="pattern-4-list-collection-lc-131-palindrome-partitioning" tabindex="-1"><a class="header-anchor" href="#pattern-4-list-collection-lc-131-palindrome-partitioning"><span>Pattern 4: List Collection (LC 131 Palindrome Partitioning)</span></a></h4>
+<pre><code class="language-java">// LC 131
+public List&lt;List&lt;String&gt;&gt; partition(String s) {
+    /**
+     * NOTE: we can init result, pass it to method,
+     * modify it, and return as ans
+     */
+    List&lt;List&lt;String&gt;&gt; result = new ArrayList&lt;&gt;();
+    dfs(0, result, new ArrayList&lt;String&gt;(), s);
+    return result;
+}
+
+private void dfs(int start, List&lt;List&lt;String&gt;&gt; result, List&lt;String&gt; currentList, String s) {
+    // Base case: reached end of string
+    if (start == s.length()) {
+        // Snapshot: add a copy of currentList (don't add reference)
+        result.add(new ArrayList&lt;&gt;(currentList));
+        return;
+    }
+
+    // Try all palindromes starting from 'start'
+    for (int end = start; end &lt; s.length(); end++) {
+        if (isPalindrome(s, start, end)) {
+            // Add to current partition
+            currentList.add(s.substring(start, end + 1));
+
+            // Recurse
+            dfs(end + 1, result, currentList, s);
+
+            // Backtrack: remove what we added
+            currentList.remove(currentList.size() - 1);
+        }
+    }
+}
+
+private boolean isPalindrome(String s, int l, int r) {
+    while (l &lt; r) {
+        if (s.charAt(l) != s.charAt(r)) return false;
+        l++;
+        r--;
+    }
+    return true;
+}
+</code></pre>
+<p><strong>Critical Distinction:</strong></p>
+<pre><code class="language-java">// ❌ WRONG: Adds reference to currentList (not a snapshot)
+result.add(currentList);  // All entries point to same list!
+
+// ✅ CORRECT: Add a copy
+result.add(new ArrayList&lt;&gt;(currentList));  // Each entry is independent
+</code></pre>
+<h3 id="2-2-get-max-min-from-3-numbers" tabindex="-1"><a class="header-anchor" href="#2-2-get-max-min-from-3-numbers"><span>2-2) Get max, min from 3 numbers</span></a></h3>
+<pre><code class="language-java">// java
+
+// LC 152
+max = Math.max(Math.max(max * nums[i], min * nums[i]), nums[i]);
+min = Math.min(Math.min(temp * nums[i], min * nums[i]), nums[i]);
+</code></pre>
+<h3 id="2-3-use-long-to-avoid-int-overflow" tabindex="-1"><a class="header-anchor" href="#2-3-use-long-to-avoid-int-overflow"><span>2-3) Use long to avoid int overflow</span></a></h3>
+<pre><code class="language-java">// java
+// LC 98
+
+// ...
+
+/**
+*  NOTE !!!
+*
+*  Use long to handle edge cases for Integer.MIN_VALUE and Integer.MAX_VALUE
+*  -&gt; use long to handle overflow issue (NOT use int type)
+*/
+long smallest_val = Long.MIN_VALUE;
+long biggest_val = Long.MAX_VALUE;
+
+return check_(root, smallest_val, biggest_val);
+
+// ...
+</code></pre>
+<h3 id="2-4-get-1-count-from-integer-s-binary-format" tabindex="-1"><a class="header-anchor" href="#2-4-get-1-count-from-integer-s-binary-format"><span>2-4) get “1” count from integer’s binary format</span></a></h3>
+<pre><code class="language-java">// java
+
+/**
+*  Integer.bitCount
+*
+*  -&gt; java default get number of &quot;1&quot; from binary representation of a 10 based integer
+*
+*  -&gt; e.g.
+*      Integer.bitCount(0) = 0
+*      Integer.bitCount(1) = 1
+*      Integer.bitCount(2) = 1
+*      Integer.bitCount(3) = 2
+*
+*  Ref
+*      - https://blog.csdn.net/weixin_42092787/article/details/106607426
+*/
+
+// LC 338
+
+</code></pre>
+<h3 id="2-5-init-queue" tabindex="-1"><a class="header-anchor" href="#2-5-init-queue"><span>2-5) Init Queue</span></a></h3>
+<ul>
+<li>
+<p><a href="https://stackoverflow.com/questions/4626812/how-do-i-instantiate-a-queue-object-in-java">https://stackoverflow.com/questions/4626812/how-do-i-instantiate-a-queue-object-in-java</a></p>
+</li>
+<li>
+<p>A Queue is an <code>interface</code>, which means you <code>cannot</code> construct a Queue directly.</p>
+</li>
+<li>
+<p>Consinder use one of below implementation:</p>
+</li>
+</ul>
+<pre><code>AbstractQueue, ArrayBlockingQueue, ArrayDeque, ConcurrentLinkedQueue, DelayQueue, LinkedBlockingQueue, LinkedList, PriorityBlockingQueue, PriorityQueue, or SynchronousQueue.
+</code></pre>
+<h3 id="2-6-loop-over-elements-in-map" tabindex="-1"><a class="header-anchor" href="#2-6-loop-over-elements-in-map"><span>2-6) loop over elements in map</span></a></h3>
+<pre><code class="language-java">// java
+
+// LC 742
+/** NOTE
+ *  
+ *  Map.Entry&lt;TreeNode, List&lt;TreeNode&gt;&gt; entry : g.entrySet()
+ * 
+ */
+Map&lt;TreeNode, List&lt;TreeNode&gt;&gt; g;
+for (Map.Entry&lt;TreeNode, List&lt;TreeNode&gt;&gt; entry : g.entrySet()) {
+        if (entry.getKey() != null &amp;&amp; entry.getKey().val == k) {
+            q.offer(entry.getKey());
+            break;
+        }
+    }
+// ...
+</code></pre>
+<h3 id="2-7-treemap" tabindex="-1"><a class="header-anchor" href="#2-7-treemap"><span>2-7) TreeMap</span></a></h3>
+<ul>
+<li>java.util.TreeMap.floorKey()</li>
+<li>will return max val in its key set, if empty, return null</li>
+<li>還有一種Map，它在內部對Key進行排序，Map就是SortedMap。</li>
+<li>SortedMap保證遍歷時以Key的順序來進行排序。預設按字母排序：</li>
+<li>使用TreeMap時，輸入的Key必須實作Comparable介面。</li>
+<li><a href="https://www.yxjc123.com/post/v0i7dl">https://www.yxjc123.com/post/v0i7dl</a></li>
+<li><a href="https://liaoxuefeng.com/books/java/collection/tree-map/index.html">https://liaoxuefeng.com/books/java/collection/tree-map/index.html</a></li>
+</ul>
+<h3 id="2-8-random-nextint" tabindex="-1"><a class="header-anchor" href="#2-8-random-nextint"><span>2-8) <code>random.nextInt</code></span></a></h3>
+<pre><code class="language-java">// java
+// LC 528
+
+/** bound : range of random int can be returned */
+//  @param bound the upper bound (exclusive).  Must be positive.
+Random random = new Random();
+
+//  * @param bound the upper bound (exclusive).  Must be positive.
+System.out.println(random.nextInt(10));
+System.out.println(random.nextInt(10));
+System.out.println(random.nextInt(100));
+</code></pre>
+<h3 id="2-9-hashmap-track-element-count-in-order" tabindex="-1"><a class="header-anchor" href="#2-9-hashmap-track-element-count-in-order"><span>2-9) HashMap - Track element count in order</span></a></h3>
+<pre><code class="language-java">// java
+// LC 767
+
+// ...
+
+// Step 1: Count the frequency of each character
+Map&lt;Character, Integer&gt; charCountMap = new HashMap&lt;&gt;();
+for (char c : S.toCharArray()) {
+    charCountMap.put(c, charCountMap.getOrDefault(c, 0) + 1);
+}
+
+// Step 2: Use a priority queue (max heap) to keep characters sorted by
+// frequency
+/** NOTE !!!
+ *
+ *  we use PQ to track the characters count sorted in order
+ */
+PriorityQueue&lt;Map.Entry&lt;Character, Integer&gt;&gt; maxHeap = new PriorityQueue&lt;&gt;(
+        (a, b) -&gt; b.getValue() - a.getValue());
+maxHeap.addAll(charCountMap.entrySet());
+
+// ...
+</code></pre>
+<h3 id="3-1-primitive-type-pass-in-func" tabindex="-1"><a class="header-anchor" href="#3-1-primitive-type-pass-in-func"><span>3-1) Primitive type pass in func</span></a></h3>
+<pre><code class="language-java">// java
+// LC 695
+
+/**
+ *  NOTE !!!!
+ *
+ *   DON'T pass `area` as parameter to the DFS func (getBiggestArea)
+ *
+ *   Reason:
+ *
+ *   1) in java, primitives pass by value.
+ *      `int` is one of the primitives
+ *
+ *   2) meaning when we pass `area` to dfs,
+ *      it actually sent as a new COPY everytime,
+ *      which makes us CAN'T track/persist the new area value
+ */
+
+// ...
+
+ private int _getArea(int[][] grid, boolean[][] seen, int x, int y){
+
+    // ...
+    return 1 + _getArea(grid, seen, x+1, y) +
+                _getArea(grid, seen, x-1, y) +
+                _getArea(grid, seen, x, y+1) +
+                _getArea(grid, seen, x, y-1);
+
+}
+</code></pre>
+<h3 id="3-2-map-characters-to-idx" tabindex="-1"><a class="header-anchor" href="#3-2-map-characters-to-idx"><span>3-2) Map characters to idx</span></a></h3>
+<p>A <strong>classic Java trick</strong> for mapping characters to array indices — especially when working with the lowercase English alphabet (<code>'a'</code> to <code>'z'</code>).</p>
+<hr>
+<h3 id="line-in-question" tabindex="-1"><a class="header-anchor" href="#line-in-question"><span>👇 Line in question:</span></a></h3>
+<pre><code class="language-java">orderMap[order.charAt(i) - 'a'] = i;
+</code></pre>
+<hr>
+<h3 id="what-s-happening" tabindex="-1"><a class="header-anchor" href="#what-s-happening"><span>🔍 What’s happening?</span></a></h3>
+<p>Let’s say:</p>
+<pre><code class="language-java">order = &quot;hlabcdefgijkmnopqrstuvwxyz&quot;;
+</code></pre>
+<p>So <code>order.charAt(i)</code> gets a character from the alien alphabet — for example:</p>
+<ul>
+<li><code>i = 0</code>: <code>order.charAt(0)</code> = <code>'h'</code></li>
+<li><code>'h' - 'a'</code> → this subtracts ASCII/Unicode values:<br>
+<code>'h' = 104</code>, <code>'a' = 97</code><br>
+➜ <code>104 - 97 = 7</code></li>
+</ul>
+<p>So:</p>
+<pre><code class="language-java">orderMap[7] = 0;
+</code></pre>
+<p>This tells us:</p>
+<blockquote>
+<p>In the alien alphabet, <code>'h'</code> is at position <code>0</code>.</p>
+</blockquote>
+<hr>
+<h3 id="so-what-is-c-a" tabindex="-1"><a class="header-anchor" href="#so-what-is-c-a"><span>🧠 So what is <code>'c' - 'a'</code>?</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>Character</th>
+<th>ASCII</th>
+<th><code>'char' - 'a'</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>'a'</code></td>
+<td>97</td>
+<td><code>0</code></td>
+</tr>
+<tr>
+<td><code>'b'</code></td>
+<td>98</td>
+<td><code>1</code></td>
+</tr>
+<tr>
+<td><code>'c'</code></td>
+<td>99</td>
+<td><code>2</code></td>
+</tr>
+<tr>
+<td><code>'z'</code></td>
+<td>122</td>
+<td><code>25</code></td>
+</tr>
+</tbody>
+</table>
+<p>So <code>'c' - 'a' == 2'</code> — we use this to convert <code>'c'</code> to the index <code>2</code>.</p>
+<hr>
+<h3 id="why-do-we-use-this" tabindex="-1"><a class="header-anchor" href="#why-do-we-use-this"><span>✅ Why do we use this?</span></a></h3>
+<p>Because we can now use a simple array of size 26:</p>
+<pre><code class="language-java">int[] orderMap = new int[26];
+</code></pre>
+<p>And <strong>store the rank</strong> of each character in constant time using:</p>
+<pre><code class="language-java">orderMap[c - 'a']
+</code></pre>
+<p>Which is way faster than repeatedly doing:</p>
+<pre><code class="language-java">order.indexOf(c)  // O(n) each time
+</code></pre>
+<hr>
+<h3 id="tl-dr" tabindex="-1"><a class="header-anchor" href="#tl-dr"><span>✅ TL;DR</span></a></h3>
+<pre><code class="language-java">order.charAt(i) - 'a'
+</code></pre>
+<p>✔️ Converts a letter to a <strong>0-based index</strong> (e.g. <code>'a'</code> → 0, <code>'z'</code> → 25)<br>
+✔️ Works because characters are basically integers in Java (<code>char</code> uses UTF-16)<br>
+✔️ Super efficient for problems limited to lowercase letters</p>
+<hr>
+<h3 id="6-2-character-range-iteration" tabindex="-1"><a class="header-anchor" href="#6-2-character-range-iteration"><span>6.2) Character Range Iteration</span></a></h3>
+<pre><code class="language-java">// Iterate through lowercase alphabet
+for (char c = 'a'; c &lt;= 'z'; c++) {
+    System.out.print(c + &quot; &quot;);  // Output: a b c d e f g h i j k l m n o p q r s t u v w x y z
+}
+
+// Iterate through uppercase alphabet  
+for (char c = 'A'; c &lt;= 'Z'; c++) {
+    System.out.print(c + &quot; &quot;);  // Output: A B C D E F G H I J K L M N O P Q R S T U V W X Y Z
+}
+
+// Generate all single-character replacements (LC 127)
+String word = &quot;hit&quot;;
+for (int i = 0; i &lt; word.length(); i++) {
+    for (char c = 'a'; c &lt;= 'z'; c++) {
+        if (c != word.charAt(i)) {
+            String newWord = word.substring(0, i) + c + word.substring(i + 1);
+            // Process newWord
+        }
+    }
+}
+</code></pre>
+<h2 id="7-quick-reference-summary" tabindex="-1"><a class="header-anchor" href="#7-quick-reference-summary"><span>7) Quick Reference &amp; Summary</span></a></h2>
+<h3 id="7-1-most-common-patterns" tabindex="-1"><a class="header-anchor" href="#7-1-most-common-patterns"><span>7.1) Most Common Patterns</span></a></h3>
+<h4 id="data-structure-initialization" tabindex="-1"><a class="header-anchor" href="#data-structure-initialization"><span>Data Structure Initialization</span></a></h4>
+<pre><code class="language-java">// Arrays
+int[] arr = new int[n];                    // Fixed size
+int[][] matrix = new int[rows][cols];      // 2D array
+
+// Collections
+List&lt;Integer&gt; list = new ArrayList&lt;&gt;();   // Dynamic list
+Map&lt;String, Integer&gt; map = new HashMap&lt;&gt;(); // Key-value store
+Set&lt;Integer&gt; set = new HashSet&lt;&gt;();        // Unique elements
+Queue&lt;Integer&gt; queue = new LinkedList&lt;&gt;(); // FIFO operations
+
+// Priority Queues
+PriorityQueue&lt;Integer&gt; minHeap = new PriorityQueue&lt;&gt;();              // Min-heap
+PriorityQueue&lt;Integer&gt; maxHeap = new PriorityQueue&lt;&gt;(Collections.reverseOrder()); // Max-heap
+</code></pre>
+<h4 id="essential-conversions" tabindex="-1"><a class="header-anchor" href="#essential-conversions"><span>Essential Conversions</span></a></h4>
+<pre><code class="language-java">// String ↔ Character Array
+String str = &quot;hello&quot;;
+char[] chars = str.toCharArray();          // String to char array
+String newStr = new String(chars);         // Char array to String
+
+// Array ↔ List  
+Integer[] arr = {1, 2, 3};
+List&lt;Integer&gt; list = new ArrayList&lt;&gt;(Arrays.asList(arr));  // Array to List
+Integer[] newArr = list.toArray(new Integer[0]);           // List to Array
+
+// Character to Index (for a-z)
+int index = character - 'a';               // 'a'→0, 'b'→1, ..., 'z'→25
+</code></pre>
+<h4 id="common-operations" tabindex="-1"><a class="header-anchor" href="#common-operations"><span>Common Operations</span></a></h4>
+<pre><code class="language-java">// HashMap with default values
+map.getOrDefault(key, defaultValue);
+map.putIfAbsent(key, value);
+
+// Sorting  
+Arrays.sort(array);                        // In-place array sort
+Collections.sort(list);                    // In-place list sort
+list.sort(Collections.reverseOrder());     // Reverse order
+
+// String operations
+s.charAt(i);                               // Get character at index
+s.substring(start, end);                   // [start, end) substring
+StringBuilder sb = new StringBuilder();     // Mutable string
+</code></pre>
+<h3 id="7-2-performance-tips" tabindex="-1"><a class="header-anchor" href="#7-2-performance-tips"><span>7.2) Performance Tips</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>Operation</th>
+<th>Efficient Approach</th>
+<th>Avoid</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>String Building</strong></td>
+<td><code>StringBuilder</code></td>
+<td>String concatenation in loops</td>
+</tr>
+<tr>
+<td><strong>Character Access</strong></td>
+<td><code>toCharArray()</code> then iterate</td>
+<td><code>charAt()</code> in tight loops</td>
+</tr>
+<tr>
+<td><strong>Sorting</strong></td>
+<td><code>Arrays.sort()</code>, <code>Collections.sort()</code></td>
+<td>Stream sorting for large data</td>
+</tr>
+<tr>
+<td><strong>Array Printing</strong></td>
+<td><code>Arrays.toString()</code>, <code>Arrays.deepToString()</code></td>
+<td>Manual iteration</td>
+</tr>
+<tr>
+<td><strong>Character Mapping</strong></td>
+<td><code>char - 'a'</code></td>
+<td><code>indexOf()</code> repeated calls</td>
+</tr>
+</tbody>
+</table>
+<h3 id="7-3-common-leetcode-patterns" tabindex="-1"><a class="header-anchor" href="#7-3-common-leetcode-patterns"><span>7.3) Common LeetCode Patterns</span></a></h3>
+<h4 id="frequency-counting" tabindex="-1"><a class="header-anchor" href="#frequency-counting"><span>Frequency Counting</span></a></h4>
+<pre><code class="language-java">Map&lt;Character, Integer&gt; freq = new HashMap&lt;&gt;();
+for (char c : s.toCharArray()) {
+    freq.put(c, freq.getOrDefault(c, 0) + 1);
+}
+</code></pre>
+<h4 id="two-pointers-with-character-comparison" tabindex="-1"><a class="header-anchor" href="#two-pointers-with-character-comparison"><span>Two Pointers with Character Comparison</span></a></h4>
+<pre><code class="language-java">int left = 0, right = s.length() - 1;
+while (left &lt; right) {
+    if (s.charAt(left) != s.charAt(right)) return false;
+    left++;
+    right--;
+}
+</code></pre>
+<h4 id="priority-queue-for-top-k-problems" tabindex="-1"><a class="header-anchor" href="#priority-queue-for-top-k-problems"><span>Priority Queue for Top-K Problems</span></a></h4>
+<pre><code class="language-java">PriorityQueue&lt;Integer&gt; heap = new PriorityQueue&lt;&gt;();
+for (int num : nums) {
+    heap.offer(num);
+    if (heap.size() &gt; k) heap.poll();
+}
+</code></pre>
+<h3 id="7-4-memory-management" tabindex="-1"><a class="header-anchor" href="#7-4-memory-management"><span>7.4) Memory Management</span></a></h3>
+<ul>
+<li><strong>Primitive arrays</strong>: More memory efficient than object arrays</li>
+<li><strong>ArrayList</strong>: Automatically resizes, initial capacity matters for large datasets</li>
+<li><strong>StringBuilder</strong>: Use for string concatenation in loops</li>
+<li><strong>Character arrays</strong>: More efficient than String manipulation for character processing</li>
+</ul>
+<h2 id="8-advanced-examples-recursion-patterns" tabindex="-1"><a class="header-anchor" href="#8-advanced-examples-recursion-patterns"><span>8) Advanced Examples &amp; Recursion Patterns</span></a></h2>
+<h3 id="8-1-recursion-parameter-passing" tabindex="-1"><a class="header-anchor" href="#8-1-recursion-parameter-passing"><span>8.1) Recursion Parameter Passing</span></a></h3>
+<pre><code class="language-java">// LC 104
+// https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/LeetCodeJava/Recursion/MaximumDepthOfBinaryTree.java
+
+**Important Concept**: In Java, primitives are **passed by value** (creates copies).
+
+```java
+// ❌ WRONG: Primitive parameter won't persist changes across recursive calls
+public int wrongDepth(TreeNode root, int depth) {
+    if (root == null) return depth;
+    depth++;  // This increment is lost after recursion returns
+    return Math.max(wrongDepth(root.left, depth), wrongDepth(root.right, depth));
+}
+
+// ✅ CORRECT: Use instance variables for state that needs to persist
+class Solution {
+    private int maxDepth = 0;  // Instance variable persists across calls
+    
+    public int maxDepth(TreeNode root) {
+        depthHelper(root, 0);
+        return maxDepth;
+    }
+    
+    private void depthHelper(TreeNode root, int currentDepth) {
+        if (root == null) return;
+        
+        maxDepth = Math.max(maxDepth, currentDepth + 1);  // Update global state
+        depthHelper(root.left, currentDepth + 1);
+        depthHelper(root.right, currentDepth + 1);
+    }
+}
+
+// ✅ ALTERNATIVE: Return and combine values (functional approach)
+public int maxDepth(TreeNode root) {
+    if (root == null) return 0;
+    return 1 + Math.max(maxDepth(root.left), maxDepth(root.right));
+}
+</code></pre>
+<p><strong>Key Takeaway</strong>: When you need to track state across recursive calls, either use instance variables or design the recursion to return and combine values.</p>
+<h3 id="8-2-primitive-vs-reference-types-in-recursion-backtracking-rule" tabindex="-1"><a class="header-anchor" href="#8-2-primitive-vs-reference-types-in-recursion-backtracking-rule"><span>8.2) Primitive vs Reference Types in Recursion — Backtracking Rule ⭐</span></a></h3>
+<blockquote>
+<p><strong>Core Rule</strong>: Primitives are pass-by-value → each call gets its own copy → <strong>no backtracking needed</strong>.
+Reference types (collections, arrays, objects) are pass-by-reference → shared state → <strong>must backtrack</strong>.</p>
+</blockquote>
+<h4 id="the-rule-1" tabindex="-1"><a class="header-anchor" href="#the-rule-1"><span>The Rule</span></a></h4>
+<pre><code>Primitive param (int, long, double...)  →  copy per call  →  NO backtrack needed
+Reference param (List, int[], HashMap)  →  shared object  →  MUST backtrack (add + remove)
+Global / instance variable              →  shared state   →  MUST backtrack
+</code></pre>
+<h4 id="case-1-primitive-no-backtracking-needed-lc-112-path-sum" tabindex="-1"><a class="header-anchor" href="#case-1-primitive-no-backtracking-needed-lc-112-path-sum"><span>Case 1: Primitive — No Backtracking Needed (LC 112 Path Sum)</span></a></h4>
+<pre><code class="language-java">// LC 112 - Path Sum
+// curSum is a primitive int → each recursive call gets its OWN COPY
+// → no backtracking needed
+
+public boolean hasPathSum(TreeNode root, int targetSum) {
+    if (root == null) return false;
+    if (root.left == null &amp;&amp; root.right == null) return root.val == targetSum;
+    getPathHelper(root, 0);
+    return pathSumMap.containsValue(targetSum);
+}
+
+private void getPathHelper(TreeNode root, Integer curSum) {
+    if (root == null) return;
+
+    int newSum = curSum + root.val;  // new local variable — does NOT affect parent's curSum
+
+    if (root.left == null &amp;&amp; root.right == null) {
+        pathSumMap.put(newSum, newSum);
+    }
+
+    /** NOTE !!!
+     *
+     *  No backtrack on curSum / newSum needed!
+     *
+     *  Reason:
+     *   - curSum is a primitive (int / Integer with autoboxing creates a new object).
+     *   - Each recursive call receives its OWN COPY of curSum.
+     *   - Modifying newSum inside the call does NOT affect the parent's curSum.
+     *   - When the call returns, the parent's curSum is completely unchanged.
+     *
+     *  Stack visualization for tree 5 -&gt; 4 -&gt; 11 -&gt; 7:
+     *
+     *    getPathHelper(5,   curSum=0)    newSum=5
+     *      getPathHelper(4,  curSum=5)   newSum=9
+     *        getPathHelper(11, curSum=9) newSum=20
+     *          getPathHelper(7, curSum=20) newSum=27  ← leaf, store 27
+     *          ← returns, parent curSum still 20 ✅
+     *        ← returns, parent curSum still 9 ✅
+     *      ← returns, parent curSum still 5 ✅
+     */
+    getPathHelper(root.left, newSum);
+    getPathHelper(root.right, newSum);
+}
+</code></pre>
+<p><strong>Memory model:</strong></p>
+<pre><code>Stack frame:  getPathHelper(node=4, curSum=5)
+              ├── newSum = 9     ← local to THIS frame
+              ├── calls getPathHelper(node.left, newSum=9)
+              │     └── newSum = 20  ← different frame, isolated
+              └── curSum is still 5 when left call returns ✅
+</code></pre>
+<h4 id="case-2-global-variable-backtracking-is-needed-lc-112-v0-2" tabindex="-1"><a class="header-anchor" href="#case-2-global-variable-backtracking-is-needed-lc-112-v0-2"><span>Case 2: Global Variable — Backtracking IS Needed (LC 112 V0-2)</span></a></h4>
+<pre><code class="language-java">// BAD pattern: using an instance variable for path sum
+// → ALL recursive calls share the SAME curSum → must backtrack!
+
+private int curSum = 0;  // shared across ALL calls ← danger!
+
+public boolean hasPathSum_0_2(TreeNode root, int targetSum) {
+    curSum += root.val;  // modifies shared state
+
+    if (root.left == null &amp;&amp; root.right == null) {
+        if (curSum == targetSum) {
+            curSum -= root.val;  // MUST backtrack before returning
+            return true;
+        }
+    }
+
+    if (hasPathSum_0_2(root.left, targetSum)) {
+        curSum -= root.val;  // MUST backtrack
+        return true;
+    }
+    if (hasPathSum_0_2(root.right, targetSum)) {
+        curSum -= root.val;  // MUST backtrack
+        return true;
+    }
+
+    curSum -= root.val;  // MUST backtrack on failure path too
+    return false;
+}
+</code></pre>
+<h4 id="case-3-reference-type-list-backtracking-is-needed-lc-113-path-sum-ii" tabindex="-1"><a class="header-anchor" href="#case-3-reference-type-list-backtracking-is-needed-lc-113-path-sum-ii"><span>Case 3: Reference Type (List) — Backtracking IS Needed (LC 113 Path Sum II)</span></a></h4>
+<pre><code class="language-java">// List is passed by reference → shared object → must backtrack
+private void dfs(TreeNode node, int remain, List&lt;Integer&gt; path, List&lt;List&lt;Integer&gt;&gt; res) {
+    if (node == null) return;
+
+    path.add(node.val);          // ← mutates shared list
+
+    if (node.left == null &amp;&amp; node.right == null &amp;&amp; remain == node.val) {
+        res.add(new ArrayList&lt;&gt;(path));  // snapshot before backtrack
+    } else {
+        dfs(node.left,  remain - node.val, path, res);
+        dfs(node.right, remain - node.val, path, res);
+    }
+
+    path.remove(path.size() - 1);  // ← MUST backtrack: undo the add
+}
+</code></pre>
+<h4 id="case-4-stringbuilder-backtracking-is-needed-lc-988-smallest-string-starting-from-leaf" tabindex="-1"><a class="header-anchor" href="#case-4-stringbuilder-backtracking-is-needed-lc-988-smallest-string-starting-from-leaf"><span>Case 4: StringBuilder — Backtracking IS Needed (LC 988 Smallest String Starting From Leaf)</span></a></h4>
+<pre><code class="language-java">// LC 988 - Smallest String Starting From Leaf
+// StringBuilder is a reference type → shared object → MUST backtrack
+
+private String smallest = &quot;&quot;;
+
+public String smallestFromLeaf(TreeNode root) {
+    dfs(root, new StringBuilder());
+    return smallest;
+}
+
+private void dfs(TreeNode node, StringBuilder sb) {
+    if (node == null)
+        return;
+
+    /** NOTE !!!
+     *
+     *  PRE-ORDER DFS: process current node first
+     */
+    // 1. Add current character (0 -&gt; 'a', 1 -&gt; 'b', etc.)
+    sb.append((char) ('a' + node.val));
+
+    /** NOTE !!!
+     *
+     *  ONLY treat as result when reach `leaf`
+     */
+    // 2. Leaf check: If we reach a leaf, we have a candidate path
+    if (node.left == null &amp;&amp; node.right == null) {
+
+        /** NOTE !!!
+         *
+         *  We reverse current StringBuilder to fit the requirement
+         *  (string from leaf to root)
+         */
+        String currentStr = new StringBuilder(sb).reverse().toString();
+
+        /** NOTE !!!
+         *
+         *  How we get the `lexicographically smaller` one:
+         *  currentStr.compareTo(smallest) &lt; 0
+         */
+        if (smallest.equals(&quot;&quot;) || currentStr.compareTo(smallest) &lt; 0) {
+            smallest = currentStr;
+        }
+    }
+
+    // 3. Standard DFS
+    dfs(node.left, sb);
+    dfs(node.right, sb);
+
+    /** NOTE !!!
+     *
+     *  For StringBuilder (NOT a primitive type),
+     *  we MUST do BACKTRACK (undo)
+     *
+     *  Reason:
+     *   - StringBuilder is a reference type (object)
+     *   - All recursive calls share the SAME StringBuilder instance
+     *   - After exploring subtrees, we must remove the current char
+     *     to restore sb to its state before this call
+     *   - Without this, the path would keep growing incorrectly
+     *
+     *  Memory model:
+     *
+     *    dfs(node=5, sb=&quot;e&quot;)
+     *      ├── sb.append('a') → sb=&quot;ea&quot;
+     *      ├── dfs(left, sb=&quot;ea&quot;)
+     *      │     └── sb.append('b') → sb=&quot;eab&quot;
+     *      │     └── sb.deleteCharAt() → sb=&quot;ea&quot;  ← backtrack!
+     *      ├── dfs(right, sb=&quot;ea&quot;)  ← sb is correctly &quot;ea&quot;, not &quot;eab&quot;
+     *      │     └── ...
+     *      └── sb.deleteCharAt() → sb=&quot;e&quot;  ← backtrack to parent state
+     */
+    // 4. BACKTRACK: Remove the last character before returning to parent
+    sb.deleteCharAt(sb.length() - 1);
+}
+</code></pre>
+<h4 id="summary-table-1" tabindex="-1"><a class="header-anchor" href="#summary-table-1"><span>Summary Table</span></a></h4>
+<table>
+<thead>
+<tr>
+<th>State Type</th>
+<th>Example</th>
+<th>Backtrack?</th>
+<th>Reason</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Primitive param</td>
+<td><code>int curSum</code></td>
+<td><strong>No</strong></td>
+<td>Each call gets own copy</td>
+</tr>
+<tr>
+<td>Wrapper param (autoboxed)</td>
+<td><code>Integer curSum</code></td>
+<td><strong>No</strong></td>
+<td>Autoboxing creates new object</td>
+</tr>
+<tr>
+<td>Local variable</td>
+<td><code>int newSum = curSum + val</code></td>
+<td><strong>No</strong></td>
+<td>Belongs to current stack frame only</td>
+</tr>
+<tr>
+<td>Instance/global variable</td>
+<td><code>this.curSum</code></td>
+<td><strong>Yes</strong></td>
+<td>Shared across all calls</td>
+</tr>
+<tr>
+<td>Collection param</td>
+<td><code>List&lt;Integer&gt; path</code></td>
+<td><strong>Yes</strong></td>
+<td>Reference, mutated in-place</td>
+</tr>
+<tr>
+<td>Array param</td>
+<td><code>int[] path</code></td>
+<td><strong>Yes</strong></td>
+<td>Reference, mutated in-place</td>
+</tr>
+<tr>
+<td>StringBuilder param</td>
+<td><code>StringBuilder sb</code></td>
+<td><strong>Yes</strong></td>
+<td>Reference, mutated in-place via <code>append()</code>/<code>deleteCharAt()</code></td>
+</tr>
+</tbody>
+</table>
+<h4 id="interview-tips" tabindex="-1"><a class="header-anchor" href="#interview-tips"><span>Interview Tips</span></a></h4>
+<pre><code>Q: &quot;Do I need to backtrack this variable?&quot;
+
+Decision tree:
+1. Is it a primitive (int, long, boolean, char...)?
+   → Passed as value → NO backtrack needed
+
+2. Is it a local variable inside the current stack frame?
+   → NOT shared → NO backtrack needed
+
+3. Is it an instance/class variable?
+   → Shared → YES, must backtrack
+
+4. Is it a collection or array passed as parameter?
+   → Reference = shared → YES, must backtrack
+
+Quick mental model:
+  &quot;If I change this variable, will the CALLER see the change?&quot;
+  YES → backtrack required
+  NO  → no backtrack needed
+</code></pre>
+<hr>
+<h2 id="9-others" tabindex="-1"><a class="header-anchor" href="#9-others"><span>9) Others</span></a></h2>
+<h3 id="9-0-modifying-custom-class-fields-directly-v-field-1" tabindex="-1"><a class="header-anchor" href="#9-0-modifying-custom-class-fields-directly-v-field-1"><span>9.0) Modifying Custom Class Fields Directly (<code>v.field -= 1</code>) ⭐</span></a></h3>
+<blockquote>
+<p><strong>Core Question</strong>: When can you write <code>v.cnt -= 1</code> and when can’t you?</p>
+</blockquote>
+<h4 id="when-you-can-modify-directly" tabindex="-1"><a class="header-anchor" href="#when-you-can-modify-directly"><span>When you CAN modify directly</span></a></h4>
+<p>All three conditions must hold:</p>
+<ol>
+<li><strong>Field is accessible</strong> (not <code>private</code>, or you are inside the class)</li>
+<li><strong>Field is not <code>final</code></strong></li>
+<li><strong>Reference is not <code>null</code></strong></li>
+</ol>
+<pre><code class="language-java">class ValCnt {
+    char val;
+    int cnt;           // package-private, non-final
+    ValCnt(char val, int cnt) { this.val = val; this.cnt = cnt; }
+}
+
+ValCnt v = new ValCnt('a', 3);
+v.cnt -= 1;   // ✅ allowed: accessible + non-final + non-null
+</code></pre>
+<h4 id="when-you-cannot-modify-directly" tabindex="-1"><a class="header-anchor" href="#when-you-cannot-modify-directly"><span>When you CANNOT modify directly</span></a></h4>
+<p><strong>Case 1 — <code>private</code> field</strong> (outside the class)</p>
+<pre><code class="language-java">class ValCnt {
+    private int cnt;   // private!
+}
+
+v.cnt -= 1;   // ❌ compile error — use a setter/method instead
+</code></pre>
+<p><strong>Case 2 — <code>final</code> field</strong></p>
+<pre><code class="language-java">class ValCnt {
+    final int cnt;
+}
+
+v.cnt -= 1;   // ❌ compile error — cannot assign to final variable
+</code></pre>
+<p><strong>Case 3 — null reference</strong></p>
+<pre><code class="language-java">ValCnt v = null;
+v.cnt -= 1;   // ❌ NullPointerException at runtime
+</code></pre>
+<h4 id="common-misconception-final-reference-vs-final-field" tabindex="-1"><a class="header-anchor" href="#common-misconception-final-reference-vs-final-field"><span>Common misconception: <code>final</code> reference vs <code>final</code> field</span></a></h4>
+<pre><code class="language-java">final ValCnt v = new ValCnt('a', 3);
+
+v.cnt -= 1;              // ✅ allowed — final only locks the REFERENCE
+v = new ValCnt('b', 1);  // ❌ compile error — cannot reassign final reference
+</code></pre>
+<p><code>final</code> on the variable means you cannot point <code>v</code> to a different object.
+It does <strong>not</strong> prevent mutating the object’s fields.</p>
+<h4 id="integer-wrapper-field-works-but-autoboxes" tabindex="-1"><a class="header-anchor" href="#integer-wrapper-field-works-but-autoboxes"><span><code>Integer</code> (wrapper) field — works but autoboxes</span></a></h4>
+<pre><code class="language-java">class Holder { Integer cnt; }
+
+Holder h = new Holder();
+h.cnt = 3;
+h.cnt -= 1;  // ✅ works, but really: h.cnt = Integer.valueOf(h.cnt.intValue() - 1)
+             //    creates a new Integer object; fails if field is final
+</code></pre>
+<h4 id="summary-table-2" tabindex="-1"><a class="header-anchor" href="#summary-table-2"><span>Summary table</span></a></h4>
+<table>
+<thead>
+<tr>
+<th>Situation</th>
+<th><code>v.cnt -= 1</code> allowed?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>int cnt</code> (package-private)</td>
+<td>✅ yes</td>
+</tr>
+<tr>
+<td><code>private int cnt</code> (outside class)</td>
+<td>❌ compile error</td>
+</tr>
+<tr>
+<td><code>final int cnt</code></td>
+<td>❌ compile error</td>
+</tr>
+<tr>
+<td><code>final ValCnt v</code> (reference is final)</td>
+<td>✅ yes — field still mutable</td>
+</tr>
+<tr>
+<td><code>v == null</code></td>
+<td>❌ NullPointerException</td>
+</tr>
+<tr>
+<td><code>Integer cnt</code> (wrapper)</td>
+<td>✅ works, autoboxes to new object</td>
+</tr>
+</tbody>
+</table>
+<h4 id="interview-trap-v-cnt-vs-v-cnt-vs-v-cnt-1" tabindex="-1"><a class="header-anchor" href="#interview-trap-v-cnt-vs-v-cnt-vs-v-cnt-1"><span>Interview trap: <code>v.cnt--</code> vs <code>--v.cnt</code> vs <code>v.cnt -= 1</code></span></a></h4>
+<p>All three decrement <code>cnt</code> by 1. The difference is the <strong>returned expression value</strong>:</p>
+<pre><code class="language-java">v.cnt = 3;
+
+int a = v.cnt--;   // a = 3  (returns BEFORE decrement), v.cnt = 2
+int b = --v.cnt;   // b = 1  (returns AFTER  decrement), v.cnt = 1
+v.cnt -= 1;        // no return value used, v.cnt = 0
+</code></pre>
+<p>Use <code>v.cnt -= 1</code> when you only care about the side-effect, not the return value.</p>
+<hr>
+<h3 id="9-1-java-value-assign" tabindex="-1"><a class="header-anchor" href="#9-1-java-value-assign"><span>9.1) Java <code>value</code> assign</span></a></h3>
+<ul>
+<li><a href="https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/LeetCodeJava/LinkedList/ReverseLinkedList.java">https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/LeetCodeJava/LinkedList/ReverseLinkedList.java</a></li>
+</ul>
+<pre><code class="language-java">
+    public ListNode reverseList_0_0_1(ListNode head) {
+            // edge
+            if(head == null || head.next == null) {
+                return head;
+            }
+
+            ListNode _prev = null;
+            /**
+             *  NOTE !!!
+             *
+             *   we CAN'T just assign `_prev` init val to `res`
+             *   and return `res` as result
+             *   e.g. this is WRONG: return res;
+             *
+             *  Reason:
+             *   - At this point, res is just a reference to null.
+             *   - As you update _prev during the loop,
+             *     res DOES NOT magically follow _prev.
+             *     It stays stuck at the value it was assigned
+             *     when you created it → null.
+             *
+             *   So by the end:
+             *    - _prev points to the new head of the reversed list ✅
+             *    - res is still null ❌
+             *
+             *
+             *  -&gt; Java references don’t “track” each other after assignment.
+             *    res = _prev copies the reference value `at that moment`
+             *    If _prev later changes, res won’t update.
+             *
+             */
+            ListNode res = _prev;
+            while(head != null){
+                ListNode _next = head.next;
+                head.next = _prev;
+                //_prev.next = head;
+                _prev = head;
+                head = _next;
+            }
+
+            //return res;
+            return _prev;
+        }
+
+</code></pre>
+<h3 id="9-2-java-re-construct-nodes" tabindex="-1"><a class="header-anchor" href="#9-2-java-re-construct-nodes"><span>9.2) Java <code>re-construct</code> nodes</span></a></h3>
+<ul>
+<li>LC 116</li>
+<li><a href="https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/LeetCodeJava/Recursion/PopulatingNextRightPointersInEachNode.java">https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/LeetCodeJava/Recursion/PopulatingNextRightPointersInEachNode.java</a></li>
+</ul>
+<pre><code class="language-java">public Node connect_0_1(Node root) {
+    if (root == null)
+        return null;
+
+    Queue&lt;Node&gt; q = new LinkedList&lt;&gt;();
+    q.add(root);
+
+    while (!q.isEmpty()) {
+        int size = q.size();
+        /**
+         *  NOTE !!!!
+         *
+         *   via `prev` node,
+         *   we can easily re-connect left - right node in each layer
+         *
+         *   pattern as below:
+         *
+         *     Node prev = null;
+         *     for(int i = 0; i &lt; size; i++){
+         *         TreeNode cur = q.poll();
+         *         // NOTE !!!! this
+         *         if(prev == null){
+         *             prev.next = cur;
+         *         }
+         *         // NOTE !!!! this
+         *         prev = cur;
+         *
+         *         // ....
+         *     }
+         *
+         */
+        Node prev = null; // prev tracks previous node in this level
+
+        for (int i = 0; i &lt; size; i++) {
+            Node cur = q.poll();
+
+            if (prev != null) {
+                prev.next = cur; // link previous node to current
+            }
+            prev = cur;
+
+            if (cur.left != null)
+                q.add(cur.left);
+            if (cur.right != null)
+                q.add(cur.right);
+        }
+
+        // last node in level should point to null
+        if (prev != null)
+            prev.next = null;
+    }
+
+    return root;
+}
+</code></pre>
+<h3 id="9-3-pre-calculate-perfect-squares-up-to-n" tabindex="-1"><a class="header-anchor" href="#9-3-pre-calculate-perfect-squares-up-to-n"><span>9.3) Pre-calculate Perfect Squares up to N</span></a></h3>
+<blockquote>
+<p><strong>Trick</strong>: Pre-compute all perfect squares ≤ N into a list, then iterate over the list instead of recalculating <code>i * i</code> each time. Useful in BFS/DP problems like LC 279 (Perfect Squares).</p>
+</blockquote>
+<pre><code class="language-java">// Pre-calculate perfect squares up to n
+List&lt;Integer&gt; squares = new ArrayList&lt;&gt;();
+for (int i = 1; i * i &lt;= n; i++) {
+    squares.add(i * i);
+}
+
+// Usage: iterate over pre-computed squares
+for (int square : squares) {
+    int nextVal = remaining - square;
+    if (nextVal &lt; 0) break; // squares are sorted, early termination
+    // ...
+}
+</code></pre>
+<h3 id="9-4-charat-returns-ascii-not-the-digit-value" tabindex="-1"><a class="header-anchor" href="#9-4-charat-returns-ascii-not-the-digit-value"><span>9.4) <code>charAt()</code> Returns ASCII, NOT the Digit Value</span></a></h3>
+<blockquote>
+<p><strong>Pitfall</strong>: <code>new Integer(s.charAt(i))</code> gives the ASCII code (e.g. 51), not the digit (e.g. 3).</p>
+</blockquote>
+<h4 id="wrong" tabindex="-1"><a class="header-anchor" href="#wrong"><span>Wrong</span></a></h4>
+<pre><code class="language-java">int val1 = new Integer(s.charAt(i));
+// s.charAt(i) = '3' → '3' is char → ASCII 51
+// val1 = 51 ❌
+</code></pre>
+<h4 id="correct" tabindex="-1"><a class="header-anchor" href="#correct"><span>Correct</span></a></h4>
+<pre><code class="language-java">int val1 = s.charAt(i) - '0';
+// '3' - '0' = 51 - 48 = 3 ✅
+</code></pre>
+<h4 id="why-char-is-stored-as-ascii-unicode-value" tabindex="-1"><a class="header-anchor" href="#why-char-is-stored-as-ascii-unicode-value"><span>Why: <code>char</code> is stored as ASCII/Unicode value</span></a></h4>
+<table>
+<thead>
+<tr>
+<th>Expression</th>
+<th>Result</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>'3'</code></td>
+<td>51 (ASCII)</td>
+</tr>
+<tr>
+<td><code>'0'</code></td>
+<td>48</td>
+</tr>
+<tr>
+<td><code>'3' - '0'</code></td>
+<td>3</td>
+</tr>
+</tbody>
+</table>
+<h4 id="new-integer-is-also-deprecated" tabindex="-1"><a class="header-anchor" href="#new-integer-is-also-deprecated"><span><code>new Integer(...)</code> is also deprecated</span></a></h4>
+<pre><code class="language-java">new Integer(...)          // ❌ Deprecated, unnecessary object creation, slower
+Integer.valueOf(...)      // ✅ If you need an Integer object
+int x = ...;             // ✅ Prefer primitives
+</code></pre>
+<h4 id="for-multi-digit-substrings-parseint-is-correct" tabindex="-1"><a class="header-anchor" href="#for-multi-digit-substrings-parseint-is-correct"><span>For multi-digit substrings, <code>parseInt</code> is correct</span></a></h4>
+<pre><code class="language-java">int val2 = Integer.parseInt(s.substring(i - 2, i));
+// ✅ Correct — parsing a String, not a char
+</code></pre>
+<h4 id="tl-dr-1" tabindex="-1"><a class="header-anchor" href="#tl-dr-1"><span>TL;DR</span></a></h4>
+<pre><code class="language-java">new Integer(s.charAt(i))  // ❌ gives ASCII (e.g. 51)
+s.charAt(i) - '0'         // ✅ gives actual digit (e.g. 3)
+</code></pre>
+
+      </div>
+      <div class="cheatsheet-footer">
+        <a href="../cheatsheets.html" class="back-link">← Back to Cheat Sheets</a>
+        <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/java_trick.md" class="github-edit" target="_blank">
+          Edit on GitHub →
+        </a>
+      </div>
+    <nav class="prev-next"><a href="iterator.html" class="prev-link">← Iterator</a><a href="kadane_algorithm.html" class="next-link">Kadane Algorithm →</a></nav>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>CS_basics - Computer Science Fundamentals & Interview Preparation</p>
+      <p>
+        <a href="https://github.com/yennanliu/CS_basics">GitHub</a> •
+        <a href="https://github.com/yennanliu/CS_basics/tree/master/doc">Documentation</a> •
+        <a href="https://github.com/yennanliu/CS_basics/issues">Report Issues</a>
+      </p>
+    </div>
+  </footer>
+</body>
+</html>

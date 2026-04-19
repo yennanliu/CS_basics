@@ -1,102 +1,166 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Resources - CS Basics</title>
+  <title>Resources - CS_basics</title>
+  <meta name="description" content="Computer Science fundamentals: algorithms, data structures, system design, and LeetCode solutions">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>CS</text></svg>">
-  <style>
-    * { box-sizing: border-box; }
-    body { 
-      margin: 0; 
-      padding: 0; 
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
-      line-height: 1.6;
-      color: #333;
-      background: #f5f5f5;
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="vendor/fonts.css">
+  <link rel="stylesheet" href="vendor/highlight/github-dark.min.css">
+  <script src="vendor/highlight/highlight.min.js"></script>
+  <script>
+  // Apply theme before render to prevent flash
+  (function() {
+    var saved = localStorage.getItem('theme');
+    if (saved === 'dark' || (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      document.documentElement.setAttribute('data-theme', 'dark');
     }
-    nav {
-      background: white;
-      border-bottom: 1px solid #ddd;
-      padding: 1rem 2rem;
-      position: sticky;
-      top: 0;
-      z-index: 100;
+  })();
+  </script>
+  <script>document.addEventListener('DOMContentLoaded', function() {
+    hljs.highlightAll();
+    document.querySelectorAll('pre code').forEach(function(codeEl) {
+      var pre = codeEl.parentElement;
+      var lang = '';
+      var cls = codeEl.className || '';
+      var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
+      if (m) lang = m[1];
+      var wrapper = document.createElement('div');
+      wrapper.className = 'code-block-wrapper';
+      pre.parentNode.insertBefore(wrapper, pre);
+      var header = document.createElement('div');
+      header.className = 'code-block-header';
+      if (lang) {
+        var label = document.createElement('span');
+        label.className = 'code-lang-label';
+        label.textContent = lang;
+        header.appendChild(label);
+      } else {
+        header.appendChild(document.createElement('span'));
+      }
+      var btn = document.createElement('button');
+      btn.className = 'copy-btn';
+      btn.textContent = 'Copy';
+      btn.addEventListener('click', function() {
+        navigator.clipboard.writeText(codeEl.textContent).then(function() {
+          btn.textContent = 'Copied!';
+          btn.classList.add('copied');
+          setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+        });
+      });
+      header.appendChild(btn);
+      wrapper.appendChild(header);
+      wrapper.appendChild(pre);
+    });
+    document.querySelectorAll('table').forEach(function(table) {
+      if (!table.parentElement.classList.contains('table-wrap')) {
+        var wrapper = document.createElement('div');
+        wrapper.className = 'table-wrap';
+        table.parentNode.insertBefore(wrapper, table);
+        wrapper.appendChild(table);
+      }
+    });
+    // Reading progress bar
+    var progressBar = document.getElementById('reading-progress');
+    if (progressBar) {
+      window.addEventListener('scroll', function() {
+        var winScroll = document.documentElement.scrollTop;
+        var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        progressBar.style.width = height > 0 ? (winScroll / height * 100) + '%' : '0%';
+      });
     }
-    .nav-container {
-      max-width: 1200px;
-      margin: 0 auto;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 2rem;
+    // Dark mode toggle
+    var toggle = document.getElementById('theme-toggle');
+    if (toggle) {
+      var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      toggle.textContent = isDark ? '☀️' : '🌙';
+      toggle.addEventListener('click', function() {
+        var dark = document.documentElement.getAttribute('data-theme') === 'dark';
+        if (dark) {
+          document.documentElement.removeAttribute('data-theme');
+          localStorage.setItem('theme', 'light');
+          toggle.textContent = '🌙';
+        } else {
+          document.documentElement.setAttribute('data-theme', 'dark');
+          localStorage.setItem('theme', 'dark');
+          toggle.textContent = '☀️';
+        }
+      });
     }
-    .logo {
-      font-size: 1.3rem;
-      font-weight: 700;
-      text-decoration: none;
-      color: #333;
-    }
-    .nav-links {
-      display: flex;
-      gap: 1.5rem;
-      list-style: none;
-      margin: 0;
-      padding: 0;
-    }
-    .nav-links a {
-      color: #666;
-      text-decoration: none;
-      padding: 0.5rem 0.75rem;
-      border-bottom: 2px solid transparent;
-      transition: all 0.2s;
-    }
-    .nav-links a:hover,
-    .nav-links a.active {
-      color: #333;
-      border-bottom-color: #333;
-    }
-    .container {
-      max-width: 1200px;
-      margin: 2rem auto;
-      padding: 0 2rem;
-      background: white;
-      padding: 2rem;
-      border-radius: 8px;
-      min-height: 60vh;
-    }
-    h1 { margin-top: 0; }
-    footer {
-      text-align: center;
-      padding: 2rem;
-      color: #666;
-      font-size: 0.9rem;
-      margin-top: 4rem;
-      border-top: 1px solid #ddd;
-    }
-  </style>
+  });</script>
 </head>
 <body>
-  <nav>
-    <div class="nav-container">
-      <a href="index.html" class="logo">CS Basics</a>
+  <div class="progress-container"><div class="progress-bar" id="reading-progress"></div></div>
+  <nav class="navbar">
+    <div class="container">
+      <div class="nav-brand">
+        <span class="nav-icon">💻</span>
+        <span class="nav-title">CS_basics</span>
+      </div>
+      <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
       <div class="nav-links">
         <a href="index.html" class="">Home</a>
         <a href="cheatsheets.html" class="">Cheat Sheets</a>
-        <a href="patterns.html" class="">Patterns</a>
+        <a href="patterns.html" class="">Pattern Recognition</a>
         <a href="faqs.html" class="">FAQs</a>
         <a href="resources.html" class="active">Resources</a>
         <a href="lc-explorer.html" class="">LC Explorer</a>
         <a href="lc-random-picker.html" class="">🎲 Random Picker</a>
-        <a href="https://github.com/yennanliu/CS_basics" target="_blank">GitHub</a>
+        <a href="algo_demo/index.html" class="">Visualizer</a>
+        <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">&#127769;</button>
+        <a href="https://github.com/yennanliu/CS_basics" target="_blank" class="github-link" aria-label="GitHub">
+          <svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor">
+            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
+          </svg>
+        </a>
       </div>
     </div>
   </nav>
-  <div class="container">
-    <h1>Resources</h1><p>Curated list of study materials and learning resources. <a href="https://github.com/yennanliu/CS_basics">View on GitHub</a>.</p>
-  </div>
+
+  <main class="container">
+    <div class="content">
+      <h1 id="coding-interview-preparation-resource" tabindex="-1"><a class="header-anchor" href="#coding-interview-preparation-resource"><span>Coding Interview Preparation Resource</span></a></h1>
+<h2 id="interview" tabindex="-1"><a class="header-anchor" href="#interview"><span>Interview</span></a></h2>
+<ul>
+<li><a href="https://www.interviewcake.com/">interviewcake</a></li>
+<li><a href="https://www.hiredintech.com/courses">hiredintech</a> - system design, soft skills, Algorithm Design</li>
+<li><a href="https://www.lecloud.net/tagged/scalability/chrono?fbclid=IwAR0o1vbF9rttIfLIQxw3ZrnLRKbG-16IuPB7MvlJaFJv0wDJrI6lJO9Up5s">lecloud blog</a> - Scalability for Dummies</li>
+<li><a href="https://lethain.com/introduction-to-architecting-systems-for-scale/?fbclid=IwAR2ghNqlAniY6PyJ_y2ybjz6gSZ1TJjFdhVhKcjrGVfedaIAKie8XOg9sTo#platform_layer">lethain.com</a> - Introduction to architecting systems for scale.</li>
+<li><a href="https://tianpan.co/notes/2016-02-13-crack-the-system-design-interview?fbclid=IwAR3mxoctdV4F-U2BI1jrKD5hw7lv-GgiE68ltJWqlVQaZ5Jpg6CSpe3jo6I">tianpan.co</a> - crack-the-system-design-interview</li>
+<li><a href="http://highscalability.com/blog/2013/4/15/scaling-pinterest-from-0-to-10s-of-billions-of-page-views-a.html?fbclid=IwAR1BGNg1ZTOHusxc5nMByAKiEq7f0iyUF4W6ZdIxXkV-E4S-2SM9suqU_pc">highscalability.com</a> - Scaling Pinterest - From 0 To 10s Of Billions Of Page Views A Month In Two Years</li>
+</ul>
+<h2 id="video" tabindex="-1"><a class="header-anchor" href="#video"><span>Video</span></a></h2>
+<ul>
+<li><a href="https://www.youtube.com/watch?v=996OiexHze0">OAuth 2.0</a> - OAuth 2.0 and OpenID Connect</li>
+<li><a href="https://www.youtube.com/watch?v=IvsANO0qZEg&amp;t=237s">API Throwdown</a> API Throwdown: RPC vs REST vs GraphQL</li>
+<li><a href="https://www.youtube.com/watch?v=PE4gwstWhmc&amp;list=PLAWUTcG0XGSY_l16FeeAkGA-SAgwpfRij&amp;index=10&amp;fbclid=IwAR3ReRMbkS09UVLJDt1VMsbgTtd3N3NSQe4RlgHpnGlNaOvpbCrTTAXDNI4">How We’ve Scaled Dropbox</a></li>
+<li>System design
+<ul>
+<li><a href="https://youtu.be/U0xTu6E2CT8">Dropbox system design</a></li>
+<li><a href="https://youtu.be/xrYTjaK5QVM">Netflix system design</a></li>
+<li><a href="https://youtu.be/L7LtmfFYjc4">Whatsapp system design</a></li>
+<li><a href="https://youtu.be/wYk0xPP_P_8">Twitter system design</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+  </main>
+
   <footer>
-    <p>&copy; 2026 CS Basics. <a href="https://github.com/yennanliu/CS_basics" style="color: #666;">Open source on GitHub</a>.</p>
+    <div class="container">
+      <p>CS_basics - Computer Science Fundamentals & Interview Preparation</p>
+      <p>
+        <a href="https://github.com/yennanliu/CS_basics">GitHub</a> •
+        <a href="https://github.com/yennanliu/CS_basics/tree/master/doc">Documentation</a> •
+        <a href="https://github.com/yennanliu/CS_basics/issues">Report Issues</a>
+      </p>
+    </div>
   </footer>
 </body>
 </html>

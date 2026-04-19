@@ -1,0 +1,2669 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Topology Sorting - CS_basics</title>
+  <meta name="description" content="Computer Science fundamentals: algorithms, data structures, system design, and LeetCode solutions">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>CS</text></svg>">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="../vendor/fonts.css">
+  <link rel="stylesheet" href="../vendor/highlight/github-dark.min.css">
+  <script src="../vendor/highlight/highlight.min.js"></script>
+  <script>
+  // Apply theme before render to prevent flash
+  (function() {
+    var saved = localStorage.getItem('theme');
+    if (saved === 'dark' || (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      document.documentElement.setAttribute('data-theme', 'dark');
+    }
+  })();
+  </script>
+  <script>document.addEventListener('DOMContentLoaded', function() {
+    hljs.highlightAll();
+    document.querySelectorAll('pre code').forEach(function(codeEl) {
+      var pre = codeEl.parentElement;
+      var lang = '';
+      var cls = codeEl.className || '';
+      var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
+      if (m) lang = m[1];
+      var wrapper = document.createElement('div');
+      wrapper.className = 'code-block-wrapper';
+      pre.parentNode.insertBefore(wrapper, pre);
+      var header = document.createElement('div');
+      header.className = 'code-block-header';
+      if (lang) {
+        var label = document.createElement('span');
+        label.className = 'code-lang-label';
+        label.textContent = lang;
+        header.appendChild(label);
+      } else {
+        header.appendChild(document.createElement('span'));
+      }
+      var btn = document.createElement('button');
+      btn.className = 'copy-btn';
+      btn.textContent = 'Copy';
+      btn.addEventListener('click', function() {
+        navigator.clipboard.writeText(codeEl.textContent).then(function() {
+          btn.textContent = 'Copied!';
+          btn.classList.add('copied');
+          setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+        });
+      });
+      header.appendChild(btn);
+      wrapper.appendChild(header);
+      wrapper.appendChild(pre);
+    });
+    document.querySelectorAll('table').forEach(function(table) {
+      if (!table.parentElement.classList.contains('table-wrap')) {
+        var wrapper = document.createElement('div');
+        wrapper.className = 'table-wrap';
+        table.parentNode.insertBefore(wrapper, table);
+        wrapper.appendChild(table);
+      }
+    });
+    // Reading progress bar
+    var progressBar = document.getElementById('reading-progress');
+    if (progressBar) {
+      window.addEventListener('scroll', function() {
+        var winScroll = document.documentElement.scrollTop;
+        var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        progressBar.style.width = height > 0 ? (winScroll / height * 100) + '%' : '0%';
+      });
+    }
+    // Dark mode toggle
+    var toggle = document.getElementById('theme-toggle');
+    if (toggle) {
+      var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      toggle.textContent = isDark ? '☀️' : '🌙';
+      toggle.addEventListener('click', function() {
+        var dark = document.documentElement.getAttribute('data-theme') === 'dark';
+        if (dark) {
+          document.documentElement.removeAttribute('data-theme');
+          localStorage.setItem('theme', 'light');
+          toggle.textContent = '🌙';
+        } else {
+          document.documentElement.setAttribute('data-theme', 'dark');
+          localStorage.setItem('theme', 'dark');
+          toggle.textContent = '☀️';
+        }
+      });
+    }
+  });</script>
+</head>
+<body>
+  <div class="progress-container"><div class="progress-bar" id="reading-progress"></div></div>
+  <nav class="navbar">
+    <div class="container">
+      <div class="nav-brand">
+        <span class="nav-icon">💻</span>
+        <span class="nav-title">CS_basics</span>
+      </div>
+      <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+      <div class="nav-links">
+        <a href="../index.html" class="">Home</a>
+        <a href="../cheatsheets.html" class="active">Cheat Sheets</a>
+        <a href="../patterns.html" class="">Pattern Recognition</a>
+        <a href="../faqs.html" class="">FAQs</a>
+        <a href="../resources.html" class="">Resources</a>
+        <a href="../lc-explorer.html" class="">LC Explorer</a>
+        <a href="../lc-random-picker.html" class="">🎲 Random Picker</a>
+        <a href="../algo_demo/index.html" class="">Visualizer</a>
+        <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">&#127769;</button>
+        <a href="https://github.com/yennanliu/CS_basics" target="_blank" class="github-link" aria-label="GitHub">
+          <svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor">
+            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container">
+    <div class="content">
+      
+      <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">Topology Sorting</span></nav>
+      <div class="cheatsheet-header">
+        <h1>Topology Sorting</h1>
+        <span class="last-updated">Last updated: Mar 31, 2026</span>
+      </div>
+      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#overview">Overview</a></li><li class="toc-sub"><a href="#key-characteristics">Key Characteristics</a></li><li class="toc-sub"><a href="#complexity-analysis">Complexity Analysis</a></li><li class="toc-sub"><a href="#references">References</a></li><li><a href="#problem-categories">Problem Categories</a></li><li class="toc-sub"><a href="#1-course-scheduling">1. Course Scheduling</a></li><li class="toc-sub"><a href="#2-task-scheduling">2. Task Scheduling</a></li><li class="toc-sub"><a href="#3-lexicographical-ordering">3. Lexicographical Ordering</a></li><li class="toc-sub"><a href="#4-build-order-dependencies">4. Build Order &amp; Dependencies</a></li><li class="toc-sub"><a href="#5-graph-layering">5. Graph Layering</a></li><li class="toc-sub"><a href="#6-cycle-detection-safe-states">6. Cycle Detection &amp; Safe States</a></li><li class="toc-sub"><a href="#7-connected-components-union-find-dfs">7. Connected Components (Union Find / DFS)</a></li><li class="toc-sub"><a href="#8-tree-centroid-finding">8. Tree Centroid Finding</a></li><li><a href="#core-templates">Core Templates</a></li><li class="toc-sub"><a href="#template-1-bfs-kahn-s-algorithm">Template 1: BFS (Kahn’s Algorithm)</a></li><li class="toc-sub"><a href="#template-2-dfs-three-color">Template 2: DFS (Three-Color)</a></li><li class="toc-sub"><a href="#template-3-dfs-stack-based">Template 3: DFS (Stack-based)</a></li><li class="toc-sub"><a href="#template-4-lexicographical-order">Template 4: Lexicographical Order</a></li><li class="toc-sub"><a href="#template-5-all-topological-orders">Template 5: All Topological Orders</a></li><li class="toc-sub"><a href="#template-6-parallel-task-scheduling">Template 6: Parallel Task Scheduling</a></li><li class="toc-sub"><a href="#template-7-tree-centroid-finding-leaf-trimming-for-undirected-trees">Template 7: Tree Centroid Finding (Leaf Trimming for Undirected Trees)</a></li><li class="toc-sub"><a href="#template-8-union-find-connected-components">Template 8: Union Find (Connected Components)</a></li><li><a href="#problem-classification">Problem Classification</a></li><li class="toc-sub"><a href="#problem-patterns-by-category">Problem Patterns by Category</a></li><li><a href="#decision-framework">Decision Framework</a></li><li><a href="#2-lc-example">2) LC Example</a></li><li class="toc-sub"><a href="#2-2-course-schedule-ii">2-2) Course Schedule II</a></li><li class="toc-sub"><a href="#2-2-course-schedule">2-2) Course Schedule</a></li><li class="toc-sub"><a href="#2-3-number-of-provinces-lc-547">2-3) Number of Provinces (LC 547)</a></li><li class="toc-sub"><a href="#2-5-alien-dictionary">2-5) Alien Dictionary</a></li><li class="toc-sub"><a href="#2-6-sequence-reconstruction">2-6) Sequence Reconstruction</a></li><li class="toc-sub"><a href="#2-7-parallel-courses">2-7) Parallel Courses</a></li><li class="toc-sub"><a href="#2-8-find-eventual-safe-states">2-8) Find Eventual Safe States</a></li><li class="toc-sub"><a href="#2-9-minimum-height-trees-lc-310">2-9) Minimum Height Trees (LC 310)</a></li><li><a href="#summary-interview-tips">Summary &amp; Interview Tips</a></li><li class="toc-sub"><a href="#common-pitfalls">Common Pitfalls</a></li><li class="toc-sub"><a href="#key-insights">Key Insights</a></li><li class="toc-sub"><a href="#interview-approach">Interview Approach</a></li><li class="toc-sub"><a href="#time-space-complexity-summary">Time/Space Complexity Summary</a></li><li class="toc-sub"><a href="#related-concepts">Related Concepts</a></li></ul></div>
+      <div class="cheatsheet-content">
+        <h1 id="topological-sorting-complete-guide" tabindex="-1"><a class="header-anchor" href="#topological-sorting-complete-guide"><span>Topological Sorting - Complete Guide</span></a></h1>
+<h2 id="overview" tabindex="-1"><a class="header-anchor" href="#overview"><span>Overview</span></a></h2>
+<p>Topological sorting is a linear ordering of vertices in a Directed Acyclic Graph (DAG) such that for every directed edge (u, v), vertex u comes before v in the ordering.</p>
+<h3 id="key-characteristics" tabindex="-1"><a class="header-anchor" href="#key-characteristics"><span>Key Characteristics</span></a></h3>
+<ul>
+<li><strong>DAG Only</strong>: Works only on Directed Acyclic Graphs</li>
+<li><strong>Multiple Valid Orders</strong>: Many valid topological orders may exist</li>
+<li><strong>Dependency Resolution</strong>: Solves problems with prerequisite/dependency relationships</li>
+<li><strong>Applications</strong>: Task scheduling, build systems, course planning, dependency resolution</li>
+</ul>
+<h3 id="complexity-analysis" tabindex="-1"><a class="header-anchor" href="#complexity-analysis"><span>Complexity Analysis</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>Approach</th>
+<th>Time Complexity</th>
+<th>Space Complexity</th>
+<th>Use Case</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>DFS (Kahn’s Algorithm)</td>
+<td>O(V + E)</td>
+<td>O(V)</td>
+<td>General purpose, cycle detection</td>
+</tr>
+<tr>
+<td>BFS (In-degree)</td>
+<td>O(V + E)</td>
+<td>O(V)</td>
+<td>Finding all orderings, level-by-level</td>
+</tr>
+<tr>
+<td>Tree Centroid Finding</td>
+<td>O(V + E)</td>
+<td>O(V)</td>
+<td>Undirected trees, find center/minimize height</td>
+</tr>
+<tr>
+<td>All Topological Sorts</td>
+<td>O(V! × (V + E))</td>
+<td>O(V)</td>
+<td>Small graphs, all permutations</td>
+</tr>
+</tbody>
+</table>
+<h3 id="references" tabindex="-1"><a class="header-anchor" href="#references"><span>References</span></a></h3>
+<ul>
+<li><a href="https://blog.techbridge.cc/2020/05/10/leetcode-topological-sort/">techbridge : topological-sort</a></li>
+<li><a href="https://alrightchiu.github.io/SecondRound/graph-li-yong-dfsxun-zhao-dagde-topological-sorttuo-pu-pai-xu.html">DFS-based topological sort</a></li>
+<li><a href="https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/topological_sort.py">topological_sort.py</a></li>
+<li><a href="https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/AlgorithmJava/TopologicalSort.java">TopologicalSort.java</a></li>
+<li><a href="https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/LeetCodeJava/DFS/NumberOfProvinces.java">NumberOfProvinces.java</a> (Connected Components / Union Find)</li>
+<li><a href="https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/LeetCodeJava/BFS/MinimumHeightTrees.java">MinimumHeightTrees.java</a> (Tree Centroid Finding)</li>
+</ul>
+<h2 id="problem-categories" tabindex="-1"><a class="header-anchor" href="#problem-categories"><span>Problem Categories</span></a></h2>
+<h3 id="1-course-scheduling" tabindex="-1"><a class="header-anchor" href="#1-course-scheduling"><span>1. Course Scheduling</span></a></h3>
+<p>Problems involving prerequisite relationships and course ordering.</p>
+<ul>
+<li><strong>Pattern</strong>: Build dependency graph, check for cycles, find valid ordering</li>
+<li><strong>Key Problems</strong>: LC 207, 210, 630, 1462</li>
+</ul>
+<h3 id="2-task-scheduling" tabindex="-1"><a class="header-anchor" href="#2-task-scheduling"><span>2. Task Scheduling</span></a></h3>
+<p>Problems involving task dependencies and parallel execution.</p>
+<ul>
+<li><strong>Pattern</strong>: Find minimum time, parallel processing levels</li>
+<li><strong>Key Problems</strong>: LC 1136, 2050, 1857</li>
+</ul>
+<h3 id="3-lexicographical-ordering" tabindex="-1"><a class="header-anchor" href="#3-lexicographical-ordering"><span>3. Lexicographical Ordering</span></a></h3>
+<p>Problems requiring smallest/largest lexicographical topological order.</p>
+<ul>
+<li><strong>Pattern</strong>: Priority queue for ordering, alien dictionary</li>
+<li><strong>Key Problems</strong>: LC 269, 953, 1203</li>
+</ul>
+<h3 id="4-build-order-dependencies" tabindex="-1"><a class="header-anchor" href="#4-build-order-dependencies"><span>4. Build Order &amp; Dependencies</span></a></h3>
+<p>Problems involving build systems and package dependencies.</p>
+<ul>
+<li><strong>Pattern</strong>: Detect cycles, find build order, handle groups</li>
+<li><strong>Key Problems</strong>: LC 444, 802, 851</li>
+</ul>
+<h3 id="5-graph-layering" tabindex="-1"><a class="header-anchor" href="#5-graph-layering"><span>5. Graph Layering</span></a></h3>
+<p>Problems involving level-by-level processing in DAGs.</p>
+<ul>
+<li><strong>Pattern</strong>: BFS with levels, longest path in DAG</li>
+<li><strong>Key Problems</strong>: LC 2192, 2115, 1857</li>
+</ul>
+<h3 id="6-cycle-detection-safe-states" tabindex="-1"><a class="header-anchor" href="#6-cycle-detection-safe-states"><span>6. Cycle Detection &amp; Safe States</span></a></h3>
+<p>Problems focused on detecting cycles and finding safe nodes.</p>
+<ul>
+<li><strong>Pattern</strong>: Three-color DFS, safe states identification</li>
+<li><strong>Key Problems</strong>: LC 802, 207, 1059</li>
+</ul>
+<h3 id="7-connected-components-union-find-dfs" tabindex="-1"><a class="header-anchor" href="#7-connected-components-union-find-dfs"><span>7. Connected Components (Union Find / DFS)</span></a></h3>
+<p>Problems involving finding connected components in undirected graphs.</p>
+<ul>
+<li><strong>Pattern</strong>: Union Find with path compression, DFS/BFS traversal to count components</li>
+<li><strong>Key Problems</strong>: LC 547, 200, 323, 684</li>
+</ul>
+<h3 id="8-tree-centroid-finding" tabindex="-1"><a class="header-anchor" href="#8-tree-centroid-finding"><span>8. Tree Centroid Finding</span></a></h3>
+<p>Problems involving finding the center/centroid of undirected trees.</p>
+<ul>
+<li><strong>Pattern</strong>: Leaf trimming layer by layer, similar to topological sort for undirected trees</li>
+<li><strong>Key Problems</strong>: LC 310, Tree diameter, Tree center</li>
+</ul>
+<h2 id="core-templates" tabindex="-1"><a class="header-anchor" href="#core-templates"><span>Core Templates</span></a></h2>
+<h3 id="template-1-bfs-kahn-s-algorithm" tabindex="-1"><a class="header-anchor" href="#template-1-bfs-kahn-s-algorithm"><span>Template 1: BFS (Kahn’s Algorithm)</span></a></h3>
+<pre><code class="language-python">def topologicalSort_BFS(numNodes, edges):
+    &quot;&quot;&quot;
+    BFS-based topological sort using in-degree tracking.
+    Time: O(V + E), Space: O(V)
+    &quot;&quot;&quot;
+    from collections import defaultdict, deque
+    
+    # Build graph and calculate in-degrees
+    graph = defaultdict(list)
+    in_degree = [0] * numNodes
+    
+    for u, v in edges:
+        graph[u].append(v)
+        in_degree[v] += 1
+    
+    # Initialize queue with nodes having no dependencies
+    queue = deque([i for i in range(numNodes) if in_degree[i] == 0])
+    result = []
+    
+    while queue:
+        node = queue.popleft()
+        result.append(node)
+        
+        # Process neighbors
+        for neighbor in graph[node]:
+            in_degree[neighbor] -= 1
+            if in_degree[neighbor] == 0:
+                queue.append(neighbor)
+    
+    # Check for cycles
+    return result if len(result) == numNodes else []
+
+# Java version
+public List&lt;Integer&gt; topologicalSort_BFS(int numNodes, int[][] edges) {
+    Map&lt;Integer, List&lt;Integer&gt;&gt; graph = new HashMap&lt;&gt;();
+    int[] inDegree = new int[numNodes];
+    
+    // Build graph
+    for (int i = 0; i &lt; numNodes; i++) {
+        graph.put(i, new ArrayList&lt;&gt;());
+    }
+    
+    for (int[] edge : edges) {
+        graph.get(edge[0]).add(edge[1]);
+        inDegree[edge[1]]++;
+    }
+    
+    // BFS
+    Queue&lt;Integer&gt; queue = new LinkedList&lt;&gt;();
+    for (int i = 0; i &lt; numNodes; i++) {
+        if (inDegree[i] == 0) queue.offer(i);
+    }
+    
+    List&lt;Integer&gt; result = new ArrayList&lt;&gt;();
+    while (!queue.isEmpty()) {
+        int node = queue.poll();
+        result.add(node);
+        
+        for (int neighbor : graph.get(node)) {
+            if (--inDegree[neighbor] == 0) {
+                queue.offer(neighbor);
+            }
+        }
+    }
+    
+    return result.size() == numNodes ? result : new ArrayList&lt;&gt;();
+}
+</code></pre>
+<h3 id="template-2-dfs-three-color" tabindex="-1"><a class="header-anchor" href="#template-2-dfs-three-color"><span>Template 2: DFS (Three-Color)</span></a></h3>
+<pre><code class="language-python">def topologicalSort_DFS(numNodes, edges):
+    &quot;&quot;&quot;
+    DFS-based topological sort with three-color marking.
+    Time: O(V + E), Space: O(V)
+    &quot;&quot;&quot;
+    from collections import defaultdict
+    
+    graph = defaultdict(list)
+    for u, v in edges:
+        graph[u].append(v)
+    
+    # 0: white (unvisited), 1: gray (visiting), 2: black (visited)
+    color = [0] * numNodes
+    result = []
+    has_cycle = False
+    
+    def dfs(node):
+        nonlocal has_cycle
+        if color[node] == 1:  # Gray = cycle detected
+            has_cycle = True
+            return
+        if color[node] == 2:  # Black = already processed
+            return
+        
+        color[node] = 1  # Mark as visiting
+        for neighbor in graph[node]:
+            dfs(neighbor)
+        color[node] = 2  # Mark as visited
+        result.append(node)  # Add to result in reverse order
+    
+    for i in range(numNodes):
+        if color[i] == 0:
+            dfs(i)
+    
+    return [] if has_cycle else result[::-1]
+
+# Java version
+public List&lt;Integer&gt; topologicalSort_DFS(int numNodes, int[][] edges) {
+    Map&lt;Integer, List&lt;Integer&gt;&gt; graph = new HashMap&lt;&gt;();
+    for (int i = 0; i &lt; numNodes; i++) {
+        graph.put(i, new ArrayList&lt;&gt;());
+    }
+    for (int[] edge : edges) {
+        graph.get(edge[0]).add(edge[1]);
+    }
+    
+    int[] color = new int[numNodes]; // 0: white, 1: gray, 2: black
+    List&lt;Integer&gt; result = new ArrayList&lt;&gt;();
+    boolean[] hasCycle = {false};
+    
+    for (int i = 0; i &lt; numNodes; i++) {
+        if (color[i] == 0) {
+            dfs(i, graph, color, result, hasCycle);
+        }
+    }
+    
+    if (hasCycle[0]) return new ArrayList&lt;&gt;();
+    Collections.reverse(result);
+    return result;
+}
+
+private void dfs(int node, Map&lt;Integer, List&lt;Integer&gt;&gt; graph, 
+                 int[] color, List&lt;Integer&gt; result, boolean[] hasCycle) {
+    if (color[node] == 1) {
+        hasCycle[0] = true;
+        return;
+    }
+    if (color[node] == 2) return;
+    
+    color[node] = 1;
+    for (int neighbor : graph.get(node)) {
+        dfs(neighbor, graph, color, result, hasCycle);
+    }
+    color[node] = 2;
+    result.add(node);
+}
+</code></pre>
+<h3 id="template-3-dfs-stack-based" tabindex="-1"><a class="header-anchor" href="#template-3-dfs-stack-based"><span>Template 3: DFS (Stack-based)</span></a></h3>
+<pre><code class="language-python"># V0
+# IDEA : implement topologicalSortUtil, topologicalSort, and addEdge methods
+# step 1) maintain a stack, save &quot;ordering&quot; nodes in it (and return in final step)
+# step 2) init visited as [False]*self.V  (all nodes are NOT visited yet)
+# step 3) iterate over all vertices in graph, if not visited, then run topologicalSortUtil
+# step 4) return result (stack)
+from collections import defaultdict
+class Graph:
+    def __init__(self, vertices):
+        self.graph = defaultdict(list)
+        self.V = vertices
+
+    # for build graph
+    def addEdge(self, u, v):
+        self.graph[u].append(v)
+
+    def topologicalSortUtil(self, v, visited, stack):
+        visited[v] = True
+
+        ### NOTE this !!! (self.graph[v])
+        for k in self.graph[v]:
+            if visited[k] == False:
+                self.topologicalSortUtil(k, visited, stack)
+        # stack.insert(0,v) # instead of insert v to idx = 0, we can still append v to stack and reverse it and return (e.g. return stack[::-1])
+        &quot;&quot;&quot;
+        ### NOTE !! stack.append(v) is wrong, we SHOULD use  stack.insert(0,v)
+        &quot;&quot;&quot;
+        stack.insert(0,v)
+
+    def topologicalSort(self):
+        visited = [False] * self.V
+        stack = []
+        ### NOTE this !!! (range(self.V))
+        for v in range(self.V):
+            # call tologicalSortUtil only if visited[v] == False (the vertice is not visited yet)
+            if visited[v] == False:
+                self.topologicalSortUtil(v, visited, stack)
+        # return the result in inverse order
+        return stack[::-1]
+
+### TEST
+{&quot;A&quot;: 0, &quot;B&quot;:1, &quot;C&quot;:2, &quot;D&quot;: 3}
+v = 4
+g = Graph(v)
+g.addEdge(0, 1)
+g.addEdge(0, 2)
+g.addEdge(2, 3)
+g.addEdge(3, 1)
+
+print (g.graph)
+
+# ans should be TableB, TableD, TableC, TableA.
+r = g.topologicalSort()
+print (r)
+</code></pre>
+<h3 id="template-4-lexicographical-order" tabindex="-1"><a class="header-anchor" href="#template-4-lexicographical-order"><span>Template 4: Lexicographical Order</span></a></h3>
+<pre><code class="language-python">def topologicalSort_Lexicographical(numNodes, edges):
+    &quot;&quot;&quot;
+    Find smallest lexicographical topological order.
+    Time: O((V + E) log V), Space: O(V)
+    &quot;&quot;&quot;
+    from collections import defaultdict
+    import heapq
+    
+    graph = defaultdict(list)
+    in_degree = [0] * numNodes
+    
+    for u, v in edges:
+        graph[u].append(v)
+        in_degree[v] += 1
+    
+    # Use min-heap for smallest lexicographical order
+    heap = [i for i in range(numNodes) if in_degree[i] == 0]
+    heapq.heapify(heap)
+    result = []
+    
+    while heap:
+        node = heapq.heappop(heap)
+        result.append(node)
+        
+        for neighbor in graph[node]:
+            in_degree[neighbor] -= 1
+            if in_degree[neighbor] == 0:
+                heapq.heappush(heap, neighbor)
+    
+    return result if len(result) == numNodes else []
+
+# Java version
+public List&lt;Integer&gt; topologicalSort_Lexicographical(int numNodes, int[][] edges) {
+    Map&lt;Integer, List&lt;Integer&gt;&gt; graph = new HashMap&lt;&gt;();
+    int[] inDegree = new int[numNodes];
+    
+    for (int i = 0; i &lt; numNodes; i++) {
+        graph.put(i, new ArrayList&lt;&gt;());
+    }
+    
+    for (int[] edge : edges) {
+        graph.get(edge[0]).add(edge[1]);
+        inDegree[edge[1]]++;
+    }
+    
+    // Min-heap for lexicographical order
+    PriorityQueue&lt;Integer&gt; pq = new PriorityQueue&lt;&gt;();
+    for (int i = 0; i &lt; numNodes; i++) {
+        if (inDegree[i] == 0) pq.offer(i);
+    }
+    
+    List&lt;Integer&gt; result = new ArrayList&lt;&gt;();
+    while (!pq.isEmpty()) {
+        int node = pq.poll();
+        result.add(node);
+        
+        for (int neighbor : graph.get(node)) {
+            if (--inDegree[neighbor] == 0) {
+                pq.offer(neighbor);
+            }
+        }
+    }
+    
+    return result.size() == numNodes ? result : new ArrayList&lt;&gt;();
+}
+</code></pre>
+<h3 id="template-5-all-topological-orders" tabindex="-1"><a class="header-anchor" href="#template-5-all-topological-orders"><span>Template 5: All Topological Orders</span></a></h3>
+<pre><code class="language-python">def allTopologicalSorts(graph, in_degree, path, result, visited):
+    &quot;&quot;&quot;
+    Find all possible topological orderings.
+    Time: O(V! × (V + E)), Space: O(V)
+    &quot;&quot;&quot;
+    if len(path) == len(graph):
+        result.append(path[:])
+        return
+    
+    for node in range(len(graph)):
+        if in_degree[node] == 0 and not visited[node]:
+            # Choose node
+            visited[node] = True
+            path.append(node)
+            
+            # Update in-degrees
+            for neighbor in graph[node]:
+                in_degree[neighbor] -= 1
+            
+            # Recurse
+            allTopologicalSorts(graph, in_degree, path, result, visited)
+            
+            # Backtrack
+            for neighbor in graph[node]:
+                in_degree[neighbor] += 1
+            path.pop()
+            visited[node] = False
+
+# Usage
+def findAllOrders(numNodes, edges):
+    from collections import defaultdict
+    
+    graph = defaultdict(list)
+    in_degree = [0] * numNodes
+    
+    for u, v in edges:
+        graph[u].append(v)
+        in_degree[v] += 1
+    
+    result = []
+    visited = [False] * numNodes
+    allTopologicalSorts(graph, in_degree, [], result, visited)
+    return result
+</code></pre>
+<h3 id="template-6-parallel-task-scheduling" tabindex="-1"><a class="header-anchor" href="#template-6-parallel-task-scheduling"><span>Template 6: Parallel Task Scheduling</span></a></h3>
+<pre><code class="language-python">def parallelTaskScheduling(numTasks, edges, times):
+    &quot;&quot;&quot;
+    Find minimum time to complete all tasks with parallel execution.
+    Time: O(V + E), Space: O(V)
+    &quot;&quot;&quot;
+    from collections import defaultdict, deque
+    
+    graph = defaultdict(list)
+    in_degree = [0] * numTasks
+    
+    for u, v in edges:
+        graph[u].append(v)
+        in_degree[v] += 1
+    
+    # Track completion time for each task
+    completion_time = [0] * numTasks
+    queue = deque()
+    
+    # Initialize with tasks having no dependencies
+    for i in range(numTasks):
+        if in_degree[i] == 0:
+            queue.append(i)
+            completion_time[i] = times[i]
+    
+    while queue:
+        task = queue.popleft()
+        
+        for next_task in graph[task]:
+            # Update completion time
+            completion_time[next_task] = max(
+                completion_time[next_task],
+                completion_time[task] + times[next_task]
+            )
+            
+            in_degree[next_task] -= 1
+            if in_degree[next_task] == 0:
+                queue.append(next_task)
+    
+    return max(completion_time)
+
+# Java version
+public int parallelTaskScheduling(int numTasks, int[][] edges, int[] times) {
+    Map&lt;Integer, List&lt;Integer&gt;&gt; graph = new HashMap&lt;&gt;();
+    int[] inDegree = new int[numTasks];
+    int[] completionTime = new int[numTasks];
+    
+    for (int i = 0; i &lt; numTasks; i++) {
+        graph.put(i, new ArrayList&lt;&gt;());
+    }
+    
+    for (int[] edge : edges) {
+        graph.get(edge[0]).add(edge[1]);
+        inDegree[edge[1]]++;
+    }
+    
+    Queue&lt;Integer&gt; queue = new LinkedList&lt;&gt;();
+    for (int i = 0; i &lt; numTasks; i++) {
+        if (inDegree[i] == 0) {
+            queue.offer(i);
+            completionTime[i] = times[i];
+        }
+    }
+    
+    while (!queue.isEmpty()) {
+        int task = queue.poll();
+        
+        for (int nextTask : graph.get(task)) {
+            completionTime[nextTask] = Math.max(
+                completionTime[nextTask],
+                completionTime[task] + times[nextTask]
+            );
+            
+            if (--inDegree[nextTask] == 0) {
+                queue.offer(nextTask);
+            }
+        }
+    }
+    
+    int maxTime = 0;
+    for (int time : completionTime) {
+        maxTime = Math.max(maxTime, time);
+    }
+    return maxTime;
+}
+</code></pre>
+<h3 id="template-7-tree-centroid-finding-leaf-trimming-for-undirected-trees" tabindex="-1"><a class="header-anchor" href="#template-7-tree-centroid-finding-leaf-trimming-for-undirected-trees"><span>Template 7: Tree Centroid Finding (Leaf Trimming for Undirected Trees)</span></a></h3>
+<pre><code class="language-python">def findMinHeightTrees(n, edges):
+    &quot;&quot;&quot;
+    Find tree centroids using leaf trimming (similar to Kahn's Algorithm for undirected trees).
+    Time: O(V + E), Space: O(V)
+
+    Key Insight:
+    - For undirected trees, leaves are nodes with degree = 1
+    - Remove leaves layer by layer until 1-2 nodes remain
+    - These remaining nodes are the centroids (MHT roots)
+    - Different from standard topological sort: works on undirected trees, not DAGs
+    &quot;&quot;&quot;
+    from collections import deque
+
+    # Edge case: single node
+    if n == 1:
+        return [0]
+
+    # Build adjacency list and track degrees
+    graph = [[] for _ in range(n)]
+    degree = [0] * n
+
+    for u, v in edges:
+        graph[u].append(v)
+        graph[v].append(u)
+        degree[u] += 1
+        degree[v] += 1
+
+    # Initialize queue with all leaf nodes (degree = 1)
+    leaves = deque([i for i in range(n) if degree[i] == 1])
+
+    # Trim leaves layer by layer
+    remaining = n
+    while remaining &gt; 2:
+        leaf_count = len(leaves)
+        remaining -= leaf_count
+
+        for _ in range(leaf_count):
+            leaf = leaves.popleft()
+
+            # Process neighbors of current leaf
+            for neighbor in graph[leaf]:
+                degree[neighbor] -= 1
+                # If neighbor becomes a leaf, add to queue
+                if degree[neighbor] == 1:
+                    leaves.append(neighbor)
+
+    # The remaining nodes (1 or 2) are the centroids
+    return list(leaves)
+
+# Java version
+public List&lt;Integer&gt; findMinHeightTrees(int n, int[][] edges) {
+    // Edge case: single node
+    if (n == 1) {
+        return Collections.singletonList(0);
+    }
+
+    // Build adjacency list and track degrees
+    List&lt;List&lt;Integer&gt;&gt; graph = new ArrayList&lt;&gt;();
+    for (int i = 0; i &lt; n; i++) {
+        graph.add(new ArrayList&lt;&gt;());
+    }
+
+    int[] degree = new int[n];
+
+    for (int[] edge : edges) {
+        int u = edge[0], v = edge[1];
+        graph.get(u).add(v);
+        graph.get(v).add(u);
+        degree[u]++;
+        degree[v]++;
+    }
+
+    // Initialize queue with all leaf nodes (degree = 1)
+    Queue&lt;Integer&gt; leaves = new LinkedList&lt;&gt;();
+    for (int i = 0; i &lt; n; i++) {
+        if (degree[i] == 1) {
+            leaves.offer(i);
+        }
+    }
+
+    // Trim leaves layer by layer
+    int remaining = n;
+    while (remaining &gt; 2) {
+        int leafCount = leaves.size();
+        remaining -= leafCount;
+
+        for (int i = 0; i &lt; leafCount; i++) {
+            int leaf = leaves.poll();
+
+            // Process neighbors of current leaf
+            for (int neighbor : graph.get(leaf)) {
+                degree[neighbor]--;
+                // If neighbor becomes a leaf, add to queue
+                if (degree[neighbor] == 1) {
+                    leaves.offer(neighbor);
+                }
+            }
+        }
+    }
+
+    // The remaining nodes (1 or 2) are the centroids
+    return new ArrayList&lt;&gt;(leaves);
+}
+</code></pre>
+<h3 id="template-8-union-find-connected-components" tabindex="-1"><a class="header-anchor" href="#template-8-union-find-connected-components"><span>Template 8: Union Find (Connected Components)</span></a></h3>
+<pre><code class="language-python">class UnionFind:
+    &quot;&quot;&quot;
+    Union Find with path compression and union by rank.
+    Time: O(α(N)) per operation (nearly O(1)), Space: O(N)
+    &quot;&quot;&quot;
+    def __init__(self, n):
+        self.parent = list(range(n))
+        self.rank = [0] * n
+        self.count = n  # number of connected components
+
+    def find(self, x):
+        if self.parent[x] != x:
+            self.parent[x] = self.find(self.parent[x])  # path compression
+        return self.parent[x]
+
+    def union(self, x, y):
+        px, py = self.find(x), self.find(y)
+        if px == py:
+            return
+        # union by rank
+        if self.rank[px] &lt; self.rank[py]:
+            px, py = py, px
+        self.parent[py] = px
+        if self.rank[px] == self.rank[py]:
+            self.rank[px] += 1
+        self.count -= 1
+
+# Usage: LC 547 Number of Provinces
+def findCircleNum(isConnected):
+    n = len(isConnected)
+    uf = UnionFind(n)
+    for i in range(n):
+        for j in range(i + 1, n):
+            if isConnected[i][j] == 1:
+                uf.union(i, j)
+    return uf.count
+
+# Java version
+class UnionFind {
+    int[] parent;
+    int[] rank;
+    int count;
+
+    UnionFind(int n) {
+        parent = new int[n];
+        rank = new int[n];
+        count = n;
+        for (int i = 0; i &lt; n; i++) {
+            parent[i] = i;
+        }
+    }
+
+    int find(int x) {
+        if (parent[x] != x) {
+            parent[x] = find(parent[x]); // path compression
+        }
+        return parent[x];
+    }
+
+    void union(int x, int y) {
+        int px = find(x), py = find(y);
+        if (px == py) return;
+        // union by rank
+        if (rank[px] &lt; rank[py]) {
+            parent[px] = py;
+        } else if (rank[px] &gt; rank[py]) {
+            parent[py] = px;
+        } else {
+            parent[py] = px;
+            rank[px]++;
+        }
+        count--;
+    }
+}
+
+// Usage: LC 547 Number of Provinces
+public int findCircleNum(int[][] isConnected) {
+    int n = isConnected.length;
+    UnionFind uf = new UnionFind(n);
+    for (int i = 0; i &lt; n; i++) {
+        for (int j = i + 1; j &lt; n; j++) {
+            if (isConnected[i][j] == 1) {
+                uf.union(i, j);
+            }
+        }
+    }
+    return uf.count;
+}
+</code></pre>
+<h2 id="problem-classification" tabindex="-1"><a class="header-anchor" href="#problem-classification"><span>Problem Classification</span></a></h2>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>Difficulty</th>
+<th>Category</th>
+<th>Key Technique</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://leetcode.com/problems/course-schedule/">207. Course Schedule</a></td>
+<td>Medium</td>
+<td>Course Scheduling</td>
+<td>Cycle Detection</td>
+</tr>
+<tr>
+<td><a href="https://leetcode.com/problems/course-schedule-ii/">210. Course Schedule II</a></td>
+<td>Medium</td>
+<td>Course Scheduling</td>
+<td>BFS/DFS</td>
+</tr>
+<tr>
+<td><a href="https://leetcode.com/problems/alien-dictionary/">269. Alien Dictionary</a></td>
+<td>Hard</td>
+<td>Lexicographical</td>
+<td>Character Ordering</td>
+</tr>
+<tr>
+<td><a href="https://leetcode.com/problems/minimum-height-trees/">310. Minimum Height Trees</a></td>
+<td>Medium</td>
+<td>Tree Centroid</td>
+<td>Leaf Trimming</td>
+</tr>
+<tr>
+<td><a href="https://leetcode.com/problems/sequence-reconstruction/">444. Sequence Reconstruction</a></td>
+<td>Medium</td>
+<td>Build Order</td>
+<td>Unique Ordering</td>
+</tr>
+<tr>
+<td><a href="https://leetcode.com/problems/course-schedule-iii/">630. Course Schedule III</a></td>
+<td>Hard</td>
+<td>Course Scheduling</td>
+<td>Greedy + Heap</td>
+</tr>
+<tr>
+<td><a href="https://leetcode.com/problems/find-eventual-safe-states/">802. Find Eventual Safe States</a></td>
+<td>Medium</td>
+<td>Cycle Detection</td>
+<td>Reverse Graph</td>
+</tr>
+<tr>
+<td><a href="https://leetcode.com/problems/loud-and-rich/">851. Loud and Rich</a></td>
+<td>Medium</td>
+<td>Graph Layering</td>
+<td>DFS + Memoization</td>
+</tr>
+<tr>
+<td><a href="https://leetcode.com/problems/verifying-an-alien-dictionary/">953. Verifying an Alien Dictionary</a></td>
+<td>Easy</td>
+<td>Lexicographical</td>
+<td>Order Validation</td>
+</tr>
+<tr>
+<td><a href="https://leetcode.com/problems/all-paths-from-source-lead-to-destination/">1059. All Paths from Source Lead to Destination</a></td>
+<td>Medium</td>
+<td>Cycle Detection</td>
+<td>DFS</td>
+</tr>
+<tr>
+<td><a href="https://leetcode.com/problems/parallel-courses/">1136. Parallel Courses</a></td>
+<td>Medium</td>
+<td>Task Scheduling</td>
+<td>Level BFS</td>
+</tr>
+<tr>
+<td><a href="https://leetcode.com/problems/sort-items-by-groups-respecting-dependencies/">1203. Sort Items by Groups Respecting Dependencies</a></td>
+<td>Hard</td>
+<td>Build Order</td>
+<td>Double Topological</td>
+</tr>
+<tr>
+<td><a href="https://leetcode.com/problems/course-schedule-iv/">1462. Course Schedule IV</a></td>
+<td>Medium</td>
+<td>Course Scheduling</td>
+<td>Transitive Closure</td>
+</tr>
+<tr>
+<td><a href="https://leetcode.com/problems/largest-color-value-in-a-directed-graph/">1857. Largest Color Value in a Directed Graph</a></td>
+<td>Hard</td>
+<td>Graph Layering</td>
+<td>DP on DAG</td>
+</tr>
+<tr>
+<td><a href="https://leetcode.com/problems/parallel-courses-iii/">2050. Parallel Courses III</a></td>
+<td>Hard</td>
+<td>Task Scheduling</td>
+<td>Time Calculation</td>
+</tr>
+<tr>
+<td><a href="https://leetcode.com/problems/find-all-possible-recipes-from-given-supplies/">2115. Find All Possible Recipes from Given Supplies</a></td>
+<td>Medium</td>
+<td>Build Order</td>
+<td>Modified BFS</td>
+</tr>
+<tr>
+<td><a href="https://leetcode.com/problems/number-of-provinces/">547. Number of Provinces</a></td>
+<td>Medium</td>
+<td>Connected Components</td>
+<td>Union Find / DFS</td>
+</tr>
+<tr>
+<td><a href="https://leetcode.com/problems/all-ancestors-of-a-node-in-a-directed-acyclic-graph/">2192. All Ancestors of a Node in a Directed Acyclic Graph</a></td>
+<td>Medium</td>
+<td>Graph Layering</td>
+<td>DFS/BFS</td>
+</tr>
+</tbody>
+</table>
+<h3 id="problem-patterns-by-category" tabindex="-1"><a class="header-anchor" href="#problem-patterns-by-category"><span>Problem Patterns by Category</span></a></h3>
+<h4 id="course-scheduling-problems" tabindex="-1"><a class="header-anchor" href="#course-scheduling-problems"><span>Course Scheduling Problems</span></a></h4>
+<table>
+<thead>
+<tr>
+<th>Pattern</th>
+<th>Problems</th>
+<th>Key Insight</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Basic Cycle Detection</td>
+<td>207</td>
+<td>Check if DAG exists</td>
+</tr>
+<tr>
+<td>Find Valid Order</td>
+<td>210</td>
+<td>Return topological order</td>
+</tr>
+<tr>
+<td>With Time Constraints</td>
+<td>630</td>
+<td>Greedy + priority queue</td>
+</tr>
+<tr>
+<td>Query Prerequisites</td>
+<td>1462</td>
+<td>Floyd-Warshall/DFS</td>
+</tr>
+</tbody>
+</table>
+<h4 id="task-scheduling-problems" tabindex="-1"><a class="header-anchor" href="#task-scheduling-problems"><span>Task Scheduling Problems</span></a></h4>
+<table>
+<thead>
+<tr>
+<th>Pattern</th>
+<th>Problems</th>
+<th>Key Insight</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Minimum Time</td>
+<td>1136, 2050</td>
+<td>Level-wise BFS</td>
+</tr>
+<tr>
+<td>Parallel Execution</td>
+<td>1136</td>
+<td>Count levels</td>
+</tr>
+<tr>
+<td>With Durations</td>
+<td>2050</td>
+<td>DP on completion times</td>
+</tr>
+</tbody>
+</table>
+<h4 id="lexicographical-ordering" tabindex="-1"><a class="header-anchor" href="#lexicographical-ordering"><span>Lexicographical Ordering</span></a></h4>
+<table>
+<thead>
+<tr>
+<th>Pattern</th>
+<th>Problems</th>
+<th>Key Insight</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Character Order</td>
+<td>269</td>
+<td>Build graph from comparisons</td>
+</tr>
+<tr>
+<td>Verify Order</td>
+<td>953</td>
+<td>Check consistency</td>
+</tr>
+<tr>
+<td>Custom Comparator</td>
+<td>269</td>
+<td>Extract rules from examples</td>
+</tr>
+</tbody>
+</table>
+<h4 id="build-order-dependencies" tabindex="-1"><a class="header-anchor" href="#build-order-dependencies"><span>Build Order &amp; Dependencies</span></a></h4>
+<table>
+<thead>
+<tr>
+<th>Pattern</th>
+<th>Problems</th>
+<th>Key Insight</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Unique Reconstruction</td>
+<td>444</td>
+<td>Queue size always 1</td>
+</tr>
+<tr>
+<td>Recipe Dependencies</td>
+<td>2115</td>
+<td>Handle initial supplies</td>
+</tr>
+<tr>
+<td>Group Dependencies</td>
+<td>1203</td>
+<td>Two-level topological sort</td>
+</tr>
+</tbody>
+</table>
+<h4 id="graph-layering" tabindex="-1"><a class="header-anchor" href="#graph-layering"><span>Graph Layering</span></a></h4>
+<table>
+<thead>
+<tr>
+<th>Pattern</th>
+<th>Problems</th>
+<th>Key Insight</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Find Ancestors</td>
+<td>2192</td>
+<td>Reverse graph traversal</td>
+</tr>
+<tr>
+<td>Richest Reachable</td>
+<td>851</td>
+<td>DFS with memoization</td>
+</tr>
+<tr>
+<td>Max Path Value</td>
+<td>1857</td>
+<td>DP on DAG</td>
+</tr>
+</tbody>
+</table>
+<h4 id="cycle-detection" tabindex="-1"><a class="header-anchor" href="#cycle-detection"><span>Cycle Detection</span></a></h4>
+<table>
+<thead>
+<tr>
+<th>Pattern</th>
+<th>Problems</th>
+<th>Key Insight</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Safe States</td>
+<td>802</td>
+<td>Reverse graph + outdegree</td>
+</tr>
+<tr>
+<td>All Paths Safe</td>
+<td>1059</td>
+<td>DFS with path tracking</td>
+</tr>
+<tr>
+<td>Detect Any Cycle</td>
+<td>207</td>
+<td>Three-color DFS</td>
+</tr>
+</tbody>
+</table>
+<h4 id="connected-components-union-find-dfs" tabindex="-1"><a class="header-anchor" href="#connected-components-union-find-dfs"><span>Connected Components (Union Find / DFS)</span></a></h4>
+<table>
+<thead>
+<tr>
+<th>Pattern</th>
+<th>Problems</th>
+<th>Key Insight</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Count Components</td>
+<td>547, 323</td>
+<td>Union Find or DFS traversal</td>
+</tr>
+<tr>
+<td>Detect Redundant Edge</td>
+<td>684</td>
+<td>Union Find cycle detection</td>
+</tr>
+<tr>
+<td>Number of Islands</td>
+<td>200</td>
+<td>DFS/BFS on grid</td>
+</tr>
+</tbody>
+</table>
+<h4 id="tree-centroid-finding" tabindex="-1"><a class="header-anchor" href="#tree-centroid-finding"><span>Tree Centroid Finding</span></a></h4>
+<table>
+<thead>
+<tr>
+<th>Pattern</th>
+<th>Problems</th>
+<th>Key Insight</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Find Tree Centers</td>
+<td>310</td>
+<td>Leaf trimming layer by layer (multi-source BFS inward)</td>
+</tr>
+<tr>
+<td>Minimum Height Trees</td>
+<td>310</td>
+<td>BFS from leaves, stop at 1-2 nodes</td>
+</tr>
+<tr>
+<td>Tree Diameter Related</td>
+<td>310, 1245</td>
+<td>Centroid is at diameter midpoint</td>
+</tr>
+<tr>
+<td>Leaf Pruning / Coin Collection</td>
+<td>2603</td>
+<td>Trim leaves to remove unnecessary nodes</td>
+</tr>
+<tr>
+<td>Sum of Distances in Tree</td>
+<td>834</td>
+<td>Rerooting DP, related to centroid concept</td>
+</tr>
+</tbody>
+</table>
+<h2 id="decision-framework" tabindex="-1"><a class="header-anchor" href="#decision-framework"><span>Decision Framework</span></a></h2>
+<pre><code>START: Topological Sort Problem
+│
+├── Working with undirected tree?
+│   │
+│   ├── YES → Finding tree center/centroid?
+│   │   │
+│   │   ├── YES → Use Template 7 (Tree Centroid Finding)
+│   │   │
+│   │   └── NO → Continue
+│   │
+│   └── NO → Continue
+│
+├── Need all valid orderings?
+│   │
+│   ├── YES → Use Template 5 (Backtracking)
+│   │
+│   └── NO → Continue
+│
+├── Need lexicographical order?
+│   │
+│   ├── YES → Use Template 4 (Priority Queue)
+│   │
+│   └── NO → Continue
+│
+├── Need parallel execution time?
+│   │
+│   ├── YES → Use Template 6 (Level BFS)
+│   │
+│   └── NO → Continue
+│
+├── Need to count connected components?
+│   │
+│   ├── YES → Use Template 8 (Union Find)
+│   │
+│   └── NO → Continue
+│
+├── Need cycle detection only?
+│   │
+│   ├── YES → Use Template 2 (Three-Color DFS)
+│   │
+│   └── NO → Continue
+│
+└── DEFAULT → Use Template 1 (BFS Kahn's Algorithm)
+</code></pre>
+<h2 id="2-lc-example" tabindex="-1"><a class="header-anchor" href="#2-lc-example"><span>2) LC Example</span></a></h2>
+<h3 id="2-2-course-schedule-ii" tabindex="-1"><a class="header-anchor" href="#2-2-course-schedule-ii"><span>2-2) Course Schedule II</span></a></h3>
+<pre><code class="language-java">// java
+// LC 210
+// ref: leetcode_java/src/main/java/LeetCodeJava/BFS/CourseSchedule2.java
+public class CourseSchedule2 {
+
+    // V0
+    // IDEA : BFS Kahn's Algorithm with followingMap (pre -&gt; next map)
+    // NOTE: With followingMap (Kahn's), we DO NOT need to reverse.
+    //       The order is already correct (starts with 0-dependency courses).
+    /**
+     * time = O(V + E)
+     * space = O(V + E)
+     */
+    public int[] findOrder(int numCourses, int[][] prerequisites) {
+        if (numCourses == 0) {
+            return null;
+        }
+        if (numCourses == 1) {
+            return new int[] { 0 };
+        }
+
+        /**
+         *  map : {pre_course : [next_course_1, next_course_2, ...] }
+         *  key is pre_course, value is the list of next-courses
+         */
+        Map&lt;Integer, List&lt;Integer&gt;&gt; followingMap = new HashMap&lt;&gt;();
+        int[] degrees = new int[numCourses];
+
+        for (int[] p : prerequisites) {
+            int cur = p[0];   // next course (depends on prev)
+            int prev = p[1];  // prerequisite course
+
+            // Build graph: prev -&gt; [next courses]
+            if (!followingMap.containsKey(prev)) {
+                followingMap.put(prev, new ArrayList&lt;&gt;());
+            }
+            followingMap.get(prev).add(cur);
+
+            // Update in-degree for the next course
+            degrees[cur] += 1;
+        }
+
+        Queue&lt;Integer&gt; q = new LinkedList&lt;&gt;();
+        List&lt;Integer&gt; collected = new ArrayList&lt;&gt;();
+
+        // Add all courses with 0 in-degree to queue
+        for (int i = 0; i &lt; degrees.length; i++) {
+            if (degrees[i] == 0) {
+                q.add(i);
+            }
+        }
+
+        while (!q.isEmpty()) {
+            int cur = q.poll();
+            collected.add(cur); // Add to result right after pop
+
+            if (followingMap.containsKey(cur)) {
+                for (int next : followingMap.get(cur)) {
+                    degrees[next] -= 1;
+                    if (degrees[next] == 0) {
+                        q.add(next);
+                    }
+                }
+            }
+        }
+
+        // Cycle check: if not all courses collected, cycle exists
+        if (collected.size() != numCourses) {
+            return new int[]{};
+        }
+
+        // NO need to reverse with followingMap approach
+        int[] res = new int[collected.size()];
+        for (int i = 0; i &lt; collected.size(); i++) {
+            res[i] = collected.get(i);
+        }
+        return res;
+    }
+
+    // V1
+    // IDEA: DFS Cycle Detection
+    /**
+     * time = O(V + E)
+     * space = O(V + E)
+     */
+    public int[] findOrder_1_1(int numCourses, int[][] prerequisites) {
+        Map&lt;Integer, List&lt;Integer&gt;&gt; prereq = new HashMap&lt;&gt;();
+        for (int[] pair : prerequisites) {
+            prereq.computeIfAbsent(pair[0],
+                    k -&gt; new ArrayList&lt;&gt;()).add(pair[1]);
+        }
+
+        List&lt;Integer&gt; output = new ArrayList&lt;&gt;();
+        Set&lt;Integer&gt; visit = new HashSet&lt;&gt;();
+        Set&lt;Integer&gt; cycle = new HashSet&lt;&gt;();
+
+        for (int course = 0; course &lt; numCourses; course++) {
+            if (!dfs(course, prereq, visit, cycle, output)) {
+                return new int[0];
+            }
+        }
+
+        int[] result = new int[numCourses];
+        for (int i = 0; i &lt; numCourses; i++) {
+            result[i] = output.get(i);
+        }
+        return result;
+    }
+
+    private boolean dfs(int course, Map&lt;Integer, List&lt;Integer&gt;&gt; prereq,
+                        Set&lt;Integer&gt; visit, Set&lt;Integer&gt; cycle,
+                        List&lt;Integer&gt; output) {
+        if (cycle.contains(course)) return false;  // cycle detected
+        if (visit.contains(course)) return true;    // already processed
+
+        cycle.add(course);
+        for (int pre : prereq.getOrDefault(course, Collections.emptyList())) {
+            if (!dfs(pre, prereq, visit, cycle, output)) {
+                return false;
+            }
+        }
+        cycle.remove(course);
+        visit.add(course);
+        output.add(course);
+        return true;
+    }
+}
+</code></pre>
+<pre><code class="language-python"># LC 210 Course Schedule II
+# V0
+# IDEA : DFS + topological sort
+# SAME dfs logic as LC 207 (Course Schedule)
+from collections import defaultdict
+class Solution(object):
+    def findOrder(self, numCourses, prerequisites):
+        # edge case
+        if not prerequisites:
+            return [x for x in range(numCourses)]
+        
+        # help func : dfs
+        # 3 cases :  0 : unknown, 1 :visiting, 2 : visited   
+        def dfs(idx, visited, g, res):
+            if visited[idx] == 1:
+                return False
+            # NOTE !!! if visited[idx] == 2, means already visited, return True directly (and check next idx in range(numCourses))
+            if visited[idx] == 2:
+                return True
+            visited[idx] = 1
+            &quot;&quot;&quot;
+            NOTE this !!!
+
+                1) for j in g[idx] (but not for i in range(numCourses))
+                2) go through idx in g[idx]
+            &quot;&quot;&quot;
+            for j in g[idx]:
+                if not dfs(j, visited, g, res):
+                    return False
+            &quot;&quot;&quot;
+            don't forget to make idx as visited (visited[idx] = 2)
+            &quot;&quot;&quot;
+            visited[idx] = 2
+            &quot;&quot;&quot;
+            NOTE : the main difference between LC 207, 210
+
+            -&gt; we append idx to res (our ans)
+            &quot;&quot;&quot;
+            res.append(idx)
+            return True
+        # init
+        visited = [0] * numCourses
+        # build grath
+        g = defaultdict(list)
+        for p in prerequisites:
+            g[p[0]].append(p[1])
+        res = []
+        &quot;&quot;&quot;
+        NOTE :  go through idx in numCourses (for idx in range(numCourses))
+        &quot;&quot;&quot;
+        for idx in range(numCourses):
+            if not dfs(idx, visited, g, res):
+                return []
+        return res
+
+# V0'
+# IDEA : DFS + topological sort
+# SAME dfs logic as LC 207 (Course Schedule)
+import collections
+class Solution:
+    def findOrder(self, numCourses, prerequisites):
+        # build graph
+        _graph = collections.defaultdict(list)
+        for i in range(len(prerequisites)):
+            _graph[prerequisites[i][0]].append(prerequisites[i][1])
+
+        visited = [0] * numCourses
+        res = []
+        for i in range(numCourses):
+            if not self.dfs(_graph, visited, i, res):
+                return []
+        print (&quot;res = &quot; + str(res))
+        return res
+
+    # 0 : unknown, 1 :visiting, 2 : visited    
+    def dfs(self, _graph, visited, i, res):
+        if visited[i] == 1:
+            return False
+        if visited[i] == 2:
+            return True
+        visited[i] = 1
+        for item in _graph[i]:
+            if not self.dfs(_graph, visited, item, res):
+                return False
+        visited[i] = 2
+        res.append(i)
+        return True
+
+# V0'
+# IDEA : DFS + topological sort
+# SAME dfs logic as LC 207 (Course Schedule)
+class Solution(object):
+    def findOrder(self, numCourses, prerequisites):
+        &quot;&quot;&quot;
+        :type numCourses: int
+        :type prerequisites: List[List[int]]
+        :rtype: List[int]
+        &quot;&quot;&quot;
+        graph = collections.defaultdict(list)
+        for u, v in prerequisites:
+            graph[u].append(v)
+        # 0 = Unknown, 1 = visiting, 2 = visited
+        visited = [0] * numCourses
+        path = []
+        for i in range(numCourses):
+            ### NOTE : if not a valid &quot;prerequisites&quot;, then will return NULL list
+            if not self.dfs(graph, visited, i, path):
+                return []
+        return path
+    
+    def dfs(self, graph, visited, i, path):
+        # 0 = Unknown, 1 = visiting, 2 = visited
+        if visited[i] == 1: return False
+        if visited[i] == 2: return True
+        visited[i] = 1
+        for j in graph[i]:
+            if not self.dfs(graph, visited, j, path):
+                ### NOTE : the quit condition
+                return False
+        visited[i] = 2
+        path.append(i)
+        return True
+</code></pre>
+<h3 id="2-2-course-schedule" tabindex="-1"><a class="header-anchor" href="#2-2-course-schedule"><span>2-2) Course Schedule</span></a></h3>
+<pre><code class="language-java">// java
+// LC 207
+// same as LC 210
+</code></pre>
+<pre><code class="language-python"># LC 207 Course Schedule
+# NOTE : there are also bracktrack, dfs approachs for this problem
+# V0
+# IDEA : LC Course Schedule II 
+from collections import defaultdict
+class Solution(object):
+    def canFinish(self, numCourses, prerequisites):
+        # edge case
+        if not prerequisites:
+            return [x for x in range(numCourses)]
+        
+        # help func : dfs
+        # 3 cases :  0 : unknown, 1 :visiting, 2 : visited   
+        def dfs(idx, visited, g, res):
+            if visited[idx] == 1:
+                return False
+            # NOTE !!! if visited[idx] == 2, means already visited, return True directly (and check next idx in range(numCourses))
+            if visited[idx] == 2:
+                return True
+            visited[idx] = 1
+            &quot;&quot;&quot;
+            NOTE this !!!
+                1) for j in g[idx] (but not for i in range(numCourses))
+                2) go through idx in g[idx]
+            &quot;&quot;&quot;
+            for j in g[idx]:
+                if not dfs(j, visited, g, res):
+                    return False
+            &quot;&quot;&quot;
+            don't forget to make idx as visited (visited[idx] = 2)
+            &quot;&quot;&quot;
+            visited[idx] = 2
+            &quot;&quot;&quot;
+            NOTE : the main difference between LC 207, 210
+            -&gt; we append idx to res (our ans)
+            &quot;&quot;&quot;
+            res.append(idx)
+            return True
+        # init
+        visited = [0] * numCourses
+        # build grath
+        g = defaultdict(list)
+        for p in prerequisites:
+            g[p[0]].append(p[1])
+        res = []
+        &quot;&quot;&quot;
+        NOTE :  go through idx in numCourses (for idx in range(numCourses))
+        &quot;&quot;&quot;
+        for idx in range(numCourses):
+            if not dfs(idx, visited, g, res):
+                return False #[]
+        return len(res) &gt; 0
+
+# V1
+# IDEA : Topological Sort
+# https://leetcode.com/problems/course-schedule/solution/
+class GNode(object):
+    &quot;&quot;&quot;  data structure represent a vertex in the graph.&quot;&quot;&quot;
+    def __init__(self):
+        self.inDegrees = 0
+        self.outNodes = []
+
+class Solution(object):
+    def canFinish(self, numCourses, prerequisites):
+        &quot;&quot;&quot;
+        :type numCourses: int
+        :type prerequisites: List[List[int]]
+        :rtype: bool
+        &quot;&quot;&quot;
+        from collections import defaultdict, deque
+        # key: index of node; value: GNode
+        graph = defaultdict(GNode)
+
+        totalDeps = 0
+        for relation in prerequisites:
+            nextCourse, prevCourse = relation[0], relation[1]
+            graph[prevCourse].outNodes.append(nextCourse)
+            graph[nextCourse].inDegrees += 1
+            totalDeps += 1
+
+        # we start from courses that have no prerequisites.
+        # we could use either set, stack or queue to keep track of courses with no dependence.
+        nodepCourses = deque()
+        for index, node in graph.items():
+            if node.inDegrees == 0:
+                nodepCourses.append(index)
+
+        removedEdges = 0
+        while nodepCourses:
+            # pop out course without dependency
+            course = nodepCourses.pop()
+
+            # remove its outgoing edges one by one
+            for nextCourse in graph[course].outNodes:
+                graph[nextCourse].inDegrees -= 1
+                removedEdges += 1
+                # while removing edges, we might discover new courses with prerequisites removed, i.e. new courses without prerequisites.
+                if graph[nextCourse].inDegrees == 0:
+                    nodepCourses.append(nextCourse)
+
+        if removedEdges == totalDeps:
+            return True
+        else:
+            # if there are still some edges left, then there exist some cycles
+            # Due to the dead-lock (dependencies), we cannot remove the cyclic edges
+            return False
+
+# V0
+# IDEA : DFS + topological sort 
+# dfs
+from collections import defaultdict
+class Solution(object):
+    def canFinish(self, numCourses, prerequisites):
+        # edge case
+        if not prerequisites:
+            return True
+        
+        # help func : dfs
+        # 3 cases :  0 : unknown, 1 :visiting, 2 : visited   
+        def dfs(idx, visited, g):
+            if visited[idx] == 1:
+                return False
+            # NOTE !!! if visited[idx] == 2, means already visited, return True directly (and check next idx in range(numCourses))
+            if visited[idx] == 2:
+                return True
+            visited[idx] = 1
+            &quot;&quot;&quot;
+            NOTE this !!!
+
+                1) for j in g[idx] (but not for i in range(numCourses))
+                2) go through idx in g[idx]
+            &quot;&quot;&quot;
+            for j in g[idx]:
+                if not dfs(j, visited, g):
+                    return False
+            &quot;&quot;&quot;
+            don't forget to make idx as visited (visited[idx] = 2)
+            &quot;&quot;&quot;
+            visited[idx] = 2
+            return True
+        # init
+        visited = [0] * numCourses
+        # build grath
+        g = defaultdict(list)
+        for p in prerequisites:
+            g[p[0]].append(p[1])
+        #print (&quot;g = &quot; + str(p))
+        # dfs
+        &quot;&quot;&quot;
+        NOTE :  go through idx in numCourses (for idx in range(numCourses))
+        &quot;&quot;&quot;
+        for idx in range(numCourses):
+            if not dfs(idx, visited, g):
+                return False
+        return True
+
+# V0
+# IDEA : DFS + topological sort 
+import collections
+class Solution:
+    def canFinish(self, numCourses, prerequisites):
+        _graph = collections.defaultdict(list)
+        for i in range(len(prerequisites)):
+            _graph[prerequisites[i][0]].append(prerequisites[i][1])
+
+        visited = [0] * numCourses
+        for i in range(numCourses):
+            if not self.dfs(_graph, visited, i):
+                return False
+        return True
+
+    # 0 : unknown, 1 :visiting, 2 : visited    
+    def dfs(self, _graph, visited, i):
+        if visited[i] == 1:
+            return False
+        if visited[i] == 2:
+            return True
+        visited[i] = 1
+        for item in _graph[i]:
+            if not self.dfs(_graph, visited, item):
+                return False
+        visited[i] = 2
+        return True
+
+# V0'
+# IDEA : BFS + topological sort 
+from collections import defaultdict, deque
+class Solution:
+    def canFinish(self, numCourses, prerequisites):
+        degree = defaultdict(int)   
+        graph = defaultdict(set)
+        q = deque()
+        
+        # init the courses with 0 deg
+        for i in range(numCourses):
+            degree[i] = 0
+        
+        # add 1 to degree of course that needs prereq
+        # build edge from prerequisite to child course (directed graph)
+        for pair in prerequisites:
+            degree[pair[0]] += 1
+            graph[pair[1]].add(pair[0])
+        
+        # start bfs queue with all classes that dont have a prerequisite
+        for key, val in degree.items():
+            if val == 0:
+                q.append(key)
+                
+        stack = []
+        
+        while q:
+            curr = q.popleft()
+            stack.append(curr)
+            for child in graph[curr]:
+                degree[child] -= 1
+                if degree[child] == 0:
+                    q.append(child)
+        
+        return len(stack) == numCourses
+</code></pre>
+<h3 id="2-3-number-of-provinces-lc-547" tabindex="-1"><a class="header-anchor" href="#2-3-number-of-provinces-lc-547"><span>2-3) Number of Provinces (LC 547)</span></a></h3>
+<pre><code class="language-java">// java
+// LC 547
+// ref: leetcode_java/src/main/java/LeetCodeJava/DFS/NumberOfProvinces.java
+
+public class NumberOfProvinces {
+
+    // V0
+    // IDEA: UNION FIND
+    /**
+     * time = O(N^2 * α(N))
+     * space = O(N)
+     */
+    public int findCircleNum(int[][] isConnected) {
+        int n = isConnected.length;
+        UnionFind uf = new UnionFind(n);
+
+        for (int y = 0; y &lt; n; y++) {
+            for (int x = y + 1; x &lt; n; x++) {
+                if (isConnected[y][x] == 1) {
+                    uf.union(y, x);
+                }
+            }
+        }
+
+        return uf.cluster;
+    }
+
+    class UnionFind {
+        int[] parents;
+        int cluster;
+
+        UnionFind(int n) {
+            this.parents = new int[n];
+            this.cluster = n;
+            for (int i = 0; i &lt; n; i++) {
+                this.parents[i] = i;
+            }
+        }
+
+        public void union(int x, int y) {
+            int parentX = find(x);
+            int parentY = find(y);
+            if (parentX != parentY) {
+                this.parents[parentX] = parentY;
+                this.cluster -= 1;
+            }
+        }
+
+        public int find(int x) {
+            if (this.parents[x] != x) {
+                this.parents[x] = find(this.parents[x]); // path compression
+            }
+            return this.parents[x];
+        }
+    }
+
+    // V1
+    // IDEA: DFS directly on adjacency matrix
+    /**
+     * time = O(N^2)
+     * space = O(N)
+     */
+    public int findCircleNum_dfs(int[][] isConnected) {
+        int n = isConnected.length;
+        boolean[] visited = new boolean[n];
+        int provinces = 0;
+
+        for (int i = 0; i &lt; n; i++) {
+            if (!visited[i]) {
+                dfs(isConnected, visited, i, n);
+                provinces++;
+            }
+        }
+
+        return provinces;
+    }
+
+    private void dfs(int[][] isConnected, boolean[] visited, int city, int n) {
+        visited[city] = true;
+        for (int j = 0; j &lt; n; j++) {
+            if (isConnected[city][j] == 1 &amp;&amp; !visited[j]) {
+                dfs(isConnected, visited, j, n);
+            }
+        }
+    }
+
+    // V2
+    // IDEA: BFS
+    /**
+     * time = O(N^2)
+     * space = O(N)
+     */
+    public int findCircleNum_bfs(int[][] isConnected) {
+        int n = isConnected.length;
+        boolean[] visited = new boolean[n];
+        int provinces = 0;
+
+        for (int i = 0; i &lt; n; i++) {
+            if (!visited[i]) {
+                provinces++;
+                Queue&lt;Integer&gt; q = new LinkedList&lt;&gt;();
+                q.offer(i);
+                visited[i] = true;
+
+                while (!q.isEmpty()) {
+                    int node = q.poll();
+                    for (int j = 0; j &lt; n; j++) {
+                        if (isConnected[node][j] == 1 &amp;&amp; !visited[j]) {
+                            q.offer(j);
+                            visited[j] = true;
+                        }
+                    }
+                }
+            }
+        }
+
+        return provinces;
+    }
+}
+</code></pre>
+<pre><code class="language-python"># python
+# LC 547 Number of Provinces
+# V0 - Union Find
+class UnionFind:
+    def __init__(self, n):
+        self.parent = list(range(n))
+        self.count = n
+
+    def find(self, x):
+        if self.parent[x] != x:
+            self.parent[x] = self.find(self.parent[x])
+        return self.parent[x]
+
+    def union(self, x, y):
+        px, py = self.find(x), self.find(y)
+        if px != py:
+            self.parent[px] = py
+            self.count -= 1
+
+class Solution:
+    def findCircleNum(self, isConnected):
+        n = len(isConnected)
+        uf = UnionFind(n)
+        for i in range(n):
+            for j in range(i + 1, n):
+                if isConnected[i][j] == 1:
+                    uf.union(i, j)
+        return uf.count
+
+# V1 - DFS
+class Solution:
+    def findCircleNum(self, isConnected):
+        n = len(isConnected)
+        visited = [False] * n
+        provinces = 0
+
+        def dfs(city):
+            visited[city] = True
+            for j in range(n):
+                if isConnected[city][j] == 1 and not visited[j]:
+                    dfs(j)
+
+        for i in range(n):
+            if not visited[i]:
+                dfs(i)
+                provinces += 1
+        return provinces
+</code></pre>
+<h3 id="2-5-alien-dictionary" tabindex="-1"><a class="header-anchor" href="#2-5-alien-dictionary"><span>2-5) Alien Dictionary</span></a></h3>
+<pre><code class="language-java">// java
+// LC 269
+
+ // V0
+    // IDEA: TOPOLOGICAL SORT (neetcode, comments created by gpt)
+    // TOPOLOGICAL SORT : `degrees`, map, BFS
+    public String foreignDictionary(String[] words) {
+        Map&lt;Character, Set&lt;Character&gt;&gt; adj = new HashMap&lt;&gt;();
+        // NOTE !!! we use `map` as degrees storage
+        Map&lt;Character, Integer&gt; indegree = new HashMap&lt;&gt;();
+
+        for (String word : words) {
+            for (char c : word.toCharArray()) {
+                adj.putIfAbsent(c, new HashSet&lt;&gt;());
+                indegree.putIfAbsent(c, 0);
+            }
+        }
+
+        /**
+         *   NOTE !!! below
+         *
+         *   -&gt; build the character `ordering`
+         *
+         *  Loop Over Adjacent Word Pairs
+         *
+         *
+         *
+         * for (int i = 0; i &lt; words.length - 1; i++) {
+         *     String w1 = words[i];
+         *     String w2 = words[i + 1];
+         *
+         * We are comparing each pair of consecutive
+         * words in the list (words[i] and words[i+1]).
+         *
+         * This is important because the alien language is
+         * sorted — and order relationships only exist between adjacent words.
+         *
+         */
+        for (int i = 0; i &lt; words.length - 1; i++) {
+            String w1 = words[i];
+            String w2 = words[i + 1];
+
+            /**
+             *  NOTE !!! below
+             *
+             *
+             * int minLen = Math.min(w1.length(), w2.length());
+             * if (w1.length() &gt; w2.length() &amp;&amp;
+             *     w1.substring(0, minLen).equals(w2.substring(0, minLen))) {
+             *     return &quot;&quot;;
+             * }
+             *
+             *
+             * -&gt;  This checks for a prefix violation:
+             * If w1 is longer than w2, and w2 is a prefix of w1, that’s `invalid`.
+             *
+             * Example:
+             *
+             *   words = [&quot;apple&quot;, &quot;app&quot;]
+             *
+             *
+             * Here, app comes after apple,
+             * which is wrong because in a lexicographically sorted language,
+             * a shorter prefix should come before the longer word.
+             *
+             * -&gt; Hence, we return &quot;&quot; to signal an invalid dictionary order.
+             *
+             */
+            int minLen = Math.min(w1.length(), w2.length());
+            // handle `ordering` edge case
+            // e.g. words = [&quot;apple&quot;, &quot;app&quot;]
+            if (w1.length() &gt; w2.length() &amp;&amp;
+                    w1.substring(0, minLen).equals(w2.substring(0, minLen))) {
+                return &quot;&quot;;
+            }
+
+            /**
+             *  NOTE !!! below
+             *
+             *
+             *  This loop compares characters at each position j in w1 and w2.
+             *  The first place where they differ defines the ordering.
+             *
+             *
+             *  Example :
+             *
+             *    w1 = &quot;wrt&quot;
+             *    w2 = &quot;wrf&quot;
+             *
+             *
+             *
+             *  At index 2, 't' and 'f' differ → so we know:
+             * 't' &lt; 'f' → Add a directed edge: t → f
+             *
+             * adj.get(w1.charAt(j)).add(w2.charAt(j)): Adds this edge in the adjacency list.
+             *
+             * indegree.put(...): Increments in-degree of the target node.
+             *
+             *
+             * NOTE !!!
+             *
+             * -&gt; Then we break — we don’t look at further characters
+             *     -&gt; because they don’t affect the order.
+             *
+             *
+             */
+            // compare the `first different character within w1, w2`
+            // The first place where they differ defines the ordering.
+            for (int j = 0; j &lt; minLen; j++) {
+                if (w1.charAt(j) != w2.charAt(j)) {
+                    if (!adj.get(w1.charAt(j)).contains(w2.charAt(j))) {
+                        adj.get(w1.charAt(j)).add(w2.charAt(j));
+                        indegree.put(w2.charAt(j),
+                                indegree.get(w2.charAt(j)) + 1);
+                    }
+                    break;
+                }
+            }
+        }
+
+        Queue&lt;Character&gt; q = new LinkedList&lt;&gt;();
+        for (char c : indegree.keySet()) {
+            if (indegree.get(c) == 0) {
+                q.offer(c);
+            }
+        }
+
+        StringBuilder res = new StringBuilder();
+
+        while (!q.isEmpty()) {
+            char char_ = q.poll();
+            res.append(char_);
+            for (char neighbor : adj.get(char_)) {
+                indegree.put(neighbor, indegree.get(neighbor) - 1);
+                if (indegree.get(neighbor) == 0) {
+                    q.offer(neighbor);
+                }
+            }
+        }
+
+        if (res.length() != indegree.size()) {
+            return &quot;&quot;;
+        }
+
+        return res.toString();
+    }
+
+</code></pre>
+<pre><code class="language-python"># python
+# 269 alien-dictionary
+class Solution(object):
+    def alienOrder(self, words):
+        &quot;&quot;&quot;
+        :type words: List[str]
+        :rtype: str
+        &quot;&quot;&quot;
+        result, zero_in_degree_queue, in_degree, out_degree = [], collections.deque(), {}, {}
+        nodes = sets.Set()
+        for word in words:
+            for c in word:
+                nodes.add(c)
+         
+        for i in range(1, len(words)):
+            if len(words[i-1]) &gt; len(words[i]) and \
+                words[i-1][:len(words[i])] == words[i]:
+                    return &quot;&quot;
+            self.findEdges(words[i - 1], words[i], in_degree, out_degree)
+         
+        for node in nodes:
+            if node not in in_degree:
+                zero_in_degree_queue.append(node)
+         
+        while zero_in_degree_queue:
+            precedence = zero_in_degree_queue.popleft()
+            result.append(precedence)
+             
+            if precedence in out_degree:
+                for c in out_degree[precedence]:
+                    in_degree[c].discard(precedence)
+                    if not in_degree[c]:
+                        zero_in_degree_queue.append(c)
+             
+                del out_degree[precedence]
+         
+        if out_degree:
+            return &quot;&quot;
+ 
+        return &quot;&quot;.join(result)
+ 
+ 
+    # Construct the graph.
+    def findEdges(self, word1, word2, in_degree, out_degree):
+        str_len = min(len(word1), len(word2))
+        for i in range(str_len):
+            if word1[i] != word2[i]:
+                if word2[i] not in in_degree:
+                    in_degree[word2[i]] = sets.Set()
+                if word1[i] not in out_degree:
+                    out_degree[word1[i]] = sets.Set()
+                in_degree[word2[i]].add(word1[i])
+                out_degree[word1[i]].add(word2[i])
+                break　　
+</code></pre>
+<h3 id="2-6-sequence-reconstruction" tabindex="-1"><a class="header-anchor" href="#2-6-sequence-reconstruction"><span>2-6) Sequence Reconstruction</span></a></h3>
+<pre><code class="language-java">// java
+// LC 444
+    // V1
+    // https://www.youtube.com/watch?v=FHY1q1h9gq0
+    // https://www.jiakaobo.com/leetcode/444.%20Sequence%20Reconstruction.html
+    Map&lt;Integer, Set&lt;Integer&gt;&gt; map;
+    Map&lt;Integer, Integer&gt; indegree;
+
+    public boolean sequenceReconstruction_1(int[] nums, List&lt;List&lt;Integer&gt;&gt; sequences) {
+        map = new HashMap&lt;&gt;();
+        indegree = new HashMap&lt;&gt;();
+
+        for(List&lt;Integer&gt; seq: sequences) {
+            if(seq.size() == 1) {
+                addNode(seq.get(0));
+            } else {
+                for(int i = 0; i &lt; seq.size() - 1; i++) {
+                    addNode(seq.get(i));
+                    addNode(seq.get(i + 1));
+
+                    // 加入子节点, 子节点增加一个入度
+                    // [1,2] =&gt; 1 -&gt; 2
+                    // 1: [2]
+                    int curr = seq.get(i);
+                    int next = seq.get(i + 1);
+                    if(map.get(curr).add(next)) {
+                        indegree.put(next, indegree.get(next) + 1);
+                    }
+                }
+            }
+        }
+
+        Queue&lt;Integer&gt; queue = new LinkedList&lt;&gt;();
+        for(int key : indegree.keySet()) {
+            if(indegree.get(key) == 0){
+                queue.offer(key);
+            }
+        }
+
+        int index = 0;
+        while(!queue.isEmpty()) {
+            // 如果只有唯一解, 那么queue的大小永远都是1
+            if(queue.size() != 1) return false;
+
+            int curr = queue.poll();
+            if(curr != nums[index++]) return false;
+
+            for(int next: map.get(curr)) {
+                indegree.put(next, indegree.get(next) - 1);
+                if(indegree.get(next) == 0) {
+                    queue.offer(next);
+                }
+            }
+        }
+
+        return index == nums.length;
+    }
+
+    private void addNode(int node) {
+        if(!map.containsKey(node)) {
+            map.put(node, new HashSet&lt;&gt;());
+            indegree.put(node, 0);
+        }
+    }
+</code></pre>
+<h3 id="2-7-parallel-courses" tabindex="-1"><a class="header-anchor" href="#2-7-parallel-courses"><span>2-7) Parallel Courses</span></a></h3>
+<pre><code class="language-python"># LC 1136
+def minimumSemesters(n, relations):
+    &quot;&quot;&quot;
+    Find minimum number of semesters to take all courses.
+    Time: O(V + E), Space: O(V)
+    &quot;&quot;&quot;
+    from collections import defaultdict, deque
+    
+    graph = defaultdict(list)
+    in_degree = [0] * (n + 1)
+    
+    for pre, next_course in relations:
+        graph[pre].append(next_course)
+        in_degree[next_course] += 1
+    
+    queue = deque([i for i in range(1, n + 1) if in_degree[i] == 0])
+    semesters = 0
+    studied = 0
+    
+    while queue:
+        # Process all courses in current semester
+        semesters += 1
+        next_queue = []
+        
+        for _ in range(len(queue)):
+            course = queue.popleft()
+            studied += 1
+            
+            for next_course in graph[course]:
+                in_degree[next_course] -= 1
+                if in_degree[next_course] == 0:
+                    next_queue.append(next_course)
+        
+        queue.extend(next_queue)
+    
+    return semesters if studied == n else -1
+</code></pre>
+<h3 id="2-8-find-eventual-safe-states" tabindex="-1"><a class="header-anchor" href="#2-8-find-eventual-safe-states"><span>2-8) Find Eventual Safe States</span></a></h3>
+<pre><code class="language-python"># LC 802
+def eventualSafeNodes(graph):
+    &quot;&quot;&quot;
+    Find all safe nodes (nodes from which all paths lead to terminal).
+    Time: O(V + E), Space: O(V)
+    &quot;&quot;&quot;
+    n = len(graph)
+    # Reverse the graph
+    reverse_graph = [[] for _ in range(n)]
+    out_degree = [0] * n
+    
+    for i in range(n):
+        for j in graph[i]:
+            reverse_graph[j].append(i)
+        out_degree[i] = len(graph[i])
+    
+    # Start with terminal nodes (out-degree = 0)
+    from collections import deque
+    queue = deque([i for i in range(n) if out_degree[i] == 0])
+    safe = []
+    
+    while queue:
+        node = queue.popleft()
+        safe.append(node)
+        
+        for prev in reverse_graph[node]:
+            out_degree[prev] -= 1
+            if out_degree[prev] == 0:
+                queue.append(prev)
+    
+    return sorted(safe)
+</code></pre>
+<h3 id="2-9-minimum-height-trees-lc-310" tabindex="-1"><a class="header-anchor" href="#2-9-minimum-height-trees-lc-310"><span>2-9) Minimum Height Trees (LC 310)</span></a></h3>
+<pre><code class="language-java">// java
+// LC 310
+// IDEA: Tree Centroid Finding - Leaf Trimming (Topological Sort for Undirected Trees)
+public class MinimumHeightTrees {
+
+    /**
+     * Core Concept: Tree Centroid Finding via Leaf Trimming
+     *
+     * This is a special application of topological sort to UNDIRECTED TREES:
+     *
+     * Key Differences from Standard Topological Sort:
+     * 1. Works on UNDIRECTED trees (not DAGs)
+     * 2. Uses degree (not in-degree) - count all edges
+     * 3. Leaves are nodes with degree = 1 (not in-degree = 0)
+     * 4. Goal: Find centroid(s), not linear ordering
+     * 5. Result: 1 or 2 nodes (tree centers), not all nodes
+     *
+     * Algorithm (Leaf Trimming):
+     * 1. Build adjacency list + track degrees for undirected edges
+     * 2. Put all leaves (degree = 1) into queue
+     * 3. Remove leaves layer by layer (like peeling an onion)
+     * 4. When neighbors' degree becomes 1, they become new leaves
+     * 5. Stop when ≤ 2 nodes remain - these are the centroids
+     *
+     * Why it works:
+     * - The centroid(s) of a tree minimize the maximum distance to any leaf
+     * - By removing outer layers, we converge to the center
+     * - A tree can have at most 2 centroids (if diameter is even: 2, if odd: 1)
+     *
+     * Time: O(N) - Each node and edge processed once
+     * Space: O(N) - Adjacency list and queue storage
+     */
+    public List&lt;Integer&gt; findMinHeightTrees(int n, int[][] edges) {
+        // Edge case: single node tree
+        if (n == 1) {
+            return Collections.singletonList(0);
+        }
+
+        // Step 1: Build adjacency list and track degrees
+        List&lt;List&lt;Integer&gt;&gt; graph = new ArrayList&lt;&gt;();
+        for (int i = 0; i &lt; n; i++) {
+            graph.add(new ArrayList&lt;&gt;());
+        }
+
+        int[] degree = new int[n];
+
+        // For undirected tree: add edges in both directions
+        for (int[] edge : edges) {
+            int u = edge[0], v = edge[1];
+            graph.get(u).add(v);
+            graph.get(v).add(u);
+            degree[u]++;
+            degree[v]++;
+        }
+
+        // Step 2: Initialize queue with all leaf nodes (degree = 1)
+        Queue&lt;Integer&gt; leaves = new LinkedList&lt;&gt;();
+        for (int i = 0; i &lt; n; i++) {
+            if (degree[i] == 1) {
+                leaves.offer(i);
+            }
+        }
+
+        // Step 3: Trim leaves layer by layer
+        int remaining = n;
+
+        // Continue until only 1 or 2 nodes remain
+        while (remaining &gt; 2) {
+            int leafCount = leaves.size();
+            remaining -= leafCount;
+
+            // Process all leaves in current layer
+            for (int i = 0; i &lt; leafCount; i++) {
+                int leaf = leaves.poll();
+
+                // Update degrees of neighbors
+                for (int neighbor : graph.get(leaf)) {
+                    degree[neighbor]--;
+
+                    // If neighbor becomes a leaf, add to queue for next layer
+                    if (degree[neighbor] == 1) {
+                        leaves.offer(neighbor);
+                    }
+                }
+            }
+        }
+
+        // Step 4: The remaining nodes (1 or 2) are the centroids
+        return new ArrayList&lt;&gt;(leaves);
+    }
+}
+</code></pre>
+<pre><code class="language-python"># python
+# LC 310
+# V0 - Tree Centroid Finding (Leaf Trimming for Undirected Trees)
+from collections import deque
+
+class Solution:
+    def findMinHeightTrees(self, n: int, edges: List[List[int]]) -&gt; List[int]:
+        &quot;&quot;&quot;
+        Find tree centroids using leaf trimming.
+
+        Key Pattern: Similar to Kahn's Algorithm but for undirected trees
+        - Use degree (not in-degree)
+        - Leaves are nodes with degree = 1
+        - Trim layers until 1-2 nodes remain
+
+        Time: O(N), Space: O(N)
+        &quot;&quot;&quot;
+        # Edge case
+        if n == 1:
+            return [0]
+
+        # Build adjacency list and track degrees
+        graph = [[] for _ in range(n)]
+        degree = [0] * n
+
+        for u, v in edges:
+            graph[u].append(v)
+            graph[v].append(u)
+            degree[u] += 1
+            degree[v] += 1
+
+        # Initialize queue with all leaves (degree = 1)
+        leaves = deque([i for i in range(n) if degree[i] == 1])
+
+        # Trim leaves layer by layer
+        remaining = n
+        while remaining &gt; 2:
+            leaf_count = len(leaves)
+            remaining -= leaf_count
+
+            for _ in range(leaf_count):
+                leaf = leaves.popleft()
+
+                # Decrease degree of neighbors
+                for neighbor in graph[leaf]:
+                    degree[neighbor] -= 1
+                    # If neighbor becomes leaf, add to queue
+                    if degree[neighbor] == 1:
+                        leaves.append(neighbor)
+
+        # Return remaining centroids (1 or 2 nodes)
+        return list(leaves)
+
+
+# V1 - Alternative: Using Set for adjacency (faster removal)
+class Solution:
+    def findMinHeightTrees(self, n: int, edges: List[List[int]]) -&gt; List[int]:
+        if n == 1:
+            return [0]
+
+        # Build graph with sets for O(1) removal
+        graph = [set() for _ in range(n)]
+
+        for u, v in edges:
+            graph[u].add(v)
+            graph[v].add(u)
+
+        # Find initial leaves
+        leaves = [i for i in range(n) if len(graph[i]) == 1]
+
+        # Trim leaves until 1-2 nodes remain
+        while n &gt; 2:
+            n -= len(leaves)
+            new_leaves = []
+
+            for leaf in leaves:
+                # Get the only neighbor
+                neighbor = graph[leaf].pop()
+                # Remove leaf from neighbor's adjacency set
+                graph[neighbor].remove(leaf)
+
+                # If neighbor becomes leaf, add to next layer
+                if len(graph[neighbor]) == 1:
+                    new_leaves.append(neighbor)
+
+            leaves = new_leaves
+
+        return leaves
+</code></pre>
+<p><strong>Core Logic Explanation:</strong></p>
+<ol>
+<li>
+<p><strong>Why Leaf Trimming Works:</strong></p>
+<ul>
+<li>Tree centroids minimize the height when used as roots</li>
+<li>By removing outer layers (leaves), we converge to the center</li>
+<li>Like peeling an onion from outside to inside</li>
+</ul>
+</li>
+<li>
+<p><strong>Key Differences from Standard Topological Sort:</strong></p>
+<ul>
+<li><strong>Graph Type</strong>: Undirected tree vs Directed Acyclic Graph (DAG)</li>
+<li><strong>Degree Tracking</strong>: Total degree vs in-degree</li>
+<li><strong>Leaf Definition</strong>: degree = 1 vs in-degree = 0</li>
+<li><strong>Goal</strong>: Find center(s) vs Find linear ordering</li>
+<li><strong>Result</strong>: 1-2 nodes vs All nodes in order</li>
+</ul>
+</li>
+<li>
+<p><strong>Why At Most 2 Centroids:</strong></p>
+<ul>
+<li>If tree diameter is even → 2 center nodes</li>
+<li>If tree diameter is odd → 1 center node</li>
+<li>These nodes minimize the maximum distance to any leaf</li>
+</ul>
+</li>
+</ol>
+<p><strong>Core Idea — BFS / Layer Trimming (Onion Peeling):</strong></p>
+<ul>
+<li>Think of the tree as an onion. The MHT roots are in the <strong>innermost layer</strong></li>
+<li>Start from the outermost leaves (degree = 1), peel them off layer by layer</li>
+<li>Each layer removal reveals new leaves (neighbors whose degree drops to 1)</li>
+<li>Stop when ≤ 2 nodes remain — these are the <strong>centroids</strong></li>
+<li>This is <strong>multi-source BFS from leaves inward</strong>, NOT BFS from a single root</li>
+</ul>
+<pre><code>[0,1,2,3,4]  (linear tree: 0-1-2-3-4)
+
+→ remove 0,4       (outer leaves)
+→ remove 1,3       (new leaves after trimming)
+→ left with [2] ✅  (centroid)
+</code></pre>
+<p><strong>Pattern Recognition — When to Use Leaf Trimming:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Signal</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Find center/centroid of a tree</td>
+<td>LC 310</td>
+</tr>
+<tr>
+<td>Minimize max distance from root to any leaf</td>
+<td>LC 310</td>
+</tr>
+<tr>
+<td>Undirected tree + “optimal root”</td>
+<td>LC 310, tree radius</td>
+</tr>
+<tr>
+<td>Peel layers from outside inward</td>
+<td>LC 310, onion structure</td>
+</tr>
+<tr>
+<td>NOT a DAG, NOT directed edges</td>
+<td>Use this instead of standard topo sort</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Key Observations:</strong></p>
+<ul>
+<li>A tree has at most <strong>2 centroids</strong>: diameter even → 2 centers, diameter odd → 1 center</li>
+<li>Brute force (BFS from every node) is O(N²) — TLE for large inputs</li>
+<li>Leaf trimming achieves O(N) by processing each node and edge exactly once</li>
+<li>Can use <code>Set&lt;Integer&gt;</code> adjacency for O(1) removal, or <code>int[] degree</code> array (simpler, preferred)</li>
+</ul>
+<p><strong>Classic Similar LCs:</strong></p>
+<table>
+<thead>
+<tr>
+<th>LC #</th>
+<th>Problem</th>
+<th>Connection</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>310</td>
+<td>Minimum Height Trees</td>
+<td>Core leaf trimming problem</td>
+</tr>
+<tr>
+<td>207</td>
+<td>Course Schedule</td>
+<td>Kahn’s algo — same BFS + degree pattern on DAG</td>
+</tr>
+<tr>
+<td>210</td>
+<td>Course Schedule II</td>
+<td>Kahn’s algo — produces ordering</td>
+</tr>
+<tr>
+<td>834</td>
+<td>Sum of Distances in Tree</td>
+<td>Tree centroid / rerooting DP</td>
+</tr>
+<tr>
+<td>1245</td>
+<td>Tree Diameter</td>
+<td>Find diameter → centroid is at midpoint</td>
+</tr>
+<tr>
+<td>2603</td>
+<td>Collect Coins in a Tree</td>
+<td>Leaf trimming to remove unnecessary nodes</td>
+</tr>
+<tr>
+<td>1377</td>
+<td>Frog Position After T Seconds</td>
+<td>BFS on tree from root</td>
+</tr>
+<tr>
+<td>863</td>
+<td>All Nodes Distance K in Binary Tree</td>
+<td>BFS from a node in tree</td>
+</tr>
+</tbody>
+</table>
+<h2 id="summary-interview-tips" tabindex="-1"><a class="header-anchor" href="#summary-interview-tips"><span>Summary &amp; Interview Tips</span></a></h2>
+<h3 id="common-pitfalls" tabindex="-1"><a class="header-anchor" href="#common-pitfalls"><span>Common Pitfalls</span></a></h3>
+<ol>
+<li><strong>Forgetting Cycle Detection</strong>: Always check if result size equals number of nodes</li>
+<li><strong>Wrong Edge Direction</strong>: Remember edges go from prerequisite to dependent</li>
+<li><strong>Not Handling Disconnected Components</strong>: Process all unvisited nodes</li>
+<li><strong>Incorrect In-degree Initialization</strong>: Ensure all nodes are included</li>
+<li><strong>Missing Edge Cases</strong>: Empty graph, single node, self-loops</li>
+<li><strong>Confusing Degree vs In-degree</strong>: For undirected trees use total degree, for DAGs use in-degree</li>
+<li><strong>Wrong Stopping Condition</strong>: For tree centroids, stop at ≤2 nodes (not when queue is empty)</li>
+</ol>
+<h3 id="key-insights" tabindex="-1"><a class="header-anchor" href="#key-insights"><span>Key Insights</span></a></h3>
+<ol>
+<li><strong>BFS vs DFS</strong>: BFS is easier for finding one order, DFS for all orders</li>
+<li><strong>In-degree Tracking</strong>: Nodes with 0 in-degree can be processed</li>
+<li><strong>Three-Color DFS</strong>: White (unvisited), Gray (visiting), Black (visited)</li>
+<li><strong>Reverse Graph</strong>: Useful for problems like safe states</li>
+<li><strong>Level Processing</strong>: For parallel execution and minimum time</li>
+<li><strong>Tree Centroid Finding</strong>: For undirected trees, use degree (not in-degree), trim leaves layer by layer until 1-2 nodes remain</li>
+<li><strong>Undirected vs Directed</strong>: Undirected trees need bidirectional edges and degree tracking, while DAGs use in-degree</li>
+</ol>
+<h3 id="interview-approach" tabindex="-1"><a class="header-anchor" href="#interview-approach"><span>Interview Approach</span></a></h3>
+<ol>
+<li>
+<p><strong>Clarify Requirements</strong>:</p>
+<ul>
+<li>Is the graph guaranteed to be a DAG?</li>
+<li>Do we need all orderings or just one?</li>
+<li>Are there any ordering preferences?</li>
+</ul>
+</li>
+<li>
+<p><strong>Choose Algorithm</strong>:</p>
+<ul>
+<li>Default to BFS (Kahn’s) for simplicity</li>
+<li>Use DFS for recursive problems</li>
+<li>Use priority queue for lexicographical order</li>
+</ul>
+</li>
+<li>
+<p><strong>Handle Edge Cases</strong>:</p>
+<ul>
+<li>Empty graph</li>
+<li>Single node</li>
+<li>Disconnected components</li>
+<li>Cycles in graph</li>
+</ul>
+</li>
+<li>
+<p><strong>Optimize if Needed</strong>:</p>
+<ul>
+<li>Early termination for cycle detection</li>
+<li>Space optimization with in-place modifications</li>
+<li>Time optimization with better data structures</li>
+</ul>
+</li>
+</ol>
+<h3 id="time-space-complexity-summary" tabindex="-1"><a class="header-anchor" href="#time-space-complexity-summary"><span>Time/Space Complexity Summary</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>Operation</th>
+<th>Time</th>
+<th>Space</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Build Graph</td>
+<td>O(E)</td>
+<td>O(V + E)</td>
+<td>Adjacency list</td>
+</tr>
+<tr>
+<td>Calculate In-degrees</td>
+<td>O(E)</td>
+<td>O(V)</td>
+<td>Array or map</td>
+</tr>
+<tr>
+<td>BFS/DFS Traversal</td>
+<td>O(V + E)</td>
+<td>O(V)</td>
+<td>Visit each node/edge once</td>
+</tr>
+<tr>
+<td>Cycle Detection</td>
+<td>O(V + E)</td>
+<td>O(V)</td>
+<td>Three-color marking</td>
+</tr>
+<tr>
+<td>All Orderings</td>
+<td>O(V! × E)</td>
+<td>O(V)</td>
+<td>Exponential for all permutations</td>
+</tr>
+</tbody>
+</table>
+<h3 id="related-concepts" tabindex="-1"><a class="header-anchor" href="#related-concepts"><span>Related Concepts</span></a></h3>
+<ul>
+<li><strong>Strongly Connected Components</strong>: Tarjan’s/Kosaraju’s algorithm</li>
+<li><strong>Shortest Path in DAG</strong>: Topological sort + relaxation</li>
+<li><strong>Critical Path Method</strong>: Project scheduling</li>
+<li><strong>Dependency Resolution</strong>: Package managers, build systems</li>
+<li><strong>Dataflow Analysis</strong>: Compiler optimization</li>
+</ul>
+
+      </div>
+      <div class="cheatsheet-footer">
+        <a href="../cheatsheets.html" class="back-link">← Back to Cheat Sheets</a>
+        <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/topology_sorting.md" class="github-edit" target="_blank">
+          Edit on GitHub →
+        </a>
+      </div>
+    <nav class="prev-next"><a href="string_matching_kmp_rolling_hash.html" class="prev-link">← String Matching Kmp Rolling Hash</a><a href="tree.html" class="next-link">Tree →</a></nav>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>CS_basics - Computer Science Fundamentals & Interview Preparation</p>
+      <p>
+        <a href="https://github.com/yennanliu/CS_basics">GitHub</a> •
+        <a href="https://github.com/yennanliu/CS_basics/tree/master/doc">Documentation</a> •
+        <a href="https://github.com/yennanliu/CS_basics/issues">Report Issues</a>
+      </p>
+    </div>
+  </footer>
+</body>
+</html>

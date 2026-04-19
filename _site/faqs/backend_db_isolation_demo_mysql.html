@@ -1,0 +1,312 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Db Isolation Demo Mysql - CS_basics</title>
+  <meta name="description" content="Computer Science fundamentals: algorithms, data structures, system design, and LeetCode solutions">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>CS</text></svg>">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="../vendor/fonts.css">
+  <link rel="stylesheet" href="../vendor/highlight/github-dark.min.css">
+  <script src="../vendor/highlight/highlight.min.js"></script>
+  <script>
+  // Apply theme before render to prevent flash
+  (function() {
+    var saved = localStorage.getItem('theme');
+    if (saved === 'dark' || (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      document.documentElement.setAttribute('data-theme', 'dark');
+    }
+  })();
+  </script>
+  <script>document.addEventListener('DOMContentLoaded', function() {
+    hljs.highlightAll();
+    document.querySelectorAll('pre code').forEach(function(codeEl) {
+      var pre = codeEl.parentElement;
+      var lang = '';
+      var cls = codeEl.className || '';
+      var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
+      if (m) lang = m[1];
+      var wrapper = document.createElement('div');
+      wrapper.className = 'code-block-wrapper';
+      pre.parentNode.insertBefore(wrapper, pre);
+      var header = document.createElement('div');
+      header.className = 'code-block-header';
+      if (lang) {
+        var label = document.createElement('span');
+        label.className = 'code-lang-label';
+        label.textContent = lang;
+        header.appendChild(label);
+      } else {
+        header.appendChild(document.createElement('span'));
+      }
+      var btn = document.createElement('button');
+      btn.className = 'copy-btn';
+      btn.textContent = 'Copy';
+      btn.addEventListener('click', function() {
+        navigator.clipboard.writeText(codeEl.textContent).then(function() {
+          btn.textContent = 'Copied!';
+          btn.classList.add('copied');
+          setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+        });
+      });
+      header.appendChild(btn);
+      wrapper.appendChild(header);
+      wrapper.appendChild(pre);
+    });
+    document.querySelectorAll('table').forEach(function(table) {
+      if (!table.parentElement.classList.contains('table-wrap')) {
+        var wrapper = document.createElement('div');
+        wrapper.className = 'table-wrap';
+        table.parentNode.insertBefore(wrapper, table);
+        wrapper.appendChild(table);
+      }
+    });
+    // Reading progress bar
+    var progressBar = document.getElementById('reading-progress');
+    if (progressBar) {
+      window.addEventListener('scroll', function() {
+        var winScroll = document.documentElement.scrollTop;
+        var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        progressBar.style.width = height > 0 ? (winScroll / height * 100) + '%' : '0%';
+      });
+    }
+    // Dark mode toggle
+    var toggle = document.getElementById('theme-toggle');
+    if (toggle) {
+      var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      toggle.textContent = isDark ? '☀️' : '🌙';
+      toggle.addEventListener('click', function() {
+        var dark = document.documentElement.getAttribute('data-theme') === 'dark';
+        if (dark) {
+          document.documentElement.removeAttribute('data-theme');
+          localStorage.setItem('theme', 'light');
+          toggle.textContent = '🌙';
+        } else {
+          document.documentElement.setAttribute('data-theme', 'dark');
+          localStorage.setItem('theme', 'dark');
+          toggle.textContent = '☀️';
+        }
+      });
+    }
+  });</script>
+</head>
+<body>
+  <div class="progress-container"><div class="progress-bar" id="reading-progress"></div></div>
+  <nav class="navbar">
+    <div class="container">
+      <div class="nav-brand">
+        <span class="nav-icon">💻</span>
+        <span class="nav-title">CS_basics</span>
+      </div>
+      <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+      <div class="nav-links">
+        <a href="../index.html" class="">Home</a>
+        <a href="../cheatsheets.html" class="">Cheat Sheets</a>
+        <a href="../patterns.html" class="">Pattern Recognition</a>
+        <a href="../faqs.html" class="active">FAQs</a>
+        <a href="../resources.html" class="">Resources</a>
+        <a href="../lc-explorer.html" class="">LC Explorer</a>
+        <a href="../lc-random-picker.html" class="">🎲 Random Picker</a>
+        <a href="../algo_demo/index.html" class="">Visualizer</a>
+        <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">&#127769;</button>
+        <a href="https://github.com/yennanliu/CS_basics" target="_blank" class="github-link" aria-label="GitHub">
+          <svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor">
+            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container">
+    <div class="content">
+      
+      <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../faqs.html">FAQs</a> <span class="sep">›</span> <span class="current">Db Isolation Demo Mysql</span></nav>
+      <div class="cheatsheet-header">
+        <h1>Db Isolation Demo Mysql</h1>
+        <span class="last-updated">Last updated: Apr 16, 2026</span>
+      </div>
+      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#">設定隔離級別</a></li><li class="toc-sub"><a href="#session">Session 級別（當前連線）</a></li><li class="toc-sub"><a href="#-1">全域級別（影響所有新連線）</a></li><li class="toc-sub"><a href="#my-cnf">持久化設定（my.cnf）</a></li><li class="toc-sub"><a href="#-2">查看當前隔離級別</a></li><li class="toc-sub"><a href="#java-jdbc">Java JDBC 設定</a></li><li><a href="#-3">隔離級別演示</a></li><li><a href="#accounts">準備：建立 Accounts 表</a></li><li><a href="#demo-1-dirty-read-read-uncommitted">✅ Demo 1: Dirty Read (READ UNCOMMITTED)</a></li><li><a href="#demo-2-prevent-dirty-read-read-committed">✅ Demo 2: Prevent Dirty Read (READ COMMITTED)</a></li><li><a href="#demo-3-non-repeatable-read-fixed-by-repeatable-read">✅ Demo 3: Non-Repeatable Read (Fixed by REPEATABLE READ)</a></li><li><a href="#demo-4-phantom-read-fixed-by-serializable">✅ Demo 4: Phantom Read (Fixed by SERIALIZABLE)</a></li><li class="toc-sub"><a href="#summary">🧠 Summary</a></li></ul></div>
+      <div class="cheatsheet-content">
+        <h1 id="mysql" tabindex="-1"><a class="header-anchor" href="#mysql"><span>MySQL 隔離級別設定與實際演示</span></a></h1>
+<h2 id="" tabindex="-1"><a class="header-anchor" href="#"><span>設定隔離級別</span></a></h2>
+<h3 id="session" tabindex="-1"><a class="header-anchor" href="#session"><span>Session 級別（當前連線）</span></a></h3>
+<pre><code class="language-sql">SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;
+START TRANSACTION;
+-- 執行查詢
+COMMIT;
+</code></pre>
+<h3 id="-1" tabindex="-1"><a class="header-anchor" href="#-1"><span>全域級別（影響所有新連線）</span></a></h3>
+<pre><code class="language-sql">SET GLOBAL TRANSACTION ISOLATION LEVEL READ COMMITTED;
+-- 需要 SUPER 或 SYSTEM_VARIABLES_ADMIN 權限
+</code></pre>
+<h3 id="my-cnf" tabindex="-1"><a class="header-anchor" href="#my-cnf"><span>持久化設定（<code>my.cnf</code>）</span></a></h3>
+<pre><code class="language-ini">[mysqld]
+transaction-isolation = READ-COMMITTED
+</code></pre>
+<pre><code class="language-bash">sudo systemctl restart mysql
+</code></pre>
+<h3 id="-2" tabindex="-1"><a class="header-anchor" href="#-2"><span>查看當前隔離級別</span></a></h3>
+<pre><code class="language-sql">SELECT @@session.transaction_isolation;  -- Session 級別
+SELECT @@global.transaction_isolation;   -- 全域級別
+</code></pre>
+<h3 id="java-jdbc" tabindex="-1"><a class="header-anchor" href="#java-jdbc"><span>Java JDBC 設定</span></a></h3>
+<pre><code class="language-java">Connection conn = dataSource.getConnection();
+conn.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
+conn.setAutoCommit(false);
+conn.commit();
+</code></pre>
+<hr>
+<h2 id="-3" tabindex="-1"><a class="header-anchor" href="#-3"><span>隔離級別演示</span></a></h2>
+<blockquote>
+<p>使用 <code>accounts</code> 表，示範各隔離級別下不同異常的發生與防止。</p>
+</blockquote>
+<h2 id="accounts" tabindex="-1"><a class="header-anchor" href="#accounts"><span>準備：建立 Accounts 表</span></a></h2>
+<pre><code class="language-sql">DROP TABLE IF EXISTS accounts;
+CREATE TABLE accounts (
+    id INT PRIMARY KEY,
+    name VARCHAR(50),
+    balance INT
+);
+
+INSERT INTO accounts VALUES (1, 'Alice', 100), (2, 'Bob', 200);
+</code></pre>
+<hr>
+<h2 id="demo-1-dirty-read-read-uncommitted" tabindex="-1"><a class="header-anchor" href="#demo-1-dirty-read-read-uncommitted"><span>✅ Demo 1: Dirty Read (READ UNCOMMITTED)</span></a></h2>
+<p>Open <strong>Session A</strong>:</p>
+<pre><code class="language-sql">SET SESSION TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;
+START TRANSACTION;
+
+UPDATE accounts SET balance = balance - 50 WHERE id = 1;
+-- Don't commit yet
+</code></pre>
+<p>Then, in <strong>Session B</strong>:</p>
+<pre><code class="language-sql">SET SESSION TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;
+START TRANSACTION;
+
+SELECT * FROM accounts WHERE id = 1;
+-- Sees Alice’s balance as 50 (even though it's uncommitted)
+</code></pre>
+<blockquote>
+<p>🔴 <strong>Dirty read occurred</strong>. If Session A rolls back, Session B saw incorrect data.</p>
+</blockquote>
+<hr>
+<h2 id="demo-2-prevent-dirty-read-read-committed" tabindex="-1"><a class="header-anchor" href="#demo-2-prevent-dirty-read-read-committed"><span>✅ Demo 2: Prevent Dirty Read (READ COMMITTED)</span></a></h2>
+<p>In <strong>Session A</strong>:</p>
+<pre><code class="language-sql">SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED;
+START TRANSACTION;
+
+UPDATE accounts SET balance = balance - 50 WHERE id = 1;
+-- Don't commit yet
+</code></pre>
+<p>In <strong>Session B</strong>:</p>
+<pre><code class="language-sql">SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED;
+START TRANSACTION;
+
+SELECT * FROM accounts WHERE id = 1;
+-- Sees balance still 100 (no dirty read)
+</code></pre>
+<blockquote>
+<p>✅ Safer — only committed data is visible.</p>
+</blockquote>
+<hr>
+<h2 id="demo-3-non-repeatable-read-fixed-by-repeatable-read" tabindex="-1"><a class="header-anchor" href="#demo-3-non-repeatable-read-fixed-by-repeatable-read"><span>✅ Demo 3: Non-Repeatable Read (Fixed by REPEATABLE READ)</span></a></h2>
+<p>In <strong>Session A</strong>:</p>
+<pre><code class="language-sql">SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;
+START TRANSACTION;
+
+SELECT balance FROM accounts WHERE id = 2;
+-- returns 200
+</code></pre>
+<p>Then in <strong>Session B</strong>:</p>
+<pre><code class="language-sql">START TRANSACTION;
+UPDATE accounts SET balance = 250 WHERE id = 2;
+COMMIT;
+</code></pre>
+<p>Back in <strong>Session A</strong>:</p>
+<pre><code class="language-sql">SELECT balance FROM accounts WHERE id = 2;
+-- Still sees 200 (repeatable read)
+COMMIT;
+</code></pre>
+<blockquote>
+<p>✅ Prevents <strong>non-repeatable reads</strong> — same query returns the same result.</p>
+</blockquote>
+<hr>
+<h2 id="demo-4-phantom-read-fixed-by-serializable" tabindex="-1"><a class="header-anchor" href="#demo-4-phantom-read-fixed-by-serializable"><span>✅ Demo 4: Phantom Read (Fixed by SERIALIZABLE)</span></a></h2>
+<p>In <strong>Session A</strong>:</p>
+<pre><code class="language-sql">SET SESSION TRANSACTION ISOLATION LEVEL SERIALIZABLE;
+START TRANSACTION;
+
+SELECT * FROM accounts WHERE balance &gt; 100;
+-- Returns Bob only
+</code></pre>
+<p>In <strong>Session B</strong>:</p>
+<pre><code class="language-sql">START TRANSACTION;
+INSERT INTO accounts VALUES (3, 'Charlie', 150);
+-- This will block until Session A commits or rolls back
+</code></pre>
+<blockquote>
+<p>✅ Prevents <strong>phantom reads</strong> by locking ranges.</p>
+</blockquote>
+<hr>
+<h3 id="summary" tabindex="-1"><a class="header-anchor" href="#summary"><span>🧠 Summary</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>Level</th>
+<th>Prevents</th>
+<th>Use Case Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Read Uncommitted</td>
+<td>None</td>
+<td>Fast analytics (unsafe)</td>
+</tr>
+<tr>
+<td>Read Committed</td>
+<td>Dirty reads</td>
+<td>Common web apps (PostgreSQL default)</td>
+</tr>
+<tr>
+<td>Repeatable Read</td>
+<td>Dirty + non-repeatable</td>
+<td>Inventory, money transfer (MySQL default)</td>
+</tr>
+<tr>
+<td>Serializable</td>
+<td>All anomalies</td>
+<td>Critical booking, finance ops</td>
+</tr>
+</tbody>
+</table>
+<hr>
+
+      </div>
+      <div class="cheatsheet-footer">
+        <a href="../faqs.html" class="back-link">← Back to FAQs</a>
+        <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/faq/backend/db_isolation_demo_mysql.md" class="github-edit" target="_blank">
+          Edit on GitHub →
+        </a>
+      </div>
+    <nav class="prev-next"><a href="backend_be_programming_notes_pt3.html" class="prev-link">← Be Programming Notes Pt3</a><a href="backend_後端面試題總整理.html" class="next-link">後端面試題總整理 →</a></nav>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>CS_basics - Computer Science Fundamentals & Interview Preparation</p>
+      <p>
+        <a href="https://github.com/yennanliu/CS_basics">GitHub</a> •
+        <a href="https://github.com/yennanliu/CS_basics/tree/master/doc">Documentation</a> •
+        <a href="https://github.com/yennanliu/CS_basics/issues">Report Issues</a>
+      </p>
+    </div>
+  </footer>
+</body>
+</html>

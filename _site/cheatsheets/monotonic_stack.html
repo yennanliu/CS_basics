@@ -1,0 +1,1638 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Monotonic Stack - CS_basics</title>
+  <meta name="description" content="Computer Science fundamentals: algorithms, data structures, system design, and LeetCode solutions">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>CS</text></svg>">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="../vendor/fonts.css">
+  <link rel="stylesheet" href="../vendor/highlight/github-dark.min.css">
+  <script src="../vendor/highlight/highlight.min.js"></script>
+  <script>
+  // Apply theme before render to prevent flash
+  (function() {
+    var saved = localStorage.getItem('theme');
+    if (saved === 'dark' || (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      document.documentElement.setAttribute('data-theme', 'dark');
+    }
+  })();
+  </script>
+  <script>document.addEventListener('DOMContentLoaded', function() {
+    hljs.highlightAll();
+    document.querySelectorAll('pre code').forEach(function(codeEl) {
+      var pre = codeEl.parentElement;
+      var lang = '';
+      var cls = codeEl.className || '';
+      var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
+      if (m) lang = m[1];
+      var wrapper = document.createElement('div');
+      wrapper.className = 'code-block-wrapper';
+      pre.parentNode.insertBefore(wrapper, pre);
+      var header = document.createElement('div');
+      header.className = 'code-block-header';
+      if (lang) {
+        var label = document.createElement('span');
+        label.className = 'code-lang-label';
+        label.textContent = lang;
+        header.appendChild(label);
+      } else {
+        header.appendChild(document.createElement('span'));
+      }
+      var btn = document.createElement('button');
+      btn.className = 'copy-btn';
+      btn.textContent = 'Copy';
+      btn.addEventListener('click', function() {
+        navigator.clipboard.writeText(codeEl.textContent).then(function() {
+          btn.textContent = 'Copied!';
+          btn.classList.add('copied');
+          setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+        });
+      });
+      header.appendChild(btn);
+      wrapper.appendChild(header);
+      wrapper.appendChild(pre);
+    });
+    document.querySelectorAll('table').forEach(function(table) {
+      if (!table.parentElement.classList.contains('table-wrap')) {
+        var wrapper = document.createElement('div');
+        wrapper.className = 'table-wrap';
+        table.parentNode.insertBefore(wrapper, table);
+        wrapper.appendChild(table);
+      }
+    });
+    // Reading progress bar
+    var progressBar = document.getElementById('reading-progress');
+    if (progressBar) {
+      window.addEventListener('scroll', function() {
+        var winScroll = document.documentElement.scrollTop;
+        var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        progressBar.style.width = height > 0 ? (winScroll / height * 100) + '%' : '0%';
+      });
+    }
+    // Dark mode toggle
+    var toggle = document.getElementById('theme-toggle');
+    if (toggle) {
+      var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      toggle.textContent = isDark ? '☀️' : '🌙';
+      toggle.addEventListener('click', function() {
+        var dark = document.documentElement.getAttribute('data-theme') === 'dark';
+        if (dark) {
+          document.documentElement.removeAttribute('data-theme');
+          localStorage.setItem('theme', 'light');
+          toggle.textContent = '🌙';
+        } else {
+          document.documentElement.setAttribute('data-theme', 'dark');
+          localStorage.setItem('theme', 'dark');
+          toggle.textContent = '☀️';
+        }
+      });
+    }
+  });</script>
+</head>
+<body>
+  <div class="progress-container"><div class="progress-bar" id="reading-progress"></div></div>
+  <nav class="navbar">
+    <div class="container">
+      <div class="nav-brand">
+        <span class="nav-icon">💻</span>
+        <span class="nav-title">CS_basics</span>
+      </div>
+      <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+      <div class="nav-links">
+        <a href="../index.html" class="">Home</a>
+        <a href="../cheatsheets.html" class="active">Cheat Sheets</a>
+        <a href="../patterns.html" class="">Pattern Recognition</a>
+        <a href="../faqs.html" class="">FAQs</a>
+        <a href="../resources.html" class="">Resources</a>
+        <a href="../lc-explorer.html" class="">LC Explorer</a>
+        <a href="../lc-random-picker.html" class="">🎲 Random Picker</a>
+        <a href="../algo_demo/index.html" class="">Visualizer</a>
+        <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">&#127769;</button>
+        <a href="https://github.com/yennanliu/CS_basics" target="_blank" class="github-link" aria-label="GitHub">
+          <svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor">
+            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container">
+    <div class="content">
+      
+      <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">Monotonic Stack</span></nav>
+      <div class="cheatsheet-header">
+        <h1>Monotonic Stack</h1>
+        <span class="last-updated">Last updated: Mar 9, 2026</span>
+      </div>
+      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#overview">Overview</a></li><li class="toc-sub"><a href="#key-properties">Key Properties</a></li><li class="toc-sub"><a href="#references">References</a></li><li><a href="#problem-categories">Problem Categories</a></li><li class="toc-sub"><a href="#pattern-1-next-previous-greater-element">Pattern 1: Next/Previous Greater Element</a></li><li class="toc-sub"><a href="#pattern-2-next-previous-smaller-element">Pattern 2: Next/Previous Smaller Element</a></li><li class="toc-sub"><a href="#pattern-3-histogram-and-area-problems">Pattern 3: Histogram and Area Problems</a></li><li class="toc-sub"><a href="#pattern-4-sequence-order-and-validation">Pattern 4: Sequence Order and Validation</a></li><li class="toc-sub"><a href="#pattern-5-optimization-and-maximum-minimum">Pattern 5: Optimization and Maximum/Minimum</a></li><li class="toc-sub"><a href="#pattern-6-circular-arrays">Pattern 6: Circular Arrays</a></li><li><a href="#templates-algorithms">Templates &amp; Algorithms</a></li><li class="toc-sub"><a href="#template-comparison-table">Template Comparison Table</a></li><li class="toc-sub"><a href="#universal-template">Universal Template</a></li><li class="toc-sub"><a href="#template-1-next-greater-element-decreasing-stack">Template 1: Next Greater Element (Decreasing Stack)</a></li><li class="toc-sub"><a href="#template-2-next-smaller-element-increasing-stack">Template 2: Next Smaller Element (Increasing Stack)</a></li><li class="toc-sub"><a href="#template-3-largest-rectangle-in-histogram">Template 3: Largest Rectangle in Histogram</a></li><li class="toc-sub"><a href="#template-4-circular-array-processing">Template 4: Circular Array Processing</a></li><li class="toc-sub"><a href="#template-5-stack-with-additional-information">Template 5: Stack with Additional Information</a></li><li class="toc-sub"><a href="#template-6-pattern-validation-132-pattern">Template 6: Pattern Validation (132 Pattern)</a></li><li><a href="#problems-by-pattern">Problems by Pattern</a></li><li class="toc-sub"><a href="#pattern-based-problem-classification">Pattern-Based Problem Classification</a></li><li class="toc-sub"><a href="#problem-difficulty-distribution">Problem Difficulty Distribution</a></li><li class="toc-sub"><a href="#template-usage-frequency">Template Usage Frequency</a></li><li><a href="#pattern-selection-strategy">Pattern Selection Strategy</a></li><li class="toc-sub"><a href="#decision-framework-flowchart">Decision Framework Flowchart</a></li><li class="toc-sub"><a href="#step-by-step-problem-analysis">Step-by-Step Problem Analysis</a></li><li class="toc-sub"><a href="#template-selection-quick-guide">Template Selection Quick Guide</a></li><li><a href="#summary-quick-reference">Summary &amp; Quick Reference</a></li><li class="toc-sub"><a href="#complexity-quick-reference">Complexity Quick Reference</a></li><li class="toc-sub"><a href="#template-quick-reference">Template Quick Reference</a></li><li class="toc-sub"><a href="#common-patterns-tricks">Common Patterns &amp; Tricks</a></li><li class="toc-sub"><a href="#problem-solving-steps">Problem-Solving Steps</a></li><li class="toc-sub"><a href="#common-mistakes-tips">Common Mistakes &amp; Tips</a></li><li class="toc-sub"><a href="#interview-tips">Interview Tips</a></li><li class="toc-sub"><a href="#related-topics">Related Topics</a></li><li><a href="#lc-examples">LC Examples</a></li><li class="toc-sub"><a href="#2-1-daily-temperatures-lc-739-monotonic-decreasing-stack">2-1) Daily Temperatures (LC 739) — Monotonic Decreasing Stack</a></li><li class="toc-sub"><a href="#2-2-largest-rectangle-in-histogram-lc-84-monotonic-increasing-stack">2-2) Largest Rectangle in Histogram (LC 84) — Monotonic Increasing Stack</a></li><li class="toc-sub"><a href="#2-3-next-greater-element-i-lc-496-monotonic-stack-hashmap">2-3) Next Greater Element I (LC 496) — Monotonic Stack + HashMap</a></li><li class="toc-sub"><a href="#2-4-trapping-rain-water-lc-42-monotonic-stack">2-4) Trapping Rain Water (LC 42) — Monotonic Stack</a></li><li class="toc-sub"><a href="#2-5-next-greater-element-ii-lc-503-circular-monotonic-stack">2-5) Next Greater Element II (LC 503) — Circular Monotonic Stack</a></li><li class="toc-sub"><a href="#2-6-online-stock-span-lc-901-monotonic-decreasing-stack">2-6) Online Stock Span (LC 901) — Monotonic Decreasing Stack</a></li><li class="toc-sub"><a href="#2-7-sum-of-subarray-minimums-lc-907-monotonic-stack">2-7) Sum of Subarray Minimums (LC 907) — Monotonic Stack</a></li><li class="toc-sub"><a href="#2-8-remove-k-digits-lc-402-monotonic-increasing-stack">2-8) Remove K Digits (LC 402) — Monotonic Increasing Stack</a></li><li class="toc-sub"><a href="#2-9-maximal-rectangle-lc-85-histogram-monotonic-stack">2-9) Maximal Rectangle (LC 85) — Histogram + Monotonic Stack</a></li><li class="toc-sub"><a href="#2-10-car-fleet-lc-853-monotonic-stack-on-speed">2-10) Car Fleet (LC 853) — Monotonic Stack on Speed</a></li><li class="toc-sub"><a href="#2-11-asteroid-collision-lc-735-stack-simulation">2-11) Asteroid Collision (LC 735) — Stack Simulation</a></li></ul></div>
+      <div class="cheatsheet-content">
+        <h1 id="monotonic-stack-data-structure" tabindex="-1"><a class="header-anchor" href="#monotonic-stack-data-structure"><span>Monotonic Stack Data Structure</span></a></h1>
+<h2 id="overview" tabindex="-1"><a class="header-anchor" href="#overview"><span>Overview</span></a></h2>
+<p><strong>Monotonic Stack</strong> is a specialized stack data structure that maintains a monotonic (either strictly increasing or strictly decreasing) order of elements. It efficiently solves problems related to finding next greater/smaller elements, histogram areas, and sequence optimization problems.</p>
+<h3 id="key-properties" tabindex="-1"><a class="header-anchor" href="#key-properties"><span>Key Properties</span></a></h3>
+<ul>
+<li><strong>Time Complexity</strong>: O(n) for most operations (each element pushed/popped once)</li>
+<li><strong>Space Complexity</strong>: O(n) for the stack storage</li>
+<li><strong>Core Idea</strong>: Maintain monotonic order while processing elements sequentially</li>
+<li><strong>When to Use</strong>: Finding next/previous greater/smaller elements, histogram problems, sequence optimization</li>
+</ul>
+<h3 id="references" tabindex="-1"><a class="header-anchor" href="#references"><span>References</span></a></h3>
+<ul>
+<li><a href="https://leetcode.com/tag/monotonic-stack/">LeetCode Monotonic Stack Pattern</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Stack_(abstract_data_type)">Stack Data Structure Fundamentals</a></li>
+</ul>
+<h2 id="problem-categories" tabindex="-1"><a class="header-anchor" href="#problem-categories"><span>Problem Categories</span></a></h2>
+<h3 id="pattern-1-next-previous-greater-element" tabindex="-1"><a class="header-anchor" href="#pattern-1-next-previous-greater-element"><span><strong>Pattern 1: Next/Previous Greater Element</strong></span></a></h3>
+<ul>
+<li><strong>Description</strong>: Find the next or previous element that is greater than current element</li>
+<li><strong>Examples</strong>: LC 496 (Next Greater Element I), LC 503 (Next Greater Element II), LC 739 (Daily Temperatures)</li>
+<li><strong>Pattern</strong>: Use decreasing monotonic stack, pop when finding greater element</li>
+</ul>
+<h3 id="pattern-2-next-previous-smaller-element" tabindex="-1"><a class="header-anchor" href="#pattern-2-next-previous-smaller-element"><span><strong>Pattern 2: Next/Previous Smaller Element</strong></span></a></h3>
+<ul>
+<li><strong>Description</strong>: Find the next or previous element that is smaller than current element</li>
+<li><strong>Examples</strong>: LC 84 (Largest Rectangle), LC 42 (Trapping Rain Water), LC 907 (Sum of Subarray Minimums)</li>
+<li><strong>Pattern</strong>: Use increasing monotonic stack, pop when finding smaller element</li>
+</ul>
+<h3 id="pattern-3-histogram-and-area-problems" tabindex="-1"><a class="header-anchor" href="#pattern-3-histogram-and-area-problems"><span><strong>Pattern 3: Histogram and Area Problems</strong></span></a></h3>
+<ul>
+<li><strong>Description</strong>: Calculate areas, rectangles, or volumes using height information</li>
+<li><strong>Examples</strong>: LC 84 (Largest Rectangle in Histogram), LC 42 (Trapping Rain Water), LC 85 (Maximal Rectangle)</li>
+<li><strong>Pattern</strong>: Find boundaries using monotonic stack, calculate areas between boundaries</li>
+</ul>
+<h3 id="pattern-4-sequence-order-and-validation" tabindex="-1"><a class="header-anchor" href="#pattern-4-sequence-order-and-validation"><span><strong>Pattern 4: Sequence Order and Validation</strong></span></a></h3>
+<ul>
+<li><strong>Description</strong>: Validate sequences, find patterns, or maintain order constraints</li>
+<li><strong>Examples</strong>: LC 456 (132 Pattern), LC 901 (Online Stock Span), LC 1856 (Maximum Subarray Min-Product)</li>
+<li><strong>Pattern</strong>: Use stack to maintain sequence properties and validate patterns</li>
+</ul>
+<h3 id="pattern-5-optimization-and-maximum-minimum" tabindex="-1"><a class="header-anchor" href="#pattern-5-optimization-and-maximum-minimum"><span><strong>Pattern 5: Optimization and Maximum/Minimum</strong></span></a></h3>
+<ul>
+<li><strong>Description</strong>: Find optimal solutions involving maximum or minimum constraints</li>
+<li><strong>Examples</strong>: LC 1944 (Number of Visible People), LC 2104 (Sum of Subarray Ranges), LC 1793 (Maximum Score)</li>
+<li><strong>Pattern</strong>: Use monotonic properties to maintain optimal candidates</li>
+</ul>
+<h3 id="pattern-6-circular-arrays" tabindex="-1"><a class="header-anchor" href="#pattern-6-circular-arrays"><span><strong>Pattern 6: Circular Arrays</strong></span></a></h3>
+<ul>
+<li><strong>Description</strong>: Handle circular or cyclic array problems</li>
+<li><strong>Examples</strong>: LC 503 (Next Greater Element II), LC 853 (Car Fleet II)</li>
+<li><strong>Pattern</strong>: Process array twice or use modular arithmetic with monotonic stack</li>
+</ul>
+<h2 id="templates-algorithms" tabindex="-1"><a class="header-anchor" href="#templates-algorithms"><span>Templates &amp; Algorithms</span></a></h2>
+<h3 id="template-comparison-table" tabindex="-1"><a class="header-anchor" href="#template-comparison-table"><span>Template Comparison Table</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>Template Type</th>
+<th>Use Case</th>
+<th>Stack Order</th>
+<th>When to Use</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Decreasing Stack</strong></td>
+<td>Next/Previous Greater</td>
+<td>Decreasing</td>
+<td>Find elements greater than current</td>
+</tr>
+<tr>
+<td><strong>Increasing Stack</strong></td>
+<td>Next/Previous Smaller</td>
+<td>Increasing</td>
+<td>Find elements smaller than current</td>
+</tr>
+<tr>
+<td><strong>Histogram Area</strong></td>
+<td>Rectangle/Area Problems</td>
+<td>Increasing</td>
+<td>Calculate areas using heights</td>
+</tr>
+<tr>
+<td><strong>Circular Array</strong></td>
+<td>Cyclic Problems</td>
+<td>Varies</td>
+<td>Process circular sequences</td>
+</tr>
+<tr>
+<td><strong>Pattern Validation</strong></td>
+<td>Sequence Validation</td>
+<td>Varies</td>
+<td>Validate specific patterns</td>
+</tr>
+<tr>
+<td><strong>Optimization Stack</strong></td>
+<td>Max/Min Problems</td>
+<td>Varies</td>
+<td>Maintain optimal candidates</td>
+</tr>
+</tbody>
+</table>
+<h3 id="universal-template" tabindex="-1"><a class="header-anchor" href="#universal-template"><span>Universal Template</span></a></h3>
+<pre><code class="language-python">def monotonic_stack_template(arr):
+    &quot;&quot;&quot;
+    Universal template for monotonic stack problems
+    Modify the condition and processing logic based on problem requirements
+    &quot;&quot;&quot;
+    stack = []  # Store indices or values
+    result = []
+    
+    for i, val in enumerate(arr):
+        # Pop elements that violate monotonic property
+        while stack and should_pop(stack, val, i):
+            # Process the popped element
+            popped = stack.pop()
+            process_popped_element(popped, i, result)
+        
+        # Add current element to stack
+        stack.append(i)  # or val depending on problem
+    
+    # Process remaining elements in stack
+    while stack:
+        popped = stack.pop()
+        process_remaining_element(popped, result)
+    
+    return result
+
+def should_pop(stack, current_val, current_idx):
+    &quot;&quot;&quot;Define when to pop based on problem requirements&quot;&quot;&quot;
+    # For next greater: return arr[stack[-1]] &lt;= current_val
+    # For next smaller: return arr[stack[-1]] &gt;= current_val
+    pass
+
+def process_popped_element(popped_idx, current_idx, result):
+    &quot;&quot;&quot;Process element when it's popped (found its next greater/smaller)&quot;&quot;&quot;
+    pass
+
+def process_remaining_element(popped_idx, result):
+    &quot;&quot;&quot;Process elements remaining in stack at the end&quot;&quot;&quot;
+    pass
+</code></pre>
+<pre><code class="language-java">// Java Universal Template
+public int[] monotonicStackTemplate(int[] arr) {
+    Stack&lt;Integer&gt; stack = new Stack&lt;&gt;();
+    int[] result = new int[arr.length];
+    
+    for (int i = 0; i &lt; arr.length; i++) {
+        // Pop elements that violate monotonic property
+        while (!stack.isEmpty() &amp;&amp; shouldPop(stack, arr, i)) {
+            int poppedIdx = stack.pop();
+            processElement(poppedIdx, i, result, arr);
+        }
+        
+        // Add current element to stack
+        stack.push(i);
+    }
+    
+    // Process remaining elements
+    while (!stack.isEmpty()) {
+        int poppedIdx = stack.pop();
+        processRemainingElement(poppedIdx, result);
+    }
+    
+    return result;
+}
+
+private boolean shouldPop(Stack&lt;Integer&gt; stack, int[] arr, int currentIdx) {
+    // Define condition based on problem requirements
+    return arr[stack.peek()] &lt;= arr[currentIdx]; // For next greater
+}
+</code></pre>
+<h3 id="template-1-next-greater-element-decreasing-stack" tabindex="-1"><a class="header-anchor" href="#template-1-next-greater-element-decreasing-stack"><span>Template 1: Next Greater Element (Decreasing Stack)</span></a></h3>
+<pre><code class="language-python">def next_greater_element(nums):
+    &quot;&quot;&quot;
+    Find next greater element for each element
+    LC 496, LC 503, LC 739
+    &quot;&quot;&quot;
+    n = len(nums)
+    result = [-1] * n
+    stack = []  # Store indices
+    
+    for i in range(n):
+        # Pop smaller or equal elements
+        while stack and nums[stack[-1]] &lt; nums[i]:
+            idx = stack.pop()
+            result[idx] = nums[i]  # Found next greater
+        
+        stack.append(i)
+    
+    return result
+</code></pre>
+<pre><code class="language-java">// Java Template 1
+public int[] nextGreaterElement(int[] nums) {
+    int n = nums.length;
+    int[] result = new int[n];
+    Arrays.fill(result, -1);
+    Stack&lt;Integer&gt; stack = new Stack&lt;&gt;();
+    
+    for (int i = 0; i &lt; n; i++) {
+        while (!stack.isEmpty() &amp;&amp; nums[stack.peek()] &lt; nums[i]) {
+            result[stack.pop()] = nums[i];
+        }
+        stack.push(i);
+    }
+    
+    return result;
+}
+</code></pre>
+<h3 id="template-2-next-smaller-element-increasing-stack" tabindex="-1"><a class="header-anchor" href="#template-2-next-smaller-element-increasing-stack"><span>Template 2: Next Smaller Element (Increasing Stack)</span></a></h3>
+<pre><code class="language-python">def next_smaller_element(nums):
+    &quot;&quot;&quot;
+    Find next smaller element for each element
+    Used in LC 84, LC 42
+    &quot;&quot;&quot;
+    n = len(nums)
+    result = [-1] * n
+    stack = []  # Store indices
+    
+    for i in range(n):
+        # Pop greater or equal elements
+        while stack and nums[stack[-1]] &gt; nums[i]:
+            idx = stack.pop()
+            result[idx] = nums[i]  # Found next smaller
+        
+        stack.append(i)
+    
+    return result
+</code></pre>
+<h3 id="template-3-largest-rectangle-in-histogram" tabindex="-1"><a class="header-anchor" href="#template-3-largest-rectangle-in-histogram"><span>Template 3: Largest Rectangle in Histogram</span></a></h3>
+<pre><code class="language-python">def largest_rectangle_area(heights):
+    &quot;&quot;&quot;
+    Find largest rectangle area in histogram
+    LC 84, LC 85
+    &quot;&quot;&quot;
+    stack = []  # Store indices
+    max_area = 0
+    heights.append(0)  # Add sentinel
+    
+    for i, h in enumerate(heights):
+        # Pop taller bars and calculate area
+        while stack and heights[stack[-1]] &gt; h:
+            height = heights[stack.pop()]
+            width = i if not stack else i - stack[-1] - 1
+            max_area = max(max_area, height * width)
+        
+        stack.append(i)
+    
+    return max_area
+</code></pre>
+<pre><code class="language-java">// Java Template 3
+public int largestRectangleArea(int[] heights) {
+    Stack&lt;Integer&gt; stack = new Stack&lt;&gt;();
+    int maxArea = 0;
+    int n = heights.length;
+    
+    for (int i = 0; i &lt;= n; i++) {
+        int h = (i == n) ? 0 : heights[i];
+        
+        while (!stack.isEmpty() &amp;&amp; heights[stack.peek()] &gt; h) {
+            int height = heights[stack.pop()];
+            int width = stack.isEmpty() ? i : i - stack.peek() - 1;
+            maxArea = Math.max(maxArea, height * width);
+        }
+        
+        stack.push(i);
+    }
+    
+    return maxArea;
+}
+</code></pre>
+<h3 id="template-4-circular-array-processing" tabindex="-1"><a class="header-anchor" href="#template-4-circular-array-processing"><span>Template 4: Circular Array Processing</span></a></h3>
+<pre><code class="language-python">def next_greater_circular(nums):
+    &quot;&quot;&quot;
+    Find next greater element in circular array
+    LC 503
+    &quot;&quot;&quot;
+    n = len(nums)
+    result = [-1] * n
+    stack = []
+    
+    # Process array twice to handle circular nature
+    for i in range(2 * n):
+        # Pop smaller elements
+        while stack and nums[stack[-1]] &lt; nums[i % n]:
+            idx = stack.pop()
+            result[idx] = nums[i % n]
+        
+        # Only add indices from first pass
+        if i &lt; n:
+            stack.append(i)
+    
+    return result
+</code></pre>
+<h3 id="template-5-stack-with-additional-information" tabindex="-1"><a class="header-anchor" href="#template-5-stack-with-additional-information"><span>Template 5: Stack with Additional Information</span></a></h3>
+<pre><code class="language-python">def monotonic_stack_with_info(nums):
+    &quot;&quot;&quot;
+    Store additional information with stack elements
+    Used for complex calculations
+    &quot;&quot;&quot;
+    stack = []  # Store (index, value, additional_info)
+    result = []
+    
+    for i, val in enumerate(nums):
+        while stack and stack[-1][1] &lt;= val:
+            idx, old_val, info = stack.pop()
+            # Process with additional information
+            result.append(calculate_result(idx, i, old_val, val, info))
+        
+        # Calculate additional information for current element
+        additional_info = calculate_info(val, stack)
+        stack.append((i, val, additional_info))
+    
+    return result
+</code></pre>
+<h3 id="template-6-pattern-validation-132-pattern" tabindex="-1"><a class="header-anchor" href="#template-6-pattern-validation-132-pattern"><span>Template 6: Pattern Validation (132 Pattern)</span></a></h3>
+<pre><code class="language-python">def find_132_pattern(nums):
+    &quot;&quot;&quot;
+    Find 132 pattern in array
+    LC 456
+    &quot;&quot;&quot;
+    n = len(nums)
+    if n &lt; 3:
+        return False
+    
+    stack = []  # Store potential k values (decreasing)
+    second = float('-inf')  # The &quot;2&quot; in 132 pattern
+    
+    # Traverse from right to left
+    for i in range(n - 1, -1, -1):
+        if nums[i] &lt; second:  # Found &quot;1&quot; &lt; &quot;2&quot;
+            return True
+        
+        # Pop smaller values and update second
+        while stack and stack[-1] &lt; nums[i]:
+            second = stack.pop()
+        
+        stack.append(nums[i])
+    
+    return False
+</code></pre>
+<h2 id="problems-by-pattern" tabindex="-1"><a class="header-anchor" href="#problems-by-pattern"><span>Problems by Pattern</span></a></h2>
+<h3 id="pattern-based-problem-classification" tabindex="-1"><a class="header-anchor" href="#pattern-based-problem-classification"><span>Pattern-Based Problem Classification</span></a></h3>
+<h4 id="pattern-1-next-previous-greater-element-problems" tabindex="-1"><a class="header-anchor" href="#pattern-1-next-previous-greater-element-problems"><span><strong>Pattern 1: Next/Previous Greater Element Problems</strong></span></a></h4>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC #</th>
+<th>Key Technique</th>
+<th>Difficulty</th>
+<th>Template</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Next Greater Element I</td>
+<td>496</td>
+<td>Decreasing stack</td>
+<td>Easy</td>
+<td>Template 1</td>
+</tr>
+<tr>
+<td>Next Greater Element II</td>
+<td>503</td>
+<td>Circular array</td>
+<td>Medium</td>
+<td>Template 4</td>
+</tr>
+<tr>
+<td>Daily Temperatures</td>
+<td>739</td>
+<td>Distance calculation</td>
+<td>Medium</td>
+<td>Template 1</td>
+</tr>
+<tr>
+<td>Remove K Digits</td>
+<td>402</td>
+<td>Greedy + stack</td>
+<td>Medium</td>
+<td>Template 1</td>
+</tr>
+<tr>
+<td>Remove Duplicate Letters</td>
+<td>316</td>
+<td>Lexicographical + stack</td>
+<td>Medium</td>
+<td>Template 1</td>
+</tr>
+<tr>
+<td>Sliding Window Maximum</td>
+<td>239</td>
+<td>Monotonic deque</td>
+<td>Hard</td>
+<td>Template 1</td>
+</tr>
+<tr>
+<td>Shortest Unsorted Array</td>
+<td>581</td>
+<td>Two-pass stack</td>
+<td>Medium</td>
+<td>Template 1</td>
+</tr>
+<tr>
+<td>Sum of Subarray Ranges</td>
+<td>2104</td>
+<td>Next greater + smaller</td>
+<td>Medium</td>
+<td>Template 1+2</td>
+</tr>
+</tbody>
+</table>
+<h4 id="pattern-2-next-previous-smaller-element-problems" tabindex="-1"><a class="header-anchor" href="#pattern-2-next-previous-smaller-element-problems"><span><strong>Pattern 2: Next/Previous Smaller Element Problems</strong></span></a></h4>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC #</th>
+<th>Key Technique</th>
+<th>Difficulty</th>
+<th>Template</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Largest Rectangle in Histogram</td>
+<td>84</td>
+<td>Area calculation</td>
+<td>Hard</td>
+<td>Template 3</td>
+</tr>
+<tr>
+<td>Maximal Rectangle</td>
+<td>85</td>
+<td>2D histogram</td>
+<td>Hard</td>
+<td>Template 3</td>
+</tr>
+<tr>
+<td>Sum of Subarray Minimums</td>
+<td>907</td>
+<td>Contribution method</td>
+<td>Medium</td>
+<td>Template 2</td>
+</tr>
+<tr>
+<td>Number of Valid Subarrays</td>
+<td>1063</td>
+<td>Smaller element count</td>
+<td>Medium</td>
+<td>Template 2</td>
+</tr>
+<tr>
+<td>Minimum Cost Tree From Leaf Values</td>
+<td>1130</td>
+<td>Optimal merging</td>
+<td>Medium</td>
+<td>Template 2</td>
+</tr>
+<tr>
+<td>Find the Most Competitive Subsequence</td>
+<td>1673</td>
+<td>Subsequence selection</td>
+<td>Medium</td>
+<td>Template 2</td>
+</tr>
+<tr>
+<td>Maximum Subarray Min-Product</td>
+<td>1856</td>
+<td>Min value as pivot</td>
+<td>Medium</td>
+<td>Template 2</td>
+</tr>
+</tbody>
+</table>
+<h4 id="pattern-3-histogram-and-area-problems-1" tabindex="-1"><a class="header-anchor" href="#pattern-3-histogram-and-area-problems-1"><span><strong>Pattern 3: Histogram and Area Problems</strong></span></a></h4>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC #</th>
+<th>Key Technique</th>
+<th>Difficulty</th>
+<th>Template</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Trapping Rain Water</td>
+<td>42</td>
+<td>Water level calculation</td>
+<td>Hard</td>
+<td>Template 2</td>
+</tr>
+<tr>
+<td>Container With Most Water</td>
+<td>11</td>
+<td>Two pointers alternative</td>
+<td>Medium</td>
+<td>Template 2</td>
+</tr>
+<tr>
+<td>Maximal Rectangle</td>
+<td>85</td>
+<td>Row-wise histogram</td>
+<td>Hard</td>
+<td>Template 3</td>
+</tr>
+<tr>
+<td>Maximum Rectangle</td>
+<td>221</td>
+<td>DP + histogram</td>
+<td>Medium</td>
+<td>Template 3</td>
+</tr>
+<tr>
+<td>Minimum Number of Taps</td>
+<td>1326</td>
+<td>Interval coverage</td>
+<td>Hard</td>
+<td>Template 2</td>
+</tr>
+<tr>
+<td>Constrained Subsequence Sum</td>
+<td>1425</td>
+<td>DP + monotonic deque</td>
+<td>Hard</td>
+<td>Template 2</td>
+</tr>
+</tbody>
+</table>
+<h4 id="pattern-4-sequence-order-and-validation-problems" tabindex="-1"><a class="header-anchor" href="#pattern-4-sequence-order-and-validation-problems"><span><strong>Pattern 4: Sequence Order and Validation Problems</strong></span></a></h4>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC #</th>
+<th>Key Technique</th>
+<th>Difficulty</th>
+<th>Template</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>132 Pattern</td>
+<td>456</td>
+<td>Pattern detection</td>
+<td>Medium</td>
+<td>Template 6</td>
+</tr>
+<tr>
+<td>Online Stock Span</td>
+<td>901</td>
+<td>Monotonic stack</td>
+<td>Medium</td>
+<td>Template 1</td>
+</tr>
+<tr>
+<td>Score of Parentheses</td>
+<td>856</td>
+<td>Nested structure</td>
+<td>Medium</td>
+<td>Template 5</td>
+</tr>
+<tr>
+<td>Valid Parenthesis String</td>
+<td>678</td>
+<td>Balance validation</td>
+<td>Medium</td>
+<td>Template 5</td>
+</tr>
+<tr>
+<td>Minimum Add to Make Parentheses Valid</td>
+<td>921</td>
+<td>Balance counting</td>
+<td>Medium</td>
+<td>Template 5</td>
+</tr>
+<tr>
+<td>Validate Stack Sequences</td>
+<td>946</td>
+<td>Sequence simulation</td>
+<td>Medium</td>
+<td>Template 5</td>
+</tr>
+<tr>
+<td>Maximum Nesting Depth of Parentheses</td>
+<td>1614</td>
+<td>Depth tracking</td>
+<td>Easy</td>
+<td>Template 5</td>
+</tr>
+<tr>
+<td>Minimum Remove to Make Valid Parentheses</td>
+<td>1249</td>
+<td>Balance + removal</td>
+<td>Medium</td>
+<td>Template 5</td>
+</tr>
+</tbody>
+</table>
+<h4 id="pattern-5-optimization-and-maximum-minimum-problems" tabindex="-1"><a class="header-anchor" href="#pattern-5-optimization-and-maximum-minimum-problems"><span><strong>Pattern 5: Optimization and Maximum/Minimum Problems</strong></span></a></h4>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC #</th>
+<th>Key Technique</th>
+<th>Difficulty</th>
+<th>Template</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Maximum Score of Good Subarray</td>
+<td>1793</td>
+<td>Two pointers + stack</td>
+<td>Hard</td>
+<td>Template 2</td>
+</tr>
+<tr>
+<td>Number of Visible People in Queue</td>
+<td>1944</td>
+<td>Line of sight</td>
+<td>Medium</td>
+<td>Template 1</td>
+</tr>
+<tr>
+<td>Car Fleet</td>
+<td>853</td>
+<td>Time calculation</td>
+<td>Medium</td>
+<td>Template 1</td>
+</tr>
+<tr>
+<td>Car Fleet II</td>
+<td>1776</td>
+<td>Collision time</td>
+<td>Hard</td>
+<td>Template 1</td>
+</tr>
+<tr>
+<td>Buildings With Ocean View</td>
+<td>1762</td>
+<td>Right-to-left scan</td>
+<td>Medium</td>
+<td>Template 1</td>
+</tr>
+<tr>
+<td>Find the Winner of Circular Game</td>
+<td>1823</td>
+<td>Josephus problem</td>
+<td>Medium</td>
+<td>Template 4</td>
+</tr>
+<tr>
+<td>Maximum Width Ramp</td>
+<td>962</td>
+<td>Index difference</td>
+<td>Medium</td>
+<td>Template 1</td>
+</tr>
+<tr>
+<td>Pancake Sorting</td>
+<td>969</td>
+<td>Reverse operations</td>
+<td>Medium</td>
+<td>Template 1</td>
+</tr>
+</tbody>
+</table>
+<h4 id="pattern-6-circular-array-problems" tabindex="-1"><a class="header-anchor" href="#pattern-6-circular-array-problems"><span><strong>Pattern 6: Circular Array Problems</strong></span></a></h4>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC #</th>
+<th>Key Technique</th>
+<th>Difficulty</th>
+<th>Template</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Next Greater Element II</td>
+<td>503</td>
+<td>Double array traversal</td>
+<td>Medium</td>
+<td>Template 4</td>
+</tr>
+<tr>
+<td>Car Fleet II</td>
+<td>1776</td>
+<td>Circular collision</td>
+<td>Hard</td>
+<td>Template 4</td>
+</tr>
+<tr>
+<td>Circular Array Loop</td>
+<td>457</td>
+<td>Cycle detection</td>
+<td>Medium</td>
+<td>Template 4</td>
+</tr>
+<tr>
+<td>Design Circular Queue</td>
+<td>622</td>
+<td>Circular buffer</td>
+<td>Medium</td>
+<td>Template 4</td>
+</tr>
+<tr>
+<td>Design Circular Deque</td>
+<td>641</td>
+<td>Double-ended circular</td>
+<td>Medium</td>
+<td>Template 4</td>
+</tr>
+</tbody>
+</table>
+<h4 id="advanced-mixed-pattern-problems" tabindex="-1"><a class="header-anchor" href="#advanced-mixed-pattern-problems"><span><strong>Advanced/Mixed Pattern Problems</strong></span></a></h4>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC #</th>
+<th>Key Technique</th>
+<th>Difficulty</th>
+<th>Template</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Sum of Total Strength of Wizards</td>
+<td>2281</td>
+<td>Multiple stacks</td>
+<td>Hard</td>
+<td>Multiple</td>
+</tr>
+<tr>
+<td>Number of Ways to Rearrange Sticks</td>
+<td>1866</td>
+<td>Combinatorics + stack</td>
+<td>Hard</td>
+<td>Template 5</td>
+</tr>
+<tr>
+<td>Basic Calculator</td>
+<td>224</td>
+<td>Expression evaluation</td>
+<td>Hard</td>
+<td>Template 5</td>
+</tr>
+<tr>
+<td>Basic Calculator II</td>
+<td>227</td>
+<td>Operator precedence</td>
+<td>Medium</td>
+<td>Template 5</td>
+</tr>
+<tr>
+<td>Basic Calculator III</td>
+<td>772</td>
+<td>Full expression parsing</td>
+<td>Hard</td>
+<td>Template 5</td>
+</tr>
+<tr>
+<td>Evaluate Reverse Polish Notation</td>
+<td>150</td>
+<td>Postfix evaluation</td>
+<td>Medium</td>
+<td>Template 5</td>
+</tr>
+<tr>
+<td>Decode String</td>
+<td>394</td>
+<td>Nested decoding</td>
+<td>Medium</td>
+<td>Template 5</td>
+</tr>
+<tr>
+<td>Find Duplicate Subtrees</td>
+<td>652</td>
+<td>Tree serialization</td>
+<td>Medium</td>
+<td>Template 5</td>
+</tr>
+<tr>
+<td>Exclusive Time of Functions</td>
+<td>636</td>
+<td>Call stack simulation</td>
+<td>Medium</td>
+<td>Template 5</td>
+</tr>
+<tr>
+<td>Minimum Window Subsequence</td>
+<td>727</td>
+<td>Two pointers + stack</td>
+<td>Hard</td>
+<td>Template 5</td>
+</tr>
+</tbody>
+</table>
+<h3 id="problem-difficulty-distribution" tabindex="-1"><a class="header-anchor" href="#problem-difficulty-distribution"><span>Problem Difficulty Distribution</span></a></h3>
+<ul>
+<li><strong>Easy (8 problems)</strong>: Basic next greater/smaller, simple validations</li>
+<li><strong>Medium (28 problems)</strong>: Most common difficulty, various patterns</li>
+<li><strong>Hard (16 problems)</strong>: Complex area calculations, advanced optimizations</li>
+</ul>
+<h3 id="template-usage-frequency" tabindex="-1"><a class="header-anchor" href="#template-usage-frequency"><span>Template Usage Frequency</span></a></h3>
+<ul>
+<li><strong>Template 1 (Next Greater)</strong>: 15 problems</li>
+<li><strong>Template 2 (Next Smaller)</strong>: 12 problems</li>
+<li><strong>Template 3 (Histogram)</strong>: 8 problems</li>
+<li><strong>Template 4 (Circular)</strong>: 6 problems</li>
+<li><strong>Template 5 (Validation/Complex)</strong>: 11 problems</li>
+<li><strong>Multiple Templates</strong>: 8 problems</li>
+</ul>
+<h2 id="pattern-selection-strategy" tabindex="-1"><a class="header-anchor" href="#pattern-selection-strategy"><span>Pattern Selection Strategy</span></a></h2>
+<h3 id="decision-framework-flowchart" tabindex="-1"><a class="header-anchor" href="#decision-framework-flowchart"><span>Decision Framework Flowchart</span></a></h3>
+<pre><code>Problem Analysis for Monotonic Stack:
+
+1. Does the problem involve finding next/previous elements?
+   ├── YES: Next/Previous GREATER elements?
+   │   ├── YES: Use Template 1 (Decreasing Stack)
+   │   │   ├── Array is circular? → Use Template 4 (Circular)
+   │   │   └── Standard case → Template 1
+   │   └── NO: Next/Previous SMALLER elements?
+   │       ├── YES: Use Template 2 (Increasing Stack)
+   │       └── NO: Continue to step 2
+   └── NO: Continue to step 2
+
+2. Does the problem involve heights/areas/rectangles?
+   ├── YES: Rectangle area calculation?
+   │   ├── YES: Use Template 3 (Histogram)
+   │   └── NO: Water trapping/volume?
+   │       └── YES: Use Template 2 (Next Smaller)
+   └── NO: Continue to step 3
+
+3. Does the problem involve sequence validation/patterns?
+   ├── YES: Parentheses/brackets?
+   │   ├── YES: Use Template 5 (Validation)
+   │   └── NO: Specific pattern (like 132)?
+   │       └── YES: Use Template 6 (Pattern Detection)
+   └── NO: Continue to step 4
+
+4. Does the problem involve optimization/max-min constraints?
+   ├── YES: Multiple criteria optimization?
+   │   ├── YES: Use Template 5 (Complex Info)
+   │   └── NO: Simple max/min tracking?
+   │       └── YES: Use Template 1 or 2
+   └── NO: Continue to step 5
+
+5. Does the problem involve circular arrays or cyclic behavior?
+   ├── YES: Use Template 4 (Circular Processing)
+   └── NO: Consider if monotonic stack is the right approach
+       └── May need different data structure/algorithm
+</code></pre>
+<h3 id="step-by-step-problem-analysis" tabindex="-1"><a class="header-anchor" href="#step-by-step-problem-analysis"><span>Step-by-Step Problem Analysis</span></a></h3>
+<ol>
+<li>
+<p><strong>Identify the Core Requirement</strong></p>
+<ul>
+<li>Next/Previous element queries → Templates 1, 2, 4</li>
+<li>Area/Rectangle calculations → Template 3</li>
+<li>Pattern validation → Templates 5, 6</li>
+<li>Optimization problems → Templates 1, 2, 5</li>
+</ul>
+</li>
+<li>
+<p><strong>Determine Stack Order</strong></p>
+<ul>
+<li>Need greater elements → Decreasing stack (pop smaller)</li>
+<li>Need smaller elements → Increasing stack (pop greater)</li>
+<li>Area calculations → Usually increasing stack</li>
+<li>Pattern detection → Varies by pattern</li>
+</ul>
+</li>
+<li>
+<p><strong>Choose Processing Direction</strong></p>
+<ul>
+<li>Left to right: Most common, natural order</li>
+<li>Right to left: For “next” elements, sometimes easier</li>
+<li>Circular: Process array multiple times</li>
+</ul>
+</li>
+<li>
+<p><strong>Decide What to Store</strong></p>
+<ul>
+<li>Indices: When need position information</li>
+<li>Values: When only need element comparison</li>
+<li>Tuples: When need additional information</li>
+</ul>
+</li>
+</ol>
+<h3 id="template-selection-quick-guide" tabindex="-1"><a class="header-anchor" href="#template-selection-quick-guide"><span>Template Selection Quick Guide</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>Problem Type</th>
+<th>Template</th>
+<th>Stack Content</th>
+<th>Processing Order</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Next Greater</strong></td>
+<td>Template 1</td>
+<td>Indices</td>
+<td>Left to Right</td>
+</tr>
+<tr>
+<td><strong>Next Smaller</strong></td>
+<td>Template 2</td>
+<td>Indices</td>
+<td>Left to Right</td>
+</tr>
+<tr>
+<td><strong>Previous Greater</strong></td>
+<td>Template 1</td>
+<td>Indices</td>
+<td>Left to Right</td>
+</tr>
+<tr>
+<td><strong>Previous Smaller</strong></td>
+<td>Template 2</td>
+<td>Indices</td>
+<td>Left to Right</td>
+</tr>
+<tr>
+<td><strong>Histogram Areas</strong></td>
+<td>Template 3</td>
+<td>Indices</td>
+<td>Left to Right</td>
+</tr>
+<tr>
+<td><strong>Circular Arrays</strong></td>
+<td>Template 4</td>
+<td>Indices</td>
+<td>2x traversal</td>
+</tr>
+<tr>
+<td><strong>Pattern Detection</strong></td>
+<td>Template 6</td>
+<td>Values</td>
+<td>Right to Left</td>
+</tr>
+<tr>
+<td><strong>Complex Validation</strong></td>
+<td>Template 5</td>
+<td>Tuples</td>
+<td>Varies</td>
+</tr>
+</tbody>
+</table>
+<h2 id="summary-quick-reference" tabindex="-1"><a class="header-anchor" href="#summary-quick-reference"><span>Summary &amp; Quick Reference</span></a></h2>
+<h3 id="complexity-quick-reference" tabindex="-1"><a class="header-anchor" href="#complexity-quick-reference"><span>Complexity Quick Reference</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>Operation</th>
+<th>Time</th>
+<th>Space</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Push to Stack</strong></td>
+<td>O(1)</td>
+<td>-</td>
+<td>Each element pushed once</td>
+</tr>
+<tr>
+<td><strong>Pop from Stack</strong></td>
+<td>O(1)</td>
+<td>-</td>
+<td>Each element popped once</td>
+</tr>
+<tr>
+<td><strong>Overall Algorithm</strong></td>
+<td>O(n)</td>
+<td>O(n)</td>
+<td>Amortized linear time</td>
+</tr>
+<tr>
+<td><strong>Next Greater/Smaller</strong></td>
+<td>O(n)</td>
+<td>O(n)</td>
+<td>Single pass through array</td>
+</tr>
+<tr>
+<td><strong>Histogram Area</strong></td>
+<td>O(n)</td>
+<td>O(n)</td>
+<td>Linear scan with stack</td>
+</tr>
+<tr>
+<td><strong>Circular Array</strong></td>
+<td>O(n)</td>
+<td>O(n)</td>
+<td>Two passes, same complexity</td>
+</tr>
+</tbody>
+</table>
+<h3 id="template-quick-reference" tabindex="-1"><a class="header-anchor" href="#template-quick-reference"><span>Template Quick Reference</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>Template</th>
+<th>Pattern</th>
+<th>Key Code Pattern</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Template 1</strong></td>
+<td>Next Greater</td>
+<td><code>while stack and nums[stack[-1]] &lt; nums[i]</code></td>
+</tr>
+<tr>
+<td><strong>Template 2</strong></td>
+<td>Next Smaller</td>
+<td><code>while stack and nums[stack[-1]] &gt; nums[i]</code></td>
+</tr>
+<tr>
+<td><strong>Template 3</strong></td>
+<td>Histogram</td>
+<td><code>while stack and heights[stack[-1]] &gt; h</code></td>
+</tr>
+<tr>
+<td><strong>Template 4</strong></td>
+<td>Circular</td>
+<td><code>for i in range(2 * n)</code></td>
+</tr>
+<tr>
+<td><strong>Template 5</strong></td>
+<td>Validation</td>
+<td>Store additional info in stack</td>
+</tr>
+<tr>
+<td><strong>Template 6</strong></td>
+<td>Pattern Detection</td>
+<td>Right-to-left with condition tracking</td>
+</tr>
+</tbody>
+</table>
+<h3 id="common-patterns-tricks" tabindex="-1"><a class="header-anchor" href="#common-patterns-tricks"><span>Common Patterns &amp; Tricks</span></a></h3>
+<h4 id="next-greater-element-pattern" tabindex="-1"><a class="header-anchor" href="#next-greater-element-pattern"><span><strong>Next Greater Element Pattern</strong></span></a></h4>
+<pre><code class="language-python"># Standard next greater element
+def next_greater_elements(nums):
+    stack, result = [], [-1] * len(nums)
+    for i, num in enumerate(nums):
+        while stack and nums[stack[-1]] &lt; num:
+            result[stack.pop()] = num
+        stack.append(i)
+    return result
+</code></pre>
+<h4 id="contribution-method-for-subarrays" tabindex="-1"><a class="header-anchor" href="#contribution-method-for-subarrays"><span><strong>Contribution Method for Subarrays</strong></span></a></h4>
+<pre><code class="language-python"># Count contribution of each element
+def sum_subarray_mins(arr):
+    n = len(arr)
+    left = [-1] * n    # Previous smaller element
+    right = [n] * n    # Next smaller element
+    
+    # Calculate left boundaries
+    stack = []
+    for i in range(n):
+        while stack and arr[stack[-1]] &gt;= arr[i]:
+            stack.pop()
+        left[i] = stack[-1] if stack else -1
+        stack.append(i)
+    
+    # Calculate contribution
+    result = 0
+    for i in range(n):
+        result += arr[i] * (i - left[i]) * (right[i] - i)
+    return result % (10**9 + 7)
+</code></pre>
+<h4 id="histogram-area-calculation" tabindex="-1"><a class="header-anchor" href="#histogram-area-calculation"><span><strong>Histogram Area Calculation</strong></span></a></h4>
+<pre><code class="language-python"># Largest rectangle with height as key
+def largest_rectangle_area(heights):
+    stack = []
+    max_area = 0
+    for i, h in enumerate(heights + [0]):
+        while stack and heights[stack[-1]] &gt; h:
+            height = heights[stack.pop()]
+            width = i if not stack else i - stack[-1] - 1
+            max_area = max(max_area, height * width)
+        stack.append(i)
+    return max_area
+</code></pre>
+<h3 id="problem-solving-steps" tabindex="-1"><a class="header-anchor" href="#problem-solving-steps"><span>Problem-Solving Steps</span></a></h3>
+<ol>
+<li>
+<p><strong>Step 1: Identify Pattern Type</strong></p>
+<ul>
+<li>Look for keywords: next/previous, greater/smaller, area, rectangle</li>
+<li>Check for circular/cyclic requirements</li>
+<li>Identify if validation or pattern detection is needed</li>
+</ul>
+</li>
+<li>
+<p><strong>Step 2: Choose Appropriate Template</strong></p>
+<ul>
+<li>Use decision framework flowchart</li>
+<li>Consider stack order (increasing vs decreasing)</li>
+<li>Determine what information to store in stack</li>
+</ul>
+</li>
+<li>
+<p><strong>Step 3: Implement Core Logic</strong></p>
+<ul>
+<li>Set up stack and result containers</li>
+<li>Implement while loop with correct popping condition</li>
+<li>Process popped elements appropriately</li>
+<li>Handle remaining elements in stack</li>
+</ul>
+</li>
+<li>
+<p><strong>Step 4: Handle Edge Cases</strong></p>
+<ul>
+<li>Empty array</li>
+<li>Single element array</li>
+<li>All elements same</li>
+<li>Strictly increasing/decreasing sequences</li>
+</ul>
+</li>
+<li>
+<p><strong>Step 5: Optimize and Verify</strong></p>
+<ul>
+<li>Ensure O(n) time complexity</li>
+<li>Check space complexity</li>
+<li>Verify with sample inputs</li>
+<li>Handle integer overflow if needed</li>
+</ul>
+</li>
+</ol>
+<h3 id="common-mistakes-tips" tabindex="-1"><a class="header-anchor" href="#common-mistakes-tips"><span>Common Mistakes &amp; Tips</span></a></h3>
+<h4 id="common-mistakes" tabindex="-1"><a class="header-anchor" href="#common-mistakes"><span>Common Mistakes</span></a></h4>
+<ul>
+<li><strong>Wrong Stack Order</strong>: Using increasing stack for next greater problems (should be decreasing)</li>
+<li><strong>Index vs Value Confusion</strong>: Storing values when indices are needed for distance calculation</li>
+<li><strong>Incomplete Processing</strong>: Forgetting to process remaining elements in stack</li>
+<li><strong>Boundary Issues</strong>: Not handling empty stack cases properly</li>
+<li><strong>Circular Logic</strong>: Not processing circular arrays correctly (missing second pass)</li>
+<li><strong>Condition Errors</strong>: Using wrong comparison operators (&lt; vs &lt;=, &gt; vs &gt;=)</li>
+</ul>
+<h4 id="best-practices" tabindex="-1"><a class="header-anchor" href="#best-practices"><span>Best Practices</span></a></h4>
+<ul>
+<li><strong>Always store indices</strong> when you need position information</li>
+<li><strong>Use sentinel values</strong> (like 0) to simplify boundary handling</li>
+<li><strong>Process from left to right</strong> unless specifically need right-to-left</li>
+<li><strong>Clear variable names</strong>: <code>stack</code>, <code>result</code>, <code>current_idx</code> instead of <code>s</code>, <code>res</code>, <code>i</code></li>
+<li><strong>Comment the while condition</strong> to clarify monotonic property</li>
+<li><strong>Handle edge cases first</strong> before main algorithm</li>
+</ul>
+<h3 id="interview-tips" tabindex="-1"><a class="header-anchor" href="#interview-tips"><span>Interview Tips</span></a></h3>
+<ol>
+<li>
+<p><strong>Pattern Recognition</strong></p>
+<ul>
+<li>Listen for “next greater/smaller” keywords</li>
+<li>Area/rectangle problems often use monotonic stacks</li>
+<li>Sequence validation problems may need stack-based approaches</li>
+</ul>
+</li>
+<li>
+<p><strong>Problem-Solving Approach</strong></p>
+<ul>
+<li>Start with brute force to understand the problem</li>
+<li>Identify if monotonic property can optimize the solution</li>
+<li>Draw examples to visualize stack behavior</li>
+</ul>
+</li>
+<li>
+<p><strong>Communication During Interview</strong></p>
+<ul>
+<li>Explain why monotonic stack is appropriate</li>
+<li>Walk through the stack state with examples</li>
+<li>Discuss time/space complexity trade-offs</li>
+</ul>
+</li>
+<li>
+<p><strong>Implementation Tips</strong></p>
+<ul>
+<li>Start with the template structure</li>
+<li>Focus on getting the while condition right</li>
+<li>Test with simple examples (like [2,1,2,4,3,1])</li>
+</ul>
+</li>
+<li>
+<p><strong>Follow-up Questions to Expect</strong></p>
+<ul>
+<li>How to handle duplicates?</li>
+<li>What if we need previous instead of next?</li>
+<li>Can you optimize space complexity?</li>
+<li>How to extend to 2D problems?</li>
+</ul>
+</li>
+</ol>
+<h3 id="related-topics" tabindex="-1"><a class="header-anchor" href="#related-topics"><span>Related Topics</span></a></h3>
+<ul>
+<li><strong>Stack</strong>: Monotonic stack is a specialized application of stack data structure</li>
+<li><strong>Deque</strong>: Monotonic deque for sliding window maximum problems</li>
+<li><strong>Two Pointers</strong>: Alternative approach for some area calculation problems</li>
+<li><strong>Dynamic Programming</strong>: Some optimization problems combine DP with monotonic stacks</li>
+<li><strong>Binary Search</strong>: Finding boundaries in sorted structures</li>
+<li><strong>Segment Tree</strong>: Advanced queries on range maximum/minimum</li>
+</ul>
+<h2 id="lc-examples" tabindex="-1"><a class="header-anchor" href="#lc-examples"><span>LC Examples</span></a></h2>
+<h3 id="2-1-daily-temperatures-lc-739-monotonic-decreasing-stack" tabindex="-1"><a class="header-anchor" href="#2-1-daily-temperatures-lc-739-monotonic-decreasing-stack"><span>2-1) Daily Temperatures (LC 739) — Monotonic Decreasing Stack</span></a></h3>
+<blockquote>
+<p>Stack stores indices; pop when a warmer day is found.</p>
+</blockquote>
+<pre><code class="language-java">// LC 739 - Daily Temperatures
+// IDEA: Monotonic decreasing stack — pop when current &gt; stack top
+// time = O(N), space = O(N)
+public int[] dailyTemperatures(int[] temperatures) {
+    int n = temperatures.length;
+    int[] ans = new int[n];
+    Deque&lt;Integer&gt; stack = new ArrayDeque&lt;&gt;(); // stores indices
+    for (int i = 0; i &lt; n; i++) {
+        while (!stack.isEmpty() &amp;&amp; temperatures[i] &gt; temperatures[stack.peek()]) {
+            int idx = stack.pop();
+            ans[idx] = i - idx;
+        }
+        stack.push(i);
+    }
+    return ans;
+}
+</code></pre>
+<h3 id="2-2-largest-rectangle-in-histogram-lc-84-monotonic-increasing-stack" tabindex="-1"><a class="header-anchor" href="#2-2-largest-rectangle-in-histogram-lc-84-monotonic-increasing-stack"><span>2-2) Largest Rectangle in Histogram (LC 84) — Monotonic Increasing Stack</span></a></h3>
+<blockquote>
+<p>Pop a bar when a shorter bar arrives; compute area using width from stack.</p>
+</blockquote>
+<pre><code class="language-java">// LC 84 - Largest Rectangle in Histogram
+// IDEA: Monotonic increasing stack — pop and compute area on shorter bar
+// time = O(N), space = O(N)
+public int largestRectangleArea(int[] heights) {
+    Deque&lt;Integer&gt; stack = new ArrayDeque&lt;&gt;();
+    int maxArea = 0;
+    for (int i = 0; i &lt;= heights.length; i++) {
+        int h = (i == heights.length) ? 0 : heights[i];
+        while (!stack.isEmpty() &amp;&amp; h &lt; heights[stack.peek()]) {
+            int height = heights[stack.pop()];
+            int width = stack.isEmpty() ? i : i - stack.peek() - 1;
+            maxArea = Math.max(maxArea, height * width);
+        }
+        stack.push(i);
+    }
+    return maxArea;
+}
+</code></pre>
+<h3 id="2-3-next-greater-element-i-lc-496-monotonic-stack-hashmap" tabindex="-1"><a class="header-anchor" href="#2-3-next-greater-element-i-lc-496-monotonic-stack-hashmap"><span>2-3) Next Greater Element I (LC 496) — Monotonic Stack + HashMap</span></a></h3>
+<blockquote>
+<p>Precompute next greater element for nums2, then answer queries for nums1.</p>
+</blockquote>
+<pre><code class="language-java">// LC 496 - Next Greater Element I
+// IDEA: Monotonic decreasing stack on nums2; store results in map
+// time = O(M + N), space = O(M)
+public int[] nextGreaterElement(int[] nums1, int[] nums2) {
+    Map&lt;Integer, Integer&gt; map = new HashMap&lt;&gt;(); // val -&gt; next greater val
+    Deque&lt;Integer&gt; stack = new ArrayDeque&lt;&gt;();
+    for (int num : nums2) {
+        while (!stack.isEmpty() &amp;&amp; num &gt; stack.peek()) {
+            map.put(stack.pop(), num);
+        }
+        stack.push(num);
+    }
+    int[] ans = new int[nums1.length];
+    for (int i = 0; i &lt; nums1.length; i++) {
+        ans[i] = map.getOrDefault(nums1[i], -1);
+    }
+    return ans;
+}
+</code></pre>
+<h3 id="2-4-trapping-rain-water-lc-42-monotonic-stack" tabindex="-1"><a class="header-anchor" href="#2-4-trapping-rain-water-lc-42-monotonic-stack"><span>2-4) Trapping Rain Water (LC 42) — Monotonic Stack</span></a></h3>
+<blockquote>
+<p>Pop a bar when a taller bar arrives; water trapped = (min height difference) * width.</p>
+</blockquote>
+<pre><code class="language-java">// LC 42 - Trapping Rain Water
+// IDEA: Monotonic stack — pop when taller bar found, water fills between boundaries
+// time = O(N), space = O(N)
+public int trap(int[] height) {
+    Deque&lt;Integer&gt; stack = new ArrayDeque&lt;&gt;();
+    int water = 0;
+    for (int i = 0; i &lt; height.length; i++) {
+        while (!stack.isEmpty() &amp;&amp; height[i] &gt; height[stack.peek()]) {
+            int bottom = stack.pop();
+            if (stack.isEmpty()) break;
+            int left = stack.peek();
+            int width = i - left - 1;
+            int boundedHeight = Math.min(height[left], height[i]) - height[bottom];
+            water += width * boundedHeight;
+        }
+        stack.push(i);
+    }
+    return water;
+}
+</code></pre>
+<h3 id="2-5-next-greater-element-ii-lc-503-circular-monotonic-stack" tabindex="-1"><a class="header-anchor" href="#2-5-next-greater-element-ii-lc-503-circular-monotonic-stack"><span>2-5) Next Greater Element II (LC 503) — Circular Monotonic Stack</span></a></h3>
+<blockquote>
+<p>Process array twice (or use modulo) to handle circular next-greater queries.</p>
+</blockquote>
+<pre><code class="language-java">// LC 503 - Next Greater Element II (circular array)
+// IDEA: Monotonic stack — traverse 2n indices with modulo for circular effect
+// time = O(N), space = O(N)
+public int[] nextGreaterElements(int[] nums) {
+    int n = nums.length;
+    int[] ans = new int[n];
+    Arrays.fill(ans, -1);
+    Deque&lt;Integer&gt; stack = new ArrayDeque&lt;&gt;();
+    for (int i = 0; i &lt; 2 * n; i++) {
+        while (!stack.isEmpty() &amp;&amp; nums[i % n] &gt; nums[stack.peek()]) {
+            ans[stack.pop()] = nums[i % n];
+        }
+        if (i &lt; n) stack.push(i);
+    }
+    return ans;
+}
+</code></pre>
+<h3 id="2-6-online-stock-span-lc-901-monotonic-decreasing-stack" tabindex="-1"><a class="header-anchor" href="#2-6-online-stock-span-lc-901-monotonic-decreasing-stack"><span>2-6) Online Stock Span (LC 901) — Monotonic Decreasing Stack</span></a></h3>
+<blockquote>
+<p>Pop all previous prices &lt;= current; span = days since last greater price.</p>
+</blockquote>
+<pre><code class="language-java">// LC 901 - Online Stock Span
+// IDEA: Monotonic decreasing stack storing [price, span] pairs
+// time = O(1) amortized per call, space = O(N)
+class StockSpanner {
+    Deque&lt;int[]&gt; stack = new ArrayDeque&lt;&gt;(); // [price, span]
+    public int next(int price) {
+        int span = 1;
+        while (!stack.isEmpty() &amp;&amp; stack.peek()[0] &lt;= price) {
+            span += stack.pop()[1];
+        }
+        stack.push(new int[]{price, span});
+        return span;
+    }
+}
+</code></pre>
+<h3 id="2-7-sum-of-subarray-minimums-lc-907-monotonic-stack" tabindex="-1"><a class="header-anchor" href="#2-7-sum-of-subarray-minimums-lc-907-monotonic-stack"><span>2-7) Sum of Subarray Minimums (LC 907) — Monotonic Stack</span></a></h3>
+<blockquote>
+<p>For each element, find left/right boundaries where it is the minimum; use monotonic stack.</p>
+</blockquote>
+<pre><code class="language-java">// LC 907 - Sum of Subarray Minimums
+// IDEA: Monotonic stack — for each element find left &amp; right span as minimum
+// time = O(N), space = O(N)
+public int sumSubarrayMins(int[] arr) {
+    int n = arr.length;
+    int MOD = 1_000_000_007;
+    int[] left = new int[n], right = new int[n];
+    Deque&lt;Integer&gt; stack = new ArrayDeque&lt;&gt;();
+    // left[i] = distance to previous smaller element
+    for (int i = 0; i &lt; n; i++) {
+        while (!stack.isEmpty() &amp;&amp; arr[stack.peek()] &gt;= arr[i]) stack.pop();
+        left[i] = stack.isEmpty() ? i + 1 : i - stack.peek();
+        stack.push(i);
+    }
+    stack.clear();
+    // right[i] = distance to next smaller or equal element
+    for (int i = n-1; i &gt;= 0; i--) {
+        while (!stack.isEmpty() &amp;&amp; arr[stack.peek()] &gt; arr[i]) stack.pop();
+        right[i] = stack.isEmpty() ? n - i : stack.peek() - i;
+        stack.push(i);
+    }
+    long ans = 0;
+    for (int i = 0; i &lt; n; i++) ans = (ans + (long) arr[i] * left[i] * right[i]) % MOD;
+    return (int) ans;
+}
+</code></pre>
+<h3 id="2-8-remove-k-digits-lc-402-monotonic-increasing-stack" tabindex="-1"><a class="header-anchor" href="#2-8-remove-k-digits-lc-402-monotonic-increasing-stack"><span>2-8) Remove K Digits (LC 402) — Monotonic Increasing Stack</span></a></h3>
+<blockquote>
+<p>Maintain increasing stack; remove digits when a smaller digit arrives.</p>
+</blockquote>
+<pre><code class="language-java">// LC 402 - Remove K Digits
+// IDEA: Greedy + monotonic increasing stack — remove larger digits greedily
+// time = O(N), space = O(N)
+public String removeKdigits(String num, int k) {
+    Deque&lt;Character&gt; stack = new ArrayDeque&lt;&gt;();
+    for (char c : num.toCharArray()) {
+        while (k &gt; 0 &amp;&amp; !stack.isEmpty() &amp;&amp; stack.peek() &gt; c) {
+            stack.pop(); k--;
+        }
+        stack.push(c);
+    }
+    while (k-- &gt; 0) stack.pop(); // remove from top if k still &gt; 0
+    // reconstruct result in correct order (bottom to top of stack)
+    Deque&lt;Character&gt; result = new ArrayDeque&lt;&gt;(stack);
+    StringBuilder sb = new StringBuilder();
+    boolean leadingZero = true;
+    while (!result.isEmpty()) {
+        char c = result.pollFirst();
+        if (leadingZero &amp;&amp; c == '0') continue;
+        leadingZero = false;
+        sb.append(c);
+    }
+    return sb.length() == 0 ? &quot;0&quot; : sb.toString();
+}
+</code></pre>
+<h3 id="2-9-maximal-rectangle-lc-85-histogram-monotonic-stack" tabindex="-1"><a class="header-anchor" href="#2-9-maximal-rectangle-lc-85-histogram-monotonic-stack"><span>2-9) Maximal Rectangle (LC 85) — Histogram + Monotonic Stack</span></a></h3>
+<blockquote>
+<p>For each row, compute histogram heights; apply LC 84 largest rectangle logic per row.</p>
+</blockquote>
+<pre><code class="language-java">// LC 85 - Maximal Rectangle
+// IDEA: For each row build histogram; apply largestRectangleArea (LC 84) logic
+// time = O(M*N), space = O(N)
+public int maximalRectangle(char[][] matrix) {
+    if (matrix.length == 0) return 0;
+    int n = matrix[0].length, maxArea = 0;
+    int[] heights = new int[n];
+    for (char[] row : matrix) {
+        for (int j = 0; j &lt; n; j++)
+            heights[j] = row[j] == '0' ? 0 : heights[j] + 1;
+        maxArea = Math.max(maxArea, largestRectangle(heights));
+    }
+    return maxArea;
+}
+private int largestRectangle(int[] heights) {
+    Deque&lt;Integer&gt; stack = new ArrayDeque&lt;&gt;();
+    int max = 0;
+    for (int i = 0; i &lt;= heights.length; i++) {
+        int h = i == heights.length ? 0 : heights[i];
+        while (!stack.isEmpty() &amp;&amp; h &lt; heights[stack.peek()]) {
+            int height = heights[stack.pop()];
+            int width = stack.isEmpty() ? i : i - stack.peek() - 1;
+            max = Math.max(max, height * width);
+        }
+        stack.push(i);
+    }
+    return max;
+}
+</code></pre>
+<h3 id="2-10-car-fleet-lc-853-monotonic-stack-on-speed" tabindex="-1"><a class="header-anchor" href="#2-10-car-fleet-lc-853-monotonic-stack-on-speed"><span>2-10) Car Fleet (LC 853) — Monotonic Stack on Speed</span></a></h3>
+<blockquote>
+<p>Sort by position; stack tracks fleets — a car joining a fleet is removed.</p>
+</blockquote>
+<pre><code class="language-java">// LC 853 - Car Fleet
+// IDEA: Sort by position DESC; use stack to count distinct fleets
+// time = O(N log N), space = O(N)
+public int carFleet(int target, int[] position, int[] speed) {
+    int n = position.length;
+    Integer[] idx = new Integer[n];
+    for (int i = 0; i &lt; n; i++) idx[i] = i;
+    Arrays.sort(idx, (a, b) -&gt; position[b] - position[a]);
+    Deque&lt;Double&gt; stack = new ArrayDeque&lt;&gt;();
+    for (int i : idx) {
+        double time = (double)(target - position[i]) / speed[i];
+        if (stack.isEmpty() || time &gt; stack.peek()) stack.push(time);
+        // if time &lt;= top, this car catches up (joins the fleet)
+    }
+    return stack.size();
+}
+</code></pre>
+<h3 id="2-11-asteroid-collision-lc-735-stack-simulation" tabindex="-1"><a class="header-anchor" href="#2-11-asteroid-collision-lc-735-stack-simulation"><span>2-11) Asteroid Collision (LC 735) — Stack Simulation</span></a></h3>
+<blockquote>
+<p>Right-moving asteroids stay on stack; left-moving collide with top until stable.</p>
+</blockquote>
+<pre><code class="language-java">// LC 735 - Asteroid Collision
+// IDEA: Stack — simulate collisions between right (+) and left (-) asteroids
+// time = O(N), space = O(N)
+public int[] asteroidCollision(int[] asteroids) {
+    Deque&lt;Integer&gt; stack = new ArrayDeque&lt;&gt;();
+    for (int a : asteroids) {
+        boolean alive = true;
+        while (alive &amp;&amp; a &lt; 0 &amp;&amp; !stack.isEmpty() &amp;&amp; stack.peek() &gt; 0) {
+            if (stack.peek() &lt; -a) { stack.pop(); }      // stack top destroyed
+            else if (stack.peek() == -a) { stack.pop(); alive = false; } // both destroyed
+            else alive = false;                             // incoming destroyed
+        }
+        if (alive) stack.push(a);
+    }
+    int[] res = new int[stack.size()];
+    for (int i = res.length - 1; i &gt;= 0; i--) res[i] = stack.pop();
+    return res;
+}
+</code></pre>
+
+      </div>
+      <div class="cheatsheet-footer">
+        <a href="../cheatsheets.html" class="back-link">← Back to Cheat Sheets</a>
+        <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/monotonic_stack.md" class="github-edit" target="_blank">
+          Edit on GitHub →
+        </a>
+      </div>
+    <nav class="prev-next"><a href="monotonic_queue.html" class="prev-link">← Monotonic Queue</a><a href="n_sum.html" class="next-link">N Sum →</a></nav>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>CS_basics - Computer Science Fundamentals & Interview Preparation</p>
+      <p>
+        <a href="https://github.com/yennanliu/CS_basics">GitHub</a> •
+        <a href="https://github.com/yennanliu/CS_basics/tree/master/doc">Documentation</a> •
+        <a href="https://github.com/yennanliu/CS_basics/issues">Report Issues</a>
+      </p>
+    </div>
+  </footer>
+</body>
+</html>

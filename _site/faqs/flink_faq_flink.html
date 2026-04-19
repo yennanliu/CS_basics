@@ -1,0 +1,607 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Faq Flink - CS_basics</title>
+  <meta name="description" content="Computer Science fundamentals: algorithms, data structures, system design, and LeetCode solutions">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>CS</text></svg>">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="../vendor/fonts.css">
+  <link rel="stylesheet" href="../vendor/highlight/github-dark.min.css">
+  <script src="../vendor/highlight/highlight.min.js"></script>
+  <script>
+  // Apply theme before render to prevent flash
+  (function() {
+    var saved = localStorage.getItem('theme');
+    if (saved === 'dark' || (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      document.documentElement.setAttribute('data-theme', 'dark');
+    }
+  })();
+  </script>
+  <script>document.addEventListener('DOMContentLoaded', function() {
+    hljs.highlightAll();
+    document.querySelectorAll('pre code').forEach(function(codeEl) {
+      var pre = codeEl.parentElement;
+      var lang = '';
+      var cls = codeEl.className || '';
+      var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
+      if (m) lang = m[1];
+      var wrapper = document.createElement('div');
+      wrapper.className = 'code-block-wrapper';
+      pre.parentNode.insertBefore(wrapper, pre);
+      var header = document.createElement('div');
+      header.className = 'code-block-header';
+      if (lang) {
+        var label = document.createElement('span');
+        label.className = 'code-lang-label';
+        label.textContent = lang;
+        header.appendChild(label);
+      } else {
+        header.appendChild(document.createElement('span'));
+      }
+      var btn = document.createElement('button');
+      btn.className = 'copy-btn';
+      btn.textContent = 'Copy';
+      btn.addEventListener('click', function() {
+        navigator.clipboard.writeText(codeEl.textContent).then(function() {
+          btn.textContent = 'Copied!';
+          btn.classList.add('copied');
+          setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+        });
+      });
+      header.appendChild(btn);
+      wrapper.appendChild(header);
+      wrapper.appendChild(pre);
+    });
+    document.querySelectorAll('table').forEach(function(table) {
+      if (!table.parentElement.classList.contains('table-wrap')) {
+        var wrapper = document.createElement('div');
+        wrapper.className = 'table-wrap';
+        table.parentNode.insertBefore(wrapper, table);
+        wrapper.appendChild(table);
+      }
+    });
+    // Reading progress bar
+    var progressBar = document.getElementById('reading-progress');
+    if (progressBar) {
+      window.addEventListener('scroll', function() {
+        var winScroll = document.documentElement.scrollTop;
+        var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        progressBar.style.width = height > 0 ? (winScroll / height * 100) + '%' : '0%';
+      });
+    }
+    // Dark mode toggle
+    var toggle = document.getElementById('theme-toggle');
+    if (toggle) {
+      var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      toggle.textContent = isDark ? '☀️' : '🌙';
+      toggle.addEventListener('click', function() {
+        var dark = document.documentElement.getAttribute('data-theme') === 'dark';
+        if (dark) {
+          document.documentElement.removeAttribute('data-theme');
+          localStorage.setItem('theme', 'light');
+          toggle.textContent = '🌙';
+        } else {
+          document.documentElement.setAttribute('data-theme', 'dark');
+          localStorage.setItem('theme', 'dark');
+          toggle.textContent = '☀️';
+        }
+      });
+    }
+  });</script>
+</head>
+<body>
+  <div class="progress-container"><div class="progress-bar" id="reading-progress"></div></div>
+  <nav class="navbar">
+    <div class="container">
+      <div class="nav-brand">
+        <span class="nav-icon">💻</span>
+        <span class="nav-title">CS_basics</span>
+      </div>
+      <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+      <div class="nav-links">
+        <a href="../index.html" class="">Home</a>
+        <a href="../cheatsheets.html" class="">Cheat Sheets</a>
+        <a href="../patterns.html" class="">Pattern Recognition</a>
+        <a href="../faqs.html" class="active">FAQs</a>
+        <a href="../resources.html" class="">Resources</a>
+        <a href="../lc-explorer.html" class="">LC Explorer</a>
+        <a href="../lc-random-picker.html" class="">🎲 Random Picker</a>
+        <a href="../algo_demo/index.html" class="">Visualizer</a>
+        <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">&#127769;</button>
+        <a href="https://github.com/yennanliu/CS_basics" target="_blank" class="github-link" aria-label="GitHub">
+          <svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor">
+            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container">
+    <div class="content">
+      
+      <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../faqs.html">FAQs</a> <span class="sep">›</span> <span class="current">Faq Flink</span></nav>
+      <div class="cheatsheet-header">
+        <h1>Faq Flink</h1>
+        <span class="last-updated">Last updated: Feb 23, 2024</span>
+      </div>
+      <div class="toc"><h2>Table of Contents</h2><ul><li class="toc-sub"><a href="#1-what-is-apache-flink">1. What is Apache Flink?</a></li><li class="toc-sub"><a href="#2-explain-apache-flink-architecture">2. Explain Apache Flink Architecture?</a></li><li class="toc-sub"><a href="#2-explain-apache-flink-execution-graph-and-its-step">2’ Explain Apache Flink execution graph and its step  ?</a></li><li class="toc-sub"><a href="#3-explain-the-apache-flink-job-execution-architecture">3. Explain the Apache Flink Job Execution Architecture?</a></li><li class="toc-sub"><a href="#4-what-is-unbounded-streams-in-apache-flink">4. What is Unbounded streams in Apache Flink?</a></li><li class="toc-sub"><a href="#5-what-is-bounded-streams-in-apache-flink">5. What is Bounded streams in Apache Flink?</a></li><li class="toc-sub"><a href="#6-what-is-dataset-api-in-apache-flink">6. What is Dataset API in Apache Flink?</a></li><li class="toc-sub"><a href="#7-what-is-datastream-api-in-apache-flink">7. What is DataStream API in Apache Flink?</a></li><li class="toc-sub"><a href="#8-what-is-apache-flink-table-api">8. What is Apache Flink Table API?</a></li><li class="toc-sub"><a href="#9-what-is-apache-flink-flinkml">9. What is Apache Flink FlinkML?</a></li><li class="toc-sub"><a href="#10-what-are-the-differences-between-apache-hadoop-apache-spark-and-apache-flink">10. What are the differences between Apache Hadoop, Apache Spark and Apache Flink?</a></li><li class="toc-sub"><a href="#11-what-are-the-key-programming-constructs-of-a-flink-streaming-application">11. What are the key programming constructs of a Flink streaming application?</a></li><li class="toc-sub"><a href="#12-explain-complex-event-processing-cep">12. explain Complex Event Processing (CEP) ?</a></li><li class="toc-sub"><a href="#13-what-are-the-apache-flink-domain-specific-libraries">13. What are the Apache Flink domain-specific libraries?</a></li><li class="toc-sub"><a href="#14-what-are-the-different-ways-to-use-apache-flink">14. What are the different ways to use Apache Flink?</a></li><li class="toc-sub"><a href="#15-explain-how-flink-implement-exactly-once-what-s-the-logics-mechanisms">15. Explain how flink implement exactly once ? what’s the logics, mechanisms… ?</a></li><li class="toc-sub"><a href="#16-explain-flink-savepoint">16. Explain flink savepoint ?</a></li><li class="toc-sub"><a href="#17-explain-flink-checkpoint">17. Explain flink checkpoint ?</a></li><li class="toc-sub"><a href="#17-explain-flink-barrier">17’ Explain flink Barrier ?</a></li><li class="toc-sub"><a href="#18-explain-flink-backpressure">18. Explain flink backpressure ?</a></li><li class="toc-sub"><a href="#18-explain-flink-data-exchange-mechanisms">18’. Explain flink data exchange mechanisms ?</a></li><li class="toc-sub"><a href="#19-explain-how-flink-submit-job-to-yarn">19. Explain how flink submit job to yarn ?</a></li><li class="toc-sub"><a href="#20-explain-how-flink-parallelism">20. Explain how flink parallelism ?</a></li><li class="toc-sub"><a href="#21-explain-flink-watermark">21. Explain flink watermark ?</a></li><li class="toc-sub"><a href="#22-explain-flink-eventime-ingestiontime-processingtime">22. Explain flink EvenTime, IngestionTime, ProcessingTime ?</a></li><li><a href="#ref">Ref</a></li></ul></div>
+      <div class="cheatsheet-content">
+        <h1 id="flink-faq" tabindex="-1"><a class="header-anchor" href="#flink-faq"><span>FLINK FAQ</span></a></h1>
+<h3 id="1-what-is-apache-flink" tabindex="-1"><a class="header-anchor" href="#1-what-is-apache-flink"><span>1. What is Apache Flink?</span></a></h3>
+<ul>
+<li>Flink is built around a distributed streaming data-flow engine written in Java and Scala. Flink runs every dataflow programm in a data-parallel and pipelined fashion.</li>
+</ul>
+<h3 id="2-explain-apache-flink-architecture" tabindex="-1"><a class="header-anchor" href="#2-explain-apache-flink-architecture"><span>2. Explain Apache Flink Architecture?</span></a></h3>
+<ul>
+<li>
+<p>Apache Flink is based on the Kappa architecture. The Kappa architecture uses a single processor - stream, who accepts all information as a stream, and the streaming engine processes data in real-time. Batch data in kappa architecture is a form of streaming data.</p>
+</li>
+<li>
+<p>Ref</p>
+<ul>
+<li>note below !!!</li>
+<li><a href="https://www.shuzhiduo.com/A/amd0NwnXJg/">https://www.shuzhiduo.com/A/amd0NwnXJg/</a></li>
+</ul>
+</li>
+</ul>
+<h3 id="2-explain-apache-flink-execution-graph-and-its-step" tabindex="-1"><a class="header-anchor" href="#2-explain-apache-flink-execution-graph-and-its-step"><span>2’ Explain Apache Flink execution graph and its step  ?</span></a></h3>
+<ul>
+<li>StreamGraph -&gt; JobGraph -&gt; ExecutionGraph -&gt; physical graph</li>
+</ul>
+<h3 id="3-explain-the-apache-flink-job-execution-architecture" tabindex="-1"><a class="header-anchor" href="#3-explain-the-apache-flink-job-execution-architecture"><span>3. Explain the Apache Flink Job Execution Architecture?</span></a></h3>
+<img src="../doc/pic/flink-job-exe-architecture.png" width="500" height="300">
+<ul>
+<li>Program
+<ul>
+<li>It is a piece of code that is executed on the Flink Cluster.</li>
+</ul>
+</li>
+<li>Client
+<ul>
+<li>client server that takes code for to-run program, creates a job dataflow graph, which is then passed to JM (job manager).</li>
+</ul>
+</li>
+<li>Job manager (JM)
+<ul>
+<li>It is responsible for generating the execution graph after obtaining the Job Dataflow Graph from the Client. It assigns the job to TaskManagers in the cluster and monitors its execution.</li>
+<li>trigger <code>Checkpoint</code> periodically</li>
+</ul>
+</li>
+<li>Task manager ™
+<ul>
+<li>It is in charge of executing all of the tasks assigned to it by JobManager. Both TaskManagers execute the tasks in their respective slots in the specified parallelism. It is in charge of informing JobManager about the status of the tasks.</li>
+</ul>
+</li>
+</ul>
+<h3 id="4-what-is-unbounded-streams-in-apache-flink" tabindex="-1"><a class="header-anchor" href="#4-what-is-unbounded-streams-in-apache-flink"><span>4. What is Unbounded streams in Apache Flink?</span></a></h3>
+<ul>
+<li>Any type of data is produced as a stream of events. Data can be processed as unbounded or bounded streams.</li>
+<li>Unbounded streams have a beginning but no end. They do not end and continue to provide data as it is produced.</li>
+<li>Unbounded streams should be processed continuously, i.e., events should be handled as soon as they are consumed. Since the input is unbounded and will not be complete at any point in time, it is not possible to wait for all of the data to arrive.</li>
+</ul>
+<h3 id="5-what-is-bounded-streams-in-apache-flink" tabindex="-1"><a class="header-anchor" href="#5-what-is-bounded-streams-in-apache-flink"><span>5. What is Bounded streams in Apache Flink?</span></a></h3>
+<ul>
+<li>Bounded streams have a beginning and an end point.</li>
+<li>Bounded streams could be processed by consuming all data before doing any computations.</li>
+<li>Ordered ingestion is not needed to process bounded streams since a bounded data set could always be sorted. Processing of bounded streams is also called as batch processing.</li>
+</ul>
+<h3 id="6-what-is-dataset-api-in-apache-flink" tabindex="-1"><a class="header-anchor" href="#6-what-is-dataset-api-in-apache-flink"><span>6. What is Dataset API in Apache Flink?</span></a></h3>
+<ul>
+<li>The Apache Flink Dataset API is used to do <code>batch</code> operations on data over time.</li>
+<li>This API is available in Java, Scala, and Python.</li>
+<li>It may perform various transformations on datasets such as filtering, mapping, aggregating, joining, and grouping.</li>
+</ul>
+<h3 id="7-what-is-datastream-api-in-apache-flink" tabindex="-1"><a class="header-anchor" href="#7-what-is-datastream-api-in-apache-flink"><span>7. What is DataStream API in Apache Flink?</span></a></h3>
+<ul>
+<li>The Apache Flink DataStream API is used to handle data in a continuous <code>stream</code>.</li>
+<li>On the stream data, you can perform operations such as filtering, routing, windowing, and aggregation.</li>
+<li>On this data stream, there are different sources such as message queues, files, and socket streams, and the resulting data can be written to different sinks such as command line terminals.</li>
+</ul>
+<h3 id="8-what-is-apache-flink-table-api" tabindex="-1"><a class="header-anchor" href="#8-what-is-apache-flink-table-api"><span>8. What is Apache Flink Table API?</span></a></h3>
+<ul>
+<li>Table API is a relational API with an expression language similar to SQL.</li>
+<li>This API is capable of <code>batch</code> and <code>stream</code> processing.</li>
+<li>. It is compatible with the Java and Scala Dataset and Datastream APIs.</li>
+<li>Tables can be generated from internal Datasets and Datastreams as well as from external data sources. You can use this relational API to perform operations such as join, select, aggregate, and filter.</li>
+</ul>
+<h3 id="9-what-is-apache-flink-flinkml" tabindex="-1"><a class="header-anchor" href="#9-what-is-apache-flink-flinkml"><span>9. What is Apache Flink FlinkML?</span></a></h3>
+<ul>
+<li>FlinkML is the Flink Machine Learning (ML) library.</li>
+</ul>
+<h3 id="10-what-are-the-differences-between-apache-hadoop-apache-spark-and-apache-flink" tabindex="-1"><a class="header-anchor" href="#10-what-are-the-differences-between-apache-hadoop-apache-spark-and-apache-flink"><span>10. What are the differences between Apache Hadoop, Apache Spark and Apache Flink?</span></a></h3>
+<img src="../doc/pic//compare_hadoop_spark_flink.png" width="500" height="300">
+<h3 id="11-what-are-the-key-programming-constructs-of-a-flink-streaming-application" tabindex="-1"><a class="header-anchor" href="#11-what-are-the-key-programming-constructs-of-a-flink-streaming-application"><span>11. What are the key programming constructs of a Flink streaming application?</span></a></h3>
+<ul>
+<li>A Flink streaming application consists of four key programming constructs.
+<ul>
+<li>
+<ol>
+<li>Stream execution environment - Every Flink streaming application requires an environment in which the streaming program is executed.</li>
+</ol>
+</li>
+<li>
+<ol start="2">
+<li>Data sources Data sources are applications or data stores from which the Flink application will read the input data from.</li>
+</ol>
+</li>
+<li>
+<ol start="3">
+<li>Data streams and transformation operations - Input data from data sources are read by the Flink application in the form of data streams.</li>
+</ol>
+</li>
+<li>
+<ol start="4">
+<li>Data sinks - The transformed data from data streams are consumed by data sinks which output the data to external systems.</li>
+</ol>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="12-explain-complex-event-processing-cep" tabindex="-1"><a class="header-anchor" href="#12-explain-complex-event-processing-cep"><span>12. explain <code>Complex Event Processing (CEP)</code> ?</span></a></h3>
+<ul>
+<li>FlinkCEP is an API in Apache Flink, which analyses event patterns on continuous streaming data. These events are near real time, which have high throughput and low latency. This API is used mostly on Sensor data, which come in real-time and are very complex to process.</li>
+<li>CEP: It is used for complex event processing.</li>
+<li><a href="https://www.tutorialspoint.com/apache_flink/apache_flink_libraries.htm">https://www.tutorialspoint.com/apache_flink/apache_flink_libraries.htm</a></li>
+</ul>
+<h3 id="13-what-are-the-apache-flink-domain-specific-libraries" tabindex="-1"><a class="header-anchor" href="#13-what-are-the-apache-flink-domain-specific-libraries"><span>13. What are the Apache Flink domain-specific libraries?</span></a></h3>
+<ul>
+<li>FlinkML: It is used for machine learning.</li>
+<li>Table: It is used to perform the relational operation.</li>
+<li>Gelly: It is used to perform the Graph operation.</li>
+<li>CEP: It is used for complex event processing.</li>
+<li><a href="https://www.cloudduggu.com/flink/interview-questions/">https://www.cloudduggu.com/flink/interview-questions/</a></li>
+</ul>
+<h3 id="14-what-are-the-different-ways-to-use-apache-flink" tabindex="-1"><a class="header-anchor" href="#14-what-are-the-different-ways-to-use-apache-flink"><span>14. What are the different ways to use Apache Flink?</span></a></h3>
+<p>Apache Flink can be deployed and configured in below ways.</p>
+<ul>
+<li>Flink can be setup Locally (Single Machine)</li>
+<li>It can be deployed on a VM machine.</li>
+<li>We can use Flink as a Docker image.</li>
+<li>We can configure and deploy Flink as a standalone cluster.</li>
+<li>Flink can be deployed and configured on Hadoop YARN and another resource managing framework.</li>
+<li>Flink can be deployed and configured on a Cloud system.</li>
+</ul>
+<h3 id="15-explain-how-flink-implement-exactly-once-what-s-the-logics-mechanisms" tabindex="-1"><a class="header-anchor" href="#15-explain-how-flink-implement-exactly-once-what-s-the-logics-mechanisms"><span>15. Explain how flink implement <code>exactly once</code> ? what’s the logics, mechanisms… ?</span></a></h3>
+<ul>
+<li><code>distributed snapshot</code></li>
+<li><code>2 phases commit</code>
+<ul>
+<li>TwoPhaseCommitSinkFunction</li>
+</ul>
+</li>
+<li>Steps)
+<ul>
+<li>step 1) for each checkpoint, flink will start a “transaction”, add all inform to the transaction
+<ul>
+<li>beginTransaction
+<ul>
+<li>before transaction, create a tmp file, write data into it first</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>step 2) when data sink to external system, not commit, but <code>pre-commit</code>
+<ul>
+<li>pre-commit
+<ul>
+<li>“flush” in-memory data into tmp file, then close file. repeat this step to next checkpoint</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>step 3) when flink receive checkpoint’s confirmation, commit the transaction, data is then “really” written to external system
+<ul>
+<li>commit
+<ul>
+<li>move tmp file to actual dest path. May have some delay</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>NOTE : external system also needs to have “transaction” mechanism, so can have end-to-end “exactly once”</li>
+</ul>
+</li>
+<li>Ref
+<ul>
+<li><a href="https://segmentfault.com/a/1190000022891333">https://segmentfault.com/a/1190000022891333</a></li>
+<li><a href="https://flink.apache.org/features/2018/03/01/end-to-end-exactly-once-apache-flink.html">https://flink.apache.org/features/2018/03/01/end-to-end-exactly-once-apache-flink.html</a></li>
+<li><a href="https://eng.uber.com/real-time-exactly-once-ad-event-processing/">https://eng.uber.com/real-time-exactly-once-ad-event-processing/</a></li>
+<li><a href="https://zhuanlan.zhihu.com/p/266620519">https://zhuanlan.zhihu.com/p/266620519</a></li>
+</ul>
+</li>
+</ul>
+<h3 id="16-explain-flink-savepoint" tabindex="-1"><a class="header-anchor" href="#16-explain-flink-savepoint"><span>16. Explain flink <code>savepoint</code> ?</span></a></h3>
+<ul>
+<li><code>savepoint</code> is a “global backup” of flink status of a timestamp moment</li>
+<li>For software upgrade, change conf. Can make flink restart from the last savepoint</li>
+<li>Triggered by users</li>
+<li>will keep existing until user delete</li>
+<li>CAN recognize <code>savepoint</code> as a <code>special snapshot</code> of <code>checkpoint</code> in a specific time</li>
+<li>Trigger way
+<ul>
+<li><code>flink savepoint</code> command</li>
+<li><code>flink cancel -s</code> command, when cancel flink job</li>
+<li>via REST API : <code>**/jobs/:jobid /savepoints**</code></li>
+</ul>
+</li>
+<li>Ref
+<ul>
+<li><a href="https://zhuanlan.zhihu.com/p/79526638">https://zhuanlan.zhihu.com/p/79526638</a></li>
+</ul>
+</li>
+</ul>
+<h3 id="17-explain-flink-checkpoint" tabindex="-1"><a class="header-anchor" href="#17-explain-flink-checkpoint"><span>17. Explain flink <code>checkpoint</code> ?</span></a></h3>
+<ul>
+<li>checkpoint save current flink status, is a “false tolerance” mechanism
+<ul>
+<li>flink status
+<ul>
+<li>Operator status : e.g. offset</li>
+<li>KeyedState status : e.g. : MapState、ListState、ValueState</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>make sure flink can auto-recover when error/exception during running</li>
+<li>example : if flink failed on chk-5, then it will try to recover from chk-4
+<img src="../doc/pic/checkpoint1.jpeg"></li>
+<li>managed/op by flink. Users only need to define parameter</li>
+<li>Auto op by flink</li>
+<li>default <code>concurrent = 1</code> -&gt; there is ONLY ONE runs per flink app</li>
+<li>3 components work on checkpoint : JM, TM, ZK</li>
+<li>Mechanisms
+<ul>
+<li>JM triggers checkpoint periodically</li>
+<li>Once TM receive all CheckpointBarrier, it will start checkpoint op, once completed, TM will inform JM. ONLY when all sink operator finish their checkpoint, and send back to JM, such checkpoint is called completed
+<ul>
+<li>in HA, checkpoint will be saved in ZK as well</li>
+<li>CheckpointBarrier is a special event, will flow to downstream operator, ONLY when skink operator receive it, we say checkpoint completed</li>
+<li>NOTE : CheckpointBarrier sync time also need to be considered
+<img src="../doc/pic/checkpoint2.png">
+<img src="../doc/pic/checkpoint3.png"></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><code>CheckpointCoordinator</code> is an important class in Checkpoint op
+<ul>
+<li>it has below important methods
+<ul>
+<li>triggerCheckpoint</li>
+<li>triggerSavepoint</li>
+<li>restoreSavepoint</li>
+<li>restoreLatestCheckpointedState</li>
+<li>receiveAcknowledgeMessage
+<img src="../doc/pic/checkpoint4.png">
+<img src="../doc/pic/checkpoint5.png"></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Disable checkpoint via <code>CheckpointConfig</code> setting
+<ul>
+<li>DELETE_ON_CANCELLATION : delete checkpoint when program canceled</li>
+<li>RETAIN_ON_CANCELLATION : keep checkpoint when program canceled</li>
+</ul>
+</li>
+<li>Common reasons why checkpoint fail:
+<ul>
+<li>No exception handling on client/external system code
+<ul>
+<li>e.g. json parse error, time out, exception on sink system</li>
+</ul>
+</li>
+<li>freqent GC, Not enough memory -&gt; cause OOM</li>
+<li>internet issues, machine issues</li>
+</ul>
+</li>
+<li>Things to care when set up checkpoint</li>
+<li>Ref
+<ul>
+<li><a href="https://tech.youzan.com/flink_checkpoint_mechanism/">https://tech.youzan.com/flink_checkpoint_mechanism/</a></li>
+<li><a href="https://zhuanlan.zhihu.com/p/79526638">https://zhuanlan.zhihu.com/p/79526638</a></li>
+</ul>
+</li>
+</ul>
+<h3 id="17-explain-flink-barrier" tabindex="-1"><a class="header-anchor" href="#17-explain-flink-barrier"><span>17’ Explain flink <code>Barrier</code> ?</span></a></h3>
+<ul>
+<li>A special event</li>
+<li>Will follow event from upstream operator to downstream operator</li>
+<li>ONLY when “final” operator (e.g. sink operator) receive Barrier, and confirm checkpoint is OK, then this “checkpoint” is completed</li>
+</ul>
+<h3 id="18-explain-flink-backpressure" tabindex="-1"><a class="header-anchor" href="#18-explain-flink-backpressure"><span>18. Explain flink <code>backpressure</code> ?</span></a></h3>
+<ul>
+<li>
+<p>Is a common concept in stream framework</p>
+</li>
+<li>
+<p>It happens when <code>&quot;downstream&quot; CAN'T catchup &quot;upstream&quot;'s processing speed</code></p>
+<ul>
+<li>-&gt; So there’s a mechanism <code>push back</code> to upstream and ask them <code>slow down</code> their process</li>
+</ul>
+</li>
+<li>
+<p>Can due to internet, disk I/O, freqent GC, data hotpoint… or data skew, code efficiency, TM memory, its GC</p>
+</li>
+<li>
+<p>Can also affect checkpoint</p>
+<ul>
+<li>if data get delay -&gt; checkpoint get delay (more longer)</li>
+<li>if “exactly once” -&gt; have to wait delay barrier -&gt; more data will be cached -&gt; checkpoint get bigger</li>
+<li>above make cause checkpoint failed, or OOM</li>
+</ul>
+</li>
+<li>
+<p>Can monitor via Flink UI (version &gt; 1.13)</p>
+</li>
+<li>
+<p>Not really a problem at all cases, have a backpressure sometimes means system is using fully of its resources. But a serious backpressure can cause system delay</p>
+</li>
+<li>
+<p>Ref</p>
+<ul>
+<li><a href="https://zhuanlan.zhihu.com/p/264637970">https://zhuanlan.zhihu.com/p/264637970</a></li>
+<li><a href="https://www.modb.pro/db/128767">https://www.modb.pro/db/128767</a></li>
+<li><a href="https://zhuanlan.zhihu.com/p/266638799">https://zhuanlan.zhihu.com/p/266638799</a></li>
+</ul>
+</li>
+</ul>
+<h3 id="18-explain-flink-data-exchange-mechanisms" tabindex="-1"><a class="header-anchor" href="#18-explain-flink-data-exchange-mechanisms"><span>18’. Explain flink data exchange mechanisms ?</span></a></h3>
+<ul>
+<li>exchange in same Task</li>
+<li>exchange in different Task, same TM</li>
+<li>exchange in different Task, different TM</li>
+<li>Ref
+<ul>
+<li><a href="https://zhuanlan.zhihu.com/p/264637970">https://zhuanlan.zhihu.com/p/264637970</a></li>
+</ul>
+</li>
+</ul>
+<h3 id="19-explain-how-flink-submit-job-to-yarn" tabindex="-1"><a class="header-anchor" href="#19-explain-how-flink-submit-job-to-yarn"><span>19. Explain how flink submit job to yarn ?</span></a></h3>
+<ul>
+<li>Components
+<ul>
+<li>ResourceManager (RM)</li>
+<li>NodeManager (NM)</li>
+<li>AppMaster (<code>job manager runs in the same container</code>)</li>
+<li>Container (task manager runs on it)</li>
+</ul>
+</li>
+<li>Steps
+<ul>
+<li>step 1) flink client upload <code>flink jar, app jar, and conf</code> to HDFS</li>
+<li>step 2) client submit job to Yarn ResourceManager, and register resources</li>
+<li>step 3) ResourceManager diepense container and launch <code>AppMaster</code>, then AppMaster load jar files and config env, then launch <code>job manager</code></li>
+<li>step 4) once above steps success, AppMaster knows job manager’s ip</li>
+<li>step 5) Job Manager create a new flink conf for task manager, this conf also uploaded to HDFS. AppMaster offer flink web service endpoint
+<ul>
+<li>NOTE : endpoints offered by Yarn are ALL temporal ones, user can run multiple flink on Yarn</li>
+</ul>
+</li>
+<li>step 6) AppMaster ask ResourceManager for resources. NodeManager load flink jar and launch TaskManager</li>
+<li>step 7) TaskManager successfully launched, send hear-beat to job manager, ready to execute missions (job manager’s command)</li>
+</ul>
+</li>
+<li>pros:
+<ul>
+<li>“use as needed” -&gt; can raise memory usage pct in system</li>
+<li>can run jobs basd on “priority” as priority setting in Yarn jobs</li>
+<li>can automatically deal with <code>Failover on various roles</code>
+<ul>
+<li>JobManager, TaskManager error/exception… can automatically retry/rerun by Yarn</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Pic
+<img src="../doc/pic/flink_yarn_1.png"></li>
+<li>Ref
+<ul>
+<li><a href="https://blog.csdn.net/penriver/article/details/120221565">https://blog.csdn.net/penriver/article/details/120221565</a></li>
+<li><a href="https://blog.csdn.net/lb812913059/article/details/86601150">https://blog.csdn.net/lb812913059/article/details/86601150</a></li>
+<li><a href="https://blog.51cto.com/u_15478540/4911346">https://blog.51cto.com/u_15478540/4911346</a></li>
+<li><a href="https://cloud.tencent.com/developer/article/1708704">https://cloud.tencent.com/developer/article/1708704</a></li>
+</ul>
+</li>
+</ul>
+<h3 id="20-explain-how-flink-parallelism" tabindex="-1"><a class="header-anchor" href="#20-explain-how-flink-parallelism"><span>20. Explain how flink parallelism ?</span></a></h3>
+<h3 id="21-explain-flink-watermark" tabindex="-1"><a class="header-anchor" href="#21-explain-flink-watermark"><span>21. Explain flink watermark ?</span></a></h3>
+<ul>
+<li><code>watermark</code> is a <code>timestamp</code> (event happened time, NOT processed time)</li>
+<li><code>watermark</code> tells Flink <code>since when it DOES NOT need to wait for delay event</code></li>
+<li>Stream frameworks use it for “evaluate if there is still a event not arrived”</li>
+<li>Types
+<ul>
+<li>Punctuated Watermark
+<ul>
+<li>make watermark when there is “special event”</li>
+<li>not relative to window time, depends when “special event” is received</li>
+<li>usually used for “real real-time” scenario</li>
+</ul>
+</li>
+<li>Periodic Watermark
+<ul>
+<li>periodically make watermark</li>
+<li>time gap can be defined by users</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>examples :
+<ul>
+<li>“out-of-order”
+<ul>
+<li><code>watermark</code> timestamp &gt; window endTime</li>
+<li>there is data in window_start_time, window_end_time]</li>
+</ul>
+</li>
+<li>“late element” event case
+<ul>
+<li>once after <code>watermark</code> -&gt; trigger <code>window</code> -&gt; do the op/calculation</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Ref
+<ul>
+<li><a href="https://nightlies.apache.org/flink/flink-docs-master/zh/docs/dev/datastream/event-time/generating_watermarks/#:~:text=%E6%97%B6%E9%97%B4%E6%A6%82%E8%A7%88%E5%B0%8F%E8%8A%82%E3%80%82-,Watermark%20%E7%AD%96%E7%95%A5%E7%AE%80%E4%BB%8B,%E5%8E%BB%E8%AE%BF%E9%97%AE%2F%E6%8F%90%E5%8F%96%E6%97%B6%E9%97%B4%E6%88%B3%E3%80%82">https://nightlies.apache.org/flink/flink-docs-master/zh/docs/dev/datastream/event-time/generating_watermarks/#:~:text=时间概览小节。-,Watermark 策略简介,去访问%2F提取时间戳。</a></li>
+<li><a href="https://www.cnblogs.com/rossiXYZ/p/12286407.html">https://www.cnblogs.com/rossiXYZ/p/12286407.html</a></li>
+<li><a href="http://chris-liu.cn/Flink-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E2%80%94%E2%80%94%E2%80%94-WaterMark-%E6%B0%B4%E5%8D%B0.html">http://chris-liu.cn/Flink-学习笔记-———-WaterMark-水印.html</a></li>
+<li><a href="https://www.gushiciku.cn/pl/pRWT/zh-tw">https://www.gushiciku.cn/pl/pRWT/zh-tw</a></li>
+</ul>
+</li>
+</ul>
+<h3 id="22-explain-flink-eventime-ingestiontime-processingtime" tabindex="-1"><a class="header-anchor" href="#22-explain-flink-eventime-ingestiontime-processingtime"><span>22. Explain flink EvenTime, IngestionTime, ProcessingTime ?</span></a></h3>
+<ul>
+<li><code>EvenTime</code>
+<ul>
+<li>“event happened time”. The most accurate time when things happended</li>
+</ul>
+</li>
+<li><code>IngestionTime</code>
+<ul>
+<li>time when event ingested into Flink, the time source operator created. Is Flink job manager’s system time in most cases</li>
+</ul>
+</li>
+<li><code>ProcessingTime</code>
+<ul>
+<li>Event processed time. Is timestamp when transformation happened. created in Flink task manager</li>
+</ul>
+</li>
+</ul>
+<h2 id="ref" tabindex="-1"><a class="header-anchor" href="#ref"><span>Ref</span></a></h2>
+<ul>
+<li><a href="https://www.techgeeknext.com/apache/apache-flink-interview-questions">https://www.techgeeknext.com/apache/apache-flink-interview-questions</a></li>
+<li><a href="https://www.interviewgrid.com/interview_questions/flink">https://www.interviewgrid.com/interview_questions/flink</a></li>
+<li><a href="https://www.tutorialspoint.com/apache_flink/index.htm">https://www.tutorialspoint.com/apache_flink/index.htm</a></li>
+</ul>
+
+      </div>
+      <div class="cheatsheet-footer">
+        <a href="../faqs.html" class="back-link">← Back to FAQs</a>
+        <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/faq/flink/faq_flink.md" class="github-edit" target="_blank">
+          Edit on GitHub →
+        </a>
+      </div>
+    <nav class="prev-next"><a href="faq_software_runtime.html" class="prev-link">← Faq Software Runtime</a><a href="java_cqrs.html" class="next-link">Cqrs →</a></nav>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>CS_basics - Computer Science Fundamentals & Interview Preparation</p>
+      <p>
+        <a href="https://github.com/yennanliu/CS_basics">GitHub</a> •
+        <a href="https://github.com/yennanliu/CS_basics/tree/master/doc">Documentation</a> •
+        <a href="https://github.com/yennanliu/CS_basics/issues">Report Issues</a>
+      </p>
+    </div>
+  </footer>
+</body>
+</html>

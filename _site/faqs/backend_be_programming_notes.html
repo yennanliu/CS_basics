@@ -1,0 +1,1188 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Be Programming Notes - CS_basics</title>
+  <meta name="description" content="Computer Science fundamentals: algorithms, data structures, system design, and LeetCode solutions">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>CS</text></svg>">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="../vendor/fonts.css">
+  <link rel="stylesheet" href="../vendor/highlight/github-dark.min.css">
+  <script src="../vendor/highlight/highlight.min.js"></script>
+  <script>
+  // Apply theme before render to prevent flash
+  (function() {
+    var saved = localStorage.getItem('theme');
+    if (saved === 'dark' || (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      document.documentElement.setAttribute('data-theme', 'dark');
+    }
+  })();
+  </script>
+  <script>document.addEventListener('DOMContentLoaded', function() {
+    hljs.highlightAll();
+    document.querySelectorAll('pre code').forEach(function(codeEl) {
+      var pre = codeEl.parentElement;
+      var lang = '';
+      var cls = codeEl.className || '';
+      var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
+      if (m) lang = m[1];
+      var wrapper = document.createElement('div');
+      wrapper.className = 'code-block-wrapper';
+      pre.parentNode.insertBefore(wrapper, pre);
+      var header = document.createElement('div');
+      header.className = 'code-block-header';
+      if (lang) {
+        var label = document.createElement('span');
+        label.className = 'code-lang-label';
+        label.textContent = lang;
+        header.appendChild(label);
+      } else {
+        header.appendChild(document.createElement('span'));
+      }
+      var btn = document.createElement('button');
+      btn.className = 'copy-btn';
+      btn.textContent = 'Copy';
+      btn.addEventListener('click', function() {
+        navigator.clipboard.writeText(codeEl.textContent).then(function() {
+          btn.textContent = 'Copied!';
+          btn.classList.add('copied');
+          setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+        });
+      });
+      header.appendChild(btn);
+      wrapper.appendChild(header);
+      wrapper.appendChild(pre);
+    });
+    document.querySelectorAll('table').forEach(function(table) {
+      if (!table.parentElement.classList.contains('table-wrap')) {
+        var wrapper = document.createElement('div');
+        wrapper.className = 'table-wrap';
+        table.parentNode.insertBefore(wrapper, table);
+        wrapper.appendChild(table);
+      }
+    });
+    // Reading progress bar
+    var progressBar = document.getElementById('reading-progress');
+    if (progressBar) {
+      window.addEventListener('scroll', function() {
+        var winScroll = document.documentElement.scrollTop;
+        var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        progressBar.style.width = height > 0 ? (winScroll / height * 100) + '%' : '0%';
+      });
+    }
+    // Dark mode toggle
+    var toggle = document.getElementById('theme-toggle');
+    if (toggle) {
+      var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      toggle.textContent = isDark ? '☀️' : '🌙';
+      toggle.addEventListener('click', function() {
+        var dark = document.documentElement.getAttribute('data-theme') === 'dark';
+        if (dark) {
+          document.documentElement.removeAttribute('data-theme');
+          localStorage.setItem('theme', 'light');
+          toggle.textContent = '🌙';
+        } else {
+          document.documentElement.setAttribute('data-theme', 'dark');
+          localStorage.setItem('theme', 'dark');
+          toggle.textContent = '☀️';
+        }
+      });
+    }
+  });</script>
+</head>
+<body>
+  <div class="progress-container"><div class="progress-bar" id="reading-progress"></div></div>
+  <nav class="navbar">
+    <div class="container">
+      <div class="nav-brand">
+        <span class="nav-icon">💻</span>
+        <span class="nav-title">CS_basics</span>
+      </div>
+      <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+      <div class="nav-links">
+        <a href="../index.html" class="">Home</a>
+        <a href="../cheatsheets.html" class="">Cheat Sheets</a>
+        <a href="../patterns.html" class="">Pattern Recognition</a>
+        <a href="../faqs.html" class="active">FAQs</a>
+        <a href="../resources.html" class="">Resources</a>
+        <a href="../lc-explorer.html" class="">LC Explorer</a>
+        <a href="../lc-random-picker.html" class="">🎲 Random Picker</a>
+        <a href="../algo_demo/index.html" class="">Visualizer</a>
+        <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">&#127769;</button>
+        <a href="https://github.com/yennanliu/CS_basics" target="_blank" class="github-link" aria-label="GitHub">
+          <svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor">
+            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container">
+    <div class="content">
+      
+      <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../faqs.html">FAQs</a> <span class="sep">›</span> <span class="current">Be Programming Notes</span></nav>
+      <div class="cheatsheet-header">
+        <h1>Be Programming Notes</h1>
+        <span class="last-updated">Last updated: Mar 26, 2026</span>
+      </div>
+      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#table-of-contents">Table of Contents</a></li><li><a href="#high-traffic-patterns">High Traffic Patterns</a></li><li class="toc-sub"><a href="#1-idempotent-request-processing">1. Idempotent Request Processing</a></li><li class="toc-sub"><a href="#key-takeaways-for-idempotent-processing">Key Takeaways for Idempotent Processing</a></li><li class="toc-sub"><a href="#2-rate-limiting">2. Rate Limiting</a></li><li class="toc-sub"><a href="#3-circuit-breaker">3. Circuit Breaker</a></li><li class="toc-sub"><a href="#4-request-deduplication-with-distributed-lock">4. Request Deduplication with Distributed Lock</a></li><li><a href="#concurrency-patterns">Concurrency Patterns</a></li><li class="toc-sub"><a href="#concurrenthashmap-operations">ConcurrentHashMap Operations</a></li><li class="toc-sub"><a href="#atomic-operations">Atomic Operations</a></li><li class="toc-sub"><a href="#lock-strategies">Lock Strategies</a></li><li><a href="#api-design-patterns">API Design Patterns</a></li><li class="toc-sub"><a href="#idempotency-key-pattern">Idempotency Key Pattern</a></li><li class="toc-sub"><a href="#retry-with-exponential-backoff">Retry with Exponential Backoff</a></li><li><a href="#java-design-patterns-for-backend">Java Design Patterns for Backend</a></li><li class="toc-sub"><a href="#1-singleton-thread-safe">1. Singleton (Thread-Safe)</a></li><li class="toc-sub"><a href="#2-producer-consumer-with-blockingqueue">2. Producer-Consumer with BlockingQueue</a></li><li class="toc-sub"><a href="#3-object-pool-pattern">3. Object Pool Pattern</a></li><li><a href="#common-interview-questions">Common Interview Questions</a></li><li class="toc-sub"><a href="#q1-why-use-concurrenthashmap-compute-instead-of-get-put">Q1: Why use ConcurrentHashMap.compute() instead of get+put?</a></li><li class="toc-sub"><a href="#q2-difference-between-synchronized-and-reentrantlock">Q2: Difference between synchronized and ReentrantLock?</a></li><li class="toc-sub"><a href="#q3-when-to-use-volatile">Q3: When to use volatile?</a></li><li class="toc-sub"><a href="#q4-how-to-prevent-deadlock">Q4: How to prevent deadlock?</a></li><li><a href="#summary-choosing-the-right-tool">Summary: Choosing the Right Tool</a></li><li><a href="#references">References</a></li></ul></div>
+      <div class="cheatsheet-content">
+        <h1 id="backend-programming-notes-for-be-role" tabindex="-1"><a class="header-anchor" href="#backend-programming-notes-for-be-role"><span>Backend Programming Notes for BE Role</span></a></h1>
+<blockquote>
+<p>Focus: High Traffic, Concurrency, Lock Patterns, and Practical Implementation</p>
+</blockquote>
+<h2 id="table-of-contents" tabindex="-1"><a class="header-anchor" href="#table-of-contents"><span>Table of Contents</span></a></h2>
+<ol>
+<li><a href="#high-traffic-patterns">High Traffic Patterns</a>
+<ul>
+<li><a href="#1-idempotent-request-processing">Idempotent Request Processing</a></li>
+<li><a href="#2-rate-limiting">Rate Limiting</a></li>
+<li><a href="#3-circuit-breaker">Circuit Breaker</a></li>
+<li><a href="#4-request-deduplication-with-distributed-lock">Request Deduplication with Distributed Lock</a></li>
+</ul>
+</li>
+<li><a href="#concurrency-patterns">Concurrency Patterns</a>
+<ul>
+<li><a href="#concurrenthashmap-operations">ConcurrentHashMap Operations</a></li>
+<li><a href="#atomic-operations">Atomic Operations</a></li>
+<li><a href="#lock-strategies">Lock Strategies</a></li>
+</ul>
+</li>
+<li><a href="#api-design-patterns">API Design Patterns</a></li>
+<li><a href="#java-design-patterns-for-backend">Java Design Patterns for Backend</a></li>
+</ol>
+<hr>
+<h2 id="high-traffic-patterns" tabindex="-1"><a class="header-anchor" href="#high-traffic-patterns"><span>High Traffic Patterns</span></a></h2>
+<h3 id="1-idempotent-request-processing" tabindex="-1"><a class="header-anchor" href="#1-idempotent-request-processing"><span>1. Idempotent Request Processing</span></a></h3>
+<p><strong>Problem</strong>: Design a mechanism that prevents duplicate processing of requests with the same <code>requestId</code> within a configurable time window.</p>
+<h4 id="initial-design-v0-interview-whiteboard" tabindex="-1"><a class="header-anchor" href="#initial-design-v0-interview-whiteboard"><span>Initial Design (V0 - Interview Whiteboard)</span></a></h4>
+<pre><code class="language-java">/**
+ * Design a mechanism that prevents duplicate processing of requests
+ * with the same requestId within a configurable time window
+ *
+ * Key considerations:
+ * - Is duplicate? -&gt; check requestId
+ * - Configurable time window
+ * - Thread safety
+ * - Lock timeout
+ */
+
+int TIME_WINDOW = 10;
+int LOCK_TIME_OUT = 60; // 60 sec
+
+class Request {
+    String reqId;
+    String msg;
+    long timestamp; // unix time
+}
+
+class Resp {
+    String status;
+}
+
+public class IdempotentRequestProcessor {
+
+    Map&lt;String, Request&gt; processedReq;
+
+    IdempotentRequestProcessor() {
+        this.map = new HashMap();  // NOT thread-safe!
+    }
+
+    public Resp processRequest(Request req) {
+        // Problem: Race condition here!
+        if (this.map.contains(req.reqId)) {
+            if (map.get(req.reqId).timestamp &lt; req.time - TIME_WINDOW) {
+                return new Resp(&quot;duplicated req in time window&quot;);
+            }
+        }
+
+        this.put(req.reqId, req);
+        return new Resp(&quot;req is received&quot;);
+    }
+}
+</code></pre>
+<p><strong>Issues with V0:</strong></p>
+<ol>
+<li><code>HashMap</code> is NOT thread-safe</li>
+<li>Check-then-act is NOT atomic (race condition)</li>
+<li>No cleanup mechanism for expired entries</li>
+<li>Lock timeout not implemented</li>
+</ol>
+<hr>
+<h4 id="solution-v1-concurrenthashmap-with-atomic-check" tabindex="-1"><a class="header-anchor" href="#solution-v1-concurrenthashmap-with-atomic-check"><span>Solution V1: ConcurrentHashMap with Atomic Check</span></a></h4>
+<pre><code class="language-java">import lombok.AllArgsConstructor;
+import lombok.Data;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.Map;
+import java.time.Instant;
+
+@Data
+@AllArgsConstructor
+class Request {
+    private String reqId;
+    private String msg;
+    private long timestamp; // Unix timestamp in seconds
+}
+
+@Data
+@AllArgsConstructor
+class Resp {
+    private String status;
+    private String message;
+}
+
+public class IdempotentRequestProcessor {
+
+    // Configurable window in seconds
+    private static final int TIME_WINDOW = 10;
+
+    // Stores RequestId -&gt; Timestamp of first successful receipt
+    private final Map&lt;String, Long&gt; processedReqs = new ConcurrentHashMap&lt;&gt;();
+
+    public Resp processRequest(Request req) {
+        long currentTime = Instant.now().getEpochSecond();
+
+        // Check if duplicate within window
+        Long existingTimestamp = processedReqs.get(req.getReqId());
+
+        if (existingTimestamp != null) {
+            if (currentTime - existingTimestamp &lt; TIME_WINDOW) {
+                return new Resp(&quot;REJECTED&quot;, &quot;Duplicate request within time window.&quot;);
+            }
+            // Outside window - treat as fresh request
+        }
+
+        // Store the request timestamp
+        processedReqs.put(req.getReqId(), currentTime);
+
+        return executeBusinessLogic(req);
+    }
+
+    private Resp executeBusinessLogic(Request req) {
+        try {
+            // Simulate processing
+            return new Resp(&quot;SUCCESS&quot;, &quot;Request processed: &quot; + req.getReqId());
+        } catch (Exception e) {
+            // If fails, remove from map so user can retry
+            processedReqs.remove(req.getReqId());
+            return new Resp(&quot;ERROR&quot;, &quot;Processing failed.&quot;);
+        }
+    }
+
+    // TODO: Add cleanup task (ScheduledExecutor) to prevent infinite growth
+}
+</code></pre>
+<p><strong>Improvement but still has issue:</strong></p>
+<ul>
+<li><code>get()</code> then <code>put()</code> is NOT atomic - still has race condition!</li>
+</ul>
+<hr>
+<h4 id="solution-v2-using-compute-for-true-atomicity" tabindex="-1"><a class="header-anchor" href="#solution-v2-using-compute-for-true-atomicity"><span>Solution V2: Using <code>compute()</code> for True Atomicity</span></a></h4>
+<pre><code class="language-java">import java.util.concurrent.*;
+
+class Request {
+    String reqId;
+    String msg;
+    long timestamp; // epoch seconds
+
+    public Request(String reqId, String msg, long timestamp) {
+        this.reqId = reqId;
+        this.msg = msg;
+        this.timestamp = timestamp;
+    }
+}
+
+class Resp {
+    String status;
+
+    public Resp(String status) {
+        this.status = status;
+    }
+}
+
+public class IdempotentRequestProcessor {
+
+    private final long TIME_WINDOW_SECONDS = 10;
+
+    // reqId -&gt; last processed timestamp
+    private final ConcurrentHashMap&lt;String, Long&gt; processedReq = new ConcurrentHashMap&lt;&gt;();
+
+    public Resp processRequest(Request req) {
+        long now = req.timestamp;
+
+        // Atomic check + update using compute()
+        Long[] resultHolder = new Long[1];
+        boolean[] isDuplicate = new boolean[1];
+
+        processedReq.compute(req.reqId, (key, oldTimestamp) -&gt; {
+            if (oldTimestamp == null) {
+                // First time seeing this request
+                resultHolder[0] = now;
+                isDuplicate[0] = false;
+                return now;
+            }
+
+            if (now - oldTimestamp &lt;= TIME_WINDOW_SECONDS) {
+                // Duplicate within window - keep old timestamp
+                isDuplicate[0] = true;
+                return oldTimestamp;
+            }
+
+            // Outside window - update timestamp
+            resultHolder[0] = now;
+            isDuplicate[0] = false;
+            return now;
+        });
+
+        if (isDuplicate[0]) {
+            return new Resp(&quot;duplicate request&quot;);
+        }
+
+        // Process actual request
+        return process(req);
+    }
+
+    private Resp process(Request req) {
+        try {
+            // Simulate business logic
+            return new Resp(&quot;processed: &quot; + req.reqId);
+        } catch (Exception e) {
+            return new Resp(&quot;failed&quot;);
+        }
+    }
+}
+</code></pre>
+<hr>
+<h4 id="solution-v3-production-ready-with-cleanup" tabindex="-1"><a class="header-anchor" href="#solution-v3-production-ready-with-cleanup"><span>Solution V3: Production-Ready with Cleanup</span></a></h4>
+<pre><code class="language-java">import java.util.concurrent.*;
+import java.time.Instant;
+
+public class IdempotentRequestProcessor {
+
+    private final long timeWindowSeconds;
+    private final ConcurrentHashMap&lt;String, Long&gt; processedReqs = new ConcurrentHashMap&lt;&gt;();
+    private final ScheduledExecutorService cleanupExecutor;
+
+    public IdempotentRequestProcessor(long timeWindowSeconds, long cleanupIntervalSeconds) {
+        this.timeWindowSeconds = timeWindowSeconds;
+
+        // Schedule periodic cleanup to prevent memory leak
+        this.cleanupExecutor = Executors.newSingleThreadScheduledExecutor();
+        cleanupExecutor.scheduleAtFixedRate(
+            this::cleanupExpiredEntries,
+            cleanupIntervalSeconds,
+            cleanupIntervalSeconds,
+            TimeUnit.SECONDS
+        );
+    }
+
+    public Resp processRequest(Request req) {
+        long now = Instant.now().getEpochSecond();
+
+        boolean[] isDuplicate = {false};
+
+        processedReqs.compute(req.getReqId(), (key, oldTimestamp) -&gt; {
+            if (oldTimestamp == null) {
+                return now;
+            }
+            if (now - oldTimestamp &lt;= timeWindowSeconds) {
+                isDuplicate[0] = true;
+                return oldTimestamp;
+            }
+            return now;
+        });
+
+        if (isDuplicate[0]) {
+            return new Resp(&quot;REJECTED&quot;, &quot;Duplicate request&quot;);
+        }
+
+        return executeBusinessLogic(req);
+    }
+
+    private void cleanupExpiredEntries() {
+        long now = Instant.now().getEpochSecond();
+        processedReqs.entrySet().removeIf(
+            entry -&gt; now - entry.getValue() &gt; timeWindowSeconds * 2
+        );
+    }
+
+    public void shutdown() {
+        cleanupExecutor.shutdown();
+    }
+
+    private Resp executeBusinessLogic(Request req) {
+        // Business logic here
+        return new Resp(&quot;SUCCESS&quot;, &quot;Processed: &quot; + req.getReqId());
+    }
+}
+</code></pre>
+<hr>
+<h4 id="solution-v4-distributed-version-with-redis" tabindex="-1"><a class="header-anchor" href="#solution-v4-distributed-version-with-redis"><span>Solution V4: Distributed Version with Redis</span></a></h4>
+<pre><code class="language-java">import redis.clients.jedis.Jedis;
+import redis.clients.jedis.params.SetParams;
+
+public class DistributedIdempotentProcessor {
+
+    private final Jedis redis;
+    private final long timeWindowSeconds;
+    private static final String KEY_PREFIX = &quot;idempotent:&quot;;
+
+    public DistributedIdempotentProcessor(Jedis redis, long timeWindowSeconds) {
+        this.redis = redis;
+        this.timeWindowSeconds = timeWindowSeconds;
+    }
+
+    public Resp processRequest(Request req) {
+        String key = KEY_PREFIX + req.getReqId();
+
+        // SETNX with expiration - atomic operation
+        String result = redis.set(
+            key,
+            String.valueOf(System.currentTimeMillis()),
+            SetParams.setParams().nx().ex(timeWindowSeconds)
+        );
+
+        if (result == null) {
+            // Key already exists - duplicate request
+            return new Resp(&quot;REJECTED&quot;, &quot;Duplicate request&quot;);
+        }
+
+        // First time - process the request
+        try {
+            return executeBusinessLogic(req);
+        } catch (Exception e) {
+            // On failure, delete key to allow retry
+            redis.del(key);
+            return new Resp(&quot;ERROR&quot;, &quot;Processing failed&quot;);
+        }
+    }
+
+    private Resp executeBusinessLogic(Request req) {
+        return new Resp(&quot;SUCCESS&quot;, &quot;Processed: &quot; + req.getReqId());
+    }
+}
+</code></pre>
+<hr>
+<h3 id="key-takeaways-for-idempotent-processing" tabindex="-1"><a class="header-anchor" href="#key-takeaways-for-idempotent-processing"><span>Key Takeaways for Idempotent Processing</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>Aspect</th>
+<th>Single Instance</th>
+<th>Distributed</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Storage</td>
+<td><code>ConcurrentHashMap</code></td>
+<td>Redis / Database</td>
+</tr>
+<tr>
+<td>Atomicity</td>
+<td><code>compute()</code> / <code>computeIfAbsent()</code></td>
+<td><code>SETNX</code> with TTL</td>
+</tr>
+<tr>
+<td>Cleanup</td>
+<td><code>ScheduledExecutorService</code></td>
+<td>Redis TTL auto-expiry</td>
+</tr>
+<tr>
+<td>Failure Handling</td>
+<td>Remove from map on error</td>
+<td>Delete key on error</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h3 id="2-rate-limiting" tabindex="-1"><a class="header-anchor" href="#2-rate-limiting"><span>2. Rate Limiting</span></a></h3>
+<h4 id="token-bucket-implementation" tabindex="-1"><a class="header-anchor" href="#token-bucket-implementation"><span>Token Bucket Implementation</span></a></h4>
+<pre><code class="language-java">import java.util.concurrent.atomic.AtomicLong;
+import java.util.concurrent.atomic.AtomicReference;
+
+public class TokenBucketRateLimiter {
+
+    private final long maxTokens;
+    private final long refillRate; // tokens per second
+    private final AtomicReference&lt;State&gt; state;
+
+    private static class State {
+        final long tokens;
+        final long lastRefillTime;
+
+        State(long tokens, long lastRefillTime) {
+            this.tokens = tokens;
+            this.lastRefillTime = lastRefillTime;
+        }
+    }
+
+    public TokenBucketRateLimiter(long maxTokens, long refillRate) {
+        this.maxTokens = maxTokens;
+        this.refillRate = refillRate;
+        this.state = new AtomicReference&lt;&gt;(new State(maxTokens, System.nanoTime()));
+    }
+
+    public boolean tryAcquire() {
+        while (true) {
+            State currentState = state.get();
+            long now = System.nanoTime();
+            long elapsedNanos = now - currentState.lastRefillTime;
+
+            // Calculate tokens to add
+            long tokensToAdd = (elapsedNanos * refillRate) / 1_000_000_000L;
+            long newTokens = Math.min(maxTokens, currentState.tokens + tokensToAdd);
+
+            if (newTokens &lt; 1) {
+                return false; // No tokens available
+            }
+
+            // Try to consume one token
+            State newState = new State(newTokens - 1, now);
+            if (state.compareAndSet(currentState, newState)) {
+                return true;
+            }
+            // CAS failed - retry
+        }
+    }
+}
+</code></pre>
+<h4 id="sliding-window-rate-limiter" tabindex="-1"><a class="header-anchor" href="#sliding-window-rate-limiter"><span>Sliding Window Rate Limiter</span></a></h4>
+<pre><code class="language-java">import java.util.concurrent.ConcurrentLinkedDeque;
+import java.util.Deque;
+
+public class SlidingWindowRateLimiter {
+
+    private final int maxRequests;
+    private final long windowSizeMs;
+    private final Deque&lt;Long&gt; requestTimestamps = new ConcurrentLinkedDeque&lt;&gt;();
+
+    public SlidingWindowRateLimiter(int maxRequests, long windowSizeMs) {
+        this.maxRequests = maxRequests;
+        this.windowSizeMs = windowSizeMs;
+    }
+
+    public synchronized boolean tryAcquire() {
+        long now = System.currentTimeMillis();
+        long windowStart = now - windowSizeMs;
+
+        // Remove expired timestamps
+        while (!requestTimestamps.isEmpty() &amp;&amp; requestTimestamps.peekFirst() &lt; windowStart) {
+            requestTimestamps.pollFirst();
+        }
+
+        if (requestTimestamps.size() &lt; maxRequests) {
+            requestTimestamps.addLast(now);
+            return true;
+        }
+
+        return false;
+    }
+}
+</code></pre>
+<hr>
+<h3 id="3-circuit-breaker" tabindex="-1"><a class="header-anchor" href="#3-circuit-breaker"><span>3. Circuit Breaker</span></a></h3>
+<pre><code class="language-java">import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
+
+public class CircuitBreaker {
+
+    private enum State { CLOSED, OPEN, HALF_OPEN }
+
+    private volatile State state = State.CLOSED;
+    private final AtomicInteger failureCount = new AtomicInteger(0);
+    private final AtomicLong lastFailureTime = new AtomicLong(0);
+
+    private final int failureThreshold;
+    private final long resetTimeoutMs;
+    private final int halfOpenMaxCalls;
+    private final AtomicInteger halfOpenCalls = new AtomicInteger(0);
+
+    public CircuitBreaker(int failureThreshold, long resetTimeoutMs, int halfOpenMaxCalls) {
+        this.failureThreshold = failureThreshold;
+        this.resetTimeoutMs = resetTimeoutMs;
+        this.halfOpenMaxCalls = halfOpenMaxCalls;
+    }
+
+    public boolean allowRequest() {
+        switch (state) {
+            case CLOSED:
+                return true;
+
+            case OPEN:
+                if (System.currentTimeMillis() - lastFailureTime.get() &gt; resetTimeoutMs) {
+                    state = State.HALF_OPEN;
+                    halfOpenCalls.set(0);
+                    return true;
+                }
+                return false;
+
+            case HALF_OPEN:
+                return halfOpenCalls.incrementAndGet() &lt;= halfOpenMaxCalls;
+
+            default:
+                return false;
+        }
+    }
+
+    public void recordSuccess() {
+        if (state == State.HALF_OPEN) {
+            state = State.CLOSED;
+        }
+        failureCount.set(0);
+    }
+
+    public void recordFailure() {
+        lastFailureTime.set(System.currentTimeMillis());
+
+        if (state == State.HALF_OPEN) {
+            state = State.OPEN;
+            return;
+        }
+
+        if (failureCount.incrementAndGet() &gt;= failureThreshold) {
+            state = State.OPEN;
+        }
+    }
+
+    public &lt;T&gt; T execute(SupplierWithException&lt;T&gt; action) throws Exception {
+        if (!allowRequest()) {
+            throw new CircuitBreakerOpenException(&quot;Circuit breaker is OPEN&quot;);
+        }
+
+        try {
+            T result = action.get();
+            recordSuccess();
+            return result;
+        } catch (Exception e) {
+            recordFailure();
+            throw e;
+        }
+    }
+
+    @FunctionalInterface
+    public interface SupplierWithException&lt;T&gt; {
+        T get() throws Exception;
+    }
+
+    public static class CircuitBreakerOpenException extends RuntimeException {
+        public CircuitBreakerOpenException(String message) {
+            super(message);
+        }
+    }
+}
+</code></pre>
+<hr>
+<h3 id="4-request-deduplication-with-distributed-lock" tabindex="-1"><a class="header-anchor" href="#4-request-deduplication-with-distributed-lock"><span>4. Request Deduplication with Distributed Lock</span></a></h3>
+<pre><code class="language-java">import redis.clients.jedis.Jedis;
+import redis.clients.jedis.params.SetParams;
+import java.util.UUID;
+
+public class DistributedLockWithDedup {
+
+    private final Jedis redis;
+    private final String lockPrefix = &quot;lock:&quot;;
+    private final String processedPrefix = &quot;processed:&quot;;
+
+    public DistributedLockWithDedup(Jedis redis) {
+        this.redis = redis;
+    }
+
+    /**
+     * Process request with distributed lock and deduplication
+     */
+    public &lt;T&gt; T processWithLock(String requestId, long lockTimeoutSec,
+                                  long dedupWindowSec, RequestProcessor&lt;T&gt; processor) {
+
+        // 1. Check if already processed
+        if (redis.exists(processedPrefix + requestId)) {
+            throw new DuplicateRequestException(&quot;Request already processed&quot;);
+        }
+
+        // 2. Acquire distributed lock
+        String lockKey = lockPrefix + requestId;
+        String lockValue = UUID.randomUUID().toString();
+
+        String acquired = redis.set(
+            lockKey, lockValue,
+            SetParams.setParams().nx().ex(lockTimeoutSec)
+        );
+
+        if (acquired == null) {
+            throw new LockNotAcquiredException(&quot;Could not acquire lock&quot;);
+        }
+
+        try {
+            // 3. Double-check after acquiring lock
+            if (redis.exists(processedPrefix + requestId)) {
+                throw new DuplicateRequestException(&quot;Request already processed&quot;);
+            }
+
+            // 4. Process the request
+            T result = processor.process();
+
+            // 5. Mark as processed
+            redis.setex(processedPrefix + requestId, dedupWindowSec, &quot;1&quot;);
+
+            return result;
+
+        } finally {
+            // 6. Release lock (only if we own it)
+            releaseLock(lockKey, lockValue);
+        }
+    }
+
+    /**
+     * Lua script for safe lock release (only release if we own the lock)
+     */
+    private void releaseLock(String lockKey, String lockValue) {
+        String script =
+            &quot;if redis.call('get', KEYS[1]) == ARGV[1] then &quot; +
+            &quot;    return redis.call('del', KEYS[1]) &quot; +
+            &quot;else &quot; +
+            &quot;    return 0 &quot; +
+            &quot;end&quot;;
+
+        redis.eval(script,
+            java.util.Collections.singletonList(lockKey),
+            java.util.Collections.singletonList(lockValue)
+        );
+    }
+
+    @FunctionalInterface
+    public interface RequestProcessor&lt;T&gt; {
+        T process();
+    }
+
+    public static class DuplicateRequestException extends RuntimeException {
+        public DuplicateRequestException(String message) { super(message); }
+    }
+
+    public static class LockNotAcquiredException extends RuntimeException {
+        public LockNotAcquiredException(String message) { super(message); }
+    }
+}
+</code></pre>
+<hr>
+<h2 id="concurrency-patterns" tabindex="-1"><a class="header-anchor" href="#concurrency-patterns"><span>Concurrency Patterns</span></a></h2>
+<h3 id="concurrenthashmap-operations" tabindex="-1"><a class="header-anchor" href="#concurrenthashmap-operations"><span>ConcurrentHashMap Operations</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Behavior</th>
+<th>Use Case</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>putIfAbsent(k, v)</code></td>
+<td>Insert only if key absent</td>
+<td>Simple dedup</td>
+</tr>
+<tr>
+<td><code>computeIfAbsent(k, func)</code></td>
+<td>Compute value lazily if absent</td>
+<td>Lazy initialization</td>
+</tr>
+<tr>
+<td><code>compute(k, func)</code></td>
+<td>Always compute (atomic read-modify-write)</td>
+<td>Conditional updates</td>
+</tr>
+<tr>
+<td><code>merge(k, v, func)</code></td>
+<td>Merge with existing value</td>
+<td>Counters, aggregation</td>
+</tr>
+</tbody>
+</table>
+<pre><code class="language-java">// Example: Atomic counter increment
+ConcurrentHashMap&lt;String, AtomicLong&gt; counters = new ConcurrentHashMap&lt;&gt;();
+
+// Safe increment
+counters.computeIfAbsent(&quot;hits&quot;, k -&gt; new AtomicLong(0)).incrementAndGet();
+
+// Conditional update
+counters.compute(&quot;hits&quot;, (k, v) -&gt; {
+    if (v == null) return new AtomicLong(1);
+    v.incrementAndGet();
+    return v;
+});
+</code></pre>
+<hr>
+<h3 id="atomic-operations" tabindex="-1"><a class="header-anchor" href="#atomic-operations"><span>Atomic Operations</span></a></h3>
+<pre><code class="language-java">import java.util.concurrent.atomic.*;
+
+// AtomicInteger/Long for simple counters
+AtomicLong counter = new AtomicLong(0);
+counter.incrementAndGet();
+counter.compareAndSet(expected, newValue);
+
+// AtomicReference for object references
+AtomicReference&lt;State&gt; stateRef = new AtomicReference&lt;&gt;(initialState);
+stateRef.compareAndSet(oldState, newState);
+
+// LongAdder for high-contention counters (better than AtomicLong)
+LongAdder adder = new LongAdder();
+adder.increment();
+adder.sum(); // Get total
+</code></pre>
+<hr>
+<h3 id="lock-strategies" tabindex="-1"><a class="header-anchor" href="#lock-strategies"><span>Lock Strategies</span></a></h3>
+<h4 id="1-reentrantlock-with-timeout" tabindex="-1"><a class="header-anchor" href="#1-reentrantlock-with-timeout"><span>1. ReentrantLock with Timeout</span></a></h4>
+<pre><code class="language-java">import java.util.concurrent.locks.ReentrantLock;
+import java.util.concurrent.TimeUnit;
+
+ReentrantLock lock = new ReentrantLock();
+
+public void processWithTimeout() throws InterruptedException {
+    if (lock.tryLock(5, TimeUnit.SECONDS)) {
+        try {
+            // Critical section
+        } finally {
+            lock.unlock();
+        }
+    } else {
+        throw new RuntimeException(&quot;Could not acquire lock&quot;);
+    }
+}
+</code></pre>
+<h4 id="2-readwritelock-for-read-heavy-workloads" tabindex="-1"><a class="header-anchor" href="#2-readwritelock-for-read-heavy-workloads"><span>2. ReadWriteLock for Read-Heavy Workloads</span></a></h4>
+<pre><code class="language-java">import java.util.concurrent.locks.ReadWriteLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
+
+ReadWriteLock rwLock = new ReentrantReadWriteLock();
+
+public Data read() {
+    rwLock.readLock().lock();
+    try {
+        return data;
+    } finally {
+        rwLock.readLock().unlock();
+    }
+}
+
+public void write(Data newData) {
+    rwLock.writeLock().lock();
+    try {
+        this.data = newData;
+    } finally {
+        rwLock.writeLock().unlock();
+    }
+}
+</code></pre>
+<h4 id="3-stampedlock-for-optimistic-read" tabindex="-1"><a class="header-anchor" href="#3-stampedlock-for-optimistic-read"><span>3. StampedLock for Optimistic Read</span></a></h4>
+<pre><code class="language-java">import java.util.concurrent.locks.StampedLock;
+
+StampedLock lock = new StampedLock();
+
+public Data optimisticRead() {
+    long stamp = lock.tryOptimisticRead();
+    Data localData = this.data;
+
+    // Check if data was modified during read
+    if (!lock.validate(stamp)) {
+        // Fall back to regular read lock
+        stamp = lock.readLock();
+        try {
+            localData = this.data;
+        } finally {
+            lock.unlockRead(stamp);
+        }
+    }
+    return localData;
+}
+</code></pre>
+<hr>
+<h2 id="api-design-patterns" tabindex="-1"><a class="header-anchor" href="#api-design-patterns"><span>API Design Patterns</span></a></h2>
+<h3 id="idempotency-key-pattern" tabindex="-1"><a class="header-anchor" href="#idempotency-key-pattern"><span>Idempotency Key Pattern</span></a></h3>
+<pre><code class="language-java">@PostMapping(&quot;/orders&quot;)
+public ResponseEntity&lt;Order&gt; createOrder(
+    @RequestHeader(&quot;Idempotency-Key&quot;) String idempotencyKey,
+    @RequestBody CreateOrderRequest request) {
+
+    // Check if already processed
+    Optional&lt;Order&gt; existing = orderService.findByIdempotencyKey(idempotencyKey);
+    if (existing.isPresent()) {
+        return ResponseEntity.ok(existing.get());
+    }
+
+    // Process and store with idempotency key
+    Order order = orderService.createOrder(request, idempotencyKey);
+    return ResponseEntity.status(HttpStatus.CREATED).body(order);
+}
+</code></pre>
+<h3 id="retry-with-exponential-backoff" tabindex="-1"><a class="header-anchor" href="#retry-with-exponential-backoff"><span>Retry with Exponential Backoff</span></a></h3>
+<pre><code class="language-java">public &lt;T&gt; T executeWithRetry(Supplier&lt;T&gt; action, int maxRetries) {
+    int attempt = 0;
+    long backoffMs = 100;
+
+    while (true) {
+        try {
+            return action.get();
+        } catch (Exception e) {
+            attempt++;
+            if (attempt &gt;= maxRetries) {
+                throw e;
+            }
+
+            try {
+                Thread.sleep(backoffMs + (long)(Math.random() * backoffMs));
+                backoffMs *= 2; // Exponential backoff
+            } catch (InterruptedException ie) {
+                Thread.currentThread().interrupt();
+                throw new RuntimeException(ie);
+            }
+        }
+    }
+}
+</code></pre>
+<hr>
+<h2 id="java-design-patterns-for-backend" tabindex="-1"><a class="header-anchor" href="#java-design-patterns-for-backend"><span>Java Design Patterns for Backend</span></a></h2>
+<h3 id="1-singleton-thread-safe" tabindex="-1"><a class="header-anchor" href="#1-singleton-thread-safe"><span>1. Singleton (Thread-Safe)</span></a></h3>
+<pre><code class="language-java">// Double-checked locking with volatile
+public class Singleton {
+    private static volatile Singleton instance;
+
+    private Singleton() {}
+
+    public static Singleton getInstance() {
+        if (instance == null) {
+            synchronized (Singleton.class) {
+                if (instance == null) {
+                    instance = new Singleton();
+                }
+            }
+        }
+        return instance;
+    }
+}
+
+// Better: Enum Singleton
+public enum SingletonEnum {
+    INSTANCE;
+
+    public void doSomething() { }
+}
+
+// Better: Static holder (lazy + thread-safe)
+public class SingletonHolder {
+    private SingletonHolder() {}
+
+    private static class Holder {
+        static final SingletonHolder INSTANCE = new SingletonHolder();
+    }
+
+    public static SingletonHolder getInstance() {
+        return Holder.INSTANCE;
+    }
+}
+</code></pre>
+<h3 id="2-producer-consumer-with-blockingqueue" tabindex="-1"><a class="header-anchor" href="#2-producer-consumer-with-blockingqueue"><span>2. Producer-Consumer with BlockingQueue</span></a></h3>
+<pre><code class="language-java">import java.util.concurrent.*;
+
+public class ProducerConsumer {
+
+    private final BlockingQueue&lt;Task&gt; queue = new LinkedBlockingQueue&lt;&gt;(100);
+    private final ExecutorService consumers = Executors.newFixedThreadPool(4);
+
+    public void start() {
+        for (int i = 0; i &lt; 4; i++) {
+            consumers.submit(() -&gt; {
+                while (!Thread.currentThread().isInterrupted()) {
+                    try {
+                        Task task = queue.take(); // Blocks if empty
+                        task.process();
+                    } catch (InterruptedException e) {
+                        Thread.currentThread().interrupt();
+                        break;
+                    }
+                }
+            });
+        }
+    }
+
+    public void submit(Task task) throws InterruptedException {
+        queue.put(task); // Blocks if full
+    }
+
+    public void shutdown() {
+        consumers.shutdownNow();
+    }
+}
+</code></pre>
+<h3 id="3-object-pool-pattern" tabindex="-1"><a class="header-anchor" href="#3-object-pool-pattern"><span>3. Object Pool Pattern</span></a></h3>
+<pre><code class="language-java">import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
+
+public class ConnectionPool {
+
+    private final BlockingQueue&lt;Connection&gt; pool;
+    private final int maxSize;
+
+    public ConnectionPool(int maxSize) {
+        this.maxSize = maxSize;
+        this.pool = new LinkedBlockingQueue&lt;&gt;(maxSize);
+
+        // Pre-create connections
+        for (int i = 0; i &lt; maxSize; i++) {
+            pool.offer(createConnection());
+        }
+    }
+
+    public Connection acquire() throws InterruptedException {
+        return pool.take();
+    }
+
+    public void release(Connection conn) {
+        if (conn != null &amp;&amp; !conn.isClosed()) {
+            pool.offer(conn);
+        } else {
+            // Replace bad connection
+            pool.offer(createConnection());
+        }
+    }
+
+    private Connection createConnection() {
+        // Create new connection
+        return new Connection();
+    }
+}
+</code></pre>
+<hr>
+<h2 id="common-interview-questions" tabindex="-1"><a class="header-anchor" href="#common-interview-questions"><span>Common Interview Questions</span></a></h2>
+<h3 id="q1-why-use-concurrenthashmap-compute-instead-of-get-put" tabindex="-1"><a class="header-anchor" href="#q1-why-use-concurrenthashmap-compute-instead-of-get-put"><span>Q1: Why use <code>ConcurrentHashMap.compute()</code> instead of get+put?</span></a></h3>
+<p><strong>Answer</strong>: <code>get()</code> followed by <code>put()</code> is NOT atomic. Between these two operations, another thread could modify the map. <code>compute()</code> performs the entire read-modify-write as a single atomic operation.</p>
+<h3 id="q2-difference-between-synchronized-and-reentrantlock" tabindex="-1"><a class="header-anchor" href="#q2-difference-between-synchronized-and-reentrantlock"><span>Q2: Difference between <code>synchronized</code> and <code>ReentrantLock</code>?</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>synchronized</th>
+<th>ReentrantLock</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Lock timeout</td>
+<td>No</td>
+<td>Yes (<code>tryLock</code>)</td>
+</tr>
+<tr>
+<td>Interruptible</td>
+<td>No</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>Fairness</td>
+<td>No</td>
+<td>Configurable</td>
+</tr>
+<tr>
+<td>Multiple conditions</td>
+<td>No</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>Try lock</td>
+<td>No</td>
+<td>Yes</td>
+</tr>
+</tbody>
+</table>
+<h3 id="q3-when-to-use-volatile" tabindex="-1"><a class="header-anchor" href="#q3-when-to-use-volatile"><span>Q3: When to use <code>volatile</code>?</span></a></h3>
+<p>Use <code>volatile</code> when:</p>
+<ul>
+<li>Variable is accessed by multiple threads</li>
+<li>Only simple read/write operations (no read-modify-write)</li>
+<li>No compound operations needed</li>
+</ul>
+<p>NOT sufficient for: <code>counter++</code> (read-modify-write needs AtomicInteger)</p>
+<h3 id="q4-how-to-prevent-deadlock" tabindex="-1"><a class="header-anchor" href="#q4-how-to-prevent-deadlock"><span>Q4: How to prevent deadlock?</span></a></h3>
+<ol>
+<li><strong>Lock ordering</strong>: Always acquire locks in the same order</li>
+<li><strong>Lock timeout</strong>: Use <code>tryLock()</code> with timeout</li>
+<li><strong>Avoid nested locks</strong>: Minimize lock scope</li>
+<li><strong>Use higher-level constructs</strong>: <code>ConcurrentHashMap</code>, <code>BlockingQueue</code></li>
+</ol>
+<hr>
+<h2 id="summary-choosing-the-right-tool" tabindex="-1"><a class="header-anchor" href="#summary-choosing-the-right-tool"><span>Summary: Choosing the Right Tool</span></a></h2>
+<table>
+<thead>
+<tr>
+<th>Scenario</th>
+<th>Solution</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Simple counter</td>
+<td><code>AtomicLong</code> or <code>LongAdder</code></td>
+</tr>
+<tr>
+<td>Conditional map update</td>
+<td><code>ConcurrentHashMap.compute()</code></td>
+</tr>
+<tr>
+<td>Read-heavy cache</td>
+<td><code>ReadWriteLock</code> or <code>StampedLock</code></td>
+</tr>
+<tr>
+<td>Request deduplication (single node)</td>
+<td><code>ConcurrentHashMap</code> + TTL cleanup</td>
+</tr>
+<tr>
+<td>Request deduplication (distributed)</td>
+<td>Redis <code>SETNX</code> with TTL</td>
+</tr>
+<tr>
+<td>Rate limiting</td>
+<td>Token Bucket / Sliding Window</td>
+</tr>
+<tr>
+<td>Fault tolerance</td>
+<td>Circuit Breaker</td>
+</tr>
+<tr>
+<td>Producer-Consumer</td>
+<td><code>BlockingQueue</code></td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="references" tabindex="-1"><a class="header-anchor" href="#references"><span>References</span></a></h2>
+<ul>
+<li><a href="https://javaguide.cn/java/concurrent/">Java Concurrency Guide</a></li>
+<li><a href="https://redis.io/topics/distlock">Redis Distributed Locks</a></li>
+<li><a href="https://martinfowler.com/bliki/CircuitBreaker.html">Martin Fowler - Circuit Breaker</a></li>
+</ul>
+
+      </div>
+      <div class="cheatsheet-footer">
+        <a href="../faqs.html" class="back-link">← Back to FAQs</a>
+        <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/faq/backend/be_programming_notes.md" class="github-edit" target="_blank">
+          Edit on GitHub →
+        </a>
+      </div>
+    <nav class="prev-next"><a href="backend_authentication.html" class="prev-link">← Authentication</a><a href="backend_be_programming_notes_pt2.html" class="next-link">Be Programming Notes Pt2 →</a></nav>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>CS_basics - Computer Science Fundamentals & Interview Preparation</p>
+      <p>
+        <a href="https://github.com/yennanliu/CS_basics">GitHub</a> •
+        <a href="https://github.com/yennanliu/CS_basics/tree/master/doc">Documentation</a> •
+        <a href="https://github.com/yennanliu/CS_basics/issues">Report Issues</a>
+      </p>
+    </div>
+  </footer>
+</body>
+</html>

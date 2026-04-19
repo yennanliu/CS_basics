@@ -1,0 +1,411 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Faq Data Model - CS_basics</title>
+  <meta name="description" content="Computer Science fundamentals: algorithms, data structures, system design, and LeetCode solutions">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>CS</text></svg>">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="../vendor/fonts.css">
+  <link rel="stylesheet" href="../vendor/highlight/github-dark.min.css">
+  <script src="../vendor/highlight/highlight.min.js"></script>
+  <script>
+  // Apply theme before render to prevent flash
+  (function() {
+    var saved = localStorage.getItem('theme');
+    if (saved === 'dark' || (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      document.documentElement.setAttribute('data-theme', 'dark');
+    }
+  })();
+  </script>
+  <script>document.addEventListener('DOMContentLoaded', function() {
+    hljs.highlightAll();
+    document.querySelectorAll('pre code').forEach(function(codeEl) {
+      var pre = codeEl.parentElement;
+      var lang = '';
+      var cls = codeEl.className || '';
+      var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
+      if (m) lang = m[1];
+      var wrapper = document.createElement('div');
+      wrapper.className = 'code-block-wrapper';
+      pre.parentNode.insertBefore(wrapper, pre);
+      var header = document.createElement('div');
+      header.className = 'code-block-header';
+      if (lang) {
+        var label = document.createElement('span');
+        label.className = 'code-lang-label';
+        label.textContent = lang;
+        header.appendChild(label);
+      } else {
+        header.appendChild(document.createElement('span'));
+      }
+      var btn = document.createElement('button');
+      btn.className = 'copy-btn';
+      btn.textContent = 'Copy';
+      btn.addEventListener('click', function() {
+        navigator.clipboard.writeText(codeEl.textContent).then(function() {
+          btn.textContent = 'Copied!';
+          btn.classList.add('copied');
+          setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+        });
+      });
+      header.appendChild(btn);
+      wrapper.appendChild(header);
+      wrapper.appendChild(pre);
+    });
+    document.querySelectorAll('table').forEach(function(table) {
+      if (!table.parentElement.classList.contains('table-wrap')) {
+        var wrapper = document.createElement('div');
+        wrapper.className = 'table-wrap';
+        table.parentNode.insertBefore(wrapper, table);
+        wrapper.appendChild(table);
+      }
+    });
+    // Reading progress bar
+    var progressBar = document.getElementById('reading-progress');
+    if (progressBar) {
+      window.addEventListener('scroll', function() {
+        var winScroll = document.documentElement.scrollTop;
+        var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        progressBar.style.width = height > 0 ? (winScroll / height * 100) + '%' : '0%';
+      });
+    }
+    // Dark mode toggle
+    var toggle = document.getElementById('theme-toggle');
+    if (toggle) {
+      var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      toggle.textContent = isDark ? '☀️' : '🌙';
+      toggle.addEventListener('click', function() {
+        var dark = document.documentElement.getAttribute('data-theme') === 'dark';
+        if (dark) {
+          document.documentElement.removeAttribute('data-theme');
+          localStorage.setItem('theme', 'light');
+          toggle.textContent = '🌙';
+        } else {
+          document.documentElement.setAttribute('data-theme', 'dark');
+          localStorage.setItem('theme', 'dark');
+          toggle.textContent = '☀️';
+        }
+      });
+    }
+  });</script>
+</head>
+<body>
+  <div class="progress-container"><div class="progress-bar" id="reading-progress"></div></div>
+  <nav class="navbar">
+    <div class="container">
+      <div class="nav-brand">
+        <span class="nav-icon">💻</span>
+        <span class="nav-title">CS_basics</span>
+      </div>
+      <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+      <div class="nav-links">
+        <a href="../index.html" class="">Home</a>
+        <a href="../cheatsheets.html" class="">Cheat Sheets</a>
+        <a href="../patterns.html" class="">Pattern Recognition</a>
+        <a href="../faqs.html" class="active">FAQs</a>
+        <a href="../resources.html" class="">Resources</a>
+        <a href="../lc-explorer.html" class="">LC Explorer</a>
+        <a href="../lc-random-picker.html" class="">🎲 Random Picker</a>
+        <a href="../algo_demo/index.html" class="">Visualizer</a>
+        <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">&#127769;</button>
+        <a href="https://github.com/yennanliu/CS_basics" target="_blank" class="github-link" aria-label="GitHub">
+          <svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor">
+            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container">
+    <div class="content">
+      
+      <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../faqs.html">FAQs</a> <span class="sep">›</span> <span class="current">Faq Data Model</span></nav>
+      <div class="cheatsheet-header">
+        <h1>Faq Data Model</h1>
+        <span class="last-updated">Last updated: Feb 23, 2024</span>
+      </div>
+      <div class="toc"><h2>Table of Contents</h2><ul><li class="toc-sub"><a href="#1-what-are-the-different-design-schemas-in-data-modelling-explain-with-the-example">1) What are the different design schemas in Data Modelling? Explain with the example?</a></li><li class="toc-sub"><a href="#2-which-schema-is-better-star-or-snowflake">2)  Which schema is better – star or snowflake?</a></li><li class="toc-sub"><a href="#3-what-is-a-fact-dimension-table">3) What is a fact, dimension table ?</a></li><li class="toc-sub"><a href="#4-what-are-the-different-types-of-dimensions-you-have-come-across-explain-each-of-them-in-detail-with-an-example">4)  What are the different types of dimensions you have come across? Explain each of them in detail with an example?</a></li><li class="toc-sub"><a href="#5-explain-slowing-changing-dimension-scd">5) Explain Slowing changing dimension (SCD) ?</a></li><li class="toc-sub"><a href="#6-give-your-idea-regarding-factless-fact-and-why-do-we-use-it">6) Give your idea regarding factless fact? And why do we use it?</a></li><li class="toc-sub"><a href="#7-distinguish-between-oltp-and-olap">7) Distinguish between OLTP and OLAP?</a></li><li class="toc-sub"><a href="#8-what-is-a-surrogate-key-how-is-it-different-from-a-primary-key">8) What is a Surrogate key? How is it different from a primary key?</a></li><li class="toc-sub"><a href="#9-is-this-true-that-all-databases-should-be-in-3nf">9) Is this true that all databases should be in 3NF?</a></li><li class="toc-sub"><a href="#10-explain-1nf-2nd-3nf-4nf-5nf">10) Explain 1NF, 2ND, 3NF, 4NF, 5NF?</a></li><li class="toc-sub"><a href="#11-list-out-a-few-common-mistakes-encountered-during-data-modelling">11) List out a few common mistakes encountered during Data Modelling?</a></li><li class="toc-sub"><a href="#12-if-a-unique-constraint-is-applied-to-a-column-then-will-it-throw-an-error-if-you-try-to-insert-two-nulls-into-it">12)  If a unique constraint is applied to a column then will it throw an error if you try to insert two nulls into it?</a></li><li class="toc-sub"><a href="#13-what-is-cardinality">13) What is cardinality?</a></li><li class="toc-sub"><a href="#ref">Ref:</a></li></ul></div>
+      <div class="cheatsheet-content">
+        <h1 id="data-modeling-faq" tabindex="-1"><a class="header-anchor" href="#data-modeling-faq"><span>Data Modeling FAQ</span></a></h1>
+<h3 id="1-what-are-the-different-design-schemas-in-data-modelling-explain-with-the-example" tabindex="-1"><a class="header-anchor" href="#1-what-are-the-different-design-schemas-in-data-modelling-explain-with-the-example"><span>1) What are the different design schemas in Data Modelling? Explain with the example?</span></a></h3>
+<ul>
+<li>2 kinds of common design
+<ul>
+<li>
+<p>Star Schema</p>
+<ul>
+<li>The simplest of the schemas is star schema where we have a fact table in the center that references multiple dimension tables around it. All the dimension tables are connected to the fact table. The primary key in all dimension tables acts as a foreign key in the fact table.</li>
+<li>The star schema is quite simple, flexible and it is in <code>denormalized</code> form.</li>
+</ul>
+</li>
+<li>
+<p>Snowflake Schema</p>
+<ul>
+<li>In a snowflake schema, the level of <code>normalization</code> increases. The fact table here remains the same as in the star schema. However, the dimension tables are normalized.  Due to several layers of dimension tables, it looks like a snowflake, and thus it is named as snowflake schema.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="2-which-schema-is-better-star-or-snowflake" tabindex="-1"><a class="header-anchor" href="#2-which-schema-is-better-star-or-snowflake"><span>2)  Which schema is better – star or snowflake?</span></a></h3>
+<ul>
+<li>depends on project and scenarios</li>
+<li>Star Schema
+<ul>
+<li><code>denormalized</code> -&gt; redundant data -&gt; a bit hard to maintain</li>
+<li>query is more simple (less join), run faster (compared to snowflake)</li>
+<li>purpose : do more of a metrics analysis. e.g. : “what is the claim amount paid to a particular subscriber?”</li>
+<li>more memory consumption</li>
+</ul>
+</li>
+<li>Snowflake Schema
+<ul>
+<li><code>normalized</code> -&gt; no redundant data -&gt; easy to maintain</li>
+<li>query is a bit complext (join), run slower (compared to star)</li>
+<li>do more of dimension analysis. e.g. :  “how many subscribers are tied to a particular plan which is currently active?”</li>
+<li>less memory consumption</li>
+</ul>
+</li>
+</ul>
+<h3 id="3-what-is-a-fact-dimension-table" tabindex="-1"><a class="header-anchor" href="#3-what-is-a-fact-dimension-table"><span>3) What is a fact, dimension table ?</span></a></h3>
+<ul>
+<li>Fact
+<ul>
+<li>Facts represent quantitative data.</li>
+<li>the net amount due is a fact. A fact table contains numerical data and foreign keys from related dimensional tables</li>
+<li>Generally, fact table is in normalized form</li>
+</ul>
+</li>
+<li>Dimension
+<ul>
+<li>Dimensions represent qualitative data. For Example, plan, product, class are all dimensions.</li>
+<li>A dimension table contains descriptive or textual attributes</li>
+<li>Generally, dimension table is in de-normalized form</li>
+</ul>
+</li>
+</ul>
+<h3 id="4-what-are-the-different-types-of-dimensions-you-have-come-across-explain-each-of-them-in-detail-with-an-example" tabindex="-1"><a class="header-anchor" href="#4-what-are-the-different-types-of-dimensions-you-have-come-across-explain-each-of-them-in-detail-with-an-example"><span>4)  What are the different types of dimensions you have come across? Explain each of them in detail with an example?</span></a></h3>
+<ul>
+<li>5 types of dimensions
+<ul>
+<li>Conformed dimensions</li>
+<li>Junk dimensions</li>
+<li>Role-playing dimensions</li>
+<li><code>Slowing changing dimension (SCD)</code></li>
+<li>Degenerated dimensions</li>
+</ul>
+</li>
+</ul>
+<h3 id="5-explain-slowing-changing-dimension-scd" tabindex="-1"><a class="header-anchor" href="#5-explain-slowing-changing-dimension-scd"><span>5) Explain <code>Slowing changing dimension (SCD)</code> ?</span></a></h3>
+<ul>
+<li>SCD : Slowly Changing Dimensions</li>
+<li>Type
+<ul>
+<li>Type 0 :
+<ul>
+<li>do nothing, (will always remain the same irrespective of the time.)</li>
+</ul>
+</li>
+<li>Type 1 :
+<ul>
+<li>The new record replaces the original record. No trace of the old record exists.</li>
+<li>These are the dimensions where the previous value of the attribute is replaced by the current value. No history is maintained in the Type-1 dimension</li>
+</ul>
+</li>
+<li>Type 2 :
+<ul>
+<li>A new record is added into the customer dimension table. Therefore, the customer is treated essentially as two people.</li>
+<li>These are the dimensions where unlimited history is preserved</li>
+</ul>
+</li>
+<li>Type 3 :
+<ul>
+<li>The original record is modified to reflect the change.</li>
+<li>These are the type of dimensions where limited history is preserved. And we use an additional column to maintain the history.</li>
+</ul>
+</li>
+<li>Type 4
+<ul>
+<li>In this type of dimension, the historical data is preserved in a separate table. The main dimension table holds only the current data</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>ref
+<ul>
+<li><a href="https://www.1keydata.com/datawarehousing/slowly-changing-dimensions.html">https://www.1keydata.com/datawarehousing/slowly-changing-dimensions.html</a></li>
+<li><a href="https://www.gushiciku.cn/pl/ggNK/zh-tw">https://www.gushiciku.cn/pl/ggNK/zh-tw</a></li>
+<li><a href="https://help.aliyun.com/document_detail/295435.html#:~:text=SCD%E7%AE%80%E4%BB%8B,%E5%85%B3%E9%94%AEETL%E4%BB%BB%E5%8A%A1%E4%B9%8B%E4%B8%80%E3%80%82">https://help.aliyun.com/document_detail/295435.html#:~:text=SCD简介,关键ETL任务之一。</a></li>
+<li><a href="https://www.cnblogs.com/biwork/p/3363749.html">https://www.cnblogs.com/biwork/p/3363749.html</a></li>
+<li><a href="https://www.codenong.com/cs107062349/">https://www.codenong.com/cs107062349/</a></li>
+</ul>
+</li>
+</ul>
+<h3 id="6-give-your-idea-regarding-factless-fact-and-why-do-we-use-it" tabindex="-1"><a class="header-anchor" href="#6-give-your-idea-regarding-factless-fact-and-why-do-we-use-it"><span>6) Give your idea regarding factless fact? And why do we use it?</span></a></h3>
+<ul>
+<li>ideas
+<ul>
+<li>Factless fact table is a fact table that contains no fact measure in it. It has only the dimension keys in it.</li>
+<li>At times, certain situations may arise in the business where you need to have a factless fact table.</li>
+<li>example :  suppose you are maintaining an employee attendance record system, you can have a factless fact table having three keys.</li>
+<li>You can see that below table does not contain any measure. Now, if you want to answer the below question, you can do easily using the above single factless fact table rather than having two separate fact tables:
+<ul>
+<li>“How many employees of a particular department were present on a particular day?”</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<pre><code># sql schema
+EMPLOYEE_ID
+DEPARTMENT_ID
+TIME_ID
+</code></pre>
+<h3 id="7-distinguish-between-oltp-and-olap" tabindex="-1"><a class="header-anchor" href="#7-distinguish-between-oltp-and-olap"><span>7) Distinguish between OLTP and OLAP?</span></a></h3>
+<ul>
+<li>OLTP
+<ul>
+<li><code>Online Transaction Processing System</code></li>
+<li>OLTP maintains the transactional data of the business &amp; is highly <code>normalized</code> generally.</li>
+<li>star schema</li>
+</ul>
+</li>
+<li>OLAP
+<ul>
+<li><code>Online Analytical Processing System</code></li>
+<li>OLAP is for <code>analysis and reporting</code> purposes &amp; it is in <code>denormalized</code>form.</li>
+<li>snowflake schema</li>
+</ul>
+</li>
+<li>extra
+<ul>
+<li>MPP (massively parallel processing)
+<ul>
+<li>An MPP database is a database that is optimized to be processed in parallel for many operations to be performed by many processing units at a time.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>ref
+<ul>
+<li><a href="https://searchdatamanagement.techtarget.com/definition/MPP-database-massively-parallel-processing-database#:~:text=An%20MPP%20database%20is%20a,different%20parts%20of%20the%20program">https://searchdatamanagement.techtarget.com/definition/MPP-database-massively-parallel-processing-database#:~:text=An MPP database is a,different parts of the program</a></li>
+<li><a href="https://medium.com/@jockeyng/hadoop%E8%88%87mpp%E6%98%AF%E4%BB%80%E9%BA%BC%E9%97%9C%E4%BF%82-%E6%9C%89%E4%BB%80%E9%BA%BC%E5%8D%80%E5%88%A5%E5%92%8C%E8%81%AF%E7%B9%AB-afb4397e12a1">https://medium.com/@jockeyng/hadoop與mpp是什麼關係-有什麼區別和聯繫-afb4397e12a1</a></li>
+</ul>
+</li>
+</ul>
+<h3 id="8-what-is-a-surrogate-key-how-is-it-different-from-a-primary-key" tabindex="-1"><a class="header-anchor" href="#8-what-is-a-surrogate-key-how-is-it-different-from-a-primary-key"><span>8) What is a <code>Surrogate key</code>? How is it different from a primary key?</span></a></h3>
+<ul>
+<li><code>Surrogate Key</code> is a <code>unique identifier or a system-generated sequence number key that can act as a primary key</code>. It can be <code>a column or a combination of columns</code>. Unlike a primary key, it is <code>not</code> picked up from the <code>existing</code> application data fields.</li>
+</ul>
+<h3 id="9-is-this-true-that-all-databases-should-be-in-3nf" tabindex="-1"><a class="header-anchor" href="#9-is-this-true-that-all-databases-should-be-in-3nf"><span>9) Is this true that all databases should be in 3NF?</span></a></h3>
+<ul>
+<li>It is not mandatory for a database to be in 3NF. However, if your purpose is the easy maintenance of data, less redundancy, and efficient access then you should go with a de-normalized database.</li>
+</ul>
+<h3 id="10-explain-1nf-2nd-3nf-4nf-5nf" tabindex="-1"><a class="header-anchor" href="#10-explain-1nf-2nd-3nf-4nf-5nf"><span>10) Explain 1NF, 2ND, 3NF, 4NF, 5NF?</span></a></h3>
+<ul>
+<li>1NF:
+<ul>
+<li>The domain of each attribute contains only atomic values, and the value of each attribute contains only a single value from that domain.</li>
+</ul>
+</li>
+<li>2NF:
+<ul>
+<li>No non-prime attribute in the table is functionally dependent on a proper subset of any candidate key.</li>
+</ul>
+</li>
+<li>3NF:
+<ul>
+<li>Every non-prime attribute is non-transitively dependent on every candidate key in the table. The attributes that do not contribute to the description of the primary key are removed from the table. In other words, no transitive dependency is allowed.</li>
+</ul>
+</li>
+<li>4NF:
+<ul>
+<li>Every non-trivial multivalued dependency in the table is a dependency on a superkey.</li>
+</ul>
+</li>
+<li>5NF:
+<ul>
+<li>Every non-trivial join dependency in the table is implied by the superkeys of the table.</li>
+</ul>
+</li>
+</ul>
+<h3 id="11-list-out-a-few-common-mistakes-encountered-during-data-modelling" tabindex="-1"><a class="header-anchor" href="#11-list-out-a-few-common-mistakes-encountered-during-data-modelling"><span>11) List out a few common mistakes encountered during Data Modelling?</span></a></h3>
+<ul>
+<li>Building massive data models:
+<ul>
+<li>Large data models are like to have more design faults. Try to restrict your data model to not more than 200 tables.</li>
+</ul>
+</li>
+<li>Lack of purpose:
+<ul>
+<li>If you do not know that what is your business solution is intended for, you might come up with an incorrect data model. So having clarity on the business purpose is very important to come up with the right data model.</li>
+</ul>
+</li>
+<li>Inappropriate use of surrogate keys:
+<ul>
+<li><code>Surrogate key should not be used unnecessarily. Use surrogate key only when the natural key cannot serve the purpose of a primary key</code>.</li>
+</ul>
+</li>
+<li>Unnecessary de-normalization:
+<ul>
+<li><code>Don’t denormalize until and unless you have a solid &amp; clear business reason to do so because de-normalization creates redundant data which is difficult to maintain</code>.</li>
+</ul>
+</li>
+</ul>
+<h3 id="12-if-a-unique-constraint-is-applied-to-a-column-then-will-it-throw-an-error-if-you-try-to-insert-two-nulls-into-it" tabindex="-1"><a class="header-anchor" href="#12-if-a-unique-constraint-is-applied-to-a-column-then-will-it-throw-an-error-if-you-try-to-insert-two-nulls-into-it"><span>12)  If a unique constraint is applied to a column then will it throw an error if you try to insert two nulls into it?</span></a></h3>
+<ul>
+<li>No, it will <code>not</code> throw any error in this case because <code>a null value is NOT equal to another null value</code>. So, more than one null will be inserted in the column without any error.</li>
+</ul>
+<h3 id="13-what-is-cardinality" tabindex="-1"><a class="header-anchor" href="#13-what-is-cardinality"><span>13) What is cardinality?</span></a></h3>
+<ul>
+<li>Thinking mathematically, it is the number of elements in a set. Thinking in the database world, cardinality has to do with the counts in a relationship, <code>one-to-one, one-to-many, or many-to-many</code>.</li>
+</ul>
+<h3 id="ref" tabindex="-1"><a class="header-anchor" href="#ref"><span>Ref:</span></a></h3>
+<ul>
+<li>DB model general
+<ul>
+<li><a href="https://www.softwaretestinghelp.com/data-modeling-interview-questions-answers/">https://www.softwaretestinghelp.com/data-modeling-interview-questions-answers/</a></li>
+<li><a href="https://resources.biginterview.com/industry-specific/sql-interview-questions/#1-What-is-cardinality">https://resources.biginterview.com/industry-specific/sql-interview-questions/#1-What-is-cardinality</a></li>
+</ul>
+</li>
+<li>keys in DB
+<ul>
+<li><a href="https://begriffs.com/posts/2018-01-01-sql-keys-in-depth.html">https://begriffs.com/posts/2018-01-01-sql-keys-in-depth.html</a></li>
+</ul>
+</li>
+<li>DB model tool
+<ul>
+<li><a href="https://www.softwaretestinghelp.com/data-modeling-tools/">https://www.softwaretestinghelp.com/data-modeling-tools/</a></li>
+</ul>
+</li>
+</ul>
+
+      </div>
+      <div class="cheatsheet-footer">
+        <a href="../faqs.html" class="back-link">← Back to FAQs</a>
+        <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/faq/faq_data_model.md" class="github-edit" target="_blank">
+          Edit on GitHub →
+        </a>
+      </div>
+    <nav class="prev-next"><a href="faq_ML.html" class="prev-link">← Faq ML</a><a href="faq_dev_interview.html" class="next-link">Faq Dev Interview →</a></nav>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>CS_basics - Computer Science Fundamentals & Interview Preparation</p>
+      <p>
+        <a href="https://github.com/yennanliu/CS_basics">GitHub</a> •
+        <a href="https://github.com/yennanliu/CS_basics/tree/master/doc">Documentation</a> •
+        <a href="https://github.com/yennanliu/CS_basics/issues">Report Issues</a>
+      </p>
+    </div>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,1050 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Recursion To Dp - CS_basics</title>
+  <meta name="description" content="Computer Science fundamentals: algorithms, data structures, system design, and LeetCode solutions">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>CS</text></svg>">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="../vendor/fonts.css">
+  <link rel="stylesheet" href="../vendor/highlight/github-dark.min.css">
+  <script src="../vendor/highlight/highlight.min.js"></script>
+  <script>
+  // Apply theme before render to prevent flash
+  (function() {
+    var saved = localStorage.getItem('theme');
+    if (saved === 'dark' || (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      document.documentElement.setAttribute('data-theme', 'dark');
+    }
+  })();
+  </script>
+  <script>document.addEventListener('DOMContentLoaded', function() {
+    hljs.highlightAll();
+    document.querySelectorAll('pre code').forEach(function(codeEl) {
+      var pre = codeEl.parentElement;
+      var lang = '';
+      var cls = codeEl.className || '';
+      var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
+      if (m) lang = m[1];
+      var wrapper = document.createElement('div');
+      wrapper.className = 'code-block-wrapper';
+      pre.parentNode.insertBefore(wrapper, pre);
+      var header = document.createElement('div');
+      header.className = 'code-block-header';
+      if (lang) {
+        var label = document.createElement('span');
+        label.className = 'code-lang-label';
+        label.textContent = lang;
+        header.appendChild(label);
+      } else {
+        header.appendChild(document.createElement('span'));
+      }
+      var btn = document.createElement('button');
+      btn.className = 'copy-btn';
+      btn.textContent = 'Copy';
+      btn.addEventListener('click', function() {
+        navigator.clipboard.writeText(codeEl.textContent).then(function() {
+          btn.textContent = 'Copied!';
+          btn.classList.add('copied');
+          setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+        });
+      });
+      header.appendChild(btn);
+      wrapper.appendChild(header);
+      wrapper.appendChild(pre);
+    });
+    document.querySelectorAll('table').forEach(function(table) {
+      if (!table.parentElement.classList.contains('table-wrap')) {
+        var wrapper = document.createElement('div');
+        wrapper.className = 'table-wrap';
+        table.parentNode.insertBefore(wrapper, table);
+        wrapper.appendChild(table);
+      }
+    });
+    // Reading progress bar
+    var progressBar = document.getElementById('reading-progress');
+    if (progressBar) {
+      window.addEventListener('scroll', function() {
+        var winScroll = document.documentElement.scrollTop;
+        var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        progressBar.style.width = height > 0 ? (winScroll / height * 100) + '%' : '0%';
+      });
+    }
+    // Dark mode toggle
+    var toggle = document.getElementById('theme-toggle');
+    if (toggle) {
+      var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      toggle.textContent = isDark ? '☀️' : '🌙';
+      toggle.addEventListener('click', function() {
+        var dark = document.documentElement.getAttribute('data-theme') === 'dark';
+        if (dark) {
+          document.documentElement.removeAttribute('data-theme');
+          localStorage.setItem('theme', 'light');
+          toggle.textContent = '🌙';
+        } else {
+          document.documentElement.setAttribute('data-theme', 'dark');
+          localStorage.setItem('theme', 'dark');
+          toggle.textContent = '☀️';
+        }
+      });
+    }
+  });</script>
+</head>
+<body>
+  <div class="progress-container"><div class="progress-bar" id="reading-progress"></div></div>
+  <nav class="navbar">
+    <div class="container">
+      <div class="nav-brand">
+        <span class="nav-icon">💻</span>
+        <span class="nav-title">CS_basics</span>
+      </div>
+      <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+      <div class="nav-links">
+        <a href="../index.html" class="">Home</a>
+        <a href="../cheatsheets.html" class="active">Cheat Sheets</a>
+        <a href="../patterns.html" class="">Pattern Recognition</a>
+        <a href="../faqs.html" class="">FAQs</a>
+        <a href="../resources.html" class="">Resources</a>
+        <a href="../lc-explorer.html" class="">LC Explorer</a>
+        <a href="../lc-random-picker.html" class="">🎲 Random Picker</a>
+        <a href="../algo_demo/index.html" class="">Visualizer</a>
+        <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">&#127769;</button>
+        <a href="https://github.com/yennanliu/CS_basics" target="_blank" class="github-link" aria-label="GitHub">
+          <svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor">
+            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container">
+    <div class="content">
+      
+      <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">Recursion To Dp</span></nav>
+      <div class="cheatsheet-header">
+        <h1>Recursion To Dp</h1>
+        <span class="last-updated">Last updated: Mar 10, 2026</span>
+      </div>
+      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#0-concept">0) Concept</a></li><li class="toc-sub"><a href="#0-0-when-to-convert-recursion-to-dp">0-0) When to Convert Recursion to DP</a></li><li class="toc-sub"><a href="#0-1-conversion-strategy">0-1) Conversion Strategy</a></li><li><a href="#1-complete-examples-recursion-dp">1) Complete Examples: Recursion → DP</a></li><li class="toc-sub"><a href="#1-1-fibonacci-sequence">1-1) Fibonacci Sequence</a></li><li class="toc-sub"><a href="#1-2-climbing-stairs-lc-70">1-2) Climbing Stairs (LC 70)</a></li><li class="toc-sub"><a href="#1-3-house-robber-lc-198">1-3) House Robber (LC 198)</a></li><li class="toc-sub"><a href="#1-4-coin-change-lc-322">1-4) Coin Change (LC 322)</a></li><li><a href="#2-common-leetcode-problems">2) Common LeetCode Problems</a></li><li class="toc-sub"><a href="#recursion-dp-conversions">Recursion → DP Conversions</a></li><li><a href="#3-conversion-checklist">3) Conversion Checklist</a></li><li class="toc-sub"><a href="#step-by-step-guide">✅ Step-by-Step Guide</a></li><li><a href="#4-interview-tips">4) Interview Tips</a></li><li class="toc-sub"><a href="#recognition-patterns">💡 Recognition Patterns</a></li><li class="toc-sub"><a href="#interview-talking-points">🎯 Interview Talking Points</a></li><li class="toc-sub"><a href="#complexity-analysis">📊 Complexity Analysis</a></li><li><a href="#summary">Summary</a></li><li><a href="#lc-examples">LC Examples</a></li><li class="toc-sub"><a href="#2-1-house-robber-lc-198-recursion-memoization-dp">2-1) House Robber (LC 198) — Recursion → Memoization → DP</a></li><li class="toc-sub"><a href="#2-2-word-break-lc-139-top-down-recursion-dp">2-2) Word Break (LC 139) — Top-down Recursion → DP</a></li><li class="toc-sub"><a href="#2-3-edit-distance-lc-72-2d-dp-string-string">2-3) Edit Distance (LC 72) — 2D DP (String → String)</a></li><li class="toc-sub"><a href="#2-4-fibonacci-number-lc-509-recursion-memoization-dp-o-1">2-4) Fibonacci Number (LC 509) — Recursion → Memoization → DP → O(1)</a></li><li class="toc-sub"><a href="#2-5-unique-paths-lc-62-2d-recursion-dp">2-5) Unique Paths (LC 62) — 2D Recursion → DP</a></li><li class="toc-sub"><a href="#2-6-triangle-lc-120-top-down-recursion-bottom-up-dp">2-6) Triangle (LC 120) — Top-Down Recursion → Bottom-Up DP</a></li><li class="toc-sub"><a href="#2-7-longest-palindromic-subsequence-lc-516-interval-dp">2-7) Longest Palindromic Subsequence (LC 516) — Interval DP</a></li><li class="toc-sub"><a href="#2-8-coin-change-lc-322-recursion-with-pruning-dp">2-8) Coin Change (LC 322) — Recursion with Pruning → DP</a></li><li class="toc-sub"><a href="#2-9-combination-sum-iv-lc-377-recursion-dp-order-matters">2-9) Combination Sum IV (LC 377) — Recursion → DP (Order Matters)</a></li><li class="toc-sub"><a href="#2-10-minimum-cost-to-cut-a-stick-lc-1547-interval-dp">2-10) Minimum Cost to Cut a Stick (LC 1547) — Interval DP</a></li><li class="toc-sub"><a href="#2-11-partition-array-for-maximum-sum-lc-1043-1d-dp">2-11) Partition Array for Maximum Sum (LC 1043) — 1D DP</a></li></ul></div>
+      <div class="cheatsheet-content">
+        <h1 id="recursion-to-dynamic-programming-conversion" tabindex="-1"><a class="header-anchor" href="#recursion-to-dynamic-programming-conversion"><span>Recursion to Dynamic Programming Conversion</span></a></h1>
+<ul>
+<li><strong>Core idea</strong>: Transform recursive solutions into iterative DP for better performance</li>
+<li><strong>When to use</strong>: Recursive solutions with overlapping subproblems and optimal substructure</li>
+<li><strong>Key benefits</strong>: Eliminate redundant calculations, reduce space from O(n) stack to O(n) or O(1) array</li>
+<li><strong>Common pattern</strong>: Recognize memoization opportunities, then convert to bottom-up tabulation</li>
+</ul>
+<p><strong>Conversion Steps:</strong></p>
+<ol>
+<li>Identify base cases</li>
+<li>Find recursive relation</li>
+<li>Add memoization (Top-Down DP)</li>
+<li>Convert to tabulation (Bottom-Up DP)</li>
+<li>Optimize space if possible</li>
+</ol>
+<hr>
+<h2 id="0-concept" tabindex="-1"><a class="header-anchor" href="#0-concept"><span>0) Concept</span></a></h2>
+<h3 id="0-0-when-to-convert-recursion-to-dp" tabindex="-1"><a class="header-anchor" href="#0-0-when-to-convert-recursion-to-dp"><span>0-0) When to Convert Recursion to DP</span></a></h3>
+<p><strong>Indicators that DP is applicable:</strong></p>
+<blockquote>
+<p>“When you hear a problem beginning with the following statements, it’s often (though not always) a good candidate for recursion: ‘Design an algorithm to compute the nth…’, ‘Write code to list the first n…’, ‘Implement a method to compute all…’, and so on.”
+— <em>Cracking the Coding Interview</em>, 6th Edition, p.130</p>
+</blockquote>
+<p><strong>Requirements for DP:</strong></p>
+<ol>
+<li><strong>Overlapping Subproblems</strong>: Same subproblems solved multiple times</li>
+<li><strong>Optimal Substructure</strong>: Optimal solution contains optimal solutions to subproblems</li>
+<li><strong>Memoization Opportunity</strong>: Results can be cached for reuse</li>
+</ol>
+<p><strong>Recognition Patterns:</strong></p>
+<ul>
+<li>“Find the nth…”</li>
+<li>“Count ways to…”</li>
+<li>“Minimum/maximum…”</li>
+<li>“Optimize…”</li>
+<li>Multiple recursive calls with same parameters</li>
+</ul>
+<h3 id="0-1-conversion-strategy" tabindex="-1"><a class="header-anchor" href="#0-1-conversion-strategy"><span>0-1) Conversion Strategy</span></a></h3>
+<pre><code>Recursion (Exponential)
+    ↓
+Top-Down DP (Memoization)
+    ↓
+Bottom-Up DP (Tabulation)
+    ↓
+Space-Optimized DP
+</code></pre>
+<p><strong>Top-Down (Memoization):</strong></p>
+<ul>
+<li>Keep recursive structure</li>
+<li>Add cache (memo) to store results</li>
+<li>Easy to implement from recursion</li>
+<li>Space: O(n) for memo + O(n) for call stack</li>
+</ul>
+<p><strong>Bottom-Up (Tabulation):</strong></p>
+<ul>
+<li>Build solution iteratively</li>
+<li>Fill DP table from base cases up</li>
+<li>No recursion overhead</li>
+<li>Space: O(n) for DP table only</li>
+</ul>
+<p><strong>Space Optimization:</strong></p>
+<ul>
+<li>Identify what previous states are actually needed</li>
+<li>Often can reduce from O(n) to O(k) where k is constant</li>
+<li>Example: Fibonacci only needs last 2 values</li>
+</ul>
+<hr>
+<h2 id="1-complete-examples-recursion-dp" tabindex="-1"><a class="header-anchor" href="#1-complete-examples-recursion-dp"><span>1) Complete Examples: Recursion → DP</span></a></h2>
+<h3 id="1-1-fibonacci-sequence" tabindex="-1"><a class="header-anchor" href="#1-1-fibonacci-sequence"><span>1-1) Fibonacci Sequence</span></a></h3>
+<p><strong>Problem:</strong> Compute the nth Fibonacci number where F(n) = F(n-1) + F(n-2), F(0)=0, F(1)=1.</p>
+<h4 id="step-1-naive-recursion" tabindex="-1"><a class="header-anchor" href="#step-1-naive-recursion"><span>Step 1: Naive Recursion</span></a></h4>
+<pre><code class="language-python"># Python - Naive Recursion
+def fib_recursive(n):
+    &quot;&quot;&quot;
+    Time: O(2^n) - exponential
+    Space: O(n) - call stack depth
+    &quot;&quot;&quot;
+    if n &lt;= 1:
+        return n
+    return fib_recursive(n-1) + fib_recursive(n-2)
+</code></pre>
+<pre><code class="language-java">// Java - Naive Recursion
+public int fibRecursive(int n) {
+    /**
+     * time = O(2^N) - exponential
+     * space = O(N) - call stack
+     */
+    if (n &lt;= 1) return n;
+    return fibRecursive(n-1) + fibRecursive(n-2);
+}
+</code></pre>
+<p><strong>Problem:</strong> Massive redundant calculations!</p>
+<pre><code>fib(5)
+├── fib(4)
+│   ├── fib(3)
+│   │   ├── fib(2)
+│   │   │   ├── fib(1)
+│   │   │   └── fib(0)
+│   │   └── fib(1)
+│   └── fib(2)  &lt;- Computed again!
+│       ├── fib(1)
+│       └── fib(0)
+└── fib(3)      &lt;- Computed again!
+    ├── fib(2)  &lt;- Computed again!
+    │   ├── fib(1)
+    │   └── fib(0)
+    └── fib(1)
+</code></pre>
+<h4 id="step-2-top-down-dp-memoization" tabindex="-1"><a class="header-anchor" href="#step-2-top-down-dp-memoization"><span>Step 2: Top-Down DP (Memoization)</span></a></h4>
+<pre><code class="language-python"># Python - Top-Down DP
+def fib_memo(n, memo=None):
+    &quot;&quot;&quot;
+    Time: O(n) - each subproblem solved once
+    Space: O(n) - memo dict + call stack
+    &quot;&quot;&quot;
+    if memo is None:
+        memo = {}
+
+    if n &lt;= 1:
+        return n
+
+    if n in memo:
+        return memo[n]
+
+    memo[n] = fib_memo(n-1, memo) + fib_memo(n-2, memo)
+    return memo[n]
+</code></pre>
+<pre><code class="language-java">// Java - Top-Down DP
+public int fibMemo(int n) {
+    return fibMemoHelper(n, new int[n+1]);
+}
+
+private int fibMemoHelper(int n, int[] memo) {
+    /**
+     * time = O(N)
+     * space = O(N) - memo + call stack
+     */
+    if (n &lt;= 1) return n;
+
+    if (memo[n] != 0) return memo[n];
+
+    memo[n] = fibMemoHelper(n-1, memo) + fibMemoHelper(n-2, memo);
+    return memo[n];
+}
+</code></pre>
+<h4 id="step-3-bottom-up-dp-tabulation" tabindex="-1"><a class="header-anchor" href="#step-3-bottom-up-dp-tabulation"><span>Step 3: Bottom-Up DP (Tabulation)</span></a></h4>
+<pre><code class="language-python"># Python - Bottom-Up DP
+def fib_dp(n):
+    &quot;&quot;&quot;
+    Time: O(n)
+    Space: O(n) - DP table
+    &quot;&quot;&quot;
+    if n &lt;= 1:
+        return n
+
+    dp = [0] * (n + 1)
+    dp[0] = 0
+    dp[1] = 1
+
+    for i in range(2, n + 1):
+        dp[i] = dp[i-1] + dp[i-2]
+
+    return dp[n]
+</code></pre>
+<pre><code class="language-java">// Java - Bottom-Up DP
+public int fibDP(int n) {
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
+    if (n &lt;= 1) return n;
+
+    int[] dp = new int[n + 1];
+    dp[0] = 0;
+    dp[1] = 1;
+
+    for (int i = 2; i &lt;= n; i++) {
+        dp[i] = dp[i-1] + dp[i-2];
+    }
+
+    return dp[n];
+}
+</code></pre>
+<h4 id="step-4-space-optimized-dp" tabindex="-1"><a class="header-anchor" href="#step-4-space-optimized-dp"><span>Step 4: Space-Optimized DP</span></a></h4>
+<pre><code class="language-python"># Python - Space Optimized
+def fib_optimized(n):
+    &quot;&quot;&quot;
+    Time: O(n)
+    Space: O(1) - only 2 variables
+    &quot;&quot;&quot;
+    if n &lt;= 1:
+        return n
+
+    prev2, prev1 = 0, 1
+
+    for i in range(2, n + 1):
+        current = prev1 + prev2
+        prev2 = prev1
+        prev1 = current
+
+    return prev1
+</code></pre>
+<pre><code class="language-java">// Java - Space Optimized
+public int fibOptimized(int n) {
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
+    if (n &lt;= 1) return n;
+
+    int prev2 = 0, prev1 = 1;
+
+    for (int i = 2; i &lt;= n; i++) {
+        int current = prev1 + prev2;
+        prev2 = prev1;
+        prev1 = current;
+    }
+
+    return prev1;
+}
+</code></pre>
+<p><strong>Summary:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Approach</th>
+<th>Time</th>
+<th>Space</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Naive Recursion</td>
+<td>O(2^n)</td>
+<td>O(n)</td>
+<td>Exponential, unusable for n&gt;40</td>
+</tr>
+<tr>
+<td>Memoization</td>
+<td>O(n)</td>
+<td>O(n) + O(n)</td>
+<td>Easy to code, still has stack overhead</td>
+</tr>
+<tr>
+<td>Tabulation</td>
+<td>O(n)</td>
+<td>O(n)</td>
+<td>No recursion, cleaner</td>
+</tr>
+<tr>
+<td>Space Optimized</td>
+<td>O(n)</td>
+<td>O(1)</td>
+<td>Best overall</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h3 id="1-2-climbing-stairs-lc-70" tabindex="-1"><a class="header-anchor" href="#1-2-climbing-stairs-lc-70"><span>1-2) Climbing Stairs (LC 70)</span></a></h3>
+<p><strong>Problem:</strong> Climbing n stairs, can climb 1 or 2 steps. How many distinct ways?</p>
+<h4 id="step-1-recursion" tabindex="-1"><a class="header-anchor" href="#step-1-recursion"><span>Step 1: Recursion</span></a></h4>
+<pre><code class="language-python">def climbStairs_recursive(n):
+    &quot;&quot;&quot;Time: O(2^n), Space: O(n)&quot;&quot;&quot;
+    if n &lt;= 2:
+        return n
+    return climbStairs_recursive(n-1) + climbStairs_recursive(n-2)
+</code></pre>
+<h4 id="step-2-memoization" tabindex="-1"><a class="header-anchor" href="#step-2-memoization"><span>Step 2: Memoization</span></a></h4>
+<pre><code class="language-python">def climbStairs_memo(n, memo=None):
+    &quot;&quot;&quot;Time: O(n), Space: O(n)&quot;&quot;&quot;
+    if memo is None:
+        memo = {}
+
+    if n &lt;= 2:
+        return n
+
+    if n in memo:
+        return memo[n]
+
+    memo[n] = climbStairs_memo(n-1, memo) + climbStairs_memo(n-2, memo)
+    return memo[n]
+</code></pre>
+<h4 id="step-3-bottom-up-dp" tabindex="-1"><a class="header-anchor" href="#step-3-bottom-up-dp"><span>Step 3: Bottom-Up DP</span></a></h4>
+<pre><code class="language-java">// LC 70 - Climbing Stairs
+public int climbStairs(int n) {
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
+    if (n &lt;= 2) return n;
+
+    int[] dp = new int[n + 1];
+    dp[1] = 1;
+    dp[2] = 2;
+
+    for (int i = 3; i &lt;= n; i++) {
+        dp[i] = dp[i-1] + dp[i-2];
+    }
+
+    return dp[n];
+}
+</code></pre>
+<h4 id="step-4-space-optimized" tabindex="-1"><a class="header-anchor" href="#step-4-space-optimized"><span>Step 4: Space Optimized</span></a></h4>
+<pre><code class="language-java">public int climbStairsOptimized(int n) {
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
+    if (n &lt;= 2) return n;
+
+    int prev2 = 1, prev1 = 2;
+
+    for (int i = 3; i &lt;= n; i++) {
+        int current = prev1 + prev2;
+        prev2 = prev1;
+        prev1 = current;
+    }
+
+    return prev1;
+}
+</code></pre>
+<hr>
+<h3 id="1-3-house-robber-lc-198" tabindex="-1"><a class="header-anchor" href="#1-3-house-robber-lc-198"><span>1-3) House Robber (LC 198)</span></a></h3>
+<p><strong>Problem:</strong> Array of house values. Can’t rob adjacent houses. Maximum robbery amount?</p>
+<h4 id="step-1-recursion-1" tabindex="-1"><a class="header-anchor" href="#step-1-recursion-1"><span>Step 1: Recursion</span></a></h4>
+<pre><code class="language-python">def rob_recursive(nums, i=0):
+    &quot;&quot;&quot;
+    Time: O(2^n)
+    Space: O(n)
+    &quot;&quot;&quot;
+    if i &gt;= len(nums):
+        return 0
+
+    # Choice: rob current house or skip
+    rob_current = nums[i] + rob_recursive(nums, i+2)
+    skip_current = rob_recursive(nums, i+1)
+
+    return max(rob_current, skip_current)
+</code></pre>
+<h4 id="step-2-memoization-1" tabindex="-1"><a class="header-anchor" href="#step-2-memoization-1"><span>Step 2: Memoization</span></a></h4>
+<pre><code class="language-python">def rob_memo(nums, i=0, memo=None):
+    &quot;&quot;&quot;Time: O(n), Space: O(n)&quot;&quot;&quot;
+    if memo is None:
+        memo = {}
+
+    if i &gt;= len(nums):
+        return 0
+
+    if i in memo:
+        return memo[i]
+
+    rob_current = nums[i] + rob_memo(nums, i+2, memo)
+    skip_current = rob_memo(nums, i+1, memo)
+
+    memo[i] = max(rob_current, skip_current)
+    return memo[i]
+</code></pre>
+<h4 id="step-3-bottom-up-dp-1" tabindex="-1"><a class="header-anchor" href="#step-3-bottom-up-dp-1"><span>Step 3: Bottom-Up DP</span></a></h4>
+<pre><code class="language-java">// LC 198 - House Robber
+public int rob(int[] nums) {
+    /**
+     * time = O(N)
+     * space = O(N)
+     */
+    if (nums.length == 0) return 0;
+    if (nums.length == 1) return nums[0];
+
+    int[] dp = new int[nums.length];
+    dp[0] = nums[0];
+    dp[1] = Math.max(nums[0], nums[1]);
+
+    for (int i = 2; i &lt; nums.length; i++) {
+        // Choice: rob current + dp[i-2] OR skip current (dp[i-1])
+        dp[i] = Math.max(nums[i] + dp[i-2], dp[i-1]);
+    }
+
+    return dp[nums.length - 1];
+}
+</code></pre>
+<h4 id="step-4-space-optimized-1" tabindex="-1"><a class="header-anchor" href="#step-4-space-optimized-1"><span>Step 4: Space Optimized</span></a></h4>
+<pre><code class="language-java">public int robOptimized(int[] nums) {
+    /**
+     * time = O(N)
+     * space = O(1)
+     */
+    if (nums.length == 0) return 0;
+    if (nums.length == 1) return nums[0];
+
+    int prev2 = nums[0];
+    int prev1 = Math.max(nums[0], nums[1]);
+
+    for (int i = 2; i &lt; nums.length; i++) {
+        int current = Math.max(nums[i] + prev2, prev1);
+        prev2 = prev1;
+        prev1 = current;
+    }
+
+    return prev1;
+}
+</code></pre>
+<hr>
+<h3 id="1-4-coin-change-lc-322" tabindex="-1"><a class="header-anchor" href="#1-4-coin-change-lc-322"><span>1-4) Coin Change (LC 322)</span></a></h3>
+<p><strong>Problem:</strong> Array of coin denominations, target amount. Minimum coins needed?</p>
+<h4 id="step-1-recursion-2" tabindex="-1"><a class="header-anchor" href="#step-1-recursion-2"><span>Step 1: Recursion</span></a></h4>
+<pre><code class="language-python">def coinChange_recursive(coins, amount):
+    &quot;&quot;&quot;
+    Time: O(S^n) where S = amount, n = coins
+    Space: O(amount)
+    &quot;&quot;&quot;
+    if amount == 0:
+        return 0
+    if amount &lt; 0:
+        return -1
+
+    min_coins = float('inf')
+
+    for coin in coins:
+        result = coinChange_recursive(coins, amount - coin)
+        if result &gt;= 0:
+            min_coins = min(min_coins, result + 1)
+
+    return min_coins if min_coins != float('inf') else -1
+</code></pre>
+<h4 id="step-2-memoization-2" tabindex="-1"><a class="header-anchor" href="#step-2-memoization-2"><span>Step 2: Memoization</span></a></h4>
+<pre><code class="language-python">def coinChange_memo(coins, amount, memo=None):
+    &quot;&quot;&quot;Time: O(S × n), Space: O(S)&quot;&quot;&quot;
+    if memo is None:
+        memo = {}
+
+    if amount == 0:
+        return 0
+    if amount &lt; 0:
+        return -1
+    if amount in memo:
+        return memo[amount]
+
+    min_coins = float('inf')
+
+    for coin in coins:
+        result = coinChange_memo(coins, amount - coin, memo)
+        if result &gt;= 0:
+            min_coins = min(min_coins, result + 1)
+
+    memo[amount] = min_coins if min_coins != float('inf') else -1
+    return memo[amount]
+</code></pre>
+<h4 id="step-3-bottom-up-dp-2" tabindex="-1"><a class="header-anchor" href="#step-3-bottom-up-dp-2"><span>Step 3: Bottom-Up DP</span></a></h4>
+<pre><code class="language-java">// LC 322 - Coin Change
+public int coinChange(int[] coins, int amount) {
+    /**
+     * time = O(S × N) where S = amount, N = coins
+     * space = O(S)
+     */
+    int[] dp = new int[amount + 1];
+    Arrays.fill(dp, amount + 1); // Infinity placeholder
+
+    dp[0] = 0; // Base case
+
+    for (int i = 1; i &lt;= amount; i++) {
+        for (int coin : coins) {
+            if (coin &lt;= i) {
+                dp[i] = Math.min(dp[i], dp[i - coin] + 1);
+            }
+        }
+    }
+
+    return dp[amount] &gt; amount ? -1 : dp[amount];
+}
+</code></pre>
+<hr>
+<h2 id="2-common-leetcode-problems" tabindex="-1"><a class="header-anchor" href="#2-common-leetcode-problems"><span>2) Common LeetCode Problems</span></a></h2>
+<h3 id="recursion-dp-conversions" tabindex="-1"><a class="header-anchor" href="#recursion-dp-conversions"><span>Recursion → DP Conversions</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>Difficulty</th>
+<th>Recursive Pattern</th>
+<th>DP Type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>LC 70</td>
+<td>Easy</td>
+<td>Stairs = (n-1) + (n-2)</td>
+<td>1D DP</td>
+</tr>
+<tr>
+<td>LC 198</td>
+<td>Medium</td>
+<td>Rob = max(rob, skip)</td>
+<td>1D DP</td>
+</tr>
+<tr>
+<td>LC 322</td>
+<td>Medium</td>
+<td>Min coins for amount</td>
+<td>Unbounded knapsack</td>
+</tr>
+<tr>
+<td>LC 509</td>
+<td>Easy</td>
+<td>Fibonacci</td>
+<td>Classic</td>
+</tr>
+<tr>
+<td>LC 746</td>
+<td>Easy</td>
+<td>Min cost climbing</td>
+<td>1D DP</td>
+</tr>
+<tr>
+<td>LC 139</td>
+<td>Medium</td>
+<td>Word break</td>
+<td>String DP</td>
+</tr>
+<tr>
+<td>LC 300</td>
+<td>Medium</td>
+<td>Longest increasing</td>
+<td>Subsequence DP</td>
+</tr>
+<tr>
+<td>LC 416</td>
+<td>Medium</td>
+<td>Partition subset</td>
+<td>0/1 knapsack</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="3-conversion-checklist" tabindex="-1"><a class="header-anchor" href="#3-conversion-checklist"><span>3) Conversion Checklist</span></a></h2>
+<h3 id="step-by-step-guide" tabindex="-1"><a class="header-anchor" href="#step-by-step-guide"><span>✅ Step-by-Step Guide</span></a></h3>
+<ol>
+<li>
+<p><strong>Identify Base Cases</strong></p>
+<ul>
+<li>What are the simplest inputs?</li>
+<li>What can be returned immediately?</li>
+</ul>
+</li>
+<li>
+<p><strong>Find Recursive Relation</strong></p>
+<ul>
+<li>How does F(n) relate to F(n-1), F(n-2), etc.?</li>
+<li>What choices/decisions are made at each step?</li>
+</ul>
+</li>
+<li>
+<p><strong>Add Memoization (Top-Down)</strong></p>
+<ul>
+<li>Create cache/memo structure</li>
+<li>Check cache before computing</li>
+<li>Store result after computing</li>
+</ul>
+</li>
+<li>
+<p><strong>Convert to Tabulation (Bottom-Up)</strong></p>
+<ul>
+<li>Create DP array</li>
+<li>Fill base cases</li>
+<li>Iterate from small to large subproblems</li>
+<li>Use recurrence relation to fill table</li>
+</ul>
+</li>
+<li>
+<p><strong>Optimize Space</strong></p>
+<ul>
+<li>Identify which previous states are needed</li>
+<li>Use variables instead of full array if possible</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h2 id="4-interview-tips" tabindex="-1"><a class="header-anchor" href="#4-interview-tips"><span>4) Interview Tips</span></a></h2>
+<h3 id="recognition-patterns" tabindex="-1"><a class="header-anchor" href="#recognition-patterns"><span>💡 Recognition Patterns</span></a></h3>
+<p><strong>When to suspect DP:</strong></p>
+<ul>
+<li>“Find the nth…”</li>
+<li>“Count ways to…”</li>
+<li>“Minimum/maximum…”</li>
+<li>Multiple recursive calls</li>
+<li>Overlapping subproblems</li>
+</ul>
+<p><strong>Conversion Strategy:</strong></p>
+<ol>
+<li>Start with recursion (easier to understand)</li>
+<li>Add memoization (quick win)</li>
+<li>Convert to bottom-up if asked</li>
+<li>Optimize space if time permits</li>
+</ol>
+<h3 id="interview-talking-points" tabindex="-1"><a class="header-anchor" href="#interview-talking-points"><span>🎯 Interview Talking Points</span></a></h3>
+<ol>
+<li>
+<p><strong>Why DP is better:</strong></p>
+<ul>
+<li>“Eliminates redundant calculations”</li>
+<li>“Trades space for time”</li>
+<li>“Linear time instead of exponential”</li>
+</ul>
+</li>
+<li>
+<p><strong>Top-Down vs Bottom-Up:</strong></p>
+<ul>
+<li>“Top-down is easier to code from recursion”</li>
+<li>“Bottom-up is more efficient (no stack overhead)”</li>
+<li>“Both have same time complexity”</li>
+</ul>
+</li>
+<li>
+<p><strong>Space Optimization:</strong></p>
+<ul>
+<li>“Only need previous k states”</li>
+<li>“Can reduce from O(n) to O(k)”</li>
+<li>“Common for 1D DP problems”</li>
+</ul>
+</li>
+</ol>
+<h3 id="complexity-analysis" tabindex="-1"><a class="header-anchor" href="#complexity-analysis"><span>📊 Complexity Analysis</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>Approach</th>
+<th>Typical Time</th>
+<th>Typical Space</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Naive Recursion</td>
+<td>O(2^n)</td>
+<td>O(n)</td>
+<td>Unusable for n&gt;30</td>
+</tr>
+<tr>
+<td>Memoization</td>
+<td>O(n)</td>
+<td>O(n) + O(n)</td>
+<td>Easy to code</td>
+</tr>
+<tr>
+<td>Tabulation</td>
+<td>O(n)</td>
+<td>O(n)</td>
+<td>More efficient</td>
+</tr>
+<tr>
+<td>Space Optimized</td>
+<td>O(n)</td>
+<td>O(1) or O(k)</td>
+<td>Best overall</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="summary" tabindex="-1"><a class="header-anchor" href="#summary"><span>Summary</span></a></h2>
+<p><strong>Core Principles:</strong></p>
+<ul>
+<li>✅ Recursion → Memoization → Tabulation → Space Optimization</li>
+<li>✅ Look for overlapping subproblems</li>
+<li>✅ Memoization keeps recursive structure, adds cache</li>
+<li>✅ Tabulation builds solution iteratively from base cases</li>
+</ul>
+<p><strong>When to Use:</strong></p>
+<ul>
+<li>“Find the nth…” problems</li>
+<li>Optimization problems (min/max)</li>
+<li>Counting problems (number of ways)</li>
+<li>Problems with choices at each step</li>
+</ul>
+<p><strong>Interview Strategy:</strong></p>
+<ol>
+<li>Start with recursive solution</li>
+<li>Identify overlapping subproblems</li>
+<li>Add memoization</li>
+<li>Convert to bottom-up if needed</li>
+<li>Optimize space if possible</li>
+</ol>
+<p><strong>Key Insight:</strong> Every DP problem can be solved recursively first, then optimized with memoization/tabulation.</p>
+<h2 id="lc-examples" tabindex="-1"><a class="header-anchor" href="#lc-examples"><span>LC Examples</span></a></h2>
+<h3 id="2-1-house-robber-lc-198-recursion-memoization-dp" tabindex="-1"><a class="header-anchor" href="#2-1-house-robber-lc-198-recursion-memoization-dp"><span>2-1) House Robber (LC 198) — Recursion → Memoization → DP</span></a></h3>
+<blockquote>
+<p>Cannot rob two adjacent houses; dp[i] = max(dp[i-1], dp[i-2] + nums[i]).</p>
+</blockquote>
+<pre><code class="language-java">// LC 198 - House Robber
+// IDEA: DP — dp[i] = max money robbing up to house i
+// time = O(N), space = O(1)
+public int rob(int[] nums) {
+    if (nums.length == 1) return nums[0];
+    int prev2 = nums[0], prev1 = Math.max(nums[0], nums[1]);
+    for (int i = 2; i &lt; nums.length; i++) {
+        int curr = Math.max(prev1, prev2 + nums[i]);
+        prev2 = prev1;
+        prev1 = curr;
+    }
+    return prev1;
+}
+</code></pre>
+<h3 id="2-2-word-break-lc-139-top-down-recursion-dp" tabindex="-1"><a class="header-anchor" href="#2-2-word-break-lc-139-top-down-recursion-dp"><span>2-2) Word Break (LC 139) — Top-down Recursion → DP</span></a></h3>
+<blockquote>
+<p>dp[i] = true if s[0…i] can be segmented using wordDict.</p>
+</blockquote>
+<pre><code class="language-java">// LC 139 - Word Break
+// IDEA: DP — dp[i] means s[0..i-1] can be segmented
+// time = O(N^2), space = O(N)
+public boolean wordBreak(String s, List&lt;String&gt; wordDict) {
+    Set&lt;String&gt; dict = new HashSet&lt;&gt;(wordDict);
+    int n = s.length();
+    boolean[] dp = new boolean[n + 1];
+    dp[0] = true;
+    for (int i = 1; i &lt;= n; i++)
+        for (int j = 0; j &lt; i; j++)
+            if (dp[j] &amp;&amp; dict.contains(s.substring(j, i))) {
+                dp[i] = true;
+                break;
+            }
+    return dp[n];
+}
+</code></pre>
+<h3 id="2-3-edit-distance-lc-72-2d-dp-string-string" tabindex="-1"><a class="header-anchor" href="#2-3-edit-distance-lc-72-2d-dp-string-string"><span>2-3) Edit Distance (LC 72) — 2D DP (String → String)</span></a></h3>
+<blockquote>
+<p>dp[i][j] = min operations to convert s1[0…i] to s2[0…j].</p>
+</blockquote>
+<pre><code class="language-java">// LC 72 - Edit Distance
+// IDEA: 2D DP — dp[i][j] = min ops to convert word1[0..i-1] to word2[0..j-1]
+// time = O(M*N), space = O(M*N)
+public int minDistance(String word1, String word2) {
+    int m = word1.length(), n = word2.length();
+    int[][] dp = new int[m + 1][n + 1];
+    for (int i = 0; i &lt;= m; i++) dp[i][0] = i;
+    for (int j = 0; j &lt;= n; j++) dp[0][j] = j;
+    for (int i = 1; i &lt;= m; i++)
+        for (int j = 1; j &lt;= n; j++)
+            if (word1.charAt(i-1) == word2.charAt(j-1))
+                dp[i][j] = dp[i-1][j-1];
+            else
+                dp[i][j] = 1 + Math.min(dp[i-1][j-1], Math.min(dp[i-1][j], dp[i][j-1]));
+    return dp[m][n];
+}
+</code></pre>
+<h3 id="2-4-fibonacci-number-lc-509-recursion-memoization-dp-o-1" tabindex="-1"><a class="header-anchor" href="#2-4-fibonacci-number-lc-509-recursion-memoization-dp-o-1"><span>2-4) Fibonacci Number (LC 509) — Recursion → Memoization → DP → O(1)</span></a></h3>
+<blockquote>
+<p>Classic example showing all 4 levels of optimization from naive recursion.</p>
+</blockquote>
+<pre><code class="language-java">// LC 509 - Fibonacci Number
+// IDEA: Iterative DP — O(N) time, O(1) space (vs O(2^N) naive recursion)
+// time = O(N), space = O(1)
+public int fib(int n) {
+    if (n &lt;= 1) return n;
+    int prev2 = 0, prev1 = 1;
+    for (int i = 2; i &lt;= n; i++) {
+        int curr = prev1 + prev2;
+        prev2 = prev1;
+        prev1 = curr;
+    }
+    return prev1;
+}
+</code></pre>
+<h3 id="2-5-unique-paths-lc-62-2d-recursion-dp" tabindex="-1"><a class="header-anchor" href="#2-5-unique-paths-lc-62-2d-recursion-dp"><span>2-5) Unique Paths (LC 62) — 2D Recursion → DP</span></a></h3>
+<blockquote>
+<p>Recursion <code>f(i,j) = f(i-1,j) + f(i,j-1)</code> → bottom-up DP with row compression.</p>
+</blockquote>
+<pre><code class="language-java">// LC 62 - Unique Paths
+// IDEA: DP with 1D rolling array — dp[j] = paths to reach column j in current row
+// time = O(M*N), space = O(N)
+public int uniquePaths(int m, int n) {
+    int[] dp = new int[n];
+    Arrays.fill(dp, 1);
+    for (int i = 1; i &lt; m; i++)
+        for (int j = 1; j &lt; n; j++)
+            dp[j] += dp[j-1];
+    return dp[n-1];
+}
+</code></pre>
+<h3 id="2-6-triangle-lc-120-top-down-recursion-bottom-up-dp" tabindex="-1"><a class="header-anchor" href="#2-6-triangle-lc-120-top-down-recursion-bottom-up-dp"><span>2-6) Triangle (LC 120) — Top-Down Recursion → Bottom-Up DP</span></a></h3>
+<blockquote>
+<p>dp[i][j] = min path sum from (i,j) to bottom; convert triangle recursion bottom-up.</p>
+</blockquote>
+<pre><code class="language-java">// LC 120 - Triangle
+// IDEA: Bottom-up DP in-place — start from second-to-last row, accumulate minimum path
+// time = O(N^2), space = O(1) modifying input
+public int minimumTotal(List&lt;List&lt;Integer&gt;&gt; triangle) {
+    int n = triangle.size();
+    int[] dp = new int[n];
+    for (int i = 0; i &lt; n; i++) dp[i] = triangle.get(n-1).get(i);
+    for (int row = n-2; row &gt;= 0; row--)
+        for (int col = 0; col &lt;= row; col++)
+            dp[col] = triangle.get(row).get(col) + Math.min(dp[col], dp[col+1]);
+    return dp[0];
+}
+</code></pre>
+<h3 id="2-7-longest-palindromic-subsequence-lc-516-interval-dp" tabindex="-1"><a class="header-anchor" href="#2-7-longest-palindromic-subsequence-lc-516-interval-dp"><span>2-7) Longest Palindromic Subsequence (LC 516) — Interval DP</span></a></h3>
+<blockquote>
+<p><code>dp[i][j]</code> = LPS length in s[i…j]; recursion <code>f(i,j)</code> → bottom-up by increasing length.</p>
+</blockquote>
+<pre><code class="language-java">// LC 516 - Longest Palindromic Subsequence
+// IDEA: Interval DP — dp[i][j] = LPS in s[i..j]
+// time = O(N^2), space = O(N^2)
+public int longestPalindromeSubseq(String s) {
+    int n = s.length();
+    int[][] dp = new int[n][n];
+    for (int i = 0; i &lt; n; i++) dp[i][i] = 1;
+    for (int len = 2; len &lt;= n; len++)
+        for (int i = 0; i &lt;= n - len; i++) {
+            int j = i + len - 1;
+            if (s.charAt(i) == s.charAt(j)) dp[i][j] = dp[i+1][j-1] + 2;
+            else dp[i][j] = Math.max(dp[i+1][j], dp[i][j-1]);
+        }
+    return dp[0][n-1];
+}
+</code></pre>
+<h3 id="2-8-coin-change-lc-322-recursion-with-pruning-dp" tabindex="-1"><a class="header-anchor" href="#2-8-coin-change-lc-322-recursion-with-pruning-dp"><span>2-8) Coin Change (LC 322) — Recursion with Pruning → DP</span></a></h3>
+<blockquote>
+<p>Recursion <code>f(amount) = 1 + min(f(amount-coin))</code> → bottom-up unbounded knapsack DP.</p>
+</blockquote>
+<pre><code class="language-java">// LC 322 - Coin Change
+// IDEA: Bottom-up DP — dp[i] = min coins for amount i; unbounded knapsack
+// time = O(amount * |coins|), space = O(amount)
+public int coinChange(int[] coins, int amount) {
+    int[] dp = new int[amount + 1];
+    Arrays.fill(dp, amount + 1);
+    dp[0] = 0;
+    for (int i = 1; i &lt;= amount; i++)
+        for (int coin : coins)
+            if (coin &lt;= i) dp[i] = Math.min(dp[i], dp[i - coin] + 1);
+    return dp[amount] &gt; amount ? -1 : dp[amount];
+}
+</code></pre>
+<h3 id="2-9-combination-sum-iv-lc-377-recursion-dp-order-matters" tabindex="-1"><a class="header-anchor" href="#2-9-combination-sum-iv-lc-377-recursion-dp-order-matters"><span>2-9) Combination Sum IV (LC 377) — Recursion → DP (Order Matters)</span></a></h3>
+<blockquote>
+<p>dp[i] = number of ordered combinations summing to i; unlike knapsack, order of adding matters.</p>
+</blockquote>
+<pre><code class="language-java">// LC 377 - Combination Sum IV
+// IDEA: DP — dp[i] = number of ordered ways to reach sum i
+// time = O(target * |nums|), space = O(target)
+public int combinationSum4(int[] nums, int target) {
+    int[] dp = new int[target + 1];
+    dp[0] = 1;
+    for (int i = 1; i &lt;= target; i++)
+        for (int num : nums)
+            if (num &lt;= i) dp[i] += dp[i - num];
+    return dp[target];
+}
+</code></pre>
+<h3 id="2-10-minimum-cost-to-cut-a-stick-lc-1547-interval-dp" tabindex="-1"><a class="header-anchor" href="#2-10-minimum-cost-to-cut-a-stick-lc-1547-interval-dp"><span>2-10) Minimum Cost to Cut a Stick (LC 1547) — Interval DP</span></a></h3>
+<blockquote>
+<p>dp[i][j] = min cost to make all cuts between cut[i] and cut[j]; try each middle cut.</p>
+</blockquote>
+<pre><code class="language-java">// LC 1547 - Minimum Cost to Cut a Stick
+// IDEA: Interval DP — insert endpoints; dp[i][j] = min cost for cuts between i and j
+// time = O(M^3), space = O(M^2)  M = cuts.length
+public int minCost(int n, int[] cuts) {
+    int m = cuts.length;
+    int[] c = new int[m + 2];
+    c[0] = 0; c[m+1] = n;
+    for (int i = 0; i &lt; m; i++) c[i+1] = cuts[i];
+    Arrays.sort(c);
+    int[][] dp = new int[m+2][m+2];
+    for (int len = 2; len &lt;= m+1; len++)
+        for (int i = 0; i + len &lt;= m+1; i++) {
+            int j = i + len;
+            dp[i][j] = Integer.MAX_VALUE;
+            for (int k = i+1; k &lt; j; k++)
+                dp[i][j] = Math.min(dp[i][j], c[j]-c[i] + dp[i][k] + dp[k][j]);
+        }
+    return dp[0][m+1];
+}
+</code></pre>
+<h3 id="2-11-partition-array-for-maximum-sum-lc-1043-1d-dp" tabindex="-1"><a class="header-anchor" href="#2-11-partition-array-for-maximum-sum-lc-1043-1d-dp"><span>2-11) Partition Array for Maximum Sum (LC 1043) — 1D DP</span></a></h3>
+<blockquote>
+<p>dp[i] = max sum of partitioning array up to index i; try all sub-partitions of size 1…k.</p>
+</blockquote>
+<pre><code class="language-java">// LC 1043 - Partition Array for Maximum Sum
+// IDEA: DP — dp[i] = max sum when array[0..i-1] is partitioned
+// time = O(N * k), space = O(N)
+public int maxSumAfterPartitioning(int[] arr, int k) {
+    int n = arr.length;
+    int[] dp = new int[n + 1];
+    for (int i = 1; i &lt;= n; i++) {
+        int maxVal = 0;
+        for (int j = 1; j &lt;= k &amp;&amp; i - j &gt;= 0; j++) {
+            maxVal = Math.max(maxVal, arr[i-j]);
+            dp[i] = Math.max(dp[i], dp[i-j] + maxVal * j);
+        }
+    }
+    return dp[n];
+}
+</code></pre>
+
+      </div>
+      <div class="cheatsheet-footer">
+        <a href="../cheatsheets.html" class="back-link">← Back to Cheat Sheets</a>
+        <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/recursion_to_dp.md" class="github-edit" target="_blank">
+          Edit on GitHub →
+        </a>
+      </div>
+    <nav class="prev-next"><a href="recursion.html" class="prev-link">← Recursion</a><a href="scanning_line.html" class="next-link">Scanning Line →</a></nav>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>CS_basics - Computer Science Fundamentals & Interview Preparation</p>
+      <p>
+        <a href="https://github.com/yennanliu/CS_basics">GitHub</a> •
+        <a href="https://github.com/yennanliu/CS_basics/tree/master/doc">Documentation</a> •
+        <a href="https://github.com/yennanliu/CS_basics/issues">Report Issues</a>
+      </p>
+    </div>
+  </footer>
+</body>
+</html>

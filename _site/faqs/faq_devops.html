@@ -1,0 +1,1604 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Faq Devops - CS_basics</title>
+  <meta name="description" content="Computer Science fundamentals: algorithms, data structures, system design, and LeetCode solutions">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>CS</text></svg>">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="../vendor/fonts.css">
+  <link rel="stylesheet" href="../vendor/highlight/github-dark.min.css">
+  <script src="../vendor/highlight/highlight.min.js"></script>
+  <script>
+  // Apply theme before render to prevent flash
+  (function() {
+    var saved = localStorage.getItem('theme');
+    if (saved === 'dark' || (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      document.documentElement.setAttribute('data-theme', 'dark');
+    }
+  })();
+  </script>
+  <script>document.addEventListener('DOMContentLoaded', function() {
+    hljs.highlightAll();
+    document.querySelectorAll('pre code').forEach(function(codeEl) {
+      var pre = codeEl.parentElement;
+      var lang = '';
+      var cls = codeEl.className || '';
+      var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
+      if (m) lang = m[1];
+      var wrapper = document.createElement('div');
+      wrapper.className = 'code-block-wrapper';
+      pre.parentNode.insertBefore(wrapper, pre);
+      var header = document.createElement('div');
+      header.className = 'code-block-header';
+      if (lang) {
+        var label = document.createElement('span');
+        label.className = 'code-lang-label';
+        label.textContent = lang;
+        header.appendChild(label);
+      } else {
+        header.appendChild(document.createElement('span'));
+      }
+      var btn = document.createElement('button');
+      btn.className = 'copy-btn';
+      btn.textContent = 'Copy';
+      btn.addEventListener('click', function() {
+        navigator.clipboard.writeText(codeEl.textContent).then(function() {
+          btn.textContent = 'Copied!';
+          btn.classList.add('copied');
+          setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+        });
+      });
+      header.appendChild(btn);
+      wrapper.appendChild(header);
+      wrapper.appendChild(pre);
+    });
+    document.querySelectorAll('table').forEach(function(table) {
+      if (!table.parentElement.classList.contains('table-wrap')) {
+        var wrapper = document.createElement('div');
+        wrapper.className = 'table-wrap';
+        table.parentNode.insertBefore(wrapper, table);
+        wrapper.appendChild(table);
+      }
+    });
+    // Reading progress bar
+    var progressBar = document.getElementById('reading-progress');
+    if (progressBar) {
+      window.addEventListener('scroll', function() {
+        var winScroll = document.documentElement.scrollTop;
+        var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        progressBar.style.width = height > 0 ? (winScroll / height * 100) + '%' : '0%';
+      });
+    }
+    // Dark mode toggle
+    var toggle = document.getElementById('theme-toggle');
+    if (toggle) {
+      var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      toggle.textContent = isDark ? '☀️' : '🌙';
+      toggle.addEventListener('click', function() {
+        var dark = document.documentElement.getAttribute('data-theme') === 'dark';
+        if (dark) {
+          document.documentElement.removeAttribute('data-theme');
+          localStorage.setItem('theme', 'light');
+          toggle.textContent = '🌙';
+        } else {
+          document.documentElement.setAttribute('data-theme', 'dark');
+          localStorage.setItem('theme', 'dark');
+          toggle.textContent = '☀️';
+        }
+      });
+    }
+  });</script>
+</head>
+<body>
+  <div class="progress-container"><div class="progress-bar" id="reading-progress"></div></div>
+  <nav class="navbar">
+    <div class="container">
+      <div class="nav-brand">
+        <span class="nav-icon">💻</span>
+        <span class="nav-title">CS_basics</span>
+      </div>
+      <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+      <div class="nav-links">
+        <a href="../index.html" class="">Home</a>
+        <a href="../cheatsheets.html" class="">Cheat Sheets</a>
+        <a href="../patterns.html" class="">Pattern Recognition</a>
+        <a href="../faqs.html" class="active">FAQs</a>
+        <a href="../resources.html" class="">Resources</a>
+        <a href="../lc-explorer.html" class="">LC Explorer</a>
+        <a href="../lc-random-picker.html" class="">🎲 Random Picker</a>
+        <a href="../algo_demo/index.html" class="">Visualizer</a>
+        <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">&#127769;</button>
+        <a href="https://github.com/yennanliu/CS_basics" target="_blank" class="github-link" aria-label="GitHub">
+          <svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor">
+            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container">
+    <div class="content">
+      
+      <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../faqs.html">FAQs</a> <span class="sep">›</span> <span class="current">Faq Devops</span></nav>
+      <div class="cheatsheet-header">
+        <h1>Faq Devops</h1>
+        <span class="last-updated">Last updated: Apr 17, 2026</span>
+      </div>
+      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#">目錄</a></li><li><a href="#1-docker">1. Docker 基礎</a></li><li class="toc-sub"><a href="#vs">容器 vs 虛擬機</a></li><li class="toc-sub"><a href="#dockerfile">Dockerfile 重要概念</a></li><li class="toc-sub"><a href="#docker">常用 Docker 指令</a></li><li class="toc-sub"><a href="#docker-compose">Docker Compose（本地多容器開發）</a></li><li><a href="#2-kubernetes">2. Kubernetes 基礎</a></li><li class="toc-sub"><a href="#-1">架構概覽</a></li><li class="toc-sub"><a href="#-2">核心資源</a></li><li class="toc-sub"><a href="#deployment">Deployment 範例</a></li><li class="toc-sub"><a href="#service">Service 類型</a></li><li class="toc-sub"><a href="#-3">部署策略比較</a></li><li class="toc-sub"><a href="#hpa">HPA（水平自動擴縮）</a></li><li class="toc-sub"><a href="#kubectl">常用 kubectl 指令</a></li><li><a href="#3-k8s-qps-requests-limits">3. K8s 資源估算（QPS → Requests/Limits）</a></li><li class="toc-sub"><a href="#-4">核心公式</a></li><li class="toc-sub"><a href="#little-s-law">步驟一：估算並發數（Little’s Law）</a></li><li class="toc-sub"><a href="#-5">步驟二：量測每次請求消耗</a></li><li class="toc-sub"><a href="#-6">步驟三：計算總資源需求</a></li><li class="toc-sub"><a href="#-7">端對端範例</a></li><li class="toc-sub"><a href="#requests-vs-limits">Requests vs Limits 設定原則</a></li><li class="toc-sub"><a href="#-8">不同應用類型的特性</a></li><li><a href="#4-ci-cd">4. CI/CD 流程設計</a></li><li class="toc-sub"><a href="#pipeline">標準 Pipeline 階段</a></li><li class="toc-sub"><a href="#github-actions">GitHub Actions 範例</a></li><li class="toc-sub"><a href="#-9">部署策略選擇</a></li><li><a href="#5">5. 監控與可觀測性</a></li><li class="toc-sub"><a href="#-10">可觀測性三大支柱</a></li><li class="toc-sub"><a href="#google-sre-four-golden-signals">黃金信號（Google SRE Four Golden Signals）</a></li><li class="toc-sub"><a href="#prometheus">Prometheus 告警規則範例</a></li><li class="toc-sub"><a href="#-11">告警設計原則</a></li><li><a href="#6-sre">6. SRE 可靠性工程</a></li><li class="toc-sub"><a href="#sli-slo-sla">SLI / SLO / SLA 的區別</a></li><li class="toc-sub"><a href="#error-budget">錯誤預算（Error Budget）</a></li><li class="toc-sub"><a href="#-12">常見可用性目標</a></li><li class="toc-sub"><a href="#incident-response">事故應對流程（Incident Response）</a></li><li class="toc-sub"><a href="#toil">Toil（重複性工作）管理</a></li><li><a href="#7">7. 網路基礎</a></li><li class="toc-sub"><a href="#osi-vs-tcp-ip">OSI 七層 vs TCP/IP 四層</a></li><li class="toc-sub"><a href="#dns">DNS 解析流程</a></li><li class="toc-sub"><a href="#load-balancer">負載平衡（Load Balancer）</a></li><li class="toc-sub"><a href="#kubernetes">Kubernetes 網路模型</a></li><li class="toc-sub"><a href="#service-mesh">Service Mesh（服務網格）</a></li><li><a href="#8-linux">8. Linux 常用指令與概念</a></li><li class="toc-sub"><a href="#-13">進程與系統管理</a></li><li class="toc-sub"><a href="#-14">網路診斷</a></li><li class="toc-sub"><a href="#-15">日誌與文件</a></li><li class="toc-sub"><a href="#linux">常見 Linux 概念</a></li><li><a href="#9-k8s-statefulset">9. K8s 持久化儲存與 StatefulSet</a></li><li class="toc-sub"><a href="#-16">儲存資源</a></li><li class="toc-sub"><a href="#pvc">PVC 範例</a></li><li class="toc-sub"><a href="#statefulset">StatefulSet（有狀態應用）</a></li><li><a href="#10-gitops">10. GitOps 工作流程</a></li><li class="toc-sub"><a href="#gitops">什麼是 GitOps？</a></li><li class="toc-sub"><a href="#gitops-vs-ci-cd">GitOps vs 傳統 CI/CD</a></li><li class="toc-sub"><a href="#argocd">ArgoCD 基本概念</a></li><li class="toc-sub"><a href="#gitops-1">GitOps 實踐流程</a></li><li><a href="#11-security">11. 安全性（Security）</a></li><li class="toc-sub"><a href="#k8s-rbac">K8s RBAC（角色存取控制）</a></li><li class="toc-sub"><a href="#secret">Secret 安全管理</a></li><li class="toc-sub"><a href="#network-policy">Network Policy（網路隔離）</a></li><li class="toc-sub"><a href="#-17">容器安全最佳實踐</a></li><li><a href="#12-iac">12. 基礎設施即代碼（IaC）</a></li><li class="toc-sub"><a href="#iac">為什麼使用 IaC？</a></li><li class="toc-sub"><a href="#terraform">Terraform 核心概念</a></li><li class="toc-sub"><a href="#helm-kubernetes">Helm（Kubernetes 套件管理）</a></li><li><a href="#13">13. 常見面試題</a></li><li class="toc-sub"><a href="#q1-docker">Q1：Docker 容器和虛擬機的主要差別？</a></li><li class="toc-sub"><a href="#q2-k8s-deployment-pod-replicaset">Q2：K8s 中 Deployment、Pod、ReplicaSet 的關係？</a></li><li class="toc-sub"><a href="#q3-readinessprobe-livenessprobe">Q3：readinessProbe 和 livenessProbe 的差別？</a></li><li class="toc-sub"><a href="#q4">Q4：如何實現零停機部署？</a></li><li class="toc-sub"><a href="#q5-slo-sla">Q5：SLO 和 SLA 的差別，以及錯誤預算的用途？</a></li><li class="toc-sub"><a href="#q6-statefulset-deployment">Q6：何時使用 StatefulSet 而非 Deployment？</a></li><li class="toc-sub"><a href="#q7-configmap-secret-secret">Q7：如何選擇 ConfigMap 和 Secret？如何安全管理 Secret？</a></li><li class="toc-sub"><a href="#q8-ci-cd-pipeline">Q8：CI/CD Pipeline 中有哪些重要的安全實踐？</a></li></ul></div>
+      <div class="cheatsheet-content">
+        <h1 id="devops" tabindex="-1"><a class="header-anchor" href="#devops"><span>DevOps 面試常見問題</span></a></h1>
+<h2 id="" tabindex="-1"><a class="header-anchor" href="#"><span>目錄</span></a></h2>
+<ol>
+<li><a href="#1-docker-%E5%9F%BA%E7%A4%8E">Docker 基礎</a></li>
+<li><a href="#2-kubernetes-%E5%9F%BA%E7%A4%8E">Kubernetes 基礎</a></li>
+<li><a href="#3-k8s-%E8%B3%87%E6%BA%90%E4%BC%B0%E7%AE%97qps--requestslimits">K8s 資源估算（QPS → Requests/Limits）</a></li>
+<li><a href="#4-cicd-%E6%B5%81%E7%A8%8B%E8%A8%AD%E8%A8%88">CI/CD 流程設計</a></li>
+<li><a href="#5-%E7%9B%A3%E6%8E%A7%E8%88%87%E5%8F%AF%E8%A7%80%E6%B8%AC%E6%80%A7">監控與可觀測性</a></li>
+<li><a href="#6-sre-%E5%8F%AF%E9%9D%A0%E6%80%A7%E5%B7%A5%E7%A8%8B">SRE 可靠性工程</a></li>
+<li><a href="#7-%E7%B6%B2%E8%B7%AF%E5%9F%BA%E7%A4%8E">網路基礎</a></li>
+<li><a href="#8-linux-%E5%B8%B8%E7%94%A8%E6%8C%87%E4%BB%A4%E8%88%87%E6%A6%82%E5%BF%B5">Linux 常用指令與概念</a></li>
+<li><a href="#9-k8s-%E6%8C%81%E4%B9%85%E5%8C%96%E5%84%B2%E5%AD%98%E8%88%87-statefulset">K8s 持久化儲存與 StatefulSet</a></li>
+<li><a href="#10-gitops-%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%A8%8B">GitOps 工作流程</a></li>
+<li><a href="#11-%E5%AE%89%E5%85%A8%E6%80%A7security">安全性（Security）</a></li>
+<li><a href="#12-%E5%9F%BA%E7%A4%8E%E8%A8%AD%E6%96%BD%E5%8D%B3%E4%BB%A3%E7%A2%BCiac">基礎設施即代碼（IaC）</a></li>
+<li><a href="#13-%E5%B8%B8%E8%A6%8B%E9%9D%A2%E8%A9%A6%E9%A1%8C">常見面試題</a></li>
+</ol>
+<hr>
+<h2 id="1-docker" tabindex="-1"><a class="header-anchor" href="#1-docker"><span>1. Docker 基礎</span></a></h2>
+<h3 id="vs" tabindex="-1"><a class="header-anchor" href="#vs"><span>容器 vs 虛擬機</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>特性</th>
+<th>容器（Container）</th>
+<th>虛擬機（VM）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>隔離層級</td>
+<td>OS 進程層級（共享 Kernel）</td>
+<td>完整硬體虛擬化</td>
+</tr>
+<tr>
+<td>啟動時間</td>
+<td>秒級</td>
+<td>分鐘級</td>
+</tr>
+<tr>
+<td>資源消耗</td>
+<td>輕量</td>
+<td>較重</td>
+</tr>
+<tr>
+<td>移植性</td>
+<td>高（映像檔跨環境一致）</td>
+<td>較低</td>
+</tr>
+<tr>
+<td>安全隔離</td>
+<td>較弱</td>
+<td>較強</td>
+</tr>
+</tbody>
+</table>
+<h3 id="dockerfile" tabindex="-1"><a class="header-anchor" href="#dockerfile"><span>Dockerfile 重要概念</span></a></h3>
+<pre><code class="language-dockerfile"># 使用輕量基底映像
+FROM node:18-alpine
+
+WORKDIR /app
+
+# 先複製 package.json（利用 Layer Cache 加速 build）
+COPY package*.json ./
+RUN npm ci --only=production
+
+# 再複製程式碼（變動頻繁，放最後）
+COPY . .
+
+# 非 root 用戶執行（安全性）
+USER node
+
+EXPOSE 3000
+CMD [&quot;node&quot;, &quot;server.js&quot;]
+</code></pre>
+<p><strong>最佳實踐：</strong></p>
+<ul>
+<li>將變動頻率低的步驟（安裝依賴）放前面，充分利用 Layer Cache</li>
+<li>使用 <code>.dockerignore</code> 排除不必要的檔案（<code>node_modules</code>、<code>.git</code>）</li>
+<li>使用 Multi-stage build 縮減最終映像大小</li>
+</ul>
+<p><strong>Multi-stage build 範例（Go）：</strong></p>
+<pre><code class="language-dockerfile"># Stage 1：編譯
+FROM golang:1.21 AS builder
+WORKDIR /app
+COPY . .
+RUN CGO_ENABLED=0 go build -o server .
+
+# Stage 2：只保留執行檔
+FROM scratch
+COPY --from=builder /app/server /server
+ENTRYPOINT [&quot;/server&quot;]
+</code></pre>
+<h3 id="docker" tabindex="-1"><a class="header-anchor" href="#docker"><span>常用 Docker 指令</span></a></h3>
+<pre><code class="language-bash">docker build -t my-app:v1 .          # 建立映像
+docker run -d -p 8080:3000 my-app:v1  # 後台執行
+docker logs -f my-container           # 追蹤日誌
+docker exec -it my-container sh        # 進入容器
+docker ps                              # 列出運行中容器
+docker images                          # 列出本地映像
+docker system prune -af               # 清理未使用資源
+</code></pre>
+<h3 id="docker-compose" tabindex="-1"><a class="header-anchor" href="#docker-compose"><span>Docker Compose（本地多容器開發）</span></a></h3>
+<pre><code class="language-yaml">version: '3.8'
+services:
+  app:
+    build: .
+    ports:
+      - &quot;8080:3000&quot;
+    environment:
+      - DB_HOST=db
+      - REDIS_HOST=redis
+    depends_on:
+      - db
+      - redis
+
+  db:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_PASSWORD: secret
+    volumes:
+      - db_data:/var/lib/postgresql/data
+
+  redis:
+    image: redis:7-alpine
+    command: redis-server --requirepass secret
+
+volumes:
+  db_data:
+</code></pre>
+<hr>
+<h2 id="2-kubernetes" tabindex="-1"><a class="header-anchor" href="#2-kubernetes"><span>2. Kubernetes 基礎</span></a></h2>
+<h3 id="-1" tabindex="-1"><a class="header-anchor" href="#-1"><span>架構概覽</span></a></h3>
+<pre><code>Cluster
+├── Control Plane（主節點）
+│   ├── API Server      ← 所有操作的入口
+│   ├── etcd            ← 儲存叢集狀態（key-value）
+│   ├── Scheduler       ← 決定 Pod 要跑在哪個 Node
+│   └── Controller Manager ← 確保叢集狀態符合期望
+└── Worker Node（工作節點）
+    ├── kubelet         ← 管理此節點上的 Pod
+    ├── kube-proxy      ← 處理網路規則
+    └── Container Runtime (containerd)
+</code></pre>
+<h3 id="-2" tabindex="-1"><a class="header-anchor" href="#-2"><span>核心資源</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>資源</th>
+<th>說明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Pod</strong></td>
+<td>一個或多個容器的集合，共享網路和儲存，是最小部署單位</td>
+</tr>
+<tr>
+<td><strong>Deployment</strong></td>
+<td>管理無狀態應用的副本數量與滾動更新</td>
+</tr>
+<tr>
+<td><strong>StatefulSet</strong></td>
+<td>管理有狀態應用（DB、Kafka），保證 Pod 有穩定的名稱和儲存</td>
+</tr>
+<tr>
+<td><strong>DaemonSet</strong></td>
+<td>確保每個 Node 都運行一個 Pod（如日誌收集、監控 Agent）</td>
+</tr>
+<tr>
+<td><strong>Service</strong></td>
+<td>為 Pod 提供穩定的網路端點</td>
+</tr>
+<tr>
+<td><strong>Ingress</strong></td>
+<td>管理外部 HTTP/HTTPS 流量，支援路由和 TLS</td>
+</tr>
+<tr>
+<td><strong>ConfigMap</strong></td>
+<td>存放非敏感設定資料</td>
+</tr>
+<tr>
+<td><strong>Secret</strong></td>
+<td>存放敏感資料（密碼、金鑰）</td>
+</tr>
+<tr>
+<td><strong>Namespace</strong></td>
+<td>邏輯隔離不同環境（dev / staging / prod）</td>
+</tr>
+<tr>
+<td><strong>PersistentVolume</strong></td>
+<td>持久化儲存資源</td>
+</tr>
+</tbody>
+</table>
+<h3 id="deployment" tabindex="-1"><a class="header-anchor" href="#deployment"><span>Deployment 範例</span></a></h3>
+<pre><code class="language-yaml">apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-app
+  namespace: production
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: my-app
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1   # 更新時最多 1 個 Pod 不可用
+      maxSurge: 1         # 更新時最多多建 1 個 Pod
+  template:
+    metadata:
+      labels:
+        app: my-app
+    spec:
+      containers:
+      - name: my-app
+        image: my-app:v2
+        ports:
+        - containerPort: 3000
+        resources:
+          requests:
+            cpu: &quot;250m&quot;
+            memory: &quot;128Mi&quot;
+          limits:
+            cpu: &quot;500m&quot;
+            memory: &quot;256Mi&quot;
+        readinessProbe:        # 就緒探針：Pod 準備好接流量了嗎？
+          httpGet:
+            path: /health
+            port: 3000
+          initialDelaySeconds: 5
+          periodSeconds: 10
+        livenessProbe:         # 存活探針：Pod 還活著嗎？不健康就重啟
+          httpGet:
+            path: /health
+            port: 3000
+          initialDelaySeconds: 15
+          periodSeconds: 20
+</code></pre>
+<h3 id="service" tabindex="-1"><a class="header-anchor" href="#service"><span>Service 類型</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>類型</th>
+<th>說明</th>
+<th>使用場景</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>ClusterIP</strong></td>
+<td>只在叢集內部可訪問（預設）</td>
+<td>服務間內部溝通</td>
+</tr>
+<tr>
+<td><strong>NodePort</strong></td>
+<td>在每個 Node 上開放指定端口</td>
+<td>開發/測試環境</td>
+</tr>
+<tr>
+<td><strong>LoadBalancer</strong></td>
+<td>自動建立雲端 Load Balancer</td>
+<td>生產環境對外服務</td>
+</tr>
+<tr>
+<td><strong>ExternalName</strong></td>
+<td>將 Service 對應到外部 DNS 名稱</td>
+<td>訪問外部服務</td>
+</tr>
+</tbody>
+</table>
+<h3 id="-3" tabindex="-1"><a class="header-anchor" href="#-3"><span>部署策略比較</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>策略</th>
+<th>說明</th>
+<th>優點</th>
+<th>缺點</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Rolling Update</strong></td>
+<td>逐步替換舊 Pod</td>
+<td>零停機，資源需求低</td>
+<td>同時存在新舊版本</td>
+</tr>
+<tr>
+<td><strong>Blue-Green</strong></td>
+<td>維護兩套環境，瞬間切換流量</td>
+<td>快速回滾，版本乾淨</td>
+<td>資源消耗翻倍</td>
+</tr>
+<tr>
+<td><strong>Canary</strong></td>
+<td>先讓小部分流量走新版本</td>
+<td>風險可控，可漸進驗證</td>
+<td>需要流量分配機制</td>
+</tr>
+<tr>
+<td><strong>Recreate</strong></td>
+<td>先停掉所有舊 Pod，再啟動新 Pod</td>
+<td>版本乾淨</td>
+<td>有停機時間</td>
+</tr>
+</tbody>
+</table>
+<h3 id="hpa" tabindex="-1"><a class="header-anchor" href="#hpa"><span>HPA（水平自動擴縮）</span></a></h3>
+<pre><code class="language-yaml">apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: my-app-hpa
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: my-app
+  minReplicas: 2
+  maxReplicas: 20
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 65
+  - type: Resource
+    resource:
+      name: memory
+      target:
+        type: Utilization
+        averageUtilization: 75
+</code></pre>
+<h3 id="kubectl" tabindex="-1"><a class="header-anchor" href="#kubectl"><span>常用 kubectl 指令</span></a></h3>
+<pre><code class="language-bash"># 查看資源
+kubectl get pods -n production
+kubectl get deployments,services -n production
+kubectl get all -n production
+
+# 除錯
+kubectl logs -f my-pod -n production --previous  # 上一次崩潰的日誌
+kubectl describe pod my-pod -n production         # 詳細資訊與 Events
+kubectl exec -it my-pod -n production -- sh       # 進入 Pod
+
+# 部署操作
+kubectl set image deployment/my-app my-app=my-app:v3 -n production
+kubectl rollout status deployment/my-app -n production
+kubectl rollout undo deployment/my-app -n production            # 回滾到上一版
+kubectl rollout undo deployment/my-app --to-revision=2          # 回滾到指定版本
+kubectl rollout history deployment/my-app -n production
+
+# 擴縮
+kubectl scale deployment/my-app --replicas=5 -n production
+
+# 強制刪除卡住的 Pod
+kubectl delete pod my-pod -n production --grace-period=0 --force
+</code></pre>
+<hr>
+<h2 id="3-k8s-qps-requests-limits" tabindex="-1"><a class="header-anchor" href="#3-k8s-qps-requests-limits"><span>3. K8s 資源估算（QPS → Requests/Limits）</span></a></h2>
+<h3 id="-4" tabindex="-1"><a class="header-anchor" href="#-4"><span>核心公式</span></a></h3>
+<pre><code>總 CPU    ≈ QPS × 每次請求的 CPU 消耗
+總 Memory ≈ 基礎記憶體 + (並發數 × 每次請求的記憶體)
+</code></pre>
+<h3 id="little-s-law" tabindex="-1"><a class="header-anchor" href="#little-s-law"><span>步驟一：估算並發數（Little’s Law）</span></a></h3>
+<pre><code>並發數 = QPS × 平均回應時間（秒）
+</code></pre>
+<p>範例：QPS = 500，平均延遲 = 200ms</p>
+<pre><code>並發數 = 500 × 0.2 = 100 個同時進行的請求
+</code></pre>
+<h3 id="-5" tabindex="-1"><a class="header-anchor" href="#-5"><span>步驟二：量測每次請求消耗</span></a></h3>
+<p>用 k6 / Locust / JMeter 進行負載測試，再推算：</p>
+<pre><code>CPU per request    = 負載測試時總 CPU 使用量 / QPS
+Memory per request ≈ (峰值記憶體 - 基礎記憶體) / 並發數
+</code></pre>
+<h3 id="-6" tabindex="-1"><a class="header-anchor" href="#-6"><span>步驟三：計算總資源需求</span></a></h3>
+<pre><code>總 CPU    = QPS × CPU per request  × 安全係數（1.5～2）
+總 Memory = (基礎記憶體 + 並發數 × Memory per request) × 安全係數（1.3～1.5）
+</code></pre>
+<h3 id="-7" tabindex="-1"><a class="header-anchor" href="#-7"><span>端對端範例</span></a></h3>
+<p>條件：QPS = 1000，延遲 = 100ms，CPU per req = 5m，基礎記憶體 = 200MB，Memory per req = 1MB</p>
+<table>
+<thead>
+<tr>
+<th>計算項目</th>
+<th>公式</th>
+<th>結果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>並發數</td>
+<td>1000 × 0.1</td>
+<td>100</td>
+</tr>
+<tr>
+<td>總 CPU（含 buffer）</td>
+<td>1000 × 5m × 2</td>
+<td>~10 cores</td>
+</tr>
+<tr>
+<td>總 Memory（含 buffer）</td>
+<td>(200 + 100) × 1.4</td>
+<td>~420 MB</td>
+</tr>
+</tbody>
+</table>
+<p>切分 10 個 Pod，每 Pod：</p>
+<pre><code class="language-yaml">resources:
+  requests:
+    cpu: &quot;500m&quot;
+    memory: &quot;64Mi&quot;
+  limits:
+    cpu: &quot;1000m&quot;
+    memory: &quot;128Mi&quot;
+</code></pre>
+<h3 id="requests-vs-limits" tabindex="-1"><a class="header-anchor" href="#requests-vs-limits"><span>Requests vs Limits 設定原則</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>資源</th>
+<th>Requests</th>
+<th>Limits</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>CPU</td>
+<td>預期用量的 70～80%</td>
+<td>requests 的 1.5～2x（超出只會限流，不會崩潰）</td>
+</tr>
+<tr>
+<td>Memory</td>
+<td>接近實際用量</td>
+<td>略高於 requests（超出直接 OOM Kill，要謹慎）</td>
+</tr>
+</tbody>
+</table>
+<h3 id="-8" tabindex="-1"><a class="header-anchor" href="#-8"><span>不同應用類型的特性</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>類型</th>
+<th>CPU</th>
+<th>Memory</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>CPU-bound（加密、轉碼）</td>
+<td>高</td>
+<td>低</td>
+</tr>
+<tr>
+<td>IO-bound（API 呼叫、DB 查詢）</td>
+<td>低</td>
+<td>中</td>
+</tr>
+<tr>
+<td>JVM 應用</td>
+<td>中</td>
+<td>高（需大 buffer）</td>
+</tr>
+<tr>
+<td>Node.js</td>
+<td>低</td>
+<td>中</td>
+</tr>
+<tr>
+<td>Python</td>
+<td>中（可能有 spike）</td>
+<td>中</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="4-ci-cd" tabindex="-1"><a class="header-anchor" href="#4-ci-cd"><span>4. CI/CD 流程設計</span></a></h2>
+<h3 id="pipeline" tabindex="-1"><a class="header-anchor" href="#pipeline"><span>標準 Pipeline 階段</span></a></h3>
+<pre><code>程式碼提交（PR）
+  → Lint / Static Analysis（程式碼品質）
+  → Unit Test（單元測試）
+  → Build &amp; Package（Docker Image）
+  → Integration Test（整合測試）
+  → Push to Registry（推送映像）
+  → Deploy to Staging（部署測試環境）
+  → Smoke Test / E2E Test（驗收測試）
+  → 手動審核（Production Gate）
+  → Deploy to Production（部署正式環境）
+  → 監控觀察（告警、回滾機制）
+</code></pre>
+<h3 id="github-actions" tabindex="-1"><a class="header-anchor" href="#github-actions"><span>GitHub Actions 範例</span></a></h3>
+<pre><code class="language-yaml">name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+      - run: npm ci
+      - run: npm run lint
+      - run: npm test -- --coverage
+
+  build:
+    needs: test
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build and push Docker image
+        env:
+          IMAGE_TAG: ${{ github.sha }}
+        run: |
+          docker build -t my-app:$IMAGE_TAG .
+          docker push my-app:$IMAGE_TAG
+
+  deploy-staging:
+    needs: build
+    runs-on: ubuntu-latest
+    environment: staging
+    steps:
+      - name: Deploy to Staging
+        run: |
+          kubectl set image deployment/my-app \
+            my-app=my-app:${{ github.sha }} -n staging
+          kubectl rollout status deployment/my-app -n staging
+
+  deploy-prod:
+    needs: deploy-staging
+    runs-on: ubuntu-latest
+    environment: production      # 需要手動審核
+    steps:
+      - name: Deploy to Production
+        run: |
+          kubectl set image deployment/my-app \
+            my-app=my-app:${{ github.sha }} -n production
+</code></pre>
+<h3 id="-9" tabindex="-1"><a class="header-anchor" href="#-9"><span>部署策略選擇</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>場景</th>
+<th>建議策略</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>一般 Web 服務</td>
+<td>Rolling Update</td>
+</tr>
+<tr>
+<td>需即時切換 / 快速回滾</td>
+<td>Blue-Green</td>
+</tr>
+<tr>
+<td>高風險功能上線</td>
+<td>Canary（5% → 20% → 100%）</td>
+</tr>
+<tr>
+<td>資料庫 Schema 變更</td>
+<td>先做 backward-compatible migration，再更新應用</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="5" tabindex="-1"><a class="header-anchor" href="#5"><span>5. 監控與可觀測性</span></a></h2>
+<h3 id="-10" tabindex="-1"><a class="header-anchor" href="#-10"><span>可觀測性三大支柱</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>支柱</th>
+<th>說明</th>
+<th>常用工具</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Metrics（指標）</strong></td>
+<td>量化數值，如 QPS、CPU 使用率、錯誤率</td>
+<td>Prometheus + Grafana</td>
+</tr>
+<tr>
+<td><strong>Logs（日誌）</strong></td>
+<td>事件的文字紀錄，用於排查問題</td>
+<td>ELK Stack (Elasticsearch + Logstash + Kibana)、Loki</td>
+</tr>
+<tr>
+<td><strong>Traces（分散式追蹤）</strong></td>
+<td>單一請求跨多個服務的完整鏈路</td>
+<td>Jaeger、Zipkin、OpenTelemetry</td>
+</tr>
+</tbody>
+</table>
+<h3 id="google-sre-four-golden-signals" tabindex="-1"><a class="header-anchor" href="#google-sre-four-golden-signals"><span>黃金信號（Google SRE Four Golden Signals）</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>指標</th>
+<th>說明</th>
+<th>範例</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Latency（延遲）</strong></td>
+<td>請求的回應時間</td>
+<td>p50 &lt; 100ms，p99 &lt; 500ms</td>
+</tr>
+<tr>
+<td><strong>Traffic（流量）</strong></td>
+<td>每秒請求數</td>
+<td>RPS、QPS</td>
+</tr>
+<tr>
+<td><strong>Errors（錯誤率）</strong></td>
+<td>失敗請求的比例</td>
+<td>5xx 錯誤率 &lt; 0.1%</td>
+</tr>
+<tr>
+<td><strong>Saturation（飽和度）</strong></td>
+<td>系統資源使用程度</td>
+<td>CPU &lt; 70%，Queue depth &lt; N</td>
+</tr>
+</tbody>
+</table>
+<h3 id="prometheus" tabindex="-1"><a class="header-anchor" href="#prometheus"><span>Prometheus 告警規則範例</span></a></h3>
+<pre><code class="language-yaml">groups:
+- name: app-alerts
+  rules:
+  - alert: HighErrorRate
+    expr: |
+      rate(http_requests_total{status=~&quot;5..&quot;}[5m])
+      / rate(http_requests_total[5m]) &gt; 0.05
+    for: 2m
+    labels:
+      severity: critical
+    annotations:
+      summary: &quot;HTTP 5xx 錯誤率超過 5%&quot;
+      runbook: &quot;https://wiki.internal/runbooks/high-error-rate&quot;
+
+  - alert: HighP99Latency
+    expr: |
+      histogram_quantile(0.99,
+        rate(http_request_duration_seconds_bucket[5m])) &gt; 2
+    for: 5m
+    labels:
+      severity: warning
+    annotations:
+      summary: &quot;P99 延遲超過 2 秒&quot;
+
+  - alert: PodCrashLooping
+    expr: rate(kube_pod_container_status_restarts_total[15m]) &gt; 0
+    for: 5m
+    labels:
+      severity: critical
+    annotations:
+      summary: &quot;Pod {{ $labels.pod }} 持續重啟&quot;
+</code></pre>
+<h3 id="-11" tabindex="-1"><a class="header-anchor" href="#-11"><span>告警設計原則</span></a></h3>
+<ul>
+<li>只針對<strong>影響用戶體驗</strong>的指標告警，避免告警疲勞（Alert Fatigue）</li>
+<li>每個告警都應有對應的 <strong>Runbook</strong>（操作手冊）</li>
+<li>設定合理的 <code>for</code> 持續時間，避免短暫 spike 觸發告警</li>
+<li>按 severity 分級：<code>critical</code>（立即處理）→ <code>warning</code>（工作時間處理）→ <code>info</code></li>
+</ul>
+<hr>
+<h2 id="6-sre" tabindex="-1"><a class="header-anchor" href="#6-sre"><span>6. SRE 可靠性工程</span></a></h2>
+<h3 id="sli-slo-sla" tabindex="-1"><a class="header-anchor" href="#sli-slo-sla"><span>SLI / SLO / SLA 的區別</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>縮寫</th>
+<th>全名</th>
+<th>說明</th>
+<th>範例</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>SLI</strong></td>
+<td>Service Level Indicator</td>
+<td>衡量服務品質的具體指標</td>
+<td>成功請求比例、P99 延遲</td>
+</tr>
+<tr>
+<td><strong>SLO</strong></td>
+<td>Service Level Objective</td>
+<td>對 SLI 設定的內部目標</td>
+<td>99.9% 的請求在 500ms 內完成</td>
+</tr>
+<tr>
+<td><strong>SLA</strong></td>
+<td>Service Level Agreement</td>
+<td>對外承諾的服務協議，通常比 SLO 低</td>
+<td>99.5% 可用性（對客戶承諾）</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>原則：<code>SLA ≤ SLO</code>（內部目標要比對外承諾更嚴格）</p>
+</blockquote>
+<h3 id="error-budget" tabindex="-1"><a class="header-anchor" href="#error-budget"><span>錯誤預算（Error Budget）</span></a></h3>
+<pre><code>錯誤預算 = 100% - SLO
+
+SLO = 99.9% 可用性
+→ 每月允許停機時間 = 30天 × 24h × 60m × 0.1% ≈ 43 分鐘
+</code></pre>
+<p><strong>錯誤預算的用法：</strong></p>
+<ul>
+<li>預算充足 → 可以加快新功能部署、做 infra 變更</li>
+<li>預算耗盡 → 凍結新功能部署，專注於可靠性修復</li>
+<li>讓開發和 SRE 共同對可靠性負責</li>
+</ul>
+<h3 id="-12" tabindex="-1"><a class="header-anchor" href="#-12"><span>常見可用性目標</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>SLO</th>
+<th>每月允許停機</th>
+<th>適用場景</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>99%</td>
+<td>~7.3 小時</td>
+<td>內部工具</td>
+</tr>
+<tr>
+<td>99.9%</td>
+<td>~43 分鐘</td>
+<td>一般 Web 服務</td>
+</tr>
+<tr>
+<td>99.95%</td>
+<td>~21 分鐘</td>
+<td>商業服務</td>
+</tr>
+<tr>
+<td>99.99%</td>
+<td>~4.3 分鐘</td>
+<td>關鍵業務系統</td>
+</tr>
+</tbody>
+</table>
+<h3 id="incident-response" tabindex="-1"><a class="header-anchor" href="#incident-response"><span>事故應對流程（Incident Response）</span></a></h3>
+<pre><code>偵測（Detection）
+  → 告警觸發 or 用戶回報
+  
+分類（Triage）
+  → 評估影響範圍和嚴重程度
+  → 指定事故指揮官（Incident Commander）
+
+緩解（Mitigation）— 先止血，再找根因
+  → 回滾部署？擴容？切換流量？
+
+根本原因分析（Root Cause Analysis）
+  → 5 Whys 分析
+
+事後檢討（Post-mortem）
+  → 無責備文化（Blameless）
+  → 記錄時間線、影響、根因、改善行動
+</code></pre>
+<h3 id="toil" tabindex="-1"><a class="header-anchor" href="#toil"><span>Toil（重複性工作）管理</span></a></h3>
+<p>SRE 原則：<code>Toil &lt; 50%</code> 的工作時間</p>
+<ul>
+<li><strong>Toil</strong> = 手動、重複、無自動化的運維工作</li>
+<li>超過上限應優先投入自動化</li>
+<li>範例：手動重啟服務 → 改為 liveness probe 自動重啟</li>
+</ul>
+<hr>
+<h2 id="7" tabindex="-1"><a class="header-anchor" href="#7"><span>7. 網路基礎</span></a></h2>
+<h3 id="osi-vs-tcp-ip" tabindex="-1"><a class="header-anchor" href="#osi-vs-tcp-ip"><span>OSI 七層 vs TCP/IP 四層</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>OSI 七層</th>
+<th>TCP/IP 四層</th>
+<th>協定範例</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>應用層（7）</td>
+<td>應用層</td>
+<td>HTTP、HTTPS、DNS、gRPC</td>
+</tr>
+<tr>
+<td>表示層（6）</td>
+<td>應用層</td>
+<td>TLS/SSL</td>
+</tr>
+<tr>
+<td>會話層（5）</td>
+<td>應用層</td>
+<td>—</td>
+</tr>
+<tr>
+<td>傳輸層（4）</td>
+<td>傳輸層</td>
+<td>TCP、UDP</td>
+</tr>
+<tr>
+<td>網路層（3）</td>
+<td>網路層</td>
+<td>IP、ICMP</td>
+</tr>
+<tr>
+<td>資料鏈結層（2）</td>
+<td>網路存取層</td>
+<td>Ethernet</td>
+</tr>
+<tr>
+<td>實體層（1）</td>
+<td>網路存取層</td>
+<td>網路線、Wi-Fi</td>
+</tr>
+</tbody>
+</table>
+<h3 id="dns" tabindex="-1"><a class="header-anchor" href="#dns"><span>DNS 解析流程</span></a></h3>
+<pre><code>瀏覽器輸入 www.example.com
+  → 查本地 Cache（/etc/hosts、瀏覽器）
+  → 查本地 DNS Resolver（通常是路由器或 ISP）
+  → 查 Root Name Server（.）
+  → 查 TLD Name Server（.com）
+  → 查 Authoritative Name Server（example.com）
+  → 取得 IP 位址，建立連線
+</code></pre>
+<h3 id="load-balancer" tabindex="-1"><a class="header-anchor" href="#load-balancer"><span>負載平衡（Load Balancer）</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>層級</th>
+<th>說明</th>
+<th>範例</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>L4（傳輸層）</strong></td>
+<td>依據 IP + Port 轉發，速度快</td>
+<td>AWS NLB、HAProxy TCP mode</td>
+</tr>
+<tr>
+<td><strong>L7（應用層）</strong></td>
+<td>依據 HTTP Header、URL、Cookie 做路由</td>
+<td>AWS ALB、Nginx、Ingress Controller</td>
+</tr>
+</tbody>
+</table>
+<p><strong>常見負載平衡演算法：</strong></p>
+<ul>
+<li><strong>Round Robin</strong>：輪流分配</li>
+<li><strong>Least Connections</strong>：分配給目前連線數最少的伺服器</li>
+<li><strong>IP Hash</strong>：同一 IP 固定到同一伺服器（Session 親和性）</li>
+<li><strong>Weighted Round Robin</strong>：依伺服器權重分配</li>
+</ul>
+<h3 id="kubernetes" tabindex="-1"><a class="header-anchor" href="#kubernetes"><span>Kubernetes 網路模型</span></a></h3>
+<pre><code>外部流量
+  → LoadBalancer Service / Ingress Controller
+  → Service（ClusterIP，kube-proxy 做 DNAT）
+  → Pod（每個 Pod 有獨立 IP）
+</code></pre>
+<p><strong>Ingress 路由範例：</strong></p>
+<pre><code class="language-yaml">apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: my-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  tls:
+  - hosts:
+    - api.example.com
+    secretName: tls-secret
+  rules:
+  - host: api.example.com
+    http:
+      paths:
+      - path: /users
+        pathType: Prefix
+        backend:
+          service:
+            name: user-service
+            port:
+              number: 80
+      - path: /orders
+        pathType: Prefix
+        backend:
+          service:
+            name: order-service
+            port:
+              number: 80
+</code></pre>
+<h3 id="service-mesh" tabindex="-1"><a class="header-anchor" href="#service-mesh"><span>Service Mesh（服務網格）</span></a></h3>
+<p>用於微服務架構，在不修改應用程式碼的情況下提供：</p>
+<table>
+<thead>
+<tr>
+<th>功能</th>
+<th>說明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>流量管理</strong></td>
+<td>灰度發布、重試、超時、熔斷</td>
+</tr>
+<tr>
+<td><strong>可觀測性</strong></td>
+<td>自動生成服務間的 Metrics 和 Traces</td>
+</tr>
+<tr>
+<td><strong>安全性</strong></td>
+<td>mTLS 自動加密服務間通訊</td>
+</tr>
+</tbody>
+</table>
+<p>常見工具：<strong>Istio</strong>、<strong>Linkerd</strong>、<strong>Consul Connect</strong></p>
+<hr>
+<h2 id="8-linux" tabindex="-1"><a class="header-anchor" href="#8-linux"><span>8. Linux 常用指令與概念</span></a></h2>
+<h3 id="-13" tabindex="-1"><a class="header-anchor" href="#-13"><span>進程與系統管理</span></a></h3>
+<pre><code class="language-bash"># 查看進程
+ps aux | grep my-app          # 列出所有進程
+top / htop                    # 動態查看系統資源使用
+kill -9 &lt;PID&gt;                 # 強制終止進程
+lsof -i :8080                 # 查看佔用 8080 端口的進程
+
+# 系統資源
+free -h                       # 記憶體使用
+df -h                         # 磁碟使用
+du -sh /var/log/*             # 目錄大小
+vmstat 1                      # 系統虛擬記憶體統計
+
+# CPU 和負載
+uptime                        # 系統負載（load average）
+nproc                         # CPU 核心數
+</code></pre>
+<h3 id="-14" tabindex="-1"><a class="header-anchor" href="#-14"><span>網路診斷</span></a></h3>
+<pre><code class="language-bash"># 連線測試
+ping -c 4 google.com
+curl -v https://api.example.com/health    # 測試 HTTP 請求
+curl -o /dev/null -s -w &quot;%{http_code}\n&quot; https://example.com
+
+# 網路資訊
+netstat -tlnp                 # 查看監聽中的端口
+ss -tlnp                      # 更快的 netstat 替代
+ip addr                       # 查看網路介面和 IP
+traceroute google.com         # 追蹤路由路徑
+nslookup / dig example.com    # DNS 查詢
+
+# 防火牆
+iptables -L                   # 列出防火牆規則
+</code></pre>
+<h3 id="-15" tabindex="-1"><a class="header-anchor" href="#-15"><span>日誌與文件</span></a></h3>
+<pre><code class="language-bash"># 查看日誌
+tail -f /var/log/nginx/access.log      # 追蹤日誌
+journalctl -u nginx -f                 # systemd 服務日誌
+journalctl --since &quot;2024-01-01 00:00&quot;  # 指定時間範圍
+
+# 搜尋
+grep -r &quot;ERROR&quot; /var/log/ --include=&quot;*.log&quot;
+grep -c &quot;500&quot; access.log               # 計算出現次數
+awk '{print $1}' access.log | sort | uniq -c | sort -rn  # 統計最多的 IP
+
+# 文件操作
+find / -name &quot;*.log&quot; -mtime +30 -delete    # 刪除 30 天前的日誌
+tar -czf backup.tar.gz /etc/nginx/         # 壓縮備份
+</code></pre>
+<h3 id="linux" tabindex="-1"><a class="header-anchor" href="#linux"><span>常見 Linux 概念</span></a></h3>
+<p><strong>Load Average（系統負載）：</strong></p>
+<pre><code>uptime 輸出：load average: 1.23, 0.95, 0.88
+              最近1分鐘  最近5分鐘  最近15分鐘
+
+規則：值 ≈ CPU 核心數 表示滿載；&gt; 核心數 表示過載
+</code></pre>
+<p><strong>進程狀態（Process States）：</strong></p>
+<table>
+<thead>
+<tr>
+<th>狀態</th>
+<th>說明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>R (Running)</td>
+<td>正在執行或等待執行</td>
+</tr>
+<tr>
+<td>S (Sleeping)</td>
+<td>等待事件（IO、Timer）</td>
+</tr>
+<tr>
+<td>D (Uninterruptible Sleep)</td>
+<td>等待 IO，無法被中斷（通常是 IO 問題）</td>
+</tr>
+<tr>
+<td>Z (Zombie)</td>
+<td>已結束但父進程未回收</td>
+</tr>
+<tr>
+<td>T (Stopped)</td>
+<td>被暫停（Ctrl+Z）</td>
+</tr>
+</tbody>
+</table>
+<p><strong>OOM Killer（記憶體不足）：</strong></p>
+<ul>
+<li>當系統記憶體不足時，Linux Kernel 會選擇一個進程強制終止</li>
+<li>可透過 <code>dmesg | grep -i &quot;oom&quot;</code> 確認是否發生</li>
+<li>預防方式：設定合理的 K8s Memory Limits，避免記憶體洩漏</li>
+</ul>
+<hr>
+<h2 id="9-k8s-statefulset" tabindex="-1"><a class="header-anchor" href="#9-k8s-statefulset"><span>9. K8s 持久化儲存與 StatefulSet</span></a></h2>
+<h3 id="-16" tabindex="-1"><a class="header-anchor" href="#-16"><span>儲存資源</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>資源</th>
+<th>說明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>PersistentVolume (PV)</strong></td>
+<td>叢集層級的儲存資源（管理員建立）</td>
+</tr>
+<tr>
+<td><strong>PersistentVolumeClaim (PVC)</strong></td>
+<td>Pod 對儲存的請求（開發者建立）</td>
+</tr>
+<tr>
+<td><strong>StorageClass</strong></td>
+<td>定義儲存的類型（SSD、HDD、雲端儲存），支援動態佈建</td>
+</tr>
+</tbody>
+</table>
+<h3 id="pvc" tabindex="-1"><a class="header-anchor" href="#pvc"><span>PVC 範例</span></a></h3>
+<pre><code class="language-yaml">apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mysql-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce          # 只能被一個 Node 掛載
+  storageClassName: standard
+  resources:
+    requests:
+      storage: 10Gi
+</code></pre>
+<p><strong>Access Mode 類型：</strong></p>
+<ul>
+<li><code>ReadWriteOnce (RWO)</code>：單一 Node 讀寫（最常見，適合 DB）</li>
+<li><code>ReadOnlyMany (ROX)</code>：多個 Node 唯讀</li>
+<li><code>ReadWriteMany (RWX)</code>：多個 Node 讀寫（需 NFS 或雲端共享儲存）</li>
+</ul>
+<h3 id="statefulset" tabindex="-1"><a class="header-anchor" href="#statefulset"><span>StatefulSet（有狀態應用）</span></a></h3>
+<p>StatefulSet vs Deployment 的關鍵差異：</p>
+<table>
+<thead>
+<tr>
+<th>特性</th>
+<th>Deployment</th>
+<th>StatefulSet</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Pod 名稱</td>
+<td>隨機（my-app-abc123）</td>
+<td>有序且穩定（my-db-0, my-db-1）</td>
+</tr>
+<tr>
+<td>儲存</td>
+<td>共享或無持久化</td>
+<td>每個 Pod 有獨立的 PVC</td>
+</tr>
+<tr>
+<td>啟動/停止順序</td>
+<td>無序</td>
+<td>有序（0, 1, 2…）</td>
+</tr>
+<tr>
+<td>適用場景</td>
+<td>無狀態應用（API Server）</td>
+<td>有狀態應用（MySQL、Kafka、Redis Cluster）</td>
+</tr>
+</tbody>
+</table>
+<pre><code class="language-yaml">apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: mysql
+spec:
+  serviceName: mysql
+  replicas: 3
+  selector:
+    matchLabels:
+      app: mysql
+  template:
+    metadata:
+      labels:
+        app: mysql
+    spec:
+      containers:
+      - name: mysql
+        image: mysql:8.0
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mysql-secret
+              key: password
+        volumeMounts:
+        - name: data
+          mountPath: /var/lib/mysql
+  volumeClaimTemplates:         # 為每個 Pod 自動建立 PVC
+  - metadata:
+      name: data
+    spec:
+      accessModes: [&quot;ReadWriteOnce&quot;]
+      resources:
+        requests:
+          storage: 20Gi
+</code></pre>
+<hr>
+<h2 id="10-gitops" tabindex="-1"><a class="header-anchor" href="#10-gitops"><span>10. GitOps 工作流程</span></a></h2>
+<h3 id="gitops" tabindex="-1"><a class="header-anchor" href="#gitops"><span>什麼是 GitOps？</span></a></h3>
+<p><strong>核心原則：Git 是唯一真實來源（Single Source of Truth）</strong></p>
+<ul>
+<li>所有基礎設施和應用配置都用 Git 管理</li>
+<li>任何變更都透過 PR + Code Review</li>
+<li>自動化工具持續確保叢集狀態與 Git 一致</li>
+<li>回滾 = <code>git revert</code>，操作直覺且有審計記錄</li>
+</ul>
+<h3 id="gitops-vs-ci-cd" tabindex="-1"><a class="header-anchor" href="#gitops-vs-ci-cd"><span>GitOps vs 傳統 CI/CD</span></a></h3>
+<pre><code>傳統 CI/CD（Push 模式）：
+CI Pipeline → kubectl apply → Cluster
+（CI 有 K8s 憑證，安全風險較高）
+
+GitOps（Pull 模式）：
+開發者 → Git Commit → Git Repo
+                          ↑ 持續 diff
+                       ArgoCD/Flux（在叢集內）→ 自動同步
+</code></pre>
+<h3 id="argocd" tabindex="-1"><a class="header-anchor" href="#argocd"><span>ArgoCD 基本概念</span></a></h3>
+<p>ArgoCD 是最常見的 GitOps 工具，在叢集內持續監控 Git 與叢集狀態的差異：</p>
+<pre><code class="language-yaml"># ArgoCD Application 定義
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: my-app
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/my-org/my-app-config
+    targetRevision: main
+    path: k8s/production           # Git repo 中 YAML 檔案的路徑
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: production
+  syncPolicy:
+    automated:
+      prune: true                  # 自動刪除 Git 中已移除的資源
+      selfHeal: true               # 有人手動修改叢集時自動還原
+    syncOptions:
+    - CreateNamespace=true
+</code></pre>
+<h3 id="gitops-1" tabindex="-1"><a class="header-anchor" href="#gitops-1"><span>GitOps 實踐流程</span></a></h3>
+<pre><code>1. 開發者修改應用程式碼
+   → 觸發 CI Pipeline（測試、建立 Docker Image、推送到 Registry）
+   → CI 自動更新 Config Repo 中的 image tag
+
+2. Config Repo 收到新 commit
+   → ArgoCD 偵測到差異（Sync Status: OutOfSync）
+   → ArgoCD 自動或手動同步到 K8s Cluster
+
+3. 需要回滾？
+   → git revert 到上一個 commit
+   → ArgoCD 自動同步，叢集回到舊版本
+</code></pre>
+<hr>
+<h2 id="11-security" tabindex="-1"><a class="header-anchor" href="#11-security"><span>11. 安全性（Security）</span></a></h2>
+<h3 id="k8s-rbac" tabindex="-1"><a class="header-anchor" href="#k8s-rbac"><span>K8s RBAC（角色存取控制）</span></a></h3>
+<p><strong>最小權限原則（Principle of Least Privilege）</strong></p>
+<pre><code class="language-yaml"># 定義 Role（限定在特定 Namespace）
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: pod-reader
+  namespace: production
+rules:
+- apiGroups: [&quot;&quot;]
+  resources: [&quot;pods&quot;, &quot;pods/log&quot;]
+  verbs: [&quot;get&quot;, &quot;list&quot;, &quot;watch&quot;]   # 只能讀，不能修改
+
+---
+# 將 Role 綁定給 ServiceAccount
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: read-pods-binding
+  namespace: production
+subjects:
+- kind: ServiceAccount
+  name: my-app-sa
+  namespace: production
+roleRef:
+  kind: Role
+  apiGroup: rbac.authorization.k8s.io
+  name: pod-reader
+</code></pre>
+<h3 id="secret" tabindex="-1"><a class="header-anchor" href="#secret"><span>Secret 安全管理</span></a></h3>
+<p>K8s Secret 預設只是 Base64 編碼，<strong>並非加密</strong>。生產環境建議：</p>
+<table>
+<thead>
+<tr>
+<th>方案</th>
+<th>說明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Vault（HashiCorp）</strong></td>
+<td>集中式 Secret 管理，支援動態 Secret、自動輪替</td>
+</tr>
+<tr>
+<td><strong>AWS Secrets Manager</strong></td>
+<td>雲端原生方案，支援跨服務共享</td>
+</tr>
+<tr>
+<td><strong>Sealed Secrets</strong></td>
+<td>將 Secret 加密後存入 Git（適合 GitOps）</td>
+</tr>
+<tr>
+<td><strong>External Secrets Operator</strong></td>
+<td>將外部 Secret 同步進 K8s</td>
+</tr>
+</tbody>
+</table>
+<h3 id="network-policy" tabindex="-1"><a class="header-anchor" href="#network-policy"><span>Network Policy（網路隔離）</span></a></h3>
+<pre><code class="language-yaml"># 只允許來自 frontend namespace 的流量進入 backend
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-frontend-only
+  namespace: backend
+spec:
+  podSelector:
+    matchLabels:
+      app: backend-api
+  policyTypes:
+  - Ingress
+  ingress:
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          name: frontend
+    ports:
+    - protocol: TCP
+      port: 8080
+</code></pre>
+<h3 id="-17" tabindex="-1"><a class="header-anchor" href="#-17"><span>容器安全最佳實踐</span></a></h3>
+<pre><code class="language-yaml">spec:
+  securityContext:
+    runAsNonRoot: true           # 禁止以 root 執行
+    runAsUser: 1000
+    fsGroup: 2000
+  containers:
+  - name: my-app
+    securityContext:
+      allowPrivilegeEscalation: false  # 禁止提權
+      readOnlyRootFilesystem: true     # 根目錄唯讀
+      capabilities:
+        drop:
+        - ALL                          # 移除所有 Linux capabilities
+</code></pre>
+<hr>
+<h2 id="12-iac" tabindex="-1"><a class="header-anchor" href="#12-iac"><span>12. 基礎設施即代碼（IaC）</span></a></h2>
+<h3 id="iac" tabindex="-1"><a class="header-anchor" href="#iac"><span>為什麼使用 IaC？</span></a></h3>
+<ul>
+<li><strong>版本控制</strong>：基礎設施變更可追蹤、可審查（PR + Code Review）</li>
+<li><strong>可重複性</strong>：同樣的代碼在不同環境產生一致的基礎設施</li>
+<li><strong>自動化</strong>：減少人工操作，降低出錯機率</li>
+<li><strong>災難恢復</strong>：可快速重建整個環境</li>
+</ul>
+<h3 id="terraform" tabindex="-1"><a class="header-anchor" href="#terraform"><span>Terraform 核心概念</span></a></h3>
+<pre><code class="language-hcl"># 宣告 Provider
+terraform {
+  required_providers {
+    aws = {
+      source  = &quot;hashicorp/aws&quot;
+      version = &quot;~&gt; 5.0&quot;
+    }
+  }
+  # 將狀態存在遠端（多人協作必須）
+  backend &quot;s3&quot; {
+    bucket = &quot;my-tf-state&quot;
+    key    = &quot;production/terraform.tfstate&quot;
+    region = &quot;us-east-1&quot;
+  }
+}
+
+# 建立 VPC
+resource &quot;aws_vpc&quot; &quot;main&quot; {
+  cidr_block = &quot;10.0.0.0/16&quot;
+  tags = {
+    Name        = &quot;main-vpc&quot;
+    Environment = &quot;production&quot;
+  }
+}
+
+# 輸出資源資訊
+output &quot;vpc_id&quot; {
+  value = aws_vpc.main.id
+}
+</code></pre>
+<pre><code class="language-bash">terraform init      # 初始化，下載 providers
+terraform plan      # 預覽變更（不實際執行）
+terraform apply     # 執行變更
+terraform destroy   # 銷毀所有資源（謹慎使用）
+terraform import    # 將既有資源納入 Terraform 管理
+terraform state list  # 查看目前管理的資源
+</code></pre>
+<h3 id="helm-kubernetes" tabindex="-1"><a class="header-anchor" href="#helm-kubernetes"><span>Helm（Kubernetes 套件管理）</span></a></h3>
+<pre><code class="language-bash">helm repo add bitnami https://charts.bitnami.com/bitnami
+helm repo update
+
+# 安裝，並覆寫預設值
+helm install my-redis bitnami/redis \
+  --namespace production \
+  --create-namespace \
+  --set auth.password=secret \
+  --set replica.replicaCount=2
+
+helm upgrade my-redis bitnami/redis --set image.tag=7.2  # 升級
+helm rollback my-redis 1                                   # 回滾到版本 1
+helm list -n production                                    # 查看安裝的 release
+helm uninstall my-redis -n production                     # 卸載
+</code></pre>
+<hr>
+<h2 id="13" tabindex="-1"><a class="header-anchor" href="#13"><span>13. 常見面試題</span></a></h2>
+<h3 id="q1-docker" tabindex="-1"><a class="header-anchor" href="#q1-docker"><span>Q1：Docker 容器和虛擬機的主要差別？</span></a></h3>
+<ul>
+<li>容器共享 Host OS 的 Kernel，VM 有自己完整的 OS</li>
+<li>容器啟動快（秒級）、資源消耗少；VM 啟動慢（分鐘）、資源消耗大</li>
+<li>VM 隔離性更強（適合多租戶）；容器更輕量（適合微服務）</li>
+</ul>
+<hr>
+<h3 id="q2-k8s-deployment-pod-replicaset" tabindex="-1"><a class="header-anchor" href="#q2-k8s-deployment-pod-replicaset"><span>Q2：K8s 中 Deployment、Pod、ReplicaSet 的關係？</span></a></h3>
+<pre><code>Deployment（管理更新策略與版本）
+  └── ReplicaSet（確保指定數量的 Pod 在運行）
+       └── Pod（實際執行的容器，最小部署單位）
+</code></pre>
+<p>通常只操作 Deployment，不直接建立 ReplicaSet 或 Pod。</p>
+<hr>
+<h3 id="q3-readinessprobe-livenessprobe" tabindex="-1"><a class="header-anchor" href="#q3-readinessprobe-livenessprobe"><span>Q3：readinessProbe 和 livenessProbe 的差別？</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>探針</th>
+<th>用途</th>
+<th>失敗後的行為</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>readinessProbe</strong></td>
+<td>判斷 Pod 是否準備好接收流量</td>
+<td>從 Service 的端點清單移除（不接流量），不重啟</td>
+</tr>
+<tr>
+<td><strong>livenessProbe</strong></td>
+<td>判斷 Pod 是否還存活</td>
+<td>重啟容器</td>
+</tr>
+<tr>
+<td><strong>startupProbe</strong></td>
+<td>給啟動慢的應用額外的初始化時間</td>
+<td>在通過前，livenessProbe 不生效</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h3 id="q4" tabindex="-1"><a class="header-anchor" href="#q4"><span>Q4：如何實現零停機部署？</span></a></h3>
+<ol>
+<li>使用 <strong>Rolling Update</strong> 或 <strong>Blue-Green</strong> 策略</li>
+<li>設定 <code>readinessProbe</code>，確保新 Pod 就緒後才接收流量</li>
+<li>設定 <code>terminationGracePeriodSeconds</code>，讓舊 Pod 優雅關閉（處理完進行中的請求）</li>
+<li>使用 <strong>PodDisruptionBudget</strong> 確保最少可用 Pod 數</li>
+</ol>
+<pre><code class="language-yaml">apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: my-app-pdb
+spec:
+  minAvailable: 2    # 或 maxUnavailable: 1
+  selector:
+    matchLabels:
+      app: my-app
+</code></pre>
+<hr>
+<h3 id="q5-slo-sla" tabindex="-1"><a class="header-anchor" href="#q5-slo-sla"><span>Q5：SLO 和 SLA 的差別，以及錯誤預算的用途？</span></a></h3>
+<ul>
+<li><strong>SLO</strong> 是內部目標（如 99.9% 可用性）；<strong>SLA</strong> 是對客戶的對外承諾，通常 SLA &lt; SLO</li>
+<li><strong>錯誤預算</strong> = 100% - SLO，代表允許發生的錯誤量</li>
+<li>預算充足 → 可積極部署新功能；預算耗盡 → 凍結新功能，優先修復可靠性</li>
+</ul>
+<hr>
+<h3 id="q6-statefulset-deployment" tabindex="-1"><a class="header-anchor" href="#q6-statefulset-deployment"><span>Q6：何時使用 StatefulSet 而非 Deployment？</span></a></h3>
+<p>需要以下特性時使用 StatefulSet：</p>
+<ul>
+<li>Pod 需要<strong>穩定的、唯一的網路識別符</strong>（my-db-0, my-db-1）</li>
+<li>Pod 需要<strong>持久化儲存</strong>，且每個 Pod 的資料不能混用</li>
+<li>Pod 需要<strong>有序的部署和擴縮</strong>（如 MySQL 主從複製，主節點要先啟動）</li>
+</ul>
+<p>典型使用場景：MySQL、PostgreSQL、MongoDB、Kafka、ZooKeeper、Redis Cluster</p>
+<hr>
+<h3 id="q7-configmap-secret-secret" tabindex="-1"><a class="header-anchor" href="#q7-configmap-secret-secret"><span>Q7：如何選擇 ConfigMap 和 Secret？如何安全管理 Secret？</span></a></h3>
+<ul>
+<li><strong>ConfigMap</strong>：非敏感設定（feature flags、環境名稱、日誌等級）</li>
+<li><strong>Secret</strong>：敏感資料（密碼、API Key、TLS 憑證）</li>
+</ul>
+<p>K8s Secret 預設只是 Base64 編碼，非加密。生產環境應搭配 Vault 或 External Secrets Operator，避免將 Secret 明文存入 Git。</p>
+<hr>
+<h3 id="q8-ci-cd-pipeline" tabindex="-1"><a class="header-anchor" href="#q8-ci-cd-pipeline"><span>Q8：CI/CD Pipeline 中有哪些重要的安全實踐？</span></a></h3>
+<ol>
+<li><strong>最小權限</strong>：CI 只給必要的 K8s 權限（RBAC）</li>
+<li><strong>掃描映像漏洞</strong>：在 Pipeline 中加入 Trivy 或 Snyk 掃描</li>
+<li><strong>Secret 不入 Git</strong>：使用 Vault 或雲端 Secret 管理服務</li>
+<li><strong>簽署映像</strong>：使用 cosign 對 Docker Image 做數位簽署</li>
+<li><strong>審查 PR</strong>：所有 infra 變更都需要 Code Review，不允許直接 push 到 main</li>
+</ol>
+
+      </div>
+      <div class="cheatsheet-footer">
+        <a href="../faqs.html" class="back-link">← Back to FAQs</a>
+        <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/faq/faq_devops.md" class="github-edit" target="_blank">
+          Edit on GitHub →
+        </a>
+      </div>
+    <nav class="prev-next"><a href="faq_dev_interview.html" class="prev-link">← Faq Dev Interview</a><a href="faq_performance_tune.html" class="next-link">Faq Performance Tune →</a></nav>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>CS_basics - Computer Science Fundamentals & Interview Preparation</p>
+      <p>
+        <a href="https://github.com/yennanliu/CS_basics">GitHub</a> •
+        <a href="https://github.com/yennanliu/CS_basics/tree/master/doc">Documentation</a> •
+        <a href="https://github.com/yennanliu/CS_basics/issues">Report Issues</a>
+      </p>
+    </div>
+  </footer>
+</body>
+</html>

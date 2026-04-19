@@ -1,0 +1,3556 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bst - CS_basics</title>
+  <meta name="description" content="Computer Science fundamentals: algorithms, data structures, system design, and LeetCode solutions">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>CS</text></svg>">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="../vendor/fonts.css">
+  <link rel="stylesheet" href="../vendor/highlight/github-dark.min.css">
+  <script src="../vendor/highlight/highlight.min.js"></script>
+  <script>
+  // Apply theme before render to prevent flash
+  (function() {
+    var saved = localStorage.getItem('theme');
+    if (saved === 'dark' || (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      document.documentElement.setAttribute('data-theme', 'dark');
+    }
+  })();
+  </script>
+  <script>document.addEventListener('DOMContentLoaded', function() {
+    hljs.highlightAll();
+    document.querySelectorAll('pre code').forEach(function(codeEl) {
+      var pre = codeEl.parentElement;
+      var lang = '';
+      var cls = codeEl.className || '';
+      var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
+      if (m) lang = m[1];
+      var wrapper = document.createElement('div');
+      wrapper.className = 'code-block-wrapper';
+      pre.parentNode.insertBefore(wrapper, pre);
+      var header = document.createElement('div');
+      header.className = 'code-block-header';
+      if (lang) {
+        var label = document.createElement('span');
+        label.className = 'code-lang-label';
+        label.textContent = lang;
+        header.appendChild(label);
+      } else {
+        header.appendChild(document.createElement('span'));
+      }
+      var btn = document.createElement('button');
+      btn.className = 'copy-btn';
+      btn.textContent = 'Copy';
+      btn.addEventListener('click', function() {
+        navigator.clipboard.writeText(codeEl.textContent).then(function() {
+          btn.textContent = 'Copied!';
+          btn.classList.add('copied');
+          setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+        });
+      });
+      header.appendChild(btn);
+      wrapper.appendChild(header);
+      wrapper.appendChild(pre);
+    });
+    document.querySelectorAll('table').forEach(function(table) {
+      if (!table.parentElement.classList.contains('table-wrap')) {
+        var wrapper = document.createElement('div');
+        wrapper.className = 'table-wrap';
+        table.parentNode.insertBefore(wrapper, table);
+        wrapper.appendChild(table);
+      }
+    });
+    // Reading progress bar
+    var progressBar = document.getElementById('reading-progress');
+    if (progressBar) {
+      window.addEventListener('scroll', function() {
+        var winScroll = document.documentElement.scrollTop;
+        var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        progressBar.style.width = height > 0 ? (winScroll / height * 100) + '%' : '0%';
+      });
+    }
+    // Dark mode toggle
+    var toggle = document.getElementById('theme-toggle');
+    if (toggle) {
+      var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      toggle.textContent = isDark ? '☀️' : '🌙';
+      toggle.addEventListener('click', function() {
+        var dark = document.documentElement.getAttribute('data-theme') === 'dark';
+        if (dark) {
+          document.documentElement.removeAttribute('data-theme');
+          localStorage.setItem('theme', 'light');
+          toggle.textContent = '🌙';
+        } else {
+          document.documentElement.setAttribute('data-theme', 'dark');
+          localStorage.setItem('theme', 'dark');
+          toggle.textContent = '☀️';
+        }
+      });
+    }
+  });</script>
+</head>
+<body>
+  <div class="progress-container"><div class="progress-bar" id="reading-progress"></div></div>
+  <nav class="navbar">
+    <div class="container">
+      <div class="nav-brand">
+        <span class="nav-icon">💻</span>
+        <span class="nav-title">CS_basics</span>
+      </div>
+      <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+      <div class="nav-links">
+        <a href="../index.html" class="">Home</a>
+        <a href="../cheatsheets.html" class="active">Cheat Sheets</a>
+        <a href="../patterns.html" class="">Pattern Recognition</a>
+        <a href="../faqs.html" class="">FAQs</a>
+        <a href="../resources.html" class="">Resources</a>
+        <a href="../lc-explorer.html" class="">LC Explorer</a>
+        <a href="../lc-random-picker.html" class="">🎲 Random Picker</a>
+        <a href="../algo_demo/index.html" class="">Visualizer</a>
+        <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">&#127769;</button>
+        <a href="https://github.com/yennanliu/CS_basics" target="_blank" class="github-link" aria-label="GitHub">
+          <svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor">
+            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container">
+    <div class="content">
+      
+      <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">Bst</span></nav>
+      <div class="cheatsheet-header">
+        <h1>Bst</h1>
+        <span class="last-updated">Last updated: Mar 26, 2026</span>
+      </div>
+      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#overview">Overview</a></li><li class="toc-sub"><a href="#key-properties">Key Properties</a></li><li class="toc-sub"><a href="#references">References</a></li><li><a href="#problem-categories">Problem Categories</a></li><li class="toc-sub"><a href="#pattern-1-bst-search-validation">Pattern 1: BST Search &amp; Validation</a></li><li class="toc-sub"><a href="#pattern-2-bst-insertion-deletion">Pattern 2: BST Insertion &amp; Deletion</a></li><li class="toc-sub"><a href="#pattern-3-bst-traversal-conversion">Pattern 3: BST Traversal &amp; Conversion</a></li><li class="toc-sub"><a href="#pattern-4-bst-construction">Pattern 4: BST Construction</a></li><li class="toc-sub"><a href="#pattern-5-bst-properties-optimization">Pattern 5: BST Properties &amp; Optimization</a></li><li class="toc-sub"><a href="#pattern-6-path-problems">Pattern 6: Path Problems</a></li><li><a href="#templates-algorithms">Templates &amp; Algorithms</a></li><li class="toc-sub"><a href="#template-comparison-table">Template Comparison Table</a></li><li class="toc-sub"><a href="#universal-bst-template">Universal BST Template</a></li><li class="toc-sub"><a href="#template-1-bst-search">Template 1: BST Search</a></li><li class="toc-sub"><a href="#template-2-bst-insertion">Template 2: BST Insertion</a></li><li class="toc-sub"><a href="#template-3-bst-deletion">Template 3: BST Deletion</a></li><li class="toc-sub"><a href="#template-4-bst-validation">Template 4: BST Validation</a></li><li class="toc-sub"><a href="#template-5-bst-inorder-operations">Template 5: BST Inorder Operations</a></li><li class="toc-sub"><a href="#template-6-bst-construction">Template 6: BST Construction</a></li><li class="toc-sub"><a href="#template-7-path-problems">Template 7: Path Problems</a></li><li><a href="#problems-by-pattern">Problems by Pattern</a></li><li class="toc-sub"><a href="#pattern-based-problem-classification">Pattern-Based Problem Classification</a></li><li class="toc-sub"><a href="#complete-problem-list-by-difficulty">Complete Problem List by Difficulty</a></li><li class="toc-sub"><a href="#template-8-recover-fix-bst-problems">Template 8: Recover/Fix BST Problems</a></li><li><a href="#1-general-form">1) General form</a></li><li class="toc-sub"><a href="#1-1-basic-op">1-1) Basic OP</a></li><li><a href="#2-lc-example">2) LC Example</a></li><li class="toc-sub"><a href="#2-1-serialize-and-deserialize-bst">2-1) Serialize and Deserialize BST</a></li><li class="toc-sub"><a href="#2-2-kth-smallest-element-in-a-bst">2-2) Kth Smallest Element in a BST</a></li><li class="toc-sub"><a href="#2-3-lowest-common-ancestor-of-a-binary-search-tree">2-3) Lowest Common Ancestor of a Binary Search Tree</a></li><li class="toc-sub"><a href="#2-4-split-bst-lc-776-recursive-partition-pattern">2-4) Split BST (LC 776) - Recursive Partition Pattern</a></li><li class="toc-sub"><a href="#2-5-binary-search-tree-iterator">2-5) Binary Search Tree Iterator</a></li><li class="toc-sub"><a href="#2-6-search-in-a-binary-search-tree">2-6) Search in a Binary Search Tree</a></li><li class="toc-sub"><a href="#2-7-unique-binary-search-trees-ii">2-7) Unique Binary Search Trees II</a></li><li class="toc-sub"><a href="#2-8-insert-into-a-binary-search-tree">2-8) Insert into a Binary Search Tree</a></li><li class="toc-sub"><a href="#2-9-validate-binary-search-tree">2-9) Validate Binary Search Tree</a></li><li class="toc-sub"><a href="#2-10-trim-a-binary-search-tree-lc-669-recursive-pruning-pattern">2-10) Trim a Binary Search Tree (LC 669) - Recursive Pruning Pattern</a></li><li class="toc-sub"><a href="#2-10-1-convert-bst-to-greater-tree">2-10-1) Convert BST to Greater Tree</a></li><li class="toc-sub"><a href="#2-11-binary-search-tree-to-greater-sum-tree">2-11) Binary Search Tree to Greater Sum Tree</a></li><li><a href="#pattern-selection-strategy">Pattern Selection Strategy</a></li><li class="toc-sub"><a href="#decision-framework">Decision Framework</a></li><li><a href="#summary-quick-reference">Summary &amp; Quick Reference</a></li><li class="toc-sub"><a href="#complexity-quick-reference">Complexity Quick Reference</a></li><li class="toc-sub"><a href="#template-quick-reference">Template Quick Reference</a></li><li class="toc-sub"><a href="#common-patterns-tricks">Common Patterns &amp; Tricks</a></li><li class="toc-sub"><a href="#problem-solving-steps">Problem-Solving Steps</a></li><li class="toc-sub"><a href="#common-mistakes-tips">Common Mistakes &amp; Tips</a></li><li class="toc-sub"><a href="#interview-tips">Interview Tips</a></li><li class="toc-sub"><a href="#related-topics">Related Topics</a></li><li class="toc-sub"><a href="#java-implementation-notes">Java Implementation Notes</a></li><li class="toc-sub"><a href="#python-implementation-notes">Python Implementation Notes</a></li><li><a href="#quick-decision-tree-choosing-the-right-bst-template">🚀 Quick Decision Tree: Choosing the Right BST Template</a></li><li class="toc-sub"><a href="#quick-template-selection-table">📋 Quick Template Selection Table</a></li><li class="toc-sub"><a href="#recognition-patterns">🎯 Recognition Patterns</a></li><li class="toc-sub"><a href="#quick-decision-examples">⚡ Quick Decision Examples</a></li><li class="toc-sub"><a href="#pro-tips-for-template-selection">💡 Pro Tips for Template Selection</a></li></ul></div>
+      <div class="cheatsheet-content">
+        <h1 id="bst-binary-search-tree" tabindex="-1"><a class="header-anchor" href="#bst-binary-search-tree"><span>BST (Binary Search Tree)</span></a></h1>
+<h2 id="overview" tabindex="-1"><a class="header-anchor" href="#overview"><span>Overview</span></a></h2>
+<p><strong>Binary Search Tree (BST)</strong> is a binary tree data structure where each node follows the ordering property: left child &lt; parent &lt; right child. This property enables efficient searching, insertion, and deletion operations.</p>
+<h3 id="key-properties" tabindex="-1"><a class="header-anchor" href="#key-properties"><span>Key Properties</span></a></h3>
+<ul>
+<li><strong>Time Complexity</strong>:
+<ul>
+<li>Search/Insert/Delete: O(log n) average, O(n) worst case (unbalanced)</li>
+<li>Traversal: O(n) for all nodes</li>
+</ul>
+</li>
+<li><strong>Space Complexity</strong>: O(n) for storing n nodes, O(h) for recursive operations</li>
+<li><strong>Core Property</strong>: <code>left &lt; root &lt; right</code> for all nodes</li>
+<li><strong>Inorder Traversal</strong>: Produces sorted sequence (ascending order)</li>
+<li><strong>When to Use</strong>: Sorted data operations, range queries, ordered statistics</li>
+</ul>
+<h3 id="references" tabindex="-1"><a class="header-anchor" href="#references"><span>References</span></a></h3>
+<ul>
+<li><a href="https://www.cs.usfca.edu/~galles/visualization/BST.html">BST Visualizer</a></li>
+<li><a href="https://labuladong.github.io/algo/2/21/43/">fucking-algorithm - BST pt.1</a></li>
+<li><a href="https://labuladong.github.io/algo/2/21/44/">fucking-algorithm - BST pt.2</a></li>
+<li><a href="https://labuladong.github.io/algo/2/21/42/">fucking-algorithm - BST pt.3</a></li>
+</ul>
+<pre><code class="language-java">// below will print BST elements in ascending ordering
+// java
+void traverse(TreeNode root) {
+    if (root == null) return;
+    traverse(root.left);
+    // in-order traversal
+    print(root.val);
+    traverse(root.right);
+</code></pre>
+<h2 id="problem-categories" tabindex="-1"><a class="header-anchor" href="#problem-categories"><span>Problem Categories</span></a></h2>
+<h3 id="pattern-1-bst-search-validation" tabindex="-1"><a class="header-anchor" href="#pattern-1-bst-search-validation"><span><strong>Pattern 1: BST Search &amp; Validation</strong></span></a></h3>
+<ul>
+<li><strong>Description</strong>: Find elements or validate BST properties</li>
+<li><strong>Recognition</strong>: “Search”, “find”, “validate”, “is valid BST”</li>
+<li><strong>Examples</strong>: LC 98, LC 700, LC 270, LC 285</li>
+<li><strong>Template</strong>: Use Search Template with BST property</li>
+</ul>
+<h3 id="pattern-2-bst-insertion-deletion" tabindex="-1"><a class="header-anchor" href="#pattern-2-bst-insertion-deletion"><span><strong>Pattern 2: BST Insertion &amp; Deletion</strong></span></a></h3>
+<ul>
+<li><strong>Description</strong>: Modify BST structure while maintaining properties</li>
+<li><strong>Recognition</strong>: “Insert”, “delete”, “remove”, “add node”</li>
+<li><strong>Examples</strong>: LC 450, LC 701, LC 669</li>
+<li><strong>Template</strong>: Use Modification Template</li>
+</ul>
+<h3 id="pattern-3-bst-traversal-conversion" tabindex="-1"><a class="header-anchor" href="#pattern-3-bst-traversal-conversion"><span><strong>Pattern 3: BST Traversal &amp; Conversion</strong></span></a></h3>
+<ul>
+<li><strong>Description</strong>: Use inorder property for sorting/conversion</li>
+<li><strong>Recognition</strong>: “Kth smallest”, “convert”, “flatten”, “sorted order”</li>
+<li><strong>Examples</strong>: LC 230, LC 173, LC 426, LC 538</li>
+<li><strong>Template</strong>: Use Inorder Template</li>
+</ul>
+<h3 id="pattern-4-bst-construction" tabindex="-1"><a class="header-anchor" href="#pattern-4-bst-construction"><span><strong>Pattern 4: BST Construction</strong></span></a></h3>
+<ul>
+<li><strong>Description</strong>: Build BST from various inputs or rebuild/balance existing BST</li>
+<li><strong>Recognition</strong>: “Construct”, “build”, “generate”, “serialize”, “balance”</li>
+<li><strong>Examples</strong>: LC 108, LC 109, LC 95, LC 96, LC 449, LC 1008, LC 1382</li>
+<li><strong>Template</strong>: Use Construction Template</li>
+</ul>
+<h3 id="pattern-5-bst-properties-optimization" tabindex="-1"><a class="header-anchor" href="#pattern-5-bst-properties-optimization"><span><strong>Pattern 5: BST Properties &amp; Optimization</strong></span></a></h3>
+<ul>
+<li><strong>Description</strong>: Find optimal values or properties in BST</li>
+<li><strong>Recognition</strong>: “Closest”, “LCA”, “range”, “distance”</li>
+<li><strong>Examples</strong>: LC 235, LC 530, LC 783, LC 776</li>
+<li><strong>Template</strong>: Use Property Template</li>
+</ul>
+<h3 id="pattern-6-path-problems" tabindex="-1"><a class="header-anchor" href="#pattern-6-path-problems"><span><strong>Pattern 6: Path Problems</strong></span></a></h3>
+<ul>
+<li><strong>Description</strong>: Problems involving root-to-leaf or node-to-node paths</li>
+<li><strong>Recognition</strong>: “Path sum”, “root to leaf”, “maximum path”, “consecutive sequence”</li>
+<li><strong>Examples</strong>: LC 112, LC 113, LC 257, LC 124, LC 129, LC 298, LC 437</li>
+<li><strong>Template</strong>: Use DFS with path tracking, backtracking, or global state</li>
+</ul>
+<h2 id="templates-algorithms" tabindex="-1"><a class="header-anchor" href="#templates-algorithms"><span>Templates &amp; Algorithms</span></a></h2>
+<h3 id="template-comparison-table" tabindex="-1"><a class="header-anchor" href="#template-comparison-table"><span>Template Comparison Table</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>Template Type</th>
+<th>Use Case</th>
+<th>Key Operation</th>
+<th>Time</th>
+<th>Space</th>
+<th>When to Use</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Search Template</strong></td>
+<td>Finding values</td>
+<td>Binary search</td>
+<td>O(log n)</td>
+<td>O(1)/O(h)</td>
+<td>Value lookup</td>
+</tr>
+<tr>
+<td><strong>Insertion Template</strong></td>
+<td>Adding nodes</td>
+<td>Find position + insert</td>
+<td>O(log n)</td>
+<td>O(1)/O(h)</td>
+<td>Adding new values</td>
+</tr>
+<tr>
+<td><strong>Deletion Template</strong></td>
+<td>Removing nodes</td>
+<td>Find + restructure</td>
+<td>O(log n)</td>
+<td>O(h)</td>
+<td>Removing values</td>
+</tr>
+<tr>
+<td><strong>Inorder Template</strong></td>
+<td>Sorted operations</td>
+<td>Left-root-right</td>
+<td>O(n)</td>
+<td>O(h)</td>
+<td>Kth element, range</td>
+</tr>
+<tr>
+<td><strong>Construction Template</strong></td>
+<td>Building BST</td>
+<td>Divide &amp; conquer</td>
+<td>O(n)</td>
+<td>O(n)</td>
+<td>Creating from array</td>
+</tr>
+<tr>
+<td><strong>Path Template</strong></td>
+<td>Root-to-leaf paths</td>
+<td>DFS + tracking</td>
+<td>O(n)</td>
+<td>O(h)</td>
+<td>Path sum, sequences</td>
+</tr>
+</tbody>
+</table>
+<h3 id="universal-bst-template" tabindex="-1"><a class="header-anchor" href="#universal-bst-template"><span>Universal BST Template</span></a></h3>
+<pre><code class="language-python">def bst_operation(root, target):
+    &quot;&quot;&quot;
+    Universal template for BST operations
+    Leverages left &lt; root &lt; right property
+    &quot;&quot;&quot;
+    if not root:
+        return None  # or appropriate base value
+    
+    # BST property for efficient search
+    if target == root.val:
+        # Process current node
+        return root
+    elif target &lt; root.val:
+        # Go left for smaller values
+        return bst_operation(root.left, target)
+    else:
+        # Go right for larger values
+        return bst_operation(root.right, target)
+</code></pre>
+<h3 id="template-1-bst-search" tabindex="-1"><a class="header-anchor" href="#template-1-bst-search"><span>Template 1: BST Search</span></a></h3>
+<pre><code class="language-python">def search_bst(root, val):
+    &quot;&quot;&quot;
+    Search for a value in BST
+    Time: O(log n) average, O(n) worst
+    &quot;&quot;&quot;
+    if not root or root.val == val:
+        return root
+    
+    if val &lt; root.val:
+        return search_bst(root.left, val)
+    return search_bst(root.right, val)
+
+# Iterative version
+def search_bst_iterative(root, val):
+    while root and root.val != val:
+        root = root.left if val &lt; root.val else root.right
+    return root
+</code></pre>
+<h3 id="template-2-bst-insertion" tabindex="-1"><a class="header-anchor" href="#template-2-bst-insertion"><span>Template 2: BST Insertion</span></a></h3>
+<pre><code class="language-python">def insert_bst(root, val):
+    &quot;&quot;&quot;
+    Insert value into BST
+    Always inserts as a leaf node
+    &quot;&quot;&quot;
+    if not root:
+        return TreeNode(val)
+    
+    if val &lt; root.val:
+        root.left = insert_bst(root.left, val)
+    elif val &gt; root.val:
+        root.right = insert_bst(root.right, val)
+    # If val == root.val, typically don't insert duplicates
+    
+    return root
+</code></pre>
+<h3 id="template-3-bst-deletion" tabindex="-1"><a class="header-anchor" href="#template-3-bst-deletion"><span>Template 3: BST Deletion</span></a></h3>
+<pre><code class="language-python">def delete_bst(root, key):
+    &quot;&quot;&quot;
+    Delete a node from BST
+    Three cases: no child, one child, two children
+    &quot;&quot;&quot;
+    if not root:
+        return None
+    
+    if key &lt; root.val:
+        root.left = delete_bst(root.left, key)
+    elif key &gt; root.val:
+        root.right = delete_bst(root.right, key)
+    else:
+        # Node found - handle 3 cases
+        if not root.left:  # No left child or leaf
+            return root.right
+        if not root.right:  # No right child
+            return root.left
+        
+        # Two children: find inorder successor
+        min_node = find_min(root.right)
+        root.val = min_node.val
+        root.right = delete_bst(root.right, min_node.val)
+    
+    return root
+
+def find_min(node):
+    &quot;&quot;&quot;Find minimum value in BST (leftmost node)&quot;&quot;&quot;
+    while node.left:
+        node = node.left
+    return node
+</code></pre>
+<h3 id="template-4-bst-validation" tabindex="-1"><a class="header-anchor" href="#template-4-bst-validation"><span>Template 4: BST Validation</span></a></h3>
+<pre><code class="language-python">def validate_bst(root):
+    &quot;&quot;&quot;
+    Validate if tree is a valid BST
+    Uses min/max bounds approach
+    &quot;&quot;&quot;
+    def validate(node, min_val, max_val):
+        if not node:
+            return True
+        
+        if node.val &lt;= min_val or node.val &gt;= max_val:
+            return False
+        
+        return (validate(node.left, min_val, node.val) and
+                validate(node.right, node.val, max_val))
+    
+    return validate(root, float('-inf'), float('inf'))
+</code></pre>
+<h3 id="template-5-bst-inorder-operations" tabindex="-1"><a class="header-anchor" href="#template-5-bst-inorder-operations"><span>Template 5: BST Inorder Operations</span></a></h3>
+<pre><code class="language-python">def kth_smallest(root, k):
+    &quot;&quot;&quot;
+    Find kth smallest element using inorder property
+    Inorder traversal of BST gives sorted order
+    &quot;&quot;&quot;
+    def inorder(node):
+        if not node:
+            return []
+        return inorder(node.left) + [node.val] + inorder(node.right)
+    
+    return inorder(root)[k-1]
+
+# Optimized with early stopping
+def kth_smallest_optimized(root, k):
+    stack = []
+    while True:
+        while root:
+            stack.append(root)
+            root = root.left
+        root = stack.pop()
+        k -= 1
+        if k == 0:
+            return root.val
+        root = root.right
+</code></pre>
+<h3 id="template-6-bst-construction" tabindex="-1"><a class="header-anchor" href="#template-6-bst-construction"><span>Template 6: BST Construction</span></a></h3>
+<h4 id="pattern-overview" tabindex="-1"><a class="header-anchor" href="#pattern-overview"><span><strong>Pattern Overview</strong></span></a></h4>
+<ul>
+<li><strong>Description</strong>: Build BST from various inputs (arrays, lists, traversals)</li>
+<li><strong>Recognition</strong>: “Construct”, “build”, “generate”, “serialize”, “from preorder/inorder”</li>
+<li><strong>Key Concept</strong>: Use recursive divide-and-conquer with BST property</li>
+<li><strong>Time Complexity</strong>: O(n) for most constructions, O(n log n) for some</li>
+<li><strong>Space Complexity</strong>: O(n) for tree storage + O(h) for recursion stack</li>
+</ul>
+<h4 id="core-construction-patterns" tabindex="-1"><a class="header-anchor" href="#core-construction-patterns"><span><strong>Core Construction Patterns</strong></span></a></h4>
+<h5 id="pattern-6-1-from-sorted-array-lc-108" tabindex="-1"><a class="header-anchor" href="#pattern-6-1-from-sorted-array-lc-108"><span><strong>Pattern 6.1: From Sorted Array</strong> (LC 108)</span></a></h5>
+<pre><code class="language-python">def sorted_array_to_bst(nums):
+    &quot;&quot;&quot;
+    Convert sorted array to balanced BST
+    Uses binary search approach - pick middle as root
+    Time: O(n), Space: O(n)
+    &quot;&quot;&quot;
+    if not nums:
+        return None
+
+    mid = len(nums) // 2
+    root = TreeNode(nums[mid])
+    root.left = sorted_array_to_bst(nums[:mid])
+    root.right = sorted_array_to_bst(nums[mid+1:])
+
+    return root
+
+# Optimized version with index (no array slicing)
+def sorted_array_to_bst_optimized(nums):
+    def build(left, right):
+        if left &gt; right:
+            return None
+
+        mid = (left + right) // 2
+        root = TreeNode(nums[mid])
+        root.left = build(left, mid - 1)
+        root.right = build(mid + 1, right)
+        return root
+
+    return build(0, len(nums) - 1)
+</code></pre>
+<h5 id="pattern-6-2-from-sorted-linked-list-lc-109" tabindex="-1"><a class="header-anchor" href="#pattern-6-2-from-sorted-linked-list-lc-109"><span><strong>Pattern 6.2: From Sorted Linked List</strong> (LC 109)</span></a></h5>
+<pre><code class="language-python">def sorted_list_to_bst(head):
+    &quot;&quot;&quot;
+    Convert sorted linked list to balanced BST
+    Two approaches: 1) Two pointers to find middle
+                   2) Inorder simulation
+    Time: O(n log n) or O(n), Space: O(log n)
+    &quot;&quot;&quot;
+    # Approach 1: Find middle with slow-fast pointers
+    def find_middle(left, right):
+        slow = fast = left
+        while fast != right and fast.next != right:
+            slow = slow.next
+            fast = fast.next.next
+        return slow
+
+    def convert(left, right):
+        if left == right:
+            return None
+
+        mid = find_middle(left, right)
+        root = TreeNode(mid.val)
+        root.left = convert(left, mid)
+        root.right = convert(mid.next, right)
+        return root
+
+    return convert(head, None)
+</code></pre>
+<h5 id="pattern-6-3-from-preorder-traversal-lc-1008" tabindex="-1"><a class="header-anchor" href="#pattern-6-3-from-preorder-traversal-lc-1008"><span><strong>Pattern 6.3: From Preorder Traversal</strong> (LC 1008)</span></a></h5>
+<pre><code class="language-python">def bst_from_preorder(preorder):
+    &quot;&quot;&quot;
+    Construct BST from preorder traversal
+    Use BST property: left &lt; root &lt; right
+    Time: O(n), Space: O(h)
+    &quot;&quot;&quot;
+    def build(min_val, max_val):
+        nonlocal idx
+        if idx &gt;= len(preorder):
+            return None
+
+        val = preorder[idx]
+        if val &lt; min_val or val &gt; max_val:
+            return None
+
+        idx += 1
+        root = TreeNode(val)
+        root.left = build(min_val, val)
+        root.right = build(val, max_val)
+        return root
+
+    idx = 0
+    return build(float('-inf'), float('inf'))
+</code></pre>
+<h5 id="pattern-6-4-balance-a-bst-lc-1382" tabindex="-1"><a class="header-anchor" href="#pattern-6-4-balance-a-bst-lc-1382"><span><strong>Pattern 6.4: Balance a BST</strong> (LC 1382)</span></a></h5>
+<pre><code class="language-python">def balance_bst(root):
+    &quot;&quot;&quot;
+    Balance an existing BST by rebuilding it
+    Approach: Inorder traversal + rebuild from sorted nodes
+    Time: O(n), Space: O(n)
+
+    Key Steps:
+    1. Inorder traversal to get sorted node list
+    2. Use middle element as root (like sorted array to BST)
+    3. Recursively build left and right subtrees
+    &quot;&quot;&quot;
+    # Step 1: Get sorted nodes via inorder traversal
+    nodes = []
+    def inorder(node):
+        if not node:
+            return
+        inorder(node.left)
+        nodes.append(node)
+        inorder(node.right)
+
+    inorder(root)
+
+    # Step 2: Rebuild balanced BST from sorted nodes
+    def build_balanced(left, right):
+        if left &gt; right:
+            return None
+
+        # Pick middle as root to ensure balance
+        mid = (left + right) // 2
+        root = nodes[mid]
+
+        # Recursively build left and right subtrees
+        root.left = build_balanced(left, mid - 1)
+        root.right = build_balanced(mid + 1, right)
+
+        return root
+
+    return build_balanced(0, len(nodes) - 1)
+</code></pre>
+<pre><code class="language-java">// Java implementation
+public TreeNode balanceBST(TreeNode root) {
+    List&lt;TreeNode&gt; nodes = new ArrayList&lt;&gt;();
+
+    // Step 1: Inorder traversal to get sorted nodes
+    inorderTraversal(root, nodes);
+
+    // Step 2: Rebuild balanced BST
+    return buildBalancedBST(nodes, 0, nodes.size() - 1);
+}
+
+private void inorderTraversal(TreeNode root, List&lt;TreeNode&gt; nodes) {
+    if (root == null) {
+        return;
+    }
+    inorderTraversal(root.left, nodes);
+    nodes.add(root);
+    inorderTraversal(root.right, nodes);
+}
+
+private TreeNode buildBalancedBST(List&lt;TreeNode&gt; nodes, int left, int right) {
+    if (left &gt; right) {
+        return null;
+    }
+
+    // Pick middle as root for balance
+    int mid = (left + right) / 2;
+    TreeNode root = nodes.get(mid);
+
+    // Recursively build subtrees
+    root.left = buildBalancedBST(nodes, left, mid - 1);
+    root.right = buildBalancedBST(nodes, mid + 1, right);
+
+    return root;
+}
+</code></pre>
+<h5 id="pattern-6-5-generate-all-unique-bsts-recursive-construction-via-cartesian-product-lc-95" tabindex="-1"><a class="header-anchor" href="#pattern-6-5-generate-all-unique-bsts-recursive-construction-via-cartesian-product-lc-95"><span><strong>Pattern 6.5: Generate All Unique BSTs (Recursive Construction via Cartesian Product)</strong> (LC 95)</span></a></h5>
+<p><strong>Core Idea</strong>:</p>
+<ul>
+<li>Pick each number <code>i</code> in <code>[start, end]</code> as the root</li>
+<li>All numbers <code>[start, i-1]</code> must form the <strong>left</strong> subtree (BST property)</li>
+<li>All numbers <code>[i+1, end]</code> must form the <strong>right</strong> subtree (BST property)</li>
+<li>The total unique trees for root <code>i</code> = <strong>Cartesian product</strong> of all left subtrees × all right subtrees</li>
+<li>Base case: when <code>start &gt; end</code>, return <code>[null]</code> (empty subtree, NOT empty list)</li>
+<li>Total count follows <strong>Catalan number</strong>: C(n) = (2n)! / ((n+1)! × n!)</li>
+</ul>
+<p><strong>Approaches</strong>:</p>
+<ol>
+<li><strong>Plain Recursion</strong> — enumerate all combinations directly (overlapping subproblems)</li>
+<li><strong>Memoized Recursion</strong> — cache <code>(start, end) → List&lt;TreeNode&gt;</code> to avoid recomputation</li>
+<li><strong>Iterative DP</strong> — bottom-up table <code>dp[start][end]</code> filled by increasing window size</li>
+<li><strong>Space-Optimized DP</strong> — <code>dp[numberOfNodes]</code> with clone + offset for right subtrees</li>
+</ol>
+<pre><code class="language-python">def generate_trees(n):
+    &quot;&quot;&quot;
+    Generate all structurally unique BSTs with n nodes
+    Catalan number of trees: C(n) = (2n)! / ((n+1)! * n!)
+    Time: O(4^n / n^(3/2)), Space: O(4^n / n^(3/2))
+    &quot;&quot;&quot;
+    if n == 0:
+        return []
+
+    def generate(start, end):
+        if start &gt; end:
+            return [None]
+
+        all_trees = []
+        for root_val in range(start, end + 1):
+            left_trees = generate(start, root_val - 1)
+            right_trees = generate(root_val + 1, end)
+
+            for left in left_trees:
+                for right in right_trees:
+                    root = TreeNode(root_val)
+                    root.left = left
+                    root.right = right
+                    all_trees.append(root)
+
+        return all_trees
+
+    return generate(1, n)
+</code></pre>
+<pre><code class="language-java">// Java — Plain Recursion (LC 95)
+public List&lt;TreeNode&gt; generateTrees(int n) {
+    if (n == 0) return new ArrayList&lt;&gt;();
+    return buildTrees(1, n);
+}
+
+private List&lt;TreeNode&gt; buildTrees(int start, int end) {
+    List&lt;TreeNode&gt; allTrees = new ArrayList&lt;&gt;();
+    if (start &gt; end) {
+        allTrees.add(null);  // important: null represents empty subtree
+        return allTrees;
+    }
+    for (int i = start; i &lt;= end; i++) {
+        // left subtree candidates: [start, i-1]
+        List&lt;TreeNode&gt; leftSubtrees = buildTrees(start, i - 1);
+        // right subtree candidates: [i+1, end]
+        List&lt;TreeNode&gt; rightSubtrees = buildTrees(i + 1, end);
+        // Cartesian product: connect each left × right to root i
+        for (TreeNode left : leftSubtrees) {
+            for (TreeNode right : rightSubtrees) {
+                TreeNode root = new TreeNode(i);
+                root.left = left;
+                root.right = right;
+                allTrees.add(root);
+            }
+        }
+    }
+    return allTrees;
+}
+</code></pre>
+<pre><code class="language-java">// Java — Memoized Recursion (LC 95)
+public List&lt;TreeNode&gt; generateTrees_memo(int n) {
+    Map&lt;Pair&lt;Integer, Integer&gt;, List&lt;TreeNode&gt;&gt; memo = new HashMap&lt;&gt;();
+    return allPossibleBST(1, n, memo);
+}
+
+private List&lt;TreeNode&gt; allPossibleBST(int start, int end,
+        Map&lt;Pair&lt;Integer, Integer&gt;, List&lt;TreeNode&gt;&gt; memo) {
+    List&lt;TreeNode&gt; res = new ArrayList&lt;&gt;();
+    if (start &gt; end) { res.add(null); return res; }
+    if (memo.containsKey(new Pair&lt;&gt;(start, end)))
+        return memo.get(new Pair&lt;&gt;(start, end));
+    for (int i = start; i &lt;= end; ++i) {
+        List&lt;TreeNode&gt; leftSubs = allPossibleBST(start, i - 1, memo);
+        List&lt;TreeNode&gt; rightSubs = allPossibleBST(i + 1, end, memo);
+        for (TreeNode left : leftSubs)
+            for (TreeNode right : rightSubs)
+                res.add(new TreeNode(i, left, right));
+    }
+    memo.put(new Pair&lt;&gt;(start, end), res);
+    return res;
+}
+</code></pre>
+<p><strong>Similar LeetCode Problems</strong>:</p>
+<ul>
+<li>LC 95: Unique Binary Search Trees II (generate all)</li>
+<li>LC 96: Unique Binary Search Trees (count only — Catalan number DP)</li>
+<li>LC 241: Different Ways to Add Parentheses (same Cartesian product pattern)</li>
+<li>LC 894: All Possible Full Binary Trees</li>
+<li>LC 1382: Balance a Binary Search Tree</li>
+</ul>
+<h5 id="pattern-6-6-count-unique-bsts-lc-96" tabindex="-1"><a class="header-anchor" href="#pattern-6-6-count-unique-bsts-lc-96"><span><strong>Pattern 6.6: Count Unique BSTs</strong> (LC 96)</span></a></h5>
+<pre><code class="language-python">def num_trees(n):
+    &quot;&quot;&quot;
+    Count number of structurally unique BSTs with n nodes
+    Uses Catalan Number: C(n) = C(0)*C(n-1) + C(1)*C(n-2) + ... + C(n-1)*C(0)
+    Time: O(n^2), Space: O(n)
+    &quot;&quot;&quot;
+    dp = [0] * (n + 1)
+    dp[0] = dp[1] = 1
+
+    for nodes in range(2, n + 1):
+        for root in range(1, nodes + 1):
+            left = root - 1
+            right = nodes - root
+            dp[nodes] += dp[left] * dp[right]
+
+    return dp[n]
+</code></pre>
+<h4 id="java-implementations" tabindex="-1"><a class="header-anchor" href="#java-implementations"><span><strong>Java Implementations</strong></span></a></h4>
+<pre><code class="language-java">// Pattern 6.1: From Sorted Array (LC 108)
+public TreeNode sortedArrayToBST(int[] nums) {
+    return buildBST(nums, 0, nums.length - 1);
+}
+
+private TreeNode buildBST(int[] nums, int left, int right) {
+    if (left &gt; right) return null;
+
+    int mid = left + (right - left) / 2;
+    TreeNode root = new TreeNode(nums[mid]);
+    root.left = buildBST(nums, left, mid - 1);
+    root.right = buildBST(nums, mid + 1, right);
+    return root;
+}
+
+// Pattern 6.3: From Preorder (LC 1008)
+private int idx = 0;
+
+public TreeNode bstFromPreorder(int[] preorder) {
+    return build(preorder, Integer.MIN_VALUE, Integer.MAX_VALUE);
+}
+
+private TreeNode build(int[] preorder, int min, int max) {
+    if (idx &gt;= preorder.length) return null;
+
+    int val = preorder[idx];
+    if (val &lt; min || val &gt; max) return null;
+
+    idx++;
+    TreeNode root = new TreeNode(val);
+    root.left = build(preorder, min, val);
+    root.right = build(preorder, val, max);
+    return root;
+}
+</code></pre>
+<h4 id="construction-pattern-summary-table" tabindex="-1"><a class="header-anchor" href="#construction-pattern-summary-table"><span><strong>Construction Pattern Summary Table</strong></span></a></h4>
+<table>
+<thead>
+<tr>
+<th>Input Type</th>
+<th>Approach</th>
+<th>Key Technique</th>
+<th>Time</th>
+<th>Space</th>
+<th>LC #</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Sorted Array</strong></td>
+<td>Binary search</td>
+<td>Pick mid as root</td>
+<td>O(n)</td>
+<td>O(n)</td>
+<td>108</td>
+</tr>
+<tr>
+<td><strong>Sorted List</strong></td>
+<td>Two pointers</td>
+<td>Find mid node</td>
+<td>O(n log n)</td>
+<td>O(log n)</td>
+<td>109</td>
+</tr>
+<tr>
+<td><strong>Preorder</strong></td>
+<td>Bounds checking</td>
+<td>Use min/max</td>
+<td>O(n)</td>
+<td>O(h)</td>
+<td>1008</td>
+</tr>
+<tr>
+<td><strong>Balance BST</strong></td>
+<td>Inorder + Rebuild</td>
+<td>Collect sorted nodes</td>
+<td>O(n)</td>
+<td>O(n)</td>
+<td>1382</td>
+</tr>
+<tr>
+<td><strong>Generate All</strong></td>
+<td>Combinatorial</td>
+<td>Try each as root</td>
+<td>O(4^n/n^1.5)</td>
+<td>O(4^n/n^1.5)</td>
+<td>95</td>
+</tr>
+<tr>
+<td><strong>Count Unique</strong></td>
+<td>Dynamic programming</td>
+<td>Catalan numbers</td>
+<td>O(n²)</td>
+<td>O(n)</td>
+<td>96</td>
+</tr>
+<tr>
+<td><strong>Serialize</strong></td>
+<td>Preorder encoding</td>
+<td>BST property</td>
+<td>O(n)</td>
+<td>O(n)</td>
+<td>449</td>
+</tr>
+</tbody>
+</table>
+<h3 id="template-7-path-problems" tabindex="-1"><a class="header-anchor" href="#template-7-path-problems"><span>Template 7: Path Problems</span></a></h3>
+<h4 id="pattern-overview-1" tabindex="-1"><a class="header-anchor" href="#pattern-overview-1"><span><strong>Pattern Overview</strong></span></a></h4>
+<ul>
+<li><strong>Description</strong>: Find or validate paths in binary trees (root-to-leaf, node-to-node)</li>
+<li><strong>Recognition</strong>: “Path sum”, “root to leaf”, “maximum path”, “consecutive”</li>
+<li><strong>Key Concept</strong>: Use DFS with path tracking, accumulation, or global state</li>
+<li><strong>Time Complexity</strong>: O(n) for visiting all nodes</li>
+<li><strong>Space Complexity</strong>: O(h) for recursion stack + path storage</li>
+</ul>
+<p><strong>📚 Related Patterns</strong>: These path problems use DFS traversal. For general tree path-finding patterns and techniques, see <strong><a href="http://dfs.md">dfs.md</a> Template 3 (Path Finding)</strong>. The examples here focus on common path problems that work for both BST and general binary trees.</p>
+<h4 id="core-path-patterns" tabindex="-1"><a class="header-anchor" href="#core-path-patterns"><span><strong>Core Path Patterns</strong></span></a></h4>
+<h5 id="pattern-7-1-simple-path-sum-lc-112" tabindex="-1"><a class="header-anchor" href="#pattern-7-1-simple-path-sum-lc-112"><span><strong>Pattern 7.1: Simple Path Sum</strong> (LC 112)</span></a></h5>
+<pre><code class="language-python">def has_path_sum(root, target_sum):
+    &quot;&quot;&quot;
+    Check if root-to-leaf path exists with given sum
+    Time: O(n), Space: O(h)
+    &quot;&quot;&quot;
+    if not root:
+        return False
+
+    # Leaf node check
+    if not root.left and not root.right:
+        return root.val == target_sum
+
+    # Recurse with reduced sum
+    remaining = target_sum - root.val
+    return (has_path_sum(root.left, remaining) or
+            has_path_sum(root.right, remaining))
+</code></pre>
+<h5 id="pattern-7-2-path-sum-ii-all-paths-lc-113" tabindex="-1"><a class="header-anchor" href="#pattern-7-2-path-sum-ii-all-paths-lc-113"><span><strong>Pattern 7.2: Path Sum II - All Paths</strong> (LC 113)</span></a></h5>
+<pre><code class="language-python">def path_sum(root, target_sum):
+    &quot;&quot;&quot;
+    Find all root-to-leaf paths with given sum
+    Uses backtracking to track current path
+    Time: O(n), Space: O(h)
+    &quot;&quot;&quot;
+    result = []
+
+    def dfs(node, remaining, path):
+        if not node:
+            return
+
+        # Add current node to path
+        path.append(node.val)
+
+        # Check if leaf with target sum
+        if not node.left and not node.right and remaining == node.val:
+            result.append(path[:])  # Deep copy
+
+        # Recurse on children
+        new_remaining = remaining - node.val
+        dfs(node.left, new_remaining, path)
+        dfs(node.right, new_remaining, path)
+
+        # Backtrack
+        path.pop()
+
+    dfs(root, target_sum, [])
+    return result
+</code></pre>
+<h5 id="pattern-7-3-binary-tree-paths-lc-257" tabindex="-1"><a class="header-anchor" href="#pattern-7-3-binary-tree-paths-lc-257"><span><strong>Pattern 7.3: Binary Tree Paths</strong> (LC 257)</span></a></h5>
+<pre><code class="language-python">def binary_tree_paths(root):
+    &quot;&quot;&quot;
+    Find all root-to-leaf paths as strings
+    Time: O(n), Space: O(h)
+    &quot;&quot;&quot;
+    if not root:
+        return []
+
+    result = []
+
+    def dfs(node, path):
+        if not node:
+            return
+
+        # Add current node to path string
+        path += str(node.val)
+
+        # Leaf node - add complete path
+        if not node.left and not node.right:
+            result.append(path)
+            return
+
+        # Continue path with arrow
+        path += &quot;-&gt;&quot;
+        dfs(node.left, path)
+        dfs(node.right, path)
+
+    dfs(root, &quot;&quot;)
+    return result
+</code></pre>
+<h5 id="pattern-7-4-sum-root-to-leaf-numbers-lc-129" tabindex="-1"><a class="header-anchor" href="#pattern-7-4-sum-root-to-leaf-numbers-lc-129"><span><strong>Pattern 7.4: Sum Root to Leaf Numbers</strong> (LC 129)</span></a></h5>
+<pre><code class="language-python">def sum_numbers(root):
+    &quot;&quot;&quot;
+    Sum all numbers formed by root-to-leaf paths
+    Example: 1-&gt;2-&gt;3 represents 123
+    Time: O(n), Space: O(h)
+    &quot;&quot;&quot;
+    def dfs(node, current_sum):
+        if not node:
+            return 0
+
+        # Build number: current_sum * 10 + node.val
+        current_sum = current_sum * 10 + node.val
+
+        # Leaf node - return the number
+        if not node.left and not node.right:
+            return current_sum
+
+        # Sum from both subtrees
+        return dfs(node.left, current_sum) + dfs(node.right, current_sum)
+
+    return dfs(root, 0)
+</code></pre>
+<h5 id="pattern-7-5-binary-tree-maximum-path-sum-lc-124" tabindex="-1"><a class="header-anchor" href="#pattern-7-5-binary-tree-maximum-path-sum-lc-124"><span><strong>Pattern 7.5: Binary Tree Maximum Path Sum</strong> (LC 124)</span></a></h5>
+<pre><code class="language-python">def max_path_sum(root):
+    &quot;&quot;&quot;
+    Find maximum path sum (any node to any node)
+    Uses global variable to track maximum
+    Time: O(n), Space: O(h)
+    &quot;&quot;&quot;
+    max_sum = float('-inf')
+
+    def dfs(node):
+        nonlocal max_sum
+
+        if not node:
+            return 0
+
+        # Get max contribution from left and right
+        # Use max(0, ...) to ignore negative paths
+        left_max = max(0, dfs(node.left))
+        right_max = max(0, dfs(node.right))
+
+        # Update global max with path through current node
+        path_sum = node.val + left_max + right_max
+        max_sum = max(max_sum, path_sum)
+
+        # Return max path going through this node (one side only)
+        return node.val + max(left_max, right_max)
+
+    dfs(root)
+    return max_sum
+</code></pre>
+<h5 id="pattern-7-6-binary-tree-longest-consecutive-sequence-lc-298" tabindex="-1"><a class="header-anchor" href="#pattern-7-6-binary-tree-longest-consecutive-sequence-lc-298"><span><strong>Pattern 7.6: Binary Tree Longest Consecutive Sequence</strong> (LC 298)</span></a></h5>
+<pre><code class="language-python">def longest_consecutive(root):
+    &quot;&quot;&quot;
+    Find length of longest consecutive path
+    Values must increase by 1 each step
+    Time: O(n), Space: O(h)
+    &quot;&quot;&quot;
+    max_length = 0
+
+    def dfs(node, parent_val, length):
+        nonlocal max_length
+
+        if not node:
+            return
+
+        # Check if consecutive with parent
+        if node.val == parent_val + 1:
+            length += 1
+        else:
+            length = 1  # Reset sequence
+
+        # Update global max
+        max_length = max(max_length, length)
+
+        # Recurse on children
+        dfs(node.left, node.val, length)
+        dfs(node.right, node.val, length)
+
+    dfs(root, float('-inf'), 0)
+    return max_length
+</code></pre>
+<h5 id="pattern-7-7-path-sum-iii-lc-437" tabindex="-1"><a class="header-anchor" href="#pattern-7-7-path-sum-iii-lc-437"><span><strong>Pattern 7.7: Path Sum III</strong> (LC 437)</span></a></h5>
+<pre><code class="language-python">def path_sum_3(root, target_sum):
+    &quot;&quot;&quot;
+    Count paths with given sum (not necessarily root-to-leaf)
+    Uses prefix sum technique with hash map
+    Time: O(n), Space: O(n)
+    &quot;&quot;&quot;
+    from collections import defaultdict
+
+    def dfs(node, current_sum, prefix_sums):
+        if not node:
+            return 0
+
+        # Update current sum
+        current_sum += node.val
+
+        # Count paths ending at current node
+        # If (current_sum - target_sum) exists, we found path(s)
+        count = prefix_sums[current_sum - target_sum]
+
+        # Add current sum to prefix map
+        prefix_sums[current_sum] += 1
+
+        # Recurse on children
+        count += dfs(node.left, current_sum, prefix_sums)
+        count += dfs(node.right, current_sum, prefix_sums)
+
+        # Backtrack: remove current sum from map
+        prefix_sums[current_sum] -= 1
+
+        return count
+
+    # Initialize with 0 sum (for paths starting from root)
+    prefix_sums = defaultdict(int)
+    prefix_sums[0] = 1
+
+    return dfs(root, 0, prefix_sums)
+</code></pre>
+<h4 id="java-implementations-1" tabindex="-1"><a class="header-anchor" href="#java-implementations-1"><span><strong>Java Implementations</strong></span></a></h4>
+<pre><code class="language-java">// Pattern 7.1: Simple Path Sum (LC 112)
+public boolean hasPathSum(TreeNode root, int targetSum) {
+    if (root == null) return false;
+
+    // Leaf node check
+    if (root.left == null &amp;&amp; root.right == null) {
+        return root.val == targetSum;
+    }
+
+    int remaining = targetSum - root.val;
+    return hasPathSum(root.left, remaining) ||
+           hasPathSum(root.right, remaining);
+}
+
+// Pattern 7.2: Path Sum II (LC 113)
+public List&lt;List&lt;Integer&gt;&gt; pathSum(TreeNode root, int targetSum) {
+    List&lt;List&lt;Integer&gt;&gt; result = new ArrayList&lt;&gt;();
+    dfs(root, targetSum, new ArrayList&lt;&gt;(), result);
+    return result;
+}
+
+private void dfs(TreeNode node, int remaining,
+                 List&lt;Integer&gt; path, List&lt;List&lt;Integer&gt;&gt; result) {
+    if (node == null) return;
+
+    path.add(node.val);
+
+    if (node.left == null &amp;&amp; node.right == null &amp;&amp; remaining == node.val) {
+        result.add(new ArrayList&lt;&gt;(path));
+    }
+
+    int newRemaining = remaining - node.val;
+    dfs(node.left, newRemaining, path, result);
+    dfs(node.right, newRemaining, path, result);
+
+    path.remove(path.size() - 1);  // Backtrack
+}
+
+// Pattern 7.5: Maximum Path Sum (LC 124)
+private int maxSum = Integer.MIN_VALUE;
+
+public int maxPathSum(TreeNode root) {
+    dfs(root);
+    return maxSum;
+}
+
+private int dfs(TreeNode node) {
+    if (node == null) return 0;
+
+    int leftMax = Math.max(0, dfs(node.left));
+    int rightMax = Math.max(0, dfs(node.right));
+
+    maxSum = Math.max(maxSum, node.val + leftMax + rightMax);
+
+    return node.val + Math.max(leftMax, rightMax);
+}
+
+// Pattern 7.7: Path Sum III (LC 437)
+public int pathSum(TreeNode root, int targetSum) {
+    Map&lt;Long, Integer&gt; prefixSums = new HashMap&lt;&gt;();
+    prefixSums.put(0L, 1);
+    return dfs(root, 0L, targetSum, prefixSums);
+}
+
+private int dfs(TreeNode node, long currentSum, int target,
+                Map&lt;Long, Integer&gt; prefixSums) {
+    if (node == null) return 0;
+
+    currentSum += node.val;
+    int count = prefixSums.getOrDefault(currentSum - target, 0);
+
+    prefixSums.put(currentSum, prefixSums.getOrDefault(currentSum, 0) + 1);
+
+    count += dfs(node.left, currentSum, target, prefixSums);
+    count += dfs(node.right, currentSum, target, prefixSums);
+
+    prefixSums.put(currentSum, prefixSums.get(currentSum) - 1);
+
+    return count;
+}
+</code></pre>
+<h4 id="path-pattern-summary-table" tabindex="-1"><a class="header-anchor" href="#path-pattern-summary-table"><span><strong>Path Pattern Summary Table</strong></span></a></h4>
+<table>
+<thead>
+<tr>
+<th>Problem Type</th>
+<th>Approach</th>
+<th>Key Technique</th>
+<th>Time</th>
+<th>Space</th>
+<th>LC #</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Simple Path Sum</strong></td>
+<td>DFS recursion</td>
+<td>Reduce sum</td>
+<td>O(n)</td>
+<td>O(h)</td>
+<td>112</td>
+</tr>
+<tr>
+<td><strong>All Paths</strong></td>
+<td>DFS + backtrack</td>
+<td>Track path</td>
+<td>O(n)</td>
+<td>O(h)</td>
+<td>113</td>
+</tr>
+<tr>
+<td><strong>Path Strings</strong></td>
+<td>DFS + string</td>
+<td>Concatenate</td>
+<td>O(n)</td>
+<td>O(h)</td>
+<td>257</td>
+</tr>
+<tr>
+<td><strong>Sum Numbers</strong></td>
+<td>DFS + accumulate</td>
+<td>Build number</td>
+<td>O(n)</td>
+<td>O(h)</td>
+<td>129</td>
+</tr>
+<tr>
+<td><strong>Max Path Sum</strong></td>
+<td>DFS + global</td>
+<td>Track max</td>
+<td>O(n)</td>
+<td>O(h)</td>
+<td>124</td>
+</tr>
+<tr>
+<td><strong>Consecutive</strong></td>
+<td>DFS + counter</td>
+<td>Track length</td>
+<td>O(n)</td>
+<td>O(h)</td>
+<td>298</td>
+</tr>
+<tr>
+<td><strong>Prefix Sum</strong></td>
+<td>DFS + hashmap</td>
+<td>Prefix technique</td>
+<td>O(n)</td>
+<td>O(n)</td>
+<td>437</td>
+</tr>
+</tbody>
+</table>
+<h4 id="key-concepts-principles" tabindex="-1"><a class="header-anchor" href="#key-concepts-principles"><span><strong>Key Concepts &amp; Principles</strong></span></a></h4>
+<ol>
+<li>
+<p><strong>Root-to-Leaf Paths</strong></p>
+<ul>
+<li>Always check for leaf nodes: <code>not node.left and not node.right</code></li>
+<li>Reduce target sum at each level</li>
+<li>Return result at leaf nodes</li>
+</ul>
+</li>
+<li>
+<p><strong>Backtracking Pattern</strong></p>
+<ul>
+<li>Add current node to path</li>
+<li>Recurse on children</li>
+<li>Remove current node from path (restore state)</li>
+<li>Essential for finding all paths</li>
+</ul>
+</li>
+<li>
+<p><strong>Global State</strong></p>
+<ul>
+<li>Use nonlocal/class variable for maximum values</li>
+<li>Update during traversal</li>
+<li>Return contribution, not final answer</li>
+</ul>
+</li>
+<li>
+<p><strong>Path Through Node</strong></p>
+<ul>
+<li>For max path: left_max + node.val + right_max</li>
+<li>For return: node.val + max(left_max, right_max)</li>
+<li>Use max(0, …) to ignore negative contributions</li>
+</ul>
+</li>
+<li>
+<p><strong>Prefix Sum Technique</strong></p>
+<ul>
+<li>Track cumulative sum from root</li>
+<li>Use hashmap: prefixSum[currentSum - target] = count</li>
+<li>Backtrack by decrementing counts</li>
+</ul>
+</li>
+</ol>
+<h4 id="common-mistakes-pitfalls" tabindex="-1"><a class="header-anchor" href="#common-mistakes-pitfalls"><span><strong>Common Mistakes &amp; Pitfalls</strong></span></a></h4>
+<p><strong>🚫 Mistake 1: Not Checking Leaf Nodes</strong></p>
+<pre><code class="language-python"># BAD: Doesn't verify it's a leaf
+if root.val == target:
+    return True
+
+# GOOD: Check both children are None
+if not root.left and not root.right and root.val == target:
+    return True
+</code></pre>
+<p><strong>🚫 Mistake 2: Forgetting to Backtrack</strong></p>
+<pre><code class="language-python"># BAD: Path grows indefinitely
+def dfs(node, path):
+    path.append(node.val)
+    dfs(node.left, path)
+
+# GOOD: Remove after recursion
+def dfs(node, path):
+    path.append(node.val)
+    dfs(node.left, path)
+    path.pop()
+</code></pre>
+<p><strong>🚫 Mistake 3: Shallow Copy in Results</strong></p>
+<pre><code class="language-python"># BAD: All results reference same list
+result.append(path)
+
+# GOOD: Create deep copy
+result.append(path[:])  # or list(path)
+</code></pre>
+<p><strong>🚫 Mistake 4: Wrong Max Path Logic</strong></p>
+<pre><code class="language-python"># BAD: Includes both subtrees in return
+def dfs(node):
+    left = dfs(node.left)
+    right = dfs(node.right)
+    return node.val + left + right  # Wrong!
+
+# GOOD: Return one path only
+return node.val + max(left, right)
+</code></pre>
+<p><strong>🚫 Mistake 5: Not Handling Negative Values</strong></p>
+<pre><code class="language-python"># BAD: Negative paths reduce maximum
+left_max = dfs(node.left)
+
+# GOOD: Ignore negative contributions
+left_max = max(0, dfs(node.left))
+</code></pre>
+<h4 id="key-concepts-principles-1" tabindex="-1"><a class="header-anchor" href="#key-concepts-principles-1"><span><strong>Key Concepts &amp; Principles</strong></span></a></h4>
+<ol>
+<li>
+<p><strong>Balanced Construction</strong></p>
+<ul>
+<li>Always pick middle element as root to ensure balance</li>
+<li>Balanced BST has height O(log n)</li>
+<li>Unbalanced can degenerate to O(n)</li>
+</ul>
+</li>
+<li>
+<p><strong>Catalan Numbers</strong></p>
+<ul>
+<li>Number of unique BSTs with n nodes = nth Catalan number</li>
+<li>Formula: C(n) = (2n)! / ((n+1)! × n!)</li>
+<li>Recurrence: C(n) = Σ C(i) × C(n-1-i) for i from 0 to n-1</li>
+</ul>
+</li>
+<li>
+<p><strong>Traversal Properties</strong></p>
+<ul>
+<li><strong>Preorder</strong>: Can reconstruct BST uniquely (root first)</li>
+<li><strong>Inorder</strong>: Gives sorted sequence (need preorder/postorder too)</li>
+<li><strong>Postorder</strong>: Can reconstruct BST uniquely (root last)</li>
+</ul>
+</li>
+<li>
+<p><strong>Optimization Techniques</strong></p>
+<ul>
+<li>Use indices instead of array slicing (saves O(n) space per call)</li>
+<li>Cache results for generate all problems</li>
+<li>Use iterative approaches where possible</li>
+</ul>
+</li>
+</ol>
+<h4 id="common-mistakes-pitfalls-1" tabindex="-1"><a class="header-anchor" href="#common-mistakes-pitfalls-1"><span><strong>Common Mistakes &amp; Pitfalls</strong></span></a></h4>
+<p><strong>🚫 Mistake 1: Array Slicing Overhead</strong></p>
+<pre><code class="language-python"># BAD: Creates new arrays O(n) space each recursion
+def build(nums):
+    mid = len(nums) // 2
+    root.left = build(nums[:mid])  # O(n) space
+
+# GOOD: Use indices
+def build(left, right):
+    mid = (left + right) // 2
+    root.left = build(left, mid - 1)
+</code></pre>
+<p><strong>🚫 Mistake 2: Off-by-One Errors</strong></p>
+<pre><code class="language-python"># BAD: Wrong boundary
+mid = len(nums) // 2
+root.left = build(nums[:mid-1])  # Skips element!
+
+# GOOD: Correct boundaries
+root.left = build(nums[:mid])  # Includes all left elements
+</code></pre>
+<p><strong>🚫 Mistake 3: Not Checking Bounds in Preorder</strong></p>
+<pre><code class="language-python"># BAD: No bounds checking
+def build():
+    val = preorder[idx]
+    root = TreeNode(val)  # May violate BST property!
+
+# GOOD: Check min/max bounds
+def build(min_val, max_val):
+    if val &lt; min_val or val &gt; max_val:
+        return None
+</code></pre>
+<p><strong>🚫 Mistake 4: Wrong Catalan Recurrence</strong></p>
+<pre><code class="language-python"># BAD: Wrong combination
+for i in range(1, n+1):
+    dp[n] += dp[i] + dp[n-i]  # Should multiply!
+
+# GOOD: Multiply left and right counts
+for i in range(1, n+1):
+    dp[n] += dp[i-1] * dp[n-i]
+</code></pre>
+<p><strong>🚫 Mistake 5: Wrong Middle Calculation</strong></p>
+<pre><code class="language-python"># BAD: Can overflow in Java/C++
+mid = (left + right) / 2
+
+# GOOD: Prevent overflow
+mid = left + (right - left) // 2
+</code></pre>
+<h2 id="problems-by-pattern" tabindex="-1"><a class="header-anchor" href="#problems-by-pattern"><span>Problems by Pattern</span></a></h2>
+<h3 id="pattern-based-problem-classification" tabindex="-1"><a class="header-anchor" href="#pattern-based-problem-classification"><span>Pattern-Based Problem Classification</span></a></h3>
+<h4 id="pattern-1-bst-search-validation-problems" tabindex="-1"><a class="header-anchor" href="#pattern-1-bst-search-validation-problems"><span><strong>Pattern 1: BST Search &amp; Validation Problems</strong></span></a></h4>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC #</th>
+<th>Difficulty</th>
+<th>Key Technique</th>
+<th>Template</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Validate Binary Search Tree</td>
+<td>98</td>
+<td>Medium</td>
+<td>Min/Max bounds</td>
+<td>Template 4</td>
+</tr>
+<tr>
+<td>Search in a BST</td>
+<td>700</td>
+<td>Easy</td>
+<td>Binary search</td>
+<td>Template 1</td>
+</tr>
+<tr>
+<td>Closest Binary Search Tree Value</td>
+<td>270</td>
+<td>Easy</td>
+<td>Binary search</td>
+<td>Template 1</td>
+</tr>
+<tr>
+<td>Inorder Successor in BST</td>
+<td>285</td>
+<td>Medium</td>
+<td>Inorder property</td>
+<td>Template 1</td>
+</tr>
+<tr>
+<td>Two Sum IV - Input is BST</td>
+<td>653</td>
+<td>Easy</td>
+<td>Hash + Traversal</td>
+<td>Template 5</td>
+</tr>
+<tr>
+<td>Find Mode in BST</td>
+<td>501</td>
+<td>Easy</td>
+<td>Inorder traversal</td>
+<td>Template 5</td>
+</tr>
+</tbody>
+</table>
+<h4 id="pattern-2-bst-insertion-deletion-problems" tabindex="-1"><a class="header-anchor" href="#pattern-2-bst-insertion-deletion-problems"><span><strong>Pattern 2: BST Insertion &amp; Deletion Problems</strong></span></a></h4>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC #</th>
+<th>Difficulty</th>
+<th>Key Technique</th>
+<th>Template</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Insert into a BST</td>
+<td>701</td>
+<td>Medium</td>
+<td>Recursive insert</td>
+<td>Template 2</td>
+</tr>
+<tr>
+<td>Delete Node in a BST</td>
+<td>450</td>
+<td>Medium</td>
+<td>Three cases</td>
+<td>Template 3</td>
+</tr>
+<tr>
+<td>Trim a Binary Search Tree</td>
+<td>669</td>
+<td>Medium</td>
+<td>Recursive trim</td>
+<td>Template 3</td>
+</tr>
+</tbody>
+</table>
+<h4 id="pattern-3-bst-traversal-conversion-problems" tabindex="-1"><a class="header-anchor" href="#pattern-3-bst-traversal-conversion-problems"><span><strong>Pattern 3: BST Traversal &amp; Conversion Problems</strong></span></a></h4>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC #</th>
+<th>Difficulty</th>
+<th>Key Technique</th>
+<th>Template</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Kth Smallest Element in BST</td>
+<td>230</td>
+<td>Medium</td>
+<td>Inorder traversal</td>
+<td>Template 5</td>
+</tr>
+<tr>
+<td>BST Iterator</td>
+<td>173</td>
+<td>Medium</td>
+<td>Stack + Inorder</td>
+<td>Template 5</td>
+</tr>
+<tr>
+<td>Convert BST to Greater Tree</td>
+<td>538</td>
+<td>Medium</td>
+<td>Reverse inorder</td>
+<td>Template 5</td>
+</tr>
+<tr>
+<td>Binary Search Tree to Greater Sum Tree</td>
+<td>1038</td>
+<td>Medium</td>
+<td>Reverse inorder</td>
+<td>Template 5</td>
+</tr>
+<tr>
+<td>Convert Sorted List to BST</td>
+<td>109</td>
+<td>Medium</td>
+<td>Two pointers</td>
+<td>Template 6</td>
+</tr>
+<tr>
+<td>Flatten BST to Sorted List</td>
+<td>426</td>
+<td>Medium</td>
+<td>Inorder + linking</td>
+<td>Template 5</td>
+</tr>
+<tr>
+<td>Increasing Order Search Tree</td>
+<td>897</td>
+<td>Easy</td>
+<td>Inorder rebuild</td>
+<td>Template 5</td>
+</tr>
+</tbody>
+</table>
+<h4 id="pattern-4-bst-construction-problems" tabindex="-1"><a class="header-anchor" href="#pattern-4-bst-construction-problems"><span><strong>Pattern 4: BST Construction Problems</strong></span></a></h4>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC #</th>
+<th>Difficulty</th>
+<th>Key Technique</th>
+<th>Template</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Convert Sorted Array to BST</td>
+<td>108</td>
+<td>Easy</td>
+<td>Binary search</td>
+<td>Template 6</td>
+</tr>
+<tr>
+<td>Unique Binary Search Trees</td>
+<td>96</td>
+<td>Medium</td>
+<td>DP/Catalan</td>
+<td>Special</td>
+</tr>
+<tr>
+<td>Unique Binary Search Trees II</td>
+<td>95</td>
+<td>Medium</td>
+<td>Generate all</td>
+<td>Template 6</td>
+</tr>
+<tr>
+<td>Serialize and Deserialize BST</td>
+<td>449</td>
+<td>Medium</td>
+<td>Preorder encoding</td>
+<td>Special</td>
+</tr>
+<tr>
+<td>Construct BST from Preorder</td>
+<td>1008</td>
+<td>Medium</td>
+<td>Stack/Recursion</td>
+<td>Template 6</td>
+</tr>
+<tr>
+<td>Balance a Binary Search Tree</td>
+<td>1382</td>
+<td>Medium</td>
+<td>Inorder + rebuild</td>
+<td>Template 6</td>
+</tr>
+</tbody>
+</table>
+<h4 id="pattern-5-bst-properties-range-problems" tabindex="-1"><a class="header-anchor" href="#pattern-5-bst-properties-range-problems"><span><strong>Pattern 5: BST Properties &amp; Range Problems</strong></span></a></h4>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC #</th>
+<th>Difficulty</th>
+<th>Key Technique</th>
+<th>Template</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Lowest Common Ancestor of BST</td>
+<td>235</td>
+<td>Easy</td>
+<td>BST property</td>
+<td>Special</td>
+</tr>
+<tr>
+<td>Minimum Distance Between BST Nodes</td>
+<td>783</td>
+<td>Easy</td>
+<td>Inorder diff</td>
+<td>Template 5</td>
+</tr>
+<tr>
+<td>Minimum Absolute Difference in BST</td>
+<td>530</td>
+<td>Easy</td>
+<td>Inorder diff</td>
+<td>Template 5</td>
+</tr>
+<tr>
+<td>Range Sum of BST</td>
+<td>938</td>
+<td>Easy</td>
+<td>DFS with pruning</td>
+<td>Template 1</td>
+</tr>
+<tr>
+<td>Split BST</td>
+<td>776</td>
+<td>Medium</td>
+<td>Recursive split</td>
+<td>Special</td>
+</tr>
+<tr>
+<td>Largest BST Subtree</td>
+<td>333</td>
+<td>Medium</td>
+<td>Bottom-up validation</td>
+<td>Template 4</td>
+</tr>
+</tbody>
+</table>
+<h4 id="pattern-6-path-problems-1" tabindex="-1"><a class="header-anchor" href="#pattern-6-path-problems-1"><span><strong>Pattern 6: Path Problems</strong></span></a></h4>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC #</th>
+<th>Difficulty</th>
+<th>Key Technique</th>
+<th>Template</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Path Sum</td>
+<td>112</td>
+<td>Easy</td>
+<td>DFS recursion</td>
+<td>Template 7</td>
+</tr>
+<tr>
+<td>Path Sum II</td>
+<td>113</td>
+<td>Medium</td>
+<td>DFS + Backtrack</td>
+<td>Template 7</td>
+</tr>
+<tr>
+<td>Binary Tree Paths</td>
+<td>257</td>
+<td>Easy</td>
+<td>DFS + Path Track</td>
+<td>Template 7</td>
+</tr>
+<tr>
+<td>Sum Root to Leaf Numbers</td>
+<td>129</td>
+<td>Medium</td>
+<td>DFS + Accumulate</td>
+<td>Template 7</td>
+</tr>
+<tr>
+<td>Binary Tree Maximum Path Sum</td>
+<td>124</td>
+<td>Hard</td>
+<td>DFS + Global Max</td>
+<td>Template 7</td>
+</tr>
+<tr>
+<td>Binary Tree Longest Consecutive Sequence</td>
+<td>298</td>
+<td>Medium</td>
+<td>DFS + Counter</td>
+<td>Template 7</td>
+</tr>
+<tr>
+<td>Path Sum III</td>
+<td>437</td>
+<td>Medium</td>
+<td>Prefix Sum + DFS</td>
+<td>Template 7</td>
+</tr>
+</tbody>
+</table>
+<h3 id="complete-problem-list-by-difficulty" tabindex="-1"><a class="header-anchor" href="#complete-problem-list-by-difficulty"><span>Complete Problem List by Difficulty</span></a></h3>
+<h4 id="easy-problems-foundation" tabindex="-1"><a class="header-anchor" href="#easy-problems-foundation"><span>Easy Problems (Foundation)</span></a></h4>
+<ul>
+<li>LC 700: Search in a Binary Search Tree - Basic BST search</li>
+<li>LC 270: Closest Binary Search Tree Value - Modified search</li>
+<li>LC 108: Convert Sorted Array to BST - Basic construction</li>
+<li>LC 235: Lowest Common Ancestor of a BST - Use BST property</li>
+<li>LC 653: Two Sum IV - Input is a BST - Two pointers on tree</li>
+<li>LC 530: Minimum Absolute Difference in BST - Inorder property</li>
+<li>LC 783: Minimum Distance Between BST Nodes - Inorder traversal</li>
+<li>LC 897: Increasing Order Search Tree - Inorder rebuilding</li>
+<li>LC 938: Range Sum of BST - DFS with pruning</li>
+<li>LC 501: Find Mode in Binary Search Tree - Inorder + counting</li>
+<li>LC 112: Path Sum - Basic DFS path sum</li>
+<li>LC 257: Binary Tree Paths - DFS path tracking</li>
+</ul>
+<h4 id="medium-problems-core" tabindex="-1"><a class="header-anchor" href="#medium-problems-core"><span>Medium Problems (Core)</span></a></h4>
+<ul>
+<li>LC 98: Validate Binary Search Tree - Classic validation</li>
+<li>LC 173: Binary Search Tree Iterator - Design pattern</li>
+<li>LC 230: Kth Smallest Element in a BST - Inorder application</li>
+<li>LC 450: Delete Node in a BST - Complex restructuring</li>
+<li>LC 701: Insert into a BST - Basic modification</li>
+<li>LC 285: Inorder Successor in BST - BST navigation</li>
+<li>LC 96: Unique Binary Search Trees - Catalan numbers</li>
+<li>LC 95: Unique Binary Search Trees II - Generate all trees</li>
+<li>LC 109: Convert Sorted List to BST - List to tree</li>
+<li>LC 449: Serialize and Deserialize BST - Encoding/decoding</li>
+<li>LC 538: Convert BST to Greater Tree - Reverse inorder</li>
+<li>LC 669: Trim a Binary Search Tree - Recursive trimming</li>
+<li>LC 776: Split BST - Advanced manipulation</li>
+<li>LC 333: Largest BST Subtree - Subtree validation</li>
+<li>LC 1008: Construct BST from Preorder - Stack approach</li>
+<li>LC 1038: Binary Search Tree to Greater Sum Tree - Accumulation</li>
+<li>LC 1382: Balance a Binary Search Tree - Inorder + rebuild balanced BST</li>
+<li>LC 426: Convert BST to Sorted Doubly Linked List - In-place conversion</li>
+<li>LC 113: Path Sum II - All root-to-leaf paths with target sum</li>
+<li>LC 129: Sum Root to Leaf Numbers - DFS accumulation</li>
+<li>LC 298: Binary Tree Longest Consecutive Sequence - Track sequence length</li>
+<li>LC 437: Path Sum III - Any path with target sum (prefix sum)</li>
+</ul>
+<h4 id="hard-problems-advanced" tabindex="-1"><a class="header-anchor" href="#hard-problems-advanced"><span>Hard Problems (Advanced)</span></a></h4>
+<ul>
+<li>LC 99: Recover Binary Search Tree - Fix swapped nodes (see Pattern 8 below)</li>
+<li>LC 1373: Maximum Sum BST in Binary Tree - Complex validation</li>
+<li>LC 124: Binary Tree Maximum Path Sum - Node-to-node max path</li>
+</ul>
+<h3 id="template-8-recover-fix-bst-problems" tabindex="-1"><a class="header-anchor" href="#template-8-recover-fix-bst-problems"><span>Template 8: Recover/Fix BST Problems</span></a></h3>
+<h4 id="pattern-overview-2" tabindex="-1"><a class="header-anchor" href="#pattern-overview-2"><span><strong>Pattern Overview</strong></span></a></h4>
+<ul>
+<li><strong>Description</strong>: Detect and fix violations in BST by leveraging in-order traversal property</li>
+<li><strong>Recognition</strong>: “Recover”, “fix”, “swapped nodes”, “invalid BST”</li>
+<li><strong>Key Insight</strong>: <strong>In-order traversal of valid BST = strictly increasing sequence</strong></li>
+<li><strong>Time Complexity</strong>: O(n)</li>
+<li><strong>Space Complexity</strong>: O(h) for recursion, O(1) with Morris traversal</li>
+</ul>
+<h4 id="why-in-order-traversal" tabindex="-1"><a class="header-anchor" href="#why-in-order-traversal"><span><strong>Why In-Order Traversal? ⭐</strong></span></a></h4>
+<pre><code>Core Insight:
+  Valid BST in-order traversal → strictly INCREASING sequence
+
+  Example valid BST:        In-order: [1, 2, 3, 4, 5, 6, 7]
+         4                            ↑  ↑  ↑  ↑  ↑  ↑  ↑
+        / \                          strictly increasing ✓
+       2   6
+      / \ / \
+     1  3 5  7
+
+  If two nodes SWAPPED:     In-order: [1, 6, 3, 4, 5, 2, 7]
+         4                                 ↓        ↓
+        / \                            DROP here  DROP here
+       6   2    (swapped!)                 ↓        ↓
+      / \ / \                         first=6   second=2
+     1  3 5  7
+
+Finding &quot;drops&quot; in sequence = finding swapped nodes!
+</code></pre>
+<h4 id="two-cases-of-swapped-nodes" tabindex="-1"><a class="header-anchor" href="#two-cases-of-swapped-nodes"><span><strong>Two Cases of Swapped Nodes</strong></span></a></h4>
+<pre><code>Case 1: ADJACENT nodes swapped (1 drop)
+  Valid:   [1, 2, 3, 4, 5]
+  Swapped: [1, 3, 2, 4, 5]  ← swap 2 and 3
+                ↓
+           one drop: 3 &gt; 2
+           first = 3 (prev at drop)
+           second = 2 (current at drop)
+
+Case 2: DISTANT nodes swapped (2 drops)
+  Valid:   [1, 2, 3, 4, 5, 6, 7]
+  Swapped: [1, 6, 3, 4, 5, 2, 7]  ← swap 2 and 6
+                ↓           ↓
+           drop 1: 6 &gt; 3    drop 2: 5 &gt; 2
+           first = 6        second = 2 (update!)
+
+Key: first is set at FIRST drop, second is ALWAYS updated at each drop
+</code></pre>
+<h4 id="java-implementation" tabindex="-1"><a class="header-anchor" href="#java-implementation"><span><strong>Java Implementation</strong></span></a></h4>
+<pre><code class="language-java">// LC 99 Recover Binary Search Tree
+// Time: O(N), Space: O(H)
+
+/**
+ * Key variables:
+ * - first:  The first node where order is violated (the larger one in first drop)
+ * - second: The second node where order is violated (the smaller one in last drop)
+ * - prev:   The previously visited node in in-order traversal
+ */
+private TreeNode first = null;
+private TreeNode second = null;
+private TreeNode prev = new TreeNode(Integer.MIN_VALUE);
+
+public void recoverTree(TreeNode root) {
+    if (root == null) return;
+
+    // Step 1: In-order traversal to find the two swapped nodes
+    inorder(root);
+
+    // Step 2: Swap the values (not the nodes themselves!)
+    if (first != null &amp;&amp; second != null) {
+        int temp = first.val;
+        first.val = second.val;
+        second.val = temp;
+    }
+}
+
+private void inorder(TreeNode root) {
+    if (root == null) return;
+
+    // 1. Go Left
+    inorder(root.left);
+
+    // 2. Process current node - detect violation
+    if (prev != null &amp;&amp; root.val &lt; prev.val) {
+        // Found a DROP in the sequence!
+        if (first == null) {
+            first = prev;    // First drop: prev is the &quot;too large&quot; node
+        }
+        second = root;       // Always update: current is the &quot;too small&quot; node
+    }
+
+    // Update prev for next comparison
+    prev = root;
+
+    // 3. Go Right
+    inorder(root.right);
+}
+</code></pre>
+<h4 id="python-implementation" tabindex="-1"><a class="header-anchor" href="#python-implementation"><span><strong>Python Implementation</strong></span></a></h4>
+<pre><code class="language-python"># LC 99 Recover Binary Search Tree
+class Solution:
+    def recoverTree(self, root: TreeNode) -&gt; None:
+        self.first = None
+        self.second = None
+        self.prev = TreeNode(float('-inf'))
+
+        def inorder(node):
+            if not node:
+                return
+
+            # Go left
+            inorder(node.left)
+
+            # Detect violation (drop in sequence)
+            if self.prev and node.val &lt; self.prev.val:
+                if self.first is None:
+                    self.first = self.prev  # First drop
+                self.second = node           # Always update
+
+            self.prev = node
+
+            # Go right
+            inorder(node.right)
+
+        inorder(root)
+
+        # Swap values
+        if self.first and self.second:
+            self.first.val, self.second.val = self.second.val, self.first.val
+</code></pre>
+<h4 id="why-this-pattern-works" tabindex="-1"><a class="header-anchor" href="#why-this-pattern-works"><span><strong>Why This Pattern Works</strong></span></a></h4>
+<pre><code>The algorithm handles BOTH cases with ONE logic:
+
+1. &quot;first&quot; is set only ONCE at the first drop
+   → This captures the &quot;too large&quot; node that was swapped
+
+2. &quot;second&quot; is ALWAYS updated at every drop
+   → For adjacent swap: only 1 drop, second = the &quot;too small&quot; node ✓
+   → For distant swap: 2 drops, second gets overwritten to correct node ✓
+
+Example (distant swap: 2 and 6):
+  Sequence: [1, 6, 3, 4, 5, 2, 7]
+
+  At index 2 (val=3): prev=6, curr=3, 6 &gt; 3 → DROP!
+    first = 6 (set once)
+    second = 3
+
+  At index 5 (val=2): prev=5, curr=2, 5 &gt; 2 → DROP!
+    first = 6 (unchanged)
+    second = 2 (updated!) ← This is the correct second node
+
+  Swap 6 and 2 → BST recovered ✓
+</code></pre>
+<h4 id="similar-problems-using-in-order-property" tabindex="-1"><a class="header-anchor" href="#similar-problems-using-in-order-property"><span><strong>Similar Problems Using In-Order Property</strong></span></a></h4>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC #</th>
+<th>Difficulty</th>
+<th>Key Technique</th>
+<th>Why In-Order?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Recover BST</strong></td>
+<td>99</td>
+<td>Medium</td>
+<td>Detect 2 drops</td>
+<td>Find swapped nodes in sorted sequence</td>
+</tr>
+<tr>
+<td><strong>Validate BST</strong></td>
+<td>98</td>
+<td>Medium</td>
+<td>Check increasing</td>
+<td>Verify strictly increasing sequence</td>
+</tr>
+<tr>
+<td><strong>Kth Smallest</strong></td>
+<td>230</td>
+<td>Medium</td>
+<td>Count in-order</td>
+<td>In-order gives sorted order</td>
+</tr>
+<tr>
+<td><strong>BST Iterator</strong></td>
+<td>173</td>
+<td>Medium</td>
+<td>Stack-based</td>
+<td>Simulate in-order traversal</td>
+</tr>
+<tr>
+<td><strong>Two Sum IV</strong></td>
+<td>653</td>
+<td>Easy</td>
+<td>Two pointers</td>
+<td>In-order gives sorted array</td>
+</tr>
+<tr>
+<td><strong>Find Mode</strong></td>
+<td>501</td>
+<td>Easy</td>
+<td>Track frequency</td>
+<td>Process sorted sequence</td>
+</tr>
+<tr>
+<td><strong>Min Diff in BST</strong></td>
+<td>530/783</td>
+<td>Easy</td>
+<td>Track prev diff</td>
+<td>Adjacent elements in sorted order</td>
+</tr>
+<tr>
+<td><strong>Convert to Greater Tree</strong></td>
+<td>538/1038</td>
+<td>Medium</td>
+<td>Reverse in-order</td>
+<td>Process in descending order</td>
+</tr>
+</tbody>
+</table>
+<h4 id="common-mistakes" tabindex="-1"><a class="header-anchor" href="#common-mistakes"><span><strong>Common Mistakes</strong></span></a></h4>
+<p><strong>🚫 Mistake 1: Trying to swap nodes instead of values</strong></p>
+<pre><code>Why swap VALUES, not NODE OBJECTS?
+
+  Swapping node objects means rewiring parent/child pointers for BOTH nodes,
+  plus handling edge cases (root, adjacent nodes, left/right children).
+  This is extremely complex and error-prone.
+
+  Swapping values is O(1) and preserves the tree structure:
+  - All parent→child links stay the same
+  - All left/right subtree relationships stay the same
+  - Only the .val fields change — the BST property is restored
+
+  Example:
+       4                    4
+      / \    swap vals      / \
+     6   2   of 6 &amp; 2 →   2   6    ← valid BST!
+    / \ / \               / \ / \
+   1  3 5  7             1  3 5  7
+
+  The nodes stay in the SAME positions. Only their values change.
+  Tree structure (edges) is completely untouched.
+</code></pre>
+<pre><code class="language-java">// BAD: Swapping node references does NOTHING to the tree
+TreeNode temp = first;
+first = second;       // Only swaps local variable pointers!
+second = temp;        // The actual tree is unchanged.
+
+// GOOD: Swap the values stored inside the nodes
+int temp = first.val;
+first.val = second.val;
+second.val = temp;
+</code></pre>
+<p><strong>🚫 Mistake 2: Only handling adjacent swaps</strong></p>
+<pre><code class="language-java">// BAD: Stops after first drop
+if (prev.val &gt; root.val) {
+    first = prev;
+    second = root;
+    return;  // Wrong! Miss the second drop for distant swaps
+}
+
+// GOOD: Always update second, handles both cases
+if (prev.val &gt; root.val) {
+    if (first == null) first = prev;
+    second = root;  // Always update!
+}
+</code></pre>
+<p><strong>🚫 Mistake 3: Not initializing prev correctly</strong></p>
+<pre><code class="language-java">// BAD: prev starts as null, first comparison fails
+TreeNode prev = null;
+
+// GOOD: prev starts with MIN_VALUE for safe comparison
+TreeNode prev = new TreeNode(Integer.MIN_VALUE);
+// Or check: if (prev != null &amp;&amp; root.val &lt; prev.val)
+</code></pre>
+<h4 id="complexity-analysis" tabindex="-1"><a class="header-anchor" href="#complexity-analysis"><span><strong>Complexity Analysis</strong></span></a></h4>
+<ul>
+<li><strong>Time</strong>: O(N) — visit each node exactly once</li>
+<li><strong>Space</strong>: O(H) — recursion stack (H = tree height)</li>
+<li><strong>Follow-up O(1) Space</strong>: Use Morris Traversal (modifies tree temporarily)</li>
+</ul>
+<h4 id="key-takeaways" tabindex="-1"><a class="header-anchor" href="#key-takeaways"><span><strong>Key Takeaways</strong></span></a></h4>
+<pre><code>1. In-order traversal of valid BST = STRICTLY INCREASING sequence
+   → This is the MOST IMPORTANT property for BST problems
+
+2. Detecting violations = finding &quot;drops&quot; in the sequence
+   → prev.val &gt; curr.val means we found a violation
+
+3. Two-drop pattern handles both adjacent and distant swaps
+   → first: set at FIRST drop (the larger misplaced node)
+   → second: ALWAYS update (the smaller misplaced node)
+
+4. Swap VALUES, not nodes
+   → Much simpler, preserves tree structure
+</code></pre>
+<h2 id="1-general-form" tabindex="-1"><a class="header-anchor" href="#1-general-form"><span>1) General form</span></a></h2>
+<h3 id="1-1-basic-op" tabindex="-1"><a class="header-anchor" href="#1-1-basic-op"><span>1-1) Basic OP</span></a></h3>
+<h4 id="1-1-1-add-1-to-all-nodes" tabindex="-1"><a class="header-anchor" href="#1-1-1-add-1-to-all-nodes"><span>1-1-1) Add 1 to all nodes</span></a></h4>
+<pre><code class="language-java">// java
+void plusOne(TreeNode root){
+    if (root == null){
+        return;
+    }
+    root.val += 1;
+    plusOne(root.left);
+    plusOne(root.right);
+}
+</code></pre>
+<pre><code class="language-python"># python
+class TreeNode(object):
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
+
+root = TreeNode(0)
+root.left = TreeNode(1)
+root.right =  TreeNode(2)
+
+print (root.val)
+print (root.left.val)
+print (root.right.val)
+
+print(&quot;==============&quot;)
+
+def add_one(root):
+    if not root:
+        return
+    root.val += 1
+    add_one(root.left)
+    add_one(root.right)
+
+add_one(root)
+print (root.val)
+print (root.left.val)
+print (root.right.val)
+</code></pre>
+<h4 id="1-1-2-check-if-2-bst-are-totally-the-same" tabindex="-1"><a class="header-anchor" href="#1-1-2-check-if-2-bst-are-totally-the-same"><span>1-1-2) Check if 2 BST are totally the same</span></a></h4>
+<pre><code class="language-java">// java
+boolean isSameTree(TreeNode root1, TreeNode root2){
+    // if all null, then same
+    if (root1 == null &amp;&amp; root2 == null){
+        return true;
+    }
+    if (root1 == null || root2 == null){
+        return false;
+    }
+    if (root1.val != root2.val){
+        return false;
+    }
+
+    return isSameTree(root1.left, root2.left) &amp;&amp; isSameTree(root1.right, root2.right)
+}
+</code></pre>
+<h4 id="1-1-3-validate-a-bst" tabindex="-1"><a class="header-anchor" href="#1-1-3-validate-a-bst"><span>1-1-3) Validate a BST</span></a></h4>
+<pre><code class="language-java">// java
+boolean isValidBST(TreeNode root){
+    return isValidBST(root, null, null);
+}
+
+// help func
+boolean isValidBST(TreeNode root, TreeNode min, TreeNode max){
+    if (root == null){
+        return true;
+    }
+    if (min != null &amp;&amp; root.val &lt;= min.val){
+        return false;
+    }
+    if (max != null &amp;&amp; root.val &gt;= max.val){
+        return false;
+    }
+    return isValidBST(root.left, min, root) &amp;&amp; isValidBST(root.right, root, max)
+}
+</code></pre>
+<h4 id="1-1-4-find-if-a-number-is-in-bst" tabindex="-1"><a class="header-anchor" href="#1-1-4-find-if-a-number-is-in-bst"><span>1-1-4) Find if a number is in BST</span></a></h4>
+<pre><code class="language-java">// java
+// V1 : general (for tree and BST)
+boolean isInBST(TreeNode root, int target){
+    if (root == null) return false;
+    if (root.val == target) return target;
+
+    return isInBST(root.left, target) || isInBST(root.right, target);
+}
+
+// V2 : optimization for BST
+boolean isInBST(TreeNode root, int target){
+    if (root == null) return false;
+    if (root.val == target) return target;
+
+    // optimize here
+    if (root.val &lt; target){
+        return isInBST(root.right, target);
+    }
+    if (root.val &gt; target){
+        return isInBST(root.left, target);
+    }
+}
+
+</code></pre>
+<h4 id="1-1-5-insert-a-number-into-bst" tabindex="-1"><a class="header-anchor" href="#1-1-5-insert-a-number-into-bst"><span>1-1-5) Insert a number into BST</span></a></h4>
+<pre><code class="language-java">// java
+TreeNode insertIntoBST(TreeNode root, int val){
+    // if null root, then just find a space and insert new value
+    if (root == null) return new TreeNode(val);
+    // if already exist, no need to insert, return directly
+    if (root.val == val) return root;
+
+    if (root.val &lt; val){
+        root.right = insertIntoBST(root.right, val);
+    }
+    if (root.val &gt; val){
+        root.left = insertIntoBST(root.left, val);
+    }
+    return root;
+}
+</code></pre>
+<h4 id="1-1-6-delete-a-node-from-bst" tabindex="-1"><a class="header-anchor" href="#1-1-6-delete-a-node-from-bst"><span>1-1-6) Delete a node from BST</span></a></h4>
+<pre><code class="language-java">// java
+// LC 450
+
+// V1-1
+// https://youtu.be/LFzAoJJt92M?feature=shared
+// https://github.com/neetcode-gh/leetcode/blob/main/java%2F0450-delete-node-in-a-bst.java
+public TreeNode minimumVal(TreeNode root) {
+    TreeNode curr = root;
+    while (curr != null &amp;&amp; curr.left != null) {
+        curr = curr.left;
+    }
+    return curr;
+}
+
+public TreeNode deleteNode_1_1(TreeNode root, int key) {
+    if (root == null)
+        return null;
+
+    if (key &gt; root.val) {
+        root.right = deleteNode_1_1(root.right, key);
+    } else if (key &lt; root.val) {
+        root.left = deleteNode_1_1(root.left, key);
+    } else {
+        if (root.left == null) {
+            return root.right;
+        } else if (root.right == null) {
+            return root.left;
+        } else {
+            TreeNode minVal = minimumVal(root.right);
+            root.val = minVal.val;
+            root.right = deleteNode_1_1(root.right, minVal.val);
+        }
+    }
+    return root;
+}
+</code></pre>
+<pre><code class="language-java">// java
+
+// pseudo java code
+TreeNode deleteNode(TreeNode root, int key){
+    if (root.val == key){
+        // delete
+    }
+    else if (root.val &gt; key){
+        // to left sub tree
+        root.left = deleteNode(root.left, key);
+    }
+    else if (root.val &lt; key){
+        // to right sub tree
+        root.right = deleteNode(root.right, key);
+    }
+    return root;
+}
+
+/** 
+ *   NOTE : 3 cases (algorithm book (labu) p.246)
+ * 
+ *   1) the value (to-delete value) is at the bottom (no sub left/right tree) -&gt; delete directly
+ *   
+ *   2) there is only one left/right tree -&gt; replace value with the sub-tree, then delete sub-tree
+ * 
+ *   3) there is BOTH left/right tree
+ *      -&gt; approach 3-1)  find the MIN right sub-tree and replace with value, then delete MIN right sub-tree
+ *      -&gt; approach 3-2)  find the MAX left sub-tree and replace with value, then delete MAX left sub-tree
+ */
+
+// java code
+TreeNode deleteNode(TreeNode root, int key){
+    if (root.val == key){
+        // case 1) &amp; case 2)
+        if (root.left == null) return root.right;
+        if (root.right == null) return root.left;
+        
+        // case 3)
+        TreeNode minNode = getMin(root.right);
+        root.val = minNode.val;
+        root.right = deleteNode(root.right, key);
+    }
+    else if (root.val &gt; key){
+        // to left sub tree
+        root.left = deleteNode(root.left, key);
+    }
+    else if (root.val &lt; key){
+        // to right sub tree
+        root.right = deleteNode(root.right, key);
+    }
+    return root;
+}
+
+// help func
+TreeNode getMin(TreeNode node){
+    // min node is on the left of BST
+    while (node.left != null) node = node.left;
+    return node;
+}
+</code></pre>
+<pre><code class="language-python"># python code
+
+# LC 450 Delete Node in a BST
+# V0
+# IDEA : RECURSION + BST PROPERTY
+#### 2 CASES :
+#   -&gt; CASE 1 : root.val == key and NO right subtree 
+#                -&gt; swap root and root.left, return root.left
+#   -&gt; CASE 2 : root.val == key and THERE IS right subtree
+#                -&gt; 1) go to 1st RIGHT sub tree
+#                -&gt; 2) iterate to deepest LEFT subtree
+#                -&gt; 3) swap root and  `deepest LEFT subtree` then return root
+class Solution(object):
+    def deleteNode(self, root, key):
+        if not root: return None
+        if root.val == key:
+            # case 1 : NO right subtree 
+            if not root.right:
+                left = root.left
+                return left
+            # case 2 : THERE IS right subtree
+            else:
+                ### NOTE : find min in &quot;right&quot; sub-tree
+                #           -&gt; because BST property, we ONLY go to 1st right tree (make sure we find the min of right sub-tree)
+                #           -&gt; then go to deepest left sub-tree
+                right = root.right
+                while right.left:
+                    right = right.left
+                root.val, right.val = right.val, root.val
+        root.left = self.deleteNode(root.left, key)
+        root.right = self.deleteNode(root.right, key)
+        return root
+</code></pre>
+<h2 id="2-lc-example" tabindex="-1"><a class="header-anchor" href="#2-lc-example"><span>2) LC Example</span></a></h2>
+<h3 id="2-1-serialize-and-deserialize-bst" tabindex="-1"><a class="header-anchor" href="#2-1-serialize-and-deserialize-bst"><span>2-1) Serialize and Deserialize BST</span></a></h3>
+<pre><code class="language-python"># LC 449 Serialize and Deserialize BST
+# V0
+# IDEA : BFS + queue op
+class Codec:
+    def serialize(self, root):
+        if not root:
+            return '{}'
+
+        res = [root.val]
+        q = [root]
+
+        while q:
+            new_q = []
+            for i in range(len(q)):
+                tmp = q.pop(0)
+                if tmp.left:
+                    q.append(tmp.left)
+                    res.extend( [tmp.left.val] )
+                else:
+                    res.append('#')
+                if tmp.right:
+                    q.append(tmp.right)
+                    res.extend( [tmp.right.val] )
+                else:
+                    res.append('#')
+
+        while res and res[-1] == '#':
+                    res.pop()
+
+        return '{' + ','.join(map(str, res)) + '}' 
+
+
+    def deserialize(self, data):
+        if data == '{}':
+            return
+
+        nodes = [ TreeNode(x) for x in data[1:-1].split(&quot;,&quot;) ]
+        root = nodes.pop(0)
+        p = [root]
+        while p:
+            new_p = []
+            for n in p:
+                if nodes:
+                    left_node = nodes.pop(0)
+                    if left_node.val != '#':
+                        n.left = left_node
+                        new_p.append(n.left)
+                    else:
+                        n.left = None
+                if nodes:
+                    right_node = nodes.pop(0)
+                    if right_node.val != '#':
+                        n.right = right_node
+                        new_p.append(n.right)
+                    else:
+                        n.right = None
+            p = new_p 
+             
+        return root
+
+# V1
+# IDEA : same as LC 297
+# https://leetcode.com/problems/serialize-and-deserialize-bst/discuss/93283/Python-solution-using-BST-property
+class Codec:
+
+    def serialize(self, root):
+        vals = []
+        self._preorder(root, vals)
+        return ','.join(vals)
+        
+    def _preorder(self, node, vals):
+        if node:
+            vals.append(str(node.val))
+            self._preorder(node.left, vals)
+            self._preorder(node.right, vals)
+        
+    def deserialize(self, data):
+        vals = collections.deque(map(int, data.split(','))) if data else []
+        return self._build(vals, -float('inf'), float('inf'))
+
+    def _build(self, vals, minVal, maxVal):
+        if vals and minVal &lt; vals[0] &lt; maxVal:
+            val = vals.popleft()
+            root = TreeNode(val)
+            root.left = self._build(vals, minVal, val)
+            root.right = self._build(vals, val, maxVal)
+            return root
+        else:
+            return None
+</code></pre>
+<h3 id="2-2-kth-smallest-element-in-a-bst" tabindex="-1"><a class="header-anchor" href="#2-2-kth-smallest-element-in-a-bst"><span>2-2) Kth Smallest Element in a BST</span></a></h3>
+<pre><code class="language-python"># LC 230
+# V1'
+# IDEA : Approach 2: Iterative Inorder Traversal
+#        -&gt; The above recursion could be converted into iteration, with the help of stack. This way one could speed up the solution because there is no need to build the entire inorder traversal, and one could stop after the kth element.
+# https://leetcode.com/problems/kth-smallest-element-in-a-bst/solution/
+class Solution:
+    def kthSmallest(self, root, k):
+        stack = []
+        
+        while True:
+            while root:
+                stack.append(root)
+                root = root.left
+            root = stack.pop()
+            k -= 1
+            if not k:
+                return root.val
+            root = root.right
+</code></pre>
+<h3 id="2-3-lowest-common-ancestor-of-a-binary-search-tree" tabindex="-1"><a class="header-anchor" href="#2-3-lowest-common-ancestor-of-a-binary-search-tree"><span>2-3) Lowest Common Ancestor of a Binary Search Tree</span></a></h3>
+<pre><code class="language-python"># LC 235 Lowest Common Ancestor of a Binary Search Tree
+# V0
+# IDEA : RECURSION + POST ORDER TRANSVERSAL
+### NOTE : we need POST ORDER TRANSVERSAL for this problem
+#          -&gt; left -&gt; right -&gt; root
+#          -&gt; we can make sure that if p == q, then the root must be p and q's &quot;common ancestor&quot;
+class Solution:
+    def lowestCommonAncestor(self, root, p, q):
+        ### NOTE : we need to assign root.val, p, q to other var first (before they are changed)
+        # Value of current node or parent node.
+        parent_val = root.val
+
+        # Value of p
+        p_val = p.val
+
+        # Value of q
+        q_val = q.val
+
+        # If both p and q are greater than parent
+        if p_val &gt; parent_val and q_val &gt; parent_val:
+            ### NOTE : we need to `return` below func call   
+            return self.lowestCommonAncestor(root.right, p, q)
+        # If both p and q are lesser than parent
+        elif p_val &lt; parent_val and q_val &lt; parent_val: 
+            ### NOTE : we need to `return` below func call   
+            return self.lowestCommonAncestor(root.left, p, q)
+        # We have found the split point, i.e. the LCA node.
+        else:
+            ### NOTE : not root.val but root
+            return root
+
+# V0'
+# IDEA : RECURSION + POST ORDER TRANSVERSAL
+### NOTE : we need POST ORDER TRANSVERSAL for this problem
+#          -&gt; left -&gt; right -&gt; root
+#          -&gt; we can make sure that if p == q, then the root must be p and q's &quot;common ancestor&quot;
+class Solution(object):
+    def lowestCommonAncestor(self, root, p, q):
+        if not root:
+            return root
+
+        p_val = p.val
+        q_val = q.val
+
+        if root.val &lt; p_val and root.val &lt; q_val:
+            return self.lowestCommonAncestor(root.right, p, q)
+
+        elif root.val &gt; p_val and root.val &gt; q_val:
+            return self.lowestCommonAncestor(root.left, p, q)
+
+        else:
+            return root
+</code></pre>
+<h3 id="2-4-split-bst-lc-776-recursive-partition-pattern" tabindex="-1"><a class="header-anchor" href="#2-4-split-bst-lc-776-recursive-partition-pattern"><span>2-4) Split BST (LC 776) - Recursive Partition Pattern</span></a></h3>
+<h4 id="pattern-recursive-bst-partition" tabindex="-1"><a class="header-anchor" href="#pattern-recursive-bst-partition"><span>Pattern: Recursive BST Partition</span></a></h4>
+<p>Split a BST into two valid BSTs based on a target value. This is a <strong>partition</strong> problem, NOT a delete problem — we preserve all nodes but redistribute them into two trees.</p>
+<h4 id="theory-why-split-delete" tabindex="-1"><a class="header-anchor" href="#theory-why-split-delete"><span>Theory: Why Split ≠ Delete</span></a></h4>
+<table>
+<thead>
+<tr>
+<th>Operation</th>
+<th>Goal</th>
+<th>Nodes Lost?</th>
+<th>Return Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Delete</strong> (LC 450)</td>
+<td>Remove one node, keep one tree</td>
+<td>Yes (1 node)</td>
+<td>Single <code>TreeNode</code></td>
+</tr>
+<tr>
+<td><strong>Split</strong> (LC 776)</td>
+<td>Separate into two trees</td>
+<td>No</td>
+<td><code>TreeNode[2]</code> array</td>
+</tr>
+</tbody>
+</table>
+<h4 id="core-idea" tabindex="-1"><a class="header-anchor" href="#core-idea"><span>Core Idea</span></a></h4>
+<pre><code>Return value: TreeNode[2]
+  res[0] → BST with all values ≤ target
+  res[1] → BST with all values &gt; target
+</code></pre>
+<p><strong>Two cases based on root.val vs target:</strong></p>
+<pre><code>Case 1: root.val &lt;= target
+  → root belongs to LEFT partition (res[0])
+  → But root.right may contain nodes &gt; target
+  → So SPLIT root.right, reconnect the pieces
+
+Case 2: root.val &gt; target
+  → root belongs to RIGHT partition (res[1])
+  → But root.left may contain nodes &lt;= target
+  → So SPLIT root.left, reconnect the pieces
+</code></pre>
+<h4 id="visual-walkthrough" tabindex="-1"><a class="header-anchor" href="#visual-walkthrough"><span>Visual Walkthrough</span></a></h4>
+<pre><code>Input:        target = 2
+         4
+        / \
+       2   6
+      / \ / \
+     1  3 5  7
+
+Step 1: root=4, val=4 &gt; target=2 → root goes to RIGHT partition
+        Split root.left (the subtree rooted at 2)
+
+Step 2: root=2, val=2 &lt;= target=2 → root goes to LEFT partition
+        Split root.right (the subtree rooted at 3)
+
+Step 3: root=3, val=3 &gt; target=2 → root goes to RIGHT partition
+        Split root.left (null) → returns [null, null]
+        root.left = null (from split[1])
+        Return [null, 3]
+
+Back to Step 2: split of node 2's right returned [null, 3]
+        node 2's right = split[0] = null  (was 3, now detached)
+        Return [2→(left:1, right:null), 3]
+
+Back to Step 1: split of node 4's left returned [2, 3]
+        node 4's left = split[1] = 3  (reconnect!)
+        Return [2, 4→(left:3, right:6)]
+
+Result:
+  res[0] (≤ 2):     res[1] (&gt; 2):
+       2                  4
+      /                  / \
+     1                  3   6
+                           / \
+                          5   7
+</code></pre>
+<h4 id="key-insight-the-reconnection" tabindex="-1"><a class="header-anchor" href="#key-insight-the-reconnection"><span>Key Insight: The Reconnection</span></a></h4>
+<pre><code>When root.val &lt;= target and we split root.right:
+  split[0] = nodes from right subtree that are still &lt;= target
+  split[1] = nodes from right subtree that are &gt; target
+
+  root.right = split[0]   ← keep the small ones attached to root
+  return [root, split[1]] ← root is left partition, split[1] is right partition
+
+When root.val &gt; target and we split root.left:
+  split[0] = nodes from left subtree that are &lt;= target
+  split[1] = nodes from left subtree that are &gt; target
+
+  root.left = split[1]    ← keep the big ones attached to root
+  return [split[0], root] ← split[0] is left partition, root is right partition
+</code></pre>
+<h4 id="python-implementation-1" tabindex="-1"><a class="header-anchor" href="#python-implementation-1"><span>Python Implementation</span></a></h4>
+<pre><code class="language-python"># LC 776 Split BST
+class Solution(object):
+    def splitBST(self, root, V):
+        if not root:
+            return None, None
+        # root belongs to LEFT partition
+        elif root.val &lt;= V:
+            result = self.splitBST(root.right, V)
+            root.right = result[0]  # keep &lt;= V part
+            return root, result[1]  # [smallTree, bigTree]
+        # root belongs to RIGHT partition
+        else:
+            result = self.splitBST(root.left, V)
+            root.left = result[1]   # keep &gt; V part
+            return result[0], root  # [smallTree, bigTree]
+</code></pre>
+<h4 id="java-implementation-1" tabindex="-1"><a class="header-anchor" href="#java-implementation-1"><span>Java Implementation</span></a></h4>
+<pre><code class="language-java">// LC 776 Split BST
+// Time: O(H), Space: O(H) where H = height of BST
+public TreeNode[] splitBST(TreeNode root, int target) {
+    if (root == null) {
+        return new TreeNode[]{null, null};
+    }
+
+    if (root.val &lt;= target) {
+        // root goes to LEFT partition (&lt;=target)
+        TreeNode[] split = splitBST(root.right, target);
+        root.right = split[0];          // reconnect small part
+        return new TreeNode[]{root, split[1]};
+    } else {
+        // root goes to RIGHT partition (&gt;target)
+        TreeNode[] split = splitBST(root.left, target);
+        root.left = split[1];           // reconnect big part
+        return new TreeNode[]{split[0], root};
+    }
+}
+</code></pre>
+<h4 id="similar-problems" tabindex="-1"><a class="header-anchor" href="#similar-problems"><span>Similar Problems</span></a></h4>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC #</th>
+<th>Similarity</th>
+<th>Key Difference</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Split BST</strong></td>
+<td>776</td>
+<td>Core pattern</td>
+<td>Partition into 2 trees by value</td>
+</tr>
+<tr>
+<td><strong>Delete Node in BST</strong></td>
+<td>450</td>
+<td>Both modify BST structure</td>
+<td>Delete removes 1 node; split keeps all</td>
+</tr>
+<tr>
+<td><strong>Trim a BST</strong></td>
+<td>669</td>
+<td>Both remove nodes outside range</td>
+<td>Trim discards nodes; split preserves all in 2 trees</td>
+</tr>
+<tr>
+<td><strong>Search in BST</strong></td>
+<td>700</td>
+<td>Same left/right branching logic</td>
+<td>Search returns 1 node; split returns 2 trees</td>
+</tr>
+<tr>
+<td><strong>Insert into BST</strong></td>
+<td>701</td>
+<td>Same recursive BST traversal</td>
+<td>Insert adds; split partitions</td>
+</tr>
+<tr>
+<td><strong>Merge Two BSTs</strong></td>
+<td>-</td>
+<td>Inverse operation</td>
+<td>Split → 2 trees; Merge → 1 tree</td>
+</tr>
+</tbody>
+</table>
+<h4 id="complexity" tabindex="-1"><a class="header-anchor" href="#complexity"><span>Complexity</span></a></h4>
+<ul>
+<li><strong>Time</strong>: O(H) — only visits nodes along one root-to-leaf path</li>
+<li><strong>Space</strong>: O(H) — recursion stack depth = tree height</li>
+</ul>
+<h3 id="2-5-binary-search-tree-iterator" tabindex="-1"><a class="header-anchor" href="#2-5-binary-search-tree-iterator"><span>2-5) Binary Search Tree Iterator</span></a></h3>
+<pre><code class="language-python"># LC 173. Binary Search Tree Iterator
+# V0
+# IDEA : STACK + tree
+class BSTIterator(object):
+    def __init__(self, root):
+        &quot;&quot;&quot;
+        :type root: TreeNode
+        &quot;&quot;&quot;
+        self.stack = []
+        self.inOrder(root)
+    
+    def inOrder(self, root):
+        if not root:
+            return
+        &quot;&quot;&quot;
+        NOTE !!! how we do inorder traversal here
+
+        irOrder : left -&gt; root -&gt; right
+        &quot;&quot;&quot;
+        self.inOrder(root.left)
+        self.stack.append(root.val)
+        self.inOrder(root.right)
+    
+    def hasNext(self):
+        &quot;&quot;&quot;
+        :rtype: bool
+        &quot;&quot;&quot;
+        return len(self.stack) &gt; 0
+
+    def next(self):
+        &quot;&quot;&quot;
+        :rtype: int
+        &quot;&quot;&quot;
+        return self.stack.pop(0)  # NOTE here
+</code></pre>
+<pre><code class="language-java">// java
+// LC 173
+// V1
+// IDEA: STACK
+// https://leetcode.com/problems/binary-search-tree-iterator/solutions/52647/nice-comparison-and-short-solution-by-st-jcmg/
+public class BSTIterator_1 {
+
+    private TreeNode visit;
+    private Stack&lt;TreeNode&gt; stack;
+
+    public BSTIterator_1(TreeNode root) {
+        visit = root;
+        stack = new Stack();
+    }
+
+    public boolean hasNext() {
+        return visit != null || !stack.empty();
+    }
+
+    /**
+     * NOTE !!! next() method logic
+     */
+    public int next() {
+  /**
+   * NOTE !!!
+   *
+   *  since BST property is as below:
+   *
+   *  - For each node
+   *     - `left sub node &lt; than current node`
+   *     - `right sub node &gt; than current node`
+   *
+   *  so, within the loop over `left node`, we keep finding
+   *  the `smaller` node, and find the `relative smallest` node when the while loop ended
+   *  -&gt; so the `relative smallest` node is the final element we put into stack
+   *  -&gt; so it's also the 1st element pop from stack
+   *  -&gt; which is the `next small` node
+   */
+  while (visit != null) {
+            stack.push(visit);
+            visit = visit.left;
+        }
+        // Stack: LIFO (last in, first out)
+        /**
+         * NOTE !!! we pop the `next small` node from stack
+         */
+        TreeNode next = stack.pop();
+        /**
+         * NOTE !!!  and set the `next small` node's right node as next node
+         */
+        visit = next.right;
+        /**
+         * NOTE !!! we return the `next small` node's right node val
+         *          because of the requirement
+         *
+         *         e.g. : int next() Moves the pointer to the right, then returns the number at the pointer.
+         */
+        return next.val;
+    }
+}
+</code></pre>
+<h3 id="2-6-search-in-a-binary-search-tree" tabindex="-1"><a class="header-anchor" href="#2-6-search-in-a-binary-search-tree"><span>2-6) Search in a Binary Search Tree</span></a></h3>
+<pre><code class="language-python"># LC 700 Search in a Binary Search Tree
+# V1
+# IDEA : RECURSION + BST property
+# https://leetcode.com/problems/search-in-a-binary-search-tree/solution/
+class Solution:
+    def searchBST(self, root: TreeNode, val: int) -&gt; TreeNode:
+        if root is None or val == root.val:
+            return root
+        
+        return self.searchBST(root.left, val) if val &lt; root.val \
+            else self.searchBST(root.right, val)
+
+# V1'
+# IDEA : ITERATION
+# https://leetcode.com/problems/search-in-a-binary-search-tree/solution/
+class Solution:
+    def searchBST(self, root: TreeNode, val: int) -&gt; TreeNode:
+        while root is not None and root.val != val:
+            root = root.left if val &lt; root.val else root.right
+        return root
+</code></pre>
+<h3 id="2-7-unique-binary-search-trees-ii" tabindex="-1"><a class="header-anchor" href="#2-7-unique-binary-search-trees-ii"><span>2-7) Unique Binary Search Trees II</span></a></h3>
+<blockquote>
+<p>See also: <strong>Pattern 6.5</strong> above for core idea, multiple approaches, and similar problems.</p>
+</blockquote>
+<pre><code class="language-python"># LC 95 Unique Binary Search Trees II
+# V1
+# IDEA : RECURSION (Cartesian product of left/right subtrees)
+# https://leetcode.com/problems/unique-binary-search-trees-ii/solution/
+#
+# Core idea:
+#   1. Pick i as root → left subtree from [start, i-1], right from [i+1, end]
+#   2. Cartesian product of all left × right subtrees
+#   3. Base case: start &gt; end → return [None] (empty subtree)
+class Solution:
+    def generateTrees(self, n):
+        &quot;&quot;&quot;
+        :type n: int
+        :rtype: List[TreeNode]
+        &quot;&quot;&quot;
+        def generate_trees(start, end):
+            if start &gt; end:
+                return [None,]
+
+            all_trees = []
+            for i in range(start, end + 1):  # pick up a root
+                # all possible left subtrees if i is choosen to be a root
+                left_trees = generate_trees(start, i - 1)
+
+                # all possible right subtrees if i is choosen to be a root
+                right_trees = generate_trees(i + 1, end)
+
+                # connect left and right subtrees to the root i
+                for l in left_trees:
+                    for r in right_trees:
+                        current_tree = TreeNode(i)
+                        current_tree.left = l
+                        current_tree.right = r
+                        all_trees.append(current_tree)
+
+            return all_trees
+
+        return generate_trees(1, n) if n else []
+</code></pre>
+<pre><code class="language-java">// LC 95 — Java plain recursion
+// See UniqueBinarySearchTrees2.java for memoized, iterative DP,
+// and space-optimized DP approaches
+public List&lt;TreeNode&gt; generateTrees(int n) {
+    if (n == 0) return new ArrayList&lt;&gt;();
+    return buildTrees(1, n);
+}
+
+private List&lt;TreeNode&gt; buildTrees(int start, int end) {
+    List&lt;TreeNode&gt; allTrees = new ArrayList&lt;&gt;();
+    if (start &gt; end) { allTrees.add(null); return allTrees; }
+    for (int i = start; i &lt;= end; i++) {
+        List&lt;TreeNode&gt; leftSubtrees = buildTrees(start, i - 1);
+        List&lt;TreeNode&gt; rightSubtrees = buildTrees(i + 1, end);
+        for (TreeNode left : leftSubtrees) {
+            for (TreeNode right : rightSubtrees) {
+                TreeNode root = new TreeNode(i);
+                root.left = left;
+                root.right = right;
+                allTrees.add(root);
+            }
+        }
+    }
+    return allTrees;
+}
+</code></pre>
+<h3 id="2-8-insert-into-a-binary-search-tree" tabindex="-1"><a class="header-anchor" href="#2-8-insert-into-a-binary-search-tree"><span>2-8) Insert into a Binary Search Tree</span></a></h3>
+<pre><code class="language-python"># LC 701 Insert into a Binary Search Tree
+# VO : recursion + dfs
+class Solution(object):
+    def insertIntoBST(self, root, val):
+        if not root: 
+            return TreeNode(val)
+        if root.val &lt; val: 
+            root.right = self.insertIntoBST(root.right, val);
+        elif root.val &gt; val: 
+            root.left = self.insertIntoBST(root.left, val);
+        return(root)
+</code></pre>
+<h3 id="2-9-validate-binary-search-tree" tabindex="-1"><a class="header-anchor" href="#2-9-validate-binary-search-tree"><span>2-9) Validate Binary Search Tree</span></a></h3>
+<pre><code class="language-python"># LC 98 Validate Binary Search Tree
+# V0
+# IDEA : BFS
+#  -&gt; trick : we make sure current tree and all of sub tree are valid BST
+#   -&gt; not only compare tmp.val with tmp.left.val, tmp.right.val,
+#   -&gt; but we need compare if tmp.left.val is SMALLER then `previous node val`
+#   -&gt; but we need compare if tmp.right.val is BIGGER then `previous node val`
+class Solution(object):
+    def isValidBST(self, root):
+        if not root:
+            return True
+        _min = -float('inf')
+        _max = float('inf')
+        ### NOTE : we set q like below
+        q = [[root, _min, _max]]
+        while q:
+            for i in range(len(q)):
+                tmp, _min, _max = q.pop(0)
+                if tmp.left:
+                    &quot;&quot;&quot;
+                    ### NOTE : below condition
+                    ### NOTE : we compare &quot;tmp.left.val&quot; with others (BEFORE we visit tmp.left)
+                    &quot;&quot;&quot;
+                    if tmp.left.val &gt;= tmp.val or tmp.left.val &lt;= _min:
+                        return False
+                    ### NOTE : we append tmp.val as _max
+                    q.append([tmp.left, _min, tmp.val])
+                if tmp.right:
+                    &quot;&quot;&quot;
+                    ### NOTE : below condition
+                    ### NOTE : we compare &quot;tmp.right.val&quot; with others (BEFORE we visit tmp.right)
+                    &quot;&quot;&quot;
+                    if tmp.right.val &lt;= tmp.val or tmp.right.val &gt;= _max:
+                        return False
+                    ### NOTE : we append tmp.val as _min
+                    q.append([tmp.right, tmp.val, _max])
+        return True
+
+# V0''
+# IDEA: RECURSION 
+class Solution(object):
+    def isValidBST(self, root):
+        &quot;&quot;&quot;
+        :type root: TreeNode
+        :rtype: bool
+        &quot;&quot;&quot;
+        return self.valid(root, float('-inf'), float('inf'))
+        
+    def valid(self, root, min_, max_):
+        if not root: return True
+        if root.val &gt;= max_ or root.val &lt;= min_:
+            return False
+        return self.valid(root.left, min_, root.val) and self.valid(root.right, root.val, max_)
+</code></pre>
+<h3 id="2-10-trim-a-binary-search-tree-lc-669-recursive-pruning-pattern" tabindex="-1"><a class="header-anchor" href="#2-10-trim-a-binary-search-tree-lc-669-recursive-pruning-pattern"><span>2-10) Trim a Binary Search Tree (LC 669) - Recursive Pruning Pattern</span></a></h3>
+<h4 id="pattern-recursive-bst-pruning" tabindex="-1"><a class="header-anchor" href="#pattern-recursive-bst-pruning"><span>Pattern: Recursive BST Pruning</span></a></h4>
+<p>Trim a BST so all node values lie within <code>[L, R]</code>. This leverages BST property to prune entire subtrees efficiently.</p>
+<h4 id="core-idea-1" tabindex="-1"><a class="header-anchor" href="#core-idea-1"><span>Core Idea</span></a></h4>
+<pre><code>Three cases based on root.val vs [L, R] range:
+
+Case 1: root.val &lt; L
+  → root and entire LEFT subtree are too small (all &lt; L)
+  → DISCARD root and left subtree, return trimmed RIGHT subtree
+
+Case 2: root.val &gt; R
+  → root and entire RIGHT subtree are too large (all &gt; R)
+  → DISCARD root and right subtree, return trimmed LEFT subtree
+
+Case 3: L &lt;= root.val &lt;= R
+  → root is in range, KEEP it
+  → Recursively trim both subtrees
+</code></pre>
+<h4 id="visual-walkthrough-1" tabindex="-1"><a class="header-anchor" href="#visual-walkthrough-1"><span>Visual Walkthrough</span></a></h4>
+<pre><code>Input:        L=1, R=3
+         3
+        / \
+       0   4
+        \
+         2
+        /
+       1
+
+Step 1: root=3, val=3 in [1,3] → KEEP, trim both subtrees
+
+Step 2: root=0, val=0 &lt; L=1 → DISCARD 0, return trimBST(right=2)
+
+Step 3: root=2, val=2 in [1,3] → KEEP, trim both subtrees
+
+Step 4: root=1, val=1 in [1,3] → KEEP (leaf)
+
+Step 5: root=4, val=4 &gt; R=3 → DISCARD 4, return trimBST(left=null) = null
+
+Result:
+     3
+    /
+   2
+  /
+ 1
+</code></pre>
+<h4 id="key-insight-why-return-trimbst-root-right-l-r-instead-of-return-null" tabindex="-1"><a class="header-anchor" href="#key-insight-why-return-trimbst-root-right-l-r-instead-of-return-null"><span>Key Insight: Why <code>return trimBST(root.right, L, R)</code> instead of <code>return null</code>?</span></a></h4>
+<pre><code>When root.val &lt; L:
+
+  ❌ WRONG: return null
+     → This would throw away the ENTIRE subtree, but some right descendants
+        could still be in range [L, R]!
+
+  ✅ RIGHT: return trimBST(root.right, L, R)
+     → BST property guarantees: left subtree &lt; root.val &lt; right subtree
+     → Since root.val &lt; L, ALL left children &lt; root.val &lt; L → all too small
+     → But right children &gt; root.val, so SOME may be &gt;= L (in range!)
+     → We discard root + left subtree, but continue searching right subtree
+
+  Example:  L=3, R=5
+         2          root=2 &lt; L=3, discard 2 and left(1)
+        / \         but right subtree has 4 which is in [3,5]!
+       1   4        → return trimBST(4, 3, 5) → returns 4 ✅
+          / \
+         3   5
+
+Same logic (mirrored) for root.val &gt; R:
+  → Discard root + right subtree (all too large)
+  → But left children may still be &lt;= R (in range!)
+  → return trimBST(root.left, L, R)
+</code></pre>
+<h4 id="java-implementation-2" tabindex="-1"><a class="header-anchor" href="#java-implementation-2"><span>Java Implementation</span></a></h4>
+<pre><code class="language-java">// LC 669 Trim a Binary Search Tree
+// Time: O(n), Space: O(h) where h = height
+public TreeNode trimBST(TreeNode root, int L, int R) {
+    if (root == null) {
+        return root;
+    }
+
+    // Case 1: root too small, discard root + left subtree
+    if (root.val &lt; L) {
+        return trimBST(root.right, L, R);
+    }
+
+    // Case 2: root too large, discard root + right subtree
+    if (root.val &gt; R) {
+        return trimBST(root.left, L, R);
+    }
+
+    // Case 3: root in range, keep it and trim both subtrees
+    root.left = trimBST(root.left, L, R);
+    root.right = trimBST(root.right, L, R);
+
+    return root;
+}
+</code></pre>
+<h4 id="python-implementation-2" tabindex="-1"><a class="header-anchor" href="#python-implementation-2"><span>Python Implementation</span></a></h4>
+<pre><code class="language-python"># LC 669 Trim a Binary Search Tree
+class Solution:
+    def trimBST(self, root: TreeNode, low: int, high: int) -&gt; TreeNode:
+        if not root:
+            return None
+
+        # root too small → discard root + left subtree
+        if root.val &lt; low:
+            return self.trimBST(root.right, low, high)
+
+        # root too large → discard root + right subtree
+        if root.val &gt; high:
+            return self.trimBST(root.left, low, high)
+
+        # root in range → keep it, trim both subtrees
+        root.left = self.trimBST(root.left, low, high)
+        root.right = self.trimBST(root.right, low, high)
+
+        return root
+</code></pre>
+<h4 id="comparison-trim-vs-split-vs-delete" tabindex="-1"><a class="header-anchor" href="#comparison-trim-vs-split-vs-delete"><span>Comparison: Trim vs Split vs Delete</span></a></h4>
+<table>
+<thead>
+<tr>
+<th>Operation</th>
+<th>LC #</th>
+<th>Nodes Removed?</th>
+<th>Return Value</th>
+<th>Key Difference</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Trim</strong></td>
+<td>669</td>
+<td>Yes (out of range)</td>
+<td>Single <code>TreeNode</code></td>
+<td>Keeps nodes in [L,R], discards rest</td>
+</tr>
+<tr>
+<td><strong>Split</strong></td>
+<td>776</td>
+<td>No</td>
+<td><code>TreeNode[2]</code></td>
+<td>Partitions into 2 trees, keeps ALL nodes</td>
+</tr>
+<tr>
+<td><strong>Delete</strong></td>
+<td>450</td>
+<td>Yes (1 node)</td>
+<td>Single <code>TreeNode</code></td>
+<td>Removes exactly 1 specific node</td>
+</tr>
+</tbody>
+</table>
+<h4 id="complexity-1" tabindex="-1"><a class="header-anchor" href="#complexity-1"><span>Complexity</span></a></h4>
+<ul>
+<li><strong>Time</strong>: O(n) — visit each node at most once</li>
+<li><strong>Space</strong>: O(h) — recursion stack depth = tree height</li>
+</ul>
+<h4 id="common-mistakes-1" tabindex="-1"><a class="header-anchor" href="#common-mistakes-1"><span>Common Mistakes</span></a></h4>
+<p><strong>🚫 Mistake 1: Forgetting to reconnect trimmed subtrees</strong></p>
+<pre><code class="language-java">// BAD: Trims but doesn't reconnect
+if (root.val &lt; L) {
+    trimBST(root.right, L, R);  // Missing return!
+}
+
+// GOOD: Return the trimmed subtree
+if (root.val &lt; L) {
+    return trimBST(root.right, L, R);
+}
+</code></pre>
+<p><strong>🚫 Mistake 2: Not recursing on both subtrees when root is in range</strong></p>
+<pre><code class="language-java">// BAD: Only trims one side
+if (root.val &gt;= L &amp;&amp; root.val &lt;= R) {
+    root.left = trimBST(root.left, L, R);
+    return root;  // Forgot to trim right!
+}
+
+// GOOD: Trim both sides
+root.left = trimBST(root.left, L, R);
+root.right = trimBST(root.right, L, R);
+return root;
+</code></pre>
+<p><strong>Similar Problems:</strong></p>
+<ul>
+<li>LC 669 Trim a Binary Search Tree (this pattern)</li>
+<li>LC 450 Delete Node in a BST (remove single node, more complex restructuring)</li>
+<li>LC 776 Split BST (partition into two trees, keeps all nodes)</li>
+<li>LC 98 Validate Binary Search Tree (same BST property reasoning)</li>
+<li>LC 938 Range Sum of BST (same “skip subtree” optimization using BST property)</li>
+</ul>
+<h3 id="2-10-1-convert-bst-to-greater-tree" tabindex="-1"><a class="header-anchor" href="#2-10-1-convert-bst-to-greater-tree"><span>2-10-1) Convert BST to Greater Tree</span></a></h3>
+<pre><code class="language-python"># LC 538
+</code></pre>
+<h3 id="2-11-binary-search-tree-to-greater-sum-tree" tabindex="-1"><a class="header-anchor" href="#2-11-binary-search-tree-to-greater-sum-tree"><span>2-11) Binary Search Tree to Greater Sum Tree</span></a></h3>
+<pre><code class="language-python"># LC 1038
+# Similar to LC 538 - Convert BST to Greater Tree
+# Uses reverse inorder traversal
+</code></pre>
+<h2 id="pattern-selection-strategy" tabindex="-1"><a class="header-anchor" href="#pattern-selection-strategy"><span>Pattern Selection Strategy</span></a></h2>
+<pre><code>BST Problem Analysis Flowchart:
+
+1. Does the problem require finding/searching a value?
+   ├── YES → Use Search Template (1)
+   │   ├── Exact match? → Basic binary search
+   │   ├── Closest value? → Track min difference
+   │   └── Range query? → Prune based on BST property
+   └── NO → Continue to 2
+
+2. Does the problem require modifying the BST structure?
+   ├── YES → Check modification type
+   │   ├── Insert new node? → Use Insertion Template (2)
+   │   ├── Delete existing node? → Use Deletion Template (3)
+   │   └── Trim/Split tree? → Use modified Deletion Template
+   └── NO → Continue to 3
+
+3. Does the problem use the sorted property of BST?
+   ├── YES → Use Inorder Template (5)
+   │   ├── Kth element? → Inorder with counter
+   │   ├── Convert to list? → Inorder traversal
+   │   └── Range sum? → Modified inorder
+   └── NO → Continue to 4
+
+4. Does the problem require validating BST properties?
+   ├── YES → Use Validation Template (4)
+   │   ├── Entire tree? → Min/max bounds approach
+   │   └── Find largest valid subtree? → Bottom-up validation
+   └── NO → Continue to 5
+
+5. Does the problem involve constructing a BST?
+   ├── YES → Use Construction Template (6)
+   │   ├── From sorted array? → Binary search approach
+   │   ├── From traversal? → Use BST properties
+   │   └── Generate all possible? → Recursive generation
+   └── NO → Continue to 6
+
+6. Does the problem involve paths in the tree?
+   ├── YES → Use Path Template (7)
+   │   ├── Root-to-leaf sum? → DFS with target reduction
+   │   ├── All paths? → DFS with backtracking
+   │   ├── Max path sum? → DFS with global variable
+   │   └── Any path with sum? → Prefix sum technique
+   └── NO → Use Universal Template or reconsider
+
+</code></pre>
+<h3 id="decision-framework" tabindex="-1"><a class="header-anchor" href="#decision-framework"><span>Decision Framework</span></a></h3>
+<ol>
+<li><strong>Identify BST property usage</strong>: Can you leverage left &lt; root &lt; right?</li>
+<li><strong>Choose operation type</strong>: Search, Insert, Delete, Validate, or Construct</li>
+<li><strong>Select traversal method</strong>: Inorder for sorted, others for structure</li>
+<li><strong>Optimize with BST property</strong>: Prune unnecessary branches</li>
+</ol>
+<h2 id="summary-quick-reference" tabindex="-1"><a class="header-anchor" href="#summary-quick-reference"><span>Summary &amp; Quick Reference</span></a></h2>
+<h3 id="complexity-quick-reference" tabindex="-1"><a class="header-anchor" href="#complexity-quick-reference"><span>Complexity Quick Reference</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>Operation</th>
+<th>Average Case</th>
+<th>Worst Case</th>
+<th>Best Case</th>
+<th>Space</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Search</td>
+<td>O(log n)</td>
+<td>O(n)</td>
+<td>O(1)</td>
+<td>O(h)</td>
+</tr>
+<tr>
+<td>Insert</td>
+<td>O(log n)</td>
+<td>O(n)</td>
+<td>O(1)</td>
+<td>O(h)</td>
+</tr>
+<tr>
+<td>Delete</td>
+<td>O(log n)</td>
+<td>O(n)</td>
+<td>O(1)</td>
+<td>O(h)</td>
+</tr>
+<tr>
+<td>Validate</td>
+<td>O(n)</td>
+<td>O(n)</td>
+<td>O(n)</td>
+<td>O(h)</td>
+</tr>
+<tr>
+<td>Inorder Traversal</td>
+<td>O(n)</td>
+<td>O(n)</td>
+<td>O(n)</td>
+<td>O(h)</td>
+</tr>
+<tr>
+<td>Construction</td>
+<td>O(n)</td>
+<td>O(n)</td>
+<td>O(n)</td>
+<td>O(n)</td>
+</tr>
+</tbody>
+</table>
+<p><em>Note: h = height of tree, n = number of nodes</em></p>
+<h3 id="template-quick-reference" tabindex="-1"><a class="header-anchor" href="#template-quick-reference"><span>Template Quick Reference</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>Template</th>
+<th>Best For</th>
+<th>Avoid When</th>
+<th>Key Pattern</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Search</td>
+<td>Finding values</td>
+<td>Need all nodes</td>
+<td><code>if val &lt; root.val: go left</code></td>
+</tr>
+<tr>
+<td>Insertion</td>
+<td>Adding nodes</td>
+<td>Balancing needed</td>
+<td>Always insert as leaf</td>
+</tr>
+<tr>
+<td>Deletion</td>
+<td>Removing nodes</td>
+<td>Multiple deletions</td>
+<td>Three cases handling</td>
+</tr>
+<tr>
+<td>Validation</td>
+<td>Checking BST</td>
+<td>Simple traversal</td>
+<td>Min/max bounds</td>
+</tr>
+<tr>
+<td>Inorder</td>
+<td>Sorted operations</td>
+<td>Random access</td>
+<td>Left-root-right</td>
+</tr>
+<tr>
+<td>Construction</td>
+<td>Building BST</td>
+<td>Incremental updates</td>
+<td>Divide &amp; conquer</td>
+</tr>
+</tbody>
+</table>
+<h3 id="common-patterns-tricks" tabindex="-1"><a class="header-anchor" href="#common-patterns-tricks"><span>Common Patterns &amp; Tricks</span></a></h3>
+<h4 id="pattern-inorder-gives-sorted-sequence" tabindex="-1"><a class="header-anchor" href="#pattern-inorder-gives-sorted-sequence"><span><strong>Pattern: Inorder Gives Sorted Sequence</strong></span></a></h4>
+<pre><code class="language-python">def get_sorted_values(root):
+    &quot;&quot;&quot;BST inorder traversal always gives sorted order&quot;&quot;&quot;
+    def inorder(node):
+        if not node:
+            return []
+        return inorder(node.left) + [node.val] + inorder(node.right)
+    return inorder(root)
+</code></pre>
+<h4 id="pattern-reverse-inorder-for-descending" tabindex="-1"><a class="header-anchor" href="#pattern-reverse-inorder-for-descending"><span><strong>Pattern: Reverse Inorder for Descending</strong></span></a></h4>
+<pre><code class="language-python">def convert_to_greater_tree(root):
+    &quot;&quot;&quot;Process nodes from largest to smallest&quot;&quot;&quot;
+    self.sum = 0
+    def reverse_inorder(node):
+        if not node:
+            return
+        reverse_inorder(node.right)
+        self.sum += node.val
+        node.val = self.sum
+        reverse_inorder(node.left)
+    reverse_inorder(root)
+    return root
+</code></pre>
+<h4 id="pattern-using-bst-property-for-optimization" tabindex="-1"><a class="header-anchor" href="#pattern-using-bst-property-for-optimization"><span><strong>Pattern: Using BST Property for Optimization</strong></span></a></h4>
+<pre><code class="language-python">def range_sum_bst(root, low, high):
+    &quot;&quot;&quot;Prune branches that can't contain values in range&quot;&quot;&quot;
+    if not root:
+        return 0
+    
+    # Prune left subtree if root is already too small
+    if root.val &lt; low:
+        return range_sum_bst(root.right, low, high)
+    
+    # Prune right subtree if root is already too large
+    if root.val &gt; high:
+        return range_sum_bst(root.left, low, high)
+    
+    # Root is in range, include it and check both subtrees
+    return (root.val + 
+            range_sum_bst(root.left, low, high) +
+            range_sum_bst(root.right, low, high))
+</code></pre>
+<h3 id="problem-solving-steps" tabindex="-1"><a class="header-anchor" href="#problem-solving-steps"><span>Problem-Solving Steps</span></a></h3>
+<ol>
+<li><strong>Identify BST property usage</strong>: Can you use left &lt; root &lt; right?</li>
+<li><strong>Choose appropriate template</strong>: Based on operation type</li>
+<li><strong>Consider edge cases</strong>: Empty tree, single node, duplicates</li>
+<li><strong>Optimize with pruning</strong>: Skip unnecessary subtrees</li>
+<li><strong>Test with skewed trees</strong>: Worst case scenarios</li>
+</ol>
+<h3 id="common-mistakes-tips" tabindex="-1"><a class="header-anchor" href="#common-mistakes-tips"><span>Common Mistakes &amp; Tips</span></a></h3>
+<p><strong>🚫 Common Mistakes:</strong></p>
+<ul>
+<li><strong>Not using BST property</strong>: Treating BST like regular binary tree</li>
+<li><strong>Forgetting inorder = sorted</strong>: Missing optimization opportunity</li>
+<li><strong>Wrong deletion handling</strong>: Not covering all three cases</li>
+<li><strong>Incorrect validation</strong>: Only checking parent-child, not entire subtree</li>
+<li><strong>Modifying while traversing</strong>: Can break BST property</li>
+</ul>
+<p><strong>✅ Best Practices:</strong></p>
+<ul>
+<li><strong>Always leverage BST property</strong>: Prune search space when possible</li>
+<li><strong>Use inorder for sorted needs</strong>: Don’t sort separately</li>
+<li><strong>Handle duplicates explicitly</strong>: Decide if allowed in your BST</li>
+<li><strong>Consider tree balance</strong>: Mention O(n) worst case in interviews</li>
+<li><strong>Test with edge cases</strong>: Empty, single node, all left/right</li>
+</ul>
+<h3 id="interview-tips" tabindex="-1"><a class="header-anchor" href="#interview-tips"><span>Interview Tips</span></a></h3>
+<ol>
+<li><strong>Clarify BST properties</strong>: Can there be duplicates? Is it balanced?</li>
+<li><strong>State complexity</strong>: Mention average O(log n) and worst O(n)</li>
+<li><strong>Consider self-balancing</strong>: Mention AVL/Red-Black trees if relevant</li>
+<li><strong>Use BST property</strong>: Show you understand the optimization</li>
+<li><strong>Handle all cases</strong>: Especially for deletion (0, 1, 2 children)</li>
+</ol>
+<h3 id="related-topics" tabindex="-1"><a class="header-anchor" href="#related-topics"><span>Related Topics</span></a></h3>
+<ul>
+<li><strong>Self-Balancing BSTs</strong>: AVL Tree, Red-Black Tree (guaranteed O(log n))</li>
+<li><strong>B-Trees</strong>: For database indexes (multiple keys per node)</li>
+<li><strong>Binary Heap</strong>: Different property (parent &gt; children)</li>
+<li><strong>Trie</strong>: Prefix tree for strings</li>
+<li><strong>Segment Tree</strong>: Range queries and updates</li>
+</ul>
+<h3 id="java-implementation-notes" tabindex="-1"><a class="header-anchor" href="#java-implementation-notes"><span>Java Implementation Notes</span></a></h3>
+<pre><code class="language-java">// Java BST Node
+class TreeNode {
+    int val;
+    TreeNode left, right;
+    TreeNode(int x) { val = x; }
+}
+
+// Iterative inorder with Stack
+Stack&lt;TreeNode&gt; stack = new Stack&lt;&gt;();
+TreeNode curr = root;
+while (curr != null || !stack.isEmpty()) {
+    while (curr != null) {
+        stack.push(curr);
+        curr = curr.left;
+    }
+    curr = stack.pop();
+    // Process curr
+    curr = curr.right;
+}
+</code></pre>
+<h3 id="python-implementation-notes" tabindex="-1"><a class="header-anchor" href="#python-implementation-notes"><span>Python Implementation Notes</span></a></h3>
+<pre><code class="language-python"># TreeNode class
+class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
+
+# Generator for memory-efficient inorder
+def inorder_generator(root):
+    if root:
+        yield from inorder_generator(root.left)
+        yield root.val
+        yield from inorder_generator(root.right)
+</code></pre>
+<h2 id="quick-decision-tree-choosing-the-right-bst-template" tabindex="-1"><a class="header-anchor" href="#quick-decision-tree-choosing-the-right-bst-template"><span>🚀 Quick Decision Tree: Choosing the Right BST Template</span></a></h2>
+<p>Use this flowchart to quickly identify which template to use for your BST problem:</p>
+<pre><code>┌─────────────────────────────────────────────────┐
+│ START: Analyze the BST Problem                  │
+└──────────────────┬──────────────────────────────┘
+                   │
+                   ▼
+        ┌──────────────────────┐
+        │ What's the main task? │
+        └──────┬───────────────┘
+               │
+      ┌────────┴────────┐
+      │                  │
+      ▼                  ▼
+┌──────────┐      ┌──────────┐
+│ SEARCH?  │      │ MODIFY?  │
+└────┬─────┘      └────┬─────┘
+     │                 │
+     │                 ├─► Insert node? → Template 2 (Insertion)
+     │                 ├─► Delete node? → Template 3 (Deletion)
+     │                 └─► Trim/Balance? → Template 3 or 6.4 (Balance BST)
+     │
+     ├─► Find value? → Template 1 (Search)
+     ├─► Validate BST? → Template 4 (Validation)
+     └─► Closest value? → Template 1 with tracking
+
+      ▼
+┌─────────────┐      ┌──────────────┐      ┌──────────────┐
+│ TRAVERSAL?  │      │ CONSTRUCT?   │      │ PATH-BASED?  │
+└──────┬──────┘      └──────┬───────┘      └──────┬───────┘
+       │                     │                      │
+       │                     │                      ├─► Root-to-leaf sum? → Template 7.1
+       │                     │                      ├─► All paths? → Template 7.2
+       │                     │                      ├─► Max path sum? → Template 7.5
+       │                     │                      └─► Any path (prefix sum)? → Template 7.7
+       │                     │
+       │                     ├─► From sorted array? → Template 6.1
+       │                     ├─► From sorted list? → Template 6.2
+       │                     ├─► From preorder? → Template 6.3
+       │                     ├─► Balance existing BST? → Template 6.4
+       │                     ├─► Generate all unique? → Template 6.5
+       │                     └─► Count unique? → Template 6.6
+       │
+       ├─► Kth smallest? → Template 5 (Inorder)
+       ├─► Convert to list? → Template 5 (Inorder)
+       ├─► Range sum/query? → Template 1 with pruning
+       └─► Iterator? → Template 5 (Stack-based inorder)
+</code></pre>
+<h3 id="quick-template-selection-table" tabindex="-1"><a class="header-anchor" href="#quick-template-selection-table"><span>📋 Quick Template Selection Table</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>If Problem Asks…</th>
+<th>Use Template</th>
+<th>Key Technique</th>
+<th>Typical LC Problems</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>“Find/search value”</td>
+<td>Template 1</td>
+<td>Binary search property</td>
+<td>700, 270, 938</td>
+</tr>
+<tr>
+<td>“Insert into BST”</td>
+<td>Template 2</td>
+<td>Recursive insertion</td>
+<td>701</td>
+</tr>
+<tr>
+<td>“Delete from BST”</td>
+<td>Template 3</td>
+<td>Three-case handling</td>
+<td>450, 669</td>
+</tr>
+<tr>
+<td>“Is valid BST?”</td>
+<td>Template 4</td>
+<td>Min/max bounds</td>
+<td>98, 333</td>
+</tr>
+<tr>
+<td>“Kth smallest/largest”</td>
+<td>Template 5</td>
+<td>Inorder traversal</td>
+<td>230, 173</td>
+</tr>
+<tr>
+<td>“Convert sorted array”</td>
+<td>Template 6.1</td>
+<td>Binary search middle</td>
+<td>108</td>
+</tr>
+<tr>
+<td>“Balance BST”</td>
+<td>Template 6.4</td>
+<td>Inorder + rebuild</td>
+<td>1382</td>
+</tr>
+<tr>
+<td>“Path with target sum”</td>
+<td>Template 7.1</td>
+<td>DFS + reduce sum</td>
+<td>112</td>
+</tr>
+<tr>
+<td>“All paths with sum”</td>
+<td>Template 7.2</td>
+<td>DFS + backtracking</td>
+<td>113</td>
+</tr>
+<tr>
+<td>“Max path sum”</td>
+<td>Template 7.5</td>
+<td>DFS + global max</td>
+<td>124</td>
+</tr>
+<tr>
+<td>“Any path with sum”</td>
+<td>Template 7.7</td>
+<td>Prefix sum</td>
+<td>437</td>
+</tr>
+</tbody>
+</table>
+<h3 id="recognition-patterns" tabindex="-1"><a class="header-anchor" href="#recognition-patterns"><span>🎯 Recognition Patterns</span></a></h3>
+<p><strong>Keywords → Template Mapping:</strong></p>
+<ul>
+<li><strong>“Search”, “find”, “closest”</strong> → Template 1 (Search)</li>
+<li><strong>“Insert”, “add node”</strong> → Template 2 (Insertion)</li>
+<li><strong>“Delete”, “remove”, “trim”</strong> → Template 3 (Deletion)</li>
+<li><strong>“Valid”, “validate”, “is BST”</strong> → Template 4 (Validation)</li>
+<li><strong>“Kth”, “sorted”, “inorder”, “iterator”</strong> → Template 5 (Inorder)</li>
+<li><strong>“Construct”, “build”, “convert”, “balance”, “generate”</strong> → Template 6 (Construction)</li>
+<li><strong>“Path”, “sum”, “maximum path”, “consecutive”</strong> → Template 7 (Path Problems)</li>
+</ul>
+<h3 id="quick-decision-examples" tabindex="-1"><a class="header-anchor" href="#quick-decision-examples"><span>⚡ Quick Decision Examples</span></a></h3>
+<p><strong>Example 1</strong>: “Find the kth smallest element in a BST”</p>
+<ul>
+<li>Keyword: “kth” + “smallest”</li>
+<li>Answer: <strong>Template 5</strong> (Inorder traversal gives sorted order)</li>
+</ul>
+<p><strong>Example 2</strong>: “Convert a sorted array to a height-balanced BST”</p>
+<ul>
+<li>Keywords: “convert” + “sorted array”</li>
+<li>Answer: <strong>Template 6.1</strong> (Pick middle as root)</li>
+</ul>
+<p><strong>Example 3</strong>: “Find if there’s a root-to-leaf path with given sum”</p>
+<ul>
+<li>Keywords: “path” + “sum”</li>
+<li>Answer: <strong>Template 7.1</strong> (Simple path sum)</li>
+</ul>
+<p><strong>Example 4</strong>: “Balance an existing BST”</p>
+<ul>
+<li>Keywords: “balance” + “existing BST”</li>
+<li>Answer: <strong>Template 6.4</strong> (Inorder + rebuild)</li>
+</ul>
+<p><strong>Example 5</strong>: “Count paths with given sum (not necessarily root-to-leaf)”</p>
+<ul>
+<li>Keywords: “any path” + “sum”</li>
+<li>Answer: <strong>Template 7.7</strong> (Prefix sum technique)</li>
+</ul>
+<h3 id="pro-tips-for-template-selection" tabindex="-1"><a class="header-anchor" href="#pro-tips-for-template-selection"><span>💡 Pro Tips for Template Selection</span></a></h3>
+<ol>
+<li><strong>Leverage BST Property</strong>: If problem can use <code>left &lt; root &lt; right</code>, use Templates 1-6</li>
+<li><strong>Path Problems</strong>: Most work on any binary tree, not just BST (Template 7)</li>
+<li><strong>Construction</strong>: Check input type (array/list/traversal) → different template variant</li>
+<li><strong>Modification</strong>: Always return root after modification (Templates 2, 3, 6)</li>
+<li><strong>When in Doubt</strong>: Check if inorder traversal helps (Template 5)</li>
+</ol>
+<hr>
+<p><strong>Must-Know Problems for Interviews</strong>: LC 98, 108, 112, 113, 124, 173, 230, 235, 450, 700, 701, 1382
+<strong>Advanced Problems</strong>: LC 99, 124, 298, 333, 437, 776, 1373
+<strong>Keywords</strong>: BST, binary search tree, inorder, sorted, validation, search tree, path sum, DFS, backtracking, balance, construction</p>
+
+      </div>
+      <div class="cheatsheet-footer">
+        <a href="../cheatsheets.html" class="back-link">← Back to Cheat Sheets</a>
+        <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/bst.md" class="github-edit" target="_blank">
+          Edit on GitHub →
+        </a>
+      </div>
+    <nav class="prev-next"><a href="bit_manipulation.html" class="prev-link">← Bit Manipulation</a><a href="code_interview_general_cheatsheet.html" class="next-link">Code Interview General Cheatsheet →</a></nav>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>CS_basics - Computer Science Fundamentals & Interview Preparation</p>
+      <p>
+        <a href="https://github.com/yennanliu/CS_basics">GitHub</a> •
+        <a href="https://github.com/yennanliu/CS_basics/tree/master/doc">Documentation</a> •
+        <a href="https://github.com/yennanliu/CS_basics/issues">Report Issues</a>
+      </p>
+    </div>
+  </footer>
+</body>
+</html>

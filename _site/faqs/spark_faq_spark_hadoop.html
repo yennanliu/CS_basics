@@ -1,0 +1,776 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Faq Spark Hadoop - CS_basics</title>
+  <meta name="description" content="Computer Science fundamentals: algorithms, data structures, system design, and LeetCode solutions">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>CS</text></svg>">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="../vendor/fonts.css">
+  <link rel="stylesheet" href="../vendor/highlight/github-dark.min.css">
+  <script src="../vendor/highlight/highlight.min.js"></script>
+  <script>
+  // Apply theme before render to prevent flash
+  (function() {
+    var saved = localStorage.getItem('theme');
+    if (saved === 'dark' || (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      document.documentElement.setAttribute('data-theme', 'dark');
+    }
+  })();
+  </script>
+  <script>document.addEventListener('DOMContentLoaded', function() {
+    hljs.highlightAll();
+    document.querySelectorAll('pre code').forEach(function(codeEl) {
+      var pre = codeEl.parentElement;
+      var lang = '';
+      var cls = codeEl.className || '';
+      var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
+      if (m) lang = m[1];
+      var wrapper = document.createElement('div');
+      wrapper.className = 'code-block-wrapper';
+      pre.parentNode.insertBefore(wrapper, pre);
+      var header = document.createElement('div');
+      header.className = 'code-block-header';
+      if (lang) {
+        var label = document.createElement('span');
+        label.className = 'code-lang-label';
+        label.textContent = lang;
+        header.appendChild(label);
+      } else {
+        header.appendChild(document.createElement('span'));
+      }
+      var btn = document.createElement('button');
+      btn.className = 'copy-btn';
+      btn.textContent = 'Copy';
+      btn.addEventListener('click', function() {
+        navigator.clipboard.writeText(codeEl.textContent).then(function() {
+          btn.textContent = 'Copied!';
+          btn.classList.add('copied');
+          setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+        });
+      });
+      header.appendChild(btn);
+      wrapper.appendChild(header);
+      wrapper.appendChild(pre);
+    });
+    document.querySelectorAll('table').forEach(function(table) {
+      if (!table.parentElement.classList.contains('table-wrap')) {
+        var wrapper = document.createElement('div');
+        wrapper.className = 'table-wrap';
+        table.parentNode.insertBefore(wrapper, table);
+        wrapper.appendChild(table);
+      }
+    });
+    // Reading progress bar
+    var progressBar = document.getElementById('reading-progress');
+    if (progressBar) {
+      window.addEventListener('scroll', function() {
+        var winScroll = document.documentElement.scrollTop;
+        var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        progressBar.style.width = height > 0 ? (winScroll / height * 100) + '%' : '0%';
+      });
+    }
+    // Dark mode toggle
+    var toggle = document.getElementById('theme-toggle');
+    if (toggle) {
+      var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      toggle.textContent = isDark ? '☀️' : '🌙';
+      toggle.addEventListener('click', function() {
+        var dark = document.documentElement.getAttribute('data-theme') === 'dark';
+        if (dark) {
+          document.documentElement.removeAttribute('data-theme');
+          localStorage.setItem('theme', 'light');
+          toggle.textContent = '🌙';
+        } else {
+          document.documentElement.setAttribute('data-theme', 'dark');
+          localStorage.setItem('theme', 'dark');
+          toggle.textContent = '☀️';
+        }
+      });
+    }
+  });</script>
+</head>
+<body>
+  <div class="progress-container"><div class="progress-bar" id="reading-progress"></div></div>
+  <nav class="navbar">
+    <div class="container">
+      <div class="nav-brand">
+        <span class="nav-icon">💻</span>
+        <span class="nav-title">CS_basics</span>
+      </div>
+      <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+      <div class="nav-links">
+        <a href="../index.html" class="">Home</a>
+        <a href="../cheatsheets.html" class="">Cheat Sheets</a>
+        <a href="../patterns.html" class="">Pattern Recognition</a>
+        <a href="../faqs.html" class="active">FAQs</a>
+        <a href="../resources.html" class="">Resources</a>
+        <a href="../lc-explorer.html" class="">LC Explorer</a>
+        <a href="../lc-random-picker.html" class="">🎲 Random Picker</a>
+        <a href="../algo_demo/index.html" class="">Visualizer</a>
+        <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">&#127769;</button>
+        <a href="https://github.com/yennanliu/CS_basics" target="_blank" class="github-link" aria-label="GitHub">
+          <svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor">
+            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container">
+    <div class="content">
+      
+      <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../faqs.html">FAQs</a> <span class="sep">›</span> <span class="current">Faq Spark Hadoop</span></nav>
+      <div class="cheatsheet-header">
+        <h1>Faq Spark Hadoop</h1>
+        <span class="last-updated">Last updated: Jul 3, 2024</span>
+      </div>
+      
+      <div class="cheatsheet-content">
+        <h1 id="spark-hadoop-ecosystem-faq" tabindex="-1"><a class="header-anchor" href="#spark-hadoop-ecosystem-faq"><span>SPARK / HADOOP ECOSYSTEM  FAQ</span></a></h1>
+<ol start="0">
+<li>
+<ul>
+<li>
+<p>Spark Tutorial</p>
+</li>
+<li>
+<p><a href="https://data-flair.training/blogs/spark-tutorial/">https://data-flair.training/blogs/spark-tutorial/</a></p>
+</li>
+<li>
+<p>Hadoop VS hive VS hbase VS pig VS RDBMS (in EMR system)</p>
+</li>
+<li>
+<p><a href="https://aws.amazon.com/tw/emr/faqs/">https://aws.amazon.com/tw/emr/faqs/</a></p>
+</li>
+</ul>
+</li>
+<li>
+<p>Difference between Spark VS Hadoop?</p>
+</li>
+</ol>
+<ul>
+<li>
+<p><em><strong>Hadoop</strong></em> is a big data framework that make large scale dataset operation via <code>Map-Reduce</code>, do storage via split the dataset (<code>HDFS</code>) into <code>data block</code> and save in each node (data node)</p>
+<ul>
+<li>Data node : the components save split data block</li>
+<li>Name node : the components manage data storage places</li>
+<li><code>Doesn't save data in memory</code> when do data op</li>
+</ul>
+</li>
+<li>
+<p><em><strong>Spark</strong></em> is a big data framework that access large scale dataset like above, and doing processing like : ETL, stream, machine learning and so on…</p>
+<ul>
+<li><code>Does save data in memory</code> as <code>RDD</code> when do data op, so that’s why spark is faster than hadoop (since it saves data in memory when do op) (only work when data is not really in <code>large</code> scale)</li>
+</ul>
+</li>
+<li>
+<p>In short, <code>Spark</code> can do more flexible data task via RDD and <code>DAG</code>(
+Map-Reduce-Map-Reduce …) ops and faster speed (data in memory), but <code>Spark</code> job also <code>heavy memory costing</code>. So if the data is really in a <code>large</code> scale, then Spark may not be a good choice, but would use <code>Hadoop</code> since it only do Map-Reduce, all the momory cost is only for key-value pairs saving theoretically.</p>
+<ul>
+<li><a href="http://web.stanford.edu/class/cs246/slides/01-intro.pdf">http://web.stanford.edu/class/cs246/slides/01-intro.pdf</a></li>
+</ul>
+</li>
+</ul>
+<img src="../doc/pic/spark_vs_hadoop.png" width="500" height="300">
+<p>1’. What’s <code>Map-Reduce</code> programming model?</p>
+<ul>
+<li>
+<p>It’s a <code>Map -&gt; Group by -&gt; Reduce</code> process model for scalable data transformation</p>
+</li>
+<li>
+<p>Developers only have to think about writing the code for <code>Map</code> and <code>Reduce</code>
+part, the execution machines will take care for the <code>Group by</code> step</p>
+</li>
+<li>
+<p>Map : map input values into <code>key-value</code> pair</p>
+</li>
+<li>
+<p>Group by : dispense key-value to cluster workers</p>
+</li>
+<li>
+<p>Reduce : Get the computaion result of the key-value based on redue function logic</p>
+</li>
+<li>
+<p>Pros :</p>
+<ul>
+<li>Easy model</li>
+<li>Not heavy memory cost</li>
+<li>Can be scalable</li>
+</ul>
+</li>
+<li>
+<p>Cons :</p>
+<ul>
+<li>Hadoop code long</li>
+<li>take time to write, doesn’t offer flexible high level APIs.</li>
+<li>have to keep grab-release data when do <code>sequence</code> map-reduce tasks</li>
+<li>doesn’t offer RDD features : lazy execution, call back …</li>
+</ul>
+</li>
+</ul>
+<img src="../doc/pic/map_reduce_overview.png" width="500" height="300">  
+<img src="../doc/pic/map_reduce_diagram.png" width="500" height="300">  
+<img src="../doc/pic/map_reduce_parallel.png" width="500" height="300">  
+<img src="../doc/pic/map_reduce_pattern.png" width="500" height="300">  
+<ol start="2">
+<li>Things happen after <code>spark-submit</code>?
+<ul>
+<li>step 1) This program invokes the main() method that is specified in the spark-submit command, which launches the driver program.</li>
+<li>step 2)  The driver program <code>converts the code</code> into <code>Directed Acyclic Graph(DAG)</code> which will <code>have all the RDDs and transformations</code> to be performed on them. ( During this phase driver program also does some optimizations and then it converts the DAG to a physical execution plan with set of stages.)</li>
+<li>step 3) After this physical plan, driver creates small execution units called tasks. Then these tasks are sent to Spark Cluster.</li>
+<li>step 4) The driver program then talks to the cluster manager and requests for the resources for execution</li>
+<li>step 5) Then the cluster manger launches the executors on the worker nodes</li>
+<li>step 6)  Executors will register themselves with driver program so the driver program will have the complete knowledge about the executors</li>
+<li>step 7) Then driver program sends the tasks to the executors and starts the execution. Driver program always monitors these tasks that are running on the executors till the completion of job.</li>
+<li>step 8) When the job is completed or called stop() method in case of any failures, the driver program terminates and frees the allocated resources</li>
+</ul>
+</li>
+</ol>
+<ul>
+<li><a href="http://www.bigdatainterview.com/explain-spark-architecture-or-what-happens-when-submit-a-spark-job/">http://www.bigdatainterview.com/explain-spark-architecture-or-what-happens-when-submit-a-spark-job/</a></li>
+</ul>
+<p>2’. <code>spark-submit</code> cmd explain ?</p>
+<pre><code class="language-bash"># pattern
+./bin/spark-submit \
+  --master &lt;master-url&gt; \
+  --deploy-mode &lt;deploy-mode&gt; \
+  --conf &lt;key&lt;=&lt;value&gt; \
+  --driver-memory &lt;amount of memory&gt; \
+  --executor-memory &lt;amount of memory&gt; \
+  --executor-cores &lt;number of cores&gt;  \
+  --jars  &lt;comma separated dependencies&gt;
+  --class &lt;main-class&gt; \
+  &lt;application-jar&gt; \
+  [application-arguments]
+</code></pre>
+<ul>
+<li><a href="https://sparkbyexamples.com/spark/spark-submit-command/">https://sparkbyexamples.com/spark/spark-submit-command/</a></li>
+</ul>
+<p>2’’ <code>SparkSession</code> VS <code>SparkContext</code> ?</p>
+<ul>
+<li>
+<p>SparkContext</p>
+<ul>
+<li>an entry point to Spark and defined in org.apache.spark package since 1.x and used to programmatically create Spark RDD, accumulators and broadcast variables on the cluster. Since Spark 2.0 most of the functionalities (methods) available in SparkContext are also available in SparkSession. Its object sc is default available in spark-shell and it can be programmatically created using SparkContext class.</li>
+</ul>
+</li>
+<li>
+<p>SparkSession</p>
+<ul>
+<li>introduced in version 2.0 and and is an entry point to underlying Spark functionality in order to programmatically create Spark RDD, DataFrame and DataSet. It’s object spark is default available in spark-shell and it can be created programmatically using SparkSession builder pattern.</li>
+<li>SparkSession can be used in replace with SQLContext and HiveContext.</li>
+</ul>
+</li>
+<li>
+<p><a href="https://sparkbyexamples.com/spark/sparksession-vs-sparkcontext/">https://sparkbyexamples.com/spark/sparksession-vs-sparkcontext/</a></p>
+</li>
+</ul>
+<ol start="3">
+<li>What’s RDD, HDFS ?</li>
+</ol>
+<ul>
+<li>
+<p>RDD</p>
+<ul>
+<li>Resilient – if data is lost, data can be recreated</li>
+<li>Distributed – stored in nodes among the cluster</li>
+<li>Dataset – initial data comes from some distributed storage</li>
+</ul>
+</li>
+<li>
+<p>Resilient Distributed Datasets (RDD) is a simple and immutable distributed collection of objects. Each RDD is split into multiple partitions which may be computed on different nodes of the cluster. In Spark, every function is performed on RDDs only.</p>
+</li>
+<li>
+<p>Spark revolves around the concept of a resilient distributed dataset (RDD), which is a fault-tolerant collection of elements that can be operated on in parallel.</p>
+</li>
+<li>
+<p>Hadoop HDFS VS RDD</p>
+<ul>
+<li>
+<p>In Hadoop, we store the data as blocks and store them in different data nodes. In Spark, instead of following the above approach, we make partitions of the RDDs and store in worker nodes (datanodes) which are computed in parallel across all the nodes.</p>
+</li>
+<li>
+<p>In Hadoop, we need to replicate the data for fault recovery, but in case of Spark, replication is not required as this is performed by RDDs.</p>
+</li>
+<li>
+<p>RDDs load the data for us and are resilient which means they can be recomputed.</p>
+</li>
+<li>
+<p>RDDs perform two types of operations: Transformations which creates a new dataset from the previous RDD and actions which return a value to the driver program after performing the computation on the dataset.</p>
+</li>
+<li>
+<p>RDDs keeps a track of transformations and checks them periodically. If a node fails, it can rebuild the lost RDD partition on the other nodes, in parallel.</p>
+</li>
+</ul>
+</li>
+</ul>
+<p>3’. Explain data partition in Spark?</p>
+<ul>
+<li>
+<p>Partitioning is nothing but dividing it into parts. If you talk about partitioning in distributed system, we can define it as the division of the large dataset and store them as multiple parts across the cluster.</p>
+</li>
+<li>
+<p>Spark works on data locality principle. Worker nodes takes the data for processing that are nearer to them. By doing partitioning network I/O will be reduced so that data can be processed a lot faster.</p>
+</li>
+<li>
+<p>In Spark, operations like co-group, groupBy, groupByKey and many more will need lots of I/O operations. In this scenario, if we apply partitioning, then we can reduce the number of I/O operations rapidly so that we can speed up the data processing.</p>
+</li>
+<li>
+<p>To divide the data into partitions first we need to store it. Spark stores its data in form of RDDs.</p>
+</li>
+<li>
+<p><a href="https://acadgild.com/blog/partitioning-in-spark">https://acadgild.com/blog/partitioning-in-spark</a></p>
+</li>
+</ul>
+<ol start="4">
+<li>
+<p>Explain spark  <code>master node</code>,<code>worker node</code> ,<code>executor</code>, <code>receiver</code>,<code>driver</code>…?</p>
+ <img src="../doc/pic/spark_driver_workder_executor.png" width="500" height="300">
+<ul>
+<li>
+<p>Driver</p>
+<ul>
+<li>The program that runs on the master node of the machine and declares transformations and actions on data RDDs. In simple terms, a driver in Spark creates <code>SparkContext</code>, connected to a given Spark Master. The driver also delivers the RDD graphs to Master, where the standalone cluster manager runs.</li>
+<li>The Driver is one of the nodes in the Cluster.</li>
+<li>The driver does not run computations (filter,map, reduce, etc).</li>
+<li>It plays the role of a master node in the Spark cluster.</li>
+<li>When you call collect() on an RDD or Dataset, the<code> whole data</code> is sent to the <code>Driver</code>. This is why you should be careful when calling collect().</li>
+</ul>
+</li>
+<li>
+<p>Master</p>
+<ul>
+<li>Master node is responsible for task scheduling and resource dispensation.</li>
+</ul>
+</li>
+<li>
+<p>Worker</p>
+<ul>
+<li><code>Worker node refers to any node that can run the application code in a cluster</code>. The driver program must listen for and accept incoming connections from its executors and must be network addressable from the worker nodes.</li>
+<li>Worker node is basically the <code>slave node</code>. Master node assigns work and worker node actually performs the assigned tasks. <code>Worker nodes process the data stored on the node and report the resources to the master</code>. Based on the resource availability, the master schedule tasks.</li>
+</ul>
+</li>
+<li>
+<p>Executor</p>
+<ul>
+<li>When SparkContext connects to a cluster manager, it acquires an Executor on nodes in the cluster. Executors are Spark processes that run computations and store the data on the worker node. The final tasks by SparkContext are transferred to executors for their execution.</li>
+<li>Executors are JVMs that run on Worker nodes.</li>
+<li>These are the JVMs that actually run Tasks on data Partitions.</li>
+</ul>
+</li>
+<li>
+<p>Cluster</p>
+<ul>
+<li>A Cluster is a group of JVMs (nodes) connected by the network, each of which runs Spark, either in Driver or Worker roles.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>Explain how to deal with <code>Spark data skew</code> problems ? ***</p>
+</li>
+<li>
+<p>How do if one of the spark node failed because of overloading ?</p>
+</li>
+<li>
+<p>Why Spark is faster than MapReduce in general ?</p>
+</li>
+<li>
+<p>Explain Spark running mode : <code>stand alone</code>, <code>Mesos</code>, <code>YARN</code> ?</p>
+<ul>
+<li>
+<p>Spark stand anlone</p>
+<ul>
+<li>When running on standalone cluster deployment, the cluster manager is a Spark master instance.</li>
+</ul>
+</li>
+<li>
+<p>Spark Mesos</p>
+<ul>
+<li>When using Mesos, the Mesos master replaces the Spark master as the cluster manager. Mesos determines what machines handle what tasks. Because it takes into account other frameworks when scheduling these many short-lived tasks, multiple frameworks can coexist on the same cluster without resorting to a static partitioning of resources.</li>
+</ul>
+</li>
+<li>
+<p>Spark YARN</p>
+</li>
+</ul>
+</li>
+<li>
+<p>Explain spark operator ?</p>
+</li>
+<li>
+<p>Explain <code>cache</code> VS <code>persist</code> ?</p>
+</li>
+<li>
+<p>Which one is better in RDD ? <code>reducebykey</code> VS <code>groupby</code> ? why?</p>
+</li>
+<li>
+<p>What errors may happen when <code>spark streaming</code> ? how to fix them ?</p>
+</li>
+<li>
+<p>How to prevent spark <code>out of memeory</code> <code>(OOM)</code> problem ?</p>
+</li>
+</ol>
+<ul>
+<li><a href="https://medium.com/swlh/spark-oom-error-closeup-462c7a01709d">https://medium.com/swlh/spark-oom-error-closeup-462c7a01709d</a></li>
+<li><a href="https://dzone.com/articles/common-reasons-your-spark-applications-are-slow-or">https://dzone.com/articles/common-reasons-your-spark-applications-are-slow-or</a></li>
+</ul>
+<p>13’ how executor memory(heap memory) is managed in spark ?</p>
+<ol start="14">
+<li>
+<p>How does saprk split <code>stage</code> ?</p>
+</li>
+<li>
+<p>What’re spark work, stage, task; and there relationship ?</p>
+</li>
+<li>
+<p>How to set up spark master HA ?</p>
+</li>
+</ol>
+<ul>
+<li>Standby Masters with ZooKeeper</li>
+<li>Single-Node Recovery with Local File System</li>
+<li><a href="https://spark.apache.org/docs/latest/spark-standalone.html#high-availability">https://spark.apache.org/docs/latest/spark-standalone.html#high-availability</a></li>
+<li><a href="https://support.datafabric.hpe.com/s/article/How-to-enable-High-Availability-on-Spark-with-Zookeeper?language=en_US">https://support.datafabric.hpe.com/s/article/How-to-enable-High-Availability-on-Spark-with-Zookeeper?language=en_US</a></li>
+</ul>
+<ol start="17">
+<li>How does <code>spark-submit</code> import external <code>jars</code></li>
+</ol>
+<ul>
+<li><a href="https://sparkbyexamples.com/spark/add-multiple-jars-to-spark-submit-classpath/">https://sparkbyexamples.com/spark/add-multiple-jars-to-spark-submit-classpath/</a></li>
+</ul>
+<ol start="18">
+<li>Explain spark Polyglot, Lazy Evaluation ?</li>
+</ol>
+<ul>
+<li>Polyglot</li>
+<li>Lazy Evaluation
+<ul>
+<li>Each RDD have access to it’s parent RDD</li>
+<li>NULL is the value of parent for first RDD</li>
+<li>Before computing it’s value, it always computes it’s parent</li>
+<li>Spark will not execute the task untill there is a <code>Actions</code> operation</li>
+<li>there 2 types of RDD operation in spark :
+<ul>
+<li>Transformations
+<ul>
+<li>map, groupby, union, filter, flatmap…</li>
+</ul>
+</li>
+<li>Actions
+<ul>
+<li>reduce, count, collect, show, saveAsTextFile…</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>18’. types of Transformations?</p>
+<ul>
+<li>Narrow transformation
+<ul>
+<li>all the elements that are required to compute the records in <code>single partition</code> live in the single partition of parent RDD</li>
+<li><code>map</code>, <code>filter</code></li>
+</ul>
+</li>
+<li>Wide transformation
+<ul>
+<li>In wide transformation, all the elements that are required to compute the records in the single partition may live in <code>many partitions</code> of parent RDD</li>
+<li><code>groupbyKey</code>, <code>reducebykey</code></li>
+</ul>
+</li>
+</ul>
+<ol start="19">
+<li>
+<p>Is there any benefit of learning MapReduce if Spark is better than MapReduce?</p>
+<ul>
+<li>Yes, MapReduce is a paradigm used by many big data tools including Spark as well. It is extremely relevant to use MapReduce when the data grows bigger and bigger. Most tools like Pig and Hive convert their queries into MapReduce phases to optimize them better.</li>
+</ul>
+</li>
+<li>
+<p>What is Executor Memory in a Spark application?</p>
+</li>
+<li>
+<p>What operations does RDD support?</p>
+<ul>
+<li>
+<p>RDDs support two types of operations: transformations and actions.</p>
+<ul>
+<li>
+<p>Transformations: Transformations create new RDD from existing RDD like map, reduceByKey and filter we just saw. Transformations are executed on demand. That means they are computed lazily.
+e.g. :<code>map</code>, <code>flatmap</code>, <code>reducebykey</code>, <code>filter</code>, <code>union</code>, <code>sample</code></p>
+</li>
+<li>
+<p>Actions: Actions return final results of RDD computations. Actions triggers execution using lineage graph to load the data into original RDD, carry out all intermediate transformations and return final results to Driver program or write it out to file system.</p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>Flatmap VS map ? Reduce VS ReduceByKey ?</p>
+</li>
+<li>
+<p>Illustrate some cons of using Spark.</p>
+</li>
+<li>
+<p>What is a Sparse Vector?</p>
+</li>
+<li>
+<p>How can you minimize data transfers when working with Spark?</p>
+<ul>
+<li>
+<p>Minimizing data transfers and avoiding shuffling helps write spark programs that run in a fast and reliable manner. The various ways in which data transfers can be minimized when working with Apache Spark are:</p>
+<ul>
+<li>
+<p>Using Broadcast Variable- Broadcast variable enhances the efficiency of joins between small and large RDDs.</p>
+</li>
+<li>
+<p>Using Accumulators – Accumulators help update the values of variables in parallel while executing.</p>
+</li>
+</ul>
+</li>
+</ul>
+<p>The most common way is to <code>avoid</code> operations <code>ByKey, repartition</code> or <code>any other operations</code> which trigger <code>shuffles</code>.</p>
+</li>
+<li>
+<p>What are broadcast variables and accumulators?</p>
+</li>
+<li>
+<p>How can you trigger automatic clean-ups in Spark to handle accumulated metadata?</p>
+<ul>
+<li>You can trigger the clean-ups by setting the parameter <code>spark.cleaner.ttl</code> or by dividing the long running jobs into different batches and writing the intermediary results to the disk.</li>
+</ul>
+</li>
+<li>
+<p>Explain Caching in Spark Streaming ?</p>
+<ul>
+<li>DStreams allow developers to cache/ persist the stream’s data in memory. This is useful if the data in the DStream will be computed multiple times. This can be done using the persist() method on a DStream. For input streams that receive data over the network (such as Kafka, Flume, Sockets, etc.), the default persistence level is set to replicate the data to two nodes for fault-tolerance.</li>
+</ul>
+</li>
+<li>
+<p>What are the various levels of persistence in Apache Spark?</p>
+<ul>
+<li>
+<p>MEMORY_ONLY: Store RDD as deserialized Java objects in the JVM. If the RDD does not fit in memory, some partitions will not be cached and will be recomputed on the fly each time they’re needed. This is the default level.</p>
+</li>
+<li>
+<p>MEMORY_AND_DISK: Store RDD as deserialized Java objects in the JVM. If the RDD does not fit in memory, store the partitions that don’t fit on disk, and read them from there when they’re needed.</p>
+</li>
+<li>
+<p>MEMORY_ONLY_SER: Store RDD as serialized Java objects (one byte array per partition).</p>
+</li>
+<li>
+<p>MEMORY_AND_DISK_SER: Similar to MEMORY_ONLY_SER, but spill partitions that don’t fit in memory to disk instead of recomputing them on the fly each time they’re needed.</p>
+</li>
+<li>
+<p>DISK_ONLY: Store the RDD partitions only on disk. OFF_HEAP: Similar to MEMORY_ONLY_SER, but store the data in off-heap memory.</p>
+</li>
+</ul>
+</li>
+<li>
+<p>Explain <code>mapPartitions</code>, what’s the difference between mapPartitions and map ?</p>
+</li>
+<li>
+<p>Explain <code>broadcast join</code>, what’s the difference between <code>broadcast join</code>and join ?</p>
+</li>
+<li>
+<p>How to optimize spark with <code>partitioner</code> ?</p>
+</li>
+<li>
+<p>Explain <code>combineByKey</code> VS. <code>groupByKey</code> ?</p>
+</li>
+</ol>
+<p>i.e.</p>
+<pre><code class="language-scala">// reduceByKey
+rdd.reduceByKey(_.sum)
+
+// groupByKey
+rdd.groupByKey().mapValue(_.sum)
+
+</code></pre>
+<ol start="34">
+<li>Explain <code>application</code>, <code>job</code>, <code>stage</code> , <code>task</code>?</li>
+</ol>
+<ul>
+<li>
+<p><code>Application</code> -&gt; <code>job</code> -&gt; <code>stage</code> -&gt; <code>task</code></p>
+</li>
+<li>
+<p>Application</p>
+<ul>
+<li>Initialize a SparkConext will generate an Application</li>
+</ul>
+</li>
+<li>
+<p>Job</p>
+<ul>
+<li>A Job is a sequence of <code>Stages</code>, triggered by an <code>Action</code> such as .count(), foreachRdd(), collect(), read() or write().</li>
+<li>An <code>Action</code> operaor will generate a job</li>
+</ul>
+</li>
+<li>
+<p>Stage</p>
+<ul>
+<li>A Stage is a sequence of <code>Tasks</code> that can all be run together, <code>without a shuffle</code>.</li>
+<li>e.g. : using .read to read a file from disk, then runnning .map and .filter can all be done <code>without a shuffle</code>, so it can fit in a <code>single</code> stage.</li>
+</ul>
+</li>
+<li>
+<p>Task</p>
+<ul>
+<li>A Task is a single operation <code>(.map or .filter)</code> happening on a specific RDD partition.</li>
+<li>Each Task is executed as a single thread in an Executor</li>
+<li>If your dataset has 2 Partitions, an operation such as a filter() will trigger 2 Tasks, one for each Partition.</li>
+<li>Stage is a TaskSet, split the stage result to different Executors is a task</li>
+</ul>
+</li>
+<li>
+<p>Each <code>stage</code> contains as many <code>tasks</code> as <code>partitions</code> of the <code>RDD</code></p>
+<ul>
+<li>i.e. partition  (part of RDD) -&gt; task (part of stage)</li>
+</ul>
+</li>
+<li>
+<p><a href="http://queirozf.com/entries/spark-concepts-overview-clusters-jobs-stages-tasks-etc#stage-vs-task">http://queirozf.com/entries/spark-concepts-overview-clusters-jobs-stages-tasks-etc#stage-vs-task</a></p>
+</li>
+<li>
+<p><a href="https://medium.com/@thejasbabu/spark-under-the-hood-partition-d386aaaa26b7">https://medium.com/@thejasbabu/spark-under-the-hood-partition-d386aaaa26b7</a></p>
+</li>
+<li>
+<p><a href="https://www.youtube.com/watch?v=pEWrWdt60nY&amp;list=PLmOn9nNkQxJF-qlCCDx9WsdAe6x5hhH77&amp;index=56">https://www.youtube.com/watch?v=pEWrWdt60nY&amp;list=PLmOn9nNkQxJF-qlCCDx9WsdAe6x5hhH77&amp;index=56</a></p>
+</li>
+</ul>
+<img src="../doc/pic/spark_stage_task.png" width="500" height="300"> 
+<img src="../doc/pic/spark_stage_task2.png" width="500" height="300"> 
+<ol start="35">
+<li>Explain <code>shuffle</code>?</li>
+</ol>
+<ul>
+<li>A Shuffle refers to an operation where data is <code>re-partitioned</code> across a Cluster.</li>
+<li><code>join</code> and <code>any operation that ends with ByKey</code> will trigger a Shuffle.</li>
+<li>It is a <code>costly</code> operation because a lot of data can be sent via the network.</li>
+</ul>
+<ol start="36">
+<li>Explain <code>partition</code>, and its relation to RDD?</li>
+</ol>
+<ul>
+<li><code>partition -&gt; RDD</code></li>
+<li>A Partition is a logical chunk of your RDD/Dataset</li>
+<li>Data is split into Partitions so that each Executor can operate on a single part, enabling parallelization.</li>
+<li>It can be processed by a single Executor core.</li>
+<li>e.g.: If you have 4 data partitions and you have 4 executor cores, you can process everything in parallel, in a single pass.</li>
+</ul>
+<img src="../doc/pic/rdd_partiiton.png" width="500" height="300"> 
+<ol start="37">
+<li>Explain spark <code>cache</code>?</li>
+</ol>
+<ul>
+<li>cache internally uses persist API</li>
+<li>persist sets a specific storage level for a given RDD</li>
+<li>Spark context tracks persistent RDD</li>
+<li>When first evaluates, partition will be put into memory by block manager</li>
+</ul>
+<ol start="38">
+<li>
+<p>Explain repartition?</p>
+<ul>
+<li>repartition():
+<ul>
+<li>shuffles the data between the executors and divides the data into number of partitions. But this might be an <code>expensive</code> operation since it <code>shuffles</code> the data between executors and involves <code>network traffic</code>. <code>Ideal place to partition</code> is at the <code>data source</code>, while fetching the data. Things can speed up greatly when data is partitioned the right way but can dramatically slow down when done wrong, especially due the Shuffle operation.</li>
+<li>Reshuffle the data in the RDD <code>randomly</code> to create either <code>more or fewer</code> partitions and balance it across them. This always <code>shuffles ALL DATA over the network</code>.</li>
+</ul>
+</li>
+<li>repartitionAndSortWithinPartitions
+<ul>
+<li>Repartition the RDD according to the <code>given partitioner</code> and, within each resulting partition, sort records by their keys. This is <code>more efficient</code> than calling <code>repartition</code> and then sorting within each partition because it can push the sorting down into the shuffle machinery.</li>
+</ul>
+</li>
+<li><a href="https://spark.apache.org/docs/latest/rdd-programming-guide.html">https://spark.apache.org/docs/latest/rdd-programming-guide.html</a></li>
+</ul>
+</li>
+<li>
+<p>RDD Wide/narrow dependency ?</p>
+<ul>
+<li>Narrow dependencies
+<ul>
+<li>When each partition at the parent RDD is used by at most one partition of the child RDD, then we have a narrow dependency. Computations of transformations with this kind of dependency are rather fast as they do not require any data shuffling over the cluster network.</li>
+</ul>
+</li>
+<li>Wide dependencies
+<ul>
+<li>When each partition of the parent RDD may be depended on by multiple child partitions (wide dependency), then the computation speed might be significantly affected as we might need to shuffle data around different nodes when creating new partitions.</li>
+</ul>
+</li>
+<li>Reference
+<ul>
+<li><a href="https://medium.com/@dvcanton/wide-and-narrow-dependencies-in-apache-spark-21acf2faf031">ref1</a></li>
+<li><a href="https://www.coursera.org/lecture/scala-spark-big-data/wide-vs-narrow-dependencies-shGAX">ref2</a></li>
+<li><a href="https://youtu.be/ha6vTXJ9BMQ?t=707">ref3</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<img src="../doc/pic/package_nego.png" width="500" height="300"> 
+<ol start="40">
+<li>Cache/Persist VS Checkpoint ?
+<ul>
+<li>Cache/Persist
+<ul>
+<li>Persisting or caching with StorageLevel.DISK_ONLY (in <code>RAM</code>) cause the generation of RDD to be computed and stored in a location such that subsequent use of that RDD will not go beyond that points in recomputing the linage.</li>
+<li>After persist is called, Spark still remembers the lineage of the RDD even though it doesn’t call it.</li>
+<li>After the application terminates, the cache is cleared or file destroyed</li>
+</ul>
+</li>
+<li>Checkpoint
+<ul>
+<li>Checkpointing stores the rdd <code>physically to hdfs</code> (in <code>Disk</code>) and destroys the lineage that created it.</li>
+<li>The checkpoint file won’t be deleted even after the Spark application terminated.</li>
+<li>Checkpoint files can be used in subsequent job run or driver program</li>
+<li>Checkpointing an RDD causes double computation because the operation will first call a cache before doing the actual job of computing and writing to the checkpoint directory.</li>
+</ul>
+</li>
+<li><a href="https://stackoverflow.com/questions/35127720/what-is-the-difference-between-spark-checkpoint-and-persist-to-a-disk">ref</a></li>
+</ul>
+</li>
+</ol>
+<h2 id="ref" tabindex="-1"><a class="header-anchor" href="#ref"><span>Ref</span></a></h2>
+<ul>
+<li><a href="https://www.edureka.co/blog/interview-questions/top-apache-spark-interview-questions-2016/">https://www.edureka.co/blog/interview-questions/top-apache-spark-interview-questions-2016/</a></li>
+<li><a href="https://data-flair.training/blogs/spark-rdd-operations-transformations-actions/">https://data-flair.training/blogs/spark-rdd-operations-transformations-actions/</a></li>
+<li><a href="https://zhuanlan.zhihu.com/p/47499258">https://zhuanlan.zhihu.com/p/47499258</a></li>
+<li><a href="https://bbs.huaweicloud.com/blogs/326863">https://bbs.huaweicloud.com/blogs/326863</a></li>
+</ul>
+
+      </div>
+      <div class="cheatsheet-footer">
+        <a href="../faqs.html" class="back-link">← Back to FAQs</a>
+        <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/faq/spark/faq_spark_hadoop.md" class="github-edit" target="_blank">
+          Edit on GitHub →
+        </a>
+      </div>
+    <nav class="prev-next"><a href="spark_faq_mapreduce.html" class="prev-link">← Faq Mapreduce</a><a href="sql_faq_mysql.html" class="next-link">Faq Mysql →</a></nav>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>CS_basics - Computer Science Fundamentals & Interview Preparation</p>
+      <p>
+        <a href="https://github.com/yennanliu/CS_basics">GitHub</a> •
+        <a href="https://github.com/yennanliu/CS_basics/tree/master/doc">Documentation</a> •
+        <a href="https://github.com/yennanliu/CS_basics/issues">Report Issues</a>
+      </p>
+    </div>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,1487 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Complexity Cheatsheet - CS_basics</title>
+  <meta name="description" content="Computer Science fundamentals: algorithms, data structures, system design, and LeetCode solutions">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>CS</text></svg>">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="../vendor/fonts.css">
+  <link rel="stylesheet" href="../vendor/highlight/github-dark.min.css">
+  <script src="../vendor/highlight/highlight.min.js"></script>
+  <script>
+  // Apply theme before render to prevent flash
+  (function() {
+    var saved = localStorage.getItem('theme');
+    if (saved === 'dark' || (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      document.documentElement.setAttribute('data-theme', 'dark');
+    }
+  })();
+  </script>
+  <script>document.addEventListener('DOMContentLoaded', function() {
+    hljs.highlightAll();
+    document.querySelectorAll('pre code').forEach(function(codeEl) {
+      var pre = codeEl.parentElement;
+      var lang = '';
+      var cls = codeEl.className || '';
+      var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
+      if (m) lang = m[1];
+      var wrapper = document.createElement('div');
+      wrapper.className = 'code-block-wrapper';
+      pre.parentNode.insertBefore(wrapper, pre);
+      var header = document.createElement('div');
+      header.className = 'code-block-header';
+      if (lang) {
+        var label = document.createElement('span');
+        label.className = 'code-lang-label';
+        label.textContent = lang;
+        header.appendChild(label);
+      } else {
+        header.appendChild(document.createElement('span'));
+      }
+      var btn = document.createElement('button');
+      btn.className = 'copy-btn';
+      btn.textContent = 'Copy';
+      btn.addEventListener('click', function() {
+        navigator.clipboard.writeText(codeEl.textContent).then(function() {
+          btn.textContent = 'Copied!';
+          btn.classList.add('copied');
+          setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+        });
+      });
+      header.appendChild(btn);
+      wrapper.appendChild(header);
+      wrapper.appendChild(pre);
+    });
+    document.querySelectorAll('table').forEach(function(table) {
+      if (!table.parentElement.classList.contains('table-wrap')) {
+        var wrapper = document.createElement('div');
+        wrapper.className = 'table-wrap';
+        table.parentNode.insertBefore(wrapper, table);
+        wrapper.appendChild(table);
+      }
+    });
+    // Reading progress bar
+    var progressBar = document.getElementById('reading-progress');
+    if (progressBar) {
+      window.addEventListener('scroll', function() {
+        var winScroll = document.documentElement.scrollTop;
+        var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        progressBar.style.width = height > 0 ? (winScroll / height * 100) + '%' : '0%';
+      });
+    }
+    // Dark mode toggle
+    var toggle = document.getElementById('theme-toggle');
+    if (toggle) {
+      var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      toggle.textContent = isDark ? '☀️' : '🌙';
+      toggle.addEventListener('click', function() {
+        var dark = document.documentElement.getAttribute('data-theme') === 'dark';
+        if (dark) {
+          document.documentElement.removeAttribute('data-theme');
+          localStorage.setItem('theme', 'light');
+          toggle.textContent = '🌙';
+        } else {
+          document.documentElement.setAttribute('data-theme', 'dark');
+          localStorage.setItem('theme', 'dark');
+          toggle.textContent = '☀️';
+        }
+      });
+    }
+  });</script>
+</head>
+<body>
+  <div class="progress-container"><div class="progress-bar" id="reading-progress"></div></div>
+  <nav class="navbar">
+    <div class="container">
+      <div class="nav-brand">
+        <span class="nav-icon">💻</span>
+        <span class="nav-title">CS_basics</span>
+      </div>
+      <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+      <div class="nav-links">
+        <a href="../index.html" class="">Home</a>
+        <a href="../cheatsheets.html" class="active">Cheat Sheets</a>
+        <a href="../patterns.html" class="">Pattern Recognition</a>
+        <a href="../faqs.html" class="">FAQs</a>
+        <a href="../resources.html" class="">Resources</a>
+        <a href="../lc-explorer.html" class="">LC Explorer</a>
+        <a href="../lc-random-picker.html" class="">🎲 Random Picker</a>
+        <a href="../algo_demo/index.html" class="">Visualizer</a>
+        <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">&#127769;</button>
+        <a href="https://github.com/yennanliu/CS_basics" target="_blank" class="github-link" aria-label="GitHub">
+          <svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor">
+            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container">
+    <div class="content">
+      
+      <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">Complexity Cheatsheet</span></nav>
+      <div class="cheatsheet-header">
+        <h1>Complexity Cheatsheet</h1>
+        <span class="last-updated">Last updated: Mar 11, 2026</span>
+      </div>
+      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#1-big-o-quick-reference">1. Big-O Quick Reference</a></li><li><a href="#2-data-structures-time-space-complexity">2. Data Structures — Time &amp; Space Complexity</a></li><li class="toc-sub"><a href="#2-1-array-list">2-1) Array / List</a></li><li class="toc-sub"><a href="#2-2-hash-map-hash-set">2-2) Hash Map / Hash Set</a></li><li class="toc-sub"><a href="#2-3-stack-queue-deque">2-3) Stack / Queue / Deque</a></li><li class="toc-sub"><a href="#2-4-heap-priority-queue">2-4) Heap (Priority Queue)</a></li><li class="toc-sub"><a href="#2-5-binary-search-tree-bst">2-5) Binary Search Tree (BST)</a></li><li class="toc-sub"><a href="#2-6-trie-prefix-tree">2-6) Trie (Prefix Tree)</a></li><li class="toc-sub"><a href="#2-7-graph">2-7) Graph</a></li><li class="toc-sub"><a href="#2-8-sorting-algorithms">2-8) Sorting Algorithms</a></li><li class="toc-sub"><a href="#2-9-dynamic-programming-classic-patterns">2-9) Dynamic Programming — Classic Patterns</a></li><li class="toc-sub"><a href="#2-10-binary-search-patterns">2-10) Binary Search — Patterns</a></li><li class="toc-sub"><a href="#2-11-tree-traversals">2-11) Tree Traversals</a></li><li><a href="#3-math-tricks-intuitions">3. Math Tricks &amp; Intuitions</a></li><li class="toc-sub"><a href="#3-1-geometric-series-why-n-n-2-n-4-2n-not-n-log-n">3-1) Geometric Series — Why N + N/2 + N/4 + … = 2N (NOT N log N!)</a></li><li class="toc-sub"><a href="#3-2-why-merge-sort-is-o-n-log-n-not-the-same-as-above">3-2) Why Merge Sort is O(N log N) — NOT the same as above</a></li><li class="toc-sub"><a href="#3-2b-case-study-lc-109-convert-sorted-list-to-bst-o-n-log-n-time-o-log-n-space">3-2b) Case Study: LC 109 — Convert Sorted List to BST (O(N log N) time, O(log N) space)</a></li><li class="toc-sub"><a href="#3-3-arithmetic-series-why-1-2-3-n-n-n-1-2-n-2">3-3) Arithmetic Series — Why 1 + 2 + 3 + … + N = N(N+1)/2 ≈ N²/2</a></li><li class="toc-sub"><a href="#3-4-logarithm-identities-for-complexity-analysis">3-4) Logarithm Identities (for complexity analysis)</a></li><li class="toc-sub"><a href="#3-5-powers-of-2-quick-reference">3-5) Powers of 2 — Quick Reference</a></li><li class="toc-sub"><a href="#3-6-harmonic-series-why-1-1-2-1-3-1-n-ln-n">3-6) Harmonic Series — Why 1 + 1/2 + 1/3 + … + 1/N ≈ ln(N)</a></li><li class="toc-sub"><a href="#3-7-counting-subsets-and-permutations">3-7) Counting Subsets and Permutations</a></li><li class="toc-sub"><a href="#3-8-recurrence-relations-master-theorem">3-8) Recurrence Relations — Master Theorem</a></li><li class="toc-sub"><a href="#3-9-ascii-tricks-for-character-problems">3-9) ASCII Tricks for Character Problems</a></li><li><a href="#4-classic-google-interview-problems-complexity-summary">4. Classic Google Interview Problems — Complexity Summary</a></li><li class="toc-sub"><a href="#tier-1-must-know">Tier 1: Must Know</a></li><li class="toc-sub"><a href="#tier-2-frequently-asked">Tier 2: Frequently Asked</a></li><li class="toc-sub"><a href="#tier-3-hard-follow-ups">Tier 3: Hard / Follow-ups</a></li><li><a href="#5-space-complexity-patterns">5. Space Complexity Patterns</a></li><li class="toc-sub"><a href="#stack-space-recursion">Stack Space (Recursion)</a></li><li class="toc-sub"><a href="#when-to-use-in-place-algorithms">When to Use In-Place Algorithms</a></li><li class="toc-sub"><a href="#space-time-tradeoffs">Space-Time Tradeoffs</a></li><li><a href="#6-interview-decision-guide">6. Interview Decision Guide</a></li><li><a href="#7-quick-sanity-checks">7. Quick Sanity Checks</a></li></ul></div>
+      <div class="cheatsheet-content">
+        <h1 id="complexity-cheatsheet-classic-algorithms-data-structures" tabindex="-1"><a class="header-anchor" href="#complexity-cheatsheet-classic-algorithms-data-structures"><span>Complexity Cheatsheet — Classic Algorithms &amp; Data Structures</span></a></h1>
+<blockquote>
+<p>Target: Google SWE interview preparation
+Covers: Time/Space complexity, classic LC problems, and math intuitions</p>
+</blockquote>
+<hr>
+<h2 id="1-big-o-quick-reference" tabindex="-1"><a class="header-anchor" href="#1-big-o-quick-reference"><span>1. Big-O Quick Reference</span></a></h2>
+<pre><code>O(1) &lt; O(log N) &lt; O(√N) &lt; O(N) &lt; O(N log N) &lt; O(N²) &lt; O(N³) &lt; O(2^N) &lt; O(N!)
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>Complexity</th>
+<th>Name</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>O(1)</td>
+<td>Constant</td>
+<td>Array index, HashMap get/put</td>
+</tr>
+<tr>
+<td>O(log N)</td>
+<td>Logarithmic</td>
+<td>Binary search, BST ops</td>
+</tr>
+<tr>
+<td>O(√N)</td>
+<td>Root</td>
+<td>Trial division, sieve block</td>
+</tr>
+<tr>
+<td>O(N)</td>
+<td>Linear</td>
+<td>Single loop, DFS/BFS</td>
+</tr>
+<tr>
+<td>O(N log N)</td>
+<td>Linearithmic</td>
+<td>Merge sort, heap sort</td>
+</tr>
+<tr>
+<td>O(N²)</td>
+<td>Quadratic</td>
+<td>Bubble/selection/insertion sort, nested loops</td>
+</tr>
+<tr>
+<td>O(N³)</td>
+<td>Cubic</td>
+<td>Floyd-Warshall, naive matrix multiply</td>
+</tr>
+<tr>
+<td>O(2^N)</td>
+<td>Exponential</td>
+<td>Subsets, Fibonacci naive</td>
+</tr>
+<tr>
+<td>O(N!)</td>
+<td>Factorial</td>
+<td>Permutations</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="2-data-structures-time-space-complexity" tabindex="-1"><a class="header-anchor" href="#2-data-structures-time-space-complexity"><span>2. Data Structures — Time &amp; Space Complexity</span></a></h2>
+<h3 id="2-1-array-list" tabindex="-1"><a class="header-anchor" href="#2-1-array-list"><span>2-1) Array / List</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>Operation</th>
+<th>Time</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Access <code>arr[i]</code></td>
+<td>O(1)</td>
+<td>Random access</td>
+</tr>
+<tr>
+<td>Search (unsorted)</td>
+<td>O(N)</td>
+<td>Linear scan</td>
+</tr>
+<tr>
+<td>Search (sorted)</td>
+<td>O(log N)</td>
+<td>Binary search</td>
+</tr>
+<tr>
+<td>Insert at end</td>
+<td>O(1) amortized</td>
+<td>Dynamic array resize</td>
+</tr>
+<tr>
+<td>Insert at index</td>
+<td>O(N)</td>
+<td>Shift elements</td>
+</tr>
+<tr>
+<td>Delete at index</td>
+<td>O(N)</td>
+<td>Shift elements</td>
+</tr>
+<tr>
+<td>Delete at end</td>
+<td>O(1)</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Space:</strong> O(N)</p>
+<hr>
+<h3 id="2-2-hash-map-hash-set" tabindex="-1"><a class="header-anchor" href="#2-2-hash-map-hash-set"><span>2-2) Hash Map / Hash Set</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>Operation</th>
+<th>Average</th>
+<th>Worst (collision)</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Insert</td>
+<td>O(1)</td>
+<td>O(N)</td>
+<td>Good hash function assumed</td>
+</tr>
+<tr>
+<td>Delete</td>
+<td>O(1)</td>
+<td>O(N)</td>
+<td></td>
+</tr>
+<tr>
+<td>Search</td>
+<td>O(1)</td>
+<td>O(N)</td>
+<td></td>
+</tr>
+<tr>
+<td>Iteration</td>
+<td>O(N)</td>
+<td>O(N)</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Space:</strong> O(N)</p>
+<p><strong>Classic LC:</strong></p>
+<ul>
+<li>LC 1 Two Sum — O(N) time, O(N) space</li>
+<li>LC 49 Group Anagrams — O(N·K) time, O(N·K) space (K = avg word len)</li>
+<li>LC 128 Longest Consecutive Sequence — O(N) time, O(N) space</li>
+</ul>
+<hr>
+<h3 id="2-3-stack-queue-deque" tabindex="-1"><a class="header-anchor" href="#2-3-stack-queue-deque"><span>2-3) Stack / Queue / Deque</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>Operation</th>
+<th>Time</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Push / Enqueue</td>
+<td>O(1)</td>
+<td></td>
+</tr>
+<tr>
+<td>Pop / Dequeue</td>
+<td>O(1)</td>
+<td></td>
+</tr>
+<tr>
+<td>Peek</td>
+<td>O(1)</td>
+<td></td>
+</tr>
+<tr>
+<td>Search</td>
+<td>O(N)</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Space:</strong> O(N)</p>
+<p><strong>Classic LC:</strong></p>
+<ul>
+<li>LC 20 Valid Parentheses — O(N) time, O(N) space</li>
+<li>LC 84 Largest Rectangle in Histogram — O(N) time, O(N) space (monotonic stack)</li>
+<li>LC 155 Min Stack — O(1) all ops, O(N) space</li>
+</ul>
+<hr>
+<h3 id="2-4-heap-priority-queue" tabindex="-1"><a class="header-anchor" href="#2-4-heap-priority-queue"><span>2-4) Heap (Priority Queue)</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>Operation</th>
+<th>Time</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Insert (heappush)</td>
+<td>O(log N)</td>
+<td>Bubble up</td>
+</tr>
+<tr>
+<td>Extract min/max</td>
+<td>O(log N)</td>
+<td>Bubble down</td>
+</tr>
+<tr>
+<td>Peek min/max</td>
+<td>O(1)</td>
+<td></td>
+</tr>
+<tr>
+<td>Build heap (heapify)</td>
+<td><strong>O(N)</strong></td>
+<td>NOT O(N log N) — see math section</td>
+</tr>
+<tr>
+<td>Heap sort</td>
+<td>O(N log N)</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Space:</strong> O(N)</p>
+<p><strong>Classic LC:</strong></p>
+<ul>
+<li>LC 215 Kth Largest Element — O(N log K) time, O(K) space</li>
+<li>LC 347 Top K Frequent Elements — O(N log K) time, O(N) space</li>
+<li>LC 23 Merge K Sorted Lists — O(N log K) time, O(K) space (N = total nodes)</li>
+<li>LC 295 Find Median from Data Stream — O(log N) insert, O(1) median</li>
+</ul>
+<hr>
+<h3 id="2-5-binary-search-tree-bst" tabindex="-1"><a class="header-anchor" href="#2-5-binary-search-tree-bst"><span>2-5) Binary Search Tree (BST)</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>Operation</th>
+<th>Average</th>
+<th>Worst (skewed)</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Search</td>
+<td>O(log N)</td>
+<td>O(N)</td>
+<td></td>
+</tr>
+<tr>
+<td>Insert</td>
+<td>O(log N)</td>
+<td>O(N)</td>
+<td></td>
+</tr>
+<tr>
+<td>Delete</td>
+<td>O(log N)</td>
+<td>O(N)</td>
+<td></td>
+</tr>
+<tr>
+<td>In-order traversal</td>
+<td>O(N)</td>
+<td>O(N)</td>
+<td>Sorted output</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Space:</strong> O(N) storage, O(H) recursion stack (H = height)</p>
+<p><strong>Balanced BST (AVL, Red-Black):</strong> all ops guaranteed O(log N)</p>
+<hr>
+<h3 id="2-6-trie-prefix-tree" tabindex="-1"><a class="header-anchor" href="#2-6-trie-prefix-tree"><span>2-6) Trie (Prefix Tree)</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>Operation</th>
+<th>Time</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Insert</td>
+<td>O(M)</td>
+<td>M = word length</td>
+</tr>
+<tr>
+<td>Search</td>
+<td>O(M)</td>
+<td></td>
+</tr>
+<tr>
+<td>Prefix search</td>
+<td>O(M)</td>
+<td></td>
+</tr>
+<tr>
+<td>Delete</td>
+<td>O(M)</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Space:</strong> O(ALPHABET_SIZE × M × N) — N words of avg length M</p>
+<p><strong>Classic LC:</strong></p>
+<ul>
+<li>LC 208 Implement Trie — O(M) ops, O(26·M·N) space</li>
+<li>LC 212 Word Search II — O(M·N·4·3^(L-1)) time (M×N grid, L = word len)</li>
+<li>LC 720 Longest Word in Dictionary — O(N log N + N·M)</li>
+</ul>
+<hr>
+<h3 id="2-7-graph" tabindex="-1"><a class="header-anchor" href="#2-7-graph"><span>2-7) Graph</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>Representation</th>
+<th>Space</th>
+<th>Edge lookup</th>
+<th>Add edge</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Adjacency Matrix</td>
+<td>O(V²)</td>
+<td>O(1)</td>
+<td>O(1)</td>
+</tr>
+<tr>
+<td>Adjacency List</td>
+<td>O(V+E)</td>
+<td>O(degree)</td>
+<td>O(1)</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Algorithm</th>
+<th>Time</th>
+<th>Space</th>
+<th>Use Case</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>BFS</td>
+<td>O(V+E)</td>
+<td>O(V)</td>
+<td>Shortest path (unweighted)</td>
+</tr>
+<tr>
+<td>DFS</td>
+<td>O(V+E)</td>
+<td>O(V)</td>
+<td>Cycle detection, topo sort</td>
+</tr>
+<tr>
+<td>Dijkstra (min-heap)</td>
+<td>O((V+E) log V)</td>
+<td>O(V)</td>
+<td>Shortest path (non-negative weights)</td>
+</tr>
+<tr>
+<td>Bellman-Ford</td>
+<td>O(V·E)</td>
+<td>O(V)</td>
+<td>Negative weights</td>
+</tr>
+<tr>
+<td>Floyd-Warshall</td>
+<td>O(V³)</td>
+<td>O(V²)</td>
+<td>All-pairs shortest path</td>
+</tr>
+<tr>
+<td>Topological Sort (DFS/BFS)</td>
+<td>O(V+E)</td>
+<td>O(V)</td>
+<td>DAG ordering</td>
+</tr>
+<tr>
+<td>Union-Find</td>
+<td>O(α(N)) ≈ O(1)</td>
+<td>O(N)</td>
+<td>Connectivity, MST</td>
+</tr>
+<tr>
+<td>Prim’s MST</td>
+<td>O(E log V)</td>
+<td>O(V)</td>
+<td>Minimum spanning tree</td>
+</tr>
+<tr>
+<td>Kruskal’s MST</td>
+<td>O(E log E)</td>
+<td>O(V)</td>
+<td>Minimum spanning tree</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Classic LC:</strong></p>
+<ul>
+<li>LC 200 Number of Islands — O(M·N) time, O(M·N) space</li>
+<li>LC 207 Course Schedule — O(V+E), cycle detection</li>
+<li>LC 743 Network Delay Time — O((V+E) log V) Dijkstra</li>
+<li>LC 684 Redundant Connection — O(N·α(N)) Union-Find</li>
+</ul>
+<hr>
+<h3 id="2-8-sorting-algorithms" tabindex="-1"><a class="header-anchor" href="#2-8-sorting-algorithms"><span>2-8) Sorting Algorithms</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>Algorithm</th>
+<th>Best</th>
+<th>Average</th>
+<th>Worst</th>
+<th>Space</th>
+<th>Stable?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Bubble Sort</td>
+<td>O(N)</td>
+<td>O(N²)</td>
+<td>O(N²)</td>
+<td>O(1)</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>Selection Sort</td>
+<td>O(N²)</td>
+<td>O(N²)</td>
+<td>O(N²)</td>
+<td>O(1)</td>
+<td>No</td>
+</tr>
+<tr>
+<td>Insertion Sort</td>
+<td>O(N)</td>
+<td>O(N²)</td>
+<td>O(N²)</td>
+<td>O(1)</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>Merge Sort</td>
+<td>O(N log N)</td>
+<td>O(N log N)</td>
+<td>O(N log N)</td>
+<td>O(N)</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>Quick Sort</td>
+<td>O(N log N)</td>
+<td>O(N log N)</td>
+<td>O(N²)</td>
+<td>O(log N)</td>
+<td>No</td>
+</tr>
+<tr>
+<td>Heap Sort</td>
+<td>O(N log N)</td>
+<td>O(N log N)</td>
+<td>O(N log N)</td>
+<td>O(1)</td>
+<td>No</td>
+</tr>
+<tr>
+<td>Counting Sort</td>
+<td>O(N+K)</td>
+<td>O(N+K)</td>
+<td>O(N+K)</td>
+<td>O(K)</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>Radix Sort</td>
+<td>O(N·d)</td>
+<td>O(N·d)</td>
+<td>O(N·d)</td>
+<td>O(N+K)</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>Tim Sort (Python/Java)</td>
+<td>O(N)</td>
+<td>O(N log N)</td>
+<td>O(N log N)</td>
+<td>O(N)</td>
+<td>Yes</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h3 id="2-9-dynamic-programming-classic-patterns" tabindex="-1"><a class="header-anchor" href="#2-9-dynamic-programming-classic-patterns"><span>2-9) Dynamic Programming — Classic Patterns</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>Problem Type</th>
+<th>Time</th>
+<th>Space</th>
+<th>Optimizable?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1D DP (Fibonacci, climb stairs)</td>
+<td>O(N)</td>
+<td>O(N) → O(1) with rolling var</td>
+<td></td>
+</tr>
+<tr>
+<td>2D DP (LCS, edit distance)</td>
+<td>O(M·N)</td>
+<td>O(M·N) → O(N) rolling row</td>
+<td></td>
+</tr>
+<tr>
+<td>Knapsack 0/1</td>
+<td>O(N·W)</td>
+<td>O(N·W) → O(W)</td>
+<td></td>
+</tr>
+<tr>
+<td>Coin Change</td>
+<td>O(N·amount)</td>
+<td>O(amount)</td>
+<td></td>
+</tr>
+<tr>
+<td>Longest Increasing Subsequence</td>
+<td>O(N²) or O(N log N)</td>
+<td>O(N)</td>
+<td></td>
+</tr>
+<tr>
+<td>Matrix Chain Multiplication</td>
+<td>O(N³)</td>
+<td>O(N²)</td>
+<td></td>
+</tr>
+<tr>
+<td>String palindrome DP</td>
+<td>O(N²)</td>
+<td>O(N²) → O(N)</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Classic LC:</strong></p>
+<ul>
+<li>LC 70 Climbing Stairs — O(N) time, O(1) space</li>
+<li>LC 322 Coin Change — O(N·amount) time, O(amount) space</li>
+<li>LC 300 LIS — O(N log N) with patience sort</li>
+<li>LC 72 Edit Distance — O(M·N) time, O(min(M,N)) space</li>
+<li>LC 1143 LCS — O(M·N) time, O(M·N) space</li>
+</ul>
+<hr>
+<h3 id="2-10-binary-search-patterns" tabindex="-1"><a class="header-anchor" href="#2-10-binary-search-patterns"><span>2-10) Binary Search — Patterns</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>Pattern</th>
+<th>Time</th>
+<th>Space</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Standard binary search</td>
+<td>O(log N)</td>
+<td>O(1)</td>
+</tr>
+<tr>
+<td>Binary search on answer</td>
+<td>O(log(MAX) · f(N))</td>
+<td>O(1)</td>
+</tr>
+<tr>
+<td>Search in rotated sorted array</td>
+<td>O(log N)</td>
+<td>O(1)</td>
+</tr>
+<tr>
+<td>Find first/last occurrence</td>
+<td>O(log N)</td>
+<td>O(1)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Classic LC:</strong></p>
+<ul>
+<li>LC 704 Binary Search — O(log N)</li>
+<li>LC 33 Search in Rotated Sorted Array — O(log N)</li>
+<li>LC 162 Find Peak Element — O(log N)</li>
+<li>LC 410 Split Array Largest Sum — O(N · log(sum)) binary search on answer</li>
+</ul>
+<hr>
+<h3 id="2-11-tree-traversals" tabindex="-1"><a class="header-anchor" href="#2-11-tree-traversals"><span>2-11) Tree Traversals</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>Algorithm</th>
+<th>Time</th>
+<th>Space</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>DFS (in/pre/post-order)</td>
+<td>O(N)</td>
+<td>O(H)</td>
+<td>H = height, O(log N) balanced, O(N) skewed</td>
+</tr>
+<tr>
+<td>BFS (level-order)</td>
+<td>O(N)</td>
+<td>O(W)</td>
+<td>W = max width ≈ O(N/2) in last level</td>
+</tr>
+<tr>
+<td>Morris Traversal</td>
+<td>O(N)</td>
+<td>O(1)</td>
+<td>Space-optimal, modifies tree temporarily</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Classic LC:</strong></p>
+<ul>
+<li>LC 104 Max Depth of Binary Tree — O(N) time, O(H) space</li>
+<li>LC 102 Binary Tree Level Order — O(N) time, O(W) space</li>
+<li>LC 236 LCA of Binary Tree — O(N) time, O(H) space</li>
+<li>LC 124 Binary Tree Max Path Sum — O(N) time, O(H) space</li>
+</ul>
+<hr>
+<h2 id="3-math-tricks-intuitions" tabindex="-1"><a class="header-anchor" href="#3-math-tricks-intuitions"><span>3. Math Tricks &amp; Intuitions</span></a></h2>
+<h3 id="3-1-geometric-series-why-n-n-2-n-4-2n-not-n-log-n" tabindex="-1"><a class="header-anchor" href="#3-1-geometric-series-why-n-n-2-n-4-2n-not-n-log-n"><span>3-1) Geometric Series — Why N + N/2 + N/4 + … = 2N (NOT N log N!)</span></a></h3>
+<pre><code>S = N + N/2 + N/4 + N/8 + ...
+  = N × (1 + 1/2 + 1/4 + 1/8 + ...)
+  = N × 1/(1 - 1/2)      ← geometric series formula: 1/(1-r) for |r| &lt; 1
+  = N × 2
+  = 2N
+</code></pre>
+<p><strong>→ O(N)</strong>, NOT O(N log N)</p>
+<p><strong>Why this matters in algorithms:</strong></p>
+<pre><code>Example: Heapify (build heap from array)
+  - Leaf level (N/2 nodes): 0 swaps each   → N/2 × 0
+  - Level above (N/4 nodes): 1 swap each   → N/4 × 1
+  - Level above (N/8 nodes): 2 swaps each  → N/8 × 2
+  - ...
+  - Root (1 node): log N swaps             → 1 × log N
+
+  Total = N/4 + 2·N/8 + 3·N/16 + ...
+        = N × (1/4 + 2/8 + 3/16 + ...) ≈ N
+  → O(N)  ← This is why heapify is O(N), not O(N log N)!
+</code></pre>
+<pre><code>Example: Segment tree build
+  - Leaf nodes: N
+  - Internal nodes: N - 1
+  - Work at each node: O(1)
+  → Total: O(N)
+</code></pre>
+<pre><code>Example: Amortized cost of dynamic array doubling
+  Insert N elements:
+  Copies at resizes: 1 + 2 + 4 + 8 + ... + N = 2N
+  → Amortized O(1) per insert
+</code></pre>
+<hr>
+<h3 id="3-2-why-merge-sort-is-o-n-log-n-not-the-same-as-above" tabindex="-1"><a class="header-anchor" href="#3-2-why-merge-sort-is-o-n-log-n-not-the-same-as-above"><span>3-2) Why Merge Sort is O(N log N) — NOT the same as above</span></a></h3>
+<pre><code>Level 0:   1 merge of size N     → N work
+Level 1:   2 merges of size N/2  → N work
+Level 2:   4 merges of size N/4  → N work
+...
+Level k:   2^k merges of size N/2^k → N work
+
+Total levels = log₂(N)
+Total work   = N × log₂(N)
+→ O(N log N)
+</code></pre>
+<p><strong>Key difference:</strong></p>
+<ul>
+<li>Geometric series: work <strong>halves</strong> each level → sum converges to 2N</li>
+<li>Merge sort: work <strong>stays the same</strong> each level → sum = N × levels = N log N</li>
+</ul>
+<pre><code>Geometric (converging):     Merge Sort (constant per level):
+Level 0:  N                 Level 0:  N
+Level 1:  N/2               Level 1:  N/2 + N/2 = N
+Level 2:  N/4               Level 2:  N/4+N/4+N/4+N/4 = N
+Level 3:  N/8               Level 3:  N
+...                         ...
+Sum ≈ 2N  ✓ O(N)            Sum = N × log N  ✓ O(N log N)
+</code></pre>
+<hr>
+<h3 id="3-2b-case-study-lc-109-convert-sorted-list-to-bst-o-n-log-n-time-o-log-n-space" tabindex="-1"><a class="header-anchor" href="#3-2b-case-study-lc-109-convert-sorted-list-to-bst-o-n-log-n-time-o-log-n-space"><span>3-2b) Case Study: LC 109 — Convert Sorted List to BST (O(N log N) time, O(log N) space)</span></a></h3>
+<blockquote>
+<p>This is the <strong>canonical example</strong> of the “N work per level × log N levels = O(N log N)” pattern,
+AND the classic illustration of why recursive space = tree height, NOT number of nodes.</p>
+</blockquote>
+<h4 id="why-time-o-n-log-n" tabindex="-1"><a class="header-anchor" href="#why-time-o-n-log-n"><span>Why Time = O(N log N)</span></a></h4>
+<p>The algorithm does two things:</p>
+<ol>
+<li>Find the middle node via <code>getNodeByIdx()</code> — scans from head each time → <strong>O(N)</strong></li>
+<li>Recursively build left and right subtrees</li>
+</ol>
+<p><strong>The expensive part:</strong> finding the middle node scans from head every call.</p>
+<pre><code>N = 8, getNodeByIdx(head, mid) ≈ O(N) per call
+
+Level 0:  build(0..7)                             → scan ~N    = N
+Level 1:  build(0..2) + build(4..7)               → N/2 + N/2  = N
+Level 2:  build(0..0)+build(2..2)+build(4..5)+... → N/4×4      = N
+Level 3:  8 leaf calls                             → N/8×8      = N
+</code></pre>
+<p>Visual:</p>
+<pre><code>                N
+           /         \
+        N/2           N/2
+       /   \         /   \
+     N/4   N/4    N/4   N/4
+</code></pre>
+<p>Each level = <strong>N total work</strong>. Number of levels = <strong>log N</strong> (balanced BST height).</p>
+<pre><code>Total = N + N + N + ... (log N times) = N × log N → O(N log N)
+</code></pre>
+<p><strong>Compare to geometric series (heapify):</strong></p>
+<pre><code>Heapify:        N/2 + N/4 + N/8 + ... = N  →  O(N)      (work HALVES per level)
+BST from list:  N   + N   + N   + ... = N log N → O(N log N) (work CONSTANT per level)
+</code></pre>
+<h4 id="why-space-o-log-n-recursion-stack-depth-not-number-of-nodes" tabindex="-1"><a class="header-anchor" href="#why-space-o-log-n-recursion-stack-depth-not-number-of-nodes"><span>Why Space = O(log N)  ← recursion stack depth, NOT number of nodes</span></a></h4>
+<p><strong>Key Rule:</strong></p>
+<pre><code>Space complexity for DFS recursion = maximum recursion stack depth
+                                    = tree height
+</code></pre>
+<p>Recursion does NOT hold both branches on the stack simultaneously.
+It goes <strong>one branch at a time</strong> (depth-first):</p>
+<pre><code>build(root)           ← frame 1 on stack
+  -&gt; build(left)      ← frame 2 on stack
+       -&gt; build(left) ← frame 3 on stack
+            -&gt; null   ← returns, pops frame 3
+</code></pre>
+<p><strong>Visual for N = 7 (sorted list: 1→2→3→4→5→6→7):</strong></p>
+<pre><code>Balanced BST built:
+        4
+      /   \
+     2     6
+    / \   / \
+   1   3 5   7
+
+Tree height = 3
+
+Max stack at any moment (going down leftmost path):
+  build(0,6)  → root 4   ← frame 1
+  build(0,2)  → root 2   ← frame 2
+  build(0,0)  → root 1   ← frame 3
+  build(0,-1) → null     ← frame 4, then returns
+
+Stack depth ≈ log₂(7) ≈ 3
+</code></pre>
+<p><strong>N vs height:</strong></p>
+<table>
+<thead>
+<tr>
+<th>N</th>
+<th>Height (stack depth)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>8</td>
+<td>3</td>
+</tr>
+<tr>
+<td>16</td>
+<td>4</td>
+</tr>
+<tr>
+<td>1,024</td>
+<td>10</td>
+</tr>
+<tr>
+<td>1,000,000</td>
+<td>~20</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Why NOT O(N)?</strong> O(N) stack only occurs with a <strong>skewed</strong> tree:</p>
+<pre><code>1
+ \
+  2
+   \
+    3       ← each node is a stack frame → O(N) depth
+     \
+      4
+</code></pre>
+<p>LC 109 always picks the <strong>middle</strong> → guaranteed balanced → stack depth = O(log N).</p>
+<h4 id="summary" tabindex="-1"><a class="header-anchor" href="#summary"><span>Summary</span></a></h4>
+<pre><code>Algorithm Variant              | Time        | Space    | How?
+-------------------------------|-------------|----------|--------------------------------------
+V0-1: getNodeByIdx (from head) | O(N log N)  | O(log N) | N scan × log N levels; balanced tree
+V0-2: slow/fast pointer        | O(N log N)  | O(log N) | O(N) per split × log N levels
+V0-3: in-order simulation      | O(N)        | O(log N) | advance pointer once per node (!)
+</code></pre>
+<blockquote>
+<p><strong>Interview tip:</strong> V0-3 (in-order simulation with a shared pointer) is the <strong>optimal O(N)</strong> approach.
+It avoids re-scanning by advancing the list pointer in sync with BST in-order traversal.</p>
+</blockquote>
+<pre><code>Interview rule of thumb for recursion:
+  Space = recursion stack depth
+  Balanced tree → O(log N)
+  Skewed tree   → O(N)
+  N work per level × log N levels → O(N log N)  ← &quot;merge sort&quot; pattern
+</code></pre>
+<hr>
+<h3 id="3-3-arithmetic-series-why-1-2-3-n-n-n-1-2-n-2" tabindex="-1"><a class="header-anchor" href="#3-3-arithmetic-series-why-1-2-3-n-n-n-1-2-n-2"><span>3-3) Arithmetic Series — Why 1 + 2 + 3 + … + N = N(N+1)/2 ≈ N²/2</span></a></h3>
+<pre><code>S = 1 + 2 + 3 + ... + N
+  = N(N+1)/2
+  ≈ N²/2
+  → O(N²)
+</code></pre>
+<p><strong>Where this appears:</strong></p>
+<pre><code>Bubble sort comparisons:
+  Round 1: N-1 comparisons
+  Round 2: N-2 comparisons
+  ...
+  Round N-1: 1 comparison
+  Total = (N-1) + (N-2) + ... + 1 = N(N-1)/2 → O(N²)
+
+Counting all pairs in array:
+  For each i, compare with all j &gt; i
+  Total pairs = N(N-1)/2 → O(N²)
+</code></pre>
+<hr>
+<h3 id="3-4-logarithm-identities-for-complexity-analysis" tabindex="-1"><a class="header-anchor" href="#3-4-logarithm-identities-for-complexity-analysis"><span>3-4) Logarithm Identities (for complexity analysis)</span></a></h3>
+<pre><code>log₂(N) ≈ ln(N) / 0.693           # log base conversion
+log₂(N²) = 2 log₂(N)              # power rule
+log₂(N·M) = log₂(N) + log₂(M)    # product rule
+log₂(2^N) = N                     # inverse
+
+2^(log₂ N) = N                    # inverse
+log₂(N!) ≈ N log₂ N  (Stirling)   # N! ≈ (N/e)^N × √(2πN)
+
+How many times can you halve N before reaching 1?
+  → log₂(N) times   (binary search, tree height)
+
+How many times can you double 1 before reaching N?
+  → log₂(N) times   (binary tree levels)
+</code></pre>
+<hr>
+<h3 id="3-5-powers-of-2-quick-reference" tabindex="-1"><a class="header-anchor" href="#3-5-powers-of-2-quick-reference"><span>3-5) Powers of 2 — Quick Reference</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>Expression</th>
+<th>Value</th>
+<th>Context</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2^10</td>
+<td>1,024 ≈ 10³</td>
+<td>1K</td>
+</tr>
+<tr>
+<td>2^20</td>
+<td>1,048,576 ≈ 10⁶</td>
+<td>1M</td>
+</tr>
+<tr>
+<td>2^30</td>
+<td>1,073,741,824 ≈ 10⁹</td>
+<td>1B</td>
+</tr>
+<tr>
+<td>2^32</td>
+<td>4,294,967,296 ≈ 4×10⁹</td>
+<td>int max</td>
+</tr>
+<tr>
+<td>2^63</td>
+<td>≈ 9.2×10¹⁸</td>
+<td>long max</td>
+</tr>
+<tr>
+<td>2^31 - 1</td>
+<td>2,147,483,647</td>
+<td>Integer.MAX_VALUE in Java</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Why this matters for complexity:</strong></p>
+<pre><code>N = 10^9 operations → too slow for 1 second (typical limit: 10^8 ops/sec)
+N = 10^6 → fine for O(N log N)
+N = 10^5 → fine for O(N²)... barely
+N = 20   → OK for O(2^N)
+N = 12   → OK for O(N!)
+</code></pre>
+<hr>
+<h3 id="3-6-harmonic-series-why-1-1-2-1-3-1-n-ln-n" tabindex="-1"><a class="header-anchor" href="#3-6-harmonic-series-why-1-1-2-1-3-1-n-ln-n"><span>3-6) Harmonic Series — Why 1 + 1/2 + 1/3 + … + 1/N ≈ ln(N)</span></a></h3>
+<pre><code>H(N) = 1 + 1/2 + 1/3 + ... + 1/N ≈ ln(N) ≈ O(log N)
+</code></pre>
+<p><strong>Where this appears:</strong></p>
+<pre><code>Sieve of Eratosthenes: O(N log log N)
+  - Cross out multiples of 2: N/2 ops
+  - Cross out multiples of 3: N/3 ops
+  - Cross out multiples of 5: N/5 ops
+  - Total ≈ N × (1/2 + 1/3 + 1/5 + ...) = N × log log N
+
+Average case of Quick Sort partitioning ≈ O(N log N)
+</code></pre>
+<hr>
+<h3 id="3-7-counting-subsets-and-permutations" tabindex="-1"><a class="header-anchor" href="#3-7-counting-subsets-and-permutations"><span>3-7) Counting Subsets and Permutations</span></a></h3>
+<pre><code>Subsets of N elements:       2^N
+Permutations of N elements:  N!
+Combinations C(N, K):        N! / (K! × (N-K)!)
+
+Stirling's approximation:    N! ≈ √(2πN) × (N/e)^N
+→ log(N!) ≈ N log N         (explains why permutation algos are O(N log N) in log space)
+</code></pre>
+<p><strong>Classic LC:</strong></p>
+<ul>
+<li>LC 78 Subsets — O(N × 2^N) time, O(N × 2^N) space</li>
+<li>LC 46 Permutations — O(N × N!) time, O(N!) space</li>
+<li>LC 77 Combinations — O(K × C(N,K)) time</li>
+</ul>
+<hr>
+<h3 id="3-8-recurrence-relations-master-theorem" tabindex="-1"><a class="header-anchor" href="#3-8-recurrence-relations-master-theorem"><span>3-8) Recurrence Relations — Master Theorem</span></a></h3>
+<p>For <code>T(N) = a·T(N/b) + f(N)</code>:</p>
+<pre><code>Compare f(N) vs N^(log_b(a)):
+
+Case 1: f(N) = O(N^(log_b(a) - ε))  →  T(N) = O(N^log_b(a))
+Case 2: f(N) = Θ(N^log_b(a))         →  T(N) = O(N^log_b(a) × log N)
+Case 3: f(N) = Ω(N^(log_b(a) + ε))  →  T(N) = O(f(N))
+</code></pre>
+<p><strong>Common examples:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Recurrence</th>
+<th>a</th>
+<th>b</th>
+<th>f(N)</th>
+<th>Result</th>
+<th>Algorithm</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>T(N) = 2T(N/2) + N</td>
+<td>2</td>
+<td>2</td>
+<td>N</td>
+<td>O(N log N)</td>
+<td>Merge Sort</td>
+</tr>
+<tr>
+<td>T(N) = 2T(N/2) + 1</td>
+<td>2</td>
+<td>2</td>
+<td>1</td>
+<td>O(N)</td>
+<td>Tree traversal</td>
+</tr>
+<tr>
+<td>T(N) = T(N/2) + 1</td>
+<td>1</td>
+<td>2</td>
+<td>1</td>
+<td>O(log N)</td>
+<td>Binary Search</td>
+</tr>
+<tr>
+<td>T(N) = T(N/2) + N</td>
+<td>1</td>
+<td>2</td>
+<td>N</td>
+<td>O(N)</td>
+<td>Certain divide &amp; conquer</td>
+</tr>
+<tr>
+<td>T(N) = 4T(N/2) + N</td>
+<td>4</td>
+<td>2</td>
+<td>N</td>
+<td>O(N²)</td>
+<td>Naive matrix multiply</td>
+</tr>
+<tr>
+<td>T(N) = 3T(N/2) + N²</td>
+<td>3</td>
+<td>2</td>
+<td>N²</td>
+<td>O(N²)</td>
+<td>Strassen-like</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h3 id="3-9-ascii-tricks-for-character-problems" tabindex="-1"><a class="header-anchor" href="#3-9-ascii-tricks-for-character-problems"><span>3-9) ASCII Tricks for Character Problems</span></a></h3>
+<pre><code>'a' - 'A' = 32     (difference between lowercase and uppercase)
+'a' = 97,  'A' = 65
+'z' = 122, 'Z' = 90
+'0' = 48,  '9' = 57
+
+Detect same letter different case:
+  Math.abs(char1 - char2) == 32   → O(1) check
+  (see LC 1544 Make The String Great)
+
+Convert case:
+  lowercase → uppercase:  c - 32  (or c &amp; ~32 or c ^ 32)
+  uppercase → lowercase:  c + 32  (or c | 32)
+
+Index in alphabet:
+  c - 'a'  (0-indexed: 'a'→0, 'b'→1, ..., 'z'→25)
+  c - 'A'  (same for uppercase)
+</code></pre>
+<hr>
+<h2 id="4-classic-google-interview-problems-complexity-summary" tabindex="-1"><a class="header-anchor" href="#4-classic-google-interview-problems-complexity-summary"><span>4. Classic Google Interview Problems — Complexity Summary</span></a></h2>
+<h3 id="tier-1-must-know" tabindex="-1"><a class="header-anchor" href="#tier-1-must-know"><span>Tier 1: Must Know</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC #</th>
+<th>Time</th>
+<th>Space</th>
+<th>Key Idea</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Two Sum</td>
+<td>1</td>
+<td>O(N)</td>
+<td>O(N)</td>
+<td>HashMap</td>
+</tr>
+<tr>
+<td>Valid Parentheses</td>
+<td>20</td>
+<td>O(N)</td>
+<td>O(N)</td>
+<td>Stack</td>
+</tr>
+<tr>
+<td>Merge Intervals</td>
+<td>56</td>
+<td>O(N log N)</td>
+<td>O(N)</td>
+<td>Sort + sweep</td>
+</tr>
+<tr>
+<td>LRU Cache</td>
+<td>146</td>
+<td>O(1) per op</td>
+<td>O(N)</td>
+<td>HashMap + DLL</td>
+</tr>
+<tr>
+<td>Binary Tree Level Order</td>
+<td>102</td>
+<td>O(N)</td>
+<td>O(W)</td>
+<td>BFS</td>
+</tr>
+<tr>
+<td>Number of Islands</td>
+<td>200</td>
+<td>O(M·N)</td>
+<td>O(M·N)</td>
+<td>DFS/BFS/Union-Find</td>
+</tr>
+<tr>
+<td>Course Schedule</td>
+<td>207</td>
+<td>O(V+E)</td>
+<td>O(V+E)</td>
+<td>Topological sort</td>
+</tr>
+<tr>
+<td>Clone Graph</td>
+<td>133</td>
+<td>O(V+E)</td>
+<td>O(V)</td>
+<td>BFS + HashMap</td>
+</tr>
+<tr>
+<td>Merge K Sorted Lists</td>
+<td>23</td>
+<td>O(N log K)</td>
+<td>O(K)</td>
+<td>Min-heap</td>
+</tr>
+<tr>
+<td>Kth Largest Element</td>
+<td>215</td>
+<td>O(N) avg</td>
+<td>O(1)</td>
+<td>QuickSelect</td>
+</tr>
+</tbody>
+</table>
+<h3 id="tier-2-frequently-asked" tabindex="-1"><a class="header-anchor" href="#tier-2-frequently-asked"><span>Tier 2: Frequently Asked</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC #</th>
+<th>Time</th>
+<th>Space</th>
+<th>Key Idea</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Longest Substring Without Repeating</td>
+<td>3</td>
+<td>O(N)</td>
+<td>O(min(N,Σ))</td>
+<td>Sliding window</td>
+</tr>
+<tr>
+<td>Word Ladder</td>
+<td>127</td>
+<td>O(M²·N)</td>
+<td>O(M²·N)</td>
+<td>BFS</td>
+</tr>
+<tr>
+<td>Trapping Rain Water</td>
+<td>42</td>
+<td>O(N)</td>
+<td>O(1)</td>
+<td>Two pointers</td>
+</tr>
+<tr>
+<td>Serialize/Deserialize Binary Tree</td>
+<td>297</td>
+<td>O(N)</td>
+<td>O(N)</td>
+<td>BFS or DFS</td>
+</tr>
+<tr>
+<td>Find Median from Data Stream</td>
+<td>295</td>
+<td>O(log N)</td>
+<td>O(N)</td>
+<td>Two heaps</td>
+</tr>
+<tr>
+<td>Alien Dictionary</td>
+<td>269</td>
+<td>O©</td>
+<td>O(1)</td>
+<td>Topological sort</td>
+</tr>
+<tr>
+<td>Regular Expression Matching</td>
+<td>10</td>
+<td>O(M·N)</td>
+<td>O(M·N)</td>
+<td>DP</td>
+</tr>
+<tr>
+<td>Word Break</td>
+<td>139</td>
+<td>O(N²)</td>
+<td>O(N)</td>
+<td>DP</td>
+</tr>
+<tr>
+<td>Decode Ways</td>
+<td>91</td>
+<td>O(N)</td>
+<td>O(1)</td>
+<td>DP</td>
+</tr>
+<tr>
+<td>Coin Change</td>
+<td>322</td>
+<td>O(N·amount)</td>
+<td>O(amount)</td>
+<td>DP</td>
+</tr>
+</tbody>
+</table>
+<h3 id="tier-3-hard-follow-ups" tabindex="-1"><a class="header-anchor" href="#tier-3-hard-follow-ups"><span>Tier 3: Hard / Follow-ups</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC #</th>
+<th>Time</th>
+<th>Space</th>
+<th>Key Idea</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Median of Two Sorted Arrays</td>
+<td>4</td>
+<td>O(log(M+N))</td>
+<td>O(1)</td>
+<td>Binary search</td>
+</tr>
+<tr>
+<td>Sliding Window Maximum</td>
+<td>239</td>
+<td>O(N)</td>
+<td>O(K)</td>
+<td>Monotonic deque</td>
+</tr>
+<tr>
+<td>Largest Rectangle in Histogram</td>
+<td>84</td>
+<td>O(N)</td>
+<td>O(N)</td>
+<td>Monotonic stack</td>
+</tr>
+<tr>
+<td>Word Search II</td>
+<td>212</td>
+<td>O(M·N·4·3^(L-1))</td>
+<td>O(L)</td>
+<td>Trie + DFS</td>
+</tr>
+<tr>
+<td>Minimum Window Substring</td>
+<td>76</td>
+<td>O(N+M)</td>
+<td>O(Σ)</td>
+<td>Sliding window</td>
+</tr>
+<tr>
+<td>Binary Tree Maximum Path Sum</td>
+<td>124</td>
+<td>O(N)</td>
+<td>O(H)</td>
+<td>DFS post-order</td>
+</tr>
+<tr>
+<td>Longest Increasing Subsequence</td>
+<td>300</td>
+<td>O(N log N)</td>
+<td>O(N)</td>
+<td>Patience sort</td>
+</tr>
+<tr>
+<td>Jump Game II</td>
+<td>45</td>
+<td>O(N)</td>
+<td>O(1)</td>
+<td>Greedy</td>
+</tr>
+<tr>
+<td>Text Justification</td>
+<td>68</td>
+<td>O(N·W)</td>
+<td>O(W)</td>
+<td>Greedy simulation</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="5-space-complexity-patterns" tabindex="-1"><a class="header-anchor" href="#5-space-complexity-patterns"><span>5. Space Complexity Patterns</span></a></h2>
+<h3 id="stack-space-recursion" tabindex="-1"><a class="header-anchor" href="#stack-space-recursion"><span>Stack Space (Recursion)</span></a></h3>
+<pre><code>Balanced BST / heap:     O(log N)  ← tree height
+Skewed BST / linked list: O(N)     ← degenerates to linear
+General graph DFS:        O(V)
+</code></pre>
+<h3 id="when-to-use-in-place-algorithms" tabindex="-1"><a class="header-anchor" href="#when-to-use-in-place-algorithms"><span>When to Use In-Place Algorithms</span></a></h3>
+<pre><code>O(1) extra space tricks:
+  - Two pointers (reverse array, palindrome)
+  - Floyd's cycle detection
+  - Morris tree traversal
+  - Partition in-place (quick sort, Dutch flag)
+  - Bit manipulation for visited flags (if N ≤ 64)
+</code></pre>
+<h3 id="space-time-tradeoffs" tabindex="-1"><a class="header-anchor" href="#space-time-tradeoffs"><span>Space-Time Tradeoffs</span></a></h3>
+<pre><code>Problem                 | Naive Space | Optimized Space | Time Trade-off
+------------------------|-------------|-----------------|---------------
+DP (2D → 1D rolling)   | O(M·N)      | O(N)            | Same time
+Memoization → Bottom-up| O(N) stack  | O(1) or O(N)    | Same time
+Fibonacci               | O(N)        | O(1)            | Same O(N)
+KMP vs Naive search     | O(M)        | —               | O(N+M) vs O(N·M)
+</code></pre>
+<hr>
+<h2 id="6-interview-decision-guide" tabindex="-1"><a class="header-anchor" href="#6-interview-decision-guide"><span>6. Interview Decision Guide</span></a></h2>
+<pre><code>Input Size → Reasonable Complexity:
+
+N ≤ 10        → O(N!) or O(2^N)     backtracking, all permutations
+N ≤ 20        → O(2^N)              bitmask DP, subsets
+N ≤ 100       → O(N³)               Floyd-Warshall, 3-loop DP
+N ≤ 1,000     → O(N²)               nested loops, naive DP
+N ≤ 100,000   → O(N log N)          sorting, heap, balanced BST
+N ≤ 1,000,000 → O(N) or O(N log N) single/two pass, sliding window
+N ≤ 10^9      → O(log N) or O(√N)  binary search, math tricks
+</code></pre>
+<hr>
+<h2 id="7-quick-sanity-checks" tabindex="-1"><a class="header-anchor" href="#7-quick-sanity-checks"><span>7. Quick Sanity Checks</span></a></h2>
+<pre><code>1. O(N log N) sort first → enables O(N) or O(log N) operations after
+2. Two passes O(N) each = still O(N)
+3. Nested loops with early break ≠ necessarily O(N²)
+4. Recursion depth × work per call = space × time relationship
+5. BFS uses O(W) space; DFS uses O(H) space — choose based on graph shape
+6. HashMap insert/lookup = O(1) avg but O(N) worst — mention in interview
+7. N + N/2 + N/4 + ... = 2N = O(N)  ← geometric series always converges!
+8. Heapify = O(N),  building heap by N inserts = O(N log N)  ← different!
+</code></pre>
+
+      </div>
+      <div class="cheatsheet-footer">
+        <a href="../cheatsheets.html" class="back-link">← Back to Cheat Sheets</a>
+        <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/complexity_cheatsheet.md" class="github-edit" target="_blank">
+          Edit on GitHub →
+        </a>
+      </div>
+    <nav class="prev-next"><a href="combinatorics_math_patterns.html" class="prev-link">← Combinatorics Math Patterns</a><a href="complexity_drills.html" class="next-link">Complexity Drills →</a></nav>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>CS_basics - Computer Science Fundamentals & Interview Preparation</p>
+      <p>
+        <a href="https://github.com/yennanliu/CS_basics">GitHub</a> •
+        <a href="https://github.com/yennanliu/CS_basics/tree/master/doc">Documentation</a> •
+        <a href="https://github.com/yennanliu/CS_basics/issues">Report Issues</a>
+      </p>
+    </div>
+  </footer>
+</body>
+</html>

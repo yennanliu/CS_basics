@@ -1,0 +1,380 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Diff Toposort Quickunion - CS_basics</title>
+  <meta name="description" content="Computer Science fundamentals: algorithms, data structures, system design, and LeetCode solutions">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>CS</text></svg>">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="../vendor/fonts.css">
+  <link rel="stylesheet" href="../vendor/highlight/github-dark.min.css">
+  <script src="../vendor/highlight/highlight.min.js"></script>
+  <script>
+  // Apply theme before render to prevent flash
+  (function() {
+    var saved = localStorage.getItem('theme');
+    if (saved === 'dark' || (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      document.documentElement.setAttribute('data-theme', 'dark');
+    }
+  })();
+  </script>
+  <script>document.addEventListener('DOMContentLoaded', function() {
+    hljs.highlightAll();
+    document.querySelectorAll('pre code').forEach(function(codeEl) {
+      var pre = codeEl.parentElement;
+      var lang = '';
+      var cls = codeEl.className || '';
+      var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
+      if (m) lang = m[1];
+      var wrapper = document.createElement('div');
+      wrapper.className = 'code-block-wrapper';
+      pre.parentNode.insertBefore(wrapper, pre);
+      var header = document.createElement('div');
+      header.className = 'code-block-header';
+      if (lang) {
+        var label = document.createElement('span');
+        label.className = 'code-lang-label';
+        label.textContent = lang;
+        header.appendChild(label);
+      } else {
+        header.appendChild(document.createElement('span'));
+      }
+      var btn = document.createElement('button');
+      btn.className = 'copy-btn';
+      btn.textContent = 'Copy';
+      btn.addEventListener('click', function() {
+        navigator.clipboard.writeText(codeEl.textContent).then(function() {
+          btn.textContent = 'Copied!';
+          btn.classList.add('copied');
+          setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+        });
+      });
+      header.appendChild(btn);
+      wrapper.appendChild(header);
+      wrapper.appendChild(pre);
+    });
+    document.querySelectorAll('table').forEach(function(table) {
+      if (!table.parentElement.classList.contains('table-wrap')) {
+        var wrapper = document.createElement('div');
+        wrapper.className = 'table-wrap';
+        table.parentNode.insertBefore(wrapper, table);
+        wrapper.appendChild(table);
+      }
+    });
+    // Reading progress bar
+    var progressBar = document.getElementById('reading-progress');
+    if (progressBar) {
+      window.addEventListener('scroll', function() {
+        var winScroll = document.documentElement.scrollTop;
+        var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        progressBar.style.width = height > 0 ? (winScroll / height * 100) + '%' : '0%';
+      });
+    }
+    // Dark mode toggle
+    var toggle = document.getElementById('theme-toggle');
+    if (toggle) {
+      var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      toggle.textContent = isDark ? '☀️' : '🌙';
+      toggle.addEventListener('click', function() {
+        var dark = document.documentElement.getAttribute('data-theme') === 'dark';
+        if (dark) {
+          document.documentElement.removeAttribute('data-theme');
+          localStorage.setItem('theme', 'light');
+          toggle.textContent = '🌙';
+        } else {
+          document.documentElement.setAttribute('data-theme', 'dark');
+          localStorage.setItem('theme', 'dark');
+          toggle.textContent = '☀️';
+        }
+      });
+    }
+  });</script>
+</head>
+<body>
+  <div class="progress-container"><div class="progress-bar" id="reading-progress"></div></div>
+  <nav class="navbar">
+    <div class="container">
+      <div class="nav-brand">
+        <span class="nav-icon">💻</span>
+        <span class="nav-title">CS_basics</span>
+      </div>
+      <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+      <div class="nav-links">
+        <a href="../index.html" class="">Home</a>
+        <a href="../cheatsheets.html" class="active">Cheat Sheets</a>
+        <a href="../patterns.html" class="">Pattern Recognition</a>
+        <a href="../faqs.html" class="">FAQs</a>
+        <a href="../resources.html" class="">Resources</a>
+        <a href="../lc-explorer.html" class="">LC Explorer</a>
+        <a href="../lc-random-picker.html" class="">🎲 Random Picker</a>
+        <a href="../algo_demo/index.html" class="">Visualizer</a>
+        <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">&#127769;</button>
+        <a href="https://github.com/yennanliu/CS_basics" target="_blank" class="github-link" aria-label="GitHub">
+          <svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor">
+            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container">
+    <div class="content">
+      
+      <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">Diff Toposort Quickunion</span></nav>
+      <div class="cheatsheet-header">
+        <h1>Diff Toposort Quickunion</h1>
+        <span class="last-updated">Last updated: Apr 27, 2025</span>
+      </div>
+      
+      <div class="cheatsheet-content">
+        <h1 id="quick-comparison-topological-sort-vs-quick-union" tabindex="-1"><a class="header-anchor" href="#quick-comparison-topological-sort-vs-quick-union"><span>Quick Comparison: Topological Sort vs Quick Union</span></a></h1>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">Feature</th>
+<th style="text-align:left">Topological Sort</th>
+<th style="text-align:left">Quick Union (Disjoint Set Union)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">Purpose</td>
+<td style="text-align:left"><strong>Order nodes</strong> respecting dependency (<strong>DAGs</strong> only)</td>
+<td style="text-align:left"><strong>Find connected components</strong> and <strong>detect cycles</strong> (<strong>undirected graphs</strong>)</td>
+</tr>
+<tr>
+<td style="text-align:left">Works on</td>
+<td style="text-align:left"><strong>Directed graphs (DAGs)</strong></td>
+<td style="text-align:left"><strong>Undirected graphs</strong></td>
+</tr>
+<tr>
+<td style="text-align:left">Detects cycle?</td>
+<td style="text-align:left">✅ (if cannot topologically sort, cycle detected)</td>
+<td style="text-align:left">✅ (when two nodes already share a parent, cycle detected)</td>
+</tr>
+<tr>
+<td style="text-align:left">Handles direction of edges?</td>
+<td style="text-align:left">✅ (Direction matters: <code>u ➔ v</code>)</td>
+<td style="text-align:left">❌ (Ignores direction: just connected or not)</td>
+</tr>
+<tr>
+<td style="text-align:left">Output</td>
+<td style="text-align:left">Ordered list of nodes (<code>[u, v, w]</code>)</td>
+<td style="text-align:left">Connected components or cycle detection</td>
+</tr>
+<tr>
+<td style="text-align:left">Common Use Cases</td>
+<td style="text-align:left">Course scheduling, build systems, dependency resolution</td>
+<td style="text-align:left">Kruskal’s MST, dynamic connectivity, union-find problems</td>
+</tr>
+<tr>
+<td style="text-align:left">Time Complexity</td>
+<td style="text-align:left">O(V + E)</td>
+<td style="text-align:left">Nearly O(1) per operation (amortized with path compression)</td>
+</tr>
+<tr>
+<td style="text-align:left">Space Complexity</td>
+<td style="text-align:left">O(V + E)</td>
+<td style="text-align:left">O(V)</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h1 id="conceptual-difference" tabindex="-1"><a class="header-anchor" href="#conceptual-difference"><span>🏩 Conceptual Difference</span></a></h1>
+<table>
+<thead>
+<tr>
+<th style="text-align:left"></th>
+<th style="text-align:left">Topological Sort</th>
+<th style="text-align:left">Quick Union</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">Respect dependency order</td>
+<td style="text-align:left">✅</td>
+<td style="text-align:left">❌</td>
+</tr>
+<tr>
+<td style="text-align:left">Is everything connected?</td>
+<td style="text-align:left">❌</td>
+<td style="text-align:left">✅</td>
+</tr>
+<tr>
+<td style="text-align:left">Detects directed cycles?</td>
+<td style="text-align:left">✅</td>
+<td style="text-align:left">❌</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h1 id="algorithm-core-ideas" tabindex="-1"><a class="header-anchor" href="#algorithm-core-ideas"><span>⚙️ Algorithm Core Ideas</span></a></h1>
+<h2 id="topological-sort-for-dags" tabindex="-1"><a class="header-anchor" href="#topological-sort-for-dags"><span>➔ Topological Sort (for DAGs)</span></a></h2>
+<ul>
+<li>Think <strong>assembly line</strong>:
+<ul>
+<li>Can’t assemble a car until frame is ready.</li>
+</ul>
+</li>
+<li>Process nodes with no incoming edges first.</li>
+<li>If you ever get stuck (nodes still left but no “zero indegree” node), <strong>cycle detected</strong>.</li>
+</ul>
+<p>Two common ways:</p>
+<ul>
+<li><strong>BFS</strong> with indegree array.</li>
+<li><strong>DFS</strong> with recursion + post-order.</li>
+</ul>
+<hr>
+<h2 id="quick-union-disjoint-set-union" tabindex="-1"><a class="header-anchor" href="#quick-union-disjoint-set-union"><span>➔ Quick Union (Disjoint Set Union)</span></a></h2>
+<ul>
+<li>Think <strong>friend groups</strong>:
+<ul>
+<li>If Alice knows Bob, Bob knows Charlie → one group.</li>
+</ul>
+</li>
+<li>Each node points to a <em>parent</em>.</li>
+<li>If two nodes already have the same root → <strong>cycle detected</strong> (for undirected graphs).</li>
+<li>Heavily optimized with:
+<ul>
+<li><strong>Path Compression</strong> (flatten tree during find)</li>
+<li><strong>Union by Rank/Size</strong> (attach smaller tree under larger one)</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h1 id="visual-example" tabindex="-1"><a class="header-anchor" href="#visual-example"><span>🚀 Visual Example</span></a></h1>
+<p>Imagine the same input:</p>
+<pre><code>Courses: 0 -&gt; 1 -&gt; 2
+</code></pre>
+<table>
+<thead>
+<tr>
+<th style="text-align:left"></th>
+<th style="text-align:left">Topological Sort</th>
+<th style="text-align:left">Quick Union</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">What happens?</td>
+<td style="text-align:left">Outputs [0, 1, 2] (order matters)</td>
+<td style="text-align:left">Simply groups them together (connection matters, not order)</td>
+</tr>
+<tr>
+<td style="text-align:left">Why?</td>
+<td style="text-align:left">Because 0 must finish before 1, and 1 before 2</td>
+<td style="text-align:left">Only cares that they’re connected</td>
+</tr>
+<tr>
+<td style="text-align:left">Cycle detection?</td>
+<td style="text-align:left">If a back edge exists (e.g., 2 ➔ 0) → <strong>cycle</strong></td>
+<td style="text-align:left">If trying to connect two nodes already connected → <strong>cycle</strong></td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h1 id="analogy" tabindex="-1"><a class="header-anchor" href="#analogy"><span>🧪 Analogy</span></a></h1>
+<ul>
+<li>
+<p><strong>Topological Sort</strong> is like <strong>building a skyscraper</strong>:</p>
+<ul>
+<li>Must finish floors <strong>bottom-up</strong> respecting the order.</li>
+</ul>
+</li>
+<li>
+<p><strong>Quick Union</strong> is like <strong>finding clusters of friends</strong>:</p>
+<ul>
+<li>Doesn’t matter who talked first, just find connected groups.</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h1 id="summary" tabindex="-1"><a class="header-anchor" href="#summary"><span>📜 Summary</span></a></h1>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">Question</th>
+<th style="text-align:left">Answer</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">Are they solving the same problem?</td>
+<td style="text-align:left">❌</td>
+</tr>
+<tr>
+<td style="text-align:left">Do both detect cycles?</td>
+<td style="text-align:left">✅ (in different contexts)</td>
+</tr>
+<tr>
+<td style="text-align:left">Which one should I use for Course Schedule (directed graph)?</td>
+<td style="text-align:left"><strong>Topological Sort</strong> ✅</td>
+</tr>
+<tr>
+<td style="text-align:left">Which one is faster per operation?</td>
+<td style="text-align:left"><strong>Quick Union</strong> (amortized ~O(1)) ✅</td>
+</tr>
+<tr>
+<td style="text-align:left">Which one handles dependency ordering?</td>
+<td style="text-align:left"><strong>Topological Sort</strong> ✅</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h1 id="final-mental-model" tabindex="-1"><a class="header-anchor" href="#final-mental-model"><span>✅ Final Mental Model</span></a></h1>
+<table>
+<thead>
+<tr>
+<th style="text-align:left"></th>
+<th style="text-align:left">Topological Sort</th>
+<th style="text-align:left">Quick Union</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">Graph Type</td>
+<td style="text-align:left">Directed</td>
+<td style="text-align:left">Undirected</td>
+</tr>
+<tr>
+<td style="text-align:left">Goal</td>
+<td style="text-align:left">Respect order, detect cycles</td>
+<td style="text-align:left">Connect components, detect undirected cycles</td>
+</tr>
+<tr>
+<td style="text-align:left">Typical Problems</td>
+<td style="text-align:left">Scheduling, compilation order</td>
+<td style="text-align:left">Kruskal’s MST, dynamic connectivity</td>
+</tr>
+</tbody>
+</table>
+<hr>
+
+      </div>
+      <div class="cheatsheet-footer">
+        <a href="../cheatsheets.html" class="back-link">← Back to Cheat Sheets</a>
+        <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/diff_toposort_quickunion.md" class="github-edit" target="_blank">
+          Edit on GitHub →
+        </a>
+      </div>
+    <nav class="prev-next"><a href="dfs.html" class="prev-link">← Dfs</a><a href="difference_array.html" class="next-link">Difference Array →</a></nav>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>CS_basics - Computer Science Fundamentals & Interview Preparation</p>
+      <p>
+        <a href="https://github.com/yennanliu/CS_basics">GitHub</a> •
+        <a href="https://github.com/yennanliu/CS_basics/tree/master/doc">Documentation</a> •
+        <a href="https://github.com/yennanliu/CS_basics/issues">Report Issues</a>
+      </p>
+    </div>
+  </footer>
+</body>
+</html>

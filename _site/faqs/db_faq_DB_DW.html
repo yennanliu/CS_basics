@@ -1,0 +1,533 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Faq DB DW - CS_basics</title>
+  <meta name="description" content="Computer Science fundamentals: algorithms, data structures, system design, and LeetCode solutions">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>CS</text></svg>">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="../vendor/fonts.css">
+  <link rel="stylesheet" href="../vendor/highlight/github-dark.min.css">
+  <script src="../vendor/highlight/highlight.min.js"></script>
+  <script>
+  // Apply theme before render to prevent flash
+  (function() {
+    var saved = localStorage.getItem('theme');
+    if (saved === 'dark' || (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      document.documentElement.setAttribute('data-theme', 'dark');
+    }
+  })();
+  </script>
+  <script>document.addEventListener('DOMContentLoaded', function() {
+    hljs.highlightAll();
+    document.querySelectorAll('pre code').forEach(function(codeEl) {
+      var pre = codeEl.parentElement;
+      var lang = '';
+      var cls = codeEl.className || '';
+      var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
+      if (m) lang = m[1];
+      var wrapper = document.createElement('div');
+      wrapper.className = 'code-block-wrapper';
+      pre.parentNode.insertBefore(wrapper, pre);
+      var header = document.createElement('div');
+      header.className = 'code-block-header';
+      if (lang) {
+        var label = document.createElement('span');
+        label.className = 'code-lang-label';
+        label.textContent = lang;
+        header.appendChild(label);
+      } else {
+        header.appendChild(document.createElement('span'));
+      }
+      var btn = document.createElement('button');
+      btn.className = 'copy-btn';
+      btn.textContent = 'Copy';
+      btn.addEventListener('click', function() {
+        navigator.clipboard.writeText(codeEl.textContent).then(function() {
+          btn.textContent = 'Copied!';
+          btn.classList.add('copied');
+          setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+        });
+      });
+      header.appendChild(btn);
+      wrapper.appendChild(header);
+      wrapper.appendChild(pre);
+    });
+    document.querySelectorAll('table').forEach(function(table) {
+      if (!table.parentElement.classList.contains('table-wrap')) {
+        var wrapper = document.createElement('div');
+        wrapper.className = 'table-wrap';
+        table.parentNode.insertBefore(wrapper, table);
+        wrapper.appendChild(table);
+      }
+    });
+    // Reading progress bar
+    var progressBar = document.getElementById('reading-progress');
+    if (progressBar) {
+      window.addEventListener('scroll', function() {
+        var winScroll = document.documentElement.scrollTop;
+        var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        progressBar.style.width = height > 0 ? (winScroll / height * 100) + '%' : '0%';
+      });
+    }
+    // Dark mode toggle
+    var toggle = document.getElementById('theme-toggle');
+    if (toggle) {
+      var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      toggle.textContent = isDark ? '☀️' : '🌙';
+      toggle.addEventListener('click', function() {
+        var dark = document.documentElement.getAttribute('data-theme') === 'dark';
+        if (dark) {
+          document.documentElement.removeAttribute('data-theme');
+          localStorage.setItem('theme', 'light');
+          toggle.textContent = '🌙';
+        } else {
+          document.documentElement.setAttribute('data-theme', 'dark');
+          localStorage.setItem('theme', 'dark');
+          toggle.textContent = '☀️';
+        }
+      });
+    }
+  });</script>
+</head>
+<body>
+  <div class="progress-container"><div class="progress-bar" id="reading-progress"></div></div>
+  <nav class="navbar">
+    <div class="container">
+      <div class="nav-brand">
+        <span class="nav-icon">💻</span>
+        <span class="nav-title">CS_basics</span>
+      </div>
+      <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+      <div class="nav-links">
+        <a href="../index.html" class="">Home</a>
+        <a href="../cheatsheets.html" class="">Cheat Sheets</a>
+        <a href="../patterns.html" class="">Pattern Recognition</a>
+        <a href="../faqs.html" class="active">FAQs</a>
+        <a href="../resources.html" class="">Resources</a>
+        <a href="../lc-explorer.html" class="">LC Explorer</a>
+        <a href="../lc-random-picker.html" class="">🎲 Random Picker</a>
+        <a href="../algo_demo/index.html" class="">Visualizer</a>
+        <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">&#127769;</button>
+        <a href="https://github.com/yennanliu/CS_basics" target="_blank" class="github-link" aria-label="GitHub">
+          <svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor">
+            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container">
+    <div class="content">
+      
+      <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../faqs.html">FAQs</a> <span class="sep">›</span> <span class="current">Faq DB DW</span></nav>
+      <div class="cheatsheet-header">
+        <h1>Faq DB DW</h1>
+        <span class="last-updated">Last updated: Feb 23, 2024</span>
+      </div>
+      <div class="toc"><h2>Table of Contents</h2><ul><li class="toc-sub"><a href="#1-db-type">1) DB type</a></li><li class="toc-sub"><a href="#2-db-properties">2) DB properties</a></li><li class="toc-sub"><a href="#3-db-design">3) DB design</a></li><li class="toc-sub"><a href="#4-index">4) Index</a></li><li class="toc-sub"><a href="#5-db-tuning">5) DB tuning</a></li><li class="toc-sub"><a href="#6-db-managment">6) DB managment</a></li><li class="toc-sub"><a href="#7-case-study">7) Case study</a></li><li class="toc-sub"><a href="#10-clustered-indexing">10) Clustered indexing</a></li><li class="toc-sub"><a href="#11-indexing">11) Indexing</a></li><li class="toc-sub"><a href="#13-normalization-denormalization">13) normalization, denormalization</a></li><li class="toc-sub"><a href="#14-sql-performance-tuning">14) SQL performance tuning</a></li><li class="toc-sub"><a href="#15-data-model-examples">15) Data model examples ?</a></li><li class="toc-sub"><a href="#16-what-do-you-understand-by-data-mart">16) What do you understand by data mart?</a></li><li class="toc-sub"><a href="#17-explain-sql-keys">17) Explain SQL keys ?</a></li><li class="toc-sub"><a href="#18-db-normalization-vs-denormalization">18) DB normalization VS Denormalization</a></li><li class="toc-sub"><a href="#19-index-pros-and-cons">19) Index pros and cons</a></li><li class="toc-sub"><a href="#20-mysql-index">20) Mysql Index</a></li><li><a href="#ref">Ref</a></li></ul></div>
+      <div class="cheatsheet-content">
+        <h1 id="db-dw-faq" tabindex="-1"><a class="header-anchor" href="#db-dw-faq"><span>DB, DW FAQ</span></a></h1>
+<h3 id="1-db-type" tabindex="-1"><a class="header-anchor" href="#1-db-type"><span>1) DB type</span></a></h3>
+<ul>
+<li>RDBMS (SQL) (Relational Database Management System)
+<ul>
+<li>
+<p>MySQL</p>
+<ul>
+<li>ACID Compliance : Some versions are compliant</li>
+<li>SQL Compliance : Some versions are compliant</li>
+<li>Widely chosen for web based projects that need a database
+simply for straightforward data transactions. Though, for MySQL to underperform when strained by a heavy loads or when
+attempting to complete complex queries.</li>
+<li>MySQL performs well in OLAP/OLTP systems when read speeds are required.</li>
+<li>MySQL + InnoDB provides very good read/write speeds for OLTP
+scenarios. Overall, MySQL performs well with high concurrency scenarios.</li>
+<li>MySQL is reliable and works well with Business Intelligence
+applications, as business intelligence applications are typically
+read-heavy.</li>
+<li>MySQL has JSON data type support but no other NoSQL feature. It does
+not support indexing for JSON</li>
+<li>Supports temporary tables but does not support materialized views.</li>
+</ul>
+</li>
+<li>
+<p>PostgreSQL</p>
+<ul>
+<li>ACID Compliance : Complete ACID Compliance</li>
+<li>SQL Compliance  : Almost fully compliant</li>
+<li>Widely used in large systems where read and write speeds are crucial
+and data needs to validated. In addition, it supports a variety of performance optimizations that are available only in commercial solutions such as Geospatial data support, concurrency without read locks, and so on (e.g. Oracle, SQL Server).</li>
+<li>PostgreSQL performance is utilized best in systems requiring execution
+of complex queries.</li>
+<li>PostgreSQL performs well in OLTP/OLAP systems when read/write speeds
+are required and extensive data analysis is needed.</li>
+<li>PostgreSQL also works well with Business Intelligence applications but
+is better suited for Data Warehousing and data analysis applications
+that require fast read/write speeds.</li>
+<li>PostgreSQL supports JSON and other NoSQL features like native XML
+support and key-value pairs with HSTORE. It also supports indexing
+JSON data for faster access.</li>
+<li>Supports materialized views and temporary tables.</li>
+</ul>
+</li>
+<li>
+<p>MySQL VS PostgreSQL</p>
+<ul>
+<li>Architecutre
+<img src="../doc/pic/mysql_architecutre.png" width="500" height="300">
+<img src="../doc/pic/postgre_architecutre.png" width="500" height="300"></li>
+<li>License</li>
+<li>Development style
+<ul>
+<li>MySQL :
+<ul>
+<li>Multi-threading</li>
+<li>customized storage engine make saving data more flexible</li>
+<li>Can use <code>INSERT</code> command save data to memcached</li>
+<li>Can update data from slave server (cluster)</li>
+</ul>
+</li>
+<li>PostgreSQL :
+<ul>
+<li>Multi-processing</li>
+<li>data need to be saved at RDBMS (follow strong rules)</li>
+<li>Can’t update data from slave server (cluster)</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Ref</li>
+</ul>
+</li>
+<li>
+<p>MSSQL/DB2/Oracle/SQLITE…</p>
+</li>
+</ul>
+</li>
+<li>No SQL
+<ul>
+<li>MongoDB</li>
+<li>Redis</li>
+</ul>
+</li>
+<li>Others</li>
+</ul>
+<h3 id="2-db-properties" tabindex="-1"><a class="header-anchor" href="#2-db-properties"><span>2) DB properties</span></a></h3>
+<ul>
+<li>RDBMS
+<ul>
+<li>ACID : atomicity, consistency, isolation, and durability
+<ul>
+<li>
+<p>Atomicity</p>
+<ul>
+<li>Guarantee that either all of the transaction succeeds or none of
+it does. You don’t get part of it succeeding and part of it not. If one part of the transaction fails, the whole transaction fails. With atomicity, it’s either “all or nothing”.</li>
+</ul>
+</li>
+<li>
+<p>Consistency</p>
+<ul>
+<li>This ensures that you guarantee that all data will be consistent.
+All data will be valid according to all defined rules, including any constraints, cascades, and triggers that have been applied on the database.</li>
+</ul>
+</li>
+<li>
+<p>Isolation</p>
+<ul>
+<li>Guarantees that all transactions will occur in isolation. No
+transaction will be affected by any other transaction. So a
+transaction cannot read data from any other transaction that has not yet completed.</li>
+</ul>
+</li>
+<li>
+<p>Durability</p>
+<ul>
+<li>Once transaction is committed, it will remain in the system – even
+if there’s a system crash immediately following the transaction. Any changes from the transaction must be stored permanently. If the system tells the user that the transaction has succeeded, the
+transaction must have, in fact, succeeded.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="3-db-design" tabindex="-1"><a class="header-anchor" href="#3-db-design"><span>3) DB design</span></a></h3>
+<ul>
+<li>
+<p>Process</p>
+</li>
+<li>
+<p>Concept</p>
+</li>
+<li>
+<p>STAR SCHEMA</p>
+<ul>
+<li>With star shape, <code>FACT table</code> as the star center, while others are <code>dimension table</code> which give describe the attribution of FACT table.</li>
+<li><code>Dimension tables</code> are independent with each other
+<img src="../doc/pic/star_schema.png" width="500" height="300"></li>
+</ul>
+</li>
+<li>
+<p>SNOWFLAKE SCHEMA</p>
+<ul>
+<li>Is an extension of STAR SHEMA actually</li>
+<li><code>FACT table</code> at center, <code>dimension table</code> at the rest, the difference is that : <code>dimension table</code> is extenable. i.e.
+can track multiples <code>dimension table</code> together</li>
+<li>Pro : Can split the data count at each dimension table -&gt; fast operation like <code>join</code></li>
+<li>Con : Have to maintain extra tables
+<img src="../doc/pic/snowflake_schema.jpg" width="500" height="300"></li>
+</ul>
+</li>
+<li>
+<p>GALAXY SCHEMA</p>
+<ul>
+<li>Galaxy schema contains many fact tables with some common dimensions (conformed dimensions). This schema is a combination of many data marts.
+<img src="../doc/pic/galaxy_schema.jpg" width="500" height="300"></li>
+</ul>
+</li>
+<li>
+<p>Example</p>
+</li>
+</ul>
+<h3 id="4-index" tabindex="-1"><a class="header-anchor" href="#4-index"><span>4) Index</span></a></h3>
+<ul>
+<li>
+<p>What’s database index ?</p>
+</li>
+<li>
+<p>A database index is a data structure that improves the speed of data retrieval operations on a database table at the cost of additional writes and storage space to maintain the index data structure. Indexes are used to quickly locate data without having to search every row in a database table every time a database table is accessed. Indexes can be created using one or more columns of a database table, providing the basis for both rapid random lookups and efficient access of ordered records.</p>
+</li>
+<li>
+<p>An index is a copy of selected columns of data from a table that can be searched very efficiently that also includes a low-level disk block address or direct link to the complete row of data it was copied from. Some databases extend the power of indexing by letting developers create indexes on functions or expressions. For example, an index could be created on upper(last_name), which would only store the upper-case versions of the last_name field in the index. Another option sometimes supported is the use of partial indices, where index entries are created only for those records that satisfy some conditional expression. A further aspect of flexibility is to permit indexing on user-defined functions, as well as expressions formed from an assortment of built-in functions.</p>
+</li>
+<li>
+<p><a href="https://en.wikipedia.org/wiki/Database_index">https://en.wikipedia.org/wiki/Database_index</a></p>
+</li>
+<li>
+<p>Why index ?</p>
+<ul>
+<li>
+<p><em><strong>FULL TABLE SCAN -&gt; INDEX SCAN (balanced tree) -&gt; INDEX SEEK</strong></em></p>
+</li>
+<li>
+<p>Full table scan :</p>
+<ul>
+<li>This is known as a Full Table Scan or simply a Table Scan. A Table Scan is the costliest among the data search methods.</li>
+</ul>
+</li>
+<li>
+<p>Index scan :</p>
+<ul>
+<li>Index Scan is nothing but scanning on the data pages from the first page to the last page. If there is an index on a table, and if the query is touching a larger amount of data, which means the query is retrieving more than 50 percent or 90 percent of the data, and then the optimizer would just scan all the data pages to retrieve the data rows. If there is no index, then you might see a Table Scan (Index Scan) in the execution plan.</li>
+</ul>
+</li>
+<li>
+<p>Index seek :</p>
+<ul>
+<li>Index seeks are generally preferred for the highly selective queries. What that means is that the query is just requesting a fewer number of rows or just retrieving the other 10 (some documents says 15 percent) of the rows of the table.</li>
+</ul>
+</li>
+<li>
+<p>In general query optimizer tries to use an Index Seek which means that the optimizer has found a useful index to retrieve recordset. But if it is not able to do so either because there is no index or no useful indexes on the table, then SQL Server has to scan all the records that satisfy the query condition.</p>
+</li>
+<li>
+<p><a href="https://www.got-it.ai/solutions/sqlquerychat/sql-help/general-sql/sql-table-scan-index-scan-vs-index-seek/">https://www.got-it.ai/solutions/sqlquerychat/sql-help/general-sql/sql-table-scan-index-scan-vs-index-seek/</a></p>
+</li>
+<li>
+<p><a href="https://blog.sqlauthority.com/2007/03/30/sql-server-index-seek-vs-index-scan-table-scan/">https://blog.sqlauthority.com/2007/03/30/sql-server-index-seek-vs-index-scan-table-scan/</a></p>
+</li>
+</ul>
+</li>
+<li>
+<p>Type of index  ?</p>
+<ul>
+<li>
+<p>Culstered index</p>
+<ul>
+<li>Only one per table</li>
+<li>Saved in the <code>DB hard disk</code></li>
+<li>Use “B-Tree” (Balanced Tree) as data structure with components : Root/intermediate/leaf node</li>
+<li>Heap (when no index, data is non-ordering) -&gt;  B-tree (when index, data is ordering)</li>
+<li>If <code>primary key</code> already set, DB will set primary key as culstered index by default</li>
+<li><em><strong>AVOID</strong></em> set <code>frequent updated</code>column as culstered index, since the system has to spend time on data reordering when every time data updated</li>
+<li><em><strong>AVOID</strong></em> set <code>unique data</code> column as culstered index, since this index is not an <code>effieicnt filter</code> for <code>where</code> sql syntax</li>
+<li><em><strong>AVOID</strong></em> set <code>too long/much</code> column as culstered index, since it will give system heavy loading where reordering</li>
+</ul>
+</li>
+<li>
+<p>Non-Culstered index</p>
+<ul>
+<li>Can be many per table  (but &lt; 5 ideally)</li>
+<li>point to data with culstered index in DB hard disk</li>
+<li>Use “B-Tree” data structure for ordering</li>
+<li>Supplement of culstered index</li>
+</ul>
+</li>
+<li>
+<p>Covering Index</p>
+<ul>
+<li>One index on <code>multiple</code> columns</li>
+<li>Leverage the <code>existing</code> non-Culstered index, copy the column (with covering Index) to the leaf node, so index scan/seek can be processed via balanced tree as well</li>
+<li><code>Hight densidy</code> column is a good choice</li>
+<li>Not include more than 3 columns ideally</li>
+</ul>
+</li>
+<li>
+<p>Index with include</p>
+<ul>
+<li>Index include column</li>
+</ul>
+</li>
+<li>
+<p>Indexed View</p>
+<ul>
+<li><code>View</code> is a <code>logical</code> definition in the DB, not a real table, Indexed View can be used as <code>intermedia view</code> that let query can just start from that, but not always go to the original table with complex syntax.</li>
+</ul>
+</li>
+<li>
+<p>Filtered Index</p>
+</li>
+<li>
+<p><a href="https://en.wikipedia.org/wiki/Database_index">https://en.wikipedia.org/wiki/Database_index</a></p>
+</li>
+<li>
+<p>(culstered index pic)
+<img src="../doc/pic/cluster_index.png" width="700" height="200"></p>
+</li>
+</ul>
+</li>
+<li>
+<p>Trade off between using index and not</p>
+<ul>
+<li>
+<p>Main concern : The <em><strong>COST of INDEX MAINTENANCE</strong></em> when data get updated</p>
+</li>
+<li>
+<p><a href="https://www.qa-knowhow.com/?p=377">https://www.qa-knowhow.com/?p=377</a></p>
+</li>
+</ul>
+</li>
+<li>
+<p>What happen at low level DB server when implement a new index ?</p>
+</li>
+</ul>
+<h3 id="5-db-tuning" tabindex="-1"><a class="header-anchor" href="#5-db-tuning"><span>5) DB tuning</span></a></h3>
+<h3 id="6-db-managment" tabindex="-1"><a class="header-anchor" href="#6-db-managment"><span>6) DB managment</span></a></h3>
+<h3 id="7-case-study" tabindex="-1"><a class="header-anchor" href="#7-case-study"><span>7) Case study</span></a></h3>
+<ul>
+<li>NeoDDL on gcloud
+<ul>
+<li><a href="https://medium.com/traveloka-engineering/data-modelling-and-processing-in-travel-super-app-8011a6ecafe6">https://medium.com/traveloka-engineering/data-modelling-and-processing-in-travel-super-app-8011a6ecafe6</a></li>
+</ul>
+</li>
+</ul>
+<h3 id="10-clustered-indexing" tabindex="-1"><a class="header-anchor" href="#10-clustered-indexing"><span>10) Clustered indexing</span></a></h3>
+<h3 id="11-indexing" tabindex="-1"><a class="header-anchor" href="#11-indexing"><span>11) Indexing</span></a></h3>
+<h3 id="13-normalization-denormalization" tabindex="-1"><a class="header-anchor" href="#13-normalization-denormalization"><span>13) normalization, denormalization</span></a></h3>
+<h3 id="14-sql-performance-tuning" tabindex="-1"><a class="header-anchor" href="#14-sql-performance-tuning"><span>14) SQL performance tuning</span></a></h3>
+<ul>
+<li>ref
+<ul>
+<li><a href="https://docs.aws.amazon.com/redshift/latest/dg/c-optimizing-query-performance.html">https://docs.aws.amazon.com/redshift/latest/dg/c-optimizing-query-performance.html</a></li>
+<li><a href="http://udayarumilli.com/sql-server-performance-tuning-interview-questions-part-1/">http://udayarumilli.com/sql-server-performance-tuning-interview-questions-part-1/</a></li>
+<li><a href="https://stackify.com/postgresql-performance-tutorial/">https://stackify.com/postgresql-performance-tutorial/</a></li>
+<li><a href="https://www.revsys.com/writings/postgresql-performance.html">https://www.revsys.com/writings/postgresql-performance.html</a></li>
+<li><a href="https://www.mssqltips.com/sqlservertip/1429/sql-server-dba-performance-tuning-interview-questions/">https://www.mssqltips.com/sqlservertip/1429/sql-server-dba-performance-tuning-interview-questions/</a></li>
+<li><a href="https://aws.amazon.com/tw/blogs/big-data/top-10-performance-tuning-techniques-for-amazon-redshift/">https://aws.amazon.com/tw/blogs/big-data/top-10-performance-tuning-techniques-for-amazon-redshift/</a></li>
+</ul>
+</li>
+</ul>
+<h3 id="15-data-model-examples" tabindex="-1"><a class="header-anchor" href="#15-data-model-examples"><span>15) Data model examples ?</span></a></h3>
+<ul>
+<li>Data models of major corps :  <code>Netflix, linkedin , yelp, uber, ads, e-commerce</code></li>
+<li>Kimball - Star schema
+<ul>
+<li>Inmon = bottom up approach.</li>
+<li>pros and cons of each approach. (3rd NF vs star schema , why or why not)</li>
+<li>surrogate keys or no surrogate keys (pros and cons)
+<ul>
+<li><a href="https://www.sisense.com/blog/when-and-how-to-use-surrogate-keys/">https://www.sisense.com/blog/when-and-how-to-use-surrogate-keys/</a></li>
+<li><a href="https://www.mssqltips.com/sqlservertip/5431/surrogate-key-vs-natural-key-differences-and-when-to-use-in-sql-server/">https://www.mssqltips.com/sqlservertip/5431/surrogate-key-vs-natural-key-differences-and-when-to-use-in-sql-server/</a></li>
+<li><a href="https://www.geeksforgeeks.org/surrogate-key-in-dbms/">https://www.geeksforgeeks.org/surrogate-key-in-dbms/</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>ref
+<ul>
+<li><a href="https://www.teamblind.com/post/Facebook-DE-decision-wzQRWoCS">https://www.teamblind.com/post/Facebook-DE-decision-wzQRWoCS</a></li>
+<li><a href="https://github.com/yennanliu/CS_basics/tree/master/doc/faq/faq_data_model.md">https://github.com/yennanliu/CS_basics/tree/master/doc/faq/faq_data_model.md</a></li>
+</ul>
+</li>
+</ul>
+<h3 id="16-what-do-you-understand-by-data-mart" tabindex="-1"><a class="header-anchor" href="#16-what-do-you-understand-by-data-mart"><span>16) What do you understand by data mart?</span></a></h3>
+<ul>
+<li>Data marts are for the most part intended for a solitary branch of business. They are designed for the individual departments.</li>
+<li>We had a data warehouse that was holding the information pertaining to all these departments and then we have few data marts built on top of this data warehouse. These DataMart were specific to each department. In simple words, you can say that a DataMart is a subset of a data warehouse.</li>
+<li>e.g. :  I used to work for a health insurance provider company that had different departments in it like Finance, Reporting, Sales and so forth.</li>
+</ul>
+<h3 id="17-explain-sql-keys" tabindex="-1"><a class="header-anchor" href="#17-explain-sql-keys"><span>17) Explain SQL keys ?</span></a></h3>
+<ul>
+<li>Ref
+<ul>
+<li><a href="https://begriffs.com/posts/2018-01-01-sql-keys-in-depth.html">https://begriffs.com/posts/2018-01-01-sql-keys-in-depth.html</a></li>
+</ul>
+</li>
+</ul>
+<h3 id="18-db-normalization-vs-denormalization" tabindex="-1"><a class="header-anchor" href="#18-db-normalization-vs-denormalization"><span>18) DB normalization VS Denormalization</span></a></h3>
+<ul>
+<li><a href="https://www.explainthis.io/zh-hant/swe/database-denormalization">https://www.explainthis.io/zh-hant/swe/database-denormalization</a></li>
+</ul>
+<h3 id="19-index-pros-and-cons" tabindex="-1"><a class="header-anchor" href="#19-index-pros-and-cons"><span>19) Index pros and cons</span></a></h3>
+<ul>
+<li><a href="https://learn.lianglianglee.com/%E6%96%87%E7%AB%A0/%E9%9D%A2%E8%AF%95%E6%9C%80%E5%B8%B8%E8%A2%AB%E9%97%AE%E7%9A%84%20Java%20%E5%90%8E%E7%AB%AF%E9%A2%98.md">https://learn.lianglianglee.com/文章/面试最常被问的 Java 后端题.md</a></li>
+</ul>
+<h3 id="20-mysql-index" tabindex="-1"><a class="header-anchor" href="#20-mysql-index"><span>20) Mysql Index</span></a></h3>
+<h2 id="ref" tabindex="-1"><a class="header-anchor" href="#ref"><span>Ref</span></a></h2>
+<ul>
+<li>Edureka DW tutorial
+<ul>
+<li><a href="https://www.youtube.com/watch?v=9gOw3joU4a8&amp;list=PL9ooVrP1hQOEDSc5QEbI8WYVV_EbWKJwX">https://www.youtube.com/watch?v=9gOw3joU4a8&amp;list=PL9ooVrP1hQOEDSc5QEbI8WYVV_EbWKJwX</a></li>
+</ul>
+</li>
+<li>DW general
+<ul>
+<li><a href="https://deliveroo.engineering/2017/11/23/engineering-interviews.html">https://deliveroo.engineering/2017/11/23/engineering-interviews.html</a></li>
+<li><a href="https://www.2ndquadrant.com/en/postgresql/postgresql-vs-mysql/">https://www.2ndquadrant.com/en/postgresql/postgresql-vs-mysql/</a></li>
+<li><a href="https://blog.xuite.net/jack101257/twblog/138494904-%E4%BC%81%E6%A5%AD%E8%B3%87%E6%96%99%E5%80%89%E5%84%B2DWH%E7%B0%A1%E4%BB%8B">https://blog.xuite.net/jack101257/twblog/138494904-企業資料倉儲DWH簡介</a></li>
+<li><a href="http://relyky.blogspot.com/2011/04/data-warehousedimensional-data-model.html">http://relyky.blogspot.com/2011/04/data-warehousedimensional-data-model.html</a></li>
+</ul>
+</li>
+</ul>
+
+      </div>
+      <div class="cheatsheet-footer">
+        <a href="../faqs.html" class="back-link">← Back to FAQs</a>
+        <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/faq/db/faq_DB_DW.md" class="github-edit" target="_blank">
+          Edit on GitHub →
+        </a>
+      </div>
+    <nav class="prev-next"><a href="cs_basic.html" class="prev-link">← Cs Basic</a><a href="db_faq_redshift.html" class="next-link">Faq Redshift →</a></nav>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>CS_basics - Computer Science Fundamentals & Interview Preparation</p>
+      <p>
+        <a href="https://github.com/yennanliu/CS_basics">GitHub</a> •
+        <a href="https://github.com/yennanliu/CS_basics/tree/master/doc">Documentation</a> •
+        <a href="https://github.com/yennanliu/CS_basics/issues">Report Issues</a>
+      </p>
+    </div>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,951 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>String Matching Kmp Rolling Hash - CS_basics</title>
+  <meta name="description" content="Computer Science fundamentals: algorithms, data structures, system design, and LeetCode solutions">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>CS</text></svg>">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="../vendor/fonts.css">
+  <link rel="stylesheet" href="../vendor/highlight/github-dark.min.css">
+  <script src="../vendor/highlight/highlight.min.js"></script>
+  <script>
+  // Apply theme before render to prevent flash
+  (function() {
+    var saved = localStorage.getItem('theme');
+    if (saved === 'dark' || (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      document.documentElement.setAttribute('data-theme', 'dark');
+    }
+  })();
+  </script>
+  <script>document.addEventListener('DOMContentLoaded', function() {
+    hljs.highlightAll();
+    document.querySelectorAll('pre code').forEach(function(codeEl) {
+      var pre = codeEl.parentElement;
+      var lang = '';
+      var cls = codeEl.className || '';
+      var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
+      if (m) lang = m[1];
+      var wrapper = document.createElement('div');
+      wrapper.className = 'code-block-wrapper';
+      pre.parentNode.insertBefore(wrapper, pre);
+      var header = document.createElement('div');
+      header.className = 'code-block-header';
+      if (lang) {
+        var label = document.createElement('span');
+        label.className = 'code-lang-label';
+        label.textContent = lang;
+        header.appendChild(label);
+      } else {
+        header.appendChild(document.createElement('span'));
+      }
+      var btn = document.createElement('button');
+      btn.className = 'copy-btn';
+      btn.textContent = 'Copy';
+      btn.addEventListener('click', function() {
+        navigator.clipboard.writeText(codeEl.textContent).then(function() {
+          btn.textContent = 'Copied!';
+          btn.classList.add('copied');
+          setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+        });
+      });
+      header.appendChild(btn);
+      wrapper.appendChild(header);
+      wrapper.appendChild(pre);
+    });
+    document.querySelectorAll('table').forEach(function(table) {
+      if (!table.parentElement.classList.contains('table-wrap')) {
+        var wrapper = document.createElement('div');
+        wrapper.className = 'table-wrap';
+        table.parentNode.insertBefore(wrapper, table);
+        wrapper.appendChild(table);
+      }
+    });
+    // Reading progress bar
+    var progressBar = document.getElementById('reading-progress');
+    if (progressBar) {
+      window.addEventListener('scroll', function() {
+        var winScroll = document.documentElement.scrollTop;
+        var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        progressBar.style.width = height > 0 ? (winScroll / height * 100) + '%' : '0%';
+      });
+    }
+    // Dark mode toggle
+    var toggle = document.getElementById('theme-toggle');
+    if (toggle) {
+      var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      toggle.textContent = isDark ? '☀️' : '🌙';
+      toggle.addEventListener('click', function() {
+        var dark = document.documentElement.getAttribute('data-theme') === 'dark';
+        if (dark) {
+          document.documentElement.removeAttribute('data-theme');
+          localStorage.setItem('theme', 'light');
+          toggle.textContent = '🌙';
+        } else {
+          document.documentElement.setAttribute('data-theme', 'dark');
+          localStorage.setItem('theme', 'dark');
+          toggle.textContent = '☀️';
+        }
+      });
+    }
+  });</script>
+</head>
+<body>
+  <div class="progress-container"><div class="progress-bar" id="reading-progress"></div></div>
+  <nav class="navbar">
+    <div class="container">
+      <div class="nav-brand">
+        <span class="nav-icon">💻</span>
+        <span class="nav-title">CS_basics</span>
+      </div>
+      <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+      <div class="nav-links">
+        <a href="../index.html" class="">Home</a>
+        <a href="../cheatsheets.html" class="active">Cheat Sheets</a>
+        <a href="../patterns.html" class="">Pattern Recognition</a>
+        <a href="../faqs.html" class="">FAQs</a>
+        <a href="../resources.html" class="">Resources</a>
+        <a href="../lc-explorer.html" class="">LC Explorer</a>
+        <a href="../lc-random-picker.html" class="">🎲 Random Picker</a>
+        <a href="../algo_demo/index.html" class="">Visualizer</a>
+        <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">&#127769;</button>
+        <a href="https://github.com/yennanliu/CS_basics" target="_blank" class="github-link" aria-label="GitHub">
+          <svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor">
+            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container">
+    <div class="content">
+      
+      <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">String Matching Kmp Rolling Hash</span></nav>
+      <div class="cheatsheet-header">
+        <h1>String Matching Kmp Rolling Hash</h1>
+        <span class="last-updated">Last updated: Nov 29, 2025</span>
+      </div>
+      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#0-concept">0) Concept</a></li><li class="toc-sub"><a href="#0-1-types">0-1) Types</a></li><li class="toc-sub"><a href="#0-2-pattern">0-2) Pattern</a></li><li><a href="#1-general-form">1) General form</a></li><li class="toc-sub"><a href="#1-1-basic-op">1-1) Basic OP</a></li><li class="toc-sub"><a href="#1-2-templates">1-2) Templates</a></li><li class="toc-sub"><a href="#1-3-double-hashing-collision-reduction">1-3) Double Hashing (Collision Reduction)</a></li><li><a href="#2-lc-example">2) LC Example</a></li><li class="toc-sub"><a href="#2-1-find-the-index-of-the-first-occurrence-in-a-string-lc-28">2-1) Find the Index of the First Occurrence in a String (LC 28)</a></li><li class="toc-sub"><a href="#2-2-repeated-substring-pattern-lc-459">2-2) Repeated Substring Pattern (LC 459)</a></li><li class="toc-sub"><a href="#2-3-longest-duplicate-substring-lc-1044">2-3) Longest Duplicate Substring (LC 1044)</a></li><li class="toc-sub"><a href="#2-4-shortest-palindrome-lc-214">2-4) Shortest Palindrome (LC 214)</a></li><li class="toc-sub"><a href="#2-5-distinct-echo-substrings-lc-1316">2-5) Distinct Echo Substrings (LC 1316)</a></li><li class="toc-sub"><a href="#2-6-rotate-string-lc-796">2-6) Rotate String (LC 796)</a></li><li class="toc-sub"><a href="#2-7-implement-strstr-variants">2-7) Implement strStr() Variants</a></li><li class="toc-sub"><a href="#2-8-longest-happy-prefix-lc-1392">2-8) Longest Happy Prefix (LC 1392)</a></li><li><a href="#3-common-applications">3) Common Applications</a></li><li class="toc-sub"><a href="#3-1-pattern-matching-problems">3-1) Pattern Matching Problems</a></li><li class="toc-sub"><a href="#3-2-string-period-detection">3-2) String Period Detection</a></li><li class="toc-sub"><a href="#3-3-palindrome-problems">3-3) Palindrome Problems</a></li><li class="toc-sub"><a href="#3-4-duplicate-detection">3-4) Duplicate Detection</a></li><li><a href="#4-algorithm-comparison">4) Algorithm Comparison</a></li><li><a href="#5-tips-tricks">5) Tips &amp; Tricks</a></li><li class="toc-sub"><a href="#5-1-when-to-use-kmp">5-1) When to Use KMP</a></li><li class="toc-sub"><a href="#5-2-when-to-use-rolling-hash">5-2) When to Use Rolling Hash</a></li><li class="toc-sub"><a href="#5-3-common-patterns">5-3) Common Patterns</a></li><li><a href="#6-summary">6) Summary</a></li><li class="toc-sub"><a href="#key-takeaways">Key Takeaways</a></li><li class="toc-sub"><a href="#common-leetcode-problems">Common LeetCode Problems</a></li><li class="toc-sub"><a href="#interview-tips">Interview Tips</a></li></ul></div>
+      <div class="cheatsheet-content">
+        <h1 id="string-matching-kmp-rolling-hash" tabindex="-1"><a class="header-anchor" href="#string-matching-kmp-rolling-hash"><span>String Matching (KMP, Rolling Hash)</span></a></h1>
+<h2 id="0-concept" tabindex="-1"><a class="header-anchor" href="#0-concept"><span>0) Concept</span></a></h2>
+<h3 id="0-1-types" tabindex="-1"><a class="header-anchor" href="#0-1-types"><span>0-1) Types</span></a></h3>
+<p><strong>String Matching</strong> refers to finding occurrences of a pattern within a text efficiently. The two most important algorithms are:</p>
+<ol>
+<li><strong>KMP (Knuth-Morris-Pratt)</strong>: Uses a failure function to avoid redundant comparisons</li>
+<li><strong>Rolling Hash (Rabin-Karp)</strong>: Uses polynomial hashing to compare substrings in O(1) time</li>
+</ol>
+<h3 id="0-2-pattern" tabindex="-1"><a class="header-anchor" href="#0-2-pattern"><span>0-2) Pattern</span></a></h3>
+<p>Both algorithms optimize naive string matching from O(nm) to O(n+m) or O(n) where:</p>
+<ul>
+<li>n = length of text</li>
+<li>m = length of pattern</li>
+</ul>
+<p><strong>Key Characteristics:</strong></p>
+<ul>
+<li><strong>KMP</strong>: Deterministic, no hash collisions, O(n+m) time, O(m) space</li>
+<li><strong>Rolling Hash</strong>: Probabilistic, may have collisions, O(n) average time, O(1) space</li>
+<li><strong>When to Use KMP</strong>: Single pattern search, guaranteed correctness</li>
+<li><strong>When to Use Rolling Hash</strong>: Multiple patterns, substring comparisons, duplicate detection</li>
+</ul>
+<h2 id="1-general-form" tabindex="-1"><a class="header-anchor" href="#1-general-form"><span>1) General form</span></a></h2>
+<h3 id="1-1-basic-op" tabindex="-1"><a class="header-anchor" href="#1-1-basic-op"><span>1-1) Basic OP</span></a></h3>
+<h4 id="kmp-algorithm-components" tabindex="-1"><a class="header-anchor" href="#kmp-algorithm-components"><span>KMP Algorithm Components</span></a></h4>
+<ol>
+<li>
+<p><strong>Failure Function (LPS Array)</strong></p>
+<ul>
+<li>LPS = Longest Proper Prefix which is also Suffix</li>
+<li>Helps skip unnecessary comparisons</li>
+<li>Time: O(m), Space: O(m)</li>
+</ul>
+</li>
+<li>
+<p><strong>Pattern Matching</strong></p>
+<ul>
+<li>Uses LPS array to avoid backtracking in text</li>
+<li>Time: O(n), Space: O(1)</li>
+</ul>
+</li>
+</ol>
+<h4 id="rolling-hash-components" tabindex="-1"><a class="header-anchor" href="#rolling-hash-components"><span>Rolling Hash Components</span></a></h4>
+<ol>
+<li>
+<p><strong>Hash Calculation</strong></p>
+<ul>
+<li>Polynomial hash: hash = (c₁ × base^(m-1) + c₂ × base^(m-2) + … + cₘ) % mod</li>
+<li>Base: typically 256 or prime number</li>
+<li>Mod: large prime to reduce collisions</li>
+</ul>
+</li>
+<li>
+<p><strong>Rolling Window</strong></p>
+<ul>
+<li>Remove leftmost character: hash = (hash - c₀ × base^(m-1)) % mod</li>
+<li>Add rightmost character: hash = (hash × base + cₘ) % mod</li>
+</ul>
+</li>
+</ol>
+<h3 id="1-2-templates" tabindex="-1"><a class="header-anchor" href="#1-2-templates"><span>1-2) Templates</span></a></h3>
+<h4 id="kmp-template" tabindex="-1"><a class="header-anchor" href="#kmp-template"><span>KMP Template</span></a></h4>
+<pre><code class="language-python">def kmp_search(text, pattern):
+    &quot;&quot;&quot;Find all occurrences of pattern in text using KMP&quot;&quot;&quot;
+
+    def build_lps(pattern):
+        &quot;&quot;&quot;Build Longest Prefix Suffix array&quot;&quot;&quot;
+        m = len(pattern)
+        lps = [0] * m
+        length = 0  # length of previous longest prefix suffix
+        i = 1
+
+        while i &lt; m:
+            if pattern[i] == pattern[length]:
+                length += 1
+                lps[i] = length
+                i += 1
+            else:
+                if length != 0:
+                    # Don't increment i, try with shorter prefix
+                    length = lps[length - 1]
+                else:
+                    lps[i] = 0
+                    i += 1
+        return lps
+
+    if not pattern:
+        return [0]
+
+    n, m = len(text), len(pattern)
+    lps = build_lps(pattern)
+    matches = []
+
+    i = j = 0  # i for text, j for pattern
+    while i &lt; n:
+        if text[i] == pattern[j]:
+            i += 1
+            j += 1
+
+        if j == m:
+            # Found pattern at index i-j
+            matches.append(i - j)
+            j = lps[j - 1]
+        elif i &lt; n and text[i] != pattern[j]:
+            if j != 0:
+                j = lps[j - 1]
+            else:
+                i += 1
+
+    return matches
+</code></pre>
+<pre><code class="language-java">// Java KMP Implementation
+public class KMP {
+    public List&lt;Integer&gt; search(String text, String pattern) {
+        List&lt;Integer&gt; matches = new ArrayList&lt;&gt;();
+        if (pattern.isEmpty()) return matches;
+
+        int[] lps = buildLPS(pattern);
+        int n = text.length(), m = pattern.length();
+        int i = 0, j = 0;
+
+        while (i &lt; n) {
+            if (text.charAt(i) == pattern.charAt(j)) {
+                i++;
+                j++;
+            }
+
+            if (j == m) {
+                matches.add(i - j);
+                j = lps[j - 1];
+            } else if (i &lt; n &amp;&amp; text.charAt(i) != pattern.charAt(j)) {
+                if (j != 0) {
+                    j = lps[j - 1];
+                } else {
+                    i++;
+                }
+            }
+        }
+        return matches;
+    }
+
+    private int[] buildLPS(String pattern) {
+        int m = pattern.length();
+        int[] lps = new int[m];
+        int length = 0;
+        int i = 1;
+
+        while (i &lt; m) {
+            if (pattern.charAt(i) == pattern.charAt(length)) {
+                length++;
+                lps[i] = length;
+                i++;
+            } else {
+                if (length != 0) {
+                    length = lps[length - 1];
+                } else {
+                    lps[i] = 0;
+                    i++;
+                }
+            }
+        }
+        return lps;
+    }
+}
+</code></pre>
+<h4 id="rolling-hash-template" tabindex="-1"><a class="header-anchor" href="#rolling-hash-template"><span>Rolling Hash Template</span></a></h4>
+<pre><code class="language-python">class RollingHash:
+    &quot;&quot;&quot;Rolling hash for efficient substring matching&quot;&quot;&quot;
+
+    def __init__(self, s, base=256, mod=10**9 + 7):
+        self.s = s
+        self.n = len(s)
+        self.base = base
+        self.mod = mod
+
+        # Precompute hash values for all prefixes
+        self.hash_values = [0] * (self.n + 1)
+        self.base_powers = [1] * (self.n + 1)
+
+        for i in range(self.n):
+            self.hash_values[i + 1] = (self.hash_values[i] * base + ord(s[i])) % mod
+            self.base_powers[i + 1] = (self.base_powers[i] * base) % mod
+
+    def get_hash(self, left, right):
+        &quot;&quot;&quot;Get hash of substring s[left:right+1] in O(1)&quot;&quot;&quot;
+        length = right - left + 1
+        result = (self.hash_values[right + 1] -
+                 self.hash_values[left] * self.base_powers[length]) % self.mod
+        return result if result &gt;= 0 else result + self.mod
+
+    def compare_substrings(self, l1, r1, l2, r2):
+        &quot;&quot;&quot;Compare two substrings in O(1) using hash&quot;&quot;&quot;
+        return (r1 - l1 == r2 - l2 and
+                self.get_hash(l1, r1) == self.get_hash(l2, r2))
+
+def rabin_karp_search(text, pattern):
+    &quot;&quot;&quot;Find all occurrences of pattern using Rabin-Karp&quot;&quot;&quot;
+    if not pattern or len(pattern) &gt; len(text):
+        return []
+
+    base = 256
+    mod = 10**9 + 7
+    n, m = len(text), len(pattern)
+
+    # Calculate base^(m-1) % mod
+    base_power = pow(base, m - 1, mod)
+
+    # Calculate initial hashes
+    pattern_hash = 0
+    text_hash = 0
+    for i in range(m):
+        pattern_hash = (pattern_hash * base + ord(pattern[i])) % mod
+        text_hash = (text_hash * base + ord(text[i])) % mod
+
+    matches = []
+
+    # Slide pattern over text
+    for i in range(n - m + 1):
+        # If hash matches, verify character by character
+        if pattern_hash == text_hash:
+            if text[i:i+m] == pattern:
+                matches.append(i)
+
+        # Calculate hash for next window
+        if i &lt; n - m:
+            text_hash = (text_hash - ord(text[i]) * base_power) % mod
+            text_hash = (text_hash * base + ord(text[i + m])) % mod
+            if text_hash &lt; 0:
+                text_hash += mod
+
+    return matches
+</code></pre>
+<pre><code class="language-java">// Java Rolling Hash Implementation
+public class RollingHash {
+    private static final long BASE = 256;
+    private static final long MOD = 1_000_000_007;
+
+    public List&lt;Integer&gt; search(String text, String pattern) {
+        List&lt;Integer&gt; matches = new ArrayList&lt;&gt;();
+        int n = text.length(), m = pattern.length();
+
+        if (m &gt; n) return matches;
+
+        long basePower = 1;
+        for (int i = 0; i &lt; m - 1; i++) {
+            basePower = (basePower * BASE) % MOD;
+        }
+
+        long patternHash = 0, textHash = 0;
+
+        // Calculate initial hashes
+        for (int i = 0; i &lt; m; i++) {
+            patternHash = (patternHash * BASE + pattern.charAt(i)) % MOD;
+            textHash = (textHash * BASE + text.charAt(i)) % MOD;
+        }
+
+        // Slide pattern over text
+        for (int i = 0; i &lt;= n - m; i++) {
+            if (patternHash == textHash) {
+                // Verify character by character
+                if (text.substring(i, i + m).equals(pattern)) {
+                    matches.add(i);
+                }
+            }
+
+            if (i &lt; n - m) {
+                textHash = (textHash - text.charAt(i) * basePower % MOD + MOD) % MOD;
+                textHash = (textHash * BASE + text.charAt(i + m)) % MOD;
+            }
+        }
+
+        return matches;
+    }
+}
+</code></pre>
+<h3 id="1-3-double-hashing-collision-reduction" tabindex="-1"><a class="header-anchor" href="#1-3-double-hashing-collision-reduction"><span>1-3) Double Hashing (Collision Reduction)</span></a></h3>
+<pre><code class="language-python">class DoubleHash:
+    &quot;&quot;&quot;Double hashing to minimize collision probability&quot;&quot;&quot;
+
+    def __init__(self, s):
+        self.s = s
+        self.n = len(s)
+
+        # Two different bases and moduli
+        self.base1, self.mod1 = 257, 10**9 + 7
+        self.base2, self.mod2 = 263, 10**9 + 9
+
+        # Precompute for both hash functions
+        self.hash1 = [0] * (self.n + 1)
+        self.hash2 = [0] * (self.n + 1)
+        self.pow1 = [1] * (self.n + 1)
+        self.pow2 = [1] * (self.n + 1)
+
+        for i in range(self.n):
+            self.hash1[i + 1] = (self.hash1[i] * self.base1 + ord(s[i])) % self.mod1
+            self.hash2[i + 1] = (self.hash2[i] * self.base2 + ord(s[i])) % self.mod2
+            self.pow1[i + 1] = (self.pow1[i] * self.base1) % self.mod1
+            self.pow2[i + 1] = (self.pow2[i] * self.base2) % self.mod2
+
+    def get_hash(self, left, right):
+        &quot;&quot;&quot;Get double hash tuple for substring&quot;&quot;&quot;
+        length = right - left + 1
+        h1 = (self.hash1[right + 1] - self.hash1[left] * self.pow1[length]) % self.mod1
+        h2 = (self.hash2[right + 1] - self.hash2[left] * self.pow2[length]) % self.mod2
+        return (h1 if h1 &gt;= 0 else h1 + self.mod1,
+                h2 if h2 &gt;= 0 else h2 + self.mod2)
+</code></pre>
+<h2 id="2-lc-example" tabindex="-1"><a class="header-anchor" href="#2-lc-example"><span>2) LC Example</span></a></h2>
+<h3 id="2-1-find-the-index-of-the-first-occurrence-in-a-string-lc-28" tabindex="-1"><a class="header-anchor" href="#2-1-find-the-index-of-the-first-occurrence-in-a-string-lc-28"><span>2-1) Find the Index of the First Occurrence in a String (LC 28)</span></a></h3>
+<pre><code class="language-python"># KMP Solution
+def strStr(haystack, needle):
+    &quot;&quot;&quot;LC 28: Implement strStr() using KMP&quot;&quot;&quot;
+    if not needle:
+        return 0
+
+    def build_lps(pattern):
+        m = len(pattern)
+        lps = [0] * m
+        length = 0
+        i = 1
+
+        while i &lt; m:
+            if pattern[i] == pattern[length]:
+                length += 1
+                lps[i] = length
+                i += 1
+            else:
+                if length != 0:
+                    length = lps[length - 1]
+                else:
+                    lps[i] = 0
+                    i += 1
+        return lps
+
+    n, m = len(haystack), len(needle)
+    lps = build_lps(needle)
+
+    i = j = 0
+    while i &lt; n:
+        if haystack[i] == needle[j]:
+            i += 1
+            j += 1
+
+        if j == m:
+            return i - j
+        elif i &lt; n and haystack[i] != needle[j]:
+            if j != 0:
+                j = lps[j - 1]
+            else:
+                i += 1
+
+    return -1
+
+# Rolling Hash Solution
+def strStr_hash(haystack, needle):
+    &quot;&quot;&quot;LC 28: Using rolling hash&quot;&quot;&quot;
+    if not needle:
+        return 0
+    if len(needle) &gt; len(haystack):
+        return -1
+
+    base = 256
+    mod = 10**9 + 7
+    n, m = len(haystack), len(needle)
+
+    base_power = pow(base, m - 1, mod)
+
+    needle_hash = 0
+    hay_hash = 0
+
+    for i in range(m):
+        needle_hash = (needle_hash * base + ord(needle[i])) % mod
+        hay_hash = (hay_hash * base + ord(haystack[i])) % mod
+
+    for i in range(n - m + 1):
+        if needle_hash == hay_hash:
+            if haystack[i:i+m] == needle:
+                return i
+
+        if i &lt; n - m:
+            hay_hash = (hay_hash - ord(haystack[i]) * base_power) % mod
+            hay_hash = (hay_hash * base + ord(haystack[i + m])) % mod
+            if hay_hash &lt; 0:
+                hay_hash += mod
+
+    return -1
+</code></pre>
+<h3 id="2-2-repeated-substring-pattern-lc-459" tabindex="-1"><a class="header-anchor" href="#2-2-repeated-substring-pattern-lc-459"><span>2-2) Repeated Substring Pattern (LC 459)</span></a></h3>
+<pre><code class="language-python">def repeatedSubstringPattern(s):
+    &quot;&quot;&quot;LC 459: Check if string is made of repeated pattern&quot;&quot;&quot;
+
+    # Method 1: KMP-based
+    def kmp_solution(s):
+        n = len(s)
+        lps = [0] * n
+        length = 0
+        i = 1
+
+        while i &lt; n:
+            if s[i] == s[length]:
+                length += 1
+                lps[i] = length
+                i += 1
+            else:
+                if length != 0:
+                    length = lps[length - 1]
+                else:
+                    lps[i] = 0
+                    i += 1
+
+        # If lps[n-1] != 0 and n % (n - lps[n-1]) == 0
+        # then string has repeating pattern
+        return lps[n - 1] != 0 and n % (n - lps[n - 1]) == 0
+
+    # Method 2: String rotation trick
+    def rotation_solution(s):
+        # If s is repeated pattern, it will appear in (s+s)[1:-1]
+        return s in (s + s)[1:-1]
+
+    return kmp_solution(s)
+</code></pre>
+<h3 id="2-3-longest-duplicate-substring-lc-1044" tabindex="-1"><a class="header-anchor" href="#2-3-longest-duplicate-substring-lc-1044"><span>2-3) Longest Duplicate Substring (LC 1044)</span></a></h3>
+<pre><code class="language-python">def longestDupSubstring(s):
+    &quot;&quot;&quot;LC 1044: Find longest duplicate substring using binary search + rolling hash&quot;&quot;&quot;
+
+    def has_duplicate(length):
+        &quot;&quot;&quot;Check if there's duplicate substring of given length&quot;&quot;&quot;
+        base = 256
+        mod = 2**63 - 1
+
+        # Calculate base^length
+        base_power = pow(base, length, mod)
+
+        # Initial hash
+        current_hash = 0
+        for i in range(length):
+            current_hash = (current_hash * base + ord(s[i])) % mod
+
+        seen = {current_hash}
+
+        # Rolling hash
+        for i in range(length, len(s)):
+            # Remove leftmost character
+            current_hash = (current_hash - ord(s[i - length]) * base_power) % mod
+            # Add rightmost character
+            current_hash = (current_hash * base + ord(s[i])) % mod
+
+            if current_hash in seen:
+                return i - length + 1
+            seen.add(current_hash)
+
+        return -1
+
+    # Binary search on length
+    left, right = 0, len(s) - 1
+    result_start = -1
+
+    while left &lt;= right:
+        mid = (left + right) // 2
+        start_pos = has_duplicate(mid)
+
+        if start_pos != -1:
+            result_start = start_pos
+            left = mid + 1
+        else:
+            right = mid - 1
+
+    return s[result_start:result_start + right] if result_start != -1 else &quot;&quot;
+</code></pre>
+<h3 id="2-4-shortest-palindrome-lc-214" tabindex="-1"><a class="header-anchor" href="#2-4-shortest-palindrome-lc-214"><span>2-4) Shortest Palindrome (LC 214)</span></a></h3>
+<pre><code class="language-python">def shortestPalindrome(s):
+    &quot;&quot;&quot;LC 214: Find shortest palindrome by adding chars to front&quot;&quot;&quot;
+
+    # KMP approach: Find longest palindromic prefix
+    def kmp_solution(s):
+        # Create pattern: s + &quot;#&quot; + reverse(s)
+        # Find longest prefix of s that matches suffix of reverse(s)
+        rev = s[::-1]
+        new_s = s + &quot;#&quot; + rev
+
+        # Build LPS array
+        n = len(new_s)
+        lps = [0] * n
+        length = 0
+        i = 1
+
+        while i &lt; n:
+            if new_s[i] == new_s[length]:
+                length += 1
+                lps[i] = length
+                i += 1
+            else:
+                if length != 0:
+                    length = lps[length - 1]
+                else:
+                    lps[i] = 0
+                    i += 1
+
+        # lps[-1] gives length of longest palindromic prefix
+        palindrome_len = lps[-1]
+
+        # Add reverse of remaining suffix to front
+        return rev[:len(s) - palindrome_len] + s
+
+    return kmp_solution(s)
+</code></pre>
+<h3 id="2-5-distinct-echo-substrings-lc-1316" tabindex="-1"><a class="header-anchor" href="#2-5-distinct-echo-substrings-lc-1316"><span>2-5) Distinct Echo Substrings (LC 1316)</span></a></h3>
+<pre><code class="language-python">def distinctEchoSubstrings(text):
+    &quot;&quot;&quot;LC 1316: Count distinct echo substrings (repeated twice consecutively)&quot;&quot;&quot;
+
+    rh = RollingHash(text)
+    seen = set()
+    count = 0
+
+    # Try all possible lengths (must be even)
+    for length in range(2, len(text) + 1, 2):
+        half = length // 2
+
+        for start in range(len(text) - length + 1):
+            mid = start + half
+            end = start + length - 1
+
+            # Compare first half with second half
+            if rh.compare_substrings(start, mid - 1, mid, end):
+                substring_hash = rh.get_hash(start, end)
+                if substring_hash not in seen:
+                    seen.add(substring_hash)
+                    count += 1
+
+    return count
+</code></pre>
+<h3 id="2-6-rotate-string-lc-796" tabindex="-1"><a class="header-anchor" href="#2-6-rotate-string-lc-796"><span>2-6) Rotate String (LC 796)</span></a></h3>
+<pre><code class="language-python">def rotateString(s, goal):
+    &quot;&quot;&quot;LC 796: Check if goal is rotation of s&quot;&quot;&quot;
+
+    # If goal is rotation of s, it will be in s+s
+    if len(s) != len(goal):
+        return False
+
+    # Method 1: Simple check
+    return goal in (s + s)
+
+    # Method 2: KMP approach
+    def kmp_approach():
+        if len(s) != len(goal):
+            return False
+
+        # Search for goal in s+s
+        matches = kmp_search(s + s, goal)
+        return len(matches) &gt; 0
+
+    return kmp_approach()
+</code></pre>
+<h3 id="2-7-implement-strstr-variants" tabindex="-1"><a class="header-anchor" href="#2-7-implement-strstr-variants"><span>2-7) Implement strStr() Variants</span></a></h3>
+<pre><code class="language-python"># Count all occurrences
+def count_occurrences(text, pattern):
+    &quot;&quot;&quot;Count all occurrences of pattern in text&quot;&quot;&quot;
+    matches = kmp_search(text, pattern)
+    return len(matches)
+
+# Find all overlapping occurrences
+def find_all_overlapping(text, pattern):
+    &quot;&quot;&quot;Find all overlapping occurrences (including overlaps)&quot;&quot;&quot;
+    n, m = len(text), len(pattern)
+    lps = build_lps(pattern)
+    matches = []
+
+    i = j = 0
+    while i &lt; n:
+        if text[i] == pattern[j]:
+            i += 1
+            j += 1
+
+        if j == m:
+            matches.append(i - j)
+            j = lps[j - 1]  # Continue to find overlapping matches
+        elif i &lt; n and text[i] != pattern[j]:
+            if j != 0:
+                j = lps[j - 1]
+            else:
+                i += 1
+
+    return matches
+
+# Multiple pattern matching
+def multiple_pattern_search(text, patterns):
+    &quot;&quot;&quot;Search for multiple patterns in text&quot;&quot;&quot;
+    results = {}
+    for pattern in patterns:
+        results[pattern] = kmp_search(text, pattern)
+    return results
+</code></pre>
+<h3 id="2-8-longest-happy-prefix-lc-1392" tabindex="-1"><a class="header-anchor" href="#2-8-longest-happy-prefix-lc-1392"><span>2-8) Longest Happy Prefix (LC 1392)</span></a></h3>
+<pre><code class="language-python">def longestPrefix(s):
+    &quot;&quot;&quot;LC 1392: Find longest happy prefix (prefix == suffix)&quot;&quot;&quot;
+
+    n = len(s)
+    lps = [0] * n
+    length = 0
+    i = 1
+
+    while i &lt; n:
+        if s[i] == s[length]:
+            length += 1
+            lps[i] = length
+            i += 1
+        else:
+            if length != 0:
+                length = lps[length - 1]
+            else:
+                lps[i] = 0
+                i += 1
+
+    # lps[-1] gives length of longest prefix which is also suffix
+    return s[:lps[-1]]
+</code></pre>
+<h2 id="3-common-applications" tabindex="-1"><a class="header-anchor" href="#3-common-applications"><span>3) Common Applications</span></a></h2>
+<h3 id="3-1-pattern-matching-problems" tabindex="-1"><a class="header-anchor" href="#3-1-pattern-matching-problems"><span>3-1) Pattern Matching Problems</span></a></h3>
+<ul>
+<li>Find first/all occurrences</li>
+<li>Multiple pattern search</li>
+<li>Substring with wildcard matching</li>
+</ul>
+<h3 id="3-2-string-period-detection" tabindex="-1"><a class="header-anchor" href="#3-2-string-period-detection"><span>3-2) String Period Detection</span></a></h3>
+<ul>
+<li>Repeated substring pattern</li>
+<li>String rotation</li>
+<li>Cyclic string comparison</li>
+</ul>
+<h3 id="3-3-palindrome-problems" tabindex="-1"><a class="header-anchor" href="#3-3-palindrome-problems"><span>3-3) Palindrome Problems</span></a></h3>
+<ul>
+<li>Shortest palindrome</li>
+<li>Palindromic prefix/suffix</li>
+</ul>
+<h3 id="3-4-duplicate-detection" tabindex="-1"><a class="header-anchor" href="#3-4-duplicate-detection"><span>3-4) Duplicate Detection</span></a></h3>
+<ul>
+<li>Longest duplicate substring</li>
+<li>Distinct substrings</li>
+<li>Echo substrings</li>
+</ul>
+<h2 id="4-algorithm-comparison" tabindex="-1"><a class="header-anchor" href="#4-algorithm-comparison"><span>4) Algorithm Comparison</span></a></h2>
+<table>
+<thead>
+<tr>
+<th>Algorithm</th>
+<th>Time</th>
+<th>Space</th>
+<th>Pros</th>
+<th>Cons</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>KMP</strong></td>
+<td>O(n+m)</td>
+<td>O(m)</td>
+<td>Deterministic, no collisions</td>
+<td>More complex implementation</td>
+</tr>
+<tr>
+<td><strong>Rolling Hash</strong></td>
+<td>O(n) avg</td>
+<td>O(1)</td>
+<td>Simple, multiple patterns</td>
+<td>Hash collisions possible</td>
+</tr>
+<tr>
+<td><strong>Naive</strong></td>
+<td>O(nm)</td>
+<td>O(1)</td>
+<td>Very simple</td>
+<td>Too slow for large inputs</td>
+</tr>
+</tbody>
+</table>
+<h2 id="5-tips-tricks" tabindex="-1"><a class="header-anchor" href="#5-tips-tricks"><span>5) Tips &amp; Tricks</span></a></h2>
+<h3 id="5-1-when-to-use-kmp" tabindex="-1"><a class="header-anchor" href="#5-1-when-to-use-kmp"><span>5-1) When to Use KMP</span></a></h3>
+<ul>
+<li>Single pattern matching</li>
+<li>Need guaranteed correctness</li>
+<li>Pattern has repeating structure</li>
+<li>LC 28, 214, 459, 1392</li>
+</ul>
+<h3 id="5-2-when-to-use-rolling-hash" tabindex="-1"><a class="header-anchor" href="#5-2-when-to-use-rolling-hash"><span>5-2) When to Use Rolling Hash</span></a></h3>
+<ul>
+<li>Multiple pattern search</li>
+<li>Substring comparison</li>
+<li>Duplicate detection</li>
+<li>LC 1044, 1316, 718, 1062</li>
+</ul>
+<h3 id="5-3-common-patterns" tabindex="-1"><a class="header-anchor" href="#5-3-common-patterns"><span>5-3) Common Patterns</span></a></h3>
+<pre><code class="language-python"># Pattern 1: String in (s+s) for rotation
+def is_rotation(s1, s2):
+    return len(s1) == len(s2) and s2 in (s1 + s1)
+
+# Pattern 2: LPS for periodicity
+def has_period(s):
+    lps = build_lps(s)
+    n = len(s)
+    return lps[n-1] != 0 and n % (n - lps[n-1]) == 0
+
+# Pattern 3: Binary search + hash for optimization
+def find_longest(s, condition):
+    left, right = 0, len(s)
+    result = -1
+
+    while left &lt;= right:
+        mid = (left + right) // 2
+        if check_with_hash(s, mid, condition):
+            result = mid
+            left = mid + 1
+        else:
+            right = mid - 1
+
+    return result
+</code></pre>
+<h2 id="6-summary" tabindex="-1"><a class="header-anchor" href="#6-summary"><span>6) Summary</span></a></h2>
+<h3 id="key-takeaways" tabindex="-1"><a class="header-anchor" href="#key-takeaways"><span>Key Takeaways</span></a></h3>
+<ol>
+<li><strong>KMP</strong> is optimal for single pattern matching with O(n+m) time</li>
+<li><strong>Rolling Hash</strong> excels at substring comparison in O(1) amortized time</li>
+<li>Use <strong>double hashing</strong> to minimize collision probability</li>
+<li><strong>Binary search + hash</strong> is powerful for optimization problems</li>
+<li>LPS array reveals string periodicity and structure</li>
+</ol>
+<h3 id="common-leetcode-problems" tabindex="-1"><a class="header-anchor" href="#common-leetcode-problems"><span>Common LeetCode Problems</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>Number</th>
+<th>Algorithm</th>
+<th>Difficulty</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Implement strStr()</td>
+<td>28</td>
+<td>KMP/Hash</td>
+<td>Easy</td>
+</tr>
+<tr>
+<td>Shortest Palindrome</td>
+<td>214</td>
+<td>KMP</td>
+<td>Hard</td>
+</tr>
+<tr>
+<td>Repeated Substring Pattern</td>
+<td>459</td>
+<td>KMP</td>
+<td>Easy</td>
+</tr>
+<tr>
+<td>Rotate String</td>
+<td>796</td>
+<td>String</td>
+<td>Easy</td>
+</tr>
+<tr>
+<td>Longest Duplicate Substring</td>
+<td>1044</td>
+<td>Hash+BS</td>
+<td>Hard</td>
+</tr>
+<tr>
+<td>Distinct Echo Substrings</td>
+<td>1316</td>
+<td>Hash</td>
+<td>Hard</td>
+</tr>
+<tr>
+<td>Longest Happy Prefix</td>
+<td>1392</td>
+<td>KMP</td>
+<td>Hard</td>
+</tr>
+<tr>
+<td>Maximum Repeating Substring</td>
+<td>1668</td>
+<td>String</td>
+<td>Easy</td>
+</tr>
+</tbody>
+</table>
+<h3 id="interview-tips" tabindex="-1"><a class="header-anchor" href="#interview-tips"><span>Interview Tips</span></a></h3>
+<ol>
+<li>Always clarify if overlapping matches are allowed</li>
+<li>Consider string length constraints (KMP vs naive)</li>
+<li>For hash, explain collision handling strategy</li>
+<li>Time complexity: O(n+m) for KMP, O(n) for hash</li>
+<li>Space complexity: O(m) for KMP, O(1) for basic hash</li>
+</ol>
+
+      </div>
+      <div class="cheatsheet-footer">
+        <a href="../cheatsheets.html" class="back-link">← Back to Cheat Sheets</a>
+        <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/string_matching_kmp_rolling_hash.md" class="github-edit" target="_blank">
+          Edit on GitHub →
+        </a>
+      </div>
+    <nav class="prev-next"><a href="string.html" class="prev-link">← String</a><a href="topology_sorting.html" class="next-link">Topology Sorting →</a></nav>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>CS_basics - Computer Science Fundamentals & Interview Preparation</p>
+      <p>
+        <a href="https://github.com/yennanliu/CS_basics">GitHub</a> •
+        <a href="https://github.com/yennanliu/CS_basics/tree/master/doc">Documentation</a> •
+        <a href="https://github.com/yennanliu/CS_basics/issues">Report Issues</a>
+      </p>
+    </div>
+  </footer>
+</body>
+</html>
