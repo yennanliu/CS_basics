@@ -892,4 +892,13 @@ public class Workspace25 {
     }
 
 
+    // LC 1292
+    public int maxSideLength(int[][] mat, int threshold) {
+
+        return 0;
+    }
+
+
+
+
 }
