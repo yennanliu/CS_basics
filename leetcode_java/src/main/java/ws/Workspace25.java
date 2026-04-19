@@ -886,6 +886,33 @@ public class Workspace25 {
 
 
     // LC 1074
+    // 11.52 - 12.02
+    /**
+     *
+     *  ->  return the number
+     *  of non-empty `submatrices` that `sum` to target.
+     *
+     *
+     *  ----------------
+     *
+     *
+     *  ----------------
+     *
+     *   ex 1)
+     *
+     *
+     *   ex 2)
+     *
+     *   matrix = [
+     *     [1,-1],
+     *     [-1,1]
+     *    ],
+     *
+     *
+     *    target = 0
+     *
+     *
+     */
     public int numSubmatrixSumTarget(int[][] matrix, int target) {
 
         return 0;
@@ -893,7 +920,7 @@ public class Workspace25 {
 
 
     // LC 1292
-    // 11.03 - 13 am
+    // 11.03 - 30 am
     /**
      *  ->  return the `maximum` `side-length` of a
      *      square with a `sum` `less than or equal` to threshold
@@ -901,15 +928,95 @@ public class Workspace25 {
      *
      *   ------------------
      *
+     *    IDEA 1) BRUTE FORCE
+     *
+     *    IDEA 2) PREFIX SUM ?????
+     *
+     *      - sum[i,j]
+     *        = prefix[j] - prefix[i-1] ???
+     *
+     *    IDEA 3) BINARY SEARCH ???
      *
      *   ------------------
      *
      *
      */
+    // IDEA 2) PREFIX SUM
     public int maxSideLength(int[][] mat, int threshold) {
+        // edge
 
-        return 0;
+        int l = mat.length;
+        int w = mat[0].length;
+
+        // NOTE !!!!
+        // build prefix sum with padding (m+1 x n+1)
+        int[][] prefix = new int[l + 1][w + 1];
+
+
+        //int[][] prefix = new int[l][w]; // ???
+
+        // NOTE !!! NO NEED INIT
+//        // init
+//        for(int y = 0; y < l; y++){
+//            prefix[y][0] = mat[y][0];
+//        }
+//        for(int x = 0; x < w; x++){
+//            prefix[0][x] = mat[0][x];
+//        }
+
+        int ans = 0;
+
+
+        // ???
+        for(int y = 1; y < l + 1; y++){
+          for(int x = 1; x < w + 1; x++){
+              /**
+               *     1 1 1 1 1
+               *     2 2 2 2 2
+               *     3 3 3 3 3
+               *     4 4 4 4 4
+               *
+               */
+
+              /**
+               *
+               *        prefix[i][j] = mat[i - 1][j - 1]
+               *                     + prefix[i - 1][j]
+               *                     + prefix[i][j - 1]
+               *                     - prefix[i - 1][j - 1];
+               */
+          prefix[y][x] = ( prefix[y-1][x-1]
+                  + mat[y][x] );
+
+
+
+//                // ??
+//                // ?? ONLY update `square prefix sum`
+//                if(x == y){
+//                    prefix[y][x] = ( prefix[y-1][x] + prefix[y][x-1] );
+//                }
+//                // ??? get the `actual prefix sum and check if <= threshold
+//                // ???
+//                int prefixVal = prefix[y][x] - prefix[y-1][x-1];
+//                if(prefixVal <= threshold){
+//                    ans = Math.max(ans, prefixVal);
+//                }
+//
+////                // or, use mat cell val as prefix[y][x]
+////                else{
+////                    prefix[y][x] = mat[y][x];
+////                }
+//            }
+             }
+        }
+
+
+
+        return ans;
     }
+
+
+
 
 
 
