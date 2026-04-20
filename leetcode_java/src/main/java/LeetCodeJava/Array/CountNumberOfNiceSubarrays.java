@@ -52,6 +52,55 @@ public class CountNumberOfNiceSubarrays {
 //    }
 
 
+    // V0-0-1
+    // IDEA: PREFIX VAL + SLIDE WINDOW (gpt)
+    public int numberOfSubarrays_0_0_1(int[] nums, int k) {
+
+        /** NOTE !!!
+         *
+         *  we need `prefix` val,
+         *  maintain and use it within slide window,
+         *  so can handle below cases:
+         *
+         * ->
+         *      nums = [2,2,1,2,1], k = 2
+         *
+         *      At r = 4 (last element):
+         *
+         *      subarrays ending at r with exactly 2 odds:
+         *
+         *       [1,2,1]
+         *       [2,1,2,1]
+         *       [2,2,1,2,1]
+         *
+         */
+        int l = 0, res = 0, oddCount = 0, prefix = 0;
+
+        for (int r = 0; r < nums.length; r++) {
+            if (nums[r] % 2 == 1) {
+                oddCount++;
+                /** NOTE !!! */
+                prefix = 0; // reset
+            }
+
+            while (oddCount == k) {
+                /** NOTE !!! */
+                prefix++;
+                if (nums[l] % 2 == 1) {
+                    oddCount--;
+                }
+                l++;
+            }
+
+            /** NOTE !!! */
+            res += prefix;
+        }
+
+        return res;
+    }
+
+
+
 
     // V0-1
     // IDEA: PREFIX SUM + HASHMAP (GPT)
