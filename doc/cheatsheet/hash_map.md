@@ -1521,6 +1521,100 @@ Now remainders 4 match → subarray `[-1]` and `[-2, -3]` have the same remainde
 
 ---
 
+### 2-1-2) Count Number of Nice Subarrays (LC 1248)
+
+**Core Pattern: Transform Odd Numbers → Prefix Sum Count (same as LC 560)**
+
+#### Key Concept
+Count subarrays with **exactly k odd numbers** by treating each number as 0 (even) or 1 (odd), then applying the prefix sum + hashmap pattern.
+
+#### Core Idea
+
+**Transform:** Replace each element with `num % 2` (1 if odd, 0 if even).
+
+Now the problem becomes: **count subarrays whose sum equals k** — exactly LC 560!
+
+```
+map: {oddCount: frequency}
+     → "How many times has this odd-count appeared so far?"
+
+At index i with current oddCount:
+  → Find how many previous positions had exactly (oddCount - k) odds
+  → Those form subarrays with exactly k odds ending at i
+```
+
+**Why `map.put(0, 1)`?**
+```
+If oddCount == k at index i:
+  → Entire subarray [0, i] has exactly k odds
+  → oddCount - k = 0, must have {0: 1} pre-initialized
+```
+
+#### Implementation Template
+
+```java
+// Java - LC 1248
+public int numberOfSubarrays(int[] nums, int k) {
+    // map: {oddCount: frequency}
+    Map<Integer, Integer> map = new HashMap<>();
+    map.put(0, 1);  // base case: 0 odds seen 1 time
+
+    int res = 0, oddCount = 0;
+
+    for (int num : nums) {
+        if (num % 2 == 1) oddCount++;  // treat odd as +1
+
+        // How many previous positions had (oddCount - k) odds?
+        res += map.getOrDefault(oddCount - k, 0);
+
+        // Update count AFTER checking (critical order!)
+        map.put(oddCount, map.getOrDefault(oddCount, 0) + 1);
+    }
+
+    return res;
+}
+```
+
+#### Alternative: Sliding Window (atMost trick)
+
+```java
+// Exactly k = atMost(k) - atMost(k-1)
+public int numberOfSubarrays(int[] nums, int k) {
+    return atMost(nums, k) - atMost(nums, k - 1);
+}
+
+private int atMost(int[] nums, int k) {
+    int l = 0, res = 0, oddCount = 0;
+    for (int r = 0; r < nums.length; r++) {
+        if (nums[r] % 2 == 1) oddCount++;
+        while (oddCount > k) {
+            if (nums[l] % 2 == 1) oddCount--;
+            l++;
+        }
+        res += (r - l + 1);
+    }
+    return res;
+}
+```
+
+#### Key Differences from Related Problems
+
+| Aspect | LC 560 (Sum = K) | LC 930 (Binary Sum = K) | LC 1248 (Nice Subarrays) |
+|--------|-----------------|------------------------|--------------------------|
+| **Transform** | None (use values directly) | Values are 0/1 already | `num % 2` → 0 or 1 |
+| **Map Key** | `prefixSum` | `prefixSum` | `oddCount` |
+| **Map Value** | `count` | `count` | `count` |
+| **Init** | `{0: 1}` | `{0: 1}` | `{0: 1}` |
+
+#### Related Problems (Same Pattern)
+
+- **LC 560**: Subarray Sum Equals K (exact same pattern, no transform)
+- **LC 930**: Binary Subarrays with Sum (values are 0/1, same idea)
+- **LC 974**: Subarray Sums Divisible by K (modulo variant)
+- **LC 1248**: Count Nice Subarrays (this problem — transform to 0/1 then LC 560)
+
+---
+
 ### 2-2) Continuous Subarray Sum
 - Similar concept as Contiguous Array (LC 525)
 

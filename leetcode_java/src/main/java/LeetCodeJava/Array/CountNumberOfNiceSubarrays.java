@@ -55,6 +55,40 @@ public class CountNumberOfNiceSubarrays {
 
     // V0-1
     // IDEA: PREFIX SUM + HASHMAP (GPT)
+    /**
+     *
+     * ## 📊 Walkthrough Example
+     *
+     * ```
+     * nums = [1,1,2,1], k = 2
+     * ```
+     *
+     * | step | num | oddCount | map               | res |
+     * | ---- | --- | -------- | ----------------- | --- |
+     * | init |     | 0        | {0:1}             | 0   |
+     * | 1    | 1   | 1        | {0:1,1:1}         | 0   |
+     * | 2    | 1   | 2        | {0:1,1:1,2:1}     | 1   |
+     * | 3    | 2   | 2        | {0:1,1:1,2:2}     | 2   |
+     * | 4    | 1   | 3        | {0:1,1:1,2:2,3:1} | 4   |
+     *
+     * ---
+     *
+     * ## 🔑 Intuition in One Line
+     *
+     * HashMap helps you answer:
+     *
+     * > “How many valid starting points exist for the current ending point?”
+     *
+     * ---
+     *
+     * ## ⚖️ Sliding Window vs HashMap
+     *
+     * | Approach         | When to use       |
+     * | ---------------- | ----------------- |
+     * | Sliding Window   | at most / longest |
+     * | Prefix + HashMap | exact count       |
+     *
+     */
     public int numberOfSubarrays_0_1(int[] nums, int k) {
 
         /**  NOTE !!!
