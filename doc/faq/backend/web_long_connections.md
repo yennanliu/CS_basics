@@ -209,3 +209,8 @@ ws.send('hello');
 | SSE | Medium (open response streams) | Easy with stateless design |
 | WebSocket | Medium-High (persistent connections) | Needs sticky sessions or message broker (Redis pub/sub) |
 | HTTP/2 | Low-Medium (one conn, many streams) | Easy |
+
+
+### Ref
+
+- https://systemdesignschool.io/problems/google-doc/solution
