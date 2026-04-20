@@ -1125,10 +1125,90 @@ public class Workspace25 {
 
 
     // LC 1248
+    // 7.40 - 50 am
+    /**
+     *  -> Return the number of nice sub-arrays.
+     *
+     *   nums: int arr
+     *   k: int
+     *
+     *   `nice array`:
+     *      if a continuous arr
+     *      has `k` odd number on it
+     *
+     *  -----------------------
+     *
+     *  IDEA 1) SLIDE WINDOW
+     *
+     *    for (int r = 0; r < len; r++)
+     *      while  condition
+     *         ...
+     *         l += 1
+     *
+     *     ...
+     *
+     *  IDEA 2) BRUTE FORCE ????
+     *
+     *  IDEA 3) HASH ???
+     *
+     *
+     *  -----------------------
+     *
+     *
+     */
+    //  IDEA 1) SLIDE WINDOW
     public int numberOfSubarrays(int[] nums, int k) {
+        // edge
 
-        return 0;
+        /**
+         *     *    for (int r = 0; r < len; r++)
+         *      *      while  condition
+         *      *         ...
+         *      *         l += 1
+         *      *
+         *      *     ...
+         *
+         */
+
+        int l = 0;
+        int cnt = 0;
+
+        // ???
+        // { val : cnt }
+        Map<Integer, Integer> map = new HashMap<>();
+        int curCnt = 0;
+
+        for(int r = 0; r < nums.length; r++){
+            int rightVal = nums[r];
+            if(rightVal % 2 == 1){
+                curCnt += 1;
+            }
+            while (curCnt > k && l <= r){
+                // ???
+                int leftVal = nums[l];
+                if(leftVal % 2 == 1){
+                    curCnt -= 1;
+                }
+                if(map.get(leftVal) - 1 == 0){
+                    map.remove(leftVal);
+                }else{
+                    map.put(leftVal, map.get(leftVal) - 1);
+                }
+                l += 1;
+            }
+
+            // ???
+            if(curCnt == k){
+                cnt += 1;
+            }
+
+        }
+
+        return cnt;
     }
+
+
+
 
 
 

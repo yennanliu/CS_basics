@@ -52,6 +52,111 @@ public class CountNumberOfNiceSubarrays {
 //    }
 
 
+    // V0-1
+    // IDEA: Sliding Window (GPT)
+    /** NOTE !!!
+     *
+     *   Core idea:
+     *
+     *   (instead of Instead of counting directly, use below)
+     *
+     *   # of subarrays with exactly k odds =
+     *        atMost(k) - atMost(k - 1)
+     *
+     */
+    public int numberOfSubarrays_0_1(int[] nums, int k) {
+        return atMost_0_1(nums, k) - atMost_0_1(nums, k - 1);
+    }
+
+    private int atMost_0_1(int[] nums, int k) {
+        int l = 0, res = 0, oddCount = 0;
+
+        for (int r = 0; r < nums.length; r++) {
+            if (nums[r] % 2 == 1) {
+                oddCount++;
+            }
+
+            while (oddCount > k) {
+                if (nums[l] % 2 == 1) {
+                    oddCount--;
+                }
+                l++;
+            }
+
+            // count subarrays ending at r
+            res += (r - l + 1);
+        }
+
+        return res;
+    }
+
+
+    // V0-2
+    // IDEA: PREFIX SUM + HASHMAP (GPT)
+    public int numberOfSubarrays_0_2(int[] nums, int k) {
+        Map<Integer, Integer> map = new HashMap<>();
+        map.put(0, 1);
+
+        int res = 0, oddCount = 0;
+
+        for (int num : nums) {
+            if (num % 2 == 1) {
+                oddCount++;
+            }
+
+            res += map.getOrDefault(oddCount - k, 0);
+            map.put(oddCount, map.getOrDefault(oddCount, 0) + 1);
+        }
+
+        return res;
+    }
+
+
+    // V0-3
+    // IDEA: Sliding Window (GEMINI)
+    /** NOTE !!!
+     *
+     *   Core idea:
+     *
+     *   (instead of Instead of counting directly, use below)
+     *
+     *   # of subarrays with exactly k odds =
+     *        atMost(k) - atMost(k - 1)
+     *
+     */
+    public int numberOfSubarrays(int[] nums, int k) {
+        // Exactly k = (At most k) - (At most k-1)
+        return atMost_0_3(nums, k) - atMost_0_3(nums, k - 1);
+    }
+
+    private int atMost_0_3(int[] nums, int k) {
+        if (k < 0)
+            return 0;
+        int l = 0, count = 0, res = 0;
+
+        for (int r = 0; r < nums.length; r++) {
+            // If the number is odd, it contributes to our 'k' count
+            if (nums[r] % 2 == 1) {
+                k--;
+            }
+
+            // Shrink window if we exceed k odd numbers
+            while (k < 0) {
+                if (nums[l] % 2 == 1) {
+                    k++;
+                }
+                l++;
+            }
+
+            // The number of subarrays ending at 'r' with AT MOST k odds
+            // is exactly the length of the current window.
+            res += (r - l + 1);
+        }
+        return res;
+    }
+
+
+
     // V1-1
     // IDEA: HASHING
     // https://leetcode.com/problems/count-number-of-nice-subarrays/editorial/
