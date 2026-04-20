@@ -696,6 +696,141 @@ Generalized: S(k) \ S(k-1) = subarrays with exactly k distinct
 
 ---
 
+### 1.8) When Pure Sliding Window Works vs. When You Need Extra Tricks
+
+#### Core Question: Is the Validity Condition Monotonic?
+
+**Pure sliding window works** when the validity condition is **monotonic**:
+- Once the window becomes invalid, it stays invalid as you expand right
+- A single `while (invalid) { shrink left }` cleanly restores validity
+
+**You need extra tricks** when the condition is **non-monotonic** (especially "exactly k"):
+- For a fixed `r`, there may be **multiple valid left boundaries**
+- Simply shrinking until valid gives you one answer, but misses others
+
+#### Decision Table
+
+| Condition Type | Example | Pure Sliding Window? | Fix |
+|----------------|---------|---------------------|-----|
+| `sum ≤ k` | product < k | ✅ Yes | — |
+| `distinct ≤ k` | at most K distinct | ✅ Yes | — |
+| `sum ≥ k` (min length) | min subarray sum | ✅ Yes | — |
+| `exactly k` odds/distinct | LC 1248, LC 992 | ❌ No | `atMost(k) - atMost(k-1)` OR prefix trick |
+| `exactly k` (with even gap) | LC 1248 | ❌ No | prefix trick (count even gap at left) |
+
+#### Why "Exactly K" Breaks Pure Sliding Window
+
+```
+nums = [2,2,1,2,1], k = 2
+
+At r = 4 (last element), valid subarrays ending here:
+  [1,2,1]           → starts at index 2
+  [2,1,2,1]         → starts at index 1
+  [2,2,1,2,1]       → starts at index 0
+
+→ 3 valid left boundaries, but pure sliding window finds only 1!
+```
+
+Pure sliding window can only track one left boundary (the smallest valid window). For "exactly k", you need to count ALL valid left positions.
+
+#### Fix 1: atMost(k) - atMost(k-1)  ← See Section 1.7
+
+#### Fix 2: Prefix Trick Inside Sliding Window  ← See Section 1.9
+
+---
+
+### 1.9) Prefix Trick + Sliding Window (for "Exactly K" Counting)
+
+**When to use:** Count subarrays with **exactly k** of some element, where you want a single-pass O(n) solution without calling `atMost` twice.
+
+**Core Idea:**
+```
+When oddCount reaches k (window has exactly k odds):
+  - Count how many even numbers are at the LEFT edge of the window
+    before hitting the (k-th-from-left) odd number
+  - Each of these even numbers gives one more valid left boundary
+  - Store this count as `prefix`
+
+After the window shrinks past the leftmost odd:
+  - oddCount drops below k, so the while loop exits
+  - But `prefix` (the "even gap") is PRESERVED
+  - For every future r that keeps oddCount == k,
+    those same left boundaries are still valid → add `prefix` again
+```
+
+**Why `prefix` resets to 0 when a new odd is encountered:**
+- A new odd number at `r` changes which odd is the "k-th from left"
+- The gap of evens before the new leftmost odd must be recomputed
+- So reset `prefix = 0` and let the while loop rebuild it
+
+#### Template
+
+```java
+// Prefix Trick + Sliding Window
+// time = O(N), space = O(1)
+public int exactlyK(int[] nums, int k) {
+    int l = 0, res = 0, oddCount = 0, prefix = 0;
+
+    for (int r = 0; r < nums.length; r++) {
+        if (nums[r] % 2 == 1) {
+            oddCount++;
+            prefix = 0;  // reset: new odd changes left boundary gap
+        }
+
+        // Shrink left while window has exactly k odds,
+        // counting even elements we skip at the left edge
+        while (oddCount == k) {
+            prefix++;                        // one more valid left boundary
+            if (nums[l] % 2 == 1) oddCount--;
+            l++;
+        }
+
+        // prefix = # of valid left boundaries for subarrays ending at r
+        res += prefix;
+    }
+
+    return res;
+}
+```
+
+#### Walkthrough: `nums = [2,2,1,2,1], k = 2`
+
+```
+r=0 (2): oddCount=0, prefix=0  → res=0
+r=1 (2): oddCount=0, prefix=0  → res=0
+r=2 (1): oddCount=1, prefix=0  → res=0   (new odd, prefix reset)
+r=3 (2): oddCount=1, prefix=0  → res=0
+r=4 (1): oddCount=2, prefix=0  → new odd, prefix reset to 0
+  while oddCount==2:
+    prefix=1, nums[0]=2 (even), l=1       → oddCount still 2
+    prefix=2, nums[1]=2 (even), l=2       → oddCount still 2
+    prefix=3, nums[2]=1 (odd),  l=3, oddCount=1 → exit while
+  res += 3 → res=3
+```
+
+Answer: 3 ✅ — the three subarrays `[1,2,1]`, `[2,1,2,1]`, `[2,2,1,2,1]`
+
+#### Comparison: Prefix Trick vs atMost Subtraction
+
+| | Prefix Trick | atMost(k) - atMost(k-1) |
+|---|---|---|
+| **Passes** | 1 | 2 |
+| **Space** | O(1) | O(1) |
+| **Complexity** | O(n) | O(n) |
+| **Readability** | Tricky (reset logic) | Cleaner, more intuitive |
+| **Use when** | Single-pass preferred | Clarity preferred |
+
+#### Related Problems
+
+| Problem | LC# | Difficulty | Note |
+|---------|-----|------------|------|
+| Count Number of Nice Subarrays | 1248 | Medium | Exactly k odds |
+| Binary Subarrays With Sum | 930 | Medium | Exactly sum k (0/1 array) |
+| Subarrays with K Different Integers | 992 | Hard | Exactly k distinct |
+| Number of Substrings Containing All Three Characters | 1358 | Medium | Similar gap counting |
+
+---
+
 ## 2) Problems by Template Pattern
 
 ### 2.1) Template Classification Guide
