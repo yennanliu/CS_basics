@@ -1117,11 +1117,87 @@ public class Workspace25 {
 
 
     // LC 486
-    // 13.31 - 41 pm
+    // 8.46 - 56 am
+    /**
+     *   IDEA 1) DP
+     *
+     *    DP def:
+     *
+     *        dp[i][j]: the max `relative diff score` between
+     *                  play1 and play2
+     *                  within idx: [i, j]
+     *    DP eq
+     *
+     *        dp[i][j] =
+     *
+     *
+     *  ---------------
+     *
+     *   ex 1)
+     *
+     *     nums = [1,2,4,5,6,7]
+     *
+     */
     public boolean predictTheWinner(int[] nums) {
+        // edge??
 
-        return false;
+        int n = nums.length;
+
+        // ???
+        // dp[i][j] = max score `difference`
+        // `current` player can get from nums[i..j]
+        int[][] dp = new int[n][n];
+
+//        dp[0][0] = nums[0]; // ?????
+        // INIT ???
+        // base case
+        // ???????
+        for (int i = 0; i < n; i++) {
+            dp[i][i] = nums[i];
+        }
+
+
+        int maxDiffScore = 0;
+
+        // NOTE !!!
+        // LOOP ON LEN
+        for(int len = 2; len <= n; len++){
+            for(int i = 0; i <= n - len; i++){
+                // ???
+                int j = i + len - 1;
+
+                dp[i][j] = Math.max(
+                        nums[i] - dp[i+1][j],
+                        nums[j] - dp[i][j-1]
+                );
+            }
+        }
+
+
+        // ???
+//        for(int i = 1; i < n; i++){
+//            for(int j = 1; j < n; j++){
+//
+//                dp[i][j] = Math.max(
+//                        nums[i-1] + dp[i-1][j],
+//                        nums[j - 1] + dp[i][j-1]
+//                );
+//
+//            }
+//        }
+
+        // ???
+        //return maxDiffScore >= 0;
+        return dp[0][n - 1] >= 0;
     }
+
+
+
+
+
+
+
+
 
 
     // LC 1248

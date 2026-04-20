@@ -36,7 +36,8 @@
 	- java_trick.md
 	- kadane_algorithm.md (OK)
 	- linked_list.md  (OK)
-	- math.md (TODO: LC examples) 
+	- math.md (OK)
+	- matrix.md (TODO: LC examples)
 
 - to review
 - needcode `250` - similar LC by AI

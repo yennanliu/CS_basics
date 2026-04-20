@@ -40,13 +40,94 @@ package LeetCodeJava.DynamicProgramming;
 public class PredictTheWinner {
 
     // V0
-    // IDEA: 2D DP (fixed by gemini)
+    // IDEA: 2D DP (fixed by GPT)
     public boolean predictTheWinner(int[] nums) {
+
+        int n = nums.length;
+        /** NOTE !!!
+         *
+         *  DP def:
+         *
+         *
+         * dp[i][j] =
+         *    max score difference current player can get from nums[i..j]
+         *
+         */
+        int[][] dp = new int[n][n];
+
+        // base case
+        /** NOTE !!!
+         *
+         *  init: dp[i][i] = nums[i];
+         */
+        for (int i = 0; i < n; i++) {
+            dp[i][i] = nums[i];
+        }
+
+        /**  NOTE !!!
+         *
+         *  1. 2 LOOP
+         *
+         *  2.  1st loop: len starts from 2
+         *  3.  2nd loop: i starts from 0
+         *
+         *  4.  j = i + len - 1;
+         *
+         *
+         *  ----------
+         *
+         *  DP eq:
+         *
+         *
+         *  dp[i][j] = max(
+         *     nums[i] - dp[i+1][j],   // take left
+         *     nums[j] - dp[i][j-1]    // take right
+         * )
+         *
+         *
+         */
+        // fill DP (length from 2 to n)
+        for (int len = 2; len <= n; len++) {
+            for (int i = 0; i <= n - len; i++) {
+                /**  NOTE !!!
+                 *
+                 *   get j via `adding extra idx to i idx`
+                 *   -> i + (len - 1)
+                 *
+                 *   (len - 1) is the `extra idx`
+                 *
+                 */
+                int j = i + len - 1;
+
+                dp[i][j] = Math.max(
+                        nums[i] - dp[i + 1][j],
+                        nums[j] - dp[i][j - 1]);
+            }
+        }
+
+        /**  NOTE !!!
+         *
+         *  the [0, n-1] max diff score is the max diff score play 1 can get,
+         *  and if diff_score >= 0, play 1 can win.
+         */
+        return dp[0][n - 1] >= 0;
+    }
+
+
+    // V0-0-0-0-1
+    // IDEA: 2D DP (fixed by gemini)
+    public boolean predictTheWinner_0_0_0_0_1(int[] nums) {
         int n = nums.length;
         // 1. Edge case: If there's only one number, P1 takes it and wins.
         if (n <= 1)
             return true;
 
+        /** NOTE !!!
+         *
+         * dp[i][j] =
+         *    max score difference current player can get from nums[i..j]
+         *
+         */
         // 2. dp[i][j] = max relative score from subarray nums[i...j]
         int[][] dp = new int[n][n];
 
@@ -57,9 +138,23 @@ public class PredictTheWinner {
 
         // 4. Fill the table for lengths 2 up to n
         // We move i from bottom up to ensure dp[i+1] is always ready
+        /** NOTE !!!
+         *
+         *   2 loops
+         *
+         *   i starts from `n-2`
+         *   j starts from i+1
+         */
         for (int i = n - 2; i >= 0; i--) {
             for (int j = i + 1; j < n; j++) {
 
+                /** NOTE !!!
+                 *
+                 * dp[i][j] = max(
+                 *     nums[i] - dp[i+1][j],   // take left
+                 *     nums[j] - dp[i][j-1]    // take right
+                 * )
+                 */
                 // Choice A: Take nums[i],
                 // subtract the opponent's best relative score from the rest
                 int pickLeft = nums[i] - dp[i + 1][j];
