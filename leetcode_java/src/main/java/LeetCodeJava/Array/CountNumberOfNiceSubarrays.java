@@ -52,6 +52,119 @@ public class CountNumberOfNiceSubarrays {
 //    }
 
 
+    // NOTE !!! below is WRONG !!!
+    /**  Reason:
+     *
+     * Short answer:
+     *   you can use sliding window — but not in the way your code is doing it.
+     *   Your version assumes “one valid subarray per r”, which is the core mistake.
+     *
+     *
+     *  Short answer: **you *can* use sliding window — but not in the way your code is doing it.**
+     * Your version assumes **“one valid subarray per `r`”**, which is the core mistake.
+     *
+     * ---
+     *
+     * ## 🔥 The Real Problem
+     *
+     * When `curCnt == k`, your code does:
+     *
+     * ```java
+     * cnt += 1;
+     * ```
+     *
+     * But in **LeetCode 1248 Nice Subarrays**, for a fixed `r`, there can be **multiple valid starting points `l`**.
+     *
+     * ---
+     *
+     * ## ❌ Why Your Sliding Window Fails
+     *
+     * Let’s walk a counterexample:
+     *
+     * ```text
+     * nums = [2,2,1,2,1], k = 2
+     * ```
+     *
+     * At `r = 4` (last element):
+     *
+     * * subarrays ending at `r` with exactly 2 odds:
+     *
+     *   ```
+     *   [1,2,1]
+     *   [2,1,2,1]
+     *   [2,2,1,2,1]
+     *   ```
+     *
+     * 👉 **3 valid subarrays**
+     *
+     * But your code only does:
+     *
+     * ```java
+     * cnt += 1;
+     * ```
+     *
+     * 👉 counts **1 instead of 3**
+     *
+     * ---
+     *
+     * ## 🧠 Why This Happens
+     *
+     * Sliding window works well when:
+     *
+     * * condition is **monotonic** (e.g., sum ≤ k, distinct ≤ k)
+     *
+     * But here:
+     *
+     * * condition is **“exactly k odds”**
+     * * which is **not monotonic**
+     *
+     * Meaning:
+     *
+     * * shrinking or expanding the window doesn’t give you a single valid state
+     * * you may have **multiple valid left boundaries**
+     *
+     *
+     */
+//    public int numberOfSubarrays_99(int[] nums, int k) {
+//        // edge
+//        int l = 0;
+//        int cnt = 0;
+//
+//        // ???
+//        // { val : cnt }
+//        Map<Integer, Integer> map = new HashMap<>();
+//        int curCnt = 0;
+//
+//        for(int r = 0; r < nums.length; r++){
+//            int rightVal = nums[r];
+//            if(rightVal % 2 == 1){
+//                curCnt += 1;
+//            }
+//            while (curCnt > k && l <= r){
+//                // ???
+//                int leftVal = nums[l];
+//                if(leftVal % 2 == 1){
+//                    curCnt -= 1;
+//                }
+//                if(map.get(leftVal) - 1 == 0){
+//                    map.remove(leftVal);
+//                }else{
+//                    map.put(leftVal, map.get(leftVal) - 1);
+//                }
+//                l += 1;
+//            }
+//
+//            // ???
+//            if(curCnt == k){
+//                cnt += 1;
+//            }
+//
+//        }
+//
+//        return cnt;
+//    }
+
+
     // V0-0-1
     // IDEA: PREFIX VAL + SLIDE WINDOW (gpt)
     public int numberOfSubarrays_0_0_1(int[] nums, int k) {
@@ -98,8 +211,6 @@ public class CountNumberOfNiceSubarrays {
 
         return res;
     }
-
-
 
 
     // V0-1

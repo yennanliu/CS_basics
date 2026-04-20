@@ -1208,17 +1208,6 @@ public class Workspace25 {
     //  IDEA 1) SLIDE WINDOW
     public int numberOfSubarrays_99(int[] nums, int k) {
         // edge
-
-        /**
-         *     *    for (int r = 0; r < len; r++)
-         *      *      while  condition
-         *      *         ...
-         *      *         l += 1
-         *      *
-         *      *     ...
-         *
-         */
-
         int l = 0;
         int cnt = 0;
 
