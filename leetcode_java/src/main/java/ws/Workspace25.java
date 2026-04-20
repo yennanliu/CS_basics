@@ -1154,10 +1154,59 @@ public class Workspace25 {
      *
      *  -----------------------
      *
+     *  ex 1)
+     *
+     *  Input: nums = [1,1,2,1,1], k = 3
+     *  Output: 2
+     *
+     *  -> [1,1,2,1,1]        map: {0: 1}, cnt = 0
+     *      x
+     *
+     *     [1,1,2,1,1]        map: {0: 1, 1:2}, cnt = 0
+     *        x
+     *
+     *     [1,1,2,1,1]        map: {0: 1, 1:2, 2:2}, cnt = 0
+     *          x
+     *
+     *    [1,1,2,1,1]        map:  {0: 1, 1:2, 2:2, 3:3}, cnt = 1
+     *           x
+     *                           k-x = 3 - 3 = 0 in map
+     *                           cnt += (1) ??? -> cnt = 2
+     *
+     *   [1,1,2,1,1]        map: {0: 1, 1:2, 2:2, 3:3, 4:4}
+     *            x
      *
      */
-    //  IDEA 1) SLIDE WINDOW
+    //IDEA 3) HASH ??? + prefix sum ???
     public int numberOfSubarrays(int[] nums, int k) {
+        // edge
+
+        int cnt = 0;
+
+        // ???
+        // { idx : odd_cnt_till_now }  // ???
+        //  -> e.g. { idx : prefix_sum_of_odd_num_cnt }
+        /**
+         *   ??
+         *
+         *   x + y = k
+         *   -> if meet x, check if y in map
+         *   -> e.g. check if k - x in map ???
+         *
+         */
+        Map<Integer, Integer> map = new HashMap<>();
+        int curCnt = 0;
+
+
+        return cnt;
+    }
+
+
+
+
+
+    //  IDEA 1) SLIDE WINDOW
+    public int numberOfSubarrays_99(int[] nums, int k) {
         // edge
 
         /**

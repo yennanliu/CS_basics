@@ -52,6 +52,49 @@ public class CountNumberOfNiceSubarrays {
 //    }
 
 
+
+    // V0-1
+    // IDEA: PREFIX SUM + HASHMAP (GPT)
+    public int numberOfSubarrays_0_1(int[] nums, int k) {
+
+        /**  NOTE !!!
+         *
+         *  map :  {oddCount : frequency }
+         *
+         *  -> How many times a certain number
+         *     of odd numbers has appeared so far
+         */
+        Map<Integer, Integer> map = new HashMap<>();
+        // NOTE !!! init as {0, 1}
+        map.put(0, 1);
+
+        int res = 0, oddCount = 0;
+
+        for (int num : nums) {
+            if (num % 2 == 1) {
+                oddCount++;
+            }
+
+            /** NOTE !!!
+             *
+             *  “How many previous positions had exactly oddCount - k odds?”
+             *
+             *
+             *  ->
+             *
+             *  - If current = oddCount
+             *     -> Previous = oddCount - k
+             *     -> Then subarray between them has exactly k odds
+             *
+             */
+            res += map.getOrDefault(oddCount - k, 0);
+            map.put(oddCount, map.getOrDefault(oddCount, 0) + 1);
+        }
+
+        return res;
+    }
+
+
     // V0-1
     // IDEA: Sliding Window (GPT)
     /** NOTE !!!
@@ -64,7 +107,7 @@ public class CountNumberOfNiceSubarrays {
      *        atMost(k) - atMost(k - 1)
      *
      */
-    public int numberOfSubarrays_0_1(int[] nums, int k) {
+    public int numberOfSubarrays_0_2(int[] nums, int k) {
         return atMost_0_1(nums, k) - atMost_0_1(nums, k - 1);
     }
 
@@ -85,27 +128,6 @@ public class CountNumberOfNiceSubarrays {
 
             // count subarrays ending at r
             res += (r - l + 1);
-        }
-
-        return res;
-    }
-
-
-    // V0-2
-    // IDEA: PREFIX SUM + HASHMAP (GPT)
-    public int numberOfSubarrays_0_2(int[] nums, int k) {
-        Map<Integer, Integer> map = new HashMap<>();
-        map.put(0, 1);
-
-        int res = 0, oddCount = 0;
-
-        for (int num : nums) {
-            if (num % 2 == 1) {
-                oddCount++;
-            }
-
-            res += map.getOrDefault(oddCount - k, 0);
-            map.put(oddCount, map.getOrDefault(oddCount, 0) + 1);
         }
 
         return res;
