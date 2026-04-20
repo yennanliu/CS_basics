@@ -1322,6 +1322,52 @@ public class Workspace25 {
     }
 
 
+    // LC 10
+    // 10.47 - 57
+    /**
+     *   -> Return a boolean indicating whether
+     *   the matching covers the entire input string (not partial).
+     *
+     *   '.' Matches any single character
+     *
+     *   '*' Matches zero or more of the preceding element.
+     *
+     *
+     *   -----------------
+     *
+     *
+     *    IDEA 1) BRUTE FORCE ???
+     *
+     *    IDEA 2) 2D DP ???
+     *
+     *      DP def:
+     *         boolean dp[i][j]
+     *           - can pattern match s in index [i, j ] ???
+     *
+     *
+     *      DP eq:
+     *
+     *        dp[i][j]
+     *          = if p == '*':
+     *              dp[i][j]  =  dp[i][j-1] ???
+     *
+     *            if p == '.'
+     *
+     *               dp[i][j]  =  dp[i][j-1] ???
+     *
+     *
+     *   -----------------
+     *
+     *
+     *
+     *
+     *
+     */
+    public boolean isMatch(String s, String p) {
+
+        return false;
+    }
+
 
 
 

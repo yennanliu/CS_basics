@@ -62,6 +62,18 @@ public class RegularExpressionMatching {
          *   dp[i][j] = true if
          *            s[0..i-1] matches p[0..j-1]
          *
+         *
+         *  ------------
+         *
+         *   V2:
+         *
+         *   dp[i][j] = whether s[0..i-1] matches p[0..j-1]
+         *
+         *
+         *
+         *   i → `length` of string prefix
+         *   j → `length` of pattern prefix
+         *
          */
         boolean[][] dp = new boolean[s_len + 1][p_len + 1];
 
@@ -96,6 +108,7 @@ public class RegularExpressionMatching {
          *       - Two possibilities:
          *
          *           a) '*' matches zero occurrences:
+         *
          *              ```
          *                dp[i][j] = dp[i][j-2];
          *              ```
@@ -103,11 +116,12 @@ public class RegularExpressionMatching {
          *
          *           b) '*' matches one or more occurrences
          *               Only if prev matches s[i-1]:
+         *
          *               ```
          *               if (prev == s[i-1] || prev == '.') {
          *                   dp[i][j] |= dp[i-1][j];
          *                 }
-         *                ```
+         *              ```
          *                
          */
         // 3. Fill the DP table
@@ -416,6 +430,7 @@ public class RegularExpressionMatching {
 
 
     // V2
+
 
 
 
