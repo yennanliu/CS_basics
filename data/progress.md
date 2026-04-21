@@ -37,7 +37,9 @@
 	- kadane_algorithm.md (OK)
 	- linked_list.md  (OK)
 	- math.md (OK)
-	- matrix.md (TODO: LC examples)
+	- matrix.md (OK)
+	- monotonic_queue.md (TODO: LC examples)
+
 
 - to review
 - needcode `250` - similar LC by AI
@@ -348,7 +350,7 @@
 	- todo (20260421)
 		- 54,74,240
 		- 289
-		- 1314
+		- 1314,304,308,1292
 
  	==================================
 
