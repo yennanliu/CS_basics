@@ -1661,9 +1661,126 @@ public class Workspace25 {
 
 
     // LC 2406
+    // 7.30 - 40 am
+    /**
+     *  -> Return the minimum number
+     *  of groups you need to make.
+     *
+     *
+     *  - intervals[i] = [lefti, righti]
+     *                  the inclusive
+     *                  interval [lefti, righti].
+     *
+     *
+     *  - NO overlap for intervals in same group
+     *
+     *
+     *
+     *  ---------------
+     *
+     *  IDEA 1) PQ / SORTING ????
+     *
+     *
+     *  IDEA 2) SCAN LINE ????
+     *
+     *
+     *
+     *  ---------------
+     *
+     *
+     *
+     */
+    // IDEA 1) PQ / SORTING ????
     public int minGroups(int[][] intervals) {
 
+
+        PriorityQueue<Integer[]> pq = new PriorityQueue<>(new Comparator<Integer[]>() {
+            @Override
+            public int compare(Integer[] o1, Integer[] o2) {
+//                int diff = o1[0] - o2[0];
+//                return diff == 0 ? o1[1] - o2[1]: diff;
+                return o1[1] - o2[1]; // ???
+            }
+        });
+
+        // sort ???
+        Arrays.sort(intervals, new Comparator<int[]>() {
+            @Override
+            public int compare(int[] o1, int[] o2) {
+                int diff = o1[0] - o2[0]; // ?????
+                return diff;
+            }
+        });
+
+        int group = 0;
+
+        List<Integer[]> tmp = new ArrayList<>(); //??
+
+        // ???
+        for(int[] x: intervals){
+            if(!pq.isEmpty() && pq.peek()[1] < x[0]){
+               // pq.add(new Integer[]{x[0], x[1]});
+
+            }
+        }
+
+
         return 0;
+    }
+
+
+
+
+
+
+    // IDEA 1) PQ / SORTING ????
+    public int minGroups_99(int[][] intervals) {
+        // edge
+
+
+        // ???
+        // PQ: small PQ
+        // sort on 1st element (small -> big)
+        //    sort on 2nd element (small -> big ????
+        PriorityQueue<Integer[]> pq = new PriorityQueue<>(new Comparator<Integer[]>() {
+            @Override
+            public int compare(Integer[] o1, Integer[] o2) {
+                int diff = o1[0] - o2[0];
+//                if(diff == 0){
+//                    return o1[1] - o2[1];
+//                }
+//                return diff;
+                return diff == 0 ? o1[1] - o2[1]: diff;
+            }
+        });
+
+        for(int[] x: intervals){
+            pq.add(new Integer[]{x[0], x[1]});
+        }
+
+        int group = 0;
+
+        // ???
+        while (!pq.isEmpty()){
+            List<Integer[]> tmp = new ArrayList<>();
+            List<Integer[]> collected = new ArrayList<>();
+            Integer[] cur = pq.poll();
+            if(collected.isEmpty() || collected.get(collected.size() - 1)[1] < cur[0]){
+                collected.add(cur);
+            }else{
+                tmp.add(cur);
+            }
+            // ??? loop all elements in pq for cur group
+            // add all of the tmp element back to PQ ??
+            if(!tmp.isEmpty()){
+                for(Integer[] y: tmp){
+                    pq.add(y);
+                }
+            }
+        }
+
+
+        return group;
     }
 
 

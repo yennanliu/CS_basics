@@ -53,6 +53,65 @@ public class DivideIntervalsIntoMinimumNumberOfGroups {
 //    }
 
 
+    // V0-1
+    // IDEA: SORT + PQ (gpt)
+    public int minGroups_0_1(int[][] intervals) {
+        // sort by start time
+        Arrays.sort(intervals, (a, b) -> a[0] - b[0]);
+
+        // min heap storing end times
+        PriorityQueue<Integer> pq = new PriorityQueue<>();
+
+        for (int[] interval : intervals) {
+            // if earliest ending group is available
+            if (!pq.isEmpty() && pq.peek() < interval[0]) {
+                pq.poll(); // reuse this group
+            }
+            pq.offer(interval[1]); // add current interval
+        }
+
+        return pq.size();
+    }
+
+
+    // V0-2
+    // IDEA: SORT + PQ (GEMINI)
+    public int minGroups_0_2(int[][] intervals) {
+        int n = intervals.length;
+        int[] starts = new int[n];
+        int[] ends = new int[n];
+
+        // 1. Separate starts and ends
+        for (int i = 0; i < n; i++) {
+            starts[i] = intervals[i][0];
+            ends[i] = intervals[i][1];
+        }
+
+        // 2. Sort both independently
+        Arrays.sort(starts);
+        Arrays.sort(ends);
+
+        int groupCount = 0;
+        int endPointer = 0;
+
+        // 3. Sweep through the starts
+        for (int start : starts) {
+            // If the current start time is GREATER than the earliest end time,
+            // it means an existing group has become free.
+            // Note: Use 'start > ends[endPointer]' if they DON'T overlap at the same number.
+            // But LC 2406 says [1, 5] and [5, 10] OVERLAP, so we need 'start > ends[endPointer]'.
+            if (start > ends[endPointer]) {
+                endPointer++;
+            } else {
+                // Otherwise, we need a new group
+                groupCount++;
+            }
+        }
+
+        return groupCount;
+    }
+
+
     // V1-1
     // IDEA: Sorting or Priority Queue
     // https://leetcode.com/problems/divide-intervals-into-minimum-number-of-groups/editorial/
