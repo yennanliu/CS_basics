@@ -3,6 +3,7 @@ package ws;
 import LeetCodeJava.DataStructure.TreeNode;
 //import com.sun.org.apache.bcel.internal.generic.SIPUSH;
 
+import java.rmi.server.RemoteRef;
 import java.util.*;
 
 public class Workspace25 {
@@ -1369,6 +1370,84 @@ public class Workspace25 {
     }
 
 
+
+    // LC 1150
+    // 7.43 - 53 am
+    /**
+     *
+     *  IDEA 1) : HASHMAP
+     *
+     *  IDEA 2) : binary search ????
+     *
+     */
+    //  IDEA 2) : binary search ????
+    public boolean isMajorityElement(int[] nums, int target) {
+        // edge
+
+        int n = nums.length;
+
+
+        // ???
+        int l = 0;
+        int r = nums.length - 1; // ???
+        while (r >= l){
+            int mid = l + (r - l) / 2;
+            int midVal = nums[mid];
+            // ???
+            if(midVal == target){
+                int firstIdx = findFirstIdx(nums, mid, midVal);
+                // ???
+                int tmp = mid;
+                while (tmp < r && nums[tmp] == target){
+                    tmp += 1;
+                }
+                return (tmp - firstIdx + 1) >= n / 2;
+            }
+            // ???
+            else if(midVal > target){
+                r = mid - 1;
+            }else{
+                l = mid + 1; // ??
+            }
+        }
+
+
+        return false;
+    }
+
+    private int findFirstIdx(int[] nums, int startIdx, int val){
+       // int res = -1;
+        while (startIdx > 0 && nums[startIdx] == val){
+            startIdx -= 1;
+        }
+        return startIdx;
+    }
+
+
+
+
+
+
+
+    // IDEA 1) : HASHMAP
+    public boolean isMajorityElement_99(int[] nums, int target) {
+        // edge
+
+        // map: { val : cnt }
+        Map<Integer, Integer> map = new HashMap<>();
+        for(int x: nums){
+            map.put(x, map.getOrDefault(x, 0) + 1);
+        }
+
+        int n = nums.length;
+        for(int k: map.keySet()){
+            if(map.get(k) >= n/2){
+                return true;
+            }
+        }
+
+        return false;
+    }
 
 
 
