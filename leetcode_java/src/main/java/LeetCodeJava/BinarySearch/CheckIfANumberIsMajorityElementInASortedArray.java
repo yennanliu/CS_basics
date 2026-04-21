@@ -242,6 +242,6 @@ public class CheckIfANumberIsMajorityElementInASortedArray {
     // V3
 
 
-    
+
 
 }

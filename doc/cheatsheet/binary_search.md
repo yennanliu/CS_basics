@@ -2953,3 +2953,160 @@ private boolean canSplit(int[] sweetness, int people, int minTarget) {
     }
     return pieces >= people;
 }
+---
+
+### 4.X) Check If a Number Is Majority Element in a Sorted Array (LC 1150)
+
+#### Core Idea
+
+Given a sorted array, a **majority element** appears more than `N/2` times.
+
+**Key Insight**: In a sorted array, if target appears more than `N/2` times, then the element at index `firstIndex + N/2` must also equal target.
+
+**Why it works:**
+- Find the first occurrence of target at index `firstIndex`
+- If target appears `> N/2` times, it must occupy at least `N/2 + 1` consecutive positions
+- So `nums[firstIndex + N/2]` **must** still be target
+
+This avoids counting all occurrences — O(log N) instead of O(N).
+
+---
+
+#### Pattern: Find First Index via Binary Search
+
+```java
+// Find first occurrence of target in sorted array
+private int findFirstIndex(int[] nums, int target) {
+    int low = 0, high = nums.length - 1;
+    int firstIdx = -1;
+
+    while (low <= high) {
+        int mid = low + (high - low) / 2;
+        if (nums[mid] == target) {
+            firstIdx = mid;       // record potential answer
+            high = mid - 1;       // keep searching LEFT for earlier occurrence
+        } else if (nums[mid] < target) {
+            low = mid + 1;
+        } else {
+            high = mid - 1;
+        }
+    }
+    return firstIdx;
+}
+```
+
+**Template rules:**
+- When `nums[mid] == target`: save `mid` as candidate, then **shrink right** (`high = mid - 1`) to keep searching left
+- When loop ends, `firstIdx` holds the leftmost index of target (or -1 if not found)
+
+---
+
+#### LC 1150 Solution
+
+```java
+// LC 1150 - Check If a Number Is Majority Element in a Sorted Array
+// time: O(log N), space: O(1)
+public boolean isMajorityElement(int[] nums, int target) {
+    int n = nums.length;
+
+    // Step 1: Find first occurrence of target
+    int firstIndex = findFirstIndex(nums, target);
+
+    // Step 2: If not found, can't be majority
+    if (firstIndex == -1) return false;
+
+    // Step 3: Check if element at (firstIndex + n/2) is still target
+    // If yes → target appears at least (n/2 + 1) times → majority
+    int majorityIndex = firstIndex + n / 2;
+    return majorityIndex < n && nums[majorityIndex] == target;
+}
+
+private int findFirstIndex(int[] nums, int target) {
+    int low = 0, high = nums.length - 1, firstIdx = -1;
+    while (low <= high) {
+        int mid = low + (high - low) / 2;
+        if (nums[mid] == target) {
+            firstIdx = mid;
+            high = mid - 1;    // search left for earlier occurrence
+        } else if (nums[mid] < target) {
+            low = mid + 1;
+        } else {
+            high = mid - 1;
+        }
+    }
+    return firstIdx;
+}
+```
+
+**Alternative using lower_bound style (V1):**
+```java
+// Uses two binary searches: first index of target, first index of (target+1)
+public boolean isMajorityElement_v1(int[] nums, int target) {
+    int left  = lowerBound(nums, target);      // first index >= target
+    int right = lowerBound(nums, target + 1);  // first index >= target+1
+    return right - left > nums.length / 2;
+}
+
+private int lowerBound(int[] nums, int x) {
+    int left = 0, right = nums.length;
+    while (left < right) {
+        int mid = (left + right) >>> 1;
+        if (nums[mid] >= x) right = mid;
+        else left = mid + 1;
+    }
+    return left;
+}
+```
+
+---
+
+#### Visual Example
+
+```
+nums = [2,4,5,5,5,5,5,6,6], target = 5, N = 9
+
+findFirstIndex(5) → index 2
+
+majorityIndex = 2 + 9/2 = 2 + 4 = 6
+nums[6] = 5 == target ✓  → return true
+
+Intuition:
+index:  0  1  2  3  4  5  6  7  8
+value:  2  4 [5] 5  5  5 [5] 6  6
+           first↑           ↑ must still be 5 if majority
+```
+
+---
+
+#### Find First Index — Comparison with Similar Patterns
+
+| Pattern | When `nums[mid] == target` | After Loop | Returns |
+|---------|---------------------------|-----------|---------|
+| **Standard BS** | `return mid` | N/A | exact index or -1 |
+| **Find First (Left Boundary)** | `firstIdx = mid; high = mid-1` | `firstIdx` | leftmost index or -1 |
+| **Find Last (Right Boundary)** | `lastIdx = mid; low = mid+1` | `lastIdx` | rightmost index or -1 |
+| **Lower Bound** | `right = mid` (half-open) | `left` | first index >= target |
+
+---
+
+#### Similar LC Problems
+
+| Problem | Core Idea | Difficulty |
+|---------|-----------|------------|
+| **LC 1150** | Find first index + jump by N/2 to verify majority | Easy (Prime) |
+| LC 34 | Find first AND last occurrence via two boundary searches | Medium |
+| LC 35 | Find insertion position (return `left` after loop) | Easy |
+| LC 278 | First Bad Version — find first index where condition is true | Easy |
+| LC 153 | Find minimum in rotated sorted array | Medium |
+| LC 374 | Guess Number Higher or Lower — classic find-first pattern | Easy |
+| LC 540 | Single Element in a Sorted Array — parity-based boundary search | Medium |
+| LC 852 | Peak Index in a Mountain Array — find first descending point | Medium |
+
+---
+
+#### Interview Tips for LC 1150 / Find-First Pattern
+
+1. **Recognize sorted array + count query** → think "find first index + O(1) check"
+2. **Key line**: `return majorityIndex < n && nums[majorityIndex] == target` — bounds check matters
+3. **Why not count?** Counting is O(N); binary search is O(log N) — interviewer expects the optimal
+4. **Edge cases**: target not in array, single element array, all elements equal target
