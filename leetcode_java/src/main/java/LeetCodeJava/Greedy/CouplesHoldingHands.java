@@ -35,7 +35,7 @@ import java.util.Map;
  * Constraints:
  *
  * 2n == row.length
- * 2 <= n <= 30​​​​​​​
+ * 2 <= n <= 30
  * 0 <= row[i] < 2n
  * All the elements of row are unique.
  *
@@ -47,9 +47,86 @@ public class CouplesHoldingHands {
 //
 //    }
 
-    // V1
+    // V1-1
+    // IDEA: HASHMAP + IDX (GPT)
+    public int minSwapsCouples_1_1(int[] row) {
+        int n = row.length;
+
+        // map: person -> index
+        Map<Integer, Integer> map = new HashMap<>();
+        for (int i = 0; i < n; i++) {
+            map.put(row[i], i);
+        }
+
+        int swaps = 0;
+
+        for (int i = 0; i < n; i += 2) {
+            int first = row[i];
+
+            // compute partner without bit trick
+            int partner = (first % 2 == 0) ? first + 1 : first - 1;
+
+            if (row[i + 1] == partner)
+                continue;
+
+            int partnerIdx = map.get(partner);
+
+            // swap
+            int temp = row[i + 1];
+            row[i + 1] = partner;
+            row[partnerIdx] = temp;
+
+            // update map
+            map.put(temp, partnerIdx);
+            map.put(partner, i + 1);
+
+            swaps++;
+        }
+
+        return swaps;
+    }
 
 
+    // V1-2
+    // IDEA: HASHMAP + IDX (GEMINI)
+    public int minSwapsCouples_1_2(int[] row) {
+        int n = row.length;
+        Map<Integer, Integer> map = new HashMap<>();
+        for (int i = 0; i < n; i++) {
+            map.put(row[i], i);
+        }
+
+        int swaps = 0;
+        for (int i = 0; i < n; i += 2) {
+            int firstPerson = row[i];
+
+            // Standard math instead of bitwise XOR
+            int partner;
+            if (firstPerson % 2 == 0) {
+                partner = firstPerson + 1;
+            } else {
+                partner = firstPerson - 1;
+            }
+
+            if (row[i + 1] != partner) {
+                swaps++;
+
+                int currentNeighbor = row[i + 1];
+                int partnerIdx = map.get(partner);
+
+                // Swap in array
+                row[partnerIdx] = currentNeighbor;
+                row[i + 1] = partner;
+
+                // Update the map for the neighbor we just moved
+                map.put(currentNeighbor, partnerIdx);
+            }
+        }
+        return swaps;
+    }
+
+
+    
     // V2-1
     // IDEA: Greedy + Index Map
     // https://leetcode.com/problems/couples-holding-hands/solutions/7489338/beats-100-2-solutions-greedy-dsu-union-f-rsml/

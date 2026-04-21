@@ -1560,9 +1560,102 @@ public class Workspace25 {
 
 
     // LC 765
+    // 10.45 -55 am
+    /**
+`     *  -> Return the `minimum` number of `swaps`
+     *     so that `every couple` is sitting side by side`
+     *
+     *     row[i]: person id at idx = i
+     *
+     *     couple: (0,1), (1,2)...
+     *              -> e.g. (2n-2, 2n-1) pair
+     *
+     *   ---------------------
+     *
+     *    IDEA 1) BRUTE FORCE
+     *
+     *    IDEA 2) GREEDY ???
+     *
+     *    IDEA 3) HASHMAP ???
+     *      { val : idx }
+     *
+     *
+     *   IDEA 4) DP ???
+     *
+     *
+     *    if row size = n
+     *     -> MUST be 0....n-1
+     *     -> so the couple MUST be
+     *         - (0,1), (2,3), .... (n-2, n-1) // ??
+     *
+     *
+     *   ---------------------
+     *
+     *   ex 1)
+     *    row = [1,3,0,2]
+     *
+     *    -> map = { 1: 0, 3: 1, 0: 2, 2: 3 }
+     *
+     *    -> [1,2,0,3]
+     *       [1,2,3,0]
+     *       ..
+     *
+     *       or
+     *
+     *       [1,0,3,2]
+     *
+     *       or
+     *
+     *       ...
+     *
+     *  ex 2)
+     *
+     *   row = [1,3,0,5,2.4]
+     *
+     *   ->
+     *    [1,0,3,5,2,4]
+     *
+     *
+     *
+     */
     public int minSwapsCouples(int[] row) {
+        // edge ???
+
+        // map: { val : idx }
+        Map<Integer, Integer> map = new HashMap<>();
+        for(int i = 0; i < row.length; i++){
+            map.put(row[i], i);
+        }
+
+        //???
+        int swap = 0;
+        int l = 1; // ??
+
+        while (l < row.length - 1){
+            // ???
+            if(isPair(row[l-1], row[l])){
+                l += 2; // /??
+            }
+            // swap
+            // get min possible `pair candidate` from map
+            // swap
+            if(map.containsKey(row[l] - 1)){
+                int tmp = row[l+1];
+                // ???
+                row[row[l+1]] = row[l] - 1;
+                row[row[l] - 1] = tmp;
+                // need to updare mp ????
+                swap += 1;
+            }
+            l += 2; // ????
+        }
 
         return -1;
+    }
+
+    // ???
+    private boolean isPair(int x, int y){
+        return Math.abs(x - y) == 1;
     }
     
 
