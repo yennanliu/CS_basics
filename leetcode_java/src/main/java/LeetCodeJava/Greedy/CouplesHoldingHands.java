@@ -52,6 +52,11 @@ public class CouplesHoldingHands {
     public int minSwapsCouples_1_1(int[] row) {
         int n = row.length;
 
+        /** NOTE !!!
+         *
+         *  map: { val : idx }
+         *
+         */
         // map: person -> index
         Map<Integer, Integer> map = new HashMap<>();
         for (int i = 0; i < n; i++) {
@@ -60,22 +65,55 @@ public class CouplesHoldingHands {
 
         int swaps = 0;
 
+        /** NOTE !!!
+         *
+         *  jump 2 idx in every loop
+         */
         for (int i = 0; i < n; i += 2) {
             int first = row[i];
 
             // compute partner without bit trick
+            /** NOTE !!!
+             *
+             *  If x is even → partner = x + 1
+             *  If x is odd → partner = x - 1
+             *
+             */
             int partner = (first % 2 == 0) ? first + 1 : first - 1;
 
-            if (row[i + 1] == partner)
+            /** NOTE !!!
+             *
+             *  if next val is `partner`,
+             *  we neglect this loop
+             *
+             */
+            if (row[i + 1] == partner){
                 continue;
+            }
 
+
+            /** NOTE !!!
+             *
+             *  get partner `idx` via map
+             */
             int partnerIdx = map.get(partner);
 
+            /** NOTE !!!
+             *
+             *   we swap
+             *     `next element` (row[i + 1])
+             *      with
+             *     `partner element`
+             */
             // swap
             int temp = row[i + 1];
             row[i + 1] = partner;
             row[partnerIdx] = temp;
 
+            /** NOTE !!!
+             *
+             *  don't forget to update the map
+             */
             // update map
             map.put(temp, partnerIdx);
             map.put(partner, i + 1);
@@ -126,7 +164,7 @@ public class CouplesHoldingHands {
     }
 
 
-    
+
     // V2-1
     // IDEA: Greedy + Index Map
     // https://leetcode.com/problems/couples-holding-hands/solutions/7489338/beats-100-2-solutions-greedy-dsu-union-f-rsml/
