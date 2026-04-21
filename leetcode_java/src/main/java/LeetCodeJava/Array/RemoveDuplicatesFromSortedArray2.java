@@ -59,13 +59,102 @@ public class RemoveDuplicatesFromSortedArray2 {
 
 
     // V0
+    // IDEA : 2 POINTERS (GEMINI)
+    /**  Core idea:
+     *
+     * ### 💡 The Strategy
+     *
+     *  -> Since the array is **sorted**,
+     *     only need to compare the current element we are reading
+     *    (`nums[r]`) with the element placed **two positions ago** in
+     *    our "written" array (`nums[l-2]`).
+     *
+     *    -> If they are different,
+     *       it means the current element hasn't been used
+     *       more than twice yet, so it is safe to write.
+     *
+     */
+    /**
+     *      * ### 📊 Complexity Analysis
+     *      *
+     *      * | Metric | Complexity | Explanation |
+     *      * | :--- | :--- | :--- |
+     *      * | **Time** | **$O(N)$** | A single pass through the array with one read and one write pointer. |
+     *      * | **Space** | **$O(1)$** | No auxiliary data structures are used. |
+     *      *
+     */
+    public int removeDuplicates(int[] nums) {
+        // 1. Edge case: If length is 2 or less, it already satisfies the condition
+        if (nums.length <= 2) {
+            return nums.length;
+        }
+
+        // 'l' is the write pointer (next available slot).
+        // The first two elements are always allowed.
+        int l = 2;
+
+        // 2. 'r' is the read pointer (scanning the array)
+        for (int r = 2; r < nums.length; r++) {
+
+            /** NOTE !!!
+             *
+             *  core idea:
+             *
+             *
+             */
+            // Compare the current element with the element 2 positions back
+            // in the 'valid' portion of the array.
+            if (nums[r] != nums[l - 2]) {
+                nums[l] = nums[r];
+                l++;
+            }
+        }
+
+        // 3. 'l' represents the length of the modified array
+        return l;
+    }
+
+
+    // V0-1
+    // IDEA : 2 POINTERS ( gpt)
+    /** Core idea:
+     *
+     * Since the array is sorted, duplicates are adjacent.
+     * We allow at most 2 occurrences, so we only keep an element if:
+     *
+     * nums[i] != nums[k - 2]
+     *
+     * This works because if the current number equals
+     * the element two positions before,
+     * it would be the 3rd duplicate → skip it
+     *
+     */
+    public int removeDuplicates_0_1(int[] nums) {
+        int n = nums.length;
+        if (n <= 2)
+            return n;
+
+        int k = 2; // first 2 elements always allowed
+
+        for (int i = 2; i < n; i++) {
+            if (nums[i] != nums[k - 2]) {
+                nums[k] = nums[i];
+                k++;
+            }
+        }
+
+        return k;
+    }
+
+
+    // V0-3
     // IDEA : 2 POINTERS ( gpt)
     // https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Array/remove-duplicates-from-sorted-array-ii.py
     /**
      * time = O(N)
      * space = O(1)
      */
-    public int removeDuplicates(int[] nums) {
+    public int removeDuplicates_0_3(int[] nums) {
         if (nums.length < 3) {
             return nums.length;
         }

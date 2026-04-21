@@ -1514,6 +1514,45 @@ public class Workspace25 {
 
 
     // LC 80
+    // 8.43 - 53 am
+    /**
+     *
+     *   at most twice
+     *
+     *
+     *   ------------
+     *
+     *   IDEA 1) 2 POINTERS ???
+     *
+     *
+     *   ------------
+     *
+     *
+     *   ex 1)
+     *
+     *   Input: nums = [1,1,1,2,2,3]
+     *   Output: 5, nums = [1,1,2,2,3,_]
+     *
+     *
+     *   [1,1,1,2,2,3]
+     *    l r
+     *
+     *   [1,1,1,2,2,3]
+     *    l   r
+     *
+     *   [1,1,2,1,2,3]
+     *    l   l r
+     *
+     *   [1,1,2,1,2,3]
+     *        l   r
+     *
+     *    [1,1,2,1,2,3]
+     *         l l    r
+     *
+     *
+     *
+     *
+     */
     public int removeDuplicates(int[] nums) {
 
         return 1;
