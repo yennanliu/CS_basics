@@ -164,6 +164,56 @@ public class CouplesHoldingHands {
     }
 
 
+    // V1-3
+    // IDEA: UNION FIND (DSU) (GEMINI)
+    class DSU_1_3 {
+        int[] parent;
+        int count; // Number of connected components
+
+        DSU_1_3(int n) {
+            parent = new int[n];
+            for (int i = 0; i < n; i++)
+                parent[i] = i;
+            this.count = n;
+        }
+
+        int find(int i) {
+            if (parent[i] == i)
+                return i;
+            return parent[i] = find(parent[i]); // Path compression
+        }
+
+        void union(int i, int j) {
+            int rootI = find(i);
+            int rootJ = find(j);
+            if (rootI != rootJ) {
+                parent[rootI] = rootJ;
+                count--; // Reduce components when we merge two groups
+            }
+        }
+    }
+
+    public int minSwapsCouples_1_3(int[] row) {
+        int n = row.length;
+        int numCouples = n / 2;
+        DSU_1_3 dsu = new DSU_1_3(numCouples);
+
+        // We look at each couch (i, i+1)
+        for (int i = 0; i < n; i += 2) {
+            // Person 1 and Person 2 sitting on the same couch
+            int coupleA = row[i] / 2;
+            int coupleB = row[i + 1] / 2;
+
+            // If they belong to different couples, union those couple-groups
+            // This means those two couples are "linked" by this couch
+            dsu.union(coupleA, coupleB);
+        }
+
+        // Formula: Swaps = Total Couples - Number of Connected Components
+        return numCouples - dsu.count;
+    }
+
+
 
     // V2-1
     // IDEA: Greedy + Index Map
