@@ -197,6 +197,133 @@ class Solution {
 | Move Zeroes | 283 | Move zeros to end, preserve order | Swap when `nums[fast] != 0` |
 | Remove Duplicates from Sorted List | 83 | Linked list version of LC 26 | `node.next = node.next.next` on duplicate |
 | Remove Duplicates from Sorted List II | 82 | Delete ALL nodes with duplicate values | Extra sentinel node + skip entire duplicate group |
+### 0-2-0b) Remove Duplicates from Sorted Array II (LC 80)
+
+#### Core Idea
+
+**"Compare with two positions back" trick:**
+- Allow each element **at most twice** → keep an element only if it differs from `nums[slow - 2]`
+- Since the array is sorted, if `nums[fast] == nums[slow - 2]`, writing it would create a 3rd consecutive duplicate → skip
+- Both `slow` and `fast` start at index 2 (first two elements always allowed)
+
+```
+Key condition: nums[fast] != nums[slow - 2]
+  → write nums[fast] to nums[slow], slow++
+  
+Pointer initialization:
+  slow = 2  (write pointer, first 2 slots are always valid)
+  fast = 2  (read pointer, scans from index 2 onward)
+```
+
+**Why `slow - 2` and not `slow - 1`?**
+- `slow - 1` would only prevent 3rd+ duplicates if the LAST two wrote the same value
+- `slow - 2` directly checks if the slot two positions back already holds the same value — guaranteeing at most 2 copies
+
+---
+
+```java
+// java
+// LC 80 - Remove Duplicates from Sorted Array II
+// time: O(N), space: O(1)
+/**
+ *  //--------------------------------
+ *  Example 1
+ *  //--------------------------------
+ *
+ *  nums = [1,1,1,2,2,3]
+ *
+ *  Initial: slow=2, fast=2
+ *  [1,1,1,2,2,3]
+ *       s
+ *       f
+ *
+ *  fast=2: nums[2]=1, nums[slow-2]=nums[0]=1  → EQUAL, skip  (would be 3rd '1')
+ *  fast=3: nums[3]=2, nums[slow-2]=nums[0]=1  → DIFFERENT, write nums[slow]=2, slow=3
+ *  [1,1,2,2,2,3]
+ *         s
+ *           f
+ *
+ *  fast=4: nums[4]=2, nums[slow-2]=nums[1]=1  → DIFFERENT, write, slow=4
+ *  [1,1,2,2,2,3]
+ *           s
+ *             f
+ *
+ *  fast=5: nums[5]=3, nums[slow-2]=nums[2]=2  → DIFFERENT, write, slow=5
+ *  [1,1,2,2,3,3]
+ *             s
+ *
+ *  return slow = 5  → nums[0..4] = [1,1,2,2,3]
+ *
+ *  //--------------------------------
+ *  Example 2
+ *  //--------------------------------
+ *
+ *  nums = [0,0,1,1,1,1,2,3,3]
+ *
+ *  Initial: slow=2, fast=2
+ *  fast=2: nums[2]=1, nums[0]=0 → DIFFERENT, write, slow=3
+ *  fast=3: nums[3]=1, nums[1]=0 → DIFFERENT, write, slow=4
+ *  fast=4: nums[4]=1, nums[2]=1 → EQUAL, skip  (3rd '1')
+ *  fast=5: nums[5]=1, nums[2]=1 → EQUAL, skip  (4th '1')
+ *  fast=6: nums[6]=2, nums[2]=1 → DIFFERENT, write, slow=5
+ *  fast=7: nums[7]=3, nums[3]=1 → DIFFERENT, write, slow=6
+ *  fast=8: nums[8]=3, nums[4]=1 → DIFFERENT, write, slow=7
+ *
+ *  return slow = 7  → nums[0..6] = [0,0,1,1,2,3,3]
+ */
+public int removeDuplicates(int[] nums) {
+    if (nums.length <= 2) return nums.length;
+
+    int slow = 2; // write pointer; first 2 elements always valid
+    for (int fast = 2; fast < nums.length; fast++) {
+        // Only write if current element != element two slots back
+        if (nums[fast] != nums[slow - 2]) {
+            nums[slow] = nums[fast];
+            slow++;
+        }
+        // else: would create 3rd duplicate → skip
+    }
+    return slow;
+}
+```
+
+#### Generalized Pattern: Allow at most K duplicates
+
+```java
+// Generic template: allow each element at most K times
+// LC 26 is K=1, LC 80 is K=2
+public int removeDuplicatesAtMostK(int[] nums, int k) {
+    int slow = k;
+    for (int fast = k; fast < nums.length; fast++) {
+        if (nums[fast] != nums[slow - k]) {
+            nums[slow] = nums[fast];
+            slow++;
+        }
+    }
+    return slow;
+}
+// LC 26: call with k=1  →  compare nums[fast] != nums[slow - 1]
+// LC 80: call with k=2  →  compare nums[fast] != nums[slow - 2]
+```
+
+#### LC 26 vs LC 80 Comparison
+
+| Aspect | LC 26 (at most 1) | LC 80 (at most 2) |
+|--------|-------------------|-------------------|
+| **Condition** | `nums[fast] != nums[slow - 1]` | `nums[fast] != nums[slow - 2]` |
+| **Init** | `slow = 1, fast = 1` | `slow = 2, fast = 2` |
+| **Returns** | `slow` | `slow` |
+| **Generalized** | `k = 1` | `k = 2` |
+
+#### Similar Problems
+
+| Problem | LC# | Key Difference |
+|---------|-----|----------------|
+| Remove Duplicates I | 26 | At most 1 copy — compare `nums[slow-1]` |
+| Remove Duplicates II | 80 | At most 2 copies — compare `nums[slow-2]` |
+| Remove Element | 27 | Remove all of a specific value |
+| Move Zeroes | 283 | Keep zeros, move to end |
+
 ### 0-2-1) Remove Element
 ```java
 // java
