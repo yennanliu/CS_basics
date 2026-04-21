@@ -1492,7 +1492,7 @@ public class Workspace25 {
      *
      */
     // IDEA 1) 2 POINTERS
-    public int removeDuplicates(int[] nums) {
+    public int removeDuplicates_xxx(int[] nums) {
         // edge
 
         int l = 0;
@@ -1513,6 +1513,11 @@ public class Workspace25 {
 
 
 
+    // LC 80
+    public int removeDuplicates(int[] nums) {
+
+        return 1;
+    }
 
 
     

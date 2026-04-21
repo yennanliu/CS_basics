@@ -58,6 +58,32 @@
 ### 0-2) Pattern
 
 ### 0-2-0) Remove Duplicates from Sorted Array
+
+#### Core Idea
+
+**Slow-Fast (Write-Read) Pattern:**
+- `slow` = the "write" pointer — tracks the last confirmed unique position
+- `fast` = the "read" pointer — scans the array looking for new unique values
+- When `nums[fast] != nums[slow]`: a new unique value is found
+  1. Advance `slow` first (open the next write slot)
+  2. Write (or swap) `nums[fast]` into `nums[slow]`
+- Return `slow + 1` as the count of unique elements
+
+**Key invariant:** `nums[0..slow]` always contains unique elements in sorted order.
+
+**Two variants:**
+- **Overwrite** (`nums[slow] = nums[fast]`): cleaner, preferred — array is already sorted so we just need to copy unique values forward
+- **Swap** (`swap(nums[slow], nums[fast])`): also correct but unnecessary for sorted arrays; used when original values need to be preserved elsewhere
+
+```
+Pointer movement rules:
+  - fast: moves EVERY iteration (scans all elements)
+  - slow: moves ONLY when a new unique value is found (after nums[fast] != nums[slow])
+  - Both start at 0 (or slow=0, fast=1 in while-loop variants)
+```
+
+---
+
 ```java
 // java
 // LC 26 (LC 83)
@@ -110,28 +136,67 @@
  *          s s         f
  *
  */
+// Variant A: OVERWRITE (cleaner, preferred for sorted arrays)
 class Solution {
     public int removeDuplicates(int[] nums) {
-        if (nums.length == 0) {
-            return 0;
+        if (nums.length == 0) return 0;
+
+        int slow = 0;
+        for (int fast = 1; fast < nums.length; fast++) {
+            if (nums[fast] != nums[slow]) {
+                slow++;                  // open next write slot
+                nums[slow] = nums[fast]; // overwrite with new unique value
+            }
+            // if equal: fast keeps moving, slow stays
         }
+        return slow + 1;
+    }
+}
+
+// Variant B: SWAP (preserves all values, same time/space)
+class Solution {
+    public int removeDuplicates(int[] nums) {
+        if (nums.length == 0) return 0;
+
         int slow = 0, fast = 0;
         while (fast < nums.length) {
-            // NOTE !!! if slow pointer != fast pointer
             if (nums[fast] != nums[slow]) {
-                // NOTE !!! move slow pointer first
                 slow++;
-                // 维护 nums[0..slow] 无重复
-                // NOTE !!! swap slow, fast pointer val
+                // swap: move the new unique value to slow position
+                int tmp = nums[slow];
                 nums[slow] = nums[fast];
+                nums[fast] = tmp;
             }
             fast++;
         }
-        // 数组长度为索引 + 1
         return slow + 1;
     }
 }
 ```
+
+#### Pattern Summary
+
+| Step | Action | Why |
+|------|--------|-----|
+| `nums[fast] == nums[slow]` | Only advance `fast` | Duplicate — skip it |
+| `nums[fast] != nums[slow]` | `slow++`, then write/swap | New unique found — claim next slot |
+| Return | `slow + 1` | `slow` is index, length = index + 1 |
+
+**Why overwrite instead of swap?**
+- Array is sorted → we only move values left, never right
+- No need to preserve overwritten values (they are duplicates already seen)
+- `nums[slow] = nums[fast]` is O(1) and simpler
+
+#### Similar Problems
+
+| Problem | LC# | Difference | Key Trick |
+|---------|-----|------------|-----------|
+| Remove Duplicates from Sorted Array | 26 | Allow each value once | `nums[slow] = nums[fast]` when different |
+| Remove Duplicates from Sorted Array II | 80 | Allow each value **at most twice** | Compare `nums[fast]` with `nums[slow-1]` (two back) |
+| Remove Element | 27 | Remove all occurrences of `val` | Write when `nums[fast] != val` |
+| Move Zeroes | 283 | Move zeros to end, preserve order | Swap when `nums[fast] != 0` |
+| Remove Duplicates from Sorted List | 83 | Linked list version of LC 26 | `node.next = node.next.next` on duplicate |
+| Remove Duplicates from Sorted List II | 82 | Delete ALL nodes with duplicate values | Extra sentinel node + skip entire duplicate group |
 ### 0-2-1) Remove Element
 ```java
 // java
