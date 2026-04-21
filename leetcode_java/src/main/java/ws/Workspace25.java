@@ -1660,5 +1660,11 @@ public class Workspace25 {
     
 
 
+    // LC 2406
+    public int minGroups(int[][] intervals) {
+
+        return 0;
+    }
+
 
 }
