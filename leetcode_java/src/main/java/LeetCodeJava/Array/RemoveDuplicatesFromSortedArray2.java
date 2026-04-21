@@ -89,10 +89,18 @@ public class RemoveDuplicatesFromSortedArray2 {
             return nums.length;
         }
 
-        // 'l' is the write pointer (next available slot).
+        /** NOTE !!!
+         *
+         *  'l' is the `write` pointer
+         */
+        // 'l' is the `write` pointer (next available slot).
         // The first two elements are always allowed.
         int l = 2;
 
+        /** NOTE !!!
+         *
+         *  'r' starts from 2
+         */
         // 2. 'r' is the read pointer (scanning the array)
         for (int r = 2; r < nums.length; r++) {
 
@@ -100,7 +108,10 @@ public class RemoveDuplicatesFromSortedArray2 {
              *
              *  core idea:
              *
-             *
+             *    1. compare if  nums[r] != nums[l - 2]
+             *        - if true,
+             *           - swap  nums[l],  nums[r]
+             *           - l += 1
              */
             // Compare the current element with the element 2 positions back
             // in the 'valid' portion of the array.
