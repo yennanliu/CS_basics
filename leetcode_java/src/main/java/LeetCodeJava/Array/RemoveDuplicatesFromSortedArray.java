@@ -60,6 +60,18 @@ public class RemoveDuplicatesFromSortedArray {
     // V0
     // IDEA : 2 POINTERS
     // time: O(N), space: O(1)
+    /** NOTE !!!
+     *
+     *   Core algo:
+     *
+     *   1. slow, fast pointers (both starts from idx = 0)
+     *
+     *   (r pointer keep moving within for loop)
+     *
+     *   2. if nums[l] != nums[r]:
+     *       - step 1) l += 1 (move left idx)
+     *       - step 2) nums[l], nums[r] = nums[r], nums[l] (swap left, right val)
+     */
     /**
      *  //--------------------------------
      *  Example 1
@@ -138,7 +150,7 @@ public class RemoveDuplicatesFromSortedArray {
          *
          *   we return s+1 as non-duplicated array length, since length = index + 1
          */
-        return s+1;
+        return s + 1;
     }
 
     // V0-0-1
