@@ -2094,6 +2094,105 @@ public int minGroups_v2(int[][] intervals) {
  */
 ```
 
+### 2-17) Minimize Deviation in Array
+
+```java
+// java
+// LC 1675
+// Reference: leetcode_java/src/main/java/LeetCodeJava/Heap/MinimizeDeviationInArray.java
+
+/**
+ * Problem: Given nums[], you can:
+ *   - Divide any EVEN element by 2  (any number of times)
+ *   - Multiply any ODD element by 2 (any number of times)
+ * Return the minimum possible deviation = max(nums) - min(nums).
+ *
+ * Example 1: nums = [1,2,3,4] → [2,2,3,2] → deviation = 3 - 2 = 1
+ * Example 2: nums = [4,1,5,20,3] → [4,2,5,5,3] → deviation = 5 - 2 = 3
+ *
+ * Key Observations:
+ * 1. Odd numbers can only be multiplied by 2 ONCE to become even,
+ *    then only divided. So first multiply all odds to get their maximum.
+ * 2. After making everything even, only DIVISION is possible.
+ * 3. To minimize deviation, always shrink the current maximum (divide by 2),
+ *    tracking the running minimum along the way.
+ * 4. Stop when max is odd (can no longer be divided).
+ *
+ * Pattern: Greedy + Max Heap
+ */
+
+// APPROACH: GREEDY + MAX HEAP
+/**
+ * Steps:
+ * 1. Normalize: multiply all odd numbers by 2 → everything is now even.
+ *    Track the global minimum during this step.
+ * 2. Push all values into a MAX heap.
+ * 3. Loop:
+ *    a. Poll the max from the heap.
+ *    b. Record deviation = max - min (update answer).
+ *    c. If max is ODD → can't divide further → break (best we can do).
+ *    d. If max is EVEN → divide by 2, update min, push back to heap.
+ *
+ * Why max heap?
+ *   We always want to reduce the LARGEST value to shrink the range.
+ *   The minimum only ever decreases (division makes values smaller).
+ *
+ * Time:  O(N log N * log(maxVal)) — each element divided at most log(maxVal) times
+ * Space: O(N)
+ */
+public int minimumDeviation(int[] nums) {
+    PriorityQueue<Integer> maxHeap = new PriorityQueue<>(Collections.reverseOrder());
+    int min = Integer.MAX_VALUE;
+
+    // Step 1: normalize — make all values even (multiply odds by 2)
+    for (int x : nums) {
+        if (x % 2 == 1) x *= 2;
+        maxHeap.offer(x);
+        min = Math.min(min, x);
+    }
+
+    int deviation = Integer.MAX_VALUE;
+
+    // Step 2: repeatedly reduce the max until it is odd
+    while (true) {
+        int max = maxHeap.poll();
+        deviation = Math.min(deviation, max - min);
+
+        if (max % 2 == 1) break;  // odd → can't divide further → done
+
+        max /= 2;
+        min = Math.min(min, max);  // new value may be the new minimum
+        maxHeap.offer(max);
+    }
+
+    return deviation;
+}
+
+/**
+ * WHY THIS WORKS:
+ *
+ * - After normalization, all numbers are even; we can only divide (move values down).
+ * - Each division brings the max closer to the min, potentially reducing deviation.
+ * - We stop the moment the max is odd because:
+ *     * Multiplying it by 2 would only increase the max (worse deviation).
+ *     * The smallest achievable deviation at this state is already recorded.
+ * - The minimum is tracked explicitly because after a division the new value
+ *   might be smaller than all current heap elements.
+ *
+ * SIMILAR PROBLEMS:
+ * - LC 2616 Minimize the Maximum Difference of Pairs — binary search + greedy
+ * - LC 910  Smallest Range II                        — sort + greedy math
+ * - LC 1671 Minimum Number of Removals to Sort       — greedy + heap
+ * - LC 621  Task Scheduler                           — max heap + greedy
+ * - LC 502  IPO                                      — two heaps + greedy
+ *
+ * COMMON MISTAKE:
+ * - Trying to increase small values by multiplying: after normalization,
+ *   multiplying any even number makes it larger → increases max → worse.
+ *   Only dividing the max is ever beneficial.
+ */
+```
+
 ## Problems by Pattern
 
 ### Pattern-Based Problem Classification
@@ -2169,6 +2268,7 @@ public int minGroups_v2(int[][] intervals) {
 | Maximum Performance of Team | 1383 | Sort + heap greedy | Hard | Top K Frequency |
 | Minimum Number of Refueling Stops | 871 | Greedy + max heap | Hard | Universal Heap |
 | Minimum Number of Visited Cells | 2617 | DP + per-row/col PQ + lazy deletion | Hard | Grid Range Jumps |
+| Minimize Deviation in Array | 1675 | Normalize odds, greedy shrink max | Hard | Universal Heap |
 
 ### Heap + Other Data Structure Combos
 | Problem | LC # | Key Technique | Difficulty | Template |
