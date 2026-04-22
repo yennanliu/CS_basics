@@ -1380,8 +1380,106 @@ public class Workspace25 {
      *  IDEA 2) : binary search ????
      *
      */
-    //  IDEA 2) : binary search ????
     public boolean isMajorityElement(int[] nums, int target) {
+        // edge
+
+
+        int firstIdx = findFirstIdx3(nums, target);
+        // ??
+        if(firstIdx == -1){
+            return false;
+        }
+        int possibleLastIdx = firstIdx + nums.length / 2;
+
+        return possibleLastIdx < nums.length && nums[possibleLastIdx] ==  target;
+    }
+
+
+    private int findFirstIdx3(int[] nums, int target){
+        //int n = nums.length;
+        int l = 0;
+        int r = nums.length - 1;
+
+        int firstIdx = -1;
+
+        while (r >= l){
+            int mid = l + (r - l) / 2;
+            int midVal = nums[mid];
+            // ??
+            if(midVal >= target){
+                // ???
+                if(midVal ==  target){
+                    firstIdx = mid;
+                }
+                r = mid - 1;
+            }else{
+                l = mid + 1;
+            }
+        }
+
+
+        return firstIdx;
+    }
+
+
+
+
+
+
+
+    // 10.14 - 24 am
+    //  IDEA 2) : binary search ????
+    public boolean isMajorityElement_97(int[] nums, int target) {
+        // edge
+
+        int n = nums.length;
+        int l = 0;
+        int r = nums.length - 1;
+
+        while (r >= l){
+            int mid = l + (r - l) / 2;
+            int midVal = nums[mid];
+
+            if(midVal == target){
+                // ??
+                int firstIdx = findFirstIdx2(nums, mid, target);
+                if(firstIdx == -1){
+                    return false;
+                }
+
+                int possibleLastIdx = firstIdx +  n / 2;
+                if(possibleLastIdx < n  && nums[possibleLastIdx] == target){
+                    return true;
+                }
+                return false; // ???
+            }
+            else if(midVal > target){
+                r = mid - 1;
+            }else{
+                l = mid + 1;
+            }
+        }
+
+
+        return false;
+    }
+
+    // ???
+    private int findFirstIdx2(int[] nums, int idx, int target){
+        while (idx > 0 && nums[idx] == target){
+            idx -= 1;
+        }
+        return idx + 1; // ????
+    }
+
+
+
+
+
+
+
+    //  IDEA 2) : binary search ????
+    public boolean isMajorityElement_98(int[] nums, int target) {
         // edge
 
         int n = nums.length;

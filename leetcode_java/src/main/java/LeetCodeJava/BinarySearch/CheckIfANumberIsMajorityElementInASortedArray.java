@@ -88,6 +88,10 @@ public class CheckIfANumberIsMajorityElementInASortedArray {
         return majorityIndex < n && nums[majorityIndex] == target;
     }
 
+    /** NOTE !!!
+     *
+     *   -> we use `binary search` get the first idx (target val)
+     */
     private int findFirst_0_0_1(int[] nums, int target) {
         int low = 0, high = nums.length - 1;
         int ans = -1;
