@@ -55,21 +55,82 @@ public class DivideIntervalsIntoMinimumNumberOfGroups {
 
     // V0-1
     // IDEA: SORT + PQ (gpt)
+    /**  Core idea:
+     *
+     *  1. `Sort` intervals by `start` time.
+     *
+     *  2. Use a min-heap (priority queue)
+     *     to track the `earliest` `ending` group.
+     *
+     *  3. If the current interval starts
+     *     after the `earliest` `ending` interval, REUSE that group.
+     *
+     *  4. Otherwise, create a new group.
+     *
+     *
+     *  -----------
+     *
+     *  NOTE !!!
+     *
+     *   PQ stores `end` times of `current groups`
+     *
+     *
+     */
     public int minGroups_0_1(int[][] intervals) {
         // sort by start time
         Arrays.sort(intervals, (a, b) -> a[0] - b[0]);
 
+        /** NOTE !!!!
+         *
+         *
+         *  PQ stores `end` times of `current groups`
+         *
+         *  (min PQ, sort on end time (small -> big))
+         */
         // min heap storing end times
         PriorityQueue<Integer> pq = new PriorityQueue<>();
 
         for (int[] interval : intervals) {
             // if earliest ending group is available
+            /** NOTE !!!
+             *
+             *  - Check if any group is free
+             *
+             *  - pq.peek() = earliest ending group
+             *
+             *  - If:
+             *
+             *      earliest end < current start
+             *
+             *     → no overlap → we can reuse that group
+             *
+             *
+             */
+            /** NOTE !!!
+             *
+             * Smallest value (pq.peek()) = earliest available group
+             */
             if (!pq.isEmpty() && pq.peek() < interval[0]) {
+                /** NOTE !!!
+                 *
+                 * Remove that group (we're reusing it)
+                 */
                 pq.poll(); // reuse this group
             }
+            /** NOTE !!!
+             *
+             *  - Add current interval’s end time
+             *  - This means:
+             *    -> “this group is now occupied until interval[1]”
+             */
             pq.offer(interval[1]); // add current interval
         }
 
+        /** NOTE !!!
+         *
+         * Number of groups needed = number of overlapping intervals at peak
+         * PQ size = how many groups are currently active
+         */
         return pq.size();
     }
 
