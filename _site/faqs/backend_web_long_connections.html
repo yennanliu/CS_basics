@@ -1,0 +1,478 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Web Long Connections - CS_basics</title>
+  <meta name="description" content="Computer Science fundamentals: algorithms, data structures, system design, and LeetCode solutions">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>CS</text></svg>">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="../vendor/fonts.css">
+  <link rel="stylesheet" href="../vendor/highlight/github-dark.min.css">
+  <script src="../vendor/highlight/highlight.min.js"></script>
+  <script>
+  // Apply theme before render to prevent flash
+  (function() {
+    var saved = localStorage.getItem('theme');
+    if (saved === 'dark' || (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      document.documentElement.setAttribute('data-theme', 'dark');
+    }
+  })();
+  </script>
+  <script>document.addEventListener('DOMContentLoaded', function() {
+    hljs.highlightAll();
+    document.querySelectorAll('pre code').forEach(function(codeEl) {
+      var pre = codeEl.parentElement;
+      var lang = '';
+      var cls = codeEl.className || '';
+      var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
+      if (m) lang = m[1];
+      var wrapper = document.createElement('div');
+      wrapper.className = 'code-block-wrapper';
+      pre.parentNode.insertBefore(wrapper, pre);
+      var header = document.createElement('div');
+      header.className = 'code-block-header';
+      if (lang) {
+        var label = document.createElement('span');
+        label.className = 'code-lang-label';
+        label.textContent = lang;
+        header.appendChild(label);
+      } else {
+        header.appendChild(document.createElement('span'));
+      }
+      var btn = document.createElement('button');
+      btn.className = 'copy-btn';
+      btn.textContent = 'Copy';
+      btn.addEventListener('click', function() {
+        navigator.clipboard.writeText(codeEl.textContent).then(function() {
+          btn.textContent = 'Copied!';
+          btn.classList.add('copied');
+          setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+        });
+      });
+      header.appendChild(btn);
+      wrapper.appendChild(header);
+      wrapper.appendChild(pre);
+    });
+    document.querySelectorAll('table').forEach(function(table) {
+      if (!table.parentElement.classList.contains('table-wrap')) {
+        var wrapper = document.createElement('div');
+        wrapper.className = 'table-wrap';
+        table.parentNode.insertBefore(wrapper, table);
+        wrapper.appendChild(table);
+      }
+    });
+    // Reading progress bar
+    var progressBar = document.getElementById('reading-progress');
+    if (progressBar) {
+      window.addEventListener('scroll', function() {
+        var winScroll = document.documentElement.scrollTop;
+        var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        progressBar.style.width = height > 0 ? (winScroll / height * 100) + '%' : '0%';
+      });
+    }
+    // Dark mode toggle
+    var toggle = document.getElementById('theme-toggle');
+    if (toggle) {
+      var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      toggle.textContent = isDark ? '☀️' : '🌙';
+      toggle.addEventListener('click', function() {
+        var dark = document.documentElement.getAttribute('data-theme') === 'dark';
+        if (dark) {
+          document.documentElement.removeAttribute('data-theme');
+          localStorage.setItem('theme', 'light');
+          toggle.textContent = '🌙';
+        } else {
+          document.documentElement.setAttribute('data-theme', 'dark');
+          localStorage.setItem('theme', 'dark');
+          toggle.textContent = '☀️';
+        }
+      });
+    }
+  });</script>
+</head>
+<body>
+  <div class="progress-container"><div class="progress-bar" id="reading-progress"></div></div>
+  <nav class="navbar">
+    <div class="container">
+      <div class="nav-brand">
+        <span class="nav-icon">💻</span>
+        <span class="nav-title">CS_basics</span>
+      </div>
+      <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+      <div class="nav-links">
+        <a href="../index.html" class="">Home</a>
+        <a href="../cheatsheets.html" class="">Cheat Sheets</a>
+        <a href="../patterns.html" class="">Pattern Recognition</a>
+        <a href="../faqs.html" class="active">FAQs</a>
+        <a href="../resources.html" class="">Resources</a>
+        <a href="../lc-explorer.html" class="">LC Explorer</a>
+        <a href="../algo_demo/index.html" class="">Visualizer</a>
+        <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">&#127769;</button>
+        <a href="https://github.com/yennanliu/CS_basics" target="_blank" class="github-link" aria-label="GitHub">
+          <svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor">
+            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container">
+    <div class="content">
+      
+      <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../faqs.html">FAQs</a> <span class="sep">›</span> <span class="current">Web Long Connections</span></nav>
+      <div class="cheatsheet-header">
+        <h1>Web Long Connections</h1>
+        <span class="last-updated">Last updated: Apr 20, 2026</span>
+      </div>
+      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#table-of-contents">Table of Contents</a></li><li><a href="#1-http-keep-alive-persistent-connection">1. HTTP Keep-Alive (Persistent Connection)</a></li><li><a href="#2-http-pipelining">2. HTTP Pipelining</a></li><li><a href="#3-long-polling">3. Long Polling</a></li><li><a href="#4-streaming-chunked-transfer">4. Streaming (Chunked Transfer)</a></li><li><a href="#5-server-sent-events-sse">5. Server-Sent Events (SSE)</a></li><li><a href="#6-websocket-upgrade-from-http">6. WebSocket (Upgrade from HTTP)</a></li><li><a href="#7-http-2-multiplexing">7. HTTP/2 Multiplexing</a></li><li><a href="#summary">Summary</a></li><li><a href="#pros-cons-use-cases-comparison">Pros, Cons &amp; Use Cases Comparison</a></li><li class="toc-sub"><a href="#scalability-considerations">Scalability Considerations</a></li><li class="toc-sub"><a href="#ref">Ref</a></li></ul></div>
+      <div class="cheatsheet-content">
+        <h1 id="web-long-connections" tabindex="-1"><a class="header-anchor" href="#web-long-connections"><span>Web Long Connections</span></a></h1>
+<blockquote>
+<p>How to maintain persistent / long-lived connections in web applications</p>
+</blockquote>
+<h2 id="table-of-contents" tabindex="-1"><a class="header-anchor" href="#table-of-contents"><span>Table of Contents</span></a></h2>
+<ol>
+<li><a href="#1-http-keep-alive-persistent-connection">HTTP Keep-Alive (Persistent Connection)</a></li>
+<li><a href="#2-http-pipelining">HTTP Pipelining</a></li>
+<li><a href="#3-long-polling">Long Polling</a></li>
+<li><a href="#4-streaming-chunked-transfer">Streaming (Chunked Transfer)</a></li>
+<li><a href="#5-server-sent-events-sse">Server-Sent Events (SSE)</a></li>
+<li><a href="#6-websocket-upgrade-from-http">WebSocket</a></li>
+<li><a href="#7-http2-multiplexing">HTTP/2 Multiplexing</a></li>
+<li><a href="#summary">Summary</a></li>
+</ol>
+<hr>
+<p>In HTTP, a “long connection” usually refers to keeping a TCP connection open for multiple requests instead of closing it after each one (often called <strong>persistent connections</strong> or <strong>keep-alive</strong>). There are several ways this concept shows up in practice depending on what you’re trying to achieve.</p>
+<hr>
+<h2 id="1-http-keep-alive-persistent-connection" tabindex="-1"><a class="header-anchor" href="#1-http-keep-alive-persistent-connection"><span>1. HTTP Keep-Alive (Persistent Connection)</span></a></h2>
+<ul>
+<li>Default in HTTP/1.1.</li>
+<li>The client and server reuse the same TCP connection for multiple requests/responses.</li>
+<li>Reduces latency and overhead from repeatedly opening/closing connections.</li>
+</ul>
+<p><strong>Header example:</strong></p>
+<pre><code>Connection: keep-alive
+</code></pre>
+<p><strong>Flow:</strong></p>
+<pre><code>Client ──── request 1 ────▶ Server
+Client ◀─── response 1 ─── Server
+Client ──── request 2 ────▶ Server   (same TCP connection)
+Client ◀─── response 2 ─── Server
+</code></pre>
+<hr>
+<h2 id="2-http-pipelining" tabindex="-1"><a class="header-anchor" href="#2-http-pipelining"><span>2. HTTP Pipelining</span></a></h2>
+<ul>
+<li>Multiple HTTP requests are sent without waiting for previous responses.</li>
+<li>Responses must still come back in order.</li>
+<li>Rarely used today due to <strong>head-of-line blocking</strong> issues.</li>
+</ul>
+<p><strong>Flow:</strong></p>
+<pre><code>Client ──── request 1 ────▶
+Client ──── request 2 ────▶ Server
+Client ──── request 3 ────▶
+Client ◀─── response 1, 2, 3 (in order)
+</code></pre>
+<hr>
+<h2 id="3-long-polling" tabindex="-1"><a class="header-anchor" href="#3-long-polling"><span>3. Long Polling</span></a></h2>
+<ul>
+<li>Client sends a request.</li>
+<li>Server <strong>holds</strong> the request open until new data is available.</li>
+<li>Once data is sent, the connection closes and the client immediately reconnects.</li>
+<li>Common for near–real-time updates (older technique).</li>
+</ul>
+<p><strong>Flow:</strong></p>
+<pre><code>Client ──── request ─────────────────────▶ Server
+                                           (server waits for new data)
+Client ◀─── response (when data ready) ── Server
+Client ──── reconnect immediately ───────▶ Server
+</code></pre>
+<p><strong>Use case:</strong> Chat apps, notification systems (legacy approach).</p>
+<hr>
+<h2 id="4-streaming-chunked-transfer" tabindex="-1"><a class="header-anchor" href="#4-streaming-chunked-transfer"><span>4. Streaming (Chunked Transfer)</span></a></h2>
+<ul>
+<li>Server keeps the connection open and continuously sends data in chunks.</li>
+<li>Useful for logs, live feeds, progress updates.</li>
+</ul>
+<p><strong>Header:</strong></p>
+<pre><code>Transfer-Encoding: chunked
+</code></pre>
+<p><strong>Example (Node.js):</strong></p>
+<pre><code class="language-javascript">res.writeHead(200, { 'Transfer-Encoding': 'chunked' });
+setInterval(() =&gt; res.write('data chunk\n'), 1000);
+</code></pre>
+<hr>
+<h2 id="5-server-sent-events-sse" tabindex="-1"><a class="header-anchor" href="#5-server-sent-events-sse"><span>5. Server-Sent Events (SSE)</span></a></h2>
+<ul>
+<li>One-way communication: <strong>server → client</strong> only.</li>
+<li>Browser keeps a long-lived HTTP connection open.</li>
+<li>Simpler than WebSockets for real-time updates (push notifications, dashboards).</li>
+<li>Automatically reconnects on disconnect.</li>
+</ul>
+<p><strong>Header:</strong></p>
+<pre><code>Content-Type: text/event-stream
+</code></pre>
+<p><strong>Server example (Node.js):</strong></p>
+<pre><code class="language-javascript">res.setHeader('Content-Type', 'text/event-stream');
+res.setHeader('Cache-Control', 'no-cache');
+setInterval(() =&gt; res.write(`data: ${JSON.stringify({ time: Date.now() })}\n\n`), 1000);
+</code></pre>
+<p><strong>Client example:</strong></p>
+<pre><code class="language-javascript">const source = new EventSource('/events');
+source.onmessage = (e) =&gt; console.log(e.data);
+</code></pre>
+<hr>
+<h2 id="6-websocket-upgrade-from-http" tabindex="-1"><a class="header-anchor" href="#6-websocket-upgrade-from-http"><span>6. WebSocket (Upgrade from HTTP)</span></a></h2>
+<ul>
+<li>Starts as HTTP, then upgrades to a <strong>persistent full-duplex</strong> connection.</li>
+<li>Enables real-time bidirectional communication.</li>
+<li>Best for chat, gaming, live collaboration.</li>
+</ul>
+<p><strong>Upgrade headers:</strong></p>
+<pre><code>Upgrade: websocket
+Connection: Upgrade
+</code></pre>
+<p><strong>Server example (Node.js with <code>ws</code>):</strong></p>
+<pre><code class="language-javascript">const WebSocket = require('ws');
+const wss = new WebSocket.Server({ port: 8080 });
+wss.on('connection', (ws) =&gt; {
+  ws.on('message', (msg) =&gt; ws.send(`echo: ${msg}`));
+});
+</code></pre>
+<p><strong>Client example:</strong></p>
+<pre><code class="language-javascript">const ws = new WebSocket('ws://localhost:8080');
+ws.onmessage = (e) =&gt; console.log(e.data);
+ws.send('hello');
+</code></pre>
+<hr>
+<h2 id="7-http-2-multiplexing" tabindex="-1"><a class="header-anchor" href="#7-http-2-multiplexing"><span>7. HTTP/2 Multiplexing</span></a></h2>
+<ul>
+<li>Multiple streams share a <strong>single long-lived connection</strong>.</li>
+<li>Solves head-of-line blocking at the HTTP layer (unlike HTTP/1.1 pipelining).</li>
+<li>More efficient: headers are compressed (HPACK), streams are independent.</li>
+</ul>
+<p><strong>Key features vs HTTP/1.1:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>HTTP/1.1</th>
+<th>HTTP/2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Connections per host</td>
+<td>Multiple</td>
+<td>One (multiplexed)</td>
+</tr>
+<tr>
+<td>Head-of-line blocking</td>
+<td>Yes</td>
+<td>No (at HTTP layer)</td>
+</tr>
+<tr>
+<td>Header compression</td>
+<td>No</td>
+<td>Yes (HPACK)</td>
+</tr>
+<tr>
+<td>Server push</td>
+<td>No</td>
+<td>Yes</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="summary" tabindex="-1"><a class="header-anchor" href="#summary"><span>Summary</span></a></h2>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Direction</th>
+<th>Connection</th>
+<th>Use Case</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Keep-Alive</strong></td>
+<td>Request/Response</td>
+<td>Reused TCP</td>
+<td>General HTTP efficiency</td>
+</tr>
+<tr>
+<td><strong>Pipelining</strong></td>
+<td>Request/Response</td>
+<td>Reused TCP</td>
+<td>Batch requests (rarely used)</td>
+</tr>
+<tr>
+<td><strong>Long Polling</strong></td>
+<td>Server → Client</td>
+<td>Reopened each time</td>
+<td>Legacy real-time updates</td>
+</tr>
+<tr>
+<td><strong>Chunked Streaming</strong></td>
+<td>Server → Client</td>
+<td>Long-lived</td>
+<td>Logs, live feeds</td>
+</tr>
+<tr>
+<td><strong>SSE</strong></td>
+<td>Server → Client</td>
+<td>Long-lived</td>
+<td>Dashboards, notifications</td>
+</tr>
+<tr>
+<td><strong>WebSocket</strong></td>
+<td>Full-duplex</td>
+<td>Long-lived</td>
+<td>Chat, gaming, collaboration</td>
+</tr>
+<tr>
+<td><strong>HTTP/2</strong></td>
+<td>Request/Response</td>
+<td>Multiplexed</td>
+<td>Modern APIs, reduced latency</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Quick decision guide:</strong></p>
+<ul>
+<li><strong>Connection reuse:</strong> Keep-Alive, HTTP/2</li>
+<li><strong>Client waiting for data:</strong> Long Polling</li>
+<li><strong>Continuous data flow from server:</strong> Streaming, SSE</li>
+<li><strong>Full-duplex (bidirectional) communication:</strong> WebSocket</li>
+</ul>
+<hr>
+<h2 id="pros-cons-use-cases-comparison" tabindex="-1"><a class="header-anchor" href="#pros-cons-use-cases-comparison"><span>Pros, Cons &amp; Use Cases Comparison</span></a></h2>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Pros</th>
+<th>Cons</th>
+<th>Best Use Cases</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>HTTP Keep-Alive</strong></td>
+<td>• Reduces TCP handshake overhead<br>• Default in HTTP/1.1, widely supported<br>• Simple — no extra code needed</td>
+<td>• Still request/response only<br>• Server holds idle connections<br>• Head-of-line blocking within connection</td>
+<td>• REST APIs<br>• Static asset serving<br>• Any general HTTP traffic</td>
+</tr>
+<tr>
+<td><strong>HTTP Pipelining</strong></td>
+<td>• Sends multiple requests without waiting<br>• Reduces round-trip latency</td>
+<td>• Responses must arrive in order (head-of-line blocking)<br>• Poor proxy/server support<br>• Largely deprecated</td>
+<td>• Rarely used; superseded by HTTP/2</td>
+</tr>
+<tr>
+<td><strong>Long Polling</strong></td>
+<td>• Works with any HTTP stack<br>• Firewall/proxy friendly<br>• No special browser API needed</td>
+<td>• High server-side resource usage (held connections)<br>• Reconnect latency after each response<br>• Not truly real-time</td>
+<td>• Legacy chat systems<br>• Notification polling in older environments<br>• When WebSocket/SSE not available</td>
+</tr>
+<tr>
+<td><strong>Chunked Streaming</strong></td>
+<td>• Simple server-side implementation<br>• Works over plain HTTP<br>• Good for large or unbounded responses</td>
+<td>• No built-in reconnect<br>• Clients must handle partial chunks<br>• Less structured than SSE</td>
+<td>• File downloads<br>• Log tailing<br>• Progress reporting</td>
+</tr>
+<tr>
+<td><strong>Server-Sent Events (SSE)</strong></td>
+<td>• Built-in auto-reconnect<br>• Native browser <code>EventSource</code> API<br>• Lightweight — plain HTTP, no upgrade<br>• Easy to scale with standard load balancers</td>
+<td>• Server → client only (unidirectional)<br>• Limited to text data<br>• Some proxies may buffer and delay</td>
+<td>• Live dashboards<br>• News/score feeds<br>• Push notifications<br>• Activity streams</td>
+</tr>
+<tr>
+<td><strong>WebSocket</strong></td>
+<td>• Full-duplex (bidirectional)<br>• Low latency after handshake<br>• Binary and text support<br>• Wide browser support</td>
+<td>• Requires protocol upgrade<br>• Harder to scale (sticky sessions or pub/sub needed)<br>• Some firewalls/proxies block WS<br>• More complex error handling</td>
+<td>• Chat applications<br>• Online gaming<br>• Live collaboration (e.g. Google Docs)<br>• Financial trading feeds</td>
+</tr>
+<tr>
+<td><strong>HTTP/2 Multiplexing</strong></td>
+<td>• Multiple streams over one connection<br>• No head-of-line blocking (HTTP layer)<br>• Header compression (HPACK)<br>• Server push capability</td>
+<td>• TCP head-of-line blocking still exists (solved by HTTP/3)<br>• Requires TLS in most browsers<br>• More complex to debug</td>
+<td>• Modern REST/gRPC APIs<br>• Asset-heavy web pages<br>• Microservice communication</td>
+</tr>
+</tbody>
+</table>
+<h3 id="scalability-considerations" tabindex="-1"><a class="header-anchor" href="#scalability-considerations"><span>Scalability Considerations</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Server Resources</th>
+<th>Horizontal Scaling</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Keep-Alive</td>
+<td>Low (short-lived idle)</td>
+<td>Easy</td>
+</tr>
+<tr>
+<td>Long Polling</td>
+<td>High (threads held per client)</td>
+<td>Moderate</td>
+</tr>
+<tr>
+<td>Chunked Streaming</td>
+<td>Medium (open response streams)</td>
+<td>Moderate</td>
+</tr>
+<tr>
+<td>SSE</td>
+<td>Medium (open response streams)</td>
+<td>Easy with stateless design</td>
+</tr>
+<tr>
+<td>WebSocket</td>
+<td>Medium-High (persistent connections)</td>
+<td>Needs sticky sessions or message broker (Redis pub/sub)</td>
+</tr>
+<tr>
+<td>HTTP/2</td>
+<td>Low-Medium (one conn, many streams)</td>
+<td>Easy</td>
+</tr>
+</tbody>
+</table>
+<h3 id="ref" tabindex="-1"><a class="header-anchor" href="#ref"><span>Ref</span></a></h3>
+<ul>
+<li><a href="https://systemdesignschool.io/problems/google-doc/solution">https://systemdesignschool.io/problems/google-doc/solution</a></li>
+</ul>
+
+      </div>
+      <div class="cheatsheet-footer">
+        <a href="../faqs.html" class="back-link">← Back to FAQs</a>
+        <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/faq/backend/web_long_connections.md" class="github-edit" target="_blank">
+          Edit on GitHub →
+        </a>
+      </div>
+    <nav class="prev-next"><a href="backend_db_isolation_demo_mysql.html" class="prev-link">← Db Isolation Demo Mysql</a><a href="backend_後端面試題總整理.html" class="next-link">後端面試題總整理 →</a></nav>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>CS_basics - Computer Science Fundamentals & Interview Preparation</p>
+      <p>
+        <a href="https://github.com/yennanliu/CS_basics">GitHub</a> •
+        <a href="https://github.com/yennanliu/CS_basics/tree/master/doc">Documentation</a> •
+        <a href="https://github.com/yennanliu/CS_basics/issues">Report Issues</a>
+      </p>
+    </div>
+  </footer>
+</body>
+</html>

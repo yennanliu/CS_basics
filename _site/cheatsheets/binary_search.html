@@ -110,7 +110,6 @@
         <a href="../faqs.html" class="">FAQs</a>
         <a href="../resources.html" class="">Resources</a>
         <a href="../lc-explorer.html" class="">LC Explorer</a>
-        <a href="../lc-random-picker.html" class="">🎲 Random Picker</a>
         <a href="../algo_demo/index.html" class="">Visualizer</a>
         <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">&#127769;</button>
         <a href="https://github.com/yennanliu/CS_basics" target="_blank" class="github-link" aria-label="GitHub">
@@ -128,7 +127,7 @@
       <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">Binary Search</span></nav>
       <div class="cheatsheet-header">
         <h1>Binary Search</h1>
-        <span class="last-updated">Last updated: Apr 14, 2026</span>
+        <span class="last-updated">Last updated: Apr 21, 2026</span>
       </div>
       <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#overview">Overview</a></li><li class="toc-sub"><a href="#key-properties">Key Properties</a></li><li class="toc-sub"><a href="#core-algorithm-steps">Core Algorithm Steps</a></li><li class="toc-sub"><a href="#when-to-use-binary-search">When to Use Binary Search</a></li><li class="toc-sub"><a href="#references">References</a></li><li><a href="#understanding-binary-search-pointer-behavior">Understanding Binary Search Pointer Behavior</a></li><li class="toc-sub"><a href="#core-insight-what-do-l-and-r-actually-mean">Core Insight: What Do l and r Actually Mean?</a></li><li class="toc-sub"><a href="#summary-table">Summary Table</a></li><li class="toc-sub"><a href="#application-search-insert-position-lc-35">Application: Search Insert Position (LC 35)</a></li><li class="toc-sub"><a href="#common-mistake-to-avoid">Common Mistake to Avoid</a></li><li><a href="#1-binary-search-types-patterns">1) Binary Search Types &amp; Patterns</a></li><li class="toc-sub"><a href="#1-1-basic-binary-search">1.1) Basic Binary Search</a></li><li class="toc-sub"><a href="#1-2-search-in-rotated-array">1.2) Search in Rotated Array</a></li><li class="toc-sub"><a href="#1-3-recursive-binary-search">1.3) Recursive Binary Search</a></li><li class="toc-sub"><a href="#1-4-search-in-2d-matrix-lc-74">1.4) Search in 2D Matrix (LC 74)</a></li><li class="toc-sub"><a href="#1-5-find-boundaries-lc-34">1.5) Find Boundaries (LC 34)</a></li><li class="toc-sub"><a href="#1-6-left-boundary-search-lc-367-875">1.6) Left Boundary Search (LC 367, 875)</a></li><li class="toc-sub"><a href="#1-7-right-boundary-search">1.7) Right Boundary Search</a></li><li class="toc-sub"><a href="#1-8-binary-search-on-answer-space">1.8) Binary Search on Answer Space ⭐⭐⭐⭐⭐</a></li><li class="toc-sub"><a href="#1-9-related-algorithms-data-structures">1.9) Related Algorithms &amp; Data Structures</a></li><li><a href="#2-binary-search-templates-patterns">2) Binary Search Templates &amp; Patterns</a></li><li class="toc-sub"><a href="#additional-resources">Additional Resources</a></li><li class="toc-sub"><a href="#2-1-standard-binary-search-template">2.1) Standard Binary Search Template</a></li><li class="toc-sub"><a href="#2-2-left-boundary-template">2.2) Left Boundary Template</a></li><li class="toc-sub"><a href="#2-3-right-boundary-template">2.3) Right Boundary Template</a></li><li><a href="#3-summary-quick-reference">3) Summary &amp; Quick Reference</a></li><li class="toc-sub"><a href="#3-1-when-to-use-binary-search">3.1) When to Use Binary Search</a></li><li class="toc-sub"><a href="#3-2-template-selection-guide">3.2) Template Selection Guide</a></li><li class="toc-sub"><a href="#3-3-common-pitfalls-tips">3.3) Common Pitfalls &amp; Tips</a></li><li class="toc-sub"><a href="#3-4-time-space-complexity">3.4) Time &amp; Space Complexity</a></li><li><a href="#4-leetcode-examples-applications">4) LeetCode Examples &amp; Applications</a></li><li class="toc-sub"><a href="#4-1-search-in-rotated-sorted-array-lc-33-lc-81">4.1) Search in Rotated Sorted Array (LC 33, LC 81)</a></li><li class="toc-sub"><a href="#4-2-two-sum-ii-input-array-is-sorted-lc-167">4.2) Two Sum II - Input Array is Sorted (LC 167)</a></li><li class="toc-sub"><a href="#4-3-find-peak-element-lc-162-lc-852">4.3) Find Peak Element (LC 162, LC 852)</a></li><li class="toc-sub"><a href="#4-4-valid-perfect-square-lc-367-sqrt-x-lc-69">4.4) Valid Perfect Square (LC 367) &amp; Sqrt(x) (LC 69)</a></li><li class="toc-sub"><a href="#4-5-minimum-size-subarray-sum-lc-209">4.5) Minimum Size Subarray Sum (LC 209)</a></li><li class="toc-sub"><a href="#4-6-first-bad-version-lc-278">4.6) First Bad Version (LC 278)</a></li><li class="toc-sub"><a href="#4-7-search-insert-position-lc-35">4.7) Search Insert Position (LC 35)</a></li><li class="toc-sub"><a href="#4-8-capacity-to-ship-packages-within-d-days-lc-1011">4.8) Capacity To Ship Packages Within D Days (LC 1011)</a></li><li class="toc-sub"><a href="#4-9-split-array-largest-sum-lc-410-hard">4.9) Split Array Largest Sum (LC 410) [Hard]</a></li><li class="toc-sub"><a href="#4-10-koko-eating-bananas-lc-875">4.10) Koko Eating Bananas (LC 875)</a></li><li class="toc-sub"><a href="#4-11-find-k-closest-elements-lc-658">4.11) Find K Closest Elements (LC 658)</a></li><li class="toc-sub"><a href="#4-12-sqrt-x-lc-69-alternative-implementation">4.12) Sqrt(x) (LC 69) - Alternative Implementation</a></li><li class="toc-sub"><a href="#4-13-find-first-and-last-position-of-element-in-sorted-array-lc-34">4.13) Find First and Last Position of Element in Sorted Array (LC 34)</a></li><li class="toc-sub"><a href="#4-14-search-a-2d-matrix-lc-74">4.14) Search a 2D Matrix (LC 74)</a></li><li class="toc-sub"><a href="#4-15-find-minimum-in-rotated-sorted-array-lc-153">4.15) Find Minimum in Rotated Sorted Array (LC 153)</a></li><li class="toc-sub"><a href="#4-16-find-first-and-last-position-alternative-implementation">4.16) Find First and Last Position - Alternative Implementation</a></li><li class="toc-sub"><a href="#4-17-find-smallest-letter-greater-than-target-lc-744">4.17) Find Smallest Letter Greater Than Target (LC 744)</a></li><li class="toc-sub"><a href="#4-18-arranging-coins-lc-441">4.18) Arranging Coins (LC 441)</a></li><li class="toc-sub"><a href="#4-19-minimum-number-of-days-to-make-m-bouquets-lc-1482">4.19) Minimum Number of Days to Make m Bouquets (LC 1482)</a></li><li class="toc-sub"><a href="#4-20-search-a-2d-matrix-ii-lc-240">4.20) Search a 2D Matrix II (LC 240)</a></li><li class="toc-sub"><a href="#4-21-find-minimum-in-rotated-sorted-array-ii-lc-154">4.21) Find Minimum in Rotated Sorted Array II (LC 154)</a></li><li class="toc-sub"><a href="#4-22-missing-element-in-sorted-array-lc-1060">4.22) Missing Element in Sorted Array (LC 1060)</a></li><li><a href="#lc-examples">LC Examples</a></li><li class="toc-sub"><a href="#2-1-find-first-and-last-position-lc-34-left-right-binary-search">2-1) Find First and Last Position (LC 34) — Left/Right Binary Search</a></li><li class="toc-sub"><a href="#2-2-search-in-rotated-sorted-array-lc-33-binary-search-on-rotated-array">2-2) Search in Rotated Sorted Array (LC 33) — Binary Search on Rotated Array</a></li><li class="toc-sub"><a href="#2-3-koko-eating-bananas-lc-875-binary-search-on-answer">2-3) Koko Eating Bananas (LC 875) — Binary Search on Answer</a></li><li class="toc-sub"><a href="#2-4-find-minimum-in-rotated-sorted-array-lc-153-binary-search">2-4) Find Minimum in Rotated Sorted Array (LC 153) — Binary Search</a></li><li class="toc-sub"><a href="#2-5-capacity-to-ship-packages-within-d-days-lc-1011-binary-search-on-answer">2-5) Capacity to Ship Packages Within D Days (LC 1011) — Binary Search on Answer</a></li><li class="toc-sub"><a href="#2-6-find-peak-element-lc-162-binary-search-on-peak">2-6) Find Peak Element (LC 162) — Binary Search on Peak</a></li><li class="toc-sub"><a href="#2-7-split-array-largest-sum-lc-410-binary-search-on-answer">2-7) Split Array Largest Sum (LC 410) — Binary Search on Answer</a></li><li class="toc-sub"><a href="#2-8-first-bad-version-lc-278-classic-binary-search">2-8) First Bad Version (LC 278) — Classic Binary Search</a></li><li class="toc-sub"><a href="#2-9-median-of-two-sorted-arrays-lc-4-binary-search-on-partition">2-9) Median of Two Sorted Arrays (LC 4) — Binary Search on Partition</a></li><li class="toc-sub"><a href="#2-10-time-based-key-value-store-lc-981-binary-search-on-timestamps">2-10) Time Based Key-Value Store (LC 981) — Binary Search on Timestamps</a></li><li class="toc-sub"><a href="#2-11-minimum-number-of-days-to-make-m-bouquets-lc-1482-binary-search-on-days">2-11) Minimum Number of Days to Make m Bouquets (LC 1482) — Binary Search on Days</a></li><li class="toc-sub"><a href="#2-12-single-element-in-a-sorted-array-lc-540-binary-search">2-12) Single Element in a Sorted Array (LC 540) — Binary Search</a></li><li class="toc-sub"><a href="#2-13-minimize-the-maximum-difference-of-pairs-lc-2616-minimize-maximum-pattern">2-13) Minimize the Maximum Difference of Pairs (LC 2616) — Minimize Maximum Pattern</a></li><li class="toc-sub"><a href="#2-14-divide-chocolate-lc-1231-maximize-minimum-pattern">2-14) Divide Chocolate (LC 1231) — Maximize Minimum Pattern</a></li></ul></div>
       <div class="cheatsheet-content">
@@ -3201,7 +3200,219 @@ private boolean canSplit(int[] sweetness, int people, int minTarget) {
         }
     }
     return pieces &gt;= people;
-}</code></pre>
+}
+---
+
+### 4.X) Check If a Number Is Majority Element in a Sorted Array (LC 1150)
+
+#### Core Idea
+
+Given a sorted array, a **majority element** appears more than `N/2` times.
+
+**Key Insight**: In a sorted array, if target appears more than `N/2` times, then the element at index `firstIndex + N/2` must also equal target.
+
+**Why it works:**
+- Find the first occurrence of target at index `firstIndex`
+- If target appears `&gt; N/2` times, it must occupy at least `N/2 + 1` consecutive positions
+- So `nums[firstIndex + N/2]` **must** still be target
+
+This avoids counting all occurrences — O(log N) instead of O(N).
+
+---
+
+#### Pattern: Find First Index via Binary Search
+
+```java
+// Find first occurrence of target in sorted array
+private int findFirstIndex(int[] nums, int target) {
+    int low = 0, high = nums.length - 1;
+    int firstIdx = -1;
+
+    while (low &lt;= high) {
+        int mid = low + (high - low) / 2;
+        if (nums[mid] == target) {
+            firstIdx = mid;       // record potential answer
+            high = mid - 1;       // keep searching LEFT for earlier occurrence
+        } else if (nums[mid] &lt; target) {
+            low = mid + 1;
+        } else {
+            high = mid - 1;
+        }
+    }
+    return firstIdx;
+}
+</code></pre>
+<p><strong>Template rules:</strong></p>
+<ul>
+<li>When <code>nums[mid] == target</code>: save <code>mid</code> as candidate, then <strong>shrink right</strong> (<code>high = mid - 1</code>) to keep searching left</li>
+<li>When loop ends, <code>firstIdx</code> holds the leftmost index of target (or -1 if not found)</li>
+</ul>
+<hr>
+<h4 id="lc-1150-solution" tabindex="-1"><a class="header-anchor" href="#lc-1150-solution"><span>LC 1150 Solution</span></a></h4>
+<pre><code class="language-java">// LC 1150 - Check If a Number Is Majority Element in a Sorted Array
+// time: O(log N), space: O(1)
+public boolean isMajorityElement(int[] nums, int target) {
+    int n = nums.length;
+
+    // Step 1: Find first occurrence of target
+    int firstIndex = findFirstIndex(nums, target);
+
+    // Step 2: If not found, can't be majority
+    if (firstIndex == -1) return false;
+
+    // Step 3: Check if element at (firstIndex + n/2) is still target
+    // If yes → target appears at least (n/2 + 1) times → majority
+    int majorityIndex = firstIndex + n / 2;
+    return majorityIndex &lt; n &amp;&amp; nums[majorityIndex] == target;
+}
+
+private int findFirstIndex(int[] nums, int target) {
+    int low = 0, high = nums.length - 1, firstIdx = -1;
+    while (low &lt;= high) {
+        int mid = low + (high - low) / 2;
+        if (nums[mid] == target) {
+            firstIdx = mid;
+            high = mid - 1;    // search left for earlier occurrence
+        } else if (nums[mid] &lt; target) {
+            low = mid + 1;
+        } else {
+            high = mid - 1;
+        }
+    }
+    return firstIdx;
+}
+</code></pre>
+<p><strong>Alternative using lower_bound style (V1):</strong></p>
+<pre><code class="language-java">// Uses two binary searches: first index of target, first index of (target+1)
+public boolean isMajorityElement_v1(int[] nums, int target) {
+    int left  = lowerBound(nums, target);      // first index &gt;= target
+    int right = lowerBound(nums, target + 1);  // first index &gt;= target+1
+    return right - left &gt; nums.length / 2;
+}
+
+private int lowerBound(int[] nums, int x) {
+    int left = 0, right = nums.length;
+    while (left &lt; right) {
+        int mid = (left + right) &gt;&gt;&gt; 1;
+        if (nums[mid] &gt;= x) right = mid;
+        else left = mid + 1;
+    }
+    return left;
+}
+</code></pre>
+<hr>
+<h4 id="visual-example-1" tabindex="-1"><a class="header-anchor" href="#visual-example-1"><span>Visual Example</span></a></h4>
+<pre><code>nums = [2,4,5,5,5,5,5,6,6], target = 5, N = 9
+
+findFirstIndex(5) → index 2
+
+majorityIndex = 2 + 9/2 = 2 + 4 = 6
+nums[6] = 5 == target ✓  → return true
+
+Intuition:
+index:  0  1  2  3  4  5  6  7  8
+value:  2  4 [5] 5  5  5 [5] 6  6
+           first↑           ↑ must still be 5 if majority
+</code></pre>
+<hr>
+<h4 id="find-first-index-comparison-with-similar-patterns" tabindex="-1"><a class="header-anchor" href="#find-first-index-comparison-with-similar-patterns"><span>Find First Index — Comparison with Similar Patterns</span></a></h4>
+<table>
+<thead>
+<tr>
+<th>Pattern</th>
+<th>When <code>nums[mid] == target</code></th>
+<th>After Loop</th>
+<th>Returns</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Standard BS</strong></td>
+<td><code>return mid</code></td>
+<td>N/A</td>
+<td>exact index or -1</td>
+</tr>
+<tr>
+<td><strong>Find First (Left Boundary)</strong></td>
+<td><code>firstIdx = mid; high = mid-1</code></td>
+<td><code>firstIdx</code></td>
+<td>leftmost index or -1</td>
+</tr>
+<tr>
+<td><strong>Find Last (Right Boundary)</strong></td>
+<td><code>lastIdx = mid; low = mid+1</code></td>
+<td><code>lastIdx</code></td>
+<td>rightmost index or -1</td>
+</tr>
+<tr>
+<td><strong>Lower Bound</strong></td>
+<td><code>right = mid</code> (half-open)</td>
+<td><code>left</code></td>
+<td>first index &gt;= target</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h4 id="similar-lc-problems" tabindex="-1"><a class="header-anchor" href="#similar-lc-problems"><span>Similar LC Problems</span></a></h4>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>Core Idea</th>
+<th>Difficulty</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>LC 1150</strong></td>
+<td>Find first index + jump by N/2 to verify majority</td>
+<td>Easy (Prime)</td>
+</tr>
+<tr>
+<td>LC 34</td>
+<td>Find first AND last occurrence via two boundary searches</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>LC 35</td>
+<td>Find insertion position (return <code>left</code> after loop)</td>
+<td>Easy</td>
+</tr>
+<tr>
+<td>LC 278</td>
+<td>First Bad Version — find first index where condition is true</td>
+<td>Easy</td>
+</tr>
+<tr>
+<td>LC 153</td>
+<td>Find minimum in rotated sorted array</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>LC 374</td>
+<td>Guess Number Higher or Lower — classic find-first pattern</td>
+<td>Easy</td>
+</tr>
+<tr>
+<td>LC 540</td>
+<td>Single Element in a Sorted Array — parity-based boundary search</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>LC 852</td>
+<td>Peak Index in a Mountain Array — find first descending point</td>
+<td>Medium</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h4 id="interview-tips-for-lc-1150-find-first-pattern" tabindex="-1"><a class="header-anchor" href="#interview-tips-for-lc-1150-find-first-pattern"><span>Interview Tips for LC 1150 / Find-First Pattern</span></a></h4>
+<ol>
+<li><strong>Recognize sorted array + count query</strong> → think “find first index + O(1) check”</li>
+<li><strong>Key line</strong>: <code>return majorityIndex &lt; n &amp;&amp; nums[majorityIndex] == target</code> — bounds check matters</li>
+<li><strong>Why not count?</strong> Counting is O(N); binary search is O(log N) — interviewer expects the optimal</li>
+<li><strong>Edge cases</strong>: target not in array, single element array, all elements equal target</li>
+</ol>
 
       </div>
       <div class="cheatsheet-footer">

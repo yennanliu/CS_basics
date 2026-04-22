@@ -1590,6 +1590,29 @@ public class Workspace25 {
      *
      */
     // IDEA 1) 2 POINTERS
+    public int removeDuplicates(int[] nums) {
+        // edge
+
+        /** logic:
+         *
+         *  1. 2 pointers (f, s)
+         *       s starts from 0
+         *       f starts from 1
+         *
+         *  2. if nums[l] != nums[r]
+         *        l += 1
+         *        // swap
+         *
+         *  3. .... return l
+         *
+         *
+         */
+
+        return -1;
+    }
+
+
+    // IDEA 1) 2 POINTERS
     public int removeDuplicates_xxx(int[] nums) {
         // edge
 
@@ -1651,10 +1674,10 @@ public class Workspace25 {
      *
      *
      */
-    public int removeDuplicates(int[] nums) {
-
-        return 1;
-    }
+//    public int removeDuplicates(int[] nums) {
+//
+//        return 1;
+//    }
 
 
     // LC 765

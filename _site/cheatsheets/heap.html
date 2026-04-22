@@ -110,7 +110,6 @@
         <a href="../faqs.html" class="">FAQs</a>
         <a href="../resources.html" class="">Resources</a>
         <a href="../lc-explorer.html" class="">LC Explorer</a>
-        <a href="../lc-random-picker.html" class="">🎲 Random Picker</a>
         <a href="../algo_demo/index.html" class="">Visualizer</a>
         <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">&#127769;</button>
         <a href="https://github.com/yennanliu/CS_basics" target="_blank" class="github-link" aria-label="GitHub">
@@ -128,9 +127,9 @@
       <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">Heap</span></nav>
       <div class="cheatsheet-header">
         <h1>Heap</h1>
-        <span class="last-updated">Last updated: Mar 19, 2026</span>
+        <span class="last-updated">Last updated: Apr 22, 2026</span>
       </div>
-      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#overview">Overview</a></li><li class="toc-sub"><a href="#key-properties">Key Properties</a></li><li class="toc-sub"><a href="#heap-types">Heap Types</a></li><li class="toc-sub"><a href="#priority-queue-relationship">Priority Queue Relationship</a></li><li class="toc-sub"><a href="#problem-categories">Problem Categories</a></li><li class="toc-sub"><a href="#references">References</a></li><li><a href="#templates-algorithms">Templates &amp; Algorithms</a></li><li class="toc-sub"><a href="#template-comparison-table">Template Comparison Table</a></li><li class="toc-sub"><a href="#universal-heap-template">Universal Heap Template</a></li><li class="toc-sub"><a href="#specific-pattern-templates">Specific Pattern Templates</a></li><li class="toc-sub"><a href="#python-heapq-api-reference">Python heapq API Reference</a></li><li class="toc-sub"><a href="#1-2-heap-vs-stack-vs-queue">1-2) Heap VS Stack VS Queue</a></li><li class="toc-sub"><a href="#1-3-heap-sort">1-3) Heap sort</a></li><li class="toc-sub"><a href="#1-4-priority-queue">1-4) Priority Queue</a></li><li><a href="#2-lc-example">2) LC Example</a></li><li class="toc-sub"><a href="#2-0-top-k-frequent-elements">2-0) Top K Frequent Elements</a></li><li class="toc-sub"><a href="#2-1-kth-largest-element-in-a-stream">2-1) Kth Largest Element in a Stream</a></li><li class="toc-sub"><a href="#2-2-ugly-number-ii">2-2) Ugly Number II</a></li><li class="toc-sub"><a href="#2-3-find-median-from-data-stream">2-3) Find Median from Data Stream</a></li><li class="toc-sub"><a href="#2-4-minimum-cost-to-connect-sticks">2-4) Minimum Cost to Connect Sticks</a></li><li class="toc-sub"><a href="#2-5-the-kth-factor-of-n">2-5) The kth Factor of n</a></li><li class="toc-sub"><a href="#2-6-least-number-of-unique-integers-after-k-removals">2-6) Least Number of Unique Integers after K Removals</a></li><li class="toc-sub"><a href="#2-7-maximum-number-of-events-that-can-be-attended">2-7) Maximum Number of Events That Can Be Attended</a></li><li class="toc-sub"><a href="#2-8-maximum-frequency-stack">2-8) Maximum Frequency Stack</a></li><li class="toc-sub"><a href="#2-9-ugly-number-ii">2-9) Ugly Number II</a></li><li class="toc-sub"><a href="#2-10-find-k-pairs-with-smallest-sums">2-10) Find K Pairs with Smallest Sums</a></li><li class="toc-sub"><a href="#2-11-kth-smallest-element-in-a-sorted-matrix">2-11) Kth Smallest Element in a Sorted Matrix</a></li><li class="toc-sub"><a href="#2-12-minimum-deletions-to-make-character-frequencies-unique">2-12) Minimum Deletions to Make Character Frequencies Unique</a></li><li class="toc-sub"><a href="#2-13-maximum-performance-of-a-team">2-13) Maximum Performance of a Team</a></li><li class="toc-sub"><a href="#2-14-minimum-number-of-refueling-stops">2-14) Minimum Number of Refueling Stops</a></li><li class="toc-sub"><a href="#2-15-minimum-number-of-visited-cells-in-a-grid">2-15) Minimum Number of Visited Cells in a Grid</a></li><li><a href="#problems-by-pattern">Problems by Pattern</a></li><li class="toc-sub"><a href="#pattern-based-problem-classification">Pattern-Based Problem Classification</a></li><li class="toc-sub"><a href="#advanced-heap-problems">Advanced Heap Problems</a></li><li class="toc-sub"><a href="#heap-other-data-structure-combos">Heap + Other Data Structure Combos</a></li><li><a href="#pattern-selection-strategy">Pattern Selection Strategy</a></li><li class="toc-sub"><a href="#decision-framework-flowchart">Decision Framework Flowchart</a></li><li class="toc-sub"><a href="#template-selection-guide">Template Selection Guide</a></li><li class="toc-sub"><a href="#common-decision-points">Common Decision Points</a></li><li><a href="#summary-quick-reference">Summary &amp; Quick Reference</a></li><li class="toc-sub"><a href="#complexity-quick-reference">Complexity Quick Reference</a></li><li class="toc-sub"><a href="#template-quick-reference">Template Quick Reference</a></li><li class="toc-sub"><a href="#common-patterns-tricks">Common Patterns &amp; Tricks</a></li><li class="toc-sub"><a href="#problem-solving-steps">Problem-Solving Steps</a></li><li class="toc-sub"><a href="#common-mistakes-tips">Common Mistakes &amp; Tips</a></li><li class="toc-sub"><a href="#interview-tips">Interview Tips</a></li><li class="toc-sub"><a href="#related-topics">Related Topics</a></li><li class="toc-sub"><a href="#language-specific-notes">Language-Specific Notes</a></li></ul></div>
+      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#overview">Overview</a></li><li class="toc-sub"><a href="#key-properties">Key Properties</a></li><li class="toc-sub"><a href="#heap-types">Heap Types</a></li><li class="toc-sub"><a href="#priority-queue-relationship">Priority Queue Relationship</a></li><li class="toc-sub"><a href="#problem-categories">Problem Categories</a></li><li class="toc-sub"><a href="#references">References</a></li><li><a href="#templates-algorithms">Templates &amp; Algorithms</a></li><li class="toc-sub"><a href="#template-comparison-table">Template Comparison Table</a></li><li class="toc-sub"><a href="#universal-heap-template">Universal Heap Template</a></li><li class="toc-sub"><a href="#specific-pattern-templates">Specific Pattern Templates</a></li><li class="toc-sub"><a href="#python-heapq-api-reference">Python heapq API Reference</a></li><li class="toc-sub"><a href="#1-2-heap-vs-stack-vs-queue">1-2) Heap VS Stack VS Queue</a></li><li class="toc-sub"><a href="#1-3-heap-sort">1-3) Heap sort</a></li><li class="toc-sub"><a href="#1-4-priority-queue">1-4) Priority Queue</a></li><li><a href="#2-lc-example">2) LC Example</a></li><li class="toc-sub"><a href="#2-0-top-k-frequent-elements">2-0) Top K Frequent Elements</a></li><li class="toc-sub"><a href="#2-1-kth-largest-element-in-a-stream">2-1) Kth Largest Element in a Stream</a></li><li class="toc-sub"><a href="#2-2-ugly-number-ii">2-2) Ugly Number II</a></li><li class="toc-sub"><a href="#2-3-find-median-from-data-stream">2-3) Find Median from Data Stream</a></li><li class="toc-sub"><a href="#2-4-minimum-cost-to-connect-sticks">2-4) Minimum Cost to Connect Sticks</a></li><li class="toc-sub"><a href="#2-5-the-kth-factor-of-n">2-5) The kth Factor of n</a></li><li class="toc-sub"><a href="#2-6-least-number-of-unique-integers-after-k-removals">2-6) Least Number of Unique Integers after K Removals</a></li><li class="toc-sub"><a href="#2-7-maximum-number-of-events-that-can-be-attended">2-7) Maximum Number of Events That Can Be Attended</a></li><li class="toc-sub"><a href="#2-8-maximum-frequency-stack">2-8) Maximum Frequency Stack</a></li><li class="toc-sub"><a href="#2-9-ugly-number-ii">2-9) Ugly Number II</a></li><li class="toc-sub"><a href="#2-10-find-k-pairs-with-smallest-sums">2-10) Find K Pairs with Smallest Sums</a></li><li class="toc-sub"><a href="#2-11-kth-smallest-element-in-a-sorted-matrix">2-11) Kth Smallest Element in a Sorted Matrix</a></li><li class="toc-sub"><a href="#2-12-minimum-deletions-to-make-character-frequencies-unique">2-12) Minimum Deletions to Make Character Frequencies Unique</a></li><li class="toc-sub"><a href="#2-13-maximum-performance-of-a-team">2-13) Maximum Performance of a Team</a></li><li class="toc-sub"><a href="#2-14-minimum-number-of-refueling-stops">2-14) Minimum Number of Refueling Stops</a></li><li class="toc-sub"><a href="#2-15-minimum-number-of-visited-cells-in-a-grid">2-15) Minimum Number of Visited Cells in a Grid</a></li><li class="toc-sub"><a href="#2-16-divide-intervals-into-minimum-number-of-groups">2-16) Divide Intervals Into Minimum Number of Groups</a></li><li class="toc-sub"><a href="#2-17-minimize-deviation-in-array">2-17) Minimize Deviation in Array</a></li><li><a href="#problems-by-pattern">Problems by Pattern</a></li><li class="toc-sub"><a href="#pattern-based-problem-classification">Pattern-Based Problem Classification</a></li><li class="toc-sub"><a href="#advanced-heap-problems">Advanced Heap Problems</a></li><li class="toc-sub"><a href="#heap-other-data-structure-combos">Heap + Other Data Structure Combos</a></li><li><a href="#pattern-selection-strategy">Pattern Selection Strategy</a></li><li class="toc-sub"><a href="#decision-framework-flowchart">Decision Framework Flowchart</a></li><li class="toc-sub"><a href="#template-selection-guide">Template Selection Guide</a></li><li class="toc-sub"><a href="#common-decision-points">Common Decision Points</a></li><li><a href="#summary-quick-reference">Summary &amp; Quick Reference</a></li><li class="toc-sub"><a href="#complexity-quick-reference">Complexity Quick Reference</a></li><li class="toc-sub"><a href="#template-quick-reference">Template Quick Reference</a></li><li class="toc-sub"><a href="#common-patterns-tricks">Common Patterns &amp; Tricks</a></li><li class="toc-sub"><a href="#problem-solving-steps">Problem-Solving Steps</a></li><li class="toc-sub"><a href="#common-mistakes-tips">Common Mistakes &amp; Tips</a></li><li class="toc-sub"><a href="#interview-tips">Interview Tips</a></li><li class="toc-sub"><a href="#related-topics">Related Topics</a></li><li class="toc-sub"><a href="#language-specific-notes">Language-Specific Notes</a></li></ul></div>
       <div class="cheatsheet-content">
         <h1 id="heap-data-structure" tabindex="-1"><a class="header-anchor" href="#heap-data-structure"><span>Heap Data Structure</span></a></h1>
 <h2 id="overview" tabindex="-1"><a class="header-anchor" href="#overview"><span>Overview</span></a></h2>
@@ -2152,6 +2151,201 @@ public int minimumVisitedCells(int[][] grid) {
  * - LC 1293: Shortest Path with Obstacles (BFS + state)
  */
 </code></pre>
+<h3 id="2-16-divide-intervals-into-minimum-number-of-groups" tabindex="-1"><a class="header-anchor" href="#2-16-divide-intervals-into-minimum-number-of-groups"><span>2-16) Divide Intervals Into Minimum Number of Groups</span></a></h3>
+<pre><code class="language-java">// java
+// LC 2406
+// Reference: leetcode_java/src/main/java/LeetCodeJava/Heap/DivideIntervalsIntoMinimumNumberOfGroups.java
+
+/**
+ * Problem: Given intervals, divide them into minimum groups so no two intervals
+ *          in the same group overlap (two intervals overlap if they share any point).
+ *
+ * Example:
+ * Input:  [[5,10],[6,8],[1,5],[2,3],[1,10]]
+ * Output: 3
+ *
+ * Key Insight:
+ * The minimum number of groups = maximum number of intervals overlapping at any point.
+ * This is equivalent to the &quot;Meeting Rooms II&quot; insight.
+ *
+ * Pattern: Sort by start + Min Heap tracking group end times
+ */
+
+// APPROACH 1: SORT + MIN HEAP
+/**
+ * Core Idea:
+ * 1. Sort intervals by start time.
+ * 2. Min-heap stores the END time of each active group.
+ * 3. For each interval:
+ *    - If the earliest-ending group ends BEFORE current start → reuse it (poll + offer).
+ *    - Otherwise → open a new group (just offer).
+ * 4. Heap size at the end = number of groups needed.
+ *
+ * NOTE: [1,5] and [5,10] OVERLAP (inclusive endpoints), so reuse only when end &lt; start.
+ *
+ * Time:  O(N log N) — sort + heap operations
+ * Space: O(N)       — heap stores at most N end times
+ */
+public int minGroups(int[][] intervals) {
+    Arrays.sort(intervals, (a, b) -&gt; a[0] - b[0]);  // sort by start
+
+    PriorityQueue&lt;Integer&gt; pq = new PriorityQueue&lt;&gt;();  // min-heap of end times
+
+    for (int[] interval : intervals) {
+        if (!pq.isEmpty() &amp;&amp; pq.peek() &lt; interval[0]) {
+            pq.poll();  // reuse earliest-ending group
+        }
+        pq.offer(interval[1]);  // assign current interval to a group
+    }
+
+    return pq.size();  // number of concurrent groups = answer
+}
+
+// APPROACH 2: SEPARATE SORT (Two-Pointer / Line Sweep)
+/**
+ * Core Idea:
+ * 1. Separate starts[] and ends[] arrays and sort them independently.
+ * 2. Sweep through starts; for each start, check if the smallest end has passed.
+ *    - start &gt; ends[endPointer] → a group freed up, advance endPointer (don't add group).
+ *    - Otherwise → overlap, need a new group.
+ * 3. groupCount = number of new groups opened.
+ *
+ * Time:  O(N log N)
+ * Space: O(N)
+ */
+public int minGroups_v2(int[][] intervals) {
+    int n = intervals.length;
+    int[] starts = new int[n], ends = new int[n];
+    for (int i = 0; i &lt; n; i++) {
+        starts[i] = intervals[i][0];
+        ends[i]   = intervals[i][1];
+    }
+    Arrays.sort(starts);
+    Arrays.sort(ends);
+
+    int groupCount = 0, endPointer = 0;
+    for (int start : starts) {
+        if (start &gt; ends[endPointer]) {
+            endPointer++;   // reuse a group
+        } else {
+            groupCount++;   // need a new group
+        }
+    }
+    return groupCount;
+}
+
+/**
+ * SIMILAR PROBLEMS:
+ *
+ * - LC 253  Meeting Rooms II          — same algorithm, identical logic
+ * - LC 1353 Maximum Events Attended   — greedy + min heap by end time
+ * - LC 56   Merge Intervals           — sort + merge overlapping
+ * - LC 57   Insert Interval           — merge after inserting
+ * - LC 435  Non-Overlapping Intervals — greedy, minimize removed to avoid overlap
+ * - LC 452  Minimum Arrows to Burst Balloons — greedy interval scheduling
+ * - LC 1094 Car Pooling               — difference array / heap scheduling
+ *
+ * KEY PATTERN RULE:
+ *   min groups = max concurrent overlaps
+ *   → always equals heap size when using Sort + Min Heap approach
+ */
+</code></pre>
+<h3 id="2-17-minimize-deviation-in-array" tabindex="-1"><a class="header-anchor" href="#2-17-minimize-deviation-in-array"><span>2-17) Minimize Deviation in Array</span></a></h3>
+<pre><code class="language-java">// java
+// LC 1675
+// Reference: leetcode_java/src/main/java/LeetCodeJava/Heap/MinimizeDeviationInArray.java
+
+/**
+ * Problem: Given nums[], you can:
+ *   - Divide any EVEN element by 2  (any number of times)
+ *   - Multiply any ODD element by 2 (any number of times)
+ * Return the minimum possible deviation = max(nums) - min(nums).
+ *
+ * Example 1: nums = [1,2,3,4] → [2,2,3,2] → deviation = 3 - 2 = 1
+ * Example 2: nums = [4,1,5,20,3] → [4,2,5,5,3] → deviation = 5 - 2 = 3
+ *
+ * Key Observations:
+ * 1. Odd numbers can only be multiplied by 2 ONCE to become even,
+ *    then only divided. So first multiply all odds to get their maximum.
+ * 2. After making everything even, only DIVISION is possible.
+ * 3. To minimize deviation, always shrink the current maximum (divide by 2),
+ *    tracking the running minimum along the way.
+ * 4. Stop when max is odd (can no longer be divided).
+ *
+ * Pattern: Greedy + Max Heap
+ */
+
+// APPROACH: GREEDY + MAX HEAP
+/**
+ * Steps:
+ * 1. Normalize: multiply all odd numbers by 2 → everything is now even.
+ *    Track the global minimum during this step.
+ * 2. Push all values into a MAX heap.
+ * 3. Loop:
+ *    a. Poll the max from the heap.
+ *    b. Record deviation = max - min (update answer).
+ *    c. If max is ODD → can't divide further → break (best we can do).
+ *    d. If max is EVEN → divide by 2, update min, push back to heap.
+ *
+ * Why max heap?
+ *   We always want to reduce the LARGEST value to shrink the range.
+ *   The minimum only ever decreases (division makes values smaller).
+ *
+ * Time:  O(N log N * log(maxVal)) — each element divided at most log(maxVal) times
+ * Space: O(N)
+ */
+public int minimumDeviation(int[] nums) {
+    PriorityQueue&lt;Integer&gt; maxHeap = new PriorityQueue&lt;&gt;(Collections.reverseOrder());
+    int min = Integer.MAX_VALUE;
+
+    // Step 1: normalize — make all values even (multiply odds by 2)
+    for (int x : nums) {
+        if (x % 2 == 1) x *= 2;
+        maxHeap.offer(x);
+        min = Math.min(min, x);
+    }
+
+    int deviation = Integer.MAX_VALUE;
+
+    // Step 2: repeatedly reduce the max until it is odd
+    while (true) {
+        int max = maxHeap.poll();
+        deviation = Math.min(deviation, max - min);
+
+        if (max % 2 == 1) break;  // odd → can't divide further → done
+
+        max /= 2;
+        min = Math.min(min, max);  // new value may be the new minimum
+        maxHeap.offer(max);
+    }
+
+    return deviation;
+}
+
+/**
+ * WHY THIS WORKS:
+ *
+ * - After normalization, all numbers are even; we can only divide (move values down).
+ * - Each division brings the max closer to the min, potentially reducing deviation.
+ * - We stop the moment the max is odd because:
+ *     * Multiplying it by 2 would only increase the max (worse deviation).
+ *     * The smallest achievable deviation at this state is already recorded.
+ * - The minimum is tracked explicitly because after a division the new value
+ *   might be smaller than all current heap elements.
+ *
+ * SIMILAR PROBLEMS:
+ * - LC 2616 Minimize the Maximum Difference of Pairs — binary search + greedy
+ * - LC 910  Smallest Range II                        — sort + greedy math
+ * - LC 1671 Minimum Number of Removals to Sort       — greedy + heap
+ * - LC 621  Task Scheduler                           — max heap + greedy
+ * - LC 502  IPO                                      — two heaps + greedy
+ *
+ * COMMON MISTAKE:
+ * - Trying to increase small values by multiplying: after normalization,
+ *   multiplying any even number makes it larger → increases max → worse.
+ *   Only dividing the max is ever beneficial.
+ */
+</code></pre>
 <h2 id="problems-by-pattern" tabindex="-1"><a class="header-anchor" href="#problems-by-pattern"><span>Problems by Pattern</span></a></h2>
 <h3 id="pattern-based-problem-classification" tabindex="-1"><a class="header-anchor" href="#pattern-based-problem-classification"><span>Pattern-Based Problem Classification</span></a></h3>
 <h4 id="pattern-1-kth-element-problems-1" tabindex="-1"><a class="header-anchor" href="#pattern-1-kth-element-problems-1"><span><strong>Pattern 1: Kth Element Problems</strong></span></a></h4>
@@ -2439,6 +2633,13 @@ public int minimumVisitedCells(int[][] grid) {
 <td>Hard</td>
 <td>Top K Frequency</td>
 </tr>
+<tr>
+<td>Divide Intervals Into Minimum Number of Groups</td>
+<td>2406</td>
+<td>Sort by start + min heap of end times</td>
+<td>Medium</td>
+<td>Universal Heap</td>
+</tr>
 </tbody>
 </table>
 <h4 id="pattern-6-data-stream-problems-1" tabindex="-1"><a class="header-anchor" href="#pattern-6-data-stream-problems-1"><span><strong>Pattern 6: Data Stream Problems</strong></span></a></h4>
@@ -2550,6 +2751,13 @@ public int minimumVisitedCells(int[][] grid) {
 <td>DP + per-row/col PQ + lazy deletion</td>
 <td>Hard</td>
 <td>Grid Range Jumps</td>
+</tr>
+<tr>
+<td>Minimize Deviation in Array</td>
+<td>1675</td>
+<td>Normalize odds, greedy shrink max</td>
+<td>Hard</td>
+<td>Universal Heap</td>
 </tr>
 </tbody>
 </table>

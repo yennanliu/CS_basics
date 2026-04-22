@@ -110,7 +110,6 @@
         <a href="../faqs.html" class="">FAQs</a>
         <a href="../resources.html" class="">Resources</a>
         <a href="../lc-explorer.html" class="">LC Explorer</a>
-        <a href="../lc-random-picker.html" class="">🎲 Random Picker</a>
         <a href="../algo_demo/index.html" class="">Visualizer</a>
         <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">&#127769;</button>
         <a href="https://github.com/yennanliu/CS_basics" target="_blank" class="github-link" aria-label="GitHub">
@@ -128,9 +127,9 @@
       <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">Scanning Line</span></nav>
       <div class="cheatsheet-header">
         <h1>Scanning Line</h1>
-        <span class="last-updated">Last updated: Sep 30, 2025</span>
+        <span class="last-updated">Last updated: Apr 22, 2026</span>
       </div>
-      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#overview">Overview</a></li><li class="toc-sub"><a href="#key-properties">Key Properties</a></li><li class="toc-sub"><a href="#algorithm-principle">Algorithm Principle</a></li><li class="toc-sub"><a href="#references">References</a></li><li><a href="#problem-categories">Problem Categories</a></li><li class="toc-sub"><a href="#pattern-1-interval-overlap">Pattern 1: Interval Overlap</a></li><li class="toc-sub"><a href="#pattern-2-skyline-problems">Pattern 2: Skyline Problems</a></li><li class="toc-sub"><a href="#pattern-3-calendar-booking">Pattern 3: Calendar Booking</a></li><li class="toc-sub"><a href="#pattern-4-employee-free-time">Pattern 4: Employee Free Time</a></li><li class="toc-sub"><a href="#pattern-5-range-updates">Pattern 5: Range Updates</a></li><li class="toc-sub"><a href="#pattern-6-geometric-intersection">Pattern 6: Geometric Intersection</a></li><li><a href="#templates-algorithms">Templates &amp; Algorithms</a></li><li class="toc-sub"><a href="#template-comparison-table">Template Comparison Table</a></li><li class="toc-sub"><a href="#template-1-basic-interval-overlap">Template 1: Basic Interval Overlap</a></li><li class="toc-sub"><a href="#template-2-weighted-interval-overlap">Template 2: Weighted Interval Overlap</a></li><li class="toc-sub"><a href="#template-3-skyline-problem">Template 3: Skyline Problem</a></li><li class="toc-sub"><a href="#template-4-calendar-booking">Template 4: Calendar Booking</a></li><li class="toc-sub"><a href="#template-5-difference-array-pattern">Template 5: Difference Array Pattern</a></li><li class="toc-sub"><a href="#template-6-interval-merge-with-sweep">Template 6: Interval Merge with Sweep</a></li><li><a href="#problems-by-pattern">Problems by Pattern</a></li><li class="toc-sub"><a href="#pattern-based-problem-tables">Pattern-Based Problem Tables</a></li><li><a href="#pattern-selection-strategy">Pattern Selection Strategy</a></li><li><a href="#summary-quick-reference">Summary &amp; Quick Reference</a></li><li class="toc-sub"><a href="#complexity-quick-reference">Complexity Quick Reference</a></li><li class="toc-sub"><a href="#template-quick-reference">Template Quick Reference</a></li><li class="toc-sub"><a href="#common-patterns-tricks">Common Patterns &amp; Tricks</a></li><li class="toc-sub"><a href="#problem-solving-steps">Problem-Solving Steps</a></li><li class="toc-sub"><a href="#common-mistakes-tips">Common Mistakes &amp; Tips</a></li><li class="toc-sub"><a href="#interview-tips">Interview Tips</a></li><li class="toc-sub"><a href="#advanced-techniques">Advanced Techniques</a></li><li class="toc-sub"><a href="#related-topics">Related Topics</a></li><li><a href="#lc-examples">LC Examples</a></li><li class="toc-sub"><a href="#2-1-meeting-rooms-ii">2-1) Meeting Rooms II</a></li><li class="toc-sub"><a href="#2-2-brightest-position-on-street">2-2) Brightest Position on Street</a></li><li class="toc-sub"><a href="#2-2-my-calendar-ii">2-2) My Calendar II</a></li></ul></div>
+      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#overview">Overview</a></li><li class="toc-sub"><a href="#key-properties">Key Properties</a></li><li class="toc-sub"><a href="#algorithm-principle">Algorithm Principle</a></li><li class="toc-sub"><a href="#references">References</a></li><li><a href="#problem-categories">Problem Categories</a></li><li class="toc-sub"><a href="#pattern-1-interval-overlap">Pattern 1: Interval Overlap</a></li><li class="toc-sub"><a href="#pattern-2-skyline-problems">Pattern 2: Skyline Problems</a></li><li class="toc-sub"><a href="#pattern-3-calendar-booking">Pattern 3: Calendar Booking</a></li><li class="toc-sub"><a href="#pattern-4-employee-free-time">Pattern 4: Employee Free Time</a></li><li class="toc-sub"><a href="#pattern-5-range-updates">Pattern 5: Range Updates</a></li><li class="toc-sub"><a href="#pattern-6-geometric-intersection">Pattern 6: Geometric Intersection</a></li><li><a href="#templates-algorithms">Templates &amp; Algorithms</a></li><li class="toc-sub"><a href="#template-comparison-table">Template Comparison Table</a></li><li class="toc-sub"><a href="#template-1-basic-interval-overlap">Template 1: Basic Interval Overlap</a></li><li class="toc-sub"><a href="#template-2-weighted-interval-overlap">Template 2: Weighted Interval Overlap</a></li><li class="toc-sub"><a href="#template-3-skyline-problem">Template 3: Skyline Problem</a></li><li class="toc-sub"><a href="#template-4-calendar-booking">Template 4: Calendar Booking</a></li><li class="toc-sub"><a href="#template-5-difference-array-pattern">Template 5: Difference Array Pattern</a></li><li class="toc-sub"><a href="#template-6-interval-merge-with-sweep">Template 6: Interval Merge with Sweep</a></li><li><a href="#problems-by-pattern">Problems by Pattern</a></li><li class="toc-sub"><a href="#pattern-based-problem-tables">Pattern-Based Problem Tables</a></li><li><a href="#pattern-selection-strategy">Pattern Selection Strategy</a></li><li><a href="#summary-quick-reference">Summary &amp; Quick Reference</a></li><li class="toc-sub"><a href="#complexity-quick-reference">Complexity Quick Reference</a></li><li class="toc-sub"><a href="#template-quick-reference">Template Quick Reference</a></li><li class="toc-sub"><a href="#common-patterns-tricks">Common Patterns &amp; Tricks</a></li><li class="toc-sub"><a href="#problem-solving-steps">Problem-Solving Steps</a></li><li class="toc-sub"><a href="#common-mistakes-tips">Common Mistakes &amp; Tips</a></li><li class="toc-sub"><a href="#interview-tips">Interview Tips</a></li><li class="toc-sub"><a href="#advanced-techniques">Advanced Techniques</a></li><li class="toc-sub"><a href="#related-topics">Related Topics</a></li><li><a href="#lc-examples">LC Examples</a></li><li class="toc-sub"><a href="#2-1-meeting-rooms-ii">2-1) Meeting Rooms II</a></li><li class="toc-sub"><a href="#2-2-brightest-position-on-street">2-2) Brightest Position on Street</a></li><li class="toc-sub"><a href="#2-2-divide-intervals-into-minimum-number-of-groups">2-2) Divide Intervals Into Minimum Number of Groups</a></li><li class="toc-sub"><a href="#2-3-my-calendar-ii">2-3) My Calendar II</a></li></ul></div>
       <div class="cheatsheet-content">
         <h1 id="scanning-line-line-sweep-algorithm" tabindex="-1"><a class="header-anchor" href="#scanning-line-line-sweep-algorithm"><span>Scanning Line (Line Sweep) Algorithm</span></a></h1>
 <h2 id="overview" tabindex="-1"><a class="header-anchor" href="#overview"><span>Overview</span></a></h2>
@@ -161,7 +160,7 @@
 <h3 id="pattern-1-interval-overlap" tabindex="-1"><a class="header-anchor" href="#pattern-1-interval-overlap"><span><strong>Pattern 1: Interval Overlap</strong></span></a></h3>
 <ul>
 <li><strong>Description</strong>: Finding maximum overlapping intervals at any point</li>
-<li><strong>Examples</strong>: LC 253, 1094, 2021, 2848</li>
+<li><strong>Examples</strong>: LC 253, 1094, 2021, 2406, 2848</li>
 <li><strong>Pattern</strong>: Track active intervals using counter</li>
 </ul>
 <h3 id="pattern-2-skyline-problems" tabindex="-1"><a class="header-anchor" href="#pattern-2-skyline-problems"><span><strong>Pattern 2: Skyline Problems</strong></span></a></h3>
@@ -633,6 +632,12 @@ def mergeIntervals(intervals):
 <td>Describe the Painting</td>
 <td>1943</td>
 <td>Segment merging</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Divide Intervals Into Minimum Number of Groups</td>
+<td>2406</td>
+<td>Event sweep, max concurrent overlaps</td>
 <td>Medium</td>
 </tr>
 </tbody>
@@ -1256,7 +1261,88 @@ class Solution:
                 res = left
         return res
 </code></pre>
-<h3 id="2-2-my-calendar-ii" tabindex="-1"><a class="header-anchor" href="#2-2-my-calendar-ii"><span>2-2) My Calendar II</span></a></h3>
+<h3 id="2-2-divide-intervals-into-minimum-number-of-groups" tabindex="-1"><a class="header-anchor" href="#2-2-divide-intervals-into-minimum-number-of-groups"><span>2-2) Divide Intervals Into Minimum Number of Groups</span></a></h3>
+<pre><code class="language-java">// java
+// LC 2406
+// Reference: leetcode_java/src/main/java/LeetCodeJava/Heap/DivideIntervalsIntoMinimumNumberOfGroups.java
+
+/**
+ * Problem: Divide intervals into minimum groups so no two intervals in the
+ *          same group intersect (inclusive endpoints: [1,5] and [5,8] DO overlap).
+ *
+ * Example:
+ * Input:  [[5,10],[6,8],[1,5],[2,3],[1,10]]
+ * Output: 3
+ *
+ * Core Insight:
+ *   min groups needed = max number of intervals active at the same time
+ *   → identical to &quot;Meeting Rooms II&quot; but phrased differently.
+ *
+ * Pattern: Scanning Line — convert each interval into two events,
+ *          sweep left-to-right and track peak concurrent count.
+ */
+
+// APPROACH: EVENT-BASED SWEEP LINE
+/**
+ * Steps:
+ * 1. For each interval [l, r]:
+ *    - Add event (l, +1)  → interval opens
+ *    - Add event (r, -1)  → interval closes
+ *
+ * 2. Sort events by time.
+ *    - TIE-BREAKING: when two events share the same time,
+ *      process START (+1) BEFORE END (-1).
+ *      Why? [1,5] and [5,10] overlap at 5, so both must be active at time 5.
+ *      Sort descending on type: (a[0]==b[0]) ? b[1]-a[1] : a[0]-b[0]
+ *
+ * 3. Sweep through events, maintain currentGroups count.
+ *    Track maxGroups across all steps.
+ *
+ * Time:  O(N log N) — sorting dominates
+ * Space: O(N)       — event list
+ */
+public int minGroups(int[][] intervals) {
+    List&lt;int[]&gt; events = new ArrayList&lt;&gt;();
+    for (int[] in : intervals) {
+        events.add(new int[]{ in[0],  1 });  // start event
+        events.add(new int[]{ in[1], -1 });  // end event
+    }
+
+    // Sort by time; at same time, START (+1) before END (-1)
+    // b[1] - a[1] puts +1 before -1 (descending type order)
+    Collections.sort(events, (a, b) -&gt; a[0] == b[0] ? b[1] - a[1] : a[0] - b[0]);
+
+    int maxGroups = 0, currentGroups = 0;
+    for (int[] event : events) {
+        currentGroups += event[1];
+        maxGroups = Math.max(maxGroups, currentGroups);
+    }
+    return maxGroups;
+}
+
+/**
+ * WHY TIE-BREAKING MATTERS:
+ *
+ * Intervals [1,5] and [5,8] share point 5 → they DO overlap (problem statement).
+ * At time = 5, we must count both as active simultaneously.
+ * If we processed END before START at the same time:
+ *   → [1,5] would close before [5,8] opens → we'd miss the overlap → wrong answer.
+ * Sorting START before END at the same time ensures peak is captured correctly.
+ *
+ * SIMILAR PROBLEMS (same scanning line pattern):
+ * - LC 253  Meeting Rooms II          — identical logic, different wording
+ * - LC 2021 Brightest Position on Street — weighted events (brightness value)
+ * - LC 731  My Calendar II            — check if concurrent count reaches 3
+ * - LC 732  My Calendar III           — return max k-booking at any point
+ * - LC 1094 Car Pooling               — track passenger count vs capacity
+ * - LC 1854 Maximum Population Year   — year range overlap counting
+ *
+ * ALTERNATIVE APPROACH (also in this file):
+ * - Sort + Min Heap (heap.md): sort by start, use PQ of end times → heap.size() = answer
+ * - TreeMap (line sweep with ordered container): mark +1/-1 at each coordinate
+ */
+</code></pre>
+<h3 id="2-3-my-calendar-ii" tabindex="-1"><a class="header-anchor" href="#2-3-my-calendar-ii"><span>2-3) My Calendar II</span></a></h3>
 <pre><code class="language-java">// java
 // LC 731
 // V0

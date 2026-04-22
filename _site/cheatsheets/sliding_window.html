@@ -110,7 +110,6 @@
         <a href="../faqs.html" class="">FAQs</a>
         <a href="../resources.html" class="">Resources</a>
         <a href="../lc-explorer.html" class="">LC Explorer</a>
-        <a href="../lc-random-picker.html" class="">🎲 Random Picker</a>
         <a href="../algo_demo/index.html" class="">Visualizer</a>
         <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">&#127769;</button>
         <a href="https://github.com/yennanliu/CS_basics" target="_blank" class="github-link" aria-label="GitHub">
@@ -128,9 +127,9 @@
       <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">Sliding Window</span></nav>
       <div class="cheatsheet-header">
         <h1>Sliding Window</h1>
-        <span class="last-updated">Last updated: Apr 15, 2026</span>
+        <span class="last-updated">Last updated: Apr 20, 2026</span>
       </div>
-      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#overview">Overview</a></li><li class="toc-sub"><a href="#key-properties">Key Properties</a></li><li class="toc-sub"><a href="#when-to-use-sliding-window">When to Use Sliding Window</a></li><li class="toc-sub"><a href="#quick-decision-guide">Quick Decision Guide</a></li><li class="toc-sub"><a href="#references">References</a></li><li><a href="#0-concept">0) Concept</a></li><li class="toc-sub"><a href="#core-components">Core Components</a></li><li class="toc-sub"><a href="#0-1-problem-categories">0-1) Problem Categories</a></li><li class="toc-sub"><a href="#0-2-core-algorithms-data-structures">0-2) Core Algorithms &amp; Data Structures</a></li><li><a href="#1-sliding-window-templates-patterns">1) Sliding Window Templates &amp; Patterns</a></li><li class="toc-sub"><a href="#1-1-template-comparison">1.1) Template Comparison</a></li><li class="toc-sub"><a href="#1-2-universal-sliding-window-template">1.2) Universal Sliding Window Template</a></li><li class="toc-sub"><a href="#1-3-template-1-fixed-size-window">1.3) Template 1: Fixed Size Window</a></li><li class="toc-sub"><a href="#1-4-template-2-variable-size-window-maximum-length">1.4) Template 2: Variable Size Window (Maximum Length)</a></li><li class="toc-sub"><a href="#1-5-template-3-variable-size-window-minimum-length">1.5) Template 3: Variable Size Window (Minimum Length)</a></li><li class="toc-sub"><a href="#1-6-template-4-counting-subarrays">1.6) Template 4: Counting Subarrays</a></li><li class="toc-sub"><a href="#1-7-technique-exactly-k-problems-at-most-k-transformation">1.7) Technique: Exactly K Problems (At Most K Transformation)</a></li><li><a href="#2-problems-by-template-pattern">2) Problems by Template Pattern</a></li><li class="toc-sub"><a href="#2-1-template-classification-guide">2.1) Template Classification Guide</a></li><li class="toc-sub"><a href="#2-2-template-selection-strategy">2.2) Template Selection Strategy</a></li><li><a href="#3-detailed-leetcode-examples">3) Detailed LeetCode Examples</a></li><li class="toc-sub"><a href="#3-1-fixed-size-window-examples">3.1) Fixed Size Window Examples</a></li><li class="toc-sub"><a href="#3-2-variable-size-window-examples">3.2) Variable Size Window Examples</a></li><li class="toc-sub"><a href="#3-3-counting-subarrays-examples">3.3) Counting Subarrays Examples</a></li><li class="toc-sub"><a href="#3-4-minimum-window-examples">3.4) Minimum Window Examples</a></li><li class="toc-sub"><a href="#3-5-advanced-examples">3.5) Advanced Examples</a></li><li class="toc-sub"><a href="#lc-1838-frequency-of-the-most-frequent-element">LC 1838 Frequency of the Most Frequent Element</a></li><li><a href="#4-core-patterns-quick-reference">4) Core Patterns &amp; Quick Reference</a></li><li class="toc-sub"><a href="#4-1-template-quick-reference">4.1) Template Quick Reference</a></li><li class="toc-sub"><a href="#4-2-common-patterns-tricks">4.2) Common Patterns &amp; Tricks</a></li><li class="toc-sub"><a href="#4-3-problem-solving-steps">4.3) Problem-Solving Steps</a></li><li class="toc-sub"><a href="#4-4-common-mistakes-tips">4.4) Common Mistakes &amp; Tips</a></li><li class="toc-sub"><a href="#4-5-time-space-complexity-analysis">4.5) Time &amp; Space Complexity Analysis</a></li><li class="toc-sub"><a href="#4-6-related-algorithms">4.6) Related Algorithms</a></li><li class="toc-sub"><a href="#4-7-additional-template-examples-advanced-java-reference">4.7) Additional Template Examples (Advanced Java Reference)</a></li></ul></div>
+      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#overview">Overview</a></li><li class="toc-sub"><a href="#key-properties">Key Properties</a></li><li class="toc-sub"><a href="#when-to-use-sliding-window">When to Use Sliding Window</a></li><li class="toc-sub"><a href="#quick-decision-guide">Quick Decision Guide</a></li><li class="toc-sub"><a href="#references">References</a></li><li><a href="#0-concept">0) Concept</a></li><li class="toc-sub"><a href="#core-components">Core Components</a></li><li class="toc-sub"><a href="#0-1-problem-categories">0-1) Problem Categories</a></li><li class="toc-sub"><a href="#0-2-core-algorithms-data-structures">0-2) Core Algorithms &amp; Data Structures</a></li><li><a href="#1-sliding-window-templates-patterns">1) Sliding Window Templates &amp; Patterns</a></li><li class="toc-sub"><a href="#1-1-template-comparison">1.1) Template Comparison</a></li><li class="toc-sub"><a href="#1-2-universal-sliding-window-template">1.2) Universal Sliding Window Template</a></li><li class="toc-sub"><a href="#1-3-template-1-fixed-size-window">1.3) Template 1: Fixed Size Window</a></li><li class="toc-sub"><a href="#1-4-template-2-variable-size-window-maximum-length">1.4) Template 2: Variable Size Window (Maximum Length)</a></li><li class="toc-sub"><a href="#1-5-template-3-variable-size-window-minimum-length">1.5) Template 3: Variable Size Window (Minimum Length)</a></li><li class="toc-sub"><a href="#1-6-template-4-counting-subarrays">1.6) Template 4: Counting Subarrays</a></li><li class="toc-sub"><a href="#1-7-technique-exactly-k-problems-at-most-k-transformation">1.7) Technique: Exactly K Problems (At Most K Transformation)</a></li><li class="toc-sub"><a href="#1-8-when-pure-sliding-window-works-vs-when-you-need-extra-tricks">1.8) When Pure Sliding Window Works vs. When You Need Extra Tricks</a></li><li class="toc-sub"><a href="#1-9-prefix-trick-sliding-window-for-exactly-k-counting">1.9) Prefix Trick + Sliding Window (for “Exactly K” Counting)</a></li><li><a href="#2-problems-by-template-pattern">2) Problems by Template Pattern</a></li><li class="toc-sub"><a href="#2-1-template-classification-guide">2.1) Template Classification Guide</a></li><li class="toc-sub"><a href="#2-2-template-selection-strategy">2.2) Template Selection Strategy</a></li><li><a href="#3-detailed-leetcode-examples">3) Detailed LeetCode Examples</a></li><li class="toc-sub"><a href="#3-1-fixed-size-window-examples">3.1) Fixed Size Window Examples</a></li><li class="toc-sub"><a href="#3-2-variable-size-window-examples">3.2) Variable Size Window Examples</a></li><li class="toc-sub"><a href="#3-3-counting-subarrays-examples">3.3) Counting Subarrays Examples</a></li><li class="toc-sub"><a href="#3-4-minimum-window-examples">3.4) Minimum Window Examples</a></li><li class="toc-sub"><a href="#3-5-advanced-examples">3.5) Advanced Examples</a></li><li class="toc-sub"><a href="#lc-1838-frequency-of-the-most-frequent-element">LC 1838 Frequency of the Most Frequent Element</a></li><li><a href="#4-core-patterns-quick-reference">4) Core Patterns &amp; Quick Reference</a></li><li class="toc-sub"><a href="#4-1-template-quick-reference">4.1) Template Quick Reference</a></li><li class="toc-sub"><a href="#4-2-common-patterns-tricks">4.2) Common Patterns &amp; Tricks</a></li><li class="toc-sub"><a href="#4-3-problem-solving-steps">4.3) Problem-Solving Steps</a></li><li class="toc-sub"><a href="#4-4-common-mistakes-tips">4.4) Common Mistakes &amp; Tips</a></li><li class="toc-sub"><a href="#4-5-time-space-complexity-analysis">4.5) Time &amp; Space Complexity Analysis</a></li><li class="toc-sub"><a href="#4-6-related-algorithms">4.6) Related Algorithms</a></li><li class="toc-sub"><a href="#4-7-additional-template-examples-advanced-java-reference">4.7) Additional Template Examples (Advanced Java Reference)</a></li></ul></div>
       <div class="cheatsheet-content">
         <h1 id="sliding-window" tabindex="-1"><a class="header-anchor" href="#sliding-window"><span>Sliding Window</span></a></h1>
 <h2 id="overview" tabindex="-1"><a class="header-anchor" href="#overview"><span>Overview</span></a></h2>
@@ -861,6 +860,211 @@ S(2) \ S(1) = subarrays in S(2) but not in S(1)
 
 Generalized: S(k) \ S(k-1) = subarrays with exactly k distinct
 </code></pre>
+<hr>
+<h3 id="1-8-when-pure-sliding-window-works-vs-when-you-need-extra-tricks" tabindex="-1"><a class="header-anchor" href="#1-8-when-pure-sliding-window-works-vs-when-you-need-extra-tricks"><span>1.8) When Pure Sliding Window Works vs. When You Need Extra Tricks</span></a></h3>
+<h4 id="core-question-is-the-validity-condition-monotonic" tabindex="-1"><a class="header-anchor" href="#core-question-is-the-validity-condition-monotonic"><span>Core Question: Is the Validity Condition Monotonic?</span></a></h4>
+<p><strong>Pure sliding window works</strong> when the validity condition is <strong>monotonic</strong>:</p>
+<ul>
+<li>Once the window becomes invalid, it stays invalid as you expand right</li>
+<li>A single <code>while (invalid) { shrink left }</code> cleanly restores validity</li>
+</ul>
+<p><strong>You need extra tricks</strong> when the condition is <strong>non-monotonic</strong> (especially “exactly k”):</p>
+<ul>
+<li>For a fixed <code>r</code>, there may be <strong>multiple valid left boundaries</strong></li>
+<li>Simply shrinking until valid gives you one answer, but misses others</li>
+</ul>
+<h4 id="decision-table" tabindex="-1"><a class="header-anchor" href="#decision-table"><span>Decision Table</span></a></h4>
+<table>
+<thead>
+<tr>
+<th>Condition Type</th>
+<th>Example</th>
+<th>Pure Sliding Window?</th>
+<th>Fix</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>sum ≤ k</code></td>
+<td>product &lt; k</td>
+<td>✅ Yes</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>distinct ≤ k</code></td>
+<td>at most K distinct</td>
+<td>✅ Yes</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>sum ≥ k</code> (min length)</td>
+<td>min subarray sum</td>
+<td>✅ Yes</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>exactly k</code> odds/distinct</td>
+<td>LC 1248, LC 992</td>
+<td>❌ No</td>
+<td><code>atMost(k) - atMost(k-1)</code> OR prefix trick</td>
+</tr>
+<tr>
+<td><code>exactly k</code> (with even gap)</td>
+<td>LC 1248</td>
+<td>❌ No</td>
+<td>prefix trick (count even gap at left)</td>
+</tr>
+</tbody>
+</table>
+<h4 id="why-exactly-k-breaks-pure-sliding-window" tabindex="-1"><a class="header-anchor" href="#why-exactly-k-breaks-pure-sliding-window"><span>Why “Exactly K” Breaks Pure Sliding Window</span></a></h4>
+<pre><code>nums = [2,2,1,2,1], k = 2
+
+At r = 4 (last element), valid subarrays ending here:
+  [1,2,1]           → starts at index 2
+  [2,1,2,1]         → starts at index 1
+  [2,2,1,2,1]       → starts at index 0
+
+→ 3 valid left boundaries, but pure sliding window finds only 1!
+</code></pre>
+<p>Pure sliding window can only track one left boundary (the smallest valid window). For “exactly k”, you need to count ALL valid left positions.</p>
+<h4 id="fix-1-atmost-k-atmost-k-1-see-section-1-7" tabindex="-1"><a class="header-anchor" href="#fix-1-atmost-k-atmost-k-1-see-section-1-7"><span>Fix 1: atMost(k) - atMost(k-1)  ← See Section 1.7</span></a></h4>
+<h4 id="fix-2-prefix-trick-inside-sliding-window-see-section-1-9" tabindex="-1"><a class="header-anchor" href="#fix-2-prefix-trick-inside-sliding-window-see-section-1-9"><span>Fix 2: Prefix Trick Inside Sliding Window  ← See Section 1.9</span></a></h4>
+<hr>
+<h3 id="1-9-prefix-trick-sliding-window-for-exactly-k-counting" tabindex="-1"><a class="header-anchor" href="#1-9-prefix-trick-sliding-window-for-exactly-k-counting"><span>1.9) Prefix Trick + Sliding Window (for “Exactly K” Counting)</span></a></h3>
+<p><strong>When to use:</strong> Count subarrays with <strong>exactly k</strong> of some element, where you want a single-pass O(n) solution without calling <code>atMost</code> twice.</p>
+<p><strong>Core Idea:</strong></p>
+<pre><code>When oddCount reaches k (window has exactly k odds):
+  - Count how many even numbers are at the LEFT edge of the window
+    before hitting the (k-th-from-left) odd number
+  - Each of these even numbers gives one more valid left boundary
+  - Store this count as `prefix`
+
+After the window shrinks past the leftmost odd:
+  - oddCount drops below k, so the while loop exits
+  - But `prefix` (the &quot;even gap&quot;) is PRESERVED
+  - For every future r that keeps oddCount == k,
+    those same left boundaries are still valid → add `prefix` again
+</code></pre>
+<p><strong>Why <code>prefix</code> resets to 0 when a new odd is encountered:</strong></p>
+<ul>
+<li>A new odd number at <code>r</code> changes which odd is the “k-th from left”</li>
+<li>The gap of evens before the new leftmost odd must be recomputed</li>
+<li>So reset <code>prefix = 0</code> and let the while loop rebuild it</li>
+</ul>
+<h4 id="template" tabindex="-1"><a class="header-anchor" href="#template"><span>Template</span></a></h4>
+<pre><code class="language-java">// Prefix Trick + Sliding Window
+// time = O(N), space = O(1)
+public int exactlyK(int[] nums, int k) {
+    int l = 0, res = 0, oddCount = 0, prefix = 0;
+
+    for (int r = 0; r &lt; nums.length; r++) {
+        if (nums[r] % 2 == 1) {
+            oddCount++;
+            prefix = 0;  // reset: new odd changes left boundary gap
+        }
+
+        // Shrink left while window has exactly k odds,
+        // counting even elements we skip at the left edge
+        while (oddCount == k) {
+            prefix++;                        // one more valid left boundary
+            if (nums[l] % 2 == 1) oddCount--;
+            l++;
+        }
+
+        // prefix = # of valid left boundaries for subarrays ending at r
+        res += prefix;
+    }
+
+    return res;
+}
+</code></pre>
+<h4 id="walkthrough-nums-2-2-1-2-1-k-2" tabindex="-1"><a class="header-anchor" href="#walkthrough-nums-2-2-1-2-1-k-2"><span>Walkthrough: <code>nums = [2,2,1,2,1], k = 2</code></span></a></h4>
+<pre><code>r=0 (2): oddCount=0, prefix=0  → res=0
+r=1 (2): oddCount=0, prefix=0  → res=0
+r=2 (1): oddCount=1, prefix=0  → res=0   (new odd, prefix reset)
+r=3 (2): oddCount=1, prefix=0  → res=0
+r=4 (1): oddCount=2, prefix=0  → new odd, prefix reset to 0
+  while oddCount==2:
+    prefix=1, nums[0]=2 (even), l=1       → oddCount still 2
+    prefix=2, nums[1]=2 (even), l=2       → oddCount still 2
+    prefix=3, nums[2]=1 (odd),  l=3, oddCount=1 → exit while
+  res += 3 → res=3
+</code></pre>
+<p>Answer: 3 ✅ — the three subarrays <code>[1,2,1]</code>, <code>[2,1,2,1]</code>, <code>[2,2,1,2,1]</code></p>
+<h4 id="comparison-prefix-trick-vs-atmost-subtraction" tabindex="-1"><a class="header-anchor" href="#comparison-prefix-trick-vs-atmost-subtraction"><span>Comparison: Prefix Trick vs atMost Subtraction</span></a></h4>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Prefix Trick</th>
+<th>atMost(k) - atMost(k-1)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Passes</strong></td>
+<td>1</td>
+<td>2</td>
+</tr>
+<tr>
+<td><strong>Space</strong></td>
+<td>O(1)</td>
+<td>O(1)</td>
+</tr>
+<tr>
+<td><strong>Complexity</strong></td>
+<td>O(n)</td>
+<td>O(n)</td>
+</tr>
+<tr>
+<td><strong>Readability</strong></td>
+<td>Tricky (reset logic)</td>
+<td>Cleaner, more intuitive</td>
+</tr>
+<tr>
+<td><strong>Use when</strong></td>
+<td>Single-pass preferred</td>
+<td>Clarity preferred</td>
+</tr>
+</tbody>
+</table>
+<h4 id="related-problems" tabindex="-1"><a class="header-anchor" href="#related-problems"><span>Related Problems</span></a></h4>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC#</th>
+<th>Difficulty</th>
+<th>Note</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Count Number of Nice Subarrays</td>
+<td>1248</td>
+<td>Medium</td>
+<td>Exactly k odds</td>
+</tr>
+<tr>
+<td>Binary Subarrays With Sum</td>
+<td>930</td>
+<td>Medium</td>
+<td>Exactly sum k (0/1 array)</td>
+</tr>
+<tr>
+<td>Subarrays with K Different Integers</td>
+<td>992</td>
+<td>Hard</td>
+<td>Exactly k distinct</td>
+</tr>
+<tr>
+<td>Number of Substrings Containing All Three Characters</td>
+<td>1358</td>
+<td>Medium</td>
+<td>Similar gap counting</td>
+</tr>
+</tbody>
+</table>
 <hr>
 <h2 id="2-problems-by-template-pattern" tabindex="-1"><a class="header-anchor" href="#2-problems-by-template-pattern"><span>2) Problems by Template Pattern</span></a></h2>
 <h3 id="2-1-template-classification-guide" tabindex="-1"><a class="header-anchor" href="#2-1-template-classification-guide"><span>2.1) Template Classification Guide</span></a></h3>

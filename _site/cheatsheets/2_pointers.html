@@ -110,7 +110,6 @@
         <a href="../faqs.html" class="">FAQs</a>
         <a href="../resources.html" class="">Resources</a>
         <a href="../lc-explorer.html" class="">LC Explorer</a>
-        <a href="../lc-random-picker.html" class="">🎲 Random Picker</a>
         <a href="../algo_demo/index.html" class="">Visualizer</a>
         <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">&#127769;</button>
         <a href="https://github.com/yennanliu/CS_basics" target="_blank" class="github-link" aria-label="GitHub">
@@ -128,9 +127,9 @@
       <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">2 Pointers</span></nav>
       <div class="cheatsheet-header">
         <h1>2 Pointers</h1>
-        <span class="last-updated">Last updated: Mar 13, 2026</span>
+        <span class="last-updated">Last updated: Apr 21, 2026</span>
       </div>
-      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#0-concept">0) Concept</a></li><li class="toc-sub"><a href="#0-1-types">0-1) Types</a></li><li class="toc-sub"><a href="#0-2-pattern">0-2) Pattern</a></li><li class="toc-sub"><a href="#0-2-0-remove-duplicates-from-sorted-array">0-2-0) Remove Duplicates from Sorted Array</a></li><li class="toc-sub"><a href="#0-2-1-remove-element">0-2-1) Remove Element</a></li><li class="toc-sub"><a href="#0-2-1b-remove-element-bidirectional-two-pointers">0-2-1b) Remove Element (Bidirectional Two Pointers)</a></li><li class="toc-sub"><a href="#0-2-2-move-zeros-to-end">0-2-2) Move Zeros to End</a></li><li class="toc-sub"><a href="#0-2-3-quickselect-partition-algorithm-for-kth-element">0-2-3) QuickSelect (Partition Algorithm for Kth Element)</a></li><li><a href="#1-general-form">1) General form</a></li><li class="toc-sub"><a href="#1-1-basic-op">1-1) Basic OP</a></li><li><a href="#2-lc-example">2) LC Example</a></li><li class="toc-sub"><a href="#2-1-remove-element">2-1) Remove Element</a></li><li class="toc-sub"><a href="#2-2-longest-palindromic-substring">2-2) Longest Palindromic Substring</a></li><li class="toc-sub"><a href="#2-3-container-with-most-water">2-3) Container With Most Water</a></li><li class="toc-sub"><a href="#2-4-longest-consecutive-sequence">2-4) Longest Consecutive Sequence</a></li><li class="toc-sub"><a href="#2-6-palindromic-substrings">2-6) Palindromic Substrings</a></li><li class="toc-sub"><a href="#2-7-sum-of-subarray-ranges">2-7) Sum of Subarray Ranges</a></li><li class="toc-sub"><a href="#2-8-trapping-rain-water">2-8) Trapping Rain Water</a></li><li class="toc-sub"><a href="#2-9-next-permutation">2-9) Next Permutation</a></li><li class="toc-sub"><a href="#2-10-valid-palindrome-ii-palindrome-with-one-deletion">2-10) Valid Palindrome II (Palindrome with One Deletion)</a></li><li class="toc-sub"><a href="#2-11-merge-sorted-array">2-11) Merge Sorted Array</a></li><li class="toc-sub"><a href="#2-12-interval-list-intersections">2-12) Interval List Intersections</a></li><li class="toc-sub"><a href="#2-13-sort-colors-dutch-national-flag">2-13) Sort Colors (Dutch National Flag)</a></li><li class="toc-sub"><a href="#2-14-3sum">2-14) 3Sum</a></li><li class="toc-sub"><a href="#2-15-reverse-string-reverse-words">2-15) Reverse String / Reverse Words</a></li><li class="toc-sub"><a href="#2-16-shortest-palindrome-find-longest-palindromic-prefix">2-16) Shortest Palindrome (Find Longest Palindromic Prefix)</a></li><li><a href="#3-classic-lc-problems-summary">3) Classic LC Problems Summary</a></li><li class="toc-sub"><a href="#easy">Easy:</a></li><li class="toc-sub"><a href="#medium">Medium:</a></li><li class="toc-sub"><a href="#hard">Hard:</a></li><li><a href="#4-two-pointers-cheat-sheet">4) Two Pointers Cheat Sheet</a></li></ul></div>
+      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#0-concept">0) Concept</a></li><li class="toc-sub"><a href="#0-1-types">0-1) Types</a></li><li class="toc-sub"><a href="#0-2-pattern">0-2) Pattern</a></li><li class="toc-sub"><a href="#0-2-0-remove-duplicates-from-sorted-array">0-2-0) Remove Duplicates from Sorted Array</a></li><li class="toc-sub"><a href="#0-2-0b-remove-duplicates-from-sorted-array-ii-lc-80">0-2-0b) Remove Duplicates from Sorted Array II (LC 80)</a></li><li class="toc-sub"><a href="#0-2-1-remove-element">0-2-1) Remove Element</a></li><li class="toc-sub"><a href="#0-2-1b-remove-element-bidirectional-two-pointers">0-2-1b) Remove Element (Bidirectional Two Pointers)</a></li><li class="toc-sub"><a href="#0-2-2-move-zeros-to-end">0-2-2) Move Zeros to End</a></li><li class="toc-sub"><a href="#0-2-3-quickselect-partition-algorithm-for-kth-element">0-2-3) QuickSelect (Partition Algorithm for Kth Element)</a></li><li><a href="#1-general-form">1) General form</a></li><li class="toc-sub"><a href="#1-1-basic-op">1-1) Basic OP</a></li><li><a href="#2-lc-example">2) LC Example</a></li><li class="toc-sub"><a href="#2-1-remove-element">2-1) Remove Element</a></li><li class="toc-sub"><a href="#2-2-longest-palindromic-substring">2-2) Longest Palindromic Substring</a></li><li class="toc-sub"><a href="#2-3-container-with-most-water">2-3) Container With Most Water</a></li><li class="toc-sub"><a href="#2-4-longest-consecutive-sequence">2-4) Longest Consecutive Sequence</a></li><li class="toc-sub"><a href="#2-6-palindromic-substrings">2-6) Palindromic Substrings</a></li><li class="toc-sub"><a href="#2-7-sum-of-subarray-ranges">2-7) Sum of Subarray Ranges</a></li><li class="toc-sub"><a href="#2-8-trapping-rain-water">2-8) Trapping Rain Water</a></li><li class="toc-sub"><a href="#2-9-next-permutation">2-9) Next Permutation</a></li><li class="toc-sub"><a href="#2-10-valid-palindrome-ii-palindrome-with-one-deletion">2-10) Valid Palindrome II (Palindrome with One Deletion)</a></li><li class="toc-sub"><a href="#2-11-merge-sorted-array">2-11) Merge Sorted Array</a></li><li class="toc-sub"><a href="#2-12-interval-list-intersections">2-12) Interval List Intersections</a></li><li class="toc-sub"><a href="#2-13-sort-colors-dutch-national-flag">2-13) Sort Colors (Dutch National Flag)</a></li><li class="toc-sub"><a href="#2-14-3sum">2-14) 3Sum</a></li><li class="toc-sub"><a href="#2-15-reverse-string-reverse-words">2-15) Reverse String / Reverse Words</a></li><li class="toc-sub"><a href="#2-16-shortest-palindrome-find-longest-palindromic-prefix">2-16) Shortest Palindrome (Find Longest Palindromic Prefix)</a></li><li><a href="#3-classic-lc-problems-summary">3) Classic LC Problems Summary</a></li><li class="toc-sub"><a href="#easy">Easy:</a></li><li class="toc-sub"><a href="#medium">Medium:</a></li><li class="toc-sub"><a href="#hard">Hard:</a></li><li><a href="#4-two-pointers-cheat-sheet">4) Two Pointers Cheat Sheet</a></li></ul></div>
       <div class="cheatsheet-content">
         <h1 id="two-pointers" tabindex="-1"><a class="header-anchor" href="#two-pointers"><span>Two pointers</span></a></h1>
 <ul>
@@ -230,6 +229,31 @@
 </ul>
 <h3 id="0-2-pattern" tabindex="-1"><a class="header-anchor" href="#0-2-pattern"><span>0-2) Pattern</span></a></h3>
 <h3 id="0-2-0-remove-duplicates-from-sorted-array" tabindex="-1"><a class="header-anchor" href="#0-2-0-remove-duplicates-from-sorted-array"><span>0-2-0) Remove Duplicates from Sorted Array</span></a></h3>
+<h4 id="core-idea" tabindex="-1"><a class="header-anchor" href="#core-idea"><span>Core Idea</span></a></h4>
+<p><strong>Slow-Fast (Write-Read) Pattern:</strong></p>
+<ul>
+<li><code>slow</code> = the “write” pointer — tracks the last confirmed unique position</li>
+<li><code>fast</code> = the “read” pointer — scans the array looking for new unique values</li>
+<li>When <code>nums[fast] != nums[slow]</code>: a new unique value is found
+<ol>
+<li>Advance <code>slow</code> first (open the next write slot)</li>
+<li>Write (or swap) <code>nums[fast]</code> into <code>nums[slow]</code></li>
+</ol>
+</li>
+<li>Return <code>slow + 1</code> as the count of unique elements</li>
+</ul>
+<p><strong>Key invariant:</strong> <code>nums[0..slow]</code> always contains unique elements in sorted order.</p>
+<p><strong>Two variants:</strong></p>
+<ul>
+<li><strong>Overwrite</strong> (<code>nums[slow] = nums[fast]</code>): cleaner, preferred — array is already sorted so we just need to copy unique values forward</li>
+<li><strong>Swap</strong> (<code>swap(nums[slow], nums[fast])</code>): also correct but unnecessary for sorted arrays; used when original values need to be preserved elsewhere</li>
+</ul>
+<pre><code>Pointer movement rules:
+  - fast: moves EVERY iteration (scans all elements)
+  - slow: moves ONLY when a new unique value is found (after nums[fast] != nums[slow])
+  - Both start at 0 (or slow=0, fast=1 in while-loop variants)
+</code></pre>
+<hr>
 <pre><code class="language-java">// java
 // LC 26 (LC 83)
 // https://labuladong.online/algo/essential-technique/array-two-pointers-summary/#%E5%8E%9F%E5%9C%B0%E4%BF%AE%E6%94%B9
@@ -281,28 +305,290 @@
  *          s s         f
  *
  */
+// Variant A: OVERWRITE (cleaner, preferred for sorted arrays)
 class Solution {
     public int removeDuplicates(int[] nums) {
-        if (nums.length == 0) {
-            return 0;
+        if (nums.length == 0) return 0;
+
+        int slow = 0;
+        for (int fast = 1; fast &lt; nums.length; fast++) {
+            if (nums[fast] != nums[slow]) {
+                slow++;                  // open next write slot
+                nums[slow] = nums[fast]; // overwrite with new unique value
+            }
+            // if equal: fast keeps moving, slow stays
         }
+        return slow + 1;
+    }
+}
+
+// Variant B: SWAP (preserves all values, same time/space)
+class Solution {
+    public int removeDuplicates(int[] nums) {
+        if (nums.length == 0) return 0;
+
         int slow = 0, fast = 0;
         while (fast &lt; nums.length) {
-            // NOTE !!! if slow pointer != fast pointer
             if (nums[fast] != nums[slow]) {
-                // NOTE !!! move slow pointer first
                 slow++;
-                // 维护 nums[0..slow] 无重复
-                // NOTE !!! swap slow, fast pointer val
+                // swap: move the new unique value to slow position
+                int tmp = nums[slow];
                 nums[slow] = nums[fast];
+                nums[fast] = tmp;
             }
             fast++;
         }
-        // 数组长度为索引 + 1
         return slow + 1;
     }
 }
 </code></pre>
+<h4 id="pattern-summary" tabindex="-1"><a class="header-anchor" href="#pattern-summary"><span>Pattern Summary</span></a></h4>
+<table>
+<thead>
+<tr>
+<th>Step</th>
+<th>Action</th>
+<th>Why</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>nums[fast] == nums[slow]</code></td>
+<td>Only advance <code>fast</code></td>
+<td>Duplicate — skip it</td>
+</tr>
+<tr>
+<td><code>nums[fast] != nums[slow]</code></td>
+<td><code>slow++</code>, then write/swap</td>
+<td>New unique found — claim next slot</td>
+</tr>
+<tr>
+<td>Return</td>
+<td><code>slow + 1</code></td>
+<td><code>slow</code> is index, length = index + 1</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Why overwrite instead of swap?</strong></p>
+<ul>
+<li>Array is sorted → we only move values left, never right</li>
+<li>No need to preserve overwritten values (they are duplicates already seen)</li>
+<li><code>nums[slow] = nums[fast]</code> is O(1) and simpler</li>
+</ul>
+<h4 id="similar-problems" tabindex="-1"><a class="header-anchor" href="#similar-problems"><span>Similar Problems</span></a></h4>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC#</th>
+<th>Difference</th>
+<th>Key Trick</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Remove Duplicates from Sorted Array</td>
+<td>26</td>
+<td>Allow each value once</td>
+<td><code>nums[slow] = nums[fast]</code> when different</td>
+</tr>
+<tr>
+<td>Remove Duplicates from Sorted Array II</td>
+<td>80</td>
+<td>Allow each value <strong>at most twice</strong></td>
+<td>Compare <code>nums[fast]</code> with <code>nums[slow-1]</code> (two back)</td>
+</tr>
+<tr>
+<td>Remove Element</td>
+<td>27</td>
+<td>Remove all occurrences of <code>val</code></td>
+<td>Write when <code>nums[fast] != val</code></td>
+</tr>
+<tr>
+<td>Move Zeroes</td>
+<td>283</td>
+<td>Move zeros to end, preserve order</td>
+<td>Swap when <code>nums[fast] != 0</code></td>
+</tr>
+<tr>
+<td>Remove Duplicates from Sorted List</td>
+<td>83</td>
+<td>Linked list version of LC 26</td>
+<td><code>node.next = node.next.next</code> on duplicate</td>
+</tr>
+<tr>
+<td>Remove Duplicates from Sorted List II</td>
+<td>82</td>
+<td>Delete ALL nodes with duplicate values</td>
+<td>Extra sentinel node + skip entire duplicate group</td>
+</tr>
+</tbody>
+</table>
+<h3 id="0-2-0b-remove-duplicates-from-sorted-array-ii-lc-80" tabindex="-1"><a class="header-anchor" href="#0-2-0b-remove-duplicates-from-sorted-array-ii-lc-80"><span>0-2-0b) Remove Duplicates from Sorted Array II (LC 80)</span></a></h3>
+<h4 id="core-idea-1" tabindex="-1"><a class="header-anchor" href="#core-idea-1"><span>Core Idea</span></a></h4>
+<p><strong>“Compare with two positions back” trick:</strong></p>
+<ul>
+<li>Allow each element <strong>at most twice</strong> → keep an element only if it differs from <code>nums[slow - 2]</code></li>
+<li>Since the array is sorted, if <code>nums[fast] == nums[slow - 2]</code>, writing it would create a 3rd consecutive duplicate → skip</li>
+<li>Both <code>slow</code> and <code>fast</code> start at index 2 (first two elements always allowed)</li>
+</ul>
+<pre><code>Key condition: nums[fast] != nums[slow - 2]
+  → write nums[fast] to nums[slow], slow++
+  
+Pointer initialization:
+  slow = 2  (write pointer, first 2 slots are always valid)
+  fast = 2  (read pointer, scans from index 2 onward)
+</code></pre>
+<p><strong>Why <code>slow - 2</code> and not <code>slow - 1</code>?</strong></p>
+<ul>
+<li><code>slow - 1</code> would only prevent 3rd+ duplicates if the LAST two wrote the same value</li>
+<li><code>slow - 2</code> directly checks if the slot two positions back already holds the same value — guaranteeing at most 2 copies</li>
+</ul>
+<hr>
+<pre><code class="language-java">// java
+// LC 80 - Remove Duplicates from Sorted Array II
+// time: O(N), space: O(1)
+/**
+ *  //--------------------------------
+ *  Example 1
+ *  //--------------------------------
+ *
+ *  nums = [1,1,1,2,2,3]
+ *
+ *  Initial: slow=2, fast=2
+ *  [1,1,1,2,2,3]
+ *       s
+ *       f
+ *
+ *  fast=2: nums[2]=1, nums[slow-2]=nums[0]=1  → EQUAL, skip  (would be 3rd '1')
+ *  fast=3: nums[3]=2, nums[slow-2]=nums[0]=1  → DIFFERENT, write nums[slow]=2, slow=3
+ *  [1,1,2,2,2,3]
+ *         s
+ *           f
+ *
+ *  fast=4: nums[4]=2, nums[slow-2]=nums[1]=1  → DIFFERENT, write, slow=4
+ *  [1,1,2,2,2,3]
+ *           s
+ *             f
+ *
+ *  fast=5: nums[5]=3, nums[slow-2]=nums[2]=2  → DIFFERENT, write, slow=5
+ *  [1,1,2,2,3,3]
+ *             s
+ *
+ *  return slow = 5  → nums[0..4] = [1,1,2,2,3]
+ *
+ *  //--------------------------------
+ *  Example 2
+ *  //--------------------------------
+ *
+ *  nums = [0,0,1,1,1,1,2,3,3]
+ *
+ *  Initial: slow=2, fast=2
+ *  fast=2: nums[2]=1, nums[0]=0 → DIFFERENT, write, slow=3
+ *  fast=3: nums[3]=1, nums[1]=0 → DIFFERENT, write, slow=4
+ *  fast=4: nums[4]=1, nums[2]=1 → EQUAL, skip  (3rd '1')
+ *  fast=5: nums[5]=1, nums[2]=1 → EQUAL, skip  (4th '1')
+ *  fast=6: nums[6]=2, nums[2]=1 → DIFFERENT, write, slow=5
+ *  fast=7: nums[7]=3, nums[3]=1 → DIFFERENT, write, slow=6
+ *  fast=8: nums[8]=3, nums[4]=1 → DIFFERENT, write, slow=7
+ *
+ *  return slow = 7  → nums[0..6] = [0,0,1,1,2,3,3]
+ */
+public int removeDuplicates(int[] nums) {
+    if (nums.length &lt;= 2) return nums.length;
+
+    int slow = 2; // write pointer; first 2 elements always valid
+    for (int fast = 2; fast &lt; nums.length; fast++) {
+        // Only write if current element != element two slots back
+        if (nums[fast] != nums[slow - 2]) {
+            nums[slow] = nums[fast];
+            slow++;
+        }
+        // else: would create 3rd duplicate → skip
+    }
+    return slow;
+}
+</code></pre>
+<h4 id="generalized-pattern-allow-at-most-k-duplicates" tabindex="-1"><a class="header-anchor" href="#generalized-pattern-allow-at-most-k-duplicates"><span>Generalized Pattern: Allow at most K duplicates</span></a></h4>
+<pre><code class="language-java">// Generic template: allow each element at most K times
+// LC 26 is K=1, LC 80 is K=2
+public int removeDuplicatesAtMostK(int[] nums, int k) {
+    int slow = k;
+    for (int fast = k; fast &lt; nums.length; fast++) {
+        if (nums[fast] != nums[slow - k]) {
+            nums[slow] = nums[fast];
+            slow++;
+        }
+    }
+    return slow;
+}
+// LC 26: call with k=1  →  compare nums[fast] != nums[slow - 1]
+// LC 80: call with k=2  →  compare nums[fast] != nums[slow - 2]
+</code></pre>
+<h4 id="lc-26-vs-lc-80-comparison" tabindex="-1"><a class="header-anchor" href="#lc-26-vs-lc-80-comparison"><span>LC 26 vs LC 80 Comparison</span></a></h4>
+<table>
+<thead>
+<tr>
+<th>Aspect</th>
+<th>LC 26 (at most 1)</th>
+<th>LC 80 (at most 2)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Condition</strong></td>
+<td><code>nums[fast] != nums[slow - 1]</code></td>
+<td><code>nums[fast] != nums[slow - 2]</code></td>
+</tr>
+<tr>
+<td><strong>Init</strong></td>
+<td><code>slow = 1, fast = 1</code></td>
+<td><code>slow = 2, fast = 2</code></td>
+</tr>
+<tr>
+<td><strong>Returns</strong></td>
+<td><code>slow</code></td>
+<td><code>slow</code></td>
+</tr>
+<tr>
+<td><strong>Generalized</strong></td>
+<td><code>k = 1</code></td>
+<td><code>k = 2</code></td>
+</tr>
+</tbody>
+</table>
+<h4 id="similar-problems-1" tabindex="-1"><a class="header-anchor" href="#similar-problems-1"><span>Similar Problems</span></a></h4>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC#</th>
+<th>Key Difference</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Remove Duplicates I</td>
+<td>26</td>
+<td>At most 1 copy — compare <code>nums[slow-1]</code></td>
+</tr>
+<tr>
+<td>Remove Duplicates II</td>
+<td>80</td>
+<td>At most 2 copies — compare <code>nums[slow-2]</code></td>
+</tr>
+<tr>
+<td>Remove Element</td>
+<td>27</td>
+<td>Remove all of a specific value</td>
+</tr>
+<tr>
+<td>Move Zeroes</td>
+<td>283</td>
+<td>Keep zeros, move to end</td>
+</tr>
+</tbody>
+</table>
 <h3 id="0-2-1-remove-element" tabindex="-1"><a class="header-anchor" href="#0-2-1-remove-element"><span>0-2-1) Remove Element</span></a></h3>
 <pre><code class="language-java">// java
 // LC 27

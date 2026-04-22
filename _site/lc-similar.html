@@ -1,0 +1,1039 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Similar LC Problems - CS Basics</title>
+  <meta name="description" content="Explore similar LeetCode problems by topic, pattern, and relationship">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💻</text></svg>">
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <style>
+    * { box-sizing: border-box; }
+    :root {
+      --bg: #fafafa;
+      --surface: #fff;
+      --text: #1a1a2e;
+      --text-light: #666;
+      --border: #e0e0e0;
+      --radius: 8px;
+      --accent: #4f46e5;
+      --accent2: #0ea5e9;
+    }
+    [data-theme="dark"] {
+      --bg: #0f0f1a;
+      --surface: #1a1a2e;
+      --text: #e0e0e0;
+      --text-light: #aaa;
+      --border: #2a2a3e;
+      --accent: #818cf8;
+      --accent2: #38bdf8;
+    }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      transition: background 0.3s, color 0.3s;
+    }
+    .navbar {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 1rem 2rem;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .nav-content {
+      max-width: 1400px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .nav-links {
+      display: flex;
+      gap: 1rem;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      flex-wrap: wrap;
+    }
+    .nav-links a {
+      color: var(--text-light);
+      text-decoration: none;
+      font-size: 0.9rem;
+      padding: 0.3rem 0;
+      border-bottom: 2px solid transparent;
+      transition: all 0.2s;
+    }
+    .nav-links a:hover, .nav-links a.active {
+      color: var(--text);
+      border-bottom-color: var(--accent);
+    }
+    .logo { font-size: 1.1rem; font-weight: 700; color: var(--text); text-decoration: none; }
+    .theme-btn { background: none; border: none; font-size: 1.2rem; cursor: pointer; padding: 0.5rem; }
+
+    .page-header {
+      text-align: center;
+      padding: 2rem 2rem 1rem;
+    }
+    .page-header h1 { margin: 0 0 0.5rem; font-size: 2rem; }
+    .page-header p { color: var(--text-light); margin: 0; }
+
+    .tabs {
+      display: flex;
+      justify-content: center;
+      gap: 0.5rem;
+      padding: 1rem 2rem;
+      flex-wrap: wrap;
+    }
+    .tab-btn {
+      padding: 0.5rem 1.4rem;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--text);
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      font-family: inherit;
+      transition: all 0.2s;
+    }
+    .tab-btn:hover { border-color: var(--accent); color: var(--accent); }
+    .tab-btn.active { background: var(--accent); color: #fff; border-color: var(--accent); font-weight: 600; }
+
+    .view-panel { display: none; }
+    .view-panel.active { display: block; }
+
+    /* ── Sankey ── */
+    #sankey-wrap {
+      max-width: 1300px;
+      margin: 0 auto;
+      padding: 0 1rem 2rem;
+    }
+    .sankey-controls {
+      display: flex;
+      gap: 0.8rem;
+      align-items: center;
+      flex-wrap: wrap;
+      margin-bottom: 1rem;
+      background: var(--surface);
+      padding: 1rem 1.5rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+    }
+    .sankey-controls label { font-size: 0.9rem; font-weight: 600; }
+    .sankey-controls select, .sankey-controls input[type=range] {
+      border: 1px solid var(--border);
+      background: var(--bg);
+      color: var(--text);
+      border-radius: 6px;
+      padding: 0.4rem 0.6rem;
+      font-family: inherit;
+      font-size: 0.9rem;
+    }
+    #sankey-svg { width: 100%; display: block; }
+    .sankey-tooltip {
+      position: fixed;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 0.6rem 0.9rem;
+      font-size: 0.85rem;
+      pointer-events: none;
+      z-index: 200;
+      display: none;
+      max-width: 220px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+    }
+
+    /* ── Topic Tree ── */
+    #tree-wrap {
+      max-width: 1300px;
+      margin: 0 auto;
+      padding: 0 1rem 2rem;
+    }
+    .tree-controls {
+      display: flex;
+      gap: 0.8rem;
+      align-items: center;
+      flex-wrap: wrap;
+      margin-bottom: 1rem;
+      background: var(--surface);
+      padding: 1rem 1.5rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+    }
+    .tree-controls label { font-size: 0.9rem; font-weight: 600; }
+    .tree-controls input[type="text"] {
+      padding: 0.4rem 0.8rem;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      background: var(--bg);
+      color: var(--text);
+      font-size: 0.9rem;
+      font-family: inherit;
+      width: 220px;
+    }
+    #tree-svg { width: 100%; display: block; cursor: grab; }
+    #tree-svg:active { cursor: grabbing; }
+
+    /* ── Bubble ── */
+    #bubble-wrap {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 1rem 2rem;
+    }
+    .bubble-controls {
+      display: flex;
+      gap: 0.8rem;
+      align-items: center;
+      flex-wrap: wrap;
+      margin-bottom: 1rem;
+      background: var(--surface);
+      padding: 1rem 1.5rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+    }
+    .bubble-controls label { font-size: 0.9rem; font-weight: 600; }
+    .bubble-controls select {
+      border: 1px solid var(--border);
+      background: var(--bg);
+      color: var(--text);
+      border-radius: 6px;
+      padding: 0.4rem 0.6rem;
+      font-family: inherit;
+      font-size: 0.9rem;
+    }
+    #bubble-svg { width: 100%; display: block; }
+
+    /* ── Similarity Graph ── */
+    #graph-wrap {
+      max-width: 1300px;
+      margin: 0 auto;
+      padding: 0 1rem 2rem;
+    }
+    .graph-controls {
+      display: flex;
+      gap: 0.8rem;
+      align-items: center;
+      flex-wrap: wrap;
+      margin-bottom: 1rem;
+      background: var(--surface);
+      padding: 1rem 1.5rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+    }
+    .graph-controls label { font-size: 0.9rem; font-weight: 600; }
+    .graph-controls select, .graph-controls input[type="text"] {
+      border: 1px solid var(--border);
+      background: var(--bg);
+      color: var(--text);
+      border-radius: 6px;
+      padding: 0.4rem 0.6rem;
+      font-family: inherit;
+      font-size: 0.9rem;
+    }
+    .graph-controls input[type="text"] { width: 200px; }
+    #graph-svg { width: 100%; display: block; cursor: grab; }
+    #graph-svg:active { cursor: grabbing; }
+
+    .legend {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      padding: 0.75rem 1.5rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      margin-bottom: 1rem;
+      font-size: 0.82rem;
+    }
+    .legend-item { display: flex; align-items: center; gap: 0.4rem; }
+    .legend-dot { width: 12px; height: 12px; border-radius: 50%; }
+
+    .tooltip-shared {
+      position: fixed;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 0.6rem 0.9rem;
+      font-size: 0.82rem;
+      pointer-events: none;
+      z-index: 200;
+      display: none;
+      max-width: 240px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.18);
+      line-height: 1.5;
+    }
+    .tt-title { font-weight: 700; margin-bottom: 0.2rem; }
+    .tt-tags { color: var(--text-light); margin-top: 0.3rem; }
+    .tt-diff-easy { color: #16a34a; font-weight: 600; }
+    .tt-diff-medium { color: #b45309; font-weight: 600; }
+    .tt-diff-hard { color: #b91c1c; font-weight: 600; }
+
+    .panel-note {
+      text-align: center;
+      color: var(--text-light);
+      font-size: 0.85rem;
+      padding: 0.5rem;
+      margin-bottom: 0.5rem;
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-content">
+      <a href="index.html" class="logo">CS Basics</a>
+      <ul class="nav-links">
+        <li><a href="lc-explorer.html">LC Explorer</a></li>
+        <li><a href="lc-similar.html" class="active">🔗 Similar LC</a></li>
+        <li><a href="lc-random-picker.html">🎲 Random Picker</a></li>
+        <li><a href="cheatsheets.html">Cheat Sheets</a></li>
+        <li><a href="faqs.html">FAQs</a></li>
+        <li><a href="patterns.html">Patterns</a></li>
+        <li><a href="resources.html">Resources</a></li>
+        <li><a href="algo_demo/index.html">Visualizer</a></li>
+      </ul>
+      <button class="theme-btn" onclick="toggleTheme()" aria-label="Toggle dark mode">🌙</button>
+    </div>
+  </nav>
+
+  <div class="page-header">
+    <h1>🔗 Similar LC Problems</h1>
+    <p>Visualize how LeetCode problems relate by topic, pattern, and difficulty — built for Google SWE interview prep</p>
+  </div>
+
+  <div class="tabs">
+    <button class="tab-btn active" onclick="switchTab('sankey')">Sankey Flow</button>
+    <button class="tab-btn" onclick="switchTab('tree')">Topic Tree</button>
+    <button class="tab-btn" onclick="switchTab('bubble')">Bubble Map</button>
+    <button class="tab-btn" onclick="switchTab('graph')">Similarity Graph</button>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════
+       TAB 1 — SANKEY DIAGRAM
+       Difficulty → Topic → Problem count flow
+  ══════════════════════════════════════════════════════ -->
+  <div id="tab-sankey" class="view-panel active">
+    <div id="sankey-wrap">
+      <div class="sankey-controls">
+        <label>Top tags:</label>
+        <select id="sankey-top-n" onchange="drawSankey()">
+          <option value="10">10</option>
+          <option value="15" selected>15</option>
+          <option value="20">20</option>
+          <option value="25">25</option>
+        </select>
+        <label style="margin-left:1rem;">Min problems per tag:</label>
+        <input type="range" id="sankey-min" min="1" max="60" value="10" oninput="this.nextElementSibling.textContent=this.value;drawSankey()">
+        <span>10</span>
+        <span style="margin-left:auto;color:var(--text-light);font-size:0.82rem;">Hover nodes/links to explore • click a tag to see problems</span>
+      </div>
+      <div class="panel-note">Flow: Difficulty level → Topic tag → relative problem count</div>
+      <svg id="sankey-svg" height="540"></svg>
+      <div class="sankey-tooltip" id="sankey-tooltip"></div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════
+       TAB 2 — COLLAPSIBLE TOPIC TREE
+  ══════════════════════════════════════════════════════ -->
+  <div id="tab-tree" class="view-panel">
+    <div id="tree-wrap">
+      <div class="tree-controls">
+        <label>Search topic:</label>
+        <input type="text" id="tree-search" placeholder="e.g. Dynamic Programming" oninput="highlightTreeNode(this.value)">
+        <span style="margin-left:auto;color:var(--text-light);font-size:0.82rem;">Click nodes to expand/collapse • scroll to zoom</span>
+      </div>
+      <div class="panel-note">Root → Difficulty → Topic → Problems (click topics to expand)</div>
+      <svg id="tree-svg" height="620"></svg>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════
+       TAB 3 — BUBBLE PACK CHART
+  ══════════════════════════════════════════════════════ -->
+  <div id="tab-bubble" class="view-panel">
+    <div id="bubble-wrap">
+      <div class="bubble-controls">
+        <label>Color by:</label>
+        <select id="bubble-color" onchange="drawBubble()">
+          <option value="tag">Topic Tag</option>
+          <option value="difficulty">Difficulty</option>
+        </select>
+        <label style="margin-left:1rem;">Size by:</label>
+        <select id="bubble-size" onchange="drawBubble()">
+          <option value="count">Problem Count</option>
+          <option value="acceptance">Avg Acceptance</option>
+        </select>
+        <span style="margin-left:auto;color:var(--text-light);font-size:0.82rem;">Bubble size = count of problems in that group</span>
+      </div>
+      <div class="panel-note">Each bubble = one topic tag. Hover for details.</div>
+      <svg id="bubble-svg" height="540"></svg>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════
+       TAB 4 — FORCE-DIRECTED SIMILARITY GRAPH
+  ══════════════════════════════════════════════════════ -->
+  <div id="tab-graph" class="view-panel">
+    <div id="graph-wrap">
+      <div class="graph-controls">
+        <label>Seed problem:</label>
+        <input type="text" id="graph-seed" placeholder="e.g. Two Sum" oninput="debounceGraph()" list="graph-datalist">
+        <datalist id="graph-datalist"></datalist>
+        <label style="margin-left:0.5rem;">Depth:</label>
+        <select id="graph-depth" onchange="drawGraph()">
+          <option value="1">1 hop</option>
+          <option value="2" selected>2 hops</option>
+        </select>
+        <label style="margin-left:0.5rem;">Max neighbors:</label>
+        <select id="graph-max-n" onchange="drawGraph()">
+          <option value="6">6</option>
+          <option value="10" selected>10</option>
+          <option value="15">15</option>
+        </select>
+        <span style="margin-left:auto;color:var(--text-light);font-size:0.82rem;">Drag nodes • scroll to zoom • edges = shared tags</span>
+      </div>
+      <div class="legend" id="graph-legend"></div>
+      <div class="panel-note">Problems are connected when they share 2+ topic tags. Thicker edges = more shared tags.</div>
+      <svg id="graph-svg" height="580"></svg>
+      <div class="tooltip-shared" id="graph-tooltip"></div>
+    </div>
+  </div>
+
+  <script>
+    // ── Theme ─────────────────────────────────────────────
+    function toggleTheme() {
+      const html = document.documentElement;
+      const next = html.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+      html.setAttribute('data-theme', next);
+      localStorage.setItem('theme', next);
+      document.querySelector('.theme-btn').textContent = next === 'dark' ? '☀️' : '🌙';
+      redrawAll();
+    }
+    const savedTheme = localStorage.getItem('theme') || 'light';
+    document.documentElement.setAttribute('data-theme', savedTheme);
+    if (savedTheme === 'dark') document.querySelector('.theme-btn').textContent = '☀️';
+
+    // ── Tab switching ──────────────────────────────────────
+    function switchTab(name) {
+      document.querySelectorAll('.view-panel').forEach(p => p.classList.remove('active'));
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.getElementById('tab-' + name).classList.add('active');
+      event.target.classList.add('active');
+      if (name === 'sankey') drawSankey();
+      if (name === 'tree')   drawTree();
+      if (name === 'bubble') drawBubble();
+      if (name === 'graph')  drawGraph();
+    }
+
+    // ── Data ──────────────────────────────────────────────
+    let allProblems = [];
+    let allTags = [];
+
+    const DIFF_COLOR = { Easy: '#16a34a', Medium: '#d97706', Hard: '#dc2626' };
+    const TAG_PALETTE = [
+      '#4f46e5','#0ea5e9','#8b5cf6','#ec4899','#f59e0b',
+      '#10b981','#ef4444','#6366f1','#14b8a6','#f97316',
+      '#a855f7','#22c55e','#3b82f6','#e11d48','#64748b',
+      '#84cc16','#06b6d4','#d946ef','#fb923c','#34d399'
+    ];
+
+    function tagColor(tag, idx) {
+      return TAG_PALETTE[idx % TAG_PALETTE.length];
+    }
+
+    // Normalise tags (the dataset has mixed-case / hyphenated duplicates)
+    function normTag(t) {
+      return t.toLowerCase().replace(/[\s_]+/g, '-');
+    }
+
+    async function loadData() {
+      const res = await fetch('./data/lc-problems.json');
+      const data = await res.json();
+      allProblems = data.problems;
+      allTags = data.tags;
+
+      // populate graph datalist
+      const dl = document.getElementById('graph-datalist');
+      allProblems.forEach(p => {
+        const opt = document.createElement('option');
+        opt.value = p.title;
+        dl.appendChild(opt);
+      });
+
+      drawSankey();
+    }
+
+    // ── Helpers ───────────────────────────────────────────
+    function svgWidth(id) {
+      return document.getElementById(id).parentElement.clientWidth || 900;
+    }
+
+    function getCSSVar(name) {
+      return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+    }
+
+    function redrawAll() {
+      const active = document.querySelector('.view-panel.active').id.replace('tab-','');
+      if (active === 'sankey') drawSankey();
+      if (active === 'tree')   drawTree();
+      if (active === 'bubble') drawBubble();
+      if (active === 'graph')  drawGraph();
+    }
+
+    // ══════════════════════════════════════════════════════
+    // TAB 1 — SANKEY
+    // ══════════════════════════════════════════════════════
+    function drawSankey() {
+      const topN   = +document.getElementById('sankey-top-n').value;
+      const minCnt = +document.getElementById('sankey-min').value;
+      const W      = Math.max(svgWidth('sankey-svg'), 600);
+      const H      = 540;
+      const pad    = { top: 20, right: 160, bottom: 20, left: 110 };
+
+      // aggregate tag counts per difficulty
+      const tagDiff = {}; // tag -> { Easy, Medium, Hard, total }
+      allProblems.forEach(p => {
+        const d = p.difficulty;
+        p.tags.forEach(t => {
+          if (!tagDiff[t]) tagDiff[t] = { Easy: 0, Medium: 0, Hard: 0, total: 0 };
+          tagDiff[t][d] = (tagDiff[t][d] || 0) + 1;
+          tagDiff[t].total++;
+        });
+      });
+
+      // filter & pick top N
+      let tagList = Object.entries(tagDiff)
+        .filter(([,v]) => v.total >= minCnt)
+        .sort((a,b) => b[1].total - a[1].total)
+        .slice(0, topN);
+
+      const svg = d3.select('#sankey-svg');
+      svg.selectAll('*').remove();
+      svg.attr('width', W).attr('height', H);
+
+      const textColor = getCSSVar('--text');
+      const borderColor = getCSSVar('--border');
+
+      // Layout: 3 columns: Difficulty | | Tags | | Count bars
+      const col = {
+        diff: pad.left,
+        tag:  pad.left + (W - pad.left - pad.right) * 0.45,
+        bar:  pad.left + (W - pad.left - pad.right) * 0.78,
+        barW: Math.min(80, (W - pad.left - pad.right) * 0.18)
+      };
+
+      const diffs = ['Easy', 'Medium', 'Hard'];
+      const diffTotals = {};
+      diffs.forEach(d => {
+        diffTotals[d] = allProblems.filter(p => p.difficulty === d).length;
+      });
+
+      const diffY = d3.scaleBand().domain(diffs).range([pad.top, H - pad.bottom]).padding(0.3);
+      const tagY  = d3.scaleBand().domain(tagList.map(([t]) => t)).range([pad.top, H - pad.bottom]).padding(0.12);
+      const maxTotal = d3.max(tagList, ([,v]) => v.total) || 1;
+      const barScale = d3.scaleLinear().domain([0, maxTotal]).range([0, col.barW]);
+
+      const tooltip = document.getElementById('sankey-tooltip');
+      function showTip(html, e) {
+        tooltip.innerHTML = html;
+        tooltip.style.display = 'block';
+        tooltip.style.left = (e.clientX + 14) + 'px';
+        tooltip.style.top  = (e.clientY - 10) + 'px';
+      }
+      function hideTip() { tooltip.style.display = 'none'; }
+
+      const g = svg.append('g');
+
+      // Draw links (difficulty → tag)
+      tagList.forEach(([tag, counts], ti) => {
+        const ty = tagY(tag) + tagY.bandwidth() / 2;
+        diffs.forEach(d => {
+          if (!counts[d]) return;
+          const dy = diffY(d) + diffY.bandwidth() / 2;
+          const opacity = 0.18 + (counts[d] / (counts.total || 1)) * 0.45;
+          const strokeW = Math.max(1, Math.min(18, counts[d] / 3));
+
+          g.append('path')
+            .attr('d', d3.linkHorizontal()({
+              source: [col.diff + 90, dy],
+              target: [col.tag,       ty]
+            }))
+            .attr('fill', 'none')
+            .attr('stroke', DIFF_COLOR[d])
+            .attr('stroke-width', strokeW)
+            .attr('opacity', opacity)
+            .style('cursor', 'pointer')
+            .on('mousemove', e => showTip(`<b>${d} → ${tag}</b><br>${counts[d]} problems`, e))
+            .on('mouseleave', hideTip);
+        });
+      });
+
+      // Difficulty nodes
+      diffs.forEach(d => {
+        const y = diffY(d);
+        const bh = diffY.bandwidth();
+        g.append('rect')
+          .attr('x', col.diff).attr('y', y)
+          .attr('width', 90).attr('height', bh)
+          .attr('rx', 6)
+          .attr('fill', DIFF_COLOR[d])
+          .attr('opacity', 0.85)
+          .style('cursor', 'pointer')
+          .on('mousemove', e => showTip(`<b>${d}</b><br>${diffTotals[d]} problems`, e))
+          .on('mouseleave', hideTip);
+
+        g.append('text')
+          .attr('x', col.diff + 45).attr('y', y + bh / 2 + 1)
+          .attr('text-anchor', 'middle').attr('dominant-baseline', 'middle')
+          .attr('fill', '#fff').attr('font-weight', '700').attr('font-size', '13px')
+          .text(d);
+      });
+
+      // Tag nodes + bar
+      tagList.forEach(([tag, counts], ti) => {
+        const y   = tagY(tag);
+        const bh  = tagY.bandwidth();
+        const cy  = y + bh / 2;
+        const col_fill = TAG_PALETTE[ti % TAG_PALETTE.length];
+
+        g.append('rect')
+          .attr('x', col.tag).attr('y', y)
+          .attr('width', col.bar - col.tag - 8).attr('height', bh)
+          .attr('rx', 5)
+          .attr('fill', col_fill)
+          .attr('opacity', 0.82)
+          .style('cursor', 'pointer')
+          .on('mousemove', e => showTip(`<b>${tag}</b><br>Easy: ${counts.Easy||0} · Med: ${counts.Medium||0} · Hard: ${counts.Hard||0}<br>Total: ${counts.total}`, e))
+          .on('mouseleave', hideTip)
+          .on('click', () => {
+            window.open(`lc-explorer.html?tags=${encodeURIComponent(tag)}`, '_blank');
+          });
+
+        g.append('text')
+          .attr('x', col.tag + 7).attr('y', cy + 1)
+          .attr('dominant-baseline', 'middle')
+          .attr('fill', '#fff').attr('font-size', Math.max(9, Math.min(12, bh * 0.55)) + 'px')
+          .style('pointer-events', 'none')
+          .text(tag.length > 20 ? tag.slice(0, 18) + '…' : tag);
+
+        // count bar
+        g.append('rect')
+          .attr('x', col.bar).attr('y', y + 2)
+          .attr('width', barScale(counts.total)).attr('height', bh - 4)
+          .attr('rx', 3).attr('fill', col_fill).attr('opacity', 0.4);
+
+        g.append('text')
+          .attr('x', col.bar + barScale(counts.total) + 4).attr('y', cy + 1)
+          .attr('dominant-baseline', 'middle')
+          .attr('fill', textColor).attr('font-size', '11px')
+          .text(counts.total);
+      });
+    }
+
+    // ══════════════════════════════════════════════════════
+    // TAB 2 — COLLAPSIBLE TREE
+    // ══════════════════════════════════════════════════════
+    let treeRoot, treeSvg, treeG, treeZoom;
+
+    function buildTreeData() {
+      // Root → Difficulty → Tag → (leaf = problem count label)
+      const root = { name: 'LeetCode', children: [] };
+      const diffs = ['Easy', 'Medium', 'Hard'];
+      diffs.forEach(d => {
+        const tagMap = {};
+        allProblems.filter(p => p.difficulty === d).forEach(p => {
+          p.tags.forEach(t => {
+            if (!tagMap[t]) tagMap[t] = [];
+            tagMap[t].push(p);
+          });
+        });
+        const tagChildren = Object.entries(tagMap)
+          .sort((a,b) => b[1].length - a[1].length)
+          .slice(0, 18)
+          .map(([tag, probs]) => ({
+            name: tag,
+            value: probs.length,
+            problems: probs.slice(0, 8),
+            _children: null,
+            children: null
+          }));
+        root.children.push({ name: d, color: DIFF_COLOR[d], children: tagChildren });
+      });
+      return root;
+    }
+
+    function drawTree() {
+      const W = Math.max(svgWidth('tree-svg'), 700);
+      const H = 620;
+      const svg = d3.select('#tree-svg');
+      svg.selectAll('*').remove();
+      svg.attr('width', W).attr('height', H);
+
+      const textColor = getCSSVar('--text');
+      const borderColor = getCSSVar('--border');
+      const surfaceColor = getCSSVar('--surface');
+
+      treeZoom = d3.zoom().scaleExtent([0.3, 3]).on('zoom', e => treeG.attr('transform', e.transform));
+      svg.call(treeZoom);
+
+      treeG = svg.append('g').attr('transform', `translate(${W * 0.05}, ${H / 2})`);
+
+      const data = buildTreeData();
+      treeRoot = d3.hierarchy(data);
+
+      // collapse all children of tag nodes initially
+      treeRoot.children.forEach(d => {
+        d.children.forEach(tag => {
+          tag._children = null; // tags start expanded; no deeper children in this dataset
+        });
+      });
+
+      const treeLayout = d3.tree().size([H - 80, W * 0.72]);
+
+      function update(source) {
+        treeLayout(treeRoot);
+        const nodes = treeRoot.descendants();
+        const links = treeRoot.links();
+
+        const link = treeG.selectAll('.tree-link')
+          .data(links, d => d.target.data.name + d.source.data.name);
+
+        link.enter().append('path')
+          .attr('class', 'tree-link')
+          .attr('fill', 'none')
+          .attr('stroke', borderColor)
+          .attr('stroke-width', 1.2)
+          .attr('opacity', 0.5)
+          .merge(link)
+          .attr('d', d3.linkHorizontal()
+            .x(d => d.y).y(d => d.x));
+
+        link.exit().remove();
+
+        const node = treeG.selectAll('.tree-node')
+          .data(nodes, d => d.data.name);
+
+        const nodeEnter = node.enter().append('g')
+          .attr('class', 'tree-node')
+          .attr('transform', d => `translate(${source.y0||0},${source.x0||0})`)
+          .style('cursor', 'pointer')
+          .on('click', (event, d) => {
+            if (d.children) {
+              d._children = d.children;
+              d.children = null;
+            } else if (d._children) {
+              d.children = d._children;
+              d._children = null;
+            }
+            source.x0 = d.x;
+            source.y0 = d.y;
+            update(d);
+          });
+
+        nodeEnter.append('circle')
+          .attr('r', d => d.depth === 0 ? 12 : d.depth === 1 ? 9 : 6)
+          .attr('fill', d => d.depth === 0 ? getCSSVar('--accent') : d.data.color || getCSSVar('--accent2'))
+          .attr('stroke', surfaceColor)
+          .attr('stroke-width', 2);
+
+        nodeEnter.append('text')
+          .attr('x', d => d.children || d._children ? -14 : 10)
+          .attr('dy', '0.35em')
+          .attr('text-anchor', d => d.children || d._children ? 'end' : 'start')
+          .attr('fill', textColor)
+          .attr('font-size', d => d.depth === 0 ? '13px' : d.depth === 1 ? '12px' : '11px')
+          .attr('font-weight', d => d.depth < 2 ? '700' : '400')
+          .text(d => {
+            const label = d.data.name;
+            const suffix = d.data.value ? ` (${d.data.value})` : '';
+            return (label.length > 22 ? label.slice(0,20)+'…' : label) + suffix;
+          });
+
+        node.merge(nodeEnter)
+          .transition().duration(280)
+          .attr('transform', d => `translate(${d.y},${d.x})`);
+
+        node.exit().remove();
+
+        nodes.forEach(d => { d.x0 = d.x; d.y0 = d.y; });
+      }
+
+      treeRoot.x0 = 0; treeRoot.y0 = 0;
+      update(treeRoot);
+    }
+
+    function highlightTreeNode(query) {
+      if (!treeG) return;
+      const q = query.toLowerCase();
+      treeG.selectAll('.tree-node text')
+        .attr('fill', d => {
+          if (!q) return getCSSVar('--text');
+          return d.data.name.toLowerCase().includes(q) ? '#f59e0b' : getCSSVar('--text-light');
+        });
+    }
+
+    // ══════════════════════════════════════════════════════
+    // TAB 3 — BUBBLE PACK
+    // ══════════════════════════════════════════════════════
+    function drawBubble() {
+      const colorBy = document.getElementById('bubble-color').value;
+      const sizeBy  = document.getElementById('bubble-size').value;
+      const W = Math.max(svgWidth('bubble-svg'), 600);
+      const H = 540;
+
+      // Aggregate by tag
+      const tagMap = {};
+      allProblems.forEach(p => {
+        p.tags.forEach(t => {
+          if (!tagMap[t]) tagMap[t] = { count: 0, acc: [], diffs: { Easy:0, Medium:0, Hard:0 } };
+          tagMap[t].count++;
+          tagMap[t].acc.push(p.acceptance);
+          tagMap[t].diffs[p.difficulty]++;
+        });
+      });
+
+      const bubbleData = Object.entries(tagMap)
+        .filter(([,v]) => v.count >= 5)
+        .map(([tag, v], i) => ({
+          tag,
+          count: v.count,
+          avgAcc: Math.round(v.acc.reduce((a,b)=>a+b,0)/v.acc.length),
+          diffs: v.diffs,
+          colorIdx: i
+        }))
+        .sort((a,b) => b.count - a.count)
+        .slice(0, 50);
+
+      const pack = d3.pack()
+        .size([W - 10, H - 10])
+        .padding(4);
+
+      const root = d3.hierarchy({ children: bubbleData })
+        .sum(d => sizeBy === 'count' ? d.count : d.avgAcc || 1);
+
+      pack(root);
+
+      const svg = d3.select('#bubble-svg');
+      svg.selectAll('*').remove();
+      svg.attr('width', W).attr('height', H);
+
+      const textColor = getCSSVar('--text');
+      const tooltip = d3.select('body').append('div')
+        .attr('class', 'tooltip-shared')
+        .style('display', 'none');
+
+      const leaf = svg.selectAll('g')
+        .data(root.leaves())
+        .enter().append('g')
+        .attr('transform', d => `translate(${d.x},${d.y})`);
+
+      leaf.append('circle')
+        .attr('r', d => d.r)
+        .attr('fill', d => {
+          if (colorBy === 'difficulty') {
+            const dom = Object.entries(d.data.diffs).sort((a,b)=>b[1]-a[1])[0][0];
+            return DIFF_COLOR[dom];
+          }
+          return TAG_PALETTE[d.data.colorIdx % TAG_PALETTE.length];
+        })
+        .attr('opacity', 0.8)
+        .style('cursor', 'pointer')
+        .on('mousemove', (event, d) => {
+          tooltip.style('display','block')
+            .style('left', (event.clientX + 12)+'px')
+            .style('top', (event.clientY - 10)+'px')
+            .html(`<div class="tt-title">${d.data.tag}</div>
+              Problems: <b>${d.data.count}</b><br>
+              Avg acceptance: <b>${d.data.avgAcc}%</b><br>
+              Easy: ${d.data.diffs.Easy} · Med: ${d.data.diffs.Medium} · Hard: ${d.data.diffs.Hard}`);
+        })
+        .on('mouseleave', () => tooltip.style('display','none'))
+        .on('click', (event, d) => {
+          window.open(`lc-explorer.html?tags=${encodeURIComponent(d.data.tag)}`, '_blank');
+        });
+
+      leaf.append('text')
+        .attr('text-anchor', 'middle')
+        .attr('dominant-baseline', 'middle')
+        .attr('fill', '#fff')
+        .attr('font-size', d => Math.min(13, d.r * 0.38) + 'px')
+        .attr('font-weight', '600')
+        .style('pointer-events', 'none')
+        .text(d => d.r > 20 ? (d.data.tag.length > 14 ? d.data.tag.slice(0,12)+'…' : d.data.tag) : '');
+    }
+
+    // ══════════════════════════════════════════════════════
+    // TAB 4 — FORCE-DIRECTED SIMILARITY GRAPH
+    // ══════════════════════════════════════════════════════
+    let graphSim;
+    let graphDebounce;
+
+    function debounceGraph() {
+      clearTimeout(graphDebounce);
+      graphDebounce = setTimeout(drawGraph, 400);
+    }
+
+    function drawGraph() {
+      const seedTitle = (document.getElementById('graph-seed').value || 'Two Sum').trim();
+      const depth     = +document.getElementById('graph-depth').value;
+      const maxN      = +document.getElementById('graph-max-n').value;
+      const W = Math.max(svgWidth('graph-svg'), 600);
+      const H = 580;
+
+      // find seed problem
+      let seed = allProblems.find(p => p.title.toLowerCase() === seedTitle.toLowerCase());
+      if (!seed) seed = allProblems.find(p => p.title.toLowerCase().includes(seedTitle.toLowerCase()));
+      if (!seed) seed = allProblems[0];
+
+      // BFS to collect connected problems
+      const normTags = p => p.tags.map(normTag);
+      const sharedTags = (a, b) => {
+        const ta = new Set(normTags(a));
+        return normTags(b).filter(t => ta.has(t));
+      };
+
+      const visited = new Set([seed.id]);
+      const nodesMap = { [seed.id]: seed };
+      const edges = [];
+      let frontier = [seed];
+
+      for (let d = 0; d < depth; d++) {
+        const next = [];
+        frontier.forEach(p => {
+          allProblems
+            .filter(q => !visited.has(q.id))
+            .map(q => ({ q, shared: sharedTags(p, q) }))
+            .filter(({shared}) => shared.length >= 2)
+            .sort((a,b) => b.shared.length - a.shared.length)
+            .slice(0, maxN)
+            .forEach(({q, shared}) => {
+              visited.add(q.id);
+              nodesMap[q.id] = q;
+              edges.push({ source: p.id, target: q.id, weight: shared.length, tags: shared });
+              next.push(q);
+            });
+        });
+        frontier = next;
+        if (frontier.length === 0) break;
+      }
+
+      const nodes = Object.values(nodesMap).map(p => ({
+        id: p.id, title: p.title, difficulty: p.difficulty,
+        tags: p.tags, acceptance: p.acceptance,
+        isSeed: p.id === seed.id
+      }));
+
+      // Legend
+      const legendEl = document.getElementById('graph-legend');
+      legendEl.innerHTML = Object.entries(DIFF_COLOR).map(([d, c]) =>
+        `<span class="legend-item"><span class="legend-dot" style="background:${c}"></span>${d}</span>`
+      ).join('') +
+      `<span class="legend-item" style="margin-left:1rem;"><span class="legend-dot" style="background:var(--accent);border:2px solid #fff;box-shadow:0 0 0 2px var(--accent)"></span>Seed problem</span>` +
+      `<span class="legend-item" style="color:var(--text-light);margin-left:auto;font-size:0.8rem;">${nodes.length} problems · ${edges.length} connections</span>`;
+
+      const svg = d3.select('#graph-svg');
+      svg.selectAll('*').remove();
+      svg.attr('width', W).attr('height', H);
+
+      const textColor = getCSSVar('--text');
+      const surfaceColor = getCSSVar('--surface');
+      const borderColor = getCSSVar('--border');
+
+      const zoom = d3.zoom().scaleExtent([0.2, 4]).on('zoom', e => gMain.attr('transform', e.transform));
+      svg.call(zoom);
+
+      const gMain = svg.append('g');
+
+      // defs for arrow
+      svg.append('defs').append('marker')
+        .attr('id', 'arrowhead')
+        .attr('viewBox', '0 -4 8 8').attr('refX', 18).attr('refY', 0)
+        .attr('markerWidth', 6).attr('markerHeight', 6).attr('orient', 'auto')
+        .append('path').attr('d', 'M0,-4L8,0L0,4').attr('fill', borderColor);
+
+      const edgeSel = gMain.append('g').selectAll('line')
+        .data(edges).enter().append('line')
+        .attr('stroke', borderColor)
+        .attr('stroke-width', d => Math.min(5, d.weight))
+        .attr('opacity', 0.5);
+
+      const tooltip = document.getElementById('graph-tooltip');
+
+      const nodeSel = gMain.append('g').selectAll('g')
+        .data(nodes).enter().append('g')
+        .style('cursor', 'pointer')
+        .call(d3.drag()
+          .on('start', (event, d) => { if (!event.active) sim.alphaTarget(0.3).restart(); d.fx=d.x; d.fy=d.y; })
+          .on('drag',  (event, d) => { d.fx=event.x; d.fy=event.y; })
+          .on('end',   (event, d) => { if (!event.active) sim.alphaTarget(0); d.fx=null; d.fy=null; })
+        )
+        .on('click', (event, d) => {
+          const slug = d.title.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
+          window.open(`https://leetcode.com/problems/${slug}/`, '_blank');
+        })
+        .on('mousemove', (event, d) => {
+          const cls = `tt-diff-${d.difficulty.toLowerCase()}`;
+          tooltip.innerHTML = `<div class="tt-title">#${d.id} ${d.title}</div>
+            <span class="${cls}">${d.difficulty}</span> · ${d.acceptance}% acc<br>
+            <div class="tt-tags">${d.tags.slice(0,5).join(', ')}</div>`;
+          tooltip.style.display = 'block';
+          tooltip.style.left = (event.clientX + 12) + 'px';
+          tooltip.style.top  = (event.clientY - 10) + 'px';
+        })
+        .on('mouseleave', () => { tooltip.style.display = 'none'; });
+
+      nodeSel.append('circle')
+        .attr('r', d => d.isSeed ? 18 : 11)
+        .attr('fill', d => DIFF_COLOR[d.difficulty])
+        .attr('stroke', d => d.isSeed ? getCSSVar('--accent') : surfaceColor)
+        .attr('stroke-width', d => d.isSeed ? 4 : 2)
+        .attr('opacity', 0.9);
+
+      nodeSel.append('text')
+        .attr('dy', d => d.isSeed ? 26 : 18)
+        .attr('text-anchor', 'middle')
+        .attr('fill', textColor)
+        .attr('font-size', d => d.isSeed ? '11px' : '9px')
+        .attr('font-weight', d => d.isSeed ? '700' : '400')
+        .style('pointer-events', 'none')
+        .text(d => {
+          const t = d.title;
+          return t.length > 16 ? t.slice(0,14)+'…' : t;
+        });
+
+      // edge label (shared tag count)
+      gMain.append('g').selectAll('text')
+        .data(edges.filter(e => e.weight > 2)).enter().append('text')
+        .attr('fill', textColor)
+        .attr('font-size', '9px')
+        .attr('opacity', 0.5)
+        .style('pointer-events', 'none')
+        .text(d => d.weight + ' tags');
+
+      // Force simulation
+      const sim = d3.forceSimulation(nodes)
+        .force('link', d3.forceLink(edges).id(d => d.id).distance(90).strength(0.6))
+        .force('charge', d3.forceManyBody().strength(-220))
+        .force('center', d3.forceCenter(W / 2, H / 2))
+        .force('collide', d3.forceCollide(22))
+        .on('tick', () => {
+          edgeSel
+            .attr('x1', d => d.source.x).attr('y1', d => d.source.y)
+            .attr('x2', d => d.target.x).attr('y2', d => d.target.y);
+          nodeSel.attr('transform', d => `translate(${d.x},${d.y})`);
+          gMain.selectAll('text[font-size="9px"]')
+            .attr('x', d => d.source ? (d.source.x + d.target.x) / 2 : 0)
+            .attr('y', d => d.source ? (d.source.y + d.target.y) / 2 : 0);
+        });
+
+      graphSim = sim;
+    }
+
+    // ── Init ──────────────────────────────────────────────
+    loadData();
+  </script>
+</body>
+</html>
