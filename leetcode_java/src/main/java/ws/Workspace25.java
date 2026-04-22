@@ -1784,4 +1784,11 @@ public class Workspace25 {
     }
 
 
+    // LC 1675
+    public int minimumDeviation(int[] nums) {
+
+        return 0;
+    }
+
+
 }

@@ -75,7 +75,6 @@
 	- LC 881
 		- gpt
 		- gemini
-			- 1675
 			- 2345
 	- LC 901
 		- gpt
