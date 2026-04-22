@@ -60,13 +60,27 @@ public class MinimizeDeviationInArray {
 
 
     // V1-1
-    // IDEA: PQ (GPT)
+    // IDEA: GREEDY + MAX PQ (GPT)
+    /**  Core idea:
+     *
+     *  1. First, make all numbers even
+     *     (so we only do one direction later)
+     *       - if odd → multiply by 2
+     *
+     *  2. Then:
+     *      - always reduce the current maximum (divide by 2 if even)
+     *      - track the minimum along the way
+     *
+     * 3. Stop when the max becomes odd
+     *    (can’t reduce anymore)
+     *
+     */
     public int minimumDeviation_1_1(int[] nums) {
         PriorityQueue<Integer> maxHeap = new PriorityQueue<>(Collections.reverseOrder());
 
         int min = Integer.MAX_VALUE;
 
-        // Step 1: normalize (make all numbers even)
+        // Step 1: normalize (make all numbers `even`)
         for (int x : nums) {
             if (x % 2 == 1)
                 x *= 2;
@@ -77,11 +91,22 @@ public class MinimizeDeviationInArray {
         int deviation = Integer.MAX_VALUE;
 
         // Step 2: reduce the maximum
+        /** NOTE !!
+         *
+         *   we use `while true`
+         *   trick to keep loop running,
+         *   and setup `break` condition
+         *   if no needed to move further anymore.
+         */
         while (true) {
             int max = maxHeap.poll();
 
             deviation = Math.min(deviation, max - min);
 
+            /** NOTE !!!
+             *
+             * Stop when the max becomes odd (can’t reduce anymore)
+             */
             // if max is odd → can't reduce further
             if (max % 2 == 1)
                 break;
@@ -95,6 +120,7 @@ public class MinimizeDeviationInArray {
 
         return deviation;
     }
+
 
     // V1-2
     // IDEA: PQ (GEMINI)
@@ -224,7 +250,7 @@ public class MinimizeDeviationInArray {
         return minDeviation;
     }
 
-    
+
 
 
 
