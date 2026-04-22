@@ -30,7 +30,7 @@ Key: transform `change` to `event`, so we can handle the `changed state` via pro
 
 ### **Pattern 1: Interval Overlap**
 - **Description**: Finding maximum overlapping intervals at any point
-- **Examples**: LC 253, 1094, 2021, 2848
+- **Examples**: LC 253, 1094, 2021, 2406, 2848
 - **Pattern**: Track active intervals using counter
 
 ### **Pattern 2: Skyline Problems**
@@ -438,6 +438,7 @@ def mergeIntervals(intervals):
 | Maximum Population Year | 1854 | Year range counting | Easy |
 | Maximum Sum Obtained | 2848 | Points on line | Medium |
 | Describe the Painting | 1943 | Segment merging | Medium |
+| Divide Intervals Into Minimum Number of Groups | 2406 | Event sweep, max concurrent overlaps | Medium |
 
 #### **Skyline Problems**
 | Problem | LC # | Key Technique | Difficulty |
@@ -830,7 +831,91 @@ class Solution:
         return res
 ```
 
-### 2-2) My Calendar II
+### 2-2) Divide Intervals Into Minimum Number of Groups
+
+```java
+// java
+// LC 2406
+// Reference: leetcode_java/src/main/java/LeetCodeJava/Heap/DivideIntervalsIntoMinimumNumberOfGroups.java
+
+/**
+ * Problem: Divide intervals into minimum groups so no two intervals in the
+ *          same group intersect (inclusive endpoints: [1,5] and [5,8] DO overlap).
+ *
+ * Example:
+ * Input:  [[5,10],[6,8],[1,5],[2,3],[1,10]]
+ * Output: 3
+ *
+ * Core Insight:
+ *   min groups needed = max number of intervals active at the same time
+ *   → identical to "Meeting Rooms II" but phrased differently.
+ *
+ * Pattern: Scanning Line — convert each interval into two events,
+ *          sweep left-to-right and track peak concurrent count.
+ */
+
+// APPROACH: EVENT-BASED SWEEP LINE
+/**
+ * Steps:
+ * 1. For each interval [l, r]:
+ *    - Add event (l, +1)  → interval opens
+ *    - Add event (r, -1)  → interval closes
+ *
+ * 2. Sort events by time.
+ *    - TIE-BREAKING: when two events share the same time,
+ *      process START (+1) BEFORE END (-1).
+ *      Why? [1,5] and [5,10] overlap at 5, so both must be active at time 5.
+ *      Sort descending on type: (a[0]==b[0]) ? b[1]-a[1] : a[0]-b[0]
+ *
+ * 3. Sweep through events, maintain currentGroups count.
+ *    Track maxGroups across all steps.
+ *
+ * Time:  O(N log N) — sorting dominates
+ * Space: O(N)       — event list
+ */
+public int minGroups(int[][] intervals) {
+    List<int[]> events = new ArrayList<>();
+    for (int[] in : intervals) {
+        events.add(new int[]{ in[0],  1 });  // start event
+        events.add(new int[]{ in[1], -1 });  // end event
+    }
+
+    // Sort by time; at same time, START (+1) before END (-1)
+    // b[1] - a[1] puts +1 before -1 (descending type order)
+    Collections.sort(events, (a, b) -> a[0] == b[0] ? b[1] - a[1] : a[0] - b[0]);
+
+    int maxGroups = 0, currentGroups = 0;
+    for (int[] event : events) {
+        currentGroups += event[1];
+        maxGroups = Math.max(maxGroups, currentGroups);
+    }
+    return maxGroups;
+}
+
+/**
+ * WHY TIE-BREAKING MATTERS:
+ *
+ * Intervals [1,5] and [5,8] share point 5 → they DO overlap (problem statement).
+ * At time = 5, we must count both as active simultaneously.
+ * If we processed END before START at the same time:
+ *   → [1,5] would close before [5,8] opens → we'd miss the overlap → wrong answer.
+ * Sorting START before END at the same time ensures peak is captured correctly.
+ *
+ * SIMILAR PROBLEMS (same scanning line pattern):
+ * - LC 253  Meeting Rooms II          — identical logic, different wording
+ * - LC 2021 Brightest Position on Street — weighted events (brightness value)
+ * - LC 731  My Calendar II            — check if concurrent count reaches 3
+ * - LC 732  My Calendar III           — return max k-booking at any point
+ * - LC 1094 Car Pooling               — track passenger count vs capacity
+ * - LC 1854 Maximum Population Year   — year range overlap counting
+ *
+ * ALTERNATIVE APPROACH (also in this file):
+ * - Sort + Min Heap (heap.md): sort by start, use PQ of end times → heap.size() = answer
+ * - TreeMap (line sweep with ordered container): mark +1/-1 at each coordinate
+ */
+```
+
+### 2-3) My Calendar II
 
 ```java
 // java
