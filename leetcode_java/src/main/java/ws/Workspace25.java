@@ -1716,26 +1716,60 @@ public class Workspace25 {
     // 11.08 - 18 am
     /**
      *
+     *  ------------------
+     *
+     *  ex 1)
+     *
+     *     [1,1,1,2,2,3]
+     *      l   r
+     *
+     *
+     *     [1,1,2,2,1,3]
+     *      l   l   r
+     *
+     *     [1,1,2,2,1,3]
+     *          l        r
+     *
+     *
+     *   ex 2)
+     *
+     *    [0,0,1,1,1,1,2,3,3]
+     *     l   r
      *
      *
      */
     // IDEA: 2 POINTERS ???
     public int removeDuplicates(int[] nums) {
         // edge ??
-        if(nums.length <= 2){
-            return nums.length; // ??
+        int n = nums.length;
+        if(n <= 2){
+            return n;
         }
 
-        int l = 0;
+        // NOTE !!!
+        // L should init as 2
+        //int l = 0;
+        int l = 2;
+
+
         //int r = 2; // ???
         // ??? NOTE !!!
         // 1. r = [2, nums.len-1]
         // 2. r += 2
-        for(int r = 2; r < nums.length; r += 2){
-
+        for(int r = 2; r < n; r ++){
+            // ???
+            // swap ????
+            // if(nums[r] != nums[l]){
+            if(nums[r] != nums[l-2]){
+                int tmp = nums[r];
+                l += 2;
+                nums[r] = nums[l];
+                nums[l] = tmp;
+            }
         }
 
-        return 1;
+        return l;
+       // return l + 1; // ???
     }
 
 

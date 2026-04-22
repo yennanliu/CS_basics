@@ -83,6 +83,235 @@ public class RemoveDuplicatesFromSortedArray2 {
      *      * | **Space** | **$O(1)$** | No auxiliary data structures are used. |
      *      *
      */
+    /**  Dry run
+     *
+     * We’ll use this code:
+     *
+     * ```java
+     * int l = 2;
+     *
+     * for (int r = 2; r < n; r++) {
+     *     if (nums[r] != nums[l - 2]) {
+     *         nums[l] = nums[r];
+     *         l++;
+     *     }
+     * }
+     * ```
+     *
+     * ---
+     *
+     * # 🧪 Example
+     *
+     * ```text
+     * nums = [1,1,1,2,2,3]
+     * ```
+     *
+     * ---
+     *
+     * # 🧠 Key invariant
+     *
+     * At any time:
+     *
+     * ```text
+     * nums[0 ... l-1]  → valid (each number appears ≤ 2 times)
+     * ```
+     *
+     * ---
+     *
+     * # ▶️ Step-by-step Dry Run
+     *
+     * ### Initial state
+     *
+     * ```text
+     * nums = [1,1,1,2,2,3]
+     * l = 2
+     * r = 2
+     * ```
+     *
+     * We **start at r = 2** because first two elements are always allowed.
+     *
+     * ---
+     *
+     * ## 🔹 Step 1: r = 2
+     *
+     * ```text
+     * nums[r] = 1
+     * nums[l-2] = nums[0] = 1
+     * ```
+     *
+     * 👉 Compare:
+     *
+     * ```text
+     * 1 == 1 → ❌ skip
+     * ```
+     *
+     * State unchanged:
+     *
+     * ```text
+     * nums = [1,1,1,2,2,3]
+     * l = 2
+     * ```
+     *
+     * ---
+     *
+     * ## 🔹 Step 2: r = 3
+     *
+     * ```text
+     * nums[r] = 2
+     * nums[l-2] = nums[0] = 1
+     * ```
+     *
+     * 👉 Compare:
+     *
+     * ```text
+     * 2 != 1 → ✅ keep
+     * ```
+     *
+     * Action:
+     *
+     * ```text
+     * nums[l] = nums[r] → nums[2] = 2
+     * l++
+     * ```
+     *
+     * New state:
+     *
+     * ```text
+     * nums = [1,1,2,2,2,3]
+     * l = 3
+     * ```
+     *
+     * ---
+     *
+     * ## 🔹 Step 3: r = 4
+     *
+     * ```text
+     * nums[r] = 2
+     * nums[l-2] = nums[1] = 1
+     * ```
+     *
+     * 👉 Compare:
+     *
+     * ```text
+     * 2 != 1 → ✅ keep
+     * ```
+     *
+     * Action:
+     *
+     * ```text
+     * nums[3] = 2
+     * l = 4
+     * ```
+     *
+     * New state:
+     *
+     * ```text
+     * nums = [1,1,2,2,2,3]
+     * l = 4
+     * ```
+     *
+     * ---
+     *
+     * ## 🔹 Step 4: r = 5
+     *
+     * ```text
+     * nums[r] = 3
+     * nums[l-2] = nums[2] = 2
+     * ```
+     *
+     * 👉 Compare:
+     *
+     * ```text
+     * 3 != 2 → ✅ keep
+     * ```
+     *
+     * Action:
+     *
+     * ```text
+     * nums[4] = 3
+     * l = 5
+     * ```
+     *
+     * Final state:
+     *
+     * ```text
+     * nums = [1,1,2,2,3,3]
+     * l = 5
+     * ```
+     *
+     * ---
+     *
+     * # ✅ Final Result
+     *
+     * ```text
+     * Valid portion: [1,1,2,2,3]
+     * return 5
+     * ```
+     *
+     * ---
+     *
+     * # 🔍 Why `nums[l - 2]` works (core insight)
+     *
+     * We check:
+     *
+     * ```text
+     * nums[r] vs nums[l - 2]
+     * ```
+     *
+     * 👉 That means:
+     *
+     * * If equal → already have **2 copies** → skip
+     * * If different → safe to include
+     *
+     * ---
+     *
+     * # ⚡ Visual intuition
+     *
+     * Think of a sliding window of size 2 behind `l`:
+     *
+     * ```text
+     * ... [ allowed zone ] [l-2][l-1] | r →
+     * ```
+     *
+     * We only allow:
+     *
+     * ```text
+     * nums[r] != nums[l-2]
+     * ```
+     *
+     * So no element can appear more than twice.
+     *
+     * ---
+     *
+     * # 🔥 Why overwrite > swap
+     *
+     * When we do:
+     *
+     * ```java
+     * nums[l] = nums[r];
+     * ```
+     *
+     * We are:
+     *
+     * * **compacting valid elements forward**
+     * * ignoring garbage beyond `l`
+     *
+     * 👉 Swapping would:
+     *
+     * * move unnecessary values backward
+     * * complicate logic without benefit
+     *
+     * ---
+     *
+     * # TL;DR
+     *
+     * * `l` = write pointer (end of valid array)
+     * * `r` = scan pointer
+     * * Compare with `l - 2` to enforce “at most 2”
+     * * Overwrite, don’t swap
+     *
+     * ---
+     */
     public int removeDuplicates(int[] nums) {
         // 1. Edge case: If length is 2 or less, it already satisfies the condition
         if (nums.length <= 2) {
