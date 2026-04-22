@@ -134,10 +134,82 @@ public class DivideIntervalsIntoMinimumNumberOfGroups {
         return pq.size();
     }
 
-
     // V0-2
-    // IDEA: SORT + PQ (GEMINI)
+    // IDEA: (Sweep Line) (gemini)
+    /**
+     *  Instead of intervals, we look at Events.
+     *  An interval is just a +1 event at
+     *  the start and a -1 event at the end.
+     *
+     *  - Logic: Break every interval into (time, type).
+     *           Type +1 for start, -1
+     *          for end. Sort all events.
+     *
+     *  - Pro Tip: Because [1, 5] and [5, 10] overlap,
+     *             must process "starts" at time $X$
+     *             before "ends" at time $X$ to
+     *             correctly count the peak.
+     *
+     *  - Best for: Finding the "High-Water Mark" of resource usage.
+     */
     public int minGroups_0_2(int[][] intervals) {
+        List<int[]> events = new ArrayList<>();
+        for (int[] in : intervals) {
+            events.add(new int[] { in[0], 1 }); // Start event
+            events.add(new int[] { in[1], -1 }); // End event
+        }
+
+        // Sort by time. If time is same, process START (1) before END (-1)
+        // Actually, in this problem, [5,5] overlaps.
+        // To handle this, we treat END as occurring slightly AFTER the start
+        // or sort 1 before -1? No, 1 (start) must come before -1 (end) if we sort descending.
+        // Standard trick: Sort by time, then by type (descending)
+        Collections.sort(events, (a, b) -> a[0] == b[0] ? b[1] - a[1] : a[0] - b[0]);
+
+        int maxGroups = 0, currentGroups = 0;
+        for (int[] event : events) {
+            currentGroups += event[1];
+            maxGroups = Math.max(maxGroups, currentGroups);
+        }
+        return maxGroups;
+    }
+
+
+    // V0-3
+    // IDEA: DIFFERENCE ARRAY (GEMINI)
+    /**  Core idea:
+     *
+     * If the range of coordinates is fixed (like $1 \dots 10^6$),
+     * we can use a difference array.
+     * This is basically a "static" version of the Sweep Line.
+     *
+     *
+     * - Logic: diff[start]++, diff[end + 1]-
+     *
+     * - Best for: Extremely high $N$ (number of intervals)
+     *      but a limited coordinate range.
+     *
+     */
+    public int minGroups_0_3(int[][] intervals) {
+        int[] diff = new int[1000002]; // Max range based on constraints
+        for (int[] in : intervals) {
+            diff[in[0]]++;
+            diff[in[1] + 1]--;
+        }
+
+        int maxGroups = 0, cur = 0;
+        for (int count : diff) {
+            cur += count;
+            maxGroups = Math.max(maxGroups, cur);
+        }
+        return maxGroups;
+    }
+
+
+
+    // V0-5
+    // IDEA: SORT + PQ (GEMINI)
+    public int minGroups_0_5(int[][] intervals) {
         int n = intervals.length;
         int[] starts = new int[n];
         int[] ends = new int[n];

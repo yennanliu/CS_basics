@@ -1992,6 +1992,108 @@ public int minimumVisitedCells(int[][] grid) {
  */
 ```
 
+### 2-16) Divide Intervals Into Minimum Number of Groups
+
+```java
+// java
+// LC 2406
+// Reference: leetcode_java/src/main/java/LeetCodeJava/Heap/DivideIntervalsIntoMinimumNumberOfGroups.java
+
+/**
+ * Problem: Given intervals, divide them into minimum groups so no two intervals
+ *          in the same group overlap (two intervals overlap if they share any point).
+ *
+ * Example:
+ * Input:  [[5,10],[6,8],[1,5],[2,3],[1,10]]
+ * Output: 3
+ *
+ * Key Insight:
+ * The minimum number of groups = maximum number of intervals overlapping at any point.
+ * This is equivalent to the "Meeting Rooms II" insight.
+ *
+ * Pattern: Sort by start + Min Heap tracking group end times
+ */
+
+// APPROACH 1: SORT + MIN HEAP
+/**
+ * Core Idea:
+ * 1. Sort intervals by start time.
+ * 2. Min-heap stores the END time of each active group.
+ * 3. For each interval:
+ *    - If the earliest-ending group ends BEFORE current start → reuse it (poll + offer).
+ *    - Otherwise → open a new group (just offer).
+ * 4. Heap size at the end = number of groups needed.
+ *
+ * NOTE: [1,5] and [5,10] OVERLAP (inclusive endpoints), so reuse only when end < start.
+ *
+ * Time:  O(N log N) — sort + heap operations
+ * Space: O(N)       — heap stores at most N end times
+ */
+public int minGroups(int[][] intervals) {
+    Arrays.sort(intervals, (a, b) -> a[0] - b[0]);  // sort by start
+
+    PriorityQueue<Integer> pq = new PriorityQueue<>();  // min-heap of end times
+
+    for (int[] interval : intervals) {
+        if (!pq.isEmpty() && pq.peek() < interval[0]) {
+            pq.poll();  // reuse earliest-ending group
+        }
+        pq.offer(interval[1]);  // assign current interval to a group
+    }
+
+    return pq.size();  // number of concurrent groups = answer
+}
+
+// APPROACH 2: SEPARATE SORT (Two-Pointer / Line Sweep)
+/**
+ * Core Idea:
+ * 1. Separate starts[] and ends[] arrays and sort them independently.
+ * 2. Sweep through starts; for each start, check if the smallest end has passed.
+ *    - start > ends[endPointer] → a group freed up, advance endPointer (don't add group).
+ *    - Otherwise → overlap, need a new group.
+ * 3. groupCount = number of new groups opened.
+ *
+ * Time:  O(N log N)
+ * Space: O(N)
+ */
+public int minGroups_v2(int[][] intervals) {
+    int n = intervals.length;
+    int[] starts = new int[n], ends = new int[n];
+    for (int i = 0; i < n; i++) {
+        starts[i] = intervals[i][0];
+        ends[i]   = intervals[i][1];
+    }
+    Arrays.sort(starts);
+    Arrays.sort(ends);
+
+    int groupCount = 0, endPointer = 0;
+    for (int start : starts) {
+        if (start > ends[endPointer]) {
+            endPointer++;   // reuse a group
+        } else {
+            groupCount++;   // need a new group
+        }
+    }
+    return groupCount;
+}
+
+/**
+ * SIMILAR PROBLEMS:
+ *
+ * - LC 253  Meeting Rooms II          — same algorithm, identical logic
+ * - LC 1353 Maximum Events Attended   — greedy + min heap by end time
+ * - LC 56   Merge Intervals           — sort + merge overlapping
+ * - LC 57   Insert Interval           — merge after inserting
+ * - LC 435  Non-Overlapping Intervals — greedy, minimize removed to avoid overlap
+ * - LC 452  Minimum Arrows to Burst Balloons — greedy interval scheduling
+ * - LC 1094 Car Pooling               — difference array / heap scheduling
+ *
+ * KEY PATTERN RULE:
+ *   min groups = max concurrent overlaps
+ *   → always equals heap size when using Sort + Min Heap approach
+ */
+```
+
 ## Problems by Pattern
 
 ### Pattern-Based Problem Classification
@@ -2046,6 +2148,7 @@ public int minimumVisitedCells(int[][] grid) {
 | Car Pooling | 1094 | Heap by drop-off time | Medium | Universal Heap |
 | Minimum Number of Refueling Stops | 871 | Greedy + max heap | Hard | Universal Heap |
 | Minimum Cost to Hire K Workers | 857 | Heap + greedy | Hard | Top K Frequency |
+| Divide Intervals Into Minimum Number of Groups | 2406 | Sort by start + min heap of end times | Medium | Universal Heap |
 
 #### **Pattern 6: Data Stream Problems**
 | Problem | LC # | Key Technique | Difficulty | Template |
