@@ -1588,6 +1588,32 @@ public class Workspace25 {
      *       l       r
      *
      *
+     *  ex 3)
+     *
+     *   [0,0,1,1,1,2,2,3,3,4]
+     *    l r
+     *
+     *   [0,1,0,1,1,2,2,3,3,4]
+     *    l l r
+     *
+     *   [0,1,0,1,1,2,2,3,3,4]
+     *      l   r
+     *
+     *   [0,1,0,1,1,2,2,3,3,4]
+     *      l     r
+     *
+     *   [0,1,2,1,1,0,2,3,3,4]
+     *      l l     r
+     *
+     *   [0,1,2,1,1,0,2,3,3,4]
+     *        l       r
+     *
+     *    [0,1,2,3,1,0,2,1,3,4]
+     *           l       r
+     *
+     *    [0,1,2,3,4,0,2,1,3,1]
+     *           l l        r r
+     *
      */
     // IDEA 1) 2 POINTERS
     public int removeDuplicates(int[] nums) {
@@ -1607,9 +1633,22 @@ public class Workspace25 {
          *
          *
          */
+        int l = 0;
+        // ??
+        for(int r = 1; r < nums.length; r++){
+            if(nums[l] != nums[r]){
+                l += 1;
+                int tmp = nums[r];
+                nums[r] = nums[l];
+                nums[l] = tmp;
+            }
+        }
 
-        return -1;
+        return l;
     }
+
+
+
 
 
     // IDEA 1) 2 POINTERS

@@ -148,7 +148,8 @@ public class RemoveDuplicatesFromSortedArray {
         /**
          *  NOTE !!!
          *
-         *   we return s+1 as non-duplicated array length, since length = index + 1
+         *   we return s+1 as non-duplicated array length,
+         *   since `length` = index + 1
          */
         return s + 1;
     }
