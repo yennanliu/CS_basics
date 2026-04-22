@@ -59,7 +59,83 @@ public class MinimizeDeviationInArray {
 
 
 
-    // V1
+    // V1-1
+    // IDEA: PQ (GPT)
+    public int minimumDeviation_1_1(int[] nums) {
+        PriorityQueue<Integer> maxHeap = new PriorityQueue<>(Collections.reverseOrder());
+
+        int min = Integer.MAX_VALUE;
+
+        // Step 1: normalize (make all numbers even)
+        for (int x : nums) {
+            if (x % 2 == 1)
+                x *= 2;
+            maxHeap.offer(x);
+            min = Math.min(min, x);
+        }
+
+        int deviation = Integer.MAX_VALUE;
+
+        // Step 2: reduce the maximum
+        while (true) {
+            int max = maxHeap.poll();
+
+            deviation = Math.min(deviation, max - min);
+
+            // if max is odd → can't reduce further
+            if (max % 2 == 1)
+                break;
+
+            // reduce max
+            max /= 2;
+            min = Math.min(min, max);
+
+            maxHeap.offer(max);
+        }
+
+        return deviation;
+    }
+
+    // V1-2
+    // IDEA: PQ (GEMINI)
+    public int minimumDeviation_1_2(int[] nums) {
+        // 1. We use a Max-Heap to always shrink the largest value
+        PriorityQueue<Integer> bigPQ = new PriorityQueue<>(Collections.reverseOrder());
+        int minVal = Integer.MAX_VALUE;
+
+        // 2. Pre-process: Make all numbers even (maximum possible state)
+        for (int x : nums) {
+            if (x % 2 == 1)
+                x *= 2;
+            bigPQ.add(x);
+            minVal = Math.min(minVal, x); // Track current minimum
+        }
+
+        int minDeviation = Integer.MAX_VALUE;
+
+        // 3. Keep shrinking the largest number
+        while (!bigPQ.isEmpty()) {
+            int curMax = bigPQ.poll();
+
+            // Calculate current deviation
+            minDeviation = Math.min(minDeviation, curMax - minVal);
+
+            // If the max is even, we can shrink it to potentially reduce deviation
+            if (curMax % 2 == 0) {
+                int reduced = curMax / 2;
+                bigPQ.add(reduced);
+                minVal = Math.min(minVal, reduced); // Update min if the reduced value is smaller
+            } else {
+                // If the largest number is odd, we can't divide it further.
+                // We've reached the point where the max can only get larger or stay the same.
+                break;
+            }
+        }
+
+        return minDeviation;
+    }
+
+
 
 
     // V2
@@ -148,6 +224,7 @@ public class MinimizeDeviationInArray {
         return minDeviation;
     }
 
+    
 
 
 

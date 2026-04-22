@@ -1785,9 +1785,86 @@ public class Workspace25 {
 
 
     // LC 1675
+    // 8.27 - 39 am
+    /**
+     *  -> Return the minimum deviation (偏差)
+     *  the array can have after
+     *  performing some number of operations.
+     *
+     *    - nums: n positive int
+     *
+     *
+     *     can two types of operations
+     *     on any element of the array
+     *     any number of times:
+     *
+     *   - OP:
+     *      - op 1:  if element is `even` divide by 2
+     *      - op 2: if  ... `odd`, multiply by 2
+     *
+     *
+     *  NOTE:
+     *   deviation:
+     *      the `maximum` difference
+     *      between `any two elements` in the array.
+     *
+     *
+     *  ---------------
+     *
+     *   IDEA 1) PQ ????
+     *     -> big, small PQ ????
+     *
+     *
+     *  ---------------
+     *
+     *
+     */
+    // IDEA 1) PQ ????
     public int minimumDeviation(int[] nums) {
+        // edge
 
-        return 0;
+        // ???
+        PriorityQueue<Integer> bigPQ = new PriorityQueue<>(Collections.reverseOrder());
+        PriorityQueue<Integer> smallPQ = new PriorityQueue<>();
+
+
+        // ??? sort (small -> big)
+        //HashSet<Integer> set = new HashSet<>();
+        //Arrays.sort(nums); // default is small -> big ???
+
+        int minDeviation = nums[nums.length - 1] - nums[0]; // ???
+
+        // ??? add num to PQs
+        int n = nums.length; // /?
+        //int half = n / 2; // ???
+
+        for(int x: nums){
+            bigPQ.add(x);
+            smallPQ.add(x);
+        }
+
+        // ???
+        while (!bigPQ.isEmpty() && !smallPQ.isEmpty()){
+            int curBig = updateWithOp(bigPQ.poll());
+            int curSmall = updateWithOp(smallPQ.poll());
+
+            // ???
+            minDeviation = Math.min(minDeviation,
+                    Math.abs(curBig - curSmall)
+            );
+
+            bigPQ.add(curBig);
+            smallPQ.add(curSmall);
+        }
+
+
+
+        return minDeviation;
+    }
+
+
+    private int updateWithOp(int x){
+        return x % 2 == 1 ? x * 2 : x / 2;
     }
 
 
