@@ -1615,37 +1615,37 @@ public class Workspace25 {
      *           l l        r r
      *
      */
-    // IDEA 1) 2 POINTERS
-    public int removeDuplicates(int[] nums) {
-        // edge
-
-        /** logic:
-         *
-         *  1. 2 pointers (f, s)
-         *       s starts from 0
-         *       f starts from 1
-         *
-         *  2. if nums[l] != nums[r]
-         *        l += 1
-         *        // swap
-         *
-         *  3. .... return l
-         *
-         *
-         */
-        int l = 0;
-        // ??
-        for(int r = 1; r < nums.length; r++){
-            if(nums[l] != nums[r]){
-                l += 1;
-                int tmp = nums[r];
-                nums[r] = nums[l];
-                nums[l] = tmp;
-            }
-        }
-
-        return l;
-    }
+//    // IDEA 1) 2 POINTERS
+//    public int removeDuplicates(int[] nums) {
+//        // edge
+//
+//        /** logic:
+//         *
+//         *  1. 2 pointers (f, s)
+//         *       s starts from 0
+//         *       f starts from 1
+//         *
+//         *  2. if nums[l] != nums[r]
+//         *        l += 1
+//         *        // swap
+//         *
+//         *  3. .... return l
+//         *
+//         *
+//         */
+//        int l = 0;
+//        // ??
+//        for(int r = 1; r < nums.length; r++){
+//            if(nums[l] != nums[r]){
+//                l += 1;
+//                int tmp = nums[r];
+//                nums[r] = nums[l];
+//                nums[l] = tmp;
+//            }
+//        }
+//
+//        return l;
+//    }
 
 
 
@@ -1713,10 +1713,30 @@ public class Workspace25 {
      *
      *
      */
-//    public int removeDuplicates(int[] nums) {
-//
-//        return 1;
-//    }
+    // 11.08 - 18 am
+    /**
+     *
+     *
+     *
+     */
+    // IDEA: 2 POINTERS ???
+    public int removeDuplicates(int[] nums) {
+        // edge ??
+        if(nums.length <= 2){
+            return nums.length; // ??
+        }
+
+        int l = 0;
+        //int r = 2; // ???
+        // ??? NOTE !!!
+        // 1. r = [2, nums.len-1]
+        // 2. r += 2
+        for(int r = 2; r < nums.length; r += 2){
+
+        }
+
+        return 1;
+    }
 
 
     // LC 765
