@@ -2347,6 +2347,12 @@ public class Workspace25 {
     }
 
 
+    // LC 85
+    public int maximalRectangle(char[][] matrix) {
+
+        return 0;
+    }
+
 
 
 
