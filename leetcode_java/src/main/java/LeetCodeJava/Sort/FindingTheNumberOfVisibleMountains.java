@@ -56,6 +56,99 @@ import java.util.Map;
 public class FindingTheNumberOfVisibleMountains {
 
     // V0
+//    public int visibleMountains(int[][] peaks) {
+//
+//    }
+
+    // V0-1
+    // IDEA: MATH (gpt)
+    // TODO: validate
+    public int visibleMountains_0_1(int[][] peaks) {
+        int n = peaks.length;
+        int[][] intervals = new int[n][2];
+
+        // build intervals
+        for (int i = 0; i < n; i++) {
+            int x = peaks[i][0];
+            int y = peaks[i][1];
+            intervals[i][0] = x - y; // left
+            intervals[i][1] = x + y; // right
+        }
+
+        // sort: left ASC, right DESC
+        Arrays.sort(intervals, (a, b) -> {
+            if (a[0] != b[0]) return Integer.compare(a[0], b[0]);
+            return Integer.compare(b[1], a[1]);
+        });
+
+        int visible = 0;
+        int maxRight = Integer.MIN_VALUE;
+
+        for (int i = 0; i < n; i++) {
+            // skip duplicates
+            if (i > 0 &&
+                    intervals[i][0] == intervals[i - 1][0] &&
+                    intervals[i][1] == intervals[i - 1][1]) {
+                continue;
+            }
+
+            if (intervals[i][1] > maxRight) {
+                visible++;
+                maxRight = intervals[i][1];
+            }
+        }
+
+        return visible;
+    }
+
+    // V0-2
+    // IDEA: GEMINI
+    // TODO: validate
+    public int visibleMountains_0_2(int[][] peaks) {
+        int n = peaks.length;
+        // 1. Convert to intervals: [start, end]
+        // We also need to handle identical mountains
+        int[][] intervals = new int[n][2];
+        Map<String, Integer> counts = new HashMap<>();
+
+        for (int i = 0; i < n; i++) {
+            intervals[i][0] = peaks[i][0] - peaks[i][1];
+            intervals[i][1] = peaks[i][0] + peaks[i][1];
+            String key = peaks[i][0] + "," + peaks[i][1];
+            counts.put(key, counts.getOrDefault(key, 0) + 1);
+        }
+
+        // 2. Sort: Start ASC, End DESC
+        Arrays.sort(intervals, (a, b) -> {
+            if (a[0] != b[0]) return a[0] - b[0];
+            return b[1] - a[1];
+        });
+
+        int visibleCount = 0;
+        int maxRight = Integer.MIN_VALUE;
+
+        for (int i = 0; i < n; i++) {
+            // A mountain is hidden if its right boundary is <= maxRight seen so far
+            if (intervals[i][1] > maxRight) {
+                maxRight = intervals[i][1];
+
+                // Check if this mountain is hidden by its own twin (identical peak)
+                // We find the original peak coords using start/end:
+                // x = (start + end) / 2, y = (end - start) / 2
+                int x = (intervals[i][0] + intervals[i][1]) / 2;
+                int y = (intervals[i][1] - intervals[i][0]) / 2;
+
+                if (counts.get(x + "," + y) == 1) {
+                    // Only visible if there is exactly one mountain at this peak
+                    visibleCount++;
+                }
+            }
+        }
+
+        return visibleCount;
+    }
+
+
 
     // V1
     // IDEA:

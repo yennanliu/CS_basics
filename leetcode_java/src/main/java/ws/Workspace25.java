@@ -2082,4 +2082,122 @@ public class Workspace25 {
     }
 
 
+    // LC 2345
+    // 14.22 - 32 pm
+    /**
+     *  -> Return the `number` of `visible` mountains.
+     *
+     *  -> A mountain is considered visible
+     *     if its peak does not lie within
+     *     another mountain
+     *     (including the border of other mountains).
+     *
+     *
+     *  ---------------
+     *
+     *
+     *   IDEA 1) MATH ???
+     *
+     *     0. sort ?????
+     *     1. find `peaks`
+     *     2. check if peaks in `line`
+     *        - 2 lines:
+     *           - peak + left boundary
+     *           - peak + right ..
+     *
+     *           NOTE: it's a `isosceles` triangle
+     *              -> so slope MUST be -1, 1
+     *
+     *   IDEA 1) SORT ??
+     *
+     *     0. sort ?????
+     *     1. find `peaks` ???
+     *     2. check if there is a overlap within prev and last`boundary`
+     *
+     *  ---------------
+     *
+     */
+    public int visibleMountains(int[][] peaks) {
+        // edge
+        if(peaks == null){
+            return 0;
+        }
+        if(peaks.length == 1){
+            return 1;
+        }
+
+        // get `2 edges`
+        // list: [ [ left_x_1, right_x_1, mountain_id ], .. }
+        List<Integer[]> list = new ArrayList<>();
+
+        // ??? sort ??? ( x: small -> big)
+        Arrays.sort(peaks, new Comparator<int[]>() {
+            @Override
+            public int compare(int[] o1, int[] o2) {
+                int diff = o1[0] - o2[0];
+                return diff;
+            }
+        });
+
+        int idx = 0;
+        for(int[] p: peaks){
+            int val1 = getBoundaries(p)[0];
+            int val2 = getBoundaries(p)[1];
+            list.add(new Integer[]{val1, val2, idx});
+            idx += 1;
+        }
+
+        List<Integer[]> cache = new ArrayList<>();
+
+        // ????
+        int[] overlap = new int[peaks.length]; // ????
+
+        /** NOTE !!!
+         *
+         *   since x boundary already sorted (small -> big),
+         *   below are the NON overlap cases:
+         *
+         *    |-----|              old
+         *            |------|     new
+         *
+         */
+        for(Integer[] x: list){
+            if(cache.isEmpty() || cache.get(cache.size() - 1)[1] < x[0]){
+                cache.add(x);
+            }else{
+               overlap[x[2]] = 1;
+            }
+        }
+
+
+        // ???
+        int cnt = 0;
+        for(int x: overlap){
+            if(x == 1){
+                cnt += 1;
+            }
+        }
+        return cnt;
+    }
+
+    private Integer[] getBoundaries(int[] peak){
+        int x = peak[0];
+        int y = peak[1];
+        //int height =
+        return new Integer[]{x - y, x + y};
+    }
+
+
+
+
+
+    private boolean isOverlap(){
+        return false;
+    }
+
+
+
+
+
+
 }
