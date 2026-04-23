@@ -62,8 +62,9 @@ public class DivideIntervalsIntoMinimumNumberOfGroups {
      *  2. Use a min-heap (priority queue)
      *     to track the `earliest` `ending` group.
      *
-     *  3. If the current interval starts
-     *     after the `earliest` `ending` interval, REUSE that group.
+     *  3. If the current interval
+     *     `starts after the` `earliest` `ending` interval,
+     *     -> REUSE that group.
      *
      *  4. Otherwise, create a new group.
      *
@@ -75,6 +76,159 @@ public class DivideIntervalsIntoMinimumNumberOfGroups {
      *   PQ stores `end` times of `current groups`
      *
      *
+     */
+    /**  Dry run:
+     *
+     *  ->
+     *    Input: intervals = [[5,10],[6,8],[1,5],[2,3],[1,10]]
+     *    Output: 3
+     *
+     * Time →
+     * 1    2    3    4    5    6    7    8    9    10
+     * ------------------------------------------------
+     * [1,5]   █████
+     * [1,10]  ███████████████
+     * [2,3]        ██
+     * [5,10]            █████████
+     * [6,8]                 ███
+     *
+     *
+     *
+     *  ->
+     *
+     *   Let’s dry-run the **min-heap solution** step by step for your input:
+     *
+     * ```
+     * NOTE !!!
+     *
+     *
+     * intervals = [[5,10],[6,8],[1,5],[2,3],[1,10]]
+     * ```
+     *
+     * ---
+     *
+     * ## 🔹 Step 1: Sort by start
+     *
+     * ```text
+     * [1,5], [1,10], [2,3], [5,10], [6,8]
+     * ```
+     *
+     * ---
+     *
+     * ## 🔹 Step 2: Process with min-heap (stores end times)
+     *
+     * We maintain:
+     *
+     * * `pq` = min-heap of end times
+     * * rule: reuse group if `pq.peek() < start`
+     *
+     * ---
+     *
+     * ### ▶️ Iteration 1: [1,5]
+     *
+     * * pq = []
+     * * no group → create one
+     *
+     * ```
+     * pq = [5]
+     * ```
+     *
+     * ---
+     *
+     * ### ▶️ Iteration 2: [1,10]
+     *
+     * * pq.peek() = 5
+     * * 5 < 1 ❌ (overlap, since inclusive)
+     *
+     * → need new group
+     *
+     * ```
+     * pq = [5, 10]
+     * ```
+     *
+     * ---
+     *
+     * ### ▶️ Iteration 3: [2,3]
+     *
+     * * pq.peek() = 5
+     * * 5 < 2 ❌
+     *
+     * → still overlapping → new group
+     *
+     * ```
+     * pq = [3, 10, 5]   // (heap internally sorted → [3,5,10])
+     * ```
+     *
+     * ---
+     *
+     * ### ▶️ Iteration 4: [5,10]
+     *
+     * * pq.peek() = 3
+     * * 3 < 5 ✅ → reuse group
+     *
+     * → remove 3, add 10
+     *
+     * ```
+     * pq = [5, 10, 10]
+     * ```
+     *
+     * ---
+     *
+     * ### ▶️ Iteration 5: [6,8]
+     *
+     * * pq.peek() = 5
+     * * 5 < 6 ✅ → reuse group
+     *
+     * → remove 5, add 8
+     *
+     * ```
+     * pq = [8, 10, 10]
+     * ```
+     *
+     * ---
+     *
+     * ## 🔹 Final result
+     *
+     * ```
+     * pq.size() = 3
+     * ```
+     *
+     * ✅ Answer = **3**
+     *
+     * ---
+     *
+     * ## 🧠 Key moment to notice
+     *
+     * At time around `2`:
+     *
+     * ```
+     * [1,5], [1,10], [2,3]
+     * ```
+     *
+     * All overlap → **3 groups needed**
+     *
+     * That’s exactly what the heap captures.
+     *
+     * ---
+     *
+     * ## ⚠️ Subtle but critical detail
+     *
+     * Why this works:
+     *
+     * ```java
+     * if (pq.peek() < start)
+     * ```
+     *
+     * NOT:
+     *
+     * ```java
+     * <=
+     * ```
+     *
+     * Because intervals are **inclusive**:
+     *
+     * * `[1,5]` and `[5,10]` **overlap at 5**
+     * * so they **cannot** share a group
      */
     public int minGroups_0_1(int[][] intervals) {
         // sort by start time
@@ -109,6 +263,12 @@ public class DivideIntervalsIntoMinimumNumberOfGroups {
             /** NOTE !!!
              *
              * Smallest value (pq.peek()) = earliest available group
+             *
+             * -> NOTE !!!
+             *
+             *  ` pq.peek()` is the min `end time` from PQ,
+             *    NOT the prev one (check above dry run)
+             *
              */
             if (!pq.isEmpty() && pq.peek() < interval[0]) {
                 /** NOTE !!!
@@ -206,7 +366,6 @@ public class DivideIntervalsIntoMinimumNumberOfGroups {
     }
 
 
-
     // V0-5
     // IDEA: SORT + PQ (GEMINI)
     public int minGroups_0_5(int[][] intervals) {
@@ -242,6 +401,32 @@ public class DivideIntervalsIntoMinimumNumberOfGroups {
         }
 
         return groupCount;
+    }
+
+
+    // V0-6
+    // IDEA: PQ + SORT (gpt)
+    public int minGroups_0_6(int[][] intervals) {
+        // sort by start
+        Arrays.sort(intervals, (a, b) -> Integer.compare(a[0], b[0]));
+
+        // min heap storing end times
+        PriorityQueue<Integer> pq = new PriorityQueue<>();
+
+        for (int[] interval : intervals) {
+            int start = interval[0];
+            int end = interval[1];
+
+            // if earliest group is free, reuse it
+            if (!pq.isEmpty() && pq.peek() < start) {
+                pq.poll();
+            }
+
+            // assign current interval to a group
+            pq.offer(end);
+        }
+
+        return pq.size();
     }
 
 

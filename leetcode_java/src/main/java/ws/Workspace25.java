@@ -1880,6 +1880,8 @@ public class Workspace25 {
      *  -> Return the minimum number
      *  of groups you need to make.
      *
+     *   s.t. NO overlap for intervals in same group
+     *
      *
      *  - intervals[i] = [lefti, righti]
      *                  the inclusive
@@ -1904,8 +1906,60 @@ public class Workspace25 {
      *
      *
      */
-    // IDEA 1) PQ / SORTING ????
+    // 15.15 - 25 pm
+    // idea: PQ
     public int minGroups(int[][] intervals) {
+        // edge
+
+        // note !!
+        // PQ: { end_time_1, end_time_2, .. }
+        // PQ to check `min end time` ?????
+        PriorityQueue<Integer> pq = new PriorityQueue<>(new Comparator<Integer>() {
+            @Override
+            public int compare(Integer o1, Integer o2) {
+                return o1 - o2;
+            }
+        });
+
+        // ??? sort
+        Arrays.sort(intervals, new Comparator<int[]>() {
+            @Override
+            public int compare(int[] o1, int[] o2) {
+                int diff = o1[0] - o2[0];
+                return diff;
+            }
+        });
+
+        //int overlap = 0;
+
+
+        // ??
+        for(int[] x: intervals){
+//            if(pq.isEmpty() || pq.peek() < x[0]){
+//                //pq.add(x);
+//            }else{
+//                overlap += 1; // ??
+//            }
+            // ???
+            if(!pq.isEmpty() && pq.peek() < x[0]){
+                pq.poll();
+            }
+
+            pq.offer(x[1]);
+        }
+
+        return pq.size();
+    }
+
+
+
+
+
+
+
+
+    // IDEA 1) PQ / SORTING ????
+    public int minGroups_98(int[][] intervals) {
 
 
         PriorityQueue<Integer[]> pq = new PriorityQueue<>(new Comparator<Integer[]>() {
