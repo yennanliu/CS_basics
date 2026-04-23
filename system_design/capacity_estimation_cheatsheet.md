@@ -194,3 +194,7 @@ Copy-paste this at the end of any estimation:
 6. **Flag IOPS separately from capacity** for disk-heavy workloads (e.g., test case loading). NVMe/SSD local cache per worker is the standard answer.
 
 7. **Round generously.** In interviews, 432 vCPUs → "about 30 servers" is fine. Precision beyond 1 sig fig wastes time.
+
+## 6. Ref
+
+- https://systemdesignschool.io/resource-estimator
