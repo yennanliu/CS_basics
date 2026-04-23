@@ -1,6 +1,6 @@
 # Progress
 
-# 2026-04-22
+# 2026-04-23
 
 - Needcode DP playlist
 	- https://www.youtube.com/watch?v=73r3KWiEvyk&list=PLot-Xpze53lcvx_tjrr_m2lgD2NsRHlNO
@@ -75,7 +75,6 @@
 	- LC 881
 		- gpt
 		- gemini
-			- 2345
 	- LC 901
 		- gpt
 			- 84
