@@ -63,6 +63,35 @@ public class FindingTheNumberOfVisibleMountains {
     // V0-1
     // IDEA: MATH (gpt)
     // TODO: validate
+    /**  Core idea:
+     *
+     * 1.         *
+     *   -> A mountain is `visible` **only if
+     *       it `pushes the right boundary further `
+     *       than anything seen so far**.
+     *
+     *
+     *  2. ✅ Steps (correct approach (key idea)
+     *
+     * -> Convert each peak (x, y) into an interval:
+     *
+     *     left = x - y
+     *     right = x + y
+     *
+     * Then:
+     *
+     *  1. Sort by:
+     *    left ASC
+     *    right DESC (important!)
+     *
+     * 2. Iterate and track the maximum right boundary seen so far
+     *
+     * 3. A mountain is visible if its right is strictly greater
+     *    than all previous ones
+     *
+     * 4. Handle duplicates: identical intervals → not visible
+     *
+     */
     public int visibleMountains_0_1(int[][] peaks) {
         int n = peaks.length;
         int[][] intervals = new int[n][2];
@@ -85,6 +114,11 @@ public class FindingTheNumberOfVisibleMountains {
         int maxRight = Integer.MIN_VALUE;
 
         for (int i = 0; i < n; i++) {
+            /** NOTE !!!
+             *
+             *   if `100 % overlap` (e.g. duplicates)
+             *   -> totally SKIP it.
+             */
             // skip duplicates
             if (i > 0 &&
                     intervals[i][0] == intervals[i - 1][0] &&
@@ -92,6 +126,127 @@ public class FindingTheNumberOfVisibleMountains {
                 continue;
             }
 
+            /** NOTE !!! why `intervals[i][1] > maxRight` ??
+             *
+             *
+             * That line is the core of the visibility
+             * check—it encodes the **containment rule**
+             * in a single comparison.
+             *
+             * ---
+             *
+             * ### 🔑 What `maxRight` represents
+             *
+             * After sorting by:
+             *
+             * * `left ASC`
+             * * `right DESC`
+             *
+             * you are scanning mountains from **left to right**, and:
+             *
+             * > `maxRight` =
+             *   the `farthest` right boundary of
+             *   *any mountain you've already seen*
+             *
+             * ---
+             *
+             * ### 🧠 Why `intervals[i][1] > maxRight` works
+             *
+             * Let current interval be:
+             *
+             * ```java
+             * [left_i, right_i]
+             * ```
+             *
+             * There are only two possibilities:
+             *
+             * ---
+             *
+             * #### ✅ Case 1: `right_i > maxRight` → **VISIBLE**
+             *
+             * This means:
+             *
+             * > This mountain extends farther right than all previous ones.
+             *
+             * So:
+             *
+             * * No earlier mountain can fully cover it
+             * * Therefore, it is **visible**
+             *
+             * ---
+             *
+             * #### ❌ Case 2: `right_i <= maxRight` → **NOT visible**
+             *
+             * This means:
+             *
+             * > Some previous mountain already reaches at least this far
+             *
+             * Because of sorting:
+             *
+             * * That previous mountain also has `left <= left_i`
+             * * So it **completely covers** the current one
+             *
+             * 👉 Hence, current mountain is hidden
+             *
+             * ---
+             *
+             * ### 📌 Why sorting matters (very important)
+             *
+             * Sorting by:
+             *
+             * ```text
+             * left ASC, right DESC
+             * ```
+             *
+             * ensures:
+             *
+             * * Bigger mountains (wider intervals) come **first**
+             * * So when a smaller one appears later, it can be detected as covered
+             *
+             * ---
+             *
+             * ### 🔍 Example
+             *
+             * Input:
+             *
+             * ```
+             * [2,2] → [0,4]
+             * [3,1] → [2,4]
+             * [4,1] → [3,5]
+             * ```
+             *
+             * After sorting:
+             *
+             * ```
+             * [0,4]
+             * [2,4]
+             * [3,5]
+             * ```
+             *
+             * Now iterate:
+             *
+             * | interval | maxRight | condition | result    |
+             * | -------- | -------- | --------- | --------- |
+             * | [0,4]    | -∞       | 4 > -∞    | visible ✅ |
+             * | [2,4]    | 4        | 4 > 4 ❌   | hidden ❌  |
+             * | [3,5]    | 4        | 5 > 4 ✅   | visible ✅ |
+             *
+             * ---
+             *
+             * ### 💡 Intuition in one sentence
+             *
+             * > A mountain is `visible` **only if
+             *   it `pushes the right boundary further `
+             *   than anything seen so far**.
+             *
+             * ---
+             *
+             * If you're wondering why we use `>` instead of `>=`,
+             * that ties into **duplicate handling**—happy to break
+             * that down next if you want.
+             *
+             *
+             */
             if (intervals[i][1] > maxRight) {
                 visible++;
                 maxRight = intervals[i][1];
@@ -104,6 +259,18 @@ public class FindingTheNumberOfVisibleMountains {
     // V0-2
     // IDEA: GEMINI
     // TODO: validate
+    /** NOTE !!
+     *
+     *
+     *  Core idea:
+     *
+     *  Visibility Logic:
+     *
+     *    As you iterate,
+     *    track the maxRight reached so far.
+     *    If a mountain's `right boundary is <= maxRight`,
+     *       -> it's hidden.
+     */
     public int visibleMountains_0_2(int[][] peaks) {
         int n = peaks.length;
         // 1. Convert to intervals: [start, end]
