@@ -1831,8 +1831,105 @@ public class Workspace25 {
      *
      *
      *
+     *
      */
+    // 16.02 - 16 pm
+    // IDEA 1) HASHMAP + GREEDY ?????
     public int minSwapsCouples(int[] row) {
+        // edge
+
+        // map: { val : idx }
+        Map<Integer, Integer> map = new HashMap<>();
+        for(int i = 0; i < row.length; i++){
+            map.put(row[i], i);
+        }
+
+        System.out.println(">>> map = " + map);
+
+        int swap = 0;
+
+        // ??
+        // ????
+        for(int i = 1; i < row.length; i += 2){
+            // ???
+            int x = row[i];
+            int y = row[i - 1];
+            if(isPair2(x, y)){
+                continue;
+            }
+            // NOTE !!! if not `couple`,
+            //         -> swap
+            else{
+
+                /** NOTE !!!
+                 *
+                 *  If x is even → partner = x + 1
+                 *  If x is odd → partner = x - 1
+                 *
+                 */
+
+
+                 swap += 1;
+
+                int partner = (x % 2 == 0) ? x + 1 : x - 1;
+
+                // NOTE !!!
+                int partnerIdx = map.get(partner);
+                int tmp = partner;
+
+                // NOTE !!!
+                // need to BOTH update
+                // arr and hashmap !!!
+                int tmp2 = row[partnerIdx];
+                row[partnerIdx] = row[i+1];
+                row[i+1] = tmp2; // ???
+
+                // ???
+                map.put(partner, i+1);
+                map.put(row[i+1], partnerIdx);
+
+
+//                swap += 1;
+//                // ???
+//                // get the `even` one ??
+//                // then swap for the `odd` one ???
+//                int even = -1;
+//                int odd = -1;
+//                if(x % 2 == 0){
+//                    x = even;
+//                    y = odd;
+//                }else{
+//                    x = odd;
+//                    y = even;
+//                }
+//                // update map ???
+//                int tmp = map.get(odd);
+//                map.put(odd, i);
+//                map.put(i, tmp);
+            }
+        }
+
+        return swap;
+    }
+
+
+
+    // ???
+    private boolean isPair2(int x, int y){
+
+        return Math.abs(x - y) == 1;
+    }
+
+
+
+
+
+
+
+
+
+
+    public int minSwapsCouples_98(int[] row) {
         // edge ???
 
         // map: { val : idx }

@@ -100,6 +100,13 @@ public class CouplesHoldingHands {
 
             /** NOTE !!!
              *
+             *  need to BOTH update
+             *   1. array
+             *   2. hashMap
+             */
+
+            /** NOTE !!!
+             *
              *   we swap
              *     `next element` (row[i + 1])
              *      with
