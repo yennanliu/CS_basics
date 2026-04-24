@@ -38,7 +38,8 @@
 	- linked_list.md  (OK)
 	- math.md (OK)
 	- matrix.md (OK)
-	- monotonic_queue.md (TODO: LC examples)
+	- monotonic_queue.md (OK)
+	- monotonic_stack.md (TODO: LC examples)
 
 
 - to review
