@@ -2348,9 +2348,54 @@ public class Workspace25 {
 
 
     // LC 85
+    // 7.46 - 56 am
+    /**
+     *  ->  find the largest rectangle containing
+     *      only 1's
+     *     -> and return its area.
+     *
+     *
+     *   ----------------
+     *
+     *   IDEA 1) DFS or BFS ??
+     *
+     *   IDEA 2) MATH + BRUTE FORCE ???
+     *
+     *   IDEA 3) DP ????
+     *
+     *
+     *   ----------------
+     *
+     *
+     *
+     */
+    //  IDEA 3) DP ????
     public int maximalRectangle(char[][] matrix) {
+        // edge
 
-        return 0;
+        int n = matrix.length;
+
+        /**  DP def:
+         *
+         *  max `rectangle` area at (i, j) (idx)
+         */
+        int[][] dp = new int[n + 1][n + 1];
+
+        // init ??
+        dp[0][0] = matrix[0][0] == 1 ? 1: 0;
+
+        for(int y = 1; y < n; y++){
+            for(int x = 1; x < n; x++){
+                // ???
+                if(matrix[y-1][x] == 1
+                        && matrix[y][x-1] == 1
+                        && dp[y-1][x-1] == 1){
+                    dp[y][x] = dp[y-1][x-1] + 2; // ???
+                }
+            }
+        }
+
+        return dp[n-1][n-1];
     }
 
 

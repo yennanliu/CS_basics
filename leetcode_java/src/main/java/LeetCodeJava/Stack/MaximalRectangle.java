@@ -48,7 +48,103 @@ public class MaximalRectangle {
 //
 //    }
 
-    // V1
+    // V1-1
+    // IDEA: (GPT)
+    public int maximalRectangle_1_1(char[][] matrix) {
+        if (matrix == null || matrix.length == 0)
+            return 0;
+
+        int m = matrix.length;
+        int n = matrix[0].length;
+
+        int[] heights = new int[n];
+        int maxArea = 0;
+
+        for (int i = 0; i < m; i++) {
+            // build histogram
+            for (int j = 0; j < n; j++) {
+                if (matrix[i][j] == '1') {
+                    heights[j] += 1;
+                } else {
+                    heights[j] = 0;
+                }
+            }
+
+            // compute largest rectangle in histogram
+            maxArea = Math.max(maxArea, largestRectangleArea_1_1(heights));
+        }
+
+        return maxArea;
+    }
+
+    private int largestRectangleArea_1_1(int[] heights) {
+        Stack<Integer> stack = new Stack<>();
+        int max = 0;
+
+        for (int i = 0; i <= heights.length; i++) {
+            int h = (i == heights.length) ? 0 : heights[i];
+
+            while (!stack.isEmpty() && h < heights[stack.peek()]) {
+                int height = heights[stack.pop()];
+                int width = stack.isEmpty() ? i : i - stack.peek() - 1;
+                max = Math.max(max, height * width);
+            }
+
+            stack.push(i);
+        }
+
+        return max;
+    }
+
+
+    // V1-2
+    // IDEA: (GEMINI)
+    public int maximalRectangle_1_2(char[][] matrix) {
+        if (matrix == null || matrix.length == 0 || matrix[0].length == 0)
+            return 0;
+
+        int rows = matrix.length;
+        int cols = matrix[0].length;
+        int[] heights = new int[cols];
+        int maxArea = 0;
+
+        for (int i = 0; i < rows; i++) {
+            // 1. Update histogram heights for the current row
+            for (int j = 0; j < cols; j++) {
+                if (matrix[i][j] == '1') {
+                    heights[j] += 1;
+                } else {
+                    heights[j] = 0; // Reset if there's a gap
+                }
+            }
+
+            // 2. Find the largest rectangle in the current histogram
+            maxArea = Math.max(maxArea, largestRectangleInHistogram(heights));
+        }
+
+        return maxArea;
+    }
+
+    private int largestRectangleInHistogram(int[] heights) {
+        Stack<Integer> stack = new Stack<>();
+        int maxArea = 0;
+        int n = heights.length;
+
+        for (int i = 0; i <= n; i++) {
+            // Use a virtual '0' height at the end to flush the stack
+            int h = (i == n) ? 0 : heights[i];
+
+            while (!stack.isEmpty() && h < heights[stack.peek()]) {
+                int height = heights[stack.pop()];
+                int width = stack.isEmpty() ? i : i - stack.peek() - 1;
+                maxArea = Math.max(maxArea, height * width);
+            }
+            stack.push(i);
+        }
+        return maxArea;
+    }
+
+
 
     // V2
     // IDEA: ROW-WISE PREFIX WIDTH + VERTICAL EXPANSION
