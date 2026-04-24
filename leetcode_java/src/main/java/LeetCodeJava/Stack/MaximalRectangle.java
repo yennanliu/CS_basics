@@ -186,7 +186,7 @@ public class MaximalRectangle {
 
 
     // V1-2
-    // IDEA: Histogram + Stack (GEMINI)
+    // IDEA: Histogram + Stack + LC 84 (GEMINI)
     public int maximalRectangle_1_2(char[][] matrix) {
         if (matrix == null || matrix.length == 0 || matrix[0].length == 0)
             return 0;
