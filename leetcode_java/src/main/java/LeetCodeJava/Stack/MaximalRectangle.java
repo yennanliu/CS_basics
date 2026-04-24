@@ -150,12 +150,13 @@ public class MaximalRectangle {
     }
 
 
-    /**  Help func:
+    /**  Help func:  // LC 84
+     * 
+     *  https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/LeetCodeJava/Stack/LargestRectangleInHistogram.java
      *
      *   Largest Rectangle in Histogram
      *
      *    -> Classic monotonic stack solution.
-     *
      *
      */
     private int largestRectangleArea_1_1(int[] heights) {

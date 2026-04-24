@@ -2400,6 +2400,19 @@ public class Workspace25 {
 
 
     // LC 84
+    // 8.25 - 35 am
+    /**
+     *
+     *   -> return the area of the
+     *     `largest rectangle` in the histogram.
+     *
+     *
+     *   ---------
+     *
+     *   IDEA 1) STACK ??????  (FILO)
+     *
+     */
+    // IDEA 1) STACK ??????  (FILO)
     public int largestRectangleArea(int[] heights) {
 
         return 0;
