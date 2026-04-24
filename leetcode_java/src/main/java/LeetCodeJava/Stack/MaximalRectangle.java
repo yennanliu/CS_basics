@@ -151,7 +151,7 @@ public class MaximalRectangle {
 
 
     /**  Help func:  // LC 84
-     * 
+     *
      *  https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/LeetCodeJava/Stack/LargestRectangleInHistogram.java
      *
      *   Largest Rectangle in Histogram

@@ -2419,6 +2419,12 @@ public class Workspace25 {
     }
 
 
+    // LC 1438
+    public int longestSubarray(int[] nums, int limit) {
+
+        return 0;
+    }
+
 
 
 
