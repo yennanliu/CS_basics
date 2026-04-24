@@ -49,7 +49,32 @@ public class MaximalRectangle {
 //    }
 
     // V1-1
-    // IDEA: (GPT)
+    // IDEA: Histogram + Stack + LC 84 (GPT)
+    /** Core idea:
+     *
+     *  -> Treat each `row` as the base of a `histogram`:
+     *
+     *   - Build heights[j]:
+     *       number of consecutive '1's above
+     *       (including current row)
+     *
+     *   - For each row,
+     *     solve Largest Rectangle in Histogram (LC 84)
+     *
+     *
+     * --------------------
+     *
+     *  V2:
+     *
+     *  We convert each row into a histogram:
+     *
+     *  - Each column stores how many consecutive
+     *    '1's appear vertically up to that row
+     *
+     *  - Then for each row, we solve
+     *    largest rectangle in histogram
+     *
+     */
     public int maximalRectangle_1_1(char[][] matrix) {
         if (matrix == null || matrix.length == 0)
             return 0;
@@ -57,10 +82,47 @@ public class MaximalRectangle {
         int m = matrix.length;
         int n = matrix[0].length;
 
+        /** NOTE !!
+         *
+         *  This is the key structure.
+         *
+         *  -> heights[j] =
+         *       number of `consecutive` '1's ending at
+         *       current `row` i in column j
+         *
+         *  Example buildup:
+         *
+         *   ```
+         *   Row 0: 1 0 1  → heights = [1,0,1]
+         *   Row 1: 1 1 1  → heights = [2,1,2]
+         *   Row 2: 1 1 0  → heights = [3,2,0]
+         *   ```
+         *
+         */
         int[] heights = new int[n];
+
+        // Tracks global maximum rectangle.
         int maxArea = 0;
 
+        // Iterate through each row
+        // (process row by row)
         for (int i = 0; i < m; i++) {
+            /** NOTE !!!
+             *
+             *  Step 1) build `histogram`
+             *
+             *  ->
+             *
+             *  - If current cell is '1':
+             *       extend the vertical height
+             *
+             *  - If '0':
+             *       reset height to 0 (rectangle breaks)
+             *
+             *
+             *       -> After this loop, heights[] represents
+             *          a histogram for row i.
+             */
             // build histogram
             for (int j = 0; j < n; j++) {
                 if (matrix[i][j] == '1') {
@@ -70,6 +132,16 @@ public class MaximalRectangle {
                 }
             }
 
+            /** NOTE !!!
+             *
+             *  Step 2) Solve histogram problem
+             *
+             *    -> We compute the largest rectangle area in
+             *       this histogram and update the global max.
+             *
+             *
+             *  get `maxArea`
+             */
             // compute largest rectangle in histogram
             maxArea = Math.max(maxArea, largestRectangleArea_1_1(heights));
         }
@@ -77,7 +149,23 @@ public class MaximalRectangle {
         return maxArea;
     }
 
+
+    /**  Help func:
+     *
+     *   Largest Rectangle in Histogram
+     *
+     *    -> Classic monotonic stack solution.
+     *
+     *
+     */
     private int largestRectangleArea_1_1(int[] heights) {
+
+        /** NOTE !!!
+         *
+         *  1.  Stack stores `indices`, not heights
+         *  2.  Maintains increasing height order
+         *
+         */
         Stack<Integer> stack = new Stack<>();
         int max = 0;
 
@@ -98,7 +186,7 @@ public class MaximalRectangle {
 
 
     // V1-2
-    // IDEA: (GEMINI)
+    // IDEA: Histogram + Stack (GEMINI)
     public int maximalRectangle_1_2(char[][] matrix) {
         if (matrix == null || matrix.length == 0 || matrix[0].length == 0)
             return 0;
