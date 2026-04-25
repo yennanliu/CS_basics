@@ -873,7 +873,11 @@ class Solution:
 ```
 
 ### 2-3) Divide Intervals Into Minimum Number of Groups (LC 2406) — Sweep Line Peak Count
-> Same as Meeting Rooms II; inclusive endpoints mean start before end at tie-breaking.
+> Min groups = peak concurrent overlaps. Three patterns: (1) sweep line events (+1/-1), (2) sort+PQ reuse group when `pq.peek() < start` (strict `<` because endpoints are inclusive), (3) difference array for fixed-range coordinates.
+>
+> **Key trap**: `[1,5]` and `[5,10]` overlap — use `pq.peek() < start` (not `<=`) in PQ approach, and sort start(+1) before end(−1) at same time in sweep approach.
+>
+> **Similar LC**: 253 Meeting Rooms II, 1094 Car Pooling, 2021 Brightest Position on Street, 1854 Maximum Population Year, 729/731/732 My Calendar I/II/III
 
 ```java
 // LC 2406 - Divide Intervals Into Minimum Number of Groups
@@ -888,6 +892,28 @@ public int minGroups(int[][] intervals) {
     events.sort((a, b) -> a[0] != b[0] ? a[0] - b[0] : b[1] - a[1]); // start(+1) before end(-1)
     int cur = 0, max = 0;
     for (int[] e : events) { cur += e[1]; max = Math.max(max, cur); }
+    return max;
+}
+
+// Alt: Sort + Min-PQ (reuse group when earliest end < current start)
+// time = O(N log N), space = O(N)
+public int minGroups_pq(int[][] intervals) {
+    Arrays.sort(intervals, (a, b) -> a[0] - b[0]);
+    PriorityQueue<Integer> pq = new PriorityQueue<>(); // stores end times
+    for (int[] inv : intervals) {
+        if (!pq.isEmpty() && pq.peek() < inv[0]) pq.poll(); // reuse group
+        pq.add(inv[1]);
+    }
+    return pq.size(); // active groups = peak overlap
+}
+
+// Alt: Difference array (fixed coordinate range)
+// time = O(N + M), space = O(M)  where M = max coordinate
+public int minGroups_diff(int[][] intervals) {
+    int[] diff = new int[1_000_002];
+    for (int[] inv : intervals) { diff[inv[0]]++; diff[inv[1] + 1]--; }
+    int max = 0, cur = 0;
+    for (int d : diff) { cur += d; max = Math.max(max, cur); }
     return max;
 }
 ```
