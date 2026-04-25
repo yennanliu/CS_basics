@@ -895,232 +895,53 @@ if not out_stack:
 
 ## LC Examples
 
-### 2-1) Sliding Window Maximum
-
-```python
-# LC 239 Sliding Window Maximum (hard)
-# V1
-# http://bookshadow.com/weblog/2015/07/18/leetcode-sliding-window-maximum/
-# IDEA : DEQUE
-class Solution:
-    def maxSlidingWindow(self, nums, k):
-        dq = collections.deque()
-        ans = []
-        for i in range(len(nums)):
-            while dq and nums[dq[-1]] <= nums[i]:
-                dq.pop()
-            dq.append(i)
-            if dq[0] == i - k:
-                dq.popleft()
-            if i >= k - 1:
-                ans.append(nums[dq[0]])
-        return ans
-```
+### 2-1) Sliding Window Maximum (LC 239) — Monotonic Deque
+> Maintain a decreasing deque of indices; front is always the current window maximum.
 
 ```java
-// LC 239 Sliding Window Maximum (hard)
-// algorithm book (labu) p. 278, p.281
-// java
-
-// monotonic queue
-class MonotonicQueue{
-
-    // init queue
-    LinkedList<Integer> q = new LinkedList<>();
-    
-    // add element to queue tail
-    public void push(int n){
-        while (!q.isEmpty() && q.getLast() < n){
-            q.pollLast();
-        }
-        q.addLast(n);
+// LC 239 - Sliding Window Maximum
+// IDEA: Monotonic deque — remove out-of-window front, remove smaller rear, front = max
+// time = O(N), space = O(k)
+public int[] maxSlidingWindow(int[] nums, int k) {
+    int n = nums.length;
+    int[] ans = new int[n - k + 1];
+    Deque<Integer> dq = new ArrayDeque<>(); // indices, decreasing by value
+    for (int i = 0; i < n; i++) {
+        while (!dq.isEmpty() && dq.peekFirst() < i - k + 1) dq.pollFirst();
+        while (!dq.isEmpty() && nums[dq.peekLast()] < nums[i]) dq.pollLast();
+        dq.addLast(i);
+        if (i >= k - 1) ans[i - k + 1] = nums[dq.peekFirst()];
     }
-
-    // return current max value in queue
-    public int max(){
-        return q.getFirst();
-    }
-
-    // if head element is n, delete it
-    public void pop(int n){
-        if (n == q.getFirst()){
-            q.pollLast();
-        }
-    }
-}
-
-/* main func */
-int[] maxSlidingWindow([int] nums, int k){
-    MonotonicQueue window = new MonotonicQueue();
-    List<Integer> res = new ArrayList<>();
-
-    for (int i = 0; i < nums.length; i++){
-        if (i < k - 1){
-            // insert k - 1 elements in the window
-            window.push(nums[i]);
-        }else{
-            // window move forward, add new element
-            window.push(nums[i]);
-            // record current max element in the window
-            res.add(window.max());
-            // move out element
-            window.pop(nums[i - k + 1]);
-        }
-    }
-
-    // transform res to int[] array as answer form
-    int[] arr = new int[res.size()];
-    for (int i = 0; i < res.size(); i ++){
-        arr[i] = res.get(i);
-    }
-    return arr;
+    return ans;
 }
 ```
 
-### 2-2) Design Circular Queue
+### 2-2) Design Circular Queue (LC 622) — Array with Head/Count
+> Fixed-size array; track head index and count; use modular arithmetic for wrap-around.
 
-```python
-# LC 622. Design Circular Queue
-# V0 
-# IDEA : ARRAY
-# https://leetcode.com/problems/design-circular-queue/solution/
-
-# NOTE !!! when `circular`, -> think about `fixed_idx = idx % len`
-
-class MyCircularQueue:
-
-    def __init__(self, k):
-        """
-        Initialize your data structure here. Set the size of the queue to be k.
-        """
-        self.queue = [0]*k
-        self.headIndex = 0
-        self.count = 0
-        self.capacity = k
-
-    def enQueue(self, value):
-        """
-        Insert an element into the circular queue. Return true if the operation is successful.
-        """
-        if self.count == self.capacity:
-            return False
-        self.queue[(self.headIndex + self.count) % self.capacity] = value
-        self.count += 1
-        return True
-
-    def deQueue(self):
-        """
-        Delete an element from the circular queue. Return true if the operation is successful.
-        """
-        if self.count == 0:
-            return False
-        self.headIndex = (self.headIndex + 1) % self.capacity
-        self.count -= 1
-        return True
-
-    def Front(self):
-        """
-        Get the front item from the queue.
-        """
-        if self.count == 0:
-            return -1
-        return self.queue[self.headIndex]
-
-    def Rear(self):
-        """
-        Get the last item from the queue.
-        """
-        # empty queue
-        if self.count == 0:
-            return -1
-        return self.queue[(self.headIndex + self.count - 1) % self.capacity]
-
-    def isEmpty(self):
-        """
-        Checks whether the circular queue is empty or not.
-        """
-        return self.count == 0
-
-    def isFull(self):
-        """
-        Checks whether the circular queue is full or not.
-        """
-        return self.count == self.capacity
-
-# V0'
-# IDEA : LINKED LIST
-# https://leetcode.com/problems/design-circular-queue/solution/
-class Node:
-    def __init__(self, value, nextNode=None):
-        self.value = value
-        self.next = nextNode
-
-class MyCircularQueue:
-
-    def __init__(self, k):
-        """
-        Initialize your data structure here. Set the size of the queue to be k.
-        """
-        self.capacity = k
-        self.head = None
-        self.tail = None
-        self.count = 0
-
-    def enQueue(self, value):
-        """
-        Insert an element into the circular queue. Return true if the operation is successful.
-        """
-        if self.count == self.capacity:
-            return False
-        
-        if self.count == 0:
-            self.head = Node(value)
-            self.tail = self.head
-        else:
-            newNode = Node(value)
-            self.tail.next = newNode
-            self.tail = newNode
-        self.count += 1
-        return True
-
-
-    def deQueue(self):
-        """
-        Delete an element from the circular queue. Return true if the operation is successful.
-        """
-        if self.count == 0:
-            return False
-        self.head = self.head.next
-        self.count -= 1
-        return True
-
-
-    def Front(self):
-        """
-        Get the front item from the queue.
-        """
-        if self.count == 0:
-            return -1
-        return self.head.value
-
-    def Rear(self):
-        """
-        Get the last item from the queue.
-        """
-        # empty queue
-        if self.count == 0:
-            return -1
-        return self.tail.value
-    
-    def isEmpty(self):
-        """
-        Checks whether the circular queue is empty or not.
-        """
-        return self.count == 0
-
-    def isFull(self):
-        """
-        Checks whether the circular queue is full or not.
-        """
-        return self.count == self.capacity
+```java
+// LC 622 - Design Circular Queue
+// IDEA: Fixed array + head pointer + count; tail = (head + count - 1) % capacity
+// time = O(1) all ops, space = O(k)
+class MyCircularQueue {
+    int[] data;
+    int head, count, capacity;
+    public MyCircularQueue(int k) { data = new int[k]; capacity = k; }
+    public boolean enQueue(int value) {
+        if (isFull()) return false;
+        data[(head + count) % capacity] = value;
+        count++;
+        return true;
+    }
+    public boolean deQueue() {
+        if (isEmpty()) return false;
+        head = (head + 1) % capacity;
+        count--;
+        return true;
+    }
+    public int Front() { return isEmpty() ? -1 : data[head]; }
+    public int Rear()  { return isEmpty() ? -1 : data[(head + count - 1) % capacity]; }
+    public boolean isEmpty() { return count == 0; }
+    public boolean isFull()  { return count == capacity; }
+}
 ```

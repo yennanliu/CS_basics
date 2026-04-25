@@ -39,7 +39,8 @@
 	- math.md (OK)
 	- matrix.md (OK)
 	- monotonic_queue.md (OK)
-	- monotonic_stack.md (TODO: LC examples)
+	- monotonic_stack.md (OK)
+	- n_sum.md (TODO: LC examples)
 
 
 - to review
@@ -352,7 +353,7 @@
 		- 1499,2398
 	- todo (20260425)
 		- 42,503
-		- 907,402
+		- 907,402**,853**
 
  	==================================
 

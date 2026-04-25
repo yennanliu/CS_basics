@@ -44,7 +44,13 @@ def parse_lc_examples(content: str):
     in_code = False
     code_lang = None
 
+    first_line = True
     for line in lines:
+        # Stop at next ## section (but not the opening ## LC Examples itself)
+        if not first_line and line.startswith("## "):
+            break
+        first_line = False
+
         # Track code fences
         if line.startswith("```"):
             if not in_code:
@@ -118,8 +124,7 @@ def classify_entry(entry):
         issues.append("no-code")
     elif "java" not in langs:
         issues.append("python-only")
-    elif "python" in langs or "python3" in langs:
-        issues.append("has-extra-python")
+    # python alongside java is acceptable
 
     return issues
 

@@ -685,7 +685,26 @@ coord_map = {v: i for i, v in enumerate(sorted(coords))}
 
 ## LC Examples
 
-### 2-1) Meeting Rooms II
+### 2-1) Meeting Rooms II (LC 253) — Sweep Line Peak Count
+> Emit +1 on start, -1 on end; sort events; peak concurrent count = min rooms needed.
+
+```java
+// LC 253 - Meeting Rooms II
+// IDEA: Sweep line — +1 on start, -1 on end; sort (end before start at ties); track peak
+// time = O(N log N), space = O(N)
+public int minMeetingRooms(int[][] intervals) {
+    List<int[]> events = new ArrayList<>();
+    for (int[] inv : intervals) {
+        events.add(new int[]{inv[0], 1});
+        events.add(new int[]{inv[1], -1});
+    }
+    events.sort((a, b) -> a[0] != b[0] ? a[0] - b[0] : a[1] - b[1]); // end before start at same time
+    int rooms = 0, maxRooms = 0;
+    for (int[] e : events) { rooms += e[1]; maxRooms = Math.max(maxRooms, rooms); }
+    return maxRooms;
+}
+```
+
 ```python
 # LC 253 Meeting Rooms II
 # NOTE : there're also priority queue, sorting approaches
@@ -743,7 +762,29 @@ class Solution:
         return max_num
 ```
 
-### 2-2) Brightest Position on Street
+### 2-2) Brightest Position on Street (LC 2021) — Weighted Sweep Line
+> Emit +1 at p−r and −1 at p+r+1; track position with maximum accumulated brightness.
+
+```java
+// LC 2021 - Brightest Position on Street
+// IDEA: Sweep line — +1 at range start, -1 at range end+1; track max brightness position
+// time = O(N log N), space = O(N)
+public int brightestPosition(int[][] lights) {
+    List<int[]> events = new ArrayList<>();
+    for (int[] light : lights) {
+        events.add(new int[]{light[0] - light[1], 1});
+        events.add(new int[]{light[0] + light[1] + 1, -1});
+    }
+    events.sort((a, b) -> a[0] - b[0]);
+    int brightness = 0, maxBrightness = 0, ans = 0;
+    for (int[] e : events) {
+        brightness += e[1];
+        if (brightness > maxBrightness) { maxBrightness = brightness; ans = e[0]; }
+    }
+    return ans;
+}
+```
+
 ```python
 # LC 2021. Brightest Position on Street
 # V0
@@ -831,177 +872,43 @@ class Solution:
         return res
 ```
 
-### 2-2) Divide Intervals Into Minimum Number of Groups
+### 2-3) Divide Intervals Into Minimum Number of Groups (LC 2406) — Sweep Line Peak Count
+> Same as Meeting Rooms II; inclusive endpoints mean start before end at tie-breaking.
 
 ```java
-// java
-// LC 2406
-// Reference: leetcode_java/src/main/java/LeetCodeJava/Heap/DivideIntervalsIntoMinimumNumberOfGroups.java
-
-/**
- * Problem: Divide intervals into minimum groups so no two intervals in the
- *          same group intersect (inclusive endpoints: [1,5] and [5,8] DO overlap).
- *
- * Example:
- * Input:  [[5,10],[6,8],[1,5],[2,3],[1,10]]
- * Output: 3
- *
- * Core Insight:
- *   min groups needed = max number of intervals active at the same time
- *   → identical to "Meeting Rooms II" but phrased differently.
- *
- * Pattern: Scanning Line — convert each interval into two events,
- *          sweep left-to-right and track peak concurrent count.
- */
-
-// APPROACH: EVENT-BASED SWEEP LINE
-/**
- * Steps:
- * 1. For each interval [l, r]:
- *    - Add event (l, +1)  → interval opens
- *    - Add event (r, -1)  → interval closes
- *
- * 2. Sort events by time.
- *    - TIE-BREAKING: when two events share the same time,
- *      process START (+1) BEFORE END (-1).
- *      Why? [1,5] and [5,10] overlap at 5, so both must be active at time 5.
- *      Sort descending on type: (a[0]==b[0]) ? b[1]-a[1] : a[0]-b[0]
- *
- * 3. Sweep through events, maintain currentGroups count.
- *    Track maxGroups across all steps.
- *
- * Time:  O(N log N) — sorting dominates
- * Space: O(N)       — event list
- */
+// LC 2406 - Divide Intervals Into Minimum Number of Groups
+// IDEA: Sweep line — +1 on start, -1 on end; start before end at same time (inclusive overlap)
+// time = O(N log N), space = O(N)
 public int minGroups(int[][] intervals) {
     List<int[]> events = new ArrayList<>();
-    for (int[] in : intervals) {
-        events.add(new int[]{ in[0],  1 });  // start event
-        events.add(new int[]{ in[1], -1 });  // end event
+    for (int[] inv : intervals) {
+        events.add(new int[]{inv[0], 1});
+        events.add(new int[]{inv[1], -1});
     }
-
-    // Sort by time; at same time, START (+1) before END (-1)
-    // b[1] - a[1] puts +1 before -1 (descending type order)
-    Collections.sort(events, (a, b) -> a[0] == b[0] ? b[1] - a[1] : a[0] - b[0]);
-
-    int maxGroups = 0, currentGroups = 0;
-    for (int[] event : events) {
-        currentGroups += event[1];
-        maxGroups = Math.max(maxGroups, currentGroups);
-    }
-    return maxGroups;
+    events.sort((a, b) -> a[0] != b[0] ? a[0] - b[0] : b[1] - a[1]); // start(+1) before end(-1)
+    int cur = 0, max = 0;
+    for (int[] e : events) { cur += e[1]; max = Math.max(max, cur); }
+    return max;
 }
-
-/**
- * WHY TIE-BREAKING MATTERS:
- *
- * Intervals [1,5] and [5,8] share point 5 → they DO overlap (problem statement).
- * At time = 5, we must count both as active simultaneously.
- * If we processed END before START at the same time:
- *   → [1,5] would close before [5,8] opens → we'd miss the overlap → wrong answer.
- * Sorting START before END at the same time ensures peak is captured correctly.
- *
- * SIMILAR PROBLEMS (same scanning line pattern):
- * - LC 253  Meeting Rooms II          — identical logic, different wording
- * - LC 2021 Brightest Position on Street — weighted events (brightness value)
- * - LC 731  My Calendar II            — check if concurrent count reaches 3
- * - LC 732  My Calendar III           — return max k-booking at any point
- * - LC 1094 Car Pooling               — track passenger count vs capacity
- * - LC 1854 Maximum Population Year   — year range overlap counting
- *
- * ALTERNATIVE APPROACH (also in this file):
- * - Sort + Min Heap (heap.md): sort by start, use PQ of end times → heap.size() = answer
- * - TreeMap (line sweep with ordered container): mark +1/-1 at each coordinate
- */
 ```
 
-### 2-3) My Calendar II
+### 2-4) My Calendar II (LC 731) — Track Double-Booked Intervals
+> New booking is invalid only if it overlaps a double-booked segment; otherwise record overlap.
 
 ```java
-// java
-// LC 731
-// V0
-// IDEA: SCANNING LINE + CUSTOM SORTING (fixed by gpt)
+// LC 731 - My Calendar II
+// IDEA: Track booked and overlaps lists; reject if new booking intersects any overlap
+// time = O(N^2), space = O(N)
 class MyCalendarTwo {
-
-  // Attributes
-  /**
-   * NOTE !!!
-   *
-   *
-   * statusList: {time, status, curBooked}
-   * time: start time or end time
-   * status: 1 for start, -1 for end
-   */
-  List<Integer[]> statusList;
-
-  // Constructor
-  public MyCalendarTwo() {
-      this.statusList = new ArrayList<>();
-  }
-
-  public boolean book(int startTime, int endTime) {
-
-      // Create intervals
-      /**
-       * NOTE !!!
-       *
-       * 1) we can init array at once as `new Inteter[] {a,b,c};
-       * 2) we init curStart, curEnd array at first
-       */
-      Integer[] curStart = new Integer[] { startTime, 1, 0 }; // {time, status, placeholder}
-      Integer[] curEnd = new Integer[] { endTime, -1, 0 }; // {time, status, placeholder}
-
-      // Temporarily add them to the list for simulation
-      /**
-       * NOTE !!!
-       *
-       * -> we add curStart, curEnd to statusList directly
-       * -> if new time is `over 2 times overlap`, we can REMOVE them
-       *    from statusList and return `false` in this method,
-       *    and we can keep this method running and validate the
-       *    other input (startTime, endTime)
-       */
-      statusList.add(curStart);
-      statusList.add(curEnd);
-
-      // Sort by time, then by status (start before end)
-      /**
-       * NOTE !!!
-       *
-       *  custom sorting
-       *
-       *  -> so, sort time first,
-       *  if time are equal, then sort on `status` (0 or 1),
-       *  `open` goes first, `close` goes next
-       */
-      statusList.sort((x, y) -> {
-          if (!x[0].equals(y[0])) {
-              return x[0] - y[0];
-          }
-          return x[1] - y[1]; // start (+1) comes before end (-1)
-      });
-
-      // Scanning line to check overlaps
-      int curBooked = 0;
-      for (Integer[] interval : statusList) {
-          curBooked += interval[1];
-          if (curBooked >= 3) {
-              // Remove the temporary intervals
-              /**
-               * NOTE !!!
-               *
-               *  if overlap > 2, we just remove the new added times,
-               *  and return false as method response
-               */
-              statusList.remove(curStart);
-              statusList.remove(curEnd);
-              return false; // Booking not allowed
-          }
-      }
-
-      // Booking is valid, keep the intervals
-      return true;
-  }
+    List<int[]> booked = new ArrayList<>(), overlaps = new ArrayList<>();
+    public boolean book(int start, int end) {
+        for (int[] ov : overlaps)
+            if (start < ov[1] && end > ov[0]) return false; // triple overlap
+        for (int[] bk : booked)
+            if (start < bk[1] && end > bk[0])
+                overlaps.add(new int[]{Math.max(start, bk[0]), Math.min(end, bk[1])});
+        booked.add(new int[]{start, end});
+        return true;
+    }
 }
 ```
