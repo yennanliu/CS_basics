@@ -49,6 +49,31 @@ public class DivideIntervalsIntoMinimumNumberOfGroups {
 
     // V0
     // IDEA: SORT + SMALL PQ (fixed by gpt)
+    /**
+     *  Dry run:
+     *
+     *
+     *      * Time →
+     *      * 1    2    3    4    5    6    7    8    9    10
+     *      * ------------------------------------------------
+     *      * [1,5]   █████
+     *      * [1,10]  ███████████████
+     *      * [2,3]        ██
+     *      * [5,10]            █████████
+     *      * [6,8]                 ███
+     *      *
+     *
+     *
+     *   | Step | Interval   | Start | Earliest End (pq.peek()) | Action                                      | PQ State (End Times) | Groups |
+     * |------|------------|-------|--------------------------|---------------------------------------------|----------------------|--------|
+     * | 1    | [1, 5]     | 1     | —                        | New group                                   | [5]                  | 1      |
+     * | 2    | [1, 10]    | 1     | 5                        | 1 > 5 → False → New group                   | [5, 10]              | 2      |
+     * | 3    | [2, 3]     | 2     | 5                        | 2 > 5 → False → New group                   | [3, 5, 10]           | 3      |
+     * | 4    | [5, 10]    | 5     | 3                        | 5 > 3 → True → Reuse group 3                | [5, 10, 10]          | 3      |
+     * | 5    | [6, 8]     | 6     | 5                        | 6 > 5 → True → Reuse group 1                | [8, 10, 10]          | 3      |
+     * 
+     *
+     */
     public int minGroups(int[][] intervals) {
 
         /** NOTE !!!
