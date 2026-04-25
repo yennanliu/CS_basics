@@ -53,6 +53,230 @@ public class LargestRectangleInHistogram {
      *  3. Stack must store `indices` (NOT val)
      *
      */
+    /**  Dry run
+     *
+     *  Great choice of example—this is the classic
+     *  one for Largest Rectangle in Histogram.
+     *
+     * ---
+     *
+     * ## 📊 Input
+     *
+     * ```text
+     * heights = [2, 1, 5, 6, 2, 3]
+     * index      0  1  2  3  4  5
+     * ```
+     *
+     * ---
+     *
+     * ## 🧠 Key setup
+     *
+     * * Stack stores **indices** (monotonic increasing heights)
+     * * Add a **sentinel 0** at the end to flush stack
+     *
+     * ---
+     *
+     * ## ⏱ Dry Run (step by step)
+     *
+     * We track:
+     *
+     * * `st` = stack (indices)
+     * * `maxArea`
+     *
+     * ---
+     *
+     * ### ▶ i = 0, h = 2
+     *
+     * * stack empty → push
+     *
+     * ```text
+     * st = [0]
+     * ```
+     *
+     * ---
+     *
+     * ### ▶ i = 1, h = 1
+     *
+     * * 1 < 2 → pop
+     *
+     * Pop index 0:
+     *
+     * ```text
+     * height = 2
+     * right = 1
+     * left = -1 (stack empty)
+     * width = 1 - (-1) - 1 = 1
+     * area = 2 × 1 = 2
+     * ```
+     *
+     * ```text
+     * maxArea = 2
+     * ```
+     *
+     * Push 1:
+     *
+     * ```text
+     * st = [1]
+     * ```
+     *
+     * ---
+     *
+     * ### ▶ i = 2, h = 5
+     *
+     * * 5 > 1 → push
+     *
+     * ```text
+     * st = [1, 2]
+     * ```
+     *
+     * ---
+     *
+     * ### ▶ i = 3, h = 6
+     *
+     * * 6 > 5 → push
+     *
+     * ```text
+     * st = [1, 2, 3]
+     * ```
+     *
+     * ---
+     *
+     * ### ▶ i = 4, h = 2
+     *
+     * Now things get interesting 👇
+     *
+     * ---
+     *
+     * #### 🔻 Pop index 3 (height = 6)
+     *
+     * ```text
+     * right = 4
+     * left = 2
+     * width = 4 - 2 - 1 = 1
+     * area = 6 × 1 = 6
+     * ```
+     *
+     * ```text
+     * maxArea = 6
+     * ```
+     *
+     * ---
+     *
+     * #### 🔻 Pop index 2 (height = 5)
+     *
+     * ```text
+     * right = 4
+     * left = 1
+     * width = 4 - 1 - 1 = 2
+     * area = 5 × 2 = 10  🔥
+     * ```
+     *
+     * ```text
+     * maxArea = 10
+     * ```
+     *
+     * ---
+     *
+     * Now stop (since 2 ≥ height at index 1)
+     *
+     * Push 4:
+     *
+     * ```text
+     * st = [1, 4]
+     * ```
+     *
+     * ---
+     *
+     * ### ▶ i = 5, h = 3
+     *
+     * * 3 > 2 → push
+     *
+     * ```text
+     * st = [1, 4, 5]
+     * ```
+     *
+     * ---
+     *
+     * ### ▶ i = 6, h = 0 (sentinel)
+     *
+     * Force cleanup 👇
+     *
+     * ---
+     *
+     * #### 🔻 Pop index 5 (height = 3)
+     *
+     * ```text
+     * right = 6
+     * left = 4
+     * width = 6 - 4 - 1 = 1
+     * area = 3
+     * ```
+     *
+     * ---
+     *
+     * #### 🔻 Pop index 4 (height = 2)
+     *
+     * ```text
+     * right = 6
+     * left = 1
+     * width = 6 - 1 - 1 = 4
+     * area = 8
+     * ```
+     *
+     * ---
+     *
+     * #### 🔻 Pop index 1 (height = 1)
+     *
+     * ```text
+     * right = 6
+     * left = -1
+     * width = 6 - (-1) - 1 = 6
+     * area = 6
+     * ```
+     *
+     * ---
+     *
+     * ## ✅ Final Answer
+     *
+     * ```text
+     * maxArea = 10
+     * ```
+     *
+     * ---
+     *
+     * ## 🎯 Visual intuition
+     *
+     * ```
+     *         █ █
+     *         █ █
+     *     █ █ █ █
+     *     █ █ █ █
+     * █   █ █ █ █
+     * █ █ █ █ █ █
+     * --------------
+     * 2 1 5 6 2 3
+     * ```
+     *
+     * The max rectangle:
+     *
+     * ```text
+     * height = 5
+     * width = 2  (indices 2 → 3)
+     * area = 10
+     * ```
+     *
+     * ---
+     *
+     * ## 🔥 Key insight (the “aha” moment)
+     *
+     * When you pop a bar:
+     *
+     * > You’ve just found the **maximum width where this height is the limiting factor**
+     *
+     * * Right boundary = current index `i`
+     * * Left boundary = new stack top after pop
+     *
+     */
     public int largestRectangleArea(int[] heights) {
         int n = heights.length;
         int maxArea = 0;
