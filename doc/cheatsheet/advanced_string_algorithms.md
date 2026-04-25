@@ -487,7 +487,32 @@ def lcp_array(s, suffix_array):
 
 ## LC Examples
 
-### 1. Find Index of First Occurrence (LC 28)
+### 2-1) Find Index of First Occurrence (LC 28) — KMP
+> Build LPS (failure) array for pattern; skip redundant comparisons on mismatch.
+
+```java
+// LC 28 - Find the Index of the First Occurrence in a String
+// IDEA: KMP — build LPS array; on mismatch jump to lps[j-1] instead of restarting
+// time = O(N+M), space = O(M)
+public int strStr(String haystack, String needle) {
+    int n = haystack.length(), m = needle.length();
+    int[] lps = new int[m];
+    for (int i = 1, len = 0; i < m; ) {
+        if (needle.charAt(i) == needle.charAt(len)) lps[i++] = ++len;
+        else if (len > 0) len = lps[len - 1];
+        else lps[i++] = 0;
+    }
+    for (int i = 0, j = 0; i < n; ) {
+        if (haystack.charAt(i) == needle.charAt(j)) { i++; j++; }
+        if (j == m) return i - j;
+        else if (i < n && haystack.charAt(i) != needle.charAt(j))
+            j = j > 0 ? lps[j - 1] : 0;
+        if (j == 0 && i < n && haystack.charAt(i) != needle.charAt(j)) i++;
+    }
+    return -1;
+}
+```
+
 ```python
 def strStr(haystack, needle):
     """KMP implementation for string search"""
@@ -535,7 +560,26 @@ def strStr(haystack, needle):
     return -1
 ```
 
-### 2. Longest Palindromic Substring (LC 5)
+### 2-2) Longest Palindromic Substring (LC 5) — Expand Around Center
+> Try every center (odd and even length); expand while characters match.
+
+```java
+// LC 5 - Longest Palindromic Substring
+// IDEA: Expand around center for each of 2N-1 centers; track longest
+// time = O(N^2), space = O(1)
+public String longestPalindrome(String s) {
+    int start = 0, maxLen = 1;
+    for (int i = 0; i < s.length(); i++) {
+        for (int d = 0; d <= 1; d++) {  // d=0: odd length, d=1: even length
+            int l = i, r = i + d;
+            while (l >= 0 && r < s.length() && s.charAt(l) == s.charAt(r)) { l--; r++; }
+            if (r - l - 1 > maxLen) { maxLen = r - l - 1; start = l + 1; }
+        }
+    }
+    return s.substring(start, start + maxLen);
+}
+```
+
 ```python
 def longestPalindrome(s):
     """Manacher's algorithm for longest palindromic substring"""
@@ -574,7 +618,46 @@ def longestPalindrome(s):
     return s[start:start + max_len]
 ```
 
-### 3. Longest Duplicate Substring (LC 1044)
+### 2-3) Longest Duplicate Substring (LC 1044) — Binary Search + Rolling Hash
+> Binary search on length; use Rabin-Karp rolling hash to check if duplicate of that length exists.
+
+```java
+// LC 1044 - Longest Duplicate Substring
+// IDEA: Binary search on length L; Rabin-Karp rolling hash checks duplicate in O(N)
+// time = O(N log N), space = O(N)
+public String longestDupSubstring(String s) {
+    int lo = 1, hi = s.length() - 1;
+    String ans = "";
+    while (lo <= hi) {
+        int mid = (lo + hi) / 2;
+        String dup = findDuplicate(s, mid);
+        if (dup != null) { ans = dup; lo = mid + 1; }
+        else hi = mid - 1;
+    }
+    return ans;
+}
+private String findDuplicate(String s, int len) {
+    long MOD = (1L << 61) - 1, BASE = 31;
+    long power = 1;
+    for (int i = 0; i < len; i++) power = power * BASE % MOD;
+    long hash = 0;
+    for (int i = 0; i < len; i++) hash = (hash * BASE + s.charAt(i)) % MOD;
+    Map<Long, List<Integer>> seen = new HashMap<>();
+    seen.computeIfAbsent(hash, k -> new ArrayList<>()).add(0);
+    for (int i = len; i < s.length(); i++) {
+        hash = (hash * BASE - s.charAt(i - len) * power % MOD + s.charAt(i) + MOD) % MOD;
+        int start = i - len + 1;
+        if (seen.containsKey(hash)) {
+            String sub = s.substring(start, start + len);
+            for (int prev : seen.get(hash))
+                if (s.substring(prev, prev + len).equals(sub)) return sub;
+        }
+        seen.computeIfAbsent(hash, k -> new ArrayList<>()).add(start);
+    }
+    return null;
+}
+```
+
 ```python
 def longestDupSubstring(s):
     """Rolling hash with binary search"""

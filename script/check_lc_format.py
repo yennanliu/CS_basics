@@ -26,7 +26,7 @@ CHEATSHEET_DIR = Path(__file__).parent.parent / "doc" / "cheatsheet"
 
 GOOD_HEADER = re.compile(r'^### \d+-\d+\) .+ \(LC \d+\) — .+')
 # Template/comparison entries don't need an LC number
-TEMPLATE_KEYWORDS = {"template", "comparison", " vs "}
+TEMPLATE_KEYWORDS = {"template", "comparison", " vs ", "custom", "theoretical"}
 SECTION_HEADER = re.compile(r'^### (.+)')
 
 

@@ -270,7 +270,39 @@ def create_sorted_array(instructions):
 
 ## LC Examples
 
-### 1. Count of Smaller Numbers After Self (LC 315)
+### 2-1) Count of Smaller Numbers After Self (LC 315) — Merge Sort with Index Tracking
+> During merge, count how many right-half elements moved past each left-half element.
+
+```java
+// LC 315 - Count of Smaller Numbers After Self
+// IDEA: Merge sort on indices; each right-side element that passes left side increments its count
+// time = O(N log N), space = O(N)
+public List<Integer> countSmaller(int[] nums) {
+    int n = nums.length;
+    int[] counts = new int[n], indices = new int[n];
+    for (int i = 0; i < n; i++) indices[i] = i;
+    mergeSort(nums, indices, counts, 0, n - 1);
+    List<Integer> res = new ArrayList<>();
+    for (int c : counts) res.add(c);
+    return res;
+}
+private void mergeSort(int[] nums, int[] idx, int[] counts, int l, int r) {
+    if (l >= r) return;
+    int mid = (l + r) / 2;
+    mergeSort(nums, idx, counts, l, mid);
+    mergeSort(nums, idx, counts, mid + 1, r);
+    int[] tmp = new int[r - l + 1];
+    int i = l, j = mid + 1, k = 0, rightMoved = 0;
+    while (i <= mid && j <= r) {
+        if (nums[idx[j]] < nums[idx[i]]) { tmp[k++] = idx[j++]; rightMoved++; }
+        else { counts[idx[i]] += rightMoved; tmp[k++] = idx[i++]; }
+    }
+    while (i <= mid) { counts[idx[i]] += rightMoved; tmp[k++] = idx[i++]; }
+    while (j <= r) tmp[k++] = idx[j++];
+    System.arraycopy(tmp, 0, idx, l, tmp.length);
+}
+```
+
 ```python
 def countSmaller(nums):
     """Count how many numbers after each element are smaller"""
@@ -322,7 +354,35 @@ def countSmaller(nums):
     return counts
 ```
 
-### 2. Reverse Pairs (LC 493)
+### 2-2) Reverse Pairs (LC 493) — Merge Sort Count Before Merge
+> Count cross-half pairs (nums[i] > 2*nums[j]) with two pointers before doing the merge.
+
+```java
+// LC 493 - Reverse Pairs
+// IDEA: Merge sort — count i>2j pairs across halves first, then merge normally
+// time = O(N log N), space = O(N)
+public int reversePairs(int[] nums) {
+    return mergeSort(nums, 0, nums.length - 1);
+}
+private int mergeSort(int[] nums, int l, int r) {
+    if (l >= r) return 0;
+    int mid = (l + r) / 2;
+    int count = mergeSort(nums, l, mid) + mergeSort(nums, mid + 1, r);
+    int j = mid + 1;
+    for (int i = l; i <= mid; i++) {
+        while (j <= r && nums[i] > 2L * nums[j]) j++;
+        count += j - (mid + 1);
+    }
+    int[] tmp = new int[r - l + 1];
+    int i = l, k = 0; j = mid + 1;
+    while (i <= mid && j <= r) tmp[k++] = nums[i] <= nums[j] ? nums[i++] : nums[j++];
+    while (i <= mid) tmp[k++] = nums[i++];
+    while (j <= r)   tmp[k++] = nums[j++];
+    System.arraycopy(tmp, 0, nums, l, tmp.length);
+    return count;
+}
+```
+
 ```python
 def reversePairs(nums):
     """Count pairs where nums[i] > 2 * nums[j] for i < j"""
@@ -373,7 +433,39 @@ def reversePairs(nums):
     return merge_sort_and_count(nums[:], temp, 0, len(nums) - 1)
 ```
 
-### 3. Count of Range Sum (LC 327)
+### 2-3) Count of Range Sum (LC 327) — Merge Sort on Prefix Sums
+> Build prefix sum array; count cross-half pairs (prefixSum[j] - prefixSum[i]) in [lower, upper].
+
+```java
+// LC 327 - Count of Range Sum
+// IDEA: Merge sort on prefix sums; count cross pairs in [lower, upper] before merging
+// time = O(N log N), space = O(N)
+public int countRangeSum(int[] nums, int lower, int upper) {
+    int n = nums.length;
+    long[] prefix = new long[n + 1];
+    for (int i = 0; i < n; i++) prefix[i + 1] = prefix[i] + nums[i];
+    return mergeSort(prefix, 0, n, lower, upper);
+}
+private int mergeSort(long[] p, int l, int r, int lo, int hi) {
+    if (l >= r) return 0;
+    int mid = (l + r) / 2;
+    int count = mergeSort(p, l, mid, lo, hi) + mergeSort(p, mid + 1, r, lo, hi);
+    int j = mid + 1, k = mid + 1;
+    for (int i = l; i <= mid; i++) {
+        while (j <= r && p[j] - p[i] < lo) j++;
+        while (k <= r && p[k] - p[i] <= hi) k++;
+        count += k - j;
+    }
+    long[] tmp = new long[r - l + 1];
+    int i = l, a = mid + 1, idx = 0;
+    while (i <= mid && a <= r) tmp[idx++] = p[i] <= p[a] ? p[i++] : p[a++];
+    while (i <= mid) tmp[idx++] = p[i++];
+    while (a <= r)   tmp[idx++] = p[a++];
+    System.arraycopy(tmp, 0, p, l, tmp.length);
+    return count;
+}
+```
+
 ```python
 def countRangeSum(nums, lower, upper):
     """Count subarrays with sum in [lower, upper]"""

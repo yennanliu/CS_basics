@@ -299,7 +299,23 @@ def fractional_knapsack(items, capacity):
 
 ## LC Examples
 
-### 2-2) Jump Game
+### 2-1) Jump Game (LC 55) — Greedy Max Reach
+> Track farthest reachable index; if current index exceeds it, return false.
+
+```java
+// LC 55 - Jump Game
+// IDEA: Greedy — track max reachable index; fail if current index exceeds it
+// time = O(N), space = O(1)
+public boolean canJump(int[] nums) {
+    int maxReach = 0;
+    for (int i = 0; i < nums.length; i++) {
+        if (i > maxReach) return false;
+        maxReach = Math.max(maxReach, i + nums[i]);
+    }
+    return true;
+}
+```
+
 ```python
 # 055 Jump Game
 # V0
@@ -316,7 +332,23 @@ class Solution(object):
         return True
 ```
 
-### 2-2') Jump Game II
+### 2-2) Jump Game II (LC 45) — Greedy Jump Window
+> Expand the current jump window; when boundary is reached, take a jump and advance window.
+
+```java
+// LC 45 - Jump Game II
+// IDEA: Greedy — track current window end and farthest; jump when window end reached
+// time = O(N), space = O(1)
+public int jump(int[] nums) {
+    int jumps = 0, curEnd = 0, farthest = 0;
+    for (int i = 0; i < nums.length - 1; i++) {
+        farthest = Math.max(farthest, i + nums[i]);
+        if (i == curEnd) { jumps++; curEnd = farthest; }
+    }
+    return jumps;
+}
+```
+
 ```python
 # 045 Jump Game II
 # V0
@@ -359,7 +391,21 @@ class Solution:
         return res
 ```
 
-### 2-3) Best Time to Buy and Sell Stock II
+### 2-3) Best Time to Buy and Sell Stock II (LC 122) — Accumulate Daily Gains
+> Accumulate every positive price difference — buy and sell every rising day.
+
+```java
+// LC 122 - Best Time to Buy and Sell Stock II
+// IDEA: Greedy — sum all positive consecutive differences
+// time = O(N), space = O(1)
+public int maxProfit(int[] prices) {
+    int profit = 0;
+    for (int i = 1; i < prices.length; i++)
+        if (prices[i] > prices[i-1]) profit += prices[i] - prices[i-1];
+    return profit;
+}
+```
+
 ```python
 # 122 Best Time to Buy and Sell Stock II
 class Solution:
@@ -374,7 +420,24 @@ class Solution:
 
 ```
 
-### 2-4) Gas Station
+### 2-4) Gas Station (LC 134) — Greedy Start Reset
+> If tank goes negative, reset start to next station; valid solution exists iff total surplus ≥ 0.
+
+```java
+// LC 134 - Gas Station
+// IDEA: Greedy — reset start when cumulative surplus goes negative; check total >= 0
+// time = O(N), space = O(1)
+public int canCompleteCircuit(int[] gas, int[] cost) {
+    int total = 0, remain = 0, start = 0;
+    for (int i = 0; i < gas.length; i++) {
+        int diff = gas[i] - cost[i];
+        total += diff; remain += diff;
+        if (remain < 0) { start = i + 1; remain = 0; }
+    }
+    return total >= 0 ? start : -1;
+}
+```
+
 ```python
 # 134 Gas Station
 # V0
@@ -393,7 +456,31 @@ class Solution(object):
         return -1 if total < 0 else start
 ```
 
-### 2-6) Reorganize String
+### 2-5) Reorganize String (LC 767) — Greedy Max-Heap Interleave
+> Always pick the most frequent character that differs from the last placed character.
+
+```java
+// LC 767 - Reorganize String
+// IDEA: Max-heap by frequency; always pick top that differs from last placed char
+// time = O(N log K), space = O(K)  K = distinct chars
+public String reorganizeString(String s) {
+    int[] freq = new int[26];
+    for (char c : s.toCharArray()) freq[c - 'a']++;
+    PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> b[1] - a[1]);
+    for (int i = 0; i < 26; i++) if (freq[i] > 0) pq.offer(new int[]{i, freq[i]});
+    StringBuilder sb = new StringBuilder();
+    int[] prev = null;
+    while (!pq.isEmpty()) {
+        int[] curr = pq.poll();
+        sb.append((char)('a' + curr[0]));
+        if (prev != null) pq.offer(prev);
+        curr[1]--;
+        prev = curr[1] > 0 ? curr : null;
+    }
+    return sb.length() == s.length() ? sb.toString() : "";
+}
+```
+
 ```python
 # LC 767. Reorganize String
 
@@ -435,26 +522,13 @@ class Solution(object):
         return ans[1:] if len(ans[1:]) == len(S) else ''
 ```
 
-### 2-6') String Without AAA or BBB
+### 2-6) String Without AAA or BBB (LC 984) — Greedy Consecutive Counter
+> Force a switch when 2 consecutive same chars; otherwise always write the higher-count char.
+
 ```java
-// LC 984. String Without AAA or BBB
-// Pattern: String Reorganization with consecutive constraint
-
-/**
- * IDEA: Greedy with Counter Tracking
- *
- * Key Insight:
- * - Track consecutive count of each character
- * - MUST switch if consecutive count reaches 2
- * - Otherwise, greedily pick the character with higher remaining count
- *
- * Decision Logic:
- * 1. If continueB == 2 → MUST write 'a' (avoid "bbb")
- * 2. If continueA == 2 → MUST write 'b' (avoid "aaa")
- * 3. Otherwise → write the one with higher remaining count
- */
-
-// V0: Greedy with consecutive tracking
+// LC 984 - String Without AAA or BBB
+// IDEA: Greedy — write higher-count char unless 2 consecutive, then must switch
+// time = O(A+B), space = O(1)
 public String strWithout3a3b(int a, int b) {
     StringBuilder res = new StringBuilder();
     int continueA = 0;
@@ -517,7 +591,24 @@ public String strWithout3a3b_v1(int A, int B) {
 - LC 1405: Longest Happy String (max a, b, c with no 3 consecutive)
 - LC 358: Rearrange String K Distance Apart (k distance constraint)
 
-### 2-7) Task Scheduler
+### 2-7) Task Scheduler (LC 621) — Greedy Idle Time Formula
+> Min time = max((maxFreq−1)*(n+1) + countOfMaxFreq, totalTasks).
+
+```java
+// LC 621 - Task Scheduler
+// IDEA: Greedy formula — (maxFreq-1)*(n+1) + #tasks_with_maxFreq; also can't be less than total
+// time = O(N), space = O(1)
+public int leastInterval(char[] tasks, int n) {
+    int[] freq = new int[26];
+    for (char t : tasks) freq[t - 'A']++;
+    int maxFreq = 0;
+    for (int f : freq) maxFreq = Math.max(maxFreq, f);
+    int countMax = 0;
+    for (int f : freq) if (f == maxFreq) countMax++;
+    return Math.max(tasks.length, (maxFreq - 1) * (n + 1) + countMax);
+}
+```
+
 ```python
 # LC 621. Task Scheduler
 # V0
@@ -565,7 +656,26 @@ class Solution(object):
         return max(time, len(tasks)) # be aware of it 
 ```
 
-### 2-8) Maximum Units on a Truck
+### 2-8) Maximum Units on a Truck (LC 1710) — Sort by Unit Value
+> Sort box types by units per box descending; greedily fill truck with highest-value boxes first.
+
+```java
+// LC 1710 - Maximum Units on a Truck
+// IDEA: Sort by units descending; greedily load boxes until truck is full
+// time = O(N log N), space = O(1)
+public int maximumUnits(int[][] boxTypes, int truckSize) {
+    Arrays.sort(boxTypes, (a, b) -> b[1] - a[1]);
+    int total = 0;
+    for (int[] box : boxTypes) {
+        int take = Math.min(box[0], truckSize);
+        total += take * box[1];
+        truckSize -= take;
+        if (truckSize == 0) break;
+    }
+    return total;
+}
+```
+
 ```python
 # LC 1710. Maximum Units on a Truck
 # V0

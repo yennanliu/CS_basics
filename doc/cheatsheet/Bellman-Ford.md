@@ -382,7 +382,28 @@ Shortest Path Algorithm Selection:
 
 ## LC Examples
 
-### Example 1: Cheapest Flights Within K Stops (LC 787)
+### 2-1) Cheapest Flights Within K Stops (LC 787) — Bellman-Ford with K Relaxations
+> Relax edges at most K+1 times; copy dist array each iteration to avoid using edges from same round.
+
+```java
+// LC 787 - Cheapest Flights Within K Stops
+// IDEA: Bellman-Ford — relax edges k+1 times; copy dist array each iteration
+// time = O(K * E), space = O(N)
+public int findCheapestPrice(int n, int[][] flights, int src, int dst, int k) {
+    int[] dist = new int[n];
+    Arrays.fill(dist, Integer.MAX_VALUE);
+    dist[src] = 0;
+    for (int i = 0; i <= k; i++) {
+        int[] tmp = Arrays.copyOf(dist, n);
+        for (int[] f : flights) {
+            if (dist[f[0]] != Integer.MAX_VALUE)
+                tmp[f[1]] = Math.min(tmp[f[1]], dist[f[0]] + f[2]);
+        }
+        dist = tmp;
+    }
+    return dist[dst] == Integer.MAX_VALUE ? -1 : dist[dst];
+}
+```
 
 ```python
 # LC 787 - Cheapest Flights Within K Stops
@@ -453,7 +474,29 @@ def findCheapestPrice_SPFA(n, flights, src, dst, k):
     return min_cost if min_cost != float('inf') else -1
 ```
 
-### Example 2: Network Delay Time (LC 743)
+### 2-2) Network Delay Time (LC 743) — Bellman-Ford N-1 Relaxations
+> Relax all edges N-1 times; minimum time for signal to reach all nodes = max of dist array.
+
+```java
+// LC 743 - Network Delay Time
+// IDEA: Bellman-Ford — relax all edges N-1 times; answer = max dist, -1 if any unreachable
+// time = O(N * E), space = O(N)
+public int networkDelayTime(int[][] times, int n, int k) {
+    int[] dist = new int[n + 1];
+    Arrays.fill(dist, Integer.MAX_VALUE);
+    dist[k] = 0;
+    for (int i = 0; i < n - 1; i++)
+        for (int[] t : times)
+            if (dist[t[0]] != Integer.MAX_VALUE)
+                dist[t[1]] = Math.min(dist[t[1]], dist[t[0]] + t[2]);
+    int max = 0;
+    for (int i = 1; i <= n; i++) {
+        if (dist[i] == Integer.MAX_VALUE) return -1;
+        max = Math.max(max, dist[i]);
+    }
+    return max;
+}
+```
 
 ```python
 # LC 743 - Network Delay Time
@@ -483,7 +526,7 @@ def networkDelayTime(times, n, k):
     return max_delay if max_delay != float('inf') else -1
 ```
 
-### Example 3: Currency Arbitrage Detection
+### 2-3) Currency Arbitrage Detection — Custom Bellman-Ford with Log Transform
 
 ```python
 # Detect arbitrage opportunity in currency exchange
@@ -584,7 +627,7 @@ def find_arbitrage_path(rates):
     return path
 ```
 
-### Example 4: Minimum Cost to Reach Destination (Custom)
+### 2-4) Minimum Cost to Reach Destination — Custom Bellman-Ford Variant
 
 ```python
 def min_cost_with_discounts(n, roads, src, dst, discounts):
@@ -619,7 +662,7 @@ def min_cost_with_discounts(n, roads, src, dst, discounts):
     return dist[dst] if dist[dst] != float('inf') else -1
 ```
 
-### Example 5: Time Travel Problem (Theoretical)
+### 2-5) Time Travel Problem — Theoretical Negative-Cycle Detection
 
 ```python
 def shortest_path_with_time_machine(n, edges, src, dst):

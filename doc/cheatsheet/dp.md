@@ -4476,7 +4476,9 @@ Question asks...                          → Use this pattern
 
 ## LC Examples
 
-### 2-1) Unique Paths
+### 2-1) Unique Paths (LC 62) — Grid DP Count Paths
+
+> dp[i][j] = dp[i-1][j] + dp[i][j-1]; paths from top-left to bottom-right on m×n grid.
 
 ```java
 // java
@@ -4561,7 +4563,10 @@ class Solution:
 ```
 
 
-### 2-2) Maximum Product Subarray
+### 2-2) Maximum Product Subarray (LC 152) — Track Min/Max Product
+
+> Track both max and min at each step (min can become max when multiplied by negative).
+
 ```python
 # NOTE : there is also brute force approach
 # V0
@@ -4686,7 +4691,9 @@ private int findMin(int a, int b, int c){
 }
 ```
 
-### 2-3) Best Time to Buy and Sell Stock with Transaction Fee
+### 2-3) Best Time to Buy and Sell Stock with Transaction Fee (LC 714) — Two-State DP
+
+> hold/free states; transition: hold = max(hold, free-price), free = max(free, hold+price-fee).
 
 ```java
 // java
@@ -4780,7 +4787,9 @@ private int findMin(int a, int b, int c){
     }
 ```
 
-### 2-3-2) Best Time to Buy and Sell Stock with Cooldown (LC 309)
+### 2-4) Best Time to Buy and Sell Stock with Cooldown (LC 309) — Three-State DP
+
+> States: held/sold/rest; sold → rest → held cycle enforces one-day cooldown.
 
 ```java
 // java

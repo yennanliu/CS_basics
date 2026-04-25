@@ -331,7 +331,39 @@ class GridWorldSimulation:
 
 ## LC Examples
 
-### 1. Walking Robot Simulation II (LC 2069)
+### 2-1) Walking Robot Simulation II (LC 2069) — Circular Perimeter State Machine
+> Map position to perimeter index (mod perimeter); track direction at each corner.
+
+```java
+// LC 2069 - Walking Robot Simulation II
+// IDEA: Map perimeter as 1D array (mod perimeter); corners change direction
+// time = O(1) per step, space = O(1)
+class Robot {
+    int w, h, perimeter, pos = 0;
+    // perimeter positions: 0=bottom, w-1=bottom-right, w+h-2=top-right, 2w+h-3=top-left
+    String[] DIRS = {"East","North","West","South"};
+    int[] dx = {1,0,-1,0}, dy = {0,1,0,-1};
+    public Robot(int width, int height) {
+        w = width; h = height;
+        perimeter = 2 * (w + h - 2);
+    }
+    public void step(int num) { pos = (pos + num) % perimeter; }
+    public int[] getPos() {
+        if (pos < w)            return new int[]{pos, 0};
+        if (pos < w + h - 1)   return new int[]{w - 1, pos - w + 1};
+        if (pos < 2*w + h - 2) return new int[]{2*w + h - 3 - pos, h - 1};
+        return new int[]{0, 2*w + 2*h - 4 - pos};
+    }
+    public String getDir() {
+        if (pos == 0)             return pos == 0 ? "East" : "South"; // start facing East
+        if (pos < w)              return "East";
+        if (pos < w + h - 1)     return "North";
+        if (pos < 2*w + h - 2)   return "West";
+        return "South";
+    }
+}
+```
+
 ```python
 class Robot:
     """Optimized robot simulation with circular path detection"""
@@ -385,7 +417,52 @@ class Robot:
         return self.dir_names[self.direction]
 ```
 
-### 2. Time to Cross a Bridge (LC 2532)
+### 2-2) Time to Cross a Bridge (LC 2532) — Multi-Queue Simulation
+> Four priority queues: waiting left/right + working left/right; simulate worker assignments by time.
+
+```java
+// LC 2532 - Time to Cross a Bridge
+// IDEA: 4 heaps (waitL, waitR, workL, workR); pick highest-efficiency waiting worker each step
+// time = O(N log K), space = O(K)  K = workers
+public int findCrossingTime(int n, int k, int[][] time) {
+    // Max-heaps for waiting (by efficiency = leftTime + rightTime, higher = worse = higher priority)
+    PriorityQueue<int[]> waitL = new PriorityQueue<>((a,b) -> b[0]-a[0]); // [eff, id]
+    PriorityQueue<int[]> waitR = new PriorityQueue<>((a,b) -> b[0]-a[0]);
+    // Min-heaps for working (by finish time)
+    PriorityQueue<int[]> workL = new PriorityQueue<>((a,b) -> a[0]-b[0]); // [finishTime, id]
+    PriorityQueue<int[]> workR = new PriorityQueue<>((a,b) -> a[0]-b[0]);
+    for (int i = 0; i < k; i++) waitL.offer(new int[]{time[i][0]+time[i][2], i});
+    int cur = 0;
+    for (int boxes = 0; boxes < n; boxes++) {
+        // Advance time if no one is waiting
+        while (waitL.isEmpty() || waitR.isEmpty()) {
+            int nextFinish = Integer.MAX_VALUE;
+            if (!workL.isEmpty()) nextFinish = Math.min(nextFinish, workL.peek()[0]);
+            if (!workR.isEmpty()) nextFinish = Math.min(nextFinish, workR.peek()[0]);
+            cur = Math.max(cur, nextFinish);
+            while (!workL.isEmpty() && workL.peek()[0] <= cur) { int[] w = workL.poll(); waitL.offer(new int[]{time[w[1]][0]+time[w[1]][2], w[1]}); }
+            while (!workR.isEmpty() && workR.peek()[0] <= cur) { int[] w = workR.poll(); waitR.offer(new int[]{time[w[1]][0]+time[w[1]][2], w[1]}); }
+            if (waitL.isEmpty() && waitR.isEmpty()) cur = nextFinish;
+        }
+        // Priority: right->left over left->right
+        if (!waitR.isEmpty()) {
+            int[] w = waitR.poll();
+            cur += time[w[1]][2];
+            workL.offer(new int[]{cur + time[w[1]][3], w[1]});
+        } else {
+            int[] w = waitL.poll();
+            cur += time[w[1]][0];
+            workR.offer(new int[]{cur + time[w[1]][1], w[1]});
+        }
+    }
+    // Wait for all right-side workers to come back
+    int ans = cur;
+    while (!waitR.isEmpty()) { int[] w = waitR.poll(); ans = Math.max(ans, cur) + time[w[1]][2]; cur = ans; }
+    while (!workR.isEmpty()) { int[] w = workR.poll(); ans = Math.max(ans, w[0]) + time[w[1]][2]; }
+    return ans;
+}
+```
+
 ```python
 import heapq
 
@@ -451,7 +528,33 @@ def findCrossingTime(n, k, time):
     return current_time
 ```
 
-### 3. Number of Spaces Cleaning Robot Cleaned (LC 2061)
+### 2-3) Number of Spaces Cleaning Robot Cleaned (LC 2061) — DFS Simulation with State
+> DFS from (0,0) facing East; stop when revisiting the same (row, col, direction) state.
+
+```java
+// LC 2061 - Number of Spaces Cleaning Robot Cleaned
+// IDEA: DFS simulation; stop when (row, col, dir) state repeats (cycle detected)
+// time = O(M*N*4), space = O(M*N*4)
+public int numberOfCleanRooms(int[][] room) {
+    int m = room.length, n = room[0].length;
+    boolean[][][] visited = new boolean[m][n][4];
+    int[][] dirs = {{0,1},{1,0},{0,-1},{-1,0}}; // E,S,W,N
+    int row = 0, col = 0, dir = 0, count = 0;
+    Set<String> cleaned = new HashSet<>();
+    while (!visited[row][col][dir]) {
+        visited[row][col][dir] = true;
+        if (cleaned.add(row + "," + col)) count++;
+        int nr = row + dirs[dir][0], nc = col + dirs[dir][1];
+        if (nr >= 0 && nr < m && nc >= 0 && nc < n && room[nr][nc] == 0) {
+            row = nr; col = nc;
+        } else {
+            dir = (dir + 1) % 4; // turn right
+        }
+    }
+    return count;
+}
+```
+
 ```python
 def numberOfCleanRooms(room):
     """Simulate robot cleaning with cycle detection"""

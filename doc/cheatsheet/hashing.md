@@ -209,7 +209,23 @@ def group_anagrams_template(strs):
 
 ## LC Examples
 
-### 1. Valid Anagram (LC 242)
+### 2-1) Valid Anagram (LC 242) — Frequency Count
+> Count character frequencies in both strings; maps must be equal.
+
+```java
+// LC 242 - Valid Anagram
+// IDEA: Count char frequencies; both strings must have same counts
+// time = O(N), space = O(1) (fixed 26-char alphabet)
+public boolean isAnagram(String s, String t) {
+    if (s.length() != t.length()) return false;
+    int[] count = new int[26];
+    for (char c : s.toCharArray()) count[c - 'a']++;
+    for (char c : t.toCharArray()) count[c - 'a']--;
+    for (int v : count) if (v != 0) return false;
+    return true;
+}
+```
+
 ```python
 def isAnagram(s, t):
     """Check if two strings are anagrams"""
@@ -238,7 +254,25 @@ def isAnagram(s, t):
     return sorted(s) == sorted(t)
 ```
 
-### 2. Group Anagrams (LC 49)
+### 2-2) Group Anagrams (LC 49) — Sort-Key HashMap
+> Use sorted string as key; all anagrams share the same key.
+
+```java
+// LC 49 - Group Anagrams
+// IDEA: Sort each string to get canonical key; group by key in HashMap
+// time = O(N * K log K), space = O(NK)  K = max string length
+public List<List<String>> groupAnagrams(String[] strs) {
+    Map<String, List<String>> map = new HashMap<>();
+    for (String s : strs) {
+        char[] arr = s.toCharArray();
+        Arrays.sort(arr);
+        String key = new String(arr);
+        map.computeIfAbsent(key, k -> new ArrayList<>()).add(s);
+    }
+    return new ArrayList<>(map.values());
+}
+```
+
 ```python
 def groupAnagrams(strs):
     """Group strings that are anagrams"""
@@ -267,7 +301,24 @@ def groupAnagrams(strs):
     return list(groups.values())
 ```
 
-### 3. Happy Number (LC 202)
+### 2-3) Happy Number (LC 202) — HashSet Cycle Detection
+> Sum digit squares repeatedly; use a set to detect if we revisit a number before reaching 1.
+
+```java
+// LC 202 - Happy Number
+// IDEA: HashSet to detect cycle in digit-square sum sequence
+// time = O(log N), space = O(log N)
+public boolean isHappy(int n) {
+    Set<Integer> seen = new HashSet<>();
+    while (n != 1 && seen.add(n)) {
+        int sum = 0;
+        while (n > 0) { int d = n % 10; sum += d * d; n /= 10; }
+        n = sum;
+    }
+    return n == 1;
+}
+```
+
 ```python
 def isHappy(n):
     """Detect if number leads to 1 or cycles"""
@@ -302,7 +353,28 @@ def isHappy(n):
     return slow == 1
 ```
 
-### 4. Longest Consecutive Sequence (LC 128)
+### 2-4) Longest Consecutive Sequence (LC 128) — HashSet Start Detection
+> Only expand from sequence starts (num−1 not in set) to avoid redundant counting.
+
+```java
+// LC 128 - Longest Consecutive Sequence
+// IDEA: HashSet; for each sequence start (num-1 absent), count forward
+// time = O(N), space = O(N)
+public int longestConsecutive(int[] nums) {
+    Set<Integer> set = new HashSet<>();
+    for (int n : nums) set.add(n);
+    int best = 0;
+    for (int n : set) {
+        if (!set.contains(n - 1)) {
+            int len = 1;
+            while (set.contains(n + len)) len++;
+            best = Math.max(best, len);
+        }
+    }
+    return best;
+}
+```
+
 ```python
 def longestConsecutive(nums):
     """Find longest consecutive sequence"""
@@ -329,7 +401,23 @@ def longestConsecutive(nums):
     return longest
 ```
 
-### 5. Repeated DNA Sequences (LC 187)
+### 2-5) Repeated DNA Sequences (LC 187) — Sliding Window HashSet
+> Slide a 10-char window; add to seen set; collect duplicates in result set.
+
+```java
+// LC 187 - Repeated DNA Sequences
+// IDEA: Slide 10-char window with HashSet; add to result if already seen
+// time = O(N), space = O(N)
+public List<String> findRepeatedDnaSequences(String s) {
+    Set<String> seen = new HashSet<>(), result = new HashSet<>();
+    for (int i = 0; i + 10 <= s.length(); i++) {
+        String sub = s.substring(i, i + 10);
+        if (!seen.add(sub)) result.add(sub);
+    }
+    return new ArrayList<>(result);
+}
+```
+
 ```python
 def findRepeatedDnaSequences(s):
     """Find repeated 10-character DNA sequences using rolling hash"""
@@ -387,7 +475,29 @@ def findRepeatedDnaSequences(s):
     return rolling_hash_dna(s)
 ```
 
-### 6. Top K Frequent Elements (LC 347)
+### 2-6) Top K Frequent Elements (LC 347) — Bucket Sort by Frequency
+> Place elements in buckets indexed by frequency; collect top k from highest buckets.
+
+```java
+// LC 347 - Top K Frequent Elements
+// IDEA: Count frequencies, then bucket sort by frequency; collect from high buckets
+// time = O(N), space = O(N)
+public int[] topKFrequent(int[] nums, int k) {
+    Map<Integer, Integer> count = new HashMap<>();
+    for (int n : nums) count.merge(n, 1, Integer::sum);
+    List<Integer>[] buckets = new List[nums.length + 1];
+    count.forEach((val, freq) -> {
+        if (buckets[freq] == null) buckets[freq] = new ArrayList<>();
+        buckets[freq].add(val);
+    });
+    int[] res = new int[k];
+    int idx = 0;
+    for (int i = buckets.length - 1; i >= 0 && idx < k; i--)
+        if (buckets[i] != null) for (int v : buckets[i]) if (idx < k) res[idx++] = v;
+    return res;
+}
+```
+
 ```python
 def topKFrequent(nums, k):
     """Find k most frequent elements"""

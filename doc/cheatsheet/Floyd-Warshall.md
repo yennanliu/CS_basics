@@ -302,7 +302,31 @@ For a graph with V=1000 vertices and E=5000 edges:
 
 ## LC Examples
 
-### Example 1: Find the City With the Smallest Number of Neighbors (LC 1334)
+### 2-1) Find the City With the Smallest Number of Neighbors (LC 1334) — Floyd-Warshall All-Pairs
+> Run Floyd-Warshall; for each city count reachable cities within threshold; return city with fewest (largest index on tie).
+
+```java
+// LC 1334 - Find the City With the Smallest Number of Neighbors at a Threshold Distance
+// IDEA: Floyd-Warshall all-pairs shortest path; count reachable per city within threshold
+// time = O(N^3), space = O(N^2)
+public int findTheCity(int n, int[][] edges, int distanceThreshold) {
+    int[][] dist = new int[n][n];
+    for (int[] row : dist) Arrays.fill(row, Integer.MAX_VALUE / 2);
+    for (int i = 0; i < n; i++) dist[i][i] = 0;
+    for (int[] e : edges) { dist[e[0]][e[1]] = e[2]; dist[e[1]][e[0]] = e[2]; }
+    for (int k = 0; k < n; k++)
+        for (int i = 0; i < n; i++)
+            for (int j = 0; j < n; j++)
+                dist[i][j] = Math.min(dist[i][j], dist[i][k] + dist[k][j]);
+    int ans = -1, minCount = n;
+    for (int i = 0; i < n; i++) {
+        int count = 0;
+        for (int j = 0; j < n; j++) if (i != j && dist[i][j] <= distanceThreshold) count++;
+        if (count <= minCount) { minCount = count; ans = i; }
+    }
+    return ans;
+}
+```
 
 ```python
 # LC 1334 - Find the City With the Smallest Number of Neighbors at a Threshold Distance
@@ -341,7 +365,25 @@ def findTheCity(n, edges, distanceThreshold):
     return result_city
 ```
 
-### Example 2: Course Schedule IV (LC 1462)
+### 2-2) Course Schedule IV (LC 1462) — Floyd-Warshall Transitive Closure
+> Use boolean reachability matrix; reachable[i][j] = true if i is prerequisite of j (direct or indirect).
+
+```java
+// LC 1462 - Course Schedule IV
+// IDEA: Floyd-Warshall transitive closure; reachable[i][j] = i is prerequisite of j
+// time = O(N^3), space = O(N^2)
+public List<Boolean> checkIfPrerequisite(int numCourses, int[][] prerequisites, int[][] queries) {
+    boolean[][] reach = new boolean[numCourses][numCourses];
+    for (int[] p : prerequisites) reach[p[0]][p[1]] = true;
+    for (int k = 0; k < numCourses; k++)
+        for (int i = 0; i < numCourses; i++)
+            for (int j = 0; j < numCourses; j++)
+                if (reach[i][k] && reach[k][j]) reach[i][j] = true;
+    List<Boolean> ans = new ArrayList<>();
+    for (int[] q : queries) ans.add(reach[q[0]][q[1]]);
+    return ans;
+}
+```
 
 ```python
 # LC 1462 - Course Schedule IV
@@ -370,7 +412,30 @@ def checkIfPrerequisite(numCourses, prerequisites, queries):
     return [is_prereq[u][v] for u, v in queries]
 ```
 
-### Example 3: Network Delay Time Alternative Solution (LC 743)
+### 2-3) Network Delay Time Alternative Solution (LC 743) — Floyd-Warshall All-Pairs
+> Compute all-pairs distances; answer is max dist from source k (overkill vs Dijkstra but correct).
+
+```java
+// LC 743 - Network Delay Time (Floyd-Warshall approach)
+// IDEA: All-pairs Floyd-Warshall; answer = max dist[k-1][i] for all i
+// time = O(N^3), space = O(N^2)
+public int networkDelayTime(int[][] times, int n, int k) {
+    int[][] dist = new int[n][n];
+    for (int[] row : dist) Arrays.fill(row, Integer.MAX_VALUE / 2);
+    for (int i = 0; i < n; i++) dist[i][i] = 0;
+    for (int[] t : times) dist[t[0]-1][t[1]-1] = t[2];
+    for (int mid = 0; mid < n; mid++)
+        for (int i = 0; i < n; i++)
+            for (int j = 0; j < n; j++)
+                dist[i][j] = Math.min(dist[i][j], dist[i][mid] + dist[mid][j]);
+    int max = 0;
+    for (int i = 0; i < n; i++) {
+        if (dist[k-1][i] == Integer.MAX_VALUE / 2) return -1;
+        max = Math.max(max, dist[k-1][i]);
+    }
+    return max;
+}
+```
 
 ```python
 # LC 743 - Network Delay Time
@@ -401,7 +466,28 @@ def networkDelayTime(times, n, k):
     return max_dist if max_dist != float('inf') else -1
 ```
 
-### Example 4: Graph Connectivity With Threshold (LC 1627)
+### 2-4) Graph Connectivity With Threshold (LC 1627) — Floyd-Warshall Connectivity
+> Build edges for all GCD > threshold; use Floyd-Warshall transitive closure to answer queries.
+
+```java
+// LC 1627 - Graph Connectivity With Threshold
+// IDEA: Connect multiples of each gcd > threshold; Floyd-Warshall for connectivity queries
+// time = O(N^2 log N + N^3 + Q), space = O(N^2)
+public List<Boolean> areConnected(int n, int threshold, int[][] queries) {
+    boolean[][] conn = new boolean[n + 1][n + 1];
+    for (int i = 0; i <= n; i++) conn[i][i] = true;
+    for (int g = threshold + 1; g <= n; g++)
+        for (int mul = 2 * g; mul <= n; mul += g)
+            conn[g][mul] = conn[mul][g] = true;
+    for (int k = 1; k <= n; k++)
+        for (int i = 1; i <= n; i++)
+            for (int j = 1; j <= n; j++)
+                if (conn[i][k] && conn[k][j]) conn[i][j] = true;
+    List<Boolean> ans = new ArrayList<>();
+    for (int[] q : queries) ans.add(conn[q[0]][q[1]]);
+    return ans;
+}
+```
 
 ```python
 # LC 1627 - Graph Connectivity With Threshold
@@ -437,7 +523,30 @@ def areConnected(n, threshold, queries):
     return [connected[u][v] for u, v in queries]
 ```
 
-### Example 5: Shortest Path Visiting All Nodes (LC 847)
+### 2-5) Shortest Path Visiting All Nodes (LC 847) — BFS + Bitmask (Floyd-Warshall Preprocessing)
+> BFS with state (node, visitedMask); precompute pairwise distances with Floyd-Warshall if needed.
+
+```java
+// LC 847 - Shortest Path Visiting All Nodes
+// IDEA: BFS with bitmask state (node, visited); all nodes are valid starts
+// time = O(2^N * N), space = O(2^N * N)
+public int shortestPathLength(int[][] graph) {
+    int n = graph.length, full = (1 << n) - 1;
+    Queue<int[]> q = new LinkedList<>();
+    boolean[][] visited = new boolean[n][1 << n];
+    for (int i = 0; i < n; i++) { q.offer(new int[]{i, 1 << i, 0}); visited[i][1 << i] = true; }
+    while (!q.isEmpty()) {
+        int[] cur = q.poll();
+        int node = cur[0], mask = cur[1], dist = cur[2];
+        if (mask == full) return dist;
+        for (int next : graph[node]) {
+            int nextMask = mask | (1 << next);
+            if (!visited[next][nextMask]) { visited[next][nextMask] = true; q.offer(new int[]{next, nextMask, dist + 1}); }
+        }
+    }
+    return -1;
+}
+```
 
 ```python
 # LC 847 - Shortest Path Visiting All Nodes

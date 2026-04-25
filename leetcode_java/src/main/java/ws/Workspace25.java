@@ -2435,5 +2435,63 @@ public class Workspace25 {
 
 
 
+    // LC 739
+    // 15.26 - 36 pm
+    /**
+     *
+     *  -> return an array answer such that answer[i] is the number of days
+     *    you have to wait after the
+     *    ith day to get a warmer temperature.
+     *
+     *  IDEA:  MONO STACK
+     */
+    // IDEA:  MONO STACK (big stack ????
+    public int[] dailyTemperatures(int[] temperatures) {
+        // edge
+        if(temperatures == null || temperatures.length == 0){
+            return null;
+        }
+        if(temperatures.length == 1){
+            return new int[]{0};
+        }
+
+
+
+        int n = temperatures.length;
+        int res[] = new int[n];
+        // ???
+        Arrays.fill(res, 0);
+
+        // NOTE !! small ???? PQ
+        // small PQ: { idx_1, idx_2, ... }
+        PriorityQueue<Integer> pq = new PriorityQueue<>(new Comparator<Integer>() {
+            @Override
+            public int compare(Integer o1, Integer o2) {
+                //int diff = o2 - o1;
+                int diff = o1 - o2; // ???
+                return diff;
+            }
+        });
+
+
+        for(int i = 0; i < n; i++){
+            int cur = temperatures[i];
+            while (!pq.isEmpty() && temperatures[pq.peek()] < cur){
+                int preIdx = pq.poll();
+                res[preIdx] = i - preIdx; // ???
+            }
+            pq.add(i);
+        }
+
+        return res;
+    }
+
+
+
+
+
+
+
+
 
 }

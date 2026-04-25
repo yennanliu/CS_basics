@@ -614,8 +614,6 @@ def dijkstra_bidirectional(n, edges, src, dst):
     return min(path1, path2, dist_fwd[dst])
 ```
 
-## LC Examples
-
 ## Problems by Pattern
 
 ### **Classic Shortest Path Problems**
@@ -662,7 +660,36 @@ def dijkstra_bidirectional(n, edges, src, dst):
 | Minimum Time to Visit All Points | 2065 | State tracking | Hard |
 | The Maze III | 499 | Lexicographic path | Hard |
 
-### 2-1) Network Delay Time
+## LC Examples
+
+### 2-1) Network Delay Time (LC 743) — Dijkstra Single Source
+> Dijkstra from source k; answer is max of all shortest distances, or -1 if any unreachable.
+
+```java
+// LC 743 - Network Delay Time
+// IDEA: Dijkstra from source k; max shortest dist = time for signal to reach all nodes
+// time = O((V+E) log V), space = O(V+E)
+public int networkDelayTime(int[][] times, int n, int k) {
+    Map<Integer, List<int[]>> graph = new HashMap<>();
+    for (int[] t : times) graph.computeIfAbsent(t[0], x -> new ArrayList<>()).add(new int[]{t[1], t[2]});
+    int[] dist = new int[n + 1];
+    Arrays.fill(dist, Integer.MAX_VALUE);
+    dist[k] = 0;
+    PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> a[0] - b[0]);
+    pq.offer(new int[]{0, k});
+    while (!pq.isEmpty()) {
+        int[] cur = pq.poll();
+        int d = cur[0], u = cur[1];
+        if (d > dist[u]) continue;
+        for (int[] e : graph.getOrDefault(u, new ArrayList<>())) {
+            if (dist[u] + e[1] < dist[e[0]]) { dist[e[0]] = dist[u] + e[1]; pq.offer(new int[]{dist[e[0]], e[0]}); }
+        }
+    }
+    int max = 0;
+    for (int i = 1; i <= n; i++) { if (dist[i] == Integer.MAX_VALUE) return -1; max = Math.max(max, dist[i]); }
+    return max;
+}
+```
 
 ```python
 # LC 743 Network Delay Time
@@ -686,7 +713,31 @@ class Solution:
         return -1 if float('inf') in dist else max(dist)
 ```
 
-### 2-2) Cheapest Flights Within K Stops
+### 2-2) Cheapest Flights Within K Stops (LC 787) — Dijkstra with Stop Counter
+> State = (cost, node, stops); skip if stops > k; don't use visited set (stops matter).
+
+```java
+// LC 787 - Cheapest Flights Within K Stops
+// IDEA: Dijkstra with state (cost, node, stops); stop expanding when stops > k
+// time = O(E * K log(E*K)), space = O(E*K)
+public int findCheapestPrice(int n, int[][] flights, int src, int dst, int k) {
+    Map<Integer, List<int[]>> graph = new HashMap<>();
+    for (int[] f : flights) graph.computeIfAbsent(f[0], x -> new ArrayList<>()).add(new int[]{f[1], f[2]});
+    int[] dist = new int[n];
+    Arrays.fill(dist, Integer.MAX_VALUE);
+    PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> a[0] - b[0]); // [cost, node, stops]
+    pq.offer(new int[]{0, src, 0});
+    while (!pq.isEmpty()) {
+        int[] cur = pq.poll();
+        int cost = cur[0], u = cur[1], stops = cur[2];
+        if (u == dst) return cost;
+        if (stops > k) continue;
+        for (int[] e : graph.getOrDefault(u, new ArrayList<>()))
+            if (cost + e[1] < dist[e[0]]) { dist[e[0]] = cost + e[1]; pq.offer(new int[]{dist[e[0]], e[0], stops + 1}); }
+    }
+    return -1;
+}
+```
 
 ```python
 # LC 787 Cheapest Flights Within K Stops
@@ -719,7 +770,9 @@ class Solution:
         return -1
 ```
 
-### 2-3) Path With Minimum Effort
+### 2-3) Path With Minimum Effort (LC 1631) — Dijkstra Min Effort on Grid
+
+> Minimize the maximum absolute difference along path; use min-heap with effort as priority key.
 
 ```java
 // java
@@ -824,7 +877,9 @@ public int minimumEffortPath_0_1(int[][] heights) {
 }
 ```
 
-### 2-4) Path with Maximum Probability
+### 2-4) Path with Maximum Probability (LC 1514) — Dijkstra Max-Heap on Probabilities
+
+> Max-heap Dijkstra multiplying edge probabilities; start at 1.0, maximize reach-probability.
 
 ```java
 // java
@@ -910,7 +965,9 @@ class Solution:
         return 0.0
 ```
 
-### 2-5) Number of Ways to Arrive at Destination
+### 2-5) Number of Ways to Arrive at Destination (LC 1976) — Dijkstra + Path Count
+
+> Standard Dijkstra; track count of shortest paths at each node alongside minimum distance.
 
 ```java
 // java
@@ -1000,7 +1057,9 @@ class Solution:
         return ways[n - 1] % MOD
 ```
 
-### 2-6) Swim in Rising Water
+### 2-6) Swim in Rising Water (LC 778) — Dijkstra Min-Max on Grid
+
+> Min-heap where priority = max elevation seen so far; answer = time to reach bottom-right.
 
 ```java
 // java
@@ -1039,7 +1098,9 @@ public int swimInWater(int[][] grid) {
 }
 ```
 
-### 2-7) Trapping Rain Water II
+### 2-7) Trapping Rain Water II (LC 407) — Multi-Source Dijkstra from Boundary
+
+> Process boundary cells with min-heap; water trapped = max(boundary height) - cell height.
 
 ```java
 // java
@@ -1093,7 +1154,9 @@ public int trapRainWater(int[][] heightMap) {
 }
 ```
 
-### 2-8) Minimum Obstacle Removal to Reach Corner
+### 2-8) Minimum Obstacle Removal to Reach Corner (LC 2290) — 0-1 BFS / Dijkstra
+
+> Cost = 1 for obstacle, 0 for empty cell; use 0-1 BFS (deque) or Dijkstra to minimize total.
 
 ```java
 // java

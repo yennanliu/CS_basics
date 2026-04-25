@@ -1024,6 +1024,24 @@ class Solution(object):
         return res
 ```
 
+```java
+// LC 54 - Spiral Matrix
+// IDEA: Four boundary pointers (left, right, top, bottom); shrink after each direction
+// time = O(M*N), space = O(1)
+public List<Integer> spiralOrder(int[][] matrix) {
+    List<Integer> res = new ArrayList<>();
+    int left = 0, right = matrix[0].length - 1, top = 0, bottom = matrix.length - 1;
+    while (left <= right && top <= bottom) {
+        for (int j = left; j <= right; j++) res.add(matrix[top][j]);
+        for (int i = top + 1; i <= bottom; i++) res.add(matrix[i][right]);
+        if (top < bottom) for (int j = right - 1; j >= left; j--) res.add(matrix[bottom][j]);
+        if (left < right) for (int i = bottom - 1; i > top; i--) res.add(matrix[i][left]);
+        left++; right--; top++; bottom--;
+    }
+    return res;
+}
+```
+
 ---
 
 ### 2-2) Rotate Image (LC 48) — Pattern: Transformation
@@ -1047,6 +1065,18 @@ class Solution(object):
         for i in range(l):
             matrix[i] = matrix[i][::-1]
         return matrix
+```
+
+```java
+// LC 48 - Rotate Image
+// IDEA: Transpose (swap [i][j] with [j][i]) then reverse each row
+// time = O(N^2), space = O(1)
+public void rotate(int[][] matrix) {
+    int n = matrix.length;
+    for (int i = 0; i < n; i++)
+        for (int j = i + 1; j < n; j++) { int t = matrix[i][j]; matrix[i][j] = matrix[j][i]; matrix[j][i] = t; }
+    for (int[] row : matrix) { int l = 0, r = row.length - 1; while (l < r) { int t = row[l]; row[l++] = row[r]; row[r--] = t; } }
+}
 ```
 
 ---
@@ -1077,6 +1107,22 @@ class Solution(object):
         return False
 ```
 
+```java
+// LC 74 - Search a 2D Matrix
+// IDEA: Binary search treating matrix as flat 1D array; row = mid/n, col = mid%n
+// time = O(log(M*N)), space = O(1)
+public boolean searchMatrix(int[][] matrix, int target) {
+    int m = matrix.length, n = matrix[0].length, l = 0, r = m * n - 1;
+    while (l <= r) {
+        int mid = (l + r) / 2, val = matrix[mid / n][mid % n];
+        if (val == target) return true;
+        else if (val < target) l = mid + 1;
+        else r = mid - 1;
+    }
+    return false;
+}
+```
+
 ---
 
 ### 2-4) Search a 2D Matrix II (LC 240) — Pattern: Search (Elimination)
@@ -1100,6 +1146,21 @@ class Solution:
             else:
                 col -= 1      # eliminate current column
         return False
+```
+
+```java
+// LC 240 - Search a 2D Matrix II
+// IDEA: Start top-right; if val > target shrink col, if val < target grow row
+// time = O(M+N), space = O(1)
+public boolean searchMatrix(int[][] matrix, int target) {
+    int row = 0, col = matrix[0].length - 1;
+    while (row < matrix.length && col >= 0) {
+        if (matrix[row][col] == target) return true;
+        else if (matrix[row][col] < target) row++;
+        else col--;
+    }
+    return false;
+}
 ```
 
 ---
@@ -1131,6 +1192,24 @@ class Solution(object):
         for j in x_zeros:
             for i in range(l):
                 matrix[i][j] = 0
+```
+
+```java
+// LC 73 - Set Matrix Zeroes
+// IDEA: Use first row/col as markers; scan once to mark, once to apply
+// time = O(M*N), space = O(1)
+public void setZeroes(int[][] matrix) {
+    int m = matrix.length, n = matrix[0].length;
+    boolean firstRowZero = false, firstColZero = false;
+    for (int j = 0; j < n; j++) if (matrix[0][j] == 0) firstRowZero = true;
+    for (int i = 0; i < m; i++) if (matrix[i][0] == 0) firstColZero = true;
+    for (int i = 1; i < m; i++) for (int j = 1; j < n; j++)
+        if (matrix[i][j] == 0) { matrix[i][0] = 0; matrix[0][j] = 0; }
+    for (int i = 1; i < m; i++) for (int j = 1; j < n; j++)
+        if (matrix[i][0] == 0 || matrix[0][j] == 0) matrix[i][j] = 0;
+    if (firstRowZero) Arrays.fill(matrix[0], 0);
+    if (firstColZero) for (int i = 0; i < m; i++) matrix[i][0] = 0;
+}
 ```
 
 ---
@@ -1165,6 +1244,24 @@ class Solution(object):
         return count
 ```
 
+```java
+// LC 200 - Number of Islands
+// IDEA: DFS from each unvisited '1'; sink visited cells to '0'
+// time = O(M*N), space = O(M*N) recursion stack
+public int numIslands(char[][] grid) {
+    int count = 0;
+    for (int i = 0; i < grid.length; i++)
+        for (int j = 0; j < grid[0].length; j++)
+            if (grid[i][j] == '1') { dfs(grid, i, j); count++; }
+    return count;
+}
+private void dfs(char[][] grid, int i, int j) {
+    if (i < 0 || i >= grid.length || j < 0 || j >= grid[0].length || grid[i][j] != '1') return;
+    grid[i][j] = '0';
+    dfs(grid, i+1, j); dfs(grid, i-1, j); dfs(grid, i, j+1); dfs(grid, i, j-1);
+}
+```
+
 ---
 
 ### 2-7) Minimum Path Sum (LC 64) — Pattern: Matrix Path DP
@@ -1193,6 +1290,21 @@ class Solution:
         return grid[-1][-1]
 ```
 
+```java
+// LC 64 - Minimum Path Sum
+// IDEA: DP in-place; dp[i][j] += min(dp[i-1][j], dp[i][j-1])
+// time = O(M*N), space = O(1)
+public int minPathSum(int[][] grid) {
+    int m = grid.length, n = grid[0].length;
+    for (int i = 1; i < m; i++) grid[i][0] += grid[i-1][0];
+    for (int j = 1; j < n; j++) grid[0][j] += grid[0][j-1];
+    for (int i = 1; i < m; i++)
+        for (int j = 1; j < n; j++)
+            grid[i][j] += Math.min(grid[i-1][j], grid[i][j-1]);
+    return grid[m-1][n-1];
+}
+```
+
 ---
 
 ### 2-8) Maximal Square (LC 221) — Pattern: 2D DP
@@ -1217,6 +1329,23 @@ class Solution:
                     dp[i][j] = min(dp[i-1][j-1], dp[i][j-1], dp[i-1][j]) + 1
                 ans = max(ans, dp[i][j])
         return ans * ans
+```
+
+```java
+// LC 221 - Maximal Square
+// IDEA: dp[i][j] = min(left, top, diag) + 1 when cell is '1'; ans = max dp^2
+// time = O(M*N), space = O(M*N)
+public int maximalSquare(char[][] matrix) {
+    int m = matrix.length, n = matrix[0].length, ans = 0;
+    int[][] dp = new int[m + 1][n + 1];
+    for (int i = 1; i <= m; i++)
+        for (int j = 1; j <= n; j++)
+            if (matrix[i-1][j-1] == '1') {
+                dp[i][j] = Math.min(dp[i-1][j-1], Math.min(dp[i-1][j], dp[i][j-1])) + 1;
+                ans = Math.max(ans, dp[i][j]);
+            }
+    return ans * ans;
+}
 ```
 
 ---
@@ -1247,6 +1376,23 @@ class Solution:
                 # Rule 4: dead cell becomes alive
                 elif copy_board[row][col] == 0 and live_neighbors == 3:
                     board[row][col] = 1
+```
+
+```java
+// LC 289 - Game of Life
+// IDEA: Encode next state in same cell: 2 = was dead now alive, -1 = was alive now dead
+// time = O(M*N), space = O(1)
+public void gameOfLife(int[][] board) {
+    int m = board.length, n = board[0].length;
+    int[][] dirs = {{0,1},{0,-1},{1,0},{-1,0},{1,1},{1,-1},{-1,1},{-1,-1}};
+    for (int i = 0; i < m; i++) for (int j = 0; j < n; j++) {
+        int live = 0;
+        for (int[] d : dirs) { int r = i+d[0], c = j+d[1]; if (r>=0&&r<m&&c>=0&&c<n&&Math.abs(board[r][c])==1) live++; }
+        if (board[i][j] == 1 && (live < 2 || live > 3)) board[i][j] = -1;
+        if (board[i][j] == 0 && live == 3) board[i][j] = 2;
+    }
+    for (int i = 0; i < m; i++) for (int j = 0; j < n; j++) board[i][j] = board[i][j] > 0 ? 1 : 0;
+}
 ```
 
 ---

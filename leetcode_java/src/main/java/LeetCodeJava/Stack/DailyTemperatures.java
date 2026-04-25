@@ -36,7 +36,8 @@ import java.util.*;
 public class DailyTemperatures {
 
     // V0
-    // IDEA: STACK + HASHMAP ( {idx : val} )
+    // IDEA: `STACK` + HASHMAP ( {idx : val} )
+    // NOTE !!! we should use `stack`, but NOT PQ
     /**
      * time = O(1)
      * space = O(1)
@@ -427,5 +428,8 @@ public class DailyTemperatures {
 
         return answer;
     }
+
+
+
 
 }
