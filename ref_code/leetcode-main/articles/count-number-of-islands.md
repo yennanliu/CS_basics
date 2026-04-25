@@ -1,0 +1,1484 @@
+## Prerequisites
+
+Before attempting this problem, you should be comfortable with:
+
+- **2D Arrays/Matrices** - Navigating and manipulating grid-based data structures
+- **Depth First Search (DFS)** - Recursive traversal to explore all connected components
+- **Breadth First Search (BFS)** - Level-by-level traversal using a queue
+- **Union-Find (Disjoint Set Union)** - Data structure for efficiently tracking connected components
+
+---
+
+## 1. Depth First Search
+
+### Intuition
+
+Think of the grid as a map where `'1'` is land and `'0'` is water.  
+An **island** is a group of connected land cells (up, down, left, right).  
+Whenever we find a land cell that hasn’t been visited, we start a DFS to **sink the entire island** by marking all its connected land as water. Each DFS call corresponds to **one island**.
+
+### Algorithm
+
+1. Iterate through every cell in the grid.
+2. When a cell with value `'1'` is found:
+    - Increment the island count.
+    - Run DFS from that cell.
+3. In DFS:
+    - If the cell is out of bounds or is `'0'`, return.
+    - Mark the current cell as `'0'` (visited).
+    - Recursively explore all 4 directions (up, down, left, right).
+4. Continue until all cells are processed.
+5. Return the total island count.
+
+
+<br>
+
+::tabs-start
+
+```python
+class Solution:
+    def numIslands(self, grid: List[List[str]]) -> int:
+        directions = [[1, 0], [-1, 0], [0, 1], [0, -1]]
+        ROWS, COLS = len(grid), len(grid[0])
+        islands = 0
+
+        def dfs(r, c):
+            if (r < 0 or c < 0 or r >= ROWS or
+                c >= COLS or grid[r][c] == "0"
+            ):
+                return
+
+            grid[r][c] = "0"
+            for dr, dc in directions:
+                dfs(r + dr, c + dc)
+
+        for r in range(ROWS):
+            for c in range(COLS):
+                if grid[r][c] == "1":
+                    dfs(r, c)
+                    islands += 1
+
+        return islands
+```
+
+```java
+public class Solution {
+    private static final int[][] directions = {{1, 0}, {-1, 0},
+                                               {0, 1}, {0, -1}};
+
+    public int numIslands(char[][] grid) {
+        int ROWS = grid.length, COLS = grid[0].length;
+        int islands = 0;
+
+        for (int r = 0; r < ROWS; r++) {
+            for (int c = 0; c < COLS; c++) {
+                if (grid[r][c] == '1') {
+                    dfs(grid, r, c);
+                    islands++;
+                }
+            }
+        }
+
+        return islands;
+    }
+
+    private void dfs(char[][] grid, int r, int c) {
+        if (r < 0 || c < 0 || r >= grid.length ||
+            c >= grid[0].length || grid[r][c] == '0') {
+            return;
+        }
+
+        grid[r][c] = '0';
+        for (int[] dir : directions) {
+            dfs(grid, r + dir[0], c + dir[1]);
+        }
+    }
+}
+```
+
+```cpp
+class Solution {
+    int directions[4][2] = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
+public:
+    int numIslands(vector<vector<char>>& grid) {
+        int ROWS = grid.size(), COLS = grid[0].size();
+        int islands = 0;
+
+        for (int r = 0; r < ROWS; r++) {
+            for (int c = 0; c < COLS; c++) {
+                if (grid[r][c] == '1') {
+                    dfs(grid, r, c);
+                    islands++;
+                }
+            }
+        }
+
+        return islands;
+    }
+
+    void dfs(vector<vector<char>>& grid, int r, int c) {
+        if (r < 0 || c < 0 || r >= grid.size() ||
+            c >= grid[0].size() || grid[r][c] == '0') {
+            return;
+        }
+
+        grid[r][c] = '0';
+        for (int i = 0; i < 4; i++) {
+            dfs(grid, r + directions[i][0], c + directions[i][1]);
+        }
+    }
+};
+```
+
+```javascript
+class Solution {
+    /**
+     * @param {character[][]} grid
+     * @return {number}
+     */
+    numIslands(grid) {
+        const directions = [
+            [1, 0],
+            [-1, 0],
+            [0, 1],
+            [0, -1],
+        ];
+        const ROWS = grid.length,
+            COLS = grid[0].length;
+        let islands = 0;
+
+        const dfs = (r, c) => {
+            if (r < 0 || c < 0 || r >= ROWS || c >= COLS || grid[r][c] === '0')
+                return;
+
+            grid[r][c] = '0';
+            for (const [dr, dc] of directions) {
+                dfs(r + dr, c + dc);
+            }
+        };
+
+        for (let r = 0; r < ROWS; r++) {
+            for (let c = 0; c < COLS; c++) {
+                if (grid[r][c] === '1') {
+                    dfs(r, c);
+                    islands++;
+                }
+            }
+        }
+
+        return islands;
+    }
+}
+```
+
+```csharp
+public class Solution {
+    private static readonly int[][] directions = new int[][] {
+        new int[] {1, 0}, new int[] {-1, 0},
+        new int[] {0, 1}, new int[] {0, -1}
+    };
+
+    public int NumIslands(char[][] grid) {
+        int ROWS = grid.Length, COLS = grid[0].Length;
+        int islands = 0;
+
+        for (int r = 0; r < ROWS; r++) {
+            for (int c = 0; c < COLS; c++) {
+                if (grid[r][c] == '1') {
+                    Dfs(grid, r, c);
+                    islands++;
+                }
+            }
+        }
+
+        return islands;
+    }
+
+    private void Dfs(char[][] grid, int r, int c) {
+        if (r < 0 || c < 0 || r >= grid.Length ||
+            c >= grid[0].Length || grid[r][c] == '0') {
+            return;
+        }
+
+        grid[r][c] = '0';
+        foreach (var dir in directions) {
+            Dfs(grid, r + dir[0], c + dir[1]);
+        }
+    }
+}
+```
+
+```go
+func numIslands(grid [][]byte) int {
+    directions := [][]int{{1, 0}, {-1, 0}, {0, 1}, {0, -1}}
+    rows, cols := len(grid), len(grid[0])
+    islands := 0
+
+    var dfs func(r, c int)
+    dfs = func(r, c int) {
+        if r < 0 || c < 0 || r >= rows ||
+           c >= cols || grid[r][c] == '0' {
+            return
+        }
+        grid[r][c] = '0'
+        for _, dir := range directions {
+            dfs(r+dir[0], c+dir[1])
+        }
+    }
+
+    for r := 0; r < rows; r++ {
+        for c := 0; c < cols; c++ {
+            if grid[r][c] == '1' {
+                dfs(r, c)
+                islands++
+            }
+        }
+    }
+
+    return islands
+}
+```
+
+```kotlin
+class Solution {
+    fun numIslands(grid: Array<CharArray>): Int {
+        val directions = arrayOf(intArrayOf(1, 0),
+                                 intArrayOf(-1, 0),
+                                 intArrayOf(0, 1),
+                                 intArrayOf(0, -1))
+        val rows = grid.size
+        val cols = grid[0].size
+        var islands = 0
+
+        fun dfs(r: Int, c: Int) {
+            if (r < 0 || c < 0 || r >= rows ||
+                c >= cols || grid[r][c] == '0') {
+                return
+            }
+            grid[r][c] = '0'
+            for (dir in directions) {
+                dfs(r + dir[0], c + dir[1])
+            }
+        }
+
+        for (r in 0 until rows) {
+            for (c in 0 until cols) {
+                if (grid[r][c] == '1') {
+                    dfs(r, c)
+                    islands++
+                }
+            }
+        }
+
+        return islands
+    }
+}
+```
+
+```swift
+class Solution {
+    func numIslands(_ grid: [[Character]]) -> Int {
+        let directions = [[1, 0], [-1, 0], [0, 1], [0, -1]]
+        let ROWS = grid.count
+        let COLS = grid[0].count
+        var islands = 0
+        var grid = grid
+
+        func dfs(_ r: Int, _ c: Int) {
+            if r < 0 || c < 0 || r >= ROWS || c >= COLS || grid[r][c] == "0" {
+                return
+            }
+
+            grid[r][c] = "0"
+            for dir in directions {
+                dfs(r + dir[0], c + dir[1])
+            }
+        }
+
+        for r in 0..<ROWS {
+            for c in 0..<COLS {
+                if grid[r][c] == "1" {
+                    dfs(r, c)
+                    islands += 1
+                }
+            }
+        }
+
+        return islands
+    }
+}
+```
+
+```rust
+impl Solution {
+    pub fn num_islands(grid: Vec<Vec<char>>) -> i32 {
+        let mut grid = grid;
+        let rows = grid.len();
+        let cols = grid[0].len();
+        let directions = [(1i32, 0i32), (-1, 0), (0, 1), (0, -1)];
+        let mut islands = 0;
+
+        fn dfs(grid: &mut Vec<Vec<char>>, r: i32, c: i32,
+               rows: usize, cols: usize, directions: &[(i32, i32)]) {
+            if r < 0 || c < 0 || r >= rows as i32 ||
+               c >= cols as i32 || grid[r as usize][c as usize] == '0' {
+                return;
+            }
+            grid[r as usize][c as usize] = '0';
+            for &(dr, dc) in directions {
+                dfs(grid, r + dr, c + dc, rows, cols, directions);
+            }
+        }
+
+        for r in 0..rows {
+            for c in 0..cols {
+                if grid[r][c] == '1' {
+                    dfs(&mut grid, r as i32, c as i32, rows, cols, &directions);
+                    islands += 1;
+                }
+            }
+        }
+        islands
+    }
+}
+```
+
+::tabs-end
+
+### Time & Space Complexity
+
+- Time complexity: $O(m * n)$
+- Space complexity: $O(m * n)$
+
+> Where $m$ is the number of rows and $n$ is the number of columns in the $grid$.
+
+---
+
+## 2. Breadth First Search
+
+### Intuition
+
+Treat the grid like a map where `'1'` represents land and `'0'` represents water.  
+Each **island** is a group of connected land cells.  
+When we encounter a land cell, we use **BFS** to visit all connected land cells and mark them as water, ensuring the same island is not counted again.
+
+### Algorithm
+
+1. Traverse every cell in the grid.
+2. When a `'1'` (land) cell is found:
+    - Increment the island count.
+    - Start BFS from that cell.
+3. In BFS:
+    - Push the starting cell into a queue and mark it as `'0'`.
+    - While the queue is not empty:
+        - Pop a cell.
+        - Explore its 4 neighbors (up, down, left, right).
+        - If a neighbor is land, mark it as `'0'` and add it to the queue.
+4. Continue scanning the grid.
+5. Return the total number of islands.
+
+
+<br>
+
+::tabs-start
+
+```python
+class Solution:
+    def numIslands(self, grid: List[List[str]]) -> int:
+        directions = [[1, 0], [-1, 0], [0, 1], [0, -1]]
+        ROWS, COLS = len(grid), len(grid[0])
+        islands = 0
+
+        def bfs(r, c):
+            q = deque()
+            grid[r][c] = "0"
+            q.append((r, c))
+
+            while q:
+                row, col = q.popleft()
+                for dr, dc in directions:
+                    nr, nc = dr + row, dc + col
+                    if (nr < 0 or nc < 0 or nr >= ROWS or
+                        nc >= COLS or grid[nr][nc] == "0"
+                    ):
+                        continue
+                    q.append((nr, nc))
+                    grid[nr][nc] = "0"
+
+        for r in range(ROWS):
+            for c in range(COLS):
+                if grid[r][c] == "1":
+                    bfs(r, c)
+                    islands += 1
+
+        return islands
+```
+
+```java
+public class Solution {
+    private static final int[][] directions = {{1, 0}, {-1, 0},
+                                               {0, 1}, {0, -1}};
+
+    public int numIslands(char[][] grid) {
+        int ROWS = grid.length, COLS = grid[0].length;
+        int islands = 0;
+
+        for (int r = 0; r < ROWS; r++) {
+            for (int c = 0; c < COLS; c++) {
+                if (grid[r][c] == '1') {
+                    bfs(grid, r, c);
+                    islands++;
+                }
+            }
+        }
+
+        return islands;
+    }
+
+    private void bfs(char[][] grid, int r, int c) {
+        Queue<int[]> q = new LinkedList<>();
+        grid[r][c] = '0';
+        q.add(new int[]{r, c});
+
+        while (!q.isEmpty()) {
+            int[] node = q.poll();
+            int row = node[0], col = node[1];
+
+            for (int[] dir : directions) {
+                int nr = row + dir[0], nc = col + dir[1];
+                if (nr >= 0 && nc >= 0 && nr < grid.length &&
+                    nc < grid[0].length && grid[nr][nc] == '1') {
+                    q.add(new int[]{nr, nc});
+                    grid[nr][nc] = '0';
+                }
+            }
+        }
+    }
+}
+```
+
+```cpp
+class Solution {
+    int directions[4][2] = {{1, 0}, {-1, 0},
+                            {0, 1}, {0, -1}};
+public:
+    int numIslands(vector<vector<char>>& grid) {
+        int ROWS = grid.size(), COLS = grid[0].size();
+        int islands = 0;
+
+        for (int r = 0; r < ROWS; r++) {
+            for (int c = 0; c < COLS; c++) {
+                if (grid[r][c] == '1') {
+                    bfs(grid, r, c);
+                    islands++;
+                }
+            }
+        }
+
+        return islands;
+    }
+
+    void bfs(vector<vector<char>>& grid, int r, int c) {
+        queue<pair<int, int>> q;
+        grid[r][c] = '0';
+        q.push({r, c});
+
+        while (!q.empty()) {
+            auto node = q.front();q.pop();
+            int row = node.first, col = node.second;
+            for (int i = 0; i < 4; i++) {
+                int nr = row + directions[i][0];
+                int nc = col + directions[i][1];
+                if (nr >= 0 && nc >= 0 && nr < grid.size() &&
+                    nc < grid[0].size() && grid[nr][nc] == '1') {
+                    q.push({nr, nc});
+                    grid[nr][nc] = '0';
+                }
+            }
+        }
+    }
+};
+```
+
+```javascript
+class Solution {
+    /**
+     * @param {character[][]} grid
+     * @return {number}
+     */
+    numIslands(grid) {
+        const directions = [
+            [1, 0],
+            [-1, 0],
+            [0, 1],
+            [0, -1],
+        ];
+        const ROWS = grid.length,
+            COLS = grid[0].length;
+        let islands = 0;
+
+        const bfs = (r, c) => {
+            const q = new Queue();
+            q.push([r, c]);
+            grid[r][c] = '0';
+
+            while (!q.isEmpty()) {
+                const [row, col] = q.pop();
+                for (const [dr, dc] of directions) {
+                    const nr = row + dr,
+                        nc = col + dc;
+                    if (
+                        nr >= 0 &&
+                        nc >= 0 &&
+                        nr < ROWS &&
+                        nc < COLS &&
+                        grid[nr][nc] === '1'
+                    ) {
+                        q.push([nr, nc]);
+                        grid[nr][nc] = '0';
+                    }
+                }
+            }
+        };
+
+        for (let r = 0; r < ROWS; r++) {
+            for (let c = 0; c < COLS; c++) {
+                if (grid[r][c] === '1') {
+                    bfs(r, c);
+                    islands++;
+                }
+            }
+        }
+
+        return islands;
+    }
+}
+```
+
+```csharp
+public class Solution {
+    private static readonly int[][] directions = new int[][] {
+        new int[] {1, 0}, new int[] {-1, 0},
+        new int[] {0, 1}, new int[] {0, -1}
+    };
+
+    public int NumIslands(char[][] grid) {
+        int ROWS = grid.Length, COLS = grid[0].Length;
+        int islands = 0;
+
+        for (int r = 0; r < ROWS; r++) {
+            for (int c = 0; c < COLS; c++) {
+                if (grid[r][c] == '1') {
+                    Bfs(grid, r, c);
+                    islands++;
+                }
+            }
+        }
+
+        return islands;
+    }
+
+    private void Bfs(char[][] grid, int r, int c) {
+        Queue<int[]> q = new Queue<int[]>();
+        grid[r][c] = '0';
+        q.Enqueue(new int[] { r, c });
+
+        while (q.Count > 0) {
+            var node = q.Dequeue();
+            int row = node[0], col = node[1];
+
+            foreach (var dir in directions) {
+                int nr = row + dir[0], nc = col + dir[1];
+                if (nr >= 0 && nc >= 0 && nr < grid.Length &&
+                    nc < grid[0].Length && grid[nr][nc] == '1') {
+                    q.Enqueue(new int[] { nr, nc });
+                    grid[nr][nc] = '0';
+                }
+            }
+        }
+    }
+}
+```
+
+```go
+func numIslands(grid [][]byte) int {
+    directions := [][]int{{1, 0}, {-1, 0}, {0, 1}, {0, -1}}
+    rows, cols := len(grid), len(grid[0])
+    islands := 0
+
+    var bfs func(r, c int)
+    bfs = func(r, c int) {
+        q := [][]int{{r, c}}
+        grid[r][c] = '0'
+
+        for len(q) > 0 {
+            front := q[0]
+            q = q[1:]
+            row, col := front[0], front[1]
+            for _, dir := range directions {
+                nr, nc := row+dir[0], col+dir[1]
+                if nr < 0 || nc < 0 || nr >= rows ||
+                   nc >= cols || grid[nr][nc] == '0' {
+                    continue
+                }
+                q = append(q, []int{nr, nc})
+                grid[nr][nc] = '0'
+            }
+        }
+    }
+
+    for r := 0; r < rows; r++ {
+        for c := 0; c < cols; c++ {
+            if grid[r][c] == '1' {
+                bfs(r, c)
+                islands++
+            }
+        }
+    }
+
+    return islands
+}
+```
+
+```kotlin
+class Solution {
+    fun numIslands(grid: Array<CharArray>): Int {
+        val directions = arrayOf(intArrayOf(1, 0),
+                                 intArrayOf(-1, 0),
+                                 intArrayOf(0, 1),
+                                 intArrayOf(0, -1))
+        val rows = grid.size
+        val cols = grid[0].size
+        var islands = 0
+
+        fun bfs(r: Int, c: Int) {
+            val q: Queue<IntArray> = LinkedList()
+            grid[r][c] = '0'
+            q.add(intArrayOf(r, c))
+
+            while (q.isNotEmpty()) {
+                val (row, col) = q.poll()
+                for (dir in directions) {
+                    val nr = row + dir[0]
+                    val nc = col + dir[1]
+                    if (nr < 0 || nc < 0 || nr >= rows ||
+                        nc >= cols || grid[nr][nc] == '0') {
+                        continue
+                    }
+                    q.add(intArrayOf(nr, nc))
+                    grid[nr][nc] = '0'
+                }
+            }
+        }
+
+        for (r in 0 until rows) {
+            for (c in 0 until cols) {
+                if (grid[r][c] == '1') {
+                    bfs(r, c)
+                    islands++
+                }
+            }
+        }
+
+        return islands
+    }
+}
+```
+
+```swift
+class Solution {
+    func numIslands(_ grid: [[Character]]) -> Int {
+        let directions = [[1, 0], [-1, 0], [0, 1], [0, -1]]
+        let ROWS = grid.count
+        let COLS = grid[0].count
+        var islands = 0
+        var grid = grid
+
+        func bfs(_ r: Int, _ c: Int) {
+            var queue = Deque<(Int, Int)>()
+            grid[r][c] = "0"
+            queue.append((r, c))
+
+            while !queue.isEmpty {
+                let (row, col) = queue.popFirst()!
+                for dir in directions {
+                    let nr = row + dir[0]
+                    let nc = col + dir[1]
+                    if nr < 0 || nc < 0 || nr >= ROWS || nc >= COLS || grid[nr][nc] == "0" {
+                        continue
+                    }
+                    queue.append((nr, nc))
+                    grid[nr][nc] = "0"
+                }
+            }
+        }
+
+        for r in 0..<ROWS {
+            for c in 0..<COLS {
+                if grid[r][c] == "1" {
+                    bfs(r, c)
+                    islands += 1
+                }
+            }
+        }
+
+        return islands
+    }
+}
+```
+
+```rust
+impl Solution {
+    pub fn num_islands(grid: Vec<Vec<char>>) -> i32 {
+        let mut grid = grid;
+        let rows = grid.len();
+        let cols = grid[0].len();
+        let directions = [(1i32, 0i32), (-1, 0), (0, 1), (0, -1)];
+        let mut islands = 0;
+
+        for r in 0..rows {
+            for c in 0..cols {
+                if grid[r][c] == '1' {
+                    let mut q = VecDeque::new();
+                    grid[r][c] = '0';
+                    q.push_back((r as i32, c as i32));
+                    while let Some((row, col)) = q.pop_front() {
+                        for &(dr, dc) in &directions {
+                            let nr = row + dr;
+                            let nc = col + dc;
+                            if nr >= 0 && nc >= 0 && (nr as usize) < rows
+                                && (nc as usize) < cols
+                                && grid[nr as usize][nc as usize] == '1'
+                            {
+                                q.push_back((nr, nc));
+                                grid[nr as usize][nc as usize] = '0';
+                            }
+                        }
+                    }
+                    islands += 1;
+                }
+            }
+        }
+        islands
+    }
+}
+```
+
+::tabs-end
+
+### Time & Space Complexity
+
+- Time complexity: $O(m * n)$
+- Space complexity: $O(m * n)$
+
+> Where $m$ is the number of rows and $n$ is the number of columns in the $grid$.
+
+---
+
+## 3. Disjoint Set Union
+
+### Intuition
+
+Think of every land cell (`'1'`) as its own separate island initially.  
+When two land cells are adjacent (up, down, left, right), they actually belong to the **same island**, so we should **merge** them.
+
+**Disjoint Set Union (Union-Find)** helps us:
+
+- Quickly connect adjacent land cells
+- Avoid counting the same island multiple times
+
+Each successful merge reduces the total island count by 1.
+
+### Algorithm
+
+1. Treat each cell as a node and map `(row, col)` to a unique index.
+2. Initialize DSU for all cells.
+3. Traverse the grid:
+    - If a cell is land (`'1'`), increment island count.
+    - Check its 4 neighbors.
+    - If a neighbor is also land:
+        - Union the two cells.
+        - If a union actually happens, decrement island count.
+4. After processing all cells, the remaining count is the number of islands.
+5. Return the island count.
+
+
+<br>
+
+::tabs-start
+
+```python
+class DSU:
+    def __init__(self, n):
+        self.Parent = list(range(n + 1))
+        self.Size = [1] * (n + 1)
+
+    def find(self, node):
+        if self.Parent[node] != node:
+            self.Parent[node] = self.find(self.Parent[node])
+        return self.Parent[node]
+
+    def union(self, u, v):
+        pu = self.find(u)
+        pv = self.find(v)
+        if pu == pv:
+            return False
+        if self.Size[pu] >= self.Size[pv]:
+            self.Size[pu] += self.Size[pv]
+            self.Parent[pv] = pu
+        else:
+            self.Size[pv] += self.Size[pu]
+            self.Parent[pu] = pv
+        return True
+
+class Solution:
+    def numIslands(self, grid: List[List[str]]) -> int:
+        ROWS, COLS = len(grid), len(grid[0])
+        dsu = DSU(ROWS * COLS)
+
+        def index(r, c):
+            return r * COLS + c
+
+        directions = [(1, 0), (-1, 0), (0, 1), (0, -1)]
+        islands = 0
+
+        for r in range(ROWS):
+            for c in range(COLS):
+                if grid[r][c] == '1':
+                    islands += 1
+                    for dr, dc in directions:
+                        nr, nc = r + dr, c + dc
+                        if (nr < 0 or nc < 0 or nr >= ROWS or
+                            nc >= COLS or grid[nr][nc] == "0"
+                        ):
+                            continue
+
+                        if dsu.union(index(r, c), index(nr, nc)):
+                            islands -= 1
+
+        return islands
+```
+
+```java
+class DSU {
+    private int[] Parent, Size;
+
+    public DSU(int n) {
+        Parent = new int[n + 1];
+        Size = new int[n + 1];
+        for (int i = 0; i <= n; i++) {
+            Parent[i] = i;
+            Size[i] = 1;
+        }
+    }
+
+    public int find(int node) {
+        if (node != Parent[node]) {
+            Parent[node] = find(Parent[node]);
+        }
+        return Parent[node];
+    }
+
+    public boolean union(int u, int v) {
+        int pu = find(u);
+        int pv = find(v);
+        if (pu == pv) return false;
+        if (Size[pu] >= Size[pv]) {
+            Size[pu] += Size[pv];
+            Parent[pv] = pu;
+        } else {
+            Size[pv] += Size[pu];
+            Parent[pu] = pv;
+        }
+        return true;
+    }
+}
+
+public class Solution {
+    public int numIslands(char[][] grid) {
+        int ROWS = grid.length;
+        int COLS = grid[0].length;
+        DSU dsu = new DSU(ROWS * COLS);
+
+        int[][] directions = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
+        int islands = 0;
+
+        for (int r = 0; r < ROWS; r++) {
+            for (int c = 0; c < COLS; c++) {
+                if (grid[r][c] == '1') {
+                    islands++;
+                    for (int[] d : directions) {
+                        int nr = r + d[0];
+                        int nc = c + d[1];
+                        if (nr >= 0 && nc >= 0 && nr < ROWS &&
+                            nc < COLS && grid[nr][nc] == '1') {
+                            if (dsu.union(r * COLS + c, nr * COLS + nc)) {
+                                islands--;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        return islands;
+    }
+}
+```
+
+```cpp
+class DSU {
+    vector<int> Parent, Size;
+public:
+    DSU(int n) {
+        Parent.resize(n + 1);
+        Size.resize(n + 1);
+        for (int i = 0; i <= n; i++) {
+            Parent[i] = i;
+            Size[i] = 1;
+        }
+    }
+
+    int find(int node) {
+        if (node != Parent[node]) {
+            Parent[node] = find(Parent[node]);
+        }
+        return Parent[node];
+    }
+
+    bool unionBySize(int u, int v) {
+        int pu = find(u);
+        int pv = find(v);
+        if (pu == pv) return false;
+        if (Size[pu] >= Size[pv]) {
+            Size[pu] += Size[pv];
+            Parent[pv] = pu;
+        } else {
+            Size[pv] += Size[pu];
+            Parent[pu] = pv;
+        }
+        return true;
+    }
+};
+
+class Solution {
+public:
+    int numIslands(vector<vector<char>>& grid) {
+        int ROWS = grid.size();
+        int COLS = grid[0].size();
+        DSU dsu(ROWS * COLS);
+
+        int directions[4][2] = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
+        int islands = 0;
+
+        auto index = [&](int r, int c) {
+            return r * COLS + c;
+        };
+
+        for (int r = 0; r < ROWS; r++) {
+            for (int c = 0; c < COLS; c++) {
+                if (grid[r][c] == '1') {
+                    islands++;
+                    for (auto& d : directions) {
+                        int nr = r + d[0];
+                        int nc = c + d[1];
+                        if (nr >= 0 && nc >= 0 && nr < ROWS &&
+                            nc < COLS && grid[nr][nc] == '1') {
+                            if (dsu.unionBySize(index(r, c), index(nr, nc))) {
+                                islands--;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        return islands;
+    }
+};
+```
+
+```javascript
+class DSU {
+    constructor(n) {
+        this.Parent = Array(n + 1)
+            .fill(0)
+            .map((_, i) => i);
+        this.Size = Array(n + 1).fill(1);
+    }
+
+    /**
+     * @param {number} node
+     * @return {number}
+     */
+    find(node) {
+        if (this.Parent[node] !== node) {
+            this.Parent[node] = this.find(this.Parent[node]);
+        }
+        return this.Parent[node];
+    }
+
+    /**
+     * @param {number} u
+     * @param {number} v
+     * @return {boolean}
+     */
+    union(u, v) {
+        let pu = this.find(u);
+        let pv = this.find(v);
+        if (pu === pv) return false;
+        if (this.Size[pu] >= this.Size[pv]) {
+            this.Size[pu] += this.Size[pv];
+            this.Parent[pv] = pu;
+        } else {
+            this.Size[pv] += this.Size[pu];
+            this.Parent[pu] = pv;
+        }
+        return true;
+    }
+}
+
+class Solution {
+    /**
+     * @param {character[][]} grid
+     * @return {number}
+     */
+    numIslands(grid) {
+        const ROWS = grid.length;
+        const COLS = grid[0].length;
+        const dsu = new DSU(ROWS * COLS);
+
+        const directions = [
+            [1, 0],
+            [-1, 0],
+            [0, 1],
+            [0, -1],
+        ];
+
+        let islands = 0;
+
+        const index = (r, c) => r * COLS + c;
+
+        for (let r = 0; r < ROWS; r++) {
+            for (let c = 0; c < COLS; c++) {
+                if (grid[r][c] === '1') {
+                    islands++;
+                    for (let [dr, dc] of directions) {
+                        let nr = r + dr,
+                            nc = c + dc;
+                        if (
+                            nr >= 0 &&
+                            nc >= 0 &&
+                            nr < ROWS &&
+                            nc < COLS &&
+                            grid[nr][nc] === '1'
+                        ) {
+                            if (dsu.union(index(r, c), index(nr, nc))) {
+                                islands--;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        return islands;
+    }
+}
+```
+
+```csharp
+public class DSU {
+    private int[] Parent, Size;
+
+    public DSU(int n) {
+        Parent = new int[n + 1];
+        Size = new int[n + 1];
+        for (int i = 0; i <= n; i++) {
+            Parent[i] = i;
+            Size[i] = 1;
+        }
+    }
+
+    public int Find(int node) {
+        if (node != Parent[node]) {
+            Parent[node] = Find(Parent[node]);
+        }
+        return Parent[node];
+    }
+
+    public bool Union(int u, int v) {
+        int pu = Find(u);
+        int pv = Find(v);
+        if (pu == pv) return false;
+        if (Size[pu] >= Size[pv]) {
+            Size[pu] += Size[pv];
+            Parent[pv] = pu;
+        } else {
+            Size[pv] += Size[pu];
+            Parent[pu] = pv;
+        }
+        return true;
+    }
+}
+
+public class Solution {
+    public int NumIslands(char[][] grid) {
+        int ROWS = grid.Length;
+        int COLS = grid[0].Length;
+        DSU dsu = new DSU(ROWS * COLS);
+
+        int[][] directions = new int[][] {
+            new int[] { 1, 0 }, new int[] { -1, 0 },
+            new int[] { 0, 1 }, new int[] { 0, -1 }
+        };
+        int islands = 0;
+
+        for (int r = 0; r < ROWS; r++) {
+            for (int c = 0; c < COLS; c++) {
+                if (grid[r][c] == '1') {
+                    islands++;
+                    foreach (var d in directions) {
+                        int nr = r + d[0];
+                        int nc = c + d[1];
+                        if (nr >= 0 && nc >= 0 && nr < ROWS &&
+                            nc < COLS && grid[nr][nc] == '1') {
+                            if (dsu.Union(r * COLS + c, nr * COLS + nc)) {
+                                islands--;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        return islands;
+    }
+}
+```
+
+```go
+type DSU struct {
+    Parent []int
+    Size   []int
+}
+
+func NewDSU(n int) *DSU {
+    dsu := &DSU{
+        Parent: make([]int, n+1),
+        Size:   make([]int, n+1),
+    }
+    for i := 0; i <= n; i++ {
+        dsu.Parent[i] = i
+        dsu.Size[i] = 1
+    }
+    return dsu
+}
+
+func (dsu *DSU) find(node int) int {
+    if dsu.Parent[node] != node {
+        dsu.Parent[node] = dsu.find(dsu.Parent[node])
+    }
+    return dsu.Parent[node]
+}
+
+func (dsu *DSU) union(u, v int) bool {
+    pu := dsu.find(u)
+    pv := dsu.find(v)
+    if pu == pv {
+        return false
+    }
+    if dsu.Size[pu] >= dsu.Size[pv] {
+        dsu.Size[pu] += dsu.Size[pv]
+        dsu.Parent[pv] = pu
+    } else {
+        dsu.Size[pv] += dsu.Size[pu]
+        dsu.Parent[pu] = pv
+    }
+    return true
+}
+
+func numIslands(grid [][]byte) int {
+    rows, cols := len(grid), len(grid[0])
+    dsu := NewDSU(rows * cols)
+    directions := [][]int{{1, 0}, {-1, 0}, {0, 1}, {0, -1}}
+    islands := 0
+
+    index := func(r, c int) int {
+        return r*cols + c
+    }
+
+    for r := 0; r < rows; r++ {
+        for c := 0; c < cols; c++ {
+            if grid[r][c] == '1' {
+                islands++
+                for _, dir := range directions {
+                    nr, nc := r+dir[0], c+dir[1]
+                    if nr < 0 || nc < 0 || nr >= rows ||
+                       nc >= cols || grid[nr][nc] == '0' {
+                        continue
+                    }
+                    if dsu.union(index(r, c), index(nr, nc)) {
+                        islands--
+                    }
+                }
+            }
+        }
+    }
+
+    return islands
+}
+```
+
+```kotlin
+class DSU(n: Int) {
+    val Parent = IntArray(n + 1) { it }
+    val Size = IntArray(n + 1) { 1 }
+
+    fun find(node: Int): Int {
+        if (Parent[node] != node) {
+            Parent[node] = find(Parent[node])
+        }
+        return Parent[node]
+    }
+
+    fun union(u: Int, v: Int): Boolean {
+        val pu = find(u)
+        val pv = find(v)
+        if (pu == pv) return false
+        if (Size[pu] >= Size[pv]) {
+            Size[pu] += Size[pv]
+            Parent[pv] = pu
+        } else {
+            Size[pv] += Size[pu]
+            Parent[pu] = pv
+        }
+        return true
+    }
+}
+
+class Solution {
+    fun numIslands(grid: Array<CharArray>): Int {
+        val rows = grid.size
+        val cols = grid[0].size
+        val dsu = DSU(rows * cols)
+        val directions = arrayOf(intArrayOf(1, 0),
+                                 intArrayOf(-1, 0),
+                                 intArrayOf(0, 1),
+                                 intArrayOf(0, -1))
+        var islands = 0
+
+        fun index(r: Int, c: Int): Int {
+            return r * cols + c
+        }
+
+        for (r in 0 until rows) {
+            for (c in 0 until cols) {
+                if (grid[r][c] == '1') {
+                    islands++
+                    for (dir in directions) {
+                        val nr = r + dir[0]
+                        val nc = c + dir[1]
+                        if (nr < 0 || nc < 0 || nr >= rows ||
+                            nc >= cols || grid[nr][nc] == '0') {
+                            continue
+                        }
+                        if (dsu.union(index(r, c), index(nr, nc))) {
+                            islands--
+                        }
+                    }
+                }
+            }
+        }
+
+        return islands
+    }
+}
+```
+
+```swift
+class DSU {
+    private var parent: [Int]
+    private var size: [Int]
+
+    init(_ n: Int) {
+        parent = Array(0...n)
+        size = Array(repeating: 1, count: n + 1)
+    }
+
+    func find(_ node: Int) -> Int {
+        if parent[node] != node {
+            parent[node] = find(parent[node])
+        }
+        return parent[node]
+    }
+
+    func union(_ u: Int, _ v: Int) -> Bool {
+        let pu = find(u)
+        let pv = find(v)
+        if pu == pv {
+            return false
+        }
+        if size[pu] >= size[pv] {
+            size[pu] += size[pv]
+            parent[pv] = pu
+        } else {
+            size[pv] += size[pu]
+            parent[pu] = pv
+        }
+        return true
+    }
+}
+
+class Solution {
+    func numIslands(_ grid: [[Character]]) -> Int {
+        let ROWS = grid.count
+        let COLS = grid[0].count
+        let dsu = DSU(ROWS * COLS)
+
+        func index(_ r: Int, _ c: Int) -> Int {
+            return r * COLS + c
+        }
+
+        let directions = [(1, 0), (-1, 0), (0, 1), (0, -1)]
+        var islands = 0
+        var grid = grid
+
+        for r in 0..<ROWS {
+            for c in 0..<COLS {
+                if grid[r][c] == "1" {
+                    islands += 1
+                    for dir in directions {
+                        let nr = r + dir.0
+                        let nc = c + dir.1
+                        if nr < 0 || nc < 0 || nr >= ROWS || nc >= COLS || grid[nr][nc] == "0" {
+                            continue
+                        }
+                        if dsu.union(index(r, c), index(nr, nc)) {
+                            islands -= 1
+                        }
+                    }
+                }
+            }
+        }
+
+        return islands
+    }
+}
+```
+
+```rust
+struct DSU {
+    parent: Vec<usize>,
+    size: Vec<usize>,
+}
+
+impl DSU {
+    fn new(n: usize) -> Self {
+        DSU {
+            parent: (0..=n).collect(),
+            size: vec![1; n + 1],
+        }
+    }
+
+    fn find(&mut self, node: usize) -> usize {
+        if self.parent[node] != node {
+            self.parent[node] = self.find(self.parent[node]);
+        }
+        self.parent[node]
+    }
+
+    fn union(&mut self, u: usize, v: usize) -> bool {
+        let pu = self.find(u);
+        let pv = self.find(v);
+        if pu == pv {
+            return false;
+        }
+        if self.size[pu] >= self.size[pv] {
+            self.size[pu] += self.size[pv];
+            self.parent[pv] = pu;
+        } else {
+            self.size[pv] += self.size[pu];
+            self.parent[pu] = pv;
+        }
+        true
+    }
+}
+
+impl Solution {
+    pub fn num_islands(grid: Vec<Vec<char>>) -> i32 {
+        let rows = grid.len();
+        let cols = grid[0].len();
+        let mut dsu = DSU::new(rows * cols);
+        let directions = [(1i32, 0i32), (-1, 0), (0, 1), (0, -1)];
+        let mut islands = 0;
+
+        for r in 0..rows {
+            for c in 0..cols {
+                if grid[r][c] == '1' {
+                    islands += 1;
+                    for &(dr, dc) in &directions {
+                        let nr = r as i32 + dr;
+                        let nc = c as i32 + dc;
+                        if nr >= 0 && nc >= 0 && (nr as usize) < rows
+                            && (nc as usize) < cols
+                            && grid[nr as usize][nc as usize] == '1'
+                        {
+                            if dsu.union(r * cols + c, nr as usize * cols + nc as usize) {
+                                islands -= 1;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        islands
+    }
+}
+```
+
+::tabs-end
+
+### Time & Space Complexity
+
+- Time complexity: $O(m * n)$
+- Space complexity: $O(m * n)$
+
+> Where $m$ is the number of rows and $n$ is the number of columns in the $grid$.
+
+---
+
+## Common Pitfalls
+
+### Not Marking Cells as Visited
+
+When exploring an island, you must mark cells as visited (either by changing them to `'0'` or using a visited set). Forgetting this causes infinite loops as the DFS/BFS keeps revisiting the same cells.
+
+```python
+# Wrong: doesn't mark visited, infinite loop
+if grid[r][c] == '1':
+    dfs(r + 1, c)
+# Correct: mark as visited
+if grid[r][c] == '1':
+    grid[r][c] = '0'  # or visited.add((r, c))
+    dfs(r + 1, c)
+```
+
+### Counting Every Land Cell Instead of Islands
+
+Each island should be counted once when you first encounter it. A common mistake is incrementing the count for every `'1'` cell rather than only incrementing when starting a new DFS/BFS traversal.
+
+### Incorrect Boundary Checks
+
+Always verify that row and column indices are within bounds before accessing the grid. Off-by-one errors or missing boundary checks cause index out of bounds errors.
+
+```python
+# Wrong: checks after access
+if grid[nr][nc] == '1' and 0 <= nr < rows:
+# Correct: check bounds first
+if 0 <= nr < rows and 0 <= nc < cols and grid[nr][nc] == '1':
+```
+
+### Diagonal Connections
+
+This problem only considers horizontal and vertical connections (4-directional). Including diagonal neighbors incorrectly merges separate islands and undercounts the total.

@@ -1,0 +1,2162 @@
+## Prerequisites
+
+Before attempting this problem, you should be comfortable with:
+
+- **Recursion** - Understanding how to break problems into smaller subproblems and handle base cases
+- **Dynamic Programming** - Both memoization (top-down) and tabulation (bottom-up) approaches
+- **Hash Set** - Using sets for O(1) lookup to efficiently check if a word exists in the dictionary
+- **String Manipulation** - Substring operations and string comparison
+- **Trie (Optional)** - A tree-based data structure for efficient prefix matching and word lookup
+
+---
+
+## 1. Recursion
+
+### Intuition
+
+At every index `i` in the string, we want to decide:
+
+> **Can the suffix starting at index `i` be segmented into valid dictionary words?**
+
+The recursive idea is:
+
+- Try **every word** in `wordDict`
+- If a word matches the string starting at position `i`
+- Recursively check whether the **remaining substring** (starting at `i + len(word)`) can also be broken successfully
+
+If **any path** reaches the end of the string, the answer is `true`.
+
+This is a classic **decision-based recursion** where:
+
+- Each index `i` represents a subproblem
+- Base case: reaching the end means a valid segmentation
+
+### Algorithm
+
+1. Define a recursive function `dfs(i)`:
+    - If `i == len(s)`, return `true`
+2. For each word `w` in `wordDict`:
+    - Check if `w` matches `s[i : i + len(w)]`
+    - If it matches and `dfs(i + len(w))` is `true`, return `true`
+3. If no word leads to a valid segmentation, return `false`
+4. Start recursion from index `0`
+
+::tabs-start
+
+```python
+class Solution:
+    def wordBreak(self, s: str, wordDict: List[str]) -> bool:
+
+        def dfs(i):
+            if i == len(s):
+                return True
+
+            for w in wordDict:
+                if ((i + len(w)) <= len(s) and
+                     s[i : i + len(w)] == w
+                ):
+                    if dfs(i + len(w)):
+                        return True
+            return False
+
+        return dfs(0)
+```
+
+```java
+public class Solution {
+    public boolean wordBreak(String s, List<String> wordDict) {
+        return dfs(s, wordDict, 0);
+    }
+
+    private boolean dfs(String s, List<String> wordDict, int i) {
+        if (i == s.length()) {
+            return true;
+        }
+
+        for (String w : wordDict) {
+            if (i + w.length() <= s.length() &&
+                s.substring(i, i + w.length()).equals(w)) {
+                if (dfs(s, wordDict, i + w.length())) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+}
+```
+
+```cpp
+class Solution {
+public:
+    bool wordBreak(string s, vector<string>& wordDict) {
+        return dfs(s, wordDict, 0);
+    }
+
+private:
+    bool dfs(const string& s, const vector<string>& wordDict, int i) {
+        if (i == s.length()) {
+            return true;
+        }
+
+        for (const string& w : wordDict) {
+            if (i + w.length() <= s.length() &&
+                s.substr(i, w.length()) == w) {
+                if (dfs(s, wordDict, i + w.length())) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+};
+```
+
+```javascript
+class Solution {
+    /**
+     * @param {string} s
+     * @param {string[]} wordDict
+     * @return {boolean}
+     */
+    wordBreak(s, wordDict) {
+        return this.dfs(s, wordDict, 0);
+    }
+
+    /**
+     * @param {string} s
+     * @param {string[]} wordDict
+     * @param {number} i
+     * @return {boolean}
+     */
+    dfs(s, wordDict, i) {
+        if (i === s.length) {
+            return true;
+        }
+
+        for (let w of wordDict) {
+            if (
+                i + w.length <= s.length &&
+                s.substring(i, i + w.length) === w
+            ) {
+                if (this.dfs(s, wordDict, i + w.length)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+}
+```
+
+```csharp
+public class Solution {
+    public bool WordBreak(string s, List<string> wordDict) {
+        return Dfs(s, wordDict, 0);
+    }
+
+    private bool Dfs(string s, List<string> wordDict, int i) {
+        if (i == s.Length) {
+            return true;
+        }
+
+        foreach (string w in wordDict) {
+            if (i + w.Length <= s.Length &&
+                s.Substring(i, w.Length) == w) {
+                if (Dfs(s, wordDict, i + w.Length)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+}
+```
+
+```go
+func wordBreak(s string, wordDict []string) bool {
+    return dfs(s, wordDict, 0)
+}
+
+func dfs(s string, wordDict []string, i int) bool {
+    if i == len(s) {
+        return true
+    }
+
+    for _, w := range wordDict {
+        if len(s[i:]) >= len(w) && s[i:i+len(w)] == w {
+            if dfs(s, wordDict, i+len(w)) {
+                return true
+            }
+        }
+    }
+
+    return false
+}
+```
+
+```kotlin
+class Solution {
+    fun wordBreak(s: String, wordDict: List<String>): Boolean {
+        return dfs(s, wordDict, 0)
+    }
+
+    private fun dfs(s: String, wordDict: List<String>, i: Int): Boolean {
+        if (i == s.length) {
+            return true
+        }
+
+        for (w in wordDict) {
+            if (s.length - i >= w.length && s.substring(i, i + w.length) == w) {
+                if (dfs(s, wordDict, i + w.length)) {
+                    return true
+                }
+            }
+        }
+
+        return false
+    }
+}
+```
+
+```swift
+class Solution {
+    func wordBreak(_ s: String, _ wordDict: [String]) -> Bool {
+        let chars = Array(s)
+
+        func dfs(_ i: Int) -> Bool {
+            if i == chars.count {
+                return true
+            }
+
+            for w in wordDict {
+                if i + w.count <= chars.count,
+                   String(chars[i..<i + w.count]) == w {
+                    if dfs(i + w.count) {
+                        return true
+                    }
+                }
+            }
+            return false
+        }
+
+        return dfs(0)
+    }
+}
+```
+
+```rust
+impl Solution {
+    pub fn word_break(s: String, word_dict: Vec<String>) -> bool {
+        fn dfs(s: &[u8], word_dict: &[String], i: usize) -> bool {
+            if i == s.len() {
+                return true;
+            }
+            for w in word_dict {
+                let wb = w.as_bytes();
+                if i + wb.len() <= s.len() && &s[i..i + wb.len()] == wb {
+                    if dfs(s, word_dict, i + wb.len()) {
+                        return true;
+                    }
+                }
+            }
+            false
+        }
+
+        dfs(s.as_bytes(), &word_dict, 0)
+    }
+}
+```
+
+::tabs-end
+
+### Time & Space Complexity
+
+- Time complexity: $O(t * m ^ n)$
+- Space complexity: $O(n)$
+
+> Where $n$ is the length of the string $s$, $m$ is the number of words in $wordDict$ and $t$ is the maximum length of any word in $wordDict$.
+
+---
+
+## 2. Recursion (Hash Set)
+
+### Intuition
+
+This version improves the brute-force recursion by **optimizing word lookup**.
+
+Instead of trying every word from `wordDict` at each index, we:
+
+- Fix a starting index `i`
+- Try **all possible substrings** `s[i : j+1]`
+- Check if the substring exists in a **Hash Set** (`O(1)` lookup)
+
+If a valid word is found:
+
+- Recursively check whether the remaining suffix starting at `j + 1` can be segmented
+
+The key idea:
+
+> If we can split the string at **any valid word boundary** and the rest is solvable, then the whole string is solvable.
+
+### Algorithm
+
+1. Convert `wordDict` into a hash set `wordSet` for fast lookup
+2. Define a recursive function `dfs(i)`:
+    - If `i == len(s)`, return `true`
+3. For every `j` from `i` to `len(s) - 1`:
+    - If `s[i : j + 1]` is in `wordSet`
+        - If `dfs(j + 1)` is `true`, return `true`
+4. If no split works, return `false`
+5. Start recursion from index `0`
+
+::tabs-start
+
+```python
+class Solution:
+    def wordBreak(self, s: str, wordDict: List[str]) -> bool:
+        wordSet = set(wordDict)
+
+        def dfs(i):
+            if i == len(s):
+                return True
+
+            for j in range(i, len(s)):
+                if s[i : j + 1] in wordSet:
+                    if dfs(j + 1):
+                        return True
+            return False
+
+        return dfs(0)
+```
+
+```java
+public class Solution {
+    public boolean wordBreak(String s, List<String> wordDict) {
+        HashSet<String> wordSet = new HashSet<>(wordDict);
+
+        return dfs(s, wordSet, 0);
+    }
+
+    private boolean dfs(String s, HashSet<String> wordSet, int i) {
+        if (i == s.length()) {
+            return true;
+        }
+
+        for (int j = i; j < s.length(); j++) {
+            if (wordSet.contains(s.substring(i, j + 1))) {
+                if (dfs(s, wordSet, j + 1)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+}
+```
+
+```cpp
+class Solution {
+public:
+    bool wordBreak(string s, vector<string>& wordDict) {
+        unordered_set<string> wordSet(wordDict.begin(), wordDict.end());
+        return dfs(s, wordSet, 0);
+    }
+
+    bool dfs(const string& s, const unordered_set<string>& wordSet, int i) {
+        if (i == s.size()) {
+            return true;
+        }
+
+        for (int j = i; j < s.size(); j++) {
+            if (wordSet.find(s.substr(i, j - i + 1)) != wordSet.end()) {
+                if (dfs(s, wordSet, j + 1)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+};
+```
+
+```javascript
+class Solution {
+    /**
+     * @param {string} s
+     * @param {string[]} wordDict
+     * @return {boolean}
+     */
+    wordBreak(s, wordDict) {
+        const wordSet = new Set(wordDict);
+        const dfs = (i) => {
+            if (i === s.length) {
+                return true;
+            }
+
+            for (let j = i; j < s.length; j++) {
+                if (wordSet.has(s.substring(i, j + 1))) {
+                    if (dfs(j + 1)) {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        };
+
+        return dfs(0);
+    }
+}
+```
+
+```csharp
+public class Solution {
+    public bool WordBreak(string s, List<string> wordDict) {
+        HashSet<string> wordSet = new HashSet<string>(wordDict);
+        return Dfs(s, wordSet, 0);
+    }
+
+    private bool Dfs(string s, HashSet<string> wordSet, int i) {
+        if (i == s.Length) {
+            return true;
+        }
+
+        for (int j = i; j < s.Length; j++) {
+            if (wordSet.Contains(s.Substring(i, j - i + 1))) {
+                if (Dfs(s, wordSet, j + 1)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+}
+```
+
+```go
+func wordBreak(s string, wordDict []string) bool {
+    wordSet := make(map[string]bool)
+    for _, w := range wordDict {
+        wordSet[w] = true
+    }
+    return dfs(s, wordSet, 0)
+}
+
+func dfs(s string, wordSet map[string]bool, i int) bool {
+    if i == len(s) {
+        return true
+    }
+
+    for j := i; j < len(s); j++ {
+        if wordSet[s[i:j+1]] {
+            if dfs(s, wordSet, j+1) {
+                return true
+            }
+        }
+    }
+
+    return false
+}
+```
+
+```kotlin
+class Solution {
+    fun wordBreak(s: String, wordDict: List<String>): Boolean {
+        val wordSet = wordDict.toHashSet()
+        return dfs(s, wordSet, 0)
+    }
+
+    private fun dfs(s: String, wordSet: HashSet<String>, i: Int): Boolean {
+        if (i == s.length) {
+            return true
+        }
+
+        for (j in i until s.length) {
+            if (wordSet.contains(s.substring(i, j + 1))) {
+                if (dfs(s, wordSet, j + 1)) {
+                    return true
+                }
+            }
+        }
+
+        return false
+    }
+}
+```
+
+```swift
+class Solution {
+    func wordBreak(_ s: String, _ wordDict: [String]) -> Bool {
+        let wordSet = Set(wordDict)
+        let chars = Array(s)
+
+        func dfs(_ i: Int) -> Bool {
+            if i == chars.count {
+                return true
+            }
+
+            for j in i..<chars.count {
+                if wordSet.contains(String(chars[i...j])) {
+                    if dfs(j + 1) {
+                        return true
+                    }
+                }
+            }
+            return false
+        }
+
+        return dfs(0)
+    }
+}
+```
+
+```rust
+impl Solution {
+    pub fn word_break(s: String, word_dict: Vec<String>) -> bool {
+        let word_set: HashSet<&str> = word_dict.iter().map(|w| w.as_str()).collect();
+
+        fn dfs(s: &str, word_set: &HashSet<&str>, i: usize) -> bool {
+            if i == s.len() {
+                return true;
+            }
+            for j in i..s.len() {
+                if word_set.contains(&s[i..=j]) {
+                    if dfs(s, word_set, j + 1) {
+                        return true;
+                    }
+                }
+            }
+            false
+        }
+
+        dfs(&s, &word_set, 0)
+    }
+}
+```
+
+::tabs-end
+
+### Time & Space Complexity
+
+- Time complexity: $O( (n * 2 ^ n) + m)$
+- Space complexity: $O(n + (m * t))$
+
+> Where $n$ is the length of the string $s$ and $m$ is the number of words in $wordDict$.
+
+---
+
+## 3. Dynamic Programming (Top-Down)
+
+### Intuition
+
+This is an **optimized version of recursion using memoization**.
+
+The key observation:
+
+- While recursively checking splits, the **same index `i` is reached many times**
+- The result of `dfs(i)` (can suffix `s[i:]` be segmented?) **never changes**
+
+So we **cache the result for each index**:
+
+- If `dfs(i)` was already computed, reuse it
+- This avoids recomputing exponential subtrees
+
+In short:
+
+> Convert exponential recursion into linear states using memoization.
+
+### Algorithm
+
+1. Use a hash map `memo` where:
+    - `memo[i] = true/false` means whether `s[i:]` can be segmented
+    - Base case: `memo[len(s)] = true`
+2. Define `dfs(i)`:
+    - If `i` is in `memo`, return `memo[i]`
+3. For each word `w` in `wordDict`:
+    - If `s[i : i + len(w)] == w`
+        - Recursively call `dfs(i + len(w))`
+        - If it returns `true`, store `memo[i] = true` and return `true`
+4. If no word leads to a valid split:
+    - Store `memo[i] = false`
+5. Return `dfs(0)`
+
+::tabs-start
+
+```python
+class Solution:
+    def wordBreak(self, s: str, wordDict: List[str]) -> bool:
+        memo = {len(s) : True}
+        def dfs(i):
+            if i in memo:
+                return memo[i]
+
+            for w in wordDict:
+                if ((i + len(w)) <= len(s) and
+                     s[i : i + len(w)] == w
+                ):
+                    if dfs(i + len(w)):
+                        memo[i] = True
+                        return True
+            memo[i] = False
+            return False
+
+        return dfs(0)
+```
+
+```java
+public class Solution {
+    private Map<Integer, Boolean> memo;
+
+    public boolean wordBreak(String s, List<String> wordDict) {
+        memo = new HashMap<>();
+        memo.put(s.length(), true);
+        return dfs(s, wordDict, 0);
+    }
+
+    private boolean dfs(String s, List<String> wordDict, int i) {
+        if (memo.containsKey(i)) {
+            return memo.get(i);
+        }
+
+        for (String w : wordDict) {
+            if (i + w.length() <= s.length() &&
+                s.substring(i, i + w.length()).equals(w)) {
+                if (dfs(s, wordDict, i + w.length())) {
+                    memo.put(i, true);
+                    return true;
+                }
+            }
+        }
+        memo.put(i, false);
+        return false;
+    }
+}
+```
+
+```cpp
+class Solution {
+public:
+    unordered_map<int, bool> memo;
+
+    bool wordBreak(string s, vector<string>& wordDict) {
+        memo[s.length()] = true;
+        return dfs(s, wordDict, 0);
+    }
+
+    bool dfs(string& s, vector<string>& wordDict, int i) {
+        if (memo.find(i) != memo.end()) {
+            return memo[i];
+        }
+
+        for (const string& w : wordDict) {
+            if (i + w.length() <= s.length() &&
+                s.substr(i, w.length()) == w) {
+                if (dfs(s, wordDict, i + w.length())) {
+                    memo[i] = true;
+                    return true;
+                }
+            }
+        }
+        memo[i] = false;
+        return false;
+    }
+};
+```
+
+```javascript
+class Solution {
+    constructor() {
+        this.memo = {};
+    }
+
+    /**
+     * @param {string} s
+     * @param {string[]} wordDict
+     * @return {boolean}
+     */
+    wordBreak(s, wordDict) {
+        this.memo = { [s.length]: true };
+        return this.dfs(s, wordDict, 0);
+    }
+
+    /**
+     * @param {string} s
+     * @param {string[]} wordDict
+     * @param {number} i
+     * @return {boolean}
+     */
+    dfs(s, wordDict, i) {
+        if (i in this.memo) {
+            return this.memo[i];
+        }
+
+        for (let w of wordDict) {
+            if (
+                i + w.length <= s.length &&
+                s.substring(i, i + w.length) === w
+            ) {
+                if (this.dfs(s, wordDict, i + w.length)) {
+                    this.memo[i] = true;
+                    return true;
+                }
+            }
+        }
+        this.memo[i] = false;
+        return false;
+    }
+}
+```
+
+```csharp
+public class Solution {
+    private Dictionary<int, bool> memo;
+
+    public bool WordBreak(string s, List<string> wordDict) {
+        memo = new Dictionary<int, bool> { { s.Length, true } };
+        return Dfs(s, wordDict, 0);
+    }
+
+    private bool Dfs(string s, List<string> wordDict, int i) {
+        if (memo.ContainsKey(i)) {
+            return memo[i];
+        }
+
+        foreach (var w in wordDict) {
+            if (i + w.Length <= s.Length &&
+                s.Substring(i, w.Length) == w) {
+                if (Dfs(s, wordDict, i + w.Length)) {
+                    memo[i] = true;
+                    return true;
+                }
+            }
+        }
+        memo[i] = false;
+        return false;
+    }
+}
+```
+
+```go
+func wordBreak(s string, wordDict []string) bool {
+    memo := make(map[int]bool)
+    memo[len(s)] = true
+
+    var dfs func(int) bool
+    dfs = func(i int) bool {
+        if val, found := memo[i]; found {
+            return val
+        }
+
+        for _, w := range wordDict {
+            if i+len(w) <= len(s) && s[i:i+len(w)] == w {
+                if dfs(i + len(w)) {
+                    memo[i] = true
+                    return true
+                }
+            }
+        }
+
+        memo[i] = false
+        return false
+    }
+
+    return dfs(0)
+}
+```
+
+```kotlin
+class Solution {
+    fun wordBreak(s: String, wordDict: List<String>): Boolean {
+        val memo = hashMapOf(s.length to true)
+
+        fun dfs(i: Int): Boolean {
+            memo[i]?.let { return it }
+
+            for (w in wordDict) {
+                if (i + w.length <= s.length &&
+                    s.substring(i, i + w.length) == w) {
+                    if (dfs(i + w.length)) {
+                        memo[i] = true
+                        return true
+                    }
+                }
+            }
+
+            memo[i] = false
+            return false
+        }
+
+        return dfs(0)
+    }
+}
+```
+
+```swift
+class Solution {
+    func wordBreak(_ s: String, _ wordDict: [String]) -> Bool {
+        var memo = [Int: Bool]()
+        memo[s.count] = true
+        let chars = Array(s)
+
+        func dfs(_ i: Int) -> Bool {
+            if let cached = memo[i] {
+                return cached
+            }
+
+            for w in wordDict {
+                if i + w.count <= chars.count,
+                   String(chars[i..<i + w.count]) == w {
+                    if dfs(i + w.count) {
+                        memo[i] = true
+                        return true
+                    }
+                }
+            }
+            memo[i] = false
+            return false
+        }
+
+        return dfs(0)
+    }
+}
+```
+
+```rust
+impl Solution {
+    pub fn word_break(s: String, word_dict: Vec<String>) -> bool {
+        let n = s.len();
+        let mut memo = HashMap::new();
+        memo.insert(n, true);
+
+        fn dfs(
+            s: &[u8], word_dict: &[String], i: usize,
+            memo: &mut HashMap<usize, bool>,
+        ) -> bool {
+            if let Some(&val) = memo.get(&i) {
+                return val;
+            }
+            for w in word_dict {
+                let wb = w.as_bytes();
+                if i + wb.len() <= s.len() && &s[i..i + wb.len()] == wb {
+                    if dfs(s, word_dict, i + wb.len(), memo) {
+                        memo.insert(i, true);
+                        return true;
+                    }
+                }
+            }
+            memo.insert(i, false);
+            false
+        }
+
+        dfs(s.as_bytes(), &word_dict, 0, &mut memo)
+    }
+}
+```
+
+::tabs-end
+
+### Time & Space Complexity
+
+- Time complexity: $O(n * m * t)$
+- Space complexity: $O(n)$
+
+> Where $n$ is the length of the string $s$, $m$ is the number of words in $wordDict$ and $t$ is the maximum length of any word in $wordDict$.
+
+---
+
+## 4. Dynamic Programming (Hash Set)
+
+### Intuition
+
+This approach is a **top-down dynamic programming solution with pruning**.
+
+Key ideas:
+
+- Checking every possible substring is expensive.
+- A word can only be as long as the **maximum word length** in `wordDict`.
+- Use a **Hash Set** for `O(1)` word lookup.
+- Use **memoization** so each index in the string is solved only once.
+
+So we:
+
+- Limit how far we try to split from each index
+- Cache results for indices to avoid repeated work
+
+This turns exponential recursion into efficient DP.
+
+### Algorithm
+
+1. Convert `wordDict` into a hash set `wordSet`
+2. Compute `t` = maximum length of any word in `wordDict`
+3. Use a `memo` map where `memo[i]` means:
+    - Can substring `s[i:]` be segmented?
+4. Define `dfs(i)`:
+    - If `i` is in `memo`, return `memo[i]`
+    - If `i == len(s)`, return `true`
+5. For `j` from `i` to `min(len(s), i + t) - 1`:
+    - If `s[i : j + 1]` is in `wordSet`
+        - If `dfs(j + 1)` is `true`, store and return `true`
+6. If no valid split works:
+    - Store `memo[i] = false`
+7. Return `dfs(0)`
+
+::tabs-start
+
+```python
+class Solution:
+    def wordBreak(self, s: str, wordDict: List[str]) -> bool:
+        wordSet = set(wordDict)
+        t = 0
+        for w in wordDict:
+            t = max(t, len(w))
+
+        memo = {}
+        def dfs(i):
+            if i in memo:
+                return memo[i]
+            if i == len(s):
+                return True
+            for j in range(i, min(len(s), i + t)):
+                if s[i : j + 1] in wordSet:
+                    if dfs(j + 1):
+                        memo[i] = True
+                        return True
+            memo[i] = False
+            return False
+
+        return dfs(0)
+```
+
+```java
+public class Solution {
+    private HashSet<String> wordSet;
+    private Boolean[] memo;
+    private int t;
+
+    public boolean wordBreak(String s, List<String> wordDict) {
+        wordSet = new HashSet<>(wordDict);
+        memo = new Boolean[s.length()];
+        t = 0;
+        for (int i = 0; i < wordDict.size(); i++) {
+            t = Math.max(t, wordDict.get(i).length());
+        }
+        return dfs(s, 0);
+    }
+
+    private boolean dfs(String s, int i) {
+        if (i == s.length()) {
+            return true;
+        }
+        if (memo[i] != null) {
+            return memo[i];
+        }
+
+        for (int j = i; j < Math.min(i + t, s.length()); j++) {
+            if (wordSet.contains(s.substring(i, j + 1))) {
+                if (dfs(s, j + 1)) {
+                    memo[i] = true;
+                    return true;
+                }
+            }
+        }
+        memo[i] = false;
+        return false;
+    }
+}
+```
+
+```cpp
+class Solution {
+public:
+    unordered_set<string> wordSet;
+    vector<int> memo;
+    int t;
+
+    bool wordBreak(string s, vector<string>& wordDict) {
+        wordSet.insert(wordDict.begin(), wordDict.end());
+        memo.resize(s.size(), -1);
+        t = 0;
+        for (string& w : wordDict) {
+            t = max(t, int(w.length()));
+        }
+        return dfs(s, 0);
+    }
+
+    bool dfs(string& s, int i) {
+        if (i == s.size()) {
+            return true;
+        }
+        if (memo[i] != -1) {
+            return memo[i] == 1;
+        }
+
+        for (int j = i; j < (i + t, s.size()); j++) {
+            if (wordSet.count(s.substr(i, j - i + 1))) {
+                if (dfs(s, j + 1)) {
+                    memo[i] = 1;
+                    return true;
+                }
+            }
+        }
+        memo[i] = 0;
+        return false;
+    }
+};
+```
+
+```javascript
+class Solution {
+    /**
+     * @param {string} s
+     * @param {string[]} wordDict
+     * @return {boolean}
+     */
+    wordBreak(s, wordDict) {
+        this.wordSet = new Set(wordDict);
+        this.memo = new Array(s.length).fill(null);
+        this.t = 0;
+        for (const w of wordDict) {
+            this.t = Math.max(this.t, w.length);
+        }
+        return this.dfs(s, 0);
+    }
+
+    /**
+     * @param {string} s
+     * @param {number} i
+     * @return {boolean}
+     */
+    dfs(s, i) {
+        if (i === s.length) {
+            return true;
+        }
+        if (this.memo[i] !== null) {
+            return this.memo[i];
+        }
+
+        for (let j = i; j < Math.min(i + this.t, s.length); j++) {
+            if (this.wordSet.has(s.substring(i, j + 1))) {
+                if (this.dfs(s, j + 1)) {
+                    this.memo[i] = true;
+                    return true;
+                }
+            }
+        }
+        this.memo[i] = false;
+        return false;
+    }
+}
+```
+
+```csharp
+public class Solution {
+    private HashSet<string> wordSet;
+    private Dictionary<int, bool> memo;
+    private int t;
+
+    public bool WordBreak(string s, List<string> wordDict) {
+        wordSet = new HashSet<string>(wordDict);
+        memo = new Dictionary<int, bool>();
+        t = 0;
+        foreach (var w in wordDict) {
+            t = Math.Max(t, w.Length);
+        }
+        return Dfs(s, 0);
+    }
+
+    private bool Dfs(string s, int i) {
+        if (i == s.Length) {
+            return true;
+        }
+        if (memo.ContainsKey(i)) {
+            return memo[i];
+        }
+
+        for (int j = i; j < Math.Min(i + t, s.Length); j++) {
+            if (wordSet.Contains(s.Substring(i, j - i + 1))) {
+                if (Dfs(s, j + 1)) {
+                    memo[i] = true;
+                    return true;
+                }
+            }
+        }
+        memo[i] = false;
+        return false;
+    }
+}
+```
+
+```go
+func wordBreak(s string, wordDict []string) bool {
+    wordSet := make(map[string]bool)
+    maxLen := 0
+
+    for _, w := range wordDict {
+        wordSet[w] = true
+        if len(w) > maxLen {
+            maxLen = len(w)
+        }
+    }
+
+    memo := make(map[int]bool)
+
+    var dfs func(int) bool
+    dfs = func(i int) bool {
+        if val, found := memo[i]; found {
+            return val
+        }
+        if i == len(s) {
+            return true
+        }
+        for j := i; j < len(s) && j < i+maxLen; j++ {
+            if wordSet[s[i:j+1]] {
+                if dfs(j + 1) {
+                    memo[i] = true
+                    return true
+                }
+            }
+        }
+        memo[i] = false
+        return false
+    }
+
+    return dfs(0)
+}
+```
+
+```kotlin
+class Solution {
+    fun wordBreak(s: String, wordDict: List<String>): Boolean {
+        val wordSet = wordDict.toSet()
+        val maxLen = wordDict.maxOfOrNull { it.length } ?: 0
+        val memo = HashMap<Int, Boolean>()
+
+        fun dfs(i: Int): Boolean {
+            memo[i]?.let { return it }
+            if (i == s.length) return true
+
+            for (j in i until minOf(s.length, i + maxLen)) {
+                if (s.substring(i, j + 1) in wordSet) {
+                    if (dfs(j + 1)) {
+                        memo[i] = true
+                        return true
+                    }
+                }
+            }
+
+            memo[i] = false
+            return false
+        }
+
+        return dfs(0)
+    }
+}
+```
+
+```swift
+class Solution {
+    func wordBreak(_ s: String, _ wordDict: [String]) -> Bool {
+        let wordSet = Set(wordDict)
+        var maxLen = 0
+        for w in wordDict {
+            maxLen = max(maxLen, w.count)
+        }
+
+        var memo = [Int: Bool]()
+        let chars = Array(s)
+
+        func dfs(_ i: Int) -> Bool {
+            if let cached = memo[i] {
+                return cached
+            }
+            if i == chars.count {
+                return true
+            }
+            for j in i..<min(chars.count, i + maxLen) {
+                if wordSet.contains(String(chars[i...j])) {
+                    if dfs(j + 1) {
+                        memo[i] = true
+                        return true
+                    }
+                }
+            }
+            memo[i] = false
+            return false
+        }
+
+        return dfs(0)
+    }
+}
+```
+
+```rust
+impl Solution {
+    pub fn word_break(s: String, word_dict: Vec<String>) -> bool {
+        let word_set: HashSet<&str> = word_dict.iter().map(|w| w.as_str()).collect();
+        let t = word_dict.iter().map(|w| w.len()).max().unwrap_or(0);
+        let n = s.len();
+        let mut memo = HashMap::new();
+
+        fn dfs(
+            s: &str, i: usize, t: usize,
+            word_set: &HashSet<&str>, memo: &mut HashMap<usize, bool>,
+        ) -> bool {
+            if let Some(&val) = memo.get(&i) {
+                return val;
+            }
+            if i == s.len() {
+                return true;
+            }
+            for j in i..s.len().min(i + t) {
+                if word_set.contains(&s[i..=j]) {
+                    if dfs(s, j + 1, t, word_set, memo) {
+                        memo.insert(i, true);
+                        return true;
+                    }
+                }
+            }
+            memo.insert(i, false);
+            false
+        }
+
+        dfs(&s, 0, t, &word_set, &mut memo)
+    }
+}
+```
+
+::tabs-end
+
+### Time & Space Complexity
+
+- Time complexity: $O((t ^ 2 * n) + m)$
+- Space complexity: $O(n + (m * t))$
+
+> Where $n$ is the length of the string $s$, $m$ is the number of words in $wordDict$ and $t$ is the maximum length of any word in $wordDict$.
+
+---
+
+## 5. Dynamic Programming (Bottom-Up)
+
+### Intuition
+
+This is a **bottom-up dynamic programming** approach.
+
+Instead of trying to split the string recursively, we solve the problem **from the end of the string toward the start**.
+
+Key idea:
+
+- `dp[i]` means **whether the substring `s[i:]` can be segmented**
+- If we know the answer for future positions, we can decide the current one
+- We reuse already computed results → no recursion, no stack overhead
+
+### Algorithm
+
+1. Create a boolean array `dp` of size `len(s) + 1`
+    - `dp[i]` = `true` if `s[i:]` can be segmented
+2. Base case:
+    - `dp[len(s)] = true` (empty string is valid)
+3. Iterate `i` from `len(s) - 1` down to `0`:
+    - For each word `w` in `wordDict`:
+        - If `s[i : i + len(w)] == w`
+            - Set `dp[i] = dp[i + len(w)]`
+        - If `dp[i]` becomes `true`, break early
+4. Return `dp[0]`
+
+::tabs-start
+
+```python
+class Solution:
+    def wordBreak(self, s: str, wordDict: List[str]) -> bool:
+        dp = [False] * (len(s) + 1)
+        dp[len(s)] = True
+
+        for i in range(len(s) - 1, -1, -1):
+            for w in wordDict:
+                if (i + len(w)) <= len(s) and s[i : i + len(w)] == w:
+                    dp[i] = dp[i + len(w)]
+                if dp[i]:
+                    break
+
+        return dp[0]
+```
+
+```java
+public class Solution {
+    public boolean wordBreak(String s, List<String> wordDict) {
+        boolean[] dp = new boolean[s.length() + 1];
+        dp[s.length()] = true;
+
+        for (int i = s.length() - 1; i >= 0; i--) {
+            for (String w : wordDict) {
+                if ((i + w.length()) <= s.length() &&
+                     s.substring(i, i + w.length()).equals(w)) {
+                    dp[i] = dp[i + w.length()];
+                }
+                if (dp[i]) {
+                    break;
+                }
+            }
+        }
+
+        return dp[0];
+    }
+}
+```
+
+```cpp
+class Solution {
+public:
+    bool wordBreak(string s, vector<string>& wordDict) {
+        vector<bool> dp(s.size() + 1, false);
+        dp[s.size()] = true;
+
+        for (int i = s.size() - 1; i >= 0; i--) {
+            for (const auto& w : wordDict) {
+                if ((i + w.size()) <= s.size() &&
+                     s.substr(i, w.size()) == w) {
+                    dp[i] = dp[i + w.size()];
+                }
+                if (dp[i]) {
+                    break;
+                }
+            }
+        }
+
+        return dp[0];
+    }
+};
+```
+
+```javascript
+class Solution {
+    /**
+     * @param {string} s
+     * @param {string[]} wordDict
+     * @return {boolean}
+     */
+    wordBreak(s, wordDict) {
+        const dp = new Array(s.length + 1).fill(false);
+        dp[s.length] = true;
+
+        for (let i = s.length - 1; i >= 0; i--) {
+            for (const w of wordDict) {
+                if (
+                    i + w.length <= s.length &&
+                    s.slice(i, i + w.length) === w
+                ) {
+                    dp[i] = dp[i + w.length];
+                }
+                if (dp[i]) {
+                    break;
+                }
+            }
+        }
+
+        return dp[0];
+    }
+}
+```
+
+```csharp
+public class Solution {
+    public bool WordBreak(string s, List<string> wordDict) {
+        bool[] dp = new bool[s.Length + 1];
+        dp[s.Length] = true;
+
+        for (int i = s.Length - 1; i >= 0; i--) {
+            foreach (string w in wordDict) {
+                if ((i + w.Length) <= s.Length &&
+                     s.Substring(i, w.Length) == w) {
+                    dp[i] = dp[i + w.Length];
+                }
+                if (dp[i]) {
+                    break;
+                }
+            }
+        }
+
+        return dp[0];
+    }
+}
+```
+
+```go
+func wordBreak(s string, wordDict []string) bool {
+    dp := make([]bool, len(s)+1)
+    dp[len(s)] = true
+
+    for i := len(s) - 1; i >= 0; i-- {
+        for _, w := range wordDict {
+            if i+len(w) <= len(s) && s[i:i+len(w)] == w {
+                dp[i] = dp[i+len(w)]
+            }
+            if dp[i] {
+                break
+            }
+        }
+    }
+
+    return dp[0]
+}
+```
+
+```kotlin
+class Solution {
+    fun wordBreak(s: String, wordDict: List<String>): Boolean {
+        val dp = BooleanArray(s.length + 1)
+        dp[s.length] = true
+
+        for (i in s.length - 1 downTo 0) {
+            for (w in wordDict) {
+                if (i + w.length <= s.length &&
+                    s.substring(i, i + w.length) == w) {
+                    dp[i] = dp[i + w.length]
+                }
+                if (dp[i]) break
+            }
+        }
+
+        return dp[0]
+    }
+}
+```
+
+```swift
+class Solution {
+    func wordBreak(_ s: String, _ wordDict: [String]) -> Bool {
+        var dp = Array(repeating: false, count: s.count + 1)
+        dp[s.count] = true
+        let chars = Array(s)
+
+        for i in stride(from: s.count - 1, through: 0, by: -1) {
+            for w in wordDict {
+                if i + w.count <= chars.count, String(chars[i..<i + w.count]) == w {
+                    dp[i] = dp[i + w.count]
+                }
+                if dp[i] {
+                    break
+                }
+            }
+        }
+
+        return dp[0]
+    }
+}
+```
+
+```rust
+impl Solution {
+    pub fn word_break(s: String, word_dict: Vec<String>) -> bool {
+        let n = s.len();
+        let sb = s.as_bytes();
+        let mut dp = vec![false; n + 1];
+        dp[n] = true;
+
+        for i in (0..n).rev() {
+            for w in &word_dict {
+                let wb = w.as_bytes();
+                if i + wb.len() <= n && &sb[i..i + wb.len()] == wb {
+                    dp[i] = dp[i + wb.len()];
+                }
+                if dp[i] {
+                    break;
+                }
+            }
+        }
+
+        dp[0]
+    }
+}
+```
+
+::tabs-end
+
+### Time & Space Complexity
+
+- Time complexity: $O(n * m * t)$
+- Space complexity: $O(n)$
+
+> Where $n$ is the length of the string $s$, $m$ is the number of words in $wordDict$ and $t$ is the maximum length of any word in $wordDict$.
+
+---
+
+## 6. Dynamic Programming (Trie)
+
+### Intuition
+
+The normal DP checks every word at every index, which can waste time comparing strings again and again.
+
+A **Trie** stores all dictionary words like a prefix tree, so from any starting index `i` in `s`, we can **walk forward character-by-character** and quickly know:
+
+- whether the current prefix matches some dictionary word path
+- and when we hit a complete word (`is_word = true`)
+
+We still use DP:
+
+- `dp[i]` = can we break the suffix `s[i:]` into dictionary words?
+- If from `i` we can reach some `j` where `s[i..j]` is a word, then `dp[i] = dp[j+1]`
+
+Trie helps us _find valid words starting at `i` efficiently_.
+
+### Algorithm
+
+1. Build a Trie from all words in `wordDict`.
+2. Create a boolean DP array `dp` of size `n + 1` where `n = len(s)`.
+    - `dp[n] = true` (empty suffix is always valid)
+3. Let `t` be the maximum word length in the dictionary (use it as a bound).
+4. Fill DP from right to left:
+    - For each index `i` from `n` down to `0`:
+        - Try all end positions `j` from `i` to `min(n-1, i+t-1)`:
+            - If `s[i..j]` is a word in the Trie, set `dp[i] = dp[j+1]`
+            - If `dp[i]` becomes `true`, stop early for this `i`
+5. Return `dp[0]`.
+
+::tabs-start
+
+```python
+class TrieNode:
+    def __init__(self):
+        self.children = {}
+        self.is_word = False
+
+class Trie:
+    def __init__(self):
+        self.root = TrieNode()
+
+    def insert(self, word):
+        node = self.root
+        for char in word:
+            if char not in node.children:
+                node.children[char] = TrieNode()
+            node = node.children[char]
+        node.is_word = True
+
+    def search(self, s, i, j):
+        node = self.root
+        for idx in range(i, j + 1):
+            if s[idx] not in node.children:
+                return False
+            node = node.children[s[idx]]
+        return node.is_word
+
+class Solution:
+    def wordBreak(self, s: str, wordDict: List[str]) -> bool:
+        trie = Trie()
+        for word in wordDict:
+            trie.insert(word)
+
+        dp = [False] * (len(s) + 1)
+        dp[len(s)] = True
+
+        t = 0
+        for w in wordDict:
+            t = max(t, len(w))
+
+        for i in range(len(s), -1, -1):
+            for j in range(i, min(len(s), i + t)):
+                if trie.search(s, i, j):
+                    dp[i] = dp[j + 1]
+                    if dp[i]:
+                        break
+
+        return dp[0]
+```
+
+```java
+class TrieNode {
+    HashMap<Character, TrieNode> children;
+    boolean isWord;
+
+    public TrieNode() {
+        children = new HashMap<>();
+        isWord = false;
+    }
+}
+
+class Trie {
+    TrieNode root;
+
+    public Trie() {
+        root = new TrieNode();
+    }
+
+    public void insert(String word) {
+        TrieNode node = root;
+        for (char c : word.toCharArray()) {
+            node.children.putIfAbsent(c, new TrieNode());
+            node = node.children.get(c);
+        }
+        node.isWord = true;
+    }
+
+    public boolean search(String s, int i, int j) {
+        TrieNode node = root;
+        for (int idx = i; idx <= j; idx++) {
+            if (!node.children.containsKey(s.charAt(idx))) {
+                return false;
+            }
+            node = node.children.get(s.charAt(idx));
+        }
+        return node.isWord;
+    }
+}
+
+public class Solution {
+    public boolean wordBreak(String s, List<String> wordDict) {
+        Trie trie = new Trie();
+        for (String word : wordDict) {
+            trie.insert(word);
+        }
+
+        int n = s.length();
+        boolean[] dp = new boolean[n + 1];
+        dp[n] = true;
+
+        int maxLen = 0;
+        for (String word : wordDict) {
+            maxLen = Math.max(maxLen, word.length());
+        }
+
+        for (int i = n - 1; i >= 0; i--) {
+            for (int j = i; j < Math.min(n, i + maxLen); j++) {
+                if (trie.search(s, i, j)) {
+                    dp[i] = dp[j + 1];
+                    if (dp[i]) break;
+                }
+            }
+        }
+
+        return dp[0];
+    }
+}
+```
+
+```cpp
+class TrieNode {
+public:
+    unordered_map<char, TrieNode*> children;
+    bool is_word = false;
+};
+
+class Trie {
+public:
+    TrieNode* root;
+
+    Trie() {
+        root = new TrieNode();
+    }
+
+    void insert(string word) {
+        TrieNode* node = root;
+        for (char c : word) {
+            if (!node->children.count(c)) {
+                node->children[c] = new TrieNode();
+            }
+            node = node->children[c];
+        }
+        node->is_word = true;
+    }
+
+    bool search(string& s, int i, int j) {
+        TrieNode* node = root;
+        for (int idx = i; idx <= j; ++idx) {
+            if (!node->children.count(s[idx])) {
+                return false;
+            }
+            node = node->children[s[idx]];
+        }
+        return node->is_word;
+    }
+};
+
+class Solution {
+public:
+    bool wordBreak(string s, vector<string>& wordDict) {
+        Trie trie;
+        for (string word : wordDict) {
+            trie.insert(word);
+        }
+
+        int n = s.length();
+        vector<bool> dp(n + 1, false);
+        dp[n] = true;
+
+        int maxLen = 0;
+        for (string w : wordDict) {
+            maxLen = max(maxLen, (int)w.size());
+        }
+
+        for (int i = n - 1; i >= 0; --i) {
+            for (int j = i; j < min(n, i + maxLen); ++j) {
+                if (trie.search(s, i, j)) {
+                    dp[i] = dp[j + 1];
+                    if (dp[i]) break;
+                }
+            }
+        }
+
+        return dp[0];
+    }
+};
+```
+
+```javascript
+class TrieNode {
+    constructor() {
+        this.children = {};
+        this.isWord = false;
+    }
+}
+
+class Trie {
+    constructor() {
+        this.root = new TrieNode();
+    }
+
+    /**
+     * @param {string} word
+     * @return {void}
+     */
+    insert(word) {
+        let node = this.root;
+        for (let char of word) {
+            if (!node.children[char]) {
+                node.children[char] = new TrieNode();
+            }
+            node = node.children[char];
+        }
+        node.isWord = true;
+    }
+
+    /**
+     * @param {string} s
+     * @param {number} i
+     * @param {number} j
+     * @return {boolean}
+     */
+    search(s, i, j) {
+        let node = this.root;
+        for (let idx = i; idx <= j; idx++) {
+            if (!node.children[s[idx]]) {
+                return false;
+            }
+            node = node.children[s[idx]];
+        }
+        return node.isWord;
+    }
+}
+
+class Solution {
+    /**
+     * @param {string} s
+     * @param {string[]} wordDict
+     * @return {boolean}
+     */
+    wordBreak(s, wordDict) {
+        const trie = new Trie();
+        for (let word of wordDict) {
+            trie.insert(word);
+        }
+
+        const dp = new Array(s.length + 1).fill(false);
+        dp[s.length] = true;
+
+        let maxLen = 0;
+        for (let w of wordDict) {
+            maxLen = Math.max(maxLen, w.length);
+        }
+
+        for (let i = s.length - 1; i >= 0; i--) {
+            for (let j = i; j < Math.min(s.length, i + maxLen); j++) {
+                if (trie.search(s, i, j)) {
+                    dp[i] = dp[j + 1];
+                    if (dp[i]) break;
+                }
+            }
+        }
+
+        return dp[0];
+    }
+}
+```
+
+```csharp
+public class TrieNode {
+    public Dictionary<char, TrieNode> Children;
+    public bool IsWord;
+
+    public TrieNode() {
+        Children = new Dictionary<char, TrieNode>();
+        IsWord = false;
+    }
+}
+
+public class Trie {
+    public TrieNode Root;
+
+    public Trie() {
+        Root = new TrieNode();
+    }
+
+    public void Insert(string word) {
+        TrieNode node = Root;
+        foreach (char c in word) {
+            if (!node.Children.ContainsKey(c)) {
+                node.Children[c] = new TrieNode();
+            }
+            node = node.Children[c];
+        }
+        node.IsWord = true;
+    }
+
+    public bool Search(string s, int i, int j) {
+        TrieNode node = Root;
+        for (int idx = i; idx <= j; idx++) {
+            if (!node.Children.ContainsKey(s[idx])) {
+                return false;
+            }
+            node = node.Children[s[idx]];
+        }
+        return node.IsWord;
+    }
+}
+
+public class Solution {
+    public bool WordBreak(string s, IList<string> wordDict) {
+        Trie trie = new Trie();
+        foreach (string word in wordDict) {
+            trie.Insert(word);
+        }
+
+        int n = s.Length;
+        bool[] dp = new bool[n + 1];
+        dp[n] = true;
+
+        int maxLen = 0;
+        foreach (string word in wordDict) {
+            maxLen = Math.Max(maxLen, word.Length);
+        }
+
+        for (int i = n - 1; i >= 0; i--) {
+            for (int j = i; j < Math.Min(n, i + maxLen); j++) {
+                if (trie.Search(s, i, j)) {
+                    dp[i] = dp[j + 1];
+                    if (dp[i]) break;
+                }
+            }
+        }
+
+        return dp[0];
+    }
+}
+```
+
+```go
+type TrieNode struct {
+    children map[rune]*TrieNode
+    isWord   bool
+}
+
+func NewTrieNode() *TrieNode {
+    return &TrieNode{children: make(map[rune]*TrieNode)}
+}
+
+type Trie struct {
+    root *TrieNode
+}
+
+func NewTrie() *Trie {
+    return &Trie{root: NewTrieNode()}
+}
+
+func (t *Trie) Insert(word string) {
+    node := t.root
+    for _, char := range word {
+        if _, found := node.children[char]; !found {
+            node.children[char] = NewTrieNode()
+        }
+        node = node.children[char]
+    }
+    node.isWord = true
+}
+
+func (t *Trie) Search(s string, i, j int) bool {
+    node := t.root
+    for idx := i; idx <= j; idx++ {
+        char := rune(s[idx])
+        if _, found := node.children[char]; !found {
+            return false
+        }
+        node = node.children[char]
+    }
+    return node.isWord
+}
+
+func wordBreak(s string, wordDict []string) bool {
+    trie := NewTrie()
+    for _, word := range wordDict {
+        trie.Insert(word)
+    }
+
+    dp := make([]bool, len(s)+1)
+    dp[len(s)] = true
+
+    maxLength := 0
+    for _, word := range wordDict {
+        if len(word) > maxLength {
+            maxLength = len(word)
+        }
+    }
+
+    for i := len(s) - 1; i >= 0; i-- {
+        for j := i; j < len(s) && j < i+maxLength; j++ {
+            if trie.Search(s, i, j) {
+                dp[i] = dp[j+1]
+                if dp[i] {
+                    break
+                }
+            }
+        }
+    }
+
+    return dp[0]
+}
+```
+
+```kotlin
+class TrieNode {
+    val children = mutableMapOf<Char, TrieNode>()
+    var isWord = false
+}
+
+class Trie {
+    private val root = TrieNode()
+
+    fun insert(word: String) {
+        var node = root
+        for (char in word) {
+            node = node.children.computeIfAbsent(char) { TrieNode() }
+        }
+        node.isWord = true
+    }
+
+    fun search(s: String, i: Int, j: Int): Boolean {
+        var node = root
+        for (idx in i..j) {
+            val char = s[idx]
+            node = node.children[char] ?: return false
+        }
+        return node.isWord
+    }
+}
+
+class Solution {
+    fun wordBreak(s: String, wordDict: List<String>): Boolean {
+        val trie = Trie()
+        wordDict.forEach { trie.insert(it) }
+
+        val dp = BooleanArray(s.length + 1)
+        dp[s.length] = true
+
+        val maxLength = wordDict.maxOfOrNull { it.length } ?: 0
+
+        for (i in s.length - 1 downTo 0) {
+            for (j in i until minOf(s.length, i + maxLength)) {
+                if (trie.search(s, i, j)) {
+                    dp[i] = dp[j + 1]
+                    if (dp[i]) break
+                }
+            }
+        }
+
+        return dp[0]
+    }
+}
+```
+
+```swift
+class TrieNode {
+    var children = [Character: TrieNode]()
+    var isWord = false
+}
+
+class Trie {
+    private let root = TrieNode()
+
+    func insert(_ word: String) {
+        var node = root
+        for char in word {
+            if node.children[char] == nil {
+                node.children[char] = TrieNode()
+            }
+            node = node.children[char]!
+        }
+        node.isWord = true
+    }
+
+    func search(_ s: [Character], _ i: Int, _ j: Int) -> Bool {
+        var node = root
+        for idx in i...j {
+            if node.children[s[idx]] == nil {
+                return false
+            }
+            node = node.children[s[idx]]!
+        }
+        return node.isWord
+    }
+}
+
+class Solution {
+    func wordBreak(_ s: String, _ wordDict: [String]) -> Bool {
+        let trie = Trie()
+        for word in wordDict {
+            trie.insert(word)
+        }
+
+        var dp = Array(repeating: false, count: s.count + 1)
+        dp[s.count] = true
+        let chars = Array(s)
+
+        var maxLen = 0
+        for word in wordDict {
+            maxLen = max(maxLen, word.count)
+        }
+
+        for i in stride(from: s.count, through: 0, by: -1) {
+            for j in i..<min(s.count, i + maxLen) {
+                if trie.search(chars, i, j) {
+                    dp[i] = dp[j + 1]
+                    if dp[i] {
+                        break
+                    }
+                }
+            }
+        }
+
+        return dp[0]
+    }
+}
+```
+
+```rust
+struct TrieNode {
+    children: HashMap<u8, TrieNode>,
+    is_word: bool,
+}
+
+impl TrieNode {
+    fn new() -> Self {
+        Self { children: HashMap::new(), is_word: false }
+    }
+}
+
+struct Trie {
+    root: TrieNode,
+}
+
+impl Trie {
+    fn new() -> Self {
+        Self { root: TrieNode::new() }
+    }
+    fn insert(&mut self, word: &str) {
+        let mut node = &mut self.root;
+        for &b in word.as_bytes() {
+            node = node.children.entry(b).or_insert_with(TrieNode::new);
+        }
+        node.is_word = true;
+    }
+    fn search(&self, s: &[u8], i: usize, j: usize) -> bool {
+        let mut node = &self.root;
+        for idx in i..=j {
+            match node.children.get(&s[idx]) {
+                Some(next) => node = next,
+                None => return false,
+            }
+        }
+        node.is_word
+    }
+}
+
+impl Solution {
+    pub fn word_break(s: String, word_dict: Vec<String>) -> bool {
+        let mut trie = Trie::new();
+        for word in &word_dict {
+            trie.insert(word);
+        }
+
+        let sb = s.as_bytes();
+        let n = sb.len();
+        let mut dp = vec![false; n + 1];
+        dp[n] = true;
+
+        let max_len = word_dict.iter().map(|w| w.len()).max().unwrap_or(0);
+
+        for i in (0..n).rev() {
+            for j in i..n.min(i + max_len) {
+                if trie.search(sb, i, j) {
+                    dp[i] = dp[j + 1];
+                    if dp[i] {
+                        break;
+                    }
+                }
+            }
+        }
+
+        dp[0]
+    }
+}
+```
+
+::tabs-end
+
+### Time & Space Complexity
+
+- Time complexity: $O((n * t ^ 2) + m)$
+- Space complexity: $O(n + (m * t))$
+
+> Where $n$ is the length of the string $s$, $m$ is the number of words in $wordDict$ and $t$ is the maximum length of any word in $wordDict$.
+
+---
+
+## Common Pitfalls
+
+### Off-by-One Error in DP Array Initialization
+
+The DP array needs size `n + 1` to represent the state after processing all characters. Using size `n` causes index-out-of-bounds when checking `dp[n]` as the base case.
+
+```python
+# Wrong: array too small
+dp = [False] * len(s)
+dp[len(s)] = True  # IndexError!
+
+# Correct: need n+1 elements
+dp = [False] * (len(s) + 1)
+dp[len(s)] = True
+```
+
+### Checking Substring Beyond String Length
+
+When iterating through possible word matches, failing to check if the word extends beyond the string causes substring errors or incorrect matches.
+
+```python
+# Wrong: may go out of bounds
+for w in wordDict:
+    if s[i:i + len(w)] == w:  # no length check
+
+# Correct: verify word fits in remaining string
+for w in wordDict:
+    if i + len(w) <= len(s) and s[i:i + len(w)] == w:
+```
+
+### Not Converting wordDict to a Set for Efficient Lookup
+
+Using a list for the word dictionary when checking substrings against it results in O(m) lookup time per check, causing TLE on large inputs.
+
+```python
+# Wrong: O(m) per lookup
+if s[i:j+1] in wordDict:  # wordDict is a list
+
+# Correct: O(1) average lookup
+wordSet = set(wordDict)
+if s[i:j+1] in wordSet:
+```

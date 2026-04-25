@@ -1,0 +1,283 @@
+## Prerequisites
+
+Before attempting this problem, you should be comfortable with:
+
+- **Basic Math** - Understanding that each match eliminates exactly one team
+- **Simulation** - Iteratively modeling the tournament rounds until a winner emerges
+- **Logical Reasoning** - Recognizing the invariant that n-1 matches are needed to eliminate n-1 teams
+
+---
+
+## 1. Simulation
+
+### Intuition
+
+We can simulate the tournament round by round. In each round, teams are paired up. If the number of teams is even, half play and half are eliminated. If odd, one team gets a bye and the rest pair up. We continue until only one team remains.
+
+### Algorithm
+
+1. Initialize a counter for the total matches played.
+2. While more than one team remains:
+    - Add `n / 2` matches (the number of pairings).
+    - Update `n` to `(n + 1) / 2` (winners plus possibly one bye team).
+3. Return the total match count.
+
+::tabs-start
+
+```python
+class Solution:
+    def numberOfMatches(self, n: int) -> int:
+        res = 0
+
+        while n > 1:
+            res += n // 2
+            n = (n + 1) // 2
+
+        return res
+```
+
+```java
+public class Solution {
+    public int numberOfMatches(int n) {
+        int res = 0;
+
+        while (n > 1) {
+            res += n / 2;
+            n = (n + 1) / 2;
+        }
+
+        return res;
+    }
+}
+```
+
+```cpp
+class Solution {
+public:
+    int numberOfMatches(int n) {
+        int res = 0;
+
+        while (n > 1) {
+            res += n / 2;
+            n = (n + 1) / 2;
+        }
+
+        return res;
+    }
+};
+```
+
+```javascript
+class Solution {
+    /**
+     * @param {number} n
+     * @return {number}
+     */
+    numberOfMatches(n) {
+        let res = 0;
+
+        while (n > 1) {
+            res += Math.floor(n / 2);
+            n = Math.ceil(n / 2);
+        }
+
+        return res;
+    }
+}
+```
+
+```csharp
+public class Solution {
+    public int NumberOfMatches(int n) {
+        int res = 0;
+
+        while (n > 1) {
+            res += n / 2;
+            n = (n + 1) / 2;
+        }
+
+        return res;
+    }
+}
+```
+
+```go
+func numberOfMatches(n int) int {
+    res := 0
+
+    for n > 1 {
+        res += n / 2
+        n = (n + 1) / 2
+    }
+
+    return res
+}
+```
+
+```kotlin
+class Solution {
+    fun numberOfMatches(n: Int): Int {
+        var n = n
+        var res = 0
+
+        while (n > 1) {
+            res += n / 2
+            n = (n + 1) / 2
+        }
+
+        return res
+    }
+}
+```
+
+```swift
+class Solution {
+    func numberOfMatches(_ n: Int) -> Int {
+        var n = n
+        var res = 0
+
+        while n > 1 {
+            res += n / 2
+            n = (n + 1) / 2
+        }
+
+        return res
+    }
+}
+```
+
+```rust
+impl Solution {
+    pub fn number_of_matches(n: i32) -> i32 {
+        let mut n = n;
+        let mut res = 0;
+
+        while n > 1 {
+            res += n / 2;
+            n = (n + 1) / 2;
+        }
+
+        res
+    }
+}
+```
+
+::tabs-end
+
+### Time & Space Complexity
+
+- Time complexity: $O(\log n)$
+- Space complexity: $O(1)$
+
+---
+
+## 2. Math
+
+### Intuition
+
+Every match eliminates exactly one team. To go from `n` teams to `1` winner, we need to eliminate `n - 1` teams. Therefore, exactly `n - 1` matches are played regardless of the tournament bracket structure.
+
+### Algorithm
+
+1. Return `n - 1`.
+
+::tabs-start
+
+```python
+class Solution:
+    def numberOfMatches(self, n: int) -> int:
+        return n - 1
+```
+
+```java
+public class Solution {
+    public int numberOfMatches(int n) {
+        return n - 1;
+    }
+}
+```
+
+```cpp
+class Solution {
+public:
+    int numberOfMatches(int n) {
+        return n - 1;
+    }
+};
+```
+
+```javascript
+class Solution {
+    /**
+     * @param {number} n
+     * @return {number}
+     */
+    numberOfMatches(n) {
+        return n - 1;
+    }
+}
+```
+
+```csharp
+public class Solution {
+    public int NumberOfMatches(int n) {
+        return n - 1;
+    }
+}
+```
+
+```go
+func numberOfMatches(n int) int {
+    return n - 1
+}
+```
+
+```kotlin
+class Solution {
+    fun numberOfMatches(n: Int): Int {
+        return n - 1
+    }
+}
+```
+
+```swift
+class Solution {
+    func numberOfMatches(_ n: Int) -> Int {
+        return n - 1
+    }
+}
+```
+
+```rust
+impl Solution {
+    pub fn number_of_matches(n: i32) -> i32 {
+        n - 1
+    }
+}
+```
+
+::tabs-end
+
+### Time & Space Complexity
+
+- Time complexity: $O(1)$
+- Space complexity: $O(1)$
+
+---
+
+## Common Pitfalls
+
+### Overcomplicating with Simulation
+
+Many beginners implement a full round-by-round simulation when the mathematical insight `n - 1` gives the answer directly. Each match eliminates exactly one team, and to get from `n` teams to 1 winner requires eliminating `n - 1` teams.
+
+### Off-by-One in Winner Calculation
+
+When simulating, incorrectly calculating the number of teams advancing to the next round. The correct formula is `(n + 1) / 2` (integer division), not `n / 2`, because the bye team also advances.
+
+```python
+# Wrong: loses the bye team
+n = n // 2
+# Correct: includes bye team when n is odd
+n = (n + 1) // 2
+```

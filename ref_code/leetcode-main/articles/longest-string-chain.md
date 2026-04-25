@@ -1,0 +1,1048 @@
+## Prerequisites
+
+Before attempting this problem, you should be comfortable with:
+
+- **Dynamic Programming** - Both top-down (memoization) and bottom-up approaches are used to build optimal chains
+- **Hash Map** - Storing words for O(1) lookup when checking if predecessors exist
+- **Sorting** - Words must be sorted by length to ensure proper processing order in DP
+- **String Manipulation** - Generating predecessors by removing one character at each position
+
+---
+
+## 1. Dynamic Programming (Top-Down)
+
+### Intuition
+
+A word chain is built by repeatedly adding one character to form the next word. If we think backwards, each word can potentially extend to multiple shorter words by removing one character at a time. We can model this as a graph where each word points to its predecessors (words formed by deleting one character).
+
+For each word, we try removing each character one at a time and check if that predecessor exists in our word list. If it does, we recursively find the longest chain starting from that predecessor. Memoization ensures we don't recompute chains for words we've already processed.
+
+### Algorithm
+
+1. Sort words by length in descending order (optional for top-down, but helps with processing order).
+2. Build a hash map mapping each word to its index.
+3. Create a memoization array `dp` where `dp[i]` stores the longest chain starting from word `i`.
+4. Define `dfs(i)` that:
+    - Returns cached result if available.
+    - Tries removing each character from `words[i]` to form predecessors.
+    - For each predecessor that exists in the word list, recursively compute its chain length.
+    - Returns `1 + max(chain lengths of all valid predecessors)`.
+5. Call `dfs` for all words and return the maximum result.
+
+::tabs-start
+
+```python
+class Solution:
+    def longestStrChain(self, words: List[str]) -> int:
+        words.sort(key=lambda w: -len(w))
+        word_index = {}  # map word to index
+        for i, w in enumerate(words):
+            word_index[w] = i
+
+        dp = {}  # index of word -> length of longest chain
+        def dfs(i):
+            if i in dp:
+                return dp[i]
+            res = 1
+            for j in range(len(words[i])):
+                w = words[i]
+                pred = w[:j] + w[j+1:]
+                if pred in word_index:
+                    res = max(res, 1 + dfs(word_index[pred]))
+            dp[i] = res
+            return res
+
+        for i in range(len(words)):
+            dfs(i)
+        return max(dp.values())
+```
+
+```java
+public class Solution {
+    public int longestStrChain(String[] words) {
+        Arrays.sort(words, (a, b) -> Integer.compare(b.length(), a.length()));
+        Map<String, Integer> wordIndex = new HashMap<>();
+        for (int i = 0; i < words.length; i++) {
+            wordIndex.put(words[i], i);
+        }
+
+        int[] dp = new int[words.length];
+        Arrays.fill(dp, -1);
+
+        int maxChain = 1;
+        for (int i = 0; i < words.length; i++) {
+            maxChain = Math.max(maxChain, dfs(i, words, wordIndex, dp));
+        }
+        return maxChain;
+    }
+
+    private int dfs(int i, String[] words, Map<String, Integer> wordIndex, int[] dp) {
+        if (dp[i] != -1) {
+            return dp[i];
+        }
+
+        int res = 1;
+        String w = words[i];
+        for (int j = 0; j < w.length(); j++) {
+            String pred = w.substring(0, j) + w.substring(j + 1);
+            if (wordIndex.containsKey(pred)) {
+                res = Math.max(res, 1 + dfs(wordIndex.get(pred), words, wordIndex, dp));
+            }
+        }
+        dp[i] = res;
+        return res;
+    }
+}
+```
+
+```cpp
+class Solution {
+public:
+    int longestStrChain(vector<string>& words) {
+        sort(words.begin(), words.end(), [](const string& a, const string& b) {
+            return b.length() < a.length();
+        });
+
+        unordered_map<string, int> wordIndex;
+        for (int i = 0; i < words.size(); i++) {
+            wordIndex[words[i]] = i;
+        }
+
+        vector<int> dp(words.size(), -1);
+        int maxChain = 1;
+        for (int i = 0; i < words.size(); i++) {
+            maxChain = max(maxChain, dfs(i, words, wordIndex, dp));
+        }
+        return maxChain;
+    }
+
+private:
+    int dfs(int i, vector<string>& words, unordered_map<string, int>& wordIndex, vector<int>& dp) {
+        if (dp[i] != -1) {
+            return dp[i];
+        }
+
+        int res = 1;
+        string w = words[i];
+        for (int j = 0; j < w.length(); j++) {
+            string pred = w.substr(0, j) + w.substr(j + 1);
+            if (wordIndex.find(pred) != wordIndex.end()) {
+                res = max(res, 1 + dfs(wordIndex[pred], words, wordIndex, dp));
+            }
+        }
+        dp[i] = res;
+        return res;
+    }
+};
+```
+
+```javascript
+class Solution {
+    /**
+     * @param {string[]} words
+     * @return {number}
+     */
+    longestStrChain(words) {
+        words.sort((a, b) => b.length - a.length);
+        const wordIndex = new Map();
+        for (let i = 0; i < words.length; i++) {
+            wordIndex.set(words[i], i);
+        }
+
+        const dp = new Array(words.length).fill(-1);
+
+        const dfs = (i) => {
+            if (dp[i] !== -1) {
+                return dp[i];
+            }
+
+            let res = 1;
+            const w = words[i];
+            for (let j = 0; j < w.length; j++) {
+                const pred = w.slice(0, j) + w.slice(j + 1);
+                if (wordIndex.has(pred)) {
+                    res = Math.max(res, 1 + dfs(wordIndex.get(pred)));
+                }
+            }
+            dp[i] = res;
+            return res;
+        };
+
+        let maxChain = 1;
+        for (let i = 0; i < words.length; i++) {
+            maxChain = Math.max(maxChain, dfs(i));
+        }
+        return maxChain;
+    }
+}
+```
+
+```csharp
+public class Solution {
+    private Dictionary<string, int> wordIndex;
+    private int[] dp;
+    private string[] words;
+
+    public int LongestStrChain(string[] words) {
+        Array.Sort(words, (a, b) => b.Length.CompareTo(a.Length));
+        this.words = words;
+        wordIndex = new Dictionary<string, int>();
+        for (int i = 0; i < words.Length; i++) {
+            wordIndex[words[i]] = i;
+        }
+
+        dp = new int[words.Length];
+        Array.Fill(dp, -1);
+
+        int maxChain = 1;
+        for (int i = 0; i < words.Length; i++) {
+            maxChain = Math.Max(maxChain, Dfs(i));
+        }
+        return maxChain;
+    }
+
+    private int Dfs(int i) {
+        if (dp[i] != -1) {
+            return dp[i];
+        }
+
+        int res = 1;
+        string w = words[i];
+        for (int j = 0; j < w.Length; j++) {
+            string pred = w.Substring(0, j) + w.Substring(j + 1);
+            if (wordIndex.ContainsKey(pred)) {
+                res = Math.Max(res, 1 + Dfs(wordIndex[pred]));
+            }
+        }
+        dp[i] = res;
+        return res;
+    }
+}
+```
+
+```go
+func longestStrChain(words []string) int {
+    sort.Slice(words, func(i, j int) bool {
+        return len(words[i]) > len(words[j])
+    })
+
+    wordIndex := make(map[string]int)
+    for i, w := range words {
+        wordIndex[w] = i
+    }
+
+    dp := make([]int, len(words))
+    for i := range dp {
+        dp[i] = -1
+    }
+
+    var dfs func(i int) int
+    dfs = func(i int) int {
+        if dp[i] != -1 {
+            return dp[i]
+        }
+
+        res := 1
+        w := words[i]
+        for j := 0; j < len(w); j++ {
+            pred := w[:j] + w[j+1:]
+            if idx, ok := wordIndex[pred]; ok {
+                if val := 1 + dfs(idx); val > res {
+                    res = val
+                }
+            }
+        }
+        dp[i] = res
+        return res
+    }
+
+    maxChain := 1
+    for i := range words {
+        if val := dfs(i); val > maxChain {
+            maxChain = val
+        }
+    }
+    return maxChain
+}
+```
+
+```kotlin
+class Solution {
+    fun longestStrChain(words: Array<String>): Int {
+        words.sortByDescending { it.length }
+        val wordIndex = mutableMapOf<String, Int>()
+        for (i in words.indices) {
+            wordIndex[words[i]] = i
+        }
+
+        val dp = IntArray(words.size) { -1 }
+
+        fun dfs(i: Int): Int {
+            if (dp[i] != -1) {
+                return dp[i]
+            }
+
+            var res = 1
+            val w = words[i]
+            for (j in w.indices) {
+                val pred = w.substring(0, j) + w.substring(j + 1)
+                if (pred in wordIndex) {
+                    res = maxOf(res, 1 + dfs(wordIndex[pred]!!))
+                }
+            }
+            dp[i] = res
+            return res
+        }
+
+        var maxChain = 1
+        for (i in words.indices) {
+            maxChain = maxOf(maxChain, dfs(i))
+        }
+        return maxChain
+    }
+}
+```
+
+```swift
+class Solution {
+    func longestStrChain(_ words: [String]) -> Int {
+        var words = words.sorted { $0.count > $1.count }
+        var wordIndex = [String: Int]()
+        for i in 0..<words.count {
+            wordIndex[words[i]] = i
+        }
+
+        var dp = [Int](repeating: -1, count: words.count)
+
+        func dfs(_ i: Int) -> Int {
+            if dp[i] != -1 {
+                return dp[i]
+            }
+
+            var res = 1
+            let w = Array(words[i])
+            for j in 0..<w.count {
+                let pred = String(w[0..<j]) + String(w[(j+1)...])
+                if let idx = wordIndex[pred] {
+                    res = max(res, 1 + dfs(idx))
+                }
+            }
+            dp[i] = res
+            return res
+        }
+
+        var maxChain = 1
+        for i in 0..<words.count {
+            maxChain = max(maxChain, dfs(i))
+        }
+        return maxChain
+    }
+}
+```
+
+```rust
+impl Solution {
+    pub fn longest_str_chain(words: Vec<String>) -> i32 {
+        let mut words = words;
+        words.sort_by(|a, b| b.len().cmp(&a.len()));
+        let word_index: HashMap<String, usize> = words
+            .iter()
+            .enumerate()
+            .map(|(i, w)| (w.clone(), i))
+            .collect();
+
+        let mut dp = vec![-1i32; words.len()];
+
+        fn dfs(
+            i: usize,
+            words: &[String],
+            word_index: &HashMap<String, usize>,
+            dp: &mut Vec<i32>,
+        ) -> i32 {
+            if dp[i] != -1 {
+                return dp[i];
+            }
+            let mut res = 1;
+            let w = &words[i];
+            for j in 0..w.len() {
+                let pred = format!("{}{}", &w[..j], &w[j + 1..]);
+                if let Some(&idx) = word_index.get(&pred) {
+                    res = res.max(1 + dfs(idx, words, word_index, dp));
+                }
+            }
+            dp[i] = res;
+            res
+        }
+
+        let mut max_chain = 1;
+        for i in 0..words.len() {
+            max_chain = max_chain.max(dfs(i, &words, &word_index, &mut dp));
+        }
+        max_chain
+    }
+}
+```
+
+::tabs-end
+
+### Time & Space Complexity
+
+- Time complexity: $O(n * m ^ 2)$
+- Space complexity: $O(n * m)$
+
+> Where $n$ is the number of words and $m$ is the average length of each word.
+
+---
+
+## 2. Dynamic Programming (Bottom-Up)
+
+### Intuition
+
+We can build chains from shorter words to longer words. By sorting words by length, we ensure that when we process a word, all potential predecessors have already been processed. For each word, we check all previous words of length exactly one less to see if the current word can be formed by adding one character.
+
+### Algorithm
+
+1. Sort words by length in ascending order.
+2. Create a `dp` array where `dp[i]` represents the longest chain ending at word `i`.
+3. For each word at index `i`:
+    - Look back at all previous words `j` where `j < i`.
+    - If word `j` has length exactly one less than word `i`, check if `j` is a predecessor of `i` using the `isPred` helper.
+    - Update `dp[i] = max(dp[i], dp[j] + 1)`.
+4. Return the maximum value in the DP array.
+
+::tabs-start
+
+```python
+class Solution:
+    def longestStrChain(self, words: List[str]) -> int:
+        def isPred(w1, w2):
+            i = 0
+            for c in w2:
+                if i == len(w1):
+                    return True
+                if w1[i] == c:
+                    i += 1
+            return i == len(w1)
+
+        words.sort(key=len)
+        n = len(words)
+        dp = [1] * n
+
+        for i in range(1, n):
+            for j in range(i - 1, -1, -1):
+                if len(words[j]) + 1 < len(words[i]):
+                    break
+                if len(words[j]) + 1 > len(words[i]) or not isPred(words[j], words[i]):
+                    continue
+                dp[i] = max(dp[i], 1 + dp[j])
+
+        return max(dp)
+```
+
+```java
+public class Solution {
+    public int longestStrChain(String[] words) {
+        Arrays.sort(words, Comparator.comparingInt(String::length));
+        int n = words.length;
+        int[] dp = new int[n];
+        Arrays.fill(dp, 1);
+
+        for (int i = 1; i < n; i++) {
+            for (int j = i - 1; j >= 0; j--) {
+                if (words[j].length() + 1 < words[i].length()) {
+                    break;
+                }
+                if (words[j].length() + 1 > words[i].length() || !isPred(words[j], words[i])) {
+                    continue;
+                }
+                dp[i] = Math.max(dp[i], 1 + dp[j]);
+            }
+        }
+
+        int maxChain = 0;
+        for (int chain : dp) {
+            maxChain = Math.max(maxChain, chain);
+        }
+        return maxChain;
+    }
+
+    private boolean isPred(String w1, String w2) {
+        int i = 0;
+        for (char c : w2.toCharArray()) {
+            if (i == w1.length()) {
+                return true;
+            }
+            if (w1.charAt(i) == c) {
+                i++;
+            }
+        }
+        return i == w1.length();
+    }
+}
+```
+
+```cpp
+class Solution {
+public:
+    int longestStrChain(vector<string>& words) {
+        sort(words.begin(), words.end(), [](const string& a, const string& b) {
+            return a.length() < b.length();
+        });
+
+        int n = words.size();
+        vector<int> dp(n, 1);
+
+        for (int i = 1; i < n; i++) {
+            for (int j = i - 1; j >= 0; j--) {
+                if (words[j].length() + 1 < words[i].length()) {
+                    break;
+                }
+                if (words[j].length() + 1 > words[i].length() || !isPred(words[j], words[i])) {
+                    continue;
+                }
+                dp[i] = max(dp[i], 1 + dp[j]);
+            }
+        }
+
+        return *max_element(dp.begin(), dp.end());
+    }
+
+private:
+    bool isPred(const string& w1, const string& w2) {
+        int i = 0;
+        for (char c : w2) {
+            if (i == w1.length()) {
+                return true;
+            }
+            if (w1[i] == c) {
+                i++;
+            }
+        }
+        return i == w1.length();
+    }
+};
+```
+
+```javascript
+class Solution {
+    /**
+     * @param {string[]} words
+     * @return {number}
+     */
+    longestStrChain(words) {
+        words.sort((a, b) => a.length - b.length);
+        const n = words.length;
+        const dp = new Array(n).fill(1);
+
+        const isPred = (w1, w2) => {
+            let i = 0;
+            for (const c of w2) {
+                if (i === w1.length) {
+                    return true;
+                }
+                if (w1[i] === c) {
+                    i++;
+                }
+            }
+            return i === w1.length;
+        };
+
+        for (let i = 1; i < n; i++) {
+            for (let j = i - 1; j >= 0; j--) {
+                if (words[j].length + 1 < words[i].length) {
+                    break;
+                }
+                if (
+                    words[j].length + 1 > words[i].length ||
+                    !isPred(words[j], words[i])
+                ) {
+                    continue;
+                }
+                dp[i] = Math.max(dp[i], 1 + dp[j]);
+            }
+        }
+
+        return Math.max(...dp);
+    }
+}
+```
+
+```csharp
+public class Solution {
+    public int LongestStrChain(string[] words) {
+        Array.Sort(words, (a, b) => a.Length.CompareTo(b.Length));
+        int n = words.Length;
+        int[] dp = new int[n];
+        Array.Fill(dp, 1);
+
+        for (int i = 1; i < n; i++) {
+            for (int j = i - 1; j >= 0; j--) {
+                if (words[j].Length + 1 < words[i].Length) {
+                    break;
+                }
+                if (words[j].Length + 1 > words[i].Length || !IsPred(words[j], words[i])) {
+                    continue;
+                }
+                dp[i] = Math.Max(dp[i], 1 + dp[j]);
+            }
+        }
+
+        int maxChain = 0;
+        foreach (int chain in dp) {
+            maxChain = Math.Max(maxChain, chain);
+        }
+        return maxChain;
+    }
+
+    private bool IsPred(string w1, string w2) {
+        int i = 0;
+        foreach (char c in w2) {
+            if (i == w1.Length) {
+                return true;
+            }
+            if (w1[i] == c) {
+                i++;
+            }
+        }
+        return i == w1.Length;
+    }
+}
+```
+
+```go
+func longestStrChain(words []string) int {
+    sort.Slice(words, func(i, j int) bool {
+        return len(words[i]) < len(words[j])
+    })
+
+    n := len(words)
+    dp := make([]int, n)
+    for i := range dp {
+        dp[i] = 1
+    }
+
+    isPred := func(w1, w2 string) bool {
+        i := 0
+        for _, c := range w2 {
+            if i == len(w1) {
+                return true
+            }
+            if rune(w1[i]) == c {
+                i++
+            }
+        }
+        return i == len(w1)
+    }
+
+    for i := 1; i < n; i++ {
+        for j := i - 1; j >= 0; j-- {
+            if len(words[j])+1 < len(words[i]) {
+                break
+            }
+            if len(words[j])+1 > len(words[i]) || !isPred(words[j], words[i]) {
+                continue
+            }
+            if dp[j]+1 > dp[i] {
+                dp[i] = dp[j] + 1
+            }
+        }
+    }
+
+    maxChain := 0
+    for _, v := range dp {
+        if v > maxChain {
+            maxChain = v
+        }
+    }
+    return maxChain
+}
+```
+
+```kotlin
+class Solution {
+    fun longestStrChain(words: Array<String>): Int {
+        words.sortBy { it.length }
+        val n = words.size
+        val dp = IntArray(n) { 1 }
+
+        fun isPred(w1: String, w2: String): Boolean {
+            var i = 0
+            for (c in w2) {
+                if (i == w1.length) {
+                    return true
+                }
+                if (w1[i] == c) {
+                    i++
+                }
+            }
+            return i == w1.length
+        }
+
+        for (i in 1 until n) {
+            for (j in i - 1 downTo 0) {
+                if (words[j].length + 1 < words[i].length) {
+                    break
+                }
+                if (words[j].length + 1 > words[i].length || !isPred(words[j], words[i])) {
+                    continue
+                }
+                dp[i] = maxOf(dp[i], 1 + dp[j])
+            }
+        }
+
+        return dp.max()
+    }
+}
+```
+
+```swift
+class Solution {
+    func longestStrChain(_ words: [String]) -> Int {
+        var words = words.sorted { $0.count < $1.count }
+        let n = words.count
+        var dp = [Int](repeating: 1, count: n)
+
+        func isPred(_ w1: String, _ w2: String) -> Bool {
+            var i = 0
+            let w1Arr = Array(w1)
+            for c in w2 {
+                if i == w1Arr.count {
+                    return true
+                }
+                if w1Arr[i] == c {
+                    i += 1
+                }
+            }
+            return i == w1Arr.count
+        }
+
+        for i in 1..<n {
+            for j in stride(from: i - 1, through: 0, by: -1) {
+                if words[j].count + 1 < words[i].count {
+                    break
+                }
+                if words[j].count + 1 > words[i].count || !isPred(words[j], words[i]) {
+                    continue
+                }
+                dp[i] = max(dp[i], 1 + dp[j])
+            }
+        }
+
+        return dp.max()!
+    }
+}
+```
+
+```rust
+impl Solution {
+    pub fn longest_str_chain(words: Vec<String>) -> i32 {
+        let mut words = words;
+        words.sort_by_key(|w| w.len());
+        let n = words.len();
+        let mut dp = vec![1i32; n];
+
+        fn is_pred(w1: &str, w2: &str) -> bool {
+            let w1 = w1.as_bytes();
+            let mut i = 0;
+            for &c in w2.as_bytes() {
+                if i == w1.len() {
+                    return true;
+                }
+                if w1[i] == c {
+                    i += 1;
+                }
+            }
+            i == w1.len()
+        }
+
+        for i in 1..n {
+            for j in (0..i).rev() {
+                if words[j].len() + 1 < words[i].len() {
+                    break;
+                }
+                if words[j].len() + 1 > words[i].len()
+                    || !is_pred(&words[j], &words[i])
+                {
+                    continue;
+                }
+                dp[i] = dp[i].max(1 + dp[j]);
+            }
+        }
+
+        *dp.iter().max().unwrap()
+    }
+}
+```
+
+::tabs-end
+
+### Time & Space Complexity
+
+- Time complexity: $O(n ^ 2 * m)$
+- Space complexity: $O(n)$
+
+> Where $n$ is the number of words and $m$ is the average length of each word.
+
+---
+
+## 3. Dynamic Programming (Bottom-Up Optimized)
+
+### Intuition
+
+Instead of comparing each word with all shorter words, we can generate all possible predecessors by removing one character at a time. Using a hash map to store the longest chain ending at each word, we can look up predecessors in O(1) time. This avoids the expensive pairwise comparisons of the previous approach.
+
+### Algorithm
+
+1. Sort words by length in ascending order.
+2. Create a hash map `dp` where `dp[word]` stores the longest chain ending at that word.
+3. For each word in sorted order:
+    - Initialize `dp[word] = 1`.
+    - Generate all possible predecessors by removing each character.
+    - For each predecessor that exists in `dp`, update `dp[word] = max(dp[word], dp[predecessor] + 1)`.
+    - Track the global maximum chain length.
+4. Return the maximum chain length found.
+
+::tabs-start
+
+```python
+class Solution:
+    def longestStrChain(self, words: List[str]) -> int:
+        words.sort(key=len)
+        dp = {}
+        res = 0
+
+        for word in words:
+            dp[word] = 1
+            for i in range(len(word)):
+                pred = word[:i] + word[i+1:]
+                if pred in dp:
+                    dp[word] = max(dp[word], dp[pred] + 1)
+            res = max(res, dp[word])
+
+        return res
+```
+
+```java
+public class Solution {
+    public int longestStrChain(String[] words) {
+        Arrays.sort(words, Comparator.comparingInt(String::length));
+        Map<String, Integer> dp = new HashMap<>();
+        int res = 0;
+
+        for (String word : words) {
+            dp.put(word, 1);
+            for (int i = 0; i < word.length(); i++) {
+                String pred = word.substring(0, i) + word.substring(i + 1);
+                if (dp.containsKey(pred)) {
+                    dp.put(word, Math.max(dp.get(word), dp.get(pred) + 1));
+                }
+            }
+            res = Math.max(res, dp.get(word));
+        }
+
+        return res;
+    }
+}
+```
+
+```cpp
+class Solution {
+public:
+    int longestStrChain(vector<string>& words) {
+        sort(words.begin(), words.end(), [](const string& a, const string& b) {
+            return a.length() < b.length();
+        });
+
+        unordered_map<string, int> dp;
+        int res = 0;
+
+        for (const string& word : words) {
+            dp[word] = 1;
+            for (int i = 0; i < word.length(); i++) {
+                string pred = word.substr(0, i) + word.substr(i + 1);
+                if (dp.find(pred) != dp.end()) {
+                    dp[word] = max(dp[word], dp[pred] + 1);
+                }
+            }
+            res = max(res, dp[word]);
+        }
+
+        return res;
+    }
+};
+```
+
+```javascript
+class Solution {
+    /**
+     * @param {string[]} words
+     * @return {number}
+     */
+    longestStrChain(words) {
+        words.sort((a, b) => a.length - b.length);
+        const dp = new Map();
+        let res = 0;
+
+        for (const word of words) {
+            dp.set(word, 1);
+            for (let i = 0; i < word.length; i++) {
+                const pred = word.slice(0, i) + word.slice(i + 1);
+                if (dp.has(pred)) {
+                    dp.set(word, Math.max(dp.get(word), dp.get(pred) + 1));
+                }
+            }
+            res = Math.max(res, dp.get(word));
+        }
+
+        return res;
+    }
+}
+```
+
+```csharp
+public class Solution {
+    public int LongestStrChain(string[] words) {
+        Array.Sort(words, (a, b) => a.Length.CompareTo(b.Length));
+        var dp = new Dictionary<string, int>();
+        int res = 0;
+
+        foreach (string word in words) {
+            dp[word] = 1;
+            for (int i = 0; i < word.Length; i++) {
+                string pred = word.Substring(0, i) + word.Substring(i + 1);
+                if (dp.ContainsKey(pred)) {
+                    dp[word] = Math.Max(dp[word], dp[pred] + 1);
+                }
+            }
+            res = Math.Max(res, dp[word]);
+        }
+
+        return res;
+    }
+}
+```
+
+```go
+func longestStrChain(words []string) int {
+    sort.Slice(words, func(i, j int) bool {
+        return len(words[i]) < len(words[j])
+    })
+
+    dp := make(map[string]int)
+    res := 0
+
+    for _, word := range words {
+        dp[word] = 1
+        for i := 0; i < len(word); i++ {
+            pred := word[:i] + word[i+1:]
+            if val, ok := dp[pred]; ok {
+                if val+1 > dp[word] {
+                    dp[word] = val + 1
+                }
+            }
+        }
+        if dp[word] > res {
+            res = dp[word]
+        }
+    }
+
+    return res
+}
+```
+
+```kotlin
+class Solution {
+    fun longestStrChain(words: Array<String>): Int {
+        words.sortBy { it.length }
+        val dp = mutableMapOf<String, Int>()
+        var res = 0
+
+        for (word in words) {
+            dp[word] = 1
+            for (i in word.indices) {
+                val pred = word.substring(0, i) + word.substring(i + 1)
+                if (pred in dp) {
+                    dp[word] = maxOf(dp[word]!!, dp[pred]!! + 1)
+                }
+            }
+            res = maxOf(res, dp[word]!!)
+        }
+
+        return res
+    }
+}
+```
+
+```swift
+class Solution {
+    func longestStrChain(_ words: [String]) -> Int {
+        var words = words.sorted { $0.count < $1.count }
+        var dp = [String: Int]()
+        var res = 0
+
+        for word in words {
+            dp[word] = 1
+            let w = Array(word)
+            for i in 0..<w.count {
+                let pred = String(w[0..<i]) + String(w[(i+1)...])
+                if let predVal = dp[pred] {
+                    dp[word] = max(dp[word]!, predVal + 1)
+                }
+            }
+            res = max(res, dp[word]!)
+        }
+
+        return res
+    }
+}
+```
+
+```rust
+impl Solution {
+    pub fn longest_str_chain(words: Vec<String>) -> i32 {
+        let mut words = words;
+        words.sort_by_key(|w| w.len());
+        let mut dp: HashMap<String, i32> = HashMap::new();
+        let mut res = 0;
+
+        for word in &words {
+            let mut best = 1;
+            for i in 0..word.len() {
+                let pred = format!("{}{}", &word[..i], &word[i + 1..]);
+                if let Some(&val) = dp.get(&pred) {
+                    best = best.max(val + 1);
+                }
+            }
+            dp.insert(word.clone(), best);
+            res = res.max(best);
+        }
+
+        res
+    }
+}
+```
+
+::tabs-end
+
+### Time & Space Complexity
+
+- Time complexity: $O(n * m ^ 2)$
+- Space complexity: $O(n * m)$
+
+> Where $n$ is the number of words and $m$ is the average length of each word.
+
+---
+
+## Common Pitfalls
+
+### Forgetting to Sort by Length
+
+The most critical step is sorting words by length before processing. Without sorting, you may try to build chains from longer words to shorter ones, which violates the chain definition. Always sort in ascending order for bottom-up DP or descending order for top-down approaches to ensure predecessors are processed before their successors.
+
+### Incorrect Predecessor Check
+
+A common mistake is checking if two words differ by exactly one character without verifying the ordering. The predecessor must be formed by _removing_ one character from the current word, not by _adding_ or _replacing_. For example, "abc" is a predecessor of "abcd" only if you can form "abc" by deleting one character from "abcd" while maintaining the relative order of remaining characters.
+
+### Not Handling Duplicate Words
+
+The input may contain duplicate words. Using a hash map that maps words to indices can cause issues if duplicates exist since later occurrences overwrite earlier ones. Ensure your solution handles this correctly, either by using a set of words or by taking the maximum chain length among duplicates.

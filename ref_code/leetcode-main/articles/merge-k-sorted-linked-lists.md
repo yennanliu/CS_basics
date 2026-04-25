@@ -1,0 +1,2734 @@
+## Prerequisites
+
+Before attempting this problem, you should be comfortable with:
+
+- **Linked Lists** - Understanding singly linked list structure, traversal, and node manipulation
+- **Merge Two Sorted Lists** - The fundamental operation used repeatedly in all approaches
+- **Min Heap / Priority Queue** - Used to efficiently find the smallest element among k lists
+- **Divide and Conquer** - Strategy to recursively split and merge lists in pairs
+- **Sorting** - Used in the brute force approach to sort all collected values
+
+---
+
+## 1. Brute Force
+
+### Intuition
+
+The simplest way to merge all linked lists is to **ignore the list structure**, collect every value, sort them, and then rebuild a single sorted linked list.
+This doesn't use any clever merging logic — it is purely based on gathering and sorting.
+It's easy to implement but not efficient because sorting dominates the runtime.
+
+### Algorithm
+
+1. Create an empty list `nodes`.
+2. For each linked list:
+    - Traverse it and append every node's value to `nodes`.
+3. Sort the `nodes` list.
+4. Create a new linked list:
+    - Use a dummy head.
+    - For each value in the sorted list, create a new node and attach it.
+5. Return the head of the new merged linked list.
+
+::tabs-start
+
+```python
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+
+class Solution:
+    def mergeKLists(self, lists: List[Optional[ListNode]]) -> Optional[ListNode]:
+        nodes = []
+        for lst in lists:
+            while lst:
+                nodes.append(lst.val)
+                lst = lst.next
+        nodes.sort()
+
+        res = ListNode(0)
+        cur = res
+        for node in nodes:
+            cur.next = ListNode(node)
+            cur = cur.next
+        return res.next
+```
+
+```java
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+
+public class Solution {
+    public ListNode mergeKLists(ListNode[] lists) {
+        List<Integer> nodes = new ArrayList<>();
+        for (ListNode lst : lists) {
+            while (lst != null) {
+                nodes.add(lst.val);
+                lst = lst.next;
+            }
+        }
+        Collections.sort(nodes);
+
+        ListNode res = new ListNode(0);
+        ListNode cur = res;
+        for (int node : nodes) {
+            cur.next = new ListNode(node);
+            cur = cur.next;
+        }
+        return res.next;
+    }
+}
+```
+
+```cpp
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+
+class Solution {
+public:
+    ListNode* mergeKLists(vector<ListNode*>& lists) {
+        vector<int> nodes;
+        for (ListNode* lst : lists) {
+            while (lst) {
+                nodes.push_back(lst->val);
+                lst = lst->next;
+            }
+        }
+        sort(nodes.begin(), nodes.end());
+
+        ListNode* res = new ListNode(0);
+        ListNode* cur = res;
+        for (int node : nodes) {
+            cur->next = new ListNode(node);
+            cur = cur->next;
+        }
+        return res->next;
+    }
+};
+```
+
+```javascript
+/**
+ * Definition for singly-linked list.
+ * class ListNode {
+ *     constructor(val = 0, next = null) {
+ *         this.val = val;
+ *         this.next = next;
+ *     }
+ * }
+ */
+
+class Solution {
+    /**
+     * @param {ListNode[]} lists
+     * @return {ListNode}
+     */
+    mergeKLists(lists) {
+        let nodes = [];
+        for (let lst of lists) {
+            while (lst) {
+                nodes.push(lst.val);
+                lst = lst.next;
+            }
+        }
+        nodes.sort((a, b) => a - b);
+
+        let res = new ListNode(0);
+        let cur = res;
+        for (let node of nodes) {
+            cur.next = new ListNode(node);
+            cur = cur.next;
+        }
+        return res.next;
+    }
+}
+```
+
+```csharp
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     public int val;
+ *     public ListNode next;
+ *     public ListNode(int val=0, ListNode next=null) {
+ *         this.val = val;
+ *         this.next = next;
+ *     }
+ * }
+ */
+
+public class Solution {
+    public ListNode MergeKLists(ListNode[] lists) {
+        List<int> nodes = new List<int>();
+        foreach (ListNode lst in lists) {
+            ListNode curr = lst;
+            while (curr != null) {
+                nodes.Add(curr.val);
+                curr = curr.next;
+            }
+        }
+        nodes.Sort();
+
+        ListNode res = new ListNode(0);
+        ListNode cur = res;
+        foreach (int node in nodes) {
+            cur.next = new ListNode(node);
+            cur = cur.next;
+        }
+        return res.next;
+    }
+}
+```
+
+```go
+/**
+ * Definition for singly-linked list.
+ * type ListNode struct {
+ *     Val int
+ *     Next *ListNode
+ * }
+ */
+func mergeKLists(lists []*ListNode) *ListNode {
+    nodes := make([]int, 0)
+
+    for _, list := range lists {
+        curr := list
+        for curr != nil {
+            nodes = append(nodes, curr.Val)
+            curr = curr.Next
+        }
+    }
+
+    sort.Ints(nodes)
+
+    dummy := &ListNode{Val: 0}
+    curr := dummy
+
+    for _, val := range nodes {
+        curr.Next = &ListNode{Val: val}
+        curr = curr.Next
+    }
+
+    return dummy.Next
+}
+```
+
+```kotlin
+/**
+ * Example:
+ * var li = ListNode(5)
+ * var v = li.`val`
+ * Definition for singly-linked list.
+ * class ListNode(var `val`: Int) {
+ *     var next: ListNode? = null
+ * }
+ */
+class Solution {
+    fun mergeKLists(lists: Array<ListNode?>): ListNode? {
+        val nodes = mutableListOf<Int>()
+
+        for (list in lists) {
+            var curr = list
+            while (curr != null) {
+                nodes.add(curr.`val`)
+                curr = curr.next
+            }
+        }
+
+        nodes.sort()
+
+        val dummy = ListNode(0)
+        var curr = dummy
+
+        for (value in nodes) {
+            curr.next = ListNode(value)
+            curr = curr.next!!
+        }
+
+        return dummy.next
+    }
+}
+```
+
+```swift
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     public var val: Int
+ *     public var next: ListNode?
+ *     public init() { self.val = 0; self.next = nil; }
+ *     public init(_ val: Int) { self.val = val; self.next = nil; }
+ *     public init(_ val: Int, _ next: ListNode?) { self.val = val; self.next = next; }
+ * }
+ */
+class Solution {
+    func mergeKLists(_ lists: [ListNode?]) -> ListNode? {
+        var nodes: [Int] = []
+
+        for list in lists {
+            var lst = list
+            while lst != nil {
+                nodes.append(lst!.val)
+                lst = lst?.next
+            }
+        }
+
+        nodes.sort()
+
+        let dummy = ListNode(0)
+        var cur = dummy
+        for node in nodes {
+            cur.next = ListNode(node)
+            cur = cur.next!
+        }
+
+        return dummy.next
+    }
+}
+```
+
+```rust
+// Definition for singly-linked list.
+// #[derive(PartialEq, Eq, Clone, Debug)]
+// pub struct ListNode {
+//     pub val: i32,
+//     pub next: Option<Box<ListNode>>,
+// }
+impl Solution {
+    pub fn merge_k_lists(lists: Vec<Option<Box<ListNode>>>) -> Option<Box<ListNode>> {
+        let mut nodes = Vec::new();
+        for list in &lists {
+            let mut cur = list;
+            while let Some(node) = cur {
+                nodes.push(node.val);
+                cur = &node.next;
+            }
+        }
+        nodes.sort();
+
+        let mut head = None;
+        for &val in nodes.iter().rev() {
+            let mut node = ListNode::new(val);
+            node.next = head;
+            head = Some(Box::new(node));
+        }
+        head
+    }
+}
+```
+
+::tabs-end
+
+### Time & Space Complexity
+
+- Time complexity: $O(n \log n)$
+- Space complexity: $O(n)$
+
+---
+
+## 2. Iteration
+
+### Intuition
+
+We repeatedly pick the **smallest head node** among all the lists and attach it to our result list.
+At every step:
+
+- Look at the first node of each non-empty list.
+- Choose the one with the smallest value.
+- Move that list's pointer forward.
+- Append the chosen node to our merged list.
+
+This is similar to merging `k` sorted arrays by always picking the smallest available element.
+
+### Algorithm
+
+1. Create a dummy node to build the merged list.
+2. Set a pointer `cur` to the dummy.
+3. Repeat:
+    - Search through all lists to find the list whose current node has the smallest value.
+    - If no list has remaining nodes (all are empty), stop.
+    - Attach the smallest node to `cur.next`.
+    - Move `cur` forward.
+    - Move the chosen list's pointer to its next node.
+4. Return the merged list starting from `dummy.next`.
+
+::tabs-start
+
+```python
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+
+class Solution:
+    def mergeKLists(self, lists: List[Optional[ListNode]]) -> Optional[ListNode]:
+        res = ListNode(0)
+        cur = res
+
+        while True:
+            minNode = -1
+            for i in range(len(lists)):
+                if not lists[i]:
+                    continue
+                if minNode == -1 or lists[minNode].val > lists[i].val:
+                    minNode = i
+
+            if minNode == -1:
+                break
+            cur.next = lists[minNode]
+            lists[minNode] = lists[minNode].next
+            cur = cur.next
+
+        return res.next
+```
+
+```java
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+
+public class Solution {
+    public ListNode mergeKLists(ListNode[] lists) {
+        ListNode res = new ListNode(0);
+        ListNode cur = res;
+
+        while (true) {
+            int minNode = -1;
+            for (int i = 0; i < lists.length; i++) {
+                if (lists[i] == null) {
+                    continue;
+                }
+                if (minNode == -1 || lists[minNode].val > lists[i].val) {
+                    minNode = i;
+                }
+            }
+
+            if (minNode == -1) {
+                break;
+            }
+            cur.next = lists[minNode];
+            lists[minNode] = lists[minNode].next;
+            cur = cur.next;
+        }
+
+        return res.next;
+    }
+}
+```
+
+```cpp
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+
+class Solution {
+public:
+    ListNode* mergeKLists(vector<ListNode*>& lists) {
+        ListNode* res = new ListNode(0);
+        ListNode* cur = res;
+
+        while (true) {
+            int minNode = -1;
+            for (int i = 0; i < lists.size(); i++) {
+                if (!lists[i]) continue;
+                if (minNode == -1 || lists[minNode]->val > lists[i]->val) {
+                    minNode = i;
+                }
+            }
+
+            if (minNode == -1) break;
+            cur->next = lists[minNode];
+            lists[minNode] = lists[minNode]->next;
+            cur = cur->next;
+        }
+        return res->next;
+    }
+};
+```
+
+```javascript
+/**
+ * Definition for singly-linked list.
+ * class ListNode {
+ *     constructor(val = 0, next = null) {
+ *         this.val = val;
+ *         this.next = next;
+ *     }
+ * }
+ */
+
+class Solution {
+    /**
+     * @param {ListNode[]} lists
+     * @return {ListNode}
+     */
+    mergeKLists(lists) {
+        let res = new ListNode(0);
+        let cur = res;
+
+        while (true) {
+            let minNode = -1;
+            for (let i = 0; i < lists.length; i++) {
+                if (!lists[i]) continue;
+                if (minNode === -1 || lists[minNode].val > lists[i].val) {
+                    minNode = i;
+                }
+            }
+
+            if (minNode === -1) break;
+            cur.next = lists[minNode];
+            lists[minNode] = lists[minNode].next;
+            cur = cur.next;
+        }
+        return res.next;
+    }
+}
+```
+
+```csharp
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     public int val;
+ *     public ListNode next;
+ *     public ListNode(int val=0, ListNode next=null) {
+ *         this.val = val;
+ *         this.next = next;
+ *     }
+ * }
+ */
+
+public class Solution {
+    public ListNode MergeKLists(ListNode[] lists) {
+        ListNode res = new ListNode(0);
+        ListNode cur = res;
+
+        while (true) {
+            int minNode = -1;
+            for (int i = 0; i < lists.Length; i++) {
+                if (lists[i] == null) continue;
+                if (minNode == -1 || lists[minNode].val > lists[i].val) {
+                    minNode = i;
+                }
+            }
+
+            if (minNode == -1) break;
+            cur.next = lists[minNode];
+            lists[minNode] = lists[minNode].next;
+            cur = cur.next;
+        }
+        return res.next;
+    }
+}
+```
+
+```go
+/**
+ * Definition for singly-linked list.
+ * type ListNode struct {
+ *     Val int
+ *     Next *ListNode
+ * }
+ */
+func mergeKLists(lists []*ListNode) *ListNode {
+    res := &ListNode{Val: 0}
+    cur := res
+
+    for {
+        minNode := -1
+        for i := range lists {
+            if lists[i] == nil {
+                continue
+            }
+            if minNode == -1 || lists[minNode].Val > lists[i].Val {
+                minNode = i
+            }
+        }
+
+        if minNode == -1 {
+            break
+        }
+
+        cur.Next = lists[minNode]
+        lists[minNode] = lists[minNode].Next
+        cur = cur.Next
+    }
+
+    return res.Next
+}
+```
+
+```kotlin
+/**
+ * Example:
+ * var li = ListNode(5)
+ * var v = li.`val`
+ * Definition for singly-linked list.
+ * class ListNode(var `val`: Int) {
+ *     var next: ListNode? = null
+ * }
+ */
+class Solution {
+    fun mergeKLists(lists: Array<ListNode?>): ListNode? {
+        val res = ListNode(0)
+        var cur = res
+
+        while (true) {
+            var minNode = -1
+            for (i in lists.indices) {
+                if (lists[i] == null) {
+                    continue
+                }
+                if (minNode == -1 || lists[minNode]!!.`val` > lists[i]!!.`val`) {
+                    minNode = i
+                }
+            }
+
+            if (minNode == -1) {
+                break
+            }
+
+            cur.next = lists[minNode]
+            lists[minNode] = lists[minNode]!!.next
+            cur = cur.next!!
+        }
+
+        return res.next
+    }
+}
+```
+
+```swift
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     public var val: Int
+ *     public var next: ListNode?
+ *     public init() { self.val = 0; self.next = nil; }
+ *     public init(_ val: Int) { self.val = val; self.next = nil; }
+ *     public init(_ val: Int, _ next: ListNode?) { self.val = val; self.next = next; }
+ * }
+ */
+class Solution {
+    func mergeKLists(_ lists: [ListNode?]) -> ListNode? {
+        var lists = lists
+        let dummy = ListNode(0)
+        var cur = dummy
+
+        while true {
+            var minNodeIndex: Int? = nil
+            for i in 0..<lists.count {
+                if let node = lists[i] {
+                    if minNodeIndex == nil || node.val < lists[minNodeIndex!]?.val ?? Int.max {
+                        minNodeIndex = i
+                    }
+                }
+            }
+
+            if minNodeIndex == nil {
+                break
+            }
+
+            cur.next = lists[minNodeIndex!]
+            lists[minNodeIndex!] = lists[minNodeIndex!]?.next
+            cur = cur.next!
+        }
+
+        return dummy.next
+    }
+}
+```
+
+```rust
+impl Solution {
+    pub fn merge_k_lists(lists: Vec<Option<Box<ListNode>>>) -> Option<Box<ListNode>> {
+        let mut lists: Vec<Option<Box<ListNode>>> = lists;
+        let mut dummy = Box::new(ListNode::new(0));
+        let mut cur = &mut dummy;
+
+        loop {
+            let mut min_idx: i32 = -1;
+            for i in 0..lists.len() {
+                if let Some(ref node) = lists[i] {
+                    if min_idx == -1
+                        || node.val < lists[min_idx as usize].as_ref().unwrap().val
+                    {
+                        min_idx = i as i32;
+                    }
+                }
+            }
+
+            if min_idx == -1 {
+                break;
+            }
+
+            let idx = min_idx as usize;
+            let mut node = lists[idx].take().unwrap();
+            lists[idx] = node.next.take();
+            cur.next = Some(node);
+            cur = cur.next.as_mut().unwrap();
+        }
+
+        dummy.next
+    }
+}
+```
+
+::tabs-end
+
+### Time & Space Complexity
+
+- Time complexity: $O(n * k)$
+- Space complexity: $O(1)$
+
+> Where $k$ is the total number of lists and $n$ is the total number of nodes across $k$ lists.
+
+---
+
+## 3. Merge Lists One By One
+
+### Intuition
+
+Instead of merging all `k` lists at once, we can **merge them one by one**.
+
+- First merge list `0` and list `1` → get a sorted list.
+- Then merge that result with list `2`.
+- Then merge that result with list `3`.
+- Repeat until all lists are merged.
+
+Each merge operation is just like the standard **"merge two sorted linked lists"** problem:
+
+- Compare the heads.
+- Attach the smaller one.
+- Move that list's pointer forward.
+- Continue until one list is empty, then attach the rest of the other list.
+
+### Algorithm
+
+1. If the list of lists is empty, return `null` (or equivalent).
+2. For each list from index `1` to `k - 1`:
+    - Merge `lists[i - 1]` and `lists[i]` into a single sorted list.
+    - Store the merged result back into `lists[i]`.
+3. After the loop, `lists[k - 1]` will contain the fully merged list.
+4. Return `lists[k - 1]`.
+
+**Merging two lists (`mergeList(l1, l2)`):**
+
+1. Create a dummy node and a `tail` pointer starting at the dummy.
+2. While both `l1` and `l2` are non-empty:
+    - Compare `l1.val` and `l2.val`.
+    - Attach the smaller node to `tail.next`.
+    - Move that list's pointer forward.
+    - Move `tail` forward.
+3. If one list still has remaining nodes, attach it to `tail.next`.
+4. Return `dummy.next` as the merged head.
+
+::tabs-start
+
+```python
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+
+class Solution:
+    def mergeKLists(self, lists: List[Optional[ListNode]]) -> Optional[ListNode]:
+        if len(lists) == 0:
+            return None
+
+        for i in range(1, len(lists)):
+            lists[i] = self.mergeList(lists[i - 1], lists[i])
+
+        return lists[-1]
+
+    def mergeList(self, l1, l2):
+        dummy = ListNode()
+        tail = dummy
+
+        while l1 and l2:
+            if l1.val < l2.val:
+                tail.next = l1
+                l1 = l1.next
+            else:
+                tail.next = l2
+                l2 = l2.next
+            tail = tail.next
+        if l1:
+            tail.next = l1
+        if l2:
+            tail.next = l2
+        return dummy.next
+```
+
+```java
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+
+class Solution {
+    public ListNode mergeKLists(ListNode[] lists) {
+        if (lists.length == 0) return null;
+
+        for (int i = 1; i < lists.length; i++) {
+            lists[i] = merge(lists[i], lists[i - 1]);
+        }
+        return lists[lists.length - 1];
+    }
+
+    private ListNode merge(ListNode l1, ListNode l2) {
+        ListNode dummy = new ListNode(0);
+        ListNode curr = dummy;
+
+        while (l1 != null && l2 != null) {
+            if (l1.val <= l2.val) {
+                curr.next = l1;
+                l1 = l1.next;
+            } else {
+                curr.next = l2;
+                l2 = l2.next;
+            }
+
+            curr = curr.next;
+        }
+
+        if (l1 != null) {
+            curr.next = l1;
+        } else {
+            curr.next = l2;
+        }
+
+        return dummy.next;
+    }
+}
+```
+
+```cpp
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+
+class Solution {
+public:
+    ListNode* mergeKLists(vector<ListNode*>& lists) {
+        if (lists.empty()) return nullptr;
+
+        for (int i = 1; i < lists.size(); i++) {
+            lists[i] = merge(lists[i], lists[i - 1]);
+        }
+        return lists.back();
+    }
+
+private:
+    ListNode* merge(ListNode* l1, ListNode* l2) {
+        ListNode* dummy = new ListNode(0);
+        ListNode* curr = dummy;
+
+        while (l1 != nullptr && l2 != nullptr) {
+            if (l1->val <= l2->val) {
+                curr->next = l1;
+                l1 = l1->next;
+            } else {
+                curr->next = l2;
+                l2 = l2->next;
+            }
+            curr = curr->next;
+        }
+
+        if (l1 != nullptr) {
+            curr->next = l1;
+        } else {
+            curr->next = l2;
+        }
+
+        return dummy->next;
+    }
+};
+```
+
+```javascript
+/**
+ * Definition for singly-linked list.
+ * class ListNode {
+ *     constructor(val = 0, next = null) {
+ *         this.val = val;
+ *         this.next = next;
+ *     }
+ * }
+ */
+
+class Solution {
+    /**
+     * @param {ListNode[]} lists
+     * @return {ListNode}
+     */
+    mergeKLists(lists) {
+        if (lists.length === 0) return null;
+
+        for (let i = 0; i < lists.length; i++) {
+            lists[i] = this.mergeList(lists[i], lists[i - 1]);
+        }
+        return lists[lists.length - 1];
+    }
+
+    /**
+     * @param {ListNode} l1
+     * @param  {ListNode} l2
+     * @return {ListNode}
+     */
+    mergeList(l1, l2) {
+        const dummy = new ListNode();
+        let tail = dummy;
+
+        while (l1 && l2) {
+            if (l1.val < l2.val) {
+                tail.next = l1;
+                l1 = l1.next;
+            } else {
+                tail.next = l2;
+                l2 = l2.next;
+            }
+            tail = tail.next;
+        }
+        if (l1) {
+            tail.next = l1;
+        }
+        if (l2) {
+            tail.next = l2;
+        }
+        return dummy.next;
+    }
+}
+```
+
+```csharp
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     public int val;
+ *     public ListNode next;
+ *     public ListNode(int val=0, ListNode next=null) {
+ *         this.val = val;
+ *         this.next = next;
+ *     }
+ * }
+ */
+
+public class Solution {
+    public ListNode MergeKLists(ListNode[] lists) {
+        if (lists.Length == 0) return null;
+
+        for (int i = 1; i < lists.Length; i++) {
+            lists[i] = Merge(lists[i], lists[i - 1]);
+        }
+        return lists[lists.Length - 1];
+    }
+
+    private ListNode Merge(ListNode l1, ListNode l2) {
+        ListNode dummy = new ListNode(0);
+        ListNode curr = dummy;
+
+        while (l1 != null && l2 != null) {
+            if (l1.val <= l2.val) {
+                curr.next = l1;
+                l1 = l1.next;
+            } else {
+                curr.next = l2;
+                l2 = l2.next;
+            }
+            curr = curr.next;
+        }
+
+        if (l1 != null) {
+            curr.next = l1;
+        } else {
+            curr.next = l2;
+        }
+
+        return dummy.next;
+    }
+}
+```
+
+```go
+/**
+ * Definition for singly-linked list.
+ * type ListNode struct {
+ *     Val int
+ *     Next *ListNode
+ * }
+ */
+func mergeList(l1 *ListNode, l2 *ListNode) *ListNode {
+    dummy := &ListNode{}
+    tail := dummy
+
+    for l1 != nil && l2 != nil {
+        if l1.Val < l2.Val {
+            tail.Next = l1
+            l1 = l1.Next
+        } else {
+            tail.Next = l2
+            l2 = l2.Next
+        }
+        tail = tail.Next
+    }
+
+    if l1 != nil {
+        tail.Next = l1
+    }
+    if l2 != nil {
+        tail.Next = l2
+    }
+
+    return dummy.Next
+}
+
+func mergeKLists(lists []*ListNode) *ListNode {
+    if len(lists) == 0 {
+        return nil
+    }
+
+    for i := 1; i < len(lists); i++ {
+        lists[i] = mergeList(lists[i-1], lists[i])
+    }
+
+    return lists[len(lists)-1]
+}
+```
+
+```kotlin
+/**
+ * Example:
+ * var li = ListNode(5)
+ * var v = li.`val`
+ * Definition for singly-linked list.
+ * class ListNode(var `val`: Int) {
+ *     var next: ListNode? = null
+ * }
+ */
+class Solution {
+    private fun mergeList(l1: ListNode?, l2: ListNode?): ListNode? {
+        val dummy = ListNode(0)
+        var tail = dummy
+        var first = l1
+        var second = l2
+
+        while (first != null && second != null) {
+            if (first.`val` < second.`val`) {
+                tail.next = first
+                first = first.next
+            } else {
+                tail.next = second
+                second = second.next
+            }
+            tail = tail.next!!
+        }
+
+        if (first != null) {
+            tail.next = first
+        }
+        if (second != null) {
+            tail.next = second
+        }
+
+        return dummy.next
+    }
+
+    fun mergeKLists(lists: Array<ListNode?>): ListNode? {
+        if (lists.isEmpty()) {
+            return null
+        }
+
+        for (i in 1 until lists.size) {
+            lists[i] = mergeList(lists[i-1], lists[i])
+        }
+
+        return lists.last()
+    }
+}
+```
+
+```swift
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     public var val: Int
+ *     public var next: ListNode?
+ *     public init() { self.val = 0; self.next = nil; }
+ *     public init(_ val: Int) { self.val = val; self.next = nil; }
+ *     public init(_ val: Int, _ next: ListNode?) { self.val = val; self.next = next; }
+ * }
+ */
+class Solution {
+    func mergeKLists(_ lists: [ListNode?]) -> ListNode? {
+        if lists.isEmpty {
+            return nil
+        }
+
+        var lists = lists
+        for i in 1..<lists.count {
+            lists[i] = mergeList(lists[i - 1], lists[i])
+        }
+
+        return lists.last!
+    }
+
+    private func mergeList(_ l1: ListNode?, _ l2: ListNode?) -> ListNode? {
+        let dummy = ListNode(0)
+        var tail = dummy
+        var l1 = l1, l2 = l2
+
+        while l1 != nil && l2 != nil {
+            if l1!.val < l2!.val {
+                tail.next = l1
+                l1 = l1?.next
+            } else {
+                tail.next = l2
+                l2 = l2?.next
+            }
+            tail = tail.next!
+        }
+
+        if l1 != nil {
+            tail.next = l1
+        }
+        if l2 != nil {
+            tail.next = l2
+        }
+
+        return dummy.next
+    }
+}
+```
+
+```rust
+impl Solution {
+    pub fn merge_k_lists(lists: Vec<Option<Box<ListNode>>>) -> Option<Box<ListNode>> {
+        if lists.is_empty() {
+            return None;
+        }
+
+        let mut lists = lists;
+        for i in 1..lists.len() {
+            let l1 = lists[i - 1].take();
+            let l2 = lists[i].take();
+            lists[i] = Self::merge_two(l1, l2);
+        }
+        lists.last_mut().unwrap().take()
+    }
+
+    fn merge_two(
+        mut l1: Option<Box<ListNode>>,
+        mut l2: Option<Box<ListNode>>,
+    ) -> Option<Box<ListNode>> {
+        let mut dummy = Box::new(ListNode::new(0));
+        let mut tail = &mut dummy;
+
+        while l1.is_some() && l2.is_some() {
+            if l1.as_ref().unwrap().val <= l2.as_ref().unwrap().val {
+                let next = l1.as_mut().unwrap().next.take();
+                tail.next = l1;
+                l1 = next;
+            } else {
+                let next = l2.as_mut().unwrap().next.take();
+                tail.next = l2;
+                l2 = next;
+            }
+            tail = tail.next.as_mut().unwrap();
+        }
+
+        tail.next = if l1.is_some() { l1 } else { l2 };
+        dummy.next
+    }
+}
+```
+
+::tabs-end
+
+### Time & Space Complexity
+
+- Time complexity: $O(n * k)$
+- Space complexity: $O(1)$
+
+> Where $k$ is the total number of lists and $n$ is the total number of nodes across $k$ lists.
+
+---
+
+## 4. Heap
+
+### Intuition
+
+We want to always pick the **smallest current node** among all `k` lists as efficiently as possible.
+
+Instead of scanning all heads every time (which is slow), we can use a **min-heap (priority queue)**:
+
+- Push the head of each non-empty list into the heap.
+- The heap always gives us the node with the **smallest value** on top.
+- We pop that node, attach it to our result list, and then push its `next` node (if it exists) into the heap.
+- Repeat until the heap is empty.
+
+This way, at every step we choose the globally smallest node in **O(log k)** time, where `k` is the number of lists.
+
+### Algorithm
+
+1. Create a min-heap (priority queue).
+2. For each non-empty linked list:
+    - Push its head node into the heap (keyed by node value).
+3. Create a dummy node to start the result list, and a pointer `cur` pointing to it.
+4. While the heap is not empty:
+    - Pop the node with the smallest value from the heap.
+    - Attach this node to `cur.next`, and move `cur` forward.
+    - If this node has a `next` node, push that `next` node into the heap.
+5. When the heap is empty, all nodes have been merged in sorted order.
+6. Return `dummy.next` as the head of the merged list.
+
+::tabs-start
+
+```python
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+
+class NodeWrapper:
+    def __init__(self, node):
+        self.node = node
+
+    def __lt__(self, other):
+        return self.node.val < other.node.val
+
+class Solution:
+    def mergeKLists(self, lists: List[Optional[ListNode]]) -> Optional[ListNode]:
+        if len(lists) == 0:
+            return None
+
+        res = ListNode(0)
+        cur = res
+        minHeap = []
+
+        for lst in lists:
+            if lst is not None:
+                heapq.heappush(minHeap, NodeWrapper(lst))
+
+        while minHeap:
+            node_wrapper = heapq.heappop(minHeap)
+            cur.next = node_wrapper.node
+            cur = cur.next
+
+            if node_wrapper.node.next:
+                heapq.heappush(minHeap, NodeWrapper(node_wrapper.node.next))
+
+        return res.next
+```
+
+```java
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+
+class Solution {
+    public ListNode mergeKLists(ListNode[] lists) {
+        if (lists.length == 0) return null;
+
+        PriorityQueue<ListNode> minHeap = new PriorityQueue<>((a, b) -> a.val - b.val);
+        for (ListNode list : lists) {
+            if (list != null) {
+                minHeap.offer(list);
+            }
+        }
+
+        ListNode res = new ListNode(0);
+        ListNode cur = res;
+        while (!minHeap.isEmpty()) {
+            ListNode node = minHeap.poll();
+            cur.next = node;
+            cur = cur.next;
+
+            node = node.next;
+            if (node != null) {
+                minHeap.offer(node);
+            }
+        }
+        return res.next;
+    }
+}
+```
+
+```cpp
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+
+class Solution {
+public:
+    ListNode* mergeKLists(vector<ListNode*>& lists) {
+        if (lists.empty()) return nullptr;
+
+        auto cmp = [](ListNode* a, ListNode* b) { return a->val > b->val; };
+        priority_queue<ListNode*, vector<ListNode*>, decltype(cmp)> minHeap(cmp);
+
+        for (ListNode* list : lists) {
+            if (list != nullptr) {
+                minHeap.push(list);
+            }
+        }
+
+        ListNode* res = new ListNode(0);
+        ListNode* cur = res;
+        while (!minHeap.empty()) {
+            ListNode* node = minHeap.top();
+            minHeap.pop();
+            cur->next = node;
+            cur = cur->next;
+
+            node = node->next;
+            if (node != nullptr) {
+                minHeap.push(node);
+            }
+        }
+        return res->next;
+    }
+};
+```
+
+```javascript
+/**
+ * Definition for singly-linked list.
+ * class ListNode {
+ *     constructor(val = 0, next = null) {
+ *         this.val = val;
+ *         this.next = next;
+ *     }
+ * }
+ */
+
+class Solution {
+    /**
+     * @param {ListNode[]} lists
+     * @return {ListNode}
+     */
+    mergeKLists(lists) {
+        if (lists.length === 0) return null;
+        const minHeap = new MinPriorityQueue((x) => x.val);
+        for (let list of lists) {
+            if (list != null) minHeap.enqueue(list);
+        }
+
+        let res = new ListNode(0);
+        let cur = res;
+        while (minHeap.size() > 0) {
+            let node = minHeap.dequeue();
+            cur.next = node;
+            cur = cur.next;
+
+            node = node.next;
+            if (node != null) {
+                minHeap.enqueue(node);
+            }
+        }
+        return res.next;
+    }
+}
+```
+
+```csharp
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     public int val;
+ *     public ListNode next;
+ *     public ListNode(int val=0, ListNode next=null) {
+ *         this.val = val;
+ *         this.next = next;
+ *     }
+ * }
+ */
+
+public class Solution {
+    public ListNode MergeKLists(ListNode[] lists) {
+        if (lists.Length == 0) return null;
+
+        var minHeap = new PriorityQueue<ListNode, int>();
+        foreach (var list in lists) {
+            if (list != null) {
+                minHeap.Enqueue(list, list.val);
+            }
+        }
+
+        var res = new ListNode(0);
+        var cur = res;
+        while (minHeap.Count > 0) {
+            var node = minHeap.Dequeue();
+            cur.next = node;
+            cur = cur.next;
+
+            node = node.next;
+            if (node != null) {
+                minHeap.Enqueue(node, node.val);
+            }
+        }
+        return res.next;
+    }
+}
+```
+
+```go
+/**
+ * Definition for singly-linked list.
+ * type ListNode struct {
+ *     Val int
+ *     Next *ListNode
+ * }
+ */
+func mergeKLists(lists []*ListNode) *ListNode {
+    if len(lists) == 0 {
+        return nil
+    }
+
+    minHeap := priorityqueue.NewWith(func(a, b interface{}) int {
+        return a.(*ListNode).Val - b.(*ListNode).Val
+    })
+
+    for _, list := range lists {
+        if list != nil {
+            minHeap.Enqueue(list)
+        }
+    }
+
+    res := &ListNode{Val: 0}
+    cur := res
+
+    for !minHeap.Empty() {
+        node, _ := minHeap.Dequeue()
+        cur.Next = node.(*ListNode)
+        cur = cur.Next
+
+        if cur.Next != nil {
+            minHeap.Enqueue(cur.Next)
+        }
+    }
+
+    return res.Next
+}
+```
+
+```kotlin
+/**
+ * Example:
+ * var li = ListNode(5)
+ * var v = li.`val`
+ * Definition for singly-linked list.
+ * class ListNode(var `val`: Int) {
+ *     var next: ListNode? = null
+ * }
+ */
+class Solution {
+    fun mergeKLists(lists: Array<ListNode?>): ListNode? {
+        if (lists.isEmpty()) return null
+
+        val minHeap = PriorityQueue<ListNode>(compareBy { it.`val` })
+
+        for (list in lists) {
+            list?.let { minHeap.offer(it) }
+        }
+
+        val res = ListNode(0)
+        var cur = res
+
+        while (minHeap.isNotEmpty()) {
+            val node = minHeap.poll()
+            cur.next = node
+            cur = cur.next!!
+
+            node.next?.let { minHeap.offer(it) }
+        }
+
+        return res.next
+    }
+}
+```
+
+```swift
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     public var val: Int
+ *     public var next: ListNode?
+ *     public init() { self.val = 0; self.next = nil; }
+ *     public init(_ val: Int) { self.val = val; self.next = nil; }
+ *     public init(_ val: Int, _ next: ListNode?) { self.val = val; self.next = next; }
+ * }
+ */
+struct NodeWrapper: Comparable {
+    let node: ListNode
+
+    init(_ node: ListNode) {
+        self.node = node
+    }
+
+    static func < (lhs: NodeWrapper, rhs: NodeWrapper) -> Bool {
+        return lhs.node.val < rhs.node.val
+    }
+
+    static func == (lhs: NodeWrapper, rhs: NodeWrapper) -> Bool {
+        return lhs.node.val == rhs.node.val
+    }
+}
+
+class Solution {
+    func mergeKLists(_ lists: [ListNode?]) -> ListNode? {
+        var heap = Heap<NodeWrapper>()
+
+        for list in lists {
+            if let node = list {
+                heap.insert(NodeWrapper(node))
+            }
+        }
+
+        let dummy = ListNode(0)
+        var tail = dummy
+
+        while let wrapper = heap.popMin() {
+            tail.next = wrapper.node
+            tail = tail.next!
+
+            if let next = wrapper.node.next {
+                heap.insert(NodeWrapper(next))
+            }
+        }
+
+        return dummy.next
+    }
+}
+```
+
+```rust
+impl Solution {
+    pub fn merge_k_lists(lists: Vec<Option<Box<ListNode>>>) -> Option<Box<ListNode>> {
+        if lists.is_empty() {
+            return None;
+        }
+
+        let mut heap = BinaryHeap::new();
+        for list in lists {
+            let mut cur = list;
+            while let Some(node) = cur {
+                heap.push(Reverse(node.val));
+                cur = node.next;
+            }
+        }
+
+        let mut dummy = Box::new(ListNode::new(0));
+        let mut cur = &mut dummy;
+        while let Some(Reverse(val)) = heap.pop() {
+            cur.next = Some(Box::new(ListNode::new(val)));
+            cur = cur.next.as_mut().unwrap();
+        }
+        dummy.next
+    }
+}
+```
+
+::tabs-end
+
+### Time & Space Complexity
+
+- Time complexity: $O(n \log k)$
+- Space complexity: $O(k)$
+
+> Where $k$ is the total number of lists and $n$ is the total number of nodes across $k$ lists.
+
+---
+
+## 5. Divide And Conquer (Recursion)
+
+### Intuition
+
+Instead of merging all k lists at once or one by one in order, we can use a **divide and conquer** strategy, similar to how **merge sort** works.
+
+Idea:
+
+- Split the list of linked lists into two halves.
+- Recursively merge the left half into one sorted list.
+- Recursively merge the right half into one sorted list.
+- Finally, merge these two sorted lists into a single sorted list.
+
+By always merging **pairs** of lists, we reduce the total work compared to merging k lists sequentially.  
+Each merge of two lists is linear in their total length, and we do about `log k` levels of merging.
+
+This makes the approach both clean and efficient.
+
+### Algorithm
+
+1. **Base Cases**
+    - If the input list `lists` is empty, return `null`.
+    - Use a recursive function `divide(lists, l, r)`:
+        - If `l > r`, return `null`.
+        - If `l == r`, return `lists[l]` (only one list to return).
+
+2. **Divide Step**
+    - Compute `mid = (l + r) // 2`.
+    - Recursively compute:
+        - `left = divide(lists, l, mid)`
+        - `right = divide(lists, mid + 1, r)`
+
+3. **Conquer Step (merge two lists)**
+    - Merge `left` and `right` using the standard **merge two sorted linked lists** routine:
+        - Create a dummy node and use a `curr` pointer.
+        - While both lists are non-empty:
+            - Attach the smaller node to `curr.next`.
+            - Move that list's pointer forward.
+            - Move `curr` forward.
+        - Attach any remaining nodes from either list.
+    - Return the merged list.
+
+4. **Final Answer**
+    - Call `divide(lists, 0, len(lists) - 1)` and return the resulting list.
+
+This approach efficiently merges `k` sorted linked lists in a structured, recursive way.
+
+::tabs-start
+
+```python
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+
+class Solution:
+    def mergeKLists(self, lists):
+        if not lists or len(lists) == 0:
+            return None
+        return self.divide(lists, 0, len(lists) - 1)
+
+    def divide(self, lists, l, r):
+        if l > r:
+            return None
+        if l == r:
+            return lists[l]
+
+        mid = l + (r - l) // 2
+        left = self.divide(lists, l, mid)
+        right = self.divide(lists, mid + 1, r)
+
+        return self.conquer(left, right)
+
+    def conquer(self, l1, l2):
+        dummy = ListNode(0)
+        curr = dummy
+
+        while l1 and l2:
+            if l1.val <= l2.val:
+                curr.next = l1
+                l1 = l1.next
+            else:
+                curr.next = l2
+                l2 = l2.next
+            curr = curr.next
+
+        if l1:
+            curr.next = l1
+        else:
+            curr.next = l2
+
+        return dummy.next
+```
+
+```java
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+
+class Solution {
+    public ListNode mergeKLists(ListNode[] lists) {
+        if (lists == null || lists.length == 0) {
+            return null;
+        }
+        return divide(lists, 0, lists.length - 1);
+    }
+
+    private ListNode divide(ListNode[] lists, int l, int r) {
+        if (l > r) {
+            return null;
+        }
+        if (l == r) {
+            return lists[l];
+        }
+
+        int mid = l + (r - l) / 2;
+        ListNode left = divide(lists, l, mid);
+        ListNode right = divide(lists, mid + 1, r);
+
+        return conquer(left, right);
+    }
+
+    private ListNode conquer(ListNode l1, ListNode l2) {
+        ListNode dummy = new ListNode(0);
+        ListNode curr = dummy;
+
+        while (l1 != null && l2 != null) {
+            if (l1.val <= l2.val) {
+                curr.next = l1;
+                l1 = l1.next;
+            } else {
+                curr.next = l2;
+                l2 = l2.next;
+            }
+
+            curr = curr.next;
+        }
+
+        if (l1 != null) {
+            curr.next = l1;
+        } else {
+            curr.next = l2;
+        }
+
+        return dummy.next;
+    }
+}
+```
+
+```cpp
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+
+class Solution {
+public:
+    ListNode* mergeKLists(vector<ListNode*>& lists) {
+        if (lists.empty()) {
+            return nullptr;
+        }
+        return divide(lists, 0, lists.size() - 1);
+    }
+
+private:
+    ListNode* divide(vector<ListNode*>& lists, int l, int r) {
+        if (l > r) {
+            return nullptr;
+        }
+        if (l == r) {
+            return lists[l];
+        }
+
+        int mid = l + (r - l) / 2;
+        ListNode* left = divide(lists, l, mid);
+        ListNode* right = divide(lists, mid + 1, r);
+
+        return conquer(left, right);
+    }
+
+    ListNode* conquer(ListNode* l1, ListNode* l2) {
+        ListNode dummy(0);
+        ListNode* curr = &dummy;
+
+        while (l1 && l2) {
+            if (l1->val <= l2->val) {
+                curr->next = l1;
+                l1 = l1->next;
+            } else {
+                curr->next = l2;
+                l2 = l2->next;
+            }
+            curr = curr->next;
+        }
+
+        if (l1) {
+            curr->next = l1;
+        } else {
+            curr->next = l2;
+        }
+
+        return dummy.next;
+    }
+};
+```
+
+```javascript
+/**
+ * Definition for singly-linked list.
+ * class ListNode {
+ *     constructor(val = 0, next = null) {
+ *         this.val = val;
+ *         this.next = next;
+ *     }
+ * }
+ */
+
+class Solution {
+    /**
+     * @param {ListNode[]} lists
+     * @return {ListNode}
+     */
+    mergeKLists(lists) {
+        if (!lists || lists.length === 0) {
+            return null;
+        }
+        return this.divide(lists, 0, lists.length - 1);
+    }
+
+    /**
+     * @param {ListNode[]} lists
+     * @param {number} l
+     * @param {number} r
+     * @return {ListNode}
+     */
+    divide(lists, l, r) {
+        if (l > r) {
+            return null;
+        }
+        if (l === r) {
+            return lists[l];
+        }
+
+        const mid = Math.floor(l + (r - l) / 2);
+        const left = this.divide(lists, l, mid);
+        const right = this.divide(lists, mid + 1, r);
+
+        return this.conquer(left, right);
+    }
+
+    /**
+     * @param {ListNode} l1
+     * @param  {ListNode} l2
+     * @return {ListNode}
+     */
+    conquer(l1, l2) {
+        const dummy = new ListNode(0);
+        let curr = dummy;
+
+        while (l1 && l2) {
+            if (l1.val <= l2.val) {
+                curr.next = l1;
+                l1 = l1.next;
+            } else {
+                curr.next = l2;
+                l2 = l2.next;
+            }
+            curr = curr.next;
+        }
+
+        curr.next = l1 ? l1 : l2;
+        return dummy.next;
+    }
+}
+```
+
+```csharp
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     public int val;
+ *     public ListNode next;
+ *     public ListNode(int val=0, ListNode next=null) {
+ *         this.val = val;
+ *         this.next = next;
+ *     }
+ * }
+ */
+
+public class Solution {
+    public ListNode MergeKLists(ListNode[] lists) {
+        if (lists == null || lists.Length == 0) {
+            return null;
+        }
+        return Divide(lists, 0, lists.Length - 1);
+    }
+
+    private ListNode Divide(ListNode[] lists, int l, int r) {
+        if (l > r) {
+            return null;
+        }
+        if (l == r) {
+            return lists[l];
+        }
+
+        int mid = l + (r - l) / 2;
+        ListNode left = Divide(lists, l, mid);
+        ListNode right = Divide(lists, mid + 1, r);
+
+        return Conquer(left, right);
+    }
+
+    private ListNode Conquer(ListNode l1, ListNode l2) {
+        ListNode dummy = new ListNode(0);
+        ListNode curr = dummy;
+
+        while (l1 != null && l2 != null) {
+            if (l1.val <= l2.val) {
+                curr.next = l1;
+                l1 = l1.next;
+            } else {
+                curr.next = l2;
+                l2 = l2.next;
+            }
+            curr = curr.next;
+        }
+
+        if (l1 != null) {
+            curr.next = l1;
+        } else {
+            curr.next = l2;
+        }
+
+        return dummy.next;
+    }
+}
+```
+
+```go
+/**
+ * Definition for singly-linked list.
+ * type ListNode struct {
+ *     Val int
+ *     Next *ListNode
+ * }
+ */
+func mergeKLists(lists []*ListNode) *ListNode {
+    if len(lists) == 0 {
+        return nil
+    }
+    return divide(lists, 0, len(lists)-1)
+}
+
+func divide(lists []*ListNode, left, right int) *ListNode {
+    if left > right {
+        return nil
+    }
+    if left == right {
+        return lists[left]
+    }
+
+    mid := left + (right-left)/2
+    l1 := divide(lists, left, mid)
+    l2 := divide(lists, mid+1, right)
+
+    return conquer(l1, l2)
+}
+
+func conquer(l1, l2 *ListNode) *ListNode {
+    dummy := &ListNode{}
+    curr := dummy
+
+    for l1 != nil && l2 != nil {
+        if l1.Val <= l2.Val {
+            curr.Next = l1
+            l1 = l1.Next
+        } else {
+            curr.Next = l2
+            l2 = l2.Next
+        }
+        curr = curr.Next
+    }
+
+    if l1 != nil {
+        curr.Next = l1
+    } else {
+        curr.Next = l2
+    }
+
+    return dummy.Next
+}
+```
+
+```kotlin
+/**
+ * Example:
+ * var li = ListNode(5)
+ * var v = li.`val`
+ * Definition for singly-linked list.
+ * class ListNode(var `val`: Int) {
+ *     var next: ListNode? = null
+ * }
+ */
+class Solution {
+    fun mergeKLists(lists: Array<ListNode?>): ListNode? {
+        if (lists.isEmpty()) return null
+        return divide(lists, 0, lists.size - 1)
+    }
+
+    private fun divide(lists: Array<ListNode?>, left: Int, right: Int): ListNode? {
+        if (left > right) return null
+        if (left == right) return lists[left]
+
+        val mid = left + (right - left) / 2
+        val l1 = divide(lists, left, mid)
+        val l2 = divide(lists, mid + 1, right)
+
+        return conquer(l1, l2)
+    }
+
+    private fun conquer(l1: ListNode?, l2: ListNode?): ListNode? {
+        val dummy = ListNode(0)
+        var curr = dummy
+        var list1 = l1
+        var list2 = l2
+
+        while (list1 != null && list2 != null) {
+            if (list1.`val` <= list2.`val`) {
+                curr.next = list1
+                list1 = list1.next
+            } else {
+                curr.next = list2
+                list2 = list2.next
+            }
+            curr = curr.next!!
+        }
+
+        curr.next = list1 ?: list2
+        return dummy.next
+    }
+}
+```
+
+```swift
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     public var val: Int
+ *     public var next: ListNode?
+ *     public init() { self.val = 0; self.next = nil; }
+ *     public init(_ val: Int) { self.val = val; self.next = nil; }
+ *     public init(_ val: Int, _ next: ListNode?) { self.val = val; self.next = next; }
+ * }
+ */
+class Solution {
+    func mergeKLists(_ lists: [ListNode?]) -> ListNode? {
+        if lists.isEmpty {
+            return nil
+        }
+        return divide(lists, 0, lists.count - 1)
+    }
+
+    private func divide(_ lists: [ListNode?], _ l: Int, _ r: Int) -> ListNode? {
+        if l > r {
+            return nil
+        }
+        if l == r {
+            return lists[l]
+        }
+
+        let mid = l + (r - l) / 2
+        let left = divide(lists, l, mid)
+        let right = divide(lists, mid + 1, r)
+        return conquer(left, right)
+    }
+
+    private func conquer(_ l1: ListNode?, _ l2: ListNode?) -> ListNode? {
+        let dummy = ListNode(0)
+        var curr = dummy
+        var l1 = l1, l2 = l2
+
+        while let node1 = l1, let node2 = l2 {
+            if node1.val <= node2.val {
+                curr.next = node1
+                l1 = node1.next
+            } else {
+                curr.next = node2
+                l2 = node2.next
+            }
+            curr = curr.next!
+        }
+
+        curr.next = l1 ?? l2
+        return dummy.next
+    }
+}
+```
+
+```rust
+impl Solution {
+    pub fn merge_k_lists(lists: Vec<Option<Box<ListNode>>>) -> Option<Box<ListNode>> {
+        if lists.is_empty() {
+            return None;
+        }
+        Self::divide(&lists, 0, lists.len() as i32 - 1)
+    }
+
+    fn divide(lists: &[Option<Box<ListNode>>], l: i32, r: i32) -> Option<Box<ListNode>> {
+        if l > r {
+            return None;
+        }
+        if l == r {
+            return lists[l as usize].clone();
+        }
+        let mid = l + (r - l) / 2;
+        let left = Self::divide(lists, l, mid);
+        let right = Self::divide(lists, mid + 1, r);
+        Self::conquer(left, right)
+    }
+
+    fn conquer(
+        mut l1: Option<Box<ListNode>>,
+        mut l2: Option<Box<ListNode>>,
+    ) -> Option<Box<ListNode>> {
+        let mut dummy = Box::new(ListNode::new(0));
+        let mut curr = &mut dummy;
+
+        while l1.is_some() && l2.is_some() {
+            if l1.as_ref().unwrap().val <= l2.as_ref().unwrap().val {
+                let next = l1.as_mut().unwrap().next.take();
+                curr.next = l1;
+                l1 = next;
+            } else {
+                let next = l2.as_mut().unwrap().next.take();
+                curr.next = l2;
+                l2 = next;
+            }
+            curr = curr.next.as_mut().unwrap();
+        }
+
+        curr.next = if l1.is_some() { l1 } else { l2 };
+        dummy.next
+    }
+}
+```
+
+::tabs-end
+
+### Time & Space Complexity
+
+- Time complexity: $O(n \log k)$
+- Space complexity: $O(\log k)$
+
+> Where $k$ is the total number of lists and $n$ is the total number of nodes across $k$ lists.
+
+---
+
+## 6. Divide And Conquer (Iteration)
+
+### Intuition
+
+This is the **same idea as divide and conquer**, but done **iteratively** instead of using recursion.
+
+We repeatedly merge the lists in **pairs**:
+
+- In one pass:
+    - Merge list 0 and list 1 -> get M0
+    - Merge list 2 and list 3 -> get M1
+    - Merge list 4 and list 5 -> get M2
+    - ... and so on.
+- After this pass, we have fewer lists (about half as many).
+- Repeat this process on the new list of merged lists until only **one** list remains.
+
+Each pairwise merge is just the usual **merge of two sorted linked lists**.
+By always merging lists two at a time, the total work is efficient and structured, similar to the merge step in merge sort.
+
+### Algorithm
+
+1. If `lists` is empty, return `null`.
+2. While the number of lists is greater than `1`:
+    - Create an empty list `mergedLists`.
+    - Loop over `lists` in steps of `2`:
+        - Let `l1 = lists[i]`.
+        - Let `l2 = lists[i + 1]` if it exists, otherwise `None`.
+        - Merge `l1` and `l2` using `mergeList` and append the result to `mergedLists`.
+    - Set `lists = mergedLists`.
+3. When the loop ends, `lists[0]` is the fully merged sorted list. Return it.
+
+**Merging two lists (`mergeList(l1, l2)`):**
+
+1. Create a dummy node and a `tail` pointer pointing to it.
+2. While both `l1` and `l2` are non-empty:
+    - Attach the smaller of `l1` and `l2` to `tail.next`.
+    - Move the chosen list's pointer forward.
+    - Move `tail` forward.
+3. Attach any remaining nodes from `l1` or `l2` to `tail.next`.
+4. Return `dummy.next` as the merged head.
+
+::tabs-start
+
+```python
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+
+class Solution:
+
+    def mergeKLists(self, lists: List[Optional[ListNode]]) -> Optional[ListNode]:
+        if not lists or len(lists) == 0:
+            return None
+
+        while len(lists) > 1:
+            mergedLists = []
+            for i in range(0, len(lists), 2):
+                l1 = lists[i]
+                l2 = lists[i + 1] if (i + 1) < len(lists) else None
+                mergedLists.append(self.mergeList(l1, l2))
+            lists = mergedLists
+        return lists[0]
+
+    def mergeList(self, l1, l2):
+        dummy = ListNode()
+        tail = dummy
+
+        while l1 and l2:
+            if l1.val < l2.val:
+                tail.next = l1
+                l1 = l1.next
+            else:
+                tail.next = l2
+                l2 = l2.next
+            tail = tail.next
+
+        if l1:
+            tail.next = l1
+        if l2:
+            tail.next = l2
+
+        return dummy.next
+```
+
+```java
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+
+public class Solution {
+    public ListNode mergeKLists(ListNode[] lists) {
+        if (lists == null || lists.length == 0) {
+            return null;
+        }
+
+        while (lists.length > 1) {
+            List<ListNode> mergedLists = new ArrayList<>();
+            for (int i = 0; i < lists.length; i += 2) {
+                ListNode l1 = lists[i];
+                ListNode l2 = (i + 1) < lists.length ? lists[i + 1] : null;
+                mergedLists.add(mergeList(l1, l2));
+            }
+            lists = mergedLists.toArray(new ListNode[0]);
+        }
+        return lists[0];
+    }
+
+    private ListNode mergeList(ListNode l1, ListNode l2) {
+        ListNode dummy = new ListNode();
+        ListNode tail = dummy;
+
+        while (l1 != null && l2 != null) {
+            if (l1.val < l2.val) {
+                tail.next = l1;
+                l1 = l1.next;
+            } else {
+                tail.next = l2;
+                l2 = l2.next;
+            }
+            tail = tail.next;
+        }
+
+        if (l1 != null) {
+            tail.next = l1;
+        }
+        if (l2 != null) {
+            tail.next = l2;
+        }
+
+        return dummy.next;
+    }
+}
+```
+
+```cpp
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+
+class Solution {
+public:
+    ListNode* mergeKLists(vector<ListNode*>& lists) {
+        if (lists.empty()) {
+            return nullptr;
+        }
+
+        while (lists.size() > 1) {
+            vector<ListNode*> mergedLists;
+            for (int i = 0; i < lists.size(); i += 2) {
+                ListNode* l1 = lists[i];
+                ListNode* l2 = (i + 1) < lists.size() ? lists[i + 1] : nullptr;
+                mergedLists.push_back(mergeList(l1, l2));
+            }
+            lists = mergedLists;
+        }
+        return lists[0];
+    }
+
+private:
+    ListNode* mergeList(ListNode* l1, ListNode* l2) {
+        ListNode dummy;
+        ListNode* tail = &dummy;
+
+        while (l1 && l2) {
+            if (l1->val < l2->val) {
+                tail->next = l1;
+                l1 = l1->next;
+            } else {
+                tail->next = l2;
+                l2 = l2->next;
+            }
+            tail = tail->next;
+        }
+
+        if (l1) {
+            tail->next = l1;
+        }
+        if (l2) {
+            tail->next = l2;
+        }
+
+        return dummy.next;
+    }
+};
+```
+
+```javascript
+/**
+ * Definition for singly-linked list.
+ * class ListNode {
+ *     constructor(val = 0, next = null) {
+ *         this.val = val;
+ *         this.next = next;
+ *     }
+ * }
+ */
+
+class Solution {
+    /**
+     * @param {ListNode[]} lists
+     * @return {ListNode}
+     */
+    mergeKLists(lists) {
+        if (!lists || lists.length === 0) {
+            return null;
+        }
+
+        while (lists.length > 1) {
+            const mergedLists = [];
+            for (let i = 0; i < lists.length; i += 2) {
+                const l1 = lists[i];
+                const l2 = i + 1 < lists.length ? lists[i + 1] : null;
+                mergedLists.push(this.mergeList(l1, l2));
+            }
+            lists = mergedLists;
+        }
+        return lists[0];
+    }
+
+    /**
+     * @param {ListNode} l1
+     * @param  {ListNode} l2
+     * @return {ListNode}
+     */
+    mergeList(l1, l2) {
+        const dummy = new ListNode(0);
+        let curr = dummy;
+
+        while (l1 && l2) {
+            if (l1.val <= l2.val) {
+                curr.next = l1;
+                l1 = l1.next;
+            } else {
+                curr.next = l2;
+                l2 = l2.next;
+            }
+            curr = curr.next;
+        }
+
+        curr.next = l1 ? l1 : l2;
+        return dummy.next;
+    }
+}
+```
+
+```csharp
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     public int val;
+ *     public ListNode next;
+ *     public ListNode(int val=0, ListNode next=null) {
+ *         this.val = val;
+ *         this.next = next;
+ *     }
+ * }
+ */
+
+public class Solution {
+    public ListNode MergeKLists(ListNode[] lists) {
+        if (lists == null || lists.Length == 0) {
+            return null;
+        }
+
+        while (lists.Length > 1) {
+            List<ListNode> mergedLists = new List<ListNode>();
+            for (int i = 0; i < lists.Length; i += 2) {
+                ListNode l1 = lists[i];
+                ListNode l2 = (i + 1) < lists.Length ? lists[i + 1] : null;
+                mergedLists.Add(MergeList(l1, l2));
+            }
+            lists = mergedLists.ToArray();
+        }
+        return lists[0];
+    }
+
+    private ListNode MergeList(ListNode l1, ListNode l2) {
+        ListNode dummy = new ListNode();
+        ListNode tail = dummy;
+
+        while (l1 != null && l2 != null) {
+            if (l1.val < l2.val) {
+                tail.next = l1;
+                l1 = l1.next;
+            } else {
+                tail.next = l2;
+                l2 = l2.next;
+            }
+            tail = tail.next;
+        }
+
+        if (l1 != null) {
+            tail.next = l1;
+        }
+        if (l2 != null) {
+            tail.next = l2;
+        }
+
+        return dummy.next;
+    }
+}
+```
+
+```go
+/**
+ * Definition for singly-linked list.
+ * type ListNode struct {
+ *     Val int
+ *     Next *ListNode
+ * }
+ */
+func mergeKLists(lists []*ListNode) *ListNode {
+    if len(lists) == 0 {
+        return nil
+    }
+
+    for len(lists) > 1 {
+        var mergedLists []*ListNode
+        for i := 0; i < len(lists); i += 2 {
+            l1 := lists[i]
+            var l2 *ListNode
+            if i+1 < len(lists) {
+                l2 = lists[i+1]
+            }
+            mergedLists = append(mergedLists, mergeList(l1, l2))
+        }
+        lists = mergedLists
+    }
+    return lists[0]
+}
+
+func mergeList(l1, l2 *ListNode) *ListNode {
+    dummy := &ListNode{}
+    tail := dummy
+
+    for l1 != nil && l2 != nil {
+        if l1.Val < l2.Val {
+            tail.Next = l1
+            l1 = l1.Next
+        } else {
+            tail.Next = l2
+            l2 = l2.Next
+        }
+        tail = tail.Next
+    }
+
+    if l1 != nil {
+        tail.Next = l1
+    } else {
+        tail.Next = l2
+    }
+
+    return dummy.Next
+}
+```
+
+```kotlin
+/**
+ * Example:
+ * var li = ListNode(5)
+ * var v = li.`val`
+ * Definition for singly-linked list.
+ * class ListNode(var `val`: Int) {
+ *     var next: ListNode? = null
+ * }
+ */
+class Solution {
+    fun mergeKLists(lists: Array<ListNode?>): ListNode? {
+        if (lists.isEmpty()) return null
+
+        var currentLists = lists.toList()
+        while (currentLists.size > 1) {
+            val mergedLists = mutableListOf<ListNode?>()
+            for (i in currentLists.indices step 2) {
+                val l1 = currentLists[i]
+                val l2 = if (i + 1 < currentLists.size) currentLists[i + 1] else null
+                mergedLists.add(mergeList(l1, l2))
+            }
+            currentLists = mergedLists
+        }
+        return currentLists[0]
+    }
+
+    private fun mergeList(l1: ListNode?, l2: ListNode?): ListNode? {
+        val dummy = ListNode(0)
+        var tail = dummy
+        var list1 = l1
+        var list2 = l2
+
+        while (list1 != null && list2 != null) {
+            if (list1.`val` < list2.`val`) {
+                tail.next = list1
+                list1 = list1.next
+            } else {
+                tail.next = list2
+                list2 = list2.next
+            }
+            tail = tail.next!!
+        }
+
+        tail.next = list1 ?: list2
+        return dummy.next
+    }
+}
+```
+
+```swift
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     public var val: Int
+ *     public var next: ListNode?
+ *     public init() { self.val = 0; self.next = nil; }
+ *     public init(_ val: Int) { self.val = val; self.next = nil; }
+ *     public init(_ val: Int, _ next: ListNode?) { self.val = val; self.next = next; }
+ * }
+ */
+class Solution {
+    func mergeKLists(_ lists: [ListNode?]) -> ListNode? {
+        if lists.isEmpty {
+            return nil
+        }
+
+        var lists = lists
+
+        while lists.count > 1 {
+            var mergedLists: [ListNode?] = []
+
+            for i in stride(from: 0, to: lists.count, by: 2) {
+                let l1 = lists[i]
+                let l2 = i + 1 < lists.count ? lists[i + 1] : nil
+                mergedLists.append(mergeList(l1, l2))
+            }
+
+            lists = mergedLists
+        }
+
+        return lists[0]
+    }
+
+    private func mergeList(_ l1: ListNode?, _ l2: ListNode?) -> ListNode? {
+        let dummy = ListNode(0)
+        var tail = dummy
+        var l1 = l1, l2 = l2
+
+        while let node1 = l1, let node2 = l2 {
+            if node1.val < node2.val {
+                tail.next = node1
+                l1 = node1.next
+            } else {
+                tail.next = node2
+                l2 = node2.next
+            }
+            tail = tail.next!
+        }
+
+        tail.next = l1 ?? l2
+        return dummy.next
+    }
+}
+```
+
+```rust
+impl Solution {
+    pub fn merge_k_lists(lists: Vec<Option<Box<ListNode>>>) -> Option<Box<ListNode>> {
+        if lists.is_empty() {
+            return None;
+        }
+
+        let mut lists = lists;
+        while lists.len() > 1 {
+            let mut merged = Vec::new();
+            for i in (0..lists.len()).step_by(2) {
+                let l1 = lists[i].take();
+                let l2 = if i + 1 < lists.len() {
+                    lists[i + 1].take()
+                } else {
+                    None
+                };
+                merged.push(Self::merge_list(l1, l2));
+            }
+            lists = merged;
+        }
+        lists.into_iter().next().unwrap()
+    }
+
+    fn merge_list(
+        mut l1: Option<Box<ListNode>>,
+        mut l2: Option<Box<ListNode>>,
+    ) -> Option<Box<ListNode>> {
+        let mut dummy = Box::new(ListNode::new(0));
+        let mut tail = &mut dummy;
+
+        while l1.is_some() && l2.is_some() {
+            if l1.as_ref().unwrap().val < l2.as_ref().unwrap().val {
+                let next = l1.as_mut().unwrap().next.take();
+                tail.next = l1;
+                l1 = next;
+            } else {
+                let next = l2.as_mut().unwrap().next.take();
+                tail.next = l2;
+                l2 = next;
+            }
+            tail = tail.next.as_mut().unwrap();
+        }
+
+        tail.next = if l1.is_some() { l1 } else { l2 };
+        dummy.next
+    }
+}
+```
+
+::tabs-end
+
+### Time & Space Complexity
+
+- Time complexity: $O(n \log k)$
+- Space complexity: $O(k)$
+
+> Where $k$ is the total number of lists and $n$ is the total number of nodes across $k$ lists.
+
+---
+
+## Common Pitfalls
+
+### Not Handling Empty Lists in the Input Array
+
+The input array `lists` may contain `null` or empty linked lists. Failing to check for these before accessing node values will cause null pointer exceptions. Always verify that a list is non-empty before processing it.
+
+### Forgetting to Advance the Chosen List's Pointer
+
+After selecting the smallest node from among the `k` lists, you must move that list's head pointer to the next node. Forgetting this step causes an infinite loop where the same node is repeatedly selected.
+
+### Incorrect Comparator for Min-Heap
+
+When using a priority queue or min-heap, the comparator must compare node values correctly. In some languages, the default heap is a max-heap (like Python's `heapq` with negative values or C++'s `priority_queue`). Using the wrong comparison direction results in a max-heap instead of a min-heap, producing an incorrectly sorted output.
+
+### Not Using a Dummy Node for the Result List
+
+Building the result list without a dummy head node requires special handling for the first node and complicates the logic. Using a dummy node simplifies the code by allowing uniform treatment of all nodes, then returning `dummy.next` as the result.
+
+### Modifying the Input Lists Array During Iteration
+
+When merging lists one by one or in the divide-and-conquer approach, be careful about how you update the `lists` array. Overwriting elements while still iterating can lead to incorrect merges or skipped lists. Either use a separate array for merged results or iterate carefully with proper indexing.

@@ -1,0 +1,733 @@
+## Prerequisites
+
+Before attempting this problem, you should be comfortable with:
+
+- **Binary Tree Traversal** - Understanding how to navigate tree structures using left and right children
+- **Recursion** - Using recursive calls to evaluate subtrees before combining results at parent nodes
+- **Post-order Traversal** - Evaluating children before the parent, which is essential for expression tree evaluation
+- **Boolean Logic** - Understanding AND/OR operations and how to combine boolean values
+
+---
+
+## 1. Depth First Search
+
+### Intuition
+
+This is a classic tree evaluation problem. Leaf nodes hold boolean values (0 or 1), while internal nodes represent OR (2) or AND (3) operations. We recursively evaluate each subtree: leaf nodes return their value directly, and internal nodes combine their children's results using the appropriate operator. The tree structure naturally maps to the recursive call stack.
+
+### Algorithm
+
+1. If the node has no left child (it's a leaf), return `true` if `val == 1`, else `false`.
+2. Recursively evaluate the left and right subtrees.
+3. If `val == 2` (OR), return `left_result` OR `right_result`.
+4. If `val == 3` (AND), return `left_result` AND `right_result`.
+
+::tabs-start
+
+```python
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def evaluateTree(self, root: Optional[TreeNode]) -> bool:
+        if not root.left:
+            return root.val == 1
+
+        if root.val == 2:
+            return self.evaluateTree(root.left) or self.evaluateTree(root.right)
+
+        if root.val == 3:
+            return self.evaluateTree(root.left) and self.evaluateTree(root.right)
+```
+
+```java
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+public class Solution {
+    public boolean evaluateTree(TreeNode root) {
+        if (root.left == null) {
+            return root.val == 1;
+        }
+
+        if (root.val == 2) {
+            return evaluateTree(root.left) || evaluateTree(root.right);
+        }
+
+        if (root.val == 3) {
+            return evaluateTree(root.left) && evaluateTree(root.right);
+        }
+
+        return false;
+    }
+}
+```
+
+```cpp
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    bool evaluateTree(TreeNode* root) {
+        if (!root->left) {
+            return root->val == 1;
+        }
+
+        if (root->val == 2) {
+            return evaluateTree(root->left) || evaluateTree(root->right);
+        }
+
+        if (root->val == 3) {
+            return evaluateTree(root->left) && evaluateTree(root->right);
+        }
+
+        return false;
+    }
+};
+```
+
+```javascript
+/**
+ * Definition for a binary tree node.
+ * class TreeNode {
+ *     constructor(val = 0, left = null, right = null) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    /**
+     * @param {TreeNode} root
+     * @return {boolean}
+     */
+    evaluateTree(root) {
+        if (!root.left) {
+            return root.val === 1;
+        }
+
+        if (root.val === 2) {
+            return (
+                this.evaluateTree(root.left) || this.evaluateTree(root.right)
+            );
+        }
+
+        if (root.val === 3) {
+            return (
+                this.evaluateTree(root.left) && this.evaluateTree(root.right)
+            );
+        }
+
+        return false;
+    }
+}
+```
+
+```csharp
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     public int val;
+ *     public TreeNode left;
+ *     public TreeNode right;
+ *     public TreeNode(int val=0, TreeNode left=null, TreeNode right=null) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+public class Solution {
+    public bool EvaluateTree(TreeNode root) {
+        if (root.left == null) {
+            return root.val == 1;
+        }
+
+        if (root.val == 2) {
+            return EvaluateTree(root.left) || EvaluateTree(root.right);
+        }
+
+        if (root.val == 3) {
+            return EvaluateTree(root.left) && EvaluateTree(root.right);
+        }
+
+        return false;
+    }
+}
+```
+
+```go
+/**
+ * Definition for a binary tree node.
+ * type TreeNode struct {
+ *     Val int
+ *     Left *TreeNode
+ *     Right *TreeNode
+ * }
+ */
+func evaluateTree(root *TreeNode) bool {
+    if root.Left == nil {
+        return root.Val == 1
+    }
+
+    if root.Val == 2 {
+        return evaluateTree(root.Left) || evaluateTree(root.Right)
+    }
+
+    if root.Val == 3 {
+        return evaluateTree(root.Left) && evaluateTree(root.Right)
+    }
+
+    return false
+}
+```
+
+```kotlin
+/**
+ * Example:
+ * var ti = TreeNode(5)
+ * var v = ti.`val`
+ * Definition for a binary tree node.
+ * class TreeNode(var `val`: Int) {
+ *     var left: TreeNode? = null
+ *     var right: TreeNode? = null
+ * }
+ */
+class Solution {
+    fun evaluateTree(root: TreeNode?): Boolean {
+        if (root?.left == null) {
+            return root?.`val` == 1
+        }
+
+        if (root.`val` == 2) {
+            return evaluateTree(root.left) || evaluateTree(root.right)
+        }
+
+        if (root.`val` == 3) {
+            return evaluateTree(root.left) && evaluateTree(root.right)
+        }
+
+        return false
+    }
+}
+```
+
+```swift
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     public var val: Int
+ *     public var left: TreeNode?
+ *     public var right: TreeNode?
+ *     public init() { self.val = 0; self.left = nil; self.right = nil; }
+ *     public init(_ val: Int) { self.val = val; self.left = nil; self.right = nil; }
+ *     public init(_ val: Int, _ left: TreeNode?, _ right: TreeNode?) {
+ *         self.val = val
+ *         self.left = left
+ *         self.right = right
+ *     }
+ * }
+ */
+class Solution {
+    func evaluateTree(_ root: TreeNode?) -> Bool {
+        guard let root = root else { return false }
+
+        if root.left == nil {
+            return root.val == 1
+        }
+
+        if root.val == 2 {
+            return evaluateTree(root.left) || evaluateTree(root.right)
+        }
+
+        if root.val == 3 {
+            return evaluateTree(root.left) && evaluateTree(root.right)
+        }
+
+        return false
+    }
+}
+```
+
+```rust
+// Definition for a binary tree node.
+// #[derive(Debug, PartialEq, Eq)]
+// pub struct TreeNode {
+//   pub val: i32,
+//   pub left: Option<Rc<RefCell<TreeNode>>>,
+//   pub right: Option<Rc<RefCell<TreeNode>>>,
+// }
+impl Solution {
+    pub fn evaluate_tree(root: Option<Rc<RefCell<TreeNode>>>) -> bool {
+        let node = root.as_ref().unwrap().borrow();
+        if node.left.is_none() {
+            return node.val == 1;
+        }
+        if node.val == 2 {
+            return Self::evaluate_tree(node.left.clone())
+                || Self::evaluate_tree(node.right.clone());
+        }
+        if node.val == 3 {
+            return Self::evaluate_tree(node.left.clone())
+                && Self::evaluate_tree(node.right.clone());
+        }
+        false
+    }
+}
+```
+
+::tabs-end
+
+### Time & Space Complexity
+
+- Time complexity: $O(n)$
+- Space complexity: $O(n)$ for recursion stack.
+
+---
+
+## 2. Iterative DFS
+
+### Intuition
+
+We can avoid recursion by using an explicit stack and a hash map to store computed values. The key challenge is handling the post-order nature of evaluation: a node can only be evaluated after both its children are processed. We achieve this by pushing nodes back onto the stack if their children haven't been evaluated yet, effectively simulating the recursive call stack.
+
+### Algorithm
+
+1. Initialize a stack with the `root` and a hash map `value` to store results.
+2. While the stack is non-empty:
+    - Pop a node.
+    - If it's a leaf, store its boolean value in `value`.
+    - If both children are already in `value`, compute and store the result.
+    - Otherwise, push the node back, then push both children (so they get processed first).
+3. Return `value[root]`.
+
+::tabs-start
+
+```python
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def evaluateTree(self, root: Optional[TreeNode]) -> bool:
+        stack = [root]
+        value = {} # map (node -> value)
+
+        while stack:
+            node = stack.pop()
+
+            if not node.left:
+                value[node] = node.val == 1
+            elif node.left in value:
+                if node.val == 2:
+                    value[node] = value[node.left] or value[node.right]
+                if node.val == 3:
+                    value[node] = value[node.left] and value[node.right]
+            else:
+                stack.extend([node, node.left, node.right])
+
+        return value[root]
+```
+
+```java
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+public class Solution {
+    public boolean evaluateTree(TreeNode root) {
+        Stack<TreeNode> stack = new Stack<>();
+        Map<TreeNode, Boolean> value = new HashMap<>();
+        stack.push(root);
+
+        while (!stack.isEmpty()) {
+            TreeNode node = stack.pop();
+
+            if (node.left == null) {
+                value.put(node, node.val == 1);
+            } else if (value.containsKey(node.left)) {
+                boolean leftValue = value.get(node.left);
+                boolean rightValue = value.get(node.right);
+
+                if (node.val == 2) {
+                    value.put(node, leftValue || rightValue);
+                } else if (node.val == 3) {
+                    value.put(node, leftValue && rightValue);
+                }
+            } else {
+                stack.push(node);
+                stack.push(node.right);
+                stack.push(node.left);
+            }
+        }
+
+        return value.get(root);
+    }
+}
+```
+
+```cpp
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    bool evaluateTree(TreeNode* root) {
+        stack<TreeNode*> stk;
+        unordered_map<TreeNode*, bool> value;
+        stk.push(root);
+
+        while (!stk.empty()) {
+            TreeNode* node = stk.top();
+            stk.pop();
+
+            if (!node->left) {
+                value[node] = node->val == 1;
+            } else if (value.count(node->left)) {
+                bool leftValue = value[node->left];
+                bool rightValue = value[node->right];
+
+                if (node->val == 2) {
+                    value[node] = leftValue || rightValue;
+                } else if (node->val == 3) {
+                    value[node] = leftValue && rightValue;
+                }
+            } else {
+                stk.push(node);
+                stk.push(node->right);
+                stk.push(node->left);
+            }
+        }
+
+        return value[root];
+    }
+};
+```
+
+```javascript
+/**
+ * Definition for a binary tree node.
+ * class TreeNode {
+ *     constructor(val = 0, left = null, right = null) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    /**
+     * @param {TreeNode} root
+     * @return {boolean}
+     */
+    evaluateTree(root) {
+        const stack = [root];
+        const value = new Map();
+
+        while (stack.length) {
+            const node = stack.pop();
+
+            if (!node.left) {
+                value.set(node, node.val === 1);
+            } else if (value.has(node.left)) {
+                const leftValue = value.get(node.left);
+                const rightValue = value.get(node.right);
+
+                if (node.val === 2) {
+                    value.set(node, leftValue || rightValue);
+                } else if (node.val === 3) {
+                    value.set(node, leftValue && rightValue);
+                }
+            } else {
+                stack.push(node, node.right, node.left);
+            }
+        }
+
+        return value.get(root);
+    }
+}
+```
+
+```csharp
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     public int val;
+ *     public TreeNode left;
+ *     public TreeNode right;
+ *     public TreeNode(int val=0, TreeNode left=null, TreeNode right=null) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+public class Solution {
+    public bool EvaluateTree(TreeNode root) {
+        Stack<TreeNode> stack = new Stack<TreeNode>();
+        Dictionary<TreeNode, bool> value = new Dictionary<TreeNode, bool>();
+        stack.Push(root);
+
+        while (stack.Count > 0) {
+            TreeNode node = stack.Pop();
+
+            if (node.left == null) {
+                value[node] = node.val == 1;
+            } else if (value.ContainsKey(node.left)) {
+                bool leftValue = value[node.left];
+                bool rightValue = value[node.right];
+
+                if (node.val == 2) {
+                    value[node] = leftValue || rightValue;
+                } else if (node.val == 3) {
+                    value[node] = leftValue && rightValue;
+                }
+            } else {
+                stack.Push(node);
+                stack.Push(node.right);
+                stack.Push(node.left);
+            }
+        }
+
+        return value[root];
+    }
+}
+```
+
+```go
+/**
+ * Definition for a binary tree node.
+ * type TreeNode struct {
+ *     Val int
+ *     Left *TreeNode
+ *     Right *TreeNode
+ * }
+ */
+func evaluateTree(root *TreeNode) bool {
+    stack := []*TreeNode{root}
+    value := make(map[*TreeNode]bool)
+
+    for len(stack) > 0 {
+        node := stack[len(stack)-1]
+        stack = stack[:len(stack)-1]
+
+        if node.Left == nil {
+            value[node] = node.Val == 1
+        } else if _, ok := value[node.Left]; ok {
+            leftValue := value[node.Left]
+            rightValue := value[node.Right]
+
+            if node.Val == 2 {
+                value[node] = leftValue || rightValue
+            } else if node.Val == 3 {
+                value[node] = leftValue && rightValue
+            }
+        } else {
+            stack = append(stack, node)
+            stack = append(stack, node.Right)
+            stack = append(stack, node.Left)
+        }
+    }
+
+    return value[root]
+}
+```
+
+```kotlin
+/**
+ * Example:
+ * var ti = TreeNode(5)
+ * var v = ti.`val`
+ * Definition for a binary tree node.
+ * class TreeNode(var `val`: Int) {
+ *     var left: TreeNode? = null
+ *     var right: TreeNode? = null
+ * }
+ */
+class Solution {
+    fun evaluateTree(root: TreeNode?): Boolean {
+        val stack = ArrayDeque<TreeNode>()
+        val value = HashMap<TreeNode, Boolean>()
+        root?.let { stack.add(it) }
+
+        while (stack.isNotEmpty()) {
+            val node = stack.removeLast()
+
+            if (node.left == null) {
+                value[node] = node.`val` == 1
+            } else if (value.containsKey(node.left)) {
+                val leftValue = value[node.left]!!
+                val rightValue = value[node.right]!!
+
+                if (node.`val` == 2) {
+                    value[node] = leftValue || rightValue
+                } else if (node.`val` == 3) {
+                    value[node] = leftValue && rightValue
+                }
+            } else {
+                stack.add(node)
+                node.right?.let { stack.add(it) }
+                node.left?.let { stack.add(it) }
+            }
+        }
+
+        return value[root] ?: false
+    }
+}
+```
+
+```swift
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     public var val: Int
+ *     public var left: TreeNode?
+ *     public var right: TreeNode?
+ *     public init() { self.val = 0; self.left = nil; self.right = nil; }
+ *     public init(_ val: Int) { self.val = val; self.left = nil; self.right = nil; }
+ *     public init(_ val: Int, _ left: TreeNode?, _ right: TreeNode?) {
+ *         self.val = val
+ *         self.left = left
+ *         self.right = right
+ *     }
+ * }
+ */
+class Solution {
+    func evaluateTree(_ root: TreeNode?) -> Bool {
+        guard let root = root else { return false }
+
+        var stack: [TreeNode] = [root]
+        var value: [ObjectIdentifier: Bool] = [:]
+
+        while !stack.isEmpty {
+            let node = stack.removeLast()
+            let nodeId = ObjectIdentifier(node)
+
+            if node.left == nil {
+                value[nodeId] = node.val == 1
+            } else if let leftVal = value[ObjectIdentifier(node.left!)] {
+                let rightVal = value[ObjectIdentifier(node.right!)]!
+
+                if node.val == 2 {
+                    value[nodeId] = leftVal || rightVal
+                } else if node.val == 3 {
+                    value[nodeId] = leftVal && rightVal
+                }
+            } else {
+                stack.append(node)
+                if let right = node.right {
+                    stack.append(right)
+                }
+                if let left = node.left {
+                    stack.append(left)
+                }
+            }
+        }
+
+        return value[ObjectIdentifier(root)] ?? false
+    }
+}
+```
+
+```rust
+impl Solution {
+    pub fn evaluate_tree(root: Option<Rc<RefCell<TreeNode>>>) -> bool {
+        let mut stack: Vec<Option<Rc<RefCell<TreeNode>>>> = vec![root.clone()];
+        let mut value: HashMap<*const RefCell<TreeNode>, bool> = HashMap::new();
+
+        while let Some(node_opt) = stack.pop() {
+            let node_rc = node_opt.as_ref().unwrap().clone();
+            let node = node_rc.borrow();
+            let key = Rc::as_ptr(&node_opt.as_ref().unwrap());
+
+            if node.left.is_none() {
+                value.insert(key, node.val == 1);
+            } else {
+                let left_key = Rc::as_ptr(node.left.as_ref().unwrap());
+                if value.contains_key(&left_key) {
+                    let left_val = value[&left_key];
+                    let right_key = Rc::as_ptr(node.right.as_ref().unwrap());
+                    let right_val = value[&right_key];
+                    if node.val == 2 {
+                        value.insert(key, left_val || right_val);
+                    } else if node.val == 3 {
+                        value.insert(key, left_val && right_val);
+                    }
+                } else {
+                    stack.push(node_opt.clone());
+                    stack.push(node.right.clone());
+                    stack.push(node.left.clone());
+                }
+            }
+        }
+
+        let root_key = Rc::as_ptr(root.as_ref().unwrap());
+        value[&root_key]
+    }
+}
+```
+
+::tabs-end
+
+### Time & Space Complexity
+
+- Time complexity: $O(n)$
+- Space complexity: $O(n)$
+
+---
+
+## Common Pitfalls
+
+### Confusing Leaf Detection with Null Check
+
+To identify a leaf node, check if `root.left` is null (since the problem guarantees full binary tree, both children are null or both exist). A common mistake is checking `root == null` instead, which would return incorrect results for the recursive base case.
+
+### Mixing Up Operator Values
+
+The problem uses `val == 2` for OR and `val == 3` for AND. Swapping these operators or using incorrect comparison values produces wrong boolean results. Always double-check the operator mapping: 0/1 for leaf values, 2 for OR, 3 for AND.

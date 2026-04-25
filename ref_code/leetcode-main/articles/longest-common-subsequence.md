@@ -1,0 +1,1330 @@
+## Prerequisites
+
+Before attempting this problem, you should be comfortable with:
+
+- **Recursion** - Breaking problems into subproblems and understanding recursive call stacks
+- **Dynamic Programming (Memoization)** - Caching results to avoid redundant computation in overlapping subproblems
+- **Dynamic Programming (Tabulation)** - Building solutions bottom-up using 2D arrays
+- **Space Optimization** - Reducing 2D DP to 1D by recognizing which previous states are needed
+
+---
+
+## 1. Recursion
+
+### Intuition
+
+A subsequence is a sequence derived by deleting some or no characters without changing the order of the remaining elements. To find the longest common subsequence (LCS) of two strings, we compare characters one by one. If the current characters match, they contribute to the LCS, and we move both pointers forward. If they don't match, we try skipping a character from either string and take the best result. This naturally leads to a recursive approach that explores all possibilities.
+
+### Algorithm
+
+1. Define a recursive function `dfs(i, j)` where `i` and `j` are the current indices in `text1` and `text2`.
+2. Base case: If either index reaches the end of its string, return `0`.
+3. If `text1[i] == text2[j]`, include this character in the LCS and recurse with `i + 1` and `j + 1`.
+4. Otherwise, try both options: skip `text1[i]` or skip `text2[j]`, and return the maximum.
+5. Start the recursion from `dfs(0, 0)`.
+
+::tabs-start
+
+```python
+class Solution:
+    def longestCommonSubsequence(self, text1: str, text2: str) -> int:
+
+        def dfs(i, j):
+            if i == len(text1) or j == len(text2):
+                return 0
+            if text1[i] == text2[j]:
+                return 1 + dfs(i + 1, j + 1)
+            return max(dfs(i + 1, j), dfs(i, j + 1))
+
+        return dfs(0, 0)
+```
+
+```java
+public class Solution {
+    public int longestCommonSubsequence(String text1, String text2) {
+        return dfs(text1, text2, 0, 0);
+    }
+
+    private int dfs(String text1, String text2, int i, int j) {
+        if (i == text1.length() || j == text2.length()) {
+            return 0;
+        }
+        if (text1.charAt(i) == text2.charAt(j)) {
+            return 1 + dfs(text1, text2, i + 1, j + 1);
+        }
+        return Math.max(dfs(text1, text2, i + 1, j),
+                        dfs(text1, text2, i, j + 1));
+    }
+}
+```
+
+```cpp
+class Solution {
+public:
+    int longestCommonSubsequence(string text1, string text2) {
+        return dfs(text1, text2, 0, 0);
+    }
+
+private:
+    int dfs(const string& text1, const string& text2, int i, int j) {
+        if (i == text1.size() || j == text2.size()) {
+            return 0;
+        }
+        if (text1[i] == text2[j]) {
+            return 1 + dfs(text1, text2, i + 1, j + 1);
+        }
+        return max(dfs(text1, text2, i + 1, j),
+                   dfs(text1, text2, i, j + 1));
+    }
+};
+```
+
+```javascript
+class Solution {
+    /**
+     * @param {string} text1
+     * @param {string} text2
+     * @return {number}
+     */
+    longestCommonSubsequence(text1, text2) {
+        const dfs = (i, j) => {
+            if (i === text1.length || j === text2.length) {
+                return 0;
+            }
+            if (text1[i] === text2[j]) {
+                return 1 + dfs(i + 1, j + 1);
+            }
+            return Math.max(dfs(i + 1, j), dfs(i, j + 1));
+        };
+
+        return dfs(0, 0);
+    }
+}
+```
+
+```csharp
+public class Solution {
+    public int LongestCommonSubsequence(string text1, string text2) {
+        return Dfs(text1, text2, 0, 0);
+    }
+
+    private int Dfs(string text1, string text2, int i, int j) {
+        if (i == text1.Length || j == text2.Length) {
+            return 0;
+        }
+        if (text1[i] == text2[j]) {
+            return 1 + Dfs(text1, text2, i + 1, j + 1);
+        }
+        return Math.Max(Dfs(text1, text2, i + 1, j),
+                        Dfs(text1, text2, i, j + 1));
+    }
+}
+```
+
+```go
+func longestCommonSubsequence(text1 string, text2 string) int {
+    var dfs func(i, j int) int
+    dfs = func(i, j int) int {
+        if i == len(text1) || j == len(text2) {
+            return 0
+        }
+        if text1[i] == text2[j] {
+            return 1 + dfs(i+1, j+1)
+        }
+        return max(dfs(i+1, j), dfs(i, j+1))
+    }
+    return dfs(0, 0)
+}
+
+func max(a, b int) int {
+    if a > b {
+        return a
+    }
+    return b
+}
+```
+
+```kotlin
+class Solution {
+    fun longestCommonSubsequence(text1: String, text2: String): Int {
+        fun dfs(i: Int, j: Int): Int {
+            if (i == text1.length || j == text2.length) return 0
+            if (text1[i] == text2[j]) return 1 + dfs(i + 1, j + 1)
+            return maxOf(dfs(i + 1, j), dfs(i, j + 1))
+        }
+
+        return dfs(0, 0)
+    }
+}
+```
+
+```swift
+class Solution {
+    func longestCommonSubsequence(_ text1: String, _ text2: String) -> Int {
+        let arr1 = Array(text1)
+        let arr2 = Array(text2)
+
+        func dfs(_ i: Int, _ j: Int) -> Int {
+            if i == arr1.count || j == arr2.count {
+                return 0
+            }
+            if arr1[i] == arr2[j] {
+                return 1 + dfs(i + 1, j + 1)
+            }
+            return max(dfs(i + 1, j), dfs(i, j + 1))
+        }
+
+        return dfs(0, 0)
+    }
+}
+```
+
+```rust
+impl Solution {
+    pub fn longest_common_subsequence(text1: String, text2: String) -> i32 {
+        let t1 = text1.as_bytes();
+        let t2 = text2.as_bytes();
+
+        fn dfs(t1: &[u8], t2: &[u8], i: usize, j: usize) -> i32 {
+            if i == t1.len() || j == t2.len() {
+                return 0;
+            }
+            if t1[i] == t2[j] {
+                return 1 + dfs(t1, t2, i + 1, j + 1);
+            }
+            dfs(t1, t2, i + 1, j).max(dfs(t1, t2, i, j + 1))
+        }
+
+        dfs(t1, t2, 0, 0)
+    }
+}
+```
+
+::tabs-end
+
+### Time & Space Complexity
+
+- Time complexity: $O(2 ^ {m + n})$
+- Space complexity: $O(m + n)$
+
+> Where $m$ is the length of the string $text1$ and $n$ is the length of the string $text2$.
+
+---
+
+## 2. Dynamic Programming (Top-Down)
+
+### Intuition
+
+The recursive solution recalculates the same subproblems many times. For example, `dfs(2, 3)` might be called from multiple branches. By storing results in a memo table, we avoid redundant work. This transforms the exponential solution into a polynomial one.
+
+### Algorithm
+
+1. Create a memoization table indexed by `(i, j)`.
+2. Before computing `dfs(i, j)`, check if the result is already cached.
+3. If cached, return it immediately.
+4. Otherwise, compute the result using the same logic as the recursive approach, store it in the memo, and return.
+5. The rest of the logic remains identical to the plain recursion.
+
+::tabs-start
+
+```python
+class Solution:
+    def longestCommonSubsequence(self, text1: str, text2: str) -> int:
+        memo = {}
+
+        def dfs(i, j):
+            if i == len(text1) or j == len(text2):
+                return 0
+            if (i, j) in memo:
+                return memo[(i, j)]
+
+            if text1[i] == text2[j]:
+                memo[(i, j)] = 1 + dfs(i + 1, j + 1)
+            else:
+                memo[(i, j)] = max(dfs(i + 1, j), dfs(i, j + 1))
+
+            return memo[(i, j)]
+
+        return dfs(0, 0)
+```
+
+```java
+public class Solution {
+    private int[][] memo;
+
+    public int longestCommonSubsequence(String text1, String text2) {
+        memo = new int[text1.length()][text2.length()];
+        for (int i = 0; i < text1.length(); i++) {
+            for (int j = 0; j < text2.length(); j++) {
+                memo[i][j] = -1;
+            }
+        }
+        return dfs(text1, text2, 0, 0);
+    }
+
+    private int dfs(String text1, String text2, int i, int j) {
+        if (i == text1.length() || j == text2.length()) {
+            return 0;
+        }
+        if (memo[i][j] != -1) {
+            return memo[i][j];
+        }
+        if (text1.charAt(i) == text2.charAt(j)) {
+            memo[i][j] = 1 + dfs(text1, text2, i + 1, j + 1);
+        } else {
+            memo[i][j] = Math.max(dfs(text1, text2, i + 1, j),
+                                  dfs(text1, text2, i, j + 1));
+        }
+        return memo[i][j];
+    }
+}
+```
+
+```cpp
+class Solution {
+public:
+    vector<vector<int>> memo;
+
+    int longestCommonSubsequence(string text1, string text2) {
+        int m = text1.size(), n = text2.size();
+        memo.assign(m, vector<int>(n, -1));
+        return dfs(text1, text2, 0, 0);
+    }
+
+    int dfs(string& text1, string& text2, int i, int j) {
+        if (i == text1.size() || j == text2.size()) {
+            return 0;
+        }
+        if (memo[i][j] != -1) {
+            return memo[i][j];
+        }
+        if (text1[i] == text2[j]) {
+            memo[i][j] = 1 + dfs(text1, text2, i + 1, j + 1);
+        } else {
+            memo[i][j] = max(dfs(text1, text2, i + 1, j),
+                             dfs(text1, text2, i, j + 1));
+        }
+        return memo[i][j];
+    }
+};
+```
+
+```javascript
+class Solution {
+    /**
+     * @param {string} text1
+     * @param {string} text2
+     * @return {number}
+     */
+    longestCommonSubsequence(text1, text2) {
+        const memo = Array(text1.length)
+            .fill()
+            .map(() => Array(text2.length).fill(-1));
+
+        const dfs = (i, j) => {
+            if (i === text1.length || j === text2.length) {
+                return 0;
+            }
+            if (memo[i][j] !== -1) {
+                return memo[i][j];
+            }
+            if (text1[i] === text2[j]) {
+                memo[i][j] = 1 + dfs(i + 1, j + 1);
+            } else {
+                memo[i][j] = Math.max(dfs(i + 1, j), dfs(i, j + 1));
+            }
+            return memo[i][j];
+        };
+
+        return dfs(0, 0);
+    }
+}
+```
+
+```csharp
+public class Solution {
+    private int[,] memo;
+
+    public int LongestCommonSubsequence(string text1, string text2) {
+        memo = new int[text1.Length, text2.Length];
+        for (int i = 0; i < text1.Length; i++) {
+            for (int j = 0; j < text2.Length; j++) {
+                memo[i, j] = -1;
+            }
+        }
+        return Dfs(text1, text2, 0, 0);
+    }
+
+    private int Dfs(string text1, string text2, int i, int j) {
+        if (i == text1.Length || j == text2.Length) {
+            return 0;
+        }
+        if (memo[i, j] != -1) {
+            return memo[i, j];
+        }
+        if (text1[i] == text2[j]) {
+            memo[i, j] = 1 + Dfs(text1, text2, i + 1, j + 1);
+        } else {
+            memo[i, j] = Math.Max(Dfs(text1, text2, i + 1, j),
+                                  Dfs(text1, text2, i, j + 1));
+        }
+        return memo[i, j];
+    }
+}
+```
+
+```go
+func longestCommonSubsequence(text1 string, text2 string) int {
+    m, n := len(text1), len(text2)
+    memo := make([][]int, m+1)
+    for i := range memo {
+        memo[i] = make([]int, n+1)
+        for j := range memo[i] {
+            memo[i][j] = -1
+        }
+    }
+
+    var dfs func(i, j int) int
+    dfs = func(i, j int) int {
+        if i == m || j == n {
+            return 0
+        }
+        if memo[i][j] != -1 {
+            return memo[i][j]
+        }
+
+        if text1[i] == text2[j] {
+            memo[i][j] = 1 + dfs(i+1, j+1)
+        } else {
+            memo[i][j] = max(dfs(i+1, j), dfs(i, j+1))
+        }
+
+        return memo[i][j]
+    }
+
+    return dfs(0, 0)
+}
+
+func max(a, b int) int {
+    if a > b {
+        return a
+    }
+    return b
+}
+```
+
+```kotlin
+class Solution {
+    fun longestCommonSubsequence(text1: String, text2: String): Int {
+        val m = text1.length
+        val n = text2.length
+        val memo = Array(m + 1) { IntArray(n + 1) { -1 } }
+
+        fun dfs(i: Int, j: Int): Int {
+            if (i == m || j == n) return 0
+            if (memo[i][j] != -1) return memo[i][j]
+
+            memo[i][j] = if (text1[i] == text2[j]) {
+                1 + dfs(i + 1, j + 1)
+            } else {
+                maxOf(dfs(i + 1, j), dfs(i, j + 1))
+            }
+
+            return memo[i][j]
+        }
+
+        return dfs(0, 0)
+    }
+}
+```
+
+```swift
+class Solution {
+    func longestCommonSubsequence(_ text1: String, _ text2: String) -> Int {
+        let arr1 = Array(text1)
+        let arr2 = Array(text2)
+        var memo = [String: Int]()
+
+        func dfs(_ i: Int, _ j: Int) -> Int {
+            if i == arr1.count || j == arr2.count {
+                return 0
+            }
+            let key = "\(i),\(j)"
+            if let val = memo[key] {
+                return val
+            }
+
+            if arr1[i] == arr2[j] {
+                memo[key] = 1 + dfs(i + 1, j + 1)
+            } else {
+                memo[key] = max(dfs(i + 1, j), dfs(i, j + 1))
+            }
+            return memo[key]!
+        }
+
+        return dfs(0, 0)
+    }
+}
+```
+
+```rust
+impl Solution {
+    pub fn longest_common_subsequence(text1: String, text2: String) -> i32 {
+        let t1 = text1.as_bytes();
+        let t2 = text2.as_bytes();
+        let mut memo = vec![vec![-1i32; t2.len()]; t1.len()];
+
+        fn dfs(t1: &[u8], t2: &[u8], i: usize, j: usize, memo: &mut Vec<Vec<i32>>) -> i32 {
+            if i == t1.len() || j == t2.len() {
+                return 0;
+            }
+            if memo[i][j] != -1 {
+                return memo[i][j];
+            }
+            if t1[i] == t2[j] {
+                memo[i][j] = 1 + dfs(t1, t2, i + 1, j + 1, memo);
+            } else {
+                memo[i][j] = dfs(t1, t2, i + 1, j, memo)
+                    .max(dfs(t1, t2, i, j + 1, memo));
+            }
+            memo[i][j]
+        }
+
+        dfs(t1, t2, 0, 0, &mut memo)
+    }
+}
+```
+
+::tabs-end
+
+### Time & Space Complexity
+
+- Time complexity: $O(m * n)$
+- Space complexity: $O(m * n)$
+
+> Where $m$ is the length of the string $text1$ and $n$ is the length of the string $text2$.
+
+---
+
+## 3. Dynamic Programming (Bottom-Up)
+
+### Intuition
+
+Instead of starting from the beginning and recursing forward, we can fill a 2D table iteratively from the end. The value `dp[i][j]` represents the LCS length for substrings `text1[i:]` and `text2[j:]`. By processing indices in reverse order, we ensure that when we compute `dp[i][j]`, the values we depend on (`dp[i+1][j+1]`, `dp[i+1][j]`, `dp[i][j+1]`) are already computed.
+
+### Algorithm
+
+1. Create a 2D array `dp` of size `(m+1) x (n+1)` initialized to `0`.
+2. Iterate `i` from `m-1` down to `0`, and `j` from `n-1` down to `0`.
+3. If `text1[i] == text2[j]`, set `dp[i][j] = 1 + dp[i+1][j+1]`.
+4. Otherwise, set `dp[i][j] = max(dp[i+1][j], dp[i][j+1])`.
+5. Return `dp[0][0]`.
+
+::tabs-start
+
+```python
+class Solution:
+    def longestCommonSubsequence(self, text1: str, text2: str) -> int:
+        dp = [[0 for j in range(len(text2) + 1)]
+                 for i in range(len(text1) + 1)]
+
+        for i in range(len(text1) - 1, -1, -1):
+            for j in range(len(text2) - 1, -1, -1):
+                if text1[i] == text2[j]:
+                    dp[i][j] = 1 + dp[i + 1][j + 1]
+                else:
+                    dp[i][j] = max(dp[i][j + 1], dp[i + 1][j])
+
+        return dp[0][0]
+```
+
+```java
+public class Solution {
+    public int longestCommonSubsequence(String text1, String text2) {
+        int[][] dp = new int[text1.length() + 1][text2.length() + 1];
+
+        for (int i = text1.length() - 1; i >= 0; i--) {
+            for (int j = text2.length() - 1; j >= 0; j--) {
+                if (text1.charAt(i) == text2.charAt(j)) {
+                    dp[i][j] = 1 + dp[i + 1][j + 1];
+                } else {
+                    dp[i][j] = Math.max(dp[i][j + 1], dp[i + 1][j]);
+                }
+            }
+        }
+
+        return dp[0][0];
+    }
+}
+```
+
+```cpp
+class Solution {
+public:
+    int longestCommonSubsequence(string text1, string text2) {
+        vector<vector<int>> dp(text1.size() + 1,
+                               vector<int>(text2.size() + 1));
+
+        for (int i = text1.size() - 1; i >= 0; i--) {
+            for (int j = text2.size() - 1; j >= 0; j--) {
+                if (text1[i] == text2[j]) {
+                    dp[i][j] = 1 + dp[i + 1][j + 1];
+                } else {
+                    dp[i][j] = max(dp[i][j + 1], dp[i + 1][j]);
+                }
+            }
+        }
+
+        return dp[0][0];
+    }
+};
+```
+
+```javascript
+class Solution {
+    /**
+     * @param {string} text1
+     * @param {string} text2
+     * @return {number}
+     */
+    longestCommonSubsequence(text1, text2) {
+        const dp = Array(text1.length + 1)
+            .fill()
+            .map(() => Array(text2.length + 1).fill(0));
+
+        for (let i = text1.length - 1; i >= 0; i--) {
+            for (let j = text2.length - 1; j >= 0; j--) {
+                if (text1[i] === text2[j]) {
+                    dp[i][j] = 1 + dp[i + 1][j + 1];
+                } else {
+                    dp[i][j] = Math.max(dp[i][j + 1], dp[i + 1][j]);
+                }
+            }
+        }
+
+        return dp[0][0];
+    }
+}
+```
+
+```csharp
+public class Solution {
+    public int LongestCommonSubsequence(string text1, string text2) {
+        int[,] dp = new int[text1.Length + 1, text2.Length + 1];
+
+        for (int i = text1.Length - 1; i >= 0; i--) {
+            for (int j = text2.Length - 1; j >= 0; j--) {
+                if (text1[i] == text2[j]) {
+                    dp[i, j] = 1 + dp[i + 1, j + 1];
+                } else {
+                    dp[i, j] = Math.Max(dp[i, j + 1], dp[i + 1, j]);
+                }
+            }
+        }
+
+        return dp[0, 0];
+    }
+}
+```
+
+```go
+func longestCommonSubsequence(text1 string, text2 string) int {
+    m, n := len(text1), len(text2)
+    dp := make([][]int, m+1)
+    for i := range dp {
+        dp[i] = make([]int, n+1)
+    }
+
+    for i := m - 1; i >= 0; i-- {
+        for j := n - 1; j >= 0; j-- {
+            if text1[i] == text2[j] {
+                dp[i][j] = 1 + dp[i+1][j+1]
+            } else {
+                dp[i][j] = max(dp[i+1][j], dp[i][j+1])
+            }
+        }
+    }
+
+    return dp[0][0]
+}
+
+func max(a, b int) int {
+    if a > b {
+        return a
+    }
+    return b
+}
+```
+
+```kotlin
+class Solution {
+    fun longestCommonSubsequence(text1: String, text2: String): Int {
+        val m = text1.length
+        val n = text2.length
+        val dp = Array(m + 1) { IntArray(n + 1) }
+
+        for (i in m - 1 downTo 0) {
+            for (j in n - 1 downTo 0) {
+                dp[i][j] = if (text1[i] == text2[j]) {
+                    1 + dp[i + 1][j + 1]
+                } else {
+                    maxOf(dp[i + 1][j], dp[i][j + 1])
+                }
+            }
+        }
+
+        return dp[0][0]
+    }
+}
+```
+
+```swift
+class Solution {
+    func longestCommonSubsequence(_ text1: String, _ text2: String) -> Int {
+        let m = text1.count
+        let n = text2.count
+        let arr1 = Array(text1)
+        let arr2 = Array(text2)
+
+        var dp = Array(repeating: Array(repeating: 0, count: n + 1), count: m + 1)
+
+        for i in stride(from: m - 1, through: 0, by: -1) {
+            for j in stride(from: n - 1, through: 0, by: -1) {
+                if arr1[i] == arr2[j] {
+                    dp[i][j] = 1 + dp[i + 1][j + 1]
+                } else {
+                    dp[i][j] = max(dp[i][j + 1], dp[i + 1][j])
+                }
+            }
+        }
+
+        return dp[0][0]
+    }
+}
+```
+
+```rust
+impl Solution {
+    pub fn longest_common_subsequence(text1: String, text2: String) -> i32 {
+        let t1 = text1.as_bytes();
+        let t2 = text2.as_bytes();
+        let m = t1.len();
+        let n = t2.len();
+        let mut dp = vec![vec![0i32; n + 1]; m + 1];
+
+        for i in (0..m).rev() {
+            for j in (0..n).rev() {
+                if t1[i] == t2[j] {
+                    dp[i][j] = 1 + dp[i + 1][j + 1];
+                } else {
+                    dp[i][j] = dp[i][j + 1].max(dp[i + 1][j]);
+                }
+            }
+        }
+
+        dp[0][0]
+    }
+}
+```
+
+::tabs-end
+
+### Time & Space Complexity
+
+- Time complexity: $O(m * n)$
+- Space complexity: $O(m * n)$
+
+> Where $m$ is the length of the string $text1$ and $n$ is the length of the string $text2$.
+
+---
+
+## 4. Dynamic Programming (Space Optimized)
+
+### Intuition
+
+Looking at the bottom-up recurrence, each cell `dp[i][j]` only depends on the current row and the next row. We don't need the entire 2D table; two 1D arrays suffice. We keep a `prev` array for the next row and a `curr` array for the current row, swapping them after each row is processed.
+
+### Algorithm
+
+1. If `text1` is shorter, swap the strings to minimize space usage.
+2. Initialize two arrays `prev` and `curr` of size `n+1`.
+3. Iterate `i` from `m-1` down to `0`:
+    - For each `j` from `n-1` down to `0`, compute `curr[j]` using `prev[j+1]`, `prev[j]`, and `curr[j+1]`.
+    - Swap `prev` and `curr`.
+4. Return `prev[0]`.
+
+::tabs-start
+
+```python
+class Solution:
+    def longestCommonSubsequence(self, text1: str, text2: str) -> int:
+        if len(text1) < len(text2):
+            text1, text2 = text2, text1
+
+        prev = [0] * (len(text2) + 1)
+        curr = [0] * (len(text2) + 1)
+
+        for i in range(len(text1) - 1, -1, -1):
+            for j in range(len(text2) - 1, -1, -1):
+                if text1[i] == text2[j]:
+                    curr[j] = 1 + prev[j + 1]
+                else:
+                    curr[j] = max(curr[j + 1], prev[j])
+            prev, curr = curr, prev
+
+        return prev[0]
+```
+
+```java
+public class Solution {
+    public int longestCommonSubsequence(String text1, String text2) {
+        if (text1.length() < text2.length()) {
+            String temp = text1;
+            text1 = text2;
+            text2 = temp;
+        }
+
+        int[] prev = new int[text2.length() + 1];
+        int[] curr = new int[text2.length() + 1];
+
+        for (int i = text1.length() - 1; i >= 0; i--) {
+            for (int j = text2.length() - 1; j >= 0; j--) {
+                if (text1.charAt(i) == text2.charAt(j)) {
+                    curr[j] = 1 + prev[j + 1];
+                } else {
+                    curr[j] = Math.max(curr[j + 1], prev[j]);
+                }
+            }
+            int[] temp = prev;
+            prev = curr;
+            curr = temp;
+        }
+
+        return prev[0];
+    }
+}
+```
+
+```cpp
+class Solution {
+public:
+    int longestCommonSubsequence(string text1, string text2) {
+        if (text1.size() < text2.size()) {
+            swap(text1, text2);
+        }
+
+        vector<int> prev(text2.size() + 1, 0);
+        vector<int> curr(text2.size() + 1, 0);
+
+        for (int i = text1.size() - 1; i >= 0; --i) {
+            for (int j = text2.size() - 1; j >= 0; --j) {
+                if (text1[i] == text2[j]) {
+                    curr[j] = 1 + prev[j + 1];
+                } else {
+                    curr[j] = max(curr[j + 1], prev[j]);
+                }
+            }
+            swap(prev, curr);
+        }
+
+        return prev[0];
+    }
+};
+```
+
+```javascript
+class Solution {
+    /**
+     * @param {string} text1
+     * @param {string} text2
+     * @return {number}
+     */
+    longestCommonSubsequence(text1, text2) {
+        if (text1.length < text2.length) {
+            [text1, text2] = [text2, text1];
+        }
+
+        let prev = new Array(text2.length + 1).fill(0);
+        let curr = new Array(text2.length + 1).fill(0);
+
+        for (let i = text1.length - 1; i >= 0; i--) {
+            for (let j = text2.length - 1; j >= 0; j--) {
+                if (text1[i] === text2[j]) {
+                    curr[j] = 1 + prev[j + 1];
+                } else {
+                    curr[j] = Math.max(curr[j + 1], prev[j]);
+                }
+            }
+            [prev, curr] = [curr, prev];
+        }
+
+        return prev[0];
+    }
+}
+```
+
+```csharp
+public class Solution {
+    public int LongestCommonSubsequence(string text1, string text2) {
+        if (text1.Length < text2.Length) {
+            string temp = text1;
+            text1 = text2;
+            text2 = temp;
+        }
+
+        int[] prev = new int[text2.Length + 1];
+        int[] curr = new int[text2.Length + 1];
+
+        for (int i = text1.Length - 1; i >= 0; i--) {
+            for (int j = text2.Length - 1; j >= 0; j--) {
+                if (text1[i] == text2[j]) {
+                    curr[j] = 1 + prev[j + 1];
+                } else {
+                    curr[j] = Math.Max(curr[j + 1], prev[j]);
+                }
+            }
+            Array.Copy(curr, prev, text2.Length + 1);
+        }
+
+        return prev[0];
+    }
+}
+```
+
+```go
+func longestCommonSubsequence(text1 string, text2 string) int {
+    if len(text1) < len(text2) {
+        text1, text2 = text2, text1
+    }
+
+    prev := make([]int, len(text2)+1)
+    curr := make([]int, len(text2)+1)
+
+    for i := len(text1) - 1; i >= 0; i-- {
+        for j := len(text2) - 1; j >= 0; j-- {
+            if text1[i] == text2[j] {
+                curr[j] = 1 + prev[j+1]
+            } else {
+                curr[j] = max(curr[j+1], prev[j])
+            }
+        }
+        prev, curr = curr, prev
+    }
+
+    return prev[0]
+}
+
+func max(a, b int) int {
+    if a > b {
+        return a
+    }
+    return b
+}
+```
+
+```kotlin
+class Solution {
+    fun longestCommonSubsequence(text1: String, text2: String): Int {
+        var t1 = text1
+        var t2 = text2
+
+        if (t1.length < t2.length) {
+            t1 = text2
+            t2 = text1
+        }
+
+        val prev = IntArray(t2.length + 1)
+        val curr = IntArray(t2.length + 1)
+
+        for (i in t1.length - 1 downTo 0) {
+            for (j in t2.length - 1 downTo 0) {
+                curr[j] = if (t1[i] == t2[j]) {
+                    1 + prev[j + 1]
+                } else {
+                    maxOf(curr[j + 1], prev[j])
+                }
+            }
+            val temp = prev
+            prev.fill(0)
+            prev.indices.forEach { prev[it] = curr[it] }
+            curr.fill(0)
+        }
+
+        return prev[0]
+    }
+}
+```
+
+```swift
+class Solution {
+    func longestCommonSubsequence(_ text1: String, _ text2: String) -> Int {
+        var t1 = Array(text1)
+        var t2 = Array(text2)
+
+        if t1.count < t2.count {
+            swap(&t1, &t2)
+        }
+
+        var prev = Array(repeating: 0, count: t2.count + 1)
+        var curr = Array(repeating: 0, count: t2.count + 1)
+
+        for i in stride(from: t1.count - 1, through: 0, by: -1) {
+            for j in stride(from: t2.count - 1, through: 0, by: -1) {
+                if t1[i] == t2[j] {
+                    curr[j] = 1 + prev[j + 1]
+                } else {
+                    curr[j] = max(curr[j + 1], prev[j])
+                }
+            }
+            swap(&prev, &curr)
+        }
+
+        return prev[0]
+    }
+}
+```
+
+```rust
+impl Solution {
+    pub fn longest_common_subsequence(text1: String, text2: String) -> i32 {
+        let (t1, t2) = if text1.len() >= text2.len() {
+            (text1.as_bytes(), text2.as_bytes())
+        } else {
+            (text2.as_bytes(), text1.as_bytes())
+        };
+
+        let mut prev = vec![0i32; t2.len() + 1];
+        let mut curr = vec![0i32; t2.len() + 1];
+
+        for i in (0..t1.len()).rev() {
+            for j in (0..t2.len()).rev() {
+                if t1[i] == t2[j] {
+                    curr[j] = 1 + prev[j + 1];
+                } else {
+                    curr[j] = curr[j + 1].max(prev[j]);
+                }
+            }
+            std::mem::swap(&mut prev, &mut curr);
+            curr.fill(0);
+        }
+
+        prev[0]
+    }
+}
+```
+
+::tabs-end
+
+### Time & Space Complexity
+
+- Time complexity: $O(m * n)$
+- Space complexity: $O(min(m, n))$
+
+> Where $m$ is the length of the string $text1$ and $n$ is the length of the string $text2$.
+
+---
+
+## 5. Dynamic Programming (Optimal)
+
+### Intuition
+
+We can reduce space further by using a single array and a temporary variable. When iterating right to left within a row, we need the old value at position `j` (which becomes `dp[i+1][j]` in 2D terms) before overwriting it. We store this in a variable `prev` before the update, then use it for the diagonal reference in the next iteration.
+
+### Algorithm
+
+1. If `text1` is shorter, swap strings for minimal space.
+2. Initialize a single array `dp` of size `n+1`.
+3. Iterate `i` from `m-1` down to `0`:
+    - Set `prev = 0` (represents `dp[i+1][n]`).
+    - For each `j` from `n-1` down to `0`:
+        - Save `temp = dp[j]` (the old value before update).
+        - If characters match, set `dp[j] = 1 + prev`.
+        - Otherwise, set `dp[j] = max(dp[j], dp[j+1])`.
+        - Update `prev = temp`.
+4. Return `dp[0]`.
+
+::tabs-start
+
+```python
+class Solution:
+    def longestCommonSubsequence(self, text1: str, text2: str) -> int:
+        if len(text1) < len(text2):
+            text1, text2 = text2, text1
+
+        dp = [0] * (len(text2) + 1)
+
+        for i in range(len(text1) - 1, -1, -1):
+            prev = 0
+            for j in range(len(text2) - 1, -1, -1):
+                temp = dp[j]
+                if text1[i] == text2[j]:
+                    dp[j] = 1 + prev
+                else:
+                    dp[j] = max(dp[j], dp[j + 1])
+                prev = temp
+
+        return dp[0]
+```
+
+```java
+public class Solution {
+    public int longestCommonSubsequence(String text1, String text2) {
+        if (text1.length() < text2.length()) {
+            String temp = text1;
+            text1 = text2;
+            text2 = temp;
+        }
+
+        int[] dp = new int[text2.length() + 1];
+
+        for (int i = text1.length() - 1; i >= 0; i--) {
+            int prev = 0;
+            for (int j = text2.length() - 1; j >= 0; j--) {
+                int temp = dp[j];
+                if (text1.charAt(i) == text2.charAt(j)) {
+                    dp[j] = 1 + prev;
+                } else {
+                    dp[j] = Math.max(dp[j], dp[j + 1]);
+                }
+                prev = temp;
+            }
+        }
+
+        return dp[0];
+    }
+}
+```
+
+```cpp
+class Solution {
+public:
+    int longestCommonSubsequence(string text1, string text2) {
+        if (text1.size() < text2.size()) {
+            swap(text1, text2);
+        }
+
+        vector<int> dp(text2.size() + 1, 0);
+
+        for (int i = text1.size() - 1; i >= 0; --i) {
+            int prev = 0;
+            for (int j = text2.size() - 1; j >= 0; --j) {
+                int temp = dp[j];
+                if (text1[i] == text2[j]) {
+                    dp[j] = 1 + prev;
+                } else {
+                    dp[j] = max(dp[j], dp[j + 1]);
+                }
+                prev = temp;
+            }
+        }
+
+        return dp[0];
+    }
+};
+```
+
+```javascript
+class Solution {
+    /**
+     * @param {string} text1
+     * @param {string} text2
+     * @return {number}
+     */
+    longestCommonSubsequence(text1, text2) {
+        if (text1.length < text2.length) {
+            [text1, text2] = [text2, text1];
+        }
+
+        const dp = new Array(text2.length + 1).fill(0);
+
+        for (let i = text1.length - 1; i >= 0; i--) {
+            let prev = 0;
+            for (let j = text2.length - 1; j >= 0; j--) {
+                let temp = dp[j];
+                if (text1[i] === text2[j]) {
+                    dp[j] = 1 + prev;
+                } else {
+                    dp[j] = Math.max(dp[j], dp[j + 1]);
+                }
+                prev = temp;
+            }
+        }
+
+        return dp[0];
+    }
+}
+```
+
+```csharp
+public class Solution {
+    public int LongestCommonSubsequence(string text1, string text2) {
+        if (text1.Length < text2.Length) {
+            string temp = text1;
+            text1 = text2;
+            text2 = temp;
+        }
+
+        int[] dp = new int[text2.Length + 1];
+
+        for (int i = text1.Length - 1; i >= 0; i--) {
+            int prev = 0;
+            for (int j = text2.Length - 1; j >= 0; j--) {
+                int temp = dp[j];
+                if (text1[i] == text2[j]) {
+                    dp[j] = 1 + prev;
+                } else {
+                    dp[j] = Math.Max(dp[j], dp[j + 1]);
+                }
+                prev = temp;
+            }
+        }
+
+        return dp[0];
+    }
+}
+```
+
+```go
+func longestCommonSubsequence(text1 string, text2 string) int {
+    if len(text1) < len(text2) {
+        text1, text2 = text2, text1
+    }
+
+    dp := make([]int, len(text2)+1)
+
+    for i := len(text1) - 1; i >= 0; i-- {
+        prev := 0
+        for j := len(text2) - 1; j >= 0; j-- {
+            temp := dp[j]
+            if text1[i] == text2[j] {
+                dp[j] = 1 + prev
+            } else {
+                dp[j] = max(dp[j], dp[j+1])
+            }
+            prev = temp
+        }
+    }
+
+    return dp[0]
+}
+
+func max(a, b int) int {
+    if a > b {
+        return a
+    }
+    return b
+}
+```
+
+```kotlin
+class Solution {
+    fun longestCommonSubsequence(text1: String, text2: String): Int {
+        var t1 = text1
+        var t2 = text2
+
+        if (t1.length < t2.length) {
+            t1 = text2
+            t2 = text1
+        }
+
+        val dp = IntArray(t2.length + 1)
+
+        for (i in t1.length - 1 downTo 0) {
+            var prev = 0
+            for (j in t2.length - 1 downTo 0) {
+                val temp = dp[j]
+                dp[j] = if (t1[i] == t2[j]) {
+                    1 + prev
+                } else {
+                    maxOf(dp[j], dp[j + 1])
+                }
+                prev = temp
+            }
+        }
+
+        return dp[0]
+    }
+}
+```
+
+```swift
+class Solution {
+    func longestCommonSubsequence(_ text1: String, _ text2: String) -> Int {
+        var t1 = Array(text1)
+        var t2 = Array(text2)
+
+        if t1.count < t2.count {
+            swap(&t1, &t2)
+        }
+
+        var dp = Array(repeating: 0, count: t2.count + 1)
+
+        for i in stride(from: t1.count - 1, through: 0, by: -1) {
+            var prev = 0
+            for j in stride(from: t2.count - 1, through: 0, by: -1) {
+                let temp = dp[j]
+                if t1[i] == t2[j] {
+                    dp[j] = 1 + prev
+                } else {
+                    dp[j] = max(dp[j], dp[j + 1])
+                }
+                prev = temp
+            }
+        }
+
+        return dp[0]
+    }
+}
+```
+
+```rust
+impl Solution {
+    pub fn longest_common_subsequence(text1: String, text2: String) -> i32 {
+        let (t1, t2) = if text1.len() >= text2.len() {
+            (text1.as_bytes(), text2.as_bytes())
+        } else {
+            (text2.as_bytes(), text1.as_bytes())
+        };
+
+        let mut dp = vec![0i32; t2.len() + 1];
+
+        for i in (0..t1.len()).rev() {
+            let mut prev = 0;
+            for j in (0..t2.len()).rev() {
+                let temp = dp[j];
+                if t1[i] == t2[j] {
+                    dp[j] = 1 + prev;
+                } else {
+                    dp[j] = dp[j].max(dp[j + 1]);
+                }
+                prev = temp;
+            }
+        }
+
+        dp[0]
+    }
+}
+```
+
+::tabs-end
+
+### Time & Space Complexity
+
+- Time complexity: $O(m * n)$
+- Space complexity: $O(min(m, n))$
+
+> Where $m$ is the length of the string $text1$ and $n$ is the length of the string $text2$.
+
+## Common Pitfalls
+
+### Confusing Subsequence with Substring
+
+A subsequence does not require consecutive characters, whereas a substring does. A common mistake is to reset the count when characters do not match, which would find the longest common substring instead of subsequence. In LCS, when characters do not match, you take the maximum of skipping either character.
+
+### Off-by-One Errors in DP Table Indexing
+
+When using a 2D DP table, the dimensions should be `(m+1) x (n+1)` to account for the base case of empty strings. Accessing `dp[i+1][j+1]` when characters match requires careful attention to avoid index out of bounds errors.
+
+### Incorrect Iteration Direction in Bottom-Up DP
+
+In the bottom-up approach, iterating in the wrong direction can cause the algorithm to use uncomputed values. When processing from the end of the strings backward, ensure that `dp[i][j]` is computed after `dp[i+1][j+1]`, `dp[i+1][j]`, and `dp[i][j+1]` are already available.

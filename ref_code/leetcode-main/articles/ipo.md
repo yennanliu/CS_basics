@@ -1,0 +1,949 @@
+## Prerequisites
+
+Before attempting this problem, you should be comfortable with:
+
+- **Heap / Priority Queue** - Understanding min-heaps and max-heaps for efficient extraction of minimum and maximum elements
+- **Greedy Algorithms** - Recognizing when selecting the locally optimal choice leads to a globally optimal solution
+- **Sorting** - Sorting data to process elements in a specific order
+
+---
+
+## 1. Two Heaps
+
+### Intuition
+
+To maximize capital after completing at most `k` projects, we should always pick the project with the highest profit among those we can currently afford. A min-heap ordered by capital lets us efficiently find all affordable projects as our capital grows. A max-heap ordered by profit then lets us pick the most profitable one. After completing a project, our capital increases, potentially unlocking more projects from the min-heap to consider.
+
+### Algorithm
+
+1. Build a min-heap of all projects ordered by their capital requirement.
+2. Initialize a max-heap for profits (empty at start).
+3. Repeat up to `k` times:
+    - Move all projects from the min-heap whose capital requirement is at most `w` into the max-heap.
+    - If the max-heap is empty, no more projects can be started, so `break`.
+    - Pop the top of the max-heap (highest profit) and add it to `w`.
+4. Return the final capital `w`.
+
+::tabs-start
+
+```python
+class Solution:
+    def findMaximizedCapital(self, k: int, w: int, profits: List[int], capital: List[int]) -> int:
+        maxProfit = []  # Max heap
+        minCapital = [(c, p) for c, p in zip(capital, profits)]  # Min heap
+        heapq.heapify(minCapital)
+
+        for _ in range(k):
+            while minCapital and minCapital[0][0] <= w:
+                c, p = heapq.heappop(minCapital)
+                heapq.heappush(maxProfit, -p)
+
+            if not maxProfit:
+                break
+
+            w += -heapq.heappop(maxProfit)
+
+        return w
+```
+
+```java
+public class Solution {
+    public int findMaximizedCapital(int k, int w, int[] profits, int[] capital) {
+        PriorityQueue<int[]> minCapital = new PriorityQueue<>((a, b) -> a[0] - b[0]); // Min heap
+        PriorityQueue<Integer> maxProfit = new PriorityQueue<>((a, b) -> b - a);      // Max heap
+
+        for (int i = 0; i < capital.length; i++) {
+            minCapital.offer(new int[]{capital[i], profits[i]});
+        }
+
+        for (int i = 0; i < k; i++) {
+            while (!minCapital.isEmpty() && minCapital.peek()[0] <= w) {
+                maxProfit.offer(minCapital.poll()[1]);
+            }
+            if (maxProfit.isEmpty()) {
+                break;
+            }
+            w += maxProfit.poll();
+        }
+
+        return w;
+    }
+}
+```
+
+```cpp
+class Solution {
+public:
+    int findMaximizedCapital(int k, int w, vector<int>& profits, vector<int>& capital) {
+        priority_queue<int> maxProfit; // Max heap
+        priority_queue<pair<int, int>, vector<pair<int, int>>, greater<>> minCapital; // Min heap
+
+        for (int i = 0; i < capital.size(); i++) {
+            minCapital.emplace(capital[i], profits[i]);
+        }
+
+        for (int i = 0; i < k; i++) {
+            while (!minCapital.empty() && minCapital.top().first <= w) {
+                maxProfit.push(minCapital.top().second);
+                minCapital.pop();
+            }
+            if (maxProfit.empty()) {
+                break;
+            }
+            w += maxProfit.top();
+            maxProfit.pop();
+        }
+
+        return w;
+    }
+};
+```
+
+```javascript
+class Solution {
+    /**
+     * @param {number} k
+     * @param {number} w
+     * @param {number[]} profits
+     * @param {number[]} capital
+     * @return {number}
+     */
+    findMaximizedCapital(k, w, profits, capital) {
+        const minCapital = new PriorityQueue((a, b) => a[0] - b[0]); // Min heap
+        const maxProfit = new PriorityQueue((a, b) => b - a); // Max heap
+
+        for (let i = 0; i < capital.length; i++) {
+            minCapital.enqueue([capital[i], profits[i]]);
+        }
+
+        for (let i = 0; i < k; i++) {
+            while (!minCapital.isEmpty() && minCapital.front()[0] <= w) {
+                maxProfit.enqueue(minCapital.dequeue()[1]);
+            }
+            if (maxProfit.isEmpty()) {
+                break;
+            }
+            w += maxProfit.dequeue();
+        }
+
+        return w;
+    }
+}
+```
+
+```csharp
+public class Solution {
+    public int FindMaximizedCapital(int k, int w, int[] profits, int[] capital) {
+        var minCapital = new List<(int c, int p)>();
+        for (int i = 0; i < capital.Length; i++) {
+            minCapital.Add((capital[i], profits[i]));
+        }
+
+        // Min-heap by capital
+        minCapital.Sort((a, b) => a.c.CompareTo(b.c));
+
+        // Max-heap by profit
+        var maxProfit = new PriorityQueue<int, int>(Comparer<int>.Create((a, b) => b.CompareTo(a)));
+        int iPtr = 0;
+
+        for (int i = 0; i < k; i++) {
+            while (iPtr < minCapital.Count && minCapital[iPtr].c <= w) {
+                maxProfit.Enqueue(minCapital[iPtr].p, minCapital[iPtr].p);
+                iPtr++;
+            }
+
+            if (maxProfit.Count == 0) {
+                break;
+            }
+
+            w += maxProfit.Dequeue();
+        }
+
+        return w;
+    }
+}
+```
+
+```go
+import (
+    "container/heap"
+)
+
+type MinCapitalHeap [][]int
+func (h MinCapitalHeap) Len() int           { return len(h) }
+func (h MinCapitalHeap) Less(i, j int) bool { return h[i][0] < h[j][0] }
+func (h MinCapitalHeap) Swap(i, j int)      { h[i], h[j] = h[j], h[i] }
+func (h *MinCapitalHeap) Push(x any)        { *h = append(*h, x.([]int)) }
+func (h *MinCapitalHeap) Pop() any {
+    old := *h
+    n := len(old)
+    x := old[n-1]
+    *h = old[0 : n-1]
+    return x
+}
+
+type MaxProfitHeap []int
+func (h MaxProfitHeap) Len() int           { return len(h) }
+func (h MaxProfitHeap) Less(i, j int) bool { return h[i] > h[j] }
+func (h MaxProfitHeap) Swap(i, j int)      { h[i], h[j] = h[j], h[i] }
+func (h *MaxProfitHeap) Push(x any)        { *h = append(*h, x.(int)) }
+func (h *MaxProfitHeap) Pop() any {
+    old := *h
+    n := len(old)
+    x := old[n-1]
+    *h = old[0 : n-1]
+    return x
+}
+
+func findMaximizedCapital(k int, w int, profits []int, capital []int) int {
+    minCapital := &MinCapitalHeap{}
+    maxProfit := &MaxProfitHeap{}
+
+    for i := 0; i < len(capital); i++ {
+        heap.Push(minCapital, []int{capital[i], profits[i]})
+    }
+
+    for i := 0; i < k; i++ {
+        for minCapital.Len() > 0 && (*minCapital)[0][0] <= w {
+            item := heap.Pop(minCapital).([]int)
+            heap.Push(maxProfit, item[1])
+        }
+        if maxProfit.Len() == 0 {
+            break
+        }
+        w += heap.Pop(maxProfit).(int)
+    }
+
+    return w
+}
+```
+
+```kotlin
+class Solution {
+    fun findMaximizedCapital(k: Int, w: Int, profits: IntArray, capital: IntArray): Int {
+        val minCapital = PriorityQueue(compareBy<IntArray> { it[0] })
+        val maxProfit = PriorityQueue<Int>(compareByDescending { it })
+
+        for (i in capital.indices) {
+            minCapital.offer(intArrayOf(capital[i], profits[i]))
+        }
+
+        var currentW = w
+        repeat(k) {
+            while (minCapital.isNotEmpty() && minCapital.peek()[0] <= currentW) {
+                maxProfit.offer(minCapital.poll()[1])
+            }
+            if (maxProfit.isEmpty()) {
+                return currentW
+            }
+            currentW += maxProfit.poll()
+        }
+
+        return currentW
+    }
+}
+```
+
+```swift
+class Solution {
+    func findMaximizedCapital(_ k: Int, _ w: Int, _ profits: [Int], _ capital: [Int]) -> Int {
+        var projects = zip(capital, profits).sorted { $0.0 < $1.0 }
+        var maxProfit = Heap<Int>(sort: >)
+        var w = w
+        var idx = 0
+
+        for _ in 0..<k {
+            while idx < projects.count && projects[idx].0 <= w {
+                maxProfit.insert(projects[idx].1)
+                idx += 1
+            }
+            if maxProfit.isEmpty {
+                break
+            }
+            w += maxProfit.remove()!
+        }
+
+        return w
+    }
+}
+```
+
+```rust
+impl Solution {
+    pub fn find_maximized_capital(k: i32, w: i32, profits: Vec<i32>, capital: Vec<i32>) -> i32 {
+        let mut min_capital: BinaryHeap<Reverse<(i32, i32)>> = BinaryHeap::new();
+        let mut max_profit: BinaryHeap<i32> = BinaryHeap::new();
+
+        for i in 0..capital.len() {
+            min_capital.push(Reverse((capital[i], profits[i])));
+        }
+
+        let mut w = w;
+        for _ in 0..k {
+            while let Some(&Reverse((c, p))) = min_capital.peek() {
+                if c <= w {
+                    min_capital.pop();
+                    max_profit.push(p);
+                } else {
+                    break;
+                }
+            }
+            if let Some(p) = max_profit.pop() {
+                w += p;
+            } else {
+                break;
+            }
+        }
+
+        w
+    }
+}
+```
+
+::tabs-end
+
+### Time & Space Complexity
+
+- Time complexity: $O(n \log n)$
+- Space complexity: $O(n)$
+
+---
+
+## 2. Two Heaps (Optimal)
+
+### Intuition
+
+This approach improves on the previous one by storing only indices in the heaps rather than copying the actual capital and profit values. The heaps use custom comparators that reference the original arrays. This reduces memory overhead while maintaining the same greedy strategy: always select the most profitable project among those currently affordable.
+
+### Algorithm
+
+1. Build a min-heap of project indices, ordered by `capital[index]`.
+2. Initialize an empty max-heap of indices, to be ordered by `profits[index]`.
+3. Repeat up to `k` times:
+    - Transfer all indices from the min-heap where `capital[index] <= w` into the max-heap.
+    - If the max-heap is empty, `break`.
+    - Pop the `index` with maximum profit, add `profits[index]` to `w`.
+4. Return `w`.
+
+::tabs-start
+
+```python
+class Solution:
+    def findMaximizedCapital(self, k: int, w: int, profits: List[int], capital: List[int]) -> int:
+        class Node:
+            def __init__(self, idx):
+                self.idx = idx
+
+            def __lt__(self, other):
+                if capital[self.idx] != capital[other.idx]:
+                    return capital[self.idx] < capital[other.idx]
+                return self.idx < other.idx
+
+        minCapital = []
+        maxProfit = []
+        for i in range(len(capital)):
+            heapq.heappush(minCapital, Node(i))
+
+        for _ in range(k):
+            while minCapital and capital[minCapital[0].idx] <= w:
+                idx = heapq.heappop(minCapital).idx
+                heapq.heappush(maxProfit, -profits[idx])
+
+            if not maxProfit:
+                break
+            w += -heapq.heappop(maxProfit)
+
+        return w
+```
+
+```java
+public class Solution {
+    public int findMaximizedCapital(int k, int w, int[] profits, int[] capital) {
+        PriorityQueue<Integer> minCapital = new PriorityQueue<>((a, b) -> capital[a] - capital[b]);
+        PriorityQueue<Integer> maxProfit = new PriorityQueue<>((a, b) -> profits[b] - profits[a]);
+
+        for (int i = 0; i < capital.length; i++) {
+            minCapital.offer(i);
+        }
+
+        for (int i = 0; i < k; i++) {
+            while (!minCapital.isEmpty() && capital[minCapital.peek()] <= w) {
+                maxProfit.offer(minCapital.poll());
+            }
+            if (maxProfit.isEmpty()) {
+                break;
+            }
+            w += profits[maxProfit.poll()];
+        }
+
+        return w;
+    }
+}
+```
+
+```cpp
+class Solution {
+public:
+    int findMaximizedCapital(int k, int w, vector<int>& profits, vector<int>& capital) {
+        auto cmpCapital = [&](int a, int b) { return capital[a] > capital[b]; };
+        auto cmpProfit = [&](int a, int b) { return profits[a] < profits[b]; };
+
+        priority_queue<int, vector<int>, decltype(cmpCapital)> minCapital(cmpCapital);
+        priority_queue<int, vector<int>, decltype(cmpProfit)> maxProfit(cmpProfit);
+
+        for (int i = 0; i < capital.size(); i++) {
+            minCapital.push(i);
+        }
+
+        for (int i = 0; i < k; i++) {
+            while (!minCapital.empty() && capital[minCapital.top()] <= w) {
+                maxProfit.push(minCapital.top());
+                minCapital.pop();
+            }
+            if (maxProfit.empty()) {
+                break;
+            }
+            w += profits[maxProfit.top()];
+            maxProfit.pop();
+        }
+
+        return w;
+    }
+};
+```
+
+```javascript
+class Solution {
+    /**
+     * @param {number} k
+     * @param {number} w
+     * @param {number[]} profits
+     * @param {number[]} capital
+     * @return {number}
+     */
+    findMaximizedCapital(k, w, profits, capital) {
+        const minCapital = new PriorityQueue((a, b) => capital[a] - capital[b]);
+        const maxProfit = new PriorityQueue((a, b) => profits[b] - profits[a]);
+
+        for (let i = 0; i < capital.length; i++) {
+            minCapital.enqueue(i);
+        }
+
+        for (let i = 0; i < k; i++) {
+            while (!minCapital.isEmpty() && capital[minCapital.front()] <= w) {
+                maxProfit.enqueue(minCapital.dequeue());
+            }
+            if (maxProfit.isEmpty()) {
+                break;
+            }
+            w += profits[maxProfit.dequeue()];
+        }
+
+        return w;
+    }
+}
+```
+
+```csharp
+public class Solution {
+    public int FindMaximizedCapital(int k, int w, int[] profits, int[] capital) {
+        var minCapital = new PriorityQueue<int, int>(); // index with capital as priority
+        var maxProfit = new PriorityQueue<int, int>(Comparer<int>.Create((a, b) => b.CompareTo(a))); // max heap by profit
+
+        for (int i = 0; i < capital.Length; i++) {
+            minCapital.Enqueue(i, capital[i]);
+        }
+
+        for (int i = 0; i < k; i++) {
+            while (minCapital.Count > 0 && capital[minCapital.Peek()] <= w) {
+                int idx = minCapital.Dequeue();
+                maxProfit.Enqueue(profits[idx], profits[idx]);
+            }
+
+            if (maxProfit.Count == 0) {
+                break;
+            }
+
+            w += maxProfit.Dequeue();
+        }
+
+        return w;
+    }
+}
+```
+
+```go
+import (
+    "container/heap"
+)
+
+type MinCapitalHeap struct {
+    indices []int
+    capital []int
+}
+
+func (h MinCapitalHeap) Len() int           { return len(h.indices) }
+func (h MinCapitalHeap) Less(i, j int) bool { return h.capital[h.indices[i]] < h.capital[h.indices[j]] }
+func (h MinCapitalHeap) Swap(i, j int)      { h.indices[i], h.indices[j] = h.indices[j], h.indices[i] }
+func (h *MinCapitalHeap) Push(x any)        { h.indices = append(h.indices, x.(int)) }
+func (h *MinCapitalHeap) Pop() any {
+    old := h.indices
+    n := len(old)
+    x := old[n-1]
+    h.indices = old[0 : n-1]
+    return x
+}
+
+type MaxProfitHeap struct {
+    indices []int
+    profits []int
+}
+
+func (h MaxProfitHeap) Len() int           { return len(h.indices) }
+func (h MaxProfitHeap) Less(i, j int) bool { return h.profits[h.indices[i]] > h.profits[h.indices[j]] }
+func (h MaxProfitHeap) Swap(i, j int)      { h.indices[i], h.indices[j] = h.indices[j], h.indices[i] }
+func (h *MaxProfitHeap) Push(x any)        { h.indices = append(h.indices, x.(int)) }
+func (h *MaxProfitHeap) Pop() any {
+    old := h.indices
+    n := len(old)
+    x := old[n-1]
+    h.indices = old[0 : n-1]
+    return x
+}
+
+func findMaximizedCapital(k int, w int, profits []int, capital []int) int {
+    minCapital := &MinCapitalHeap{indices: []int{}, capital: capital}
+    maxProfit := &MaxProfitHeap{indices: []int{}, profits: profits}
+
+    for i := 0; i < len(capital); i++ {
+        heap.Push(minCapital, i)
+    }
+
+    for i := 0; i < k; i++ {
+        for minCapital.Len() > 0 && capital[minCapital.indices[0]] <= w {
+            idx := heap.Pop(minCapital).(int)
+            heap.Push(maxProfit, idx)
+        }
+        if maxProfit.Len() == 0 {
+            break
+        }
+        w += profits[heap.Pop(maxProfit).(int)]
+    }
+
+    return w
+}
+```
+
+```kotlin
+class Solution {
+    fun findMaximizedCapital(k: Int, w: Int, profits: IntArray, capital: IntArray): Int {
+        val minCapital = PriorityQueue(compareBy<Int> { capital[it] })
+        val maxProfit = PriorityQueue<Int>(compareByDescending { profits[it] })
+
+        for (i in capital.indices) {
+            minCapital.offer(i)
+        }
+
+        var currentW = w
+        repeat(k) {
+            while (minCapital.isNotEmpty() && capital[minCapital.peek()] <= currentW) {
+                maxProfit.offer(minCapital.poll())
+            }
+            if (maxProfit.isEmpty()) {
+                return currentW
+            }
+            currentW += profits[maxProfit.poll()]
+        }
+
+        return currentW
+    }
+}
+```
+
+```swift
+class Solution {
+    func findMaximizedCapital(_ k: Int, _ w: Int, _ profits: [Int], _ capital: [Int]) -> Int {
+        var indices = Array(0..<capital.count)
+        indices.sort { capital[$0] < capital[$1] }
+
+        var maxProfit = Heap<Int>(sort: { profits[$0] > profits[$1] })
+        var w = w
+        var idx = 0
+
+        for _ in 0..<k {
+            while idx < indices.count && capital[indices[idx]] <= w {
+                maxProfit.insert(indices[idx])
+                idx += 1
+            }
+            if maxProfit.isEmpty {
+                break
+            }
+            w += profits[maxProfit.remove()!]
+        }
+
+        return w
+    }
+}
+```
+
+```rust
+impl Solution {
+    pub fn find_maximized_capital(k: i32, w: i32, profits: Vec<i32>, capital: Vec<i32>) -> i32 {
+        let n = capital.len();
+        let mut min_capital: BinaryHeap<Reverse<(i32, usize)>> = BinaryHeap::new();
+        let mut max_profit: BinaryHeap<i32> = BinaryHeap::new();
+
+        for i in 0..n {
+            min_capital.push(Reverse((capital[i], i)));
+        }
+
+        let mut w = w;
+        for _ in 0..k {
+            while let Some(&Reverse((c, idx))) = min_capital.peek() {
+                if c <= w {
+                    min_capital.pop();
+                    max_profit.push(profits[idx]);
+                } else {
+                    break;
+                }
+            }
+            if let Some(p) = max_profit.pop() {
+                w += p;
+            } else {
+                break;
+            }
+        }
+
+        w
+    }
+}
+```
+
+::tabs-end
+
+### Time & Space Complexity
+
+- Time complexity: $O(n \log n)$
+- Space complexity: $O(n)$
+
+---
+
+## 3. Sorting + Max-Heap
+
+### Intuition
+
+Instead of using a min-heap for capital, we can simply sort the projects by their capital requirements upfront. A pointer then tracks which projects have become affordable. As capital grows, we advance this pointer and push newly affordable project profits into a max-heap. This avoids repeated heap operations on the capital side and is often faster in practice due to better cache performance from the sorted array traversal.
+
+### Algorithm
+
+1. Create an array of indices `[0, 1, ..., n-1]` and sort it by `capital[index]`.
+2. Initialize a max-heap for profits and a pointer `idx = 0`.
+3. Repeat up to `k` times:
+    - While `idx < n` and `capital[indices[idx]] <= w`, push `profits[indices[idx]]` onto the max-heap and increment `idx`.
+    - If the max-heap is empty, `break`.
+    - Pop the maximum profit and add it to `w`.
+4. Return `w`.
+
+::tabs-start
+
+```python
+class Solution:
+    def findMaximizedCapital(self, k: int, w: int, profits: List[int], capital: List[int]) -> int:
+        n = len(profits)
+        indices = list(range(n))
+        indices.sort(key=lambda i: capital[i])
+
+        maxProfit, idx = [], 0
+        for _ in range(k):
+            while idx < n and capital[indices[idx]] <= w:
+                heapq.heappush(maxProfit, -profits[indices[idx]])
+                idx += 1
+
+            if not maxProfit:
+                break
+            w += -heapq.heappop(maxProfit)
+
+        return w
+```
+
+```java
+public class Solution {
+    public int findMaximizedCapital(int k, int w, int[] profits, int[] capital) {
+        int n = profits.length;
+        Integer[] indices = new Integer[n];
+        for (int i = 0; i < n; i++) {
+            indices[i] = i;
+        }
+        Arrays.sort(indices, (a, b) -> Integer.compare(capital[a], capital[b]));
+
+        PriorityQueue<Integer> maxProfit = new PriorityQueue<>(Collections.reverseOrder());
+        int idx = 0;
+        for (int i = 0; i < k; i++) {
+            while (idx < n && capital[indices[idx]] <= w) {
+                maxProfit.add(profits[indices[idx]]);
+                idx++;
+            }
+            if (maxProfit.isEmpty()) {
+                break;
+            }
+            w += maxProfit.poll();
+        }
+
+        return w;
+    }
+}
+```
+
+```cpp
+class Solution {
+public:
+    int findMaximizedCapital(int k, int w, vector<int>& profits, vector<int>& capital) {
+        int n = profits.size();
+        vector<int> indices(n);
+        for (int i = 0; i < n; i++) {
+            indices[i] = i;
+        }
+        sort(indices.begin(), indices.end(), [&](int a, int b) {
+            return capital[a] < capital[b];
+        });
+
+        priority_queue<int> maxProfit;
+        int idx = 0;
+        for (int i = 0; i < k; i++) {
+            while (idx < n && capital[indices[idx]] <= w) {
+                maxProfit.push(profits[indices[idx]]);
+                idx++;
+            }
+            if (maxProfit.empty()) {
+                break;
+            }
+            w += maxProfit.top();
+            maxProfit.pop();
+        }
+
+        return w;
+    }
+};
+```
+
+```javascript
+class Solution {
+    /**
+     * @param {number} k
+     * @param {number} w
+     * @param {number[]} profits
+     * @param {number[]} capital
+     * @return {number}
+     */
+    findMaximizedCapital(k, w, profits, capital) {
+        const n = profits.length;
+        const indices = Array.from({ length: n }, (_, i) => i);
+        indices.sort((a, b) => capital[a] - capital[b]);
+
+        const maxProfit = new MaxPriorityQueue();
+        let idx = 0;
+        for (let i = 0; i < k; i++) {
+            while (idx < n && capital[indices[idx]] <= w) {
+                maxProfit.enqueue(profits[indices[idx]]);
+                idx++;
+            }
+            if (maxProfit.isEmpty()) {
+                break;
+            }
+            w += maxProfit.dequeue();
+        }
+
+        return w;
+    }
+}
+```
+
+```csharp
+public class Solution {
+    public int FindMaximizedCapital(int k, int w, int[] profits, int[] capital) {
+        int n = profits.Length;
+        int[] indices = new int[n];
+        for (int i = 0; i < n; i++) {
+            indices[i] = i;
+        }
+
+        Array.Sort(indices, (a, b) => capital[a].CompareTo(capital[b]));
+
+        var maxProfit = new PriorityQueue<int, int>(Comparer<int>.Create((a, b) => b.CompareTo(a)));
+        int idx = 0;
+
+        for (int i = 0; i < k; i++) {
+            while (idx < n && capital[indices[idx]] <= w) {
+                maxProfit.Enqueue(profits[indices[idx]], profits[indices[idx]]);
+                idx++;
+            }
+
+            if (maxProfit.Count == 0) {
+                break;
+            }
+
+            w += maxProfit.Dequeue();
+        }
+
+        return w;
+    }
+}
+```
+
+```go
+import (
+    "container/heap"
+    "sort"
+)
+
+type MaxHeap []int
+
+func (h MaxHeap) Len() int           { return len(h) }
+func (h MaxHeap) Less(i, j int) bool { return h[i] > h[j] }
+func (h MaxHeap) Swap(i, j int)      { h[i], h[j] = h[j], h[i] }
+func (h *MaxHeap) Push(x any)        { *h = append(*h, x.(int)) }
+func (h *MaxHeap) Pop() any {
+    old := *h
+    n := len(old)
+    x := old[n-1]
+    *h = old[0 : n-1]
+    return x
+}
+
+func findMaximizedCapital(k int, w int, profits []int, capital []int) int {
+    n := len(profits)
+    indices := make([]int, n)
+    for i := 0; i < n; i++ {
+        indices[i] = i
+    }
+    sort.Slice(indices, func(i, j int) bool {
+        return capital[indices[i]] < capital[indices[j]]
+    })
+
+    maxProfit := &MaxHeap{}
+    idx := 0
+    for i := 0; i < k; i++ {
+        for idx < n && capital[indices[idx]] <= w {
+            heap.Push(maxProfit, profits[indices[idx]])
+            idx++
+        }
+        if maxProfit.Len() == 0 {
+            break
+        }
+        w += heap.Pop(maxProfit).(int)
+    }
+
+    return w
+}
+```
+
+```kotlin
+class Solution {
+    fun findMaximizedCapital(k: Int, w: Int, profits: IntArray, capital: IntArray): Int {
+        val n = profits.size
+        val indices = (0 until n).sortedBy { capital[it] }
+
+        val maxProfit = PriorityQueue<Int>(compareByDescending { it })
+        var idx = 0
+        var currentW = w
+
+        repeat(k) {
+            while (idx < n && capital[indices[idx]] <= currentW) {
+                maxProfit.add(profits[indices[idx]])
+                idx++
+            }
+            if (maxProfit.isEmpty()) {
+                return currentW
+            }
+            currentW += maxProfit.poll()
+        }
+
+        return currentW
+    }
+}
+```
+
+```swift
+class Solution {
+    func findMaximizedCapital(_ k: Int, _ w: Int, _ profits: [Int], _ capital: [Int]) -> Int {
+        let n = profits.count
+        let indices = (0..<n).sorted { capital[$0] < capital[$1] }
+
+        var maxProfit = Heap<Int>(sort: >)
+        var w = w
+        var idx = 0
+
+        for _ in 0..<k {
+            while idx < n && capital[indices[idx]] <= w {
+                maxProfit.insert(profits[indices[idx]])
+                idx += 1
+            }
+            if maxProfit.isEmpty {
+                break
+            }
+            w += maxProfit.remove()!
+        }
+
+        return w
+    }
+}
+```
+
+```rust
+impl Solution {
+    pub fn find_maximized_capital(k: i32, w: i32, profits: Vec<i32>, capital: Vec<i32>) -> i32 {
+        let n = profits.len();
+        let mut indices: Vec<usize> = (0..n).collect();
+        indices.sort_by_key(|&i| capital[i]);
+
+        let mut max_profit: BinaryHeap<i32> = BinaryHeap::new();
+        let mut w = w;
+        let mut idx = 0;
+
+        for _ in 0..k {
+            while idx < n && capital[indices[idx]] <= w {
+                max_profit.push(profits[indices[idx]]);
+                idx += 1;
+            }
+            if let Some(p) = max_profit.pop() {
+                w += p;
+            } else {
+                break;
+            }
+        }
+
+        w
+    }
+}
+```
+
+::tabs-end
+
+### Time & Space Complexity
+
+- Time complexity: $O(n \log n)$
+- Space complexity: $O(n)$
+
+---
+
+## Common Pitfalls
+
+### Using the Wrong Heap Type
+
+A critical mistake is confusing which heap to use for which purpose. You need a min-heap ordered by capital (to efficiently find affordable projects) and a max-heap ordered by profit (to select the most profitable affordable project). Reversing these or using the wrong ordering will produce incorrect results.
+
+### Not Transferring Projects When Capital Increases
+
+After completing a project and gaining profit, your capital increases, which may unlock previously unaffordable projects. Forgetting to transfer newly affordable projects from the capital heap to the profit heap before selecting the next project means you might miss the most profitable option available to you.
+
+### Not Handling the Case When No Projects Are Affordable
+
+If your current capital is insufficient to start any remaining projects, the max-heap for profits will be empty. Failing to check for this condition and break out of the loop will cause errors (such as attempting to pop from an empty heap) or infinite loops.
+
+### Incorrect Greedy Strategy
+
+Some developers try to optimize by considering both profit and capital together (e.g., profit-to-capital ratio) or by looking ahead multiple projects. This overcomplicates the solution. The optimal greedy strategy is simple: always pick the highest-profit project among those currently affordable.
+
+### Off-by-One Errors with k Projects
+
+Remember that you can complete at most `k` projects, not exactly `k`. If there are fewer than `k` affordable projects total or if you run out of affordable projects before completing `k`, you should stop early rather than erroring or returning incorrect values.

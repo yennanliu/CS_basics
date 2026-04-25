@@ -1,0 +1,1275 @@
+## Prerequisites
+Before attempting this problem, you should be comfortable with:
+- **Recursion** - Understanding recursive function calls and base cases
+- **Dynamic Programming** - Memoization (top-down) and tabulation (bottom-up) approaches to optimize overlapping subproblems
+- **Fibonacci Sequence** - Recognizing patterns where each value depends on the previous two values
+
+---
+
+## 1. Recursion
+
+### Intuition
+At every step, you have **two choices**:
+- climb **1 step**
+- climb **2 steps**
+
+So from any step `i`, the number of ways to reach the top is:
+- ways from `i + 1`
+- plus ways from `i + 2`
+
+This naturally forms a **binary recursion tree** where we try all possible paths.
+- If we land **exactly on step `n`**, that path counts as **1 valid way**
+- If we cross `n`, it’s an **invalid path**
+
+This is a classic example of **exploring all possibilities** using recursion.
+
+### Algorithm
+1. Start from step `0`.
+2. Define a recursive function `dfs(i)`:
+   - If `i == n`, return `1` (one valid way).
+   - If `i > n`, return `0` (invalid path).
+3. Recursively compute:
+   - `dfs(i + 1)` → take 1 step
+   - `dfs(i + 2)` → take 2 steps
+4. Return the sum of both choices.
+5. The answer is `dfs(0)`.
+
+::tabs-start
+
+```python
+class Solution:
+    def climbStairs(self, n: int) -> int:
+
+        def dfs(i):
+            if i >= n:
+                return i == n
+            return dfs(i + 1) + dfs(i + 2)
+
+        return dfs(0)
+```
+
+```java
+public class Solution {
+    public int climbStairs(int n) {
+        return dfs(n, 0);
+    }
+
+    public int dfs(int n, int i) {
+        if (i >= n) return i == n ? 1 : 0;
+        return dfs(n, i + 1) + dfs(n, i + 2);
+    }
+}
+```
+
+```cpp
+class Solution {
+public:
+    int climbStairs(int n) {
+        return dfs(n, 0);
+    }
+
+    int dfs(int n, int i) {
+        if (i >= n) return i == n;
+        return dfs(n, i + 1) + dfs(n, i + 2);
+    }
+};
+```
+
+```javascript
+class Solution {
+    /**
+     * @param {number} n
+     * @return {number}
+     */
+    climbStairs(n) {
+        const dfs = (i) => {
+            if (i >= n) return i == n;
+            return dfs(i + 1) + dfs(i + 2);
+        };
+        return dfs(0);
+    }
+}
+```
+
+```csharp
+public class Solution {
+    public int ClimbStairs(int n) {
+        return Dfs(n, 0);
+    }
+
+    public int Dfs(int n, int i) {
+        if (i >= n) return i == n ? 1 : 0;
+        return Dfs(n, i + 1) + Dfs(n, i + 2);
+    }
+}
+```
+
+```go
+func climbStairs(n int) int {
+    var dfs func(i int) int
+    dfs = func(i int) int {
+        if i >= n {
+            if i == n {
+                return 1
+            }
+            return 0
+        }
+        return dfs(i + 1) + dfs(i + 2)
+    }
+    return dfs(0)
+}
+```
+
+```kotlin
+class Solution {
+    fun climbStairs(n: Int): Int {
+        fun dfs(i: Int): Int {
+            if (i >= n) return if (i == n) 1 else 0
+            return dfs(i + 1) + dfs(i + 2)
+        }
+        return dfs(0)
+    }
+}
+```
+
+```swift
+class Solution {
+    func climbStairs(_ n: Int) -> Int {
+        func dfs(_ i: Int) -> Int {
+            if i >= n {
+                return i == n ? 1 : 0
+            }
+            return dfs(i + 1) + dfs(i + 2)
+        }
+
+        return dfs(0)
+    }
+}
+```
+
+
+```rust
+impl Solution {
+    pub fn climb_stairs(n: i32) -> i32 {
+        fn dfs(n: i32, i: i32) -> i32 {
+            if i >= n {
+                return if i == n { 1 } else { 0 };
+            }
+            dfs(n, i + 1) + dfs(n, i + 2)
+        }
+        dfs(n, 0)
+    }
+}
+```
+
+::tabs-end
+
+### Time & Space Complexity
+
+- Time complexity: $O(2 ^ n)$
+- Space complexity: $O(n)$
+
+---
+
+## 2. Dynamic Programming (Top-Down)
+
+### Intuition
+This is the **optimized version of the recursive solution**.
+
+The key observation is:
+- While exploring choices (1 step or 2 steps), the same subproblems repeat many times.
+- For example, the number of ways from step `i` is always the same whenever we reach `i`.
+
+So instead of recomputing, we **store the result** the first time we compute it and reuse it later.
+This is exactly what **Top-Down Dynamic Programming (Memoization)** does.
+
+We still think recursively, but we avoid redundant work.
+
+### Algorithm
+1. Create a cache array `cache` of size `n` initialized with `-1`.
+2. Define a recursive function `dfs(i)`:
+   - If `i == n`, return `1` (valid way).
+   - If `i > n`, return `0` (invalid path).
+   - If `cache[i] != -1`, return the cached value.
+3. Otherwise:
+   - Compute `dfs(i + 1) + dfs(i + 2)`
+   - Store the result in `cache[i]`
+4. Return `dfs(0)` as the final answer.
+
+::tabs-start
+
+```python
+class Solution:
+    def climbStairs(self, n: int) -> int:
+        cache = [-1] * n
+        def dfs(i):
+            if i >= n:
+                return i == n
+            if cache[i] != -1:
+                return cache[i]
+            cache[i] = dfs(i + 1) + dfs(i + 2)
+            return cache[i]
+
+        return dfs(0)
+```
+
+```java
+public class Solution {
+    int[] cache;
+    public int climbStairs(int n) {
+        cache = new int[n];
+        for (int i = 0; i < n; i++) {
+            cache[i] = -1;
+        }
+        return dfs(n, 0);
+    }
+
+    public int dfs(int n, int i) {
+        if (i >= n) return i == n ? 1 : 0;
+        if (cache[i] != -1) return cache[i];
+        return cache[i] = dfs(n, i + 1) + dfs(n, i + 2);
+    }
+}
+```
+
+```cpp
+class Solution {
+public:
+    vector<int> cache;
+    int climbStairs(int n) {
+        cache.resize(n, -1);
+        return dfs(n, 0);
+    }
+
+    int dfs(int n, int i) {
+        if (i >= n) return i == n;
+        if (cache[i] != -1) return cache[i];
+        return cache[i] = dfs(n, i + 1) + dfs(n, i + 2);
+    }
+};
+```
+
+```javascript
+class Solution {
+    /**
+     * @param {number} n
+     * @return {number}
+     */
+    climbStairs(n) {
+        const cache = new Int32Array(n).fill(-1);
+        const dfs = (i) => {
+            if (i >= n) return i == n;
+            if (cache[i] != -1) return cache[i];
+            return (cache[i] = dfs(i + 1) + dfs(i + 2));
+        };
+        return dfs(0);
+    }
+}
+```
+
+```csharp
+public class Solution {
+    int[] cache;
+    public int ClimbStairs(int n) {
+        cache = new int[n];
+        for (int i = 0; i < n; i++) {
+            cache[i] = -1;
+        }
+        return Dfs(n, 0);
+    }
+
+    public int Dfs(int n, int i) {
+        if (i >= n) return i == n ? 1 : 0;
+        if (cache[i] != -1) return cache[i];
+        return cache[i] = Dfs(n, i + 1) + Dfs(n, i + 2);
+    }
+}
+```
+
+```go
+func climbStairs(n int) int {
+    cache := make([]int, n+1)
+    for i := 0; i <= n; i++ {
+        cache[i] = -1
+    }
+
+    var dfs func(i int) int
+    dfs = func(i int) int {
+        if i >= n {
+            if i == n {
+                return 1
+            }
+            return 0
+        }
+        if cache[i] != -1 {
+            return cache[i]
+        }
+        cache[i] = dfs(i + 1) + dfs(i + 2)
+        return cache[i]
+    }
+    return dfs(0)
+}
+```
+
+```kotlin
+class Solution {
+    fun climbStairs(n: Int): Int {
+        var cache = IntArray(n+1){-1}
+        fun dfs(i: Int): Int {
+            if (i >= n) return if (i == n) 1 else 0
+            if (cache[i] != -1) return cache[i]
+            cache[i] = dfs(i + 1) + dfs(i + 2)
+            return cache[i]
+        }
+        return dfs(0)
+    }
+}
+```
+
+```swift
+class Solution {
+    func climbStairs(_ n: Int) -> Int {
+        var cache = Array(repeating: -1, count: n)
+
+        func dfs(_ i: Int) -> Int {
+            if i >= n {
+                return i == n ? 1 : 0
+            }
+            if cache[i] != -1 {
+                return cache[i]
+            }
+            cache[i] = dfs(i + 1) + dfs(i + 2)
+            return cache[i]
+        }
+
+        return dfs(0)
+    }
+}
+```
+
+
+```rust
+impl Solution {
+    pub fn climb_stairs(n: i32) -> i32 {
+        let n = n as usize;
+        let mut cache = vec![-1; n];
+
+        fn dfs(n: usize, i: usize, cache: &mut Vec<i32>) -> i32 {
+            if i >= n {
+                return if i == n { 1 } else { 0 };
+            }
+            if cache[i] != -1 {
+                return cache[i];
+            }
+            cache[i] = dfs(n, i + 1, cache) + dfs(n, i + 2, cache);
+            cache[i]
+        }
+
+        dfs(n, 0, &mut cache)
+    }
+}
+```
+
+::tabs-end
+
+### Time & Space Complexity
+
+- Time complexity: $O(n)$
+- Space complexity: $O(n)$
+
+---
+
+## 3. Dynamic Programming (Bottom-Up)
+
+### Intuition
+To reach step `i`, you can only come from:
+- step `i - 1` (1 step)
+- step `i - 2` (2 steps)
+
+So the total ways to reach step `i` is the **sum of ways to reach the previous two steps**.  
+This forms a **Fibonacci-like pattern**.
+
+### Algorithm
+1. If `n <= 2`, return `n`.
+2. Create a DP array where `dp[i]` = number of ways to reach step `i`.
+3. Initialize:
+   - `dp[1] = 1`
+   - `dp[2] = 2`
+4. For `i` from `3` to `n`:
+   - `dp[i] = dp[i - 1] + dp[i - 2]`
+5. Return `dp[n]`.
+
+::tabs-start
+
+```python
+class Solution:
+    def climbStairs(self, n: int) -> int:
+        if n <= 2:
+            return n
+        dp = [0] * (n + 1)
+        dp[1], dp[2] = 1, 2
+        for i in range(3, n + 1):
+            dp[i] = dp[i - 1] + dp[i - 2]
+        return dp[n]
+```
+
+```java
+public class Solution {
+    public int climbStairs(int n) {
+        if (n <= 2) {
+            return n;
+        }
+        int[] dp = new int[n + 1];
+        dp[1] = 1;
+        dp[2] = 2;
+        for (int i = 3; i <= n; i++) {
+            dp[i] = dp[i - 1] + dp[i - 2];
+        }
+        return dp[n];
+    }
+}
+```
+
+```cpp
+class Solution {
+public:
+    int climbStairs(int n) {
+        if (n <= 2) {
+            return n;
+        }
+        vector<int> dp(n + 1);
+        dp[1] = 1;
+        dp[2] = 2;
+        for (int i = 3; i <= n; i++) {
+            dp[i] = dp[i - 1] + dp[i - 2];
+        }
+        return dp[n];
+    }
+};
+```
+
+```javascript
+class Solution {
+    /**
+     * @param {number} n
+     * @return {number}
+     */
+    climbStairs(n) {
+        if (n <= 2) {
+            return n;
+        }
+        let dp = new Array(n + 1).fill(0);
+        dp[1] = 1;
+        dp[2] = 2;
+        for (let i = 3; i <= n; i++) {
+            dp[i] = dp[i - 1] + dp[i - 2];
+        }
+        return dp[n];
+    }
+}
+```
+
+```csharp
+public class Solution {
+    public int ClimbStairs(int n) {
+        if (n <= 2) {
+            return n;
+        }
+        int[] dp = new int[n + 1];
+        dp[1] = 1;
+        dp[2] = 2;
+        for (int i = 3; i <= n; i++) {
+            dp[i] = dp[i - 1] + dp[i - 2];
+        }
+        return dp[n];
+    }
+}
+```
+
+```go
+func climbStairs(n int) int {
+    if n <= 2 {
+        return n
+    }
+    dp := make([]int, n+1)
+    dp[1] = 1
+    dp[2] = 2
+    for i := 3; i <= n; i++ {
+        dp[i] = dp[i - 1] + dp[i - 2]
+    }
+    return dp[n]
+}
+```
+
+```kotlin
+class Solution {
+    fun climbStairs(n: Int): Int {
+        if (n <= 2) return n
+        var dp = IntArray(n + 1)
+        dp[1] = 1
+        dp[2] = 2
+        for (i in 3..n) {
+            dp[i] = dp[i - 1] + dp[i - 2];
+        }
+        return dp[n];
+    }
+}
+```
+
+```swift
+class Solution {
+    func climbStairs(_ n: Int) -> Int {
+        if n <= 2 {
+            return n
+        }
+        var dp = Array(repeating: 0, count: n + 1)
+        dp[1] = 1
+        dp[2] = 2
+        for i in 3...n {
+            dp[i] = dp[i - 1] + dp[i - 2]
+        }
+        return dp[n]
+    }
+}
+```
+
+
+```rust
+impl Solution {
+    pub fn climb_stairs(n: i32) -> i32 {
+        let n = n as usize;
+        if n <= 2 {
+            return n as i32;
+        }
+        let mut dp = vec![0; n + 1];
+        dp[1] = 1;
+        dp[2] = 2;
+        for i in 3..=n {
+            dp[i] = dp[i - 1] + dp[i - 2];
+        }
+        dp[n]
+    }
+}
+```
+
+::tabs-end
+
+### Time & Space Complexity
+
+- Time complexity: $O(n)$
+- Space complexity: $O(n)$
+
+---
+
+## 4. Dynamic Programming (Space Optimized)
+
+### Intuition
+At any step, the number of ways depends only on the **previous two steps**.  
+So instead of storing all values in a DP array, we can just keep **two variables** that represent:
+- ways to reach the previous step
+- ways to reach the step before that
+
+This is the same Fibonacci idea, but optimized to use constant space.
+
+### Algorithm
+1. Initialize two variables:
+   - `one` -> ways to reach the current step
+   - `two` -> ways to reach the previous step
+2. Start both as `1` (base case).
+3. Repeat `n - 1` times:
+   - New ways = `one + two`
+   - Shift variables forward.
+4. Return `one`.
+
+::tabs-start
+
+```python
+class Solution:
+    def climbStairs(self, n: int) -> int:
+        one, two = 1, 1
+
+        for i in range(n - 1):
+            temp = one
+            one = one + two
+            two = temp
+
+        return one
+```
+
+```java
+public class Solution {
+    public int climbStairs(int n) {
+        int one = 1, two = 1;
+
+        for (int i = 0; i < n - 1; i++) {
+            int temp = one;
+            one = one + two;
+            two = temp;
+        }
+
+        return one;
+    }
+}
+```
+
+```cpp
+class Solution {
+public:
+    int climbStairs(int n) {
+        int one = 1, two = 1;
+
+        for (int i = 0; i < n - 1; i++) {
+            int temp = one;
+            one = one + two;
+            two = temp;
+        }
+
+        return one;
+    }
+};
+```
+
+```javascript
+class Solution {
+    /**
+     * @param {number} n
+     * @return {number}
+     */
+    climbStairs(n) {
+        let one = 1,
+            two = 1;
+
+        for (let i = 0; i < n - 1; i++) {
+            let temp = one;
+            one = one + two;
+            two = temp;
+        }
+
+        return one;
+    }
+}
+```
+
+```csharp
+public class Solution {
+    public int ClimbStairs(int n) {
+        int one = 1, two = 1;
+
+        for (int i = 0; i < n - 1; i++) {
+            int temp = one;
+            one = one + two;
+            two = temp;
+        }
+
+        return one;
+    }
+}
+```
+
+```go
+func climbStairs(n int) int {
+    one := 1
+    two := 1
+
+    for i := 0; i < n-1; i++ {
+        temp := one
+        one += two
+        two = temp
+    }
+
+    return one
+}
+```
+
+```kotlin
+class Solution {
+    fun climbStairs(n: Int): Int {
+        var one = 1
+        var two = 1
+
+        for (i in 0..(n - 2)) {
+            var temp = one
+            one += two
+            two = temp
+        }
+
+        return one
+    }
+}
+```
+
+```swift
+class Solution {
+    func climbStairs(_ n: Int) -> Int {
+        var one = 1, two = 1
+
+        for _ in 0..<(n - 1) {
+            let temp = one
+            one = one + two
+            two = temp
+        }
+
+        return one
+    }
+}
+```
+
+
+```rust
+impl Solution {
+    pub fn climb_stairs(n: i32) -> i32 {
+        let mut one = 1;
+        let mut two = 1;
+
+        for _ in 0..n - 1 {
+            let temp = one;
+            one = one + two;
+            two = temp;
+        }
+
+        one
+    }
+}
+```
+
+::tabs-end
+
+### Time & Space Complexity
+
+- Time complexity: $O(n)$
+- Space complexity: $O(1)$
+
+---
+
+## 5. Matrix Exponentiation
+
+### Intuition
+The number of ways to climb stairs follows the **Fibonacci sequence**:
+- To reach step `n`, you can come from `n-1` or `n-2`
+- So, `ways(n) = ways(n-1) + ways(n-2)`
+
+Fibonacci numbers can be computed efficiently using **matrix exponentiation**, which reduces the time from linear to logarithmic.
+
+### Algorithm
+1. Use the Fibonacci matrix:
+```
+|1 1|
+|1 0|
+```
+2. Raise this matrix to power `n` using **binary exponentiation**.
+3. Matrix exponentiation repeatedly squares the matrix to reduce work.
+4. The value at position `[0][0]` of the final matrix is the answer.
+
+::tabs-start
+
+```python
+class Solution:
+    def climbStairs(self, n: int) -> int:
+        if n == 1:
+            return 1
+
+        def matrix_mult(A, B):
+            return [[A[0][0] * B[0][0] + A[0][1] * B[1][0],
+                     A[0][0] * B[0][1] + A[0][1] * B[1][1]],
+                    [A[1][0] * B[0][0] + A[1][1] * B[1][0],
+                     A[1][0] * B[0][1] + A[1][1] * B[1][1]]]
+
+        def matrix_pow(M, p):
+            result = [[1, 0], [0, 1]]
+            base = M
+
+            while p:
+                if p % 2 == 1:
+                    result = matrix_mult(result, base)
+                base = matrix_mult(base, base)
+                p //= 2
+
+            return result
+
+        M = [[1, 1], [1, 0]]
+        result = matrix_pow(M, n)
+        return result[0][0]
+```
+
+```java
+public class Solution {
+    public int climbStairs(int n) {
+        if (n == 1) return 1;
+
+        int[][] M = {{1, 1}, {1, 0}};
+        int[][] result = matrixPow(M, n);
+
+        return result[0][0];
+    }
+
+    private int[][] matrixMult(int[][] A, int[][] B) {
+        return new int[][] {
+            {A[0][0] * B[0][0] + A[0][1] * B[1][0],
+             A[0][0] * B[0][1] + A[0][1] * B[1][1]},
+            {A[1][0] * B[0][0] + A[1][1] * B[1][0],
+             A[1][0] * B[0][1] + A[1][1] * B[1][1]}
+        };
+    }
+
+    private int[][] matrixPow(int[][] M, int p) {
+        int[][] result = {{1, 0}, {0, 1}};
+        int[][] base = M;
+
+        while (p > 0) {
+            if (p % 2 == 1) {
+                result = matrixMult(result, base);
+            }
+            base = matrixMult(base, base);
+            p /= 2;
+        }
+
+        return result;
+    }
+}
+```
+
+```cpp
+class Solution {
+public:
+    int climbStairs(int n) {
+        if (n == 1) return 1;
+
+        vector<vector<int>> M = {{1, 1}, {1, 0}};
+        vector<vector<int>> result = matrixPow(M, n);
+
+        return result[0][0];
+    }
+
+private:
+    vector<vector<int>> matrixMult(vector<vector<int>>& A, vector<vector<int>>& B) {
+        return {{A[0][0] * B[0][0] + A[0][1] * B[1][0],
+                 A[0][0] * B[0][1] + A[0][1] * B[1][1]},
+                {A[1][0] * B[0][0] + A[1][1] * B[1][0],
+                 A[1][0] * B[0][1] + A[1][1] * B[1][1]}};
+    }
+
+    vector<vector<int>> matrixPow(vector<vector<int>>& M, int p) {
+        vector<vector<int>> result = {{1, 0}, {0, 1}};
+        vector<vector<int>> base = M;
+
+        while (p > 0) {
+            if (p % 2 == 1) {
+                result = matrixMult(result, base);
+            }
+            base = matrixMult(base, base);
+            p /= 2;
+        }
+
+        return result;
+    }
+};
+```
+
+```javascript
+class Solution {
+    /**
+     * @param {number} n
+     * @return {number}
+     */
+    climbStairs(n) {
+        if (n === 1) return 1;
+
+        const matrixMult = (A, B) => {
+            return [
+                [
+                    A[0][0] * B[0][0] + A[0][1] * B[1][0],
+                    A[0][0] * B[0][1] + A[0][1] * B[1][1],
+                ],
+                [
+                    A[1][0] * B[0][0] + A[1][1] * B[1][0],
+                    A[1][0] * B[0][1] + A[1][1] * B[1][1],
+                ],
+            ];
+        };
+
+        const matrixPow = (M, p) => {
+            let result = [
+                [1, 0],
+                [0, 1],
+            ];
+            let base = M;
+
+            while (p > 0) {
+                if (p % 2 === 1) {
+                    result = matrixMult(result, base);
+                }
+                base = matrixMult(base, base);
+                p = Math.floor(p / 2);
+            }
+
+            return result;
+        };
+
+        const M = [
+            [1, 1],
+            [1, 0],
+        ];
+        const result = matrixPow(M, n);
+
+        return result[0][0];
+    }
+}
+```
+
+```csharp
+public class Solution {
+    public int ClimbStairs(int n) {
+        if (n == 1) return 1;
+
+        int[,] M = new int[,] {{1, 1}, {1, 0}};
+        int[,] result = MatrixPow(M, n);
+
+        return result[0, 0];
+    }
+
+    private int[,] MatrixMult(int[,] A, int[,] B) {
+        return new int[,] {
+            {A[0, 0] * B[0, 0] + A[0, 1] * B[1, 0],
+             A[0, 0] * B[0, 1] + A[0, 1] * B[1, 1]},
+            {A[1, 0] * B[0, 0] + A[1, 1] * B[1, 0],
+             A[1, 0] * B[0, 1] + A[1, 1] * B[1, 1]}
+        };
+    }
+
+    private int[,] MatrixPow(int[,] M, int p) {
+        int[,] result = new int[,] {{1, 0}, {0, 1}};
+        int[,] baseM = M;
+
+        while (p > 0) {
+            if (p % 2 == 1) {
+                result = MatrixMult(result, baseM);
+            }
+            baseM = MatrixMult(baseM, baseM);
+            p /= 2;
+        }
+
+        return result;
+    }
+}
+```
+
+```go
+func climbStairs(n int) int {
+    if n == 1 {
+        return 1
+    }
+
+    M := [][]int{{1, 1}, {1, 0}}
+    result := matrixPow(M, n)
+
+    return result[0][0]
+}
+
+func matrixMult(A, B [][]int) [][]int {
+    return [][]int{
+        {A[0][0]*B[0][0] + A[0][1]*B[1][0],
+         A[0][0]*B[0][1] + A[0][1]*B[1][1]},
+        {A[1][0]*B[0][0] + A[1][1]*B[1][0],
+         A[1][0]*B[0][1] + A[1][1]*B[1][1]},
+    }
+}
+
+func matrixPow(M [][]int, p int) [][]int {
+    result := [][]int{{1, 0}, {0, 1}}
+    base := M
+
+    for p > 0 {
+        if p%2 == 1 {
+            result = matrixMult(result, base)
+        }
+        base = matrixMult(base, base)
+        p /= 2
+    }
+
+    return result
+}
+```
+
+```kotlin
+class Solution {
+    fun climbStairs(n: Int): Int {
+        if (n == 1) return 1
+
+        val M = arrayOf(intArrayOf(1, 1), intArrayOf(1, 0))
+        val result = matrixPow(M, n)
+
+        return result[0][0]
+    }
+
+    private fun matrixMult(A: Array<IntArray>, B: Array<IntArray>): Array<IntArray> {
+        return arrayOf(
+            intArrayOf(A[0][0] * B[0][0] + A[0][1] * B[1][0],
+                       A[0][0] * B[0][1] + A[0][1] * B[1][1]),
+            intArrayOf(A[1][0] * B[0][0] + A[1][1] * B[1][0],
+                       A[1][0] * B[0][1] + A[1][1] * B[1][1])
+        )
+    }
+
+    private fun matrixPow(M: Array<IntArray>, p: Int): Array<IntArray> {
+        var result = arrayOf(intArrayOf(1, 0), intArrayOf(0, 1))
+        var base = M
+        var power = p
+
+        while (power > 0) {
+            if (power % 2 == 1) {
+                result = matrixMult(result, base)
+            }
+            base = matrixMult(base, base)
+            power /= 2
+        }
+
+        return result
+    }
+}
+```
+
+```swift
+class Solution {
+    func climbStairs(_ n: Int) -> Int {
+        if n == 1 {
+            return 1
+        }
+
+        func matrixMult(_ A: [[Int]], _ B: [[Int]]) -> [[Int]] {
+            return [
+                [A[0][0] * B[0][0] + A[0][1] * B[1][0],
+                 A[0][0] * B[0][1] + A[0][1] * B[1][1]],
+                [A[1][0] * B[0][0] + A[1][1] * B[1][0],
+                 A[1][0] * B[0][1] + A[1][1] * B[1][1]]
+            ]
+        }
+
+        func matrixPow(_ M: [[Int]], _ p: Int) -> [[Int]] {
+            var result = [[1, 0], [0, 1]]
+            var base = M
+            var power = p
+
+            while power > 0 {
+                if power % 2 == 1 {
+                    result = matrixMult(result, base)
+                }
+                base = matrixMult(base, base)
+                power /= 2
+            }
+
+            return result
+        }
+
+        let M = [[1, 1], [1, 0]]
+        let result = matrixPow(M, n)
+        return result[0][0]
+    }
+}
+```
+
+
+```rust
+impl Solution {
+    pub fn climb_stairs(n: i32) -> i32 {
+        if n == 1 {
+            return 1;
+        }
+
+        fn matrix_mult(a: &[[i64; 2]; 2], b: &[[i64; 2]; 2]) -> [[i64; 2]; 2] {
+            [
+                [
+                    a[0][0] * b[0][0] + a[0][1] * b[1][0],
+                    a[0][0] * b[0][1] + a[0][1] * b[1][1],
+                ],
+                [
+                    a[1][0] * b[0][0] + a[1][1] * b[1][0],
+                    a[1][0] * b[0][1] + a[1][1] * b[1][1],
+                ],
+            ]
+        }
+
+        fn matrix_pow(m: &[[i64; 2]; 2], mut p: i32) -> [[i64; 2]; 2] {
+            let mut result = [[1i64, 0], [0, 1]];
+            let mut base = *m;
+
+            while p > 0 {
+                if p % 2 == 1 {
+                    result = matrix_mult(&result, &base);
+                }
+                base = matrix_mult(&base, &base);
+                p /= 2;
+            }
+
+            result
+        }
+
+        let m = [[1i64, 1], [1, 0]];
+        let result = matrix_pow(&m, n);
+        result[0][0] as i32
+    }
+}
+```
+
+::tabs-end
+
+### Time & Space Complexity
+
+- Time complexity: $O(\log n)$
+- Space complexity: $O(1)$
+
+---
+
+## 6. Math
+
+### Intuition
+The number of ways to climb stairs follows the **Fibonacci sequence**.  
+There is a **closed-form mathematical formula** (called **Binet’s Formula**) that directly computes the nth Fibonacci number using powers and square roots, without loops or recursion.
+
+This works because Fibonacci numbers can be expressed using two constants derived from the golden ratio.
+
+### Algorithm
+1. Compute the golden ratio `φ = (1 + √5) / 2` and its conjugate `ψ = (1 − √5) / 2`.
+2. Use Binet’s Formula to compute the Fibonacci value directly.
+3. Since climbing stairs corresponds to `Fib(n+1)`, adjust `n` accordingly.
+4. Round the result to handle floating-point precision.
+
+::tabs-start
+
+```python
+class Solution:
+    def climbStairs(self, n: int) -> int:
+        sqrt5 = math.sqrt(5)
+        phi = (1 + sqrt5) / 2
+        psi = (1 - sqrt5) / 2
+        n += 1
+        return round((phi**n - psi**n) / sqrt5)
+```
+
+```java
+public class Solution {
+    public int climbStairs(int n) {
+        double sqrt5 = Math.sqrt(5);
+        double phi = (1 + sqrt5) / 2;
+        double psi = (1 - sqrt5) / 2;
+        n++;
+        return (int) Math.round((Math.pow(phi, n) -
+                     Math.pow(psi, n)) / sqrt5);
+    }
+}
+```
+
+```cpp
+class Solution {
+public:
+    int climbStairs(int n) {
+        double sqrt5 = sqrt(5);
+        double phi = (1 + sqrt5) / 2;
+        double psi = (1 - sqrt5) / 2;
+        n++;
+        return round((pow(phi, n) - pow(psi, n)) / sqrt5);
+    }
+};
+```
+
+```javascript
+class Solution {
+    /**
+     * @param {number} n
+     * @return {number}
+     */
+    climbStairs(n) {
+        let sqrt5 = Math.sqrt(5);
+        let phi = (1 + sqrt5) / 2;
+        let psi = (1 - sqrt5) / 2;
+        n++;
+        return Math.round((Math.pow(phi, n) - Math.pow(psi, n)) / sqrt5);
+    }
+}
+```
+
+```csharp
+public class Solution {
+    public int ClimbStairs(int n) {
+        double sqrt5 = Math.Sqrt(5);
+        double phi = (1 + sqrt5) / 2;
+        double psi = (1 - sqrt5) / 2;
+        n++;
+        return (int) Math.Round((Math.Pow(phi, n) -
+                     Math.Pow(psi, n)) / sqrt5);
+    }
+}
+```
+
+```go
+func climbStairs(n int) int {
+    sqrt5 := math.Sqrt(5)
+    phi := (1 + sqrt5) / 2
+    psi := (1 - sqrt5) / 2
+    n++
+    return int(math.Round((math.Pow(phi, float64(n)) -
+               math.Pow(psi, float64(n))) / sqrt5))
+}
+```
+
+```kotlin
+class Solution {
+    fun climbStairs(n: Int): Int {
+        val sqrt5 = sqrt(5.0)
+        val phi = (1 + sqrt5) / 2
+        val psi = (1 - sqrt5) / 2
+        return round((phi.pow(n + 1) - psi.pow(n + 1)) / sqrt5).toInt()
+    }
+}
+```
+
+```swift
+class Solution {
+    func climbStairs(_ n: Int) -> Int {
+        let sqrt5 = sqrt(5.0)
+        let phi = (1.0 + sqrt5) / 2.0
+        let psi = (1.0 - sqrt5) / 2.0
+        let n = n + 1
+        return Int(round((pow(phi, Double(n)) - pow(psi, Double(n))) / sqrt5))
+    }
+}
+```
+
+
+```rust
+impl Solution {
+    pub fn climb_stairs(n: i32) -> i32 {
+        let sqrt5 = 5.0_f64.sqrt();
+        let phi = (1.0 + sqrt5) / 2.0;
+        let psi = (1.0 - sqrt5) / 2.0;
+        let n = n as f64 + 1.0;
+        ((phi.powf(n) - psi.powf(n)) / sqrt5).round() as i32
+    }
+}
+```
+
+::tabs-end
+
+### Time & Space Complexity
+
+- Time complexity: $O(\log n)$
+- Space complexity: $O(1)$
+
+---
+
+## Common Pitfalls
+
+### Off-by-One Error in Base Cases
+Initializing DP incorrectly or misunderstanding what `dp[0]` represents. For this problem, `dp[1] = 1` (one way to climb 1 step) and `dp[2] = 2` (two ways to climb 2 steps). Starting the loop from index 1 instead of 3 overwrites these base cases.
+
+```python
+# Wrong: loop starts too early
+for i in range(1, n + 1):
+    dp[i] = dp[i-1] + dp[i-2]
+
+# Correct: preserve base cases
+for i in range(3, n + 1):
+    dp[i] = dp[i-1] + dp[i-2]
+```
+
+### Not Handling n = 1 or n = 2 Edge Cases
+Attempting to access `dp[n-1]` or `dp[n-2]` when `n` is 1 or 2 without proper base case handling, causing index out of bounds errors. Always check `if n <= 2: return n` before running the general loop.

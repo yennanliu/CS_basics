@@ -1,0 +1,884 @@
+## Prerequisites
+
+Before attempting this problem, you should be comfortable with:
+
+- **Recursion** - Building solutions through recursive function calls
+- **Backtracking** - Exploring solution paths and undoing choices when they lead to invalid states
+- **Dynamic Programming** - Building larger solutions from smaller subproblems
+- **String Manipulation** - Building and validating strings character by character
+
+---
+
+## 1. Brute Force
+
+### Intuition
+
+Generate **all** strings of length `2n` using only `'('` and `')'`.
+Most will be invalid, so for each completed string we **validate** it:
+
+- Keep a `balance` (opens count).
+- `'('` increases `balance`, `')'` decreases it.
+- If `balance` ever becomes negative, there are too many `)` early, which is invalid.
+- At the end, `balance` must be `0`, meaning all opens are closed.
+
+### Algorithm
+
+1. Use DFS to build a string `s`.
+2. If `len(s) == 2n`, check if `s` is valid using the balance rule:
+    - If valid, add to result.
+3. Otherwise, branch:
+    - Try adding `'('`.
+    - Try adding `')'`.
+4. Return the collected results.
+
+::tabs-start
+
+```python
+class Solution:
+    def generateParenthesis(self, n: int) -> List[str]:
+        res = []
+
+        def valid(s: str):
+            open = 0
+            for c in s:
+                open += 1 if c == '(' else -1
+                if open < 0:
+                    return False
+            return not open
+
+        def dfs(s: str):
+            if n * 2 == len(s):
+                if valid(s):
+                    res.append(s)
+                return
+
+            dfs(s + '(')
+            dfs(s + ')')
+
+        dfs("")
+        return res
+```
+
+```java
+public class Solution {
+    public boolean valid(String s) {
+        int open = 0;
+        for (char c : s.toCharArray()) {
+            open += c == '(' ? 1 : -1;
+            if (open < 0) return false;
+        }
+        return open == 0;
+    }
+
+    void dfs(String s, List<String> res, int n) {
+        if (n * 2 == s.length()) {
+            if (valid(s)) res.add(s);
+            return;
+        }
+        dfs(s + '(', res, n);
+        dfs(s + ')', res, n);
+    }
+
+    public List<String> generateParenthesis(int n) {
+        List<String> res = new ArrayList<>();
+        dfs("", res, n);
+        return res;
+    }
+}
+```
+
+```cpp
+class Solution {
+public:
+    bool valid(const string& s) {
+        int open = 0;
+        for (char c : s) {
+            open += (c == '(') ? 1 : -1;
+            if (open < 0) return false;
+        }
+        return open == 0;
+    }
+
+    void dfs(string s, vector<string>& res, int n) {
+        if (s.length() == 2 * n) {
+            if (valid(s)) res.push_back(s);
+            return;
+        }
+        dfs(s + '(', res, n);
+        dfs(s + ')', res, n);
+    }
+
+    vector<string> generateParenthesis(int n) {
+        vector<string> res;
+        dfs("", res, n);
+        return res;
+    }
+};
+```
+
+```javascript
+class Solution {
+    /**
+     * @param {string} s
+     * @return {boolean}
+     */
+    valid(s) {
+        let open = 0;
+        for (const c of s) {
+            open += c === '(' ? 1 : -1;
+            if (open < 0) return false;
+        }
+        return open === 0;
+    }
+
+    /**
+     * @param {string} s
+     * @param {string[]}
+     * @param {number} n
+     */
+    dfs(s, res, n) {
+        if (s.length === 2 * n) {
+            if (this.valid(s)) res.push(s);
+            return;
+        }
+        this.dfs(s + '(', res, n);
+        this.dfs(s + ')', res, n);
+    }
+
+    /**
+     * @param {number} n
+     * @return {string[]}
+     */
+    generateParenthesis(n) {
+        const res = [];
+        this.dfs('', res, n);
+        return res;
+    }
+}
+```
+
+```csharp
+public class Solution {
+    public bool Valid(string s) {
+        int open = 0;
+        foreach (char c in s) {
+            open += (c == '(') ? 1 : -1;
+            if (open < 0) return false;
+        }
+        return open == 0;
+    }
+
+    public void Dfs(string s, List<string> res, int n) {
+        if (s.Length == 2 * n) {
+            if (Valid(s)) res.Add(s);
+            return;
+        }
+        Dfs(s + '(', res, n);
+        Dfs(s + ')', res, n);
+    }
+
+    public List<string> GenerateParenthesis(int n) {
+        List<string> res = new List<string>();
+        Dfs("", res, n);
+        return res;
+    }
+}
+```
+
+```go
+func generateParenthesis(n int) []string {
+   res := make([]string, 0)
+
+   var valid func(string) bool
+   valid = func(s string) bool {
+       open := 0
+       for _, c := range s {
+           if c == '(' {
+               open++
+           } else {
+               open--
+           }
+           if open < 0 {
+               return false
+           }
+       }
+       return open == 0
+   }
+
+   var dfs func(string)
+   dfs = func(s string) {
+       if len(s) == n*2 {
+           if valid(s) {
+               res = append(res, s)
+           }
+           return
+       }
+
+       dfs(s + "(")
+       dfs(s + ")")
+   }
+
+   dfs("")
+   return res
+}
+```
+
+```kotlin
+class Solution {
+    fun generateParenthesis(n: Int): List<String> {
+        val res = mutableListOf<String>()
+
+        fun valid(s: String): Boolean {
+            var open = 0
+            for (c in s) {
+                if (c == '(') open++ else open--
+                if (open < 0) return false
+            }
+            return open == 0
+        }
+
+        fun dfs(s: String) {
+            if (s.length == n * 2) {
+                if (valid(s)) {
+                    res.add(s)
+                }
+                return
+            }
+
+            dfs(s + "(")
+            dfs(s + ")")
+        }
+
+        dfs("")
+        return res
+    }
+}
+```
+
+```swift
+class Solution {
+    func generateParenthesis(_ n: Int) -> [String] {
+        var res = [String]()
+
+        func isValid(_ s: String) -> Bool {
+            var open = 0
+            for c in s {
+                open += (c == "(") ? 1 : -1
+                if open < 0 {
+                    return false
+                }
+            }
+            return open == 0
+        }
+
+        func dfs(_ s: String) {
+            if s.count == n * 2 {
+                if isValid(s) {
+                    res.append(s)
+                }
+                return
+            }
+            dfs(s + "(")
+            dfs(s + ")")
+        }
+
+        dfs("")
+        return res
+    }
+}
+```
+
+```rust
+impl Solution {
+    pub fn generate_parenthesis(n: i32) -> Vec<String> {
+        let mut res = vec![];
+
+        fn valid(s: &str) -> bool {
+            let mut open = 0i32;
+            for c in s.chars() {
+                open += if c == '(' { 1 } else { -1 };
+                if open < 0 {
+                    return false;
+                }
+            }
+            open == 0
+        }
+
+        fn dfs(s: String, n: i32, res: &mut Vec<String>) {
+            if s.len() == (n * 2) as usize {
+                if valid(&s) {
+                    res.push(s);
+                }
+                return;
+            }
+            dfs(s.clone() + "(", n, res);
+            dfs(s + ")", n, res);
+        }
+
+        dfs(String::new(), n, &mut res);
+        res
+    }
+}
+```
+
+::tabs-end
+
+### Time & Space Complexity
+
+- Time complexity: $O(2 ^ {2n} * n)$
+- Space complexity: $O(2 ^ {2n} * n)$
+
+---
+
+## 2. Backtracking
+
+### Intuition
+
+Instead of generating **all** strings and then checking validity, we **build only valid strings**.
+
+Key rules for valid parentheses:
+
+- You can add `'('` **only if** you still have openings left (`open < n`).
+- You can add `')'` **only if** it won't break validity (`close < open`).
+- A string is complete and valid **only when** `open == close == n`.
+
+So at every step, we make **safe choices only**, which avoids invalid paths early.
+
+### Algorithm
+
+1. Start with an empty string.
+2. Track:
+    - `open` - number of `'('` used.
+    - `close` - number of `')'` used.
+3. If `open == close == n`, add the built string to the result.
+4. If `open < n`, add `'('` and recurse.
+5. If `close < open`, add `')'` and recurse.
+6. Backtrack after each choice.
+
+::tabs-start
+
+```python
+class Solution:
+    def generateParenthesis(self, n: int) -> List[str]:
+        stack = []
+        res = []
+
+        def backtrack(openN, closedN):
+            if openN == closedN == n:
+                res.append("".join(stack))
+                return
+
+            if openN < n:
+                stack.append("(")
+                backtrack(openN + 1, closedN)
+                stack.pop()
+            if closedN < openN:
+                stack.append(")")
+                backtrack(openN, closedN + 1)
+                stack.pop()
+
+        backtrack(0, 0)
+        return res
+```
+
+```java
+public class Solution {
+    private void backtrack(int openN, int closedN, int n, List<String> res, StringBuilder stack) {
+        if (openN == closedN && openN == n) {
+            res.add(stack.toString());
+            return;
+        }
+
+        if (openN < n) {
+            stack.append('(');
+            backtrack(openN + 1, closedN, n, res, stack);
+            stack.deleteCharAt(stack.length() - 1);
+        }
+        if (closedN < openN) {
+            stack.append(')');
+            backtrack(openN, closedN + 1, n, res, stack);
+            stack.deleteCharAt(stack.length() - 1);
+        }
+    }
+
+    public List<String> generateParenthesis(int n) {
+        List<String> res = new ArrayList<>();
+        StringBuilder stack = new StringBuilder();
+        backtrack(0, 0, n, res, stack);
+        return res;
+    }
+}
+```
+
+```cpp
+class Solution {
+public:
+    void backtrack(int openN, int closedN, int n, vector<string>& res, string& stack) {
+        if (openN == closedN && openN == n) {
+            res.push_back(stack);
+            return;
+        }
+
+        if (openN < n) {
+            stack += '(';
+            backtrack(openN + 1, closedN, n, res, stack);
+            stack.pop_back();
+        }
+        if (closedN < openN) {
+            stack += ')';
+            backtrack(openN, closedN + 1, n, res, stack);
+            stack.pop_back();
+        }
+    }
+
+    vector<string> generateParenthesis(int n) {
+        vector<string> res;
+        string stack;
+        backtrack(0, 0, n, res, stack);
+        return res;
+    }
+};
+```
+
+```javascript
+class Solution {
+    /**
+     * @param {number} openN
+     * @param {number} closeN
+     * @param {number} n
+     * @param {string[]} res
+     * @param {string} stack
+     */
+    backtrack(openN, closedN, n, res, stack) {
+        if (openN === closedN && openN === n) {
+            res.push(stack);
+            return;
+        }
+
+        if (openN < n) {
+            this.backtrack(openN + 1, closedN, n, res, stack + '(');
+        }
+        if (closedN < openN) {
+            this.backtrack(openN, closedN + 1, n, res, stack + ')');
+        }
+    }
+
+    /**
+     * @param {number} n
+     * @return {string[]}
+     */
+    generateParenthesis(n) {
+        const res = [];
+        this.backtrack(0, 0, n, res, '');
+        return res;
+    }
+}
+```
+
+```csharp
+public class Solution {
+    public void Backtrack(int openN, int closedN, int n, List<string> res, string stack) {
+        if (openN == closedN && openN == n) {
+            res.Add(stack);
+            return;
+        }
+
+        if (openN < n) {
+            Backtrack(openN + 1, closedN, n, res, stack + '(');
+        }
+
+        if (closedN < openN) {
+            Backtrack(openN, closedN + 1, n, res, stack + ')');
+        }
+    }
+
+    public List<string> GenerateParenthesis(int n) {
+        List<string> res = new List<string>();
+        string stack = "";
+        Backtrack(0, 0, n, res, stack);
+        return res;
+    }
+}
+```
+
+```go
+func generateParenthesis(n int) []string {
+   stack := make([]string, 0)
+   res := make([]string, 0)
+
+   var backtrack func(int, int)
+   backtrack = func(openN, closedN int) {
+       if openN == n && closedN == n {
+           res = append(res, strings.Join(stack, ""))
+           return
+       }
+
+       if openN < n {
+           stack = append(stack, "(")
+           backtrack(openN+1, closedN)
+           stack = stack[:len(stack)-1]
+       }
+
+       if closedN < openN {
+           stack = append(stack, ")")
+           backtrack(openN, closedN+1)
+           stack = stack[:len(stack)-1]
+       }
+   }
+
+   backtrack(0, 0)
+   return res
+}
+```
+
+```kotlin
+class Solution {
+    fun generateParenthesis(n: Int): List<String> {
+        val stack = mutableListOf<String>()
+        val res = mutableListOf<String>()
+
+        fun backtrack(openN: Int, closedN: Int) {
+            if (openN == n && closedN == n) {
+                res.add(stack.joinToString(""))
+                return
+            }
+
+            if (openN < n) {
+                stack.add("(")
+                backtrack(openN + 1, closedN)
+                stack.removeAt(stack.lastIndex)
+            }
+
+            if (closedN < openN) {
+                stack.add(")")
+                backtrack(openN, closedN + 1)
+                stack.removeAt(stack.lastIndex)
+            }
+        }
+
+        backtrack(0, 0)
+        return res
+    }
+}
+```
+
+```swift
+class Solution {
+    func generateParenthesis(_ n: Int) -> [String] {
+        var stack = [Character]()
+        var res = [String]()
+
+        func backtrack(_ openN: Int, _ closedN: Int) {
+            if openN == n && closedN == n {
+                res.append(String(stack))
+                return
+            }
+
+            if openN < n {
+                stack.append("(")
+                backtrack(openN + 1, closedN)
+                stack.removeLast()
+            }
+
+            if closedN < openN {
+                stack.append(")")
+                backtrack(openN, closedN + 1)
+                stack.removeLast()
+            }
+        }
+
+        backtrack(0, 0)
+        return res
+    }
+}
+```
+
+```rust
+impl Solution {
+    pub fn generate_parenthesis(n: i32) -> Vec<String> {
+        let mut res = vec![];
+        let mut stack = String::new();
+
+        fn backtrack(open_n: i32, closed_n: i32, n: i32, res: &mut Vec<String>, stack: &mut String) {
+            if open_n == n && closed_n == n {
+                res.push(stack.clone());
+                return;
+            }
+            if open_n < n {
+                stack.push('(');
+                backtrack(open_n + 1, closed_n, n, res, stack);
+                stack.pop();
+            }
+            if closed_n < open_n {
+                stack.push(')');
+                backtrack(open_n, closed_n + 1, n, res, stack);
+                stack.pop();
+            }
+        }
+
+        backtrack(0, 0, n, &mut res, &mut stack);
+        res
+    }
+}
+```
+
+::tabs-end
+
+### Time & Space Complexity
+
+- Time complexity: $O(\frac{4^n}{\sqrt{n}})$
+- Space complexity: $O(n)$
+
+---
+
+## 3. Dynamic Programming
+
+### Intuition
+
+A valid parentheses string can be **built from smaller valid strings**.
+
+Think of this pattern: `( left ) right`
+
+- `left` is a valid parentheses string with `i` pairs.
+- `right` is a valid parentheses string with `k - i - 1` pairs.
+- Wrapping `left` with `()` guarantees balance.
+- Appending `right` keeps the string valid.
+
+So, every valid result for `k` pairs is formed by **combining smaller answers**.
+
+### Algorithm
+
+1. Let `dp[x]` store **all valid parentheses strings with `x` pairs**.
+2. Base case:
+    - `dp[0] = [""]` (empty string).
+3. For each `k` from `1` to `n`:
+    - Try all splits `i` from `0` to `k-1`.
+    - Combine:
+        ```
+        "(" + dp[i] + ")" + dp[k - i - 1]
+        ```
+4. Store all combinations in `dp[k]`.
+5. Return `dp[n]`.
+
+::tabs-start
+
+```python
+class Solution:
+    def generateParenthesis(self, n):
+        res = [[] for _ in range(n+1)]
+        res[0] = [""]
+
+        for k in range(n + 1):
+            for i in range(k):
+                for left in res[i]:
+                    for right in res[k-i-1]:
+                        res[k].append("(" + left + ")" + right)
+
+        return res[-1]
+```
+
+```java
+public class Solution {
+    public List<String> generateParenthesis(int n) {
+        List<List<String>> res = new ArrayList<>();
+        for (int i = 0; i <= n; i++) {
+            res.add(new ArrayList<>());
+        }
+        res.get(0).add("");
+
+        for (int k = 0; k <= n; k++) {
+            for (int i = 0; i < k; i++) {
+                for (String left : res.get(i)) {
+                    for (String right : res.get(k - i - 1)) {
+                        res.get(k).add("(" + left + ")" + right);
+                    }
+                }
+            }
+        }
+
+        return res.get(n);
+    }
+}
+```
+
+```cpp
+class Solution {
+public:
+    vector<string> generateParenthesis(int n) {
+        vector<vector<string>> res(n + 1);
+        res[0] = {""};
+
+        for (int k = 0; k <= n; ++k) {
+            for (int i = 0; i < k; ++i) {
+                for (const string& left : res[i]) {
+                    for (const string& right : res[k - i - 1]) {
+                        res[k].push_back("(" + left + ")" + right);
+                    }
+                }
+            }
+        }
+
+        return res[n];
+    }
+};
+```
+
+```javascript
+class Solution {
+    /**
+     * @param {number} n
+     * @return {string[]}
+     */
+    generateParenthesis(n) {
+        const res = Array.from({ length: n + 1 }, () => []);
+        res[0] = [''];
+
+        for (let k = 0; k <= n; k++) {
+            for (let i = 0; i < k; i++) {
+                for (const left of res[i]) {
+                    for (const right of res[k - i - 1]) {
+                        res[k].push('(' + left + ')' + right);
+                    }
+                }
+            }
+        }
+
+        return res[n];
+    }
+}
+```
+
+```csharp
+public class Solution {
+    public List<string> GenerateParenthesis(int n) {
+        List<List<string>> res = new List<List<string>>();
+        for (int i = 0; i <= n; i++) {
+            res.Add(new List<string>());
+        }
+        res[0].Add("");
+
+        for (int k = 0; k <= n; k++) {
+            for (int i = 0; i < k; i++) {
+                foreach (string left in res[i]) {
+                    foreach (string right in res[k - i - 1]) {
+                        res[k].Add("(" + left + ")" + right);
+                    }
+                }
+            }
+        }
+
+        return res[n];
+    }
+}
+```
+
+```go
+func generateParenthesis(n int) []string {
+   res := make([][]string, n+1)
+   res[0] = []string{""}
+
+   for k := 1; k <= n; k++ {
+       res[k] = make([]string, 0)
+       for i := 0; i < k; i++ {
+           for _, left := range res[i] {
+               for _, right := range res[k-i-1] {
+                   res[k] = append(res[k], "(" + left + ")" + right)
+               }
+           }
+       }
+   }
+
+   return res[n]
+}
+```
+
+```kotlin
+class Solution {
+    fun generateParenthesis(n: Int): List<String> {
+        val res = Array(n + 1) { mutableListOf<String>() }
+        res[0] = mutableListOf("")
+
+        for (k in 1..n) {
+            for (i in 0 until k) {
+                for (left in res[i]) {
+                    for (right in res[k-i-1]) {
+                        res[k].add("(" + left + ")" + right)
+                    }
+                }
+            }
+        }
+
+        return res[n]
+    }
+}
+```
+
+```swift
+class Solution {
+    func generateParenthesis(_ n: Int) -> [String] {
+        var res = [[String]](repeating: [], count: n + 1)
+        res[0] = [""]
+
+        for k in 0...n {
+            for i in 0..<k {
+                for left in res[i] {
+                    for right in res[k - i - 1] {
+                        res[k].append("(" + left + ")" + right)
+                    }
+                }
+            }
+        }
+
+        return res[n]
+    }
+}
+```
+
+```rust
+impl Solution {
+    pub fn generate_parenthesis(n: i32) -> Vec<String> {
+        let n = n as usize;
+        let mut res: Vec<Vec<String>> = vec![vec![]; n + 1];
+        res[0] = vec![String::new()];
+
+        for k in 1..=n {
+            let mut cur = vec![];
+            for i in 0..k {
+                let left = res[i].clone();
+                let right = res[k - i - 1].clone();
+                for l in &left {
+                    for r in &right {
+                        cur.push(format!("({}){}", l, r));
+                    }
+                }
+            }
+            res[k] = cur;
+        }
+
+        res[n].clone()
+    }
+}
+```
+
+::tabs-end
+
+### Time & Space Complexity
+
+- Time complexity: $O(\frac{4^n}{\sqrt{n}})$
+- Space complexity: $O(n)$
+
+---
+
+## Common Pitfalls
+
+### Using Wrong Condition for Adding Closing Parenthesis
+
+The condition to add `)` is `close < open`, not `close < n`. Adding a closing parenthesis is only valid when there are unmatched opening parentheses. Using `close < n` would generate invalid strings like `())(()` where closing brackets appear before their matching opens.
+
+### Forgetting to Backtrack When Using a Mutable Builder
+
+When using a mutable structure like a list or StringBuilder to build the string, you must remove the last character after the recursive call returns. Forgetting to pop/remove leads to corrupted strings in subsequent branches. The immutable string concatenation approach avoids this issue but is less memory efficient.
+
+### Misunderstanding the Base Case Condition
+
+The base case should check `open == n && close == n`, not just `length == 2n`. While both conditions are mathematically equivalent for valid paths, explicitly checking both counters makes the logic clearer and helps catch bugs where invalid strings might reach length `2n` through incorrect branching conditions.

@@ -1,0 +1,710 @@
+## Prerequisites
+
+Before attempting this problem, you should be comfortable with:
+
+- **Linked List Fundamentals** - Understanding node structure, traversal, and pointer manipulation
+- **Recursion** - Processing linked lists recursively from the tail back to the head
+- **Sorted Data Structures** - Leveraging the fact that duplicates are adjacent in sorted lists
+
+---
+
+## 1. Recursion
+
+### Intuition
+
+We solve the problem from the end of the list backward. First, we recursively remove duplicates from the rest of the list, then check if the current node duplicates its (now cleaned) next node. If so, we skip the current node by returning its next. This naturally handles chains of duplicates.
+
+### Algorithm
+
+1. Base case: if the list is empty or has one node, return it.
+2. Recursively clean the rest of the list starting from `head.next`.
+3. Update `head.next` to point to the cleaned sublist.
+4. If the current node's value equals the next node's value, return `head.next` (skip current).
+5. Otherwise, return `head` (keep current).
+
+::tabs-start
+
+```python
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+class Solution:
+    def deleteDuplicates(self, head: Optional[ListNode]) -> Optional[ListNode]:
+        if not head or not head.next:
+            return head
+
+        head.next = self.deleteDuplicates(head.next)
+        return head if head.val != head.next.val else head.next
+```
+
+```java
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+public class Solution {
+    public ListNode deleteDuplicates(ListNode head) {
+        if (head == null || head.next == null) return head;
+
+        head.next = deleteDuplicates(head.next);
+        return head.val != head.next.val ? head : head.next;
+    }
+}
+```
+
+```cpp
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* deleteDuplicates(ListNode* head) {
+        if (!head || !head->next) return head;
+
+        head->next = deleteDuplicates(head->next);
+        return head->val != head->next->val ? head : head->next;
+    }
+};
+```
+
+```javascript
+/**
+ * Definition for singly-linked list.
+ * class ListNode {
+ *     constructor(val = 0, next = null) {
+ *         this.val = val;
+ *         this.next = next;
+ *     }
+ * }
+ */
+class Solution {
+    /**
+     * @param {ListNode} head
+     * @return {ListNode}
+     */
+    deleteDuplicates(head) {
+        if (!head || !head.next) return head;
+
+        head.next = this.deleteDuplicates(head.next);
+        return head.val !== head.next.val ? head : head.next;
+    }
+}
+```
+
+```csharp
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     public int val;
+ *     public ListNode next;
+ *     public ListNode(int val=0, ListNode next=null) {
+ *         this.val = val;
+ *         this.next = next;
+ *     }
+ * }
+ */
+public class Solution {
+    public ListNode DeleteDuplicates(ListNode head) {
+        if (head == null || head.next == null) return head;
+
+        head.next = DeleteDuplicates(head.next);
+        return head.val != head.next.val ? head : head.next;
+    }
+}
+```
+
+```go
+/**
+ * Definition for singly-linked list.
+ * type ListNode struct {
+ *     Val int
+ *     Next *ListNode
+ * }
+ */
+func deleteDuplicates(head *ListNode) *ListNode {
+    if head == nil || head.Next == nil {
+        return head
+    }
+
+    head.Next = deleteDuplicates(head.Next)
+    if head.Val != head.Next.Val {
+        return head
+    }
+    return head.Next
+}
+```
+
+```kotlin
+/**
+ * Example:
+ * var li = ListNode(5)
+ * var v = li.`val`
+ * Definition for singly-linked list.
+ * class ListNode(var `val`: Int) {
+ *     var next: ListNode? = null
+ * }
+ */
+class Solution {
+    fun deleteDuplicates(head: ListNode?): ListNode? {
+        if (head?.next == null) return head
+
+        head.next = deleteDuplicates(head.next)
+        return if (head.`val` != head.next!!.`val`) head else head.next
+    }
+}
+```
+
+```swift
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     public var val: Int
+ *     public var next: ListNode?
+ *     public init() { self.val = 0; self.next = nil; }
+ *     public init(_ val: Int) { self.val = val; self.next = nil; }
+ *     public init(_ val: Int, _ next: ListNode?) { self.val = val; self.next = next; }
+ * }
+ */
+class Solution {
+    func deleteDuplicates(_ head: ListNode?) -> ListNode? {
+        guard let head = head, let next = head.next else { return head }
+
+        head.next = deleteDuplicates(head.next)
+        return head.val != head.next!.val ? head : head.next
+    }
+}
+```
+
+```rust
+// Definition for singly-linked list.
+// #[derive(PartialEq, Eq, Clone, Debug)]
+// pub struct ListNode {
+//   pub val: i32,
+//   pub next: Option<Box<ListNode>>
+// }
+impl Solution {
+    pub fn delete_duplicates(head: Option<Box<ListNode>>) -> Option<Box<ListNode>> {
+        match head {
+            None => None,
+            Some(mut node) => {
+                node.next = Self::delete_duplicates(node.next);
+                if node.next.is_some() && node.val == node.next.as_ref().unwrap().val {
+                    node.next
+                } else {
+                    Some(node)
+                }
+            }
+        }
+    }
+}
+```
+
+::tabs-end
+
+### Time & Space Complexity
+
+- Time complexity: $O(n)$
+- Space complexity: $O(n)$ for recursion stack.
+
+---
+
+## 2. Iteration - I
+
+### Intuition
+
+Since the list is sorted, duplicates are consecutive. At each node, we skip over all following nodes with the same value by adjusting the `next` pointer. This removes entire chains of duplicates in one pass through the list.
+
+### Algorithm
+
+1. Start with a pointer `cur` at the head.
+2. While `cur` is not `null`, check if the next node has the same value.
+3. If so, skip the next node by setting `cur.next = cur.next.next`.
+4. Continue skipping until the next node has a different value.
+5. Move `cur` to the next node and repeat.
+6. Return the head.
+
+::tabs-start
+
+```python
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+class Solution:
+    def deleteDuplicates(self, head: Optional[ListNode]) -> Optional[ListNode]:
+        cur = head
+        while cur:
+            while cur.next and cur.next.val == cur.val:
+                cur.next = cur.next.next
+            cur = cur.next
+        return head
+```
+
+```java
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+public class Solution {
+    public ListNode deleteDuplicates(ListNode head) {
+        ListNode cur = head;
+        while (cur != null) {
+            while (cur.next != null && cur.next.val == cur.val) {
+                cur.next = cur.next.next;
+            }
+            cur = cur.next;
+        }
+        return head;
+    }
+}
+```
+
+```cpp
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* deleteDuplicates(ListNode* head) {
+        ListNode* cur = head;
+        while (cur) {
+            while (cur->next && cur->next->val == cur->val) {
+                cur->next = cur->next->next;
+            }
+            cur = cur->next;
+        }
+        return head;
+    }
+};
+```
+
+```javascript
+/**
+ * Definition for singly-linked list.
+ * class ListNode {
+ *     constructor(val = 0, next = null) {
+ *         this.val = val;
+ *         this.next = next;
+ *     }
+ * }
+ */
+class Solution {
+    /**
+     * @param {ListNode} head
+     * @return {ListNode}
+     */
+    deleteDuplicates(head) {
+        let cur = head;
+        while (cur) {
+            while (cur.next && cur.next.val === cur.val) {
+                cur.next = cur.next.next;
+            }
+            cur = cur.next;
+        }
+        return head;
+    }
+}
+```
+
+```csharp
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     public int val;
+ *     public ListNode next;
+ *     public ListNode(int val=0, ListNode next=null) {
+ *         this.val = val;
+ *         this.next = next;
+ *     }
+ * }
+ */
+public class Solution {
+    public ListNode DeleteDuplicates(ListNode head) {
+        ListNode cur = head;
+        while (cur != null) {
+            while (cur.next != null && cur.next.val == cur.val) {
+                cur.next = cur.next.next;
+            }
+            cur = cur.next;
+        }
+        return head;
+    }
+}
+```
+
+```go
+/**
+ * Definition for singly-linked list.
+ * type ListNode struct {
+ *     Val int
+ *     Next *ListNode
+ * }
+ */
+func deleteDuplicates(head *ListNode) *ListNode {
+    cur := head
+    for cur != nil {
+        for cur.Next != nil && cur.Next.Val == cur.Val {
+            cur.Next = cur.Next.Next
+        }
+        cur = cur.Next
+    }
+    return head
+}
+```
+
+```kotlin
+/**
+ * Example:
+ * var li = ListNode(5)
+ * var v = li.`val`
+ * Definition for singly-linked list.
+ * class ListNode(var `val`: Int) {
+ *     var next: ListNode? = null
+ * }
+ */
+class Solution {
+    fun deleteDuplicates(head: ListNode?): ListNode? {
+        var cur = head
+        while (cur != null) {
+            while (cur.next != null && cur.next!!.`val` == cur.`val`) {
+                cur.next = cur.next!!.next
+            }
+            cur = cur.next
+        }
+        return head
+    }
+}
+```
+
+```swift
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     public var val: Int
+ *     public var next: ListNode?
+ *     public init() { self.val = 0; self.next = nil; }
+ *     public init(_ val: Int) { self.val = val; self.next = nil; }
+ *     public init(_ val: Int, _ next: ListNode?) { self.val = val; self.next = next; }
+ * }
+ */
+class Solution {
+    func deleteDuplicates(_ head: ListNode?) -> ListNode? {
+        var cur = head
+        while cur != nil {
+            while cur?.next != nil && cur?.next?.val == cur?.val {
+                cur?.next = cur?.next?.next
+            }
+            cur = cur?.next
+        }
+        return head
+    }
+}
+```
+
+```rust
+impl Solution {
+    pub fn delete_duplicates(head: Option<Box<ListNode>>) -> Option<Box<ListNode>> {
+        let mut head = head;
+        let mut cur = &mut head;
+        while cur.is_some() {
+            while cur.as_ref().unwrap().next.is_some()
+                && cur.as_ref().unwrap().val
+                    == cur.as_ref().unwrap().next.as_ref().unwrap().val
+            {
+                let next_next = cur.as_mut().unwrap().next.as_mut().unwrap().next.take();
+                cur.as_mut().unwrap().next = next_next;
+            }
+            cur = &mut cur.as_mut().unwrap().next;
+        }
+        head
+    }
+}
+```
+
+::tabs-end
+
+### Time & Space Complexity
+
+- Time complexity: $O(n)$
+- Space complexity: $O(1)$ extra space.
+
+---
+
+## 3. Iteration - II
+
+### Intuition
+
+A slightly different structure: instead of a nested loop, we use a single loop with a conditional. If the current and next values match, we skip the next node. If they differ, we advance the pointer. This achieves the same result with cleaner control flow.
+
+### Algorithm
+
+1. Start with a pointer `cur` at the head.
+2. While both `cur` and `cur.next` exist:
+    - If they have the same value, skip the next node by updating `cur.next`.
+    - Otherwise, advance `cur` to the next node.
+3. Return the head.
+
+::tabs-start
+
+```python
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+class Solution:
+    def deleteDuplicates(self, head: Optional[ListNode]) -> Optional[ListNode]:
+        cur = head
+        while cur and cur.next:
+            if cur.val == cur.next.val:
+                cur.next = cur.next.next
+            else:
+                cur = cur.next
+        return head
+```
+
+```java
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+public class Solution {
+    public ListNode deleteDuplicates(ListNode head) {
+        ListNode cur = head;
+        while (cur != null && cur.next != null) {
+            if (cur.next.val == cur.val) {
+                cur.next = cur.next.next;
+            } else {
+                cur = cur.next;
+            }
+        }
+        return head;
+    }
+}
+```
+
+```cpp
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* deleteDuplicates(ListNode* head) {
+        ListNode* cur = head;
+        while (cur && cur->next) {
+            if (cur->next->val == cur->val) {
+                cur->next = cur->next->next;
+            } else {
+                cur = cur->next;
+            }
+        }
+        return head;
+    }
+};
+```
+
+```javascript
+/**
+ * Definition for singly-linked list.
+ * class ListNode {
+ *     constructor(val = 0, next = null) {
+ *         this.val = val;
+ *         this.next = next;
+ *     }
+ * }
+ */
+class Solution {
+    /**
+     * @param {ListNode} head
+     * @return {ListNode}
+     */
+    deleteDuplicates(head) {
+        let cur = head;
+        while (cur && cur.next) {
+            if (cur.next.val === cur.val) {
+                cur.next = cur.next.next;
+            } else {
+                cur = cur.next;
+            }
+        }
+        return head;
+    }
+}
+```
+
+```csharp
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     public int val;
+ *     public ListNode next;
+ *     public ListNode(int val=0, ListNode next=null) {
+ *         this.val = val;
+ *         this.next = next;
+ *     }
+ * }
+ */
+public class Solution {
+    public ListNode DeleteDuplicates(ListNode head) {
+        ListNode cur = head;
+        while (cur != null && cur.next != null) {
+            if (cur.next.val == cur.val) {
+                cur.next = cur.next.next;
+            } else {
+                cur = cur.next;
+            }
+        }
+        return head;
+    }
+}
+```
+
+```go
+/**
+ * Definition for singly-linked list.
+ * type ListNode struct {
+ *     Val int
+ *     Next *ListNode
+ * }
+ */
+func deleteDuplicates(head *ListNode) *ListNode {
+    cur := head
+    for cur != nil && cur.Next != nil {
+        if cur.Next.Val == cur.Val {
+            cur.Next = cur.Next.Next
+        } else {
+            cur = cur.Next
+        }
+    }
+    return head
+}
+```
+
+```kotlin
+/**
+ * Example:
+ * var li = ListNode(5)
+ * var v = li.`val`
+ * Definition for singly-linked list.
+ * class ListNode(var `val`: Int) {
+ *     var next: ListNode? = null
+ * }
+ */
+class Solution {
+    fun deleteDuplicates(head: ListNode?): ListNode? {
+        var cur = head
+        while (cur?.next != null) {
+            if (cur.next!!.`val` == cur.`val`) {
+                cur.next = cur.next!!.next
+            } else {
+                cur = cur.next
+            }
+        }
+        return head
+    }
+}
+```
+
+```swift
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     public var val: Int
+ *     public var next: ListNode?
+ *     public init() { self.val = 0; self.next = nil; }
+ *     public init(_ val: Int) { self.val = val; self.next = nil; }
+ *     public init(_ val: Int, _ next: ListNode?) { self.val = val; self.next = next; }
+ * }
+ */
+class Solution {
+    func deleteDuplicates(_ head: ListNode?) -> ListNode? {
+        var cur = head
+        while cur != nil && cur?.next != nil {
+            if cur?.next?.val == cur?.val {
+                cur?.next = cur?.next?.next
+            } else {
+                cur = cur?.next
+            }
+        }
+        return head
+    }
+}
+```
+
+```rust
+impl Solution {
+    pub fn delete_duplicates(head: Option<Box<ListNode>>) -> Option<Box<ListNode>> {
+        let mut head = head;
+        let mut cur = &mut head;
+        while let Some(node) = cur {
+            if node.next.is_some() && node.val == node.next.as_ref().unwrap().val {
+                node.next = node.next.as_mut().unwrap().next.take();
+            } else {
+                cur = &mut node.next;
+            }
+        }
+        head
+    }
+}
+```
+
+::tabs-end
+
+### Time & Space Complexity
+
+- Time complexity: $O(n)$
+- Space complexity: $O(1)$ extra space.
+
+---
+
+## Common Pitfalls
+
+### Advancing the Pointer Incorrectly
+
+When removing a duplicate, you should only update `cur.next` to skip the duplicate node, but not advance `cur` itself. If you move `cur` forward after removing a node, you might skip checking whether the new next node is also a duplicate. Only advance `cur` when the next node has a different value.
+
+### Not Handling Null Pointers
+
+When accessing `cur.next.val`, you must first verify that `cur.next` is not null. Forgetting this check leads to null pointer exceptions on the last node or empty lists. Always structure your loop condition as `while cur and cur.next` or check `cur.next != null` before accessing its value.

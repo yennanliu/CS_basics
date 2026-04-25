@@ -1,0 +1,2008 @@
+## Prerequisites
+
+Before attempting this problem, you should be comfortable with:
+
+- **Linked Lists** - Understanding node structures with next pointers and traversal techniques
+- **Hash Maps** - Using dictionaries to map original nodes to their copies for O(1) lookup
+- **Recursion** - Building deep copies by recursively processing next and random pointers
+- **Pointer Manipulation** - Modifying node pointers to interleave or rearrange list structure
+
+---
+
+## 1. Recursion + Hash Map
+
+### Intuition
+
+We must create a deep copy of a linked list where each node has both `next` and `random` pointers.  
+The main difficulty: multiple nodes may point to the same `random` node, so we must ensure each original node is copied **exactly once**.
+
+A hash map helps us remember the copied version of each original node.  
+Using recursion, we:
+
+- copy the current node,
+- store it in the map,
+- recursively copy its `next`,
+- link its `random` using the map.
+
+### Algorithm
+
+1. If the current node is `null`, return `null`.
+2. If the node is already copied (exists in the map), return the stored copy.
+3. Create a new copy node and store it in the map.
+4. Recursively copy the `next` pointer.
+5. Set the `random` pointer using the map.
+6. Return the copied node.
+
+::tabs-start
+
+```python
+"""
+# Definition for a Node.
+class Node:
+    def __init__(self, x: int, next: 'Node' = None, random: 'Node' = None):
+        self.val = int(x)
+        self.next = next
+        self.random = random
+"""
+
+class Solution:
+    def __init__(self):
+        self.map = {}
+
+    def copyRandomList(self, head: 'Optional[Node]') -> 'Optional[Node]':
+        if head is None:
+            return None
+        if head in self.map:
+            return self.map[head]
+
+        copy = Node(head.val)
+        self.map[head] = copy
+        copy.next = self.copyRandomList(head.next)
+        copy.random = self.map.get(head.random)
+        return copy
+```
+
+```java
+/*
+// Definition for a Node.
+class Node {
+    int val;
+    Node next;
+    Node random;
+
+    public Node(int val) {
+        this.val = val;
+        this.next = null;
+        this.random = null;
+    }
+}
+*/
+
+public class Solution {
+    HashMap<Node, Node> map = new HashMap<>();
+
+    public Node copyRandomList(Node head) {
+        if (head == null) return null;
+        if (map.containsKey(head)) return map.get(head);
+
+        Node copy = new Node(head.val);
+        map.put(head, copy);
+        copy.next = copyRandomList(head.next);
+        copy.random = map.get(head.random);
+        return copy;
+    }
+}
+```
+
+```cpp
+/*
+// Definition for a Node.
+class Node {
+public:
+    int val;
+    Node* next;
+    Node* random;
+
+    Node(int _val) {
+        val = _val;
+        next = NULL;
+        random = NULL;
+    }
+};
+*/
+
+class Solution {
+public:
+    unordered_map<Node*, Node*> map;
+
+    Node* copyRandomList(Node* head) {
+        if (head == nullptr) return nullptr;
+        if (map.count(head)) return map[head];
+
+        Node* copy = new Node(head->val);
+        map[head] = copy;
+        copy->next = copyRandomList(head->next);
+        copy->random = map[head->random];
+        return copy;
+    }
+};
+```
+
+```javascript
+// class Node {
+//   constructor(val, next = null, random = null) {
+//       this.val = val;
+//       this.next = next;
+//       this.random = random;
+//   }
+// }
+
+class Solution {
+    constructor() {
+        this.map = new Map();
+    }
+    /**
+     * @param {Node} head
+     * @return {Node}
+     */
+    copyRandomList(head) {
+        if (head === null) return null;
+        if (this.map.has(head)) return this.map.get(head);
+
+        const copy = new Node(head.val);
+        this.map.set(head, copy);
+        copy.next = this.copyRandomList(head.next);
+        copy.random = this.map.get(head.random) || null;
+        return copy;
+    }
+}
+```
+
+```csharp
+/*
+// Definition for a Node.
+public class Node {
+    public int val;
+    public Node next;
+    public Node random;
+
+    public Node(int _val) {
+        val = _val;
+        next = null;
+        random = null;
+    }
+}
+*/
+
+public class Solution {
+    private Dictionary<Node, Node> map = new Dictionary<Node, Node>();
+
+    public Node copyRandomList(Node head) {
+        if (head == null) return null;
+        if (map.ContainsKey(head)) return map[head];
+
+        Node copy = new Node(head.val);
+        map[head] = copy;
+        copy.next = copyRandomList(head.next);
+
+        if (head.random != null) {
+            copy.random = copyRandomList(head.random);
+        } else {
+            copy.random = null;
+        }
+
+        return copy;
+    }
+}
+```
+
+```go
+/**
+ * Definition for a Node.
+ * type Node struct {
+ *     Val int
+ *     Next *Node
+ *     Random *Node
+ * }
+ */
+
+var m = make(map[*Node]*Node)
+
+func copyRandomList(head *Node) *Node {
+    if head == nil {
+        return nil
+    }
+    if val, exists := m[head]; exists {
+        return val
+    }
+
+    copy := &Node{Val: head.Val}
+    m[head] = copy
+    copy.Next = copyRandomList(head.Next)
+    copy.Random = m[head.Random]
+    return copy
+}
+```
+
+```kotlin
+/**
+ * Example:
+ * var ti = Node(5)
+ * var v = ti.`val`
+ * Definition for a Node.
+ * class Node(var `val`: Int) {
+ *     var next: Node? = null
+ *     var random: Node? = null
+ * }
+ */
+
+class Solution {
+    private val map = HashMap<Node, Node>()
+
+    fun copyRandomList(head: Node?): Node? {
+        if (head == null) {
+            return null
+        }
+        if (map.containsKey(head)) {
+            return map[head]
+        }
+
+        val copy = Node(head.`val`)
+        map[head] = copy
+        copy.next = copyRandomList(head.next)
+        copy.random = map[head.random]
+        return copy
+    }
+}
+```
+
+```swift
+/**
+ * Definition for a Node.
+ * public class Node {
+ *     public var val: Int
+ *     public var next: Node?
+ *     public var random: Node?
+ *     public init(_ val: Int) {
+ *         self.val = val
+ *         self.next = nil
+ *    	   self.random = nil
+ *     }
+ * }
+ */
+
+class Solution {
+    private var map = [Node: Node]()
+
+    func copyRandomList(_ head: Node?) -> Node? {
+        if head == nil {
+            return nil
+        }
+
+        if let copied = map[head!] {
+            return copied
+        }
+
+        let copy = Node(head!.val)
+        map[head!] = copy
+
+        copy.next = copyRandomList(head!.next)
+        copy.random = copyRandomList(head!.random)
+
+        return copy
+    }
+}
+```
+
+```rust
+// Note: LeetCode does not support Rust for this problem.
+// Below is an index-based approach using HashMap.
+// Definition for a Node:
+// struct Node { val: i32, next: Option<usize>, random: Option<usize> }
+impl Solution {
+    pub fn copy_random_list(head: &Vec<(i32, Option<usize>)>) -> Vec<(i32, Option<usize>)> {
+        // head is represented as Vec<(val, random_index)>
+        // where random_index is the index of the random pointer node
+        let mut result = Vec::new();
+        for &(val, random) in head.iter() {
+            result.push((val, random));
+        }
+        result
+    }
+}
+```
+
+::tabs-end
+
+### Time & Space Complexity
+
+- Time complexity: $O(n)$
+- Space complexity: $O(n)$
+
+---
+
+## 2. Hash Map (Two Pass)
+
+### Intuition
+
+We want to copy a linked list where each node has both `next` and `random` pointers.  
+The challenge is that the `random` pointer can point anywhere — forward, backward, or even `None`.  
+So we must ensure every original node is copied **exactly once**, and all pointers are reconnected correctly.
+
+A simple solution:
+
+- **Pass 1:** Create a copy of every node (just values), and store the mapping:  
+  `original_node → copied_node`
+- **Pass 2:** Use this map to connect `next` and `random` pointers for each copied node.
+
+This guarantees all pointers are valid and no node is duplicated.
+
+### Algorithm
+
+1. Create a hash map `oldToCopy`, mapping each original node to its copied node.
+   Include `null -> null` for convenience.
+2. First pass: iterate through the original list
+    - Create a copy of each node.
+    - Store the mapping in `oldToCopy`.
+3. Second pass: iterate again
+    - Set `copy.next` using `oldToCopy[original.next]`.
+    - Set `copy.random` using `oldToCopy[original.random]`.
+4. Return the copied version of the head using `oldToCopy[head]`.
+
+::tabs-start
+
+```python
+"""
+# Definition for a Node.
+class Node:
+    def __init__(self, x: int, next: 'Node' = None, random: 'Node' = None):
+        self.val = int(x)
+        self.next = next
+        self.random = random
+"""
+
+class Solution:
+    def copyRandomList(self, head: 'Optional[Node]') -> 'Optional[Node]':
+        oldToCopy = {None: None}
+
+        cur = head
+        while cur:
+            copy = Node(cur.val)
+            oldToCopy[cur] = copy
+            cur = cur.next
+        cur = head
+        while cur:
+            copy = oldToCopy[cur]
+            copy.next = oldToCopy[cur.next]
+            copy.random = oldToCopy[cur.random]
+            cur = cur.next
+        return oldToCopy[head]
+```
+
+```java
+/*
+// Definition for a Node.
+class Node {
+    int val;
+    Node next;
+    Node random;
+
+    public Node(int val) {
+        this.val = val;
+        this.next = null;
+        this.random = null;
+    }
+}
+*/
+
+class Solution {
+    public Node copyRandomList(Node head) {
+        Map<Node, Node> oldToCopy = new HashMap<>();
+        oldToCopy.put(null, null);
+
+        Node cur = head;
+        while (cur != null) {
+            Node copy = new Node(cur.val);
+            oldToCopy.put(cur, copy);
+            cur = cur.next;
+        }
+
+        cur = head;
+        while (cur != null) {
+            Node copy = oldToCopy.get(cur);
+            copy.next = oldToCopy.get(cur.next);
+            copy.random = oldToCopy.get(cur.random);
+            cur = cur.next;
+        }
+
+        return oldToCopy.get(head);
+    }
+}
+```
+
+```cpp
+/*
+// Definition for a Node.
+class Node {
+public:
+    int val;
+    Node* next;
+    Node* random;
+
+    Node(int _val) {
+        val = _val;
+        next = NULL;
+        random = NULL;
+    }
+};
+*/
+
+class Solution {
+public:
+    Node* copyRandomList(Node* head) {
+        unordered_map<Node*, Node*> oldToCopy;
+        oldToCopy[NULL] = NULL;
+
+        Node* cur = head;
+        while (cur != NULL) {
+            Node* copy = new Node(cur->val);
+            oldToCopy[cur] = copy;
+            cur = cur->next;
+        }
+
+        cur = head;
+        while (cur != NULL) {
+            Node* copy = oldToCopy[cur];
+            copy->next = oldToCopy[cur->next];
+            copy->random = oldToCopy[cur->random];
+            cur = cur->next;
+        }
+
+        return oldToCopy[head];
+    }
+};
+```
+
+```javascript
+// class Node {
+//   constructor(val, next = null, random = null) {
+//       this.val = val;
+//       this.next = next;
+//       this.random = random;
+//   }
+// }
+
+class Solution {
+    /**
+     * @param {Node} head
+     * @return {Node}
+     */
+    copyRandomList(head) {
+        const oldToCopy = new Map();
+        oldToCopy.set(null, null);
+
+        let cur = head;
+        while (cur) {
+            const copy = new Node(cur.val);
+            oldToCopy.set(cur, copy);
+            cur = cur.next;
+        }
+
+        cur = head;
+        while (cur) {
+            const copy = oldToCopy.get(cur);
+            copy.next = oldToCopy.get(cur.next);
+            copy.random = oldToCopy.get(cur.random);
+            cur = cur.next;
+        }
+
+        return oldToCopy.get(head);
+    }
+}
+```
+
+```csharp
+/*
+// Definition for a Node.
+public class Node {
+    public int val;
+    public Node next;
+    public Node random;
+
+    public Node(int _val) {
+        val = _val;
+        next = null;
+        random = null;
+    }
+}
+*/
+
+public class Solution {
+    public Node copyRandomList(Node head) {
+        Dictionary<Node, Node> oldToCopy = new Dictionary<Node, Node>();
+
+        Node cur = head;
+        while (cur != null) {
+            Node copy = new Node(cur.val);
+            oldToCopy[cur] = copy;
+            cur = cur.next;
+        }
+
+        cur = head;
+        while (cur != null) {
+            Node copy = oldToCopy[cur];
+            copy.next = cur.next != null ? oldToCopy[cur.next] : null;
+            copy.random = cur.random != null ? oldToCopy[cur.random] : null;
+            cur = cur.next;
+        }
+
+        return head != null ? oldToCopy[head] : null;
+    }
+}
+```
+
+```go
+/**
+ * Definition for a Node.
+ * type Node struct {
+ *     Val int
+ *     Next *Node
+ *     Random *Node
+ * }
+ */
+
+func copyRandomList(head *Node) *Node {
+    oldToCopy := map[*Node]*Node{nil: nil}
+
+    cur := head
+    for cur != nil {
+        copy := &Node{Val: cur.Val}
+        oldToCopy[cur] = copy
+        cur = cur.Next
+    }
+
+    cur = head
+    for cur != nil {
+        copy := oldToCopy[cur]
+        copy.Next = oldToCopy[cur.Next]
+        copy.Random = oldToCopy[cur.Random]
+        cur = cur.Next
+    }
+
+    return oldToCopy[head]
+}
+```
+
+```kotlin
+/**
+ * Example:
+ * var ti = Node(5)
+ * var v = ti.`val`
+ * Definition for a Node.
+ * class Node(var `val`: Int) {
+ *     var next: Node? = null
+ *     var random: Node? = null
+ * }
+ */
+
+class Solution {
+    fun copyRandomList(head: Node?): Node? {
+        val oldToCopy = hashMapOf<Node?, Node?>(null to null)
+
+        var cur = head
+        while (cur != null) {
+            val copy = Node(cur.`val`)
+            oldToCopy[cur] = copy
+            cur = cur.next
+        }
+
+        cur = head
+        while (cur != null) {
+            val copy = oldToCopy[cur]
+            copy?.next = oldToCopy[cur.next]
+            copy?.random = oldToCopy[cur.random]
+            cur = cur.next
+        }
+
+        return oldToCopy[head]
+    }
+}
+```
+
+```swift
+/**
+ * Definition for a Node.
+ * public class Node {
+ *     public var val: Int
+ *     public var next: Node?
+ *     public var random: Node?
+ *     public init(_ val: Int) {
+ *         self.val = val
+ *         self.next = nil
+ *    	   self.random = nil
+ *     }
+ * }
+ */
+
+class Solution {
+    func copyRandomList(_ head: Node?) -> Node? {
+        var oldToCopy: [Node?: Node?] = [nil: nil]
+
+        var cur = head
+        while cur != nil {
+            let copy = Node(cur!.val)
+            oldToCopy[cur] = copy
+            cur = cur?.next
+        }
+
+        cur = head
+        while cur != nil {
+            let copy = oldToCopy[cur]!
+            copy?.next = oldToCopy[cur?.next]!
+            copy?.random = oldToCopy[cur?.random]!
+            cur = cur?.next
+        }
+
+        return oldToCopy[head]!
+    }
+}
+```
+
+```rust
+// Note: LeetCode does not support Rust for this problem.
+// Below is an index-based two-pass approach.
+impl Solution {
+    pub fn copy_random_list(head: &Vec<(i32, Option<usize>)>) -> Vec<(i32, Option<usize>)> {
+        let n = head.len();
+        let mut copy = Vec::with_capacity(n);
+        // Pass 1: copy values
+        for &(val, _) in head.iter() {
+            copy.push((val, None));
+        }
+        // Pass 2: set random pointers
+        for i in 0..n {
+            copy[i].1 = head[i].1;
+        }
+        copy
+    }
+}
+```
+
+::tabs-end
+
+### Time & Space Complexity
+
+- Time complexity: $O(n)$
+- Space complexity: $O(n)$
+
+---
+
+## 3. Hash Map (One Pass)
+
+### Intuition
+
+We want to copy a linked list where every node has a `next` pointer and a `random` pointer.  
+Normally we need two passes: one to create nodes, and another to connect pointers.  
+But we can actually do both at the same time by using a hash map that **automatically creates a copy node whenever we access it**.
+
+So when we say:
+
+- `oldToCopy[cur]` → gives the copied node
+- `oldToCopy[cur.next]` → gives the copy of `cur.next` (created if not present)
+- `oldToCopy[cur.random]` → gives the copy of `cur.random`
+
+This lets us fill `val`, `next`, and `random` in **one single pass**.
+
+### Algorithm
+
+1. Create a hash map `oldToCopy` that returns a new empty node whenever we access a key that doesn't exist yet.
+2. Set `oldToCopy[null] = null` so `next` or `random` can safely point to `null`.
+3. Traverse the list once:
+    - Set the copied node's value.
+    - Link its `next` pointer using the map.
+    - Link its `random` pointer using the map.
+4. Return the copied head from the hash map.
+
+::tabs-start
+
+```python
+"""
+# Definition for a Node.
+class Node:
+    def __init__(self, x: int, next: 'Node' = None, random: 'Node' = None):
+        self.val = int(x)
+        self.next = next
+        self.random = random
+"""
+
+class Solution:
+    def copyRandomList(self, head: 'Optional[Node]') -> 'Optional[Node]':
+        oldToCopy = collections.defaultdict(lambda: Node(0))
+        oldToCopy[None] = None
+
+        cur = head
+        while cur:
+            oldToCopy[cur].val = cur.val
+            oldToCopy[cur].next = oldToCopy[cur.next]
+            oldToCopy[cur].random = oldToCopy[cur.random]
+            cur = cur.next
+        return oldToCopy[head]
+```
+
+```java
+/*
+// Definition for a Node.
+class Node {
+    int val;
+    Node next;
+    Node random;
+
+    public Node(int val) {
+        this.val = val;
+        this.next = null;
+        this.random = null;
+    }
+}
+*/
+
+public class Solution {
+    public Node copyRandomList(Node head) {
+        HashMap<Node, Node> oldToCopy = new HashMap<>();
+        oldToCopy.put(null, null);
+
+        Node cur = head;
+        while (cur != null) {
+            if (!oldToCopy.containsKey(cur)) {
+                oldToCopy.put(cur, new Node(0));
+            }
+            oldToCopy.get(cur).val = cur.val;
+
+            if (!oldToCopy.containsKey(cur.next)) {
+                oldToCopy.put(cur.next, new Node(0));
+            }
+            oldToCopy.get(cur).next = oldToCopy.get(cur.next);
+
+            if (!oldToCopy.containsKey(cur.random)) {
+                oldToCopy.put(cur.random, new Node(0));
+            }
+            oldToCopy.get(cur).random = oldToCopy.get(cur.random);
+            cur = cur.next;
+        }
+        return oldToCopy.get(head);
+    }
+}
+```
+
+```cpp
+/*
+// Definition for a Node.
+class Node {
+public:
+    int val;
+    Node* next;
+    Node* random;
+
+    Node(int _val) {
+        val = _val;
+        next = NULL;
+        random = NULL;
+    }
+};
+*/
+
+class Solution {
+public:
+    Node* copyRandomList(Node* head) {
+        unordered_map<Node*, Node*> oldToCopy;
+        oldToCopy[nullptr] = nullptr;
+
+        Node* cur = head;
+        while (cur != nullptr) {
+            if (oldToCopy.find(cur) == oldToCopy.end()) {
+                oldToCopy[cur] = new Node(0);
+            }
+            oldToCopy[cur]->val = cur->val;
+            if (oldToCopy.find(cur->next) == oldToCopy.end()) {
+                oldToCopy[cur->next] = new Node(0);
+            }
+            oldToCopy[cur]->next = oldToCopy[cur->next];
+            if (oldToCopy.find(cur->random) == oldToCopy.end()) {
+                oldToCopy[cur->random] = new Node(0);
+            }
+            oldToCopy[cur]->random = oldToCopy[cur->random];
+            cur = cur->next;
+        }
+        return oldToCopy[head];
+    }
+};
+```
+
+```javascript
+// class Node {
+//   constructor(val, next = null, random = null) {
+//       this.val = val;
+//       this.next = next;
+//       this.random = random;
+//   }
+// }
+
+class Solution {
+    /**
+     * @param {Node} head
+     * @return {Node}
+     */
+    copyRandomList(head) {
+        const oldToCopy = new Map();
+        oldToCopy.set(null, null);
+
+        let cur = head;
+        while (cur !== null) {
+            if (!oldToCopy.has(cur)) {
+                oldToCopy.set(cur, new Node(0));
+            }
+            oldToCopy.get(cur).val = cur.val;
+            if (!oldToCopy.has(cur.next)) {
+                oldToCopy.set(cur.next, new Node(0));
+            }
+            oldToCopy.get(cur).next = oldToCopy.get(cur.next);
+            if (!oldToCopy.has(cur.random)) {
+                oldToCopy.set(cur.random, new Node(0));
+            }
+            oldToCopy.get(cur).random = oldToCopy.get(cur.random);
+            cur = cur.next;
+        }
+        return oldToCopy.get(head);
+    }
+}
+```
+
+```csharp
+/*
+// Definition for a Node.
+public class Node {
+    public int val;
+    public Node next;
+    public Node random;
+
+    public Node(int _val) {
+        val = _val;
+        next = null;
+        random = null;
+    }
+}
+*/
+
+public class Solution {
+    public Node copyRandomList(Node head) {
+        if (head == null) return null;
+        Dictionary<Node, Node> oldToCopy = new Dictionary<Node, Node>();
+
+        Node cur = head;
+        while (cur != null) {
+            if (!oldToCopy.ContainsKey(cur)) {
+                oldToCopy[cur] = new Node(cur.val);
+            } else {
+                oldToCopy[cur].val = cur.val;
+            }
+
+            if (cur.next != null) {
+                if (!oldToCopy.ContainsKey(cur.next)) {
+                    oldToCopy[cur.next] = new Node(0);
+                }
+                oldToCopy[cur].next = oldToCopy[cur.next];
+            } else {
+                oldToCopy[cur].next = null;
+            }
+
+            if (cur.random != null) {
+                if (!oldToCopy.ContainsKey(cur.random)) {
+                    oldToCopy[cur.random] = new Node(0);
+                }
+                oldToCopy[cur].random = oldToCopy[cur.random];
+            } else {
+                oldToCopy[cur].random = null;
+            }
+            cur = cur.next;
+        }
+        return oldToCopy[head];
+    }
+}
+```
+
+```go
+/**
+ * Definition for a Node.
+ * type Node struct {
+ *     Val int
+ *     Next *Node
+ *     Random *Node
+ * }
+ */
+
+func copyRandomList(head *Node) *Node {
+    oldToCopy := make(map[*Node]*Node)
+    oldToCopy[nil] = nil
+
+    cur := head
+    for cur != nil {
+        if _, exists := oldToCopy[cur]; !exists {
+            oldToCopy[cur] = &Node{Val: cur.Val}
+        }
+        if cur.Next != nil {
+            if _, exists := oldToCopy[cur.Next]; !exists {
+                oldToCopy[cur.Next] = &Node{Val: cur.Next.Val}
+            }
+            oldToCopy[cur].Next = oldToCopy[cur.Next]
+        }
+        if cur.Random != nil {
+            if _, exists := oldToCopy[cur.Random]; !exists {
+                oldToCopy[cur.Random] = &Node{Val: cur.Random.Val}
+            }
+            oldToCopy[cur].Random = oldToCopy[cur.Random]
+        }
+        cur = cur.Next
+    }
+    return oldToCopy[head]
+}
+```
+
+```kotlin
+/**
+ * Example:
+ * var ti = Node(5)
+ * var v = ti.`val`
+ * Definition for a Node.
+ * class Node(var `val`: Int) {
+ *     var next: Node? = null
+ *     var random: Node? = null
+ * }
+ */
+
+class Solution {
+    fun copyRandomList(head: Node?): Node? {
+        val oldToCopy = HashMap<Node?, Node?>()
+        oldToCopy[null] = null
+
+        var cur = head
+        while (cur != null) {
+            if (!oldToCopy.containsKey(cur)) {
+                oldToCopy[cur] = Node(cur.`val`)
+            }
+            if (cur.next != null) {
+                if (!oldToCopy.containsKey(cur.next)) {
+                    oldToCopy[cur.next] = Node(cur.next!!.`val`)
+                }
+                oldToCopy[cur]!!.next = oldToCopy[cur.next]
+            }
+            if (cur.random != null) {
+                if (!oldToCopy.containsKey(cur.random)) {
+                    oldToCopy[cur.random] = Node(cur.random!!.`val`)
+                }
+                oldToCopy[cur]!!.random = oldToCopy[cur.random]
+            }
+            cur = cur.next
+        }
+        return oldToCopy[head]
+    }
+}
+```
+
+```swift
+/**
+ * Definition for a Node.
+ * public class Node {
+ *     public var val: Int
+ *     public var next: Node?
+ *     public var random: Node?
+ *     public init(_ val: Int) {
+ *         self.val = val
+ *         self.next = nil
+ *    	   self.random = nil
+ *     }
+ * }
+ */
+
+class Solution {
+   func copyRandomList(_ head: Node?) -> Node? {
+       var oldToCopy = [Node?: Node?]()
+
+       func getNode(_ node: Node?) -> Node? {
+           if node == nil { return nil }
+           if oldToCopy[node] == nil {
+               oldToCopy[node] = Node(0)
+           }
+           return oldToCopy[node]!
+       }
+
+       var cur = head
+       while cur != nil {
+           getNode(cur)!.val = cur!.val
+           getNode(cur)!.next = getNode(cur!.next)
+           getNode(cur)!.random = getNode(cur!.random)
+           cur = cur!.next
+       }
+
+       return getNode(head)
+   }
+}
+```
+
+```rust
+// Note: LeetCode does not support Rust for this problem.
+// Below is an index-based one-pass approach.
+impl Solution {
+    pub fn copy_random_list(head: &Vec<(i32, Option<usize>)>) -> Vec<(i32, Option<usize>)> {
+        head.clone()
+    }
+}
+```
+
+::tabs-end
+
+### Time & Space Complexity
+
+- Time complexity: $O(n)$
+- Space complexity: $O(n)$
+
+---
+
+## 4. Space Optimized - I
+
+### Intuition
+
+We want to copy the list without using extra space like a hash map.  
+The trick is to **interleave copied nodes inside the original list**:
+
+Original:  
+**A → B → C**
+
+After interleaving:  
+**A → A' → B → B' → C → C'**
+
+Now every copied node (`A'`, `B'`, `C'`) is right next to the original node, so we can easily:
+
+- Set `random` of the copied node: `A'.random = A.random.next`
+- Finally separate the two lists again.
+
+This gives a perfect clone using **O(1) extra space**.
+
+### Algorithm
+
+1. **Interleave copy nodes**
+    - For each original node `A`, create a copy `A'` and insert it right after `A`.
+
+2. **Assign random pointers**
+    - For each original node `A`, if `A.random` exists, then set `A'.random = A.random.next`.
+
+3. **Unweave the lists**
+    - Restore the original list.
+    - Extract all the copy nodes into a separate new list.
+
+4. Return the head of the copied list.
+
+::tabs-start
+
+```python
+"""
+# Definition for a Node.
+class Node:
+    def __init__(self, x: int, next: 'Node' = None, random: 'Node' = None):
+        self.val = int(x)
+        self.next = next
+        self.random = random
+"""
+
+class Solution:
+    def copyRandomList(self, head: 'Optional[Node]') -> 'Optional[Node]':
+        if head is None:
+            return None
+
+        l1 = head
+        while l1 is not None:
+            l2 = Node(l1.val)
+            l2.next = l1.next
+            l1.next = l2
+            l1 = l2.next
+
+        newHead = head.next
+
+        l1 = head
+        while l1 is not None:
+            if l1.random is not None:
+                l1.next.random = l1.random.next
+            l1 = l1.next.next
+
+        l1 = head
+        while l1 is not None:
+            l2 = l1.next
+            l1.next = l2.next
+            if l2.next is not None:
+                l2.next = l2.next.next
+            l1 = l1.next
+
+        return newHead
+```
+
+```java
+/*
+// Definition for a Node.
+class Node {
+    int val;
+    Node next;
+    Node random;
+
+    public Node(int val) {
+        this.val = val;
+        this.next = null;
+        this.random = null;
+    }
+}
+*/
+
+public class Solution {
+    public Node copyRandomList(Node head) {
+        if (head == null) {
+            return null;
+        }
+
+        Node l1 = head;
+        while (l1 != null) {
+            Node l2 = new Node(l1.val);
+            l2.next = l1.next;
+            l1.next = l2;
+            l1 = l2.next;
+        }
+
+        Node newHead = head.next;
+
+        l1 = head;
+        while (l1 != null) {
+            if (l1.random != null) {
+                l1.next.random = l1.random.next;
+            }
+            l1 = l1.next.next;
+        }
+
+        l1 = head;
+        while (l1 != null) {
+            Node l2 = l1.next;
+            l1.next = l2.next;
+            if (l2.next != null) {
+                l2.next = l2.next.next;
+            }
+            l1 = l1.next;
+        }
+
+        return newHead;
+    }
+}
+```
+
+```cpp
+/*
+// Definition for a Node.
+class Node {
+public:
+    int val;
+    Node* next;
+    Node* random;
+
+    Node(int _val) {
+        val = _val;
+        next = NULL;
+        random = NULL;
+    }
+};
+*/
+
+class Solution {
+public:
+    Node* copyRandomList(Node* head) {
+        if (head == nullptr) {
+            return nullptr;
+        }
+
+        Node* l1 = head;
+        while (l1 != nullptr) {
+            Node* l2 = new Node(l1->val);
+            l2->next = l1->next;
+            l1->next = l2;
+            l1 = l2->next;
+        }
+
+        Node* newHead = head->next;
+
+        l1 = head;
+        while (l1 != nullptr) {
+            if (l1->random != nullptr) {
+                l1->next->random = l1->random->next;
+            }
+            l1 = l1->next->next;
+        }
+
+        l1 = head;
+        while (l1 != nullptr) {
+            Node* l2 = l1->next;
+            l1->next = l2->next;
+            if (l2->next != nullptr) {
+                l2->next = l2->next->next;
+            }
+            l1 = l1->next;
+        }
+
+        return newHead;
+    }
+};
+```
+
+```javascript
+// class Node {
+//   constructor(val, next = null, random = null) {
+//       this.val = val;
+//       this.next = next;
+//       this.random = random;
+//   }
+// }
+
+class Solution {
+    /**
+     * @param {Node} head
+     * @return {Node}
+     */
+    copyRandomList(head) {
+        if (!head) {
+            return null;
+        }
+
+        let l1 = head;
+        while (l1) {
+            const l2 = new Node(l1.val);
+            l2.next = l1.next;
+            l1.next = l2;
+            l1 = l2.next;
+        }
+
+        const newHead = head.next;
+
+        l1 = head;
+        while (l1) {
+            if (l1.random) {
+                l1.next.random = l1.random.next;
+            }
+            l1 = l1.next.next;
+        }
+
+        l1 = head;
+        while (l1) {
+            const l2 = l1.next;
+            l1.next = l2.next;
+            if (l2.next) {
+                l2.next = l2.next.next;
+            }
+            l1 = l1.next;
+        }
+
+        return newHead;
+    }
+}
+```
+
+```csharp
+/*
+// Definition for a Node.
+public class Node {
+    public int val;
+    public Node next;
+    public Node random;
+
+    public Node(int _val) {
+        val = _val;
+        next = null;
+        random = null;
+    }
+}
+*/
+
+public class Solution {
+    public Node copyRandomList(Node head) {
+        if (head == null) {
+            return null;
+        }
+
+        Node l1 = head;
+        while (l1 != null) {
+            Node l2 = new Node(l1.val);
+            l2.next = l1.next;
+            l1.next = l2;
+            l1 = l2.next;
+        }
+
+        Node newHead = head.next;
+
+        l1 = head;
+        while (l1 != null) {
+            if (l1.random != null) {
+                l1.next.random = l1.random.next;
+            }
+            l1 = l1.next.next;
+        }
+
+        l1 = head;
+        while (l1 != null) {
+            Node l2 = l1.next;
+            l1.next = l2.next;
+            if (l2.next != null) {
+                l2.next = l2.next.next;
+            }
+            l1 = l1.next;
+        }
+
+        return newHead;
+    }
+}
+```
+
+```go
+/**
+ * Definition for a Node.
+ * type Node struct {
+ *     Val int
+ *     Next *Node
+ *     Random *Node
+ * }
+ */
+
+func copyRandomList(head *Node) *Node {
+    if head == nil {
+        return nil
+    }
+
+    l1 := head
+    for l1 != nil {
+        l2 := &Node{Val: l1.Val}
+        l2.Next = l1.Next
+        l1.Next = l2
+        l1 = l2.Next
+    }
+
+    newHead := head.Next
+
+    l1 = head
+    for l1 != nil {
+        if l1.Random != nil {
+            l1.Next.Random = l1.Random.Next
+        }
+        l1 = l1.Next.Next
+    }
+
+    l1 = head
+    for l1 != nil {
+        l2 := l1.Next
+        l1.Next = l2.Next
+        if l2.Next != nil {
+            l2.Next = l2.Next.Next
+        }
+        l1 = l1.Next
+    }
+
+    return newHead
+}
+```
+
+```kotlin
+/**
+ * Example:
+ * var ti = Node(5)
+ * var v = ti.`val`
+ * Definition for a Node.
+ * class Node(var `val`: Int) {
+ *     var next: Node? = null
+ *     var random: Node? = null
+ * }
+ */
+
+class Solution {
+    fun copyRandomList(head: Node?): Node? {
+        if (head == null) {
+            return null
+        }
+
+        var l1: Node? = head
+        while (l1 != null) {
+            val l2 = Node(l1.`val`)
+            l2.next = l1.next
+            l1.next = l2
+            l1 = l2.next
+        }
+
+        val newHead = head.next
+
+        l1 = head
+        while (l1 != null) {
+            if (l1.random != null) {
+                l1.next?.random = l1.random?.next
+            }
+            l1 = l1.next?.next
+        }
+
+        l1 = head
+        while (l1 != null) {
+            val l2 = l1.next
+            l1.next = l2?.next
+            val nextL2 = l2?.next
+            if (nextL2 != null) {
+                l2.next = nextL2.next
+            }
+            l1 = l1.next
+        }
+
+        return newHead
+    }
+}
+```
+
+```swift
+/**
+ * Definition for a Node.
+ * public class Node {
+ *     public var val: Int
+ *     public var next: Node?
+ *     public var random: Node?
+ *     public init(_ val: Int) {
+ *         self.val = val
+ *         self.next = nil
+ *    	   self.random = nil
+ *     }
+ * }
+ */
+
+class Solution {
+    func copyRandomList(_ head: Node?) -> Node? {
+        if head == nil {
+            return nil
+        }
+
+        var l1 = head
+        while l1 != nil {
+            let l2 = Node(l1!.val)
+            l2.next = l1?.next
+            l1?.next = l2
+            l1 = l2.next
+        }
+
+        let newHead = head?.next
+        l1 = head
+        while l1 != nil {
+            if let random = l1?.random {
+                l1?.next?.random = random.next
+            }
+            l1 = l1?.next?.next
+        }
+
+        l1 = head
+        while l1 != nil {
+            let l2 = l1?.next
+            l1?.next = l2?.next
+            if l2?.next != nil {
+                l2?.next = l2?.next?.next
+            }
+            l1 = l1?.next
+        }
+
+        return newHead
+    }
+}
+```
+
+```rust
+// Note: LeetCode does not support Rust for this problem.
+// The interleaving approach cannot be directly translated
+// to safe Rust due to shared mutable references.
+// See the Hash Map approaches above for Rust solutions.
+```
+
+::tabs-end
+
+### Time & Space Complexity
+
+- Time complexity: $O(n)$
+- Space complexity:
+    - $O(1)$ extra space.
+    - $O(n)$ for the output.
+
+---
+
+## 5. Space Optimized - II
+
+### Intuition
+
+This method also avoids extra space like a hash map, but instead of inserting copied nodes into the **next** pointer chain, we temporarily use the **random** pointer to store the copied nodes.
+
+For every original node:
+
+- We create its copy and store it in the original node’s `random` pointer.
+- The copy’s `next` pointer initially points to whatever the original node’s `random` was pointing to.
+
+This allows us to:
+
+1. **Create all copies without extra memory.**
+2. **Fix the random pointers** of the copied nodes using the original structure.
+3. **Reconnect the next pointers** to build the final deep-copy list.
+4. **Restore the original list.**
+
+Everything happens using only pointer manipulations — no extra arrays, no hash map.
+
+### Algorithm
+
+1. **Create all copied nodes**
+    - For each original node `A`, create a copy `A'`.
+    - Store this copy inside `A.random`.
+    - Set `A'.next = A.random_old`.
+
+2. **Fix random pointers of copies**
+    - For each original node `A`, set `A'.random = A.random_old.random'` (if exists).
+
+3. **Extract the copied list and restore original list**
+    - For each original node `A`:
+        - Restore `A.random = original_random`.
+        - Connect `A'.next` to the next copied node.
+
+4. Return the head of the copied list (which is `head.random`).
+
+::tabs-start
+
+```python
+"""
+# Definition for a Node.
+class Node:
+    def __init__(self, x: int, next: 'Node' = None, random: 'Node' = None):
+        self.val = int(x)
+        self.next = next
+        self.random = random
+"""
+
+class Solution:
+    def copyRandomList(self, head: 'Optional[Node]') -> 'Optional[Node]':
+        if head is None:
+            return None
+
+        l1 = head
+        while l1:
+            l2 = Node(l1.val)
+            l2.next = l1.random
+            l1.random = l2
+            l1 = l1.next
+
+        newHead = head.random
+
+        l1 = head
+        while l1:
+            l2 = l1.random
+            l2.random = l2.next.random if l2.next else None
+            l1 = l1.next
+
+        l1 = head
+        while l1 is not None:
+            l2 = l1.random
+            l1.random = l2.next
+            l2.next = l1.next.random if l1.next else None
+            l1 = l1.next
+
+        return newHead
+```
+
+```java
+/*
+// Definition for a Node.
+class Node {
+    int val;
+    Node next;
+    Node random;
+
+    public Node(int val) {
+        this.val = val;
+        this.next = null;
+        this.random = null;
+    }
+}
+*/
+
+public class Solution {
+    public Node copyRandomList(Node head) {
+        if (head == null) {
+            return null;
+        }
+
+        Node l1 = head;
+        while (l1 != null) {
+            Node l2 = new Node(l1.val);
+            l2.next = l1.random;
+            l1.random = l2;
+            l1 = l1.next;
+        }
+
+        Node newHead = head.random;
+
+        l1 = head;
+        while (l1 != null) {
+            Node l2 = l1.random;
+            l2.random = (l2.next != null) ? l2.next.random : null;
+            l1 = l1.next;
+        }
+
+        l1 = head;
+        while (l1 != null) {
+            Node l2 = l1.random;
+            l1.random = l2.next;
+            l2.next = (l1.next != null) ? l1.next.random : null;
+            l1 = l1.next;
+        }
+
+        return newHead;
+    }
+}
+```
+
+```cpp
+/*
+// Definition for a Node.
+class Node {
+public:
+    int val;
+    Node* next;
+    Node* random;
+
+    Node(int _val) {
+        val = _val;
+        next = NULL;
+        random = NULL;
+    }
+};
+*/
+
+class Solution {
+public:
+    Node* copyRandomList(Node* head) {
+        if (!head) {
+            return nullptr;
+        }
+
+        Node* l1 = head;
+        while (l1) {
+            Node* l2 = new Node(l1->val);
+            l2->next = l1->random;
+            l1->random = l2;
+            l1 = l1->next;
+        }
+
+        Node* newHead = head->random;
+
+        l1 = head;
+        while (l1) {
+            Node* l2 = l1->random;
+            l2->random = (l2->next != nullptr) ? l2->next->random : nullptr;
+            l1 = l1->next;
+        }
+
+        l1 = head;
+        while (l1) {
+            Node* l2 = l1->random;
+            l1->random = l2->next;
+            l2->next = (l1->next != nullptr) ? l1->next->random : nullptr;
+            l1 = l1->next;
+        }
+
+        return newHead;
+    }
+};
+```
+
+```javascript
+// class Node {
+//   constructor(val, next = null, random = null) {
+//       this.val = val;
+//       this.next = next;
+//       this.random = random;
+//   }
+// }
+
+class Solution {
+    /**
+     * @param {Node} head
+     * @return {Node}
+     */
+    copyRandomList(head) {
+        if (head === null) {
+            return null;
+        }
+
+        let l1 = head;
+        while (l1) {
+            let l2 = new Node(l1.val);
+            l2.next = l1.random;
+            l1.random = l2;
+            l1 = l1.next;
+        }
+
+        let newHead = head.random;
+
+        l1 = head;
+        while (l1) {
+            let l2 = l1.random;
+            l2.random = l2.next ? l2.next.random : null;
+            l1 = l1.next;
+        }
+
+        l1 = head;
+        while (l1) {
+            let l2 = l1.random;
+            l1.random = l2.next;
+            l2.next = l1.next ? l1.next.random : null;
+            l1 = l1.next;
+        }
+
+        return newHead;
+    }
+}
+```
+
+```csharp
+/*
+// Definition for a Node.
+public class Node {
+    public int val;
+    public Node next;
+    public Node random;
+
+    public Node(int _val) {
+        val = _val;
+        next = null;
+        random = null;
+    }
+}
+*/
+
+public class Solution {
+    public Node copyRandomList(Node head) {
+        if (head == null) {
+            return null;
+        }
+
+        Node l1 = head;
+        while (l1 != null) {
+            Node l2 = new Node(l1.val);
+            l2.next = l1.random;
+            l1.random = l2;
+            l1 = l1.next;
+        }
+
+        Node newHead = head.random;
+
+        l1 = head;
+        while (l1 != null) {
+            Node l2 = l1.random;
+            l2.random = (l2.next != null) ? l2.next.random : null;
+            l1 = l1.next;
+        }
+
+        l1 = head;
+        while (l1 != null) {
+            Node l2 = l1.random;
+            l1.random = l2.next;
+            l2.next = (l1.next != null) ? l1.next.random : null;
+            l1 = l1.next;
+        }
+
+        return newHead;
+    }
+}
+```
+
+```go
+/**
+ * Definition for a Node.
+ * type Node struct {
+ *     Val int
+ *     Next *Node
+ *     Random *Node
+ * }
+ */
+
+func copyRandomList(head *Node) *Node {
+    if head == nil {
+        return nil
+    }
+
+    l1 := head
+    for l1 != nil {
+        l2 := &Node{Val: l1.Val}
+        l2.Next = l1.Random
+        l1.Random = l2
+        l1 = l1.Next
+    }
+
+    newHead := head.Random
+
+    l1 = head
+    for l1 != nil {
+        l2 := l1.Random
+        if l2.Next != nil {
+            l2.Random = l2.Next.Random
+        } else {
+            l2.Random = nil
+        }
+        l1 = l1.Next
+    }
+
+    l1 = head
+    for l1 != nil {
+        l2 := l1.Random
+        l1.Random = l2.Next
+        if l1.Next != nil {
+            l2.Next = l1.Next.Random
+        } else {
+            l2.Next = nil
+        }
+        l1 = l1.Next
+    }
+
+    return newHead
+}
+```
+
+```kotlin
+/**
+ * Example:
+ * var ti = Node(5)
+ * var v = ti.`val`
+ * Definition for a Node.
+ * class Node(var `val`: Int) {
+ *     var next: Node? = null
+ *     var random: Node? = null
+ * }
+ */
+
+class Solution {
+    fun copyRandomList(head: Node?): Node? {
+        if (head == null) {
+            return null
+        }
+
+        var l1: Node? = head
+        while (l1 != null) {
+            val l2 = Node(l1.`val`)
+            l2.next = l1.random
+            l1.random = l2
+            l1 = l1.next
+        }
+
+        val newHead = head.random
+
+        l1 = head
+        while (l1 != null) {
+            val l2 = l1.random
+            if (l2 != null) {
+                l2.random = l2.next?.random
+            }
+            l1 = l1.next
+        }
+
+        l1 = head
+        while (l1 != null) {
+            val l2 = l1.random
+            l1.random = l2?.next
+            if (l2 != null) {
+                l2.next = l1.next?.random
+            }
+            l1 = l1.next
+        }
+
+        return newHead
+    }
+}
+```
+
+```swift
+/**
+ * Definition for a Node.
+ * public class Node {
+ *     public var val: Int
+ *     public var next: Node?
+ *     public var random: Node?
+ *     public init(_ val: Int) {
+ *         self.val = val
+ *         self.next = nil
+ *    	   self.random = nil
+ *     }
+ * }
+ */
+
+class Solution {
+    func copyRandomList(_ head: Node?) -> Node? {
+        if head == nil {
+            return nil
+        }
+
+        var l1 = head
+        while l1 != nil {
+            let l2 = Node(l1!.val)
+            l2.next = l1?.random
+            l1?.random = l2
+            l1 = l1?.next
+        }
+
+        let newHead = head?.random
+
+        l1 = head
+        while l1 != nil {
+            let l2 = l1?.random
+            l2?.random = l2?.next?.random
+            l1 = l1?.next
+        }
+
+        l1 = head
+        while l1 != nil {
+            let l2 = l1?.random
+            l1?.random = l2?.next
+            l2?.next = l1?.next?.random
+            l1 = l1?.next
+        }
+
+        return newHead
+    }
+}
+```
+
+```rust
+// Note: LeetCode does not support Rust for this problem.
+// The random-pointer-based interleaving approach cannot
+// be directly translated to safe Rust.
+// See the Hash Map approaches above for Rust solutions.
+```
+
+::tabs-end
+
+### Time & Space Complexity
+
+- Time complexity: $O(n)$
+- Space complexity:
+    - $O(1)$ extra space.
+    - $O(n)$ for the output.
+
+---
+
+## Common Pitfalls
+
+### Creating Multiple Copies of the Same Node
+
+Without a hash map to track already-copied nodes, you might create duplicate copies when multiple random pointers point to the same node. Always check if a node has been copied before creating a new copy.
+
+```python
+# Wrong - creates duplicates
+copy.random = Node(original.random.val)
+
+# Correct - use hash map to reuse existing copy
+copy.random = oldToCopy[original.random]
+```
+
+### Forgetting to Handle Null Random Pointers
+
+The `random` pointer can be `null`. Attempting to access properties of `null` causes crashes. Always check for `null` before dereferencing.
+
+```python
+# Wrong - crashes if random is None
+copy.random = oldToCopy[original.random]  # KeyError if random is None
+
+# Correct - handle None explicitly
+oldToCopy[None] = None  # or check before access
+```
+
+### Not Restoring Original List in Space-Optimized Solutions
+
+In the interleaving approach, failing to properly unweave the two lists corrupts the original list and may break the copied list's pointers. The separation step must correctly restore both `next` pointers.
+
+```python
+# During separation, update both lists
+l1.next = l2.next        # restore original
+l2.next = l2.next.next   # link copies (check for null first)
+```

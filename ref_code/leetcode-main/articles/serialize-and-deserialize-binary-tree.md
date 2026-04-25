@@ -1,0 +1,1244 @@
+## Prerequisites
+
+Before attempting this problem, you should be comfortable with:
+
+- **Binary Trees** - Understanding tree node structure with left and right children
+- **Tree Traversal (DFS)** - Preorder traversal visits root, then left subtree, then right subtree
+- **Tree Traversal (BFS)** - Level-order traversal processes nodes level by level using a queue
+- **Recursion** - Building and reconstructing trees requires recursive thinking
+- **String Manipulation** - Encoding tree structure into strings and parsing them back
+
+---
+
+## 1. Depth First Search
+
+### Intuition
+
+We want to turn a tree into a string (serialize) and then rebuild the same tree from that string (deserialize).
+We use **preorder DFS (root → left → right)** because it naturally records a node before its children.
+
+- When a node exists → record its value.
+- When a child is missing → record `"N"` so we know where `null` pointers are.
+
+Example:
+`1,2,N,N,3,N,N` uniquely represents a tree.
+
+During **deserialization**, we read the list in order:
+
+- `"N"` → return `None`
+- Otherwise → create node, then build left, then right.
+
+This works because preorder always visits nodes in the exact structure order.
+
+### Algorithm
+
+#### **Serialize**
+
+1. Use `dfs` preorder.
+2. If node is `null` → append `"N"`.
+3. Else append node value.
+4. Recursively process left child, then right child.
+5. Join list with commas → return string.
+
+#### **Deserialize**
+
+1. Split string into list `vals`.
+2. Use an index to process values in order.
+3. If current value is `"N"` → return `None`.
+4. Otherwise create a node.
+5. Recursively build left subtree.
+6. Recursively build right subtree.
+7. Return the root.
+
+::tabs-start
+
+```python
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+
+class Codec:
+
+    # Encodes a tree to a single string.
+    def serialize(self, root: Optional[TreeNode]) -> str:
+        res = []
+
+        def dfs(node):
+            if not node:
+                res.append("N")
+                return
+            res.append(str(node.val))
+            dfs(node.left)
+            dfs(node.right)
+
+        dfs(root)
+        return ",".join(res)
+
+    # Decodes your encoded data to tree.
+    def deserialize(self, data: str) -> Optional[TreeNode]:
+        vals = data.split(",")
+        self.i = 0
+
+        def dfs():
+            if vals[self.i] == "N":
+                self.i += 1
+                return None
+            node = TreeNode(int(vals[self.i]))
+            self.i += 1
+            node.left = dfs()
+            node.right = dfs()
+            return node
+
+        return dfs()
+```
+
+```java
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+
+public class Codec {
+
+    // Encodes a tree to a single string.
+    public String serialize(TreeNode root) {
+        List<String> res = new ArrayList<>();
+        dfsSerialize(root, res);
+        return String.join(",", res);
+    }
+
+    private void dfsSerialize(TreeNode node, List<String> res) {
+        if (node == null) {
+            res.add("N");
+            return;
+        }
+        res.add(String.valueOf(node.val));
+        dfsSerialize(node.left, res);
+        dfsSerialize(node.right, res);
+    }
+
+    // Decodes your encoded data to tree.
+    public TreeNode deserialize(String data) {
+        String[] vals = data.split(",");
+        int[] i = {0};
+        return dfsDeserialize(vals, i);
+    }
+
+    private TreeNode dfsDeserialize(String[] vals, int[] i) {
+        if (vals[i[0]].equals("N")) {
+            i[0]++;
+            return null;
+        }
+        TreeNode node = new TreeNode(Integer.parseInt(vals[i[0]]));
+        i[0]++;
+        node.left = dfsDeserialize(vals, i);
+        node.right = dfsDeserialize(vals, i);
+        return node;
+    }
+}
+```
+
+```cpp
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+
+class Codec {
+public:
+    // Encodes a tree to a single string.
+    string serialize(TreeNode* root) {
+        vector<string> res;
+        dfsSerialize(root, res);
+        return join(res, ",");
+    }
+
+    // Decodes your encoded data to tree.
+    TreeNode* deserialize(string data) {
+        vector<string> vals = split(data, ',');
+        int i = 0;
+        return dfsDeserialize(vals, i);
+    }
+
+private:
+    void dfsSerialize(TreeNode* node, vector<string>& res) {
+        if (!node) {
+            res.push_back("N");
+            return;
+        }
+        res.push_back(to_string(node->val));
+        dfsSerialize(node->left, res);
+        dfsSerialize(node->right, res);
+    }
+
+    TreeNode* dfsDeserialize(vector<string>& vals, int& i) {
+        if (vals[i] == "N") {
+            i++;
+            return NULL;
+        }
+        TreeNode* node = new TreeNode(stoi(vals[i]));
+        i++;
+        node->left = dfsDeserialize(vals, i);
+        node->right = dfsDeserialize(vals, i);
+        return node;
+    }
+
+    vector<string> split(const string &s, char delim) {
+        vector<string> elems;
+        stringstream ss(s);
+        string item;
+        while (getline(ss, item, delim)) {
+            elems.push_back(item);
+        }
+        return elems;
+    }
+
+    string join(const vector<string> &v, const string &delim) {
+        ostringstream s;
+        for (const auto &i : v) {
+            if (&i != &v[0])
+                s << delim;
+            s << i;
+        }
+        return s.str();
+    }
+};
+```
+
+```javascript
+/**
+ * Definition for a binary tree node.
+ * class TreeNode {
+ *     constructor(val = 0, left = null, right = null) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+
+class Codec {
+    /**
+     * Encodes a tree to a single string.
+     *
+     * @param {TreeNode} root
+     * @return {string}
+     */
+    serialize(root) {
+        const res = [];
+        this.dfsSerialize(root, res);
+        return res.join(',');
+    }
+
+    dfsSerialize(node, res) {
+        if (node === null) {
+            res.push('N');
+            return;
+        }
+        res.push(node.val.toString());
+        this.dfsSerialize(node.left, res);
+        this.dfsSerialize(node.right, res);
+    }
+
+    /**
+     * Decodes your encoded data to tree.
+     *
+     * @param {string} data
+     * @return {TreeNode}
+     */
+    deserialize(data) {
+        const vals = data.split(',');
+        const i = { val: 0 };
+        return this.dfsDeserialize(vals, i);
+    }
+
+    dfsDeserialize(vals, i) {
+        if (vals[i.val] === 'N') {
+            i.val++;
+            return null;
+        }
+        const node = new TreeNode(parseInt(vals[i.val]));
+        i.val++;
+        node.left = this.dfsDeserialize(vals, i);
+        node.right = this.dfsDeserialize(vals, i);
+        return node;
+    }
+}
+```
+
+```csharp
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     public int val;
+ *     public TreeNode left;
+ *     public TreeNode right;
+ *     public TreeNode(int val=0, TreeNode left=null, TreeNode right=null) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+
+public class Codec {
+
+    // Encodes a tree to a single string.
+    public string Serialize(TreeNode root) {
+        List<string> res = new List<string>();
+        dfsSerialize(root, res);
+        return String.Join(",", res);
+    }
+
+    private void dfsSerialize(TreeNode node, List<string> res) {
+        if (node == null) {
+            res.Add("N");
+            return;
+        }
+        res.Add(node.val.ToString());
+        dfsSerialize(node.left, res);
+        dfsSerialize(node.right, res);
+    }
+
+    // Decodes your encoded data to tree.
+    public TreeNode Deserialize(string data) {
+        string[] vals = data.Split(',');
+        int i = 0;
+        return dfsDeserialize(vals, ref i);
+    }
+
+    private TreeNode dfsDeserialize(string[] vals, ref int i) {
+        if (vals[i] == "N") {
+            i++;
+            return null;
+        }
+        TreeNode node = new TreeNode(Int32.Parse(vals[i]));
+        i++;
+        node.left = dfsDeserialize(vals, ref i);
+        node.right = dfsDeserialize(vals, ref i);
+        return node;
+    }
+}
+```
+
+```go
+/**
+ * Definition for a binary tree node.
+ * type TreeNode struct {
+ *     Val int
+ *     Left *TreeNode
+ *     Right *TreeNode
+ * }
+ */
+
+type Codec struct{}
+
+func Constructor() Codec {
+    return Codec{}
+}
+
+// Encodes a tree to a single string.
+func (this *Codec) serialize(root *TreeNode) string {
+    var res []string
+
+    var dfs func(node *TreeNode)
+    dfs = func(node *TreeNode) {
+        if node == nil {
+            res = append(res, "N")
+            return
+        }
+        res = append(res, strconv.Itoa(node.Val))
+        dfs(node.Left)
+        dfs(node.Right)
+    }
+
+    dfs(root)
+    return strings.Join(res, ",")
+}
+
+// Decodes your encoded data to tree.
+func (this *Codec) deserialize(data string) *TreeNode {
+    vals := strings.Split(data, ",")
+    i := 0
+
+    var dfs func() *TreeNode
+    dfs = func() *TreeNode {
+        if vals[i] == "N" {
+            i++
+            return nil
+        }
+        val, _ := strconv.Atoi(vals[i])
+        node := &TreeNode{Val: val}
+        i++
+        node.Left = dfs()
+        node.Right = dfs()
+        return node
+    }
+
+    return dfs()
+}
+```
+
+```kotlin
+/**
+ * Definition for a binary tree node.
+ * class TreeNode(var `val`: Int) {
+ *     var left: TreeNode? = null
+ *     var right: TreeNode? = null
+ * }
+ */
+
+class Codec {
+
+    // Encodes a tree to a single string.
+    fun serialize(root: TreeNode?): String {
+        val res = mutableListOf<String>()
+
+        fun dfs(node: TreeNode?) {
+            if (node == null) {
+                res.add("N")
+                return
+            }
+            res.add(node.`val`.toString())
+            dfs(node.left)
+            dfs(node.right)
+        }
+
+        dfs(root)
+        return res.joinToString(",")
+    }
+
+    // Decodes your encoded data to tree.
+    fun deserialize(data: String): TreeNode? {
+        val vals = data.split(",")
+        var i = 0
+
+        fun dfs(): TreeNode? {
+            if (vals[i] == "N") {
+                i++
+                return null
+            }
+            val node = TreeNode(vals[i].toInt())
+            i++
+            node.left = dfs()
+            node.right = dfs()
+            return node
+        }
+
+        return dfs()
+    }
+}
+```
+
+```swift
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     public var val: Int
+ *     public var left: TreeNode?
+ *     public var right: TreeNode?
+ *     public init(_ val: Int) {
+ *         self.val = val
+ *         self.left = nil
+ *         self.right = nil
+ *     }
+ * }
+ */
+
+class Codec {
+
+    func serialize(_ root: TreeNode?) -> String {
+        var res = [String]()
+
+        func dfs(_ node: TreeNode?) {
+            guard let node = node else {
+                res.append("N")
+                return
+            }
+            res.append("\(node.val)")
+            dfs(node.left)
+            dfs(node.right)
+        }
+
+        dfs(root)
+        return res.joined(separator: ",")
+    }
+
+    func deserialize(_ data: String) -> TreeNode? {
+        var vals = data.split(separator: ",").map { String($0) }
+        var i = 0
+
+        func dfs() -> TreeNode? {
+            if vals[i] == "N" {
+                i += 1
+                return nil
+            }
+            let node = TreeNode(Int(vals[i])!)
+            i += 1
+            node.left = dfs()
+            node.right = dfs()
+            return node
+        }
+
+        return dfs()
+    }
+}
+```
+
+```rust
+// Definition for a binary tree node.
+// #[derive(Debug, PartialEq, Eq)]
+// pub struct TreeNode {
+//     pub val: i32,
+//     pub left: Option<Rc<RefCell<TreeNode>>>,
+//     pub right: Option<Rc<RefCell<TreeNode>>>,
+// }
+
+struct Codec;
+
+impl Codec {
+    fn new() -> Self {
+        Codec
+    }
+
+    fn serialize(&self, root: Option<Rc<RefCell<TreeNode>>>) -> String {
+        let mut res = Vec::new();
+        Self::dfs_serialize(&root, &mut res);
+        res.join(",")
+    }
+
+    fn dfs_serialize(node: &Option<Rc<RefCell<TreeNode>>>, res: &mut Vec<String>) {
+        match node {
+            None => res.push("N".to_string()),
+            Some(n) => {
+                let n = n.borrow();
+                res.push(n.val.to_string());
+                Self::dfs_serialize(&n.left, res);
+                Self::dfs_serialize(&n.right, res);
+            }
+        }
+    }
+
+    fn deserialize(&self, data: String) -> Option<Rc<RefCell<TreeNode>>> {
+        let vals: Vec<&str> = data.split(',').collect();
+        let mut i = 0;
+        Self::dfs_deserialize(&vals, &mut i)
+    }
+
+    fn dfs_deserialize(vals: &[&str], i: &mut usize) -> Option<Rc<RefCell<TreeNode>>> {
+        if vals[*i] == "N" {
+            *i += 1;
+            return None;
+        }
+        let val = vals[*i].parse::<i32>().unwrap();
+        *i += 1;
+        let left = Self::dfs_deserialize(vals, i);
+        let right = Self::dfs_deserialize(vals, i);
+        Some(Rc::new(RefCell::new(TreeNode { val, left, right })))
+    }
+}
+```
+
+::tabs-end
+
+### Time & Space Complexity
+
+- Time complexity: $O(n)$
+- Space complexity: $O(n)$
+
+---
+
+## 2. Breadth First Search
+
+### Intuition
+
+Instead of using DFS, we treat the tree like a queue (level order traversal).
+BFS visits nodes level by level, so we simply record values in that order:
+
+- If a node exists → record its value and push its children (even if they are `None`).
+- If a node is missing → record `"N"` to mark empty spots.
+
+This ensures the structure is preserved, because BFS processes nodes exactly how they appear in the tree layout.
+
+During **deserialization**, we again use BFS:
+
+- The first value is the root.
+- Then for each node in the queue, assign its left and right children from the next values in the list.
+
+This keeps the tree reconstruction aligned with the serialized order.
+
+### Algorithm
+
+#### **Serialize**
+
+1. If root is `None` → return `"N"`.
+2. Initialize a queue with `root`.
+3. While queue is not empty:
+    - Pop a node.
+    - If node exists → append its value, push left & right children.
+    - If node is missing → append `"N"`.
+4. Join the list with commas and return.
+
+#### **Deserialize**
+
+1. Split string into list `vals`.
+2. If first value is `"N"` → return `None`.
+3. Create root from first value and push it into a queue.
+4. Use an `index` to read the next values:
+    - For each node popped from queue:
+        - If `vals[index]` is not `"N"` → create left child & push.
+        - Move `index`.
+        - Repeat for right child.
+5. Return the root of the rebuilt tree.
+
+::tabs-start
+
+```python
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+
+class Codec:
+
+    # Encodes a tree to a single string.
+    def serialize(self, root: Optional[TreeNode]) -> str:
+        if not root:
+            return "N"
+        res = []
+        queue = deque([root])
+        while queue:
+            node = queue.popleft()
+            if not node:
+                res.append("N")
+            else:
+                res.append(str(node.val))
+                queue.append(node.left)
+                queue.append(node.right)
+        return ",".join(res)
+
+    # Decodes your encoded data to tree.
+    def deserialize(self, data: str) -> Optional[TreeNode]:
+        vals = data.split(",")
+        if vals[0] == "N":
+            return None
+        root = TreeNode(int(vals[0]))
+        queue = deque([root])
+        index = 1
+        while queue:
+            node = queue.popleft()
+            if vals[index] != "N":
+                node.left = TreeNode(int(vals[index]))
+                queue.append(node.left)
+            index += 1
+            if vals[index] != "N":
+                node.right = TreeNode(int(vals[index]))
+                queue.append(node.right)
+            index += 1
+        return root
+```
+
+```java
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+
+public class Codec {
+
+    // Encodes a tree to a single string.
+    public String serialize(TreeNode root) {
+        if (root == null) return "N";
+        StringBuilder res = new StringBuilder();
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.add(root);
+
+        while (!queue.isEmpty()) {
+            TreeNode node = queue.poll();
+            if (node == null) {
+                res.append("N,");
+            } else {
+                res.append(node.val).append(",");
+                queue.add(node.left);
+                queue.add(node.right);
+            }
+        }
+        return res.toString();
+    }
+
+    // Decodes your encoded data to tree.
+    public TreeNode deserialize(String data) {
+        String[] vals = data.split(",");
+        if (vals[0].equals("N")) return null;
+        TreeNode root = new TreeNode(Integer.parseInt(vals[0]));
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.add(root);
+        int index = 1;
+
+        while (!queue.isEmpty()) {
+            TreeNode node = queue.poll();
+            if (!vals[index].equals("N")) {
+                node.left = new TreeNode(Integer.parseInt(vals[index]));
+                queue.add(node.left);
+            }
+            index++;
+            if (!vals[index].equals("N")) {
+                node.right = new TreeNode(Integer.parseInt(vals[index]));
+                queue.add(node.right);
+            }
+            index++;
+        }
+        return root;
+    }
+}
+```
+
+```cpp
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+
+class Codec {
+public:
+
+    // Encodes a tree to a single string.
+    string serialize(TreeNode* root) {
+        if (!root) return "N";
+        string res;
+        queue<TreeNode*> queue;
+        queue.push(root);
+
+        while (!queue.empty()) {
+            TreeNode* node = queue.front();
+            queue.pop();
+            if (!node) {
+                res += "N,";
+            } else {
+                res += to_string(node->val) + ",";
+                queue.push(node->left);
+                queue.push(node->right);
+            }
+        }
+        return res;
+    }
+
+    // Decodes your encoded data to tree.
+    TreeNode* deserialize(string data) {
+        stringstream ss(data);
+        string val;
+        getline(ss, val, ',');
+        if (val == "N") return nullptr;
+        TreeNode* root = new TreeNode(stoi(val));
+        queue<TreeNode*> queue;
+        queue.push(root);
+
+        while (getline(ss, val, ',')) {
+            TreeNode* node = queue.front();
+            queue.pop();
+            if (val != "N") {
+                node->left = new TreeNode(stoi(val));
+                queue.push(node->left);
+            }
+            getline(ss, val, ',');
+            if (val != "N") {
+                node->right = new TreeNode(stoi(val));
+                queue.push(node->right);
+            }
+        }
+        return root;
+    }
+};
+```
+
+```javascript
+/**
+ * Definition for a binary tree node.
+ * class TreeNode {
+ *     constructor(val = 0, left = null, right = null) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+
+class Codec {
+    /**
+     * Encodes a tree to a single string.
+     *
+     * @param {TreeNode} root
+     * @return {string}
+     */
+    serialize(root) {
+        if (!root) return 'N';
+        const res = [];
+        const queue = new Queue();
+        queue.push(root);
+
+        while (!queue.isEmpty()) {
+            const node = queue.pop();
+            if (!node) {
+                res.push('N');
+            } else {
+                res.push(node.val);
+                queue.push(node.left);
+                queue.push(node.right);
+            }
+        }
+        return res.join(',');
+    }
+
+    /**
+     * Decodes your encoded data to tree.
+     *
+     * @param {string} data
+     * @return {TreeNode}
+     */
+    deserialize(data) {
+        const vals = data.split(',');
+        if (vals[0] === 'N') return null;
+        const root = new TreeNode(parseInt(vals[0]));
+        const queue = new Queue([root]);
+        let index = 1;
+
+        while (!queue.isEmpty()) {
+            const node = queue.pop();
+            if (vals[index] !== 'N') {
+                node.left = new TreeNode(parseInt(vals[index]));
+                queue.push(node.left);
+            }
+            index++;
+            if (vals[index] !== 'N') {
+                node.right = new TreeNode(parseInt(vals[index]));
+                queue.push(node.right);
+            }
+            index++;
+        }
+        return root;
+    }
+}
+```
+
+```csharp
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     public int val;
+ *     public TreeNode left;
+ *     public TreeNode right;
+ *     public TreeNode(int val=0, TreeNode left=null, TreeNode right=null) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+
+public class Codec {
+
+    // Encodes a tree to a single string.
+    public string Serialize(TreeNode root) {
+        if (root == null) return "N";
+        var res = new List<string>();
+        var queue = new Queue<TreeNode>();
+        queue.Enqueue(root);
+
+        while (queue.Count > 0) {
+            var node = queue.Dequeue();
+            if (node == null) {
+                res.Add("N");
+            } else {
+                res.Add(node.val.ToString());
+                queue.Enqueue(node.left);
+                queue.Enqueue(node.right);
+            }
+        }
+        return string.Join(",", res);
+    }
+
+    // Decodes your encoded data to tree.
+    public TreeNode Deserialize(string data) {
+        var vals = data.Split(',');
+        if (vals[0] == "N") return null;
+        var root = new TreeNode(int.Parse(vals[0]));
+        var queue = new Queue<TreeNode>();
+        queue.Enqueue(root);
+        int index = 1;
+
+        while (queue.Count > 0) {
+            var node = queue.Dequeue();
+            if (vals[index] != "N") {
+                node.left = new TreeNode(int.Parse(vals[index]));
+                queue.Enqueue(node.left);
+            }
+            index++;
+            if (vals[index] != "N") {
+                node.right = new TreeNode(int.Parse(vals[index]));
+                queue.Enqueue(node.right);
+            }
+            index++;
+        }
+        return root;
+    }
+}
+```
+
+```go
+/**
+ * Definition for a binary tree node.
+ * type TreeNode struct {
+ *     Val int
+ *     Left *TreeNode
+ *     Right *TreeNode
+ * }
+ */
+
+type Codec struct{}
+
+func Constructor() Codec {
+    return Codec{}
+}
+
+// Encodes a tree to a single string.
+func (this *Codec) serialize(root *TreeNode) string {
+    if root == nil {
+        return "N"
+    }
+    var res []string
+    queue := []*TreeNode{root}
+
+    for len(queue) > 0 {
+        node := queue[0]
+        queue = queue[1:]
+
+        if node == nil {
+            res = append(res, "N")
+        } else {
+            res = append(res, strconv.Itoa(node.Val))
+            queue = append(queue, node.Left)
+            queue = append(queue, node.Right)
+        }
+    }
+
+    return strings.Join(res, ",")
+}
+
+// Decodes your encoded data to tree.
+func (this *Codec) deserialize(data string) *TreeNode {
+    vals := strings.Split(data, ",")
+    if vals[0] == "N" {
+        return nil
+    }
+
+    rootVal, _ := strconv.Atoi(vals[0])
+    root := &TreeNode{Val: rootVal}
+    queue := []*TreeNode{root}
+    index := 1
+
+    for len(queue) > 0 && index < len(vals) {
+        node := queue[0]
+        queue = queue[1:]
+
+        if vals[index] != "N" {
+            leftVal, _ := strconv.Atoi(vals[index])
+            node.Left = &TreeNode{Val: leftVal}
+            queue = append(queue, node.Left)
+        }
+        index++
+
+        if index < len(vals) && vals[index] != "N" {
+            rightVal, _ := strconv.Atoi(vals[index])
+            node.Right = &TreeNode{Val: rightVal}
+            queue = append(queue, node.Right)
+        }
+        index++
+    }
+
+    return root
+}
+```
+
+```kotlin
+/**
+ * Definition for a binary tree node.
+ * class TreeNode(var `val`: Int) {
+ *     var left: TreeNode? = null
+ *     var right: TreeNode? = null
+ * }
+ */
+
+class Codec {
+
+    // Encodes a tree to a single string.
+    fun serialize(root: TreeNode?): String {
+        if (root == null) return "N"
+        val res = mutableListOf<String>()
+        val queue: Queue<TreeNode?> = LinkedList()
+        queue.add(root)
+
+        while (queue.isNotEmpty()) {
+            val node = queue.poll()
+            if (node == null) {
+                res.add("N")
+            } else {
+                res.add(node.`val`.toString())
+                queue.add(node.left)
+                queue.add(node.right)
+            }
+        }
+
+        return res.joinToString(",")
+    }
+
+    // Decodes your encoded data to tree.
+    fun deserialize(data: String): TreeNode? {
+        val vals = data.split(",")
+        if (vals[0] == "N") return null
+
+        val root = TreeNode(vals[0].toInt())
+        val queue: Queue<TreeNode> = LinkedList()
+        queue.add(root)
+        var index = 1
+
+        while (queue.isNotEmpty() && index < vals.size) {
+            val node = queue.poll()
+
+            if (vals[index] != "N") {
+                node.left = TreeNode(vals[index].toInt())
+                queue.add(node.left!!)
+            }
+            index++
+
+            if (index < vals.size && vals[index] != "N") {
+                node.right = TreeNode(vals[index].toInt())
+                queue.add(node.right!!)
+            }
+            index++
+        }
+
+        return root
+    }
+}
+```
+
+```swift
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     public var val: Int
+ *     public var left: TreeNode?
+ *     public var right: TreeNode?
+ *     public init(_ val: Int) {
+ *         self.val = val
+ *         self.left = nil
+ *         self.right = nil
+ *     }
+ * }
+ */
+
+class Codec {
+
+    func serialize(_ root: TreeNode?) -> String {
+        guard let root = root else {
+            return "N"
+        }
+
+        var res = [String]()
+        var queue: Deque<TreeNode?> = [root]
+
+        while !queue.isEmpty {
+            let node = queue.removeFirst()
+            if let node = node {
+                res.append("\(node.val)")
+                queue.append(node.left)
+                queue.append(node.right)
+            } else {
+                res.append("N")
+            }
+        }
+
+        return res.joined(separator: ",")
+    }
+
+    func deserialize(_ data: String) -> TreeNode? {
+        let vals = data.split(separator: ",").map { String($0) }
+        guard vals[0] != "N" else {
+            return nil
+        }
+
+        let root = TreeNode(Int(vals[0])!)
+        var queue: Deque<TreeNode> = [root]
+        var index = 1
+
+        while !queue.isEmpty {
+            let node = queue.popFirst()!
+
+            if vals[index] != "N" {
+                node.left = TreeNode(Int(vals[index])!)
+                queue.append(node.left!)
+            }
+            index += 1
+
+            if vals[index] != "N" {
+                node.right = TreeNode(Int(vals[index])!)
+                queue.append(node.right!)
+            }
+            index += 1
+        }
+
+        return root
+    }
+}
+```
+
+```rust
+// Definition for a binary tree node.
+// #[derive(Debug, PartialEq, Eq)]
+// pub struct TreeNode {
+//     pub val: i32,
+//     pub left: Option<Rc<RefCell<TreeNode>>>,
+//     pub right: Option<Rc<RefCell<TreeNode>>>,
+// }
+
+struct Codec;
+
+impl Codec {
+    fn new() -> Self {
+        Codec
+    }
+
+    fn serialize(&self, root: Option<Rc<RefCell<TreeNode>>>) -> String {
+        if root.is_none() {
+            return "N".to_string();
+        }
+        let mut res = Vec::new();
+        let mut queue: VecDeque<Option<Rc<RefCell<TreeNode>>>> = VecDeque::new();
+        queue.push_back(root);
+
+        while let Some(node_opt) = queue.pop_front() {
+            match node_opt {
+                None => res.push("N".to_string()),
+                Some(node) => {
+                    let n = node.borrow();
+                    res.push(n.val.to_string());
+                    queue.push_back(n.left.clone());
+                    queue.push_back(n.right.clone());
+                }
+            }
+        }
+        res.join(",")
+    }
+
+    fn deserialize(&self, data: String) -> Option<Rc<RefCell<TreeNode>>> {
+        let vals: Vec<&str> = data.split(',').collect();
+        if vals[0] == "N" {
+            return None;
+        }
+        let root = Rc::new(RefCell::new(TreeNode {
+            val: vals[0].parse().unwrap(),
+            left: None,
+            right: None,
+        }));
+        let mut queue: VecDeque<Rc<RefCell<TreeNode>>> = VecDeque::new();
+        queue.push_back(root.clone());
+        let mut index = 1;
+
+        while let Some(node) = queue.pop_front() {
+            if vals[index] != "N" {
+                let left = Rc::new(RefCell::new(TreeNode {
+                    val: vals[index].parse().unwrap(),
+                    left: None,
+                    right: None,
+                }));
+                node.borrow_mut().left = Some(left.clone());
+                queue.push_back(left);
+            }
+            index += 1;
+            if vals[index] != "N" {
+                let right = Rc::new(RefCell::new(TreeNode {
+                    val: vals[index].parse().unwrap(),
+                    left: None,
+                    right: None,
+                }));
+                node.borrow_mut().right = Some(right.clone());
+                queue.push_back(right);
+            }
+            index += 1;
+        }
+        Some(root)
+    }
+}
+```
+
+::tabs-end
+
+### Time & Space Complexity
+
+- Time complexity: $O(n)$
+- Space complexity: $O(n)$
+
+---
+
+## Common Pitfalls
+
+### Forgetting to Handle Null Nodes
+
+A common mistake is not encoding null children in the serialized string. Without explicit null markers (like `"N"`), the tree structure becomes ambiguous during deserialization. Two different trees could produce the same serialized string if nulls are omitted.
+
+### Using a Global Index Without Proper State Management
+
+When deserializing with DFS, using a simple integer variable as an index fails because the index must persist across recursive calls. In many languages, primitive integers are passed by value, so the incremented index is lost when returning from recursion. The solution is to use a mutable wrapper (like an array or object) to maintain the index state.
+
+### Incorrect Order of Building Left and Right Subtrees
+
+The deserialization must rebuild children in the exact same order they were serialized. If you serialize using preorder (root, left, right), you must deserialize in preorder too. Building the right subtree before the left will produce an incorrect tree structure.
+
+### Not Handling Empty Trees
+
+An empty tree (null root) is a valid input that requires special handling. Forgetting to check for this case in both serialization and deserialization leads to null pointer exceptions or incorrect output.
+
+### Delimiter Conflicts with Node Values
+
+Using a delimiter that could appear in node values causes parsing errors. For example, if nodes can have negative values and you use `-` as a delimiter, parsing becomes ambiguous. Using a character that cannot appear in integer values (like `,`) avoids this issue.

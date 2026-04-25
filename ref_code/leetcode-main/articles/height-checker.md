@@ -1,0 +1,481 @@
+## Prerequisites
+
+Before attempting this problem, you should be comfortable with:
+
+- **Sorting** - Creating a sorted copy to compare against the original order
+- **Counting Sort** - Using frequency arrays for efficient sorting when values are constrained to a small range
+
+---
+
+## 1. Sorting
+
+### Intuition
+
+The problem asks us to count how many students are standing in the wrong position compared to where they should be if arranged by height.
+If we sort the array, we get the "expected" order.
+By comparing each position in the original array with the sorted version, we can count mismatches.
+
+### Algorithm
+
+1. Create a copy of the heights array and sort it to get the expected order.
+2. Initialize a counter `res` to `0`.
+3. Iterate through both arrays simultaneously.
+4. For each index, if the original height differs from the expected height, increment the counter.
+5. Return the count.
+
+::tabs-start
+
+```python
+class Solution:
+    def heightChecker(self, heights: List[int]) -> int:
+        expected = sorted(heights)
+
+        res = 0
+        for i in range(len(heights)):
+            if heights[i] != expected[i]:
+                res += 1
+
+        return res
+```
+
+```java
+public class Solution {
+    public int heightChecker(int[] heights) {
+        int[] expected = Arrays.copyOf(heights, heights.length);
+        Arrays.sort(expected);
+
+        int res = 0;
+        for (int i = 0; i < heights.length; i++) {
+            if (heights[i] != expected[i]) {
+                res++;
+            }
+        }
+
+        return res;
+    }
+}
+```
+
+```cpp
+class Solution {
+public:
+    int heightChecker(vector<int>& heights) {
+        vector<int> expected = heights;
+        sort(expected.begin(), expected.end());
+
+        int res = 0;
+        for (int i = 0; i < heights.size(); i++) {
+            if (heights[i] != expected[i]) {
+                res++;
+            }
+        }
+
+        return res;
+    }
+};
+```
+
+```javascript
+class Solution {
+    /**
+     * @param {number[]} heights
+     * @return {number}
+     */
+    heightChecker(heights) {
+        const expected = [...heights].sort((a, b) => a - b);
+
+        let res = 0;
+        for (let i = 0; i < heights.length; i++) {
+            if (heights[i] !== expected[i]) {
+                res++;
+            }
+        }
+
+        return res;
+    }
+}
+```
+
+```csharp
+public class Solution {
+    public int HeightChecker(int[] heights) {
+        int[] expected = new int[heights.Length];
+        Array.Copy(heights, expected, heights.Length);
+        Array.Sort(expected);
+
+        int res = 0;
+        for (int i = 0; i < heights.Length; i++) {
+            if (heights[i] != expected[i]) {
+                res++;
+            }
+        }
+
+        return res;
+    }
+}
+```
+
+```go
+func heightChecker(heights []int) int {
+    expected := make([]int, len(heights))
+    copy(expected, heights)
+    sort.Ints(expected)
+
+    res := 0
+    for i := 0; i < len(heights); i++ {
+        if heights[i] != expected[i] {
+            res++
+        }
+    }
+
+    return res
+}
+```
+
+```kotlin
+class Solution {
+    fun heightChecker(heights: IntArray): Int {
+        val expected = heights.sortedArray()
+
+        var res = 0
+        for (i in heights.indices) {
+            if (heights[i] != expected[i]) {
+                res++
+            }
+        }
+
+        return res
+    }
+}
+```
+
+```swift
+class Solution {
+    func heightChecker(_ heights: [Int]) -> Int {
+        let expected = heights.sorted()
+
+        var res = 0
+        for i in 0..<heights.count {
+            if heights[i] != expected[i] {
+                res += 1
+            }
+        }
+
+        return res
+    }
+}
+```
+
+```rust
+impl Solution {
+    pub fn height_checker(heights: Vec<i32>) -> i32 {
+        let mut expected = heights.clone();
+        expected.sort();
+
+        let mut res = 0;
+        for i in 0..heights.len() {
+            if heights[i] != expected[i] {
+                res += 1;
+            }
+        }
+
+        res
+    }
+}
+```
+
+::tabs-end
+
+### Time & Space Complexity
+
+- Time complexity: $O(n \log n)$
+- Space complexity: $O(n)$
+
+---
+
+## 2. Counting Sort
+
+### Intuition
+
+Since heights are constrained to a small range (`1` to `100`), we can use counting sort for a more efficient solution.
+Instead of sorting the entire array, we count how many times each height appears.
+Then we reconstruct the expected sorted order by iterating through possible heights and adding each one according to its count.
+Finally, we compare the original array with this expected array.
+
+### Algorithm
+
+1. Create a count array of size `101` (to cover heights `1` through `100`).
+2. Count occurrences of each height in the original array.
+3. Build the expected array by iterating from height `1` to `100` and appending each height according to its count.
+4. Compare the original array with the expected array and count positions where they differ.
+5. Return the mismatch count.
+
+::tabs-start
+
+```python
+class Solution:
+    def heightChecker(self, heights: List[int]) -> int:
+        count = [0] * 101
+        for h in heights:
+            count[h] += 1
+
+        expected = []
+        for h in range(1, 101):
+            c = count[h]
+            for _ in range(c):
+                expected.append(h)
+
+        res = 0
+        for i in range(len(heights)):
+            if heights[i] != expected[i]:
+                res += 1
+
+        return res
+```
+
+```java
+public class Solution {
+    public int heightChecker(int[] heights) {
+        int[] count = new int[101];
+        for (int h : heights) {
+            count[h]++;
+        }
+
+        List<Integer> expected = new ArrayList<>();
+        for (int h = 1; h <= 100; h++) {
+            int c = count[h];
+            for (int i = 0; i < c; i++) {
+                expected.add(h);
+            }
+        }
+
+        int res = 0;
+        for (int i = 0; i < heights.length; i++) {
+            if (heights[i] != expected.get(i)) {
+                res++;
+            }
+        }
+
+        return res;
+    }
+}
+```
+
+```cpp
+class Solution {
+public:
+    int heightChecker(vector<int>& heights) {
+        int count[101] = {};
+        for (int h : heights) {
+            count[h]++;
+        }
+
+        vector<int> expected;
+        for (int h = 1; h <= 100; h++) {
+            int c = count[h];
+            for (int i = 0; i < c; i++) {
+                expected.push_back(h);
+            }
+        }
+
+        int res = 0;
+        for (int i = 0; i < heights.size(); i++) {
+            if (heights[i] != expected[i]) {
+                res++;
+            }
+        }
+
+        return res;
+    }
+};
+```
+
+```javascript
+class Solution {
+    /**
+     * @param {number[]} heights
+     * @return {number}
+     */
+    heightChecker(heights) {
+        const count = new Array(101).fill(0);
+        for (let h of heights) {
+            count[h]++;
+        }
+
+        const expected = [];
+        for (let h = 1; h <= 100; h++) {
+            let c = count[h];
+            for (let i = 0; i < c; i++) {
+                expected.push(h);
+            }
+        }
+
+        let res = 0;
+        for (let i = 0; i < heights.length; i++) {
+            if (heights[i] !== expected[i]) {
+                res++;
+            }
+        }
+
+        return res;
+    }
+}
+```
+
+```csharp
+public class Solution {
+    public int HeightChecker(int[] heights) {
+        int[] count = new int[101];
+        foreach (int h in heights) {
+            count[h]++;
+        }
+
+        List<int> expected = new List<int>();
+        for (int h = 1; h <= 100; h++) {
+            int c = count[h];
+            for (int i = 0; i < c; i++) {
+                expected.Add(h);
+            }
+        }
+
+        int res = 0;
+        for (int i = 0; i < heights.Length; i++) {
+            if (heights[i] != expected[i]) {
+                res++;
+            }
+        }
+
+        return res;
+    }
+}
+```
+
+```go
+func heightChecker(heights []int) int {
+    count := make([]int, 101)
+    for _, h := range heights {
+        count[h]++
+    }
+
+    expected := []int{}
+    for h := 1; h <= 100; h++ {
+        c := count[h]
+        for i := 0; i < c; i++ {
+            expected = append(expected, h)
+        }
+    }
+
+    res := 0
+    for i := 0; i < len(heights); i++ {
+        if heights[i] != expected[i] {
+            res++
+        }
+    }
+
+    return res
+}
+```
+
+```kotlin
+class Solution {
+    fun heightChecker(heights: IntArray): Int {
+        val count = IntArray(101)
+        for (h in heights) {
+            count[h]++
+        }
+
+        val expected = mutableListOf<Int>()
+        for (h in 1..100) {
+            val c = count[h]
+            repeat(c) {
+                expected.add(h)
+            }
+        }
+
+        var res = 0
+        for (i in heights.indices) {
+            if (heights[i] != expected[i]) {
+                res++
+            }
+        }
+
+        return res
+    }
+}
+```
+
+```swift
+class Solution {
+    func heightChecker(_ heights: [Int]) -> Int {
+        var count = [Int](repeating: 0, count: 101)
+        for h in heights {
+            count[h] += 1
+        }
+
+        var expected = [Int]()
+        for h in 1...100 {
+            let c = count[h]
+            for _ in 0..<c {
+                expected.append(h)
+            }
+        }
+
+        var res = 0
+        for i in 0..<heights.count {
+            if heights[i] != expected[i] {
+                res += 1
+            }
+        }
+
+        return res
+    }
+}
+```
+
+```rust
+impl Solution {
+    pub fn height_checker(heights: Vec<i32>) -> i32 {
+        let mut count = [0; 101];
+        for &h in &heights {
+            count[h as usize] += 1;
+        }
+
+        let mut expected = Vec::new();
+        for h in 1..=100 {
+            for _ in 0..count[h] {
+                expected.push(h as i32);
+            }
+        }
+
+        let mut res = 0;
+        for i in 0..heights.len() {
+            if heights[i] != expected[i] {
+                res += 1;
+            }
+        }
+
+        res
+    }
+}
+```
+
+::tabs-end
+
+### Time & Space Complexity
+
+- Time complexity: $O(n + k)$
+- Space complexity: $O(n + k)$
+
+> Where $n$ is the size of the input array, and $k$ is the range of numbers.
+
+---
+
+## Common Pitfalls
+
+### Modifying the Original Array
+
+When sorting the array to get the expected order, some developers accidentally sort the original array in place. This destroys the original order, making it impossible to compare positions. Always create a copy of the array before sorting, or use a method that returns a new sorted array without modifying the original.
+
+### Using Lexicographic Sort Instead of Numeric Sort
+
+In languages like JavaScript, the default `sort()` method sorts elements as strings, not numbers. This means `[1, 10, 2]` would be sorted as `[1, 10, 2]` instead of `[1, 2, 10]`. Always provide a numeric comparator function (e.g., `(a, b) => a - b`) to ensure correct sorting behavior.

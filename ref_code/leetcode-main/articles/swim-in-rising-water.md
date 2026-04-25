@@ -1,0 +1,2283 @@
+## Prerequisites
+Before attempting this problem, you should be comfortable with:
+- **Graph Traversal (DFS/BFS)** - Exploring grid cells using depth-first or breadth-first search with 4-directional movement
+- **Binary Search** - Using binary search on the answer to optimize searching for the minimum valid time
+- **Dijkstra's Algorithm** - Finding shortest paths with modified cost function (minimizing maximum edge weight)
+- **Union-Find (Disjoint Set Union)** - Tracking connected components as cells become accessible over time
+- **Priority Queue / Min-Heap** - Efficiently selecting the next cell with minimum cost in greedy approaches
+
+---
+
+## 1. Brute Force
+
+### Intuition
+This brute force tries **every possible path** from the top-left to the bottom-right.
+
+While walking, your “time” is not the number of steps — it’s the **maximum height value you have stepped on so far**, because you must wait until water rises to at least that height to pass those cells.
+
+So for each path:
+- The cost of the path = **max cell value on that path**
+- We want the path with the **minimum** such cost (minimize the worst height you had to cross).
+
+The DFS explores all routes, keeps a `visited` grid to avoid looping, and returns the best (minimum) possible maximum-height value among all paths.
+
+### Algorithm
+1. Start `dfs` from `(0, 0)` with initial time `t = 0`.
+2. For a cell `(r, c)`:
+   - If out of bounds or already visited → return a very large number (invalid path).
+   - Update `t = max(t, grid[r][c])` (time needed to stand on this cell).
+   - If `(r, c)` is the destination `(n-1, n-1)` → return `t`.
+3. Mark `(r, c)` as visited.
+4. Recursively try all 4 directions (up, down, left, right).
+5. Take the minimum result among the 4 recursive calls (best path from here).
+6. Unmark `(r, c)` (backtrack) and return that minimum.
+
+::tabs-start
+
+```python
+class Solution:
+    def swimInWater(self, grid: List[List[int]]) -> int:
+        n = len(grid)
+        visit = [[False] * n for _ in range(n)]
+
+        def dfs(node, t):
+            r, c = node
+            if min(r, c) < 0 or max(r, c) >= n or visit[r][c]:
+                return 1000000
+            if r == (n - 1) and c == (n - 1):
+                return max(t, grid[r][c])
+            visit[r][c] = True
+            t = max(t, grid[r][c])
+            res = min(dfs((r + 1, c), t),
+                       dfs((r - 1, c), t),
+                       dfs((r, c + 1), t),
+                       dfs((r, c - 1), t))
+            visit[r][c] = False
+            return res
+
+        return dfs((0, 0), 0)
+```
+
+```java
+public class Solution {
+    public int swimInWater(int[][] grid) {
+        int n = grid.length;
+        boolean[][] visit = new boolean[n][n];
+
+        return dfs(grid, visit, 0, 0, 0);
+    }
+
+    private int dfs(int[][] grid, boolean[][] visit,
+                    int r, int c, int t) {
+        int n = grid.length;
+        if (r < 0 || c < 0 || r >= n || c >= n || visit[r][c]) {
+            return 1000000;
+        }
+        if (r == n - 1 && c == n - 1) {
+            return Math.max(t, grid[r][c]);
+        }
+        visit[r][c] = true;
+        t = Math.max(t, grid[r][c]);
+        int res = Math.min(Math.min(dfs(grid, visit, r + 1, c, t),
+                                     dfs(grid, visit, r - 1, c, t)),
+                           Math.min(dfs(grid, visit, r, c + 1, t),
+                                    dfs(grid, visit, r, c - 1, t)));
+        visit[r][c] = false;
+        return res;
+    }
+}
+```
+
+```cpp
+class Solution {
+public:
+    int swimInWater(vector<vector<int>>& grid) {
+        int n = grid.size();
+        vector<vector<bool>> visit(n, vector<bool>(n, false));
+        return dfs(grid, visit, 0, 0, 0);
+    }
+
+private:
+    int dfs(vector<vector<int>>& grid, vector<vector<bool>>& visit,
+            int r, int c, int t) {
+        int n = grid.size();
+        if (r < 0 || c < 0 || r >= n || c >= n || visit[r][c]) {
+            return 1000000;
+        }
+        if (r == n - 1 && c == n - 1) {
+            return max(t, grid[r][c]);
+        }
+        visit[r][c] = true;
+        t = max(t, grid[r][c]);
+        int res = min(min(dfs(grid, visit, r + 1, c, t),
+                                     dfs(grid, visit, r - 1, c, t)),
+                           min(dfs(grid, visit, r, c + 1, t),
+                                    dfs(grid, visit, r, c - 1, t)));
+        visit[r][c] = false;
+        return res;
+    }
+};
+```
+
+```javascript
+class Solution {
+    /**
+     * @param {number[][]} grid
+     * @return {number}
+     */
+    swimInWater(grid) {
+        const n = grid.length;
+        const visit = Array.from({ length: n }, () => Array(n).fill(false));
+
+        const dfs = (r, c, t) => {
+            if (r < 0 || c < 0 || r >= n || c >= n || visit[r][c]) {
+                return 1000000;
+            }
+            if (r === n - 1 && c === n - 1) {
+                return Math.max(t, grid[r][c]);
+            }
+            visit[r][c] = true;
+            t = Math.max(t, grid[r][c]);
+            const res = Math.min(
+                Math.min(dfs(r + 1, c, t), dfs(r - 1, c, t)),
+                Math.min(dfs(r, c + 1, t), dfs(r, c - 1, t)),
+            );
+            visit[r][c] = false;
+            return res;
+        };
+
+        return dfs(0, 0, 0);
+    }
+}
+```
+
+```csharp
+public class Solution {
+    public int SwimInWater(int[][] grid) {
+        int n = grid.Length;
+        bool[][] visit = new bool[n][];
+        for (int i = 0; i < n; i++) {
+            visit[i] = new bool[n];
+        }
+        return Dfs(grid, visit, 0, 0, 0);
+    }
+
+    private int Dfs(int[][] grid, bool[][] visit,
+                    int r, int c, int t) {
+        int n = grid.Length;
+        if (r < 0 || c < 0 || r >= n ||
+            c >= n || visit[r][c]) {
+            return 1000000;
+        }
+        if (r == n - 1 && c == n - 1) {
+            return Math.Max(t, grid[r][c]);
+        }
+        visit[r][c] = true;
+        t = Math.Max(t, grid[r][c]);
+        int res = Math.Min(Math.Min(Dfs(grid, visit, r + 1, c, t),
+                                     Dfs(grid, visit, r - 1, c, t)),
+                           Math.Min(Dfs(grid, visit, r, c + 1, t),
+                                    Dfs(grid, visit, r, c - 1, t)));
+        visit[r][c] = false;
+        return res;
+    }
+}
+```
+
+```go
+func swimInWater(grid [][]int) int {
+    n := len(grid)
+    visit := make([][]bool, n)
+    for i := range visit {
+        visit[i] = make([]bool, n)
+    }
+
+    var dfs func(r, c, t int) int
+    dfs = func(r, c, t int) int {
+        if r < 0 || c < 0 || r >= n || c >= n || visit[r][c] {
+            return 1000000
+        }
+        if r == n-1 && c == n-1 {
+            return max(t, grid[r][c])
+        }
+        visit[r][c] = true
+        t = max(t, grid[r][c])
+
+        res := min(
+            min(dfs(r+1, c, t), dfs(r-1, c, t)),
+            min(dfs(r, c+1, t), dfs(r, c-1, t)),
+        )
+
+        visit[r][c] = false
+        return res
+    }
+
+    return dfs(0, 0, 0)
+}
+
+func max(a, b int) int {
+    if a > b {
+        return a
+    }
+    return b
+}
+
+func min(a, b int) int {
+    if a < b {
+        return a
+    }
+    return b
+}
+```
+
+```kotlin
+class Solution {
+    fun swimInWater(grid: Array<IntArray>): Int {
+        val n = grid.size
+        val visit = Array(n) { BooleanArray(n) }
+
+        fun dfs(r: Int, c: Int, t: Int): Int {
+            if (r < 0 || c < 0 || r >= n || c >= n || visit[r][c]) {
+                return 1000000
+            }
+            if (r == n - 1 && c == n - 1) return maxOf(t, grid[r][c])
+            visit[r][c] = true
+            val time = maxOf(t, grid[r][c])
+
+            val res = minOf(
+                dfs(r + 1, c, time),
+                dfs(r - 1, c, time),
+                dfs(r, c + 1, time),
+                dfs(r, c - 1, time)
+            )
+
+            visit[r][c] = false
+            return res
+        }
+
+        return dfs(0, 0, 0)
+    }
+}
+```
+
+```swift
+class Solution {
+    func swimInWater(_ grid: [[Int]]) -> Int {
+        let n = grid.count
+        var visit = Array(repeating: Array(repeating: false, count: n), count: n)
+
+        func dfs(_ node: (Int, Int), _ t: Int) -> Int {
+            let (r, c) = node
+            if r < 0 || c < 0 || r >= n || c >= n || visit[r][c] {
+                return 1000000
+            }
+            if r == n - 1 && c == n - 1 {
+                return max(t, grid[r][c])
+            }
+            visit[r][c] = true
+            let t = max(t, grid[r][c])
+            let res = min(dfs((r + 1, c), t),
+                          dfs((r - 1, c), t),
+                          dfs((r, c + 1), t),
+                          dfs((r, c - 1), t))
+            visit[r][c] = false
+            return res
+        }
+
+        return dfs((0, 0), 0)
+    }
+}
+```
+
+
+```rust
+impl Solution {
+    pub fn swim_in_water(grid: Vec<Vec<i32>>) -> i32 {
+        let n = grid.len();
+        let mut visit = vec![vec![false; n]; n];
+
+        fn dfs(
+            grid: &Vec<Vec<i32>>, visit: &mut Vec<Vec<bool>>,
+            r: i32, c: i32, t: i32,
+        ) -> i32 {
+            let n = grid.len() as i32;
+            if r < 0 || c < 0 || r >= n || c >= n || visit[r as usize][c as usize] {
+                return 1_000_000;
+            }
+            let t = t.max(grid[r as usize][c as usize]);
+            if r == n - 1 && c == n - 1 {
+                return t;
+            }
+            visit[r as usize][c as usize] = true;
+            let res = dfs(grid, visit, r + 1, c, t)
+                .min(dfs(grid, visit, r - 1, c, t))
+                .min(dfs(grid, visit, r, c + 1, t))
+                .min(dfs(grid, visit, r, c - 1, t));
+            visit[r as usize][c as usize] = false;
+            res
+        }
+
+        dfs(&grid, &mut visit, 0, 0, 0)
+    }
+}
+```
+
+::tabs-end
+
+### Time & Space Complexity
+
+- Time complexity: $O(4 ^ {n ^ 2})$
+- Space complexity: $O(n ^ 2)$
+
+---
+
+## 2. Depth First Search
+
+### Intuition
+Here we turn the problem into a **yes/no question**:
+
+> “If the water level is `t`, can I reach the bottom-right?”
+
+At water level `t`, you are only allowed to step on cells with `grid[r][c] <= t`.  
+So we try a DFS that only walks through “allowed” cells.  
+Then we **increase `t` gradually** from the smallest possible height to the largest, and return the first `t` where reaching the end becomes possible.
+
+### Algorithm
+1. Compute:
+   - `minH` = minimum value in the grid (smallest possible water level to consider)
+   - `maxH` = maximum value in the grid (guaranteed enough water level)
+2. Define `canReach(t)` using `dfs`:
+   - Start from `(0,0)`
+   - You can move 4 directions.
+   - You **cannot** enter a cell if:
+     - it is out of bounds, or
+     - already visited, or
+     - its height `> t` (not flooded enough yet)
+   - If you reach `(n-1, n-1)`, return `true`.
+3. For `t` from `minH` to `maxH`:
+   - If `canReach(t)` is `true`, return `t` (first possible time).
+   - Otherwise reset `visited` and try the next `t`.
+4. If none worked earlier, return `maxH`.
+
+::tabs-start
+
+```python
+class Solution:
+    def swimInWater(self, grid: List[List[int]]) -> int:
+        n = len(grid)
+        visit = [[False] * n for _ in range(n)]
+        minH = maxH = grid[0][0]
+        for row in range(n):
+            maxH = max(maxH, max(grid[row]))
+            minH = min(minH, min(grid[row]))
+
+        def dfs(node, t):
+            r, c = node
+            if (min(r, c) < 0 or max(r, c) >= n or
+                visit[r][c] or grid[r][c] > t):
+                return False
+            if r == (n - 1) and c == (n - 1):
+                return True
+            visit[r][c] = True
+            return (dfs((r + 1, c), t) or
+                    dfs((r - 1, c), t) or
+                    dfs((r, c + 1), t) or
+                    dfs((r, c - 1), t))
+
+        for t in range(minH, maxH):
+            if dfs((0, 0), t):
+                return t
+            for r in range(n):
+                for c in range(n):
+                    visit[r][c] = False
+
+        return maxH
+```
+
+```java
+public class Solution {
+    public int swimInWater(int[][] grid) {
+        int n = grid.length;
+        boolean[][] visit = new boolean[n][n];
+        int minH = grid[0][0], maxH = grid[0][0];
+        for (int row = 0; row < n; row++) {
+            for (int col = 0; col < n; col++) {
+                maxH = Math.max(maxH, grid[row][col]);
+                minH = Math.min(minH, grid[row][col]);
+            }
+        }
+
+        for (int t = minH; t < maxH; t++) {
+            if (dfs(grid, visit, 0, 0, t)) {
+                return t;
+            }
+            for (int r = 0; r < n; r++) {
+                Arrays.fill(visit[r], false);
+            }
+        }
+        return maxH;
+    }
+
+    private boolean dfs(int[][] grid, boolean[][] visit, int r, int c, int t) {
+        if (r < 0 || c < 0 || r >= grid.length ||
+            c >= grid.length || visit[r][c] || grid[r][c] > t) {
+            return false;
+        }
+        if (r == grid.length - 1 && c == grid.length - 1) {
+            return true;
+        }
+        visit[r][c] = true;
+        return dfs(grid, visit, r + 1, c, t) ||
+               dfs(grid, visit, r - 1, c, t) ||
+               dfs(grid, visit, r, c + 1, t) ||
+               dfs(grid, visit, r, c - 1, t);
+    }
+}
+```
+
+```cpp
+class Solution {
+public:
+    int swimInWater(vector<vector<int>>& grid) {
+        int n = grid.size();
+        vector<vector<bool>> visit(n, vector<bool>(n, false));
+        int minH = grid[0][0], maxH = grid[0][0];
+        for (int row = 0; row < n; row++) {
+            for (int col = 0; col < n; col++) {
+                maxH = max(maxH, grid[row][col]);
+                minH = min(minH, grid[row][col]);
+            }
+        }
+
+        for (int t = minH; t < maxH; t++) {
+            if (dfs(grid, visit, 0, 0, t)) {
+                return t;
+            }
+            for (int r = 0; r < n; r++) {
+                fill(visit[r].begin(), visit[r].end(), false);
+            }
+        }
+        return maxH;
+    }
+
+private:
+    bool dfs(vector<vector<int>>& grid, vector<vector<bool>>& visit,
+                                        int r, int c, int t) {
+        if (r < 0 || c < 0 || r >= grid.size() ||
+            c >= grid.size() || visit[r][c] || grid[r][c] > t) {
+            return false;
+        }
+        if (r == grid.size() - 1 && c == grid.size() - 1) {
+            return true;
+        }
+        visit[r][c] = true;
+        return dfs(grid, visit, r + 1, c, t) ||
+               dfs(grid, visit, r - 1, c, t) ||
+               dfs(grid, visit, r, c + 1, t) ||
+               dfs(grid, visit, r, c - 1, t);
+    }
+};
+```
+
+```javascript
+class Solution {
+    /**
+     * @param {number[][]} grid
+     * @return {number}
+     */
+    swimInWater(grid) {
+        const n = grid.length;
+        const visit = Array.from({ length: n }, () => Array(n).fill(false));
+        let minH = grid[0][0],
+            maxH = grid[0][0];
+        for (let row = 0; row < n; row++) {
+            for (let col = 0; col < n; col++) {
+                maxH = Math.max(maxH, grid[row][col]);
+                minH = Math.min(minH, grid[row][col]);
+            }
+        }
+
+        const dfs = (node, t) => {
+            const [r, c] = node;
+            if (
+                Math.min(r, c) < 0 ||
+                Math.max(r, c) >= n ||
+                visit[r][c] ||
+                grid[r][c] > t
+            ) {
+                return false;
+            }
+            if (r === n - 1 && c === n - 1) {
+                return true;
+            }
+            visit[r][c] = true;
+            return (
+                dfs([r + 1, c], t) ||
+                dfs([r - 1, c], t) ||
+                dfs([r, c + 1], t) ||
+                dfs([r, c - 1], t)
+            );
+        };
+
+        for (let t = minH; t < maxH; t++) {
+            if (dfs([0, 0], t)) {
+                return t;
+            }
+            for (let r = 0; r < n; r++) {
+                for (let c = 0; c < n; c++) {
+                    visit[r][c] = false;
+                }
+            }
+        }
+        return maxH;
+    }
+}
+```
+
+```csharp
+public class Solution {
+    public int SwimInWater(int[][] grid) {
+        int n = grid.Length;
+        bool[][] visit = new bool[n][];
+        for (int i = 0; i < n; i++) {
+            visit[i] = new bool[n];
+        }
+        int minH = grid[0][0], maxH = grid[0][0];
+        for (int row = 0; row < n; row++) {
+            for (int col = 0; col < n; col++) {
+                maxH = Math.Max(maxH, grid[row][col]);
+                minH = Math.Min(minH, grid[row][col]);
+            }
+        }
+
+        for (int t = minH; t < maxH; t++) {
+            if (dfs(grid, visit, 0, 0, t)) {
+                return t;
+            }
+            for (int r = 0; r < n; r++) {
+                Array.Fill(visit[r], false);
+            }
+        }
+        return maxH;
+    }
+
+    private bool dfs(int[][] grid, bool[][] visit, int r, int c, int t) {
+        if (r < 0 || c < 0 || r >= grid.Length ||
+            c >= grid.Length || visit[r][c] || grid[r][c] > t) {
+            return false;
+        }
+        if (r == grid.Length - 1 && c == grid.Length - 1) {
+            return true;
+        }
+        visit[r][c] = true;
+        return dfs(grid, visit, r + 1, c, t) ||
+               dfs(grid, visit, r - 1, c, t) ||
+               dfs(grid, visit, r, c + 1, t) ||
+               dfs(grid, visit, r, c - 1, t);
+    }
+}
+```
+
+```go
+func swimInWater(grid [][]int) int {
+    n := len(grid)
+    minH, maxH := grid[0][0], grid[0][0]
+    for r := 0; r < n; r++ {
+        for c := 0; c < n; c++ {
+            if grid[r][c] < minH {
+                minH = grid[r][c]
+            }
+            if grid[r][c] > maxH {
+                maxH = grid[r][c]
+            }
+        }
+    }
+
+    visit := make([][]bool, n)
+    for i := range visit {
+        visit[i] = make([]bool, n)
+    }
+
+    var dfs func(r, c, t int) bool
+    dfs = func(r, c, t int) bool {
+        if r < 0 || c < 0 || r >= n || c >= n ||
+           visit[r][c] || grid[r][c] > t {
+            return false
+        }
+        if r == n-1 && c == n-1 {
+            return true
+        }
+        visit[r][c] = true
+        found := dfs(r+1, c, t) || dfs(r-1, c, t) ||
+                 dfs(r, c+1, t) || dfs(r, c-1, t)
+        return found
+    }
+
+    for t := minH; t <= maxH; t++ {
+        if dfs(0, 0, t) {
+            return t
+        }
+        for i := range visit {
+            for j := range visit[i] {
+                visit[i][j] = false
+            }
+        }
+    }
+
+    return maxH
+}
+```
+
+```kotlin
+class Solution {
+    fun swimInWater(grid: Array<IntArray>): Int {
+        val n = grid.size
+        var minH = grid[0][0]
+        var maxH = grid[0][0]
+        for (row in grid) {
+            minH = minOf(minH, row.minOrNull() ?: minH)
+            maxH = maxOf(maxH, row.maxOrNull() ?: maxH)
+        }
+
+        val visit = Array(n) { BooleanArray(n) }
+
+        fun dfs(r: Int, c: Int, t: Int): Boolean {
+            if (r < 0 || c < 0 || r >= n || c >= n ||
+                visit[r][c] || grid[r][c] > t) {
+                return false
+            }
+            if (r == n - 1 && c == n - 1) {
+                return true
+            }
+            visit[r][c] = true
+            return dfs(r + 1, c, t) || dfs(r - 1, c, t) ||
+                   dfs(r, c + 1, t) || dfs(r, c - 1, t)
+        }
+
+        for (t in minH..maxH) {
+            if (dfs(0, 0, t)) return t
+            for (r in 0 until n) {
+                visit[r].fill(false)
+            }
+        }
+
+        return maxH
+    }
+}
+```
+
+```swift
+class Solution {
+    func swimInWater(_ grid: [[Int]]) -> Int {
+        let n = grid.count
+        var visit = Array(repeating: Array(repeating: false, count: n), count: n)
+        var minH = grid[0][0], maxH = grid[0][0]
+
+        for row in 0..<n {
+            for col in 0..<n {
+                maxH = max(maxH, grid[row][col])
+                minH = min(minH, grid[row][col])
+            }
+        }
+
+        func dfs(_ node: (Int, Int), _ t: Int) -> Bool {
+            let (r, c) = node
+            if r < 0 || c < 0 || r >= n || c >= n || visit[r][c] || grid[r][c] > t {
+                return false
+            }
+            if r == n - 1 && c == n - 1 {
+                return true
+            }
+            visit[r][c] = true
+            return dfs((r + 1, c), t) ||
+                   dfs((r - 1, c), t) ||
+                   dfs((r, c + 1), t) ||
+                   dfs((r, c - 1), t)
+        }
+
+        for t in minH...maxH {
+            if dfs((0, 0), t) {
+                return t
+            }
+            for r in 0..<n {
+                for c in 0..<n {
+                    visit[r][c] = false
+                }
+            }
+        }
+
+        return maxH
+    }
+}
+```
+
+
+```rust
+impl Solution {
+    pub fn swim_in_water(grid: Vec<Vec<i32>>) -> i32 {
+        let n = grid.len();
+        let mut min_h = grid[0][0];
+        let mut max_h = grid[0][0];
+        for row in &grid {
+            for &val in row {
+                min_h = min_h.min(val);
+                max_h = max_h.max(val);
+            }
+        }
+
+        let mut visit = vec![vec![false; n]; n];
+
+        fn dfs(
+            grid: &Vec<Vec<i32>>, visit: &mut Vec<Vec<bool>>,
+            r: i32, c: i32, t: i32,
+        ) -> bool {
+            let n = grid.len() as i32;
+            if r < 0 || c < 0 || r >= n || c >= n
+                || visit[r as usize][c as usize]
+                || grid[r as usize][c as usize] > t
+            {
+                return false;
+            }
+            if r == n - 1 && c == n - 1 {
+                return true;
+            }
+            visit[r as usize][c as usize] = true;
+            dfs(grid, visit, r + 1, c, t)
+                || dfs(grid, visit, r - 1, c, t)
+                || dfs(grid, visit, r, c + 1, t)
+                || dfs(grid, visit, r, c - 1, t)
+        }
+
+        for t in min_h..max_h {
+            if dfs(&grid, &mut visit, 0, 0, t) {
+                return t;
+            }
+            for row in visit.iter_mut() {
+                row.fill(false);
+            }
+        }
+        max_h
+    }
+}
+```
+
+::tabs-end
+
+### Time & Space Complexity
+
+- Time complexity: $O(n ^ 4)$
+- Space complexity: $O(n ^ 2)$
+
+---
+
+## 3. Binary Search + DFS
+
+### Intuition
+Instead of trying every water level `t` one by one, we **binary search the answer**.
+
+Key idea:
+- If you **can** reach the bottom-right at water level `t`, then you can also reach it at any **higher** level (`t+1, t+2, ...`).  
+- If you **cannot** reach at `t`, you also cannot reach at any **lower** level.
+
+So the condition “reachable at `t`” is **monotonic** → perfect for binary search.
+
+To test a fixed `t`, run a **DFS** from `(0,0)` and only move through cells with `height <= t`.
+
+### Algorithm
+1. Compute the search range:
+   - `low = minimum height in grid`
+   - `high = maximum height in grid`
+2. Define `canReach(t)` using `dfs`:
+   - Start at `(0,0)`
+   - Move in 4 directions.
+   - Reject moves that are:
+     - out of bounds, or
+     - already visited, or
+     - on a cell with `grid[r][c] > t`
+   - If `dfs` reaches `(n-1, n-1)`, return `true`, else `false`.
+3. Binary search on `t`:
+   - `mid = (low + high) // 2`
+   - If `canReach(mid)` is `true` → try smaller time: `high = mid`
+   - Else → need more water: `low = mid + 1`
+   - Reset `visited` before the next `dfs` check.
+4. When `low == high`, that value is the minimum time needed.
+
+::tabs-start
+
+```python
+class Solution:
+    def swimInWater(self, grid: List[List[int]]) -> int:
+        n = len(grid)
+        visit = [[False] * n for _ in range(n)]
+        minH = maxH = grid[0][0]
+        for row in range(n):
+            maxH = max(maxH, max(grid[row]))
+            minH = min(minH, min(grid[row]))
+
+        def dfs(node, t):
+            r, c = node
+            if (min(r, c) < 0 or max(r, c) >= n or
+                visit[r][c] or grid[r][c] > t):
+                return False
+            if r == (n - 1) and c == (n - 1):
+                return True
+            visit[r][c] = True
+            return (dfs((r + 1, c), t) or
+                    dfs((r - 1, c), t) or
+                    dfs((r, c + 1), t) or
+                    dfs((r, c - 1), t))
+
+        l, r = minH, maxH
+        while l < r:
+            m = (l + r) >> 1
+            if dfs((0, 0), m):
+                r = m
+            else:
+                l = m + 1
+            for row in range(n):
+                for col in range(n):
+                    visit[row][col] = False
+
+        return r
+```
+
+```java
+public class Solution {
+    public int swimInWater(int[][] grid) {
+        int n = grid.length;
+        boolean[][] visit = new boolean[n][n];
+        int minH = grid[0][0], maxH = grid[0][0];
+        for (int row = 0; row < n; row++) {
+            for (int col = 0; col < n; col++) {
+                maxH = Math.max(maxH, grid[row][col]);
+                minH = Math.min(minH, grid[row][col]);
+            }
+        }
+
+        int l = minH, r = maxH;
+        while (l < r) {
+            int m = (l + r) >> 1;
+            if (dfs(grid, visit, 0, 0, m)) {
+                r = m;
+            } else {
+                l = m + 1;
+            }
+            for (int row = 0; row < n; row++) {
+                Arrays.fill(visit[row], false);
+            }
+        }
+        return r;
+    }
+
+    private boolean dfs(int[][] grid, boolean[][] visit, int r, int c, int t) {
+        if (r < 0 || c < 0 || r >= grid.length ||
+            c >= grid.length || visit[r][c] || grid[r][c] > t) {
+            return false;
+        }
+        if (r == grid.length - 1 && c == grid.length - 1) {
+            return true;
+        }
+        visit[r][c] = true;
+        return dfs(grid, visit, r + 1, c, t) ||
+               dfs(grid, visit, r - 1, c, t) ||
+               dfs(grid, visit, r, c + 1, t) ||
+               dfs(grid, visit, r, c - 1, t);
+    }
+}
+```
+
+```cpp
+class Solution {
+public:
+    int swimInWater(vector<vector<int>>& grid) {
+        int n = grid.size();
+        vector<vector<bool>> visit(n, vector<bool>(n, false));
+        int minH = grid[0][0], maxH = grid[0][0];
+        for (int row = 0; row < n; row++) {
+            for (int col = 0; col < n; col++) {
+                maxH = max(maxH, grid[row][col]);
+                minH = min(minH, grid[row][col]);
+            }
+        }
+
+        int l = minH, r = maxH;
+        while (l < r) {
+            int m = (l + r) >> 1;
+            if (dfs(grid, visit, 0, 0, m)) {
+                r = m;
+            } else {
+                l = m + 1;
+            }
+            for (int row = 0; row < n; row++) {
+                fill(visit[row].begin(), visit[row].end(), false);
+            }
+        }
+        return r;
+    }
+
+private:
+    bool dfs(vector<vector<int>>& grid, vector<vector<bool>>& visit,
+                                        int r, int c, int t) {
+        if (r < 0 || c < 0 || r >= grid.size() ||
+            c >= grid.size() || visit[r][c] || grid[r][c] > t) {
+            return false;
+        }
+        if (r == grid.size() - 1 && c == grid.size() - 1) {
+            return true;
+        }
+        visit[r][c] = true;
+        return dfs(grid, visit, r + 1, c, t) ||
+               dfs(grid, visit, r - 1, c, t) ||
+               dfs(grid, visit, r, c + 1, t) ||
+               dfs(grid, visit, r, c - 1, t);
+    }
+};
+```
+
+```javascript
+class Solution {
+    /**
+     * @param {number[][]} grid
+     * @return {number}
+     */
+    swimInWater(grid) {
+        const n = grid.length;
+        const visit = Array.from({ length: n }, () => Array(n).fill(false));
+        let minH = grid[0][0],
+            maxH = grid[0][0];
+        for (let row = 0; row < n; row++) {
+            for (let col = 0; col < n; col++) {
+                maxH = Math.max(maxH, grid[row][col]);
+                minH = Math.min(minH, grid[row][col]);
+            }
+        }
+
+        const dfs = (node, t) => {
+            const [r, c] = node;
+            if (
+                Math.min(r, c) < 0 ||
+                Math.max(r, c) >= n ||
+                visit[r][c] ||
+                grid[r][c] > t
+            ) {
+                return false;
+            }
+            if (r === n - 1 && c === n - 1) {
+                return true;
+            }
+            visit[r][c] = true;
+            return (
+                dfs([r + 1, c], t) ||
+                dfs([r - 1, c], t) ||
+                dfs([r, c + 1], t) ||
+                dfs([r, c - 1], t)
+            );
+        };
+
+        let l = minH,
+            r = maxH;
+        while (l < r) {
+            let m = (l + r) >> 1;
+            if (dfs([0, 0], m)) {
+                r = m;
+            } else {
+                l = m + 1;
+            }
+            for (let row = 0; row < n; row++) {
+                for (let col = 0; col < n; col++) {
+                    visit[row][col] = false;
+                }
+            }
+        }
+        return r;
+    }
+}
+```
+
+```csharp
+public class Solution {
+    public int SwimInWater(int[][] grid) {
+        int n = grid.Length;
+        bool[][] visit = new bool[n][];
+        for (int i = 0; i < n; i++) {
+            visit[i] = new bool[n];
+        }
+        int minH = grid[0][0], maxH = grid[0][0];
+        for (int row = 0; row < n; row++) {
+            for (int col = 0; col < n; col++) {
+                maxH = Math.Max(maxH, grid[row][col]);
+                minH = Math.Min(minH, grid[row][col]);
+            }
+        }
+
+        int l = minH, r = maxH;
+        while (l < r) {
+            int m = (l + r) >> 1;
+            if (dfs(grid, visit, 0, 0, m)) {
+                r = m;
+            } else {
+                l = m + 1;
+            }
+            for (int row = 0; row < n; row++) {
+                Array.Fill(visit[row], false);
+            }
+        }
+        return r;
+    }
+
+    private bool dfs(int[][] grid, bool[][] visit, int r, int c, int t) {
+        if (r < 0 || c < 0 || r >= grid.Length ||
+            c >= grid.Length || visit[r][c] || grid[r][c] > t) {
+            return false;
+        }
+        if (r == grid.Length - 1 && c == grid.Length - 1) {
+            return true;
+        }
+        visit[r][c] = true;
+        return dfs(grid, visit, r + 1, c, t) ||
+               dfs(grid, visit, r - 1, c, t) ||
+               dfs(grid, visit, r, c + 1, t) ||
+               dfs(grid, visit, r, c - 1, t);
+    }
+}
+```
+
+```go
+func swimInWater(grid [][]int) int {
+    n := len(grid)
+    minH, maxH := grid[0][0], grid[0][0]
+    for r := 0; r < n; r++ {
+        for c := 0; c < n; c++ {
+            if grid[r][c] < minH {
+                minH = grid[r][c]
+            }
+            if grid[r][c] > maxH {
+                maxH = grid[r][c]
+            }
+        }
+    }
+
+    visit := make([][]bool, n)
+    for i := range visit {
+        visit[i] = make([]bool, n)
+    }
+
+    var dfs func(r, c, t int) bool
+    dfs = func(r, c, t int) bool {
+        if r < 0 || c < 0 || r >= n || c >= n ||
+           visit[r][c] || grid[r][c] > t {
+            return false
+        }
+        if r == n-1 && c == n-1 {
+            return true
+        }
+        visit[r][c] = true
+        found := dfs(r+1, c, t) || dfs(r-1, c, t) ||
+                 dfs(r, c+1, t) || dfs(r, c-1, t)
+        return found
+    }
+
+    l, r := minH, maxH
+    for l < r {
+        m := (l + r) / 2
+        if dfs(0, 0, m) {
+            r = m
+        } else {
+            l = m + 1
+        }
+        for i := range visit {
+            for j := range visit[i] {
+                visit[i][j] = false
+            }
+        }
+    }
+
+    return r
+}
+```
+
+```kotlin
+class Solution {
+    fun swimInWater(grid: Array<IntArray>): Int {
+        val n = grid.size
+        var minH = grid[0][0]
+        var maxH = grid[0][0]
+        for (row in grid) {
+            minH = minOf(minH, row.minOrNull() ?: minH)
+            maxH = maxOf(maxH, row.maxOrNull() ?: maxH)
+        }
+
+        val visit = Array(n) { BooleanArray(n) }
+
+        fun dfs(r: Int, c: Int, t: Int): Boolean {
+            if (r < 0 || c < 0 || r >= n || c >= n ||
+                visit[r][c] || grid[r][c] > t) {
+                return false
+            }
+            if (r == n - 1 && c == n - 1) {
+                return true
+            }
+            visit[r][c] = true
+            return dfs(r + 1, c, t) || dfs(r - 1, c, t) ||
+                   dfs(r, c + 1, t) || dfs(r, c - 1, t)
+        }
+
+        var l = minH
+        var r = maxH
+        while (l < r) {
+            val m = (l + r) / 2
+            if (dfs(0, 0, m)) {
+                r = m
+            } else {
+                l = m + 1
+            }
+            for (row in visit) {
+                row.fill(false)
+            }
+        }
+
+        return r
+    }
+}
+```
+
+```swift
+class Solution {
+    func swimInWater(_ grid: [[Int]]) -> Int {
+        let n = grid.count
+        var visit = Array(repeating: Array(repeating: false, count: n), count: n)
+        var minH = grid[0][0], maxH = grid[0][0]
+
+        for row in 0..<n {
+            for col in 0..<n {
+                maxH = max(maxH, grid[row][col])
+                minH = min(minH, grid[row][col])
+            }
+        }
+
+        func dfs(_ node: (Int, Int), _ t: Int) -> Bool {
+            let (r, c) = node
+            if r < 0 || c < 0 || r >= n || c >= n || visit[r][c] || grid[r][c] > t {
+                return false
+            }
+            if r == n - 1 && c == n - 1 {
+                return true
+            }
+            visit[r][c] = true
+            return dfs((r + 1, c), t) ||
+                   dfs((r - 1, c), t) ||
+                   dfs((r, c + 1), t) ||
+                   dfs((r, c - 1), t)
+        }
+
+        var l = minH, r = maxH
+        while l < r {
+            let m = (l + r) >> 1
+            if dfs((0, 0), m) {
+                r = m
+            } else {
+                l = m + 1
+            }
+            for row in 0..<n {
+                for col in 0..<n {
+                    visit[row][col] = false
+                }
+            }
+        }
+
+        return r
+    }
+}
+```
+
+
+```rust
+impl Solution {
+    pub fn swim_in_water(grid: Vec<Vec<i32>>) -> i32 {
+        let n = grid.len();
+        let mut min_h = grid[0][0];
+        let mut max_h = grid[0][0];
+        for row in &grid {
+            for &val in row {
+                min_h = min_h.min(val);
+                max_h = max_h.max(val);
+            }
+        }
+
+        let mut visit = vec![vec![false; n]; n];
+
+        fn dfs(
+            grid: &Vec<Vec<i32>>, visit: &mut Vec<Vec<bool>>,
+            r: i32, c: i32, t: i32,
+        ) -> bool {
+            let n = grid.len() as i32;
+            if r < 0 || c < 0 || r >= n || c >= n
+                || visit[r as usize][c as usize]
+                || grid[r as usize][c as usize] > t
+            {
+                return false;
+            }
+            if r == n - 1 && c == n - 1 {
+                return true;
+            }
+            visit[r as usize][c as usize] = true;
+            dfs(grid, visit, r + 1, c, t)
+                || dfs(grid, visit, r - 1, c, t)
+                || dfs(grid, visit, r, c + 1, t)
+                || dfs(grid, visit, r, c - 1, t)
+        }
+
+        let (mut lo, mut hi) = (min_h, max_h);
+        while lo < hi {
+            let mid = (lo + hi) >> 1;
+            if dfs(&grid, &mut visit, 0, 0, mid) {
+                hi = mid;
+            } else {
+                lo = mid + 1;
+            }
+            for row in visit.iter_mut() {
+                row.fill(false);
+            }
+        }
+        hi
+    }
+}
+```
+
+::tabs-end
+
+### Time & Space Complexity
+
+- Time complexity: $O(n ^ 2 \log n)$
+- Space complexity: $O(n ^ 2)$
+
+---
+
+## 4. Dijkstra's Algorithm
+
+### Intuition
+Think of each cell’s height as the **earliest time** you’re allowed to stand on it (water must be at least that high).  
+While moving from start to end, the **total time of a path** is not the sum — it’s the **maximum height** you ever step on (because water must rise to that max).
+
+So the problem becomes:
+> Find a path from (0,0) to (n-1,n-1) that **minimizes the maximum cell height** along the path.
+
+That is exactly what Dijkstra can solve if we define:
+- **cost to reach a cell** = smallest possible “maximum height so far”.
+
+### Algorithm
+1. Use a min-heap storing states: `(timeSoFar, r, c)`, where `timeSoFar = max height on the path up to (r,c)`.
+2. Start by pushing the start cell: `(grid[0][0], 0, 0)`.
+3. Repeatedly:
+   - Pop the cell with the **smallest** `timeSoFar`.
+   - If it's the destination, return `timeSoFar` (this is optimal).
+   - For each of 4 neighbors:
+     - If valid and not visited, compute:
+       - `newTime = max(timeSoFar, grid[nr][nc])`
+     - Push `(newTime, nr, nc)` into the heap.
+4. Use a `visited` set so each cell is processed once (when it's popped with the best possible `timeSoFar`).
+
+::tabs-start
+
+```python
+class Solution:
+    def swimInWater(self, grid: List[List[int]]) -> int:
+        N = len(grid)
+        visit = set()
+        minH = [[grid[0][0], 0, 0]]  # (time/max-height, r, c)
+        directions = [[0, 1], [0, -1], [1, 0], [-1, 0]]
+
+        visit.add((0, 0))
+        while minH:
+            t, r, c = heapq.heappop(minH)
+            if r == N - 1 and c == N - 1:
+                return t
+            for dr, dc in directions:
+                neiR, neiC = r + dr, c + dc
+                if (neiR < 0 or neiC < 0 or
+                    neiR == N or neiC == N or
+                    (neiR, neiC) in visit
+                ):
+                    continue
+                visit.add((neiR, neiC))
+                heapq.heappush(minH, [max(t, grid[neiR][neiC]), neiR, neiC])
+```
+
+```java
+public class Solution {
+    public int swimInWater(int[][] grid) {
+        int N = grid.length;
+        boolean[][] visit = new boolean[N][N];
+        PriorityQueue<int[]> minHeap = new PriorityQueue<>(
+            Comparator.comparingInt(a -> a[0])
+        );
+        int[][] directions = {
+            {0, 1}, {0, -1}, {1, 0}, {-1, 0}
+        };
+
+        minHeap.offer(new int[]{grid[0][0], 0, 0});
+        visit[0][0] = true;
+
+        while (!minHeap.isEmpty()) {
+            int[] curr = minHeap.poll();
+            int t = curr[0], r = curr[1], c = curr[2];
+            if (r == N - 1 && c == N - 1) {
+                return t;
+            }
+            for (int[] dir : directions) {
+                int neiR = r + dir[0], neiC = c + dir[1];
+                if (neiR >= 0 && neiC >= 0 && neiR < N &&
+                    neiC < N && !visit[neiR][neiC]) {
+                    visit[neiR][neiC] = true;
+                    minHeap.offer(new int[]{
+                        Math.max(t, grid[neiR][neiC]),
+                        neiR, neiC
+                    });
+                }
+            }
+        }
+        return N * N;
+    }
+}
+```
+
+```cpp
+class Solution {
+public:
+    int swimInWater(vector<vector<int>>& grid) {
+        int N = grid.size();
+        set<pair<int, int>> visit;
+        priority_queue<vector<int>,
+                       vector<vector<int>>, greater<>> minHeap;
+        vector<vector<int>> directions = {
+            {0, 1}, {0, -1}, {1, 0}, {-1, 0}
+        };
+
+        minHeap.push({grid[0][0], 0, 0});
+        visit.insert({0, 0});
+
+        while (!minHeap.empty()) {
+            auto curr = minHeap.top();
+            minHeap.pop();
+            int t = curr[0], r = curr[1], c = curr[2];
+            if (r == N - 1 && c == N - 1) {
+                return t;
+            }
+            for (const auto& dir : directions) {
+                int neiR = r + dir[0], neiC = c + dir[1];
+                if (neiR < 0 || neiC < 0 || neiR == N ||
+                    neiC == N || visit.count({neiR, neiC})) {
+                    continue;
+                }
+                visit.insert({neiR, neiC});
+                minHeap.push({
+                    max(t, grid[neiR][neiC]), neiR, neiC
+                });
+            }
+        }
+
+        return N * N;
+    }
+};
+```
+
+```javascript
+/**
+ * const { MinPriorityQueue } = require('@datastructures-js/priority-queue');
+ */
+
+class Solution {
+    /**
+     * @param {number[][]} grid
+     * @return {number}
+     */
+    swimInWater(grid) {
+        const N = grid.length;
+        const visit = new Set();
+        const minPQ = new MinPriorityQueue((entry) => entry[0]);
+        const directions = [
+            [0, 1],
+            [0, -1],
+            [1, 0],
+            [-1, 0],
+        ];
+
+        minPQ.push([grid[0][0], 0, 0]);
+        visit.add('0,0');
+
+        while (!minPQ.isEmpty()) {
+            const [t, r, c] = minPQ.pop();
+            if (r === N - 1 && c === N - 1) {
+                return t;
+            }
+            for (const [dr, dc] of directions) {
+                const neiR = r + dr;
+                const neiC = c + dc;
+                if (
+                    neiR < 0 ||
+                    neiC < 0 ||
+                    neiR >= N ||
+                    neiC >= N ||
+                    visit.has(`${neiR},${neiC}`)
+                ) {
+                    continue;
+                }
+                visit.add(`${neiR},${neiC}`);
+                minPQ.push([Math.max(t, grid[neiR][neiC]), neiR, neiC]);
+            }
+        }
+    }
+}
+```
+
+```csharp
+public class Solution {
+    public int SwimInWater(int[][] grid) {
+        int N = grid.Length;
+        var visit = new HashSet<(int, int)>();
+        var minHeap = new PriorityQueue<(int t, int r, int c), int>();
+        int[][] directions = {
+            new int[]{0, 1}, new int[]{0, -1},
+            new int[]{1, 0}, new int[]{-1, 0}
+        };
+
+        minHeap.Enqueue((grid[0][0], 0, 0), grid[0][0]);
+        visit.Add((0, 0));
+
+        while (minHeap.Count > 0) {
+            var curr = minHeap.Dequeue();
+            int t = curr.t, r = curr.r, c = curr.c;
+            if (r == N - 1 && c == N - 1) {
+                return t;
+            }
+            foreach (var dir in directions) {
+                int neiR = r + dir[0], neiC = c + dir[1];
+                if (neiR < 0 || neiC < 0 || neiR >= N ||
+                    neiC >= N || visit.Contains((neiR, neiC))) {
+                    continue;
+                }
+                visit.Add((neiR, neiC));
+                minHeap.Enqueue(
+                    (Math.Max(t, grid[neiR][neiC]), neiR, neiC),
+                    Math.Max(t, grid[neiR][neiC]));
+            }
+        }
+
+        return N * N;
+    }
+}
+```
+
+```go
+type Node struct {
+    time, r, c int
+}
+
+func swimInWater(grid [][]int) int {
+    N := len(grid)
+    directions := [][2]int{{0, 1}, {0, -1}, {1, 0}, {-1, 0}}
+
+    pq := priorityqueue.NewWith(func(a, b interface{}) int {
+        return utils.IntComparator(a.(Node).time, b.(Node).time)
+    })
+
+    pq.Enqueue(Node{grid[0][0], 0, 0})
+    visited := make(map[[2]int]bool)
+    visited[[2]int{0, 0}] = true
+
+    for !pq.Empty() {
+        item, _ := pq.Dequeue()
+        node := item.(Node)
+        t, r, c := node.time, node.r, node.c
+
+        if r == N-1 && c == N-1 {
+            return t
+        }
+
+        for _, dir := range directions {
+            neiR, neiC := r+dir[0], c+dir[1]
+            if neiR < 0 || neiC < 0 || neiR >= N || neiC >= N ||
+               visited[[2]int{neiR, neiC}] {
+                continue
+            }
+
+            visited[[2]int{neiR, neiC}] = true
+            pq.Enqueue(Node{max(t, grid[neiR][neiC]), neiR, neiC})
+        }
+    }
+
+    return -1
+}
+
+func max(a, b int) int {
+    if a > b {
+        return a
+    }
+    return b
+}
+```
+
+```kotlin
+class Solution {
+    fun swimInWater(grid: Array<IntArray>): Int {
+        val N = grid.size
+        val directions = listOf(Pair(0, 1), Pair(0, -1), Pair(1, 0), Pair(-1, 0))
+
+        val minHeap = PriorityQueue(compareBy<Pair<Int, Pair<Int, Int>>> { it.first })
+        minHeap.offer(Pair(grid[0][0], Pair(0, 0)))
+
+        val visited = HashSet<Pair<Int, Int>>()
+        visited.add(Pair(0, 0))
+
+        while (minHeap.isNotEmpty()) {
+            val (t, pos) = minHeap.poll()
+            val (r, c) = pos
+
+            if (r == N - 1 && c == N - 1) return t
+
+            for ((dr, dc) in directions) {
+                val neiR = r + dr
+                val neiC = c + dc
+                if (neiR !in 0 until N || neiC !in 0 until N || Pair(neiR, neiC) in visited) {
+                    continue
+                }
+
+                visited.add(Pair(neiR, neiC))
+                minHeap.offer(Pair(maxOf(t, grid[neiR][neiC]), Pair(neiR, neiC)))
+            }
+        }
+
+        return -1
+    }
+}
+```
+
+```swift
+struct Item: Comparable {
+    let time: Int
+    let row: Int
+    let col: Int
+
+    static func < (lhs: Item, rhs: Item) -> Bool {
+        return lhs.time < rhs.time
+    }
+}
+
+class Solution {
+    func swimInWater(_ grid: [[Int]]) -> Int {
+        let N = grid.count
+        var visit = Set<[Int]>()
+        var minHeap = Heap<Item>()
+
+        let directions = [(0, 1), (0, -1), (1, 0), (-1, 0)]
+
+        minHeap.insert(Item(time: grid[0][0], row: 0, col: 0))
+        visit.insert([0, 0])
+
+        while !minHeap.isEmpty {
+            let item = minHeap.removeMin()
+            let t = item.time, r = item.row, c = item.col
+
+            if r == N - 1 && c == N - 1 {
+                return t
+            }
+
+            for (dr, dc) in directions {
+                let neiR = r + dr, neiC = c + dc
+                if neiR < 0 || neiC < 0 || neiR == N || neiC == N || visit.contains([neiR, neiC]) {
+                    continue
+                }
+                visit.insert([neiR, neiC])
+                minHeap.insert(Item(time: max(t, grid[neiR][neiC]), row: neiR, col: neiC))
+            }
+        }
+
+        return -1
+    }
+}
+```
+
+
+```rust
+impl Solution {
+    pub fn swim_in_water(grid: Vec<Vec<i32>>) -> i32 {
+        let n = grid.len();
+        let mut visit = vec![vec![false; n]; n];
+        let mut heap = BinaryHeap::new();
+        let directions = [(0i32, 1i32), (0, -1), (1, 0), (-1, 0)];
+
+        heap.push(Reverse((grid[0][0], 0usize, 0usize)));
+        visit[0][0] = true;
+
+        while let Some(Reverse((t, r, c))) = heap.pop() {
+            if r == n - 1 && c == n - 1 {
+                return t;
+            }
+            for &(dr, dc) in &directions {
+                let nr = r as i32 + dr;
+                let nc = c as i32 + dc;
+                if nr >= 0 && nc >= 0 && (nr as usize) < n && (nc as usize) < n {
+                    let (nr, nc) = (nr as usize, nc as usize);
+                    if !visit[nr][nc] {
+                        visit[nr][nc] = true;
+                        heap.push(Reverse((t.max(grid[nr][nc]), nr, nc)));
+                    }
+                }
+            }
+        }
+        n as i32 * n as i32
+    }
+}
+```
+
+::tabs-end
+
+### Time & Space Complexity
+
+- Time complexity: $O(n ^ 2 \log n)$
+- Space complexity: $O(n ^ 2)$
+
+---
+
+## 5. Kruskal's Algorithm
+
+### Intuition
+Water level `t` rises over time. At time `t`, you’re allowed to step only on cells with height `<= t`.  
+So as `t` increases, **more cells become “open”** and neighboring open cells form bigger connected regions.
+
+We want the **earliest time `t`** when the start cell `(0,0)` and end cell `(N-1,N-1)` become part of the **same connected component**.
+
+DSU (Union-Find) is perfect for this: it quickly merges neighboring open cells and checks if start and end are connected.
+
+### Algorithm (Kruskal-style using DSU)
+1. Create a list of all cells as `(height, r, c)` and sort by `height` (smallest first).
+2. Initialize `dsu` for `N*N` cells (each cell is a node with `id = r*N + c`).
+3. Process cells in increasing height order:
+   - Current cell `(r,c)` becomes "open" at time `t = height`.
+   - For each of its 4 neighbors:
+     - If the neighbor's height `<= t`, it is already open (or also open now), so **union** the two cells.
+   - After unions, check if `start` (`0`) and `end` (`N*N-1`) are connected.
+   - The first `t` where they connect is the answer.
+4. Return that `t`.
+
+::tabs-start
+
+```python
+class DSU:
+    def __init__(self, n):
+        self.Parent = list(range(n + 1))
+        self.Size = [1] * (n + 1)
+
+    def find(self, node):
+        if self.Parent[node] != node:
+            self.Parent[node] = self.find(self.Parent[node])
+        return self.Parent[node]
+
+    def union(self, u, v):
+        pu = self.find(u)
+        pv = self.find(v)
+        if pu == pv:
+            return False
+        if self.Size[pu] < self.Size[pv]:
+            pu, pv = pv, pu
+        self.Size[pu] += self.Size[pv]
+        self.Parent[pv] = pu
+        return True
+
+    def connected(self, u, v):
+        return self.find(u) == self.find(v)
+
+class Solution:
+    def swimInWater(self, grid: List[List[int]]) -> int:
+        N = len(grid)
+        dsu = DSU(N * N)
+        positions = sorted((grid[r][c], r, c) for r in range(N) for c in range(N))
+        directions = [(0, 1), (1, 0), (0, -1), (-1, 0)]
+
+        for t, r, c in positions:
+            for dr, dc in directions:
+                nr, nc = r + dr, c + dc
+                if 0 <= nr < N and 0 <= nc < N and grid[nr][nc] <= t:
+                    dsu.union(r * N + c, nr * N + nc)
+            if dsu.connected(0, N * N - 1):
+                return t
+```
+
+```java
+class DSU {
+    private int[] Parent;
+    private int[] Size;
+
+    public DSU(int n) {
+        Parent = new int[n + 1];
+        Size = new int[n + 1];
+        for (int i = 0; i <= n; i++) Parent[i] = i;
+        Arrays.fill(Size, 1);
+    }
+
+    public int find(int node) {
+        if (Parent[node] != node)
+            Parent[node] = find(Parent[node]);
+        return Parent[node];
+    }
+
+    public boolean union(int u, int v) {
+        int pu = find(u), pv = find(v);
+        if (pu == pv) return false;
+        if (Size[pu] < Size[pv]) {
+            int temp = pu;
+            pu = pv;
+            pv = temp;
+        }
+        Size[pu] += Size[pv];
+        Parent[pv] = pu;
+        return true;
+    }
+
+    public boolean connected(int u, int v) {
+        return find(u) == find(v);
+    }
+}
+
+public class Solution {
+    public int swimInWater(int[][] grid) {
+        int N = grid.length;
+        DSU dsu = new DSU(N * N);
+        List<int[]> positions = new ArrayList<>();
+        for (int r = 0; r < N; r++)
+            for (int c = 0; c < N; c++)
+                positions.add(new int[]{grid[r][c], r, c});
+        positions.sort(Comparator.comparingInt(a -> a[0]));
+        int[][] directions = {
+            {0, 1}, {1, 0}, {0, -1}, {-1, 0}
+        };
+
+        for (int[] pos : positions) {
+            int t = pos[0], r = pos[1], c = pos[2];
+            for (int[] dir : directions) {
+                int nr = r + dir[0], nc = c + dir[1];
+                if (nr >= 0 && nr < N && nc >= 0 &&
+                    nc < N && grid[nr][nc] <= t) {
+                    dsu.union(r * N + c, nr * N + nc);
+                }
+            }
+            if (dsu.connected(0, N * N - 1)) return t;
+        }
+        return N * N;
+    }
+}
+```
+
+```cpp
+class DSU {
+    vector<int> Parent, Size;
+public:
+    DSU(int n) : Parent(n + 1), Size(n + 1, 1) {
+        for (int i = 0; i <= n; i++) Parent[i] = i;
+    }
+
+    int find(int node) {
+        if (Parent[node] != node)
+            Parent[node] = find(Parent[node]);
+        return Parent[node];
+    }
+
+    bool unionSets(int u, int v) {
+        int pu = find(u), pv = find(v);
+        if (pu == pv) return false;
+        if (Size[pu] < Size[pv]) swap(pu, pv);
+        Size[pu] += Size[pv];
+        Parent[pv] = pu;
+        return true;
+    }
+
+    bool connected(int u, int v) {
+        return find(u) == find(v);
+    }
+};
+
+class Solution {
+public:
+    int swimInWater(vector<vector<int>>& grid) {
+        int N = grid.size();
+        DSU dsu(N * N);
+        vector<tuple<int, int, int>> positions;
+        for (int r = 0; r < N; r++)
+            for (int c = 0; c < N; c++)
+                positions.emplace_back(grid[r][c], r, c);
+
+        sort(positions.begin(), positions.end());
+        vector<pair<int, int>> directions = {
+            {0, 1}, {1, 0}, {0, -1}, {-1, 0}
+        };
+
+        for (auto& [t, r, c] : positions) {
+            for (auto& [dr, dc] : directions) {
+                int nr = r + dr, nc = c + dc;
+                if (nr >= 0 && nr < N && nc >= 0 &&
+                    nc < N && grid[nr][nc] <= t) {
+                    dsu.unionSets(r * N + c, nr * N + nc);
+                }
+            }
+            if (dsu.connected(0, N * N - 1)) return t;
+        }
+        return N * N;
+    }
+};
+```
+
+```javascript
+class DSU {
+    constructor(n) {
+        this.Parent = Array.from({ length: n + 1 }, (_, i) => i);
+        this.Size = Array(n + 1).fill(1);
+    }
+
+    /**
+     * @param {number} node
+     * @return {number}
+     */
+    find(node) {
+        if (this.Parent[node] !== node) {
+            this.Parent[node] = this.find(this.Parent[node]);
+        }
+        return this.Parent[node];
+    }
+
+    /**
+     * @param {number} u
+     * @param {number} v
+     * @return {boolean}
+     */
+    union(u, v) {
+        let pu = this.find(u),
+            pv = this.find(v);
+        if (pu === pv) return false;
+        if (this.Size[pu] < this.Size[pv]) [pu, pv] = [pv, pu];
+        this.Size[pu] += this.Size[pv];
+        this.Parent[pv] = pu;
+        return true;
+    }
+
+    /**
+     * @param {number} n
+     * @param {number} n
+     * @return {boolean}
+     */
+    connected(u, v) {
+        return this.find(u) == this.find(v);
+    }
+}
+
+class Solution {
+    /**
+     * @param {number[][]} grid
+     * @return {number}
+     */
+    swimInWater(grid) {
+        const N = grid.length;
+        const dsu = new DSU(N * N);
+        const positions = [];
+        for (let r = 0; r < N; r++) {
+            for (let c = 0; c < N; c++) {
+                positions.push([grid[r][c], r, c]);
+            }
+        }
+        positions.sort((a, b) => a[0] - b[0]);
+        const directions = [
+            [0, 1],
+            [1, 0],
+            [0, -1],
+            [-1, 0],
+        ];
+
+        for (const [t, r, c] of positions) {
+            for (const [dr, dc] of directions) {
+                const nr = r + dr,
+                    nc = c + dc;
+                if (
+                    nr >= 0 &&
+                    nr < N &&
+                    nc >= 0 &&
+                    nc < N &&
+                    grid[nr][nc] <= t
+                ) {
+                    dsu.union(r * N + c, nr * N + nc);
+                }
+            }
+            if (dsu.connected(0, N * N - 1)) return t;
+        }
+        return N * N;
+    }
+}
+```
+
+```csharp
+public class DSU {
+    private int[] Parent, Size;
+
+    public DSU(int n) {
+        Parent = new int[n + 1];
+        Size = new int[n + 1];
+        for (int i = 0; i <= n; i++) Parent[i] = i;
+        Array.Fill(Size, 1);
+    }
+
+    public int Find(int node) {
+        if (Parent[node] != node)
+            Parent[node] = Find(Parent[node]);
+        return Parent[node];
+    }
+
+    public bool Union(int u, int v) {
+        int pu = Find(u), pv = Find(v);
+        if (pu == pv) return false;
+        if (Size[pu] < Size[pv]) {
+            int temp = pu;
+            pu = pv;
+            pv = temp;
+        }
+        Size[pu] += Size[pv];
+        Parent[pv] = pu;
+        return true;
+    }
+
+    public bool Connected(int u, int v) {
+        return Find(u) == Find(v);
+    }
+}
+
+public class Solution {
+    public int SwimInWater(int[][] grid) {
+        int N = grid.Length;
+        DSU dsu = new DSU(N * N);
+        List<int[]> positions = new List<int[]>();
+        for (int r = 0; r < N; r++)
+            for (int c = 0; c < N; c++)
+                positions.Add(new int[] {grid[r][c], r, c});
+        positions.Sort((a, b) => a[0] - b[0]);
+        int[][] directions = new int[][] {
+            new int[] {0, 1}, new int[] {1, 0},
+            new int[] {0, -1}, new int[] {-1, 0}
+        };
+
+        foreach (var pos in positions) {
+            int t = pos[0], r = pos[1], c = pos[2];
+            foreach (var dir in directions) {
+                int nr = r + dir[0], nc = c + dir[1];
+                if (nr >= 0 && nr < N && nc >= 0 &&
+                    nc < N && grid[nr][nc] <= t) {
+                    dsu.Union(r * N + c, nr * N + nc);
+                }
+            }
+            if (dsu.Connected(0, N * N - 1)) return t;
+        }
+        return N * N;
+    }
+}
+```
+
+```go
+type DSU struct {
+    Parent, Size []int
+}
+
+func NewDSU(n int) *DSU {
+    dsu := &DSU{
+        Parent: make([]int, n+1),
+        Size:   make([]int, n+1),
+    }
+    for i := 0; i <= n; i++ {
+        dsu.Parent[i] = i
+        dsu.Size[i] = 1
+    }
+    return dsu
+}
+
+func (dsu *DSU) Find(node int) int {
+    if dsu.Parent[node] != node {
+        dsu.Parent[node] = dsu.Find(dsu.Parent[node])
+    }
+    return dsu.Parent[node]
+}
+
+func (dsu *DSU) Union(u, v int) bool {
+    pu, pv := dsu.Find(u), dsu.Find(v)
+    if pu == pv {
+        return false
+    }
+    if dsu.Size[pu] < dsu.Size[pv] {
+        pu, pv = pv, pu
+    }
+    dsu.Size[pu] += dsu.Size[pv]
+    dsu.Parent[pv] = pu
+    return true
+}
+
+func (dsu *DSU) Connected(u, v int) bool {
+    return dsu.Find(u) == dsu.Find(v)
+}
+
+func swimInWater(grid [][]int) int {
+    N := len(grid)
+    dsu := NewDSU(N * N)
+    positions := make([][3]int, 0, N*N)
+    for r := 0; r < N; r++ {
+        for c := 0; c < N; c++ {
+            positions = append(positions, [3]int{grid[r][c], r, c})
+        }
+    }
+    sort.Slice(positions, func(i, j int) bool {
+        return positions[i][0] < positions[j][0]
+    })
+    directions := [][2]int{{0, 1}, {1, 0}, {0, -1}, {-1, 0}}
+
+    for _, pos := range positions {
+        t, r, c := pos[0], pos[1], pos[2]
+        for _, d := range directions {
+            nr, nc := r+d[0], c+d[1]
+            if nr >= 0 && nc >= 0 && nr < N && nc < N && grid[nr][nc] <= t {
+                dsu.Union(r*N+c, nr*N+nc)
+            }
+        }
+        if dsu.Connected(0, N*N-1) {
+            return t
+        }
+    }
+    return -1
+}
+```
+
+```kotlin
+class DSU(n: Int) {
+    private val parent = IntArray(n + 1) { it }
+    private val size = IntArray(n + 1) { 1 }
+
+    fun find(node: Int): Int {
+        if (parent[node] != node) {
+            parent[node] = find(parent[node])
+        }
+        return parent[node]
+    }
+
+    fun union(u: Int, v: Int): Boolean {
+        var pu = find(u)
+        var pv = find(v)
+        if (pu == pv) return false
+        if (size[pu] < size[pv]) {
+            val temp = pu
+            pu = pv
+            pv = temp
+        }
+        size[pu] += size[pv]
+        parent[pv] = pu
+        return true
+    }
+
+    fun connected(u: Int, v: Int): Boolean {
+        return find(u) == find(v)
+    }
+}
+
+class Solution {
+    fun swimInWater(grid: Array<IntArray>): Int {
+        val N = grid.size
+        val dsu = DSU(N * N)
+        val positions = mutableListOf<Triple<Int, Int, Int>>()
+        for (r in grid.indices) {
+            for (c in grid[r].indices) {
+                positions.add(Triple(grid[r][c], r, c))
+            }
+        }
+        positions.sortBy { it.first }
+        val directions = listOf(Pair(0, 1), Pair(1, 0), Pair(0, -1), Pair(-1, 0))
+
+        for ((t, r, c) in positions) {
+            for ((dr, dc) in directions) {
+                val nr = r + dr
+                val nc = c + dc
+                if (nr in 0 until N && nc in 0 until N && grid[nr][nc] <= t) {
+                    dsu.union(r * N + c, nr * N + nc)
+                }
+            }
+            if (dsu.connected(0, N * N - 1)) {
+                return t
+            }
+        }
+        return -1
+    }
+}
+```
+
+```swift
+class DSU {
+    private var parent: [Int]
+    private var size: [Int]
+
+    init(_ n: Int) {
+        parent = Array(0...(n - 1))
+        size = Array(repeating: 1, count: n)
+    }
+
+    func find(_ node: Int) -> Int {
+        if parent[node] != node {
+            parent[node] = find(parent[node])
+        }
+        return parent[node]
+    }
+
+    func union(_ u: Int, _ v: Int) -> Bool {
+        let pu = find(u)
+        let pv = find(v)
+        if pu == pv {
+            return false
+        }
+        if size[pu] < size[pv] {
+            parent[pu] = pv
+            size[pv] += size[pu]
+        } else {
+            parent[pv] = pu
+            size[pu] += size[pv]
+        }
+        return true
+    }
+
+    func connected(_ u: Int, _ v: Int) -> Bool {
+        return find(u) == find(v)
+    }
+}
+
+class Solution {
+    func swimInWater(_ grid: [[Int]]) -> Int {
+        let N = grid.count
+        let dsu = DSU(N * N)
+        var positions = [(Int, Int, Int)]()
+        let directions = [(0, 1), (1, 0), (0, -1), (-1, 0)]
+
+        for r in 0..<N {
+            for c in 0..<N {
+                positions.append((grid[r][c], r, c))
+            }
+        }
+
+        positions.sort { $0.0 < $1.0 }
+
+        for (t, r, c) in positions {
+            for (dr, dc) in directions {
+                let nr = r + dr, nc = c + dc
+                if nr >= 0, nc >= 0, nr < N, nc < N, grid[nr][nc] <= t {
+                    dsu.union(r * N + c, nr * N + nc)
+                }
+            }
+            if dsu.connected(0, N * N - 1) {
+                return t
+            }
+        }
+        return -1
+    }
+}
+```
+
+
+```rust
+struct DSU {
+    parent: Vec<usize>,
+    size: Vec<usize>,
+}
+
+impl DSU {
+    fn new(n: usize) -> Self {
+        Self {
+            parent: (0..n).collect(),
+            size: vec![1; n],
+        }
+    }
+
+    fn find(&mut self, x: usize) -> usize {
+        if self.parent[x] != x {
+            self.parent[x] = self.find(self.parent[x]);
+        }
+        self.parent[x]
+    }
+
+    fn union(&mut self, u: usize, v: usize) -> bool {
+        let (mut pu, mut pv) = (self.find(u), self.find(v));
+        if pu == pv {
+            return false;
+        }
+        if self.size[pu] < self.size[pv] {
+            std::mem::swap(&mut pu, &mut pv);
+        }
+        self.size[pu] += self.size[pv];
+        self.parent[pv] = pu;
+        true
+    }
+
+    fn connected(&mut self, u: usize, v: usize) -> bool {
+        self.find(u) == self.find(v)
+    }
+}
+
+impl Solution {
+    pub fn swim_in_water(grid: Vec<Vec<i32>>) -> i32 {
+        let n = grid.len();
+        let mut dsu = DSU::new(n * n);
+        let mut positions: Vec<(i32, usize, usize)> = Vec::new();
+        for r in 0..n {
+            for c in 0..n {
+                positions.push((grid[r][c], r, c));
+            }
+        }
+        positions.sort();
+        let directions: [(i32, i32); 4] = [(0, 1), (1, 0), (0, -1), (-1, 0)];
+
+        for &(t, r, c) in &positions {
+            for &(dr, dc) in &directions {
+                let nr = r as i32 + dr;
+                let nc = c as i32 + dc;
+                if nr >= 0 && nc >= 0 && (nr as usize) < n && (nc as usize) < n {
+                    let (nr, nc) = (nr as usize, nc as usize);
+                    if grid[nr][nc] <= t {
+                        dsu.union(r * n + c, nr * n + nc);
+                    }
+                }
+            }
+            if dsu.connected(0, n * n - 1) {
+                return t;
+            }
+        }
+        n as i32 * n as i32
+    }
+}
+```
+
+::tabs-end
+
+### Time & Space Complexity
+
+- Time complexity: $O(n ^ 2 \log n)$
+- Space complexity: $O(n ^ 2)$
+
+---
+
+## Common Pitfalls
+
+### Confusing Time with Step Count
+
+A common mistake is treating "time" as the number of steps taken. In this problem, time represents the **maximum height** you must wait for the water to rise to before you can traverse your chosen path. It is not the path length.
+
+### Forgetting to Include Start and End Cells
+
+When calculating the minimum time, you must include both `grid[0][0]` and `grid[n-1][n-1]` in your considerations. The answer is at least `max(grid[0][0], grid[n-1][n-1])` since you must be able to stand on both endpoints.
+
+### Incorrect Binary Search Bounds
+
+When using binary search, setting the wrong initial bounds can cause issues. The lower bound should be the minimum value in the grid (or at least `grid[0][0]`), and the upper bound should be the maximum value. Using `0` to `n*n-1` works but is less precise.
+
+### Not Resetting Visited Array Between Searches
+
+In both the linear search and binary search DFS approaches, forgetting to reset the `visited` array between different attempts (for different time values) leads to incorrect results. Each DFS with a new threshold needs a fresh visited state.
+
+### Union-Find: Incorrect Node Indexing
+
+When using Kruskal's algorithm with DSU, a frequent bug is incorrectly converting 2D coordinates to 1D indices. The formula `r * N + c` must be used consistently, and you must ensure neighbors are already "open" (have height <= current time) before attempting to union them.

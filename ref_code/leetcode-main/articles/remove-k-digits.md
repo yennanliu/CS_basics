@@ -1,0 +1,819 @@
+## Prerequisites
+
+Before attempting this problem, you should be comfortable with:
+
+- **Stack Data Structure** - Using a stack for LIFO operations and building results incrementally
+- **Greedy Algorithms** - Making locally optimal choices to achieve a globally optimal result
+- **String Manipulation** - Converting between strings and character arrays, handling leading zeros
+- **Monotonic Stack** - Maintaining a stack where elements follow a specific order (non-increasing or non-decreasing)
+
+---
+
+## 1. Brute Force
+
+### Intuition
+
+To make the smallest possible number, we want smaller digits to appear earlier.
+If a digit is followed by a smaller digit, removing the larger one produces a smaller result.
+We repeatedly find the first position where a digit is greater than its successor and remove it.
+After `k` removals, we strip leading zeros and return the result.
+
+### Algorithm
+
+1. Repeat the following `k` times:
+    - Scan from left to right to find the first digit that is greater than the next digit.
+    - Remove that digit from the string.
+2. Strip any leading zeros from the result.
+3. Return the remaining string, or `"0"` if it becomes empty.
+
+::tabs-start
+
+```python
+class Solution:
+    def removeKdigits(self, num: str, k: int) -> str:
+        num = list(num)
+        while k:
+            i = 1
+            while i < len(num) and num[i] >= num[i - 1]:
+                i += 1
+            num.pop(i - 1)
+            k -= 1
+
+        i = 0
+        while i < len(num) and num[i] == '0':
+            i += 1
+
+        num = num[i:]
+        return ''.join(num) if num else '0'
+```
+
+```java
+public class Solution {
+    public String removeKdigits(String num, int k) {
+        StringBuilder sb = new StringBuilder(num);
+        while (k > 0) {
+            int i = 1;
+            while (i < sb.length() && sb.charAt(i) >= sb.charAt(i - 1)) {
+                i++;
+            }
+            sb.deleteCharAt(i - 1);
+            k--;
+        }
+
+        int i = 0;
+        while (i < sb.length() && sb.charAt(i) == '0') {
+            i++;
+        }
+
+        sb = new StringBuilder(sb.substring(i));
+        return sb.length() == 0 ? "0" : sb.toString();
+    }
+}
+```
+
+```cpp
+class Solution {
+public:
+    string removeKdigits(string num, int k) {
+        while (k > 0) {
+            int i = 1;
+            while (i < num.size() && num[i] >= num[i - 1]) {
+                i++;
+            }
+            num.erase(i - 1, 1);
+            k--;
+        }
+
+        int i = 0;
+        while (i < num.size() && num[i] == '0') {
+            i++;
+        }
+
+        num = num.substr(i);
+        return num.empty() ? "0" : num;
+    }
+};
+```
+
+```javascript
+class Solution {
+    /**
+     * @param {string} num
+     * @param {number} k
+     * @return {string}
+     */
+    removeKdigits(num, k) {
+        num = num.split('');
+        while (k > 0) {
+            let i = 1;
+            while (i < num.length && num[i] >= num[i - 1]) {
+                i++;
+            }
+            num.splice(i - 1, 1);
+            k--;
+        }
+
+        let i = 0;
+        while (i < num.length && num[i] === '0') {
+            i++;
+        }
+
+        num = num.slice(i);
+        return num.length === 0 ? '0' : num.join('');
+    }
+}
+```
+
+```csharp
+public class Solution {
+    public string RemoveKdigits(string num, int k) {
+        var sb = new System.Text.StringBuilder(num);
+        while (k > 0) {
+            int i = 1;
+            while (i < sb.Length && sb[i] >= sb[i - 1]) {
+                i++;
+            }
+            sb.Remove(i - 1, 1);
+            k--;
+        }
+
+        int j = 0;
+        while (j < sb.Length && sb[j] == '0') {
+            j++;
+        }
+
+        string result = sb.ToString().Substring(j);
+        return result.Length == 0 ? "0" : result;
+    }
+}
+```
+
+```go
+func removeKdigits(num string, k int) string {
+    numArr := []byte(num)
+    for k > 0 {
+        i := 1
+        for i < len(numArr) && numArr[i] >= numArr[i-1] {
+            i++
+        }
+        numArr = append(numArr[:i-1], numArr[i:]...)
+        k--
+    }
+
+    i := 0
+    for i < len(numArr) && numArr[i] == '0' {
+        i++
+    }
+
+    numArr = numArr[i:]
+    if len(numArr) == 0 {
+        return "0"
+    }
+    return string(numArr)
+}
+```
+
+```kotlin
+class Solution {
+    fun removeKdigits(num: String, k: Int): String {
+        var k = k
+        val sb = StringBuilder(num)
+        while (k > 0) {
+            var i = 1
+            while (i < sb.length && sb[i] >= sb[i - 1]) {
+                i++
+            }
+            sb.deleteCharAt(i - 1)
+            k--
+        }
+
+        var i = 0
+        while (i < sb.length && sb[i] == '0') {
+            i++
+        }
+
+        val result = sb.substring(i)
+        return if (result.isEmpty()) "0" else result
+    }
+}
+```
+
+```swift
+class Solution {
+    func removeKdigits(_ num: String, _ k: Int) -> String {
+        var k = k
+        var numArr = Array(num)
+        while k > 0 {
+            var i = 1
+            while i < numArr.count && numArr[i] >= numArr[i - 1] {
+                i += 1
+            }
+            numArr.remove(at: i - 1)
+            k -= 1
+        }
+
+        var i = 0
+        while i < numArr.count && numArr[i] == "0" {
+            i += 1
+        }
+
+        numArr = Array(numArr[i...])
+        return numArr.isEmpty ? "0" : String(numArr)
+    }
+}
+```
+
+```rust
+impl Solution {
+    pub fn remove_kdigits(num: String, k: i32) -> String {
+        let mut num: Vec<u8> = num.into_bytes();
+        let mut k = k as usize;
+        while k > 0 {
+            let mut i = 1;
+            while i < num.len() && num[i] >= num[i - 1] {
+                i += 1;
+            }
+            num.remove(i - 1);
+            k -= 1;
+        }
+
+        let i = num.iter().position(|&c| c != b'0').unwrap_or(num.len());
+        let num = &num[i..];
+        if num.is_empty() {
+            "0".to_string()
+        } else {
+            String::from_utf8(num.to_vec()).unwrap()
+        }
+    }
+}
+```
+
+::tabs-end
+
+### Time & Space Complexity
+
+- Time complexity: $O(n * k)$
+- Space complexity: $O(1)$ or $O(n)$ depending on the language.
+
+---
+
+## 2. Greedy + Stack
+
+### Intuition
+
+The brute force approach rescans the string after each removal, which is inefficient.
+A stack lets us make decisions in a single pass.
+As we process each digit, we pop from the stack whenever the top is larger than the current digit and we still have removals left.
+This greedily ensures that smaller digits bubble up to the front.
+
+### Algorithm
+
+1. Initialize an empty stack.
+2. For each character `c` in `num`:
+    - While `k > 0`, the stack is not empty, and the top of the stack is greater than `c`, pop from the stack and decrement `k`.
+    - Push `c` onto the stack.
+3. If `k` is still greater than `0`, remove `k` digits from the end of the stack.
+4. Strip leading zeros from the result.
+5. Return the final string, or `"0"` if empty.
+
+::tabs-start
+
+```python
+class Solution:
+    def removeKdigits(self, num: str, k: int) -> str:
+        stack = []
+        for c in num:
+            while k > 0 and stack and stack[-1] > c:
+                k -= 1
+                stack.pop()
+            stack.append(c)
+
+        while stack and k:
+            stack.pop()
+            k -= 1
+
+        i = 0
+        while i < len(stack) and stack[i] == '0':
+            i += 1
+
+        res = stack[i:]
+        return ''.join(res) if res else "0"
+```
+
+```java
+public class Solution {
+    public String removeKdigits(String num, int k) {
+        StringBuilder stack = new StringBuilder();
+        for (char c : num.toCharArray()) {
+            while (k > 0 && stack.length() > 0 && stack.charAt(stack.length() - 1) > c) {
+                stack.deleteCharAt(stack.length() - 1);
+                k--;
+            }
+            stack.append(c);
+        }
+
+        while (k > 0 && stack.length() > 0) {
+            stack.deleteCharAt(stack.length() - 1);
+            k--;
+        }
+
+        int i = 0;
+        while (i < stack.length() && stack.charAt(i) == '0') {
+            i++;
+        }
+
+        String res = stack.substring(i);
+        return res.isEmpty() ? "0" : res;
+    }
+}
+```
+
+```cpp
+class Solution {
+public:
+    string removeKdigits(string num, int k) {
+        string stack;
+        for (char c : num) {
+            while (k > 0 && !stack.empty() && stack.back() > c) {
+                stack.pop_back();
+                k--;
+            }
+            stack.push_back(c);
+        }
+
+        while (k > 0 && !stack.empty()) {
+            stack.pop_back();
+            k--;
+        }
+
+        int i = 0;
+        while (i < stack.size() && stack[i] == '0') {
+            i++;
+        }
+
+        string res = stack.substr(i);
+        return res.empty() ? "0" : res;
+    }
+};
+```
+
+```javascript
+class Solution {
+    /**
+     * @param {string} num
+     * @param {number} k
+     * @return {string}
+     */
+    removeKdigits(num, k) {
+        let stack = [];
+        for (let c of num) {
+            while (k > 0 && stack.length > 0 && stack[stack.length - 1] > c) {
+                stack.pop();
+                k--;
+            }
+            stack.push(c);
+        }
+
+        while (k > 0 && stack.length > 0) {
+            stack.pop();
+            k--;
+        }
+
+        let i = 0;
+        while (i < stack.length && stack[i] === '0') {
+            i++;
+        }
+
+        let res = stack.slice(i).join('');
+        return res === '' ? '0' : res;
+    }
+}
+```
+
+```csharp
+public class Solution {
+    public string RemoveKdigits(string num, int k) {
+        var stack = new System.Text.StringBuilder();
+        foreach (char c in num) {
+            while (k > 0 && stack.Length > 0 && stack[stack.Length - 1] > c) {
+                stack.Remove(stack.Length - 1, 1);
+                k--;
+            }
+            stack.Append(c);
+        }
+
+        while (k > 0 && stack.Length > 0) {
+            stack.Remove(stack.Length - 1, 1);
+            k--;
+        }
+
+        int i = 0;
+        while (i < stack.Length && stack[i] == '0') {
+            i++;
+        }
+
+        string res = stack.ToString().Substring(i);
+        return res.Length == 0 ? "0" : res;
+    }
+}
+```
+
+```go
+func removeKdigits(num string, k int) string {
+    stack := []byte{}
+    for i := 0; i < len(num); i++ {
+        c := num[i]
+        for k > 0 && len(stack) > 0 && stack[len(stack)-1] > c {
+            stack = stack[:len(stack)-1]
+            k--
+        }
+        stack = append(stack, c)
+    }
+
+    for k > 0 && len(stack) > 0 {
+        stack = stack[:len(stack)-1]
+        k--
+    }
+
+    i := 0
+    for i < len(stack) && stack[i] == '0' {
+        i++
+    }
+
+    res := string(stack[i:])
+    if res == "" {
+        return "0"
+    }
+    return res
+}
+```
+
+```kotlin
+class Solution {
+    fun removeKdigits(num: String, k: Int): String {
+        var k = k
+        val stack = StringBuilder()
+        for (c in num) {
+            while (k > 0 && stack.isNotEmpty() && stack.last() > c) {
+                stack.deleteCharAt(stack.length - 1)
+                k--
+            }
+            stack.append(c)
+        }
+
+        while (k > 0 && stack.isNotEmpty()) {
+            stack.deleteCharAt(stack.length - 1)
+            k--
+        }
+
+        var i = 0
+        while (i < stack.length && stack[i] == '0') {
+            i++
+        }
+
+        val res = stack.substring(i)
+        return if (res.isEmpty()) "0" else res
+    }
+}
+```
+
+```swift
+class Solution {
+    func removeKdigits(_ num: String, _ k: Int) -> String {
+        var k = k
+        var stack = [Character]()
+        for c in num {
+            while k > 0 && !stack.isEmpty && stack.last! > c {
+                stack.removeLast()
+                k -= 1
+            }
+            stack.append(c)
+        }
+
+        while k > 0 && !stack.isEmpty {
+            stack.removeLast()
+            k -= 1
+        }
+
+        var i = 0
+        while i < stack.count && stack[i] == "0" {
+            i += 1
+        }
+
+        let res = String(stack[i...])
+        return res.isEmpty ? "0" : res
+    }
+}
+```
+
+```rust
+impl Solution {
+    pub fn remove_kdigits(num: String, k: i32) -> String {
+        let mut k = k as usize;
+        let mut stack = Vec::new();
+        for c in num.bytes() {
+            while k > 0 && !stack.is_empty() && *stack.last().unwrap() > c {
+                stack.pop();
+                k -= 1;
+            }
+            stack.push(c);
+        }
+
+        while k > 0 && !stack.is_empty() {
+            stack.pop();
+            k -= 1;
+        }
+
+        let i = stack.iter().position(|&c| c != b'0').unwrap_or(stack.len());
+        let res = &stack[i..];
+        if res.is_empty() {
+            "0".to_string()
+        } else {
+            String::from_utf8(res.to_vec()).unwrap()
+        }
+    }
+}
+```
+
+::tabs-end
+
+### Time & Space Complexity
+
+- Time complexity: $O(n)$
+- Space complexity: $O(n)$
+
+---
+
+## 3. Two Pointers
+
+### Intuition
+
+Instead of using a separate stack, we can simulate stack behavior in place using two pointers.
+The left pointer `l` represents the top of our virtual stack, while the right pointer `r` scans through the input.
+When we see a smaller digit, we backtrack `l` to remove larger digits, then place the current digit.
+This achieves the same greedy logic with better space efficiency.
+
+### Algorithm
+
+1. Initialize `l = 0` as the write pointer.
+2. For each index `r` from `0` to the end of `num`:
+    - While `l > 0`, `k > 0`, and `num[l-1] > num[r]`, decrement both `l` and `k`.
+    - Write `num[r]` at position `l` and increment `l`.
+3. Subtract any remaining `k` from `l` to trim excess digits from the end.
+4. Skip leading zeros and return the substring from that point to `l`, or `"0"` if empty.
+
+::tabs-start
+
+```python
+class Solution:
+    def removeKdigits(self, num: str, k: int) -> str:
+        l = 0
+        num = list(num)
+
+        for r in range(len(num)):
+            while l > 0 and k > 0 and num[l - 1] > num[r]:
+                l -= 1
+                k -= 1
+            num[l] = num[r]
+            l += 1
+
+        l -= k
+        i = 0
+        while i < l and num[i] == '0':
+            i += 1
+        res = ''.join(num[i:l])
+        return res if res else '0'
+```
+
+```java
+public class Solution {
+    public String removeKdigits(String num, int k) {
+        char[] numArray = num.toCharArray();
+        int l = 0;
+
+        for (int r = 0; r < numArray.length; r++) {
+            while (l > 0 && k > 0 && numArray[l - 1] > numArray[r]) {
+                l--;
+                k--;
+            }
+            numArray[l++] = numArray[r];
+        }
+
+        l -= k;
+        int i = 0;
+        while (i < l && numArray[i] == '0') {
+            i++;
+        }
+        String res = new String(numArray, i, l - i);
+        return res.isEmpty() ? "0" : res;
+    }
+}
+```
+
+```cpp
+class Solution {
+public:
+    string removeKdigits(string num, int k) {
+        int l = 0;
+        for (int r = 0; r < num.size(); r++) {
+            while (l > 0 && k > 0 && num[l - 1] > num[r]) {
+                l--;
+                k--;
+            }
+            num[l++] = num[r];
+        }
+
+        l -= k;
+        int i = 0;
+        while (i < l && num[i] == '0') {
+            i++;
+        }
+        if (i == l) return "0";
+        return num.substr(i, l - i);
+    }
+};
+```
+
+```javascript
+class Solution {
+    /**
+     * @param {string} num
+     * @param {number} k
+     * @return {string}
+     */
+    removeKdigits(num, k) {
+        let numArray = num.split('');
+        let l = 0;
+
+        for (let r = 0; r < numArray.length; r++) {
+            while (l > 0 && k > 0 && numArray[l - 1] > numArray[r]) {
+                l--;
+                k--;
+            }
+            numArray[l++] = numArray[r];
+        }
+
+        l -= k;
+        let i = 0;
+        while (i < l && numArray[i] === '0') {
+            i++;
+        }
+        let res = numArray.slice(i, l).join('');
+        return res.length === 0 ? '0' : res;
+    }
+}
+```
+
+```csharp
+public class Solution {
+    public string RemoveKdigits(string num, int k) {
+        char[] numArray = num.ToCharArray();
+        int l = 0;
+
+        for (int r = 0; r < numArray.Length; r++) {
+            while (l > 0 && k > 0 && numArray[l - 1] > numArray[r]) {
+                l--;
+                k--;
+            }
+            numArray[l++] = numArray[r];
+        }
+
+        l -= k;
+        int i = 0;
+        while (i < l && numArray[i] == '0') {
+            i++;
+        }
+        if (i == l) return "0";
+        return new string(numArray, i, l - i);
+    }
+}
+```
+
+```go
+func removeKdigits(num string, k int) string {
+    numArr := []byte(num)
+    l := 0
+
+    for r := 0; r < len(numArr); r++ {
+        for l > 0 && k > 0 && numArr[l-1] > numArr[r] {
+            l--
+            k--
+        }
+        numArr[l] = numArr[r]
+        l++
+    }
+
+    l -= k
+    i := 0
+    for i < l && numArr[i] == '0' {
+        i++
+    }
+    if i == l {
+        return "0"
+    }
+    return string(numArr[i:l])
+}
+```
+
+```kotlin
+class Solution {
+    fun removeKdigits(num: String, k: Int): String {
+        var k = k
+        val numArray = num.toCharArray()
+        var l = 0
+
+        for (r in numArray.indices) {
+            while (l > 0 && k > 0 && numArray[l - 1] > numArray[r]) {
+                l--
+                k--
+            }
+            numArray[l++] = numArray[r]
+        }
+
+        l -= k
+        var i = 0
+        while (i < l && numArray[i] == '0') {
+            i++
+        }
+        if (i == l) return "0"
+        return String(numArray, i, l - i)
+    }
+}
+```
+
+```swift
+class Solution {
+    func removeKdigits(_ num: String, _ k: Int) -> String {
+        var k = k
+        var numArr = Array(num)
+        var l = 0
+
+        for r in 0..<numArr.count {
+            while l > 0 && k > 0 && numArr[l - 1] > numArr[r] {
+                l -= 1
+                k -= 1
+            }
+            numArr[l] = numArr[r]
+            l += 1
+        }
+
+        l -= k
+        var i = 0
+        while i < l && numArr[i] == "0" {
+            i += 1
+        }
+        if i == l { return "0" }
+        return String(numArr[i..<l])
+    }
+}
+```
+
+```rust
+impl Solution {
+    pub fn remove_kdigits(num: String, k: i32) -> String {
+        let mut k = k as usize;
+        let mut num = num.into_bytes();
+        let mut l = 0;
+
+        for r in 0..num.len() {
+            while l > 0 && k > 0 && num[l - 1] > num[r] {
+                l -= 1;
+                k -= 1;
+            }
+            num[l] = num[r];
+            l += 1;
+        }
+
+        l -= k;
+        let i = num[..l].iter().position(|&c| c != b'0').unwrap_or(l);
+        if i == l {
+            "0".to_string()
+        } else {
+            String::from_utf8(num[i..l].to_vec()).unwrap()
+        }
+    }
+}
+```
+
+::tabs-end
+
+### Time & Space Complexity
+
+- Time complexity: $O(n)$
+- Space complexity: $O(1)$ or $O(n)$ depending on the language.
+
+---
+
+## Common Pitfalls
+
+### Forgetting to Remove Remaining Digits When k > 0
+
+After processing all digits, there may still be removals left if the string was already in non-decreasing order (e.g., `"12345"` with `k=2`). If you do not trim the last `k` digits from the result, you will return a number larger than necessary. Always check if `k > 0` after the main loop and remove digits from the end accordingly.
+
+### Not Stripping Leading Zeros
+
+Removing digits can expose leading zeros that make the result invalid (e.g., removing `1` from `"10200"` leaves `"0200"`). Failing to strip these zeros results in incorrect output. After all removals, scan from the start and skip any `'0'` characters before constructing the final string.
+
+### Returning an Empty String Instead of "0"
+
+When all digits are removed or only zeros remain after stripping, the result should be `"0"`, not an empty string. For example, `"10"` with `k=2` should return `"0"`. Always check if the final string is empty and return `"0"` as a fallback to handle this edge case.

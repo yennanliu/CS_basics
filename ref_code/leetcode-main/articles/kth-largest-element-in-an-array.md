@@ -1,0 +1,1208 @@
+## Prerequisites
+
+Before attempting this problem, you should be comfortable with:
+
+- **Sorting Algorithms** - Understanding how sorting works and its O(n log n) time complexity
+- **Heap Data Structure** - Using min-heaps to efficiently track the k largest elements
+- **QuickSelect Algorithm** - Partitioning arrays around a pivot to find the k-th element in average O(n) time
+- **Two Pointers / Partitioning** - Rearranging elements based on comparison with a pivot value
+
+---
+
+## 1. Sorting
+
+### Intuition
+
+If you sort the entire array, all elements will be arranged from smallest to largest.  
+Once sorted:
+
+- The **largest element** is at the last position.
+- The **2nd largest** is one position before that.
+- The **k-th largest** is simply at index `n - k`.
+
+So the problem becomes:  
+→ _Sort the array and pick the element that is k steps from the end._
+
+This is simple but not the most efficient, because sorting takes `O(n log n)`.
+
+### Algorithm
+
+1. Sort the array in non-decreasing order.
+2. Compute the index of the k-th largest element: `index = n - k`.
+3. Return the element at that position.
+
+::tabs-start
+
+```python
+class Solution:
+    def findKthLargest(self, nums: List[int], k: int) -> int:
+        nums.sort()
+        return nums[len(nums) - k]
+```
+
+```java
+public class Solution {
+    public int findKthLargest(int[] nums, int k) {
+        Arrays.sort(nums);
+        return nums[nums.length - k];
+    }
+}
+```
+
+```cpp
+class Solution {
+public:
+    int findKthLargest(vector<int>& nums, int k) {
+        sort(nums.begin(), nums.end());
+        return nums[nums.size() - k];
+    }
+};
+```
+
+```javascript
+class Solution {
+    /**
+     * @param {number[]} nums
+     * @param {number} k
+     * @return {number}
+     */
+    findKthLargest(nums, k) {
+        nums.sort((a, b) => a - b);
+        return nums[nums.length - k];
+    }
+}
+```
+
+```csharp
+public class Solution {
+    public int FindKthLargest(int[] nums, int k) {
+        Array.Sort(nums);
+        return nums[nums.Length - k];
+    }
+}
+```
+
+```go
+func findKthLargest(nums []int, k int) int {
+    sort.Ints(nums)
+    return nums[len(nums) - k]
+}
+```
+
+```kotlin
+class Solution {
+    fun findKthLargest(nums: IntArray, k: Int): Int {
+        nums.sort()
+        return nums[nums.size - k]
+    }
+}
+```
+
+```swift
+class Solution {
+    func findKthLargest(_ nums: [Int], _ k: Int) -> Int {
+        let sortedNums = nums.sorted()
+        return sortedNums[sortedNums.count - k]
+    }
+}
+```
+
+```rust
+impl Solution {
+    pub fn find_kth_largest(mut nums: Vec<i32>, k: i32) -> i32 {
+        nums.sort();
+        nums[nums.len() - k as usize]
+    }
+}
+```
+
+::tabs-end
+
+### Time & Space Complexity
+
+- Time complexity: $O(n \log n)$
+- Space complexity: $O(1)$ or $O(n)$ depending on the sorting algorithm.
+
+---
+
+## 2. Min-Heap
+
+### Intuition
+
+Instead of sorting the whole array, we only need to keep track of the **k largest elements** seen so far.
+
+A **min-heap** is perfect for this:
+
+- A min-heap always keeps the _smallest_ element at the top.
+- If we maintain a heap of size `k`, then:
+    - the heap will always contain the `k` largest elements seen so far.
+    - the root of the heap (the smallest among these `k`) will be the **k-th largest** element.
+
+Process:
+
+- Add elements into the heap.
+- If the heap grows larger than `k`, remove the smallest element.
+- At the end, the root of the heap is exactly the k-th largest element.
+
+This avoids sorting the entire array and keeps memory small.
+
+### Algorithm
+
+1. Create an empty min-heap.
+2. Iterate through each number:
+    - Push the number into the min-heap.
+    - If the heap size exceeds `k`, pop the smallest element.
+3. After processing all numbers, the top of the heap is the **k-th largest element**.
+4. Return that value.
+
+::tabs-start
+
+```python
+class Solution:
+    def findKthLargest(self, nums, k):
+        return heapq.nlargest(k, nums)[-1]
+```
+
+```java
+public class Solution {
+    public int findKthLargest(int[] nums, int k) {
+        PriorityQueue<Integer> minHeap = new PriorityQueue<>();
+        for (int num : nums) {
+            minHeap.offer(num);
+            if (minHeap.size() > k) {
+                minHeap.poll();
+            }
+        }
+        return minHeap.peek();
+    }
+}
+```
+
+```cpp
+class Solution {
+public:
+    int findKthLargest(vector<int>& nums, int k) {
+        priority_queue<int, vector<int>, greater<int>> minHeap;
+        for (int num : nums) {
+            minHeap.push(num);
+            if (minHeap.size() > k) {
+                minHeap.pop();
+            }
+        }
+        return minHeap.top();
+    }
+};
+```
+
+```javascript
+class Solution {
+    /**
+     * @param {number[]} nums
+     * @param {number} k
+     * @return {number}
+     */
+    findKthLargest(nums, k) {
+        const minHeap = new MinPriorityQueue();
+        for (let num of nums) {
+            minHeap.push(num);
+            if (minHeap.size() > k) {
+                minHeap.pop();
+            }
+        }
+        return minHeap.front();
+    }
+}
+```
+
+```csharp
+public class Solution {
+    public int FindKthLargest(int[] nums, int k) {
+        PriorityQueue<int, int> minHeap = new PriorityQueue<int, int>();
+        foreach (int num in nums) {
+            minHeap.Enqueue(num, num);
+            if (minHeap.Count > k) {
+                minHeap.Dequeue();
+            }
+        }
+        return minHeap.Peek();
+    }
+}
+```
+
+```go
+func findKthLargest(nums []int, k int) int {
+    minHeap := priorityqueue.NewWith(utils.IntComparator)
+
+    for _, num := range nums {
+        minHeap.Enqueue(num)
+        if minHeap.Size() > k {
+            minHeap.Dequeue()
+        }
+    }
+
+    val, _ := minHeap.Peek()
+    return val.(int)
+}
+```
+
+```kotlin
+class Solution {
+    fun findKthLargest(nums: IntArray, k: Int): Int {
+        val minHeap = PriorityQueue<Int>()
+
+        for (num in nums) {
+            minHeap.offer(num)
+            if (minHeap.size > k) {
+                minHeap.poll()
+            }
+        }
+        return minHeap.peek()
+    }
+}
+```
+
+```swift
+class Solution {
+    func findKthLargest(_ nums: [Int], _ k: Int) -> Int {
+        var minHeap = Heap<Int>()
+
+        for num in nums {
+            minHeap.insert(num)
+            if minHeap.count > k {
+                _ = minHeap.removeMin()
+            }
+        }
+
+        return minHeap.popMin()!
+    }
+}
+```
+
+```rust
+impl Solution {
+    pub fn find_kth_largest(nums: Vec<i32>, k: i32) -> i32 {
+        let k = k as usize;
+        let mut min_heap = BinaryHeap::new();
+        for &num in &nums {
+            min_heap.push(Reverse(num));
+            if min_heap.len() > k {
+                min_heap.pop();
+            }
+        }
+        min_heap.peek().unwrap().0
+    }
+}
+```
+
+::tabs-end
+
+### Time & Space Complexity
+
+- Time complexity: $O(n \log k)$
+- Space complexity: $O(k)$
+
+> Where $n$ is the length of the array $nums$.
+
+---
+
+## 3. Quick Select
+
+### Intuition
+
+Quick Select is a selection algorithm that works like QuickSort but only explores the side of the array that contains the answer.
+
+Key idea:
+
+- Pick a pivot.
+- Rearrange elements so that:
+    - all numbers **smaller than or equal to** the pivot go to the left,
+    - all numbers **greater** go to the right.
+- After partitioning, the pivot ends up in its correct sorted position.
+- Instead of sorting the whole array, we check:
+    - If the pivot’s final position is the index we want → answer found.
+    - Otherwise, recurse only into the side where the target index lies.
+
+Because we eliminate half the array each time, this approach is much faster on average than full sorting.
+
+For the k-th largest:
+
+- Convert it to the corresponding index in sorted order:
+    - index = n − k
+- Then use Quick Select to find the value that would appear at that index.
+
+### Algorithm
+
+1. Convert k-th largest to its zero-based sorted index: `target = n - k`.
+2. Use Quick Select between indices `l` and `r`:
+    - Choose a pivot (commonly the rightmost element).
+    - Partition the array around the pivot.
+    - Let the pivot's final index be `p`.
+3. If `p == target`, return the pivot value.
+4. If `p > target`, repeat Quick Select on the **left** half.
+5. If `p < target`, repeat on the **right** half.
+6. Continue until the target index is found.
+
+::tabs-start
+
+```python
+class Solution:
+
+    def findKthLargest(self, nums: List[int], k: int) -> int:
+        k = len(nums) - k
+
+        def quickSelect(l, r):
+            pivot, p = nums[r], l
+            for i in range(l, r):
+                if nums[i] <= pivot:
+                    nums[p], nums[i] = nums[i], nums[p]
+                    p += 1
+            nums[p], nums[r] = nums[r], nums[p]
+
+            if p > k:
+                return quickSelect(l, p - 1)
+            elif p < k:
+                return quickSelect(p + 1, r)
+            else:
+                return nums[p]
+
+        return quickSelect(0, len(nums) - 1)
+```
+
+```java
+public class Solution {
+    public int findKthLargest(int[] nums, int k) {
+        k = nums.length - k;
+
+        return quickSelect(nums, 0, nums.length - 1, k);
+    }
+
+    private int quickSelect(int[] nums, int left, int right, int k) {
+        int pivot = nums[right];
+        int p = left;
+
+        for (int i = left; i < right; i++) {
+            if (nums[i] <= pivot) {
+                int temp = nums[p];
+                nums[p] = nums[i];
+                nums[i] = temp;
+                p++;
+            }
+        }
+
+        int temp = nums[p];
+        nums[p] = nums[right];
+        nums[right] = temp;
+
+        if (p > k) {
+            return quickSelect(nums, left, p - 1, k);
+        } else if (p < k) {
+            return quickSelect(nums, p + 1, right, k);
+        } else {
+            return nums[p];
+        }
+    }
+}
+```
+
+```cpp
+class Solution {
+public:
+    int findKthLargest(vector<int>& nums, int k) {
+        k = nums.size() - k;
+        return quickSelect(nums, 0, nums.size() - 1, k);
+    }
+
+    int quickSelect(vector<int>& nums, int left, int right, int k) {
+        int pivot = nums[right];
+        int p = left;
+
+        for (int i = left; i < right; ++i) {
+            if (nums[i] <= pivot) {
+                swap(nums[p], nums[i]);
+                p++;
+            }
+        }
+        swap(nums[p], nums[right]);
+
+        if (p > k) {
+            return quickSelect(nums, left, p - 1, k);
+        } else if (p < k) {
+            return quickSelect(nums, p + 1, right, k);
+        } else {
+            return nums[p];
+        }
+    }
+};
+```
+
+```javascript
+class Solution {
+    /**
+     * @param {number[]} nums
+     * @param {number} k
+     * @return {number}
+     */
+    findKthLargest(nums, k) {
+        k = nums.length - k;
+
+        const quickSelect = (left, right) => {
+            let pivot = nums[right];
+            let p = left;
+
+            for (let i = left; i < right; i++) {
+                if (nums[i] <= pivot) {
+                    [nums[p], nums[i]] = [nums[i], nums[p]];
+                    p++;
+                }
+            }
+            [nums[p], nums[right]] = [nums[right], nums[p]];
+
+            if (p > k) {
+                return quickSelect(left, p - 1);
+            } else if (p < k) {
+                return quickSelect(p + 1, right);
+            } else {
+                return nums[p];
+            }
+        };
+
+        return quickSelect(0, nums.length - 1);
+    }
+}
+```
+
+```csharp
+public class Solution {
+    public int FindKthLargest(int[] nums, int k) {
+        k = nums.Length - k;
+        return QuickSelect(nums, 0, nums.Length - 1, k);
+    }
+
+    private int QuickSelect(int[] nums, int left, int right, int k) {
+        int pivot = nums[right];
+        int p = left;
+
+        for (int i = left; i < right; i++) {
+            if (nums[i] <= pivot) {
+                int temp = nums[p];
+                nums[p] = nums[i];
+                nums[i] = temp;
+                p++;
+            }
+        }
+
+        int tmp = nums[p];
+        nums[p] = nums[right];
+        nums[right] = tmp;
+
+        if (p > k) {
+            return QuickSelect(nums, left, p - 1, k);
+        } else if (p < k) {
+            return QuickSelect(nums, p + 1, right, k);
+        } else {
+            return nums[p];
+        }
+    }
+}
+```
+
+```go
+func findKthLargest(nums []int, k int) int {
+    k = len(nums) - k
+
+    var quickSelect func(l, r int) int
+    quickSelect = func(l, r int) int {
+        pivot, p := nums[r], l
+        for i := l; i < r; i++ {
+            if nums[i] <= pivot {
+                nums[p], nums[i] = nums[i], nums[p]
+                p++
+            }
+        }
+        nums[p], nums[r] = nums[r], nums[p]
+
+        if p > k {
+            return quickSelect(l, p-1)
+        } else if p < k {
+            return quickSelect(p+1, r)
+        } else {
+            return nums[p]
+        }
+    }
+
+    return quickSelect(0, len(nums)-1)
+}
+```
+
+```kotlin
+class Solution {
+    fun findKthLargest(nums: IntArray, k: Int): Int {
+        val target = nums.size - k
+
+        fun quickSelect(l: Int, r: Int): Int {
+            val pivot = nums[r]
+            var p = l
+            for (i in l until r) {
+                if (nums[i] <= pivot) {
+                    nums[p] = nums[i].also { nums[i] = nums[p] }
+                    p++
+                }
+            }
+            nums[p] = nums[r].also { nums[r] = nums[p] }
+
+            return when {
+                p > target -> quickSelect(l, p - 1)
+                p < target -> quickSelect(p + 1, r)
+                else -> nums[p]
+            }
+        }
+
+        return quickSelect(0, nums.size - 1)
+    }
+}
+```
+
+```swift
+class Solution {
+    func findKthLargest(_ nums: [Int], _ k: Int) -> Int {
+        var nums = nums
+        let k = nums.count - k
+
+        func quickSelect(_ l: Int, _ r: Int) -> Int {
+            let pivot = nums[r]
+            var p = l
+
+            for i in l..<r {
+                if nums[i] <= pivot {
+                    nums.swapAt(i, p)
+                    p += 1
+                }
+            }
+            nums.swapAt(p, r)
+
+            if p > k {
+                return quickSelect(l, p - 1)
+            } else if p < k {
+                return quickSelect(p + 1, r)
+            } else {
+                return nums[p]
+            }
+        }
+
+        return quickSelect(0, nums.count - 1)
+    }
+}
+```
+
+```rust
+impl Solution {
+    pub fn find_kth_largest(mut nums: Vec<i32>, k: i32) -> i32 {
+        let k = nums.len() - k as usize;
+
+        fn quick_select(nums: &mut Vec<i32>, l: usize, r: usize, k: usize) -> i32 {
+            let pivot = nums[r];
+            let mut p = l;
+            for i in l..r {
+                if nums[i] <= pivot {
+                    nums.swap(p, i);
+                    p += 1;
+                }
+            }
+            nums.swap(p, r);
+
+            if p > k {
+                quick_select(nums, l, p - 1, k)
+            } else if p < k {
+                quick_select(nums, p + 1, r, k)
+            } else {
+                nums[p]
+            }
+        }
+
+        let r = nums.len() - 1;
+        quick_select(&mut nums, 0, r, k)
+    }
+}
+```
+
+::tabs-end
+
+### Time & Space Complexity
+
+- Time complexity: $O(n)$ in average case, $O(n ^ 2)$ in worst case.
+- Space complexity: $O(n)$
+
+---
+
+## 4. Quick Select (Optimal)
+
+### Intuition
+
+Quick Select finds the k-th largest (or smallest) element without sorting the whole array.
+
+This **optimal version** improves the classic Quick Select by:
+
+- choosing a pivot more intelligently (using a 3-element median-like technique),
+- reducing worst-case behavior,
+- partitioning the array efficiently so that large elements move left and small elements move right.
+
+The key idea is still the same:
+
+- After partitioning, the pivot ends up exactly where it belongs in sorted order.
+- If the pivot’s final index is the one we need, we’re done.
+- Otherwise, we only search the half of the array where the answer lies.
+
+This drastically reduces unnecessary work and leads to **O(n)** average time.
+
+### Algorithm
+
+1. Convert k-th largest to zero-based index:
+    - `targetIndex = k - 1` (because array is arranged in descending order in this variant).
+2. Maintain two pointers: `left = 0` and `right = n - 1`.
+3. While searching:
+    - Choose a pivot using a more stable technique (swapping elements from `left`, `left+1`, `right`, `mid`).
+    - Partition the array so:
+        - All **elements > pivot** move to the left.
+        - All **elements < pivot** move to the right.
+    - The pivot ends at index `j`.
+4. Compare:
+    - If `j == targetIndex`: return the pivot value.
+    - If `j > targetIndex`: search only in the **left** part (`right = j - 1`).
+    - If `j < targetIndex`: search only in the **right** part (`left = j + 1`).
+5. Continue until the correct index is isolated.
+
+::tabs-start
+
+```python
+class Solution:
+    def partition(self, nums: List[int], left: int, right: int) -> int:
+        mid = (left + right) >> 1
+        nums[mid], nums[left + 1] = nums[left + 1], nums[mid]
+
+        if nums[left] < nums[right]:
+            nums[left], nums[right] = nums[right], nums[left]
+        if nums[left + 1] < nums[right]:
+            nums[left + 1], nums[right] = nums[right], nums[left + 1]
+        if nums[left] < nums[left + 1]:
+            nums[left], nums[left + 1] = nums[left + 1], nums[left]
+
+        pivot = nums[left + 1]
+        i = left + 1
+        j = right
+
+        while True:
+            while True:
+                i += 1
+                if not nums[i] > pivot:
+                    break
+            while True:
+                j -= 1
+                if not nums[j] < pivot:
+                    break
+            if i > j:
+                break
+            nums[i], nums[j] = nums[j], nums[i]
+
+        nums[left + 1], nums[j] = nums[j], nums[left + 1]
+        return j
+
+    def quickSelect(self, nums: List[int], k: int) -> int:
+        left = 0
+        right = len(nums) - 1
+
+        while True:
+            if right <= left + 1:
+                if right == left + 1 and nums[right] > nums[left]:
+                    nums[left], nums[right] = nums[right], nums[left]
+                return nums[k]
+
+            j = self.partition(nums, left, right)
+
+            if j >= k:
+                right = j - 1
+            if j <= k:
+                left = j + 1
+
+    def findKthLargest(self, nums: List[int], k: int) -> int:
+        return self.quickSelect(nums, k - 1)
+```
+
+```java
+public class Solution {
+    private int partition(int[] nums, int left, int right) {
+        int mid = (left + right) >> 1;
+        swap(nums, mid, left + 1);
+
+        if (nums[left] < nums[right])
+            swap(nums, left, right);
+        if (nums[left + 1] < nums[right])
+            swap(nums, left + 1, right);
+        if (nums[left] < nums[left + 1])
+            swap(nums, left, left + 1);
+
+        int pivot = nums[left + 1];
+        int i = left + 1;
+        int j = right;
+
+        while (true) {
+            while (nums[++i] > pivot);
+            while (nums[--j] < pivot);
+            if (i > j) break;
+            swap(nums, i, j);
+        }
+
+        nums[left + 1] = nums[j];
+        nums[j] = pivot;
+        return j;
+    }
+
+    private void swap(int[] nums, int i, int j) {
+        int temp = nums[i];
+        nums[i] = nums[j];
+        nums[j] = temp;
+    }
+
+    private int quickSelect(int[] nums, int k) {
+        int left = 0;
+        int right = nums.length - 1;
+
+        while (true) {
+            if (right <= left + 1) {
+                if (right == left + 1 && nums[right] > nums[left])
+                    swap(nums, left, right);
+                return nums[k];
+            }
+
+            int j = partition(nums, left, right);
+
+            if (j >= k) right = j - 1;
+            if (j <= k) left = j + 1;
+        }
+    }
+
+    public int findKthLargest(int[] nums, int k) {
+        return quickSelect(nums, k - 1);
+    }
+}
+```
+
+```cpp
+class Solution {
+public:
+    int partition(vector<int>& nums, int left, int right) {
+        int mid = (left + right) >> 1;
+        swap(nums[mid], nums[left + 1]);
+
+        if (nums[left] < nums[right])
+            swap(nums[left], nums[right]);
+        if (nums[left + 1] < nums[right])
+            swap(nums[left + 1], nums[right]);
+        if (nums[left] < nums[left + 1])
+            swap(nums[left], nums[left + 1]);
+
+        int pivot = nums[left + 1];
+        int i = left + 1;
+        int j = right;
+
+        while (true) {
+            while (nums[++i] > pivot);
+            while (nums[--j] < pivot);
+            if (i > j) break;
+            swap(nums[i], nums[j]);
+        }
+
+        nums[left + 1] = nums[j];
+        nums[j] = pivot;
+        return j;
+    }
+
+    int quickSelect(vector<int>& nums, int k) {
+        int left = 0;
+        int right = nums.size() - 1;
+
+        while (true) {
+            if (right <= left + 1) {
+                if (right == left + 1 && nums[right] > nums[left])
+                    swap(nums[left], nums[right]);
+                return nums[k];
+            }
+
+            int j = partition(nums, left, right);
+
+            if (j >= k) right = j - 1;
+            if (j <= k) left = j + 1;
+        }
+    }
+
+    int findKthLargest(vector<int>& nums, int k) {
+        return quickSelect(nums, k - 1);
+    }
+};
+```
+
+```javascript
+class Solution {
+    /**
+     * @param {number[]} nums
+     * @param {number} k
+     * @return {number}
+     */
+    findKthLargest(nums, k) {
+        function partition(left, right) {
+            const mid = (left + right) >> 1;
+            [nums[mid], nums[left + 1]] = [nums[left + 1], nums[mid]];
+
+            if (nums[left] < nums[right])
+                [nums[left], nums[right]] = [nums[right], nums[left]];
+            if (nums[left + 1] < nums[right])
+                [nums[left + 1], nums[right]] = [nums[right], nums[left + 1]];
+            if (nums[left] < nums[left + 1])
+                [nums[left], nums[left + 1]] = [nums[left + 1], nums[left]];
+
+            const pivot = nums[left + 1];
+            let i = left + 1;
+            let j = right;
+
+            while (true) {
+                while (nums[++i] > pivot);
+                while (nums[--j] < pivot);
+                if (i > j) break;
+                [nums[i], nums[j]] = [nums[j], nums[i]];
+            }
+
+            nums[left + 1] = nums[j];
+            nums[j] = pivot;
+            return j;
+        }
+
+        function quickSelect(k) {
+            let left = 0;
+            let right = nums.length - 1;
+
+            while (true) {
+                if (right <= left + 1) {
+                    if (right == left + 1 && nums[right] > nums[left])
+                        [nums[left], nums[right]] = [nums[right], nums[left]];
+                    return nums[k];
+                }
+
+                const j = partition(left, right);
+
+                if (j >= k) right = j - 1;
+                if (j <= k) left = j + 1;
+            }
+        }
+
+        return quickSelect(k - 1);
+    }
+}
+```
+
+```csharp
+public class Solution {
+    private int Partition(int[] nums, int left, int right) {
+        int mid = (left + right) >> 1;
+        (nums[mid], nums[left + 1]) = (nums[left + 1], nums[mid]);
+
+        if (nums[left] < nums[right])
+            (nums[left], nums[right]) = (nums[right], nums[left]);
+        if (nums[left + 1] < nums[right])
+            (nums[left + 1], nums[right]) = (nums[right], nums[left + 1]);
+        if (nums[left] < nums[left + 1])
+            (nums[left], nums[left + 1]) = (nums[left + 1], nums[left]);
+
+        int pivot = nums[left + 1];
+        int i = left + 1;
+        int j = right;
+
+        while (true) {
+            while (nums[++i] > pivot);
+            while (nums[--j] < pivot);
+            if (i > j) break;
+            (nums[i], nums[j]) = (nums[j], nums[i]);
+        }
+
+        nums[left + 1] = nums[j];
+        nums[j] = pivot;
+        return j;
+    }
+
+    private int QuickSelect(int[] nums, int k) {
+        int left = 0;
+        int right = nums.Length - 1;
+
+        while (true) {
+            if (right <= left + 1) {
+                if (right == left + 1 && nums[right] > nums[left])
+                    (nums[left], nums[right]) = (nums[right], nums[left]);
+                return nums[k];
+            }
+
+            int j = Partition(nums, left, right);
+
+            if (j >= k) right = j - 1;
+            if (j <= k) left = j + 1;
+        }
+    }
+
+    public int FindKthLargest(int[] nums, int k) {
+        return QuickSelect(nums, k - 1);
+    }
+}
+```
+
+```go
+func findKthLargest(nums []int, k int) int {
+    var partition func(left, right int) int
+    partition = func(left, right int) int {
+        mid := (left + right) >> 1
+        nums[mid], nums[left+1] = nums[left+1], nums[mid]
+
+        if nums[left] < nums[right] {
+            nums[left], nums[right] = nums[right], nums[left]
+        }
+        if nums[left+1] < nums[right] {
+            nums[left+1], nums[right] = nums[right], nums[left+1]
+        }
+        if nums[left] < nums[left+1] {
+            nums[left], nums[left+1] = nums[left+1], nums[left]
+        }
+
+        pivot := nums[left+1]
+        i := left + 1
+        j := right
+
+        for {
+            for i++; nums[i] > pivot; i++ {}
+            for j--; nums[j] < pivot; j-- {}
+            if i > j {
+                break
+            }
+            nums[i], nums[j] = nums[j], nums[i]
+        }
+
+        nums[left+1], nums[j] = nums[j], nums[left+1]
+        return j
+    }
+
+    quickSelect := func(k int) int {
+        left := 0
+        right := len(nums) - 1
+
+        for {
+            if right <= left+1 {
+                if right == left+1 && nums[right] > nums[left] {
+                    nums[left], nums[right] = nums[right], nums[left]
+                }
+                return nums[k]
+            }
+
+            j := partition(left, right)
+
+            if j >= k {
+                right = j - 1
+            }
+            if j <= k {
+                left = j + 1
+            }
+        }
+    }
+
+    return quickSelect(k - 1)
+}
+```
+
+```kotlin
+class Solution {
+    private fun partition(nums: IntArray, left: Int, right: Int): Int {
+        val mid = (left + right) shr 1
+        nums[mid] = nums[left + 1].also { nums[left + 1] = nums[mid] }
+
+        if (nums[left] < nums[right])
+            nums[left] = nums[right].also { nums[right] = nums[left] }
+        if (nums[left + 1] < nums[right])
+            nums[left + 1] = nums[right].also { nums[right] = nums[left + 1] }
+        if (nums[left] < nums[left + 1])
+            nums[left] = nums[left + 1].also { nums[left + 1] = nums[left] }
+
+        val pivot = nums[left + 1]
+        var i = left + 1
+        var j = right
+
+        while (true) {
+            while (nums[++i] > pivot);
+            while (nums[--j] < pivot);
+            if (i > j) break
+            nums[i] = nums[j].also { nums[j] = nums[i] }
+        }
+
+        nums[left + 1] = nums[j]
+        nums[j] = pivot
+        return j
+    }
+
+    private fun quickSelect(nums: IntArray, k: Int): Int {
+        var left = 0
+        var right = nums.size - 1
+
+        while (true) {
+            if (right <= left + 1) {
+                if (right == left + 1 && nums[right] > nums[left])
+                    nums[left] = nums[right].also { nums[right] = nums[left] }
+                return nums[k]
+            }
+
+            val j = partition(nums, left, right)
+
+            if (j >= k) right = j - 1
+            if (j <= k) left = j + 1
+        }
+    }
+
+    fun findKthLargest(nums: IntArray, k: Int): Int {
+        return quickSelect(nums, k - 1)
+    }
+}
+```
+
+```swift
+class Solution {
+    func partition(_ nums: inout [Int], _ left: Int, _ right: Int) -> Int {
+        let mid = (left + right) >> 1
+        nums.swapAt(mid, left + 1)
+
+        if nums[left] < nums[right] {
+            nums.swapAt(left, right)
+        }
+        if nums[left + 1] < nums[right] {
+            nums.swapAt(left + 1, right)
+        }
+        if nums[left] < nums[left + 1] {
+            nums.swapAt(left, left + 1)
+        }
+
+        let pivot = nums[left + 1]
+        var i = left + 1
+        var j = right
+
+        while true {
+            repeat { i += 1 } while nums[i] > pivot
+            repeat { j -= 1 } while nums[j] < pivot
+
+            if i > j {
+                break
+            }
+            nums.swapAt(i, j)
+        }
+
+        nums.swapAt(left + 1, j)
+        return j
+    }
+
+    func quickSelect(_ nums: inout [Int], _ k: Int) -> Int {
+        var left = 0
+        var right = nums.count - 1
+
+        while true {
+            if right <= left + 1 {
+                if right == left + 1 && nums[right] > nums[left] {
+                    nums.swapAt(left, right)
+                }
+                return nums[k]
+            }
+
+            let j = partition(&nums, left, right)
+
+            if j >= k {
+                right = j - 1
+            }
+            if j <= k {
+                left = j + 1
+            }
+        }
+    }
+
+    func findKthLargest(_ nums: [Int], _ k: Int) -> Int {
+        var nums = nums
+        return quickSelect(&nums, k - 1)
+    }
+}
+```
+
+```rust
+impl Solution {
+    pub fn find_kth_largest(mut nums: Vec<i32>, k: i32) -> i32 {
+        let k = (k - 1) as usize;
+
+        fn partition(nums: &mut Vec<i32>, left: usize, right: usize) -> usize {
+            let mid = (left + right) >> 1;
+            nums.swap(mid, left + 1);
+
+            if nums[left] < nums[right] {
+                nums.swap(left, right);
+            }
+            if nums[left + 1] < nums[right] {
+                nums.swap(left + 1, right);
+            }
+            if nums[left] < nums[left + 1] {
+                nums.swap(left, left + 1);
+            }
+
+            let pivot = nums[left + 1];
+            let mut i = left + 1;
+            let mut j = right;
+
+            loop {
+                loop { i += 1; if nums[i] <= pivot { break; } }
+                loop { j -= 1; if nums[j] >= pivot { break; } }
+                if i > j { break; }
+                nums.swap(i, j);
+            }
+
+            nums[left + 1] = nums[j];
+            nums[j] = pivot;
+            j
+        }
+
+        let mut left = 0usize;
+        let mut right = nums.len() - 1;
+
+        loop {
+            if right <= left + 1 {
+                if right == left + 1 && nums[right] > nums[left] {
+                    nums.swap(left, right);
+                }
+                return nums[k];
+            }
+
+            let j = partition(&mut nums, left, right);
+
+            if j >= k { right = j.wrapping_sub(1); }
+            if j <= k { left = j + 1; }
+        }
+    }
+}
+```
+
+::tabs-end
+
+### Time & Space Complexity
+
+- Time complexity: $O(n)$ in average case, $O(n ^ 2)$ in worst case.
+- Space complexity: $O(1)$
+
+---
+
+## Common Pitfalls
+
+### Confusing K-th Largest With K-th Smallest
+
+The problem asks for the k-th largest element, not the k-th smallest. When using sorting, the k-th largest is at index `n - k`, not at index `k - 1`. Similarly, in QuickSelect, you must convert to the correct target index. Mixing up these indices is a very common source of off-by-one errors.
+
+### Using a Max-Heap Instead of a Min-Heap
+
+For the heap approach, a min-heap of size k is the correct choice because it keeps the smallest of the k largest elements at the top. Using a max-heap would require storing all n elements and extracting k times, which is less efficient. The min-heap approach maintains O(k) space and O(n log k) time.
+
+### QuickSelect Worst Case on Sorted Arrays
+
+QuickSelect degrades to O(n^2) time when the pivot choice is consistently poor, such as always picking the last element on an already sorted or reverse-sorted array. This can cause time limit exceeded errors. Using randomized pivot selection or median-of-three pivot selection helps avoid this worst case and keeps the average complexity at O(n).

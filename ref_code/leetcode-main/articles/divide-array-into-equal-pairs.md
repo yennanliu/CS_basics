@@ -1,0 +1,660 @@
+## Prerequisites
+
+Before attempting this problem, you should be comfortable with:
+
+- **Hash Maps** - Counting element frequencies efficiently in O(1) per operation
+- **Hash Sets** - Tracking elements with odd occurrences using add/remove toggle logic
+- **Sorting** - Grouping identical elements together for run-length analysis
+
+---
+
+## 1. Sorting
+
+### Intuition
+
+For an array to be divisible into pairs of equal elements, every distinct value must appear an even number of times. By sorting the array, identical elements become adjacent. We can then scan through and count consecutive runs of equal values. If any run has an odd length, we cannot form valid pairs.
+
+### Algorithm
+
+1. Sort the array.
+2. Iterate through the sorted array, tracking runs of consecutive equal elements.
+3. For each run, check if its length is odd.
+4. If any run has odd length, return `false`.
+5. If all runs have even length, return `true`.
+
+::tabs-start
+
+```python
+class Solution:
+    def divideArray(self, nums: List[int]) -> bool:
+        N = len(nums)
+        nums.sort()
+
+        i = 0
+        while i < N:
+            j = i
+            while j < N and nums[i] == nums[j]:
+                j += 1
+
+            if (j - i) % 2 != 0:
+                return False
+
+            i = j
+
+        return True
+```
+
+```java
+public class Solution {
+    public boolean divideArray(int[] nums) {
+        int N = nums.length;
+        Arrays.sort(nums);
+
+        int i = 0;
+        while (i < N) {
+            int j = i;
+            while (j < N && nums[i] == nums[j]) {
+                j++;
+            }
+
+            if ((j - i) % 2 != 0) {
+                return false;
+            }
+
+            i = j;
+        }
+
+        return true;
+    }
+}
+```
+
+```cpp
+class Solution {
+public:
+    bool divideArray(vector<int>& nums) {
+        int N = nums.size();
+        sort(nums.begin(), nums.end());
+
+        int i = 0;
+        while (i < N) {
+            int j = i;
+            while (j < N && nums[i] == nums[j]) {
+                j++;
+            }
+
+            if ((j - i) % 2 != 0) {
+                return false;
+            }
+
+            i = j;
+        }
+
+        return true;
+    }
+};
+```
+
+```javascript
+class Solution {
+    /**
+     * @param {number[]} nums
+     * @return {boolean}
+     */
+    divideArray(nums) {
+        const N = nums.length;
+        nums.sort((a, b) => a - b);
+
+        let i = 0;
+        while (i < N) {
+            let j = i;
+            while (j < N && nums[i] === nums[j]) {
+                j++;
+            }
+
+            if ((j - i) % 2 !== 0) {
+                return false;
+            }
+
+            i = j;
+        }
+
+        return true;
+    }
+}
+```
+
+```csharp
+public class Solution {
+    public bool DivideArray(int[] nums) {
+        int N = nums.Length;
+        Array.Sort(nums);
+
+        int i = 0;
+        while (i < N) {
+            int j = i;
+            while (j < N && nums[i] == nums[j]) {
+                j++;
+            }
+
+            if ((j - i) % 2 != 0) {
+                return false;
+            }
+
+            i = j;
+        }
+
+        return true;
+    }
+}
+```
+
+```go
+func divideArray(nums []int) bool {
+    N := len(nums)
+    sort.Ints(nums)
+
+    i := 0
+    for i < N {
+        j := i
+        for j < N && nums[i] == nums[j] {
+            j++
+        }
+
+        if (j-i)%2 != 0 {
+            return false
+        }
+
+        i = j
+    }
+
+    return true
+}
+```
+
+```kotlin
+class Solution {
+    fun divideArray(nums: IntArray): Boolean {
+        val N = nums.size
+        nums.sort()
+
+        var i = 0
+        while (i < N) {
+            var j = i
+            while (j < N && nums[i] == nums[j]) {
+                j++
+            }
+
+            if ((j - i) % 2 != 0) {
+                return false
+            }
+
+            i = j
+        }
+
+        return true
+    }
+}
+```
+
+```swift
+class Solution {
+    func divideArray(_ nums: [Int]) -> Bool {
+        let N = nums.count
+        let nums = nums.sorted()
+
+        var i = 0
+        while i < N {
+            var j = i
+            while j < N && nums[i] == nums[j] {
+                j += 1
+            }
+
+            if (j - i) % 2 != 0 {
+                return false
+            }
+
+            i = j
+        }
+
+        return true
+    }
+}
+```
+
+```rust
+impl Solution {
+    pub fn divide_array(mut nums: Vec<i32>) -> bool {
+        let n = nums.len();
+        nums.sort();
+
+        let mut i = 0;
+        while i < n {
+            let mut j = i;
+            while j < n && nums[i] == nums[j] {
+                j += 1;
+            }
+
+            if (j - i) % 2 != 0 {
+                return false;
+            }
+
+            i = j;
+        }
+
+        true
+    }
+}
+```
+
+::tabs-end
+
+### Time & Space Complexity
+
+- Time complexity: $O(n \log n)$
+- Space complexity: $O(1)$ or $O(n)$ depending on the sorting algorithm.
+
+---
+
+## 2. Hash Map
+
+### Intuition
+
+We can count the frequency of each element using a hash map. After counting, we check if every element appears an even number of times. If any element has an odd count, it cannot be fully paired, so we return `false`.
+
+### Algorithm
+
+1. Create a hash map to store the count of each element.
+2. Iterate through the array and increment the count for each element.
+3. Iterate through all counts in the hash map.
+4. If any count is odd, return `false`.
+5. Otherwise, return `true`.
+
+::tabs-start
+
+```python
+class Solution:
+    def divideArray(self, nums: List[int]) -> bool:
+        count = {}
+        for num in nums:
+            if num not in count:
+                count[num] = 0
+            count[num] += 1
+
+        for cnt in count.values():
+            if cnt % 2 == 1:
+                return False
+
+        return True
+```
+
+```java
+public class Solution {
+    public boolean divideArray(int[] nums) {
+        Map<Integer, Integer> count = new HashMap<>();
+        for (int num : nums) {
+            count.put(num, count.getOrDefault(num, 0) + 1);
+        }
+
+        for (int cnt : count.values()) {
+            if (cnt % 2 == 1) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+}
+```
+
+```cpp
+class Solution {
+public:
+    bool divideArray(vector<int>& nums) {
+        unordered_map<int, int> count;
+        for (int num : nums) {
+            count[num]++;
+        }
+
+        for (auto& [key, cnt] : count) {
+            if (cnt % 2 == 1) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+};
+```
+
+```javascript
+class Solution {
+    /**
+     * @param {number[]} nums
+     * @return {boolean}
+     */
+    divideArray(nums) {
+        const count = {};
+        for (let num of nums) {
+            if (!(num in count)) {
+                count[num] = 0;
+            }
+            count[num]++;
+        }
+
+        for (let key in count) {
+            if (count[key] % 2 === 1) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+}
+```
+
+```csharp
+public class Solution {
+    public bool DivideArray(int[] nums) {
+        Dictionary<int, int> count = new Dictionary<int, int>();
+        foreach (int num in nums) {
+            if (!count.ContainsKey(num)) {
+                count[num] = 0;
+            }
+            count[num]++;
+        }
+
+        foreach (var cnt in count.Values) {
+            if (cnt % 2 == 1) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+}
+```
+
+```go
+func divideArray(nums []int) bool {
+    count := make(map[int]int)
+    for _, num := range nums {
+        count[num]++
+    }
+
+    for _, cnt := range count {
+        if cnt%2 == 1 {
+            return false
+        }
+    }
+
+    return true
+}
+```
+
+```kotlin
+class Solution {
+    fun divideArray(nums: IntArray): Boolean {
+        val count = HashMap<Int, Int>()
+        for (num in nums) {
+            count[num] = count.getOrDefault(num, 0) + 1
+        }
+
+        for (cnt in count.values) {
+            if (cnt % 2 == 1) {
+                return false
+            }
+        }
+
+        return true
+    }
+}
+```
+
+```swift
+class Solution {
+    func divideArray(_ nums: [Int]) -> Bool {
+        var count = [Int: Int]()
+        for num in nums {
+            count[num, default: 0] += 1
+        }
+
+        for cnt in count.values {
+            if cnt % 2 == 1 {
+                return false
+            }
+        }
+
+        return true
+    }
+}
+```
+
+```rust
+impl Solution {
+    pub fn divide_array(nums: Vec<i32>) -> bool {
+        let mut count = HashMap::new();
+        for &num in &nums {
+            *count.entry(num).or_insert(0) += 1;
+        }
+
+        count.values().all(|&cnt| cnt % 2 == 0)
+    }
+}
+```
+
+::tabs-end
+
+### Time & Space Complexity
+
+- Time complexity: $O(n)$
+- Space complexity: $O(n)$
+
+---
+
+## 3. Hash Set
+
+### Intuition
+
+Instead of counting all frequencies, we can use a set to track elements with odd occurrences. When we see an element, if it is already in the set (meaning we have seen it an odd number of times), we remove it. If it is not in the set, we add it. At the end, if the set is empty, all elements appeared an even number of times.
+
+### Algorithm
+
+1. Create an empty hash set.
+2. Iterate through each element in the array.
+3. If the element is in the set, remove it (completing a pair).
+4. Otherwise, add it to the set (unpaired element).
+5. After processing all elements, return `true` if the set is empty, `false` otherwise.
+
+::tabs-start
+
+```python
+class Solution:
+    def divideArray(self, nums: List[int]) -> bool:
+        odd_set = set()
+
+        for num in nums:
+            if num not in odd_set:
+                odd_set.add(num)
+            else:
+                odd_set.remove(num)
+
+        return not len(odd_set)
+```
+
+```java
+public class Solution {
+    public boolean divideArray(int[] nums) {
+        Set<Integer> oddSet = new HashSet<>();
+
+        for (int num : nums) {
+            if (!oddSet.contains(num)) {
+                oddSet.add(num);
+            } else {
+                oddSet.remove(num);
+            }
+        }
+
+        return oddSet.isEmpty();
+    }
+}
+```
+
+```cpp
+class Solution {
+public:
+    bool divideArray(vector<int>& nums) {
+        unordered_set<int> oddSet;
+
+        for (int num : nums) {
+            if (oddSet.count(num)) {
+                oddSet.erase(num);
+            } else {
+                oddSet.insert(num);
+            }
+        }
+
+        return oddSet.empty();
+    }
+};
+```
+
+```javascript
+class Solution {
+    /**
+     * @param {number[]} nums
+     * @return {boolean}
+     */
+    divideArray(nums) {
+        const oddSet = new Set();
+
+        for (let num of nums) {
+            if (oddSet.has(num)) {
+                oddSet.delete(num);
+            } else {
+                oddSet.add(num);
+            }
+        }
+
+        return oddSet.size === 0;
+    }
+}
+```
+
+```csharp
+public class Solution {
+    public bool DivideArray(int[] nums) {
+        HashSet<int> oddSet = new HashSet<int>();
+
+        foreach (int num in nums) {
+            if (oddSet.Contains(num)) {
+                oddSet.Remove(num);
+            } else {
+                oddSet.Add(num);
+            }
+        }
+
+        return oddSet.Count == 0;
+    }
+}
+```
+
+```go
+func divideArray(nums []int) bool {
+    oddSet := make(map[int]bool)
+
+    for _, num := range nums {
+        if oddSet[num] {
+            delete(oddSet, num)
+        } else {
+            oddSet[num] = true
+        }
+    }
+
+    return len(oddSet) == 0
+}
+```
+
+```kotlin
+class Solution {
+    fun divideArray(nums: IntArray): Boolean {
+        val oddSet = HashSet<Int>()
+
+        for (num in nums) {
+            if (num in oddSet) {
+                oddSet.remove(num)
+            } else {
+                oddSet.add(num)
+            }
+        }
+
+        return oddSet.isEmpty()
+    }
+}
+```
+
+```swift
+class Solution {
+    func divideArray(_ nums: [Int]) -> Bool {
+        var oddSet = Set<Int>()
+
+        for num in nums {
+            if oddSet.contains(num) {
+                oddSet.remove(num)
+            } else {
+                oddSet.insert(num)
+            }
+        }
+
+        return oddSet.isEmpty
+    }
+}
+```
+
+```rust
+impl Solution {
+    pub fn divide_array(nums: Vec<i32>) -> bool {
+        let mut odd_set = HashSet::new();
+
+        for &num in &nums {
+            if !odd_set.remove(&num) {
+                odd_set.insert(num);
+            }
+        }
+
+        odd_set.is_empty()
+    }
+}
+```
+
+::tabs-end
+
+### Time & Space Complexity
+
+- Time complexity: $O(n)$
+- Space complexity: $O(n)$
+
+---
+
+## Common Pitfalls
+
+### Checking for Pairs Instead of Even Counts
+
+A common mistake is trying to actually form pairs and check if adjacent elements match after sorting. The problem only requires checking if each element appears an even number of times, not that the pairs are adjacent.
+
+```python
+# Wrong: Checking adjacent pairs after sorting
+nums.sort()
+for i in range(0, len(nums), 2):
+    if nums[i] != nums[i + 1]:  # IndexError if odd length
+        return False
+
+# Correct: Just check if each count is even
+for cnt in count.values():
+    if cnt % 2 == 1:
+        return False
+```
+
+### Forgetting the Array Length is Always Even
+
+The problem guarantees that `nums` has `2n` elements. Some solutions add unnecessary checks for odd-length arrays or forget that the total count of elements is always even, which simplifies the problem to just checking individual element frequencies.

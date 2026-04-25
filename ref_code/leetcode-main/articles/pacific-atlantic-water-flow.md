@@ -1,0 +1,1522 @@
+## Prerequisites
+
+Before attempting this problem, you should be comfortable with:
+
+- **Depth First Search (DFS)** - Recursive traversal to explore connected components and paths in grids
+- **Breadth First Search (BFS)** - Level-by-level traversal as an alternative approach for grid exploration
+- **2D Matrix/Grid Traversal** - Moving in four directions and tracking visited cells
+- **Multi-source Search** - Starting BFS/DFS from multiple boundary cells simultaneously
+
+---
+
+## 1. Brute Force (Backtracking)
+
+### Intuition
+
+For each cell, we try to see **where water can flow** if it starts there.
+
+Rule: water can flow from a cell to a neighbor only if the neighbor’s height is **<= current height** (downhill or flat).
+
+So for every (r, c):
+
+- Run DFS exploring all paths that keep going to **same or lower** heights.
+- If during DFS we ever step **out of the grid**:
+    - Out of **top/left** boundary ⇒ it can reach the **Pacific**.
+    - Out of **bottom/right** boundary ⇒ it can reach the **Atlantic**.
+- If both oceans are reachable, include (r, c) in the answer.
+
+To avoid infinite loops, we temporarily mark the current cell as **visited** (here by setting it to `inf`) while exploring, then restore it after backtracking.
+
+### Algorithm
+
+1. For each cell `(r, c)`:
+    - Set `pacific = false`, `atlantic = false`.
+    - `DFS(r, c, prevVal = +∞)`.
+2. `DFS(r, c, prevVal)`:
+    - If `r < 0` or `c < 0`: set `pacific = true`, return.
+    - If `r == ROWS` or `c == COLS`: set `atlantic = true`, return.
+    - If `heights[r][c] > prevVal`: return (can't flow uphill).
+    - Mark cell as visited (temporary), explore 4 neighbors with `prevVal = currentHeight`.
+    - If both oceans found, you can stop early.
+    - Restore the cell value (backtrack).
+3. If after `DFS` both flags are `true`, add `(r, c)` to result.
+4. Return result list.
+
+::tabs-start
+
+```python
+class Solution:
+    def pacificAtlantic(self, heights: List[List[int]]) -> List[List[int]]:
+        ROWS, COLS = len(heights), len(heights[0])
+        directions = [(1, 0), (-1, 0), (0, 1), (0, -1)]
+
+        pacific = atlantic = False
+
+        def dfs(r, c, prevVal):
+            nonlocal pacific, atlantic
+            if r < 0 or c < 0:
+                pacific = True
+                return
+            if r >= ROWS or c >= COLS:
+                atlantic = True
+                return
+            if heights[r][c] > prevVal:
+                return
+
+            tmp = heights[r][c]
+            heights[r][c] = float('inf')
+            for dx, dy in directions:
+                dfs(r + dx, c + dy, tmp)
+                if pacific and atlantic:
+                    break
+            heights[r][c] = tmp
+
+        res = []
+        for r in range(ROWS):
+            for c in range(COLS):
+                pacific = False
+                atlantic = False
+                dfs(r, c, float('inf'))
+                if pacific and atlantic:
+                    res.append([r, c])
+        return res
+```
+
+```java
+public class Solution {
+    int ROWS, COLS;
+    boolean pacific, atlantic;
+    int[][] directions = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
+
+    public List<List<Integer>> pacificAtlantic(int[][] heights) {
+        ROWS = heights.length;
+        COLS = heights[0].length;
+        List<List<Integer>> res = new ArrayList<>();
+
+        for (int r = 0; r < ROWS; r++) {
+            for (int c = 0; c < COLS; c++) {
+                pacific = false;
+                atlantic = false;
+                dfs(heights, r, c, Integer.MAX_VALUE);
+                if (pacific && atlantic) {
+                    res.add(Arrays.asList(r, c));
+                }
+            }
+        }
+        return res;
+    }
+
+    private void dfs(int[][] heights, int r, int c, int prevVal) {
+        if (r < 0 || c < 0) {
+            pacific = true;
+            return;
+        }
+        if (r >= ROWS || c >= COLS) {
+            atlantic = true;
+            return;
+        }
+        if (heights[r][c] > prevVal) {
+            return;
+        }
+
+        int tmp = heights[r][c];
+        heights[r][c] = Integer.MAX_VALUE;
+        for (int[] dir : directions) {
+            dfs(heights, r + dir[0], c + dir[1], tmp);
+            if (pacific && atlantic) {
+                break;
+            }
+        }
+        heights[r][c] = tmp;
+    }
+}
+```
+
+```cpp
+class Solution {
+public:
+    int ROWS, COLS;
+    bool pacific, atlantic;
+    vector<vector<int>> directions = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
+
+    vector<vector<int>> pacificAtlantic(vector<vector<int>>& heights) {
+        ROWS = heights.size();
+        COLS = heights[0].size();
+        vector<vector<int>> res;
+
+        for (int r = 0; r < ROWS; r++) {
+            for (int c = 0; c < COLS; c++) {
+                pacific = false;
+                atlantic = false;
+                dfs(heights, r, c, INT_MAX);
+                if (pacific && atlantic) {
+                    res.push_back({r, c});
+                }
+            }
+        }
+
+        return res;
+    }
+
+    void dfs(vector<vector<int>>& heights, int r, int c, int prevVal) {
+        if (r < 0 || c < 0) {
+            pacific = true;
+            return;
+        }
+        if (r >= ROWS || c >= COLS) {
+            atlantic = true;
+            return;
+        }
+        if (heights[r][c] > prevVal) {
+            return;
+        }
+
+        int tmp = heights[r][c];
+        heights[r][c] = INT_MAX;
+        for (auto& dir : directions) {
+            dfs(heights, r + dir[0], c + dir[1], tmp);
+            if (pacific && atlantic) {
+                break;
+            }
+        }
+        heights[r][c] = tmp;
+    }
+};
+```
+
+```javascript
+class Solution {
+    /**
+     * @param {number[][]} heights
+     * @return {number[][]}
+     */
+    pacificAtlantic(heights) {
+        let ROWS = heights.length,
+            COLS = heights[0].length;
+        let directions = [
+            [1, 0],
+            [-1, 0],
+            [0, 1],
+            [0, -1],
+        ];
+
+        let pacific = false,
+            atlantic = false;
+
+        const dfs = (r, c, prevVal) => {
+            if (r < 0 || c < 0) {
+                pacific = true;
+                return;
+            }
+            if (r >= ROWS || c >= COLS) {
+                atlantic = true;
+                return;
+            }
+            if (heights[r][c] > prevVal) {
+                return;
+            }
+
+            let tmp = heights[r][c];
+            heights[r][c] = Infinity;
+            for (let [dx, dy] of directions) {
+                dfs(r + dx, c + dy, tmp);
+                if (pacific && atlantic) {
+                    break;
+                }
+            }
+            heights[r][c] = tmp;
+        };
+
+        let res = [];
+        for (let r = 0; r < ROWS; r++) {
+            for (let c = 0; c < COLS; c++) {
+                pacific = false;
+                atlantic = false;
+                dfs(r, c, Infinity);
+                if (pacific && atlantic) {
+                    res.push([r, c]);
+                }
+            }
+        }
+
+        return res;
+    }
+}
+```
+
+```csharp
+public class Solution {
+    int ROWS, COLS;
+    bool pacific, atlantic;
+    int[][] directions = new int[][] {
+        new int[] {1, 0}, new int[] {-1, 0}, new int[] {0, 1}, new int[] {0, -1}
+    };
+
+    public List<List<int>> PacificAtlantic(int[][] heights) {
+        ROWS = heights.Length;
+        COLS = heights[0].Length;
+        List<List<int>> res = new List<List<int>>();
+
+        for (int r = 0; r < ROWS; r++) {
+            for (int c = 0; c < COLS; c++) {
+                pacific = false;
+                atlantic = false;
+                Dfs(heights, r, c, int.MaxValue);
+                if (pacific && atlantic) {
+                    res.Add(new List<int>{r, c});
+                }
+            }
+        }
+        return res;
+    }
+
+    private void Dfs(int[][] heights, int r, int c, int prevVal) {
+        if (r < 0 || c < 0) {
+            pacific = true;
+            return;
+        }
+        if (r >= ROWS || c >= COLS) {
+            atlantic = true;
+            return;
+        }
+        if (heights[r][c] > prevVal) {
+            return;
+        }
+
+        int tmp = heights[r][c];
+        heights[r][c] = int.MaxValue;
+        foreach (var dir in directions) {
+            Dfs(heights, r + dir[0], c + dir[1], tmp);
+            if (pacific && atlantic) {
+                break;
+            }
+        }
+        heights[r][c] = tmp;
+    }
+}
+```
+
+```go
+func pacificAtlantic(heights [][]int) [][]int {
+    rows, cols := len(heights), len(heights[0])
+    directions := [][]int{{1, 0}, {-1, 0}, {0, 1}, {0, -1}}
+    result := make([][]int, 0)
+
+    var pacific, atlantic bool
+
+    var dfs func(r, c int, prevVal int)
+    dfs = func(r, c int, prevVal int) {
+        if r < 0 || c < 0 {
+            pacific = true
+            return
+        }
+        if r >= rows || c >= cols {
+            atlantic = true
+            return
+        }
+        if heights[r][c] > prevVal {
+            return
+        }
+
+        tmp := heights[r][c]
+        heights[r][c] = int(^uint(0) >> 1)
+
+        for _, dir := range directions {
+            dfs(r + dir[0], c + dir[1], tmp)
+            if pacific && atlantic {
+                break
+            }
+        }
+        heights[r][c] = tmp
+    }
+
+    for r := 0; r < rows; r++ {
+        for c := 0; c < cols; c++ {
+            pacific = false
+            atlantic = false
+            dfs(r, c, int(^uint(0) >> 1))
+            if pacific && atlantic {
+                result = append(result, []int{r, c})
+            }
+        }
+    }
+
+    return result
+}
+```
+
+```kotlin
+class Solution {
+    private var pacific = false
+    private var atlantic = false
+    private val directions = arrayOf(
+        intArrayOf(1, 0),
+        intArrayOf(-1, 0),
+        intArrayOf(0, 1),
+        intArrayOf(0, -1)
+    )
+
+    fun pacificAtlantic(heights: Array<IntArray>): List<List<Int>> {
+        val rows = heights.size
+        val cols = heights[0].size
+        val result = mutableListOf<List<Int>>()
+
+        fun dfs(r: Int, c: Int, prevVal: Int) {
+            when {
+                r < 0 || c < 0 -> {
+                    pacific = true
+                    return
+                }
+                r >= rows || c >= cols -> {
+                    atlantic = true
+                    return
+                }
+                heights[r][c] > prevVal -> return
+            }
+
+            val tmp = heights[r][c]
+            heights[r][c] = Int.MAX_VALUE
+
+            for (dir in directions) {
+                dfs(r + dir[0], c + dir[1], tmp)
+                if (pacific && atlantic) break
+            }
+            heights[r][c] = tmp
+        }
+
+        for (r in 0 until rows) {
+            for (c in 0 until cols) {
+                pacific = false
+                atlantic = false
+                dfs(r, c, Int.MAX_VALUE)
+                if (pacific && atlantic) {
+                    result.add(listOf(r, c))
+                }
+            }
+        }
+
+        return result
+    }
+}
+```
+
+```swift
+class Solution {
+    func pacificAtlantic(_ heights: [[Int]]) -> [[Int]] {
+        var heights = heights
+        let ROWS = heights.count
+        let COLS = heights[0].count
+        let directions = [(1, 0), (-1, 0), (0, 1), (0, -1)]
+
+        var pacific = false
+        var atlantic = false
+
+        func dfs(_ r: Int, _ c: Int, _ prevVal: Int) {
+            if r < 0 || c < 0 {
+                pacific = true
+                return
+            }
+            if r >= ROWS || c >= COLS {
+                atlantic = true
+                return
+            }
+            if heights[r][c] > prevVal {
+                return
+            }
+
+            let tmp = heights[r][c]
+            heights[r][c] = Int.max
+            for dir in directions {
+                dfs(r + dir.0, c + dir.1, tmp)
+                if pacific && atlantic {
+                    break
+                }
+            }
+            heights[r][c] = tmp
+        }
+
+        var res = [[Int]]()
+        for r in 0..<ROWS {
+            for c in 0..<COLS {
+                pacific = false
+                atlantic = false
+                dfs(r, c, Int.max)
+                if pacific && atlantic {
+                    res.append([r, c])
+                }
+            }
+        }
+        return res
+    }
+}
+```
+
+```rust
+impl Solution {
+    pub fn pacific_atlantic(heights: Vec<Vec<i32>>) -> Vec<Vec<i32>> {
+        let rows = heights.len();
+        let cols = heights[0].len();
+        let directions = [(1i32, 0i32), (-1, 0), (0, 1), (0, -1)];
+        let mut heights = heights;
+        let mut res = vec![];
+
+        for r in 0..rows {
+            for c in 0..cols {
+                let mut pacific = false;
+                let mut atlantic = false;
+                Self::dfs_backtrack(
+                    &mut heights, r as i32, c as i32, i32::MAX,
+                    rows, cols, &directions, &mut pacific, &mut atlantic,
+                );
+                if pacific && atlantic {
+                    res.push(vec![r as i32, c as i32]);
+                }
+            }
+        }
+        res
+    }
+
+    fn dfs_backtrack(
+        heights: &mut Vec<Vec<i32>>, r: i32, c: i32, prev_val: i32,
+        rows: usize, cols: usize, directions: &[(i32, i32)],
+        pacific: &mut bool, atlantic: &mut bool,
+    ) {
+        if r < 0 || c < 0 {
+            *pacific = true;
+            return;
+        }
+        if r >= rows as i32 || c >= cols as i32 {
+            *atlantic = true;
+            return;
+        }
+        let (ru, cu) = (r as usize, c as usize);
+        if heights[ru][cu] > prev_val {
+            return;
+        }
+        let tmp = heights[ru][cu];
+        heights[ru][cu] = i32::MAX;
+        for &(dr, dc) in directions {
+            Self::dfs_backtrack(heights, r + dr, c + dc, tmp, rows, cols, directions, pacific, atlantic);
+            if *pacific && *atlantic {
+                break;
+            }
+        }
+        heights[ru][cu] = tmp;
+    }
+}
+```
+
+::tabs-end
+
+### Time & Space Complexity
+
+- Time complexity: $O(m * n * 4 ^ {m * n})$
+- Space complexity: $O(m * n)$
+
+> Where $m$ is the number of rows and $n$ is the number of columns.
+
+---
+
+## 2. Depth First Search
+
+### Intuition
+
+Instead of starting DFS from every cell (slow), we reverse the thinking:
+
+A cell can reach an ocean **if water can flow from that cell to the ocean** (downhill/flat).
+Reverse it: start from the **ocean borders** and move **uphill/flat** (to neighbors with height >= current).
+If you can climb from the ocean to a cell, then that cell can flow down to that ocean.
+
+So we do 2 DFS runs:
+
+- From all **Pacific border** cells (top row + left column) → mark all reachable cells in `pac`
+- From all **Atlantic border** cells (bottom row + right column) → mark all reachable cells in `atl`
+
+Answer = cells that are in **both** sets.
+
+### Algorithm
+
+1. Create two visited sets: `pac`, `atl`.
+2. `DFS` rule (reverse flow):
+    - From cell `(r, c)`, you may go to a neighbor `(nr, nc)` only if
+      `heights[nr][nc] >= heights[r][c]` (uphill or same).
+3. Run `DFS` from every Pacific border cell, fill `pac`.
+4. Run `DFS` from every Atlantic border cell, fill `atl`.
+5. For every cell in the grid, if it's in both `pac` and `atl`, add it to result.
+6. Return result.
+
+::tabs-start
+
+```python
+class Solution:
+    def pacificAtlantic(self, heights: List[List[int]]) -> List[List[int]]:
+        ROWS, COLS = len(heights), len(heights[0])
+        pac, atl = set(), set()
+
+        def dfs(r, c, visit, prevHeight):
+            if ((r, c) in visit or
+                r < 0 or c < 0 or
+                r == ROWS or c == COLS or
+                heights[r][c] < prevHeight
+            ):
+                return
+            visit.add((r, c))
+            dfs(r + 1, c, visit, heights[r][c])
+            dfs(r - 1, c, visit, heights[r][c])
+            dfs(r, c + 1, visit, heights[r][c])
+            dfs(r, c - 1, visit, heights[r][c])
+
+        for c in range(COLS):
+            dfs(0, c, pac, heights[0][c])
+            dfs(ROWS - 1, c, atl, heights[ROWS - 1][c])
+
+        for r in range(ROWS):
+            dfs(r, 0, pac, heights[r][0])
+            dfs(r, COLS - 1, atl, heights[r][COLS - 1])
+
+        res = []
+        for r in range(ROWS):
+            for c in range(COLS):
+                if (r, c) in pac and (r, c) in atl:
+                    res.append([r, c])
+        return res
+```
+
+```java
+public class Solution {
+    private int[][] directions = {{1, 0}, {-1, 0},
+                                  {0, 1}, {0, -1}};
+    public List<List<Integer>> pacificAtlantic(int[][] heights) {
+        int ROWS = heights.length, COLS = heights[0].length;
+        boolean[][] pac = new boolean[ROWS][COLS];
+        boolean[][] atl = new boolean[ROWS][COLS];
+
+        for (int c = 0; c < COLS; c++) {
+            dfs(0, c, pac, heights);
+            dfs(ROWS - 1, c, atl, heights);
+        }
+        for (int r = 0; r < ROWS; r++) {
+            dfs(r, 0, pac, heights);
+            dfs(r, COLS - 1, atl, heights);
+        }
+
+        List<List<Integer>> res = new ArrayList<>();
+        for (int r = 0; r < ROWS; r++) {
+            for (int c = 0; c < COLS; c++) {
+                if (pac[r][c] && atl[r][c]) {
+                    res.add(Arrays.asList(r, c));
+                }
+            }
+        }
+        return res;
+    }
+
+    private void dfs(int r, int c, boolean[][] ocean, int[][] heights) {
+        ocean[r][c] = true;
+        for (int[] d : directions) {
+            int nr = r + d[0], nc = c + d[1];
+            if (nr >= 0 && nr < heights.length &&
+                nc >= 0 && nc < heights[0].length &&
+                !ocean[nr][nc] && heights[nr][nc] >= heights[r][c]) {
+                dfs(nr, nc, ocean, heights);
+            }
+        }
+    }
+}
+```
+
+```cpp
+class Solution {
+    vector<pair<int, int>> directions = {{1, 0}, {-1, 0},
+                                         {0, 1}, {0, -1}};
+public:
+    vector<vector<int>> pacificAtlantic(vector<vector<int>>& heights) {
+        int ROWS = heights.size(), COLS = heights[0].size();
+        vector<vector<bool>> pac(ROWS, vector<bool>(COLS, false));
+        vector<vector<bool>> atl(ROWS, vector<bool>(COLS, false));
+
+        for (int c = 0; c < COLS; ++c) {
+            dfs(0, c, pac, heights);
+            dfs(ROWS - 1, c, atl, heights);
+        }
+        for (int r = 0; r < ROWS; ++r) {
+            dfs(r, 0, pac, heights);
+            dfs(r, COLS - 1, atl, heights);
+        }
+
+        vector<vector<int>> res;
+        for (int r = 0; r < ROWS; ++r) {
+            for (int c = 0; c < COLS; ++c) {
+                if (pac[r][c] && atl[r][c]) {
+                    res.push_back({r, c});
+                }
+            }
+        }
+        return res;
+    }
+
+private:
+    void dfs(int r, int c, vector<vector<bool>>& ocean, vector<vector<int>>& heights) {
+        ocean[r][c] = true;
+        for (auto [dr, dc] : directions) {
+            int nr = r + dr, nc = c + dc;
+            if (nr >= 0 && nr < heights.size() &&
+                nc >= 0 && nc < heights[0].size() &&
+                !ocean[nr][nc] && heights[nr][nc] >= heights[r][c]) {
+                dfs(nr, nc, ocean, heights);
+            }
+        }
+    }
+};
+```
+
+```javascript
+class Solution {
+    /**
+     * @param {number[][]} heights
+     * @return {number[][]}
+     */
+    pacificAtlantic(heights) {
+        let ROWS = heights.length,
+            COLS = heights[0].length;
+        let pac = Array.from({ length: ROWS }, () => Array(COLS).fill(false));
+        let atl = Array.from({ length: ROWS }, () => Array(COLS).fill(false));
+
+        const dfs = (r, c, ocean) => {
+            ocean[r][c] = true;
+            let directions = [
+                [1, 0],
+                [-1, 0],
+                [0, 1],
+                [0, -1],
+            ];
+            for (let [dr, dc] of directions) {
+                let nr = r + dr,
+                    nc = c + dc;
+                if (
+                    nr >= 0 &&
+                    nr < ROWS &&
+                    nc >= 0 &&
+                    nc < COLS &&
+                    !ocean[nr][nc] &&
+                    heights[nr][nc] >= heights[r][c]
+                ) {
+                    dfs(nr, nc, ocean);
+                }
+            }
+        };
+
+        for (let c = 0; c < COLS; c++) {
+            dfs(0, c, pac);
+            dfs(ROWS - 1, c, atl);
+        }
+        for (let r = 0; r < ROWS; r++) {
+            dfs(r, 0, pac);
+            dfs(r, COLS - 1, atl);
+        }
+
+        let res = [];
+        for (let r = 0; r < ROWS; r++) {
+            for (let c = 0; c < COLS; c++) {
+                if (pac[r][c] && atl[r][c]) {
+                    res.push([r, c]);
+                }
+            }
+        }
+        return res;
+    }
+}
+```
+
+```csharp
+public class Solution {
+    private int[][] directions = new int[][] {
+        new int[] { 1, 0 }, new int[] { -1, 0 },
+        new int[] { 0, 1 }, new int[] { 0, -1 }
+    };
+    public List<List<int>> PacificAtlantic(int[][] heights) {
+        int ROWS = heights.Length, COLS = heights[0].Length;
+        bool[,] pac = new bool[ROWS, COLS];
+        bool[,] atl = new bool[ROWS, COLS];
+
+        for (int c = 0; c < COLS; c++) {
+            Dfs(0, c, pac, heights);
+            Dfs(ROWS - 1, c, atl, heights);
+        }
+        for (int r = 0; r < ROWS; r++) {
+            Dfs(r, 0, pac, heights);
+            Dfs(r, COLS - 1, atl, heights);
+        }
+
+        List<List<int>> res = new List<List<int>>();
+        for (int r = 0; r < ROWS; r++) {
+            for (int c = 0; c < COLS; c++) {
+                if (pac[r, c] && atl[r, c]) {
+                    res.Add(new List<int> { r, c });
+                }
+            }
+        }
+        return res;
+    }
+
+    private void Dfs(int r, int c, bool[,] ocean, int[][] heights) {
+        ocean[r, c] = true;
+        foreach (var dir in directions) {
+            int nr = r + dir[0], nc = c + dir[1];
+            if (nr >= 0 && nr < heights.Length && nc >= 0 &&
+                nc < heights[0].Length && !ocean[nr, nc] &&
+                heights[nr][nc] >= heights[r][c]) {
+                Dfs(nr, nc, ocean, heights);
+            }
+        }
+    }
+}
+```
+
+```go
+func pacificAtlantic(heights [][]int) [][]int {
+    rows, cols := len(heights), len(heights[0])
+    pac := make(map[[2]int]bool)
+    atl := make(map[[2]int]bool)
+
+    var dfs func(r, c int, visit map[[2]int]bool, prevHeight int)
+    dfs = func(r, c int, visit map[[2]int]bool, prevHeight int) {
+        coord := [2]int{r, c}
+        if visit[coord] ||
+           r < 0 || c < 0 ||
+           r == rows || c == cols ||
+           heights[r][c] < prevHeight {
+            return
+        }
+
+        visit[coord] = true
+
+        dfs(r+1, c, visit, heights[r][c])
+        dfs(r-1, c, visit, heights[r][c])
+        dfs(r, c+1, visit, heights[r][c])
+        dfs(r, c-1, visit, heights[r][c])
+    }
+
+    for c := 0; c < cols; c++ {
+        dfs(0, c, pac, heights[0][c])
+        dfs(rows-1, c, atl, heights[rows-1][c])
+    }
+
+    for r := 0; r < rows; r++ {
+        dfs(r, 0, pac, heights[r][0])
+        dfs(r, cols-1, atl, heights[r][cols-1])
+    }
+
+    result := make([][]int, 0)
+    for r := 0; r < rows; r++ {
+        for c := 0; c < cols; c++ {
+            coord := [2]int{r, c}
+            if pac[coord] && atl[coord] {
+                result = append(result, []int{r, c})
+            }
+        }
+    }
+
+    return result
+}
+```
+
+```kotlin
+class Solution {
+    fun pacificAtlantic(heights: Array<IntArray>): List<List<Int>> {
+        val rows = heights.size
+        val cols = heights[0].size
+        val pac = HashSet<Pair<Int, Int>>()
+        val atl = HashSet<Pair<Int, Int>>()
+
+        fun dfs(r: Int, c: Int, visit: HashSet<Pair<Int, Int>>, prevHeight: Int) {
+            val coord = r to c
+            if (coord in visit ||
+                r < 0 || c < 0 ||
+                r == rows || c == cols ||
+                heights[r][c] < prevHeight
+            ) {
+                return
+            }
+
+            visit.add(coord)
+
+            dfs(r + 1, c, visit, heights[r][c])
+            dfs(r - 1, c, visit, heights[r][c])
+            dfs(r, c + 1, visit, heights[r][c])
+            dfs(r, c - 1, visit, heights[r][c])
+        }
+
+        for (c in 0 until cols) {
+            dfs(0, c, pac, heights[0][c])
+            dfs(rows - 1, c, atl, heights[rows - 1][c])
+        }
+
+        for (r in 0 until rows) {
+            dfs(r, 0, pac, heights[r][0])
+            dfs(r, cols - 1, atl, heights[r][cols - 1])
+        }
+
+        return (0 until rows).flatMap { r ->
+            (0 until cols).mapNotNull { c ->
+                if ((r to c) in pac && (r to c) in atl) {
+                    listOf(r, c)
+                } else null
+            }
+        }
+    }
+}
+```
+
+```swift
+class Solution {
+    func pacificAtlantic(_ heights: [[Int]]) -> [[Int]] {
+        let ROWS = heights.count
+        let COLS = heights[0].count
+        var pac = Set<[Int]>()
+        var atl = Set<[Int]>()
+
+        func dfs(_ r: Int, _ c: Int, _ visit: inout Set<[Int]>, _ prevHeight: Int) {
+            if (visit.contains([r, c]) || r < 0 || c < 0 || r == ROWS ||
+                c == COLS || heights[r][c] < prevHeight) {
+                return
+            }
+            visit.insert([r, c])
+            dfs(r + 1, c, &visit, heights[r][c])
+            dfs(r - 1, c, &visit, heights[r][c])
+            dfs(r, c + 1, &visit, heights[r][c])
+            dfs(r, c - 1, &visit, heights[r][c])
+        }
+
+        for c in 0..<COLS {
+            dfs(0, c, &pac, heights[0][c])
+            dfs(ROWS - 1, c, &atl, heights[ROWS - 1][c])
+        }
+
+        for r in 0..<ROWS {
+            dfs(r, 0, &pac, heights[r][0])
+            dfs(r, COLS - 1, &atl, heights[r][COLS - 1])
+        }
+
+        var res = [[Int]]()
+        for r in 0..<ROWS {
+            for c in 0..<COLS {
+                if pac.contains([r, c]) && atl.contains([r, c]) {
+                    res.append([r, c])
+                }
+            }
+        }
+        return res
+    }
+}
+```
+
+```rust
+impl Solution {
+    pub fn pacific_atlantic(heights: Vec<Vec<i32>>) -> Vec<Vec<i32>> {
+        let rows = heights.len();
+        let cols = heights[0].len();
+        let mut pac = vec![vec![false; cols]; rows];
+        let mut atl = vec![vec![false; cols]; rows];
+
+        fn dfs(r: usize, c: usize, ocean: &mut Vec<Vec<bool>>, heights: &Vec<Vec<i32>>,
+               rows: usize, cols: usize) {
+            ocean[r][c] = true;
+            let directions: [(i32, i32); 4] = [(1, 0), (-1, 0), (0, 1), (0, -1)];
+            for (dr, dc) in directions {
+                let nr = r as i32 + dr;
+                let nc = c as i32 + dc;
+                if nr >= 0 && nr < rows as i32 && nc >= 0 && nc < cols as i32 {
+                    let (nr, nc) = (nr as usize, nc as usize);
+                    if !ocean[nr][nc] && heights[nr][nc] >= heights[r][c] {
+                        dfs(nr, nc, ocean, heights, rows, cols);
+                    }
+                }
+            }
+        }
+
+        for c in 0..cols {
+            dfs(0, c, &mut pac, &heights, rows, cols);
+            dfs(rows - 1, c, &mut atl, &heights, rows, cols);
+        }
+        for r in 0..rows {
+            dfs(r, 0, &mut pac, &heights, rows, cols);
+            dfs(r, cols - 1, &mut atl, &heights, rows, cols);
+        }
+
+        let mut res = vec![];
+        for r in 0..rows {
+            for c in 0..cols {
+                if pac[r][c] && atl[r][c] {
+                    res.push(vec![r as i32, c as i32]);
+                }
+            }
+        }
+        res
+    }
+}
+```
+
+::tabs-end
+
+### Time & Space Complexity
+
+- Time complexity: $O(m * n)$
+- Space complexity: $O(m * n)$
+
+> Where $m$ is the number of rows and $n$ is the number of columns.
+
+---
+
+## 3. Breadth First Search
+
+### Intuition
+
+Do the same “reverse flow” idea, but with BFS.
+
+A cell can flow to an ocean if you can start from the ocean border and move _backwards_ into the grid using the rule:
+
+- from (r, c) you can go to neighbor (nr, nc) if `heights[nr][nc] >= heights[r][c]`
+  (because in the real direction water would flow from higher/equal down to (r, c)).
+
+So:
+
+- Multi-source BFS from all Pacific border cells marks `pac[r][c] = True`
+- Multi-source BFS from all Atlantic border cells marks `atl[r][c] = True`
+  Cells that are `True` in both are the answer.
+
+### Algorithm
+
+1. Create two boolean grids `pac` and `atl` (same size as `heights`), all `false`.
+2. Build two source lists:
+    - `pacificSources`: all cells on top row + left column
+    - `atlanticSources`: all cells on bottom row + right column
+3. Run `BFS(sources, oceanGrid)`:
+    - Initialize queue with all sources.
+    - While queue not empty:
+        - pop `(r, c)`, mark `oceanGrid[r][c] = true`
+        - for each neighbor `(nr, nc)` in 4 directions:
+            - if inside grid AND not visited in `oceanGrid` AND `heights[nr][nc] >= heights[r][c]`,
+              push `(nr, nc)` into queue.
+4. Run `BFS` for Pacific → fill `pac`.
+5. Run `BFS` for Atlantic → fill `atl`.
+6. Iterate all cells; if `pac[r][c]` and `atl[r][c]` are both `true`, add `[r, c]` to result.
+7. Return result.
+
+::tabs-start
+
+```python
+class Solution:
+    def pacificAtlantic(self, heights: List[List[int]]) -> List[List[int]]:
+        ROWS, COLS = len(heights), len(heights[0])
+        directions = [(1, 0), (-1, 0), (0, 1), (0, -1)]
+        pac = [[False] * COLS for _ in range(ROWS)]
+        atl = [[False] * COLS for _ in range(ROWS)]
+
+        def bfs(source, ocean):
+            q = deque(source)
+            while q:
+                r, c = q.popleft()
+                ocean[r][c] = True
+                for dr, dc in directions:
+                    nr, nc = r + dr, c + dc
+                    if (0 <= nr < ROWS and 0 <= nc < COLS and
+                        not ocean[nr][nc] and
+                        heights[nr][nc] >= heights[r][c]
+                    ):
+                        q.append((nr, nc))
+
+        pacific = []
+        atlantic = []
+        for c in range(COLS):
+            pacific.append((0, c))
+            atlantic.append((ROWS - 1, c))
+
+        for r in range(ROWS):
+            pacific.append((r, 0))
+            atlantic.append((r, COLS - 1))
+
+        bfs(pacific, pac)
+        bfs(atlantic, atl)
+
+        res = []
+        for r in range(ROWS):
+            for c in range(COLS):
+                if pac[r][c] and atl[r][c]:
+                    res.append([r, c])
+        return res
+```
+
+```java
+public class Solution {
+    private int[][] directions = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
+    public List<List<Integer>> pacificAtlantic(int[][] heights) {
+        int ROWS = heights.length, COLS = heights[0].length;
+        boolean[][] pac = new boolean[ROWS][COLS];
+        boolean[][] atl = new boolean[ROWS][COLS];
+
+        Queue<int[]> pacQueue = new LinkedList<>();
+        Queue<int[]> atlQueue = new LinkedList<>();
+
+        for (int c = 0; c < COLS; c++) {
+            pacQueue.add(new int[]{0, c});
+            atlQueue.add(new int[]{ROWS - 1, c});
+        }
+        for (int r = 0; r < ROWS; r++) {
+            pacQueue.add(new int[]{r, 0});
+            atlQueue.add(new int[]{r, COLS - 1});
+        }
+
+        bfs(pacQueue, pac, heights);
+        bfs(atlQueue, atl, heights);
+
+        List<List<Integer>> res = new ArrayList<>();
+        for (int r = 0; r < ROWS; r++) {
+            for (int c = 0; c < COLS; c++) {
+                if (pac[r][c] && atl[r][c]) {
+                    res.add(Arrays.asList(r, c));
+                }
+            }
+        }
+        return res;
+    }
+
+    private void bfs(Queue<int[]> q, boolean[][] ocean, int[][] heights) {
+        while (!q.isEmpty()) {
+            int[] cur = q.poll();
+            int r = cur[0], c = cur[1];
+            ocean[r][c] = true;
+            for (int[] d : directions) {
+                int nr = r + d[0], nc = c + d[1];
+                if (nr >= 0 && nr < heights.length && nc >= 0 &&
+                    nc < heights[0].length && !ocean[nr][nc] &&
+                    heights[nr][nc] >= heights[r][c]) {
+                    q.add(new int[]{nr, nc});
+                }
+            }
+        }
+    }
+}
+```
+
+```cpp
+class Solution {
+    vector<pair<int, int>> directions = {{1, 0}, {-1, 0},
+                                         {0, 1}, {0, -1}};
+public:
+    vector<vector<int>> pacificAtlantic(vector<vector<int>>& heights) {
+        int ROWS = heights.size(), COLS = heights[0].size();
+        vector<vector<bool>> pac(ROWS, vector<bool>(COLS, false));
+        vector<vector<bool>> atl(ROWS, vector<bool>(COLS, false));
+
+        queue<pair<int, int>> pacQueue, atlQueue;
+
+        for (int c = 0; c < COLS; ++c) {
+            pacQueue.push({0, c});
+            atlQueue.push({ROWS - 1, c});
+        }
+        for (int r = 0; r < ROWS; ++r) {
+            pacQueue.push({r, 0});
+            atlQueue.push({r, COLS - 1});
+        }
+
+        bfs(pacQueue, pac, heights);
+        bfs(atlQueue, atl, heights);
+
+        vector<vector<int>> res;
+        for (int r = 0; r < ROWS; ++r) {
+            for (int c = 0; c < COLS; ++c) {
+                if (pac[r][c] && atl[r][c]) {
+                    res.push_back({r, c});
+                }
+            }
+        }
+        return res;
+    }
+
+private:
+    void bfs(queue<pair<int, int>>& q, vector<vector<bool>>& ocean,
+                                        vector<vector<int>>& heights) {
+        while (!q.empty()) {
+            auto [r, c] = q.front(); q.pop();
+            ocean[r][c] = true;
+            for (auto [dr, dc] : directions) {
+                int nr = r + dr, nc = c + dc;
+                if (nr >= 0 && nr < heights.size() && nc >= 0 &&
+                    nc < heights[0].size() && !ocean[nr][nc] &&
+                    heights[nr][nc] >= heights[r][c]) {
+                    q.push({nr, nc});
+                }
+            }
+        }
+    }
+};
+```
+
+```javascript
+class Solution {
+    /**
+     * @param {number[][]} heights
+     * @return {number[][]}
+     */
+    pacificAtlantic(heights) {
+        let ROWS = heights.length,
+            COLS = heights[0].length;
+        let directions = [
+            [1, 0],
+            [-1, 0],
+            [0, 1],
+            [0, -1],
+        ];
+        let pac = Array.from({ length: ROWS }, () => Array(COLS).fill(false));
+        let atl = Array.from({ length: ROWS }, () => Array(COLS).fill(false));
+
+        let pacQueue = new Queue();
+        let atlQueue = new Queue();
+        for (let c = 0; c < COLS; c++) {
+            pacQueue.push([0, c]);
+            atlQueue.push([ROWS - 1, c]);
+        }
+        for (let r = 0; r < ROWS; r++) {
+            pacQueue.push([r, 0]);
+            atlQueue.push([r, COLS - 1]);
+        }
+
+        const bfs = (queue, ocean, heights) => {
+            while (!queue.isEmpty()) {
+                let [r, c] = queue.pop();
+                ocean[r][c] = true;
+                for (let [dr, dc] of directions) {
+                    let nr = r + dr,
+                        nc = c + dc;
+                    if (
+                        nr >= 0 &&
+                        nr < ROWS &&
+                        nc >= 0 &&
+                        nc < COLS &&
+                        !ocean[nr][nc] &&
+                        heights[nr][nc] >= heights[r][c]
+                    ) {
+                        queue.push([nr, nc]);
+                    }
+                }
+            }
+        };
+        bfs(pacQueue, pac, heights);
+        bfs(atlQueue, atl, heights);
+
+        let res = [];
+        for (let r = 0; r < ROWS; r++) {
+            for (let c = 0; c < COLS; c++) {
+                if (pac[r][c] && atl[r][c]) {
+                    res.push([r, c]);
+                }
+            }
+        }
+        return res;
+    }
+}
+```
+
+```csharp
+public class Solution {
+    private int[][] directions = new int[][] {
+        new int[] { 1, 0 }, new int[] { -1, 0 },
+        new int[] { 0, 1 }, new int[] { 0, -1 }
+    };
+    public List<List<int>> PacificAtlantic(int[][] heights) {
+        int ROWS = heights.Length, COLS = heights[0].Length;
+        bool[,] pac = new bool[ROWS, COLS];
+        bool[,] atl = new bool[ROWS, COLS];
+
+        Queue<int[]> pacQueue = new Queue<int[]>();
+        Queue<int[]> atlQueue = new Queue<int[]>();
+
+        for (int c = 0; c < COLS; c++) {
+            pacQueue.Enqueue(new int[] { 0, c });
+            atlQueue.Enqueue(new int[] { ROWS - 1, c });
+        }
+        for (int r = 0; r < ROWS; r++) {
+            pacQueue.Enqueue(new int[] { r, 0 });
+            atlQueue.Enqueue(new int[] { r, COLS - 1 });
+        }
+
+        Bfs(pacQueue, pac, heights);
+        Bfs(atlQueue, atl, heights);
+
+        List<List<int>> res = new List<List<int>>();
+        for (int r = 0; r < ROWS; r++) {
+            for (int c = 0; c < COLS; c++) {
+                if (pac[r, c] && atl[r, c]) {
+                    res.Add(new List<int> { r, c });
+                }
+            }
+        }
+        return res;
+    }
+
+    private void Bfs(Queue<int[]> q, bool[,] ocean, int[][] heights) {
+        while (q.Count > 0) {
+            int[] cur = q.Dequeue();
+            int r = cur[0], c = cur[1];
+            ocean[r, c] = true;
+            foreach (var dir in directions) {
+                int nr = r + dir[0], nc = c + dir[1];
+                if (nr >= 0 && nr < heights.Length && nc >= 0 &&
+                    nc < heights[0].Length && !ocean[nr, nc] &&
+                    heights[nr][nc] >= heights[r][c]) {
+                    q.Enqueue(new int[] { nr, nc });
+                }
+            }
+        }
+    }
+}
+```
+
+```go
+func pacificAtlantic(heights [][]int) [][]int {
+    rows, cols := len(heights), len(heights[0])
+    directions := [][]int{{1, 0}, {-1, 0}, {0, 1}, {0, -1}}
+
+    pac := make([][]bool, rows)
+    atl := make([][]bool, rows)
+    for i := range pac {
+        pac[i] = make([]bool, cols)
+        atl[i] = make([]bool, cols)
+    }
+
+    bfs := func(source [][2]int, ocean [][]bool) {
+        q := list.New()
+        for _, s := range source {
+            q.PushBack(s)
+        }
+        for q.Len() > 0 {
+            element := q.Front()
+            q.Remove(element)
+            r, c := element.Value.([2]int)[0], element.Value.([2]int)[1]
+            ocean[r][c] = true
+            for _, dir := range directions {
+                nr, nc := r+dir[0], c+dir[1]
+                if nr >= 0 && nr < rows && nc >= 0 && nc < cols &&
+                    !ocean[nr][nc] && heights[nr][nc] >= heights[r][c] {
+                    q.PushBack([2]int{nr, nc})
+                }
+            }
+        }
+    }
+
+    pacific := [][2]int{}
+    atlantic := [][2]int{}
+    for c := 0; c < cols; c++ {
+        pacific = append(pacific, [2]int{0, c})
+        atlantic = append(atlantic, [2]int{rows - 1, c})
+    }
+    for r := 0; r < rows; r++ {
+        pacific = append(pacific, [2]int{r, 0})
+        atlantic = append(atlantic, [2]int{r, cols - 1})
+    }
+
+    bfs(pacific, pac)
+    bfs(atlantic, atl)
+
+    res := [][]int{}
+    for r := 0; r < rows; r++ {
+        for c := 0; c < cols; c++ {
+            if pac[r][c] && atl[r][c] {
+                res = append(res, []int{r, c})
+            }
+        }
+    }
+    return res
+}
+```
+
+```kotlin
+class Solution {
+    fun pacificAtlantic(heights: Array<IntArray>): List<List<Int>> {
+        val rows = heights.size
+        val cols = heights[0].size
+        val directions = arrayOf(intArrayOf(1, 0),
+                                 intArrayOf(-1, 0),
+                                 intArrayOf(0, 1),
+                                 intArrayOf(0, -1))
+
+        val pac = Array(rows) { BooleanArray(cols) }
+        val atl = Array(rows) { BooleanArray(cols) }
+
+        fun bfs(source: List<IntArray>, ocean: Array<BooleanArray>) {
+            val q = LinkedList<IntArray>()
+            q.addAll(source)
+            while (q.isNotEmpty()) {
+                val (r, c) = q.poll()
+                ocean[r][c] = true
+                for (dir in directions) {
+                    val nr = r + dir[0]
+                    val nc = c + dir[1]
+                    if (nr in 0 until rows && nc in 0 until cols &&
+                        !ocean[nr][nc] && heights[nr][nc] >= heights[r][c]) {
+                        q.offer(intArrayOf(nr, nc))
+                    }
+                }
+            }
+        }
+
+        val pacific = mutableListOf<IntArray>()
+        val atlantic = mutableListOf<IntArray>()
+        for (c in 0 until cols) {
+            pacific.add(intArrayOf(0, c))
+            atlantic.add(intArrayOf(rows - 1, c))
+        }
+        for (r in 0 until rows) {
+            pacific.add(intArrayOf(r, 0))
+            atlantic.add(intArrayOf(r, cols - 1))
+        }
+
+        bfs(pacific, pac)
+        bfs(atlantic, atl)
+
+        val result = mutableListOf<List<Int>>()
+        for (r in 0 until rows) {
+            for (c in 0 until cols) {
+                if (pac[r][c] && atl[r][c]) {
+                    result.add(listOf(r, c))
+                }
+            }
+        }
+        return result
+    }
+}
+```
+
+```swift
+class Solution {
+    func pacificAtlantic(_ heights: [[Int]]) -> [[Int]] {
+        let ROWS = heights.count
+        let COLS = heights[0].count
+        let directions = [(1, 0), (-1, 0), (0, 1), (0, -1)]
+
+        var pac = Array(repeating: Array(repeating: false, count: COLS), count: ROWS)
+        var atl = Array(repeating: Array(repeating: false, count: COLS), count: ROWS)
+
+        func bfs(_ source: [(Int, Int)], _ ocean: inout [[Bool]]) {
+            var queue = Deque(source)
+            while !queue.isEmpty {
+                let (r, c) = queue.popFirst()!
+                ocean[r][c] = true
+                for dir in directions {
+                    let nr = r + dir.0
+                    let nc = c + dir.1
+                    if nr >= 0, nr < ROWS, nc >= 0, nc < COLS,
+                       !ocean[nr][nc], heights[nr][nc] >= heights[r][c] {
+                        queue.append((nr, nc))
+                    }
+                }
+            }
+        }
+
+        var pacific: [(Int, Int)] = []
+        var atlantic: [(Int, Int)] = []
+
+        for c in 0..<COLS {
+            pacific.append((0, c))
+            atlantic.append((ROWS - 1, c))
+        }
+
+        for r in 0..<ROWS {
+            pacific.append((r, 0))
+            atlantic.append((r, COLS - 1))
+        }
+
+        bfs(pacific, &pac)
+        bfs(atlantic, &atl)
+
+        var res = [[Int]]()
+        for r in 0..<ROWS {
+            for c in 0..<COLS {
+                if pac[r][c] && atl[r][c] {
+                    res.append([r, c])
+                }
+            }
+        }
+        return res
+    }
+}
+```
+
+```rust
+impl Solution {
+    pub fn pacific_atlantic(heights: Vec<Vec<i32>>) -> Vec<Vec<i32>> {
+        let rows = heights.len();
+        let cols = heights[0].len();
+        let directions = [(1i32, 0i32), (-1, 0), (0, 1), (0, -1)];
+        let mut pac = vec![vec![false; cols]; rows];
+        let mut atl = vec![vec![false; cols]; rows];
+
+        let mut bfs = |source: Vec<(usize, usize)>, ocean: &mut Vec<Vec<bool>>| {
+            let mut queue: VecDeque<(usize, usize)> = source.into_iter().collect();
+            while let Some((r, c)) = queue.pop_front() {
+                ocean[r][c] = true;
+                for &(dr, dc) in &directions {
+                    let nr = r as i32 + dr;
+                    let nc = c as i32 + dc;
+                    if nr >= 0 && nr < rows as i32 && nc >= 0 && nc < cols as i32 {
+                        let (nr, nc) = (nr as usize, nc as usize);
+                        if !ocean[nr][nc] && heights[nr][nc] >= heights[r][c] {
+                            queue.push_back((nr, nc));
+                        }
+                    }
+                }
+            }
+        };
+
+        let mut pacific = vec![];
+        let mut atlantic = vec![];
+        for c in 0..cols {
+            pacific.push((0, c));
+            atlantic.push((rows - 1, c));
+        }
+        for r in 0..rows {
+            pacific.push((r, 0));
+            atlantic.push((r, cols - 1));
+        }
+
+        bfs(pacific, &mut pac);
+        bfs(atlantic, &mut atl);
+
+        let mut res = vec![];
+        for r in 0..rows {
+            for c in 0..cols {
+                if pac[r][c] && atl[r][c] {
+                    res.push(vec![r as i32, c as i32]);
+                }
+            }
+        }
+        res
+    }
+}
+```
+
+::tabs-end
+
+### Time & Space Complexity
+
+- Time complexity: $O(m * n)$
+- Space complexity: $O(m * n)$
+
+> Where $m$ is the number of rows and $n$ is the number of columns.
+
+---
+
+## Common Pitfalls
+
+### Using the Wrong Flow Direction Comparison
+
+When starting from ocean borders and moving inward, the comparison must check if the neighbor height is greater than or equal to the current height (water flows uphill in reverse). Using the normal downhill comparison (`neighbor <= current`) gives incorrect reachability since the logic is reversed.
+
+### Running Separate DFS/BFS for Each Cell
+
+A brute force approach that runs a full traversal from every cell to check ocean reachability leads to O((m\*n)^2) time complexity or worse. The efficient approach is to run only two traversals total: one multi-source search from all Pacific border cells and one from all Atlantic border cells.
+
+### Not Properly Handling Edge and Corner Cells
+
+Edge cells border one ocean while corner cells border both oceans. A common bug is forgetting that cells on the top row and left column touch the Pacific, while cells on the bottom row and right column touch the Atlantic. Missing any border initialization causes incomplete reachability sets.

@@ -1,0 +1,1688 @@
+## Prerequisites
+
+Before attempting this problem, you should be comfortable with:
+
+- **Graph Traversal (DFS/BFS)** - Exploring connected components in a 2D grid using depth-first or breadth-first search
+- **Flood Fill Algorithm** - Marking all connected cells starting from a given position
+- **Union-Find (Disjoint Set Union)** - Alternative approach using DSU to group connected components and check connectivity
+
+---
+
+## 1. Depth First Search
+
+### Intuition
+
+Only the **'O' regions that touch the border** can never be surrounded, because they have a path to the outside of the board.  
+So instead of trying to find surrounded regions directly, we do the opposite:
+
+1. **Mark all border-connected 'O' cells as “safe”** (temporary mark `'T'`).
+2. Any remaining `'O'` is truly surrounded → flip it to `'X'`.
+3. Convert the temporary `'T'` back to `'O'`.
+
+### Algorithm
+
+1. Let `ROWS` and `COLS` be board dimensions.
+2. Define `capture(r, c)` (`dfs`):
+    - If out of bounds or cell is not `'O'`, return.
+    - Mark cell as `'T'`.
+    - `dfs` to its 4 neighbors (up, down, left, right).
+3. Run `capture` from every border cell that is `'O'`:
+    - All cells in first/last column.
+    - All cells in first/last row.
+4. Scan entire board:
+    - If cell is `'O'`, it's surrounded → change to `'X'`.
+    - If cell is `'T'`, it's safe → change back to `'O'`.
+
+::tabs-start
+
+```python
+class Solution:
+    def solve(self, board: List[List[str]]) -> None:
+        ROWS, COLS = len(board), len(board[0])
+
+        def capture(r, c):
+            if (r < 0 or c < 0 or r == ROWS or
+                c == COLS or board[r][c] != "O"
+            ):
+                return
+            board[r][c] = "T"
+            capture(r + 1, c)
+            capture(r - 1, c)
+            capture(r, c + 1)
+            capture(r, c - 1)
+
+        for r in range(ROWS):
+            if board[r][0] == "O":
+                capture(r, 0)
+            if board[r][COLS - 1] == "O":
+                capture(r, COLS - 1)
+
+        for c in range(COLS):
+            if board[0][c] == "O":
+                capture(0, c)
+            if board[ROWS - 1][c] == "O":
+                capture(ROWS - 1, c)
+
+        for r in range(ROWS):
+            for c in range(COLS):
+                if board[r][c] == "O":
+                    board[r][c] = "X"
+                elif board[r][c] == "T":
+                    board[r][c] = "O"
+```
+
+```java
+public class Solution {
+    private int ROWS, COLS;
+
+    public void solve(char[][] board) {
+        ROWS = board.length;
+        COLS = board[0].length;
+
+        for (int r = 0; r < ROWS; r++) {
+            if (board[r][0] == 'O') {
+                capture(board, r, 0);
+            }
+            if (board[r][COLS - 1] == 'O') {
+                capture(board, r, COLS - 1);
+            }
+        }
+
+        for (int c = 0; c < COLS; c++) {
+            if (board[0][c] == 'O') {
+                capture(board, 0, c);
+            }
+            if (board[ROWS - 1][c] == 'O') {
+                capture(board, ROWS - 1, c);
+            }
+        }
+
+        for (int r = 0; r < ROWS; r++) {
+            for (int c = 0; c < COLS; c++) {
+                if (board[r][c] == 'O') {
+                    board[r][c] = 'X';
+                } else if (board[r][c] == 'T') {
+                    board[r][c] = 'O';
+                }
+            }
+        }
+    }
+
+    private void capture(char[][] board, int r, int c) {
+        if (r < 0 || c < 0 || r >= ROWS ||
+            c >= COLS || board[r][c] != 'O') {
+            return;
+        }
+        board[r][c] = 'T';
+        capture(board, r + 1, c);
+        capture(board, r - 1, c);
+        capture(board, r, c + 1);
+        capture(board, r, c - 1);
+    }
+}
+```
+
+```cpp
+class Solution {
+    int ROWS, COLS;
+
+public:
+    void solve(vector<vector<char>>& board) {
+        ROWS = board.size();
+        COLS = board[0].size();
+
+        for (int r = 0; r < ROWS; r++) {
+            if (board[r][0] == 'O') {
+                capture(board, r, 0);
+            }
+            if (board[r][COLS - 1] == 'O') {
+                capture(board, r, COLS - 1);
+            }
+        }
+
+        for (int c = 0; c < COLS; c++) {
+            if (board[0][c] == 'O') {
+                capture(board, 0, c);
+            }
+            if (board[ROWS - 1][c] == 'O') {
+                capture(board, ROWS - 1, c);
+            }
+        }
+
+        for (int r = 0; r < ROWS; r++) {
+            for (int c = 0; c < COLS; c++) {
+                if (board[r][c] == 'O') {
+                    board[r][c] = 'X';
+                } else if (board[r][c] == 'T') {
+                    board[r][c] = 'O';
+                }
+            }
+        }
+    }
+
+private:
+    void capture(vector<vector<char>>& board, int r, int c) {
+        if (r < 0 || c < 0 || r >= ROWS ||
+            c >= COLS || board[r][c] != 'O') {
+            return;
+        }
+        board[r][c] = 'T';
+        capture(board, r + 1, c);
+        capture(board, r - 1, c);
+        capture(board, r, c + 1);
+        capture(board, r, c - 1);
+    }
+};
+```
+
+```javascript
+class Solution {
+    /**
+     * @param {character[][]} board
+     * @return {void} Do not return anything, modify board in-place instead.
+     */
+    solve(board) {
+        let ROWS = board.length,
+            COLS = board[0].length;
+
+        const capture = (r, c) => {
+            if (
+                r < 0 ||
+                c < 0 ||
+                r == ROWS ||
+                c == COLS ||
+                board[r][c] !== 'O'
+            ) {
+                return;
+            }
+            board[r][c] = 'T';
+            capture(r + 1, c);
+            capture(r - 1, c);
+            capture(r, c + 1);
+            capture(r, c - 1);
+        };
+
+        for (let r = 0; r < ROWS; r++) {
+            if (board[r][0] === 'O') capture(r, 0);
+            if (board[r][COLS - 1] === 'O') capture(r, COLS - 1);
+        }
+
+        for (let c = 0; c < COLS; c++) {
+            if (board[0][c] === 'O') capture(0, c);
+            if (board[ROWS - 1][c] === 'O') capture(ROWS - 1, c);
+        }
+
+        for (let r = 0; r < ROWS; r++) {
+            for (let c = 0; c < COLS; c++) {
+                if (board[r][c] === 'O') board[r][c] = 'X';
+                else if (board[r][c] === 'T') board[r][c] = 'O';
+            }
+        }
+    }
+}
+```
+
+```csharp
+public class Solution {
+    private int ROWS, COLS;
+
+    public void Solve(char[][] board) {
+        ROWS = board.Length;
+        COLS = board[0].Length;
+
+        for (int r = 0; r < ROWS; r++) {
+            if (board[r][0] == 'O') {
+                Capture(board, r, 0);
+            }
+            if (board[r][COLS - 1] == 'O') {
+                Capture(board, r, COLS - 1);
+            }
+        }
+
+        for (int c = 0; c < COLS; c++) {
+            if (board[0][c] == 'O') {
+                Capture(board, 0, c);
+            }
+            if (board[ROWS - 1][c] == 'O') {
+                Capture(board, ROWS - 1, c);
+            }
+        }
+
+        for (int r = 0; r < ROWS; r++) {
+            for (int c = 0; c < COLS; c++) {
+                if (board[r][c] == 'O') {
+                    board[r][c] = 'X';
+                } else if (board[r][c] == 'T') {
+                    board[r][c] = 'O';
+                }
+            }
+        }
+    }
+
+    private void Capture(char[][] board, int r, int c) {
+        if (r < 0 || c < 0 || r == ROWS ||
+            c == COLS || board[r][c] != 'O') {
+            return;
+        }
+        board[r][c] = 'T';
+        Capture(board, r + 1, c);
+        Capture(board, r - 1, c);
+        Capture(board, r, c + 1);
+        Capture(board, r, c - 1);
+    }
+}
+```
+
+```go
+func solve(board [][]byte) {
+    rows, cols := len(board), len(board[0])
+
+    var capture func(r, c int)
+    capture = func(r, c int) {
+        if r < 0 || c < 0 || r == rows ||
+           c == cols || board[r][c] != 'O' {
+            return
+        }
+        board[r][c] = 'T'
+        capture(r+1, c)
+        capture(r-1, c)
+        capture(r, c+1)
+        capture(r, c-1)
+    }
+
+    for r := 0; r < rows; r++ {
+        if board[r][0] == 'O' {
+            capture(r, 0)
+        }
+        if board[r][cols-1] == 'O' {
+            capture(r, cols-1)
+        }
+    }
+
+    for c := 0; c < cols; c++ {
+        if board[0][c] == 'O' {
+            capture(0, c)
+        }
+        if board[rows-1][c] == 'O' {
+            capture(rows-1, c)
+        }
+    }
+
+    for r := 0; r < rows; r++ {
+        for c := 0; c < cols; c++ {
+            if board[r][c] == 'O' {
+                board[r][c] = 'X'
+            } else if board[r][c] == 'T' {
+                board[r][c] = 'O'
+            }
+        }
+    }
+}
+```
+
+```kotlin
+class Solution {
+    fun solve(board: Array<CharArray>) {
+        val rows = board.size
+        val cols = board[0].size
+
+        fun capture(r: Int, c: Int) {
+            if (r < 0 || c < 0 || r == rows ||
+                c == cols || board[r][c] != 'O') {
+                return
+            }
+            board[r][c] = 'T'
+            capture(r + 1, c)
+            capture(r - 1, c)
+            capture(r, c + 1)
+            capture(r, c - 1)
+        }
+
+        for (r in 0 until rows) {
+            if (board[r][0] == 'O') {
+                capture(r, 0)
+            }
+            if (board[r][cols - 1] == 'O') {
+                capture(r, cols - 1)
+            }
+        }
+
+        for (c in 0 until cols) {
+            if (board[0][c] == 'O') {
+                capture(0, c)
+            }
+            if (board[rows - 1][c] == 'O') {
+                capture(rows - 1, c)
+            }
+        }
+
+        for (r in 0 until rows) {
+            for (c in 0 until cols) {
+                if (board[r][c] == 'O') {
+                    board[r][c] = 'X'
+                } else if (board[r][c] == 'T') {
+                    board[r][c] = 'O'
+                }
+            }
+        }
+    }
+}
+```
+
+```swift
+class Solution {
+    func solve(_ board: inout [[Character]]) {
+        let ROWS = board.count
+        let COLS = board[0].count
+
+        func capture(_ r: Int, _ c: Int) {
+            if r < 0 || c < 0 || r == ROWS || c == COLS || board[r][c] != "O" {
+                return
+            }
+            board[r][c] = "T"
+            capture(r + 1, c)
+            capture(r - 1, c)
+            capture(r, c + 1)
+            capture(r, c - 1)
+        }
+
+        for r in 0..<ROWS {
+            if board[r][0] == "O" {
+                capture(r, 0)
+            }
+            if board[r][COLS - 1] == "O" {
+                capture(r, COLS - 1)
+            }
+        }
+
+        for c in 0..<COLS {
+            if board[0][c] == "O" {
+                capture(0, c)
+            }
+            if board[ROWS - 1][c] == "O" {
+                capture(ROWS - 1, c)
+            }
+        }
+
+        for r in 0..<ROWS {
+            for c in 0..<COLS {
+                if board[r][c] == "O" {
+                    board[r][c] = "X"
+                } else if board[r][c] == "T" {
+                    board[r][c] = "O"
+                }
+            }
+        }
+    }
+}
+```
+
+```rust
+impl Solution {
+    pub fn solve(board: &mut Vec<Vec<char>>) {
+        let rows = board.len();
+        let cols = board[0].len();
+
+        fn capture(board: &mut Vec<Vec<char>>, r: i32, c: i32, rows: i32, cols: i32) {
+            if r < 0 || c < 0 || r >= rows || c >= cols
+                || board[r as usize][c as usize] != 'O'
+            {
+                return;
+            }
+            board[r as usize][c as usize] = 'T';
+            capture(board, r + 1, c, rows, cols);
+            capture(board, r - 1, c, rows, cols);
+            capture(board, r, c + 1, rows, cols);
+            capture(board, r, c - 1, rows, cols);
+        }
+
+        let (r_len, c_len) = (rows as i32, cols as i32);
+        for r in 0..rows {
+            if board[r][0] == 'O' {
+                capture(board, r as i32, 0, r_len, c_len);
+            }
+            if board[r][cols - 1] == 'O' {
+                capture(board, r as i32, (cols - 1) as i32, r_len, c_len);
+            }
+        }
+        for c in 0..cols {
+            if board[0][c] == 'O' {
+                capture(board, 0, c as i32, r_len, c_len);
+            }
+            if board[rows - 1][c] == 'O' {
+                capture(board, (rows - 1) as i32, c as i32, r_len, c_len);
+            }
+        }
+
+        for r in 0..rows {
+            for c in 0..cols {
+                if board[r][c] == 'O' {
+                    board[r][c] = 'X';
+                } else if board[r][c] == 'T' {
+                    board[r][c] = 'O';
+                }
+            }
+        }
+    }
+}
+```
+
+::tabs-end
+
+### Time & Space Complexity
+
+- Time complexity: $O(m * n)$
+- Space complexity: $O(m * n)$
+
+> Where $m$ is the number of rows and $n$ is the number of columns of the $board$.
+
+---
+
+## 2. Breadth First Search
+
+### Intuition
+
+Same idea as DFS, but we use **BFS with a queue**.
+
+- Any `'O'` that is connected to the **border** can "escape", so it should **NOT** be flipped.
+- Start BFS from all border `'O'` cells and mark every reachable `'O'` as temporary `'T'` (safe).
+- After that:
+    - leftover `'O'` cells are fully surrounded → flip to `'X'`
+    - `'T'` cells are safe → change back to `'O'`
+
+### Algorithm
+
+1. Initialize a queue and push all **border cells** that contain `'O'`.
+2. While the queue is not empty:
+    - Pop a cell `(r, c)`
+    - If it is `'O'`, mark it as `'T'`
+    - Push its 4 neighbors (up/down/left/right) if they are in bounds
+3. Traverse the entire board:
+    - Change `'O'` → `'X'` (surrounded)
+    - Change `'T'` → `'O'` (safe)
+
+::tabs-start
+
+```python
+class Solution:
+    def solve(self, board: List[List[str]]) -> None:
+        ROWS, COLS = len(board), len(board[0])
+        directions = [(1, 0), (-1, 0), (0, 1), (0, -1)]
+
+        def capture():
+            q = deque()
+            for r in range(ROWS):
+                for c in range(COLS):
+                    if (r == 0 or r == ROWS - 1 or
+                        c == 0 or c == COLS - 1) and board[r][c] == "O":
+                        q.append((r, c))
+            while q:
+                r, c = q.popleft()
+                if board[r][c] == "O":
+                    board[r][c] = "T"
+                    for dr, dc in directions:
+                        nr, nc = r + dr, c + dc
+                        if 0 <= nr < ROWS and 0 <= nc < COLS:
+                            q.append((nr, nc))
+
+        capture()
+        for r in range(ROWS):
+            for c in range(COLS):
+                if board[r][c] == "O":
+                    board[r][c] = "X"
+                elif board[r][c] == "T":
+                    board[r][c] = "O"
+```
+
+```java
+public class Solution {
+    private int ROWS, COLS;
+    private int[][] directions = new int[][]{
+        {1, 0}, {-1, 0}, {0, 1}, {0, -1}
+    };
+
+    public void solve(char[][] board) {
+        ROWS = board.length;
+        COLS = board[0].length;
+
+        capture(board);
+
+        for (int r = 0; r < ROWS; r++) {
+            for (int c = 0; c < COLS; c++) {
+                if (board[r][c] == 'O') {
+                    board[r][c] = 'X';
+                } else if (board[r][c] == 'T') {
+                    board[r][c] = 'O';
+                }
+            }
+        }
+    }
+
+    private void capture(char[][] board) {
+        Queue<int[]> q = new LinkedList<>();
+        for (int r = 0; r < ROWS; r++) {
+            for (int c = 0; c < COLS; c++) {
+                if ((r == 0 || r == ROWS - 1 ||
+                    c == 0 || c == COLS - 1) &&
+                    board[r][c] == 'O') {
+                    q.offer(new int[]{r, c});
+                }
+            }
+        }
+        while (!q.isEmpty()) {
+            int[] cell = q.poll();
+            int r = cell[0], c = cell[1];
+            if (board[r][c] == 'O') {
+                board[r][c] = 'T';
+                for (int[] direction : directions) {
+                    int nr = r + direction[0], nc = c + direction[1];
+                    if (nr >= 0 && nr < ROWS && nc >= 0 && nc < COLS) {
+                        q.offer(new int[]{nr, nc});
+                    }
+                }
+            }
+        }
+    }
+}
+```
+
+```cpp
+class Solution {
+    int ROWS, COLS;
+    vector<pair<int, int>> directions = {{1, 0}, {-1, 0},
+                                         {0, 1}, {0, -1}};
+
+public:
+    void solve(vector<vector<char>>& board) {
+        ROWS = board.size();
+        COLS = board[0].size();
+
+        capture(board);
+
+        for (int r = 0; r < ROWS; r++) {
+            for (int c = 0; c < COLS; c++) {
+                if (board[r][c] == 'O') {
+                    board[r][c] = 'X';
+                } else if (board[r][c] == 'T') {
+                    board[r][c] = 'O';
+                }
+            }
+        }
+    }
+
+private:
+    void capture(vector<vector<char>>& board) {
+        queue<pair<int, int>> q;
+        for (int r = 0; r < ROWS; r++) {
+            for (int c = 0; c < COLS; c++) {
+                if ((r == 0 || r == ROWS - 1 ||
+                    c == 0 || c == COLS - 1) &&
+                    board[r][c] == 'O') {
+                    q.push({r, c});
+                }
+            }
+        }
+        while (!q.empty()) {
+            auto [r, c] = q.front();
+            q.pop();
+            if (board[r][c] == 'O') {
+                board[r][c] = 'T';
+                for (auto& direction : directions) {
+                    int nr = r + direction.first;
+                    int nc = c + direction.second;
+                    if (nr >= 0 && nr < ROWS &&
+                        nc >= 0 && nc < COLS) {
+                        q.push({nr, nc});
+                    }
+                }
+            }
+        }
+    }
+};
+```
+
+```javascript
+class Solution {
+    /**
+     * @param {character[][]} board
+     * @return {void} Do not return anything, modify board in-place instead.
+     */
+    solve(board) {
+        let ROWS = board.length,
+            COLS = board[0].length;
+        let directions = [
+            [1, 0],
+            [-1, 0],
+            [0, 1],
+            [0, -1],
+        ];
+
+        const capture = () => {
+            let q = new Queue();
+            for (let r = 0; r < ROWS; r++) {
+                for (let c = 0; c < COLS; c++) {
+                    if (
+                        (r === 0 ||
+                            r === ROWS - 1 ||
+                            c === 0 ||
+                            c === COLS - 1) &&
+                        board[r][c] === 'O'
+                    ) {
+                        q.push([r, c]);
+                    }
+                }
+            }
+            while (!q.isEmpty()) {
+                let [r, c] = q.pop();
+                if (board[r][c] === 'O') {
+                    board[r][c] = 'T';
+                    for (let [dr, dc] of directions) {
+                        let nr = r + dr,
+                            nc = c + dc;
+                        if (nr >= 0 && nr < ROWS && nc >= 0 && nc < COLS) {
+                            q.push([nr, nc]);
+                        }
+                    }
+                }
+            }
+        };
+
+        capture();
+        for (let r = 0; r < ROWS; r++) {
+            for (let c = 0; c < COLS; c++) {
+                if (board[r][c] === 'O') board[r][c] = 'X';
+                else if (board[r][c] === 'T') board[r][c] = 'O';
+            }
+        }
+    }
+}
+```
+
+```csharp
+public class Solution {
+    private int ROWS, COLS;
+    private int[][] directions = new int[][] {
+        new int[] { 1, 0 }, new int[] { -1, 0 },
+        new int[] { 0, 1 }, new int[] { 0, -1 }
+    };
+
+    public void Solve(char[][] board) {
+        ROWS = board.Length;
+        COLS = board[0].Length;
+
+        Capture(board);
+
+        for (int r = 0; r < ROWS; r++) {
+            for (int c = 0; c < COLS; c++) {
+                if (board[r][c] == 'O') {
+                    board[r][c] = 'X';
+                } else if (board[r][c] == 'T') {
+                    board[r][c] = 'O';
+                }
+            }
+        }
+    }
+
+    private void Capture(char[][] board) {
+        Queue<int[]> q = new Queue<int[]>();
+        for (int r = 0; r < ROWS; r++) {
+            for (int c = 0; c < COLS; c++) {
+                if ((r == 0 || r == ROWS - 1 ||
+                    c == 0 || c == COLS - 1) &&
+                    board[r][c] == 'O') {
+                    q.Enqueue(new int[] { r, c });
+                }
+            }
+        }
+        while (q.Count > 0) {
+            int[] cell = q.Dequeue();
+            int r = cell[0], c = cell[1];
+            if (board[r][c] == 'O') {
+                board[r][c] = 'T';
+                foreach (var direction in directions) {
+                    int nr = r + direction[0];
+                    int nc = c + direction[1];
+                    if (nr >= 0 && nr < ROWS &&
+                        nc >= 0 && nc < COLS) {
+                        q.Enqueue(new int[] { nr, nc });
+                    }
+                }
+            }
+        }
+    }
+}
+```
+
+```go
+func solve(board [][]byte) {
+    rows, cols := len(board), len(board[0])
+    directions := [][]int{{1, 0}, {-1, 0}, {0, 1}, {0, -1}}
+
+    capture := func() {
+        q := [][]int{}
+        for r := 0; r < rows; r++ {
+            for c := 0; c < cols; c++ {
+                if r == 0 || r == rows-1 || c == 0 || c == cols-1 {
+                    if board[r][c] == 'O' {
+                        q = append(q, []int{r, c})
+                    }
+                }
+            }
+        }
+        for len(q) > 0 {
+            // Dequeue
+            r, c := q[0][0], q[0][1]
+            q = q[1:]
+            if board[r][c] == 'O' {
+                board[r][c] = 'T'
+                for _, dir := range directions {
+                    nr, nc := r+dir[0], c+dir[1]
+                    if nr >= 0 && nr < rows && nc >= 0 && nc < cols {
+                        q = append(q, []int{nr, nc})
+                    }
+                }
+            }
+        }
+    }
+
+    capture()
+
+    for r := 0; r < rows; r++ {
+        for c := 0; c < cols; c++ {
+            if board[r][c] == 'O' {
+                board[r][c] = 'X'
+            } else if board[r][c] == 'T' {
+                board[r][c] = 'O'
+            }
+        }
+    }
+}
+```
+
+```kotlin
+class Solution {
+    fun solve(board: Array<CharArray>) {
+        val rows = board.size
+        val cols = board[0].size
+        val directions = arrayOf(intArrayOf(1, 0),
+                                 intArrayOf(-1, 0),
+                                 intArrayOf(0, 1),
+                                 intArrayOf(0, -1))
+
+        fun capture() {
+            val q: LinkedList<IntArray> = LinkedList()
+            for (r in 0 until rows) {
+                for (c in 0 until cols) {
+                    if (r == 0 || r == rows - 1 || c == 0 || c == cols - 1) {
+                        if (board[r][c] == 'O') {
+                            q.add(intArrayOf(r, c))
+                        }
+                    }
+                }
+            }
+            while (q.isNotEmpty()) {
+                val (r, c) = q.poll()
+                if (board[r][c] == 'O') {
+                    board[r][c] = 'T'
+                    for (dir in directions) {
+                        val nr = r + dir[0]
+                        val nc = c + dir[1]
+                        if (nr in 0 until rows && nc in 0 until cols) {
+                            q.add(intArrayOf(nr, nc))
+                        }
+                    }
+                }
+            }
+        }
+
+        capture()
+
+        for (r in 0 until rows) {
+            for (c in 0 until cols) {
+                if (board[r][c] == 'O') {
+                    board[r][c] = 'X'
+                } else if (board[r][c] == 'T') {
+                    board[r][c] = 'O'
+                }
+            }
+        }
+    }
+}
+```
+
+```swift
+class Solution {
+    func solve(_ board: inout [[Character]]) {
+        let ROWS = board.count
+        let COLS = board[0].count
+        let directions = [(1, 0), (-1, 0), (0, 1), (0, -1)]
+
+        func capture() {
+            var queue = Deque<(Int, Int)>()
+            for r in 0..<ROWS {
+                for c in 0..<COLS {
+                    if (r == 0 || r == ROWS - 1 || c == 0 || c == COLS - 1) && board[r][c] == "O" {
+                        queue.append((r, c))
+                    }
+                }
+            }
+
+            while !queue.isEmpty {
+                let (r, c) = queue.popFirst()!
+                if board[r][c] == "O" {
+                    board[r][c] = "T"
+                    for dir in directions {
+                        let nr = r + dir.0
+                        let nc = c + dir.1
+                        if nr >= 0, nr < ROWS, nc >= 0, nc < COLS {
+                            queue.append((nr, nc))
+                        }
+                    }
+                }
+            }
+        }
+
+        capture()
+
+        for r in 0..<ROWS {
+            for c in 0..<COLS {
+                if board[r][c] == "O" {
+                    board[r][c] = "X"
+                } else if board[r][c] == "T" {
+                    board[r][c] = "O"
+                }
+            }
+        }
+    }
+}
+```
+
+```rust
+impl Solution {
+    pub fn solve(board: &mut Vec<Vec<char>>) {
+        let rows = board.len();
+        let cols = board[0].len();
+        let directions = [(1i32, 0i32), (-1, 0), (0, 1), (0, -1)];
+
+        let mut q: VecDeque<(usize, usize)> = VecDeque::new();
+        for r in 0..rows {
+            for c in 0..cols {
+                if (r == 0 || r == rows - 1 || c == 0 || c == cols - 1)
+                    && board[r][c] == 'O'
+                {
+                    q.push_back((r, c));
+                }
+            }
+        }
+
+        while let Some((r, c)) = q.pop_front() {
+            if board[r][c] == 'O' {
+                board[r][c] = 'T';
+                for &(dr, dc) in &directions {
+                    let nr = r as i32 + dr;
+                    let nc = c as i32 + dc;
+                    if nr >= 0
+                        && nr < rows as i32
+                        && nc >= 0
+                        && nc < cols as i32
+                    {
+                        q.push_back((nr as usize, nc as usize));
+                    }
+                }
+            }
+        }
+
+        for r in 0..rows {
+            for c in 0..cols {
+                if board[r][c] == 'O' {
+                    board[r][c] = 'X';
+                } else if board[r][c] == 'T' {
+                    board[r][c] = 'O';
+                }
+            }
+        }
+    }
+}
+```
+
+::tabs-end
+
+### Time & Space Complexity
+
+- Time complexity: $O(m * n)$
+- Space complexity: $O(m * n)$
+
+> Where $m$ is the number of rows and $n$ is the number of columns of the $board$.
+
+---
+
+## 3. Disjoint Set Union
+
+### Intuition
+
+Treat every `'O'` cell as a node in a graph. Two `'O'` cells belong to the same region if they are **4-directionally connected**.
+
+The key observation:
+
+- Any region of `'O'` that touches the **border** is **safe** (it cannot be surrounded).
+- Any region of `'O'` that does **not** touch the border is **captured** → should become `'X'`.
+
+So we use **DSU (Union-Find)** to group connected `'O'` cells, and we create one extra **dummy node** that represents "connected to border".
+
+- Union every border `'O'` with the dummy node.
+- Union every `'O'` with its neighboring `'O'` cells.
+- Finally, any cell **not connected** to the dummy node is surrounded → flip to `'X'`.
+
+### Algorithm
+
+1. Create a `dsu` for `(ROWS * COLS)` cells plus **1 dummy node**.
+2. For each cell `(r, c)`:
+    - If it is not `'O'`, skip.
+    - Convert `(r, c)` to an `id`: `id = r * COLS + c`.
+    - If `(r, c)` is on the border, union `id` with `dummy`.
+    - Union `id` with any 4-direction neighbor that is also `'O'`.
+3. Traverse the grid again:
+    - If a cell is `'O'` but **not connected** to `dummy`, flip it to `'X'`.
+    - Otherwise keep it as `'O'`.
+
+::tabs-start
+
+```python
+class DSU:
+    def __init__(self, n):
+        self.Parent = list(range(n + 1))
+        self.Size = [1] * (n + 1)
+
+    def find(self, node):
+        if self.Parent[node] != node:
+            self.Parent[node] = self.find(self.Parent[node])
+        return self.Parent[node]
+
+    def union(self, u, v):
+        pu = self.find(u)
+        pv = self.find(v)
+        if pu == pv:
+            return False
+        if self.Size[pu] >= self.Size[pv]:
+            self.Size[pu] += self.Size[pv]
+            self.Parent[pv] = pu
+        else:
+            self.Size[pv] += self.Size[pu]
+            self.Parent[pu] = pv
+        return True
+
+    def connected(self, u, v):
+        return self.find(u) == self.find(v)
+
+class Solution:
+    def solve(self, board: List[List[str]]) -> None:
+        ROWS, COLS = len(board), len(board[0])
+        directions = [(1, 0), (-1, 0), (0, 1), (0, -1)]
+        dsu = DSU(ROWS * COLS + 1)
+
+        for r in range(ROWS):
+            for c in range(COLS):
+                if board[r][c] != "O":
+                    continue
+                if (r == 0 or c == 0 or
+                    r == (ROWS - 1) or c == (COLS - 1)
+                ):
+                    dsu.union(ROWS * COLS, r * COLS + c)
+                else:
+                    for dx, dy in directions:
+                        nr, nc = r + dx, c + dy
+                        if board[nr][nc] == "O":
+                            dsu.union(r * COLS + c, nr * COLS + nc)
+
+        for r in range(ROWS):
+            for c in range(COLS):
+                if not dsu.connected(ROWS * COLS, r * COLS + c):
+                    board[r][c] = "X"
+```
+
+```java
+class DSU {
+    int[] Parent, Size;
+
+    public DSU(int n) {
+        Parent = new int[n + 1];
+        Size = new int[n + 1];
+        for (int i = 0; i <= n; i++) {
+            Parent[i] = i;
+            Size[i] = 1;
+        }
+    }
+
+    public int find(int node) {
+        if (Parent[node] != node) {
+            Parent[node] = find(Parent[node]);
+        }
+        return Parent[node];
+    }
+
+    public boolean union(int u, int v) {
+        int pu = find(u), pv = find(v);
+        if (pu == pv) return false;
+        if (Size[pu] >= Size[pv]) {
+            Size[pu] += Size[pv];
+            Parent[pv] = pu;
+        } else {
+            Size[pv] += Size[pu];
+            Parent[pu] = pv;
+        }
+        return true;
+    }
+
+    public boolean connected(int u, int v) {
+        return find(u) == find(v);
+    }
+}
+
+public class Solution {
+    public void solve(char[][] board) {
+        int ROWS = board.length, COLS = board[0].length;
+        DSU dsu = new DSU(ROWS * COLS + 1);
+        int[][] directions = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
+
+        for (int r = 0; r < ROWS; r++) {
+            for (int c = 0; c < COLS; c++) {
+                if (board[r][c] != 'O') continue;
+                if (r == 0 || c == 0 ||
+                    r == ROWS - 1 || c == COLS - 1) {
+                    dsu.union(ROWS * COLS, r * COLS + c);
+                } else {
+                    for (int[] dir : directions) {
+                        int nr = r + dir[0], nc = c + dir[1];
+                        if (board[nr][nc] == 'O') {
+                            dsu.union(r * COLS + c, nr * COLS + nc);
+                        }
+                    }
+                }
+            }
+        }
+
+        for (int r = 0; r < ROWS; r++) {
+            for (int c = 0; c < COLS; c++) {
+                if (!dsu.connected(ROWS * COLS, r * COLS + c)) {
+                    board[r][c] = 'X';
+                }
+            }
+        }
+    }
+}
+```
+
+```cpp
+class DSU {
+    vector<int> Parent, Size;
+
+public:
+    DSU(int n) {
+        Parent.resize(n + 1);
+        Size.resize(n + 1);
+        for (int i = 0; i <= n; i++) {
+            Parent[i] = i;
+            Size[i] = 1;
+        }
+    }
+
+    int find(int node) {
+        if (Parent[node] != node) {
+            Parent[node] = find(Parent[node]);
+        }
+        return Parent[node];
+    }
+
+    bool unionNodes(int u, int v) {
+        int pu = find(u), pv = find(v);
+        if (pu == pv) return false;
+        if (Size[pu] >= Size[pv]) {
+            Size[pu] += Size[pv];
+            Parent[pv] = pu;
+        } else {
+            Size[pv] += Size[pu];
+            Parent[pu] = pv;
+        }
+        return true;
+    }
+
+    bool connected(int u, int v) {
+        return find(u) == find(v);
+    }
+};
+
+class Solution {
+public:
+    void solve(vector<vector<char>>& board) {
+        int ROWS = board.size(), COLS = board[0].size();
+        DSU dsu(ROWS * COLS + 1);
+        vector<vector<int>> directions = {{1, 0}, {-1, 0},
+                                          {0, 1}, {0, -1}};
+
+        for (int r = 0; r < ROWS; r++) {
+            for (int c = 0; c < COLS; c++) {
+                if (board[r][c] != 'O') continue;
+                if (r == 0 || c == 0 ||
+                    r == ROWS - 1 || c == COLS - 1) {
+                    dsu.unionNodes(ROWS * COLS, r * COLS + c);
+                } else {
+                    for (auto& dir : directions) {
+                        int nr = r + dir[0], nc = c + dir[1];
+                        if (board[nr][nc] == 'O') {
+                            dsu.unionNodes(r * COLS + c, nr * COLS + nc);
+                        }
+                    }
+                }
+            }
+        }
+
+        for (int r = 0; r < ROWS; r++) {
+            for (int c = 0; c < COLS; c++) {
+                if (!dsu.connected(ROWS * COLS, r * COLS + c)) {
+                    board[r][c] = 'X';
+                }
+            }
+        }
+    }
+};
+```
+
+```javascript
+class DSU {
+    constructor(n) {
+        this.Parent = Array.from({ length: n + 1 }, (_, i) => i);
+        this.Size = Array(n + 1).fill(1);
+    }
+
+    /**
+     * @param {number} node
+     * @return {number}
+     */
+    find(node) {
+        if (this.Parent[node] !== node) {
+            this.Parent[node] = this.find(this.Parent[node]);
+        }
+        return this.Parent[node];
+    }
+
+    /**
+     * @param {number} u
+     * @param {number} v
+     * @return {boolean}
+     */
+    union(u, v) {
+        let pu = this.find(u);
+        let pv = this.find(v);
+        if (pu === pv) return false;
+        if (this.Size[pu] >= this.Size[pv]) {
+            this.Size[pu] += this.Size[pv];
+            this.Parent[pv] = pu;
+        } else {
+            this.Size[pv] += this.Size[pu];
+            this.Parent[pu] = pv;
+        }
+        return true;
+    }
+
+    /**
+     * @param {number} u
+     * @param {number} v
+     * @return {boolean}
+     */
+    connected(u, v) {
+        return this.find(u) === this.find(v);
+    }
+}
+
+class Solution {
+    /**
+     * @param {character[][]} board
+     * @return {void} Do not return anything, modify board in-place instead.
+     */
+    solve(board) {
+        const ROWS = board.length,
+            COLS = board[0].length;
+        const dsu = new DSU(ROWS * COLS + 1);
+        const directions = [
+            [1, 0],
+            [-1, 0],
+            [0, 1],
+            [0, -1],
+        ];
+
+        for (let r = 0; r < ROWS; r++) {
+            for (let c = 0; c < COLS; c++) {
+                if (board[r][c] !== 'O') continue;
+                if (r === 0 || c === 0 || r === ROWS - 1 || c === COLS - 1) {
+                    dsu.union(ROWS * COLS, r * COLS + c);
+                } else {
+                    for (let [dx, dy] of directions) {
+                        const nr = r + dx,
+                            nc = c + dy;
+                        if (board[nr][nc] === 'O') {
+                            dsu.union(r * COLS + c, nr * COLS + nc);
+                        }
+                    }
+                }
+            }
+        }
+
+        for (let r = 0; r < ROWS; r++) {
+            for (let c = 0; c < COLS; c++) {
+                if (!dsu.connected(ROWS * COLS, r * COLS + c)) {
+                    board[r][c] = 'X';
+                }
+            }
+        }
+    }
+}
+```
+
+```csharp
+public class DSU {
+    private int[] Parent, Size;
+
+    public DSU(int n) {
+        Parent = new int[n + 1];
+        Size = new int[n + 1];
+        for (int i = 0; i <= n; i++) {
+            Parent[i] = i;
+            Size[i] = 1;
+        }
+    }
+
+    public int Find(int node) {
+        if (Parent[node] != node) {
+            Parent[node] = Find(Parent[node]);
+        }
+        return Parent[node];
+    }
+
+    public bool Union(int u, int v) {
+        int pu = Find(u), pv = Find(v);
+        if (pu == pv) return false;
+        if (Size[pu] >= Size[pv]) {
+            Size[pu] += Size[pv];
+            Parent[pv] = pu;
+        } else {
+            Size[pv] += Size[pu];
+            Parent[pu] = pv;
+        }
+        return true;
+    }
+
+    public bool Connected(int u, int v) {
+        return Find(u) == Find(v);
+    }
+}
+
+public class Solution {
+    public void Solve(char[][] board) {
+        int ROWS = board.Length, COLS = board[0].Length;
+        DSU dsu = new DSU(ROWS * COLS + 1);
+        int[][] directions = new int[][] {
+            new int[] { 1, 0 }, new int[] { -1, 0 },
+            new int[] { 0, 1 }, new int[] { 0, -1 }
+        };
+
+        for (int r = 0; r < ROWS; r++) {
+            for (int c = 0; c < COLS; c++) {
+                if (board[r][c] != 'O') continue;
+                if (r == 0 || c == 0 ||
+                    r == ROWS - 1 || c == COLS - 1) {
+                    dsu.Union(ROWS * COLS, r * COLS + c);
+                } else {
+                    foreach (var dir in directions) {
+                        int nr = r + dir[0], nc = c + dir[1];
+                        if (board[nr][nc] == 'O') {
+                            dsu.Union(r * COLS + c, nr * COLS + nc);
+                        }
+                    }
+                }
+            }
+        }
+
+        for (int r = 0; r < ROWS; r++) {
+            for (int c = 0; c < COLS; c++) {
+                if (!dsu.Connected(ROWS * COLS, r * COLS + c)) {
+                    board[r][c] = 'X';
+                }
+            }
+        }
+    }
+}
+```
+
+```go
+type DSU struct {
+    Parent []int
+    Size   []int
+}
+
+func NewDSU(n int) *DSU {
+    dsu := &DSU{
+        Parent: make([]int, n+1),
+        Size:   make([]int, n+1),
+    }
+    for i := 0; i <= n; i++ {
+        dsu.Parent[i] = i
+        dsu.Size[i] = 1
+    }
+    return dsu
+}
+
+func (dsu *DSU) Find(node int) int {
+    if dsu.Parent[node] != node {
+        dsu.Parent[node] = dsu.Find(dsu.Parent[node])
+    }
+    return dsu.Parent[node]
+}
+
+func (dsu *DSU) Union(u, v int) bool {
+    pu := dsu.Find(u)
+    pv := dsu.Find(v)
+    if pu == pv {
+        return false
+    }
+    if dsu.Size[pu] >= dsu.Size[pv] {
+        dsu.Size[pu] += dsu.Size[pv]
+        dsu.Parent[pv] = pu
+    } else {
+        dsu.Size[pv] += dsu.Size[pu]
+        dsu.Parent[pu] = pv
+    }
+    return true
+}
+
+func (dsu *DSU) Connected(u, v int) bool {
+    return dsu.Find(u) == dsu.Find(v)
+}
+
+func solve(board [][]byte) {
+    rows, cols := len(board), len(board[0])
+    directions := [][]int{{1, 0}, {-1, 0}, {0, 1}, {0, -1}}
+    dsu := NewDSU(rows * cols)
+
+    for r := 0; r < rows; r++ {
+        for c := 0; c < cols; c++ {
+            if board[r][c] != 'O' {
+                continue
+            }
+            if r == 0 || c == 0 || r == rows-1 || c == cols-1 {
+                dsu.Union(rows*cols, r*cols+c)
+            } else {
+                for _, dir := range directions {
+                    nr, nc := r+dir[0], c+dir[1]
+                    if nr >= 0 && nr < rows && nc >= 0 &&
+                       nc < cols && board[nr][nc] == 'O' {
+                        dsu.Union(r*cols+c, nr*cols+nc)
+                    }
+                }
+            }
+        }
+    }
+
+    for r := 0; r < rows; r++ {
+        for c := 0; c < cols; c++ {
+            if !dsu.Connected(rows*cols, r*cols+c) {
+                board[r][c] = 'X'
+            }
+        }
+    }
+}
+```
+
+```kotlin
+class DSU(n: Int) {
+    val parent: IntArray = IntArray(n + 1) { it }
+    val size: IntArray = IntArray(n + 1) { 1 }
+
+    fun find(node: Int): Int {
+        if (parent[node] != node) {
+            parent[node] = find(parent[node])
+        }
+        return parent[node]
+    }
+
+    fun union(u: Int, v: Int): Boolean {
+        val pu = find(u)
+        val pv = find(v)
+        if (pu == pv) return false
+        if (size[pu] >= size[pv]) {
+            size[pu] += size[pv]
+            parent[pv] = pu
+        } else {
+            size[pv] += size[pu]
+            parent[pu] = pv
+        }
+        return true
+    }
+
+    fun connected(u: Int, v: Int): Boolean {
+        return find(u) == find(v)
+    }
+}
+
+class Solution {
+    fun solve(board: Array<CharArray>) {
+        val rows = board.size
+        val cols = board[0].size
+        val directions = arrayOf(intArrayOf(1, 0),
+                                 intArrayOf(-1, 0),
+                                 intArrayOf(0, 1),
+                                 intArrayOf(0, -1))
+        val dsu = DSU(rows * cols)
+
+        for (r in 0 until rows) {
+            for (c in 0 until cols) {
+                if (board[r][c] != 'O') continue
+                if (r == 0 || c == 0 || r == rows - 1 || c == cols - 1) {
+                    dsu.union(rows * cols, r * cols + c)
+                } else {
+                    for (dir in directions) {
+                        val nr = r + dir[0]
+                        val nc = c + dir[1]
+                        if (nr in 0 until rows &&
+                            nc in 0 until cols && board[nr][nc] == 'O') {
+                            dsu.union(r * cols + c, nr * cols + nc)
+                        }
+                    }
+                }
+            }
+        }
+
+        for (r in 0 until rows) {
+            for (c in 0 until cols) {
+                if (!dsu.connected(rows * cols, r * cols + c)) {
+                    board[r][c] = 'X'
+                }
+            }
+        }
+    }
+}
+```
+
+```swift
+class DSU {
+    private var parent: [Int]
+    private var size: [Int]
+
+    init(_ n: Int) {
+        parent = Array(0...n)
+        size = Array(repeating: 1, count: n + 1)
+    }
+
+    func find(_ node: Int) -> Int {
+        if parent[node] != node {
+            parent[node] = find(parent[node])
+        }
+        return parent[node]
+    }
+
+    func union(_ u: Int, _ v: Int) {
+        let pu = find(u)
+        let pv = find(v)
+        if pu == pv { return }
+        if size[pu] >= size[pv] {
+            size[pu] += size[pv]
+            parent[pv] = pu
+        } else {
+            size[pv] += size[pu]
+            parent[pu] = pv
+        }
+    }
+
+    func connected(_ u: Int, _ v: Int) -> Bool {
+        return find(u) == find(v)
+    }
+}
+
+class Solution {
+    func solve(_ board: inout [[Character]]) {
+        let ROWS = board.count
+        let COLS = board[0].count
+        let directions = [(1, 0), (-1, 0), (0, 1), (0, -1)]
+        let dsu = DSU(ROWS * COLS + 1)
+        let N = ROWS * COLS
+
+        for r in 0..<ROWS {
+            for c in 0..<COLS {
+                if board[r][c] != "O" {
+                    continue
+                }
+                if r == 0 || c == 0 || r == ROWS - 1 || c == COLS - 1 {
+                    dsu.union(N, r * COLS + c)
+                } else {
+                    for dir in directions {
+                        let nr = r + dir.0
+                        let nc = c + dir.1
+                        if nr >= 0, nr < ROWS, nc >= 0, nc < COLS, board[nr][nc] == "O" {
+                            dsu.union(r * COLS + c, nr * COLS + nc)
+                        }
+                    }
+                }
+            }
+        }
+
+        for r in 0..<ROWS {
+            for c in 0..<COLS {
+                if board[r][c] == "O", !dsu.connected(N, r * COLS + c) {
+                    board[r][c] = "X"
+                }
+            }
+        }
+    }
+}
+```
+
+```rust
+struct DSU {
+    parent: Vec<usize>,
+    size: Vec<usize>,
+}
+
+impl DSU {
+    fn new(n: usize) -> Self {
+        DSU {
+            parent: (0..=n).collect(),
+            size: vec![1; n + 1],
+        }
+    }
+
+    fn find(&mut self, node: usize) -> usize {
+        if self.parent[node] != node {
+            self.parent[node] = self.find(self.parent[node]);
+        }
+        self.parent[node]
+    }
+
+    fn union(&mut self, u: usize, v: usize) {
+        let pu = self.find(u);
+        let pv = self.find(v);
+        if pu == pv {
+            return;
+        }
+        if self.size[pu] >= self.size[pv] {
+            self.size[pu] += self.size[pv];
+            self.parent[pv] = pu;
+        } else {
+            self.size[pv] += self.size[pu];
+            self.parent[pu] = pv;
+        }
+    }
+
+    fn connected(&mut self, u: usize, v: usize) -> bool {
+        self.find(u) == self.find(v)
+    }
+}
+
+impl Solution {
+    pub fn solve(board: &mut Vec<Vec<char>>) {
+        let rows = board.len();
+        let cols = board[0].len();
+        let directions: [(i32, i32); 4] = [(1, 0), (-1, 0), (0, 1), (0, -1)];
+        let dummy = rows * cols;
+        let mut dsu = DSU::new(rows * cols);
+
+        for r in 0..rows {
+            for c in 0..cols {
+                if board[r][c] != 'O' {
+                    continue;
+                }
+                if r == 0 || c == 0 || r == rows - 1 || c == cols - 1 {
+                    dsu.union(dummy, r * cols + c);
+                } else {
+                    for &(dr, dc) in &directions {
+                        let nr = r as i32 + dr;
+                        let nc = c as i32 + dc;
+                        if nr >= 0
+                            && (nr as usize) < rows
+                            && nc >= 0
+                            && (nc as usize) < cols
+                            && board[nr as usize][nc as usize] == 'O'
+                        {
+                            dsu.union(
+                                r * cols + c,
+                                nr as usize * cols + nc as usize,
+                            );
+                        }
+                    }
+                }
+            }
+        }
+
+        for r in 0..rows {
+            for c in 0..cols {
+                if !dsu.connected(dummy, r * cols + c) {
+                    board[r][c] = 'X';
+                }
+            }
+        }
+    }
+}
+```
+
+::tabs-end
+
+### Time & Space Complexity
+
+- Time complexity: $O(m * n)$
+- Space complexity: $O(m * n)$
+
+> Where $m$ is the number of rows and $n$ is the number of columns of the $board$.
+
+---
+
+## Common Pitfalls
+
+### Trying to Find Surrounded Regions Directly
+
+The intuitive approach of finding regions completely surrounded by 'X' is error-prone. A region touching any border cell cannot be captured, and checking this condition during a flood fill is complex. The correct approach is to invert the logic: first mark all border-connected 'O' cells as safe, then flip all remaining 'O' cells. This reversal simplifies the problem significantly.
+
+### Forgetting to Check All Four Borders
+
+When marking safe regions, you must start DFS/BFS from 'O' cells on all four borders: top row, bottom row, left column, and right column. A common mistake is only checking two opposite edges (like top and bottom) and missing cells connected through the left or right borders. Ensure your initial seeding loop covers all border cells.
+
+### Modifying Cells Without a Temporary Marker
+
+If you flip 'O' to 'X' immediately when you find a surrounded region, you may incorrectly process cells that should remain 'O'. The standard approach uses a temporary marker (like 'T') to distinguish between safe 'O' cells and those to be processed. After marking is complete, convert 'T' back to 'O' and remaining 'O' to 'X' in a final pass.

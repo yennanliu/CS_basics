@@ -1,0 +1,1498 @@
+## Prerequisites
+Before attempting this problem, you should be comfortable with:
+- **Tree Traversal (DFS)** - Used to traverse the tree structure and combine subtree results
+- **Dynamic Programming** - Tracking even/odd parity states to ensure valid XOR operation counts
+- **Bit Manipulation (XOR)** - Understanding XOR properties, including self-cancellation (a ^ k ^ k = a)
+- **Greedy Algorithms** - The optimal greedy approach selects nodes based on delta values
+
+---
+
+## 1. Depth First Search
+
+### Intuition
+
+A key insight is that applying XOR with `k` on an edge affects both endpoints. If we apply the operation on the same edge twice, the effects cancel out. This means we can effectively choose any pair of nodes to XOR (not just adjacent ones) by applying operations along the path between them.
+
+For each node, we have two choices: keep its original value or XOR it with `k`. However, since each operation affects two nodes simultaneously, we must XOR an even number of nodes in total. We use DFS to track two states for each subtree: the maximum sum when an even number of nodes are XORed, and when an odd number are XORed.
+
+### Algorithm
+
+1. Build an adjacency list from the given edges.
+2. Perform a DFS starting from node 0, passing the parent to avoid revisiting.
+3. For each node, maintain a pair `res[0]` (even XOR count) and `res[1]` (odd XOR count):
+   - Initially, `res[0] = nums[node]` and `res[1] = nums[node] ^ k`.
+4. For each child subtree with result `cur`, update:
+   - `res[0] = max(res[0] + cur[0], res[1] + cur[1])` (combining even+even or odd+odd gives even)
+   - `res[1] = max(res[1] + cur[0], res[0] + cur[1])` (combining odd+even or even+odd gives odd)
+5. Return `res[0]` from the root, representing the maximum sum with an even number of XOR operations.
+
+::tabs-start
+
+```python
+class Solution:
+    def maximumValueSum(self, nums: List[int], k: int, edges: List[List[int]]) -> int:
+        adj = [[] for _ in range(len(nums))]
+        for u, v in edges:
+            adj[u].append(v)
+            adj[v].append(u)
+
+        def dfs(node, par):
+            res = [nums[node], nums[node] ^ k]
+            for child in adj[node]:
+                if child == par:
+                    continue
+
+                cur = dfs(child, node)
+                tmp = []
+                tmp.append(max(res[0] + cur[0], res[1] + cur[1]))
+                tmp.append(max(res[1] + cur[0], res[0] + cur[1]))
+                res = tmp
+
+            return res
+
+        return dfs(0, -1)[0]
+```
+
+```java
+public class Solution {
+    public long maximumValueSum(int[] nums, int k, int[][] edges) {
+        int n = nums.length;
+        List<Integer>[] adj = new ArrayList[n];
+        for (int i = 0; i < n; i++) adj[i] = new ArrayList<>();
+        for (int[] edge : edges) {
+            adj[edge[0]].add(edge[1]);
+            adj[edge[1]].add(edge[0]);
+        }
+
+        return dfs(0, -1, nums, k, adj)[0];
+    }
+
+    private long[] dfs(int node, int parent, int[] nums, int k, List<Integer>[] adj) {
+        long[] res = { nums[node], nums[node] ^ k };
+        for (int child : adj[node]) {
+            if (child == parent) continue;
+
+            long[] cur = dfs(child, node, nums, k, adj);
+            long[] tmp = new long[2];
+            tmp[0] = Math.max(res[0] + cur[0], res[1] + cur[1]);
+            tmp[1] = Math.max(res[1] + cur[0], res[0] + cur[1]);
+            res = tmp;
+        }
+        return res;
+    }
+}
+```
+
+```cpp
+class Solution {
+    vector<vector<int>> adj;
+
+public:
+    long long maximumValueSum(vector<int>& nums, int k, vector<vector<int>>& edges) {
+        int n = nums.size();
+        adj.resize(n);
+        for (const auto& edge : edges) {
+            adj[edge[0]].push_back(edge[1]);
+            adj[edge[1]].push_back(edge[0]);
+        }
+
+        return dfs(0, -1, nums, k)[0];
+    }
+
+private:
+    vector<long long> dfs(int node, int parent, vector<int>& nums, int k) {
+        vector<long long> res = { nums[node], nums[node] ^ k };
+        for (int child : adj[node]) {
+            if (child == parent) continue;
+
+            vector<long long> cur = dfs(child, node, nums, k);
+            vector<long long> tmp(2);
+            tmp[0] = max(res[0] + cur[0], res[1] + cur[1]);
+            tmp[1] = max(res[1] + cur[0], res[0] + cur[1]);
+            res = tmp;
+        }
+        return res;
+    }
+};
+```
+
+```javascript
+class Solution {
+    /**
+     * @param {number[]} nums
+     * @param {number} k
+     * @param {number[][]} edges
+     * @return {number}
+     */
+    maximumValueSum(nums, k, edges) {
+        const n = nums.length;
+        const adj = Array.from({ length: n }, () => []);
+
+        for (const [u, v] of edges) {
+            adj[u].push(v);
+            adj[v].push(u);
+        }
+
+        const dfs = (node, parent) => {
+            let res = [nums[node], nums[node] ^ k];
+
+            for (const child of adj[node]) {
+                if (child === parent) continue;
+
+                const cur = dfs(child, node);
+                const tmp = [];
+                tmp[0] = Math.max(res[0] + cur[0], res[1] + cur[1]);
+                tmp[1] = Math.max(res[1] + cur[0], res[0] + cur[1]);
+                res = tmp;
+            }
+
+            return res;
+        };
+
+        return dfs(0, -1)[0];
+    }
+}
+```
+
+```csharp
+public class Solution {
+    private List<int>[] adj;
+
+    public long MaximumValueSum(int[] nums, int k, int[][] edges) {
+        int n = nums.Length;
+        adj = new List<int>[n];
+        for (int i = 0; i < n; i++) adj[i] = new List<int>();
+        foreach (var edge in edges) {
+            adj[edge[0]].Add(edge[1]);
+            adj[edge[1]].Add(edge[0]);
+        }
+
+        return Dfs(0, -1, nums, k)[0];
+    }
+
+    private long[] Dfs(int node, int parent, int[] nums, int k) {
+        long[] res = { nums[node], nums[node] ^ k };
+        foreach (int child in adj[node]) {
+            if (child == parent) continue;
+
+            long[] cur = Dfs(child, node, nums, k);
+            long[] tmp = new long[2];
+            tmp[0] = Math.Max(res[0] + cur[0], res[1] + cur[1]);
+            tmp[1] = Math.Max(res[1] + cur[0], res[0] + cur[1]);
+            res = tmp;
+        }
+        return res;
+    }
+}
+```
+
+```go
+func maximumValueSum(nums []int, k int, edges [][]int) int64 {
+    n := len(nums)
+    adj := make([][]int, n)
+    for i := range adj {
+        adj[i] = []int{}
+    }
+    for _, edge := range edges {
+        adj[edge[0]] = append(adj[edge[0]], edge[1])
+        adj[edge[1]] = append(adj[edge[1]], edge[0])
+    }
+
+    var dfs func(node, parent int) [2]int64
+    dfs = func(node, parent int) [2]int64 {
+        res := [2]int64{int64(nums[node]), int64(nums[node] ^ k)}
+        for _, child := range adj[node] {
+            if child == parent {
+                continue
+            }
+            cur := dfs(child, node)
+            tmp := [2]int64{}
+            tmp[0] = max64(res[0]+cur[0], res[1]+cur[1])
+            tmp[1] = max64(res[1]+cur[0], res[0]+cur[1])
+            res = tmp
+        }
+        return res
+    }
+
+    return dfs(0, -1)[0]
+}
+
+func max64(a, b int64) int64 {
+    if a > b {
+        return a
+    }
+    return b
+}
+```
+
+```kotlin
+class Solution {
+    private lateinit var adj: Array<MutableList<Int>>
+
+    fun maximumValueSum(nums: IntArray, k: Int, edges: Array<IntArray>): Long {
+        val n = nums.size
+        adj = Array(n) { mutableListOf<Int>() }
+        for (edge in edges) {
+            adj[edge[0]].add(edge[1])
+            adj[edge[1]].add(edge[0])
+        }
+
+        return dfs(0, -1, nums, k)[0]
+    }
+
+    private fun dfs(node: Int, parent: Int, nums: IntArray, k: Int): LongArray {
+        var res = longArrayOf(nums[node].toLong(), (nums[node] xor k).toLong())
+        for (child in adj[node]) {
+            if (child == parent) continue
+
+            val cur = dfs(child, node, nums, k)
+            val tmp = LongArray(2)
+            tmp[0] = maxOf(res[0] + cur[0], res[1] + cur[1])
+            tmp[1] = maxOf(res[1] + cur[0], res[0] + cur[1])
+            res = tmp
+        }
+        return res
+    }
+}
+```
+
+```swift
+class Solution {
+    private var adj: [[Int]] = []
+
+    func maximumValueSum(_ nums: [Int], _ k: Int, _ edges: [[Int]]) -> Int {
+        let n = nums.count
+        adj = Array(repeating: [Int](), count: n)
+        for edge in edges {
+            adj[edge[0]].append(edge[1])
+            adj[edge[1]].append(edge[0])
+        }
+
+        return dfs(0, -1, nums, k)[0]
+    }
+
+    private func dfs(_ node: Int, _ parent: Int, _ nums: [Int], _ k: Int) -> [Int] {
+        var res = [nums[node], nums[node] ^ k]
+        for child in adj[node] {
+            if child == parent { continue }
+
+            let cur = dfs(child, node, nums, k)
+            var tmp = [Int](repeating: 0, count: 2)
+            tmp[0] = max(res[0] + cur[0], res[1] + cur[1])
+            tmp[1] = max(res[1] + cur[0], res[0] + cur[1])
+            res = tmp
+        }
+        return res
+    }
+}
+```
+
+```rust
+impl Solution {
+    pub fn maximum_value_sum(nums: Vec<i32>, k: i32, edges: Vec<Vec<i32>>) -> i64 {
+        let n = nums.len();
+        let mut adj = vec![vec![]; n];
+        for edge in &edges {
+            adj[edge[0] as usize].push(edge[1] as usize);
+            adj[edge[1] as usize].push(edge[0] as usize);
+        }
+
+        fn dfs(node: usize, parent: i32, nums: &[i32], k: i32, adj: &[Vec<usize>]) -> [i64; 2] {
+            let mut res = [nums[node] as i64, (nums[node] ^ k) as i64];
+            for &child in &adj[node] {
+                if child as i32 == parent { continue; }
+                let cur = dfs(child, node as i32, nums, k, adj);
+                let mut tmp = [0i64; 2];
+                tmp[0] = (res[0] + cur[0]).max(res[1] + cur[1]);
+                tmp[1] = (res[1] + cur[0]).max(res[0] + cur[1]);
+                res = tmp;
+            }
+            res
+        }
+
+        dfs(0, -1, &nums, k, &adj)[0]
+    }
+}
+```
+
+::tabs-end
+
+### Time & Space Complexity
+
+- Time complexity: $O(n)$
+- Space complexity: $O(n)$
+
+---
+
+## 2. Dynamic Programming (Top-Down)
+
+### Intuition
+
+Since we must XOR an even number of nodes, we can ignore the tree structure entirely and treat this as a selection problem. For each node, we decide whether to XOR it or not, while tracking whether we have selected an odd or even count so far. This naturally leads to a DP formulation where the state is the current index and the parity of nodes XORed.
+
+### Algorithm
+
+1. Create a memoization table `dp[i][xorCnt]` where `i` is the node index and `xorCnt` is `0` (even) or `1` (odd).
+2. Base case: `dp[n][0] = 0` (valid: even count at the end) and `dp[n][1] = -infinity` (invalid: odd count).
+3. For each position `i`, recursively compute:
+   - Option 1: Keep `nums[i]` as is, add to `dfs(i + 1, xorCnt)`.
+   - Option 2: Use `nums[i] ^ k`, add to `dfs(i + 1, xorCnt ^ 1)` (toggle parity).
+4. Take the maximum of both options.
+5. Return `dfs(0, 0)` to get the maximum sum starting with even parity.
+
+::tabs-start
+
+```python
+class Solution:
+    def maximumValueSum(self, nums: List[int], k: int, edges: List[List[int]]) -> int:
+        dp = [[None] * 2 for _ in range(len(nums))] + [[0, float("-inf")]]
+
+        def dfs(i, xorCnt):
+            if dp[i][xorCnt] is not None:
+                return dp[i][xorCnt]
+
+            res = nums[i] + dfs(i + 1, xorCnt)
+            res = max(res, (nums[i] ^ k) + dfs(i + 1, xorCnt ^ 1))
+            dp[i][xorCnt] = res
+            return res
+
+        return dfs(0, 0)
+```
+
+```java
+public class Solution {
+    private long[][] dp;
+
+    public long maximumValueSum(int[] nums, int k, int[][] edges) {
+        int n = nums.length;
+        dp = new long[n + 1][2];
+        for (long[] row : dp) Arrays.fill(row, Long.MIN_VALUE);
+        dp[n][0] = 0;
+        dp[n][1] = Integer.MIN_VALUE;
+
+        return dfs(0, 0, nums, k);
+    }
+
+    private long dfs(int i, int xorCnt, int[] nums, int k) {
+        if (dp[i][xorCnt] != Long.MIN_VALUE) {
+            return dp[i][xorCnt];
+        }
+
+        long res = nums[i] + dfs(i + 1, xorCnt, nums, k);
+        res = Math.max(res, (nums[i] ^ k) + dfs(i + 1, xorCnt ^ 1, nums, k));
+
+        return dp[i][xorCnt] = res;
+    }
+}
+```
+
+```cpp
+class Solution {
+    vector<vector<long long>> dp;
+
+public:
+    long long maximumValueSum(vector<int>& nums, int k, vector<vector<int>>& edges) {
+        int n = nums.size();
+        dp.assign(n + 1, vector<long long>(2, LLONG_MIN));
+        dp[n][0] = 0;
+        dp[n][1] = INT_MIN;
+
+        return dfs(0, 0, nums, k);
+    }
+
+private:
+    long long dfs(int i, int xorCnt, vector<int>& nums, int k) {
+        if (dp[i][xorCnt] != LLONG_MIN) {
+            return dp[i][xorCnt];
+        }
+
+        long long res = nums[i] + dfs(i + 1, xorCnt, nums, k);
+        res = max(res, (nums[i] ^ k) + dfs(i + 1, xorCnt ^ 1, nums, k));
+        return dp[i][xorCnt] = res;
+    }
+};
+```
+
+```javascript
+class Solution {
+    /**
+     * @param {number[]} nums
+     * @param {number} k
+     * @param {number[][]} edges
+     * @return {number}
+     */
+    maximumValueSum(nums, k, edges) {
+        const n = nums.length;
+        const dp = Array.from({ length: n + 1 }, () => [null, null]);
+        dp[n][0] = 0;
+        dp[n][1] = -Infinity;
+
+        const dfs = (i, xorCnt) => {
+            if (dp[i][xorCnt] !== null) return dp[i][xorCnt];
+
+            let res = nums[i] + dfs(i + 1, xorCnt);
+            res = Math.max(res, (nums[i] ^ k) + dfs(i + 1, xorCnt ^ 1));
+            return (dp[i][xorCnt] = res);
+        };
+
+        return dfs(0, 0);
+    }
+}
+```
+
+```csharp
+public class Solution {
+    private long[][] dp;
+
+    public long MaximumValueSum(int[] nums, int k, int[][] edges) {
+        int n = nums.Length;
+        dp = new long[n + 1][];
+        for (int i = 0; i <= n; i++) {
+            dp[i] = new long[] { long.MinValue, long.MinValue };
+        }
+        dp[n][0] = 0;
+        dp[n][1] = int.MinValue;
+
+        return Dfs(0, 0, nums, k);
+    }
+
+    private long Dfs(int i, int xorCnt, int[] nums, int k) {
+        if (dp[i][xorCnt] != long.MinValue) {
+            return dp[i][xorCnt];
+        }
+
+        long res = nums[i] + Dfs(i + 1, xorCnt, nums, k);
+        res = Math.Max(res, (nums[i] ^ k) + Dfs(i + 1, xorCnt ^ 1, nums, k));
+
+        return dp[i][xorCnt] = res;
+    }
+}
+```
+
+```go
+func maximumValueSum(nums []int, k int, edges [][]int) int64 {
+    n := len(nums)
+    dp := make([][2]int64, n+1)
+    for i := range dp {
+        dp[i] = [2]int64{math.MinInt64, math.MinInt64}
+    }
+    dp[n][0] = 0
+    dp[n][1] = math.MinInt32
+
+    var dfs func(i, xorCnt int) int64
+    dfs = func(i, xorCnt int) int64 {
+        if dp[i][xorCnt] != math.MinInt64 {
+            return dp[i][xorCnt]
+        }
+
+        res := int64(nums[i]) + dfs(i+1, xorCnt)
+        res = max64(res, int64(nums[i]^k)+dfs(i+1, xorCnt^1))
+        dp[i][xorCnt] = res
+        return res
+    }
+
+    return dfs(0, 0)
+}
+
+func max64(a, b int64) int64 {
+    if a > b {
+        return a
+    }
+    return b
+}
+```
+
+```kotlin
+class Solution {
+    private lateinit var dp: Array<LongArray>
+
+    fun maximumValueSum(nums: IntArray, k: Int, edges: Array<IntArray>): Long {
+        val n = nums.size
+        dp = Array(n + 1) { LongArray(2) { Long.MIN_VALUE } }
+        dp[n][0] = 0
+        dp[n][1] = Int.MIN_VALUE.toLong()
+
+        return dfs(0, 0, nums, k)
+    }
+
+    private fun dfs(i: Int, xorCnt: Int, nums: IntArray, k: Int): Long {
+        if (dp[i][xorCnt] != Long.MIN_VALUE) {
+            return dp[i][xorCnt]
+        }
+
+        var res = nums[i] + dfs(i + 1, xorCnt, nums, k)
+        res = maxOf(res, (nums[i] xor k) + dfs(i + 1, xorCnt xor 1, nums, k))
+
+        dp[i][xorCnt] = res
+        return res
+    }
+}
+```
+
+```swift
+class Solution {
+    private var dp: [[Int?]] = []
+
+    func maximumValueSum(_ nums: [Int], _ k: Int, _ edges: [[Int]]) -> Int {
+        let n = nums.count
+        dp = Array(repeating: [nil, nil], count: n + 1)
+        dp[n][0] = 0
+        dp[n][1] = Int.min / 2
+
+        return dfs(0, 0, nums, k)
+    }
+
+    private func dfs(_ i: Int, _ xorCnt: Int, _ nums: [Int], _ k: Int) -> Int {
+        if let cached = dp[i][xorCnt] {
+            return cached
+        }
+
+        var res = nums[i] + dfs(i + 1, xorCnt, nums, k)
+        res = max(res, (nums[i] ^ k) + dfs(i + 1, xorCnt ^ 1, nums, k))
+
+        dp[i][xorCnt] = res
+        return res
+    }
+}
+```
+
+```rust
+impl Solution {
+    pub fn maximum_value_sum(nums: Vec<i32>, k: i32, _edges: Vec<Vec<i32>>) -> i64 {
+        let n = nums.len();
+        let mut dp = vec![[i64::MIN; 2]; n + 1];
+        dp[n][0] = 0;
+        dp[n][1] = i32::MIN as i64;
+
+        fn dfs(i: usize, xor_cnt: usize, nums: &[i32], k: i32, dp: &mut Vec<[i64; 2]>) -> i64 {
+            if dp[i][xor_cnt] != i64::MIN {
+                return dp[i][xor_cnt];
+            }
+            let mut res = nums[i] as i64 + dfs(i + 1, xor_cnt, nums, k, dp);
+            res = res.max((nums[i] ^ k) as i64 + dfs(i + 1, xor_cnt ^ 1, nums, k, dp));
+            dp[i][xor_cnt] = res;
+            res
+        }
+
+        dfs(0, 0, &nums, k, &mut dp)
+    }
+}
+```
+
+::tabs-end
+
+### Time & Space Complexity
+
+- Time complexity: $O(n)$
+- Space complexity: $O(n)$
+
+---
+
+## 3. Dynamic Programming (Bottom-Up)
+
+### Intuition
+
+This is the iterative version of the top-down approach. Instead of using recursion with memoization, we fill the DP table from the end to the beginning. At each position, we compute the best sum for both even and odd XOR counts based on the values already computed for subsequent positions.
+
+### Algorithm
+
+1. Create a DP table `dp[i][0]` and `dp[i][1]` for each index.
+2. Initialize `dp[n][0] = 0` and `dp[n][1] = -infinity`.
+3. Iterate from `i = n - 1` down to `0`:
+   - `dp[i][0] = max(nums[i] + dp[i+1][0], (nums[i] ^ k) + dp[i+1][1])`
+   - `dp[i][1] = max(nums[i] + dp[i+1][1], (nums[i] ^ k) + dp[i+1][0])`
+4. Return `dp[0][0]`.
+
+::tabs-start
+
+```python
+class Solution:
+    def maximumValueSum(self, nums: List[int], k: int, edges: List[List[int]]) -> int:
+        n = len(nums)
+        dp = [[0, 0] for _ in range(n + 1)]
+        dp[n][1] = float("-inf")
+
+        for i in range(n - 1, -1, -1):
+            dp[i][0] = max(nums[i] + dp[i + 1][0], (nums[i] ^ k) + dp[i + 1][1])
+            dp[i][1] = max(nums[i] + dp[i + 1][1], (nums[i] ^ k) + dp[i + 1][0])
+
+        return dp[0][0]
+```
+
+```java
+public class Solution {
+    public long maximumValueSum(int[] nums, int k, int[][] edges) {
+        int n = nums.length;
+        long[][] dp = new long[n + 1][2];
+        dp[n][1] = Integer.MIN_VALUE;
+
+        for (int i = n - 1; i >= 0; i--) {
+            dp[i][0] = Math.max(nums[i] + dp[i + 1][0], (nums[i] ^ k) + dp[i + 1][1]);
+            dp[i][1] = Math.max(nums[i] + dp[i + 1][1], (nums[i] ^ k) + dp[i + 1][0]);
+        }
+
+        return dp[0][0];
+    }
+}
+```
+
+```cpp
+class Solution {
+public:
+    long long maximumValueSum(vector<int>& nums, int k, vector<vector<int>>& edges) {
+        int n = nums.size();
+        vector<vector<long long>> dp(n + 1, vector<long long>(2));
+        dp[n][1] = INT_MIN;
+
+        for (int i = n - 1; i >= 0; i--) {
+            dp[i][0] = max(nums[i] + dp[i + 1][0], (nums[i] ^ k) + dp[i + 1][1]);
+            dp[i][1] = max(nums[i] + dp[i + 1][1], (nums[i] ^ k) + dp[i + 1][0]);
+        }
+
+        return dp[0][0];
+    }
+};
+```
+
+```javascript
+class Solution {
+    /**
+     * @param {number[]} nums
+     * @param {number} k
+     * @param {number[][]} edges
+     * @return {number}
+     */
+    maximumValueSum(nums, k, edges) {
+        const n = nums.length;
+        const dp = Array.from({ length: n + 1 }, () => [0, 0]);
+        dp[n][1] = -Infinity;
+
+        for (let i = n - 1; i >= 0; i--) {
+            dp[i][0] = Math.max(
+                nums[i] + dp[i + 1][0],
+                (nums[i] ^ k) + dp[i + 1][1],
+            );
+            dp[i][1] = Math.max(
+                nums[i] + dp[i + 1][1],
+                (nums[i] ^ k) + dp[i + 1][0],
+            );
+        }
+
+        return dp[0][0];
+    }
+}
+```
+
+```csharp
+public class Solution {
+    public long MaximumValueSum(int[] nums, int k, int[][] edges) {
+        int n = nums.Length;
+        long[][] dp = new long[n + 1][];
+        for (int i = 0; i <= n; i++) {
+            dp[i] = new long[2];
+        }
+        dp[n][1] = int.MinValue;
+
+        for (int i = n - 1; i >= 0; i--) {
+            dp[i][0] = Math.Max(nums[i] + dp[i + 1][0], (nums[i] ^ k) + dp[i + 1][1]);
+            dp[i][1] = Math.Max(nums[i] + dp[i + 1][1], (nums[i] ^ k) + dp[i + 1][0]);
+        }
+
+        return dp[0][0];
+    }
+}
+```
+
+```go
+func maximumValueSum(nums []int, k int, edges [][]int) int64 {
+    n := len(nums)
+    dp := make([][2]int64, n+1)
+    dp[n][1] = math.MinInt32
+
+    for i := n - 1; i >= 0; i-- {
+        dp[i][0] = max64(int64(nums[i])+dp[i+1][0], int64(nums[i]^k)+dp[i+1][1])
+        dp[i][1] = max64(int64(nums[i])+dp[i+1][1], int64(nums[i]^k)+dp[i+1][0])
+    }
+
+    return dp[0][0]
+}
+
+func max64(a, b int64) int64 {
+    if a > b {
+        return a
+    }
+    return b
+}
+```
+
+```kotlin
+class Solution {
+    fun maximumValueSum(nums: IntArray, k: Int, edges: Array<IntArray>): Long {
+        val n = nums.size
+        val dp = Array(n + 1) { LongArray(2) }
+        dp[n][1] = Int.MIN_VALUE.toLong()
+
+        for (i in n - 1 downTo 0) {
+            dp[i][0] = maxOf(nums[i] + dp[i + 1][0], (nums[i] xor k) + dp[i + 1][1])
+            dp[i][1] = maxOf(nums[i] + dp[i + 1][1], (nums[i] xor k) + dp[i + 1][0])
+        }
+
+        return dp[0][0]
+    }
+}
+```
+
+```swift
+class Solution {
+    func maximumValueSum(_ nums: [Int], _ k: Int, _ edges: [[Int]]) -> Int {
+        let n = nums.count
+        var dp = [[Int]](repeating: [0, 0], count: n + 1)
+        dp[n][1] = Int.min / 2
+
+        for i in stride(from: n - 1, through: 0, by: -1) {
+            dp[i][0] = max(nums[i] + dp[i + 1][0], (nums[i] ^ k) + dp[i + 1][1])
+            dp[i][1] = max(nums[i] + dp[i + 1][1], (nums[i] ^ k) + dp[i + 1][0])
+        }
+
+        return dp[0][0]
+    }
+}
+```
+
+```rust
+impl Solution {
+    pub fn maximum_value_sum(nums: Vec<i32>, k: i32, _edges: Vec<Vec<i32>>) -> i64 {
+        let n = nums.len();
+        let mut dp = vec![[0i64; 2]; n + 1];
+        dp[n][1] = i32::MIN as i64;
+
+        for i in (0..n).rev() {
+            dp[i][0] = (nums[i] as i64 + dp[i + 1][0])
+                .max((nums[i] ^ k) as i64 + dp[i + 1][1]);
+            dp[i][1] = (nums[i] as i64 + dp[i + 1][1])
+                .max((nums[i] ^ k) as i64 + dp[i + 1][0]);
+        }
+
+        dp[0][0]
+    }
+}
+```
+
+::tabs-end
+
+### Time & Space Complexity
+
+- Time complexity: $O(n)$
+- Space complexity: $O(n)$
+
+---
+
+## 4. Dynamic Programming (Space Optimized)
+
+### Intuition
+
+In the bottom-up approach, each state only depends on the immediately next state. This means we do not need to store the entire DP table. We can reduce space by keeping only two variables: one for even parity and one for odd parity, updating them as we process each element.
+
+### Algorithm
+
+1. Initialize `dp = [0, -infinity]` representing even and odd XOR counts.
+2. Iterate from `i = n - 1` down to `0`:
+   - Compute `next_dp[0] = max(nums[i] + dp[0], (nums[i] ^ k) + dp[1])`
+   - Compute `next_dp[1] = max(nums[i] + dp[1], (nums[i] ^ k) + dp[0])`
+   - Set `dp = next_dp`.
+3. Return `dp[0]`.
+
+::tabs-start
+
+```python
+class Solution:
+    def maximumValueSum(self, nums: List[int], k: int, edges: List[List[int]]) -> int:
+        dp = [0, float("-inf")]
+
+        for i in range(len(nums) - 1, -1, -1):
+            next_dp = [0, 0]
+            next_dp[0] = max(nums[i] + dp[0], (nums[i] ^ k) + dp[1])
+            next_dp[1] = max(nums[i] + dp[1], (nums[i] ^ k) + dp[0])
+            dp = next_dp
+
+        return dp[0]
+```
+
+```java
+public class Solution {
+    public long maximumValueSum(int[] nums, int k, int[][] edges) {
+        int n = nums.length;
+        long[] dp = {0, Long.MIN_VALUE};
+
+        for (int i = n - 1; i >= 0; i--) {
+            long[] nextDp = new long[2];
+            nextDp[0] = Math.max(nums[i] + dp[0], (nums[i] ^ k) + dp[1]);
+            nextDp[1] = Math.max(nums[i] + dp[1], (nums[i] ^ k) + dp[0]);
+            dp = nextDp;
+        }
+
+        return dp[0];
+    }
+}
+```
+
+```cpp
+class Solution {
+public:
+    long long maximumValueSum(vector<int>& nums, int k, vector<vector<int>>& edges) {
+        int n = nums.size();
+        vector<long long> dp = {0, LLONG_MIN};
+
+        for (int i = n - 1; i >= 0; i--) {
+            vector<long long> nextDp(2);
+            nextDp[0] = max(nums[i] + dp[0], (nums[i] ^ k) + dp[1]);
+            nextDp[1] = max(nums[i] + dp[1], (nums[i] ^ k) + dp[0]);
+            dp = nextDp;
+        }
+
+        return dp[0];
+    }
+};
+```
+
+```javascript
+class Solution {
+    /**
+     * @param {number[]} nums
+     * @param {number} k
+     * @param {number[][]} edges
+     * @return {number}
+     */
+    maximumValueSum(nums, k, edges) {
+        const n = nums.length;
+        let dp = [0, -Infinity];
+
+        for (let i = n - 1; i >= 0; i--) {
+            let nextDp = [0, 0];
+            nextDp[0] = Math.max(nums[i] + dp[0], (nums[i] ^ k) + dp[1]);
+            nextDp[1] = Math.max(nums[i] + dp[1], (nums[i] ^ k) + dp[0]);
+            dp = nextDp;
+        }
+
+        return dp[0];
+    }
+}
+```
+
+```csharp
+public class Solution {
+    public long MaximumValueSum(int[] nums, int k, int[][] edges) {
+        int n = nums.Length;
+        long[] dp = { 0, long.MinValue };
+
+        for (int i = n - 1; i >= 0; i--) {
+            long[] nextDp = new long[2];
+            nextDp[0] = Math.Max(nums[i] + dp[0], (nums[i] ^ k) + dp[1]);
+            nextDp[1] = Math.Max(nums[i] + dp[1], (nums[i] ^ k) + dp[0]);
+            dp = nextDp;
+        }
+
+        return dp[0];
+    }
+}
+```
+
+```go
+func maximumValueSum(nums []int, k int, edges [][]int) int64 {
+    n := len(nums)
+    dp := [2]int64{0, math.MinInt64}
+
+    for i := n - 1; i >= 0; i-- {
+        nextDp := [2]int64{}
+        nextDp[0] = max64(int64(nums[i])+dp[0], int64(nums[i]^k)+dp[1])
+        nextDp[1] = max64(int64(nums[i])+dp[1], int64(nums[i]^k)+dp[0])
+        dp = nextDp
+    }
+
+    return dp[0]
+}
+
+func max64(a, b int64) int64 {
+    if a > b {
+        return a
+    }
+    return b
+}
+```
+
+```kotlin
+class Solution {
+    fun maximumValueSum(nums: IntArray, k: Int, edges: Array<IntArray>): Long {
+        val n = nums.size
+        var dp = longArrayOf(0, Long.MIN_VALUE)
+
+        for (i in n - 1 downTo 0) {
+            val nextDp = LongArray(2)
+            nextDp[0] = maxOf(nums[i] + dp[0], (nums[i] xor k) + dp[1])
+            nextDp[1] = maxOf(nums[i] + dp[1], (nums[i] xor k) + dp[0])
+            dp = nextDp
+        }
+
+        return dp[0]
+    }
+}
+```
+
+```swift
+class Solution {
+    func maximumValueSum(_ nums: [Int], _ k: Int, _ edges: [[Int]]) -> Int {
+        let n = nums.count
+        var dp = [0, Int.min / 2]
+
+        for i in stride(from: n - 1, through: 0, by: -1) {
+            var nextDp = [0, 0]
+            nextDp[0] = max(nums[i] + dp[0], (nums[i] ^ k) + dp[1])
+            nextDp[1] = max(nums[i] + dp[1], (nums[i] ^ k) + dp[0])
+            dp = nextDp
+        }
+
+        return dp[0]
+    }
+}
+```
+
+```rust
+impl Solution {
+    pub fn maximum_value_sum(nums: Vec<i32>, k: i32, _edges: Vec<Vec<i32>>) -> i64 {
+        let mut dp = [0i64, i64::MIN];
+
+        for i in (0..nums.len()).rev() {
+            let mut next_dp = [0i64; 2];
+            next_dp[0] = (nums[i] as i64 + dp[0]).max((nums[i] ^ k) as i64 + dp[1]);
+            next_dp[1] = (nums[i] as i64 + dp[1]).max((nums[i] ^ k) as i64 + dp[0]);
+            dp = next_dp;
+        }
+
+        dp[0]
+    }
+}
+```
+
+::tabs-end
+
+### Time & Space Complexity
+
+- Time complexity: $O(n)$
+- Space complexity: $O(1)$ extra space.
+
+---
+
+## 5. Greedy
+
+### Intuition
+
+For each node, compute the delta: `(nums[i] ^ k) - nums[i]`. A positive delta means XORing that node increases the sum. Since we must XOR an even number of nodes, we greedily pick pairs of nodes with the highest combined deltas. We sort deltas in descending order and take pairs as long as their sum is positive.
+
+### Algorithm
+
+1. Compute `delta[i] = (nums[i] ^ k) - nums[i]` for each node.
+2. Sort deltas in descending order.
+3. Start with `res = sum(nums)`.
+4. Iterate through deltas in pairs (indices `0`-`1`, `2`-`3`, etc.):
+   - If `delta[i] + delta[i+1] > 0`, add this sum to `res`.
+   - Otherwise, stop (remaining pairs will also be non-positive).
+5. Return `res`.
+
+::tabs-start
+
+```python
+class Solution:
+    def maximumValueSum(self, nums: List[int], k: int, edges: List[List[int]]) -> int:
+        delta = [(num ^ k) - num for num in nums]
+        delta.sort(reverse=True)
+        res = sum(nums)
+
+        for i in range(0, len(nums), 2):
+            if i == len(nums) - 1:
+                break
+            path_delta = delta[i] + delta[i + 1]
+            if path_delta <= 0:
+                break
+            res += path_delta
+
+        return res
+```
+
+```java
+public class Solution {
+    public long maximumValueSum(int[] nums, int k, int[][] edges) {
+        int n = nums.length;
+        int[] delta = new int[n];
+        long res = 0;
+        for (int i = 0; i < n; i++) {
+            res += nums[i];
+            delta[i] = (nums[i] ^ k) - nums[i];
+        }
+
+        Arrays.sort(delta);
+        for (int i = n - 1; i > 0; i -= 2) {
+            int pathDelta = delta[i] + delta[i - 1];
+            if (pathDelta <= 0) {
+                break;
+            }
+            res += pathDelta;
+        }
+
+        return res;
+    }
+}
+```
+
+```cpp
+class Solution {
+public:
+    long long maximumValueSum(vector<int>& nums, int k, vector<vector<int>>& edges) {
+        int n = nums.size();
+        vector<int> delta(n);
+        long long res = 0;
+        for (int i = 0; i < n; i++) {
+            res += nums[i];
+            delta[i] = (nums[i] ^ k) - nums[i];
+        }
+
+        sort(delta.rbegin(), delta.rend());
+
+        for (int i = 0; i + 1 < n; i += 2) {
+            int pathDelta = delta[i] + delta[i + 1];
+            if (pathDelta <= 0) {
+                break;
+            }
+            res += pathDelta;
+        }
+
+        return res;
+    }
+};
+```
+
+```javascript
+class Solution {
+    /**
+     * @param {number[]} nums
+     * @param {number} k
+     * @param {number[][]} edges
+     * @return {number}
+     */
+    maximumValueSum(nums, k, edges) {
+        const n = nums.length;
+        let res = 0;
+        let delta = [];
+        for (let i = 0; i < n; i++) {
+            res += nums[i];
+            delta.push((nums[i] ^ k) - nums[i]);
+        }
+
+        delta.sort((a, b) => b - a);
+        for (let i = 0; i + 1 < n; i += 2) {
+            let pathDelta = delta[i] + delta[i + 1];
+            if (pathDelta <= 0) {
+                break;
+            }
+            res += pathDelta;
+        }
+
+        return res;
+    }
+}
+```
+
+```csharp
+public class Solution {
+    public long MaximumValueSum(int[] nums, int k, int[][] edges) {
+        int n = nums.Length;
+        int[] delta = new int[n];
+        long res = 0;
+
+        for (int i = 0; i < n; i++) {
+            res += nums[i];
+            delta[i] = (nums[i] ^ k) - nums[i];
+        }
+
+        Array.Sort(delta);
+        Array.Reverse(delta);
+
+        for (int i = 0; i + 1 < n; i += 2) {
+            int pathDelta = delta[i] + delta[i + 1];
+            if (pathDelta <= 0) break;
+            res += pathDelta;
+        }
+
+        return res;
+    }
+}
+```
+
+```go
+import "sort"
+
+func maximumValueSum(nums []int, k int, edges [][]int) int64 {
+    n := len(nums)
+    delta := make([]int, n)
+    res := int64(0)
+
+    for i := 0; i < n; i++ {
+        res += int64(nums[i])
+        delta[i] = (nums[i] ^ k) - nums[i]
+    }
+
+    sort.Sort(sort.Reverse(sort.IntSlice(delta)))
+
+    for i := 0; i+1 < n; i += 2 {
+        pathDelta := delta[i] + delta[i+1]
+        if pathDelta <= 0 {
+            break
+        }
+        res += int64(pathDelta)
+    }
+
+    return res
+}
+```
+
+```kotlin
+class Solution {
+    fun maximumValueSum(nums: IntArray, k: Int, edges: Array<IntArray>): Long {
+        val n = nums.size
+        val delta = IntArray(n)
+        var res = 0L
+
+        for (i in 0 until n) {
+            res += nums[i]
+            delta[i] = (nums[i] xor k) - nums[i]
+        }
+
+        delta.sortDescending()
+
+        var i = 0
+        while (i + 1 < n) {
+            val pathDelta = delta[i] + delta[i + 1]
+            if (pathDelta <= 0) break
+            res += pathDelta
+            i += 2
+        }
+
+        return res
+    }
+}
+```
+
+```swift
+class Solution {
+    func maximumValueSum(_ nums: [Int], _ k: Int, _ edges: [[Int]]) -> Int {
+        let n = nums.count
+        var delta = [Int](repeating: 0, count: n)
+        var res = 0
+
+        for i in 0..<n {
+            res += nums[i]
+            delta[i] = (nums[i] ^ k) - nums[i]
+        }
+
+        delta.sort(by: >)
+
+        var i = 0
+        while i + 1 < n {
+            let pathDelta = delta[i] + delta[i + 1]
+            if pathDelta <= 0 { break }
+            res += pathDelta
+            i += 2
+        }
+
+        return res
+    }
+}
+```
+
+```rust
+impl Solution {
+    pub fn maximum_value_sum(nums: Vec<i32>, k: i32, _edges: Vec<Vec<i32>>) -> i64 {
+        let n = nums.len();
+        let mut delta: Vec<i32> = nums.iter().map(|&num| (num ^ k) - num).collect();
+        delta.sort_unstable_by(|a, b| b.cmp(a));
+        let mut res: i64 = nums.iter().map(|&x| x as i64).sum();
+
+        let mut i = 0;
+        while i + 1 < n {
+            let path_delta = delta[i] + delta[i + 1];
+            if path_delta <= 0 { break; }
+            res += path_delta as i64;
+            i += 2;
+        }
+
+        res
+    }
+}
+```
+
+::tabs-end
+
+### Time & Space Complexity
+
+- Time complexity: $O(n \log n)$
+- Space complexity: $O(n)$
+
+---
+
+## 6. Greedy (Optimal)
+
+### Intuition
+
+We can optimize by avoiding sorting. For each node, greedily add whichever is larger: `nums[i]` or `nums[i] ^ k`. Track whether we have XORed an odd or even number of nodes. If odd at the end, we need to undo one operation. The minimum cost to fix parity is the smallest absolute difference `|nums[i] ^ k - nums[i]|` across all nodes.
+
+### Algorithm
+
+1. Initialize `res = 0`, `xorCnt = 0`, and `minDiff = infinity`.
+2. For each node:
+   - If `nums[i] ^ k > nums[i]`, add `nums[i] ^ k` to `res` and toggle `xorCnt`.
+   - Otherwise, add `nums[i]` to `res`.
+   - Update `minDiff = min(minDiff, |nums[i] ^ k - nums[i]|)`.
+3. If `xorCnt` is odd, subtract `minDiff` from `res` to fix parity.
+4. Return `res`.
+
+::tabs-start
+
+```python
+class Solution:
+    def maximumValueSum(self, nums: List[int], k: int, edges: List[List[int]]) -> int:
+        xorCnt = res = 0
+        minDiff = 1 << 30
+
+        for num in nums:
+            xorNum = num ^ k
+            if xorNum > num:
+                res += xorNum
+                xorCnt ^= 1
+            else:
+                res += num
+            minDiff = min(minDiff, abs(xorNum - num))
+
+        return res - xorCnt * minDiff
+```
+
+```java
+public class Solution {
+    public long maximumValueSum(int[] nums, int k, int[][] edges) {
+        int xorCnt = 0, minDiff = 1 << 30;
+        long res = 0;
+
+        for (int num : nums) {
+            int xorNum = num ^ k;
+            if (xorNum > num) {
+                res += xorNum;
+                xorCnt ^= 1;
+            } else {
+                res += num;
+            }
+            minDiff = Math.min(minDiff, Math.abs(xorNum - num));
+        }
+
+        return res - xorCnt * minDiff;
+    }
+}
+```
+
+```cpp
+class Solution {
+public:
+    long long maximumValueSum(vector<int>& nums, int k, vector<vector<int>>& edges) {
+        int xorCnt = 0, minDiff = 1 << 30;
+        long long res = 0;
+
+        for (int& num : nums) {
+            int xorNum = num ^ k;
+            if (xorNum > num) {
+                res += xorNum;
+                xorCnt ^= 1;
+            } else {
+                res += num;
+            }
+            minDiff = min(minDiff, abs(xorNum - num));
+        }
+
+        return res - (xorCnt * minDiff);
+    }
+};
+```
+
+```javascript
+class Solution {
+    /**
+     * @param {number[]} nums
+     * @param {number} k
+     * @param {number[][]} edges
+     * @return {number}
+     */
+    maximumValueSum(nums, k, edges) {
+        let xorCnt = 0,
+            res = 0,
+            minDiff = 1 << 30;
+
+        for (let num of nums) {
+            let xorNum = num ^ k;
+            if (xorNum > num) {
+                res += xorNum;
+                xorCnt ^= 1;
+            } else {
+                res += num;
+            }
+            minDiff = Math.min(minDiff, Math.abs(xorNum - num));
+        }
+
+        return res - xorCnt * minDiff;
+    }
+}
+```
+
+```csharp
+public class Solution {
+    public long MaximumValueSum(int[] nums, int k, int[][] edges) {
+        int xorCnt = 0, minDiff = 1 << 30;
+        long res = 0;
+
+        foreach (int num in nums) {
+            int xorNum = num ^ k;
+            if (xorNum > num) {
+                res += xorNum;
+                xorCnt ^= 1;
+            } else {
+                res += num;
+            }
+            minDiff = Math.Min(minDiff, Math.Abs(xorNum - num));
+        }
+
+        return res - xorCnt * minDiff;
+    }
+}
+```
+
+```go
+func maximumValueSum(nums []int, k int, edges [][]int) int64 {
+    xorCnt := 0
+    minDiff := 1 << 30
+    res := int64(0)
+
+    for _, num := range nums {
+        xorNum := num ^ k
+        if xorNum > num {
+            res += int64(xorNum)
+            xorCnt ^= 1
+        } else {
+            res += int64(num)
+        }
+        diff := xorNum - num
+        if diff < 0 {
+            diff = -diff
+        }
+        if diff < minDiff {
+            minDiff = diff
+        }
+    }
+
+    return res - int64(xorCnt*minDiff)
+}
+```
+
+```kotlin
+class Solution {
+    fun maximumValueSum(nums: IntArray, k: Int, edges: Array<IntArray>): Long {
+        var xorCnt = 0
+        var minDiff = 1 shl 30
+        var res = 0L
+
+        for (num in nums) {
+            val xorNum = num xor k
+            if (xorNum > num) {
+                res += xorNum
+                xorCnt = xorCnt xor 1
+            } else {
+                res += num
+            }
+            minDiff = minOf(minDiff, kotlin.math.abs(xorNum - num))
+        }
+
+        return res - xorCnt * minDiff
+    }
+}
+```
+
+```swift
+class Solution {
+    func maximumValueSum(_ nums: [Int], _ k: Int, _ edges: [[Int]]) -> Int {
+        var xorCnt = 0
+        var minDiff = 1 << 30
+        var res = 0
+
+        for num in nums {
+            let xorNum = num ^ k
+            if xorNum > num {
+                res += xorNum
+                xorCnt ^= 1
+            } else {
+                res += num
+            }
+            minDiff = min(minDiff, abs(xorNum - num))
+        }
+
+        return res - xorCnt * minDiff
+    }
+}
+```
+
+```rust
+impl Solution {
+    pub fn maximum_value_sum(nums: Vec<i32>, k: i32, _edges: Vec<Vec<i32>>) -> i64 {
+        let mut xor_cnt = 0;
+        let mut min_diff = 1 << 30;
+        let mut res: i64 = 0;
+
+        for &num in &nums {
+            let xor_num = num ^ k;
+            if xor_num > num {
+                res += xor_num as i64;
+                xor_cnt ^= 1;
+            } else {
+                res += num as i64;
+            }
+            min_diff = min_diff.min((xor_num - num).abs());
+        }
+
+        res - (xor_cnt as i64) * (min_diff as i64)
+    }
+}
+```
+
+::tabs-end
+
+### Time & Space Complexity
+
+- Time complexity: $O(n)$
+- Space complexity: $O(1)$ extra space.
+
+---
+
+## Common Pitfalls
+
+### Forgetting the Even Parity Constraint
+
+The XOR operation on an edge affects both endpoints simultaneously. This means you must XOR an even number of nodes in total. Forgetting this constraint and greedily XORing any node that benefits individually will produce incorrect results when an odd number of nodes would improve.
+
+### Ignoring That Tree Structure Allows Any Pair
+
+A key insight is that applying XOR operations along a path allows you to effectively XOR any pair of nodes, not just adjacent ones. Many solutions incorrectly try to only consider adjacent node pairs, missing that the tree structure enables reaching any two nodes through a sequence of edge operations.
+
+### Integer Overflow in Sum Calculations
+
+When summing node values (especially after XOR operations), the total can exceed 32-bit integer limits. Using `int` instead of `long` in languages like Java, C++, or C# will cause overflow errors on large inputs.
+
+### Incorrectly Computing the Minimum Difference for Parity Fix
+
+In the optimal greedy approach, if an odd number of nodes are XORed, you need to undo one operation. The cost to fix parity is the minimum absolute difference `|nums[i] ^ k - nums[i]|` across all nodes. A common mistake is taking the minimum gain rather than the minimum absolute difference, or forgetting to track this value during iteration.
+
+### Misunderstanding XOR Self-Cancellation
+
+Applying XOR with `k` twice on the same value returns the original value. Some solutions fail to recognize that repeated operations on the same edge cancel out, leading to unnecessarily complex state tracking or incorrect assumptions about which operations are possible.

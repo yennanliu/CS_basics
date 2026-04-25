@@ -1,0 +1,798 @@
+## Prerequisites
+
+Before attempting this problem, you should be comfortable with:
+
+- **Hash Maps / Frequency Counting** - Counting character occurrences in a string
+- **Custom Comparators** - Sorting based on frequency rather than natural ordering
+- **Bucket Sort** - Grouping elements by frequency for linear time complexity
+
+---
+
+## 1. Sorting
+
+### Intuition
+
+To sort characters by frequency, we first need to know how often each character appears. Once we have the frequencies, we can sort the entire string using a custom comparator that prioritizes higher frequencies. Characters with the same frequency are sorted alphabetically for consistency.
+
+### Algorithm
+
+1. Count the frequency of each character in the string.
+2. Sort all characters using a custom comparator:
+    - Higher frequency comes first.
+    - If frequencies are equal, sort by character value for consistency.
+3. Join the sorted characters into a string and return it.
+
+::tabs-start
+
+```python
+class Solution:
+    def frequencySort(self, s: str) -> str:
+        count = Counter(s)
+        sorted_chars = sorted(s, key=lambda x: (-count[x], x))
+        return ''.join(sorted_chars)
+```
+
+```java
+public class Solution {
+    public String frequencySort(String s) {
+        int[] count = new int[123];
+        for (char c : s.toCharArray()) {
+            count[c]++;
+        }
+
+        Character[] chars = new Character[s.length()];
+        for (int i = 0; i < s.length(); i++) {
+            chars[i] = s.charAt(i);
+        }
+
+        Arrays.sort(chars, (a, b) -> {
+            if (count[b] == count[a]) {
+                return a - b;
+            }
+            return count[b] - count[a];
+        });
+
+        StringBuilder result = new StringBuilder();
+        for (char c : chars) {
+            result.append(c);
+        }
+
+        return result.toString();
+    }
+}
+```
+
+```cpp
+class Solution {
+public:
+    string frequencySort(string s) {
+        vector<int> count(123);
+        for (char c : s) {
+            count[c]++;
+        }
+
+        vector<char> chars(s.begin(), s.end());
+        sort(chars.begin(), chars.end(), [&](char a, char b) {
+            if (count[b] == count[a]) {
+                return a < b;
+            }
+            return count[b] < count[a];
+        });
+
+        return string(chars.begin(), chars.end());
+    }
+};
+```
+
+```javascript
+class Solution {
+    /**
+     * @param {string} s
+     * @return {string}
+     */
+    frequencySort(s) {
+        const count = {};
+        for (const char of s) {
+            count[char] = (count[char] || 0) + 1;
+        }
+
+        const sortedChars = [...s].sort((a, b) => {
+            if (count[b] === count[a]) {
+                return a.localeCompare(b);
+            }
+            return count[b] - count[a];
+        });
+
+        return sortedChars.join('');
+    }
+}
+```
+
+```csharp
+public class Solution {
+    public string FrequencySort(string s) {
+        int[] count = new int[123];
+        foreach (char c in s) {
+            count[c]++;
+        }
+
+        char[] chars = s.ToCharArray();
+        Array.Sort(chars, (a, b) => {
+            if (count[b] == count[a]) {
+                return a.CompareTo(b);
+            }
+            return count[b].CompareTo(count[a]);
+        });
+
+        return new string(chars);
+    }
+}
+```
+
+```go
+func frequencySort(s string) string {
+    count := make([]int, 123)
+    for _, c := range s {
+        count[c]++
+    }
+
+    chars := []rune(s)
+    sort.Slice(chars, func(i, j int) bool {
+        if count[chars[i]] == count[chars[j]] {
+            return chars[i] < chars[j]
+        }
+        return count[chars[i]] > count[chars[j]]
+    })
+
+    return string(chars)
+}
+```
+
+```kotlin
+class Solution {
+    fun frequencySort(s: String): String {
+        val count = IntArray(123)
+        for (c in s) {
+            count[c.code]++
+        }
+
+        return s.toCharArray()
+            .sortedWith(compareBy({ -count[it.code] }, { it }))
+            .joinToString("")
+    }
+}
+```
+
+```swift
+class Solution {
+    func frequencySort(_ s: String) -> String {
+        var count = [Int](repeating: 0, count: 123)
+        for c in s {
+            count[Int(c.asciiValue!)] += 1
+        }
+
+        let sortedChars = s.sorted { a, b in
+            let countA = count[Int(a.asciiValue!)]
+            let countB = count[Int(b.asciiValue!)]
+            if countA == countB {
+                return a < b
+            }
+            return countA > countB
+        }
+
+        return String(sortedChars)
+    }
+}
+```
+
+```rust
+impl Solution {
+    pub fn frequency_sort(s: String) -> String {
+        let mut count = [0i32; 123];
+        for b in s.bytes() {
+            count[b as usize] += 1;
+        }
+
+        let mut chars: Vec<u8> = s.into_bytes();
+        chars.sort_by(|&a, &b| {
+            if count[b as usize] == count[a as usize] {
+                a.cmp(&b)
+            } else {
+                count[b as usize].cmp(&count[a as usize])
+            }
+        });
+
+        String::from_utf8(chars).unwrap()
+    }
+}
+```
+
+::tabs-end
+
+### Time & Space Complexity
+
+- Time complexity: $O(n \log n)$
+- Space complexity: $O(1)$ or $O(n)$ depending on the sorting algorithm.
+
+---
+
+## 2. Frequency Sort
+
+### Intuition
+
+Instead of sorting all characters individually, we can sort the unique characters by their frequencies. This is more efficient because the number of unique characters is bounded (at most 62 for alphanumeric). After sorting the unique characters, we build the result by repeating each character according to its frequency.
+
+### Algorithm
+
+1. Count the frequency of each character.
+2. Create a list of (character, frequency) pairs for characters that appear at least once.
+3. Sort this list by frequency in descending order (with alphabetical tiebreaker).
+4. Build the result string by repeating each character by its frequency count.
+
+::tabs-start
+
+```python
+class Solution:
+    def frequencySort(self, s: str) -> str:
+        count = [0] * 123
+        for c in s:
+            count[ord(c)] += 1
+
+        freq = [(chr(i), count[i]) for i in range(123) if count[i] > 0]
+        freq.sort(key=lambda x: (-x[1], x[0]))
+
+        return ''.join(char * freq for char, freq in freq)
+```
+
+```java
+public class Solution {
+    public String frequencySort(String s) {
+        int[] count = new int[123];
+        for (char c : s.toCharArray()) {
+            count[c]++;
+        }
+
+        List<int[]> freq = new ArrayList<>();
+        for (int i = 0; i < 123; i++) {
+            if (count[i] > 0) {
+                freq.add(new int[]{i, count[i]});
+            }
+        }
+
+        freq.sort((a, b) -> {
+            if (b[1] == a[1]) {
+                return a[0] - b[0];
+            }
+            return b[1] - a[1];
+        });
+
+        StringBuilder res = new StringBuilder();
+        for (int[] entry : freq) {
+            for (int i = 0; i < entry[1]; i++) {
+                res.append((char) entry[0]);
+            }
+        }
+
+        return res.toString();
+    }
+}
+```
+
+```cpp
+class Solution {
+public:
+    string frequencySort(string s) {
+        vector<int> count(123, 0);
+        for (char c : s) {
+            count[c]++;
+        }
+
+        vector<pair<char, int>> freq;
+        for (int i = 0; i < 123; i++) {
+            if (count[i] > 0) {
+                freq.emplace_back((char)i, count[i]);
+            }
+        }
+
+        sort(freq.begin(), freq.end(), [](auto& a, auto& b) {
+            if (a.second == b.second) {
+                return a.first < b.first;
+            }
+            return a.second > b.second;
+        });
+
+        string res;
+        for (const auto& entry : freq) {
+            res += string(entry.second, entry.first);
+        }
+
+        return res;
+    }
+};
+```
+
+```javascript
+class Solution {
+    /**
+     * @param {string} s
+     * @return {string}
+     */
+    frequencySort(s) {
+        const count = new Array(123).fill(0);
+        for (const char of s) {
+            count[char.charCodeAt(0)]++;
+        }
+
+        const freq = [];
+        for (let i = 0; i < 123; i++) {
+            if (count[i] > 0) {
+                freq.push([String.fromCharCode(i), count[i]]);
+            }
+        }
+
+        freq.sort((a, b) => {
+            if (b[1] === a[1]) {
+                return a[0].localeCompare(b[0]);
+            }
+            return b[1] - a[1];
+        });
+
+        let res = '';
+        for (const [char, freqCount] of freq) {
+            res += char.repeat(freqCount);
+        }
+
+        return res;
+    }
+}
+```
+
+```csharp
+public class Solution {
+    public string FrequencySort(string s) {
+        int[] count = new int[123];
+        foreach (char c in s) {
+            count[c]++;
+        }
+
+        var freq = new List<(char ch, int cnt)>();
+        for (int i = 0; i < 123; i++) {
+            if (count[i] > 0) {
+                freq.Add(((char)i, count[i]));
+            }
+        }
+
+        freq.Sort((a, b) => {
+            if (b.cnt == a.cnt) {
+                return a.ch.CompareTo(b.ch);
+            }
+            return b.cnt.CompareTo(a.cnt);
+        });
+
+        var res = new StringBuilder();
+        foreach (var (ch, cnt) in freq) {
+            res.Append(ch, cnt);
+        }
+
+        return res.ToString();
+    }
+}
+```
+
+```go
+func frequencySort(s string) string {
+    count := make([]int, 123)
+    for _, c := range s {
+        count[c]++
+    }
+
+    type pair struct {
+        ch   rune
+        freq int
+    }
+
+    freq := []pair{}
+    for i := 0; i < 123; i++ {
+        if count[i] > 0 {
+            freq = append(freq, pair{rune(i), count[i]})
+        }
+    }
+
+    sort.Slice(freq, func(i, j int) bool {
+        if freq[i].freq == freq[j].freq {
+            return freq[i].ch < freq[j].ch
+        }
+        return freq[i].freq > freq[j].freq
+    })
+
+    var res strings.Builder
+    for _, p := range freq {
+        for i := 0; i < p.freq; i++ {
+            res.WriteRune(p.ch)
+        }
+    }
+
+    return res.String()
+}
+```
+
+```kotlin
+class Solution {
+    fun frequencySort(s: String): String {
+        val count = IntArray(123)
+        for (c in s) {
+            count[c.code]++
+        }
+
+        val freq = mutableListOf<Pair<Char, Int>>()
+        for (i in 0 until 123) {
+            if (count[i] > 0) {
+                freq.add(Pair(i.toChar(), count[i]))
+            }
+        }
+
+        freq.sortWith(compareBy({ -it.second }, { it.first }))
+
+        val res = StringBuilder()
+        for ((ch, cnt) in freq) {
+            repeat(cnt) { res.append(ch) }
+        }
+
+        return res.toString()
+    }
+}
+```
+
+```swift
+class Solution {
+    func frequencySort(_ s: String) -> String {
+        var count = [Int](repeating: 0, count: 123)
+        for c in s {
+            count[Int(c.asciiValue!)] += 1
+        }
+
+        var freq = [(Character, Int)]()
+        for i in 0..<123 {
+            if count[i] > 0 {
+                freq.append((Character(UnicodeScalar(i)!), count[i]))
+            }
+        }
+
+        freq.sort { a, b in
+            if a.1 == b.1 {
+                return a.0 < b.0
+            }
+            return a.1 > b.1
+        }
+
+        var res = ""
+        for (ch, cnt) in freq {
+            res += String(repeating: String(ch), count: cnt)
+        }
+
+        return res
+    }
+}
+```
+
+```rust
+impl Solution {
+    pub fn frequency_sort(s: String) -> String {
+        let mut count = [0i32; 123];
+        for b in s.bytes() {
+            count[b as usize] += 1;
+        }
+
+        let mut freq: Vec<(u8, i32)> = (0u8..123)
+            .filter(|&i| count[i as usize] > 0)
+            .map(|i| (i, count[i as usize]))
+            .collect();
+
+        freq.sort_by(|a, b| {
+            if a.1 == b.1 {
+                a.0.cmp(&b.0)
+            } else {
+                b.1.cmp(&a.1)
+            }
+        });
+
+        let mut res = String::new();
+        for &(ch, cnt) in &freq {
+            for _ in 0..cnt {
+                res.push(ch as char);
+            }
+        }
+
+        res
+    }
+}
+```
+
+::tabs-end
+
+### Time & Space Complexity
+
+- Time complexity: $O(n)$
+- Space complexity: $O(n)$ for the output string.
+
+---
+
+## 3. Bucket Sort
+
+### Intuition
+
+Bucket sort avoids comparison-based sorting entirely. Since frequencies range from 1 to n (the string length), we create buckets indexed by frequency. Each bucket holds characters that appear exactly that many times. By iterating from the highest frequency bucket down to the lowest, we naturally process characters in the required order.
+
+### Algorithm
+
+1. Count the frequency of each character.
+2. Create buckets where `bucket[i]` contains all characters with frequency `i`.
+3. Iterate from the highest possible frequency (string length) down to `1`.
+4. For each character in the current bucket, append it to the result the appropriate number of times.
+5. Return the result string.
+
+::tabs-start
+
+```python
+class Solution:
+    def frequencySort(self, s: str) -> str:
+        count = Counter(s)  # char -> freq
+        buckets = defaultdict(list)  # freq -> [char]
+
+        for char, freq in count.items():
+            buckets[freq].append(char)
+
+        res = []
+        for i in range(len(s), 0, -1):
+            if i in buckets:
+                for c in buckets[i]:
+                    res.append(c * i)
+
+        return "".join(res)
+```
+
+```java
+public class Solution {
+    public String frequencySort(String s) {
+        Map<Character, Integer> count = new HashMap<>();
+        for (char c : s.toCharArray()) {
+            count.put(c, count.getOrDefault(c, 0) + 1);
+        }
+
+        List<List<Character>> buckets = new ArrayList<>(s.length() + 1);
+        for (int i = 0; i <= s.length(); i++) {
+            buckets.add(new ArrayList<>());
+        }
+
+        for (Map.Entry<Character, Integer> entry : count.entrySet()) {
+            buckets.get(entry.getValue()).add(entry.getKey());
+        }
+
+        StringBuilder res = new StringBuilder();
+        for (int i = s.length(); i > 0; i--) {
+            for (char c : buckets.get(i)) {
+                for (int j = 0; j < i; j++) {
+                    res.append(c);
+                }
+            }
+        }
+
+        return res.toString();
+    }
+}
+```
+
+```cpp
+class Solution {
+public:
+    string frequencySort(string s) {
+        unordered_map<char, int> count;
+        for (char c : s) {
+            count[c]++;
+        }
+
+        vector<vector<char>> buckets(s.size() + 1);
+        for (auto& entry : count) {
+            buckets[entry.second].push_back(entry.first);
+        }
+
+        string res;
+        for (int i = s.size(); i > 0; i--) {
+            for (char c : buckets[i]) {
+                res += string(i, c);
+            }
+        }
+
+        return res;
+    }
+};
+```
+
+```javascript
+class Solution {
+    /**
+     * @param {string} s
+     * @return {string}
+     */
+    frequencySort(s) {
+        const count = {};
+        for (const char of s) {
+            count[char] = (count[char] || 0) + 1;
+        }
+
+        const buckets = Array.from({ length: s.length + 1 }, () => []);
+        for (const [char, freq] of Object.entries(count)) {
+            buckets[freq].push(char);
+        }
+
+        let res = '';
+        for (let i = s.length; i > 0; i--) {
+            for (const char of buckets[i]) {
+                res += char.repeat(i);
+            }
+        }
+
+        return res;
+    }
+}
+```
+
+```csharp
+public class Solution {
+    public string FrequencySort(string s) {
+        var count = new Dictionary<char, int>();
+        foreach (char c in s) {
+            if (!count.ContainsKey(c)) count[c] = 0;
+            count[c]++;
+        }
+
+        var buckets = new List<List<char>>(s.Length + 1);
+        for (int i = 0; i <= s.Length; i++) {
+            buckets.Add(new List<char>());
+        }
+
+        foreach (var entry in count) {
+            buckets[entry.Value].Add(entry.Key);
+        }
+
+        var res = new StringBuilder();
+        for (int i = s.Length; i > 0; i--) {
+            foreach (char c in buckets[i]) {
+                res.Append(c, i);
+            }
+        }
+
+        return res.ToString();
+    }
+}
+```
+
+```go
+func frequencySort(s string) string {
+    count := make(map[rune]int)
+    for _, c := range s {
+        count[c]++
+    }
+
+    buckets := make([][]rune, len(s)+1)
+    for i := range buckets {
+        buckets[i] = []rune{}
+    }
+
+    for char, freq := range count {
+        buckets[freq] = append(buckets[freq], char)
+    }
+
+    var res strings.Builder
+    for i := len(s); i > 0; i-- {
+        for _, c := range buckets[i] {
+            for j := 0; j < i; j++ {
+                res.WriteRune(c)
+            }
+        }
+    }
+
+    return res.String()
+}
+```
+
+```kotlin
+class Solution {
+    fun frequencySort(s: String): String {
+        val count = mutableMapOf<Char, Int>()
+        for (c in s) {
+            count[c] = count.getOrDefault(c, 0) + 1
+        }
+
+        val buckets = MutableList(s.length + 1) { mutableListOf<Char>() }
+        for ((char, freq) in count) {
+            buckets[freq].add(char)
+        }
+
+        val res = StringBuilder()
+        for (i in s.length downTo 1) {
+            for (c in buckets[i]) {
+                repeat(i) { res.append(c) }
+            }
+        }
+
+        return res.toString()
+    }
+}
+```
+
+```swift
+class Solution {
+    func frequencySort(_ s: String) -> String {
+        var count = [Character: Int]()
+        for c in s {
+            count[c, default: 0] += 1
+        }
+
+        var buckets = [[Character]](repeating: [], count: s.count + 1)
+        for (char, freq) in count {
+            buckets[freq].append(char)
+        }
+
+        var res = ""
+        for i in stride(from: s.count, through: 1, by: -1) {
+            for c in buckets[i] {
+                res += String(repeating: String(c), count: i)
+            }
+        }
+
+        return res
+    }
+}
+```
+
+```rust
+impl Solution {
+    pub fn frequency_sort(s: String) -> String {
+        let mut count = HashMap::new();
+        for b in s.bytes() {
+            *count.entry(b).or_insert(0) += 1;
+        }
+
+        let n = s.len();
+        let mut buckets = vec![vec![]; n + 1];
+        for (&ch, &freq) in &count {
+            buckets[freq as usize].push(ch);
+        }
+
+        let mut res = String::new();
+        for i in (1..=n).rev() {
+            for &c in &buckets[i] {
+                for _ in 0..i {
+                    res.push(c as char);
+                }
+            }
+        }
+
+        res
+    }
+}
+```
+
+::tabs-end
+
+### Time & Space Complexity
+
+- Time complexity: $O(n)$
+- Space complexity: $O(n)$
+
+---
+
+## Common Pitfalls
+
+### Assuming Only Lowercase Letters
+
+The input can contain uppercase letters and digits (ASCII 48-122), not just lowercase letters (97-122). Using an array of size 26 or only indexing by `c - 'a'` causes index out of bounds errors or incorrect results for uppercase letters and digits.
+
+### Not Grouping Same Characters Together
+
+The output must have all occurrences of each character adjacent to each other. Simply sorting by frequency without ensuring character grouping can interleave different characters with the same frequency, producing invalid output.
+
+### Using an Unstable Sort Without Grouping
+
+When sorting individual characters by frequency, an unstable sort may scatter characters with the same frequency. Either use bucket sort which naturally groups characters, or sort unique characters first and then build the result by repeating each character.

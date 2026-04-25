@@ -1,0 +1,1338 @@
+## Prerequisites
+
+Before attempting this problem, you should be comfortable with:
+
+- **Binary Trees** - Understanding tree structure and traversal patterns
+- **Breadth First Search (BFS)** - Level-order traversal ensures correct top-to-bottom ordering within columns
+- **Hash Maps** - Used to group nodes by their column index for efficient lookup
+- **Sorting** - Required to order columns from left to right in some approaches
+
+---
+
+## 1. Breadth First Search + Sorting
+
+### Intuition
+
+We assign each node a column index where the root is at column `0`, left children are at `column - 1`, and right children are at `column + 1`. Using BFS ensures we visit nodes level by level, so nodes in the same column appear in top-to-bottom order. We group nodes by their column index and sort the columns to get the final result.
+
+### Algorithm
+
+1. Use a hash map to group node values by their column index.
+2. Initialize a queue with the root node and its column index (`0`).
+3. While the queue is not empty:
+    - Dequeue a node and its column index.
+    - Add the node's value to the corresponding column list.
+    - Enqueue the left child with `column - 1` and right child with `column + 1`.
+4. Sort the column keys and return the values in order.
+
+::tabs-start
+
+```python
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def verticalOrder(self, root: Optional[TreeNode]) -> List[List[int]]:
+        cols = defaultdict(list)
+        que = deque([(root, 0)])
+
+        while que:
+            node, pos = que.popleft()
+            if node:
+                cols[pos].append(node.val)
+                que.append((node.left, pos - 1))
+                que.append((node.right, pos + 1))
+
+        return [cols[x] for x in sorted(cols)]
+```
+
+```java
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+public class Solution {
+    public List<List<Integer>> verticalOrder(TreeNode root) {
+        if (root == null) return new ArrayList<>();
+
+        Map<Integer, List<Integer>> cols = new TreeMap<>();
+        Queue<Pair<TreeNode, Integer>> queue = new LinkedList<>();
+        queue.offer(new Pair<>(root, 0));
+
+        while (!queue.isEmpty()) {
+            Pair<TreeNode, Integer> p = queue.poll();
+            TreeNode node = p.getKey();
+            int pos = p.getValue();
+
+            cols.computeIfAbsent(pos, k -> new ArrayList<>()).add(node.val);
+
+            if (node.left != null) queue.offer(new Pair<>(node.left, pos - 1));
+            if (node.right != null) queue.offer(new Pair<>(node.right, pos + 1));
+        }
+
+        return new ArrayList<>(cols.values());
+    }
+}
+```
+
+```cpp
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    vector<vector<int>> verticalOrder(TreeNode* root) {
+        if (!root) return {};
+        map<int, vector<int>> cols;
+        queue<pair<TreeNode*, int>> q;
+        q.push({root, 0});
+
+        while (!q.empty()) {
+            auto [node, pos] = q.front(); q.pop();
+            cols[pos].push_back(node->val);
+            if (node->left) q.push({node->left, pos - 1});
+            if (node->right) q.push({node->right, pos + 1});
+        }
+
+        vector<vector<int>> res;
+        for (auto& [_, vec] : cols)
+            res.push_back(vec);
+        return res;
+    }
+};
+```
+
+```javascript
+/**
+ * Definition for a binary tree node.
+ * class TreeNode {
+ *     constructor(val = 0, left = null, right = null) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    /**
+     * @param {TreeNode} root
+     * @return {number[][]}
+     */
+    verticalOrder(root) {
+        if (!root) return [];
+
+        const cols = new Map();
+        const queue = new Queue([[root, 0]]);
+
+        while (!queue.isEmpty()) {
+            const [node, pos] = queue.pop();
+            if (!cols.has(pos)) cols.set(pos, []);
+            cols.get(pos).push(node.val);
+
+            if (node.left) queue.push([node.left, pos - 1]);
+            if (node.right) queue.push([node.right, pos + 1]);
+        }
+
+        const sortedKeys = Array.from(cols.keys()).sort((a, b) => a - b);
+        return sortedKeys.map((k) => cols.get(k));
+    }
+}
+```
+
+```csharp
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     public int val;
+ *     public TreeNode left;
+ *     public TreeNode right;
+ *     public TreeNode(int val=0, TreeNode left=null, TreeNode right=null) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+public class Solution {
+    public List<List<int>> VerticalOrder(TreeNode root) {
+        if (root == null) return new List<List<int>>();
+
+        var cols = new SortedDictionary<int, List<int>>();
+        var queue = new Queue<(TreeNode node, int pos)>();
+        queue.Enqueue((root, 0));
+
+        while (queue.Count > 0) {
+            var (node, pos) = queue.Dequeue();
+
+            if (!cols.ContainsKey(pos))
+                cols[pos] = new List<int>();
+            cols[pos].Add(node.val);
+
+            if (node.left != null) queue.Enqueue((node.left, pos - 1));
+            if (node.right != null) queue.Enqueue((node.right, pos + 1));
+        }
+
+        return cols.Values.ToList<List<int>>();
+    }
+}
+```
+
+```go
+func verticalOrder(root *TreeNode) [][]int {
+    if root == nil {
+        return [][]int{}
+    }
+
+    cols := make(map[int][]int)
+    type pair struct {
+        node *TreeNode
+        pos  int
+    }
+    queue := []pair{{root, 0}}
+
+    for len(queue) > 0 {
+        p := queue[0]
+        queue = queue[1:]
+        cols[p.pos] = append(cols[p.pos], p.node.Val)
+
+        if p.node.Left != nil {
+            queue = append(queue, pair{p.node.Left, p.pos - 1})
+        }
+        if p.node.Right != nil {
+            queue = append(queue, pair{p.node.Right, p.pos + 1})
+        }
+    }
+
+    keys := make([]int, 0, len(cols))
+    for k := range cols {
+        keys = append(keys, k)
+    }
+    sort.Ints(keys)
+
+    res := make([][]int, len(keys))
+    for i, k := range keys {
+        res[i] = cols[k]
+    }
+    return res
+}
+```
+
+```kotlin
+class Solution {
+    fun verticalOrder(root: TreeNode?): List<List<Int>> {
+        if (root == null) return emptyList()
+
+        val cols = sortedMapOf<Int, MutableList<Int>>()
+        val queue = ArrayDeque<Pair<TreeNode, Int>>()
+        queue.add(Pair(root, 0))
+
+        while (queue.isNotEmpty()) {
+            val (node, pos) = queue.removeFirst()
+            cols.getOrPut(pos) { mutableListOf() }.add(node.`val`)
+
+            node.left?.let { queue.add(Pair(it, pos - 1)) }
+            node.right?.let { queue.add(Pair(it, pos + 1)) }
+        }
+
+        return cols.values.toList()
+    }
+}
+```
+
+```swift
+class Solution {
+    func verticalOrder(_ root: TreeNode?) -> [[Int]] {
+        guard let root = root else { return [] }
+
+        var cols = [Int: [Int]]()
+        var queue = [(TreeNode, Int)]()
+        queue.append((root, 0))
+
+        while !queue.isEmpty {
+            let (node, pos) = queue.removeFirst()
+            cols[pos, default: []].append(node.val)
+
+            if let left = node.left {
+                queue.append((left, pos - 1))
+            }
+            if let right = node.right {
+                queue.append((right, pos + 1))
+            }
+        }
+
+        return cols.keys.sorted().map { cols[$0]! }
+    }
+}
+```
+
+```rust
+impl Solution {
+    pub fn vertical_order(root: Option<Rc<RefCell<TreeNode>>>) -> Vec<Vec<i32>> {
+        if root.is_none() {
+            return vec![];
+        }
+
+        let mut cols: BTreeMap<i32, Vec<i32>> = BTreeMap::new();
+        let mut queue: VecDeque<(Rc<RefCell<TreeNode>>, i32)> = VecDeque::new();
+        queue.push_back((root.unwrap(), 0));
+
+        while let Some((node, pos)) = queue.pop_front() {
+            let node_ref = node.borrow();
+            cols.entry(pos).or_default().push(node_ref.val);
+
+            if let Some(ref left) = node_ref.left {
+                queue.push_back((left.clone(), pos - 1));
+            }
+            if let Some(ref right) = node_ref.right {
+                queue.push_back((right.clone(), pos + 1));
+            }
+        }
+
+        cols.into_values().collect()
+    }
+}
+```
+
+::tabs-end
+
+### Time & Space Complexity
+
+- Time complexity: $O(n \log n)$
+- Space complexity: $O(n)$
+
+---
+
+## 2. Depth First Search + Sorting
+
+### Intuition
+
+DFS can also solve this problem, but we need to track each node's row to maintain the correct vertical order within columns. Since DFS doesn't naturally visit nodes in level order, we store both the row and value for each node. After traversal, we sort each column by row index to ensure nodes appear in top-to-bottom order.
+
+### Algorithm
+
+1. Use a hash map to store pairs of `(row, value)` for each column.
+2. Define a `dfs` function that takes the current `node`, `row`, and `column`.
+3. If the `node` is `null`, return.
+4. Add `(row, node value)` to the column's list.
+5. Recursively call `dfs` on the left child with `(row + 1, column - 1)` and right child with `(row + 1, column + 1)`.
+6. Sort the columns by their keys, then sort each column's entries by row.
+7. Extract just the values from each sorted column list.
+
+::tabs-start
+
+```python
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def verticalOrder(self, root: Optional[TreeNode]) -> List[List[int]]:
+        cols = defaultdict(list)
+
+        def dfs(node, row, col):
+            if not node:
+                return
+            cols[col].append((row, node.val))
+            dfs(node.left, row + 1, col - 1)
+            dfs(node.right, row + 1, col + 1)
+
+        dfs(root, 0, 0)
+
+        res = []
+        for col in sorted(cols):
+            col_vals = sorted(cols[col], key=lambda x: x[0])
+            res.append([val for _, val in col_vals])
+        return res
+```
+
+```java
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+public class Solution {
+    private Map<Integer, List<int[]>> cols = new TreeMap<>();
+
+    public List<List<Integer>> verticalOrder(TreeNode root) {
+        dfs(root, 0, 0);
+        List<List<Integer>> res = new ArrayList<>();
+
+        for (List<int[]> list : cols.values()) {
+            list.sort(Comparator.comparingInt(a -> a[0]));
+            List<Integer> colVals = new ArrayList<>();
+            for (int[] p : list) colVals.add(p[1]);
+            res.add(colVals);
+        }
+
+        return res;
+    }
+
+    private void dfs(TreeNode node, int row, int col) {
+        if (node == null) return;
+        cols.computeIfAbsent(col, k -> new ArrayList<>()).add(new int[]{row, node.val});
+        dfs(node.left, row + 1, col - 1);
+        dfs(node.right, row + 1, col + 1);
+    }
+}
+```
+
+```cpp
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+    map<int, vector<pair<int, int>>> cols;
+
+    void dfs(TreeNode* node, int row, int col) {
+        if (!node) return;
+        cols[col].push_back({row, node->val});
+        dfs(node->left, row + 1, col - 1);
+        dfs(node->right, row + 1, col + 1);
+    }
+
+public:
+    vector<vector<int>> verticalOrder(TreeNode* root) {
+        dfs(root, 0, 0);
+        vector<vector<int>> res;
+
+        for (auto& [col, vec] : cols) {
+            stable_sort(vec.begin(), vec.end(),
+                        [](const pair<int, int>& a, const pair<int, int>& b) {
+                            return a.first < b.first;  // sort ONLY by row
+                        });
+
+            vector<int> colVals;
+            for (auto& [_, val] : vec)
+                colVals.push_back(val);
+            res.push_back(colVals);
+        }
+
+        return res;
+    }
+};
+```
+
+```javascript
+/**
+ * Definition for a binary tree node.
+ * class TreeNode {
+ *     constructor(val = 0, left = null, right = null) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    /**
+     * @param {TreeNode} root
+     * @return {number[][]}
+     */
+    verticalOrder(root) {
+        const cols = new Map();
+
+        const dfs = (node, row, col) => {
+            if (!node) return;
+            if (!cols.has(col)) cols.set(col, []);
+            cols.get(col).push([row, node.val]);
+            dfs(node.left, row + 1, col - 1);
+            dfs(node.right, row + 1, col + 1);
+        };
+
+        dfs(root, 0, 0);
+
+        const sortedCols = Array.from(cols.entries()).sort(
+            (a, b) => a[0] - b[0],
+        );
+        return sortedCols.map(([_, vec]) =>
+            vec.sort((a, b) => a[0] - b[0]).map(([_, val]) => val),
+        );
+    }
+}
+```
+
+```csharp
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     public int val;
+ *     public TreeNode left;
+ *     public TreeNode right;
+ *     public TreeNode(int val=0, TreeNode left=null, TreeNode right=null) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+public class Solution {
+    private SortedDictionary<int, List<(int, int)>> cols = new();
+
+    public List<List<int>> VerticalOrder(TreeNode root) {
+        DFS(root, 0, 0);
+
+        List<List<int>> res = new();
+        foreach (var entry in cols) {
+            var list = entry.Value.OrderBy(x => x.Item1).Select(x => x.Item2).ToList();
+            res.Add(list);
+        }
+
+        return res;
+    }
+
+    private void DFS(TreeNode node, int row, int col) {
+        if (node == null) return;
+        if (!cols.ContainsKey(col)) cols[col] = new List<(int, int)>();
+        cols[col].Add((row, node.val));
+        DFS(node.left, row + 1, col - 1);
+        DFS(node.right, row + 1, col + 1);
+    }
+}
+```
+
+```go
+func verticalOrder(root *TreeNode) [][]int {
+    if root == nil {
+        return [][]int{}
+    }
+
+    cols := make(map[int][][2]int)
+
+    var dfs func(node *TreeNode, row, col int)
+    dfs = func(node *TreeNode, row, col int) {
+        if node == nil {
+            return
+        }
+        cols[col] = append(cols[col], [2]int{row, node.Val})
+        dfs(node.Left, row+1, col-1)
+        dfs(node.Right, row+1, col+1)
+    }
+
+    dfs(root, 0, 0)
+
+    keys := make([]int, 0, len(cols))
+    for k := range cols {
+        keys = append(keys, k)
+    }
+    sort.Ints(keys)
+
+    res := make([][]int, len(keys))
+    for i, k := range keys {
+        vec := cols[k]
+        sort.SliceStable(vec, func(a, b int) bool {
+            return vec[a][0] < vec[b][0]
+        })
+        colVals := make([]int, len(vec))
+        for j, p := range vec {
+            colVals[j] = p[1]
+        }
+        res[i] = colVals
+    }
+    return res
+}
+```
+
+```kotlin
+class Solution {
+    private val cols = sortedMapOf<Int, MutableList<Pair<Int, Int>>>()
+
+    fun verticalOrder(root: TreeNode?): List<List<Int>> {
+        dfs(root, 0, 0)
+
+        return cols.values.map { list ->
+            list.sortedBy { it.first }.map { it.second }
+        }
+    }
+
+    private fun dfs(node: TreeNode?, row: Int, col: Int) {
+        if (node == null) return
+        cols.getOrPut(col) { mutableListOf() }.add(Pair(row, node.`val`))
+        dfs(node.left, row + 1, col - 1)
+        dfs(node.right, row + 1, col + 1)
+    }
+}
+```
+
+```swift
+class Solution {
+    private var cols = [Int: [(Int, Int)]]()
+
+    func verticalOrder(_ root: TreeNode?) -> [[Int]] {
+        guard root != nil else { return [] }
+        dfs(root, 0, 0)
+
+        return cols.keys.sorted().map { col in
+            cols[col]!.sorted { $0.0 < $1.0 }.map { $0.1 }
+        }
+    }
+
+    private func dfs(_ node: TreeNode?, _ row: Int, _ col: Int) {
+        guard let node = node else { return }
+        cols[col, default: []].append((row, node.val))
+        dfs(node.left, row + 1, col - 1)
+        dfs(node.right, row + 1, col + 1)
+    }
+}
+```
+
+```rust
+impl Solution {
+    pub fn vertical_order(root: Option<Rc<RefCell<TreeNode>>>) -> Vec<Vec<i32>> {
+        if root.is_none() {
+            return vec![];
+        }
+
+        let mut cols: BTreeMap<i32, Vec<(i32, i32)>> = BTreeMap::new();
+        Self::dfs(&root, 0, 0, &mut cols);
+
+        cols.into_values()
+            .map(|mut vec| {
+                vec.sort_by_key(|&(row, _)| row);
+                vec.into_iter().map(|(_, val)| val).collect()
+            })
+            .collect()
+    }
+
+    fn dfs(
+        node: &Option<Rc<RefCell<TreeNode>>>,
+        row: i32,
+        col: i32,
+        cols: &mut BTreeMap<i32, Vec<(i32, i32)>>,
+    ) {
+        if let Some(n) = node {
+            let n = n.borrow();
+            cols.entry(col).or_default().push((row, n.val));
+            Self::dfs(&n.left, row + 1, col - 1, cols);
+            Self::dfs(&n.right, row + 1, col + 1, cols);
+        }
+    }
+}
+```
+
+::tabs-end
+
+### Time & Space Complexity
+
+- Time complexity: $O(n \log n)$
+- Space complexity: $O(n \log n)$
+
+---
+
+## 3. Breadth First Search (Optimal)
+
+### Intuition
+
+Instead of sorting all column keys at the end, we can track the minimum and maximum column indices during traversal. This allows us to iterate from the leftmost to rightmost column directly without sorting, reducing the time complexity.
+
+### Algorithm
+
+1. Use a hash map to group node values by column index.
+2. Track the minimum and maximum column indices during traversal.
+3. Initialize a queue with the root and column `0`.
+4. While the queue is not empty:
+    - Dequeue a node and its column.
+    - Add the value to the column's list and update `minCol`/`maxCol`.
+    - Enqueue children with their respective column indices.
+5. Iterate from `minCol` to `maxCol` and collect each column's values in order.
+
+::tabs-start
+
+```python
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def verticalOrder(self, root: Optional[TreeNode]) -> List[List[int]]:
+        if not root:
+            return []
+
+        cols = defaultdict(list)
+        queue = deque([(root, 0)])
+        minCol = maxCol = 0
+
+        while queue:
+            node, col = queue.popleft()
+            cols[col].append(node.val)
+            minCol = min(minCol, col)
+            maxCol = max(maxCol, col)
+
+            if node.left:
+                queue.append((node.left, col - 1))
+            if node.right:
+                queue.append((node.right, col + 1))
+
+        return [cols[c] for c in range(minCol, maxCol + 1)]
+```
+
+```java
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+public class Solution {
+    public List<List<Integer>> verticalOrder(TreeNode root) {
+        if (root == null) return new ArrayList<>();
+
+        Map<Integer, List<Integer>> cols = new HashMap<>();
+        Queue<Pair<TreeNode, Integer>> queue = new LinkedList<>();
+        queue.offer(new Pair<>(root, 0));
+        int minCol = 0, maxCol = 0;
+
+        while (!queue.isEmpty()) {
+            Pair<TreeNode, Integer> p = queue.poll();
+            TreeNode node = p.getKey();
+            int col = p.getValue();
+
+            cols.computeIfAbsent(col, x -> new ArrayList<>()).add(node.val);
+            minCol = Math.min(minCol, col);
+            maxCol = Math.max(maxCol, col);
+
+            if (node.left != null) queue.offer(new Pair<>(node.left, col - 1));
+            if (node.right != null) queue.offer(new Pair<>(node.right, col + 1));
+        }
+
+        List<List<Integer>> res = new ArrayList<>();
+        for (int c = minCol; c <= maxCol; c++) {
+            res.add(cols.get(c));
+        }
+        return res;
+    }
+}
+```
+
+```cpp
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    vector<vector<int>> verticalOrder(TreeNode* root) {
+        if (!root) return {};
+
+        unordered_map<int, vector<int>> cols;
+        queue<pair<TreeNode*, int>> q;
+        q.push({root, 0});
+        int minCol = 0, maxCol = 0;
+
+        while (!q.empty()) {
+            auto [node, col] = q.front(); q.pop();
+            cols[col].push_back(node->val);
+            minCol = min(minCol, col);
+            maxCol = max(maxCol, col);
+
+            if (node->left) q.push({node->left, col - 1});
+            if (node->right) q.push({node->right, col + 1});
+        }
+
+        vector<vector<int>> res;
+        for (int c = minCol; c <= maxCol; ++c)
+            res.push_back(cols[c]);
+
+        return res;
+    }
+};
+```
+
+```javascript
+/**
+ * Definition for a binary tree node.
+ * class TreeNode {
+ *     constructor(val = 0, left = null, right = null) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    /**
+     * @param {TreeNode} root
+     * @return {number[][]}
+     */
+    verticalOrder(root) {
+        if (!root) return [];
+
+        const cols = new Map();
+        const queue = new Queue([[root, 0]]);
+        let minCol = 0,
+            maxCol = 0;
+
+        while (!queue.isEmpty()) {
+            const [node, col] = queue.pop();
+            if (!cols.has(col)) cols.set(col, []);
+            cols.get(col).push(node.val);
+            minCol = Math.min(minCol, col);
+            maxCol = Math.max(maxCol, col);
+
+            if (node.left) queue.push([node.left, col - 1]);
+            if (node.right) queue.push([node.right, col + 1]);
+        }
+
+        const res = [];
+        for (let c = minCol; c <= maxCol; c++) {
+            res.push(cols.get(c));
+        }
+        return res;
+    }
+}
+```
+
+```csharp
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     public int val;
+ *     public TreeNode left;
+ *     public TreeNode right;
+ *     public TreeNode(int val=0, TreeNode left=null, TreeNode right=null) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+public class Solution {
+    public List<List<int>> VerticalOrder(TreeNode root) {
+        if (root == null) return new List<List<int>>();
+
+        Dictionary<int, List<int>> cols = new();
+        Queue<(TreeNode node, int col)> queue = new();
+        queue.Enqueue((root, 0));
+        int minCol = 0, maxCol = 0;
+
+        while (queue.Count > 0) {
+            var (node, col) = queue.Dequeue();
+            if (!cols.ContainsKey(col))
+                cols[col] = new List<int>();
+            cols[col].Add(node.val);
+            minCol = Math.Min(minCol, col);
+            maxCol = Math.Max(maxCol, col);
+
+            if (node.left != null) queue.Enqueue((node.left, col - 1));
+            if (node.right != null) queue.Enqueue((node.right, col + 1));
+        }
+
+        var res = new List<List<int>>();
+        for (int c = minCol; c <= maxCol; c++) {
+            res.Add(cols[c]);
+        }
+
+        return res;
+    }
+}
+```
+
+```go
+func verticalOrder(root *TreeNode) [][]int {
+    if root == nil {
+        return [][]int{}
+    }
+
+    cols := make(map[int][]int)
+    type pair struct {
+        node *TreeNode
+        col  int
+    }
+    queue := []pair{{root, 0}}
+    minCol, maxCol := 0, 0
+
+    for len(queue) > 0 {
+        p := queue[0]
+        queue = queue[1:]
+        cols[p.col] = append(cols[p.col], p.node.Val)
+        if p.col < minCol {
+            minCol = p.col
+        }
+        if p.col > maxCol {
+            maxCol = p.col
+        }
+
+        if p.node.Left != nil {
+            queue = append(queue, pair{p.node.Left, p.col - 1})
+        }
+        if p.node.Right != nil {
+            queue = append(queue, pair{p.node.Right, p.col + 1})
+        }
+    }
+
+    res := make([][]int, maxCol-minCol+1)
+    for c := minCol; c <= maxCol; c++ {
+        res[c-minCol] = cols[c]
+    }
+    return res
+}
+```
+
+```kotlin
+class Solution {
+    fun verticalOrder(root: TreeNode?): List<List<Int>> {
+        if (root == null) return emptyList()
+
+        val cols = mutableMapOf<Int, MutableList<Int>>()
+        val queue = ArrayDeque<Pair<TreeNode, Int>>()
+        queue.add(Pair(root, 0))
+        var minCol = 0
+        var maxCol = 0
+
+        while (queue.isNotEmpty()) {
+            val (node, col) = queue.removeFirst()
+            cols.getOrPut(col) { mutableListOf() }.add(node.`val`)
+            minCol = minOf(minCol, col)
+            maxCol = maxOf(maxCol, col)
+
+            node.left?.let { queue.add(Pair(it, col - 1)) }
+            node.right?.let { queue.add(Pair(it, col + 1)) }
+        }
+
+        return (minCol..maxCol).map { cols[it]!! }
+    }
+}
+```
+
+```swift
+class Solution {
+    func verticalOrder(_ root: TreeNode?) -> [[Int]] {
+        guard let root = root else { return [] }
+
+        var cols = [Int: [Int]]()
+        var queue = [(TreeNode, Int)]()
+        queue.append((root, 0))
+        var minCol = 0
+        var maxCol = 0
+
+        while !queue.isEmpty {
+            let (node, col) = queue.removeFirst()
+            cols[col, default: []].append(node.val)
+            minCol = min(minCol, col)
+            maxCol = max(maxCol, col)
+
+            if let left = node.left {
+                queue.append((left, col - 1))
+            }
+            if let right = node.right {
+                queue.append((right, col + 1))
+            }
+        }
+
+        return (minCol...maxCol).map { cols[$0]! }
+    }
+}
+```
+
+```rust
+impl Solution {
+    pub fn vertical_order(root: Option<Rc<RefCell<TreeNode>>>) -> Vec<Vec<i32>> {
+        if root.is_none() {
+            return vec![];
+        }
+
+        let mut cols: HashMap<i32, Vec<i32>> = HashMap::new();
+        let mut queue: VecDeque<(Rc<RefCell<TreeNode>>, i32)> = VecDeque::new();
+        queue.push_back((root.unwrap(), 0));
+        let mut min_col = 0i32;
+        let mut max_col = 0i32;
+
+        while let Some((node, col)) = queue.pop_front() {
+            let node_ref = node.borrow();
+            cols.entry(col).or_default().push(node_ref.val);
+            min_col = min_col.min(col);
+            max_col = max_col.max(col);
+
+            if let Some(ref left) = node_ref.left {
+                queue.push_back((left.clone(), col - 1));
+            }
+            if let Some(ref right) = node_ref.right {
+                queue.push_back((right.clone(), col + 1));
+            }
+        }
+
+        (min_col..=max_col)
+            .map(|c| cols.remove(&c).unwrap())
+            .collect()
+    }
+}
+```
+
+::tabs-end
+
+### Time & Space Complexity
+
+- Time complexity: $O(n)$
+- Space complexity: $O(n)$
+
+---
+
+## 4. Depth First Search (Optimal)
+
+### Intuition
+
+Similar to the optimal BFS approach, we track min and max column indices during DFS to avoid sorting columns. However, we still need to store row information and sort within each column since DFS doesn't visit nodes in level order. This approach reduces the complexity of iterating over columns while still requiring per-column sorting.
+
+### Algorithm
+
+1. Use a hash map to store `(row, value)` pairs for each column.
+2. Track `minCol` and `maxCol` column indices during traversal.
+3. Define a `dfs` function that updates `minCol`/`maxCol` and adds `(row, value)` to the column list.
+4. Recursively traverse left and right children with updated row and column values.
+5. After `dfs` completes, iterate from `minCol` to `maxCol`.
+6. For each column, sort entries by row and extract the values.
+
+::tabs-start
+
+```python
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def verticalOrder(self, root: Optional[TreeNode]) -> List[List[int]]:
+        if not root:
+            return []
+
+        cols = defaultdict(list)
+        minCol = maxCol = 0
+
+        def dfs(node, row, col):
+            nonlocal minCol, maxCol
+            if not node:
+                return
+            cols[col].append((row, node.val))
+            minCol = min(minCol, col)
+            maxCol = max(maxCol, col)
+            dfs(node.left, row + 1, col - 1)
+            dfs(node.right, row + 1, col + 1)
+
+        dfs(root, 0, 0)
+
+        res = []
+        for c in range(minCol, maxCol + 1):
+            # sort by row only
+            col_vals = sorted(cols[c], key=lambda x: x[0])
+            res.append([val for _, val in col_vals])
+        return res
+```
+
+```java
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+public class Solution {
+    private Map<Integer, List<int[]>> cols = new HashMap<>();
+    private int minCol = 0, maxCol = 0;
+
+    public List<List<Integer>> verticalOrder(TreeNode root) {
+        if (root == null) return new ArrayList<>();
+        dfs(root, 0, 0);
+
+        List<List<Integer>> res = new ArrayList<>();
+        for (int c = minCol; c <= maxCol; c++) {
+            List<int[]> list = cols.getOrDefault(c, new ArrayList<>());
+            list.sort(Comparator.comparingInt(a -> a[0])); // sort by row
+            List<Integer> colVals = new ArrayList<>();
+            for (int[] p : list) colVals.add(p[1]);
+            res.add(colVals);
+        }
+        return res;
+    }
+
+    private void dfs(TreeNode node, int row, int col) {
+        if (node == null) return;
+        cols.computeIfAbsent(col, k -> new ArrayList<>()).add(new int[]{row, node.val});
+        minCol = Math.min(minCol, col);
+        maxCol = Math.max(maxCol, col);
+        dfs(node.left, row + 1, col - 1);
+        dfs(node.right, row + 1, col + 1);
+    }
+}
+```
+
+```cpp
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+    unordered_map<int, vector<pair<int, int>>> cols;
+    int minCol = 0, maxCol = 0;
+
+    void dfs(TreeNode* node, int row, int col) {
+        if (!node) return;
+        cols[col].emplace_back(row, node->val);
+        minCol = min(minCol, col);
+        maxCol = max(maxCol, col);
+        dfs(node->left, row + 1, col - 1);
+        dfs(node->right, row + 1, col + 1);
+    }
+
+public:
+    vector<vector<int>> verticalOrder(TreeNode* root) {
+        if (!root) return {};
+        dfs(root, 0, 0);
+        vector<vector<int>> res;
+
+        for (int c = minCol; c <= maxCol; ++c) {
+            auto& vec = cols[c];
+            stable_sort(vec.begin(), vec.end(),
+                        [](const pair<int, int>& a, const pair<int, int>& b) {
+                            return a.first < b.first; // sort by row only
+                        });
+            vector<int> colVals;
+            for (auto& [_, val] : vec)
+                colVals.push_back(val);
+            res.push_back(colVals);
+        }
+
+        return res;
+    }
+};
+```
+
+```javascript
+/**
+ * Definition for a binary tree node.
+ * class TreeNode {
+ *     constructor(val = 0, left = null, right = null) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    /**
+     * @param {TreeNode} root
+     * @return {number[][]}
+     */
+    verticalOrder(root) {
+        if (!root) return [];
+
+        const cols = new Map();
+        let minCol = 0,
+            maxCol = 0;
+
+        const dfs = (node, row, col) => {
+            if (!node) return;
+            if (!cols.has(col)) cols.set(col, []);
+            cols.get(col).push([row, node.val]);
+            minCol = Math.min(minCol, col);
+            maxCol = Math.max(maxCol, col);
+            dfs(node.left, row + 1, col - 1);
+            dfs(node.right, row + 1, col + 1);
+        };
+
+        dfs(root, 0, 0);
+
+        const res = [];
+        for (let c = minCol; c <= maxCol; c++) {
+            let entries = cols.get(c) || [];
+            entries.sort((a, b) => a[0] - b[0]); // sort by row only
+            res.push(entries.map(([_, val]) => val));
+        }
+
+        return res;
+    }
+}
+```
+
+```csharp
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     public int val;
+ *     public TreeNode left;
+ *     public TreeNode right;
+ *     public TreeNode(int val=0, TreeNode left=null, TreeNode right=null) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+public class Solution {
+    private Dictionary<int, List<(int, int)>> cols = new();
+    private int minCol = 0, maxCol = 0;
+
+    public List<List<int>> VerticalOrder(TreeNode root) {
+        if (root == null) return new List<List<int>>();
+        DFS(root, 0, 0);
+        var res = new List<List<int>>();
+
+        for (int c = minCol; c <= maxCol; c++) {
+            var list = cols.ContainsKey(c) ? cols[c] : new List<(int, int)>();
+            list.Sort((a, b) => a.Item1.CompareTo(b.Item1)); // sort by row
+            res.Add(list.Select(p => p.Item2).ToList());
+        }
+
+        return res;
+    }
+
+    private void DFS(TreeNode node, int row, int col) {
+        if (node == null) return;
+        if (!cols.ContainsKey(col)) cols[col] = new List<(int, int)>();
+        cols[col].Add((row, node.val));
+        minCol = Math.Min(minCol, col);
+        maxCol = Math.Max(maxCol, col);
+        DFS(node.left, row + 1, col - 1);
+        DFS(node.right, row + 1, col + 1);
+    }
+}
+```
+
+```rust
+impl Solution {
+    pub fn vertical_order(root: Option<Rc<RefCell<TreeNode>>>) -> Vec<Vec<i32>> {
+        if root.is_none() {
+            return vec![];
+        }
+
+        let mut cols: HashMap<i32, Vec<(i32, i32)>> = HashMap::new();
+        let mut min_col = 0i32;
+        let mut max_col = 0i32;
+
+        Self::dfs(&root, 0, 0, &mut cols, &mut min_col, &mut max_col);
+
+        let mut res = Vec::new();
+        for c in min_col..=max_col {
+            if let Some(mut vec) = cols.remove(&c) {
+                vec.sort_by_key(|&(row, _)| row);
+                res.push(vec.into_iter().map(|(_, val)| val).collect());
+            }
+        }
+        res
+    }
+
+    fn dfs(
+        node: &Option<Rc<RefCell<TreeNode>>>,
+        row: i32,
+        col: i32,
+        cols: &mut HashMap<i32, Vec<(i32, i32)>>,
+        min_col: &mut i32,
+        max_col: &mut i32,
+    ) {
+        if let Some(n) = node {
+            let n = n.borrow();
+            cols.entry(col).or_default().push((row, n.val));
+            *min_col = (*min_col).min(col);
+            *max_col = (*max_col).max(col);
+            Self::dfs(&n.left, row + 1, col - 1, cols, min_col, max_col);
+            Self::dfs(&n.right, row + 1, col + 1, cols, min_col, max_col);
+        }
+    }
+}
+```
+
+::tabs-end
+
+### Time & Space Complexity
+
+- Time complexity: $O(w * h \log h)$
+- Space complexity: $O(n)$
+
+> Where $n$ is the number of nodes, $h$ is the height of the tree (i.e. maximum number of nodes in any vertical line of the tree), and $w$ is the width of the tree (i.e. maximum number of nodes in any of the levels of the tree).
+
+---
+
+## Common Pitfalls
+
+### Using DFS Without Tracking Row Index
+
+DFS does not visit nodes level by level, so nodes in the same column may be visited out of order. Without storing the row index alongside each value, nodes at the same column will appear in traversal order rather than top-to-bottom order, violating the problem's requirement.
+
+### Forgetting to Handle the Left-Before-Right Ordering
+
+When two nodes share the same row and column (which can happen with certain tree structures), the node that appears first from left to right in the tree should come first in the result. BFS naturally handles this, but DFS with unstable sorting can break this ordering.
+
+```python
+# Wrong: using regular sort instead of stable sort
+cols[col].sort(key=lambda x: x[0])  # May reorder same-row nodes
+```
+
+### Sorting Columns Instead of Tracking Min/Max
+
+Sorting all column keys at the end works but is less efficient. A common mistake is not realizing that column indices are consecutive integers from `minCol` to `maxCol`, allowing direct iteration without sorting.

@@ -1,0 +1,1053 @@
+## Prerequisites
+
+Before attempting this problem, you should be comfortable with:
+
+- **Graph Representation (Adjacency List)** - Building and traversing a directed graph from edge pairs
+- **Depth First Search (DFS)** - Recursive and iterative graph traversal with backtracking
+- **Eulerian Path** - Understanding when a path exists that uses every edge exactly once (Hierholzer's Algorithm)
+- **Sorting** - Needed to ensure lexicographically smallest result when multiple paths exist
+
+---
+
+## 1. Depth First Search
+
+### Intuition
+
+We must build an itinerary that:
+
+- starts from `"JFK"`
+- uses **every ticket exactly once**
+- is **lexicographically smallest** among all valid itineraries.
+
+This DFS solution tries destinations in sorted order.
+At each airport `src`, we **choose one outgoing ticket**, remove it (so it can't be reused), and continue DFS.
+If we reach a dead end before using all tickets, we **backtrack**: undo the choice and try the next destination.
+
+Sorting tickets ensures the first complete valid path we find is the smallest lexicographically.
+
+### Algorithm
+
+1. Sort `tickets` lexicographically.
+2. Build an adjacency list `adj[src] = list of destinations` in sorted order.
+3. Start `res = ["JFK"]`.
+4. Run DFS from `"JFK"`:
+    - If `len(res) == len(tickets) + 1`, all tickets are used → return `true`.
+    - For each possible destination `v` from `src` (in order):
+        - Remove that edge (`src -> v`) from `adj[src]` (use the ticket).
+        - Append `v` to `res`.
+        - If DFS from `v` succeeds, return `true`.
+        - Otherwise backtrack:
+            - Remove `v` from `res`
+            - Insert the destination back into `adj[src]` at the same position.
+5. Return `res`.
+
+::tabs-start
+
+```python
+class Solution:
+    def findItinerary(self, tickets: List[List[str]]) -> List[str]:
+        adj = {src: [] for src, dst in tickets}
+        tickets.sort()
+        for src, dst in tickets:
+            adj[src].append(dst)
+
+        res = ["JFK"]
+        def dfs(src):
+            if len(res) == len(tickets) + 1:
+                return True
+            if src not in adj:
+                return False
+
+            temp = list(adj[src])
+            for i, v in enumerate(temp):
+                adj[src].pop(i)
+                res.append(v)
+                if dfs(v): return True
+                adj[src].insert(i, v)
+                res.pop()
+            return False
+
+        dfs("JFK")
+        return res
+```
+
+```java
+public class Solution {
+    public List<String> findItinerary(List<List<String>> tickets) {
+        Map<String, List<String>> adj = new HashMap<>();
+        for (List<String> ticket : tickets) {
+            adj.putIfAbsent(ticket.get(0), new ArrayList<>());
+        }
+
+        tickets.sort((a, b) -> a.get(1).compareTo(b.get(1)));
+        for (List<String> ticket : tickets) {
+            adj.get(ticket.get(0)).add(ticket.get(1));
+        }
+
+        List<String> res = new ArrayList<>();
+        res.add("JFK");
+
+        if (dfs("JFK", res, adj, tickets.size() + 1)) {
+            return res;
+        }
+        return new ArrayList<>();
+    }
+
+    private boolean dfs(String src, List<String> res,
+                        Map<String, List<String>> adj, int targetLen) {
+        if (res.size() == targetLen) {
+            return true;
+        }
+
+        if (!adj.containsKey(src)) {
+            return false;
+        }
+
+        List<String> temp = new ArrayList<>(adj.get(src));
+        for (int i = 0; i < temp.size(); i++) {
+            String v = temp.get(i);
+            adj.get(src).remove(i);
+            res.add(v);
+            if (dfs(v, res, adj, targetLen)) return true;
+            adj.get(src).add(i, v);
+            res.remove(res.size() - 1);
+        }
+        return false;
+    }
+}
+```
+
+```cpp
+class Solution {
+public:
+    vector<string> findItinerary(vector<vector<string>>& tickets) {
+        unordered_map<string, vector<string>> adj;
+        for (auto& ticket : tickets) {
+            adj[ticket[0]];
+        }
+
+        sort(tickets.begin(), tickets.end());
+        for (auto& ticket : tickets) {
+            adj[ticket[0]].push_back(ticket[1]);
+        }
+
+        vector<string> res = {"JFK"};
+        dfs("JFK", res, adj, tickets.size() + 1);
+        return res;
+    }
+
+private:
+    bool dfs(const string& src, vector<string>& res,
+             unordered_map<string, vector<string>>& adj, int targetLen) {
+        if (res.size() == targetLen) {
+            return true;
+        }
+
+        if (adj.find(src) == adj.end()) {
+            return false;
+        }
+
+        vector<string> temp = adj[src];
+        for (int i = 0; i < temp.size(); ++i) {
+            string v = temp[i];
+            adj[src].erase(adj[src].begin() + i);
+            res.push_back(v);
+            if (dfs(v, res, adj, targetLen)) return true;
+            adj[src].insert(adj[src].begin() + i, v);
+            res.pop_back();
+        }
+        return false;
+    }
+};
+```
+
+```javascript
+class Solution {
+    /**
+     * @param {string[][]} tickets
+     * @return {string[]}
+     */
+    findItinerary(tickets) {
+        const adj = {};
+        for (const [src, dst] of tickets) {
+            if (!adj[src]) adj[src] = [];
+        }
+
+        tickets.sort();
+        for (const [src, dst] of tickets) {
+            adj[src].push(dst);
+        }
+
+        const res = ['JFK'];
+        const dfs = (src) => {
+            if (res.length === tickets.length + 1) return true;
+            if (!adj[src]) return false;
+
+            const temp = [...adj[src]];
+            for (let i = 0; i < temp.length; i++) {
+                const v = temp[i];
+                adj[src].splice(i, 1);
+                res.push(v);
+                if (dfs(v)) return true;
+                res.pop();
+                adj[src].splice(i, 0, v);
+            }
+            return false;
+        };
+
+        dfs('JFK');
+        return res;
+    }
+}
+```
+
+```csharp
+public class Solution {
+    public List<string> FindItinerary(List<List<string>> tickets) {
+        var adj = new Dictionary<string, List<string>>();
+        foreach (var ticket in tickets) {
+            if (!adj.ContainsKey(ticket[0])) {
+                adj[ticket[0]] = new List<string>();
+            }
+        }
+
+        tickets.Sort((a, b) => string.Compare(a[1], b[1]));
+        foreach (var ticket in tickets) {
+            adj[ticket[0]].Add(ticket[1]);
+        }
+
+        var res = new List<string> { "JFK" };
+        Dfs("JFK", res, adj, tickets.Count + 1);
+        return res;
+    }
+
+    private bool Dfs(string src, List<string> res,
+                     Dictionary<string, List<string>> adj, int targetLen) {
+        if (res.Count == targetLen) return true;
+        if (!adj.ContainsKey(src)) return false;
+
+        var temp = new List<string>(adj[src]);
+        for (int i = 0; i < temp.Count; i++) {
+            var v = temp[i];
+            adj[src].RemoveAt(i);
+            res.Add(v);
+            if (Dfs(v, res, adj, targetLen)) return true;
+            res.RemoveAt(res.Count - 1);
+            adj[src].Insert(i, v);
+        }
+        return false;
+    }
+}
+```
+
+```go
+func findItinerary(tickets [][]string) []string {
+    adj := make(map[string][]string)
+    for _, ticket := range tickets {
+        adj[ticket[0]] = append(adj[ticket[0]], ticket[1])
+    }
+
+    for src := range adj {
+        sort.Strings(adj[src])
+    }
+
+    res := []string{"JFK"}
+
+    var dfs func(string) bool
+    dfs = func(src string) bool {
+        if len(res) == len(tickets) + 1 {
+            return true
+        }
+
+        destinations, exists := adj[src]
+        if !exists {
+            return false
+        }
+
+        temp := make([]string, len(destinations))
+        copy(temp, destinations)
+
+        for i, v := range temp {
+            adj[src] = append(adj[src][:i], adj[src][i+1:]...)
+            res = append(res, v)
+
+            if dfs(v) {
+                return true
+            }
+
+            adj[src] = append(adj[src][:i], append([]string{v}, adj[src][i:]...)...)
+            res = res[:len(res)-1]
+        }
+        return false
+    }
+
+    dfs("JFK")
+    return res
+}
+```
+
+```kotlin
+class Solution {
+    fun findItinerary(tickets: List<List<String>>): List<String> {
+        val adj = HashMap<String, MutableList<String>>()
+
+        tickets.sortedBy { it[1] }.forEach { (src, dst) ->
+            adj.getOrPut(src) { mutableListOf() }.add(dst)
+        }
+
+        val res = mutableListOf("JFK")
+
+        fun dfs(src: String): Boolean {
+            if (res.size == tickets.size + 1) {
+                return true
+            }
+
+            val destinations = adj[src] ?: return false
+
+            for (i in destinations.indices) {
+                val v = destinations.removeAt(i)
+                res.add(v)
+
+                if (dfs(v)) {
+                    return true
+                }
+
+                destinations.add(i, v)
+                res.removeAt(res.lastIndex)
+            }
+            return false
+        }
+
+        dfs("JFK")
+        return res
+    }
+}
+```
+
+```swift
+class Solution {
+    func findItinerary(_ tickets: [[String]]) -> [String] {
+        var adj = [String: [String]]()
+        for ticket in tickets {
+            adj[ticket[0], default: []].append(ticket[1])
+        }
+
+        for key in adj.keys {
+            adj[key]?.sort()
+        }
+
+        var res = ["JFK"]
+
+        func dfs(_ src: String) -> Bool {
+            if res.count == tickets.count + 1 {
+                return true
+            }
+            guard let destinations = adj[src] else {
+                return false
+            }
+
+            var temp = destinations
+            for i in 0..<temp.count {
+                let v = temp[i]
+                adj[src]?.remove(at: i)
+                res.append(v)
+                if dfs(v) { return true }
+                res.removeLast()
+                adj[src]?.insert(v, at: i)
+            }
+            return false
+        }
+
+        dfs("JFK")
+        return res
+    }
+}
+```
+
+```rust
+impl Solution {
+    pub fn find_itinerary(tickets: Vec<Vec<String>>) -> Vec<String> {
+        let mut adj: HashMap<String, Vec<String>> = HashMap::new();
+        let mut tickets = tickets;
+        tickets.sort();
+        for ticket in &tickets {
+            adj.entry(ticket[0].clone()).or_default().push(ticket[1].clone());
+        }
+
+        let mut res = vec!["JFK".to_string()];
+        let target_len = tickets.len() + 1;
+
+        fn dfs(
+            src: &str,
+            res: &mut Vec<String>,
+            adj: &mut HashMap<String, Vec<String>>,
+            target_len: usize,
+        ) -> bool {
+            if res.len() == target_len {
+                return true;
+            }
+            let dests = match adj.get(src) {
+                Some(d) => d.clone(),
+                None => return false,
+            };
+            for i in 0..dests.len() {
+                let v = dests[i].clone();
+                adj.get_mut(src).unwrap().remove(i);
+                res.push(v.clone());
+                if dfs(&v, res, adj, target_len) {
+                    return true;
+                }
+                adj.get_mut(src).unwrap().insert(i, v);
+                res.pop();
+            }
+            false
+        }
+
+        dfs("JFK", &mut res, &mut adj, target_len);
+        res
+    }
+}
+```
+
+::tabs-end
+
+### Time & Space Complexity
+
+- Time complexity: $O(E * V)$
+- Space complexity: $O(E * V)$
+
+> Where $E$ is the number of tickets (edges) and $V$ is the number of airports (vertices).
+
+---
+
+## 2. Hierholzer's Algorithm (Recursion)
+
+### Intuition
+
+This problem is an **Eulerian Path** problem:  
+we must use **every ticket exactly once** and form a valid path starting from `"JFK"`.
+
+**Hierholzer's Algorithm** builds such a path by:
+
+- always taking an available edge,
+- going as deep as possible,
+- and adding airports to the answer **only when no outgoing edges remain**.
+
+To ensure the **lexicographically smallest** itinerary:
+
+- we sort tickets,
+- and always pick the smallest destination first.
+
+The key idea:
+
+> **Build the path in reverse while backtracking.**
+
+### Algorithm
+
+1. Build an adjacency list where each airport maps to its destinations.
+2. Sort tickets in reverse lexicographical order and push destinations so we can pop the smallest later.
+3. Start DFS from `"JFK"`:
+    - While there are outgoing edges:
+        - Remove one destination and DFS into it.
+    - When no edges remain, add the current airport to the result.
+4. Reverse the result list to get the correct itinerary.
+
+::tabs-start
+
+```python
+class Solution:
+    def findItinerary(self, tickets: List[List[str]]) -> List[str]:
+        adj = defaultdict(list)
+        for src, dst in sorted(tickets)[::-1]:
+            adj[src].append(dst)
+
+        res = []
+        def dfs(src):
+            while adj[src]:
+                dst = adj[src].pop()
+                dfs(dst)
+            res.append(src)
+
+        dfs('JFK')
+        return res[::-1]
+```
+
+```java
+public class Solution {
+    public List<String> findItinerary(List<List<String>> tickets) {
+        Map<String, PriorityQueue<String>> adj = new HashMap<>();
+        for (List<String> ticket : tickets) {
+            String src = ticket.get(0);
+            String dst = ticket.get(1);
+            adj.computeIfAbsent(src, k -> new PriorityQueue<>()).offer(dst);
+        }
+
+        List<String> res = new ArrayList<>();
+        dfs(adj, "JFK", res);
+
+        Collections.reverse(res);
+        return res;
+    }
+
+    private void dfs(Map<String, PriorityQueue<String>> adj,
+                     String src, List<String> res) {
+        PriorityQueue<String> queue = adj.get(src);
+        while (queue != null && !queue.isEmpty()) {
+            String dst = queue.poll();
+            dfs(adj, dst, res);
+        }
+        res.add(src);
+    }
+}
+```
+
+```cpp
+class Solution {
+public:
+    vector<string> findItinerary(vector<vector<string>>& tickets) {
+        unordered_map<string, deque<string>> adj;
+        for (auto& ticket : tickets) {
+            adj[ticket[0]].push_back(ticket[1]);
+        }
+        for (auto& [src, dests] : adj) {
+            sort(dests.rbegin(), dests.rend());
+        }
+
+        vector<string> res;
+        dfs("JFK", adj, res);
+        reverse(res.begin(), res.end());
+        return res;
+    }
+
+private:
+    void dfs(const string& src, unordered_map<string,
+             deque<string>>& adj, vector<string>& res) {
+        while (!adj[src].empty()) {
+            string dst = adj[src].back();
+            adj[src].pop_back();
+            dfs(dst, adj, res);
+        }
+        res.push_back(src);
+    }
+};
+```
+
+```javascript
+class Solution {
+    /**
+     * @param {string[][]} tickets
+     * @return {string[]}
+     */
+    findItinerary(tickets) {
+        const adj = new Map();
+        const res = [];
+
+        tickets
+            .sort()
+            .reverse()
+            .forEach(([src, dst]) => {
+                if (!adj.has(src)) adj.set(src, []);
+                adj.get(src).push(dst);
+            });
+
+        function dfs(src) {
+            while (adj.has(src) && adj.get(src).length > 0) {
+                const dst = adj.get(src).pop();
+                dfs(dst);
+            }
+            res.push(src);
+        }
+
+        dfs('JFK');
+        return res.reverse();
+    }
+}
+```
+
+```csharp
+public class Solution {
+    private Dictionary<string, List<string>> adj;
+    private List<string> res = new List<string>();
+
+    public List<string> FindItinerary(List<List<string>> tickets) {
+        adj = new Dictionary<string, List<string>>();
+        var sortedTickets = tickets.OrderByDescending(t => t[1]).ToList();
+        foreach (var ticket in sortedTickets) {
+            if (!adj.ContainsKey(ticket[0])) {
+                adj[ticket[0]] = new List<string>();
+            }
+            adj[ticket[0]].Add(ticket[1]);
+        }
+
+        Dfs("JFK");
+        res.Reverse();
+        return res;
+    }
+
+    private void Dfs(string src) {
+        while (adj.ContainsKey(src) && adj[src].Count > 0) {
+            var dst = adj[src][adj[src].Count - 1];
+            adj[src].RemoveAt(adj[src].Count - 1);
+            Dfs(dst);
+        }
+        res.Add(src);
+    }
+}
+```
+
+```go
+func findItinerary(tickets [][]string) []string {
+    adj := make(map[string][]string)
+
+    sort.Slice(tickets, func(i, j int) bool {
+        if tickets[i][0] == tickets[j][0] {
+            return tickets[i][1] > tickets[j][1]
+        }
+        return tickets[i][0] > tickets[j][0]
+    })
+
+    for _, ticket := range tickets {
+        src, dst := ticket[0], ticket[1]
+        adj[src] = append(adj[src], dst)
+    }
+
+    res := make([]string, 0)
+
+    var dfs func(string)
+    dfs = func(src string) {
+        for len(adj[src]) > 0 {
+            last := len(adj[src]) - 1
+            dst := adj[src][last]
+            adj[src] = adj[src][:last]
+            dfs(dst)
+        }
+        res = append(res, src)
+    }
+
+    dfs("JFK")
+
+    for i := 0; i < len(res)/2; i++ {
+        res[i], res[len(res)-1-i] = res[len(res)-1-i], res[i]
+    }
+
+    return res
+}
+```
+
+```kotlin
+class Solution {
+    fun findItinerary(tickets: List<List<String>>): List<String> {
+        val adj = HashMap<String, MutableList<String>>()
+
+        tickets.sortedWith(compareBy({ it[0] }, { it[1] }))
+            .reversed()
+            .forEach { (src, dst) ->
+                adj.getOrPut(src) { mutableListOf() }.add(dst)
+            }
+
+        val res = mutableListOf<String>()
+
+        fun dfs(src: String) {
+            while (adj[src]?.isNotEmpty() == true) {
+                val dst = adj[src]!!.removeAt(adj[src]!!.lastIndex)
+                dfs(dst)
+            }
+            res.add(src)
+        }
+
+        dfs("JFK")
+        return res.reversed()
+    }
+}
+```
+
+```swift
+class Solution {
+    func findItinerary(_ tickets: [[String]]) -> [String] {
+        var adj = [String: [String]]()
+        for ticket in tickets.sorted(by: { $0[1] > $1[1] }) {
+            adj[ticket[0], default: []].append(ticket[1])
+        }
+
+        var res = [String]()
+
+        func dfs(_ src: String) {
+            while let destinations = adj[src], !destinations.isEmpty {
+                let dst = adj[src]!.removeLast()
+                dfs(dst)
+            }
+            res.append(src)
+        }
+
+        dfs("JFK")
+        return res.reversed()
+    }
+}
+```
+
+```rust
+impl Solution {
+    pub fn find_itinerary(tickets: Vec<Vec<String>>) -> Vec<String> {
+        let mut adj: HashMap<String, Vec<String>> = HashMap::new();
+        let mut tickets = tickets;
+        tickets.sort();
+        tickets.reverse();
+        for ticket in &tickets {
+            adj.entry(ticket[0].clone()).or_default().push(ticket[1].clone());
+        }
+
+        let mut res = Vec::new();
+
+        fn dfs(src: &str, adj: &mut HashMap<String, Vec<String>>, res: &mut Vec<String>) {
+            while let Some(dests) = adj.get(src) {
+                if dests.is_empty() {
+                    break;
+                }
+                let dst = adj.get_mut(src).unwrap().pop().unwrap();
+                dfs(&dst, adj, res);
+            }
+            res.push(src.to_string());
+        }
+
+        dfs("JFK", &mut adj, &mut res);
+        res.reverse();
+        res
+    }
+}
+```
+
+::tabs-end
+
+### Time & Space Complexity
+
+- Time complexity: $O(E\log E)$
+- Space complexity: $O(E)$
+
+> Where $E$ is the number of tickets (edges) and $V$ is the number of airports (vertices).
+
+---
+
+## 3. Hierholzer's Algorithm (Iteration)
+
+### Intuition
+
+This is the **iterative version of Hierholzer’s Algorithm** for finding an **Eulerian Path**.
+
+We must:
+
+- use **every ticket exactly once**,
+- start from `"JFK"`,
+- and return the **lexicographically smallest** valid itinerary.
+
+Instead of recursion, we simulate the DFS using a **stack**:
+
+- Keep moving forward while tickets exist.
+- When stuck (no outgoing flights), **backtrack** and record the airport.
+
+Key idea:
+
+> **Airports are added to the answer only when they have no remaining outgoing edges.**
+
+### Algorithm
+
+1. Build an adjacency list from tickets.
+2. Sort tickets in **reverse lexicographical order** so popping gives the smallest destination.
+3. Initialize a stack with `"JFK"`.
+4. While the stack is not empty:
+    - Look at the top airport:
+        - If it has outgoing flights, pop one and push the destination.
+        - Otherwise, pop the airport and add it to the result.
+5. Reverse the result to get the final itinerary.
+
+::tabs-start
+
+```python
+class Solution:
+    def findItinerary(self, tickets: List[List[str]]) -> List[str]:
+        adj = defaultdict(list)
+        for src, dst in sorted(tickets)[::-1]:
+            adj[src].append(dst)
+
+        stack = ["JFK"]
+        res = []
+
+        while stack:
+            curr = stack[-1]
+            if not adj[curr]:
+                res.append(stack.pop())
+            else:
+                stack.append(adj[curr].pop())
+
+        return res[::-1]
+```
+
+```java
+public class Solution {
+    public List<String> findItinerary(List<List<String>> tickets) {
+        Map<String, PriorityQueue<String>> adj = new HashMap<>();
+        for (List<String> ticket : tickets) {
+            adj.computeIfAbsent(ticket.get(0),
+            k -> new PriorityQueue<>()).add(ticket.get(1));
+        }
+
+        LinkedList<String> res = new LinkedList<>();
+        Stack<String> stack = new Stack<>();
+        stack.push("JFK");
+
+        while (!stack.isEmpty()) {
+            String curr = stack.peek();
+            if (!adj.containsKey(curr) || adj.get(curr).isEmpty()) {
+                res.addFirst(stack.pop());
+            } else {
+                stack.push(adj.get(curr).poll());
+            }
+        }
+
+        return res;
+    }
+}
+```
+
+```cpp
+class Solution {
+public:
+    vector<string> findItinerary(vector<vector<string>>& tickets) {
+        unordered_map<string, vector<string>> adj;
+        for (const auto& ticket : tickets) {
+            adj[ticket[0]].push_back(ticket[1]);
+        }
+        for (auto& [src, destinations] : adj) {
+            sort(destinations.rbegin(), destinations.rend());
+        }
+
+        vector<string> res;
+        stack<string> stk;
+        stk.push("JFK");
+
+        while (!stk.empty()) {
+            string curr = stk.top();
+            if (adj[curr].empty()) {
+                res.push_back(curr);
+                stk.pop();
+            } else {
+                string next = adj[curr].back();
+                adj[curr].pop_back();
+                stk.push(next);
+            }
+        }
+
+        reverse(res.begin(), res.end());
+        return res;
+    }
+};
+```
+
+```javascript
+class Solution {
+    /**
+     * @param {string[][]} tickets
+     * @return {string[]}
+     */
+    findItinerary(tickets) {
+        const adj = new Map();
+        tickets
+            .sort()
+            .reverse()
+            .forEach(([src, dst]) => {
+                if (!adj.has(src)) adj.set(src, []);
+                adj.get(src).push(dst);
+            });
+
+        const res = [];
+        const stack = ['JFK'];
+
+        while (stack.length > 0) {
+            let curr = stack[stack.length - 1];
+            if (!adj.has(curr) || adj.get(curr).length === 0) {
+                res.unshift(stack.pop());
+            } else {
+                stack.push(adj.get(curr).pop());
+            }
+        }
+
+        return res;
+    }
+}
+```
+
+```csharp
+public class Solution {
+    public List<string> FindItinerary(List<List<string>> tickets) {
+        var adj = new Dictionary<string, List<string>>();
+        foreach (var ticket in tickets.OrderByDescending(t => t[1])) {
+            if (!adj.ContainsKey(ticket[0])) {
+                adj[ticket[0]] = new List<string>();
+            }
+            adj[ticket[0]].Add(ticket[1]);
+        }
+
+        var res = new List<string>();
+        var stack = new Stack<string>();
+        stack.Push("JFK");
+
+        while (stack.Count > 0) {
+            var curr = stack.Peek();
+            if (!adj.ContainsKey(curr) || adj[curr].Count == 0) {
+                res.Insert(0, stack.Pop());
+            } else {
+                var next = adj[curr][adj[curr].Count - 1];
+                adj[curr].RemoveAt(adj[curr].Count - 1);
+                stack.Push(next);
+            }
+        }
+
+        return res;
+    }
+}
+```
+
+```go
+func findItinerary(tickets [][]string) []string {
+	adj := make(map[string][]string)
+	for _, ticket := range tickets {
+		src, dst := ticket[0], ticket[1]
+		adj[src] = append(adj[src], dst)
+	}
+	for src := range adj {
+		sort.Sort(sort.Reverse(sort.StringSlice(adj[src])))
+	}
+
+	stack := []string{"JFK"}
+	var res []string
+
+	for len(stack) > 0 {
+		curr := stack[len(stack)-1]
+		if len(adj[curr]) == 0 {
+			res = append(res, stack[len(stack)-1])
+			stack = stack[:len(stack)-1]
+		} else {
+			stack = append(stack, adj[curr][len(adj[curr])-1])
+			adj[curr] = adj[curr][:len(adj[curr])-1]
+		}
+	}
+
+	for i, j := 0, len(res)-1; i < j; i, j = i+1, j-1 {
+		res[i], res[j] = res[j], res[i]
+	}
+	return res
+}
+```
+
+```kotlin
+class Solution {
+    fun findItinerary(tickets: List<List<String>>): List<String> {
+        val adj = HashMap<String, MutableList<String>>()
+        for ((src, dst) in tickets.sortedWith(
+            compareByDescending<List<String>> { it[0] }.thenByDescending { it[1] })
+        ) {
+            adj.computeIfAbsent(src) { mutableListOf() }.add(dst)
+        }
+
+        val stack = ArrayDeque<String>().apply { add("JFK") }
+        val res = mutableListOf<String>()
+
+        while (stack.isNotEmpty()) {
+            val curr = stack.last()
+            if (adj[curr].isNullOrEmpty()) {
+                res.add(stack.removeLast())
+            } else {
+                stack.add(adj[curr]!!.removeLast())
+            }
+        }
+
+        return res.asReversed()
+    }
+}
+```
+
+```swift
+class Solution {
+    func findItinerary(_ tickets: [[String]]) -> [String] {
+        var adj = [String: [String]]()
+        for ticket in tickets.sorted(by: { $0[1] > $1[1] }) {
+            adj[ticket[0], default: []].append(ticket[1])
+        }
+
+        var stack = ["JFK"]
+        var res = [String]()
+
+        while !stack.isEmpty {
+            let curr = stack.last!
+            if adj[curr] == nil || adj[curr]!.isEmpty {
+                res.append(stack.removeLast())
+            } else {
+                stack.append(adj[curr]!.removeLast())
+            }
+        }
+
+        return res.reversed()
+    }
+}
+```
+
+```rust
+impl Solution {
+    pub fn find_itinerary(tickets: Vec<Vec<String>>) -> Vec<String> {
+        let mut adj: HashMap<String, Vec<String>> = HashMap::new();
+        let mut tickets = tickets;
+        tickets.sort();
+        tickets.reverse();
+        for ticket in &tickets {
+            adj.entry(ticket[0].clone()).or_default().push(ticket[1].clone());
+        }
+
+        let mut stack = vec!["JFK".to_string()];
+        let mut res = Vec::new();
+
+        while let Some(curr) = stack.last().cloned() {
+            if adj.get(&curr).map_or(true, |d| d.is_empty()) {
+                res.push(stack.pop().unwrap());
+            } else {
+                let next = adj.get_mut(&curr).unwrap().pop().unwrap();
+                stack.push(next);
+            }
+        }
+
+        res.reverse();
+        res
+    }
+}
+```
+
+::tabs-end
+
+### Time & Space Complexity
+
+- Time complexity: $O(E\log E)$
+- Space complexity: $O(E)$
+
+> Where $E$ is the number of tickets (edges) and $V$ is the number of airports (vertices).
+
+---
+
+## Common Pitfalls
+
+### Not Starting from JFK
+
+The problem explicitly states the journey must begin from "JFK". Forgetting to initialize the traversal from "JFK" or accidentally starting from a different airport will produce an invalid itinerary.
+
+### Forgetting to Use Each Ticket Exactly Once
+
+Each ticket represents a one-time-use flight. Failing to remove or mark tickets as used after consuming them leads to infinite loops or itineraries that reuse the same flight multiple times.
+
+### Sorting in Wrong Order for Hierholzer's Algorithm
+
+Hierholzer's algorithm requires processing destinations in reverse lexicographical order (when using a stack/pop approach) so that popping gives the smallest destination. Sorting in ascending order without reversing, or using the wrong data structure, produces lexicographically incorrect results.
+
+### Not Reversing the Result in Post-Order Traversal
+
+In Hierholzer's algorithm, airports are added to the result when backtracking (post-order), which builds the path in reverse. Forgetting to reverse the final result returns the itinerary in wrong order.
+
+### Confusing Dead Ends with Valid Endpoints
+
+In the DFS backtracking approach, reaching an airport with no outgoing flights does not necessarily mean failure. It could be the valid end of the Eulerian path. Only return failure if you cannot use all tickets, not simply because you reached a node with no remaining edges.

@@ -1,0 +1,242 @@
+## Prerequisites
+
+Before attempting this problem, you should be comfortable with:
+
+- **Hash Map** - Used to store and quickly lookup the integer value for each Roman numeral character
+- **String Iteration** - Traversing through a string character by character while comparing adjacent elements
+- **Conditional Logic** - Determining when to add vs subtract based on comparing current and next values
+
+---
+
+## 1. Hash Map
+
+### Intuition
+
+Roman numerals normally add values from left to right. The key insight is handling subtractive notation, where a smaller value before a larger one means subtraction (like IV = 4, not 6). As we scan left to right, if the current symbol is smaller than the next one, we subtract its value; otherwise, we add it. This single rule handles both regular addition and subtractive cases elegantly.
+
+### Algorithm
+
+1. Create a hash map storing each Roman numeral character and its integer value.
+2. Initialize the result to `0`.
+3. Iterate through each character in the string:
+    - If the current character's value is less than the next character's value, subtract it from the result.
+    - Otherwise, add it to the result.
+4. Return the final result.
+
+::tabs-start
+
+```python
+class Solution:
+    def romanToInt(self, s: str) -> int:
+        roman = {
+            "I": 1, "V": 5, "X": 10,
+            "L": 50, "C": 100, "D": 500, "M": 1000
+        }
+        res = 0
+        for i in range(len(s)):
+            if i + 1 < len(s) and roman[s[i]] < roman[s[i + 1]]:
+                res -= roman[s[i]]
+            else:
+                res += roman[s[i]]
+        return res
+```
+
+```java
+public class Solution {
+    public int romanToInt(String s) {
+        Map<Character, Integer> roman = new HashMap<>();
+        roman.put('I', 1); roman.put('V', 5);
+        roman.put('X', 10); roman.put('L', 50);
+        roman.put('C', 100); roman.put('D', 500);
+        roman.put('M', 1000);
+
+        int res = 0;
+        for (int i = 0; i < s.length(); i++) {
+            if (i + 1 < s.length() && roman.get(s.charAt(i)) < roman.get(s.charAt(i + 1))) {
+                res -= roman.get(s.charAt(i));
+            } else {
+                res += roman.get(s.charAt(i));
+            }
+        }
+        return res;
+    }
+}
+```
+
+```cpp
+class Solution {
+public:
+    int romanToInt(string s) {
+        unordered_map<char, int> roman = {
+            {'I', 1}, {'V', 5}, {'X', 10},
+            {'L', 50}, {'C', 100}, {'D', 500}, {'M', 1000}
+        };
+
+        int res = 0;
+        for (int i = 0; i < s.size(); i++) {
+            if (i + 1 < s.size() && roman[s[i]] < roman[s[i + 1]]) {
+                res -= roman[s[i]];
+            } else {
+                res += roman[s[i]];
+            }
+        }
+        return res;
+    }
+};
+```
+
+```javascript
+class Solution {
+    /**
+     * @param {string} s
+     * @return {number}
+     */
+    romanToInt(s) {
+        const roman = {
+            I: 1,
+            V: 5,
+            X: 10,
+            L: 50,
+            C: 100,
+            D: 500,
+            M: 1000,
+        };
+
+        let res = 0;
+        for (let i = 0; i < s.length; i++) {
+            if (i + 1 < s.length && roman[s[i]] < roman[s[i + 1]]) {
+                res -= roman[s[i]];
+            } else {
+                res += roman[s[i]];
+            }
+        }
+        return res;
+    }
+}
+```
+
+```csharp
+public class Solution {
+    public int RomanToInt(string s) {
+        Dictionary<char, int> roman = new Dictionary<char, int> {
+            {'I', 1}, {'V', 5}, {'X', 10},
+            {'L', 50}, {'C', 100}, {'D', 500}, {'M', 1000}
+        };
+
+        int res = 0;
+        for (int i = 0; i < s.Length; i++) {
+            if (i + 1 < s.Length && roman[s[i]] < roman[s[i + 1]]) {
+                res -= roman[s[i]];
+            } else {
+                res += roman[s[i]];
+            }
+        }
+        return res;
+    }
+}
+```
+
+```go
+func romanToInt(s string) int {
+    roman := map[byte]int{
+        'I': 1, 'V': 5, 'X': 10,
+        'L': 50, 'C': 100, 'D': 500, 'M': 1000,
+    }
+
+    res := 0
+    for i := 0; i < len(s); i++ {
+        if i+1 < len(s) && roman[s[i]] < roman[s[i+1]] {
+            res -= roman[s[i]]
+        } else {
+            res += roman[s[i]]
+        }
+    }
+    return res
+}
+```
+
+```kotlin
+class Solution {
+    fun romanToInt(s: String): Int {
+        val roman = mapOf(
+            'I' to 1, 'V' to 5, 'X' to 10,
+            'L' to 50, 'C' to 100, 'D' to 500, 'M' to 1000
+        )
+
+        var res = 0
+        for (i in s.indices) {
+            if (i + 1 < s.length && roman[s[i]]!! < roman[s[i + 1]]!!) {
+                res -= roman[s[i]]!!
+            } else {
+                res += roman[s[i]]!!
+            }
+        }
+        return res
+    }
+}
+```
+
+```swift
+class Solution {
+    func romanToInt(_ s: String) -> Int {
+        let roman: [Character: Int] = [
+            "I": 1, "V": 5, "X": 10,
+            "L": 50, "C": 100, "D": 500, "M": 1000
+        ]
+
+        let chars = Array(s)
+        var res = 0
+        for i in 0..<chars.count {
+            if i + 1 < chars.count && roman[chars[i]]! < roman[chars[i + 1]]! {
+                res -= roman[chars[i]]!
+            } else {
+                res += roman[chars[i]]!
+            }
+        }
+        return res
+    }
+}
+```
+
+```rust
+impl Solution {
+    pub fn roman_to_int(s: String) -> i32 {
+        let roman = |c: u8| -> i32 {
+            match c {
+                b'I' => 1, b'V' => 5, b'X' => 10,
+                b'L' => 50, b'C' => 100, b'D' => 500, b'M' => 1000,
+                _ => 0,
+            }
+        };
+        let bytes = s.as_bytes();
+        let mut res = 0;
+        for i in 0..bytes.len() {
+            if i + 1 < bytes.len() && roman(bytes[i]) < roman(bytes[i + 1]) {
+                res -= roman(bytes[i]);
+            } else {
+                res += roman(bytes[i]);
+            }
+        }
+        res
+    }
+}
+```
+
+::tabs-end
+
+### Time & Space Complexity
+
+- Time complexity: $O(n)$
+- Space complexity: $O(1)$ since we have $7$ characters in the hash map.
+
+---
+
+## Common Pitfalls
+
+### Always Adding Instead of Subtracting
+
+A common mistake is to always add the value of each Roman numeral without checking for subtractive notation. For example, treating `IV` as `I + V = 6` instead of `V - I = 4`. The fix is to compare the current character's value with the next character's value and subtract when the current is smaller.
+
+### Off-by-One Error When Comparing Adjacent Characters
+
+When checking if the current numeral is smaller than the next, forgetting to verify that `i + 1` is within bounds causes an index out of bounds error. Always ensure the comparison `i + 1 < len(s)` is checked before accessing `s[i + 1]`.

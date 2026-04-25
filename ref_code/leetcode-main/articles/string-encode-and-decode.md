@@ -1,0 +1,767 @@
+## Prerequisites
+
+Before attempting this problem, you should be comfortable with:
+
+- **String Manipulation** - Building strings by concatenation and extracting substrings based on indices
+- **Delimiter Design** - Understanding how to choose separators that won't conflict with input content
+- **Length-Prefix Encoding** - Using string lengths to unambiguously mark boundaries between encoded segments
+
+---
+
+## 1. Encoding & Decoding
+
+### Intuition
+
+To encode a list of strings into a single string, we need a way to store each string so that we can later separate them correctly during decoding.
+A simple and reliable strategy is to record the **length of each string** first, followed by a special separator, and then append all the strings together.
+During decoding, we can read the recorded lengths to know exactly how many characters to extract for each original string.
+This avoids any issues with special characters, commas, or symbols inside the strings because the lengths tell us precisely where each string starts and ends.
+
+### Algorithm
+
+#### Encoding
+
+1. If the input list is empty, return an empty string.
+2. Create an empty list to store the sizes of each string.
+3. For each string, append its length to the sizes list.
+4. Build a single string by:
+    - Writing all sizes separated by commas.
+    - Adding a `'#'` to mark the end of the size section.
+    - Appending all the actual strings in order.
+5. Return the final encoded string.
+
+#### Decoding
+
+1. If the encoded string is empty, return an empty list.
+2. Read characters from the start until reaching `'#'` to extract all recorded sizes:
+    - Parse each size by reading until a comma.
+3. After the `'#'`, extract substrings according to the sizes list:
+    - For each size, read that many characters and append the substring to the result.
+4. Return the list of decoded strings.
+
+::tabs-start
+
+```python
+class Solution:
+    def encode(self, strs: List[str]) -> str:
+        if not strs:
+            return ""
+        sizes, res = [], ""
+        for s in strs:
+            sizes.append(len(s))
+        for sz in sizes:
+            res += str(sz)
+            res += ','
+        res += '#'
+        for s in strs:
+            res += s
+        return res
+
+    def decode(self, s: str) -> List[str]:
+        if not s:
+            return []
+        sizes, res, i = [], [], 0
+        while s[i] != '#':
+            cur = ""
+            while s[i] != ',':
+                cur += s[i]
+                i += 1
+            sizes.append(int(cur))
+            i += 1
+        i += 1
+        for sz in sizes:
+            res.append(s[i:i + sz])
+            i += sz
+        return res
+```
+
+```java
+public class Solution {
+
+    public String encode(List<String> strs) {
+        if (strs.isEmpty()) return "";
+        StringBuilder res = new StringBuilder();
+        List<Integer> sizes = new ArrayList<>();
+        for (String str : strs) {
+            sizes.add(str.length());
+        }
+        for (int size : sizes) {
+            res.append(size).append(',');
+        }
+        res.append('#');
+        for (String str : strs) {
+            res.append(str);
+        }
+        return res.toString();
+    }
+
+    public List<String> decode(String str) {
+        if (str.length() == 0) {
+            return new ArrayList<>();
+        }
+        List<String> res = new ArrayList<>();
+        List<Integer> sizes = new ArrayList<>();
+        int i = 0;
+        while (str.charAt(i) != '#') {
+            StringBuilder cur = new StringBuilder();
+            while (str.charAt(i) != ',') {
+                cur.append(str.charAt(i));
+                i++;
+            }
+            sizes.add(Integer.parseInt(cur.toString()));
+            i++;
+        }
+        i++;
+        for (int sz : sizes) {
+            res.add(str.substring(i, i + sz));
+            i += sz;
+        }
+        return res;
+    }
+}
+```
+
+```cpp
+class Solution {
+public:
+    string encode(vector<string>& strs) {
+        if (strs.empty()) return "";
+        vector<int> sizes;
+        string res = "";
+        for (string& s : strs) {
+            sizes.push_back(s.size());
+        }
+        for (int sz : sizes) {
+            res += to_string(sz) + ',';
+        }
+        res += '#';
+        for (string& s : strs) {
+            res += s;
+        }
+        return res;
+    }
+
+    vector<string> decode(string s) {
+        if (s.empty()) return {};
+        vector<int> sizes;
+        vector<string> res;
+        int i = 0;
+        while (s[i] != '#') {
+            string cur = "";
+            while (s[i] != ',') {
+                cur += s[i];
+                i++;
+            }
+            sizes.push_back(stoi(cur));
+            i++;
+        }
+        i++;
+        for (int sz : sizes) {
+            res.push_back(s.substr(i, sz));
+            i += sz;
+        }
+        return res;
+    }
+};
+```
+
+```javascript
+class Solution {
+    /**
+     * @param {string[]} strs
+     * @returns {string}
+     */
+    encode(strs) {
+        if (strs.length === 0) return '';
+        let sizes = [],
+            res = '';
+        for (let s of strs) {
+            sizes.push(s.length);
+        }
+        for (let sz of sizes) {
+            res += sz + ',';
+        }
+        res += '#';
+        for (let s of strs) {
+            res += s;
+        }
+        return res;
+    }
+
+    /**
+     * @param {string} str
+     * @returns {string[]}
+     */
+    decode(str) {
+        if (str.length === 0) return [];
+        let sizes = [],
+            res = [],
+            i = 0;
+        while (str[i] !== '#') {
+            let cur = '';
+            while (str[i] !== ',') {
+                cur += str[i];
+                i++;
+            }
+            sizes.push(parseInt(cur));
+            i++;
+        }
+        i++;
+        for (let sz of sizes) {
+            res.push(str.substr(i, sz));
+            i += sz;
+        }
+        return res;
+    }
+}
+```
+
+```csharp
+public class Solution {
+
+    public string Encode(IList<string> strs) {
+        if (strs.Count == 0) return "";
+        List<int> sizes = new List<int>();
+        string res = "";
+        foreach (string s in strs) {
+            sizes.Add(s.Length);
+        }
+        foreach (int sz in sizes) {
+            res += sz.ToString() + ',';
+        }
+        res += '#';
+        foreach (string s in strs) {
+            res += s;
+        }
+        return res;
+    }
+
+    public List<string> Decode(string s) {
+        if (s.Length == 0) {
+            return new List<string>();
+        }
+        List<int> sizes = new List<int>();
+        List<string> res = new List<string>();
+        int i = 0;
+        while (s[i] != '#') {
+            string cur = "";
+            while (s[i] != ',') {
+                cur += s[i];
+                i++;
+            }
+            sizes.Add(int.Parse(cur));
+            i++;
+        }
+        i++;
+        foreach (int sz in sizes) {
+            res.Add(s.Substring(i, sz));
+            i += sz;
+        }
+        return res;
+    }
+}
+```
+
+```go
+type Solution struct{}
+
+func (s *Solution) Encode(strs []string) string {
+	if len(strs) == 0 {
+		return ""
+	}
+	var sizes []string
+	for _, str := range strs {
+		sizes = append(sizes, strconv.Itoa(len(str)))
+	}
+	return strings.Join(sizes, ",") + "#" + strings.Join(strs, "")
+}
+
+func (s *Solution) Decode(encoded string) []string {
+	if encoded == "" {
+		return []string{}
+	}
+	parts := strings.SplitN(encoded, "#", 2)
+	sizes := strings.Split(parts[0], ",")
+	var res []string
+	i := 0
+	for _, sz := range sizes {
+		if sz == "" {
+			continue
+		}
+		length, _ := strconv.Atoi(sz)
+		res = append(res, parts[1][i:i+length])
+		i += length
+	}
+	return res
+}
+```
+
+```kotlin
+class Solution {
+    fun encode(strs: List<String>): String {
+        if (strs.isEmpty()) return ""
+        val sizes = mutableListOf<String>()
+        for (str in strs) {
+            sizes.add(str.length.toString())
+        }
+        return sizes.joinToString(",") + "#" + strs.joinToString("")
+    }
+
+    fun decode(encoded: String): List<String> {
+        if (encoded.isEmpty()) return emptyList()
+        val parts = encoded.split("#", limit = 2)
+        val sizes = parts[0].split(",")
+        val res = mutableListOf<String>()
+        var i = 0
+        for (sz in sizes) {
+            if (sz.isEmpty()) continue
+            val length = sz.toInt()
+            res.add(parts[1].substring(i, i + length))
+            i += length
+        }
+        return res
+    }
+}
+```
+
+```swift
+class Solution {
+    func encode(_ strs: [String]) -> String {
+        if strs.isEmpty { return "" }
+
+        var sizes: [Int] = []
+        var res = ""
+        for s in strs {
+            sizes.append(s.count)
+        }
+        for sz in sizes {
+            res += String(sz)
+            res += ","
+        }
+
+        res += "#"
+        for s in strs {
+            res += s
+        }
+        return res
+    }
+
+    func decode(_ s: String) -> [String] {
+        if s.isEmpty { return [] }
+        let sArr = Array(s)
+        var sizes: [Int] = []
+        var res: [String] = []
+        var i = 0
+
+        while sArr[i] != "#" {
+            var cur = ""
+            while sArr[i] != "," {
+                cur.append(sArr[i])
+                i += 1
+            }
+            sizes.append(Int(cur)!)
+            i += 1
+        }
+
+        i += 1
+        for sz in sizes {
+            let substring = String(sArr[i..<i+sz])
+            res.append(substring)
+            i += sz
+        }
+        return res
+    }
+}
+```
+
+```rust
+impl Solution {
+    pub fn encode(strs: Vec<String>) -> String {
+        if strs.is_empty() {
+            return String::new();
+        }
+        let mut res = String::new();
+        let sizes: Vec<usize> = strs.iter().map(|s| s.len()).collect();
+        for sz in &sizes {
+            res.push_str(&sz.to_string());
+            res.push(',');
+        }
+        res.push('#');
+        for s in &strs {
+            res.push_str(s);
+        }
+        res
+    }
+
+    pub fn decode(s: String) -> Vec<String> {
+        if s.is_empty() {
+            return vec![];
+        }
+        let bytes = s.as_bytes();
+        let mut sizes = vec![];
+        let mut res = vec![];
+        let mut i = 0;
+        while bytes[i] != b'#' {
+            let mut cur = String::new();
+            while bytes[i] != b',' {
+                cur.push(bytes[i] as char);
+                i += 1;
+            }
+            sizes.push(cur.parse::<usize>().unwrap());
+            i += 1;
+        }
+        i += 1;
+        for sz in sizes {
+            res.push(s[i..i + sz].to_string());
+            i += sz;
+        }
+        res
+    }
+}
+```
+
+::tabs-end
+
+### Time & Space Complexity
+
+- Time complexity: $O(m)$ for each $encode()$ and $decode()$ function calls.
+- Space complexity: $O(m + n)$ for each $encode()$ and $decode()$ function calls.
+
+> Where $m$ is the sum of lengths of all the strings and $n$ is the number of strings.
+
+---
+
+## 2. Encoding & Decoding (Optimal)
+
+### Intuition
+
+Instead of storing all string lengths first and then appending the strings, we can directly attach each string to its length.  
+For every string, we write **`length#string`**.  
+The `#` character acts as a clear boundary between the length and the actual content, and using the length ensures we know exactly how many characters to read—no matter what characters appear in the string itself.  
+During decoding, we simply read characters until we reach `#` to find the length, then extract exactly that many characters as the string.  
+This approach is both simpler and more efficient because it avoids building separate sections for lengths and content.
+
+### Algorithm
+
+#### Encoding
+
+1. Initialize an empty result string.
+2. For each string in the list:
+    - Compute its length.
+    - Append `"length#string"` to the result.
+3. Return the final encoded string.
+
+#### Decoding
+
+1. Initialize an empty list for the decoded strings and a pointer `i = 0`.
+2. While `i` is within the bounds of the encoded string:
+    - Move a pointer `j` forward until it finds `'#'` — this segment represents the length.
+    - Convert the substring `s[i:j]` into an integer `length`.
+    - Move `i` to the character right after `'#'`.
+    - Extract the next `length` characters — this is the original string.
+    - Append the extracted string to the result list.
+    - Move `i` forward by `length` to continue decoding the next segment.
+3. Return the list of decoded strings.
+
+::tabs-start
+
+```python
+class Solution:
+
+    def encode(self, strs: List[str]) -> str:
+        res = ""
+        for s in strs:
+            res += str(len(s)) + "#" + s
+        return res
+
+    def decode(self, s: str) -> List[str]:
+        res = []
+        i = 0
+
+        while i < len(s):
+            j = i
+            while s[j] != '#':
+                j += 1
+            length = int(s[i:j])
+            i = j + 1
+            j = i + length
+            res.append(s[i:j])
+            i = j
+
+        return res
+```
+
+```java
+public class Solution {
+
+    public String encode(List<String> strs) {
+        StringBuilder res = new StringBuilder();
+        for (String s : strs) {
+            res.append(s.length()).append('#').append(s);
+        }
+        return res.toString();
+    }
+
+    public List<String> decode(String str) {
+        List<String> res = new ArrayList<>();
+        int i = 0;
+        while (i < str.length()) {
+            int j = i;
+            while (str.charAt(j) != '#') {
+                j++;
+            }
+            int length = Integer.parseInt(str.substring(i, j));
+            i = j + 1;
+            j = i + length;
+            res.add(str.substring(i, j));
+            i = j;
+        }
+        return res;
+    }
+}
+```
+
+```cpp
+class Solution {
+public:
+    string encode(vector<string>& strs) {
+        string res;
+        for (const string& s : strs) {
+            res += to_string(s.size()) + "#" + s;
+        }
+        return res;
+    }
+
+    vector<string> decode(string s) {
+        vector<string> res;
+        int i = 0;
+        while (i < s.size()) {
+            int j = i;
+            while (s[j] != '#') {
+                j++;
+            }
+            int length = stoi(s.substr(i, j - i));
+            i = j + 1;
+            j = i + length;
+            res.push_back(s.substr(i, length));
+            i = j;
+        }
+        return res;
+    }
+};
+```
+
+```javascript
+class Solution {
+    /**
+     * @param {string[]} strs
+     * @returns {string}
+     */
+    encode(strs) {
+        let res = '';
+        for (let s of strs) {
+            res += s.length + '#' + s;
+        }
+        return res;
+    }
+
+    /**
+     * @param {string} str
+     * @returns {string[]}
+     */
+    decode(str) {
+        let res = [];
+        let i = 0;
+        while (i < str.length) {
+            let j = i;
+            while (str[j] !== '#') {
+                j++;
+            }
+            let length = parseInt(str.substring(i, j));
+            i = j + 1;
+            j = i + length;
+            res.push(str.substring(i, j));
+            i = j;
+        }
+        return res;
+    }
+}
+```
+
+```csharp
+public class Solution {
+    public string Encode(IList<string> strs) {
+        string res = "";
+        foreach (string s in strs) {
+            res += s.Length + "#" + s;
+        }
+        return res;
+    }
+
+    public List<string> Decode(string s) {
+        List<string> res = new List<string>();
+        int i = 0;
+        while (i < s.Length) {
+            int j = i;
+            while (s[j] != '#') {
+                j++;
+            }
+            int length = int.Parse(s.Substring(i, j - i));
+            i = j + 1;
+            j = i + length;
+            res.Add(s.Substring(i, length));
+            i = j;
+        }
+        return res;
+    }
+}
+```
+
+```go
+type Solution struct{}
+
+func (s *Solution) Encode(strs []string) string {
+	res := ""
+	for _, str := range strs {
+		res += strconv.Itoa(len(str)) + "#" + str
+	}
+	return res
+}
+
+func (s *Solution) Decode(encoded string) []string {
+	res := []string{}
+	i := 0
+	for i < len(encoded) {
+		j := i
+		for encoded[j] != '#' {
+			j++
+		}
+		length, _ := strconv.Atoi(encoded[i:j])
+		i = j + 1
+		res = append(res, encoded[i:i+length])
+		i += length
+	}
+	return res
+}
+```
+
+```kotlin
+class Solution {
+
+    fun encode(strs: List<String>): String {
+        val res = StringBuilder()
+        for (str in strs) {
+            res.append(str.length).append('#').append(str)
+        }
+        return res.toString()
+    }
+
+    fun decode(encoded: String): List<String> {
+        val res = mutableListOf<String>()
+        var i = 0
+        while (i < encoded.length) {
+            var j = i
+            while (encoded[j] != '#') {
+                j++
+            }
+            val length = encoded.substring(i, j).toInt()
+            i = j + 1
+            res.add(encoded.substring(i, i + length))
+            i += length
+        }
+        return res
+    }
+}
+```
+
+```swift
+class Solution {
+    func encode(_ strs: [String]) -> String {
+        var res = ""
+        for s in strs {
+            res += "\(s.count)#\(s)"
+        }
+        return res
+    }
+
+    func decode(_ s: String) -> [String] {
+        var res = [String]()
+        let sArr = Array(s)
+        var i = 0
+
+        while i < sArr.count {
+            var j = i
+            while sArr[j] != "#" {
+                j += 1
+            }
+            let lengthStr = String(sArr[i..<j])
+            let length = Int(lengthStr)!
+
+            i = j + 1
+            let end = i + length
+            let substring = String(sArr[i..<end])
+            res.append(substring)
+            i = end
+        }
+
+        return res
+    }
+}
+```
+
+```rust
+impl Solution {
+    pub fn encode(strs: Vec<String>) -> String {
+        let mut res = String::new();
+        for s in &strs {
+            res.push_str(&s.len().to_string());
+            res.push('#');
+            res.push_str(s);
+        }
+        res
+    }
+
+    pub fn decode(s: String) -> Vec<String> {
+        let mut res = vec![];
+        let bytes = s.as_bytes();
+        let mut i = 0;
+        while i < bytes.len() {
+            let mut j = i;
+            while bytes[j] != b'#' {
+                j += 1;
+            }
+            let length: usize = s[i..j].parse().unwrap();
+            i = j + 1;
+            j = i + length;
+            res.push(s[i..j].to_string());
+            i = j;
+        }
+        res
+    }
+}
+```
+
+::tabs-end
+
+### Time & Space Complexity
+
+- Time complexity: $O(m)$ for each $encode()$ and $decode()$ function calls.
+- Space complexity: $O(m + n)$ for each $encode()$ and $decode()$ function calls.
+
+> Where $m$ is the sum of lengths of all the strings and $n$ is the number of strings.
+
+---
+
+## Common Pitfalls
+
+### Using a Delimiter That Can Appear in the Strings
+
+Choosing a simple delimiter like a comma or space will break decoding if that character appears inside the original strings. The length-prefixing approach avoids this by using the length to know exactly how many characters to read, making the content irrelevant.
+
+### Not Handling Empty Strings or Empty Lists
+
+Edge cases like an empty input list or strings that are themselves empty ("") require careful handling. Ensure your encoding distinguishes between an empty list and a list containing one empty string, and that decoding correctly reconstructs zero-length strings.
+
+### Parsing Length Incorrectly for Multi-Digit Numbers
+
+When the length of a string is 10 or more, the length prefix becomes multi-digit. Ensure you read all digits before the `#` separator rather than just assuming a single digit. Using a loop to collect characters until reaching `#` handles this correctly.

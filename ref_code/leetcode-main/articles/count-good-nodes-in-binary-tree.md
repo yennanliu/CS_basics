@@ -1,0 +1,749 @@
+## Prerequisites
+
+Before attempting this problem, you should be comfortable with:
+
+- **Binary Trees** - Understanding tree node structures with left and right children
+- **Depth First Search (DFS)** - Traversing trees recursively while passing state (max value) down each path
+- **Breadth First Search (BFS)** - Level-order traversal using a queue with associated path information
+
+---
+
+## 1. Depth First Search
+
+### Intuition
+
+A node is “good” if on the path from the root to that node, **no earlier node has a value greater than it**.  
+So while traversing the tree, we just need to carry the **maximum value seen so far** on the current path.
+
+If the current node’s value ≥ that maximum → it is a good node.
+
+### Algorithm
+
+1. Start DFS from the root and store the root's value as the current `maxSoFar`.
+2. At each node:
+    - If `node.val >= maxSoFar`, count it as a good node.
+    - Update `maxSoFar = max(maxSoFar, node.val)`.
+3. Recursively explore:
+    - Left child with updated `maxSoFar`
+    - Right child with updated `maxSoFar`
+4. Sum the counts from left and right and return the total.
+
+::tabs-start
+
+```python
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+
+class Solution:
+    def goodNodes(self, root: TreeNode) -> int:
+
+        def dfs(node, maxVal):
+            if not node:
+                return 0
+
+            res = 1 if node.val >= maxVal else 0
+            maxVal = max(maxVal, node.val)
+            res += dfs(node.left, maxVal)
+            res += dfs(node.right, maxVal)
+            return res
+
+        return dfs(root, root.val)
+```
+
+```java
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+
+class Solution {
+
+    public int goodNodes(TreeNode root) {
+        return dfs(root, root.val);
+    }
+
+    private int dfs(TreeNode node, int maxVal) {
+        if (node == null) {
+            return 0;
+        }
+
+        int res = (node.val >= maxVal) ? 1 : 0;
+        maxVal = Math.max(maxVal, node.val);
+        res += dfs(node.left, maxVal);
+        res += dfs(node.right, maxVal);
+        return res;
+    }
+}
+```
+
+```cpp
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+
+class Solution {
+public:
+    int goodNodes(TreeNode* root) {
+        return dfs(root, root->val);
+    }
+
+private:
+    int dfs(TreeNode* node, int maxVal) {
+        if (!node) {
+            return 0;
+        }
+
+        int res = (node->val >= maxVal) ? 1 : 0;
+        maxVal = max(maxVal, node->val);
+        res += dfs(node->left, maxVal);
+        res += dfs(node->right, maxVal);
+        return res;
+    }
+};
+```
+
+```javascript
+/**
+ * Definition for a binary tree node.
+ * class TreeNode {
+ *     constructor(val = 0, left = null, right = null) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+
+class Solution {
+    /**
+     * @param {TreeNode} root
+     * @return {number}
+     */
+    goodNodes(root) {
+        return this.dfs(root, root.val);
+    }
+
+    /**
+     * @param {TreeNode} node
+     * @param {number} maxVal
+     * @return {number}
+     */
+    dfs(node, maxVal) {
+        if (!node) {
+            return 0;
+        }
+
+        let res = node.val >= maxVal ? 1 : 0;
+        maxVal = Math.max(maxVal, node.val);
+        res += this.dfs(node.left, maxVal);
+        res += this.dfs(node.right, maxVal);
+        return res;
+    }
+}
+```
+
+```csharp
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     public int val;
+ *     public TreeNode left;
+ *     public TreeNode right;
+ *     public TreeNode(int val=0, TreeNode left=null, TreeNode right=null) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+
+public class Solution {
+
+    public int GoodNodes(TreeNode root) {
+        return Dfs(root, root.val);
+    }
+
+    private int Dfs(TreeNode node, int maxVal) {
+        if (node == null) {
+            return 0;
+        }
+
+        int res = (node.val >= maxVal) ? 1 : 0;
+        maxVal = Math.Max(maxVal, node.val);
+        res += Dfs(node.left, maxVal);
+        res += Dfs(node.right, maxVal);
+        return res;
+    }
+}
+```
+
+```go
+/**
+ * Definition for a binary tree node.
+ * type TreeNode struct {
+ *     Val int
+ *     Left *TreeNode
+ *     Right *TreeNode
+ * }
+ */
+func goodNodes(root *TreeNode) int {
+    if root == nil {
+        return 0
+    }
+
+    var dfs func(node *TreeNode, maxVal int) int
+    dfs = func(node *TreeNode, maxVal int) int {
+        if node == nil {
+            return 0
+        }
+
+        res := 0
+        if node.Val >= maxVal {
+            res = 1
+        }
+
+        maxVal = max(maxVal, node.Val)
+        res += dfs(node.Left, maxVal)
+        res += dfs(node.Right, maxVal)
+
+        return res
+    }
+
+    return dfs(root, root.Val)
+}
+
+func max(a, b int) int {
+    if a > b {
+        return a
+    }
+    return b
+}
+```
+
+```kotlin
+/**
+ * Example:
+ * var ti = TreeNode(5)
+ * var v = ti.`val`
+ * Definition for a binary tree node.
+ * class TreeNode(var `val`: Int) {
+ *     var left: TreeNode? = null
+ *     var right: TreeNode? = null
+ * }
+ */
+class Solution {
+    fun goodNodes(root: TreeNode?): Int {
+        if (root == null) return 0
+
+        fun dfs(node: TreeNode?, maxVal: Int): Int {
+            if (node == null) return 0
+
+            var res = 0
+            if (node.`val` >= maxVal) {
+                res = 1
+            }
+
+            val newMaxVal = maxOf(maxVal, node.`val`)
+            res += dfs(node.left, newMaxVal)
+            res += dfs(node.right, newMaxVal)
+
+            return res
+        }
+
+        return dfs(root, root.`val`)
+    }
+}
+```
+
+```swift
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     public var val: Int
+ *     public var left: TreeNode?
+ *     public var right: TreeNode?
+ *     public init() { self.val = 0; self.left = nil; self.right = nil; }
+ *     public init(_ val: Int) { self.val = val; self.left = nil; self.right = nil; }
+ *     public init(_ val: Int, _ left: TreeNode?, _ right: TreeNode?) {
+ *         self.val = val
+ *         self.left = left
+ *         self.right = right
+ *     }
+ * }
+ */
+class Solution {
+    func goodNodes(_ root: TreeNode?) -> Int {
+        func dfs(_ node: TreeNode?, _ maxVal: Int) -> Int {
+            guard let node = node else { return 0 }
+
+            var res = node.val >= maxVal ? 1 : 0
+            let newMaxVal = max(maxVal, node.val)
+            res += dfs(node.left, newMaxVal)
+            res += dfs(node.right, newMaxVal)
+            return res
+        }
+
+        return dfs(root, root?.val ?? Int.min)
+    }
+}
+```
+
+```rust
+impl Solution {
+    pub fn good_nodes(root: Option<Rc<RefCell<TreeNode>>>) -> i32 {
+        fn dfs(node: &Option<Rc<RefCell<TreeNode>>>, max_val: i32) -> i32 {
+            match node {
+                None => 0,
+                Some(n) => {
+                    let n = n.borrow();
+                    let res = if n.val >= max_val { 1 } else { 0 };
+                    let new_max = max_val.max(n.val);
+                    res + dfs(&n.left, new_max) + dfs(&n.right, new_max)
+                }
+            }
+        }
+        dfs(&root, i32::MIN)
+    }
+}
+```
+
+::tabs-end
+
+### Time & Space Complexity
+
+- Time complexity: $O(n)$
+- Space complexity: $O(n)$
+
+---
+
+## 2. Breadth First Search
+
+### Intuition
+
+A node is “good” if along the path from the root to that node, **no earlier node has a value greater than it**.  
+Using BFS, we can traverse level by level while carrying the **maximum value seen so far** for each path.  
+Whenever we visit a node, we compare its value with that max — if it's greater or equal, this node is good.
+
+Each child inherits the updated maximum of its own path.
+
+### Algorithm
+
+1. Use a queue that stores pairs: `(node, maxSoFarOnPath)`.
+2. Start by pushing `(root, -infinity)` into the queue.
+3. While the queue is not empty:
+    - Pop one `(node, maxVal)`.
+    - If `node.val >= maxVal`, increase the good-node count.
+    - For each child:
+        - Push `(child, max(maxVal, node.val))` into the queue.
+4. Return the total count.
+
+::tabs-start
+
+```python
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+
+class Solution:
+    def goodNodes(self, root: TreeNode) -> int:
+        res = 0
+        q = deque()
+
+        q.append((root,-float('inf')))
+
+        while q:
+            node,maxval = q.popleft()
+            if node.val >= maxval:
+                res += 1
+
+            if node.left:
+                q.append((node.left,max(maxval,node.val)))
+
+            if node.right:
+                q.append((node.right,max(maxval,node.val)))
+
+        return res
+```
+
+```java
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+
+public class Solution {
+    public int goodNodes(TreeNode root) {
+        int res = 0;
+        Queue<Pair<TreeNode, Integer>> q = new LinkedList<>();
+        q.offer(new Pair<>(root, Integer.MIN_VALUE));
+
+        while (!q.isEmpty()) {
+            Pair<TreeNode, Integer> pair = q.poll();
+            TreeNode node = pair.getKey();
+            int maxval = pair.getValue();
+            if (node.val >= maxval) {
+                res++;
+            }
+            if (node.left != null) {
+                q.offer(new Pair<>(node.left, Math.max(maxval, node.val)));
+            }
+            if (node.right != null) {
+                q.offer(new Pair<>(node.right, Math.max(maxval, node.val)));
+            }
+        }
+        return res;
+    }
+}
+```
+
+```cpp
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+
+class Solution {
+public:
+    int goodNodes(TreeNode* root) {
+        int res = 0;
+        queue<pair<TreeNode*, int>> q;
+        q.push({root, -INT_MAX});
+
+        while (!q.empty()) {
+            auto [node, maxval] = q.front();
+            q.pop();
+            if (node->val >= maxval) {
+                res++;
+            }
+            if (node->left) {
+                q.push({node->left, max(maxval, node->val)});
+            }
+            if (node->right) {
+                q.push({node->right, max(maxval, node->val)});
+            }
+        }
+        return res;
+    }
+};
+```
+
+```javascript
+/**
+ * Definition for a binary tree node.
+ * class TreeNode {
+ *     constructor(val = 0, left = null, right = null) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+
+class Solution {
+    /**
+     * @param {TreeNode} root
+     * @return {number}
+     */
+    goodNodes(root) {
+        let res = 0;
+        let q = new Queue();
+        q.push([root, -Infinity]);
+
+        while (!q.isEmpty()) {
+            let [node, maxval] = q.pop();
+            if (node.val >= maxval) {
+                res++;
+            }
+            if (node.left) {
+                q.push([node.left, Math.max(maxval, node.val)]);
+            }
+            if (node.right) {
+                q.push([node.right, Math.max(maxval, node.val)]);
+            }
+        }
+        return res;
+    }
+}
+```
+
+```csharp
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     public int val;
+ *     public TreeNode left;
+ *     public TreeNode right;
+ *     public TreeNode(int val=0, TreeNode left=null, TreeNode right=null) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+
+public class Solution {
+    public int GoodNodes(TreeNode root) {
+        int res = 0;
+        Queue<(TreeNode, int)> q = new Queue<(TreeNode, int)>();
+        q.Enqueue((root, int.MinValue));
+
+        while (q.Count > 0) {
+            var (node, maxval) = q.Dequeue();
+            if (node.val >= maxval) {
+                res++;
+            }
+            if (node.left != null) {
+                q.Enqueue((node.left, Math.Max(maxval, node.val)));
+            }
+            if (node.right != null) {
+                q.Enqueue((node.right, Math.Max(maxval, node.val)));
+            }
+        }
+        return res;
+    }
+}
+```
+
+```go
+/**
+ * Definition for a binary tree node.
+ * type TreeNode struct {
+ *     Val int
+ *     Left *TreeNode
+ *     Right *TreeNode
+ * }
+ */
+func goodNodes(root *TreeNode) int {
+    if root == nil {
+        return 0
+    }
+
+    res := 0
+    q := []struct {
+        node   *TreeNode
+        maxVal int
+    }{{root, math.MinInt32}}
+
+    for len(q) > 0 {
+        front := q[0]
+        q = q[1:]
+
+        node := front.node
+        maxVal := front.maxVal
+
+        if node.Val >= maxVal {
+            res++
+        }
+
+        newMaxVal := max(maxVal, node.Val)
+
+        if node.Left != nil {
+            q = append(q, struct {
+                node   *TreeNode
+                maxVal int
+            }{node.Left, newMaxVal})
+        }
+
+        if node.Right != nil {
+            q = append(q, struct {
+                node   *TreeNode
+                maxVal int
+            }{node.Right, newMaxVal})
+        }
+    }
+
+    return res
+}
+
+func max(a, b int) int {
+    if a > b {
+        return a
+    }
+    return b
+}
+```
+
+```kotlin
+/**
+ * Example:
+ * var ti = TreeNode(5)
+ * var v = ti.`val`
+ * Definition for a binary tree node.
+ * class TreeNode(var `val`: Int) {
+ *     var left: TreeNode? = null
+ *     var right: TreeNode? = null
+ * }
+ */
+class Solution {
+    fun goodNodes(root: TreeNode?): Int {
+        if (root == null) return 0
+
+        var res = 0
+        val q = ArrayDeque<Pair<TreeNode, Int>>()
+        q.add(root to Int.MIN_VALUE)
+
+        while (q.isNotEmpty()) {
+            val (node, maxVal) = q.removeFirst()
+
+            if (node.`val` >= maxVal) {
+                res++
+            }
+
+            val newMaxVal = maxOf(maxVal, node.`val`)
+
+            node.left?.let { q.add(it to newMaxVal) }
+            node.right?.let { q.add(it to newMaxVal) }
+        }
+
+        return res
+    }
+}
+```
+
+```swift
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     public var val: Int
+ *     public var left: TreeNode?
+ *     public var right: TreeNode?
+ *     public init() { self.val = 0; self.left = nil; self.right = nil; }
+ *     public init(_ val: Int) { self.val = val; self.left = nil; self.right = nil; }
+ *     public init(_ val: Int, _ left: TreeNode?, _ right: TreeNode?) {
+ *         self.val = val
+ *         self.left = left
+ *         self.right = right
+ *     }
+ * }
+ */
+class Solution {
+    func goodNodes(_ root: TreeNode?) -> Int {
+        guard let root = root else { return 0 }
+
+        var res = 0
+        var q = Deque<(TreeNode, Int)>()
+        q.append((root, Int.min))
+
+        while !q.isEmpty {
+            let (node, maxVal) = q.popFirst()!
+            if node.val >= maxVal {
+                res += 1
+            }
+
+            let newMaxVal = max(maxVal, node.val)
+
+            if let left = node.left {
+                q.append((left, newMaxVal))
+            }
+            if let right = node.right {
+                q.append((right, newMaxVal))
+            }
+        }
+
+        return res
+    }
+}
+```
+
+```rust
+impl Solution {
+    pub fn good_nodes(root: Option<Rc<RefCell<TreeNode>>>) -> i32 {
+        let mut res = 0;
+        let mut q: VecDeque<(Rc<RefCell<TreeNode>>, i32)> = VecDeque::new();
+        if let Some(ref r) = root {
+            q.push_back((Rc::clone(r), i32::MIN));
+        }
+
+        while let Some((node, max_val)) = q.pop_front() {
+            let n = node.borrow();
+            if n.val >= max_val {
+                res += 1;
+            }
+            let new_max = max_val.max(n.val);
+            if let Some(ref left) = n.left {
+                q.push_back((Rc::clone(left), new_max));
+            }
+            if let Some(ref right) = n.right {
+                q.push_back((Rc::clone(right), new_max));
+            }
+        }
+
+        res
+    }
+}
+```
+
+::tabs-end
+
+### Time & Space Complexity
+
+- Time complexity: $O(n)$
+- Space complexity: $O(n)$
+
+---
+
+## Common Pitfalls
+
+### Using Strictly Greater Than Instead of Greater Than or Equal
+
+A node is "good" if its value is greater than OR EQUAL to all ancestors. Using `node.val > maxVal` instead of `node.val >= maxVal` causes the root and equal-valued paths to be missed.
+
+### Initializing maxVal Too High
+
+Starting with `maxVal = 0` or `maxVal = root.val` can cause issues with negative values. Initialize with negative infinity or the root's value to correctly count the root as a good node.
+
+```python
+# Wrong: misses root if root.val < 0
+dfs(root, 0)
+
+# Correct: root is always good
+dfs(root, float('-inf'))
+```
+
+### Sharing maxVal Across Sibling Subtrees
+
+The maximum value must be tracked per-path, not globally. Updating a shared variable instead of passing the new max to each recursive call causes incorrect comparisons across different branches.

@@ -1,0 +1,555 @@
+## Prerequisites
+
+Before attempting this problem, you should be comfortable with:
+
+- **Linked Lists** - Traversing nodes using next pointers
+- **Hash Sets** - O(1) lookup to track visited nodes
+- **Fast and Slow Pointers (Floyd's Algorithm)** - Two-pointer technique for cycle detection with O(1) space
+
+---
+
+## 1. Hash Set
+
+### Intuition
+
+To detect whether a linked list has a cycle, one simple idea is to **remember every node we visit**.  
+As we move forward through the list, if we ever reach a node we’ve already seen before, it means the list loops back on itself — so a cycle exists.
+
+If we reach the end (`null`) without repeating a node, then there is no cycle.
+
+### Algorithm
+
+1. Create an empty hash set to store visited nodes.
+2. Start from the head and move through the list one node at a time.
+3. For each node:
+    - If it is already in the set, a cycle exists, return `true`.
+    - Otherwise, add it to the set and continue.
+4. If you reach `null`, no cycle exists, return `false`.
+
+::tabs-start
+
+```python
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+
+class Solution:
+    def hasCycle(self, head: Optional[ListNode]) -> bool:
+        seen = set()
+        cur = head
+        while cur:
+            if cur in seen:
+                return True
+            seen.add(cur)
+            cur = cur.next
+        return False
+```
+
+```java
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+
+public class Solution {
+    public boolean hasCycle(ListNode head) {
+        HashSet<ListNode> seen = new HashSet<>();
+        ListNode cur = head;
+        while (cur != null) {
+            if (seen.contains(cur)) {
+                return true;
+            }
+            seen.add(cur);
+            cur = cur.next;
+        }
+        return false;
+    }
+}
+```
+
+```cpp
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+
+class Solution {
+public:
+    bool hasCycle(ListNode* head) {
+        unordered_set<ListNode*> seen;
+        ListNode* cur = head;
+        while (cur) {
+            if (seen.find(cur) != seen.end()) {
+                return true;
+            }
+            seen.insert(cur);
+            cur = cur->next;
+        }
+        return false;
+    }
+};
+```
+
+```javascript
+/**
+ * Definition for singly-linked list.
+ * class ListNode {
+ *     constructor(val = 0, next = null) {
+ *         this.val = val;
+ *         this.next = next;
+ *     }
+ * }
+ */
+
+class Solution {
+    /**
+     * @param {ListNode} head
+     * @return {boolean}
+     */
+    hasCycle(head) {
+        let seen = new Set();
+        let cur = head;
+        while (cur) {
+            if (seen.has(cur)) {
+                return true;
+            }
+            seen.add(cur);
+            cur = cur.next;
+        }
+        return false;
+    }
+}
+```
+
+```csharp
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     public int val;
+ *     public ListNode next;
+ *     public ListNode(int val=0, ListNode next=null) {
+ *         this.val = val;
+ *         this.next = next;
+ *     }
+ * }
+ */
+
+public class Solution {
+    public bool HasCycle(ListNode head) {
+        HashSet<ListNode> seen = new HashSet<ListNode>();
+        ListNode cur = head;
+        while (cur != null) {
+            if (seen.Contains(cur)) {
+                return true;
+            }
+            seen.Add(cur);
+            cur = cur.next;
+        }
+        return false;
+    }
+}
+```
+
+```go
+/**
+ * Definition for singly-linked list.
+ * type ListNode struct {
+ *     Val int
+ *     Next *ListNode
+ * }
+ */
+func hasCycle(head *ListNode) bool {
+    seen := make(map[*ListNode]bool)
+    cur := head
+    for cur != nil {
+        if seen[cur] {
+            return true
+        }
+        seen[cur] = true
+        cur = cur.Next
+    }
+    return false
+}
+```
+
+```kotlin
+/**
+ * Example:
+ * var li = ListNode(5)
+ * var v = li.`val`
+ * Definition for singly-linked list.
+ * class ListNode(var `val`: Int) {
+ *     var next: ListNode? = null
+ * }
+ */
+
+class Solution {
+    fun hasCycle(head: ListNode?): Boolean {
+        val seen = HashSet<ListNode>()
+        var cur = head
+        while (cur != null) {
+            if (!seen.add(cur)) {
+                return true
+            }
+            cur = cur.next
+        }
+        return false
+    }
+}
+```
+
+```swift
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     public var val: Int
+ *     public var next: ListNode?
+ *     public init(_ val: Int) {
+ *         self.val = val
+ *         self.next = nil
+ *     }
+ * }
+ */
+
+class Solution {
+    func hasCycle(_ head: ListNode?) -> Bool {
+        var seen = Set<ObjectIdentifier>()
+        var cur = head
+
+        while cur != nil {
+            let nodeId = ObjectIdentifier(cur!)
+            if seen.contains(nodeId) {
+                return true
+            }
+            seen.insert(nodeId)
+            cur = cur?.next
+        }
+        return false
+    }
+}
+```
+
+```rust
+// Note: Cycle detection via HashSet is not directly possible with
+// Option<Box<ListNode>> in safe Rust since Box provides unique
+// ownership (no shared references to track identity). This approach
+// requires raw pointers or a different representation.
+// The Floyd's algorithm below (Solution 2) is the idiomatic Rust approach.
+impl Solution {
+    pub fn has_cycle(head: Option<Box<ListNode>>) -> bool {
+        // Cannot form a cycle with owned Box<ListNode> in safe Rust.
+        // See the fast & slow pointer approach for the idiomatic solution.
+        false
+    }
+}
+```
+
+::tabs-end
+
+### Time & Space Complexity
+
+- Time complexity: $O(n)$
+- Space complexity: $O(n)$
+
+---
+
+## 2. Fast And Slow Pointers
+
+### Intuition
+
+We use two pointers moving through the list at different speeds:
+
+- `slow` moves one step at a time
+- `fast` moves two steps at a time
+
+If the list has a cycle, the `fast` pointer will eventually "lap" the `slow` pointer, meaning they will meet at some node inside the cycle.
+
+If the list has no cycle, the `fast` pointer will reach the end (`null`) and the loop stops.
+
+This method is efficient and uses constant extra space.
+
+### Algorithm
+
+1. Initialize two pointers:
+    - `slow = head`
+    - `fast = head`
+2. Move through the list:
+    - `slow` moves one step.
+    - `fast` moves two steps.
+3. If at any point `slow == fast`, a cycle exists, return `true`.
+4. If `fast` reaches the end (`null` or `fast.next` is `null`), no cycle exists, return `false`.
+
+::tabs-start
+
+```python
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+
+class Solution:
+    def hasCycle(self, head: Optional[ListNode]) -> bool:
+        slow, fast = head, head
+
+        while fast and fast.next:
+            slow = slow.next
+            fast = fast.next.next
+            if slow == fast:
+                return True
+        return False
+```
+
+```java
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+
+class Solution {
+    public boolean hasCycle(ListNode head) {
+        ListNode fast = head;
+        ListNode slow = head;
+
+        while (fast != null && fast.next != null) {
+            fast = fast.next.next;
+            slow = slow.next;
+            if (fast == slow) return true;
+        }
+        return false;
+    }
+}
+```
+
+```cpp
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+
+class Solution {
+public:
+    bool hasCycle(ListNode* head) {
+        ListNode* fast = head;
+        ListNode* slow = head;
+
+        while (fast != nullptr && fast->next != nullptr) {
+            fast = fast->next->next;
+            slow = slow->next;
+
+            if (fast == slow) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+};
+```
+
+```javascript
+/**
+ * Definition for singly-linked list.
+ * class ListNode {
+ *     constructor(val = 0, next = null) {
+ *         this.val = val;
+ *         this.next = next;
+ *     }
+ * }
+ */
+
+class Solution {
+    /**
+     * @param {ListNode} head
+     * @return {boolean}
+     */
+    hasCycle(head) {
+        let fast = head;
+        let slow = head;
+
+        while (fast !== null && fast.next !== null) {
+            fast = fast.next.next;
+            slow = slow.next;
+
+            if (fast === slow) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+}
+```
+
+```csharp
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     public int val;
+ *     public ListNode next;
+ *     public ListNode(int val=0, ListNode next=null) {
+ *         this.val = val;
+ *         this.next = next;
+ *     }
+ * }
+ */
+
+public class Solution {
+    public bool HasCycle(ListNode head) {
+        ListNode slow = head, fast = head;
+
+        while (fast != null && fast.next != null) {
+            fast = fast.next.next;
+            slow = slow.next;
+            if (slow.Equals(fast)) return true;
+        }
+        return false;
+    }
+}
+```
+
+```go
+/**
+ * Definition for singly-linked list.
+ * type ListNode struct {
+ *     Val int
+ *     Next *ListNode
+ * }
+ */
+func hasCycle(head *ListNode) bool {
+    slow := head
+    fast := head
+    for fast != nil && fast.Next != nil {
+        slow = slow.Next
+        fast = fast.Next.Next
+        if slow == fast {
+            return true
+        }
+    }
+    return false
+}
+```
+
+```kotlin
+/**
+ * Example:
+ * var li = ListNode(5)
+ * var v = li.`val`
+ * Definition for singly-linked list.
+ * class ListNode(var `val`: Int) {
+ *     var next: ListNode? = null
+ * }
+ */
+
+class Solution {
+    fun hasCycle(head: ListNode?): Boolean {
+        var slow = head
+        var fast = head
+        while (fast != null && fast?.next != null) {
+            slow = slow?.next
+            fast = fast?.next?.next
+            if (slow == fast) {
+                return true
+            }
+        }
+        return false
+    }
+}
+```
+
+```swift
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     public var val: Int
+ *     public var next: ListNode?
+ *     public init(_ val: Int) {
+ *         self.val = val
+ *         self.next = nil
+ *     }
+ * }
+ */
+
+class Solution {
+    func hasCycle(_ head: ListNode?) -> Bool {
+        var slow = head
+        var fast = head
+
+        while fast != nil && fast?.next != nil {
+            slow = slow?.next
+            fast = fast?.next?.next
+            if slow === fast {
+                return true
+            }
+        }
+        return false
+    }
+}
+```
+
+```rust
+// Note: A true cycle cannot exist with Option<Box<ListNode>> in safe Rust
+// because Box enforces unique ownership. In LeetCode's Rust environment,
+// cycle problems typically use raw pointers. Below is the Floyd's algorithm
+// translated using raw pointers, matching the Java logic.
+impl Solution {
+    pub fn has_cycle(head: Option<Box<ListNode>>) -> bool {
+        // With owned Box<ListNode>, cycles cannot form in safe Rust.
+        // If using raw pointers (*const ListNode), the algorithm is:
+        //   let mut slow = head_ptr;
+        //   let mut fast = head_ptr;
+        //   while !fast.is_null() && unsafe { (*fast).next } != std::ptr::null() {
+        //       fast = unsafe { (*(*fast).next).next_ptr };
+        //       slow = unsafe { (*slow).next_ptr };
+        //       if fast == slow { return true; }
+        //   }
+        //   false
+        false
+    }
+}
+```
+
+::tabs-end
+
+### Time & Space Complexity
+
+- Time complexity: $O(n)$
+- Space complexity: $O(1)$
+
+---
+
+## Common Pitfalls
+
+### Not Checking if Fast Pointer Can Advance Safely
+
+Before moving the fast pointer two steps, you must verify both `fast` and `fast.next` are not null. Checking only `fast != null` before accessing `fast.next.next` causes a null pointer exception when the list has an odd number of nodes without a cycle.
+
+### Comparing Node Values Instead of Node References
+
+The cycle detection requires comparing whether two pointers reference the same node object, not whether they have the same value. Using value equality (`slow.val == fast.val`) incorrectly detects cycles when two different nodes happen to have the same value.

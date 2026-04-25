@@ -1,0 +1,1270 @@
+## Prerequisites
+
+Before attempting this problem, you should be comfortable with:
+
+- **Backtracking** - Exploring all possible paths and undoing choices to try different options
+- **Depth First Search (DFS)** - Traversing a grid by exploring as far as possible along each branch
+- **2D Grid Traversal** - Moving in four directions (up, down, left, right) and handling boundaries
+- **Bitmask (for BFS solution)** - Using bits to efficiently track visited states
+
+---
+
+## 1. Backtracking (DFS) - I
+
+### Intuition
+
+We want to collect the maximum amount of gold by traversing the grid. Since we can start from any cell containing gold and move in four directions without revisiting cells, this naturally fits a backtracking approach. We try starting from every gold cell and explore all possible paths, keeping track of the maximum gold collected. The key insight is that we need to "undo" our visit after exploring a path so other paths can use that cell.
+
+### Algorithm
+
+1. Iterate through every cell in the grid. For each cell that contains gold, start a `dfs` from that cell.
+2. In the `dfs`, mark the current cell as visited by adding it to a set.
+3. Explore all four directions (up, down, left, right). For each valid neighbor that contains gold and has not been visited, recursively call `dfs`.
+4. Track the maximum gold collected among all paths from the current cell.
+5. Before returning, remove the current cell from the visited set (backtrack) so it can be used in other paths.
+6. Return the maximum gold found across all starting positions.
+
+::tabs-start
+
+```python
+class Solution:
+    def getMaximumGold(self, grid: list[list[int]]) -> int:
+        ROWS, COLS = len(grid), len(grid[0])
+        directions = [(1, 0), (-1, 0), (0, 1), (0, -1)]
+
+        def dfs(r, c, visit):
+            if min(r, c) < 0 or r == ROWS or c == COLS or grid[r][c] == 0 or (r, c) in visit:
+                return 0
+
+            visit.add((r, c))
+            res = grid[r][c]
+
+            for dr, dc in directions:
+                res = max(res, grid[r][c] + dfs(r + dr, c + dc, visit))
+
+            visit.remove((r, c))
+            return res
+
+        res = 0
+        for r in range(ROWS):
+            for c in range(COLS):
+                if grid[r][c] != 0:
+                    res = max(res, dfs(r, c, set()))
+        return res
+```
+
+```java
+public class Solution {
+    private int ROWS, COLS;
+    private int[][] directions = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
+
+    public int getMaximumGold(int[][] grid) {
+        ROWS = grid.length;
+        COLS = grid[0].length;
+        int res = 0;
+
+        for (int r = 0; r < ROWS; r++) {
+            for (int c = 0; c < COLS; c++) {
+                if (grid[r][c] != 0) {
+                    res = Math.max(res, dfs(grid, r, c, new boolean[ROWS][COLS]));
+                }
+            }
+        }
+        return res;
+    }
+
+    private int dfs(int[][] grid, int r, int c, boolean[][] visit) {
+        if (r < 0 || c < 0 || r >= ROWS || c >= COLS ||
+            grid[r][c] == 0 || visit[r][c]) {
+            return 0;
+        }
+
+        visit[r][c] = true;
+        int res = grid[r][c];
+
+        for (int[] d : directions) {
+            res = Math.max(res, grid[r][c] + dfs(grid, r + d[0], c + d[1], visit));
+        }
+
+        visit[r][c] = false;
+        return res;
+    }
+}
+```
+
+```cpp
+class Solution {
+public:
+    int ROWS, COLS;
+    vector<vector<int>> directions = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
+
+    int getMaximumGold(vector<vector<int>>& grid) {
+        ROWS = grid.size();
+        COLS = grid[0].size();
+        int res = 0;
+
+        for (int r = 0; r < ROWS; r++) {
+            for (int c = 0; c < COLS; c++) {
+                if (grid[r][c] != 0) {
+                    vector<vector<bool>> visit(ROWS, vector<bool>(COLS, false));
+                    res = max(res, dfs(grid, r, c, visit));
+                }
+            }
+        }
+        return res;
+    }
+
+private:
+    int dfs(vector<vector<int>>& grid, int r, int c, vector<vector<bool>>& visit) {
+        if (r < 0 || c < 0 || r >= ROWS || c >= COLS || grid[r][c] == 0 || visit[r][c]) {
+            return 0;
+        }
+
+        visit[r][c] = true;
+        int res = grid[r][c];
+
+        for (auto& d : directions) {
+            res = max(res, grid[r][c] + dfs(grid, r + d[0], c + d[1], visit));
+        }
+
+        visit[r][c] = false;
+        return res;
+    }
+};
+```
+
+```javascript
+class Solution {
+    /**
+     * @param {number[][]} grid
+     * @return {number}
+     */
+    getMaximumGold(grid) {
+        const ROWS = grid.length,
+            COLS = grid[0].length;
+        const directions = [
+            [1, 0],
+            [-1, 0],
+            [0, 1],
+            [0, -1],
+        ];
+
+        const dfs = (r, c, visit) => {
+            if (
+                r < 0 ||
+                c < 0 ||
+                r >= ROWS ||
+                c >= COLS ||
+                grid[r][c] === 0 ||
+                visit[r][c]
+            ) {
+                return 0;
+            }
+
+            visit[r][c] = true;
+            let res = grid[r][c];
+
+            for (const [dr, dc] of directions) {
+                res = Math.max(res, grid[r][c] + dfs(r + dr, c + dc, visit));
+            }
+
+            visit[r][c] = false;
+            return res;
+        };
+
+        let res = 0;
+        for (let r = 0; r < ROWS; r++) {
+            for (let c = 0; c < COLS; c++) {
+                if (grid[r][c] !== 0) {
+                    let visit = Array.from({ length: ROWS }, () =>
+                        Array(COLS).fill(false),
+                    );
+                    res = Math.max(res, dfs(r, c, visit));
+                }
+            }
+        }
+        return res;
+    }
+}
+```
+
+```csharp
+public class Solution {
+    private int ROWS, COLS;
+    private int[][] directions = new int[][] {
+        new int[] {1, 0}, new int[] {-1, 0},
+        new int[] {0, 1}, new int[] {0, -1}
+    };
+
+    public int GetMaximumGold(int[][] grid) {
+        ROWS = grid.Length;
+        COLS = grid[0].Length;
+        int res = 0;
+
+        for (int r = 0; r < ROWS; r++) {
+            for (int c = 0; c < COLS; c++) {
+                if (grid[r][c] != 0) {
+                    res = Math.Max(res, Dfs(grid, r, c, new bool[ROWS, COLS]));
+                }
+            }
+        }
+        return res;
+    }
+
+    private int Dfs(int[][] grid, int r, int c, bool[,] visit) {
+        if (r < 0 || c < 0 || r >= ROWS || c >= COLS ||
+            grid[r][c] == 0 || visit[r, c]) {
+            return 0;
+        }
+
+        visit[r, c] = true;
+        int res = grid[r][c];
+
+        foreach (var d in directions) {
+            res = Math.Max(res, grid[r][c] + Dfs(grid, r + d[0], c + d[1], visit));
+        }
+
+        visit[r, c] = false;
+        return res;
+    }
+}
+```
+
+```go
+func getMaximumGold(grid [][]int) int {
+    ROWS, COLS := len(grid), len(grid[0])
+    directions := [][]int{{1, 0}, {-1, 0}, {0, 1}, {0, -1}}
+
+    var dfs func(r, c int, visit [][]bool) int
+    dfs = func(r, c int, visit [][]bool) int {
+        if r < 0 || c < 0 || r >= ROWS || c >= COLS ||
+           grid[r][c] == 0 || visit[r][c] {
+            return 0
+        }
+
+        visit[r][c] = true
+        res := grid[r][c]
+
+        for _, d := range directions {
+            res = max(res, grid[r][c]+dfs(r+d[0], c+d[1], visit))
+        }
+
+        visit[r][c] = false
+        return res
+    }
+
+    res := 0
+    for r := 0; r < ROWS; r++ {
+        for c := 0; c < COLS; c++ {
+            if grid[r][c] != 0 {
+                visit := make([][]bool, ROWS)
+                for i := range visit {
+                    visit[i] = make([]bool, COLS)
+                }
+                res = max(res, dfs(r, c, visit))
+            }
+        }
+    }
+    return res
+}
+
+func max(a, b int) int {
+    if a > b {
+        return a
+    }
+    return b
+}
+```
+
+```kotlin
+class Solution {
+    private var ROWS = 0
+    private var COLS = 0
+    private val directions = arrayOf(intArrayOf(1, 0), intArrayOf(-1, 0),
+                                     intArrayOf(0, 1), intArrayOf(0, -1))
+
+    fun getMaximumGold(grid: Array<IntArray>): Int {
+        ROWS = grid.size
+        COLS = grid[0].size
+        var res = 0
+
+        for (r in 0 until ROWS) {
+            for (c in 0 until COLS) {
+                if (grid[r][c] != 0) {
+                    res = maxOf(res, dfs(grid, r, c, Array(ROWS) { BooleanArray(COLS) }))
+                }
+            }
+        }
+        return res
+    }
+
+    private fun dfs(grid: Array<IntArray>, r: Int, c: Int, visit: Array<BooleanArray>): Int {
+        if (r < 0 || c < 0 || r >= ROWS || c >= COLS ||
+            grid[r][c] == 0 || visit[r][c]) {
+            return 0
+        }
+
+        visit[r][c] = true
+        var res = grid[r][c]
+
+        for (d in directions) {
+            res = maxOf(res, grid[r][c] + dfs(grid, r + d[0], c + d[1], visit))
+        }
+
+        visit[r][c] = false
+        return res
+    }
+}
+```
+
+```swift
+class Solution {
+    func getMaximumGold(_ grid: [[Int]]) -> Int {
+        let ROWS = grid.count, COLS = grid[0].count
+        let directions = [(1, 0), (-1, 0), (0, 1), (0, -1)]
+
+        func dfs(_ r: Int, _ c: Int, _ visit: inout [[Bool]]) -> Int {
+            if r < 0 || c < 0 || r >= ROWS || c >= COLS ||
+               grid[r][c] == 0 || visit[r][c] {
+                return 0
+            }
+
+            visit[r][c] = true
+            var res = grid[r][c]
+
+            for (dr, dc) in directions {
+                res = max(res, grid[r][c] + dfs(r + dr, c + dc, &visit))
+            }
+
+            visit[r][c] = false
+            return res
+        }
+
+        var res = 0
+        for r in 0..<ROWS {
+            for c in 0..<COLS {
+                if grid[r][c] != 0 {
+                    var visit = [[Bool]](repeating: [Bool](repeating: false, count: COLS), count: ROWS)
+                    res = max(res, dfs(r, c, &visit))
+                }
+            }
+        }
+        return res
+    }
+}
+```
+
+```rust
+impl Solution {
+    pub fn get_maximum_gold(grid: Vec<Vec<i32>>) -> i32 {
+        let rows = grid.len();
+        let cols = grid[0].len();
+        let directions = [(1, 0), (-1, 0), (0, 1), (0, -1)];
+
+        fn dfs(
+            grid: &[Vec<i32>], r: i32, c: i32,
+            visit: &mut Vec<Vec<bool>>,
+            directions: &[(i32, i32)], rows: i32, cols: i32,
+        ) -> i32 {
+            if r < 0 || c < 0 || r >= rows || c >= cols
+                || grid[r as usize][c as usize] == 0
+                || visit[r as usize][c as usize]
+            {
+                return 0;
+            }
+            let (ru, cu) = (r as usize, c as usize);
+            visit[ru][cu] = true;
+            let mut res = grid[ru][cu];
+            for &(dr, dc) in directions {
+                res = res.max(
+                    grid[ru][cu] + dfs(grid, r + dr, c + dc, visit, directions, rows, cols),
+                );
+            }
+            visit[ru][cu] = false;
+            res
+        }
+
+        let mut res = 0;
+        for r in 0..rows {
+            for c in 0..cols {
+                if grid[r][c] != 0 {
+                    let mut visit = vec![vec![false; cols]; rows];
+                    res = res.max(dfs(
+                        &grid, r as i32, c as i32, &mut visit,
+                        &directions, rows as i32, cols as i32,
+                    ));
+                }
+            }
+        }
+        res
+    }
+}
+```
+
+::tabs-end
+
+### Time & Space Complexity
+
+- Time complexity: $O(N * 3 ^ N)$
+- Space complexity: $O(N)$
+
+> Where $N$ is the number of cells which contain gold.
+
+---
+
+## 2. Backtracking (DFS) - II
+
+### Intuition
+
+Instead of using a separate visited set, we can mark cells as visited by temporarily setting them to zero. Since zero represents an empty cell (no gold), the `dfs` will naturally skip it. After exploring all paths from a cell, we restore its original value. This approach saves space and can be slightly faster since we avoid set operations.
+
+### Algorithm
+
+1. Iterate through every cell in the grid. For each cell that contains gold, start a `dfs` from that cell.
+2. In the `dfs`, save the current cell's gold value and set the cell to `0` (marking it as visited).
+3. Explore all four directions. For each valid neighbor, recursively call `dfs` and track the maximum gold from neighbors.
+4. Restore the cell's original gold value before returning (backtrack).
+5. Return the current cell's gold plus the maximum gold from any path extending from it.
+6. Return the maximum gold found across all starting positions.
+
+::tabs-start
+
+```python
+class Solution:
+    def getMaximumGold(self, grid: list[list[int]]) -> int:
+        ROWS, COLS = len(grid), len(grid[0])
+        directions = [(1, 0), (-1, 0), (0, 1), (0, -1)]
+
+        def dfs(r, c):
+            if min(r, c) < 0 or r == ROWS or c == COLS or grid[r][c] == 0:
+                return 0
+
+            gold = grid[r][c]
+            grid[r][c] = 0
+            res = 0
+
+            for dr, dc in directions:
+                res = max(res, dfs(r + dr, c + dc))
+
+            grid[r][c] = gold
+            return gold + res
+
+        res = 0
+        for r in range(ROWS):
+            for c in range(COLS):
+                if grid[r][c] != 0:
+                    res = max(res, dfs(r, c))
+        return res
+```
+
+```java
+public class Solution {
+    private int ROWS, COLS;
+    private int[][] directions = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
+
+    public int getMaximumGold(int[][] grid) {
+        ROWS = grid.length;
+        COLS = grid[0].length;
+        int res = 0;
+
+        for (int r = 0; r < ROWS; r++) {
+            for (int c = 0; c < COLS; c++) {
+                if (grid[r][c] != 0) {
+                    res = Math.max(res, dfs(grid, r, c));
+                }
+            }
+        }
+        return res;
+    }
+
+    private int dfs(int[][] grid, int r, int c) {
+        if (r < 0 || c < 0 || r >= ROWS || c >= COLS || grid[r][c] == 0) {
+            return 0;
+        }
+
+        int gold = grid[r][c];
+        grid[r][c] = 0;
+        int res = 0;
+
+        for (int[] d : directions) {
+            res = Math.max(res, dfs(grid, r + d[0], c + d[1]));
+        }
+
+        grid[r][c] = gold;
+        return gold + res;
+    }
+}
+```
+
+```cpp
+class Solution {
+public:
+    int ROWS, COLS;
+    vector<vector<int>> directions = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
+
+    int getMaximumGold(vector<vector<int>>& grid) {
+        ROWS = grid.size();
+        COLS = grid[0].size();
+        int res = 0;
+
+        for (int r = 0; r < ROWS; r++) {
+            for (int c = 0; c < COLS; c++) {
+                if (grid[r][c] != 0) {
+                    res = max(res, dfs(grid, r, c));
+                }
+            }
+        }
+        return res;
+    }
+
+private:
+    int dfs(vector<vector<int>>& grid, int r, int c) {
+        if (r < 0 || c < 0 || r >= ROWS || c >= COLS || grid[r][c] == 0) {
+            return 0;
+        }
+
+        int gold = grid[r][c];
+        grid[r][c] = 0;
+        int res = 0;
+
+        for (auto& d : directions) {
+            res = max(res, dfs(grid, r + d[0], c + d[1]));
+        }
+
+        grid[r][c] = gold;
+        return gold + res;
+    }
+};
+```
+
+```javascript
+class Solution {
+    /**
+     * @param {number[][]} grid
+     * @return {number}
+     */
+    getMaximumGold(grid) {
+        const ROWS = grid.length,
+            COLS = grid[0].length;
+        const directions = [
+            [1, 0],
+            [-1, 0],
+            [0, 1],
+            [0, -1],
+        ];
+
+        const dfs = (r, c) => {
+            if (r < 0 || c < 0 || r >= ROWS || c >= COLS || grid[r][c] === 0) {
+                return 0;
+            }
+
+            let gold = grid[r][c];
+            grid[r][c] = 0;
+            let res = 0;
+
+            for (const [dr, dc] of directions) {
+                res = Math.max(res, dfs(r + dr, c + dc));
+            }
+
+            grid[r][c] = gold;
+            return gold + res;
+        };
+
+        let res = 0;
+        for (let r = 0; r < ROWS; r++) {
+            for (let c = 0; c < COLS; c++) {
+                if (grid[r][c] !== 0) {
+                    res = Math.max(res, dfs(r, c));
+                }
+            }
+        }
+        return res;
+    }
+}
+```
+
+```csharp
+public class Solution {
+    private int ROWS, COLS;
+    private int[][] directions = new int[][] {
+        new int[] {1, 0}, new int[] {-1, 0},
+        new int[] {0, 1}, new int[] {0, -1}
+    };
+
+    public int GetMaximumGold(int[][] grid) {
+        ROWS = grid.Length;
+        COLS = grid[0].Length;
+        int res = 0;
+
+        for (int r = 0; r < ROWS; r++) {
+            for (int c = 0; c < COLS; c++) {
+                if (grid[r][c] != 0) {
+                    res = Math.Max(res, Dfs(grid, r, c));
+                }
+            }
+        }
+        return res;
+    }
+
+    private int Dfs(int[][] grid, int r, int c) {
+        if (r < 0 || c < 0 || r >= ROWS || c >= COLS || grid[r][c] == 0) {
+            return 0;
+        }
+
+        int gold = grid[r][c];
+        grid[r][c] = 0;
+        int res = 0;
+
+        foreach (var d in directions) {
+            res = Math.Max(res, Dfs(grid, r + d[0], c + d[1]));
+        }
+
+        grid[r][c] = gold;
+        return gold + res;
+    }
+}
+```
+
+```go
+func getMaximumGold(grid [][]int) int {
+    ROWS, COLS := len(grid), len(grid[0])
+    directions := [][]int{{1, 0}, {-1, 0}, {0, 1}, {0, -1}}
+
+    var dfs func(r, c int) int
+    dfs = func(r, c int) int {
+        if r < 0 || c < 0 || r >= ROWS || c >= COLS || grid[r][c] == 0 {
+            return 0
+        }
+
+        gold := grid[r][c]
+        grid[r][c] = 0
+        res := 0
+
+        for _, d := range directions {
+            res = max(res, dfs(r+d[0], c+d[1]))
+        }
+
+        grid[r][c] = gold
+        return gold + res
+    }
+
+    res := 0
+    for r := 0; r < ROWS; r++ {
+        for c := 0; c < COLS; c++ {
+            if grid[r][c] != 0 {
+                res = max(res, dfs(r, c))
+            }
+        }
+    }
+    return res
+}
+
+func max(a, b int) int {
+    if a > b {
+        return a
+    }
+    return b
+}
+```
+
+```kotlin
+class Solution {
+    private var ROWS = 0
+    private var COLS = 0
+    private val directions = arrayOf(intArrayOf(1, 0), intArrayOf(-1, 0),
+                                     intArrayOf(0, 1), intArrayOf(0, -1))
+
+    fun getMaximumGold(grid: Array<IntArray>): Int {
+        ROWS = grid.size
+        COLS = grid[0].size
+        var res = 0
+
+        for (r in 0 until ROWS) {
+            for (c in 0 until COLS) {
+                if (grid[r][c] != 0) {
+                    res = maxOf(res, dfs(grid, r, c))
+                }
+            }
+        }
+        return res
+    }
+
+    private fun dfs(grid: Array<IntArray>, r: Int, c: Int): Int {
+        if (r < 0 || c < 0 || r >= ROWS || c >= COLS || grid[r][c] == 0) {
+            return 0
+        }
+
+        val gold = grid[r][c]
+        grid[r][c] = 0
+        var res = 0
+
+        for (d in directions) {
+            res = maxOf(res, dfs(grid, r + d[0], c + d[1]))
+        }
+
+        grid[r][c] = gold
+        return gold + res
+    }
+}
+```
+
+```swift
+class Solution {
+    func getMaximumGold(_ grid: [[Int]]) -> Int {
+        var grid = grid
+        let ROWS = grid.count, COLS = grid[0].count
+        let directions = [(1, 0), (-1, 0), (0, 1), (0, -1)]
+
+        func dfs(_ r: Int, _ c: Int) -> Int {
+            if r < 0 || c < 0 || r >= ROWS || c >= COLS || grid[r][c] == 0 {
+                return 0
+            }
+
+            let gold = grid[r][c]
+            grid[r][c] = 0
+            var res = 0
+
+            for (dr, dc) in directions {
+                res = max(res, dfs(r + dr, c + dc))
+            }
+
+            grid[r][c] = gold
+            return gold + res
+        }
+
+        var res = 0
+        for r in 0..<ROWS {
+            for c in 0..<COLS {
+                if grid[r][c] != 0 {
+                    res = max(res, dfs(r, c))
+                }
+            }
+        }
+        return res
+    }
+}
+```
+
+```rust
+impl Solution {
+    pub fn get_maximum_gold(mut grid: Vec<Vec<i32>>) -> i32 {
+        let rows = grid.len();
+        let cols = grid[0].len();
+
+        fn dfs(grid: &mut Vec<Vec<i32>>, r: i32, c: i32, rows: i32, cols: i32) -> i32 {
+            if r < 0 || c < 0 || r >= rows || c >= cols
+                || grid[r as usize][c as usize] == 0
+            {
+                return 0;
+            }
+            let (ru, cu) = (r as usize, c as usize);
+            let gold = grid[ru][cu];
+            grid[ru][cu] = 0;
+            let mut res = 0;
+            for &(dr, dc) in &[(1, 0), (-1, 0), (0, 1), (0, -1)] {
+                res = res.max(dfs(grid, r + dr, c + dc, rows, cols));
+            }
+            grid[ru][cu] = gold;
+            gold + res
+        }
+
+        let mut res = 0;
+        for r in 0..rows {
+            for c in 0..cols {
+                if grid[r][c] != 0 {
+                    res = res.max(dfs(&mut grid, r as i32, c as i32, rows as i32, cols as i32));
+                }
+            }
+        }
+        res
+    }
+}
+```
+
+::tabs-end
+
+### Time & Space Complexity
+
+- Time complexity: $O(N * 3 ^ N)$
+- Space complexity: $O(N)$ for recursion stack.
+
+> Where $N$ is the number of cells which contain gold.
+
+---
+
+## 3. Backtracking (BFS)
+
+### Intuition
+
+We can also solve this problem using BFS with bitmask state tracking. Each cell containing gold is assigned a unique index, and we use a bitmask to track which cells have been visited along the current path. This allows us to explore all possible paths level by level while ensuring we do not revisit any cell within the same path.
+
+### Algorithm
+
+1. Assign a unique index to each cell containing gold.
+2. For each gold cell, start a BFS with the initial state containing the cell's position, the gold collected so far, and a bitmask marking this cell as visited.
+3. For each state in the queue, update the maximum gold collected.
+4. Explore all four neighbors. If a neighbor contains gold and has not been visited in the current path (check the bitmask), add a new state to the queue with updated gold and an updated `bitmask`.
+5. Continue until the queue is empty and return the maximum gold found.
+
+::tabs-start
+
+```python
+class Solution:
+    def getMaximumGold(self, grid: list[list[int]]) -> int:
+        ROWS, COLS = len(grid), len(grid[0])
+        directions = [1, 0, -1, 0, 1]
+        index = [[0] * COLS for _ in range(ROWS)]
+        idx = 0
+
+        for r in range(ROWS):
+            for c in range(COLS):
+                if grid[r][c] != 0:
+                    index[r][c] = idx
+                    idx += 1
+
+        res = 0
+        for r in range(ROWS):
+            for c in range(COLS):
+                if grid[r][c] > 0:
+                    q = deque([(r, c, grid[r][c], 1 << index[r][c])])
+                    while q:
+                        row, col, gold, mask = q.popleft()
+                        res = max(res, gold)
+
+                        for i in range(4):
+                            nr, nc = row + directions[i], col + directions[i + 1]
+                            if 0 <= nr < ROWS and 0 <= nc < COLS and grid[nr][nc] > 0:
+                                idx = index[nr][nc]
+                                if not (mask & (1 << idx)):
+                                    q.append((nr, nc, gold + grid[nr][nc], mask | (1 << idx)))
+
+        return res
+```
+
+```java
+public class Solution {
+    public int getMaximumGold(int[][] grid) {
+        int ROWS = grid.length, COLS = grid[0].length;
+        int[][] index = new int[ROWS][COLS];
+        int idx = 0;
+        int[] directions = {1, 0, -1, 0, 1};
+
+        for (int r = 0; r < ROWS; r++) {
+            for (int c = 0; c < COLS; c++) {
+                if (grid[r][c] != 0) {
+                    index[r][c] = idx++;
+                }
+            }
+        }
+
+        int res = 0;
+        for (int r = 0; r < ROWS; r++) {
+            for (int c = 0; c < COLS; c++) {
+                if (grid[r][c] > 0) {
+                    Queue<int[]> q = new LinkedList<>();
+                    q.offer(new int[]{r, c, grid[r][c], 1 << index[r][c]});
+
+                    while (!q.isEmpty()) {
+                        int[] cur = q.poll();
+                        int row = cur[0], col = cur[1], gold = cur[2], mask = cur[3];
+                        res = Math.max(res, gold);
+
+                        for (int i = 0; i < 4; i++) {
+                            int nr = row + directions[i], nc = col + directions[i + 1];
+                            if (nr >= 0 && nr < ROWS && nc >= 0 && nc < COLS && grid[nr][nc] > 0) {
+                                int newIdx = index[nr][nc];
+                                if ((mask & (1 << newIdx)) == 0) {
+                                    q.offer(new int[]{nr, nc, gold + grid[nr][nc], mask | (1 << newIdx)});
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return res;
+    }
+}
+```
+
+```cpp
+class Solution {
+public:
+    int getMaximumGold(vector<vector<int>>& grid) {
+        int ROWS = grid.size(), COLS = grid[0].size();
+        vector<vector<int>> index(ROWS, vector<int>(COLS, 0));
+        int idx = 0;
+        int directions[] = {1, 0, -1, 0, 1};
+
+        for (int r = 0; r < ROWS; r++) {
+            for (int c = 0; c < COLS; c++) {
+                if (grid[r][c] != 0) {
+                    index[r][c] = idx++;
+                }
+            }
+        }
+
+        int res = 0;
+        for (int r = 0; r < ROWS; r++) {
+            for (int c = 0; c < COLS; c++) {
+                if (grid[r][c] > 0) {
+                    queue<tuple<int, int, int, int>> q;
+                    q.push({r, c, grid[r][c], 1 << index[r][c]});
+
+                    while (!q.empty()) {
+                        auto [row, col, gold, mask] = q.front();q.pop();
+                        res = max(res, gold);
+                        for (int i = 0; i < 4; i++) {
+                            int nr = row + directions[i], nc = col + directions[i + 1];
+                            if (nr >= 0 && nr < ROWS && nc >= 0 && nc < COLS && grid[nr][nc] > 0) {
+                                int newIdx = index[nr][nc];
+                                if ((mask & (1 << newIdx)) == 0) {
+                                    q.push({nr, nc, gold + grid[nr][nc], mask | (1 << newIdx)});
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return res;
+    }
+};
+```
+
+```javascript
+class Solution {
+    /**
+     * @param {number[][]} grid
+     * @return {number}
+     */
+    getMaximumGold(grid) {
+        const ROWS = grid.length,
+            COLS = grid[0].length;
+        const index = Array.from({ length: ROWS }, () => Array(COLS).fill(0));
+        let idx = 0;
+        const directions = [1, 0, -1, 0, 1];
+
+        for (let r = 0; r < ROWS; r++) {
+            for (let c = 0; c < COLS; c++) {
+                if (grid[r][c] !== 0) {
+                    index[r][c] = idx++;
+                }
+            }
+        }
+
+        let res = 0;
+        for (let r = 0; r < ROWS; r++) {
+            for (let c = 0; c < COLS; c++) {
+                if (grid[r][c] > 0) {
+                    const q = new Queue([[r, c, grid[r][c], 1 << index[r][c]]]);
+
+                    while (!q.isEmpty()) {
+                        const [row, col, gold, mask] = q.pop();
+                        res = Math.max(res, gold);
+                        for (let i = 0; i < 4; i++) {
+                            const nr = row + directions[i],
+                                nc = col + directions[i + 1];
+                            if (
+                                nr >= 0 &&
+                                nr < ROWS &&
+                                nc >= 0 &&
+                                nc < COLS &&
+                                grid[nr][nc] > 0
+                            ) {
+                                const newIdx = index[nr][nc];
+                                if (!(mask & (1 << newIdx))) {
+                                    q.push([
+                                        nr,
+                                        nc,
+                                        gold + grid[nr][nc],
+                                        mask | (1 << newIdx),
+                                    ]);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return res;
+    }
+}
+```
+
+```csharp
+public class Solution {
+    public int GetMaximumGold(int[][] grid) {
+        int ROWS = grid.Length, COLS = grid[0].Length;
+        int[,] index = new int[ROWS, COLS];
+        int idx = 0;
+        int[] directions = {1, 0, -1, 0, 1};
+
+        for (int r = 0; r < ROWS; r++) {
+            for (int c = 0; c < COLS; c++) {
+                if (grid[r][c] != 0) {
+                    index[r, c] = idx++;
+                }
+            }
+        }
+
+        int res = 0;
+        for (int r = 0; r < ROWS; r++) {
+            for (int c = 0; c < COLS; c++) {
+                if (grid[r][c] > 0) {
+                    var q = new Queue<(int, int, int, int)>();
+                    q.Enqueue((r, c, grid[r][c], 1 << index[r, c]));
+
+                    while (q.Count > 0) {
+                        var (row, col, gold, mask) = q.Dequeue();
+                        res = Math.Max(res, gold);
+
+                        for (int i = 0; i < 4; i++) {
+                            int nr = row + directions[i], nc = col + directions[i + 1];
+                            if (nr >= 0 && nr < ROWS && nc >= 0 && nc < COLS && grid[nr][nc] > 0) {
+                                int newIdx = index[nr, nc];
+                                if ((mask & (1 << newIdx)) == 0) {
+                                    q.Enqueue((nr, nc, gold + grid[nr][nc], mask | (1 << newIdx)));
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return res;
+    }
+}
+```
+
+```go
+func getMaximumGold(grid [][]int) int {
+    ROWS, COLS := len(grid), len(grid[0])
+    directions := []int{1, 0, -1, 0, 1}
+    index := make([][]int, ROWS)
+    for i := range index {
+        index[i] = make([]int, COLS)
+    }
+    idx := 0
+
+    for r := 0; r < ROWS; r++ {
+        for c := 0; c < COLS; c++ {
+            if grid[r][c] != 0 {
+                index[r][c] = idx
+                idx++
+            }
+        }
+    }
+
+    res := 0
+    for r := 0; r < ROWS; r++ {
+        for c := 0; c < COLS; c++ {
+            if grid[r][c] > 0 {
+                type state struct {
+                    row, col, gold, mask int
+                }
+                q := []state{{r, c, grid[r][c], 1 << index[r][c]}}
+
+                for len(q) > 0 {
+                    cur := q[0]
+                    q = q[1:]
+                    res = max(res, cur.gold)
+
+                    for i := 0; i < 4; i++ {
+                        nr, nc := cur.row+directions[i], cur.col+directions[i+1]
+                        if nr >= 0 && nr < ROWS && nc >= 0 && nc < COLS && grid[nr][nc] > 0 {
+                            newIdx := index[nr][nc]
+                            if (cur.mask & (1 << newIdx)) == 0 {
+                                q = append(q, state{nr, nc, cur.gold + grid[nr][nc], cur.mask | (1 << newIdx)})
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    return res
+}
+
+func max(a, b int) int {
+    if a > b {
+        return a
+    }
+    return b
+}
+```
+
+```kotlin
+class Solution {
+    fun getMaximumGold(grid: Array<IntArray>): Int {
+        val ROWS = grid.size
+        val COLS = grid[0].size
+        val directions = intArrayOf(1, 0, -1, 0, 1)
+        val index = Array(ROWS) { IntArray(COLS) }
+        var idx = 0
+
+        for (r in 0 until ROWS) {
+            for (c in 0 until COLS) {
+                if (grid[r][c] != 0) {
+                    index[r][c] = idx++
+                }
+            }
+        }
+
+        var res = 0
+        for (r in 0 until ROWS) {
+            for (c in 0 until COLS) {
+                if (grid[r][c] > 0) {
+                    val q = ArrayDeque<IntArray>()
+                    q.add(intArrayOf(r, c, grid[r][c], 1 shl index[r][c]))
+
+                    while (q.isNotEmpty()) {
+                        val cur = q.removeFirst()
+                        val row = cur[0]
+                        val col = cur[1]
+                        val gold = cur[2]
+                        val mask = cur[3]
+                        res = maxOf(res, gold)
+
+                        for (i in 0 until 4) {
+                            val nr = row + directions[i]
+                            val nc = col + directions[i + 1]
+                            if (nr in 0 until ROWS && nc in 0 until COLS && grid[nr][nc] > 0) {
+                                val newIdx = index[nr][nc]
+                                if ((mask and (1 shl newIdx)) == 0) {
+                                    q.add(intArrayOf(nr, nc, gold + grid[nr][nc], mask or (1 shl newIdx)))
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return res
+    }
+}
+```
+
+```swift
+class Solution {
+    func getMaximumGold(_ grid: [[Int]]) -> Int {
+        let ROWS = grid.count, COLS = grid[0].count
+        let directions = [1, 0, -1, 0, 1]
+        var index = [[Int]](repeating: [Int](repeating: 0, count: COLS), count: ROWS)
+        var idx = 0
+
+        for r in 0..<ROWS {
+            for c in 0..<COLS {
+                if grid[r][c] != 0 {
+                    index[r][c] = idx
+                    idx += 1
+                }
+            }
+        }
+
+        var res = 0
+        for r in 0..<ROWS {
+            for c in 0..<COLS {
+                if grid[r][c] > 0 {
+                    var q = [(Int, Int, Int, Int)]()
+                    q.append((r, c, grid[r][c], 1 << index[r][c]))
+
+                    while !q.isEmpty {
+                        let (row, col, gold, mask) = q.removeFirst()
+                        res = max(res, gold)
+
+                        for i in 0..<4 {
+                            let nr = row + directions[i], nc = col + directions[i + 1]
+                            if nr >= 0 && nr < ROWS && nc >= 0 && nc < COLS && grid[nr][nc] > 0 {
+                                let newIdx = index[nr][nc]
+                                if (mask & (1 << newIdx)) == 0 {
+                                    q.append((nr, nc, gold + grid[nr][nc], mask | (1 << newIdx)))
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return res
+    }
+}
+```
+
+```rust
+impl Solution {
+    pub fn get_maximum_gold(grid: Vec<Vec<i32>>) -> i32 {
+        let rows = grid.len();
+        let cols = grid[0].len();
+        let directions: [i32; 5] = [1, 0, -1, 0, 1];
+        let mut index = vec![vec![0usize; cols]; rows];
+        let mut idx = 0;
+
+        for r in 0..rows {
+            for c in 0..cols {
+                if grid[r][c] != 0 {
+                    index[r][c] = idx;
+                    idx += 1;
+                }
+            }
+        }
+
+        let mut res = 0;
+        for r in 0..rows {
+            for c in 0..cols {
+                if grid[r][c] > 0 {
+                    let mut q: VecDeque<(i32, i32, i32, u32)> = VecDeque::new();
+                    q.push_back((r as i32, c as i32, grid[r][c], 1 << index[r][c]));
+
+                    while let Some((row, col, gold, mask)) = q.pop_front() {
+                        res = res.max(gold);
+                        for i in 0..4 {
+                            let nr = row + directions[i];
+                            let nc = col + directions[i + 1];
+                            if nr >= 0 && nr < rows as i32
+                                && nc >= 0 && nc < cols as i32
+                                && grid[nr as usize][nc as usize] > 0
+                            {
+                                let new_idx = index[nr as usize][nc as usize];
+                                if mask & (1 << new_idx) == 0 {
+                                    q.push_back((
+                                        nr, nc,
+                                        gold + grid[nr as usize][nc as usize],
+                                        mask | (1 << new_idx),
+                                    ));
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        res
+    }
+}
+```
+
+::tabs-end
+
+### Time & Space Complexity
+
+- Time complexity: $O(N * 3 ^ N)$
+- Space complexity: $O(N)$
+
+> Where $N$ is the number of cells which contain gold.
+
+---
+
+## Common Pitfalls
+
+### Forgetting to Backtrack
+
+The most common mistake is forgetting to restore the cell's state after exploring a path. Whether using a visited set or modifying the grid directly, failing to backtrack means other paths starting from different cells cannot use that position. Always remove the cell from the visited set or restore its original value before returning.
+
+### Starting Only from Corner Cells
+
+Some solutions incorrectly assume the optimal path must start from a corner or edge. The problem allows starting from any cell containing gold, so you must try all possible starting positions. Missing interior starting cells can lead to suboptimal results.
+
+### Not Handling Zero Cells Correctly
+
+Cells with value zero cannot be visited, but some solutions forget to check for zeros when determining valid neighbors. Additionally, when using the grid modification approach to mark cells as visited (setting them to zero), ensure you save the original value before modification so it can be properly restored during backtracking.

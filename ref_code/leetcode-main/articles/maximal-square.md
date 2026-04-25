@@ -1,0 +1,1335 @@
+## Prerequisites
+
+Before attempting this problem, you should be comfortable with:
+
+- **2D Arrays/Matrices** - Traversing and manipulating elements in a grid structure
+- **Dynamic Programming** - Building solutions from smaller subproblems and using recurrence relations
+- **Space Optimization** - Reducing space complexity by recognizing that only previous row/column values are needed
+
+---
+
+## 1. Brute Force
+
+### Intuition
+
+For each cell containing a `'1'`, we can try to expand a square outward as far as possible. Starting with a 1x1 square, we incrementally check if we can form a 2x2, 3x3, and so on. For each size, we only need to verify the new rightmost column and bottommost row that would be added. If any cell in those edges is `'0'`, we cannot expand further. This approach checks all potential squares explicitly.
+
+### Algorithm
+
+1. Iterate through each cell `(r, c)` in the matrix.
+2. If `matrix[r][c]` is `'0'`, skip it.
+3. Otherwise, try expanding a square of side `k` starting at `1`:
+    - Check if `r + k` and `c + k` are within bounds.
+    - Verify all cells in the new right column and bottom row are `'1'`.
+    - If any cell is `'0'`, stop expanding.
+    - Update the result with `k * k` if the square is valid.
+4. Return the maximum area found.
+
+::tabs-start
+
+```python
+class Solution:
+    def maximalSquare(self, matrix: List[List[str]]) -> int:
+        m, n = len(matrix), len(matrix[0])
+        res = 0
+
+        for r in range(m):
+            for c in range(n):
+                if matrix[r][c] == "0":
+                    continue
+                k = 1
+                while True:
+                    if r + k > m or c + k > n:
+                        break
+                    flag = True
+
+                    for i in range(r, r + k):
+                        if matrix[i][c + k - 1] == "0":
+                            flag = False
+                            break
+                    for j in range(c, c + k):
+                        if matrix[r + k - 1][j] == "0":
+                            flag = False
+                            break
+
+                    if not flag:
+                        break
+                    res = max(res, k * k)
+                    k += 1
+
+        return res
+```
+
+```java
+public class Solution {
+    public int maximalSquare(char[][] matrix) {
+        int m = matrix.length, n = matrix[0].length;
+        int res = 0;
+
+        for (int r = 0; r < m; r++) {
+            for (int c = 0; c < n; c++) {
+                if (matrix[r][c] == '0') {
+                    continue;
+                }
+                int k = 1;
+                while (true) {
+                    if (r + k > m || c + k > n) {
+                        break;
+                    }
+                    boolean flag = true;
+
+                    for (int i = r; i < r + k; i++) {
+                        if (matrix[i][c + k - 1] == '0') {
+                            flag = false;
+                            break;
+                        }
+                    }
+                    for (int j = c; j < c + k; j++) {
+                        if (matrix[r + k - 1][j] == '0') {
+                            flag = false;
+                            break;
+                        }
+                    }
+
+                    if (!flag) {
+                        break;
+                    }
+                    res = Math.max(res, k * k);
+                    k++;
+                }
+            }
+        }
+
+        return res;
+    }
+}
+```
+
+```cpp
+class Solution {
+public:
+    int maximalSquare(vector<vector<char>>& matrix) {
+        int m = matrix.size(), n = matrix[0].size();
+        int res = 0;
+
+        for (int r = 0; r < m; r++) {
+            for (int c = 0; c < n; c++) {
+                if (matrix[r][c] == '0') {
+                    continue;
+                }
+                int k = 1;
+                while (true) {
+                    if (r + k > m || c + k > n) {
+                        break;
+                    }
+                    bool flag = true;
+
+                    for (int i = r; i < r + k; i++) {
+                        if (matrix[i][c + k - 1] == '0') {
+                            flag = false;
+                            break;
+                        }
+                    }
+                    for (int j = c; j < c + k; j++) {
+                        if (matrix[r + k - 1][j] == '0') {
+                            flag = false;
+                            break;
+                        }
+                    }
+
+                    if (!flag) {
+                        break;
+                    }
+                    res = max(res, k * k);
+                    k++;
+                }
+            }
+        }
+
+        return res;
+    }
+};
+```
+
+```javascript
+class Solution {
+    /**
+     * @param {character[][]} matrix
+     * @return {number}
+     */
+    maximalSquare(matrix) {
+        const m = matrix.length,
+            n = matrix[0].length;
+        let res = 0;
+
+        for (let r = 0; r < m; r++) {
+            for (let c = 0; c < n; c++) {
+                if (matrix[r][c] === '0') {
+                    continue;
+                }
+                let k = 1;
+                while (true) {
+                    if (r + k > m || c + k > n) {
+                        break;
+                    }
+                    let flag = true;
+
+                    for (let i = r; i < r + k; i++) {
+                        if (matrix[i][c + k - 1] === '0') {
+                            flag = false;
+                            break;
+                        }
+                    }
+                    for (let j = c; j < c + k; j++) {
+                        if (matrix[r + k - 1][j] === '0') {
+                            flag = false;
+                            break;
+                        }
+                    }
+
+                    if (!flag) {
+                        break;
+                    }
+                    res = Math.max(res, k * k);
+                    k++;
+                }
+            }
+        }
+
+        return res;
+    }
+}
+```
+
+```csharp
+public class Solution {
+    public int MaximalSquare(char[][] matrix) {
+        int m = matrix.Length;
+        int n = matrix[0].Length;
+        int res = 0;
+
+        for (int r = 0; r < m; r++) {
+            for (int c = 0; c < n; c++) {
+                if (matrix[r][c] == '0') continue;
+                int k = 1;
+                while (true) {
+                    if (r + k > m || c + k > n) break;
+                    bool flag = true;
+
+                    for (int i = r; i < r + k; i++) {
+                        if (matrix[i][c + k - 1] == '0') {
+                            flag = false;
+                            break;
+                        }
+                    }
+
+                    for (int j = c; j < c + k; j++) {
+                        if (matrix[r + k - 1][j] == '0') {
+                            flag = false;
+                            break;
+                        }
+                    }
+
+                    if (!flag) break;
+                    res = Math.Max(res, k * k);
+                    k++;
+                }
+            }
+        }
+
+        return res;
+    }
+}
+```
+
+```go
+func maximalSquare(matrix [][]byte) int {
+    m, n := len(matrix), len(matrix[0])
+    res := 0
+
+    for r := 0; r < m; r++ {
+        for c := 0; c < n; c++ {
+            if matrix[r][c] == '0' {
+                continue
+            }
+            k := 1
+            for {
+                if r+k > m || c+k > n {
+                    break
+                }
+                flag := true
+
+                for i := r; i < r+k; i++ {
+                    if matrix[i][c+k-1] == '0' {
+                        flag = false
+                        break
+                    }
+                }
+                for j := c; j < c+k; j++ {
+                    if matrix[r+k-1][j] == '0' {
+                        flag = false
+                        break
+                    }
+                }
+
+                if !flag {
+                    break
+                }
+                if k*k > res {
+                    res = k * k
+                }
+                k++
+            }
+        }
+    }
+
+    return res
+}
+```
+
+```kotlin
+class Solution {
+    fun maximalSquare(matrix: Array<CharArray>): Int {
+        val m = matrix.size
+        val n = matrix[0].size
+        var res = 0
+
+        for (r in 0 until m) {
+            for (c in 0 until n) {
+                if (matrix[r][c] == '0') continue
+                var k = 1
+                while (true) {
+                    if (r + k > m || c + k > n) break
+                    var flag = true
+
+                    for (i in r until r + k) {
+                        if (matrix[i][c + k - 1] == '0') {
+                            flag = false
+                            break
+                        }
+                    }
+                    for (j in c until c + k) {
+                        if (matrix[r + k - 1][j] == '0') {
+                            flag = false
+                            break
+                        }
+                    }
+
+                    if (!flag) break
+                    res = maxOf(res, k * k)
+                    k++
+                }
+            }
+        }
+
+        return res
+    }
+}
+```
+
+```swift
+class Solution {
+    func maximalSquare(_ matrix: [[Character]]) -> Int {
+        let m = matrix.count, n = matrix[0].count
+        var res = 0
+
+        for r in 0..<m {
+            for c in 0..<n {
+                if matrix[r][c] == "0" {
+                    continue
+                }
+                var k = 1
+                while true {
+                    if r + k > m || c + k > n {
+                        break
+                    }
+                    var flag = true
+
+                    for i in r..<(r + k) {
+                        if matrix[i][c + k - 1] == "0" {
+                            flag = false
+                            break
+                        }
+                    }
+                    for j in c..<(c + k) {
+                        if matrix[r + k - 1][j] == "0" {
+                            flag = false
+                            break
+                        }
+                    }
+
+                    if !flag {
+                        break
+                    }
+                    res = max(res, k * k)
+                    k += 1
+                }
+            }
+        }
+
+        return res
+    }
+}
+```
+
+```rust
+impl Solution {
+    pub fn maximal_square(matrix: Vec<Vec<char>>) -> i32 {
+        let m = matrix.len();
+        let n = matrix[0].len();
+        let mut res = 0;
+
+        for r in 0..m {
+            for c in 0..n {
+                if matrix[r][c] == '0' {
+                    continue;
+                }
+                let mut k = 1usize;
+                loop {
+                    if r + k > m || c + k > n {
+                        break;
+                    }
+                    let mut flag = true;
+
+                    for i in r..r + k {
+                        if matrix[i][c + k - 1] == '0' {
+                            flag = false;
+                            break;
+                        }
+                    }
+                    for j in c..c + k {
+                        if matrix[r + k - 1][j] == '0' {
+                            flag = false;
+                            break;
+                        }
+                    }
+
+                    if !flag {
+                        break;
+                    }
+                    res = res.max((k * k) as i32);
+                    k += 1;
+                }
+            }
+        }
+
+        res
+    }
+}
+```
+
+::tabs-end
+
+### Time & Space Complexity
+
+- Time complexity: $O((m * n) ^ 2)$
+- Space complexity: $O(1)$
+
+> Where $m$ is the number of rows and $n$ is the number columns.
+
+---
+
+## 2. Dynamic Programming (Top-Down)
+
+### Intuition
+
+We can define a recursive function where `dp(r, c)` returns the side length of the largest square whose top-left corner is at `(r, c)`. For a cell with `'1'`, the answer depends on how far we can extend to the right, down, and diagonally. The limiting factor is the minimum of these three directions. We memoize results to avoid redundant computation, then scan all cells to find the maximum value.
+
+### Algorithm
+
+1. Create a memoization table initialized to `-1` (unvisited).
+2. Define `dfs(r, c)`:
+    - If out of bounds, return `0`.
+    - If already computed, return the cached value.
+    - Recursively compute `dfs(r+1, c)`, `dfs(r, c+1)`, and `dfs(r+1, c+1)`.
+    - If `matrix[r][c]` is `'1'`, set `dp[r][c] = 1 + min(down, right, diag)`.
+    - Otherwise, set `dp[r][c] = 0`.
+3. Call `dfs(0, 0)` to fill the table.
+4. Find the maximum value in the table and return its square.
+
+::tabs-start
+
+```python
+class Solution:
+    def maximalSquare(self, matrix: List[List[str]]) -> int:
+        ROWS, COLS = len(matrix), len(matrix[0])
+        cache = {}
+
+        def dfs(r, c):
+            if r >= ROWS or c >= COLS:
+                return 0
+            if (r, c) not in cache:
+                down = dfs(r + 1, c)
+                right = dfs(r, c + 1)
+                diag = dfs(r + 1, c + 1)
+                cache[(r, c)] = 0
+                if matrix[r][c] == "1":
+                    cache[(r, c)] = 1 + min(down, right, diag)
+            return cache[(r, c)]
+
+        dfs(0, 0)
+        return max(cache.values()) ** 2
+```
+
+```java
+public class Solution {
+    private int[][] dp;
+
+    public int maximalSquare(char[][] matrix) {
+        int ROWS = matrix.length, COLS = matrix[0].length;
+        dp = new int[ROWS][COLS];
+        for (int i = 0; i < ROWS; i++) {
+            for (int j = 0; j < COLS; j++) {
+                dp[i][j] = -1;
+            }
+        }
+
+        dfs(0, 0, matrix);
+        int maxSquare = 0;
+        for (int i = 0; i < ROWS; i++) {
+            for (int j = 0; j < COLS; j++) {
+                maxSquare = Math.max(maxSquare, dp[i][j]);
+            }
+        }
+        return maxSquare * maxSquare;
+    }
+
+    private int dfs(int r, int c, char[][] matrix) {
+        if (r >= matrix.length || c >= matrix[0].length) {
+            return 0;
+        }
+        if (dp[r][c] != -1) {
+            return dp[r][c];
+        }
+        int down = dfs(r + 1, c, matrix);
+        int right = dfs(r, c + 1, matrix);
+        int diag = dfs(r + 1, c + 1, matrix);
+        dp[r][c] = 0;
+        if (matrix[r][c] == '1') {
+            dp[r][c] = 1 + Math.min(down, Math.min(right, diag));
+        }
+        return dp[r][c];
+    }
+}
+```
+
+```cpp
+class Solution {
+private:
+    vector<vector<int>> dp;
+
+public:
+    int maximalSquare(vector<vector<char>>& matrix) {
+        int ROWS = matrix.size(), COLS = matrix[0].size();
+        dp = vector<vector<int>>(ROWS, vector<int>(COLS, -1));
+
+        dfs(0, 0, matrix);
+        int maxSquare = 0;
+        for (int r = 0; r < ROWS; r++) {
+            for (int c = 0; c < COLS; c++) {
+                maxSquare = max(maxSquare, dp[r][c]);
+            }
+        }
+        return maxSquare * maxSquare;
+    }
+
+    int dfs(int r, int c, vector<vector<char>>& matrix) {
+        if (r >= matrix.size() || c >= matrix[0].size()) {
+            return 0;
+        }
+        if (dp[r][c] != -1) {
+            return dp[r][c];
+        }
+        int down = dfs(r + 1, c, matrix);
+        int right = dfs(r, c + 1, matrix);
+        int diag = dfs(r + 1, c + 1, matrix);
+        dp[r][c] = 0;
+        if (matrix[r][c] == '1') {
+            dp[r][c] = 1 + min(down, min(right, diag));
+        }
+        return dp[r][c];
+    }
+};
+```
+
+```javascript
+class Solution {
+    /**
+     * @param {character[][]} matrix
+     * @return {number}
+     */
+    maximalSquare(matrix) {
+        const ROWS = matrix.length,
+            COLS = matrix[0].length;
+        const dp = Array.from({ length: ROWS }, () => Array(COLS).fill(-1));
+
+        const dfs = (r, c) => {
+            if (r >= ROWS || c >= COLS) {
+                return 0;
+            }
+            if (dp[r][c] !== -1) {
+                return dp[r][c];
+            }
+            const down = dfs(r + 1, c);
+            const right = dfs(r, c + 1);
+            const diag = dfs(r + 1, c + 1);
+            dp[r][c] = 0;
+            if (matrix[r][c] === '1') {
+                dp[r][c] = 1 + Math.min(down, Math.min(right, diag));
+            }
+            return dp[r][c];
+        };
+
+        dfs(0, 0);
+        let maxSquare = 0;
+        for (let r = 0; r < ROWS; r++) {
+            for (let c = 0; c < COLS; c++) {
+                maxSquare = Math.max(maxSquare, dp[r][c]);
+            }
+        }
+        return maxSquare * maxSquare;
+    }
+}
+```
+
+```csharp
+public class Solution {
+    private int[][] dp;
+
+    public int MaximalSquare(char[][] matrix) {
+        int ROWS = matrix.Length, COLS = matrix[0].Length;
+        dp = new int[ROWS][];
+        for (int i = 0; i < ROWS; i++) {
+            dp[i] = new int[COLS];
+            for (int j = 0; j < COLS; j++) {
+                dp[i][j] = -1;
+            }
+        }
+
+        Dfs(0, 0, matrix);
+        int maxSquare = 0;
+        for (int i = 0; i < ROWS; i++) {
+            for (int j = 0; j < COLS; j++) {
+                maxSquare = Math.Max(maxSquare, dp[i][j]);
+            }
+        }
+        return maxSquare * maxSquare;
+    }
+
+    private int Dfs(int r, int c, char[][] matrix) {
+        if (r >= matrix.Length || c >= matrix[0].Length) {
+            return 0;
+        }
+        if (dp[r][c] != -1) {
+            return dp[r][c];
+        }
+
+        int down = Dfs(r + 1, c, matrix);
+        int right = Dfs(r, c + 1, matrix);
+        int diag = Dfs(r + 1, c + 1, matrix);
+
+        dp[r][c] = 0;
+        if (matrix[r][c] == '1') {
+            dp[r][c] = 1 + Math.Min(down, Math.Min(right, diag));
+        }
+
+        return dp[r][c];
+    }
+}
+```
+
+```go
+func maximalSquare(matrix [][]byte) int {
+    ROWS, COLS := len(matrix), len(matrix[0])
+    dp := make([][]int, ROWS)
+    for i := range dp {
+        dp[i] = make([]int, COLS)
+        for j := range dp[i] {
+            dp[i][j] = -1
+        }
+    }
+
+    var dfs func(r, c int) int
+    dfs = func(r, c int) int {
+        if r >= ROWS || c >= COLS {
+            return 0
+        }
+        if dp[r][c] != -1 {
+            return dp[r][c]
+        }
+        down := dfs(r+1, c)
+        right := dfs(r, c+1)
+        diag := dfs(r+1, c+1)
+        dp[r][c] = 0
+        if matrix[r][c] == '1' {
+            dp[r][c] = 1 + min(down, min(right, diag))
+        }
+        return dp[r][c]
+    }
+
+    dfs(0, 0)
+    maxSquare := 0
+    for r := 0; r < ROWS; r++ {
+        for c := 0; c < COLS; c++ {
+            if dp[r][c] > maxSquare {
+                maxSquare = dp[r][c]
+            }
+        }
+    }
+    return maxSquare * maxSquare
+}
+
+func min(a, b int) int {
+    if a < b {
+        return a
+    }
+    return b
+}
+```
+
+```kotlin
+class Solution {
+    private lateinit var dp: Array<IntArray>
+
+    fun maximalSquare(matrix: Array<CharArray>): Int {
+        val ROWS = matrix.size
+        val COLS = matrix[0].size
+        dp = Array(ROWS) { IntArray(COLS) { -1 } }
+
+        dfs(0, 0, matrix)
+        var maxSquare = 0
+        for (i in 0 until ROWS) {
+            for (j in 0 until COLS) {
+                maxSquare = maxOf(maxSquare, dp[i][j])
+            }
+        }
+        return maxSquare * maxSquare
+    }
+
+    private fun dfs(r: Int, c: Int, matrix: Array<CharArray>): Int {
+        if (r >= matrix.size || c >= matrix[0].size) {
+            return 0
+        }
+        if (dp[r][c] != -1) {
+            return dp[r][c]
+        }
+        val down = dfs(r + 1, c, matrix)
+        val right = dfs(r, c + 1, matrix)
+        val diag = dfs(r + 1, c + 1, matrix)
+        dp[r][c] = 0
+        if (matrix[r][c] == '1') {
+            dp[r][c] = 1 + minOf(down, right, diag)
+        }
+        return dp[r][c]
+    }
+}
+```
+
+```swift
+class Solution {
+    private var dp: [[Int]] = []
+
+    func maximalSquare(_ matrix: [[Character]]) -> Int {
+        let ROWS = matrix.count, COLS = matrix[0].count
+        dp = Array(repeating: Array(repeating: -1, count: COLS), count: ROWS)
+
+        dfs(0, 0, matrix)
+        var maxSquare = 0
+        for i in 0..<ROWS {
+            for j in 0..<COLS {
+                maxSquare = max(maxSquare, dp[i][j])
+            }
+        }
+        return maxSquare * maxSquare
+    }
+
+    private func dfs(_ r: Int, _ c: Int, _ matrix: [[Character]]) -> Int {
+        if r >= matrix.count || c >= matrix[0].count {
+            return 0
+        }
+        if dp[r][c] != -1 {
+            return dp[r][c]
+        }
+        let down = dfs(r + 1, c, matrix)
+        let right = dfs(r, c + 1, matrix)
+        let diag = dfs(r + 1, c + 1, matrix)
+        dp[r][c] = 0
+        if matrix[r][c] == "1" {
+            dp[r][c] = 1 + min(down, min(right, diag))
+        }
+        return dp[r][c]
+    }
+}
+```
+
+```rust
+impl Solution {
+    pub fn maximal_square(matrix: Vec<Vec<char>>) -> i32 {
+        let rows = matrix.len();
+        let cols = matrix[0].len();
+        let mut dp = vec![vec![-1i32; cols]; rows];
+
+        fn dfs(r: usize, c: usize, matrix: &[Vec<char>], dp: &mut Vec<Vec<i32>>) -> i32 {
+            let rows = matrix.len();
+            let cols = matrix[0].len();
+            if r >= rows || c >= cols {
+                return 0;
+            }
+            if dp[r][c] != -1 {
+                return dp[r][c];
+            }
+            let down = dfs(r + 1, c, matrix, dp);
+            let right = dfs(r, c + 1, matrix, dp);
+            let diag = dfs(r + 1, c + 1, matrix, dp);
+            dp[r][c] = 0;
+            if matrix[r][c] == '1' {
+                dp[r][c] = 1 + down.min(right).min(diag);
+            }
+            dp[r][c]
+        }
+
+        dfs(0, 0, &matrix, &mut dp);
+        let mut max_square = 0;
+        for r in 0..rows {
+            for c in 0..cols {
+                max_square = max_square.max(dp[r][c]);
+            }
+        }
+        max_square * max_square
+    }
+}
+```
+
+::tabs-end
+
+### Time & Space Complexity
+
+- Time complexity: $O(m * n)$
+- Space complexity: $O(m * n)$
+
+> Where $m$ is the number of rows and $n$ is the number columns.
+
+---
+
+## 3. Dynamic Programming (Bottom-Up)
+
+### Intuition
+
+Instead of recursion, we can fill the DP table iteratively from bottom-right to top-left. For each `'1'` cell, the largest square ending there (as the bottom-right corner) is determined by the minimum of the squares ending at its right, bottom, and diagonal neighbors, plus one. This builds up from smaller subproblems to larger ones and avoids recursion overhead.
+
+### Algorithm
+
+1. Create a DP table of size `(m+1) x (n+1)` initialized to `0`.
+2. Iterate from `r = m-1` down to `0`, and `c = n-1` down to `0`:
+    - If `matrix[r][c]` is `'1'`, set `dp[r][c] = 1 + min(dp[r+1][c], dp[r][c+1], dp[r+1][c+1])`.
+    - Update `maxSquare` with `dp[r][c]`.
+3. Return `maxSquare * maxSquare`.
+
+::tabs-start
+
+```python
+class Solution:
+    def maximalSquare(self, matrix: List[List[str]]) -> int:
+        m, n = len(matrix), len(matrix[0])
+        dp = [[0] * (n + 1) for _ in range(m + 1)]
+        max_square = 0
+
+        for r in range(m - 1, -1, -1):
+            for c in range(n - 1, -1, -1):
+                if matrix[r][c] == "1":
+                    dp[r][c] = 1 + min(dp[r + 1][c], dp[r][c + 1], dp[r + 1][c + 1])
+                    max_square = max(max_square, dp[r][c])
+
+        return max_square * max_square
+```
+
+```java
+public class Solution {
+    public int maximalSquare(char[][] matrix) {
+        int m = matrix.length, n = matrix[0].length;
+        int[][] dp = new int[m + 1][n + 1];
+        int maxSquare = 0;
+
+        for (int r = m - 1; r >= 0; r--) {
+            for (int c = n - 1; c >= 0; c--) {
+                if (matrix[r][c] == '1') {
+                    dp[r][c] = 1 + Math.min(dp[r + 1][c], Math.min(dp[r][c + 1], dp[r + 1][c + 1]));
+                    maxSquare = Math.max(maxSquare, dp[r][c]);
+                }
+            }
+        }
+
+        return maxSquare * maxSquare;
+    }
+}
+```
+
+```cpp
+class Solution {
+public:
+    int maximalSquare(vector<vector<char>>& matrix) {
+        int m = matrix.size(), n = matrix[0].size();
+        vector<vector<int>> dp(m + 1, vector<int>(n + 1, 0));
+        int maxSquare = 0;
+
+        for (int r = m - 1; r >= 0; r--) {
+            for (int c = n - 1; c >= 0; c--) {
+                if (matrix[r][c] == '1') {
+                    dp[r][c] = 1 + min({dp[r + 1][c], dp[r][c + 1], dp[r + 1][c + 1]});
+                    maxSquare = max(maxSquare, dp[r][c]);
+                }
+            }
+        }
+
+        return maxSquare * maxSquare;
+    }
+};
+```
+
+```javascript
+class Solution {
+    /**
+     * @param {character[][]} matrix
+     * @return {number}
+     */
+    maximalSquare(matrix) {
+        const m = matrix.length,
+            n = matrix[0].length;
+        const dp = Array.from({ length: m + 1 }, () => Array(n + 1).fill(0));
+        let maxSquare = 0;
+
+        for (let r = m - 1; r >= 0; r--) {
+            for (let c = n - 1; c >= 0; c--) {
+                if (matrix[r][c] === '1') {
+                    dp[r][c] =
+                        1 +
+                        Math.min(dp[r + 1][c], dp[r][c + 1], dp[r + 1][c + 1]);
+                    maxSquare = Math.max(maxSquare, dp[r][c]);
+                }
+            }
+        }
+
+        return maxSquare * maxSquare;
+    }
+}
+```
+
+```csharp
+public class Solution {
+    public int MaximalSquare(char[][] matrix) {
+        int m = matrix.Length, n = matrix[0].Length;
+        int[][] dp = new int[m + 1][];
+        for (int i = 0; i <= m; i++) {
+            dp[i] = new int[n + 1];
+        }
+
+        int maxSquare = 0;
+        for (int r = m - 1; r >= 0; r--) {
+            for (int c = n - 1; c >= 0; c--) {
+                if (matrix[r][c] == '1') {
+                    dp[r][c] = 1 + Math.Min(dp[r + 1][c], Math.Min(dp[r][c + 1], dp[r + 1][c + 1]));
+                    maxSquare = Math.Max(maxSquare, dp[r][c]);
+                }
+            }
+        }
+
+        return maxSquare * maxSquare;
+    }
+}
+```
+
+```go
+func maximalSquare(matrix [][]byte) int {
+    m, n := len(matrix), len(matrix[0])
+    dp := make([][]int, m+1)
+    for i := range dp {
+        dp[i] = make([]int, n+1)
+    }
+    maxSquare := 0
+
+    for r := m - 1; r >= 0; r-- {
+        for c := n - 1; c >= 0; c-- {
+            if matrix[r][c] == '1' {
+                dp[r][c] = 1 + min(dp[r+1][c], min(dp[r][c+1], dp[r+1][c+1]))
+                if dp[r][c] > maxSquare {
+                    maxSquare = dp[r][c]
+                }
+            }
+        }
+    }
+
+    return maxSquare * maxSquare
+}
+
+func min(a, b int) int {
+    if a < b {
+        return a
+    }
+    return b
+}
+```
+
+```kotlin
+class Solution {
+    fun maximalSquare(matrix: Array<CharArray>): Int {
+        val m = matrix.size
+        val n = matrix[0].size
+        val dp = Array(m + 1) { IntArray(n + 1) }
+        var maxSquare = 0
+
+        for (r in m - 1 downTo 0) {
+            for (c in n - 1 downTo 0) {
+                if (matrix[r][c] == '1') {
+                    dp[r][c] = 1 + minOf(dp[r + 1][c], dp[r][c + 1], dp[r + 1][c + 1])
+                    maxSquare = maxOf(maxSquare, dp[r][c])
+                }
+            }
+        }
+
+        return maxSquare * maxSquare
+    }
+}
+```
+
+```swift
+class Solution {
+    func maximalSquare(_ matrix: [[Character]]) -> Int {
+        let m = matrix.count, n = matrix[0].count
+        var dp = Array(repeating: Array(repeating: 0, count: n + 1), count: m + 1)
+        var maxSquare = 0
+
+        for r in stride(from: m - 1, through: 0, by: -1) {
+            for c in stride(from: n - 1, through: 0, by: -1) {
+                if matrix[r][c] == "1" {
+                    dp[r][c] = 1 + min(dp[r + 1][c], min(dp[r][c + 1], dp[r + 1][c + 1]))
+                    maxSquare = max(maxSquare, dp[r][c])
+                }
+            }
+        }
+
+        return maxSquare * maxSquare
+    }
+}
+```
+
+```rust
+impl Solution {
+    pub fn maximal_square(matrix: Vec<Vec<char>>) -> i32 {
+        let m = matrix.len();
+        let n = matrix[0].len();
+        let mut dp = vec![vec![0i32; n + 1]; m + 1];
+        let mut max_square = 0;
+
+        for r in (0..m).rev() {
+            for c in (0..n).rev() {
+                if matrix[r][c] == '1' {
+                    dp[r][c] = 1 + dp[r + 1][c].min(dp[r][c + 1]).min(dp[r + 1][c + 1]);
+                    max_square = max_square.max(dp[r][c]);
+                }
+            }
+        }
+
+        max_square * max_square
+    }
+}
+```
+
+::tabs-end
+
+### Time & Space Complexity
+
+- Time complexity: $O(m * n)$
+- Space complexity: $O(m * n)$
+
+> Where $m$ is the number of rows and $n$ is the number columns.
+
+---
+
+## 4. Dynamic Programming (Space Optimized)
+
+### Intuition
+
+The bottom-up DP only needs the current row and the next row to compute values. We can reduce space by using a single 1D array. As we process each row from right to left, we keep track of the previous diagonal value in a variable `prev`. This allows us to update the array in place while still having access to all three neighbors needed for the recurrence.
+
+### Algorithm
+
+1. Create a 1D DP array of size `n+1` initialized to `0`.
+2. Iterate from `r = m-1` down to `0`:
+    - Set `prev = 0` (represents the diagonal value from the previous iteration).
+    - For each column `c` from `n-1` down to `0`:
+        - Store `dp[c]` in `temp` (this will be the next diagonal).
+        - If `matrix[r][c]` is `'1'`, set `dp[c] = 1 + min(dp[c], dp[c+1], prev)` and update `maxSquare`.
+        - Otherwise, set `dp[c] = 0`.
+        - Update `prev = temp`.
+3. Return `maxSquare * maxSquare`.
+
+::tabs-start
+
+```python
+class Solution:
+    def maximalSquare(self, matrix: List[List[str]]) -> int:
+        m, n = len(matrix), len(matrix[0])
+        dp = [0] * (n + 1)
+        max_square = 0
+
+        for r in range(m - 1, -1, -1):
+            prev = 0
+            for c in range(n - 1, -1, -1):
+                temp = dp[c]
+                if matrix[r][c] == "1":
+                    dp[c] = 1 + min(dp[c], dp[c + 1], prev)
+                    max_square = max(max_square, dp[c])
+                else:
+                    dp[c] = 0
+                prev = temp
+
+        return max_square * max_square
+```
+
+```java
+public class Solution {
+    public int maximalSquare(char[][] matrix) {
+        int m = matrix.length, n = matrix[0].length;
+        int[] dp = new int[n + 1];
+        int maxSquare = 0;
+
+        for (int r = m - 1; r >= 0; r--) {
+            int prev = 0;
+            for (int c = n - 1; c >= 0; c--) {
+                int temp = dp[c];
+                if (matrix[r][c] == '1') {
+                    dp[c] = 1 + Math.min(dp[c], Math.min(dp[c + 1], prev));
+                    maxSquare = Math.max(maxSquare, dp[c]);
+                } else {
+                    dp[c] = 0;
+                }
+                prev = temp;
+            }
+        }
+
+        return maxSquare * maxSquare;
+    }
+}
+```
+
+```cpp
+class Solution {
+public:
+    int maximalSquare(vector<vector<char>>& matrix) {
+        int m = matrix.size(), n = matrix[0].size();
+        vector<int> dp(n + 1, 0);
+        int maxSquare = 0;
+
+        for (int r = m - 1; r >= 0; r--) {
+            int prev = 0;
+            for (int c = n - 1; c >= 0; c--) {
+                int temp = dp[c];
+                if (matrix[r][c] == '1') {
+                    dp[c] = 1 + min({dp[c], dp[c + 1], prev});
+                    maxSquare = max(maxSquare, dp[c]);
+                } else {
+                    dp[c] = 0;
+                }
+                prev = temp;
+            }
+        }
+
+        return maxSquare * maxSquare;
+    }
+};
+```
+
+```javascript
+class Solution {
+    /**
+     * @param {character[][]} matrix
+     * @return {number}
+     */
+    maximalSquare(matrix) {
+        const m = matrix.length,
+            n = matrix[0].length;
+        const dp = new Array(n + 1).fill(0);
+        let maxSquare = 0;
+        let prev = 0;
+
+        for (let r = m - 1; r >= 0; r--) {
+            for (let c = n - 1; c >= 0; c--) {
+                const temp = dp[c];
+                if (matrix[r][c] === '1') {
+                    dp[c] = 1 + Math.min(dp[c], dp[c + 1], prev);
+                    maxSquare = Math.max(maxSquare, dp[c]);
+                } else {
+                    dp[c] = 0;
+                }
+                prev = temp;
+            }
+        }
+
+        return maxSquare * maxSquare;
+    }
+}
+```
+
+```csharp
+public class Solution {
+    public int MaximalSquare(char[][] matrix) {
+        int m = matrix.Length, n = matrix[0].Length;
+        int[] dp = new int[n + 1];
+        int maxSquare = 0;
+
+        for (int r = m - 1; r >= 0; r--) {
+            int prev = 0;
+            for (int c = n - 1; c >= 0; c--) {
+                int temp = dp[c];
+                if (matrix[r][c] == '1') {
+                    dp[c] = 1 + Math.Min(dp[c], Math.Min(dp[c + 1], prev));
+                    maxSquare = Math.Max(maxSquare, dp[c]);
+                } else {
+                    dp[c] = 0;
+                }
+                prev = temp;
+            }
+        }
+
+        return maxSquare * maxSquare;
+    }
+}
+```
+
+```go
+func maximalSquare(matrix [][]byte) int {
+    m, n := len(matrix), len(matrix[0])
+    dp := make([]int, n+1)
+    maxSquare := 0
+
+    for r := m - 1; r >= 0; r-- {
+        prev := 0
+        for c := n - 1; c >= 0; c-- {
+            temp := dp[c]
+            if matrix[r][c] == '1' {
+                dp[c] = 1 + min(dp[c], min(dp[c+1], prev))
+                if dp[c] > maxSquare {
+                    maxSquare = dp[c]
+                }
+            } else {
+                dp[c] = 0
+            }
+            prev = temp
+        }
+    }
+
+    return maxSquare * maxSquare
+}
+
+func min(a, b int) int {
+    if a < b {
+        return a
+    }
+    return b
+}
+```
+
+```kotlin
+class Solution {
+    fun maximalSquare(matrix: Array<CharArray>): Int {
+        val m = matrix.size
+        val n = matrix[0].size
+        val dp = IntArray(n + 1)
+        var maxSquare = 0
+
+        for (r in m - 1 downTo 0) {
+            var prev = 0
+            for (c in n - 1 downTo 0) {
+                val temp = dp[c]
+                if (matrix[r][c] == '1') {
+                    dp[c] = 1 + minOf(dp[c], dp[c + 1], prev)
+                    maxSquare = maxOf(maxSquare, dp[c])
+                } else {
+                    dp[c] = 0
+                }
+                prev = temp
+            }
+        }
+
+        return maxSquare * maxSquare
+    }
+}
+```
+
+```swift
+class Solution {
+    func maximalSquare(_ matrix: [[Character]]) -> Int {
+        let m = matrix.count, n = matrix[0].count
+        var dp = Array(repeating: 0, count: n + 1)
+        var maxSquare = 0
+
+        for r in stride(from: m - 1, through: 0, by: -1) {
+            var prev = 0
+            for c in stride(from: n - 1, through: 0, by: -1) {
+                let temp = dp[c]
+                if matrix[r][c] == "1" {
+                    dp[c] = 1 + min(dp[c], min(dp[c + 1], prev))
+                    maxSquare = max(maxSquare, dp[c])
+                } else {
+                    dp[c] = 0
+                }
+                prev = temp
+            }
+        }
+
+        return maxSquare * maxSquare
+    }
+}
+```
+
+```rust
+impl Solution {
+    pub fn maximal_square(matrix: Vec<Vec<char>>) -> i32 {
+        let m = matrix.len();
+        let n = matrix[0].len();
+        let mut dp = vec![0i32; n + 1];
+        let mut max_square = 0;
+
+        for r in (0..m).rev() {
+            let mut prev = 0;
+            for c in (0..n).rev() {
+                let temp = dp[c];
+                if matrix[r][c] == '1' {
+                    dp[c] = 1 + dp[c].min(dp[c + 1]).min(prev);
+                    max_square = max_square.max(dp[c]);
+                } else {
+                    dp[c] = 0;
+                }
+                prev = temp;
+            }
+        }
+
+        max_square * max_square
+    }
+}
+```
+
+::tabs-end
+
+### Time & Space Complexity
+
+- Time complexity: $O(m * n)$
+- Space complexity: $O(n)$
+
+> Where $m$ is the number of rows and $n$ is the number columns.
+
+---
+
+## Common Pitfalls
+
+### Returning the Side Length Instead of the Area
+
+The DP table stores the side length of the largest square, but the problem asks for the area. Forgetting to square the maximum side length before returning gives an incorrect answer.
+
+### Comparing Characters Instead of Character Values
+
+Matrix elements are characters (`'0'` and `'1'`), not integers. Comparing against integer `0` or `1` instead of character `'0'` or `'1'` causes the condition to always evaluate incorrectly, resulting in wrong DP values.
+
+### Incorrect DP Recurrence Direction
+
+The recurrence `dp[r][c] = 1 + min(dp[r+1][c], dp[r][c+1], dp[r+1][c+1])` assumes processing from bottom-right to top-left. Processing in the wrong direction (top-left to bottom-right without adjusting the formula) references uncomputed values and produces incorrect results.

@@ -1,0 +1,1156 @@
+## Prerequisites
+
+Before attempting this problem, you should be comfortable with:
+
+- **Stack Data Structure** - Understanding LIFO (Last In First Out) operations including push, pop, and peek
+- **Auxiliary Data Structures** - Using additional stacks or variables to track extra state alongside the main data structure
+- **Space-Time Tradeoffs** - Trading extra memory for faster operations (e.g., O(n) space for O(1) getMin)
+
+---
+
+## 1. Brute Force
+
+### Intuition
+
+To get the minimum value, this approach simply looks through **all elements** in the stack.
+Since a normal stack does not store any extra information about the minimum, the only way to find it is to temporarily remove every element, track the smallest one, and then put everything back.
+It's easy to understand but slow because each `getMin` call scans the entire stack.
+
+### Algorithm
+
+1. To `push` a value, append it to the stack.
+2. To `pop`, remove the top element of the stack.
+3. To `top`, return the last element.
+4. To `getMin`:
+    - Create a temporary list.
+    - Pop all elements from the stack while tracking the smallest value.
+    - Push all elements back from the temporary list to restore the stack.
+    - Return the smallest value found.
+
+::tabs-start
+
+```python
+class MinStack:
+
+    def __init__(self):
+        self.stack = []
+
+    def push(self, val: int) -> None:
+        self.stack.append(val)
+
+    def pop(self) -> None:
+        self.stack.pop()
+
+    def top(self) -> int:
+        return self.stack[-1]
+
+    def getMin(self) -> int:
+        tmp = []
+        mini = self.stack[-1]
+
+        while len(self.stack):
+            mini = min(mini, self.stack[-1])
+            tmp.append(self.stack.pop())
+
+        while len(tmp):
+            self.stack.append(tmp.pop())
+
+        return mini
+```
+
+```java
+class MinStack {
+
+    private Stack<Integer> stack;
+
+    public MinStack() {
+        stack = new Stack<>();
+    }
+
+    public void push(int val) {
+        stack.push(val);
+    }
+
+    public void pop() {
+        stack.pop();
+    }
+
+    public int top() {
+        return stack.peek();
+    }
+
+    public int getMin() {
+        Stack<Integer> tmp = new Stack<>();
+        int mini = stack.peek();
+
+        while (!stack.isEmpty()) {
+            mini = Math.min(mini, stack.peek());
+            tmp.push(stack.pop());
+        }
+
+        while (!tmp.isEmpty()) {
+            stack.push(tmp.pop());
+        }
+
+        return mini;
+    }
+}
+```
+
+```cpp
+class MinStack {
+public:
+    stack<int> stk;
+    MinStack() {
+
+    }
+
+    void push(int val) {
+        stk.push(val);
+    }
+
+    void pop() {
+        stk.pop();
+    }
+
+    int top() {
+        return stk.top();
+    }
+
+    int getMin() {
+        stack<int> tmp;
+        int mini = stk.top();
+        while (stk.size()) {
+            mini = min(mini, stk.top());
+            tmp.push(stk.top());
+            stk.pop();
+        }
+
+        while (tmp.size()) {
+            stk.push(tmp.top());
+            tmp.pop();
+        }
+
+        return mini;
+    }
+};
+```
+
+```javascript
+class MinStack {
+    constructor() {
+        this.stack = [];
+    }
+
+    /**
+     * @param {number} val
+     * @return {void}
+     */
+    push(val) {
+        this.stack.push(val);
+    }
+
+    /**
+     * @return {void}
+     */
+    pop() {
+        this.stack.pop();
+    }
+
+    /**
+     * @return {number}
+     */
+    top() {
+        return this.stack[this.stack.length - 1];
+    }
+
+    /**
+     * @return {number}
+     */
+    getMin() {
+        const tmp = [];
+        let mini = this.stack[this.stack.length - 1];
+
+        while (this.stack.length > 0) {
+            mini = Math.min(mini, this.stack[this.stack.length - 1]);
+            tmp.push(this.stack.pop());
+        }
+
+        while (tmp.length > 0) {
+            this.stack.push(tmp.pop());
+        }
+
+        return mini;
+    }
+}
+```
+
+```csharp
+public class MinStack {
+    private Stack<int> stack;
+
+    public MinStack() {
+        stack = new Stack<int>();
+    }
+
+    public void Push(int val) {
+        stack.Push(val);
+    }
+
+    public void Pop() {
+        stack.Pop();
+    }
+
+    public int Top() {
+        return stack.Peek();
+    }
+
+    public int GetMin() {
+        Stack<int> tmp = new Stack<int>();
+        int mini = stack.Peek();
+
+        while (stack.Count > 0) {
+            mini = System.Math.Min(mini, stack.Peek());
+            tmp.Push(stack.Pop());
+        }
+
+        while (tmp.Count > 0) {
+            stack.Push(tmp.Pop());
+        }
+
+        return mini;
+    }
+}
+```
+
+```go
+type MinStack struct {
+    stack *linkedliststack.Stack
+}
+
+func Constructor() MinStack {
+    return MinStack{stack: linkedliststack.New()}
+}
+
+func (this *MinStack) Push(val int) {
+    this.stack.Push(val)
+}
+
+func (this *MinStack) Pop() {
+    this.stack.Pop()
+}
+
+func (this *MinStack) Top() int {
+    top, _ := this.stack.Peek()
+    return top.(int)
+}
+
+func (this *MinStack) GetMin() int {
+    tmp := linkedliststack.New()
+    min := this.Top()
+
+    for !this.stack.Empty() {
+        val, _ := this.stack.Pop()
+        min = getMin(min, val.(int))
+        tmp.Push(val)
+    }
+
+    for !tmp.Empty() {
+        val, _ := tmp.Pop()
+        this.stack.Push(val)
+    }
+
+    return min
+}
+
+func getMin(a, b int) int {
+    if a < b {
+        return a
+    }
+    return b
+}
+```
+
+```kotlin
+class MinStack() {
+    private val stack = ArrayDeque<Int>()
+
+    fun push(`val`: Int) {
+        stack.addLast(`val`)
+    }
+
+    fun pop() {
+        stack.removeLast()
+    }
+
+    fun top(): Int {
+        return stack.last()
+    }
+
+    fun getMin(): Int {
+        val tmp = ArrayDeque<Int>()
+        var min = stack.last()
+
+        while (stack.isNotEmpty()) {
+            min = minOf(min, stack.last())
+            tmp.addLast(stack.removeLast())
+        }
+
+        while (tmp.isNotEmpty()) {
+            stack.addLast(tmp.removeLast())
+        }
+
+        return min
+    }
+}
+```
+
+```swift
+class MinStack {
+    private var stack: [Int] = []
+
+    init() {}
+
+    func push(_ val: Int) {
+        stack.append(val)
+    }
+
+    func pop() {
+        stack.popLast()
+    }
+
+    func top() -> Int {
+        return stack.last!
+    }
+
+    func getMin() -> Int {
+        var tmp = [Int]()
+        var mini = stack.last!
+
+        while !stack.isEmpty {
+            mini = min(mini, stack.last!)
+            tmp.append(stack.removeLast())
+        }
+
+        while !tmp.isEmpty {
+            stack.append(tmp.removeLast())
+        }
+
+        return mini
+    }
+}
+```
+
+```rust
+struct MinStack {
+    stack: Vec<i32>,
+}
+
+impl MinStack {
+    fn new() -> Self {
+        Self { stack: Vec::new() }
+    }
+
+    fn push(&mut self, val: i32) {
+        self.stack.push(val);
+    }
+
+    fn pop(&mut self) {
+        self.stack.pop();
+    }
+
+    fn top(&self) -> i32 {
+        *self.stack.last().unwrap()
+    }
+
+    fn get_min(&mut self) -> i32 {
+        let mut tmp = Vec::new();
+        let mut mini = *self.stack.last().unwrap();
+
+        while let Some(val) = self.stack.pop() {
+            mini = mini.min(val);
+            tmp.push(val);
+        }
+
+        while let Some(val) = tmp.pop() {
+            self.stack.push(val);
+        }
+
+        mini
+    }
+}
+```
+
+::tabs-end
+
+### Time & Space Complexity
+
+- Time complexity: $O(n)$ for $getMin()$ and $O(1)$ for other operations.
+- Space complexity: $O(n)$ for $getMin()$ and $O(1)$ for other operations.
+
+---
+
+## 2. Two Stacks
+
+### Intuition
+
+Instead of searching the whole stack to find the minimum every time, we can keep a **second stack** that always stores the minimum value _up to that point_.
+So whenever we push a new value, we compare it with the current minimum and store the smaller one on the `minStack`.
+This guarantees that the top of `minStack` is always the minimum of the entire stack — allowing `getMin()` to work in constant time.
+
+### Algorithm
+
+1. Maintain two stacks:
+    - `stack` → stores all pushed values.
+    - `minStack` → stores the minimum so far at each level.
+2. On `push(val)`:
+    - Push `val` onto `stack`.
+    - Compute the new minimum (between `val` and the current minimum on `minStack`).
+    - Push this minimum onto `minStack`.
+3. On `pop()`:
+    - Pop from both `stack` and `minStack` to keep them aligned.
+4. On `top()`:
+    - Return the top of `stack`.
+5. On `getMin()`:
+    - Return the top of `minStack`, which is the current minimum.
+
+::tabs-start
+
+```python
+class MinStack:
+    def __init__(self):
+        self.stack = []
+        self.minStack = []
+
+    def push(self, val: int) -> None:
+        self.stack.append(val)
+        val = min(val, self.minStack[-1] if self.minStack else val)
+        self.minStack.append(val)
+
+    def pop(self) -> None:
+        self.stack.pop()
+        self.minStack.pop()
+
+    def top(self) -> int:
+        return self.stack[-1]
+
+    def getMin(self) -> int:
+        return self.minStack[-1]
+```
+
+```java
+public class MinStack {
+    private Stack<Integer> stack;
+    private Stack<Integer> minStack;
+
+    public MinStack() {
+        stack = new Stack<>();
+        minStack = new Stack<>();
+    }
+
+    public void push(int val) {
+        stack.push(val);
+        if (minStack.isEmpty() || val <= minStack.peek()) {
+            minStack.push(val);
+        }
+    }
+
+    public void pop() {
+        if (stack.isEmpty()) return;
+        int top = stack.pop();
+        if (top == minStack.peek()) {
+            minStack.pop();
+        }
+    }
+
+    public int top() {
+        return stack.peek();
+    }
+
+    public int getMin() {
+        return minStack.peek();
+    }
+}
+```
+
+```cpp
+class MinStack {
+private:
+    std::stack<int> stack;
+    std::stack<int> minStack;
+
+public:
+    MinStack() {}
+
+    void push(int val) {
+        stack.push(val);
+        val = std::min(val, minStack.empty() ? val : minStack.top());
+        minStack.push(val);
+    }
+
+    void pop() {
+        stack.pop();
+        minStack.pop();
+    }
+
+    int top() {
+        return stack.top();
+    }
+
+    int getMin() {
+        return minStack.top();
+    }
+};
+```
+
+```javascript
+class MinStack {
+    constructor() {
+        this.stack = [];
+        this.minStack = [];
+    }
+
+    /**
+     * @param {number} val
+     * @return {void}
+     */
+    push(val) {
+        this.stack.push(val);
+        val = Math.min(
+            val,
+            this.minStack.length === 0
+                ? val
+                : this.minStack[this.minStack.length - 1],
+        );
+        this.minStack.push(val);
+    }
+
+    /**
+     * @return {void}
+     */
+    pop() {
+        this.stack.pop();
+        this.minStack.pop();
+    }
+
+    /**
+     * @return {number}
+     */
+    top() {
+        return this.stack[this.stack.length - 1];
+    }
+
+    /**
+     * @return {number}
+     */
+    getMin() {
+        return this.minStack[this.minStack.length - 1];
+    }
+}
+```
+
+```csharp
+public class MinStack {
+
+    private Stack<int> stack;
+    private Stack<int> minStack;
+
+    public MinStack() {
+        stack = new Stack<int>();
+        minStack = new Stack<int>();
+    }
+
+    public void Push(int val) {
+        stack.Push(val);
+        val = Math.Min(val, minStack.Count == 0 ? val : minStack.Peek());
+        minStack.Push(val);
+    }
+
+    public void Pop() {
+        stack.Pop();
+        minStack.Pop();
+    }
+
+    public int Top() {
+        return stack.Peek();
+    }
+
+    public int GetMin() {
+        return minStack.Peek();
+    }
+}
+```
+
+```go
+type MinStack struct {
+    stack    *linkedliststack.Stack
+    minStack *linkedliststack.Stack
+}
+
+func Constructor() MinStack {
+    return MinStack{
+        stack:    linkedliststack.New(),
+        minStack: linkedliststack.New(),
+    }
+}
+
+func (this *MinStack) Push(val int) {
+    this.stack.Push(val)
+    minVal := val
+    if !this.minStack.Empty() {
+        if top, ok := this.minStack.Peek(); ok {
+            if top.(int) < val {
+                minVal = top.(int)
+            }
+        }
+    }
+    this.minStack.Push(minVal)
+}
+
+func (this *MinStack) Pop() {
+    this.stack.Pop()
+    this.minStack.Pop()
+}
+
+func (this *MinStack) Top() int {
+    top, _ := this.stack.Peek()
+    return top.(int)
+}
+
+func (this *MinStack) GetMin() int {
+    min, _ := this.minStack.Peek()
+    return min.(int)
+}
+```
+
+```kotlin
+class MinStack() {
+    private val stack = ArrayDeque<Int>()
+    private val minStack = ArrayDeque<Int>()
+
+    fun push(`val`: Int) {
+        stack.addLast(`val`)
+        val minVal = if (minStack.isNotEmpty()) minOf(`val`, minStack.last()) else `val`
+        minStack.addLast(minVal)
+    }
+
+    fun pop() {
+        stack.removeLast()
+        minStack.removeLast()
+    }
+
+    fun top(): Int {
+        return stack.last()
+    }
+
+    fun getMin(): Int {
+        return minStack.last()
+    }
+}
+```
+
+```swift
+class MinStack {
+    private var stack: [Int] = []
+    private var minStack: [Int] = []
+
+    init() {}
+
+    func push(_ val: Int) {
+        stack.append(val)
+        let minVal = min(val, minStack.last ?? val)
+        minStack.append(minVal)
+    }
+
+    func pop() {
+        stack.popLast()
+        minStack.popLast()
+    }
+
+    func top() -> Int {
+        return stack.last!
+    }
+
+    func getMin() -> Int {
+        return minStack.last!
+    }
+}
+```
+
+```rust
+struct MinStack {
+    stack: Vec<i32>,
+    min_stack: Vec<i32>,
+}
+
+impl MinStack {
+    fn new() -> Self {
+        Self {
+            stack: Vec::new(),
+            min_stack: Vec::new(),
+        }
+    }
+
+    fn push(&mut self, val: i32) {
+        self.stack.push(val);
+        let min_val = if let Some(&top) = self.min_stack.last() {
+            val.min(top)
+        } else {
+            val
+        };
+        self.min_stack.push(min_val);
+    }
+
+    fn pop(&mut self) {
+        self.stack.pop();
+        self.min_stack.pop();
+    }
+
+    fn top(&self) -> i32 {
+        *self.stack.last().unwrap()
+    }
+
+    fn get_min(&self) -> i32 {
+        *self.min_stack.last().unwrap()
+    }
+}
+```
+
+::tabs-end
+
+### Time & Space Complexity
+
+- Time complexity: $O(1)$ for all operations.
+- Space complexity: $O(n)$
+
+---
+
+## 3. One Stack
+
+### Intuition
+
+This approach keeps only **one stack** and stores **encoded values** instead of the actual numbers.
+The trick is to record the _difference_ between the pushed value and the current minimum.
+Whenever a new minimum is pushed, we store a **negative encoded value**, which signals that the minimum has changed.
+Later, when popping such a value, we can decode it to restore the previous minimum.
+
+This way, the stack internally keeps track of all minimum updates without needing a second stack — giving constant-time operations with minimal space.
+
+### Algorithm
+
+1. Maintain:
+    - `stack` → stores encoded values (not the actual numbers)
+    - `min` → stores the current minimum in the stack
+2. **Push(val)**:
+    - If the stack is empty:
+        - Push `0` (difference) and set `min = val`.
+    - Otherwise:
+        - Push `val - min`.
+        - If `val` is the new minimum, update `min`.
+3. **Pop()**:
+    - Pop the encoded value.
+    - If this value is **negative**, it means the popped element was the minimum.
+        - Restore the previous minimum using the encoded difference.
+4. **Top()**:
+    - If the encoded value is positive, return `encoded + min`.
+    - If it's negative, the top actual value is simply `min`.
+5. **getMin()**:
+    - Return the current `min`.
+
+::tabs-start
+
+```python
+class MinStack:
+    def __init__(self):
+        self.min = float('inf')
+        self.stack = []
+
+    def push(self, val: int) -> None:
+        if not self.stack:
+            self.stack.append(0)
+            self.min = val
+        else:
+            self.stack.append(val - self.min)
+            if val < self.min:
+                self.min = val
+
+    def pop(self) -> None:
+        if not self.stack:
+            return
+
+        pop = self.stack.pop()
+
+        if pop < 0:
+            self.min = self.min - pop
+
+    def top(self) -> int:
+        top = self.stack[-1]
+        if top > 0:
+            return top + self.min
+        else:
+            return self.min
+
+    def getMin(self) -> int:
+        return self.min
+```
+
+```java
+public class MinStack {
+    long min;
+    Stack<Long> stack;
+
+    public MinStack() {
+        stack = new Stack<>();
+    }
+
+    public void push(int val) {
+        if (stack.isEmpty()) {
+            stack.push(0L);
+            min = val;
+        } else {
+            stack.push(val - min);
+            if (val < min) min = val;
+        }
+    }
+
+    public void pop() {
+        if (stack.isEmpty()) return;
+
+        long pop = stack.pop();
+
+        if (pop < 0) min = min - pop;
+    }
+
+    public int top() {
+        long top = stack.peek();
+        if (top > 0) {
+            return (int) (top + min);
+        } else {
+            return (int) min;
+        }
+    }
+
+    public int getMin() {
+        return (int) min;
+    }
+}
+```
+
+```cpp
+class MinStack {
+private:
+    long min;
+    std::stack<long> stack;
+
+public:
+    MinStack() {}
+
+    void push(int val) {
+        if (stack.empty()) {
+            stack.push(0);
+            min = val;
+        } else {
+            stack.push(val - min);
+            if (val < min) min = val;
+        }
+    }
+
+    void pop() {
+        if (stack.empty()) return;
+
+        long pop = stack.top();
+        stack.pop();
+
+        if (pop < 0) min = min - pop;
+    }
+
+    int top() {
+        long top = stack.top();
+        return (top > 0) ? (top + min) : (int)min;
+    }
+
+    int getMin() {
+        return (int)min;
+    }
+};
+```
+
+```javascript
+class MinStack {
+    constructor() {
+        this.min = Infinity;
+        this.stack = [];
+    }
+
+    /**
+     * @param {number} val
+     * @return {void}
+     */
+    push(val) {
+        if (this.stack.length === 0) {
+            this.stack.push(0);
+            this.min = val;
+        } else {
+            this.stack.push(val - this.min);
+            if (val < this.min) this.min = val;
+        }
+    }
+
+    /**
+     * @return {void}
+     */
+    pop() {
+        if (this.stack.length === 0) return;
+
+        const pop = this.stack.pop();
+
+        if (pop < 0) this.min -= pop;
+    }
+
+    /**
+     * @return {number}
+     */
+    top() {
+        const top = this.stack[this.stack.length - 1];
+        return top > 0 ? top + this.min : this.min;
+    }
+
+    /**
+     * @return {number}
+     */
+    getMin() {
+        return this.min;
+    }
+}
+```
+
+```csharp
+public class MinStack {
+    private long min;
+    private Stack<long> stack;
+
+    public MinStack() {
+        stack = new Stack<long>();
+    }
+
+    public void Push(int val) {
+        if (stack.Count == 0) {
+            stack.Push(0L);
+            min = val;
+        } else {
+            stack.Push(val - min);
+            if (val < min) min = val;
+        }
+    }
+
+    public void Pop() {
+        if (stack.Count == 0) return;
+
+        long pop = stack.Pop();
+
+        if (pop < 0) min -= pop;
+    }
+
+    public int Top() {
+        long top = stack.Peek();
+        return top > 0 ? (int)(top + min) : (int)(min);
+    }
+
+    public int GetMin() {
+        return (int)min;
+    }
+}
+```
+
+```go
+type MinStack struct {
+    min   int
+    stack []int
+}
+
+func Constructor() MinStack {
+    return MinStack{
+        min:   math.MaxInt64,
+        stack: []int{},
+    }
+}
+
+func (this *MinStack) Push(val int) {
+    if len(this.stack) == 0 {
+        this.stack = append(this.stack, 0)
+        this.min = val
+    } else {
+        this.stack = append(this.stack, val - this.min)
+        if val < this.min {
+            this.min = val
+        }
+    }
+}
+
+func (this *MinStack) Pop() {
+    if len(this.stack) == 0 {
+        return
+    }
+    pop := this.stack[len(this.stack)-1]
+    this.stack = this.stack[:len(this.stack)-1]
+    if pop < 0 {
+        this.min = this.min - pop
+    }
+}
+
+func (this *MinStack) Top() int {
+    top := this.stack[len(this.stack)-1]
+    if top > 0 {
+        return top + this.min
+    }
+    return this.min
+}
+
+func (this *MinStack) GetMin() int {
+    return this.min
+}
+```
+
+```kotlin
+class MinStack() {
+    private var min: Long = Long.MAX_VALUE
+    private val stack = ArrayDeque<Long>()
+
+    fun push(`val`: Int) {
+        val valAsLong = `val`.toLong()
+        if (stack.isEmpty()) {
+            stack.addLast(0L)
+            min = valAsLong
+        } else {
+            stack.addLast(valAsLong - min)
+            if (valAsLong < min) {
+                min = valAsLong
+            }
+        }
+    }
+
+    fun pop() {
+        if (stack.isEmpty()) return
+        val pop = stack.removeLast()
+        if (pop < 0) {
+            min -= pop
+        }
+    }
+
+    fun top(): Int {
+        val top = stack.last()
+        return if (top > 0) (top + min).toInt() else min.toInt()
+    }
+
+    fun getMin(): Int {
+        return min.toInt()
+    }
+}
+```
+
+```swift
+class MinStack {
+    private var minVal: Int = Int.max
+    private var stack: [Int] = []
+
+    init() {}
+
+    func push(_ val: Int) {
+        if stack.isEmpty {
+            stack.append(0)
+            minVal = val
+        } else {
+            stack.append(val - minVal)
+            if val < minVal {
+                minVal = val
+            }
+        }
+    }
+
+    func pop() {
+        if stack.isEmpty {
+            return
+        }
+
+        let pop = stack.removeLast()
+
+        if pop < 0 {
+            minVal -= pop
+        }
+    }
+
+    func top() -> Int {
+        let top = stack.last!
+        return top > 0 ? top + minVal : minVal
+    }
+
+    func getMin() -> Int {
+        return minVal
+    }
+}
+```
+
+```rust
+struct MinStack {
+    min_val: i64,
+    stack: Vec<i64>,
+}
+
+impl MinStack {
+    fn new() -> Self {
+        Self {
+            min_val: 0,
+            stack: Vec::new(),
+        }
+    }
+
+    fn push(&mut self, val: i32) {
+        let val = val as i64;
+        if self.stack.is_empty() {
+            self.stack.push(0);
+            self.min_val = val;
+        } else {
+            self.stack.push(val - self.min_val);
+            if val < self.min_val {
+                self.min_val = val;
+            }
+        }
+    }
+
+    fn pop(&mut self) {
+        if let Some(top) = self.stack.pop() {
+            if top < 0 {
+                self.min_val -= top;
+            }
+        }
+    }
+
+    fn top(&self) -> i32 {
+        let top = *self.stack.last().unwrap();
+        if top > 0 { (top + self.min_val) as i32 } else { self.min_val as i32 }
+    }
+
+    fn get_min(&self) -> i32 {
+        self.min_val as i32
+    }
+}
+```
+
+::tabs-end
+
+### Time & Space Complexity
+
+- Time complexity: $O(1)$ for all operations.
+- Space complexity: $O(n)$
+
+---
+
+## Common Pitfalls
+
+### Not Synchronizing the Two Stacks
+
+When using the two-stack approach, some implementations only push to `minStack` when the new value is smaller than the current minimum. This optimization requires careful handling during `pop()`: you must only pop from `minStack` when the popped value equals the current minimum. Forgetting this synchronization causes `minStack` to become misaligned with the main stack, returning incorrect minimums.
+
+### Integer Overflow in the Encoded Value Approach
+
+The one-stack solution stores `val - min` as encoded values. When dealing with extreme integer values (e.g., `Integer.MIN_VALUE` and `Integer.MAX_VALUE`), this subtraction can overflow. Using `long` instead of `int` for the encoded values and the minimum prevents this issue in languages with fixed-width integers.

@@ -1,0 +1,197 @@
+## Prerequisites
+
+Before attempting this problem, you should be comfortable with:
+
+- **Prime Factorization** - Understanding how to break down a number into its prime factors
+- **Modulo and Division Operations** - Using the modulo operator to check divisibility and integer division to reduce numbers
+
+---
+
+## 1. Math
+
+### Intuition
+
+An ugly number has only 2, 3, and 5 as prime factors. This means if we keep dividing the number by 2, 3, and 5 (as long as it is divisible), we should eventually reach 1. If any other prime factor exists, the number will not reduce to 1.
+
+### Algorithm
+
+1. Handle edge case: if `n <= 0`, return `false` (ugly numbers are positive).
+2. For each prime factor in `[2, 3, 5]`:
+    - While `n` is divisible by the prime, divide `n` by it.
+3. After all divisions, check if `n == 1`.
+4. Return `true` if `n` is `1`, `false` otherwise.
+
+::tabs-start
+
+```python
+class Solution:
+    def isUgly(self, n: int) -> bool:
+        if n <= 0:
+            return False
+
+        for p in [2, 3, 5]:
+            while n % p == 0:
+                n //= p
+
+        return n == 1
+```
+
+```java
+public class Solution {
+    public boolean isUgly(int n) {
+        if (n <= 0) return false;
+
+        for (int p = 2; p <= 5 && n > 0; p++) {
+            while (n % p == 0) {
+                n /= p;
+            }
+        }
+
+        return n == 1;
+    }
+}
+```
+
+```cpp
+class Solution {
+public:
+    bool isUgly(int n) {
+        if (n <= 0) return false;
+
+        for (int p = 2; p <= 5 && n > 0; p++) {
+            while (n % p == 0) {
+                n /= p;
+            }
+        }
+
+        return n == 1;
+    }
+};
+```
+
+```javascript
+class Solution {
+    /**
+     * @param {number} n
+     * @return {boolean}
+     */
+    isUgly(n) {
+        if (n <= 0) return false;
+
+        for (let p of [2, 3, 5]) {
+            while (n % p == 0) {
+                n /= p;
+            }
+        }
+
+        return n === 1;
+    }
+}
+```
+
+```csharp
+public class Solution {
+    public bool IsUgly(int n) {
+        if (n <= 0) {
+            return false;
+        }
+
+        int[] primes = { 2, 3, 5 };
+        foreach (int p in primes) {
+            while (n % p == 0) {
+                n /= p;
+            }
+        }
+
+        return n == 1;
+    }
+}
+```
+
+```go
+func isUgly(n int) bool {
+    if n <= 0 {
+        return false
+    }
+
+    for _, p := range []int{2, 3, 5} {
+        for n % p == 0 {
+            n /= p
+        }
+    }
+
+    return n == 1
+}
+```
+
+```kotlin
+class Solution {
+    fun isUgly(n: Int): Boolean {
+        if (n <= 0) return false
+
+        var num = n
+        for (p in listOf(2, 3, 5)) {
+            while (num % p == 0) {
+                num /= p
+            }
+        }
+
+        return num == 1
+    }
+}
+```
+
+```swift
+class Solution {
+    func isUgly(_ n: Int) -> Bool {
+        if n <= 0 {
+            return false
+        }
+
+        var num = n
+        for p in [2, 3, 5] {
+            while num % p == 0 {
+                num /= p
+            }
+        }
+
+        return num == 1
+    }
+}
+```
+
+```rust
+impl Solution {
+    pub fn is_ugly(n: i32) -> bool {
+        if n <= 0 {
+            return false;
+        }
+        let mut n = n;
+        for p in [2, 3, 5] {
+            while n % p == 0 {
+                n /= p;
+            }
+        }
+        n == 1
+    }
+}
+```
+
+::tabs-end
+
+### Time & Space Complexity
+
+- Time complexity: $O(\log n)$
+- Space complexity: $O(1)$
+
+---
+
+## Common Pitfalls
+
+### Forgetting to Handle Non-Positive Numbers
+
+Ugly numbers are defined as positive integers. A common mistake is not checking for `n <= 0` at the start, which can lead to infinite loops when trying to divide zero or incorrect results for negative numbers. Always return `false` immediately for non-positive inputs.
+
+### Dividing by Primes in the Wrong Order
+
+While the order of dividing by 2, 3, and 5 does not affect correctness, some implementations accidentally skip primes or use incorrect loop conditions. Ensure each prime factor is completely divided out before moving to the next one, using a `while` loop rather than an `if` statement.

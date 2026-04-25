@@ -1,0 +1,487 @@
+## Prerequisites
+
+Before attempting this problem, you should be comfortable with:
+
+- **Lexicographical Ordering** - Understanding that strings are compared character by character, so "10" < "2" because '1' < '2'
+- **Tree/Trie Traversal** - Visualizing numbers as a tree where each prefix extends to its children (1 -> 10, 11, ..., 19)
+- **Counting Nodes in a Subtree** - Calculating how many numbers exist under a given prefix without enumeration
+- **Binary Search Concepts** - Using count-based navigation to skip large portions of the search space
+
+---
+
+## 1. Brute Force
+
+### Intuition
+
+The simplest approach converts all numbers from `1` to `n` into strings and sorts them lexicographically. In lexicographical order, "10" comes before "2" because '1' < '2'. After sorting, we simply return the `k`-th element. This is straightforward but inefficient for large `n`.
+
+### Algorithm
+
+1. Generate all numbers from `1` to `n` as strings.
+2. Sort the list of strings lexicographically.
+3. Return the `k`-th string converted back to an integer.
+
+::tabs-start
+
+```python
+class Solution:
+    def findKthNumber(self, n: int, k: int) -> int:
+        nums = []
+        for num in range(1, n + 1):
+            nums.append(str(num))
+
+        nums.sort()
+        return int(nums[k - 1])
+```
+
+```java
+public class Solution {
+    public int findKthNumber(int n, int k) {
+        List<String> nums = new ArrayList<>();
+        for (int num = 1; num <= n; num++) {
+            nums.add(Integer.toString(num));
+        }
+        Collections.sort(nums);
+        return Integer.parseInt(nums.get(k - 1));
+    }
+}
+```
+
+```cpp
+class Solution {
+public:
+    int findKthNumber(int n, int k) {
+        vector<string> nums;
+        for (int num = 1; num <= n; ++num) {
+            nums.push_back(to_string(num));
+        }
+        sort(nums.begin(), nums.end());
+        return stoi(nums[k - 1]);
+    }
+};
+```
+
+```javascript
+class Solution {
+    /**
+     * @param {number} n
+     * @param {number} k
+     * @return {number}
+     */
+    findKthNumber(n, k) {
+        const nums = [];
+        for (let num = 1; num <= n; num++) {
+            nums.push(num.toString());
+        }
+        nums.sort();
+        return parseInt(nums[k - 1], 10);
+    }
+}
+```
+
+```csharp
+public class Solution {
+    public int FindKthNumber(int n, int k) {
+        var nums = new List<string>();
+        for (int num = 1; num <= n; num++) {
+            nums.Add(num.ToString());
+        }
+        nums.Sort();
+        return int.Parse(nums[k - 1]);
+    }
+}
+```
+
+```go
+func findKthNumber(n int, k int) int {
+    nums := make([]string, 0, n)
+    for num := 1; num <= n; num++ {
+        nums = append(nums, strconv.Itoa(num))
+    }
+    sort.Strings(nums)
+    res, _ := strconv.Atoi(nums[k-1])
+    return res
+}
+```
+
+```kotlin
+class Solution {
+    fun findKthNumber(n: Int, k: Int): Int {
+        val nums = (1..n).map { it.toString() }.sorted()
+        return nums[k - 1].toInt()
+    }
+}
+```
+
+```swift
+class Solution {
+    func findKthNumber(_ n: Int, _ k: Int) -> Int {
+        var nums = [String]()
+        for num in 1...n {
+            nums.append(String(num))
+        }
+        nums.sort()
+        return Int(nums[k - 1])!
+    }
+}
+```
+
+```rust
+impl Solution {
+    pub fn find_kth_number(n: i32, k: i32) -> i32 {
+        let mut nums: Vec<String> = (1..=n).map(|x| x.to_string()).collect();
+        nums.sort();
+        nums[k as usize - 1].parse().unwrap()
+    }
+}
+```
+
+::tabs-end
+
+### Time & Space Complexity
+
+- Time complexity: $O(n \log n)$
+- Space complexity: $O(n)$
+
+---
+
+## 2. Prefix Count
+
+### Intuition
+
+Numbers in lexicographical order form a tree structure where each prefix leads to its extensions. For example, prefix "1" leads to "10", "11", ..., "19", "100", etc. We can count how many numbers exist under any prefix without enumerating them. Starting at "1", we count how many numbers lie in the subtree rooted at the current prefix. If this count is less than or equal to the remaining `k`, we skip this entire subtree and move to the next sibling. Otherwise, we descend into the subtree by appending a digit.
+
+### Algorithm
+
+1. Define `count(cur)` to calculate how many numbers in `[1, n]` have `cur` as a prefix.
+2. Start with `cur = 1` and `i = 1` (position in lexicographical order).
+3. While `i < k`:
+    - Calculate `steps = count(cur)`.
+    - If `i + steps <= k`, move to the next sibling: `cur++` and `i += steps`.
+    - Otherwise, descend into children: `cur *= 10` and `i++`.
+4. Return `cur` when `i == k`.
+
+::tabs-start
+
+```python
+class Solution:
+    def findKthNumber(self, n: int, k: int) -> int:
+        cur = 1
+        i = 1
+
+        def count(cur):
+            res = 0
+            nei = cur + 1
+            while cur <= n:
+                res += min(nei, n + 1) - cur
+                cur *= 10
+                nei *= 10
+            return res
+
+        while i < k:
+            steps = count(cur)
+            if i + steps <= k:
+                cur = cur + 1
+                i += steps
+            else:
+                cur *= 10
+                i += 1
+
+        return cur
+```
+
+```java
+public class Solution {
+    public int findKthNumber(int n, int k) {
+        long cur = 1;
+        long i = 1;
+        while (i < k) {
+            long steps = count(cur, n);
+            if (i + steps <= k) {
+                cur++;
+                i += steps;
+            } else {
+                cur *= 10;
+                i++;
+            }
+        }
+        return (int) cur;
+    }
+
+    private long count(long cur, int n) {
+        long res = 0;
+        long nei = cur + 1;
+        while (cur <= n) {
+            res += Math.min(nei, (long)n + 1) - cur;
+            cur *= 10;
+            nei *= 10;
+        }
+        return res;
+    }
+}
+```
+
+```cpp
+class Solution {
+public:
+    int findKthNumber(int n, int k) {
+        long long cur = 1;
+        long long i = 1;
+        while (i < k) {
+            long long steps = count(cur, n);
+            if (i + steps <= k) {
+                cur++;
+                i += steps;
+            } else {
+                cur *= 10;
+                i++;
+            }
+        }
+        return (int)cur;
+    }
+
+private:
+    long long count(long long cur, int n) {
+        long long res = 0;
+        long long nei = cur + 1;
+        while (cur <= n) {
+            res += min(nei, (long long)n + 1) - cur;
+            cur *= 10;
+            nei *= 10;
+        }
+        return res;
+    }
+};
+```
+
+```javascript
+class Solution {
+    /**
+     * @param {number} n
+     * @param {number} k
+     * @return {number}
+     */
+    findKthNumber(n, k) {
+        let cur = 1,
+            i = 1;
+        const count = (curVal) => {
+            let res = 0,
+                nei = curVal + 1;
+            while (curVal <= n) {
+                res += Math.min(nei, n + 1) - curVal;
+                curVal *= 10;
+                nei *= 10;
+            }
+            return res;
+        };
+
+        while (i < k) {
+            const steps = count(cur);
+            if (i + steps <= k) {
+                cur++;
+                i += steps;
+            } else {
+                cur *= 10;
+                i++;
+            }
+        }
+        return cur;
+    }
+}
+```
+
+```csharp
+public class Solution {
+    public int FindKthNumber(int n, int k) {
+        long cur = 1;
+        long i = 1;
+        while (i < k) {
+            long steps = Count(cur, n);
+            if (i + steps <= k) {
+                cur++;
+                i += steps;
+            } else {
+                cur *= 10;
+                i++;
+            }
+        }
+        return (int)cur;
+    }
+
+    private long Count(long cur, int n) {
+        long res = 0;
+        long nei = cur + 1;
+        while (cur <= n) {
+            res += Math.Min(nei, (long)n + 1) - cur;
+            cur *= 10;
+            nei *= 10;
+        }
+        return res;
+    }
+}
+```
+
+```go
+func findKthNumber(n int, k int) int {
+    count := func(cur int64) int64 {
+        var res int64 = 0
+        nei := cur + 1
+        for cur <= int64(n) {
+            res += min64(nei, int64(n)+1) - cur
+            cur *= 10
+            nei *= 10
+        }
+        return res
+    }
+
+    var cur int64 = 1
+    var i int64 = 1
+    for i < int64(k) {
+        steps := count(cur)
+        if i+steps <= int64(k) {
+            cur++
+            i += steps
+        } else {
+            cur *= 10
+            i++
+        }
+    }
+    return int(cur)
+}
+
+func min64(a, b int64) int64 {
+    if a < b {
+        return a
+    }
+    return b
+}
+```
+
+```kotlin
+class Solution {
+    fun findKthNumber(n: Int, k: Int): Int {
+        fun count(cur: Long): Long {
+            var c = cur
+            var nei = cur + 1
+            var res = 0L
+            while (c <= n) {
+                res += minOf(nei, n.toLong() + 1) - c
+                c *= 10
+                nei *= 10
+            }
+            return res
+        }
+
+        var cur = 1L
+        var i = 1L
+        while (i < k) {
+            val steps = count(cur)
+            if (i + steps <= k) {
+                cur++
+                i += steps
+            } else {
+                cur *= 10
+                i++
+            }
+        }
+        return cur.toInt()
+    }
+}
+```
+
+```swift
+class Solution {
+    func findKthNumber(_ n: Int, _ k: Int) -> Int {
+        func count(_ cur: Int) -> Int {
+            var res = 0
+            var c = cur
+            var nei = cur + 1
+            while c <= n {
+                res += min(nei, n + 1) - c
+                c *= 10
+                nei *= 10
+            }
+            return res
+        }
+
+        var cur = 1
+        var i = 1
+        while i < k {
+            let steps = count(cur)
+            if i + steps <= k {
+                cur += 1
+                i += steps
+            } else {
+                cur *= 10
+                i += 1
+            }
+        }
+        return cur
+    }
+}
+```
+
+```rust
+impl Solution {
+    pub fn find_kth_number(n: i32, k: i32) -> i32 {
+        let n = n as i64;
+        let k = k as i64;
+
+        fn count(mut cur: i64, n: i64) -> i64 {
+            let mut res = 0i64;
+            let mut nei = cur + 1;
+            while cur <= n {
+                res += nei.min(n + 1) - cur;
+                cur *= 10;
+                nei *= 10;
+            }
+            res
+        }
+
+        let mut cur: i64 = 1;
+        let mut i: i64 = 1;
+        while i < k {
+            let steps = count(cur, n);
+            if i + steps <= k {
+                cur += 1;
+                i += steps;
+            } else {
+                cur *= 10;
+                i += 1;
+            }
+        }
+        cur as i32
+    }
+}
+```
+
+::tabs-end
+
+### Time & Space Complexity
+
+- Time complexity: $O((\log n) ^ 2)$
+- Space complexity: $O(1)$
+
+---
+
+## Common Pitfalls
+
+### Confusing Lexicographical Order with Numerical Order
+
+In lexicographical order, "10" comes before "2" because strings are compared character by character. Treating numbers numerically instead of as strings leads to completely wrong results. The sequence starts 1, 10, 100, ..., 2, 20, ....
+
+### Integer Overflow in Prefix Counting
+
+When counting numbers under a prefix, the prefix and its neighbor are multiplied by 10 repeatedly. For large `n`, these values can exceed 32-bit integer limits. Use 64-bit integers (`long` in Java, `long long` in C++) for the counting logic.
+
+### Incorrect Step Counting Logic
+
+The count function must include the prefix itself plus all its extensions up to `n`. The formula `min(neighbor, n + 1) - cur` counts numbers in the current level. A common error is using `n` instead of `n + 1`, which excludes the boundary value.
+
+### Off-by-One in Position Tracking
+
+The position variable `i` starts at 1 (representing we are at number 1). When moving to a child, increment `i` by 1. When skipping a subtree, increment `i` by the step count. Confusing these increments places you at the wrong number.
+
+### Not Handling Single-Digit to Multi-Digit Transitions
+
+When descending from prefix "1" to "10", you multiply by 10. But if `10 > n`, you cannot descend further. The algorithm must handle cases where the current prefix exceeds `n` after multiplication, which the count function naturally handles by returning 0.

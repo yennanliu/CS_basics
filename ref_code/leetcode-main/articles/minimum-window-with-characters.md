@@ -1,0 +1,896 @@
+## Prerequisites
+
+Before attempting this problem, you should be comfortable with:
+
+- **Hash Maps** - Used for counting character frequencies in both the target string and current window
+- **Sliding Window Technique** - The optimal solution uses a dynamic window that expands and contracts to find the minimum valid substring
+- **Two Pointers** - Left and right pointers manage the window boundaries while traversing the string
+
+---
+
+## 1. Brute Force
+
+### Intuition
+
+We want the smallest substring of `s` that contains all characters of `t` (with the right counts).
+The brute-force way is to try **every possible substring** of `s` and check whether it covers all the characters in `t`.
+For each starting index, we expand the end index and keep a frequency map for the current substring.
+Whenever the substring has all required characters, we see if it's the smallest one so far.
+This is simple to understand but very slow because we check many overlapping substrings.
+
+### Algorithm
+
+1. If `t` is empty, return an empty string.
+2. Build a frequency map `countT` for all characters in `t`.
+3. Initialize:
+    - `res = [-1, -1]` to store the best window,
+    - `resLen = infinity` to store the smallest length found.
+4. For each starting index `i` in `s`:
+    - Create an empty frequency map `countS`.
+    - For each ending index `j` from `i` to the end of `s`:
+        - Add `s[j]` to `countS`.
+        - Check if the current substring from `i` to `j` contains all characters in `t`:
+            - For each character `c` in `countT`, ensure `countS[c]` is at least `countT[c]`.
+        - If it satisfies all requirements and is smaller than the current best, update `res` and `resLen`.
+5. After all checks:
+    - If `resLen` is still infinity, return `""`.
+    - Otherwise, return the substring `s[res[0] : res[1] + 1]`.
+
+::tabs-start
+
+```python
+class Solution:
+    def minWindow(self, s: str, t: str) -> str:
+        if t == "":
+            return ""
+
+        countT = {}
+        for c in t:
+            countT[c] = 1 + countT.get(c, 0)
+
+        res, resLen = [-1, -1], float("infinity")
+        for i in range(len(s)):
+            countS = {}
+            for j in range(i, len(s)):
+                countS[s[j]] = 1 + countS.get(s[j], 0)
+
+                flag = True
+                for c in countT:
+                    if countT[c] > countS.get(c, 0):
+                        flag = False
+                        break
+
+                if flag and (j - i + 1) < resLen:
+                    resLen = j - i + 1
+                    res = [i, j]
+
+        l, r = res
+        return s[l : r + 1] if resLen != float("infinity") else ""
+```
+
+```java
+public class Solution {
+    public String minWindow(String s, String t) {
+        if (t.isEmpty()) return "";
+
+        Map<Character, Integer> countT = new HashMap<>();
+        for (char c : t.toCharArray()) {
+            countT.put(c, countT.getOrDefault(c, 0) + 1);
+        }
+
+        int[] res = {-1, -1};
+        int resLen = Integer.MAX_VALUE;
+
+        for (int i = 0; i < s.length(); i++) {
+            Map<Character, Integer> countS = new HashMap<>();
+            for (int j = i; j < s.length(); j++) {
+                countS.put(s.charAt(j), countS.getOrDefault(s.charAt(j), 0) + 1);
+
+                boolean flag = true;
+                for (char c : countT.keySet()) {
+                    if (countS.getOrDefault(c, 0) < countT.get(c)) {
+                        flag = false;
+                        break;
+                    }
+                }
+
+                if (flag && (j - i + 1) < resLen) {
+                    resLen = j - i + 1;
+                    res[0] = i;
+                    res[1] = j;
+                }
+            }
+        }
+
+        return resLen == Integer.MAX_VALUE ? "" : s.substring(res[0], res[1] + 1);
+    }
+}
+```
+
+```cpp
+class Solution {
+public:
+    string minWindow(string s, string t) {
+        if (t.empty()) return "";
+
+        unordered_map<char, int> countT;
+        for (char c : t) {
+            countT[c]++;
+        }
+
+        pair<int, int> res = {-1, -1};
+        int resLen = INT_MAX;
+
+        for (int i = 0; i < s.length(); i++) {
+            unordered_map<char, int> countS;
+            for (int j = i; j < s.length(); j++) {
+                countS[s[j]]++;
+
+                bool flag = true;
+                for (auto &[c, cnt] : countT) {
+                    if (countS[c] < cnt) {
+                        flag = false;
+                        break;
+                    }
+                }
+
+                if (flag && (j - i + 1) < resLen) {
+                    resLen = j - i + 1;
+                    res = {i, j};
+                }
+            }
+        }
+
+        return resLen == INT_MAX ? "" : s.substr(res.first, resLen);
+    }
+};
+```
+
+```javascript
+class Solution {
+    /**
+     * @param {string} s
+     * @param {string} t
+     * @return {string}
+     */
+    minWindow(s, t) {
+        if (t === '') return '';
+
+        let countT = {};
+        for (let c of t) {
+            countT[c] = (countT[c] || 0) + 1;
+        }
+
+        let res = [-1, -1];
+        let resLen = Infinity;
+
+        for (let i = 0; i < s.length; i++) {
+            let countS = {};
+            for (let j = i; j < s.length; j++) {
+                countS[s[j]] = (countS[s[j]] || 0) + 1;
+
+                let flag = true;
+                for (let c in countT) {
+                    if ((countS[c] || 0) < countT[c]) {
+                        flag = false;
+                        break;
+                    }
+                }
+
+                if (flag && j - i + 1 < resLen) {
+                    resLen = j - i + 1;
+                    res = [i, j];
+                }
+            }
+        }
+
+        return resLen === Infinity ? '' : s.slice(res[0], res[1] + 1);
+    }
+}
+```
+
+```csharp
+public class Solution {
+    public string MinWindow(string s, string t) {
+        if (t == "") return "";
+
+        Dictionary<char, int> countT = new Dictionary<char, int>();
+        foreach (char c in t) {
+            if (countT.ContainsKey(c)) {
+                countT[c]++;
+            } else {
+                countT[c] = 1;
+            }
+        }
+
+        int[] res = { -1, -1 };
+        int resLen = int.MaxValue;
+
+        for (int i = 0; i < s.Length; i++) {
+            Dictionary<char, int> countS = new Dictionary<char, int>();
+            for (int j = i; j < s.Length; j++) {
+                if (countS.ContainsKey(s[j])) {
+                    countS[s[j]]++;
+                } else {
+                    countS[s[j]] = 1;
+                }
+
+                bool flag = true;
+                foreach (var c in countT.Keys) {
+                    if (!countS.ContainsKey(c) || countS[c] < countT[c]) {
+                        flag = false;
+                        break;
+                    }
+                }
+
+                if (flag && (j - i + 1) < resLen) {
+                    resLen = j - i + 1;
+                    res[0] = i;
+                    res[1] = j;
+                }
+            }
+        }
+
+        return resLen == int.MaxValue ? "" : s.Substring(res[0], resLen);
+    }
+}
+```
+
+```go
+func minWindow(s string, t string) string {
+	if t == "" {
+		return ""
+	}
+
+	countT := make(map[rune]int)
+	for _, c := range t {
+		countT[c]++
+	}
+
+	res := []int{-1, -1}
+	resLen := int(^uint(0) >> 1)
+	for i := 0; i < len(s); i++ {
+		countS := make(map[rune]int)
+		for j := i; j < len(s); j++ {
+			countS[rune(s[j])]++
+
+			flag := true
+			for c, cnt := range countT {
+				if cnt > countS[c] {
+					flag = false
+					break
+				}
+			}
+
+			if flag && (j-i+1) < resLen {
+				resLen = j - i + 1
+				res = []int{i, j}
+			}
+		}
+	}
+
+	if res[0] == -1 {
+		return ""
+	}
+	return s[res[0]:res[1]+1]
+}
+```
+
+```kotlin
+class Solution {
+    fun minWindow(s: String, t: String): String {
+        if (t.isEmpty()) return ""
+
+        val countT = HashMap<Char, Int>()
+        for (c in t) {
+            countT[c] = countT.getOrDefault(c, 0) + 1
+        }
+
+        var res = IntArray(2) {-1}
+        var resLen = Int.MAX_VALUE
+
+        for (i in s.indices) {
+            val countS = HashMap<Char, Int>()
+            for (j in i until s.length) {
+                countS[s[j]] = countS.getOrDefault(s[j], 0) + 1
+
+                var flag = true
+                for (c in countT.keys) {
+                    if (countT[c]!! > countS.getOrDefault(c, 0)) {
+                        flag = false
+                        break
+                    }
+                }
+
+                if (flag && (j - i + 1) < resLen) {
+                    resLen = j - i + 1
+                    res[0] = i
+                    res[1] = j
+                }
+            }
+        }
+
+        return if (res[0] == -1) "" else s.substring(res[0], res[1] + 1)
+    }
+}
+```
+
+```swift
+class Solution {
+    func minWindow(_ s: String, _ t: String) -> String {
+        if t.isEmpty {
+            return ""
+        }
+
+        var countT = [Character: Int]()
+        for c in t {
+            countT[c, default: 0] += 1
+        }
+
+        var res = [-1, -1]
+        var resLen = Int.max
+        let chars = Array(s)
+
+        for i in 0..<chars.count {
+            var countS = [Character: Int]()
+            for j in i..<chars.count {
+                countS[chars[j], default: 0] += 1
+
+                var flag = true
+                for (c, count) in countT {
+                    if count > countS[c, default: 0] {
+                        flag = false
+                        break
+                    }
+                }
+
+                if flag && (j - i + 1) < resLen {
+                    resLen = j - i + 1
+                    res = [i, j]
+                }
+            }
+        }
+
+        let (l, r) = (res[0], res[1])
+        return resLen != Int.max ? String(chars[l...r]) : ""
+    }
+}
+```
+
+```rust
+impl Solution {
+    pub fn min_window(s: String, t: String) -> String {
+        if t.is_empty() {
+            return String::new();
+        }
+
+        let s = s.as_bytes();
+        let mut count_t: HashMap<u8, i32> = HashMap::new();
+        for &c in t.as_bytes() {
+            *count_t.entry(c).or_insert(0) += 1;
+        }
+
+        let mut res = (0usize, 0usize);
+        let mut res_len = usize::MAX;
+
+        for i in 0..s.len() {
+            let mut count_s: HashMap<u8, i32> = HashMap::new();
+            for j in i..s.len() {
+                *count_s.entry(s[j]).or_insert(0) += 1;
+
+                let flag = count_t.iter().all(|(&c, &cnt)| {
+                    *count_s.get(&c).unwrap_or(&0) >= cnt
+                });
+
+                if flag && (j - i + 1) < res_len {
+                    res_len = j - i + 1;
+                    res = (i, j);
+                }
+            }
+        }
+
+        if res_len == usize::MAX {
+            String::new()
+        } else {
+            String::from_utf8(s[res.0..=res.1].to_vec()).unwrap()
+        }
+    }
+}
+```
+
+::tabs-end
+
+### Time & Space Complexity
+
+- Time complexity: $O(n ^ 2 * m)$
+- Space complexity: $O(m)$
+
+> Where $n$ is the length of the string $s$ and $m$ is the total number of unique characters in the strings $t$ and $s$.
+
+---
+
+## 2. Sliding Window
+
+### Intuition
+
+We want the **smallest window in `s`** that contains all characters of `t` (with the right counts).
+Instead of checking all substrings, we use a **sliding window**:
+
+- Expand the window by moving the right pointer `r` and adding characters into a `window` map.
+- Once the window has all required characters (i.e., it "covers" `t`), we try to **shrink it from the left** with pointer `l` to make it as small as possible while still valid.
+
+During this process, we keep track of the best (smallest) window seen so far.
+This way, we only scan each character at most two times, making it efficient and still easy to follow.
+
+### Algorithm
+
+1. If `t` is empty, return `""`.
+2. Build a frequency map `countT` for characters in `t`.
+3. Initialize:
+    - `window` as an empty map for the current window counts.
+    - `have = 0` = how many characters currently meet the required count.
+    - `need = len(countT)` = how many distinct characters we need to match.
+    - `res = [-1, -1]` and `resLen = infinity` to store the best window.
+4. Use a right pointer `r` to expand the window over `s`:
+    - Add `s[r]` to `window`.
+    - If `s[r]` is in `countT` and its count in `window` matches `countT`, increment `have`.
+5. When `have == need`, the window is valid:
+    - Update the best result if the current window is smaller.
+    - Then shrink from the left:
+        - Decrease the count of `s[l]` in `window`.
+        - If `s[l]` is in `countT` and its count in `window` falls below `countT`, decrement `have`.
+        - Move `l` right.
+6. After the loop, return the substring defined by `res` if found; otherwise, return `""`.
+
+::tabs-start
+
+```python
+class Solution:
+    def minWindow(self, s: str, t: str) -> str:
+        if t == "":
+            return ""
+
+        countT, window = {}, {}
+        for c in t:
+            countT[c] = 1 + countT.get(c, 0)
+
+        have, need = 0, len(countT)
+        res, resLen = [-1, -1], float("infinity")
+        l = 0
+        for r in range(len(s)):
+            c = s[r]
+            window[c] = 1 + window.get(c, 0)
+
+            if c in countT and window[c] == countT[c]:
+                have += 1
+
+            while have == need:
+                if (r - l + 1) < resLen:
+                    res = [l, r]
+                    resLen = r - l + 1
+
+                window[s[l]] -= 1
+                if s[l] in countT and window[s[l]] < countT[s[l]]:
+                    have -= 1
+                l += 1
+        l, r = res
+        return s[l : r + 1] if resLen != float("infinity") else ""
+```
+
+```java
+public class Solution {
+    public String minWindow(String s, String t) {
+        if (t.isEmpty()) return "";
+
+        Map<Character, Integer> countT = new HashMap<>();
+        Map<Character, Integer> window = new HashMap<>();
+        for (char c : t.toCharArray()) {
+            countT.put(c, countT.getOrDefault(c, 0) + 1);
+        }
+
+        int have = 0, need = countT.size();
+        int[] res = {-1, -1};
+        int resLen = Integer.MAX_VALUE;
+        int l = 0;
+
+        for (int r = 0; r < s.length(); r++) {
+            char c = s.charAt(r);
+            window.put(c, window.getOrDefault(c, 0) + 1);
+
+            if (countT.containsKey(c) && window.get(c).equals(countT.get(c))) {
+                have++;
+            }
+
+            while (have == need) {
+                if ((r - l + 1) < resLen) {
+                    resLen = r - l + 1;
+                    res[0] = l;
+                    res[1] = r;
+                }
+
+                char leftChar = s.charAt(l);
+                window.put(leftChar, window.get(leftChar) - 1);
+                if (countT.containsKey(leftChar) && window.get(leftChar) < countT.get(leftChar)) {
+                    have--;
+                }
+                l++;
+            }
+        }
+
+        return resLen == Integer.MAX_VALUE ? "" : s.substring(res[0], res[1] + 1);
+    }
+}
+```
+
+```cpp
+class Solution {
+public:
+    string minWindow(string s, string t) {
+        if (t.empty()) return "";
+
+        unordered_map<char, int> countT, window;
+        for (char c : t) {
+            countT[c]++;
+        }
+
+        int have = 0, need = countT.size();
+        pair<int, int> res = {-1, -1};
+        int resLen = INT_MAX;
+        int l = 0;
+
+        for (int r = 0; r < s.length(); r++) {
+            char c = s[r];
+            window[c]++;
+
+            if (countT.count(c) && window[c] == countT[c]) {
+                have++;
+            }
+
+            while (have == need) {
+                if ((r - l + 1) < resLen) {
+                    resLen = r - l + 1;
+                    res = {l, r};
+                }
+
+                window[s[l]]--;
+                if (countT.count(s[l]) && window[s[l]] < countT[s[l]]) {
+                    have--;
+                }
+                l++;
+            }
+        }
+
+        return resLen == INT_MAX ? "" : s.substr(res.first, resLen);
+    }
+};
+```
+
+```javascript
+class Solution {
+    /**
+     * @param {string} s
+     * @param {string} t
+     * @return {string}
+     */
+    minWindow(s, t) {
+        if (t === '') return '';
+
+        let countT = {};
+        let window = {};
+        for (let c of t) {
+            countT[c] = (countT[c] || 0) + 1;
+        }
+
+        let have = 0,
+            need = Object.keys(countT).length;
+        let res = [-1, -1];
+        let resLen = Infinity;
+        let l = 0;
+
+        for (let r = 0; r < s.length; r++) {
+            let c = s[r];
+            window[c] = (window[c] || 0) + 1;
+
+            if (countT[c] && window[c] === countT[c]) {
+                have++;
+            }
+
+            while (have === need) {
+                if (r - l + 1 < resLen) {
+                    resLen = r - l + 1;
+                    res = [l, r];
+                }
+
+                window[s[l]]--;
+                if (countT[s[l]] && window[s[l]] < countT[s[l]]) {
+                    have--;
+                }
+                l++;
+            }
+        }
+
+        return resLen === Infinity ? '' : s.slice(res[0], res[1] + 1);
+    }
+}
+```
+
+```csharp
+public class Solution {
+    public string MinWindow(string s, string t) {
+        if (t == "") return "";
+
+        Dictionary<char, int> countT = new Dictionary<char, int>();
+        Dictionary<char, int> window = new Dictionary<char, int>();
+
+        foreach (char c in t) {
+            if (countT.ContainsKey(c)) {
+                countT[c]++;
+            } else {
+                countT[c] = 1;
+            }
+        }
+
+        int have = 0, need = countT.Count;
+        int[] res = { -1, -1 };
+        int resLen = int.MaxValue;
+        int l = 0;
+
+        for (int r = 0; r < s.Length; r++) {
+            char c = s[r];
+            if (window.ContainsKey(c)) {
+                window[c]++;
+            } else {
+                window[c] = 1;
+            }
+
+            if (countT.ContainsKey(c) && window[c] == countT[c]) {
+                have++;
+            }
+
+            while (have == need) {
+                if ((r - l + 1) < resLen) {
+                    resLen = r - l + 1;
+                    res[0] = l;
+                    res[1] = r;
+                }
+
+                char leftChar = s[l];
+                window[leftChar]--;
+                if (countT.ContainsKey(leftChar) && window[leftChar] < countT[leftChar]) {
+                    have--;
+                }
+                l++;
+            }
+        }
+
+        return resLen == int.MaxValue ? "" : s.Substring(res[0], resLen);
+    }
+}
+```
+
+```go
+func minWindow(s string, t string) string {
+	if t == "" {
+		return ""
+	}
+
+	countT := make(map[rune]int)
+	for _, c := range t {
+		countT[c]++
+	}
+
+	have, need := 0, len(countT)
+	res := []int{-1, -1}
+	resLen := math.MaxInt32
+	l := 0
+	window := make(map[rune]int)
+
+	for r := 0; r < len(s); r++ {
+		c := rune(s[r])
+		window[c]++
+
+		if countT[c] > 0 && window[c] == countT[c] {
+			have++
+		}
+
+		for have == need {
+			if (r - l + 1) < resLen {
+				res = []int{l, r}
+				resLen = r - l + 1
+			}
+
+			window[rune(s[l])]--
+			if countT[rune(s[l])] > 0 && window[rune(s[l])] < countT[rune(s[l])] {
+				have--
+			}
+			l++
+		}
+	}
+
+	if res[0] == -1 {
+		return ""
+	}
+	return s[res[0]:res[1]+1]
+}
+```
+
+```kotlin
+class Solution {
+    fun minWindow(s: String, t: String): String {
+        if (t.isEmpty()) return ""
+
+        val countT = HashMap<Char, Int>()
+        for (c in t) {
+            countT[c] = countT.getOrDefault(c, 0) + 1
+        }
+
+        var have = 0
+        val need = countT.size
+        val res = IntArray(2) {-1}
+        var resLen = Int.MAX_VALUE
+        var l = 0
+        val window = HashMap<Char, Int>()
+
+        for (r in s.indices) {
+            val c = s[r]
+            window[c] = window.getOrDefault(c, 0) + 1
+
+            if (countT.containsKey(c) && window[c] == countT[c]) {
+                have++
+            }
+
+            while (have == need) {
+                if ((r - l + 1) < resLen) {
+                    res[0] = l
+                    res[1] = r
+                    resLen = r - l + 1
+                }
+
+                window[s[l]] = window.getOrDefault(s[l], 0) - 1
+                if (countT.containsKey(s[l]) && (window[s[l]] ?: 0) < countT[s[l]]!!) {
+                    have--
+                }
+                l++
+            }
+        }
+
+        return if (res[0] == -1) "" else s.substring(res[0], res[1] + 1)
+    }
+}
+```
+
+```swift
+class Solution {
+    func minWindow(_ s: String, _ t: String) -> String {
+        if t.isEmpty {
+            return ""
+        }
+
+        var countT = [Character: Int]()
+        var window = [Character: Int]()
+        for c in t {
+            countT[c, default: 0] += 1
+        }
+
+        var have = 0, need = countT.count
+        var res = [-1, -1], resLen = Int.max
+        let chars = Array(s)
+        var l = 0
+
+        for r in 0..<chars.count {
+            let c = chars[r]
+            window[c, default: 0] += 1
+
+            if let count = countT[c], window[c] == count {
+                have += 1
+            }
+
+            while have == need {
+                if (r - l + 1) < resLen {
+                    res = [l, r]
+                    resLen = r - l + 1
+                }
+
+                let leftChar = chars[l]
+                window[leftChar, default: 0] -= 1
+                if let count = countT[leftChar], window[leftChar]! < count {
+                    have -= 1
+                }
+                l += 1
+            }
+        }
+
+        let (left, right) = (res[0], res[1])
+        return resLen != Int.max ? String(chars[left...right]) : ""
+    }
+}
+```
+
+```rust
+impl Solution {
+    pub fn min_window(s: String, t: String) -> String {
+        if t.is_empty() {
+            return String::new();
+        }
+
+        let s = s.as_bytes();
+        let mut count_t: HashMap<u8, i32> = HashMap::new();
+        for &c in t.as_bytes() {
+            *count_t.entry(c).or_insert(0) += 1;
+        }
+
+        let mut window: HashMap<u8, i32> = HashMap::new();
+        let mut have = 0;
+        let need = count_t.len();
+        let mut res = (0usize, 0usize);
+        let mut res_len = usize::MAX;
+        let mut l = 0;
+
+        for r in 0..s.len() {
+            let c = s[r];
+            *window.entry(c).or_insert(0) += 1;
+
+            if let Some(&required) = count_t.get(&c) {
+                if window[&c] == required {
+                    have += 1;
+                }
+            }
+
+            while have == need {
+                if (r - l + 1) < res_len {
+                    res = (l, r);
+                    res_len = r - l + 1;
+                }
+
+                let left_char = s[l];
+                *window.get_mut(&left_char).unwrap() -= 1;
+                if let Some(&required) = count_t.get(&left_char) {
+                    if window[&left_char] < required {
+                        have -= 1;
+                    }
+                }
+                l += 1;
+            }
+        }
+
+        if res_len == usize::MAX {
+            String::new()
+        } else {
+            String::from_utf8(s[res.0..=res.1].to_vec()).unwrap()
+        }
+    }
+}
+```
+
+::tabs-end
+
+### Time & Space Complexity
+
+- Time complexity: $O(n + m)$
+- Space complexity: $O(m)$
+
+> Where $n$ is the length of the string $s$ and $m$ is the total number of unique characters in the strings $t$ and $s$.
+
+---
+
+## Common Pitfalls
+
+### Not Handling Duplicate Characters in Target
+
+The target string `t` may contain duplicate characters (e.g., "AAB"). Simply checking for character presence is insufficient; you must track the exact count of each character and ensure the window contains at least that many occurrences.
+
+### Shrinking the Window Too Aggressively
+
+When contracting the window from the left, some implementations remove characters before checking if the window is still valid. Always update the result before shrinking, and only shrink while the window remains valid.
+
+### Incorrect Validity Check Logic
+
+Using `have == need` requires careful management: `have` should only increment when a character's count exactly reaches the required amount, and only decrement when it falls below. Incrementing `have` every time a required character is added leads to overcounting.
+
+### Forgetting to Handle Empty Target String
+
+When `t` is empty, the minimum window is an empty string. Failing to handle this edge case at the start can lead to unexpected behavior or incorrect results.
+
+### Off-by-One Errors in Substring Extraction
+
+When storing and returning the result window, confusing inclusive vs. exclusive bounds leads to returning a substring that is one character too short or too long. Ensure consistency between how you store indices and how you extract the final substring.

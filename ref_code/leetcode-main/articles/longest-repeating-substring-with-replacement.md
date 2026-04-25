@@ -1,0 +1,837 @@
+## Prerequisites
+
+Before attempting this problem, you should be comfortable with:
+
+- **Sliding Window** - The optimal solution uses a variable-size window that expands and contracts based on validity conditions
+- **Hash Map / Frequency Counting** - Tracking character frequencies within the current window to determine the most frequent character
+- **Two Pointers** - Managing left and right pointers to define and adjust the window boundaries
+
+---
+
+## 1. Brute Force
+
+### Intuition
+
+The brute-force idea is to try every possible substring starting at every index.
+For each start point, we expand the substring and keep track of how many times each character appears.
+A substring is valid if we can make all its characters the same by replacing at most `k` of them.
+To check this, we track the **most frequent character** inside the substring — everything else would need to be replaced.
+If the number of replacements needed is within `k`, we update the answer.
+This works but is slow because it checks many overlapping substrings.
+
+### Algorithm
+
+1. Initialize `res = 0` to store the longest valid window.
+2. For each starting index `i`:
+    - Create an empty frequency map and set `maxf = 0`.
+    - Extend the substring by increasing `j` from `i` to the end:
+        - Update the frequency of `s[j]`.
+        - Update `maxf` (most frequent character in the current window).
+        - If the window size minus `maxf` is `<= k`, it is valid.
+            - Update `res` with the window size.
+3. Return `res` after testing all starting positions.
+
+::tabs-start
+
+```python
+class Solution:
+    def characterReplacement(self, s: str, k: int) -> int:
+        res = 0
+        for i in range(len(s)):
+            count, maxf = {}, 0
+            for j in range(i, len(s)):
+                count[s[j]] = 1 + count.get(s[j], 0)
+                maxf = max(maxf, count[s[j]])
+                if (j - i + 1) - maxf <= k:
+                    res = max(res, j - i + 1)
+        return res
+```
+
+```java
+public class Solution {
+    public int characterReplacement(String s, int k) {
+        int res = 0;
+        for (int i = 0; i < s.length(); i++) {
+            HashMap<Character, Integer> count = new HashMap<>();
+            int maxf = 0;
+            for (int j = i; j < s.length(); j++) {
+                count.put(s.charAt(j), count.getOrDefault(s.charAt(j), 0) + 1);
+                maxf = Math.max(maxf, count.get(s.charAt(j)));
+                if ((j - i + 1) - maxf <= k) {
+                    res = Math.max(res, j - i + 1);
+                }
+            }
+        }
+        return res;
+    }
+}
+```
+
+```cpp
+class Solution {
+public:
+    int characterReplacement(string s, int k) {
+        int res = 0;
+        for (int i = 0; i < s.size(); i++) {
+            unordered_map<char, int> count;
+            int maxf = 0;
+            for (int j = i; j < s.size(); j++) {
+                count[s[j]]++;
+                maxf = max(maxf, count[s[j]]);
+                if ((j - i + 1) - maxf <= k) {
+                    res = max(res, j - i + 1);
+                }
+            }
+        }
+        return res;
+    }
+};
+```
+
+```javascript
+class Solution {
+    /**
+     * @param {string} s
+     * @param {number} k
+     * @return {number}
+     */
+    characterReplacement(s, k) {
+        let res = 0;
+        for (let i = 0; i < s.length; i++) {
+            let count = new Map();
+            let maxf = 0;
+            for (let j = i; j < s.length; j++) {
+                count.set(s[j], (count.get(s[j]) || 0) + 1);
+                maxf = Math.max(maxf, count.get(s[j]));
+                if (j - i + 1 - maxf <= k) {
+                    res = Math.max(res, j - i + 1);
+                }
+            }
+        }
+        return res;
+    }
+}
+```
+
+```csharp
+public class Solution {
+    public int CharacterReplacement(string s, int k) {
+        int res = 0;
+        for (int i = 0; i < s.Length; i++) {
+            Dictionary<char, int> count = new Dictionary<char, int>();
+            int maxf = 0;
+            for (int j = i; j < s.Length; j++) {
+                if (count.ContainsKey(s[j])) {
+                    count[s[j]]++;
+                } else {
+                    count[s[j]] = 1;
+                }
+                maxf = Math.Max(maxf, count[s[j]]);
+                if ((j - i + 1) - maxf <= k) {
+                    res = Math.Max(res, j - i + 1);
+                }
+            }
+        }
+        return res;
+    }
+}
+```
+
+```go
+func characterReplacement(s string, k int) int {
+    res := 0
+    for i := 0; i < len(s); i++ {
+        count := make(map[byte]int)
+        maxf := 0
+        for j := i; j < len(s); j++ {
+            count[s[j]]++
+            maxf = max(maxf, count[s[j]])
+            if (j - i + 1) - maxf <= k {
+                res = max(res, j - i + 1)
+            }
+        }
+    }
+    return res
+}
+
+func max(a, b int) int {
+    if a > b {
+        return a
+    }
+    return b
+}
+```
+
+```kotlin
+class Solution {
+    fun characterReplacement(s: String, k: Int): Int {
+        var res = 0
+        for (i in s.indices) {
+            val count = HashMap<Char, Int>()
+            var maxf = 0
+            for (j in i until s.length) {
+                count[s[j]] = count.getOrDefault(s[j], 0) + 1
+                maxf = maxOf(maxf, count[s[j]]!!)
+                if ((j - i + 1) - maxf <= k) {
+                    res = maxOf(res, j - i + 1)
+                }
+            }
+        }
+        return res
+    }
+}
+```
+
+```swift
+class Solution {
+    func characterReplacement(_ s: String, _ k: Int) -> Int {
+        var res = 0
+        let chars = Array(s)
+
+        for i in 0..<chars.count {
+            var count = [Character: Int]()
+            var maxf = 0
+
+            for j in i..<chars.count {
+                count[chars[j], default: 0] += 1
+                maxf = max(maxf, count[chars[j]]!)
+
+                if (j - i + 1) - maxf <= k {
+                    res = max(res, j - i + 1)
+                }
+            }
+        }
+        return res
+    }
+}
+```
+
+```rust
+impl Solution {
+    pub fn character_replacement(s: String, k: i32) -> i32 {
+        let s = s.as_bytes();
+        let k = k as usize;
+        let mut res = 0;
+
+        for i in 0..s.len() {
+            let mut count = HashMap::new();
+            let mut maxf = 0;
+            for j in i..s.len() {
+                let e = count.entry(s[j]).or_insert(0);
+                *e += 1;
+                maxf = maxf.max(*e);
+                if (j - i + 1) - maxf <= k {
+                    res = res.max(j - i + 1);
+                }
+            }
+        }
+
+        res as i32
+    }
+}
+```
+
+::tabs-end
+
+### Time & Space Complexity
+
+- Time complexity: $O(n ^ 2)$
+- Space complexity: $O(m)$
+
+> Where $n$ is the length of the string and $m$ is the total number of unique characters in the string.
+
+---
+
+## 2. Sliding Window
+
+### Intuition
+
+We try to make a valid window where **all characters become the same**, but instead of checking every substring, we fix a target character `c` and ask:
+
+"How long can the window be if we want the entire window to become `c` using at most `k` replacements?"
+
+We slide a window across the string and count how many characters inside it already match `c`.
+If the number of characters that **don't** match `c` is more than `k`, the window is invalid, so we shrink it from the left.
+By doing this for every possible character, we find the longest valid window.
+
+This idea is simple and beginner-friendly because we only track:
+
+- how many characters match `c`
+- how many replacements are needed
+
+### Algorithm
+
+1. Put all unique characters of the string into a set `charSet`.
+2. For each character `c` in `charSet`:
+    - Set `l = 0` and `count = 0` (count of `c` inside the window).
+    - Slide the right pointer `r` across the string:
+        - Increase `count` when `s[r] == c`.
+        - If the window needs more than `k` replacements, move `l` forward and adjust `count`.
+        - Update `res` with the current valid window size.
+3. Return the maximum window size found.
+
+::tabs-start
+
+```python
+class Solution:
+    def characterReplacement(self, s: str, k: int) -> int:
+        res = 0
+        charSet = set(s)
+
+        for c in charSet:
+            count = l = 0
+            for r in range(len(s)):
+                if s[r] == c:
+                    count += 1
+
+                while (r - l + 1) - count > k:
+                    if s[l] == c:
+                        count -= 1
+                    l += 1
+
+                res = max(res, r - l + 1)
+        return res
+```
+
+```java
+public class Solution {
+    public int characterReplacement(String s, int k) {
+        int res = 0;
+        HashSet<Character> charSet = new HashSet<>();
+        for (char c : s.toCharArray()) {
+            charSet.add(c);
+        }
+
+        for (char c : charSet) {
+            int count = 0, l = 0;
+            for (int r = 0; r < s.length(); r++) {
+                if (s.charAt(r) == c) {
+                    count++;
+                }
+
+                while ((r - l + 1) - count > k) {
+                    if (s.charAt(l) == c) {
+                        count--;
+                    }
+                    l++;
+                }
+
+                res = Math.max(res, r - l + 1);
+            }
+        }
+        return res;
+    }
+}
+```
+
+```cpp
+class Solution {
+public:
+    int characterReplacement(std::string s, int k) {
+        int res = 0;
+        unordered_set<char> charSet(s.begin(), s.end());
+
+        for (char c : charSet) {
+            int count = 0, l = 0;
+            for (int r = 0; r < s.size(); r++) {
+                if (s[r] == c) {
+                    count++;
+                }
+
+                while ((r - l + 1) - count > k) {
+                    if (s[l] == c) {
+                        count--;
+                    }
+                    l++;
+                }
+
+                res = std::max(res, r - l + 1);
+            }
+        }
+        return res;
+    }
+};
+```
+
+```javascript
+class Solution {
+    /**
+     * @param {string} s
+     * @param {number} k
+     * @return {number}
+     */
+    characterReplacement(s, k) {
+        let res = 0;
+        let charSet = new Set(s);
+
+        for (let c of charSet) {
+            let count = 0,
+                l = 0;
+            for (let r = 0; r < s.length; r++) {
+                if (s[r] === c) {
+                    count++;
+                }
+
+                while (r - l + 1 - count > k) {
+                    if (s[l] === c) {
+                        count--;
+                    }
+                    l++;
+                }
+
+                res = Math.max(res, r - l + 1);
+            }
+        }
+        return res;
+    }
+}
+```
+
+```csharp
+public class Solution {
+    public int CharacterReplacement(string s, int k) {
+        int res = 0;
+        HashSet<char> charSet = new HashSet<char>(s);
+
+        foreach (char c in charSet) {
+            int count = 0, l = 0;
+            for (int r = 0; r < s.Length; r++) {
+                if (s[r] == c) {
+                    count++;
+                }
+
+                while ((r - l + 1) - count > k) {
+                    if (s[l] == c) {
+                        count--;
+                    }
+                    l++;
+                }
+
+                res = Math.Max(res, r - l + 1);
+            }
+        }
+        return res;
+    }
+}
+```
+
+```go
+func characterReplacement(s string, k int) int {
+    res := 0
+    charSet := make(map[byte]bool)
+
+    for i := 0; i < len(s); i++ {
+        charSet[s[i]] = true
+    }
+
+    for c := range charSet {
+        count, l := 0, 0
+        for r := 0; r < len(s); r++ {
+            if s[r] == c {
+                count++
+            }
+
+            for (r - l + 1) - count > k {
+                if s[l] == c {
+                    count--
+                }
+                l++
+            }
+
+            res = max(res, r - l + 1)
+        }
+    }
+
+    return res
+}
+
+func max(a, b int) int {
+    if a > b {
+        return a
+    }
+    return b
+}
+```
+
+```kotlin
+class Solution {
+    fun characterReplacement(s: String, k: Int): Int {
+        var res = 0
+        val charSet = s.toSet()
+
+        for (c in charSet) {
+            var count = 0
+            var l = 0
+            for (r in s.indices) {
+                if (s[r] == c) {
+                    count++
+                }
+
+                while ((r - l + 1) - count > k) {
+                    if (s[l] == c) {
+                        count--
+                    }
+                    l++
+                }
+
+                res = maxOf(res, r - l + 1)
+            }
+        }
+
+        return res
+    }
+}
+```
+
+```swift
+class Solution {
+    func characterReplacement(_ s: String, _ k: Int) -> Int {
+        var res = 0
+        let charSet = Set(s)
+        let chars = Array(s)
+
+        for c in charSet {
+            var count = 0, l = 0
+
+            for r in 0..<chars.count {
+                if chars[r] == c {
+                    count += 1
+                }
+
+                while (r - l + 1) - count > k {
+                    if chars[l] == c {
+                        count -= 1
+                    }
+                    l += 1
+                }
+
+                res = max(res, r - l + 1)
+            }
+        }
+        return res
+    }
+}
+```
+
+```rust
+impl Solution {
+    pub fn character_replacement(s: String, k: i32) -> i32 {
+        let s = s.as_bytes();
+        let k = k as usize;
+        let mut res = 0;
+        let char_set: HashSet<u8> = s.iter().copied().collect();
+
+        for &c in &char_set {
+            let (mut count, mut l) = (0, 0);
+            for r in 0..s.len() {
+                if s[r] == c {
+                    count += 1;
+                }
+                while (r - l + 1) - count > k {
+                    if s[l] == c {
+                        count -= 1;
+                    }
+                    l += 1;
+                }
+                res = res.max(r - l + 1);
+            }
+        }
+
+        res as i32
+    }
+}
+```
+
+::tabs-end
+
+### Time & Space Complexity
+
+- Time complexity: $O(m * n)$
+- Space complexity: $O(m)$
+
+> Where $n$ is the length of the string and $m$ is the total number of unique characters in the string.
+
+---
+
+## 3. Sliding Window (Optimal)
+
+### Intuition
+
+We want the longest window where we can make all characters the same using at most `k` replacements.
+The key insight is that the window is valid as long as:
+
+**window size – count of the most frequent character ≤ k**
+
+Why?
+Because the characters that _aren't_ the most frequent are the ones we would need to replace.
+
+So while expanding the window, we track:
+
+- the frequency of each character,
+- the most frequent character inside the window (`maxf`).
+
+If the window becomes invalid, we shrink it from the left.
+This gives us one clean sliding window pass.
+
+### Algorithm
+
+1. Create a frequency map `count` and initialize `l = 0`, `maxf = 0`, and `res = 0`.
+2. Move the right pointer `r` across the string:
+    - Update the frequency of `s[r]`.
+    - Update `maxf` with the highest frequency seen so far.
+3. If the window is invalid (`window size - maxf > k`):
+    - Shrink the window from the left and adjust counts.
+4. Update the result with the valid window size.
+5. Return `res` at the end.
+
+::tabs-start
+
+```python
+class Solution:
+    def characterReplacement(self, s: str, k: int) -> int:
+        count = {}
+        res = 0
+
+        l = 0
+        maxf = 0
+        for r in range(len(s)):
+            count[s[r]] = 1 + count.get(s[r], 0)
+            maxf = max(maxf, count[s[r]])
+
+            while (r - l + 1) - maxf > k:
+                count[s[l]] -= 1
+                l += 1
+            res = max(res, r - l + 1)
+
+        return res
+```
+
+```java
+public class Solution {
+    public int characterReplacement(String s, int k) {
+        HashMap<Character, Integer> count = new HashMap<>();
+        int res = 0;
+
+        int l = 0, maxf = 0;
+        for (int r = 0; r < s.length(); r++) {
+            count.put(s.charAt(r), count.getOrDefault(s.charAt(r), 0) + 1);
+            maxf = Math.max(maxf, count.get(s.charAt(r)));
+
+            while ((r - l + 1) - maxf > k) {
+                count.put(s.charAt(l), count.get(s.charAt(l)) - 1);
+                l++;
+            }
+            res = Math.max(res, r - l + 1);
+        }
+
+        return res;
+    }
+}
+```
+
+```cpp
+class Solution {
+public:
+    int characterReplacement(std::string s, int k) {
+        unordered_map<char, int> count;
+        int res = 0;
+
+        int l = 0, maxf = 0;
+        for (int r = 0; r < s.size(); r++) {
+            count[s[r]]++;
+            maxf = max(maxf, count[s[r]]);
+
+            while ((r - l + 1) - maxf > k) {
+                count[s[l]]--;
+                l++;
+            }
+            res = max(res, r - l + 1);
+        }
+
+        return res;
+    }
+};
+```
+
+```javascript
+class Solution {
+    /**
+     * @param {string} s
+     * @param {number} k
+     * @return {number}
+     */
+    characterReplacement(s, k) {
+        let count = new Map();
+        let res = 0;
+
+        let l = 0,
+            maxf = 0;
+        for (let r = 0; r < s.length; r++) {
+            count.set(s[r], (count.get(s[r]) || 0) + 1);
+            maxf = Math.max(maxf, count.get(s[r]));
+
+            while (r - l + 1 - maxf > k) {
+                count.set(s[l], count.get(s[l]) - 1);
+                l++;
+            }
+            res = Math.max(res, r - l + 1);
+        }
+
+        return res;
+    }
+}
+```
+
+```csharp
+public class Solution {
+    public int CharacterReplacement(string s, int k) {
+        Dictionary<char, int> count = new Dictionary<char, int>();
+        int res = 0;
+
+        int l = 0, maxf = 0;
+        for (int r = 0; r < s.Length; r++) {
+            if (count.ContainsKey(s[r])) {
+                count[s[r]]++;
+            } else {
+                count[s[r]] = 1;
+            }
+            maxf = Math.Max(maxf, count[s[r]]);
+
+            while ((r - l + 1) - maxf > k) {
+                count[s[l]]--;
+                l++;
+            }
+            res = Math.Max(res, r - l + 1);
+        }
+
+        return res;
+    }
+}
+```
+
+```go
+func characterReplacement(s string, k int) int {
+    count := make(map[byte]int)
+    res, l, maxf := 0, 0, 0
+
+    for r := 0; r < len(s); r++ {
+        count[s[r]]++
+        if count[s[r]] > maxf {
+            maxf = count[s[r]]
+        }
+
+        for (r - l + 1) - maxf > k {
+            count[s[l]]--
+            l++
+        }
+
+        if r - l + 1 > res {
+            res = r - l + 1
+        }
+    }
+
+    return res
+}
+```
+
+```kotlin
+class Solution {
+    fun characterReplacement(s: String, k: Int): Int {
+        val count = mutableMapOf<Char, Int>()
+        var res = 0
+        var l = 0
+        var maxf = 0
+
+        for (r in s.indices) {
+            count[s[r]] = count.getOrDefault(s[r], 0) + 1
+            maxf = maxOf(maxf, count[s[r]]!!)
+
+            while (r - l + 1 - maxf > k) {
+                count[s[l]] = count[s[l]]!! - 1
+                l++
+            }
+
+            res = maxOf(res, r - l + 1)
+        }
+
+        return res
+    }
+}
+```
+
+```swift
+class Solution {
+    func characterReplacement(_ s: String, _ k: Int) -> Int {
+        var count = [Character: Int]()
+        var res = 0
+        var l = 0, maxf = 0
+        let chars = Array(s)
+
+        for r in 0..<chars.count {
+            count[chars[r], default: 0] += 1
+            maxf = max(maxf, count[chars[r]]!)
+
+            while (r - l + 1) - maxf > k {
+                count[chars[l], default: 0] -= 1
+                l += 1
+            }
+            res = max(res, r - l + 1)
+        }
+
+        return res
+    }
+}
+```
+
+```rust
+impl Solution {
+    pub fn character_replacement(s: String, k: i32) -> i32 {
+        let s = s.as_bytes();
+        let k = k as usize;
+        let mut count = HashMap::new();
+        let mut res = 0;
+        let mut l = 0;
+        let mut maxf = 0;
+
+        for r in 0..s.len() {
+            let e = count.entry(s[r]).or_insert(0usize);
+            *e += 1;
+            maxf = maxf.max(*e);
+
+            while (r - l + 1) - maxf > k {
+                let e = count.get_mut(&s[l]).unwrap();
+                *e -= 1;
+                l += 1;
+            }
+            res = res.max(r - l + 1);
+        }
+
+        res as i32
+    }
+}
+```
+
+::tabs-end
+
+### Time & Space Complexity
+
+- Time complexity: $O(n)$
+- Space complexity: $O(m)$
+
+> Where $n$ is the length of the string and $m$ is the total number of unique characters in the string.
+
+---
+
+## Common Pitfalls
+
+### Not Updating maxf Correctly
+
+The variable `maxf` tracks the maximum frequency of any character in the current window. A common mistake is recalculating the maximum by iterating through all counts after shrinking the window. In the optimal solution, you do not need to decrease `maxf` when shrinking because keeping a stale (higher) `maxf` only makes the window condition stricter, which is still correct. However, misunderstanding this can lead to unnecessary complexity or bugs.
+
+### Shrinking the Window Too Aggressively
+
+When the window becomes invalid (`window size - maxf > k`), you only need to shrink it enough to make it valid again. A common error is resetting the left pointer too far or not updating character counts properly when moving the left pointer. Make sure to decrement the count of `s[l]` before incrementing `l`.
+
+### Confusing Window Size Calculation
+
+The window size is `r - l + 1`, not `r - l`. This off-by-one error is frequent and leads to incorrect validity checks. For example, if `l = 0` and `r = 2`, the window contains 3 characters, not 2. Always double-check your window size formula in the condition `(r - l + 1) - maxf <= k`.

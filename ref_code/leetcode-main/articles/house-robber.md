@@ -1,0 +1,852 @@
+## Prerequisites
+
+Before attempting this problem, you should be comfortable with:
+
+- **Dynamic Programming Fundamentals** - Understanding optimal substructure and overlapping subproblems
+- **Recursion** - Breaking down problems into smaller subproblems
+- **Memoization** - Caching computed results to avoid redundant calculations
+- **Array Traversal** - Iterating through elements while maintaining state
+
+---
+
+## 1. Recursion
+
+### Intuition
+
+At every house, you have **two choices**:
+
+- **Skip** the current house → move to the next house.
+- **Rob** the current house → take its money and skip the next house.
+
+The goal is to choose the option that gives the **maximum total money**.
+Recursion tries **both choices at each index** and returns the best result.
+
+### Algorithm
+
+1. Start from house `0`.
+2. For each index `i`:
+    - Option 1: Skip the house → solve for `i + 1`
+    - Option 2: Rob the house → `nums[i] + solve(i + 2)`
+3. Return the maximum of the two options.
+4. If `i` goes out of bounds, return `0`.
+
+::tabs-start
+
+```python
+class Solution:
+    def rob(self, nums: List[int]) -> int:
+
+        def dfs(i):
+            if i >= len(nums):
+                return 0
+            return max(dfs(i + 1),
+                       nums[i] + dfs(i + 2))
+
+        return dfs(0)
+```
+
+```java
+public class Solution {
+    public int rob(int[] nums) {
+        return dfs(nums, 0);
+    }
+
+    private int dfs(int[] nums, int i) {
+        if (i >= nums.length) {
+            return 0;
+        }
+        return Math.max(dfs(nums, i + 1),
+                        nums[i] + dfs(nums, i + 2));
+    }
+}
+```
+
+```cpp
+class Solution {
+public:
+    int rob(vector<int>& nums) {
+        return dfs(nums, 0);
+    }
+
+    int dfs(vector<int>& nums, int i) {
+        if (i >= nums.size()) {
+            return 0;
+        }
+        return max(dfs(nums, i + 1),
+                   nums[i] + dfs(nums, i + 2));
+    }
+};
+```
+
+```javascript
+class Solution {
+    /**
+     * @param {number[]} nums
+     * @return {number}
+     */
+    rob(nums) {
+        const dfs = (i) => {
+            if (i >= nums.length) {
+                return 0;
+            }
+            return Math.max(dfs(i + 1), nums[i] + dfs(i + 2));
+        };
+        return dfs(0);
+    }
+}
+```
+
+```csharp
+public class Solution {
+    public int Rob(int[] nums) {
+        return Dfs(nums, 0);
+    }
+
+    private int Dfs(int[] nums, int i) {
+        if (i >= nums.Length) {
+            return 0;
+        }
+        return Math.Max(Dfs(nums, i + 1),
+               nums[i] + Dfs(nums, i + 2));
+    }
+}
+```
+
+```go
+func rob(nums []int) int {
+    var dfs func(i int) int
+    dfs = func(i int) int {
+        if i >= len(nums) {
+            return 0
+        }
+        return max(dfs(i+1), nums[i] + dfs(i+2))
+    }
+
+    return dfs(0)
+}
+
+func max(a, b int) int {
+    if a > b {
+        return a
+    }
+    return b
+}
+```
+
+```kotlin
+class Solution {
+    fun rob(nums: IntArray): Int {
+        val n = nums.size
+        fun dfs(i: Int): Int {
+            if (i >= n) return 0
+            return maxOf(dfs(i + 1), nums[i] + dfs(i + 2))
+        }
+        return dfs(0)
+    }
+}
+```
+
+```swift
+class Solution {
+    func rob(_ nums: [Int]) -> Int {
+        func dfs(_ i: Int) -> Int {
+            if i >= nums.count {
+                return 0
+            }
+            return max(dfs(i + 1), nums[i] + dfs(i + 2))
+        }
+
+        return dfs(0)
+    }
+}
+```
+
+```rust
+impl Solution {
+    pub fn rob(nums: Vec<i32>) -> i32 {
+        fn dfs(nums: &[i32], i: usize) -> i32 {
+            if i >= nums.len() {
+                return 0;
+            }
+            dfs(nums, i + 1).max(nums[i] + dfs(nums, i + 2))
+        }
+        dfs(&nums, 0)
+    }
+}
+```
+
+::tabs-end
+
+### Time & Space Complexity
+
+- Time complexity: $O(2 ^ n)$
+- Space complexity: $O(n)$
+
+---
+
+## 2. Dynamic Programming (Top-Down)
+
+### Intuition
+
+The recursive solution recomputes the same subproblems many times.
+To optimize this, we **store the result for each index** once it’s computed.
+
+At every house `i`, you still have **two choices**:
+
+- Skip the house → go to `i + 1`
+- Rob the house → take `nums[i]` and go to `i + 2`
+
+Using **memoization**, each index is solved only once.
+
+### Algorithm
+
+1. Create a memo array where `memo[i]` stores the maximum money from house `i`.
+2. Define a recursive function `dfs(i)`:
+    - If `i` is out of bounds, return `0`.
+    - If `memo[i]` is already computed, return it.
+    - Compute:
+        - `skip = dfs(i + 1)`
+        - `rob = nums[i] + dfs(i + 2)`
+    - Store and return `max(skip, rob)` in `memo[i]`.
+3. Start recursion from index `0`.
+
+::tabs-start
+
+```python
+class Solution:
+    def rob(self, nums: List[int]) -> int:
+        memo = [-1] * len(nums)
+
+        def dfs(i):
+            if i >= len(nums):
+                return 0
+            if memo[i] != -1:
+                return memo[i]
+            memo[i] = max(dfs(i + 1), nums[i] + dfs(i + 2))
+            return memo[i]
+
+        return dfs(0)
+```
+
+```java
+public class Solution {
+    private int[] memo;
+
+    public int rob(int[] nums) {
+        memo = new int[nums.length];
+        Arrays.fill(memo, -1);
+        return dfs(nums, 0);
+    }
+
+    private int dfs(int[] nums, int i) {
+        if (i >= nums.length) {
+            return 0;
+        }
+        if (memo[i] != -1) {
+            return memo[i];
+        }
+        memo[i] = Math.max(dfs(nums, i + 1),
+                         nums[i] + dfs(nums, i + 2));
+        return memo[i];
+    }
+}
+```
+
+```cpp
+class Solution {
+public:
+    vector<int> memo;
+
+    int rob(vector<int>& nums) {
+        memo.resize(nums.size(), -1);
+        return dfs(nums, 0);
+    }
+
+    int dfs(vector<int>& nums, int i) {
+        if (i >= nums.size()) {
+            return 0;
+        }
+        if (memo[i] != -1) {
+            return memo[i];
+        }
+        memo[i] = max(dfs(nums, i + 1),
+                    nums[i] + dfs(nums, i + 2));
+        return memo[i];
+    }
+};
+```
+
+```javascript
+class Solution {
+    /**
+     * @param {number[]} nums
+     * @return {number}
+     */
+    rob(nums) {
+        const memo = new Int32Array(nums.length).fill(-1);
+        const dfs = (i) => {
+            if (i >= nums.length) {
+                return 0;
+            }
+            if (memo[i] !== -1) {
+                return memo[i];
+            }
+            return (memo[i] = Math.max(dfs(i + 1), nums[i] + dfs(i + 2)));
+        };
+        return dfs(0);
+    }
+}
+```
+
+```csharp
+public class Solution {
+    private int[] memo;
+
+    public int Rob(int[] nums) {
+        memo = new int[nums.Length];
+        for (int i = 0; i < nums.Length; i++) {
+            memo[i] = -1;
+        }
+        return Dfs(nums, 0);
+    }
+
+    private int Dfs(int[] nums, int i) {
+        if (i >= nums.Length) {
+            return 0;
+        }
+        if (memo[i] != -1) {
+            return memo[i];
+        }
+        memo[i] = Math.Max(Dfs(nums, i + 1),
+                         nums[i] + Dfs(nums, i + 2));
+        return memo[i];
+    }
+}
+```
+
+```go
+func rob(nums []int) int {
+    n := len(nums)
+    memo := make([]int, n+1)
+    for i := 0; i <= n; i++ {
+        memo[i] = -1
+    }
+
+    var dfs func(i int) int
+    dfs = func(i int) int {
+        if i >= len(nums) {
+            return 0
+        }
+        if memo[i] != -1 {
+            return memo[i]
+        }
+        memo[i] = max(dfs(i+1), nums[i] + dfs(i+2))
+        return memo[i]
+    }
+
+    return dfs(0)
+}
+
+func max(a, b int) int {
+    if a > b {
+        return a
+    }
+    return b
+}
+```
+
+```kotlin
+class Solution {
+    fun rob(nums: IntArray): Int {
+        val n = nums.size
+        var memo = IntArray(n+1){-1}
+        fun dfs(i: Int): Int {
+            if (i >= n) return 0
+            if (memo[i] != -1) return memo[i]
+            memo[i] = maxOf(dfs(i + 1), nums[i] + dfs(i + 2))
+            return memo[i]
+        }
+        return dfs(0)
+    }
+}
+```
+
+```swift
+class Solution {
+    func rob(_ nums: [Int]) -> Int {
+        var memo = Array(repeating: -1, count: nums.count)
+
+        func dfs(_ i: Int) -> Int {
+            if i >= nums.count {
+                return 0
+            }
+            if memo[i] != -1 {
+                return memo[i]
+            }
+            memo[i] = max(dfs(i + 1), nums[i] + dfs(i + 2))
+            return memo[i]
+        }
+
+        return dfs(0)
+    }
+}
+```
+
+```rust
+impl Solution {
+    pub fn rob(nums: Vec<i32>) -> i32 {
+        let mut memo = vec![-1; nums.len()];
+        fn dfs(nums: &[i32], i: usize, memo: &mut Vec<i32>) -> i32 {
+            if i >= nums.len() {
+                return 0;
+            }
+            if memo[i] != -1 {
+                return memo[i];
+            }
+            memo[i] = dfs(nums, i + 1, memo)
+                .max(nums[i] + dfs(nums, i + 2, memo));
+            memo[i]
+        }
+        dfs(&nums, 0, &mut memo)
+    }
+}
+```
+
+::tabs-end
+
+### Time & Space Complexity
+
+- Time complexity: $O(n)$
+- Space complexity: $O(n)$
+
+---
+
+## 3. Dynamic Programming (Bottom-Up)
+
+### Intuition
+
+Instead of deciding recursively, we **build the answer step by step**.
+
+For each house `i`, the maximum money we can have depends on:
+
+- **Not robbing it** → same money as `i - 1`
+- **Robbing it** → money at `i` + best up to `i - 2`
+
+We choose the **better of the two** at every step.
+
+### Algorithm
+
+1. Handle edge cases:
+    - No houses → return `0`
+    - One house → return its value
+2. Create a DP array where `dp[i]` = max money up to house `i`.
+3. Initialize:
+    - `dp[0] = nums[0]`
+    - `dp[1] = max(nums[0], nums[1])`
+4. For each house `i` from `2` to `n - 1`:
+    - `dp[i] = max(dp[i - 1], nums[i] + dp[i - 2])`
+5. Return `dp[n - 1]`.
+
+::tabs-start
+
+```python
+class Solution:
+    def rob(self, nums: List[int]) -> int:
+        if not nums:
+            return 0
+        if len(nums) == 1:
+            return nums[0]
+
+        dp = [0] * len(nums)
+        dp[0] = nums[0]
+        dp[1] = max(nums[0], nums[1])
+
+        for i in range(2, len(nums)):
+            dp[i] = max(dp[i - 1], nums[i] + dp[i - 2])
+
+        return dp[-1]
+```
+
+```java
+public class Solution {
+    public int rob(int[] nums) {
+        if (nums.length == 0) return 0;
+        if (nums.length == 1) return nums[0];
+
+        int[] dp = new int[nums.length];
+        dp[0] = nums[0];
+        dp[1] = Math.max(nums[0], nums[1]);
+
+        for (int i = 2; i < nums.length; i++) {
+            dp[i] = Math.max(dp[i - 1], nums[i] + dp[i - 2]);
+        }
+
+        return dp[nums.length - 1];
+    }
+}
+```
+
+```cpp
+class Solution {
+public:
+    int rob(vector<int>& nums) {
+        if (nums.empty()) return 0;
+        if (nums.size() == 1) return nums[0];
+
+        vector<int> dp(nums.size());
+        dp[0] = nums[0];
+        dp[1] = max(nums[0], nums[1]);
+
+        for (int i = 2; i < nums.size(); i++) {
+            dp[i] = max(dp[i - 1], nums[i] + dp[i - 2]);
+        }
+
+        return dp[nums.size() - 1];
+    }
+};
+```
+
+```javascript
+class Solution {
+    /**
+     * @param {number[]} nums
+     * @return {number}
+     */
+    rob(nums) {
+        if (nums.length === 0) return 0;
+        if (nums.length === 1) return nums[0];
+
+        const dp = new Array(nums.length).fill(0);
+        dp[0] = nums[0];
+        dp[1] = Math.max(nums[0], nums[1]);
+
+        for (let i = 2; i < nums.length; i++) {
+            dp[i] = Math.max(dp[i - 1], nums[i] + dp[i - 2]);
+        }
+
+        return dp[nums.length - 1];
+    }
+}
+```
+
+```csharp
+public class Solution {
+    public int Rob(int[] nums) {
+        if (nums.Length == 0) return 0;
+        if (nums.Length == 1) return nums[0];
+
+        int[] dp = new int[nums.Length];
+        dp[0] = nums[0];
+        dp[1] = Math.Max(nums[0], nums[1]);
+
+        for (int i = 2; i < nums.Length; i++) {
+            dp[i] = Math.Max(dp[i - 1], nums[i] + dp[i - 2]);
+        }
+
+        return dp[nums.Length - 1];
+    }
+}
+```
+
+```go
+func rob(nums []int) int {
+    n := len(nums)
+    if n == 0 {
+        return 0
+    }
+    if n == 1 {
+        return nums[0]
+    }
+
+    dp := make([]int, n)
+    dp[0] = nums[0]
+    dp[1] = max(nums[0], nums[1])
+
+    for i := 2; i < n; i++ {
+        dp[i] = max(dp[i-1], nums[i] + dp[i-2])
+    }
+
+    return dp[n-1]
+}
+
+func max(a, b int) int {
+    if a > b {
+        return a
+    }
+    return b
+}
+```
+
+```kotlin
+class Solution {
+    fun rob(nums: IntArray): Int {
+        if (nums.isEmpty()) {
+            return 0
+        }
+        if (nums.size == 1) {
+            return nums[0]
+        }
+
+        val dp = IntArray(nums.size)
+        dp[0] = nums[0]
+        dp[1] = maxOf(nums[0], nums[1])
+
+        for (i in 2 until nums.size) {
+            dp[i] = maxOf(dp[i - 1], nums[i] + dp[i - 2])
+        }
+
+        return dp[nums.size - 1]
+    }
+}
+```
+
+```swift
+class Solution {
+    func rob(_ nums: [Int]) -> Int {
+        if nums.isEmpty {
+            return 0
+        }
+        if nums.count == 1 {
+            return nums[0]
+        }
+
+        var dp = Array(repeating: 0, count: nums.count)
+        dp[0] = nums[0]
+        dp[1] = max(nums[0], nums[1])
+
+        for i in 2..<nums.count {
+            dp[i] = max(dp[i - 1], nums[i] + dp[i - 2])
+        }
+
+        return dp[nums.count - 1]
+    }
+}
+```
+
+```rust
+impl Solution {
+    pub fn rob(nums: Vec<i32>) -> i32 {
+        if nums.is_empty() {
+            return 0;
+        }
+        if nums.len() == 1 {
+            return nums[0];
+        }
+        let n = nums.len();
+        let mut dp = vec![0; n];
+        dp[0] = nums[0];
+        dp[1] = nums[0].max(nums[1]);
+        for i in 2..n {
+            dp[i] = dp[i - 1].max(nums[i] + dp[i - 2]);
+        }
+        dp[n - 1]
+    }
+}
+```
+
+::tabs-end
+
+### Time & Space Complexity
+
+- Time complexity: $O(n)$
+- Space complexity: $O(n)$
+
+---
+
+## 4. Dynamic Programming (Space Optimized)
+
+### Intuition
+
+We don’t actually need a full DP array.
+
+At any house, we only care about:
+
+- the **best result up to the previous house**
+- the **best result up to the house before that**
+
+So instead of storing everything, we just keep **two variables** and update them as we move forward.
+
+For each house:
+
+- Either **skip it** → keep previous best
+- Or **rob it** → current money + best from two steps back  
+  Pick the maximum.
+
+### Algorithm
+
+1. Initialize two variables:
+    - `rob1` → best up to house `i - 2`
+    - `rob2` → best up to house `i - 1`
+2. For each house value:
+    - Compute `newRob = max(rob2, rob1 + currentHouseValue)`
+    - Move pointers:
+        - `rob1 = rob2`
+        - `rob2 = newRob`
+3. After processing all houses, `rob2` is the answer.
+
+::tabs-start
+
+```python
+class Solution:
+    def rob(self, nums: List[int]) -> int:
+        rob1, rob2 = 0, 0
+
+        for num in nums:
+            temp = max(num + rob1, rob2)
+            rob1 = rob2
+            rob2 = temp
+        return rob2
+```
+
+```java
+public class Solution {
+    public int rob(int[] nums) {
+        int rob1 = 0, rob2 = 0;
+
+        for (int num : nums) {
+            int temp = Math.max(num + rob1, rob2);
+            rob1 = rob2;
+            rob2 = temp;
+        }
+        return rob2;
+    }
+}
+```
+
+```cpp
+class Solution {
+public:
+    int rob(vector<int>& nums) {
+        int rob1 = 0, rob2 = 0;
+
+        for (int num : nums) {
+            int temp = max(num + rob1, rob2);
+            rob1 = rob2;
+            rob2 = temp;
+        }
+        return rob2;
+    }
+};
+```
+
+```javascript
+class Solution {
+    /**
+     * @param {number[]} nums
+     * @return {number}
+     */
+    rob(nums) {
+        let rob1 = 0;
+        let rob2 = 0;
+
+        for (const num of nums) {
+            const temp = Math.max(num + rob1, rob2);
+            rob1 = rob2;
+            rob2 = temp;
+        }
+        return rob2;
+    }
+}
+```
+
+```csharp
+public class Solution {
+    public int Rob(int[] nums) {
+        int rob1 = 0, rob2 = 0;
+
+        foreach (int num in nums) {
+            int temp = Math.Max(num + rob1, rob2);
+            rob1 = rob2;
+            rob2 = temp;
+        }
+        return rob2;
+    }
+}
+```
+
+```go
+func rob(nums []int) int {
+    rob1, rob2 := 0, 0
+    for _, num := range nums {
+        temp := max(num+rob1, rob2)
+        rob1 = rob2
+        rob2 = temp
+    }
+    return rob2
+}
+
+func max(a, b int) int {
+    if a > b {
+        return a
+    }
+    return b
+}
+```
+
+```kotlin
+class Solution {
+    fun rob(nums: IntArray): Int {
+        var rob1 = 0
+        var rob2 = 0
+        for (num in nums) {
+            val temp = maxOf(num + rob1, rob2)
+            rob1 = rob2
+            rob2 = temp
+        }
+        return rob2
+    }
+}
+```
+
+```swift
+class Solution {
+    func rob(_ nums: [Int]) -> Int {
+        var rob1 = 0, rob2 = 0
+
+        for num in nums {
+            let temp = max(num + rob1, rob2)
+            rob1 = rob2
+            rob2 = temp
+        }
+
+        return rob2
+    }
+}
+```
+
+```rust
+impl Solution {
+    pub fn rob(nums: Vec<i32>) -> i32 {
+        let (mut rob1, mut rob2) = (0, 0);
+        for &num in &nums {
+            let temp = (num + rob1).max(rob2);
+            rob1 = rob2;
+            rob2 = temp;
+        }
+        rob2
+    }
+}
+```
+
+::tabs-end
+
+### Time & Space Complexity
+
+- Time complexity: $O(n)$
+- Space complexity: $O(1)$
+
+---
+
+## Common Pitfalls
+
+### Incorrect Base Case Initialization
+
+In the bottom-up DP approach, `dp[1]` should be initialized as `max(nums[0], nums[1])`, not just `nums[1]`. This represents the maximum money obtainable from the first two houses. If you set `dp[1] = nums[1]`, you ignore the possibility that the first house might have more money, leading to suboptimal results.
+
+### Confusing the Recurrence Relation
+
+The recurrence `dp[i] = max(dp[i-1], nums[i] + dp[i-2])` represents choosing between skipping house `i` (keeping the best from `i-1`) or robbing house `i` (adding its value to the best from `i-2`). A common mistake is writing `dp[i] = max(dp[i-1] + nums[i], dp[i-2])`, which incorrectly adds the current house value when skipping it. Remember: robbing requires jumping over the previous house, not adding to it.
+
+### Not Handling Edge Cases for Empty or Single-Element Arrays
+
+When the input array is empty, return 0. When it has only one element, return that element. The bottom-up approach with a DP array requires at least two elements to initialize `dp[0]` and `dp[1]`. Failing to handle these edge cases causes index-out-of-bounds errors or incorrect results. The space-optimized solution with two variables naturally handles the single-element case but still needs an empty array check.

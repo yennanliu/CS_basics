@@ -1,0 +1,848 @@
+## Prerequisites
+
+Before attempting this problem, you should be comfortable with:
+
+- **Intervals** - Understanding interval representation and overlap detection logic
+- **Two Pointers** - Using two indices to traverse two sorted lists simultaneously
+- **Line Sweep Algorithm** - Processing events at specific points to track active intervals
+- **Sorted Arrays** - Leveraging sorted order to optimize comparison-based algorithms
+
+---
+
+## 1. Brute Force
+
+### Intuition
+
+The simplest way to find intersections is to check every interval in the first list against every interval in the second list. Two intervals overlap when one starts before the other ends and vice versa. If they do overlap, the intersection spans from the later start point to the earlier end point. This approach is straightforward but involves redundant comparisons since we ignore the fact that both lists are already sorted.
+
+### Algorithm
+
+1. Initialize an empty result list.
+2. For each interval `[startA, endA]` in the first list:
+    - For each interval `[startB, endB]` in the second list:
+        - Check if they overlap by verifying that one interval's start falls within the other.
+        - If they overlap, compute the intersection as `[max(startA, startB), min(endA, endB)]` and add it to the result.
+3. Return the result list.
+
+::tabs-start
+
+```python
+class Solution:
+    def intervalIntersection(self, firstList: List[List[int]], secondList: List[List[int]]) -> List[List[int]]:
+        res = []
+        for i in range(len(firstList)):
+            startA, endA = firstList[i][0], firstList[i][1]
+            for j in range(len(secondList)):
+                startB, endB = secondList[j][0], secondList[j][1]
+                if (startA <= startB <= endA) or (startB <= startA <= endB):
+                    res.append([max(startA, startB), min(endA, endB)])
+        return res
+```
+
+```java
+public class Solution {
+    public int[][] intervalIntersection(int[][] firstList, int[][] secondList) {
+        List<int[]> res = new ArrayList<>();
+        for (int i = 0; i < firstList.length; i++) {
+            int startA = firstList[i][0], endA = firstList[i][1];
+            for (int j = 0; j < secondList.length; j++) {
+                int startB = secondList[j][0], endB = secondList[j][1];
+                if ((startA <= startB && startB <= endA) || (startB <= startA && startA <= endB)) {
+                    res.add(new int[]{Math.max(startA, startB), Math.min(endA, endB)});
+                }
+            }
+        }
+        return res.toArray(new int[res.size()][]);
+    }
+}
+```
+
+```cpp
+class Solution {
+public:
+    vector<vector<int>> intervalIntersection(vector<vector<int>>& firstList, vector<vector<int>>& secondList) {
+        vector<vector<int>> res;
+        for (int i = 0; i < firstList.size(); i++) {
+            int startA = firstList[i][0], endA = firstList[i][1];
+            for (int j = 0; j < secondList.size(); j++) {
+                int startB = secondList[j][0], endB = secondList[j][1];
+                if ((startA <= startB && startB <= endA) || (startB <= startA && startA <= endB)) {
+                    res.push_back({max(startA, startB), min(endA, endB)});
+                }
+            }
+        }
+        return res;
+    }
+};
+```
+
+```javascript
+class Solution {
+    /**
+     * @param {number[][]} firstList
+     * @param {number[][]} secondList
+     * @return {number[][]}
+     */
+    intervalIntersection(firstList, secondList) {
+        const res = [];
+        for (let i = 0; i < firstList.length; i++) {
+            const [startA, endA] = firstList[i];
+            for (let j = 0; j < secondList.length; j++) {
+                const [startB, endB] = secondList[j];
+                if (
+                    (startA <= startB && startB <= endA) ||
+                    (startB <= startA && startA <= endB)
+                ) {
+                    res.push([Math.max(startA, startB), Math.min(endA, endB)]);
+                }
+            }
+        }
+        return res;
+    }
+}
+```
+
+```csharp
+public class Solution {
+    public int[][] IntervalIntersection(int[][] firstList, int[][] secondList) {
+        var res = new List<int[]>();
+        for (int i = 0; i < firstList.Length; i++) {
+            int startA = firstList[i][0], endA = firstList[i][1];
+            for (int j = 0; j < secondList.Length; j++) {
+                int startB = secondList[j][0], endB = secondList[j][1];
+                if ((startA <= startB && startB <= endA) || (startB <= startA && startA <= endB)) {
+                    res.Add(new int[] { Math.Max(startA, startB), Math.Min(endA, endB) });
+                }
+            }
+        }
+        return res.ToArray();
+    }
+}
+```
+
+```go
+func intervalIntersection(firstList [][]int, secondList [][]int) [][]int {
+    res := [][]int{}
+    for i := 0; i < len(firstList); i++ {
+        startA, endA := firstList[i][0], firstList[i][1]
+        for j := 0; j < len(secondList); j++ {
+            startB, endB := secondList[j][0], secondList[j][1]
+            if (startA <= startB && startB <= endA) || (startB <= startA && startA <= endB) {
+                res = append(res, []int{max(startA, startB), min(endA, endB)})
+            }
+        }
+    }
+    return res
+}
+
+func max(a, b int) int {
+    if a > b {
+        return a
+    }
+    return b
+}
+
+func min(a, b int) int {
+    if a < b {
+        return a
+    }
+    return b
+}
+```
+
+```kotlin
+class Solution {
+    fun intervalIntersection(firstList: Array<IntArray>, secondList: Array<IntArray>): Array<IntArray> {
+        val res = mutableListOf<IntArray>()
+        for (i in firstList.indices) {
+            val (startA, endA) = firstList[i][0] to firstList[i][1]
+            for (j in secondList.indices) {
+                val (startB, endB) = secondList[j][0] to secondList[j][1]
+                if ((startA <= startB && startB <= endA) || (startB <= startA && startA <= endB)) {
+                    res.add(intArrayOf(maxOf(startA, startB), minOf(endA, endB)))
+                }
+            }
+        }
+        return res.toTypedArray()
+    }
+}
+```
+
+```swift
+class Solution {
+    func intervalIntersection(_ firstList: [[Int]], _ secondList: [[Int]]) -> [[Int]] {
+        var res = [[Int]]()
+        for i in 0..<firstList.count {
+            let startA = firstList[i][0], endA = firstList[i][1]
+            for j in 0..<secondList.count {
+                let startB = secondList[j][0], endB = secondList[j][1]
+                if (startA <= startB && startB <= endA) || (startB <= startA && startA <= endB) {
+                    res.append([max(startA, startB), min(endA, endB)])
+                }
+            }
+        }
+        return res
+    }
+}
+```
+
+```rust
+impl Solution {
+    pub fn interval_intersection(
+        first_list: Vec<Vec<i32>>,
+        second_list: Vec<Vec<i32>>,
+    ) -> Vec<Vec<i32>> {
+        let mut res = Vec::new();
+        for i in 0..first_list.len() {
+            let (start_a, end_a) = (first_list[i][0], first_list[i][1]);
+            for j in 0..second_list.len() {
+                let (start_b, end_b) = (second_list[j][0], second_list[j][1]);
+                if (start_a <= start_b && start_b <= end_a)
+                    || (start_b <= start_a && start_a <= end_b)
+                {
+                    res.push(vec![start_a.max(start_b), end_a.min(end_b)]);
+                }
+            }
+        }
+        res
+    }
+}
+```
+
+::tabs-end
+
+### Time & Space Complexity
+
+- Time complexity: $O(m * n)$
+- Space complexity:
+    - $O(1)$ extra space.
+    - $O(m + n)$ for the output list.
+
+> Where $m$ and $n$ are the sizes of the arrays $firstList$ and $secondList$, respectively.
+
+---
+
+## 2. Line Sweep
+
+### Intuition
+
+Line sweep treats intervals as events on a number line. At each interval's start, we increment an "active" counter; at each interval's end plus one, we decrement it. When the active count equals `2`, it means both an interval from the first list and one from the second list are covering that point simultaneously. By processing all events in sorted order, we can identify exactly where overlaps occur without directly comparing pairs of intervals.
+
+### Algorithm
+
+1. Create a map to store events. For each interval `[start, end]`:
+    - Add `+1` at position `start`.
+    - Add `-1` at position `end + 1`.
+2. Sort all event positions.
+3. Traverse the events in order, maintaining an `active` counter:
+    - Before updating the counter, if `active == 2`, record the intersection from the previous position to the current position minus one.
+    - Update `active` by adding the event's value.
+    - Track the previous position for the next iteration.
+4. Return the collected intersections.
+
+::tabs-start
+
+```python
+class Solution:
+    def intervalIntersection(self, firstList: List[List[int]], secondList: List[List[int]]) -> List[List[int]]:
+        mp = defaultdict(int)
+        for s, e in firstList:
+            mp[s] += 1
+            mp[e + 1] -= 1
+        for s, e in secondList:
+            mp[s] += 1
+            mp[e + 1] -= 1
+
+        res = []
+        active = 0
+        prev = None
+        for x in sorted(mp):
+            if active == 2:
+                res.append([prev, x - 1])
+            active += mp[x]
+            prev = x
+        return res
+```
+
+```java
+class Solution {
+    public int[][] intervalIntersection(int[][] firstList, int[][] secondList) {
+        TreeMap<Integer, Integer> mp = new TreeMap<>();
+        for (int[] f : firstList) {
+            mp.put(f[0], mp.getOrDefault(f[0], 0) + 1);
+            mp.put(f[1] + 1, mp.getOrDefault(f[1] + 1, 0) - 1);
+        }
+        for (int[] s : secondList) {
+            mp.put(s[0], mp.getOrDefault(s[0], 0) + 1);
+            mp.put(s[1] + 1, mp.getOrDefault(s[1] + 1, 0) - 1);
+        }
+
+        List<int[]> res = new ArrayList<>();
+        int active = 0, prev = 0;
+        boolean started = false;
+        for (int x : mp.keySet()) {
+            if (active == 2) {
+                res.add(new int[]{prev, x - 1});
+            }
+            active += mp.get(x);
+            prev = x;
+        }
+        return res.toArray(new int[res.size()][]);
+    }
+}
+```
+
+```cpp
+class Solution {
+public:
+    vector<vector<int>> intervalIntersection(vector<vector<int>>& firstList, vector<vector<int>>& secondList) {
+        map<int, int> mp;
+        for (auto& f : firstList) {
+            mp[f[0]] += 1;
+            mp[f[1] + 1] -= 1;
+        }
+        for (auto& s : secondList) {
+            mp[s[0]] += 1;
+            mp[s[1] + 1] -= 1;
+        }
+
+        vector<vector<int>> res;
+        int active = 0, prev = 0;
+        bool started = false;
+        for (auto& [x, v] : mp) {
+            if (active == 2) {
+                res.push_back({prev, x - 1});
+            }
+            active += v;
+            prev = x;
+        }
+        return res;
+    }
+};
+```
+
+```javascript
+class Solution {
+    /**
+     * @param {number[][]} firstList
+     * @param {number[][]} secondList
+     * @return {number[][]}
+     */
+    intervalIntersection(firstList, secondList) {
+        let mp = new Map();
+        for (let [s, e] of firstList) {
+            mp.set(s, (mp.get(s) || 0) + 1);
+            mp.set(e + 1, (mp.get(e + 1) || 0) - 1);
+        }
+        for (let [s, e] of secondList) {
+            mp.set(s, (mp.get(s) || 0) + 1);
+            mp.set(e + 1, (mp.get(e + 1) || 0) - 1);
+        }
+
+        let keys = Array.from(mp.keys()).sort((a, b) => a - b);
+        let res = [],
+            active = 0,
+            prev = 0;
+        for (let x of keys) {
+            if (active === 2) {
+                res.push([prev, x - 1]);
+            }
+            active += mp.get(x);
+            prev = x;
+        }
+        return res;
+    }
+}
+```
+
+```csharp
+public class Solution {
+    public int[][] IntervalIntersection(int[][] firstList, int[][] secondList) {
+        var mp = new SortedDictionary<int, int>();
+        foreach (var f in firstList) {
+            if (!mp.ContainsKey(f[0])) mp[f[0]] = 0;
+            mp[f[0]] += 1;
+            if (!mp.ContainsKey(f[1] + 1)) mp[f[1] + 1] = 0;
+            mp[f[1] + 1] -= 1;
+        }
+        foreach (var s in secondList) {
+            if (!mp.ContainsKey(s[0])) mp[s[0]] = 0;
+            mp[s[0]] += 1;
+            if (!mp.ContainsKey(s[1] + 1)) mp[s[1] + 1] = 0;
+            mp[s[1] + 1] -= 1;
+        }
+
+        var res = new List<int[]>();
+        int active = 0, prev = 0;
+        foreach (var kvp in mp) {
+            int x = kvp.Key;
+            if (active == 2) {
+                res.Add(new int[] { prev, x - 1 });
+            }
+            active += kvp.Value;
+            prev = x;
+        }
+        return res.ToArray();
+    }
+}
+```
+
+```go
+func intervalIntersection(firstList [][]int, secondList [][]int) [][]int {
+    mp := make(map[int]int)
+    keys := []int{}
+
+    addKey := func(k int) {
+        if _, exists := mp[k]; !exists {
+            keys = append(keys, k)
+        }
+    }
+
+    for _, f := range firstList {
+        addKey(f[0])
+        mp[f[0]] += 1
+        addKey(f[1] + 1)
+        mp[f[1]+1] -= 1
+    }
+    for _, s := range secondList {
+        addKey(s[0])
+        mp[s[0]] += 1
+        addKey(s[1] + 1)
+        mp[s[1]+1] -= 1
+    }
+
+    sort.Ints(keys)
+
+    res := [][]int{}
+    active, prev := 0, 0
+    for _, x := range keys {
+        if active == 2 {
+            res = append(res, []int{prev, x - 1})
+        }
+        active += mp[x]
+        prev = x
+    }
+    return res
+}
+```
+
+```kotlin
+class Solution {
+    fun intervalIntersection(firstList: Array<IntArray>, secondList: Array<IntArray>): Array<IntArray> {
+        val mp = sortedMapOf<Int, Int>()
+        for (f in firstList) {
+            mp[f[0]] = mp.getOrDefault(f[0], 0) + 1
+            mp[f[1] + 1] = mp.getOrDefault(f[1] + 1, 0) - 1
+        }
+        for (s in secondList) {
+            mp[s[0]] = mp.getOrDefault(s[0], 0) + 1
+            mp[s[1] + 1] = mp.getOrDefault(s[1] + 1, 0) - 1
+        }
+
+        val res = mutableListOf<IntArray>()
+        var active = 0
+        var prev = 0
+        for ((x, v) in mp) {
+            if (active == 2) {
+                res.add(intArrayOf(prev, x - 1))
+            }
+            active += v
+            prev = x
+        }
+        return res.toTypedArray()
+    }
+}
+```
+
+```swift
+class Solution {
+    func intervalIntersection(_ firstList: [[Int]], _ secondList: [[Int]]) -> [[Int]] {
+        var mp = [Int: Int]()
+        for f in firstList {
+            mp[f[0], default: 0] += 1
+            mp[f[1] + 1, default: 0] -= 1
+        }
+        for s in secondList {
+            mp[s[0], default: 0] += 1
+            mp[s[1] + 1, default: 0] -= 1
+        }
+
+        var res = [[Int]]()
+        var active = 0
+        var prev = 0
+        for x in mp.keys.sorted() {
+            if active == 2 {
+                res.append([prev, x - 1])
+            }
+            active += mp[x]!
+            prev = x
+        }
+        return res
+    }
+}
+```
+
+```rust
+impl Solution {
+    pub fn interval_intersection(
+        first_list: Vec<Vec<i32>>,
+        second_list: Vec<Vec<i32>>,
+    ) -> Vec<Vec<i32>> {
+        let mut mp = BTreeMap::new();
+        for f in &first_list {
+            *mp.entry(f[0]).or_insert(0) += 1;
+            *mp.entry(f[1] + 1).or_insert(0) -= 1;
+        }
+        for s in &second_list {
+            *mp.entry(s[0]).or_insert(0) += 1;
+            *mp.entry(s[1] + 1).or_insert(0) -= 1;
+        }
+
+        let mut res = Vec::new();
+        let mut active = 0;
+        let mut prev = 0;
+        for (&x, &v) in &mp {
+            if active == 2 {
+                res.push(vec![prev, x - 1]);
+            }
+            active += v;
+            prev = x;
+        }
+        res
+    }
+}
+```
+
+::tabs-end
+
+### Time & Space Complexity
+
+- Time complexity: $O((m + n) \log (m + n))$
+- Space complexity: $O(m + n)$
+
+> Where $m$ and $n$ are the sizes of the arrays $firstList$ and $secondList$, respectively.
+
+---
+
+## 3. Two Pointers
+
+### Intuition
+
+Since both interval lists are sorted and disjoint within themselves, we can use two pointers to efficiently find intersections. At each step, we compare the current interval from each list. If they overlap, we record the intersection. Then we advance the pointer for whichever interval ends first, since that interval cannot intersect with any future intervals from the other list. This eliminates unnecessary comparisons and processes each interval exactly once.
+
+### Algorithm
+
+1. Initialize two pointers `i` and `j` to `0`, and an empty result list.
+2. While both pointers are within bounds:
+    - Get the current intervals: `[startA, endA]` from `firstList[i]` and `[startB, endB]` from `secondList[j]`.
+    - Compute the potential intersection: `start = max(startA, startB)` and `end = min(endA, endB)`.
+    - If `start <= end`, add `[start, end]` to the result.
+    - Advance the pointer for the interval that ends first (if `endA < endB`, increment `i`; otherwise, increment `j`).
+3. Return the result list.
+
+::tabs-start
+
+```python
+class Solution:
+    def intervalIntersection(self, firstList: List[List[int]], secondList: List[List[int]]) -> List[List[int]]:
+        res = []
+        i = j = 0
+        while i < len(firstList) and j < len(secondList):
+            startA, endA = firstList[i]
+            startB, endB = secondList[j]
+
+            start = max(startA, startB)
+            end = min(endA, endB)
+
+            if start <= end:
+                res.append([start, end])
+
+            if endA < endB:
+                i += 1
+            else:
+                j += 1
+
+        return res
+```
+
+```java
+public class Solution {
+    public int[][] intervalIntersection(int[][] firstList, int[][] secondList) {
+        List<int[]> res = new ArrayList<>();
+        int i = 0, j = 0;
+
+        while (i < firstList.length && j < secondList.length) {
+            int startA = firstList[i][0], endA = firstList[i][1];
+            int startB = secondList[j][0], endB = secondList[j][1];
+
+            int start = Math.max(startA, startB);
+            int end = Math.min(endA, endB);
+
+            if (start <= end) {
+                res.add(new int[]{start, end});
+            }
+
+            if (endA < endB) {
+                i++;
+            } else {
+                j++;
+            }
+        }
+
+        return res.toArray(new int[res.size()][]);
+    }
+}
+```
+
+```cpp
+class Solution {
+public:
+    vector<vector<int>> intervalIntersection(vector<vector<int>>& firstList, vector<vector<int>>& secondList) {
+        vector<vector<int>> res;
+        int i = 0, j = 0;
+
+        while (i < firstList.size() && j < secondList.size()) {
+            int startA = firstList[i][0], endA = firstList[i][1];
+            int startB = secondList[j][0], endB = secondList[j][1];
+
+            int start = max(startA, startB);
+            int end = min(endA, endB);
+
+            if (start <= end) {
+                res.push_back({start, end});
+            }
+
+            if (endA < endB) {
+                i++;
+            } else {
+                j++;
+            }
+        }
+
+        return res;
+    }
+};
+```
+
+```javascript
+class Solution {
+    /**
+     * @param {number[][]} firstList
+     * @param {number[][]} secondList
+     * @return {number[][]}
+     */
+    intervalIntersection(firstList, secondList) {
+        const res = [];
+        let i = 0,
+            j = 0;
+
+        while (i < firstList.length && j < secondList.length) {
+            const [startA, endA] = firstList[i];
+            const [startB, endB] = secondList[j];
+
+            const start = Math.max(startA, startB);
+            const end = Math.min(endA, endB);
+
+            if (start <= end) {
+                res.push([start, end]);
+            }
+
+            if (endA < endB) {
+                i++;
+            } else {
+                j++;
+            }
+        }
+
+        return res;
+    }
+}
+```
+
+```csharp
+public class Solution {
+    public int[][] IntervalIntersection(int[][] firstList, int[][] secondList) {
+        var res = new List<int[]>();
+        int i = 0, j = 0;
+
+        while (i < firstList.Length && j < secondList.Length) {
+            int startA = firstList[i][0], endA = firstList[i][1];
+            int startB = secondList[j][0], endB = secondList[j][1];
+
+            int start = Math.Max(startA, startB);
+            int end = Math.Min(endA, endB);
+
+            if (start <= end) {
+                res.Add(new int[] { start, end });
+            }
+
+            if (endA < endB) {
+                i++;
+            } else {
+                j++;
+            }
+        }
+
+        return res.ToArray();
+    }
+}
+```
+
+```go
+func intervalIntersection(firstList [][]int, secondList [][]int) [][]int {
+    res := [][]int{}
+    i, j := 0, 0
+
+    for i < len(firstList) && j < len(secondList) {
+        startA, endA := firstList[i][0], firstList[i][1]
+        startB, endB := secondList[j][0], secondList[j][1]
+
+        start := max(startA, startB)
+        end := min(endA, endB)
+
+        if start <= end {
+            res = append(res, []int{start, end})
+        }
+
+        if endA < endB {
+            i++
+        } else {
+            j++
+        }
+    }
+
+    return res
+}
+
+func max(a, b int) int {
+    if a > b {
+        return a
+    }
+    return b
+}
+
+func min(a, b int) int {
+    if a < b {
+        return a
+    }
+    return b
+}
+```
+
+```kotlin
+class Solution {
+    fun intervalIntersection(firstList: Array<IntArray>, secondList: Array<IntArray>): Array<IntArray> {
+        val res = mutableListOf<IntArray>()
+        var i = 0
+        var j = 0
+
+        while (i < firstList.size && j < secondList.size) {
+            val (startA, endA) = firstList[i][0] to firstList[i][1]
+            val (startB, endB) = secondList[j][0] to secondList[j][1]
+
+            val start = maxOf(startA, startB)
+            val end = minOf(endA, endB)
+
+            if (start <= end) {
+                res.add(intArrayOf(start, end))
+            }
+
+            if (endA < endB) {
+                i++
+            } else {
+                j++
+            }
+        }
+
+        return res.toTypedArray()
+    }
+}
+```
+
+```swift
+class Solution {
+    func intervalIntersection(_ firstList: [[Int]], _ secondList: [[Int]]) -> [[Int]] {
+        var res = [[Int]]()
+        var i = 0, j = 0
+
+        while i < firstList.count && j < secondList.count {
+            let startA = firstList[i][0], endA = firstList[i][1]
+            let startB = secondList[j][0], endB = secondList[j][1]
+
+            let start = max(startA, startB)
+            let end = min(endA, endB)
+
+            if start <= end {
+                res.append([start, end])
+            }
+
+            if endA < endB {
+                i += 1
+            } else {
+                j += 1
+            }
+        }
+
+        return res
+    }
+}
+```
+
+```rust
+impl Solution {
+    pub fn interval_intersection(
+        first_list: Vec<Vec<i32>>,
+        second_list: Vec<Vec<i32>>,
+    ) -> Vec<Vec<i32>> {
+        let mut res = Vec::new();
+        let (mut i, mut j) = (0, 0);
+
+        while i < first_list.len() && j < second_list.len() {
+            let (start_a, end_a) = (first_list[i][0], first_list[i][1]);
+            let (start_b, end_b) = (second_list[j][0], second_list[j][1]);
+
+            let start = start_a.max(start_b);
+            let end = end_a.min(end_b);
+
+            if start <= end {
+                res.push(vec![start, end]);
+            }
+
+            if end_a < end_b {
+                i += 1;
+            } else {
+                j += 1;
+            }
+        }
+
+        res
+    }
+}
+```
+
+::tabs-end
+
+### Time & Space Complexity
+
+- Time complexity: $O(m + n)$
+- Space complexity:
+    - $O(1)$ extra space.
+    - $O(m + n)$ for the output list.
+
+> Where $m$ and $n$ are the sizes of the arrays $firstList$ and $secondList$, respectively.
+
+---
+
+## Common Pitfalls
+
+### Incorrect Overlap Detection
+
+A common mistake is using an incorrect condition to check if two intervals overlap. The correct condition is `start <= end` where `start = max(startA, startB)` and `end = min(endA, endB)`. Some developers mistakenly check if one interval's start is between the other's boundaries, which can miss edge cases like when intervals touch at a single point (e.g., `[1,3]` and `[3,5]` should produce `[3,3]`).
+
+### Wrong Pointer Advancement Logic
+
+When using the two-pointer approach, advancing the wrong pointer leads to missed intersections. The key insight is to advance the pointer for the interval that ends first because that interval cannot intersect with any future intervals from the other list. Advancing based on start times or advancing both pointers simultaneously will produce incorrect results.
+
+### Forgetting Empty Input Cases
+
+Failing to handle cases where one or both input lists are empty can cause index out-of-bounds errors or incorrect behavior. Always ensure your solution gracefully returns an empty result when either `firstList` or `secondList` is empty, which the two-pointer approach handles naturally by never entering the while loop.

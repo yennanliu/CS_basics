@@ -1,0 +1,1324 @@
+## Prerequisites
+
+Before attempting this problem, you should be comfortable with:
+
+- **Dynamic Programming** - Used to count ways to form the target by choosing characters from word columns
+- **Memoization** - Caching results for (target index, column index) pairs to avoid recomputation
+- **Character Frequency Preprocessing** - Precomputing character counts at each column position optimizes the solution
+- **Modular Arithmetic** - Required for handling large results modulo 10^9+7
+
+---
+
+## 1. Recursion
+
+### Intuition
+
+We build the target string character by character. For each target character, we can pick it from any word at the current column position, then move to the next column. We can also skip columns without picking anything. The constraint is that once we use a column, we cannot go back to previous columns.
+
+### Algorithm
+
+1. Define a recursive function `dfs(i, k)` where `i` is the current target index and `k` is the current column index in the words.
+2. Base cases:
+    - If `i == n` (target length), we formed the entire target, return `1`.
+    - If `k == m` (word length), we ran out of columns, return `0`.
+3. Count the ways by skipping column `k` (call `dfs(i, k + 1)`).
+4. For each word where `word[k]` matches `target[i]`, add `dfs(i + 1, k + 1)` to `res`.
+5. Return the total count modulo `10^9 + 7`.
+
+::tabs-start
+
+```python
+class Solution:
+    def numWays(self, words: List[str], target: str) -> int:
+        mod = 10**9 + 7
+        n, m = len(target), len(words[0])
+
+        def dfs(i, k):
+            if i == n:
+                return 1
+            if k == m:
+                return 0
+
+            res = dfs(i, k + 1)
+            for w in words:
+                if w[k] != target[i]:
+                    continue
+                res = (res + dfs(i + 1, k + 1)) % mod
+            return res
+
+        return dfs(0, 0)
+```
+
+```java
+public class Solution {
+    private static final int MOD = 1_000_000_007;
+
+    public int numWays(String[] words, String target) {
+        return dfs(words, target, 0, 0);
+    }
+
+    private int dfs(String[] words, String target, int i, int k) {
+        if (i == target.length()) return 1;
+        if (k == words[0].length()) return 0;
+
+        int res = dfs(words, target, i, k + 1);
+        for (String w : words) {
+            if (w.charAt(k) != target.charAt(i)) {
+                continue;
+            }
+            res = (int) (res + 0L + dfs(words, target, i + 1, k + 1)) % MOD;
+        }
+
+        return res;
+    }
+}
+```
+
+```cpp
+class Solution {
+private:
+    static const int MOD = 1e9 + 7;
+
+    int dfs(vector<string>& words, string target, int i, int k) {
+        if (i == target.length()) return 1;
+        if (k == words[0].length()) return 0;
+
+        int res = dfs(words, target, i, k + 1);
+        for (string& w : words) {
+            if (w[k] != target[i]) {
+                continue;
+            }
+            res = (int) (res + 0LL + dfs(words, target, i + 1, k + 1)) % MOD;
+        }
+
+        return res;
+    }
+
+public:
+    int numWays(vector<string>& words, string target) {
+        return dfs(words, target, 0, 0);
+    }
+};
+```
+
+```javascript
+class Solution {
+    /**
+     * @param {string[]} words
+     * @param {string} target
+     * @return {number}
+     */
+    numWays(words, target) {
+        const n = target.length;
+        const m = words[0].length;
+        const MOD = 1e9 + 7;
+
+        const dfs = (i, k) => {
+            if (i === n) return 1;
+            if (k === m) return 0;
+
+            let res = dfs(i, k + 1);
+            for (const w of words) {
+                if (w[k] != target[i]) {
+                    continue;
+                }
+                res = (res + dfs(i + 1, k + 1)) % MOD;
+            }
+
+            return res;
+        };
+
+        return dfs(0, 0);
+    }
+}
+```
+
+```csharp
+public class Solution {
+    private const int MOD = 1_000_000_007;
+
+    public int NumWays(string[] words, string target) {
+        return Dfs(words, target, 0, 0);
+    }
+
+    private int Dfs(string[] words, string target, int i, int k) {
+        if (i == target.Length) return 1;
+        if (k == words[0].Length) return 0;
+
+        int res = Dfs(words, target, i, k + 1);
+        foreach (var w in words) {
+            if (w[k] != target[i]) continue;
+            res = (int)((res + (long)Dfs(words, target, i + 1, k + 1)) % MOD);
+        }
+        return res;
+    }
+}
+```
+
+```go
+func numWays(words []string, target string) int {
+    MOD := int(1e9 + 7)
+    n, m := len(target), len(words[0])
+
+    var dfs func(i, k int) int
+    dfs = func(i, k int) int {
+        if i == n {
+            return 1
+        }
+        if k == m {
+            return 0
+        }
+
+        res := dfs(i, k+1)
+        for _, w := range words {
+            if w[k] != target[i] {
+                continue
+            }
+            res = (res + dfs(i+1, k+1)) % MOD
+        }
+        return res
+    }
+
+    return dfs(0, 0)
+}
+```
+
+```kotlin
+class Solution {
+    private val MOD = 1_000_000_007
+
+    fun numWays(words: Array<String>, target: String): Int {
+        val n = target.length
+        val m = words[0].length
+
+        fun dfs(i: Int, k: Int): Int {
+            if (i == n) return 1
+            if (k == m) return 0
+
+            var res = dfs(i, k + 1)
+            for (w in words) {
+                if (w[k] != target[i]) continue
+                res = ((res + dfs(i + 1, k + 1)) % MOD).toInt()
+            }
+            return res
+        }
+
+        return dfs(0, 0)
+    }
+}
+```
+
+```swift
+class Solution {
+    func numWays(_ words: [String], _ target: String) -> Int {
+        let MOD = 1_000_000_007
+        let n = target.count
+        let m = words[0].count
+        let targetArr = Array(target)
+        let wordsArr = words.map { Array($0) }
+
+        func dfs(_ i: Int, _ k: Int) -> Int {
+            if i == n { return 1 }
+            if k == m { return 0 }
+
+            var res = dfs(i, k + 1)
+            for w in wordsArr {
+                if w[k] != targetArr[i] { continue }
+                res = (res + dfs(i + 1, k + 1)) % MOD
+            }
+            return res
+        }
+
+        return dfs(0, 0)
+    }
+}
+```
+
+```rust
+impl Solution {
+    pub fn num_ways(words: Vec<String>, target: String) -> i32 {
+        const MOD: i64 = 1_000_000_007;
+        let words: Vec<&[u8]> = words.iter().map(|w| w.as_bytes()).collect();
+        let target = target.as_bytes();
+        let n = target.len();
+        let m = words[0].len();
+
+        fn dfs(words: &[&[u8]], target: &[u8], i: usize, k: usize, n: usize, m: usize) -> i64 {
+            if i == n { return 1; }
+            if k == m { return 0; }
+            let mut res = dfs(words, target, i, k + 1, n, m);
+            for w in words {
+                if w[k] != target[i] { continue; }
+                res = (res + dfs(words, target, i + 1, k + 1, n, m)) % 1_000_000_007;
+            }
+            res
+        }
+
+        dfs(&words, target, 0, 0, n, m) as i32
+    }
+}
+```
+
+::tabs-end
+
+### Time & Space Complexity
+
+- Time complexity: $O(N ^ m)$
+- Space complexity: $O(m)$
+
+> Where $N$ is the number of words, $m$ is the length of each word, and $n$ is the length of the $target$ string.
+
+---
+
+## 2. Dynamic Programming (Top-Down)
+
+### Intuition
+
+The naive recursion is slow because we check every word at each step. We can precompute how many times each character appears at each column position. Then instead of iterating through all words, we simply multiply by the count of matching characters.
+
+### Algorithm
+
+1. Precompute a frequency table `cnt[k][c]` storing how many words have character `c` at column `k`.
+2. Define `dfs(i, k)` with memoization:
+    - Base cases same as before.
+    - Skip column `k` by adding `dfs(i, k + 1)`.
+    - Use column `k` by multiplying `cnt[k][target[i]]` with `dfs(i + 1, k + 1)`.
+3. Return `dfs(0, 0)` modulo `10^9 + 7`.
+
+::tabs-start
+
+```python
+class Solution:
+    def numWays(self, words: List[str], target: str) -> int:
+        mod = 10**9 + 7
+        cnt = defaultdict(int)  # (index, char) --> count among all words
+        for w in words:
+            for i, c in enumerate(w):
+                cnt[(i, c)] += 1
+
+        dp = {}
+
+        def dfs(i, k):
+            if i == len(target):
+                return 1
+            if k == len(words[0]):
+                return 0
+            if (i, k) in dp:
+                return dp[(i, k)]
+
+            c = target[i]
+            dp[(i, k)] = dfs(i, k + 1)  # skip k position
+            dp[(i, k)] += cnt[(k, c)] * dfs(i + 1, k + 1)
+            dp[(i, k)] %= mod
+            return dp[(i, k)]
+
+        return dfs(0, 0)
+```
+
+```java
+public class Solution {
+    private static final int MOD = 1_000_000_007;
+    private int[][] dp;
+    private int[][] cnt;
+
+    public int numWays(String[] words, String target) {
+        int n = target.length(), m = words[0].length();
+        cnt = new int[m][26];
+
+        for (String word : words) {
+            for (int i = 0; i < word.length(); i++) {
+                cnt[i][word.charAt(i) - 'a']++;
+            }
+        }
+
+        dp = new int[n + 1][m + 1];
+        for (int[] row : dp) {
+            Arrays.fill(row, -1);
+        }
+
+        return dfs(0, 0, target, n, m);
+    }
+
+    private int dfs(int i, int k, String target, int n, int m) {
+        if (i == n) return 1;
+        if (k == m) return 0;
+        if (dp[i][k] != -1) return dp[i][k];
+
+        int c = target.charAt(i) - 'a';
+        dp[i][k] = dfs(i, k + 1, target, n, m);  // Skip k position
+        dp[i][k] = (int) ((dp[i][k] + (long) cnt[k][c] * dfs(i + 1, k + 1, target, n, m)) % MOD);
+        return dp[i][k];
+    }
+}
+```
+
+```cpp
+class Solution {
+private:
+    static const int MOD = 1e9 + 7;
+    vector<vector<int>> dp;
+    vector<vector<int>> cnt;
+
+public:
+    int numWays(vector<string>& words, string target) {
+        int n = target.size(), m = words[0].size();
+        cnt = vector<vector<int>>(m, vector<int>(26, 0));
+
+        for (const string& word : words) {
+            for (int i = 0; i < word.size(); i++) {
+                cnt[i][word[i] - 'a']++;
+            }
+        }
+
+        dp = vector<vector<int>>(n + 1, vector<int>(m + 1, -1));
+        return dfs(0, 0, target, n, m);
+    }
+
+private:
+    int dfs(int i, int k, const string& target, int n, int m) {
+        if (i == n) return 1;
+        if (k == m) return 0;
+        if (dp[i][k] != -1) return dp[i][k];
+
+        int c = target[i] - 'a';
+        dp[i][k] = dfs(i, k + 1, target, n, m);  // Skip k position
+        dp[i][k] = (dp[i][k] + (long long) cnt[k][c] * dfs(i + 1, k + 1, target, n, m)) % MOD;
+        return dp[i][k];
+    }
+};
+```
+
+```javascript
+class Solution {
+    /**
+     * @param {string[]} words
+     * @param {string} target
+     * @return {number}
+     */
+    numWays(words, target) {
+        const MOD = 1e9 + 7;
+        const n = target.length,
+            m = words[0].length;
+        const cnt = Array.from({ length: m }, () => Array(26).fill(0));
+
+        for (const word of words) {
+            for (let i = 0; i < word.length; i++) {
+                cnt[i][word.charCodeAt(i) - 97]++;
+            }
+        }
+
+        const dp = Array.from({ length: n + 1 }, () => Array(m + 1).fill(-1));
+
+        const dfs = (i, k) => {
+            if (i === n) return 1;
+            if (k === m) return 0;
+            if (dp[i][k] !== -1) return dp[i][k];
+
+            const c = target.charCodeAt(i) - 97;
+            dp[i][k] = dfs(i, k + 1); // Skip k position
+            dp[i][k] = (dp[i][k] + cnt[k][c] * dfs(i + 1, k + 1)) % MOD;
+            return dp[i][k];
+        };
+
+        return dfs(0, 0);
+    }
+}
+```
+
+```csharp
+public class Solution {
+    private const int MOD = 1_000_000_007;
+    private int[,] dp;
+    private int[,] cnt;
+
+    public int NumWays(string[] words, string target) {
+        int n = target.Length, m = words[0].Length;
+        cnt = new int[m, 26];
+
+        foreach (var word in words) {
+            for (int i = 0; i < word.Length; i++) {
+                cnt[i, word[i] - 'a']++;
+            }
+        }
+
+        dp = new int[n + 1, m + 1];
+        for (int i = 0; i <= n; i++) {
+            for (int j = 0; j <= m; j++) {
+                dp[i, j] = -1;
+            }
+        }
+
+        return Dfs(0, 0, target, n, m);
+    }
+
+    private int Dfs(int i, int k, string target, int n, int m) {
+        if (i == n) return 1;
+        if (k == m) return 0;
+        if (dp[i, k] != -1) return dp[i, k];
+
+        int c = target[i] - 'a';
+        dp[i, k] = Dfs(i, k + 1, target, n, m);
+        dp[i, k] = (int)((dp[i, k] + (long)cnt[k, c] * Dfs(i + 1, k + 1, target, n, m)) % MOD);
+        return dp[i, k];
+    }
+}
+```
+
+```go
+func numWays(words []string, target string) int {
+    MOD := int(1e9 + 7)
+    n, m := len(target), len(words[0])
+
+    cnt := make([][]int, m)
+    for i := range cnt {
+        cnt[i] = make([]int, 26)
+    }
+    for _, word := range words {
+        for i := 0; i < len(word); i++ {
+            cnt[i][word[i]-'a']++
+        }
+    }
+
+    dp := make([][]int, n+1)
+    for i := range dp {
+        dp[i] = make([]int, m+1)
+        for j := range dp[i] {
+            dp[i][j] = -1
+        }
+    }
+
+    var dfs func(i, k int) int
+    dfs = func(i, k int) int {
+        if i == n {
+            return 1
+        }
+        if k == m {
+            return 0
+        }
+        if dp[i][k] != -1 {
+            return dp[i][k]
+        }
+
+        c := target[i] - 'a'
+        dp[i][k] = dfs(i, k+1)
+        dp[i][k] = (dp[i][k] + cnt[k][c]*dfs(i+1, k+1)) % MOD
+        return dp[i][k]
+    }
+
+    return dfs(0, 0)
+}
+```
+
+```kotlin
+class Solution {
+    private val MOD = 1_000_000_007
+    private lateinit var dp: Array<IntArray>
+    private lateinit var cnt: Array<IntArray>
+
+    fun numWays(words: Array<String>, target: String): Int {
+        val n = target.length
+        val m = words[0].length
+        cnt = Array(m) { IntArray(26) }
+
+        for (word in words) {
+            for (i in word.indices) {
+                cnt[i][word[i] - 'a']++
+            }
+        }
+
+        dp = Array(n + 1) { IntArray(m + 1) { -1 } }
+        return dfs(0, 0, target, n, m)
+    }
+
+    private fun dfs(i: Int, k: Int, target: String, n: Int, m: Int): Int {
+        if (i == n) return 1
+        if (k == m) return 0
+        if (dp[i][k] != -1) return dp[i][k]
+
+        val c = target[i] - 'a'
+        dp[i][k] = dfs(i, k + 1, target, n, m)
+        dp[i][k] = ((dp[i][k] + cnt[k][c].toLong() * dfs(i + 1, k + 1, target, n, m)) % MOD).toInt()
+        return dp[i][k]
+    }
+}
+```
+
+```swift
+class Solution {
+    func numWays(_ words: [String], _ target: String) -> Int {
+        let MOD = 1_000_000_007
+        let n = target.count
+        let m = words[0].count
+        let targetArr = Array(target)
+
+        var cnt = [[Int]](repeating: [Int](repeating: 0, count: 26), count: m)
+        for word in words {
+            let wordArr = Array(word)
+            for i in 0..<wordArr.count {
+                cnt[i][Int(wordArr[i].asciiValue!) - Int(Character("a").asciiValue!)] += 1
+            }
+        }
+
+        var dp = [[Int]](repeating: [Int](repeating: -1, count: m + 1), count: n + 1)
+
+        func dfs(_ i: Int, _ k: Int) -> Int {
+            if i == n { return 1 }
+            if k == m { return 0 }
+            if dp[i][k] != -1 { return dp[i][k] }
+
+            let c = Int(targetArr[i].asciiValue!) - Int(Character("a").asciiValue!)
+            dp[i][k] = dfs(i, k + 1)
+            dp[i][k] = (dp[i][k] + cnt[k][c] * dfs(i + 1, k + 1)) % MOD
+            return dp[i][k]
+        }
+
+        return dfs(0, 0)
+    }
+}
+```
+
+```rust
+impl Solution {
+    pub fn num_ways(words: Vec<String>, target: String) -> i32 {
+        const MOD: i64 = 1_000_000_007;
+        let target = target.as_bytes();
+        let n = target.len();
+        let m = words[0].len();
+
+        let mut cnt = vec![vec![0i64; 26]; m];
+        for word in &words {
+            for (i, &b) in word.as_bytes().iter().enumerate() {
+                cnt[i][(b - b'a') as usize] += 1;
+            }
+        }
+
+        let mut dp = vec![vec![-1i64; m + 1]; n + 1];
+
+        fn dfs(cnt: &[Vec<i64>], target: &[u8], dp: &mut Vec<Vec<i64>>,
+               i: usize, k: usize, n: usize, m: usize) -> i64 {
+            if i == n { return 1; }
+            if k == m { return 0; }
+            if dp[i][k] != -1 { return dp[i][k]; }
+
+            let c = (target[i] - b'a') as usize;
+            let skip = dfs(cnt, target, dp, i, k + 1, n, m);
+            let take = cnt[k][c] * dfs(cnt, target, dp, i + 1, k + 1, n, m) % 1_000_000_007;
+            dp[i][k] = (skip + take) % 1_000_000_007;
+            dp[i][k]
+        }
+
+        dfs(&cnt, target, &mut dp, 0, 0, n, m) as i32
+    }
+}
+```
+
+::tabs-end
+
+### Time & Space Complexity
+
+- Time complexity: $O(m * (n + N))$
+- Space complexity: $O(n * m)$
+
+> Where $N$ is the number of words, $m$ is the length of each word, and $n$ is the length of the $target$ string.
+
+---
+
+## 3. Dynamic Programming (Bottom-Up)
+
+### Intuition
+
+We can convert the memoized solution to a bottom-up DP. We fill a 2D table where `dp[i][k]` represents the number of ways to form `target[i:]` using columns `k` to `m-1`.
+
+### Algorithm
+
+1. Precompute the character frequency table.
+2. Create a DP table of size `(n+1) x (m+1)` initialized to `0`.
+3. Set `dp[n][m] = 1` (base case: empty target from the end is valid).
+4. Iterate backward through positions:
+    - For each `(i, k)`, set `dp[i][k] = dp[i][k+1]` (skip column).
+    - If `i < n`, add `cnt[k][target[i]] * dp[i+1][k+1]` (use column).
+5. Return `dp[0][0]` modulo `10^9 + 7`.
+
+::tabs-start
+
+```python
+class Solution:
+    def numWays(self, words: List[str], target: str) -> int:
+        MOD = 10**9 + 7
+        n, m = len(target), len(words[0])
+
+        cnt = [[0] * 26 for _ in range(m)]
+        for word in words:
+            for i, c in enumerate(word):
+                cnt[i][ord(c) - ord('a')] += 1
+
+        dp = [[0] * (m + 1) for _ in range(n + 1)]
+        dp[n][m] = 1
+
+        for i in range(n, -1, -1):
+            for k in range(m - 1, -1, -1):
+                dp[i][k] = dp[i][k + 1]
+                if i < n:
+                    c = ord(target[i]) - ord('a')
+                    dp[i][k] = (dp[i][k] + cnt[k][c] * dp[i + 1][k + 1]) % MOD
+
+        return dp[0][0]
+```
+
+```java
+public class Solution {
+    private static final int MOD = 1_000_000_007;
+
+    public int numWays(String[] words, String target) {
+        int n = target.length(), m = words[0].length();
+
+        int[][] cnt = new int[m][26];
+        for (String word : words) {
+            for (int i = 0; i < word.length(); i++) {
+                cnt[i][word.charAt(i) - 'a']++;
+            }
+        }
+
+        int[][] dp = new int[n + 1][m + 1];
+        dp[n][m] = 1;
+
+        for (int i = n; i >= 0; i--) {
+            for (int k = m - 1; k >= 0; k--) {
+                dp[i][k] = dp[i][k + 1];
+                if (i < n) {
+                    int c = target.charAt(i) - 'a';
+                    dp[i][k] = (int) ((dp[i][k] + (long) cnt[k][c] * dp[i + 1][k + 1]) % MOD);
+                }
+            }
+        }
+
+        return dp[0][0];
+    }
+}
+```
+
+```cpp
+class Solution {
+private:
+    static const int MOD = 1e9 + 7;
+
+public:
+    int numWays(vector<string>& words, string target) {
+        int n = target.size(), m = words[0].size();
+
+        vector<vector<int>> cnt(m, vector<int>(26, 0));
+        for (const string& word : words) {
+            for (int i = 0; i < word.size(); i++) {
+                cnt[i][word[i] - 'a']++;
+            }
+        }
+
+        vector<vector<int>> dp(n + 1, vector<int>(m + 1, 0));
+        dp[n][m] = 1;
+
+        for (int i = n; i >= 0; i--) {
+            for (int k = m - 1; k >= 0; k--) {
+                dp[i][k] = dp[i][k + 1];
+                if (i < n) {
+                    int c = target[i] - 'a';
+                    dp[i][k] = (dp[i][k] + (long long) cnt[k][c] * dp[i + 1][k + 1]) % MOD;
+                }
+            }
+        }
+
+        return dp[0][0];
+    }
+};
+```
+
+```javascript
+class Solution {
+    /**
+     * @param {string[]} words
+     * @param {string} target
+     * @return {number}
+     */
+    numWays(words, target) {
+        const MOD = 1e9 + 7;
+        const n = target.length,
+            m = words[0].length;
+
+        const cnt = Array.from({ length: m }, () => Array(26).fill(0));
+        for (const word of words) {
+            for (let i = 0; i < word.length; i++) {
+                cnt[i][word.charCodeAt(i) - 'a'.charCodeAt(0)]++;
+            }
+        }
+
+        const dp = Array.from({ length: n + 1 }, () => Array(m + 1).fill(0));
+        dp[n][m] = 1;
+
+        for (let i = n; i >= 0; i--) {
+            for (let k = m - 1; k >= 0; k--) {
+                dp[i][k] = dp[i][k + 1];
+                if (i < n) {
+                    const c = target.charCodeAt(i) - 'a'.charCodeAt(0);
+                    dp[i][k] = (dp[i][k] + cnt[k][c] * dp[i + 1][k + 1]) % MOD;
+                }
+            }
+        }
+
+        return dp[0][0];
+    }
+}
+```
+
+```csharp
+public class Solution {
+    private const int MOD = 1_000_000_007;
+
+    public int NumWays(string[] words, string target) {
+        int n = target.Length, m = words[0].Length;
+
+        int[,] cnt = new int[m, 26];
+        foreach (var word in words) {
+            for (int i = 0; i < word.Length; i++) {
+                cnt[i, word[i] - 'a']++;
+            }
+        }
+
+        int[,] dp = new int[n + 1, m + 1];
+        dp[n, m] = 1;
+
+        for (int i = n; i >= 0; i--) {
+            for (int k = m - 1; k >= 0; k--) {
+                dp[i, k] = dp[i, k + 1];
+                if (i < n) {
+                    int c = target[i] - 'a';
+                    dp[i, k] = (int)((dp[i, k] + (long)cnt[k, c] * dp[i + 1, k + 1]) % MOD);
+                }
+            }
+        }
+
+        return dp[0, 0];
+    }
+}
+```
+
+```go
+func numWays(words []string, target string) int {
+    MOD := int(1e9 + 7)
+    n, m := len(target), len(words[0])
+
+    cnt := make([][]int, m)
+    for i := range cnt {
+        cnt[i] = make([]int, 26)
+    }
+    for _, word := range words {
+        for i := 0; i < len(word); i++ {
+            cnt[i][word[i]-'a']++
+        }
+    }
+
+    dp := make([][]int, n+1)
+    for i := range dp {
+        dp[i] = make([]int, m+1)
+    }
+    dp[n][m] = 1
+
+    for i := n; i >= 0; i-- {
+        for k := m - 1; k >= 0; k-- {
+            dp[i][k] = dp[i][k+1]
+            if i < n {
+                c := target[i] - 'a'
+                dp[i][k] = (dp[i][k] + cnt[k][c]*dp[i+1][k+1]) % MOD
+            }
+        }
+    }
+
+    return dp[0][0]
+}
+```
+
+```kotlin
+class Solution {
+    fun numWays(words: Array<String>, target: String): Int {
+        val MOD = 1_000_000_007
+        val n = target.length
+        val m = words[0].length
+
+        val cnt = Array(m) { IntArray(26) }
+        for (word in words) {
+            for (i in word.indices) {
+                cnt[i][word[i] - 'a']++
+            }
+        }
+
+        val dp = Array(n + 1) { IntArray(m + 1) }
+        dp[n][m] = 1
+
+        for (i in n downTo 0) {
+            for (k in m - 1 downTo 0) {
+                dp[i][k] = dp[i][k + 1]
+                if (i < n) {
+                    val c = target[i] - 'a'
+                    dp[i][k] = ((dp[i][k] + cnt[k][c].toLong() * dp[i + 1][k + 1]) % MOD).toInt()
+                }
+            }
+        }
+
+        return dp[0][0]
+    }
+}
+```
+
+```swift
+class Solution {
+    func numWays(_ words: [String], _ target: String) -> Int {
+        let MOD = 1_000_000_007
+        let n = target.count
+        let m = words[0].count
+        let targetArr = Array(target)
+
+        var cnt = [[Int]](repeating: [Int](repeating: 0, count: 26), count: m)
+        for word in words {
+            let wordArr = Array(word)
+            for i in 0..<wordArr.count {
+                cnt[i][Int(wordArr[i].asciiValue!) - Int(Character("a").asciiValue!)] += 1
+            }
+        }
+
+        var dp = [[Int]](repeating: [Int](repeating: 0, count: m + 1), count: n + 1)
+        dp[n][m] = 1
+
+        for i in stride(from: n, through: 0, by: -1) {
+            for k in stride(from: m - 1, through: 0, by: -1) {
+                dp[i][k] = dp[i][k + 1]
+                if i < n {
+                    let c = Int(targetArr[i].asciiValue!) - Int(Character("a").asciiValue!)
+                    dp[i][k] = (dp[i][k] + cnt[k][c] * dp[i + 1][k + 1]) % MOD
+                }
+            }
+        }
+
+        return dp[0][0]
+    }
+}
+```
+
+```rust
+impl Solution {
+    pub fn num_ways(words: Vec<String>, target: String) -> i32 {
+        const MOD: i64 = 1_000_000_007;
+        let target = target.as_bytes();
+        let n = target.len();
+        let m = words[0].len();
+
+        let mut cnt = vec![vec![0i64; 26]; m];
+        for word in &words {
+            for (i, &b) in word.as_bytes().iter().enumerate() {
+                cnt[i][(b - b'a') as usize] += 1;
+            }
+        }
+
+        let mut dp = vec![vec![0i64; m + 1]; n + 1];
+        dp[n][m] = 1;
+
+        for i in (0..=n).rev() {
+            for k in (0..m).rev() {
+                dp[i][k] = dp[i][k + 1];
+                if i < n {
+                    let c = (target[i] - b'a') as usize;
+                    dp[i][k] = (dp[i][k] + cnt[k][c] * dp[i + 1][k + 1]) % MOD;
+                }
+            }
+        }
+
+        dp[0][0] as i32
+    }
+}
+```
+
+::tabs-end
+
+### Time & Space Complexity
+
+- Time complexity: $O(m * (n + N))$
+- Space complexity: $O(n * m)$
+
+> Where $N$ is the number of words, $m$ is the length of each word, and $n$ is the length of the $target$ string.
+
+---
+
+## 4. Dynamic Programming (Space Optimized)
+
+### Intuition
+
+Since we only need the previous row of the DP table to compute the current row, we can reduce space by using a single 1D array.
+
+### Algorithm
+
+1. Precompute the character frequency table.
+2. Use a 1D DP array of size `m + 1`.
+3. Iterate from `i = n` down to `0`, and for each row, iterate through columns in reverse.
+4. Maintain the value from the next row using a temporary variable.
+5. Return `dp[0]` modulo `10^9 + 7`.
+
+::tabs-start
+
+```python
+class Solution:
+    def numWays(self, words: List[str], target: str) -> int:
+        MOD = 10**9 + 7
+        n, m = len(target), len(words[0])
+
+        cnt = [[0] * 26 for _ in range(m)]
+        for word in words:
+            for i, c in enumerate(word):
+                cnt[i][ord(c) - ord('a')] += 1
+
+        dp = [0] * (m + 1)
+        dp[m] = 1
+
+        for i in range(n, -1, -1):
+            nxt = 1 if i == n - 1 else 0
+            for k in range(m - 1, -1, -1):
+                cur = dp[k]
+                dp[k] = dp[k + 1]
+                if i < n:
+                    c = ord(target[i]) - ord('a')
+                    dp[k] = (dp[k] + cnt[k][c] * nxt) % MOD
+                nxt = cur
+            dp[m] = 0
+
+        return dp[0]
+```
+
+```java
+public class Solution {
+    private static final int MOD = 1_000_000_007;
+
+    public int numWays(String[] words, String target) {
+        int n = target.length(), m = words[0].length();
+
+        int[][] cnt = new int[m][26];
+        for (String word : words) {
+            for (int i = 0; i < word.length(); i++) {
+                cnt[i][word.charAt(i) - 'a']++;
+            }
+        }
+
+        int[] dp = new int[m + 1];
+        dp[m] = 1;
+
+        for (int i = n; i >= 0; i--) {
+            int nxt = i == n - 1 ? 1 : 0;
+            for (int k = m - 1; k >= 0; k--) {
+                int cur = dp[k];
+                dp[k] = dp[k + 1];
+                if (i < n) {
+                    int c = target.charAt(i) - 'a';
+                    dp[k] = (int) ((dp[k] + (long) cnt[k][c] * nxt) % MOD);
+                }
+                nxt = cur;
+            }
+            dp[m] = 0;
+        }
+
+        return dp[0];
+    }
+}
+```
+
+```cpp
+class Solution {
+private:
+    static const int MOD = 1e9 + 7;
+
+public:
+    int numWays(vector<string>& words, string target) {
+        int n = target.size(), m = words[0].size();
+
+        vector<vector<int>> cnt(m, vector<int>(26, 0));
+        for (const string& word : words) {
+            for (int i = 0; i < word.size(); i++) {
+                cnt[i][word[i] - 'a']++;
+            }
+        }
+
+        vector<int> dp(m + 1);
+        dp[m] = 1;
+
+        for (int i = n; i >= 0; i--) {
+            int nxt = i == n - 1 ? 1 : 0;
+            for (int k = m - 1; k >= 0; k--) {
+                int cur = dp[k];
+                dp[k] = dp[k + 1];
+                if (i < n) {
+                    int c = target[i] - 'a';
+                    dp[k] = (dp[k] + (long long) cnt[k][c] * nxt) % MOD;
+                }
+                nxt = cur;
+            }
+            dp[m] = 0;
+        }
+
+        return dp[0];
+    }
+};
+```
+
+```javascript
+class Solution {
+    /**
+     * @param {string[]} words
+     * @param {string} target
+     * @return {number}
+     */
+    numWays(words, target) {
+        const MOD = 1e9 + 7;
+        const n = target.length,
+            m = words[0].length;
+
+        const cnt = Array.from({ length: m }, () => Array(26).fill(0));
+        for (const word of words) {
+            for (let i = 0; i < word.length; i++) {
+                cnt[i][word.charCodeAt(i) - 'a'.charCodeAt(0)]++;
+            }
+        }
+
+        const dp = new Array(m + 1).fill(0);
+        dp[m] = 1;
+
+        for (let i = n; i >= 0; i--) {
+            let nxt = i === n - 1 ? 1 : 0;
+            for (let k = m - 1; k >= 0; k--) {
+                const cur = dp[k];
+                dp[k] = dp[k + 1];
+                if (i < n) {
+                    const c = target.charCodeAt(i) - 'a'.charCodeAt(0);
+                    dp[k] = (dp[k] + cnt[k][c] * nxt) % MOD;
+                }
+                nxt = cur;
+            }
+            dp[m] = 0;
+        }
+
+        return dp[0];
+    }
+}
+```
+
+```csharp
+public class Solution {
+    private const int MOD = 1_000_000_007;
+
+    public int NumWays(string[] words, string target) {
+        int n = target.Length, m = words[0].Length;
+
+        int[,] cnt = new int[m, 26];
+        foreach (var word in words) {
+            for (int i = 0; i < word.Length; i++) {
+                cnt[i, word[i] - 'a']++;
+            }
+        }
+
+        int[] dp = new int[m + 1];
+        dp[m] = 1;
+
+        for (int i = n; i >= 0; i--) {
+            int nxt = i == n - 1 ? 1 : 0;
+            for (int k = m - 1; k >= 0; k--) {
+                int cur = dp[k];
+                dp[k] = dp[k + 1];
+                if (i < n) {
+                    int c = target[i] - 'a';
+                    dp[k] = (int)((dp[k] + (long)cnt[k, c] * nxt) % MOD);
+                }
+                nxt = cur;
+            }
+            dp[m] = 0;
+        }
+
+        return dp[0];
+    }
+}
+```
+
+```go
+func numWays(words []string, target string) int {
+    MOD := int(1e9 + 7)
+    n, m := len(target), len(words[0])
+
+    cnt := make([][]int, m)
+    for i := range cnt {
+        cnt[i] = make([]int, 26)
+    }
+    for _, word := range words {
+        for i := 0; i < len(word); i++ {
+            cnt[i][word[i]-'a']++
+        }
+    }
+
+    dp := make([]int, m+1)
+    dp[m] = 1
+
+    for i := n; i >= 0; i-- {
+        nxt := 0
+        if i == n-1 {
+            nxt = 1
+        }
+        for k := m - 1; k >= 0; k-- {
+            cur := dp[k]
+            dp[k] = dp[k+1]
+            if i < n {
+                c := target[i] - 'a'
+                dp[k] = (dp[k] + cnt[k][c]*nxt) % MOD
+            }
+            nxt = cur
+        }
+        dp[m] = 0
+    }
+
+    return dp[0]
+}
+```
+
+```kotlin
+class Solution {
+    fun numWays(words: Array<String>, target: String): Int {
+        val MOD = 1_000_000_007
+        val n = target.length
+        val m = words[0].length
+
+        val cnt = Array(m) { IntArray(26) }
+        for (word in words) {
+            for (i in word.indices) {
+                cnt[i][word[i] - 'a']++
+            }
+        }
+
+        val dp = IntArray(m + 1)
+        dp[m] = 1
+
+        for (i in n downTo 0) {
+            var nxt = if (i == n - 1) 1 else 0
+            for (k in m - 1 downTo 0) {
+                val cur = dp[k]
+                dp[k] = dp[k + 1]
+                if (i < n) {
+                    val c = target[i] - 'a'
+                    dp[k] = ((dp[k] + cnt[k][c].toLong() * nxt) % MOD).toInt()
+                }
+                nxt = cur
+            }
+            dp[m] = 0
+        }
+
+        return dp[0]
+    }
+}
+```
+
+```swift
+class Solution {
+    func numWays(_ words: [String], _ target: String) -> Int {
+        let MOD = 1_000_000_007
+        let n = target.count
+        let m = words[0].count
+        let targetArr = Array(target)
+
+        var cnt = [[Int]](repeating: [Int](repeating: 0, count: 26), count: m)
+        for word in words {
+            let wordArr = Array(word)
+            for i in 0..<wordArr.count {
+                cnt[i][Int(wordArr[i].asciiValue!) - Int(Character("a").asciiValue!)] += 1
+            }
+        }
+
+        var dp = [Int](repeating: 0, count: m + 1)
+        dp[m] = 1
+
+        for i in stride(from: n, through: 0, by: -1) {
+            var nxt = i == n - 1 ? 1 : 0
+            for k in stride(from: m - 1, through: 0, by: -1) {
+                let cur = dp[k]
+                dp[k] = dp[k + 1]
+                if i < n {
+                    let c = Int(targetArr[i].asciiValue!) - Int(Character("a").asciiValue!)
+                    dp[k] = (dp[k] + cnt[k][c] * nxt) % MOD
+                }
+                nxt = cur
+            }
+            dp[m] = 0
+        }
+
+        return dp[0]
+    }
+}
+```
+
+```rust
+impl Solution {
+    pub fn num_ways(words: Vec<String>, target: String) -> i32 {
+        const MOD: i64 = 1_000_000_007;
+        let target = target.as_bytes();
+        let n = target.len();
+        let m = words[0].len();
+
+        let mut cnt = vec![vec![0i64; 26]; m];
+        for word in &words {
+            for (i, &b) in word.as_bytes().iter().enumerate() {
+                cnt[i][(b - b'a') as usize] += 1;
+            }
+        }
+
+        let mut dp = vec![0i64; m + 1];
+        dp[m] = 1;
+
+        for i in (0..=n).rev() {
+            let mut nxt: i64 = if i == n - 1 { 1 } else { 0 };
+            for k in (0..m).rev() {
+                let cur = dp[k];
+                dp[k] = dp[k + 1];
+                if i < n {
+                    let c = (target[i] - b'a') as usize;
+                    dp[k] = (dp[k] + cnt[k][c] * nxt) % MOD;
+                }
+                nxt = cur;
+            }
+            dp[m] = 0;
+        }
+
+        dp[0] as i32
+    }
+}
+```
+
+::tabs-end
+
+### Time & Space Complexity
+
+- Time complexity: $O(m * (n + N))$
+- Space complexity: $O(m)$
+
+> Where $N$ is the number of words, $m$ is the length of each word, and $n$ is the length of the $target$ string.
+
+---
+
+## Common Pitfalls
+
+### Forgetting to Precompute Character Frequencies
+
+A common mistake is iterating through all words at each step to count matching characters. This leads to TLE because the time complexity becomes $O(N)$ per state transition. Instead, precompute a frequency table `cnt[k][c]` storing how many words have character `c` at column `k` before starting the DP.
+
+### Integer Overflow When Multiplying Count by DP Value
+
+When computing `cnt[k][c] * dp[i+1][k+1]`, both values can be large. In languages like Java and C++, multiplying two `int` values can overflow before the modulo operation is applied. Always cast to `long` or `long long` before multiplication: `(long) cnt[k][c] * dp[i+1][k+1] % MOD`.
+
+### Using Wrong Base Case for Bottom-Up DP
+
+In bottom-up DP, the base case placement matters. Setting `dp[n][k] = 1` for all `k` is incorrect because only `dp[n][m] = 1` represents a valid completion (target fully matched at the end). The recurrence `dp[i][k] = dp[i][k+1]` propagates this value correctly, but initializing all `dp[n][k] = 1` would overcount.
+
+### Confusing Column Index with Target Index
+
+The DP state involves two indices: `i` for the target position and `k` for the column in words. A common error is swapping their roles or forgetting that `k` can skip ahead (we can skip columns) while `i` must advance exactly by 1 each time we pick a character. The column index `k` must always be at least as large as the target index `i`.
+
+### Not Handling Target Longer Than Word Length
+
+If the target string is longer than the word length (`n > m`), it is impossible to form the target since we need at least `n` columns. The algorithm should return `0` in this case. While the recursion handles this naturally (running out of columns before finishing target), explicitly checking can prevent unnecessary computation.

@@ -1,0 +1,2055 @@
+## Prerequisites
+
+Before attempting this problem, you should be comfortable with:
+
+- **Recursion** - Exploring all possible split points by recursively solving subproblems
+- **Dynamic Programming** - Using memoization or tabulation to cache overlapping subproblems
+- **Binary Search on Answer** - Searching for the minimum feasible value when the check function is monotonic
+- **Greedy Algorithms** - Validating a candidate answer by greedily forming subarrays
+- **Prefix Sums** - Efficiently computing subarray sums for optimized feasibility checks
+
+---
+
+## 1. Recursion
+
+### Intuition
+
+We want to split the array into k subarrays and minimize the maximum sum among them. Using recursion, we try every possible way to form the first subarray, then recursively solve for the remaining elements with k-1 subarrays. For each split point, we track the maximum sum between the current subarray and the best result from the recursive call, then take the minimum across all choices.
+
+### Algorithm
+
+1. Define `dfs(i, m)` where `i` is the starting index and `m` is the number of subarrays left to form.
+2. Base cases: if `i == n` and `m == 0`, return `0` (valid split). If either condition fails alone, return infinity (invalid).
+3. For each possible endpoint `j` of the current subarray:
+    - Accumulate the sum from index `i` to `j`.
+    - Recursively solve `dfs(j + 1, m - 1)` for the remaining portion.
+    - Track `min(res, max(curSum, recursiveResult))`.
+4. Return the result of `dfs(0, k)`.
+
+::tabs-start
+
+```python
+class Solution:
+    def splitArray(self, nums: List[int], k: int) -> int:
+        n = len(nums)
+
+        def dfs(i, m):
+            if i == n:
+                return 0 if m == 0 else float("inf")
+            if m == 0:
+                return float("inf")
+
+            res = float("inf")
+            curSum = 0
+            for j in range(i, n - m + 1):
+                curSum += nums[j]
+                res = min(res, max(curSum, dfs(j + 1, m - 1)))
+
+            return res
+
+        return dfs(0, k)
+```
+
+```java
+public class Solution {
+    public int splitArray(int[] nums, int k) {
+        int n = nums.length;
+
+        return dfs(nums, 0, k, n);
+    }
+
+    private int dfs(int[] nums, int i, int m, int n) {
+        if (i == n) {
+            return m == 0 ? 0 : Integer.MAX_VALUE;
+        }
+        if (m == 0) {
+            return Integer.MAX_VALUE;
+        }
+
+        int res = Integer.MAX_VALUE;
+        int curSum = 0;
+        for (int j = i; j <= n - m; j++) {
+            curSum += nums[j];
+            res = Math.min(res, Math.max(curSum, dfs(nums, j + 1, m - 1, n)));
+        }
+
+        return res;
+    }
+}
+```
+
+```cpp
+class Solution {
+public:
+    int splitArray(vector<int>& nums, int k) {
+        int n = nums.size();
+        return dfs(nums, 0, k, n);
+    }
+
+private:
+    int dfs(vector<int>& nums, int i, int m, int n) {
+        if (i == n) {
+            return m == 0 ? 0 : INT_MAX;
+        }
+        if (m == 0) {
+            return INT_MAX;
+        }
+
+        int res = INT_MAX, curSum = 0;
+        for (int j = i; j <= n - m; j++) {
+            curSum += nums[j];
+            res = min(res, max(curSum, dfs(nums, j + 1, m - 1, n)));
+        }
+
+        return res;
+    }
+};
+```
+
+```javascript
+class Solution {
+    /**
+     * @param {number[]} nums
+     * @param {number} k
+     * @return {number}
+     */
+    splitArray(nums, k) {
+        const n = nums.length;
+
+        const dfs = (i, m) => {
+            if (i === n) {
+                return m === 0 ? 0 : Infinity;
+            }
+            if (m === 0) {
+                return Infinity;
+            }
+
+            let res = Infinity;
+            let curSum = 0;
+            for (let j = i; j <= n - m; j++) {
+                curSum += nums[j];
+                res = Math.min(res, Math.max(curSum, dfs(j + 1, m - 1)));
+            }
+
+            return res;
+        };
+
+        return dfs(0, k);
+    }
+}
+```
+
+```csharp
+public class Solution {
+    public int SplitArray(int[] nums, int k) {
+        int n = nums.Length;
+        return Dfs(nums, 0, k, n);
+    }
+
+    private int Dfs(int[] nums, int i, int m, int n) {
+        if (i == n) {
+            return m == 0 ? 0 : int.MaxValue;
+        }
+        if (m == 0) {
+            return int.MaxValue;
+        }
+
+        int res = int.MaxValue;
+        int curSum = 0;
+        for (int j = i; j <= n - m; j++) {
+            curSum += nums[j];
+            int next = Dfs(nums, j + 1, m - 1, n);
+            if (next != int.MaxValue) {
+                res = Math.Min(res, Math.Max(curSum, next));
+            }
+        }
+
+        return res;
+    }
+}
+```
+
+```go
+func splitArray(nums []int, k int) int {
+    n := len(nums)
+
+    var dfs func(i, m int) int
+    dfs = func(i, m int) int {
+        if i == n {
+            if m == 0 {
+                return 0
+            }
+            return math.MaxInt32
+        }
+        if m == 0 {
+            return math.MaxInt32
+        }
+
+        res := math.MaxInt32
+        curSum := 0
+        for j := i; j <= n-m; j++ {
+            curSum += nums[j]
+            next := dfs(j+1, m-1)
+            if next != math.MaxInt32 {
+                res = min(res, max(curSum, next))
+            }
+        }
+
+        return res
+    }
+
+    return dfs(0, k)
+}
+```
+
+```kotlin
+class Solution {
+    fun splitArray(nums: IntArray, k: Int): Int {
+        val n = nums.size
+
+        fun dfs(i: Int, m: Int): Int {
+            if (i == n) {
+                return if (m == 0) 0 else Int.MAX_VALUE
+            }
+            if (m == 0) {
+                return Int.MAX_VALUE
+            }
+
+            var res = Int.MAX_VALUE
+            var curSum = 0
+            for (j in i until n - m + 1) {
+                curSum += nums[j]
+                val next = dfs(j + 1, m - 1)
+                if (next != Int.MAX_VALUE) {
+                    res = minOf(res, maxOf(curSum, next))
+                }
+            }
+
+            return res
+        }
+
+        return dfs(0, k)
+    }
+}
+```
+
+```swift
+class Solution {
+    func splitArray(_ nums: [Int], _ k: Int) -> Int {
+        let n = nums.count
+
+        func dfs(_ i: Int, _ m: Int) -> Int {
+            if i == n {
+                return m == 0 ? 0 : Int.max
+            }
+            if m == 0 {
+                return Int.max
+            }
+
+            var res = Int.max
+            var curSum = 0
+            for j in i...(n - m) {
+                curSum += nums[j]
+                let next = dfs(j + 1, m - 1)
+                if next != Int.max {
+                    res = min(res, max(curSum, next))
+                }
+            }
+
+            return res
+        }
+
+        return dfs(0, k)
+    }
+}
+```
+
+```rust
+impl Solution {
+    pub fn split_array(nums: Vec<i32>, k: i32) -> i32 {
+        let n = nums.len();
+
+        fn dfs(nums: &[i32], i: usize, m: usize, n: usize) -> i32 {
+            if i == n {
+                return if m == 0 { 0 } else { i32::MAX };
+            }
+            if m == 0 {
+                return i32::MAX;
+            }
+            let mut res = i32::MAX;
+            let mut cur_sum = 0;
+            for j in i..=n - m {
+                cur_sum += nums[j];
+                let next = dfs(nums, j + 1, m - 1, n);
+                if next != i32::MAX {
+                    res = res.min(cur_sum.max(next));
+                }
+            }
+            res
+        }
+
+        dfs(&nums, 0, k as usize, n)
+    }
+}
+```
+
+::tabs-end
+
+### Time & Space Complexity
+
+- Time complexity: $O(n * 2 ^ n)$
+- Space complexity: $O(n)$ for recursion stack.
+
+---
+
+## 2. Dynamic Programming (Top-Down)
+
+### Intuition
+
+The recursive solution has overlapping subproblems since we may compute `dfs(i, m)` multiple times with the same parameters. By caching results in a memoization table, we avoid redundant computation. The state is defined by the current index and remaining subarrays to form.
+
+### Algorithm
+
+1. Create a 2D memoization table `dp[n][k+1]` initialized to `-1`.
+2. Use the same recursive structure as the brute force approach.
+3. Before computing, check if `dp[i][m]` is already computed. If so, return the cached value.
+4. After computing the result for state `(i, m)`, store it in `dp[i][m]`.
+5. Return `dfs(0, k)`.
+
+::tabs-start
+
+```python
+class Solution:
+    def splitArray(self, nums: List[int], k: int) -> int:
+        n = len(nums)
+        dp = [[-1] * (k + 1) for _ in range(n)]
+
+        def dfs(i, m):
+            if i == n:
+                return 0 if m == 0 else float("inf")
+            if m == 0:
+                return float("inf")
+            if dp[i][m] != -1:
+                return dp[i][m]
+
+            res = float("inf")
+            curSum = 0
+            for j in range(i, n - m + 1):
+                curSum += nums[j]
+                res = min(res, max(curSum, dfs(j + 1, m - 1)))
+
+            dp[i][m] = res
+            return res
+
+        return dfs(0, k)
+```
+
+```java
+public class Solution {
+    private int[][] dp;
+
+    public int splitArray(int[] nums, int k) {
+        int n = nums.length;
+        dp = new int[n][k + 1];
+        for (int[] it : dp) {
+            Arrays.fill(it, -1);
+        }
+        return dfs(nums, 0, k, n);
+    }
+
+    private int dfs(int[] nums, int i, int m, int n) {
+        if (i == n) {
+            return m == 0 ? 0 : Integer.MAX_VALUE;
+        }
+        if (m == 0) {
+            return Integer.MAX_VALUE;
+        }
+        if (dp[i][m] != -1) {
+            return dp[i][m];
+        }
+
+        int res = Integer.MAX_VALUE;
+        int curSum = 0;
+        for (int j = i; j <= n - m; j++) {
+            curSum += nums[j];
+            res = Math.min(res, Math.max(curSum, dfs(nums, j + 1, m - 1, n)));
+        }
+
+        return dp[i][m] = res;
+    }
+}
+```
+
+```cpp
+class Solution {
+    vector<vector<int>> dp;
+
+public:
+    int splitArray(vector<int>& nums, int k) {
+        int n = nums.size();
+        dp.assign(n, vector<int>(k + 1, -1));
+        return dfs(nums, 0, k, n);
+    }
+
+private:
+    int dfs(vector<int>& nums, int i, int m, int n) {
+        if (i == n) {
+            return m == 0 ? 0 : INT_MAX;
+        }
+        if (m == 0) {
+            return INT_MAX;
+        }
+        if (dp[i][m] != -1) {
+            return dp[i][m];
+        }
+
+        int res = INT_MAX, curSum = 0;
+        for (int j = i; j <= n - m; j++) {
+            curSum += nums[j];
+            res = min(res, max(curSum, dfs(nums, j + 1, m - 1, n)));
+        }
+
+        return dp[i][m] = res;
+    }
+};
+```
+
+```javascript
+class Solution {
+    /**
+     * @param {number[]} nums
+     * @param {number} k
+     * @return {number}
+     */
+    splitArray(nums, k) {
+        const n = nums.length;
+        const dp = Array.from({ length: n }, () => Array(k + 1).fill(-1));
+
+        const dfs = (i, m) => {
+            if (i === n) {
+                return m === 0 ? 0 : Infinity;
+            }
+            if (m === 0) {
+                return Infinity;
+            }
+            if (dp[i][m] !== -1) {
+                return dp[i][m];
+            }
+
+            let res = Infinity;
+            let curSum = 0;
+            for (let j = i; j <= n - m; j++) {
+                curSum += nums[j];
+                res = Math.min(res, Math.max(curSum, dfs(j + 1, m - 1)));
+            }
+
+            return (dp[i][m] = res);
+        };
+
+        return dfs(0, k);
+    }
+}
+```
+
+```csharp
+public class Solution {
+    private int[,] dp;
+
+    public int SplitArray(int[] nums, int k) {
+        int n = nums.Length;
+        dp = new int[n, k + 1];
+
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j <= k; j++) {
+                dp[i, j] = -1;
+            }
+        }
+
+        return Dfs(nums, 0, k, n);
+    }
+
+    private int Dfs(int[] nums, int i, int m, int n) {
+        if (i == n) {
+            return m == 0 ? 0 : int.MaxValue;
+        }
+        if (m == 0) {
+            return int.MaxValue;
+        }
+        if (dp[i, m] != -1) {
+            return dp[i, m];
+        }
+
+        int res = int.MaxValue;
+        int curSum = 0;
+        for (int j = i; j <= n - m; j++) {
+            curSum += nums[j];
+            int next = Dfs(nums, j + 1, m - 1, n);
+            if (next != int.MaxValue) {
+                res = Math.Min(res, Math.Max(curSum, next));
+            }
+        }
+
+        dp[i, m] = res;
+        return res;
+    }
+}
+```
+
+```go
+func splitArray(nums []int, k int) int {
+    n := len(nums)
+    dp := make([][]int, n)
+    for i := range dp {
+        dp[i] = make([]int, k+1)
+        for j := range dp[i] {
+            dp[i][j] = -1
+        }
+    }
+
+    var dfs func(i, m int) int
+    dfs = func(i, m int) int {
+        if i == n {
+            if m == 0 {
+                return 0
+            }
+            return math.MaxInt32
+        }
+        if m == 0 {
+            return math.MaxInt32
+        }
+        if dp[i][m] != -1 {
+            return dp[i][m]
+        }
+
+        res := math.MaxInt32
+        curSum := 0
+        for j := i; j <= n-m; j++ {
+            curSum += nums[j]
+            next := dfs(j+1, m-1)
+            if next != math.MaxInt32 {
+                res = min(res, max(curSum, next))
+            }
+        }
+
+        dp[i][m] = res
+        return res
+    }
+
+    return dfs(0, k)
+}
+```
+
+```kotlin
+class Solution {
+    fun splitArray(nums: IntArray, k: Int): Int {
+        val n = nums.size
+        val dp = Array(n) { IntArray(k + 1) { -1 } }
+
+        fun dfs(i: Int, m: Int): Int {
+            if (i == n) {
+                return if (m == 0) 0 else Int.MAX_VALUE
+            }
+            if (m == 0) {
+                return Int.MAX_VALUE
+            }
+            if (dp[i][m] != -1) {
+                return dp[i][m]
+            }
+
+            var res = Int.MAX_VALUE
+            var curSum = 0
+            for (j in i until n - m + 1) {
+                curSum += nums[j]
+                val next = dfs(j + 1, m - 1)
+                if (next != Int.MAX_VALUE) {
+                    res = minOf(res, maxOf(curSum, next))
+                }
+            }
+
+            dp[i][m] = res
+            return res
+        }
+
+        return dfs(0, k)
+    }
+}
+```
+
+```swift
+class Solution {
+    func splitArray(_ nums: [Int], _ k: Int) -> Int {
+        let n = nums.count
+        var dp = [[Int]](repeating: [Int](repeating: -1, count: k + 1), count: n)
+
+        func dfs(_ i: Int, _ m: Int) -> Int {
+            if i == n {
+                return m == 0 ? 0 : Int.max
+            }
+            if m == 0 {
+                return Int.max
+            }
+            if dp[i][m] != -1 {
+                return dp[i][m]
+            }
+
+            var res = Int.max
+            var curSum = 0
+            for j in i...(n - m) {
+                curSum += nums[j]
+                let next = dfs(j + 1, m - 1)
+                if next != Int.max {
+                    res = min(res, max(curSum, next))
+                }
+            }
+
+            dp[i][m] = res
+            return res
+        }
+
+        return dfs(0, k)
+    }
+}
+```
+
+```rust
+impl Solution {
+    pub fn split_array(nums: Vec<i32>, k: i32) -> i32 {
+        let n = nums.len();
+        let k = k as usize;
+        let mut dp = vec![vec![-1i32; k + 1]; n];
+
+        fn dfs(nums: &[i32], i: usize, m: usize, n: usize, dp: &mut Vec<Vec<i32>>) -> i32 {
+            if i == n {
+                return if m == 0 { 0 } else { i32::MAX };
+            }
+            if m == 0 {
+                return i32::MAX;
+            }
+            if dp[i][m] != -1 {
+                return dp[i][m];
+            }
+            let mut res = i32::MAX;
+            let mut cur_sum = 0;
+            for j in i..=n - m {
+                cur_sum += nums[j];
+                let next = dfs(nums, j + 1, m - 1, n, dp);
+                if next != i32::MAX {
+                    res = res.min(cur_sum.max(next));
+                }
+            }
+            dp[i][m] = res;
+            res
+        }
+
+        dfs(&nums, 0, k, n, &mut dp)
+    }
+}
+```
+
+::tabs-end
+
+### Time & Space Complexity
+
+- Time complexity: $O(k * n ^ 2)$
+- Space complexity: $O(k * n)$
+
+> Where $n$ is the size of the array $nums$ and $k$ is the number of sub-arrays to form.
+
+---
+
+## 3. Dynamic Programming (Bottom-Up)
+
+### Intuition
+
+We can convert the top-down approach to bottom-up by filling the DP table iteratively. We build solutions for smaller subproblems first (fewer subarrays, starting from the end of the array) and use them to solve larger problems. The table `dp[i][m]` represents the minimum largest sum when splitting elements from index `i` to the end into `m` subarrays.
+
+### Algorithm
+
+1. Create `dp[n+1][k+1]` initialized to infinity, with `dp[n][0] = 0` as the base case.
+2. For each number of subarrays `m` from `1` to `k`:
+    - For each starting index `i` from `n-1` down to `0`:
+        - Try all possible endpoints `j` for the first subarray.
+        - Compute `dp[i][m] = min(dp[i][m], max(curSum, dp[j+1][m-1]))`.
+3. Return `dp[0][k]`.
+
+::tabs-start
+
+```python
+class Solution:
+    def splitArray(self, nums: List[int], k: int) -> int:
+        n = len(nums)
+        dp = [[float("inf")] * (k + 1) for _ in range(n + 1)]
+        dp[n][0] = 0
+
+        for m in range(1, k + 1):
+            for i in range(n - 1, -1, -1):
+                curSum = 0
+                for j in range(i, n - m + 1):
+                    curSum += nums[j]
+                    dp[i][m] = min(dp[i][m], max(curSum, dp[j + 1][m - 1]))
+
+        return dp[0][k]
+```
+
+```java
+public class Solution {
+    public int splitArray(int[] nums, int k) {
+        int n = nums.length;
+        int[][] dp = new int[n + 1][k + 1];
+        for (int[] it : dp) {
+            Arrays.fill(it, Integer.MAX_VALUE);
+        }
+        dp[n][0] = 0;
+
+        for (int m = 1; m <= k; m++) {
+            for (int i = n - 1; i >= 0; i--) {
+                int curSum = 0;
+                for (int j = i; j < n - m + 1; j++) {
+                    curSum += nums[j];
+                    dp[i][m] = Math.min(dp[i][m], Math.max(curSum, dp[j + 1][m - 1]));
+                }
+            }
+        }
+
+        return dp[0][k];
+    }
+}
+```
+
+```cpp
+class Solution {
+public:
+    int splitArray(vector<int>& nums, int k) {
+        int n = nums.size();
+        vector<vector<int>> dp(n + 1, vector<int>(k + 1, INT_MAX));
+        dp[n][0] = 0;
+
+        for (int m = 1; m <= k; m++) {
+            for (int i = n - 1; i >= 0; i--) {
+                int curSum = 0;
+                for (int j = i; j < n - m + 1; j++) {
+                    curSum += nums[j];
+                    dp[i][m] = min(dp[i][m], max(curSum, dp[j + 1][m - 1]));
+                }
+            }
+        }
+
+        return dp[0][k];
+    }
+};
+```
+
+```javascript
+class Solution {
+    /**
+     * @param {number[]} nums
+     * @param {number} k
+     * @return {number}
+     */
+    splitArray(nums, k) {
+        const n = nums.length;
+        const dp = Array.from({ length: n + 1 }, () =>
+            Array(k + 1).fill(Infinity),
+        );
+        dp[n][0] = 0;
+
+        for (let m = 1; m <= k; m++) {
+            for (let i = n - 1; i >= 0; i--) {
+                let curSum = 0;
+                for (let j = i; j < n - m + 1; j++) {
+                    curSum += nums[j];
+                    dp[i][m] = Math.min(
+                        dp[i][m],
+                        Math.max(curSum, dp[j + 1][m - 1]),
+                    );
+                }
+            }
+        }
+
+        return dp[0][k];
+    }
+}
+```
+
+```csharp
+public class Solution {
+    public int SplitArray(int[] nums, int k) {
+        int n = nums.Length;
+        int[,] dp = new int[n + 1, k + 1];
+
+        for (int i = 0; i <= n; i++) {
+            for (int j = 0; j <= k; j++) {
+                dp[i, j] = int.MaxValue;
+            }
+        }
+
+        dp[n, 0] = 0;
+
+        for (int m = 1; m <= k; m++) {
+            for (int i = n - 1; i >= 0; i--) {
+                int curSum = 0;
+                for (int j = i; j < n - m + 1; j++) {
+                    curSum += nums[j];
+                    if (dp[j + 1, m - 1] != int.MaxValue) {
+                        dp[i, m] = Math.Min(dp[i, m], Math.Max(curSum, dp[j + 1, m - 1]));
+                    }
+                }
+            }
+        }
+
+        return dp[0, k];
+    }
+}
+```
+
+```go
+func splitArray(nums []int, k int) int {
+    n := len(nums)
+    dp := make([][]int, n+1)
+    for i := range dp {
+        dp[i] = make([]int, k+1)
+        for j := range dp[i] {
+            dp[i][j] = math.MaxInt32
+        }
+    }
+    dp[n][0] = 0
+
+    for m := 1; m <= k; m++ {
+        for i := n - 1; i >= 0; i-- {
+            curSum := 0
+            for j := i; j < n-m+1; j++ {
+                curSum += nums[j]
+                if dp[j+1][m-1] != math.MaxInt32 {
+                    dp[i][m] = min(dp[i][m], max(curSum, dp[j+1][m-1]))
+                }
+            }
+        }
+    }
+
+    return dp[0][k]
+}
+```
+
+```kotlin
+class Solution {
+    fun splitArray(nums: IntArray, k: Int): Int {
+        val n = nums.size
+        val dp = Array(n + 1) { IntArray(k + 1) { Int.MAX_VALUE } }
+        dp[n][0] = 0
+
+        for (m in 1..k) {
+            for (i in n - 1 downTo 0) {
+                var curSum = 0
+                for (j in i until n - m + 1) {
+                    curSum += nums[j]
+                    if (dp[j + 1][m - 1] != Int.MAX_VALUE) {
+                        dp[i][m] = minOf(dp[i][m], maxOf(curSum, dp[j + 1][m - 1]))
+                    }
+                }
+            }
+        }
+
+        return dp[0][k]
+    }
+}
+```
+
+```swift
+class Solution {
+    func splitArray(_ nums: [Int], _ k: Int) -> Int {
+        let n = nums.count
+        var dp = [[Int]](repeating: [Int](repeating: Int.max, count: k + 1), count: n + 1)
+        dp[n][0] = 0
+
+        for m in 1...k {
+            for i in stride(from: n - 1, through: 0, by: -1) {
+                var curSum = 0
+                for j in i..<(n - m + 1) {
+                    curSum += nums[j]
+                    if dp[j + 1][m - 1] != Int.max {
+                        dp[i][m] = min(dp[i][m], max(curSum, dp[j + 1][m - 1]))
+                    }
+                }
+            }
+        }
+
+        return dp[0][k]
+    }
+}
+```
+
+```rust
+impl Solution {
+    pub fn split_array(nums: Vec<i32>, k: i32) -> i32 {
+        let n = nums.len();
+        let k = k as usize;
+        let mut dp = vec![vec![i32::MAX; k + 1]; n + 1];
+        dp[n][0] = 0;
+
+        for m in 1..=k {
+            for i in (0..n).rev() {
+                let mut cur_sum = 0;
+                for j in i..n - m + 1 {
+                    cur_sum += nums[j];
+                    if dp[j + 1][m - 1] != i32::MAX {
+                        dp[i][m] = dp[i][m].min(cur_sum.max(dp[j + 1][m - 1]));
+                    }
+                }
+            }
+        }
+
+        dp[0][k]
+    }
+}
+```
+
+::tabs-end
+
+### Time & Space Complexity
+
+- Time complexity: $O(k * n ^ 2)$
+- Space complexity: $O(k * n)$
+
+> Where $n$ is the size of the array $nums$ and $k$ is the number of sub-arrays to form.
+
+---
+
+## 4. Dynamic Programming (Space Optimized)
+
+### Intuition
+
+In the bottom-up approach, computing `dp[i][m]` only depends on values from `dp[...][m-1]`. We can reduce space from O(k \* n) to O(n) by using two 1D arrays: one for the previous layer and one for the current layer, swapping them after each iteration.
+
+### Algorithm
+
+1. Create two 1D arrays `dp` and `nextDp` of size `n+1`, initialized to infinity with `dp[n] = 0`.
+2. For each number of subarrays `m` from `1` to `k`:
+    - Reset `nextDp` to infinity.
+    - For each starting index `i`, compute the minimum largest sum using the previous `dp` array.
+    - Swap `dp` and `nextDp`.
+3. Return `dp[0]`.
+
+::tabs-start
+
+```python
+class Solution:
+    def splitArray(self, nums: List[int], k: int) -> int:
+        n = len(nums)
+        dp = [float("inf")] * (n + 1)
+        dp[n] = 0
+
+        for m in range(1, k + 1):
+            nextDp = [float("inf")] * (n + 1)
+            for i in range(n - 1, -1, -1):
+                curSum = 0
+                for j in range(i, n - m + 1):
+                    curSum += nums[j]
+                    nextDp[i] = min(nextDp[i], max(curSum, dp[j + 1]))
+            dp = nextDp
+
+        return dp[0]
+```
+
+```java
+public class Solution {
+    public int splitArray(int[] nums, int k) {
+        int n = nums.length;
+        int[] dp = new int[n + 1];
+        int[] nextDp = new int[n + 1];
+        Arrays.fill(dp, Integer.MAX_VALUE);
+        dp[n] = 0;
+
+        for (int m = 1; m <= k; m++) {
+            Arrays.fill(nextDp, Integer.MAX_VALUE);
+            for (int i = n - 1; i >= 0; i--) {
+                int curSum = 0;
+                for (int j = i; j < n - m + 1; j++) {
+                    curSum += nums[j];
+                    nextDp[i] = Math.min(nextDp[i], Math.max(curSum, dp[j + 1]));
+                }
+            }
+            int[] temp = dp;
+            dp = nextDp;
+            nextDp = temp;
+        }
+
+        return dp[0];
+    }
+}
+```
+
+```cpp
+class Solution {
+public:
+    int splitArray(vector<int>& nums, int k) {
+        int n = nums.size();
+        vector<int> dp(n + 1, INT_MAX), nextDp(n + 1, INT_MAX);
+        dp[n] = 0;
+
+        for (int m = 1; m <= k; m++) {
+            fill(nextDp.begin(), nextDp.end(), INT_MAX);
+            for (int i = n - 1; i >= 0; i--) {
+                int curSum = 0;
+                for (int j = i; j < n - m + 1; j++) {
+                    curSum += nums[j];
+                    nextDp[i] = min(nextDp[i], max(curSum, dp[j + 1]));
+                }
+            }
+            dp.swap(nextDp);
+        }
+
+        return dp[0];
+    }
+};
+```
+
+```javascript
+class Solution {
+    /**
+     * @param {number[]} nums
+     * @param {number} k
+     * @return {number}
+     */
+    splitArray(nums, k) {
+        const n = nums.length;
+        let dp = new Array(n + 1).fill(Infinity);
+        let nextDp = new Array(n + 1).fill(Infinity);
+        dp[n] = 0;
+
+        for (let m = 1; m <= k; m++) {
+            nextDp.fill(Infinity);
+            for (let i = n - 1; i >= 0; i--) {
+                let curSum = 0;
+                for (let j = i; j < n - m + 1; j++) {
+                    curSum += nums[j];
+                    nextDp[i] = Math.min(
+                        nextDp[i],
+                        Math.max(curSum, dp[j + 1]),
+                    );
+                }
+            }
+            [dp, nextDp] = [nextDp, dp];
+        }
+
+        return dp[0];
+    }
+}
+```
+
+```csharp
+public class Solution {
+    public int SplitArray(int[] nums, int k) {
+        int n = nums.Length;
+        int[] dp = new int[n + 1];
+        int[] nextDp = new int[n + 1];
+        Array.Fill(dp, int.MaxValue);
+        dp[n] = 0;
+
+        for (int m = 1; m <= k; m++) {
+            Array.Fill(nextDp, int.MaxValue);
+            for (int i = n - 1; i >= 0; i--) {
+                int curSum = 0;
+                for (int j = i; j < n - m + 1; j++) {
+                    curSum += nums[j];
+                    if (dp[j + 1] != int.MaxValue) {
+                        nextDp[i] = Math.Min(nextDp[i], Math.Max(curSum, dp[j + 1]));
+                    }
+                }
+            }
+            var temp = dp;
+            dp = nextDp;
+            nextDp = temp;
+        }
+
+        return dp[0];
+    }
+}
+```
+
+```go
+func splitArray(nums []int, k int) int {
+    n := len(nums)
+    dp := make([]int, n+1)
+    nextDp := make([]int, n+1)
+    for i := range dp {
+        dp[i] = math.MaxInt32
+    }
+    dp[n] = 0
+
+    for m := 1; m <= k; m++ {
+        for i := range nextDp {
+            nextDp[i] = math.MaxInt32
+        }
+        for i := n - 1; i >= 0; i-- {
+            curSum := 0
+            for j := i; j < n-m+1; j++ {
+                curSum += nums[j]
+                if dp[j+1] != math.MaxInt32 {
+                    nextDp[i] = min(nextDp[i], max(curSum, dp[j+1]))
+                }
+            }
+        }
+        dp, nextDp = nextDp, dp
+    }
+
+    return dp[0]
+}
+```
+
+```kotlin
+class Solution {
+    fun splitArray(nums: IntArray, k: Int): Int {
+        val n = nums.size
+        var dp = IntArray(n + 1) { Int.MAX_VALUE }
+        var nextDp = IntArray(n + 1) { Int.MAX_VALUE }
+        dp[n] = 0
+
+        for (m in 1..k) {
+            nextDp.fill(Int.MAX_VALUE)
+            for (i in n - 1 downTo 0) {
+                var curSum = 0
+                for (j in i until n - m + 1) {
+                    curSum += nums[j]
+                    if (dp[j + 1] != Int.MAX_VALUE) {
+                        nextDp[i] = minOf(nextDp[i], maxOf(curSum, dp[j + 1]))
+                    }
+                }
+            }
+            val temp = dp
+            dp = nextDp
+            nextDp = temp
+        }
+
+        return dp[0]
+    }
+}
+```
+
+```swift
+class Solution {
+    func splitArray(_ nums: [Int], _ k: Int) -> Int {
+        let n = nums.count
+        var dp = [Int](repeating: Int.max, count: n + 1)
+        var nextDp = [Int](repeating: Int.max, count: n + 1)
+        dp[n] = 0
+
+        for m in 1...k {
+            for i in 0...n {
+                nextDp[i] = Int.max
+            }
+            for i in stride(from: n - 1, through: 0, by: -1) {
+                var curSum = 0
+                for j in i..<(n - m + 1) {
+                    curSum += nums[j]
+                    if dp[j + 1] != Int.max {
+                        nextDp[i] = min(nextDp[i], max(curSum, dp[j + 1]))
+                    }
+                }
+            }
+            swap(&dp, &nextDp)
+        }
+
+        return dp[0]
+    }
+}
+```
+
+```rust
+impl Solution {
+    pub fn split_array(nums: Vec<i32>, k: i32) -> i32 {
+        let n = nums.len();
+        let k = k as usize;
+        let mut dp = vec![i32::MAX; n + 1];
+        let mut next_dp = vec![i32::MAX; n + 1];
+        dp[n] = 0;
+
+        for m in 1..=k {
+            next_dp.fill(i32::MAX);
+            for i in (0..n).rev() {
+                let mut cur_sum = 0;
+                for j in i..n - m + 1 {
+                    cur_sum += nums[j];
+                    if dp[j + 1] != i32::MAX {
+                        next_dp[i] = next_dp[i].min(cur_sum.max(dp[j + 1]));
+                    }
+                }
+            }
+            std::mem::swap(&mut dp, &mut next_dp);
+        }
+
+        dp[0]
+    }
+}
+```
+
+::tabs-end
+
+### Time & Space Complexity
+
+- Time complexity: $O(k * n ^ 2)$
+- Space complexity: $O(n)$
+
+> Where $n$ is the size of the array $nums$ and $k$ is the number of sub-arrays to form.
+
+---
+
+## 5. Binary Search
+
+### Intuition
+
+Instead of trying all possible splits, we binary search on the answer itself. The minimum possible largest sum is the maximum element (when k equals n), and the maximum is the total sum (when k equals 1). For a given target sum, we greedily check if we can split the array into at most k subarrays where no subarray exceeds the target. If possible, we try a smaller target; otherwise, we need a larger one.
+
+### Algorithm
+
+1. Set `l = max(nums)` and `r = sum(nums)`.
+2. Binary search while `l <= r`:
+    - For `mid`, check if we can split into at most `k` subarrays with max sum `<= mid`.
+    - The check greedily adds elements until the sum exceeds `mid`, then starts a new subarray.
+    - If feasible, record `mid` as a candidate and search for smaller values.
+    - Otherwise, search for larger values.
+3. Return the smallest feasible value.
+
+::tabs-start
+
+```python
+class Solution:
+    def splitArray(self, nums: List[int], k: int) -> int:
+        def canSplit(largest):
+            subarray = 1
+            curSum = 0
+            for num in nums:
+                curSum += num
+                if curSum > largest:
+                    subarray += 1
+                    if subarray > k:
+                        return False
+                    curSum = num
+            return True
+
+        l, r = max(nums), sum(nums)
+        res = r
+        while l <= r:
+            mid = l + (r - l) // 2
+            if canSplit(mid):
+                res = mid
+                r = mid - 1
+            else:
+                l = mid + 1
+        return res
+```
+
+```java
+public class Solution {
+    public int splitArray(int[] nums, int k) {
+        int l = 0, r = 0, res = 0;
+        for (int num : nums) {
+            l = Math.max(l, num);
+            r += num;
+        }
+        res = r;
+
+        while (l <= r) {
+            int mid = l + (r - l) / 2;
+            if (canSplit(nums, k, mid)) {
+                res = mid;
+                r = mid - 1;
+            } else {
+                l = mid + 1;
+            }
+        }
+        return res;
+    }
+
+    private boolean canSplit(int[] nums, int k, int largest) {
+        int subarray = 1, curSum = 0;
+        for (int num : nums) {
+            curSum += num;
+            if (curSum > largest) {
+                subarray++;
+                if (subarray > k) return false;
+                curSum = num;
+            }
+        }
+        return true;
+    }
+}
+```
+
+```cpp
+class Solution {
+public:
+    int splitArray(vector<int>& nums, int k) {
+        int l = *max_element(nums.begin(), nums.end());
+        int r = accumulate(nums.begin(), nums.end(), 0);
+        int res = r;
+
+        while (l <= r) {
+            int mid = l + (r - l) / 2;
+            if (canSplit(nums, k, mid)) {
+                res = mid;
+                r = mid - 1;
+            } else {
+                l = mid + 1;
+            }
+        }
+        return res;
+    }
+
+private:
+    bool canSplit(vector<int>& nums, int k, int largest) {
+        int subarray = 1, curSum = 0;
+        for (int num : nums) {
+            curSum += num;
+            if (curSum > largest) {
+                subarray++;
+                if (subarray > k) return 0;
+                curSum = num;
+            }
+        }
+        return true;
+    }
+};
+```
+
+```javascript
+class Solution {
+    /**
+     * @param {number[]} nums
+     * @param {number} k
+     * @return {number}
+     */
+    splitArray(nums, k) {
+        const canSplit = (largest) => {
+            let subarray = 1,
+                curSum = 0;
+            for (const num of nums) {
+                curSum += num;
+                if (curSum > largest) {
+                    subarray++;
+                    if (subarray > k) return false;
+                    curSum = num;
+                }
+            }
+            return true;
+        };
+
+        let l = Math.max(...nums);
+        let r = nums.reduce((a, b) => a + b, 0);
+        let res = r;
+
+        while (l <= r) {
+            const mid = Math.floor(l + (r - l) / 2);
+            if (canSplit(mid)) {
+                res = mid;
+                r = mid - 1;
+            } else {
+                l = mid + 1;
+            }
+        }
+        return res;
+    }
+}
+```
+
+```csharp
+public class Solution {
+    public int SplitArray(int[] nums, int k) {
+        int l = 0, r = 0, res = 0;
+        foreach (int num in nums) {
+            l = Math.Max(l, num);
+            r += num;
+        }
+        res = r;
+
+        while (l <= r) {
+            int mid = l + (r - l) / 2;
+            if (CanSplit(nums, k, mid)) {
+                res = mid;
+                r = mid - 1;
+            } else {
+                l = mid + 1;
+            }
+        }
+        return res;
+    }
+
+    private bool CanSplit(int[] nums, int k, int largest) {
+        int subarray = 1, curSum = 0;
+        foreach (int num in nums) {
+            curSum += num;
+            if (curSum > largest) {
+                subarray++;
+                if (subarray > k) return false;
+                curSum = num;
+            }
+        }
+        return true;
+    }
+}
+```
+
+```go
+func splitArray(nums []int, k int) int {
+    canSplit := func(largest int) bool {
+        subarray := 1
+        curSum := 0
+        for _, num := range nums {
+            curSum += num
+            if curSum > largest {
+                subarray++
+                if subarray > k {
+                    return false
+                }
+                curSum = num
+            }
+        }
+        return true
+    }
+
+    l, r := 0, 0
+    for _, num := range nums {
+        if num > l {
+            l = num
+        }
+        r += num
+    }
+    res := r
+
+    for l <= r {
+        mid := l + (r-l)/2
+        if canSplit(mid) {
+            res = mid
+            r = mid - 1
+        } else {
+            l = mid + 1
+        }
+    }
+    return res
+}
+```
+
+```kotlin
+class Solution {
+    fun splitArray(nums: IntArray, k: Int): Int {
+        fun canSplit(largest: Int): Boolean {
+            var subarray = 1
+            var curSum = 0
+            for (num in nums) {
+                curSum += num
+                if (curSum > largest) {
+                    subarray++
+                    if (subarray > k) return false
+                    curSum = num
+                }
+            }
+            return true
+        }
+
+        var l = nums.max()
+        var r = nums.sum()
+        var res = r
+
+        while (l <= r) {
+            val mid = l + (r - l) / 2
+            if (canSplit(mid)) {
+                res = mid
+                r = mid - 1
+            } else {
+                l = mid + 1
+            }
+        }
+        return res
+    }
+}
+```
+
+```swift
+class Solution {
+    func splitArray(_ nums: [Int], _ k: Int) -> Int {
+        func canSplit(_ largest: Int) -> Bool {
+            var subarray = 1
+            var curSum = 0
+            for num in nums {
+                curSum += num
+                if curSum > largest {
+                    subarray += 1
+                    if subarray > k { return false }
+                    curSum = num
+                }
+            }
+            return true
+        }
+
+        var l = nums.max()!
+        var r = nums.reduce(0, +)
+        var res = r
+
+        while l <= r {
+            let mid = l + (r - l) / 2
+            if canSplit(mid) {
+                res = mid
+                r = mid - 1
+            } else {
+                l = mid + 1
+            }
+        }
+        return res
+    }
+}
+```
+
+```rust
+impl Solution {
+    pub fn split_array(nums: Vec<i32>, k: i32) -> i32 {
+        let k = k as i32;
+
+        let can_split = |largest: i32| -> bool {
+            let mut subarray = 1;
+            let mut cur_sum = 0;
+            for &num in &nums {
+                cur_sum += num;
+                if cur_sum > largest {
+                    subarray += 1;
+                    if subarray > k {
+                        return false;
+                    }
+                    cur_sum = num;
+                }
+            }
+            true
+        };
+
+        let mut l = *nums.iter().max().unwrap();
+        let mut r: i32 = nums.iter().sum();
+        let mut res = r;
+
+        while l <= r {
+            let mid = l + (r - l) / 2;
+            if can_split(mid) {
+                res = mid;
+                r = mid - 1;
+            } else {
+                l = mid + 1;
+            }
+        }
+        res
+    }
+}
+```
+
+::tabs-end
+
+### Time & Space Complexity
+
+- Time complexity: $O(n \log s)$
+- Space complexity: $O(1)$
+
+> Where $n$ is the size of the array $nums$ and $s$ is the sum of all the elements in the array.
+
+---
+
+## 6. Binary Search + Prefix Sum
+
+### Intuition
+
+We can optimize the feasibility check using prefix sums and binary search. Instead of linearly scanning to find where each subarray should end, we use binary search on the prefix sum array to find the farthest index where the subarray sum stays within the target. This speeds up the check from O(n) to O(k log n) for each candidate.
+
+### Algorithm
+
+1. Build a prefix sum array where `prefix[i]` is the sum of elements from index `0` to `i-1`.
+2. Binary search on the answer as before.
+3. In the feasibility check:
+    - For each subarray start, binary search for the rightmost end where `prefix[end] - prefix[start] <= target`.
+    - Count subarrays and verify it does not exceed `k`.
+4. Return the smallest feasible value.
+
+::tabs-start
+
+```python
+class Solution:
+    def splitArray(self, nums: List[int], k: int) -> int:
+        n = len(nums)
+        prefix = [0] * (n + 1)
+        for i in range(n):
+            prefix[i + 1] = prefix[i] + nums[i]
+
+        def canSplit(largest):
+            subarrays = 0
+            i = 0
+            while i < n:
+                l, r = i + 1, n
+                while l <= r:
+                    mid = l + (r - l) // 2
+                    if prefix[mid] - prefix[i] <= largest:
+                        l = mid + 1
+                    else:
+                        r = mid - 1
+                subarrays += 1
+                i = r
+                if subarrays > k:
+                    return False
+            return True
+
+        l, r = max(nums), sum(nums)
+        res = r
+        while l <= r:
+            mid = l + (r - l) // 2
+            if canSplit(mid):
+                res = mid
+                r = mid - 1
+            else:
+                l = mid + 1
+
+        return res
+```
+
+```java
+public class Solution {
+    private int[] prefix;
+    private int n;
+
+    public int splitArray(int[] nums, int k) {
+        n = nums.length;
+        prefix = new int[n + 1];
+        for (int i = 0; i < n; i++) {
+            prefix[i + 1] = prefix[i] + nums[i];
+        }
+
+        int l = Integer.MIN_VALUE, r = 0;
+        for (int num : nums) {
+            l = Math.max(l, num);
+            r += num;
+        }
+
+        int res = r;
+        while (l <= r) {
+            int mid = l + (r - l) / 2;
+            if (canSplit(mid, k)) {
+                res = mid;
+                r = mid - 1;
+            } else {
+                l = mid + 1;
+            }
+        }
+        return res;
+    }
+
+    private boolean canSplit(int largest, int k) {
+        int subarrays = 0, i = 0;
+        while (i < n) {
+            int l = i + 1, r = n;
+            while (l <= r) {
+                int mid = l + (r - l) / 2;
+                if (prefix[mid] - prefix[i] <= largest) {
+                    l = mid + 1;
+                } else {
+                    r = mid - 1;
+                }
+            }
+            subarrays++;
+            i = r;
+            if (subarrays > k) {
+                return false;
+            }
+        }
+        return true;
+    }
+}
+```
+
+```cpp
+class Solution {
+private:
+    vector<int> prefix;
+    int n;
+
+public:
+    int splitArray(vector<int>& nums, int k) {
+        n = nums.size();
+        prefix.resize(n + 1, 0);
+        for (int i = 0; i < n; ++i) {
+            prefix[i + 1] = prefix[i] + nums[i];
+        }
+
+        int l = *max_element(nums.begin(), nums.end());
+        int r = accumulate(nums.begin(), nums.end(), 0);
+        int res = r;
+
+        while (l <= r) {
+            int mid = l + (r - l) / 2;
+            if (canSplit(mid, k)) {
+                res = mid;
+                r = mid - 1;
+            } else {
+                l = mid + 1;
+            }
+        }
+
+        return res;
+    }
+
+private:
+    bool canSplit(int largest, int k) {
+        int subarrays = 0, i = 0;
+        while (i < n) {
+            int l = i + 1, r = n;
+            while (l <= r) {
+                int mid = l + (r - l) / 2;
+                if (prefix[mid] - prefix[i] <= largest) {
+                    l = mid + 1;
+                } else {
+                    r = mid - 1;
+                }
+            }
+            subarrays++;
+            i = r;
+            if (subarrays > k) {
+                return false;
+            }
+        }
+        return true;
+    }
+};
+```
+
+```javascript
+class Solution {
+    /**
+     * @param {number[]} nums
+     * @param {number} k
+     * @return {number}
+     */
+    splitArray(nums, k) {
+        const n = nums.length;
+        const prefix = new Array(n + 1).fill(0);
+        for (let i = 0; i < n; i++) {
+            prefix[i + 1] = prefix[i] + nums[i];
+        }
+
+        const canSplit = (largest) => {
+            let subarrays = 0,
+                i = 0;
+            while (i < n) {
+                let l = i + 1,
+                    r = n;
+                while (l <= r) {
+                    const mid = Math.floor(l + (r - l) / 2);
+                    if (prefix[mid] - prefix[i] <= largest) {
+                        l = mid + 1;
+                    } else {
+                        r = mid - 1;
+                    }
+                }
+                subarrays++;
+                i = r;
+                if (subarrays > k) {
+                    return false;
+                }
+            }
+            return true;
+        };
+
+        let l = Math.max(...nums);
+        let r = nums.reduce((a, b) => a + b, 0),
+            res = r;
+        while (l <= r) {
+            const mid = Math.floor(l + (r - l) / 2);
+            if (canSplit(mid)) {
+                res = mid;
+                r = mid - 1;
+            } else {
+                l = mid + 1;
+            }
+        }
+        return res;
+    }
+}
+```
+
+```csharp
+public class Solution {
+    private int[] prefix;
+    private int n;
+
+    public int SplitArray(int[] nums, int k) {
+        n = nums.Length;
+        prefix = new int[n + 1];
+        for (int i = 0; i < n; i++) {
+            prefix[i + 1] = prefix[i] + nums[i];
+        }
+
+        int l = int.MinValue, r = 0;
+        foreach (int num in nums) {
+            l = Math.Max(l, num);
+            r += num;
+        }
+
+        int res = r;
+        while (l <= r) {
+            int mid = l + (r - l) / 2;
+            if (CanSplit(mid, k)) {
+                res = mid;
+                r = mid - 1;
+            } else {
+                l = mid + 1;
+            }
+        }
+        return res;
+    }
+
+    private bool CanSplit(int largest, int k) {
+        int subarrays = 0, i = 0;
+        while (i < n) {
+            int l = i + 1, r = n;
+            while (l <= r) {
+                int mid = l + (r - l) / 2;
+                if (prefix[mid] - prefix[i] <= largest) {
+                    l = mid + 1;
+                } else {
+                    r = mid - 1;
+                }
+            }
+            subarrays++;
+            i = r;
+            if (subarrays > k) {
+                return false;
+            }
+        }
+        return true;
+    }
+}
+```
+
+```go
+func splitArray(nums []int, k int) int {
+    n := len(nums)
+    prefix := make([]int, n+1)
+    for i := 0; i < n; i++ {
+        prefix[i+1] = prefix[i] + nums[i]
+    }
+
+    canSplit := func(largest int) bool {
+        subarrays, i := 0, 0
+        for i < n {
+            l, r := i+1, n
+            for l <= r {
+                mid := l + (r-l)/2
+                if prefix[mid]-prefix[i] <= largest {
+                    l = mid + 1
+                } else {
+                    r = mid - 1
+                }
+            }
+            subarrays++
+            i = r
+            if subarrays > k {
+                return false
+            }
+        }
+        return true
+    }
+
+    l, r := 0, 0
+    for _, num := range nums {
+        if num > l {
+            l = num
+        }
+        r += num
+    }
+    res := r
+
+    for l <= r {
+        mid := l + (r-l)/2
+        if canSplit(mid) {
+            res = mid
+            r = mid - 1
+        } else {
+            l = mid + 1
+        }
+    }
+    return res
+}
+```
+
+```kotlin
+class Solution {
+    fun splitArray(nums: IntArray, k: Int): Int {
+        val n = nums.size
+        val prefix = IntArray(n + 1)
+        for (i in 0 until n) {
+            prefix[i + 1] = prefix[i] + nums[i]
+        }
+
+        fun canSplit(largest: Int): Boolean {
+            var subarrays = 0
+            var i = 0
+            while (i < n) {
+                var l = i + 1
+                var r = n
+                while (l <= r) {
+                    val mid = l + (r - l) / 2
+                    if (prefix[mid] - prefix[i] <= largest) {
+                        l = mid + 1
+                    } else {
+                        r = mid - 1
+                    }
+                }
+                subarrays++
+                i = r
+                if (subarrays > k) {
+                    return false
+                }
+            }
+            return true
+        }
+
+        var l = nums.max()
+        var r = nums.sum()
+        var res = r
+
+        while (l <= r) {
+            val mid = l + (r - l) / 2
+            if (canSplit(mid)) {
+                res = mid
+                r = mid - 1
+            } else {
+                l = mid + 1
+            }
+        }
+        return res
+    }
+}
+```
+
+```swift
+class Solution {
+    func splitArray(_ nums: [Int], _ k: Int) -> Int {
+        let n = nums.count
+        var prefix = [Int](repeating: 0, count: n + 1)
+        for i in 0..<n {
+            prefix[i + 1] = prefix[i] + nums[i]
+        }
+
+        func canSplit(_ largest: Int) -> Bool {
+            var subarrays = 0
+            var i = 0
+            while i < n {
+                var l = i + 1
+                var r = n
+                while l <= r {
+                    let mid = l + (r - l) / 2
+                    if prefix[mid] - prefix[i] <= largest {
+                        l = mid + 1
+                    } else {
+                        r = mid - 1
+                    }
+                }
+                subarrays += 1
+                i = r
+                if subarrays > k {
+                    return false
+                }
+            }
+            return true
+        }
+
+        var l = nums.max()!
+        var r = nums.reduce(0, +)
+        var res = r
+
+        while l <= r {
+            let mid = l + (r - l) / 2
+            if canSplit(mid) {
+                res = mid
+                r = mid - 1
+            } else {
+                l = mid + 1
+            }
+        }
+        return res
+    }
+}
+```
+
+```rust
+impl Solution {
+    pub fn split_array(nums: Vec<i32>, k: i32) -> i32 {
+        let n = nums.len();
+        let k = k as i32;
+        let mut prefix = vec![0i32; n + 1];
+        for i in 0..n {
+            prefix[i + 1] = prefix[i] + nums[i];
+        }
+
+        let can_split = |largest: i32| -> bool {
+            let mut subarrays = 0;
+            let mut i = 0;
+            while i < n {
+                let (mut l, mut r) = (i + 1, n);
+                while l <= r {
+                    let mid = l + (r - l) / 2;
+                    if prefix[mid] - prefix[i] <= largest {
+                        l = mid + 1;
+                    } else {
+                        r = mid - 1;
+                    }
+                }
+                subarrays += 1;
+                i = r;
+                if subarrays > k {
+                    return false;
+                }
+            }
+            true
+        };
+
+        let mut l = *nums.iter().max().unwrap();
+        let mut r: i32 = nums.iter().sum();
+        let mut res = r;
+
+        while l <= r {
+            let mid = l + (r - l) / 2;
+            if can_split(mid) {
+                res = mid;
+                r = mid - 1;
+            } else {
+                l = mid + 1;
+            }
+        }
+        res
+    }
+}
+```
+
+::tabs-end
+
+### Time & Space Complexity
+
+- Time complexity: $O(n + (k * \log n * \log s))$
+- Space complexity: $O(n)$
+
+> Where $n$ is the size of the array $nums$, $s$ is the sum of all the elements in the array, and $k$ is the number of sub-arrays to form.
+
+---
+
+## Common Pitfalls
+
+### Setting Incorrect Binary Search Bounds
+
+The lower bound must be `max(nums)` (not `0` or `1`) because no subarray sum can be smaller than the largest single element. The upper bound is `sum(nums)` representing the case where all elements are in one subarray. Using incorrect bounds leads to invalid answers or infinite loops.
+
+### Off-by-One in Subarray Counting
+
+When checking if a target sum is feasible, starting the subarray count at `0` instead of `1` causes the algorithm to allow one extra split. The count should start at `1` since we always have at least one subarray before any splits occur.
+
+### Integer Overflow in Sum Calculations
+
+For large arrays with large values, the sum of elements can overflow 32-bit integers. Using `long` or equivalent 64-bit types for prefix sums and running totals prevents incorrect comparisons and ensures the binary search operates on valid values.
+
+### Greedy Check Not Resetting Current Sum
+
+In the feasibility check, when the current sum exceeds the target and a new subarray begins, the current sum must be reset to the current element (not to `0`). Resetting to `0` loses the current element and produces incorrect subarray counts.
+
+### Confusing Minimizing Maximum with Maximizing Minimum
+
+This problem asks to minimize the largest subarray sum, which means we want the smallest possible value that still allows a valid k-way split. Binary searching in the wrong direction (trying to maximize instead of minimize) yields incorrect results.

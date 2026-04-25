@@ -1,0 +1,482 @@
+## Prerequisites
+
+Before attempting this problem, you should be comfortable with:
+
+- **Two Pointers** - Using pointers from both ends of a string to compare characters efficiently
+- **String Manipulation** - Filtering characters, converting case, and reversing strings
+- **Character Classification** - Identifying alphanumeric vs non-alphanumeric characters
+
+---
+
+## 1. Reverse String
+
+### Intuition
+
+To check if a string is a palindrome, we only care about letters and digits—everything else can be ignored.  
+We can build a cleaned version of the string that contains only alphanumeric characters, all converted to lowercase for consistency.  
+Once we have this cleaned string, the problem becomes very simple:  
+a string is a palindrome if it is exactly the same as its reverse.
+
+### Algorithm
+
+1. Create an empty string `newStr`.
+2. Loop through each character `c` in the input string:
+    - If `c` is alphanumeric, convert it to lowercase and add it to `newStr`.
+3. Compare `newStr` with its reverse (`newStr[::-1]`):
+    - If they are equal, return `true`.
+    - Otherwise, return `false`.
+
+::tabs-start
+
+```python
+class Solution:
+    def isPalindrome(self, s: str) -> bool:
+        newStr = ''
+        for c in s:
+            if c.isalnum():
+                newStr += c.lower()
+        return newStr == newStr[::-1]
+```
+
+```java
+public class Solution {
+    public boolean isPalindrome(String s) {
+        StringBuilder newStr = new StringBuilder();
+        for (char c : s.toCharArray()) {
+            if (Character.isLetterOrDigit(c)) {
+                newStr.append(Character.toLowerCase(c));
+            }
+        }
+        return newStr.toString().equals(newStr.reverse().toString());
+    }
+}
+```
+
+```cpp
+class Solution {
+public:
+    bool isPalindrome(string s) {
+        string newStr = "";
+        for (char c : s) {
+            if (isalnum(c)) {
+                newStr += tolower(c);
+            }
+        }
+        return newStr == string(newStr.rbegin(), newStr.rend());
+    }
+};
+```
+
+```javascript
+class Solution {
+    /**
+     * Check if a character is alphanumeric
+     * @param {char} char
+     * @return {boolean}
+     */
+    isAlphanumeric(char) {
+        return (
+            (char >= 'a' && char <= 'z') ||
+            (char >= 'A' && char <= 'Z') ||
+            (char >= '0' && char <= '9')
+        );
+    }
+
+    /**
+     * @param {string} s
+     * @return {boolean}
+     */
+    isPalindrome(s) {
+        let newStr = '';
+        for (let c of s) {
+            if (this.isAlphanumeric(c)) {
+                newStr += c.toLowerCase();
+            }
+        }
+        return newStr === newStr.split('').reverse().join('');
+    }
+}
+```
+
+```csharp
+public class Solution {
+    public bool IsPalindrome(string s) {
+        string newStr = "";
+        foreach (char c in s) {
+            if (char.IsLetterOrDigit(c)) {
+                newStr += char.ToLower(c);
+            }
+        }
+        return newStr == new string(newStr.Reverse().ToArray());
+    }
+}
+```
+
+```go
+func isPalindrome(s string) bool {
+    newStr := ""
+    for _, c := range s {
+        if ('a' <= c && c <= 'z') || ('0' <= c && c <= '9') {
+            newStr += string(c)
+        } else if 'A' <= c && c <= 'Z' {
+            newStr += string(c + 'a' - 'A')
+        }
+    }
+
+    reversedStr := reverse(newStr)
+    return newStr == reversedStr
+}
+
+func reverse(s string) string {
+    runes := []rune(s)
+    n := len(runes)
+    for i := 0; i < n/2; i++ {
+        runes[i], runes[n-1-i] = runes[n-1-i], runes[i]
+    }
+    return string(runes)
+}
+```
+
+```kotlin
+class Solution {
+    fun isPalindrome(s: String): Boolean {
+        var newStr = ""
+        for (c in s) {
+            if (c.isLetterOrDigit()) {
+                newStr += c.lowercaseChar()
+            }
+        }
+        return newStr == newStr.reversed()
+    }
+}
+```
+
+```swift
+class Solution {
+    func isPalindrome(_ s: String) -> Bool {
+        var newStr = ""
+
+        for c in s {
+            if c.isLetter || c.isNumber {
+                newStr.append(c.lowercased())
+            }
+        }
+
+        return newStr == String(newStr.reversed())
+    }
+}
+```
+
+```rust
+impl Solution {
+    pub fn is_palindrome(s: String) -> bool {
+        let new_str: Vec<u8> = s
+            .bytes()
+            .filter(|b| b.is_ascii_alphanumeric())
+            .map(|b| b.to_ascii_lowercase())
+            .collect();
+        new_str == new_str.iter().copied().rev().collect::<Vec<u8>>()
+    }
+}
+```
+
+::tabs-end
+
+### Time & Space Complexity
+
+- Time complexity: $O(n)$
+- Space complexity: $O(n)$
+
+---
+
+## 2. Two Pointers
+
+### Intuition
+
+Instead of building a new string, we can check the palindrome directly in-place using two pointers.  
+One pointer starts at the beginning (`l`) and the other at the end (`r`).  
+We move both pointers inward, skipping any characters that are not letters or digits.  
+Whenever both pointers point to valid characters, we compare them in lowercase form.  
+If at any point they differ, the string is not a palindrome.  
+This method avoids extra space and keeps the logic simple and efficient.
+
+### Algorithm
+
+1. Initialize two pointers:
+    - `l` at the start of the string,
+    - `r` at the end of the string.
+2. While `l` is less than `r`:
+    - Move `l` forward until it points to an alphanumeric character.
+    - Move `r` backward until it points to an alphanumeric character.
+    - Compare the lowercase characters at `l` and `r`:
+        - If they don't match, return `false`.
+    - Move both pointers inward: `l += 1`, `r -= 1`.
+3. If the loop finishes without mismatches, return `true`.
+
+::tabs-start
+
+```python
+class Solution:
+    def isPalindrome(self, s: str) -> bool:
+        l, r = 0, len(s) - 1
+
+        while l < r:
+            while l < r and not self.alphaNum(s[l]):
+                l += 1
+            while r > l and not self.alphaNum(s[r]):
+                r -= 1
+            if s[l].lower() != s[r].lower():
+                return False
+            l, r = l + 1, r - 1
+        return True
+
+    def alphaNum(self, c):
+        return (ord('A') <= ord(c) <= ord('Z') or
+                ord('a') <= ord(c) <= ord('z') or
+                ord('0') <= ord(c) <= ord('9'))
+```
+
+```java
+public class Solution {
+    public boolean isPalindrome(String s) {
+        int l = 0, r = s.length() - 1;
+
+        while (l < r) {
+            while (l < r && !alphaNum(s.charAt(l))) {
+                l++;
+            }
+            while (r > l && !alphaNum(s.charAt(r))) {
+                r--;
+            }
+            if (Character.toLowerCase(s.charAt(l)) != Character.toLowerCase(s.charAt(r))) {
+                return false;
+            }
+            l++; r--;
+        }
+        return true;
+    }
+
+    public boolean alphaNum(char c) {
+        return (c >= 'A' && c <= 'Z' ||
+                c >= 'a' && c <= 'z' ||
+                c >= '0' && c <= '9');
+    }
+}
+```
+
+```cpp
+class Solution {
+public:
+    bool isPalindrome(string s) {
+        int l = 0, r = s.length() - 1;
+
+        while (l < r) {
+            while (l < r && !alphaNum(s[l])) {
+                l++;
+            }
+            while (r > l && !alphaNum(s[r])) {
+                r--;
+            }
+            if (tolower(s[l]) != tolower(s[r])) {
+                return false;
+            }
+            l++; r--;
+        }
+        return true;
+    }
+
+    bool alphaNum(char c) {
+        return (c >= 'A' && c <= 'Z' ||
+                c >= 'a' && c <= 'z' ||
+                c >= '0' && c <= '9');
+    }
+};
+```
+
+```javascript
+class Solution {
+    /**
+     * @param {string} s
+     * @return {boolean}
+     */
+    isPalindrome(s) {
+        let l = 0,
+            r = s.length - 1;
+
+        while (l < r) {
+            while (l < r && !this.alphaNum(s[l])) {
+                l++;
+            }
+            while (r > l && !this.alphaNum(s[r])) {
+                r--;
+            }
+            if (s[l].toLowerCase() !== s[r].toLowerCase()) {
+                return false;
+            }
+            l++;
+            r--;
+        }
+        return true;
+    }
+
+    /**
+     * @param {char} c
+     * @return {boolean}
+     */
+    alphaNum(c) {
+        return (
+            (c >= 'A' && c <= 'Z') ||
+            (c >= 'a' && c <= 'z') ||
+            (c >= '0' && c <= '9')
+        );
+    }
+}
+```
+
+```csharp
+public class Solution {
+    public bool IsPalindrome(string s) {
+        int l = 0, r = s.Length - 1;
+
+        while (l < r) {
+            while (l < r && !AlphaNum(s[l])) {
+                l++;
+            }
+            while (r > l && !AlphaNum(s[r])) {
+                r--;
+            }
+            if (char.ToLower(s[l]) != char.ToLower(s[r])) {
+                return false;
+            }
+            l++; r--;
+        }
+        return true;
+    }
+
+    public bool AlphaNum(char c) {
+        return (c >= 'A' && c <= 'Z' ||
+                c >= 'a' && c <= 'z' ||
+                c >= '0' && c <= '9');
+    }
+}
+```
+
+```go
+func isPalindrome(s string) bool {
+    l, r := 0, len(s)-1
+
+    for l < r {
+        for l < r && !isAlphaNum(rune(s[l])) {
+            l++
+        }
+        for r > l && !isAlphaNum(rune(s[r])) {
+            r--
+        }
+        if unicode.ToLower(rune(s[l])) != unicode.ToLower(rune(s[r])) {
+            return false
+        }
+        l++
+        r--
+    }
+    return true
+}
+
+func isAlphaNum(c rune) bool {
+    return unicode.IsLetter(c) || unicode.IsDigit(c)
+}
+```
+
+```kotlin
+class Solution {
+    fun isPalindrome(s: String): Boolean {
+        var l = 0
+        var r = s.length - 1
+
+        while (l < r) {
+            while (l < r && !s[l].isLetterOrDigit()) {
+                l++
+            }
+            while (r > l && !s[r].isLetterOrDigit()) {
+                r--
+            }
+            if (s[l].lowercase() != s[r].lowercase()) {
+                return false
+            }
+            l++
+            r--
+        }
+        return true
+    }
+}
+```
+
+```swift
+class Solution {
+    func isPalindrome(_ s: String) -> Bool {
+        let chars = Array(s)
+        var l = 0, r = chars.count - 1
+
+        while l < r {
+            while l < r && !isAlphaNum(chars[l]) {
+                l += 1
+            }
+            while r > l && !isAlphaNum(chars[r]) {
+                r -= 1
+            }
+            if chars[l].lowercased() != chars[r].lowercased() {
+                return false
+            }
+            l += 1
+            r -= 1
+        }
+        return true
+    }
+
+    private func isAlphaNum(_ c: Character) -> Bool {
+        return c.isLetter || c.isNumber
+    }
+}
+```
+
+```rust
+impl Solution {
+    pub fn is_palindrome(s: String) -> bool {
+        let s = s.as_bytes();
+        let (mut l, mut r) = (0i32, s.len() as i32 - 1);
+
+        while l < r {
+            while l < r && !s[l as usize].is_ascii_alphanumeric() {
+                l += 1;
+            }
+            while r > l && !s[r as usize].is_ascii_alphanumeric() {
+                r -= 1;
+            }
+            if s[l as usize].to_ascii_lowercase() != s[r as usize].to_ascii_lowercase() {
+                return false;
+            }
+            l += 1;
+            r -= 1;
+        }
+        true
+    }
+}
+```
+
+::tabs-end
+
+### Time & Space Complexity
+
+- Time complexity: $O(n)$
+- Space complexity: $O(1)$
+
+---
+
+## Common Pitfalls
+
+### Not Skipping Non-Alphanumeric Characters
+
+The problem requires ignoring all characters that are not letters or digits. Forgetting to skip spaces, punctuation, and special characters will cause false negatives. For example, "A man, a plan, a canal: Panama" should be recognized as a palindrome, but including the spaces and punctuation in the comparison will incorrectly return false.
+
+### Case Sensitivity
+
+Letters must be compared in a case-insensitive manner. Comparing 'A' directly with 'a' will return false even though they should be treated as equal. Always convert both characters to the same case (lowercase or uppercase) before comparing.

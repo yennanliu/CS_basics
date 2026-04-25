@@ -1,0 +1,1296 @@
+## Prerequisites
+
+Before attempting this problem, you should be comfortable with:
+
+- **Graph Representation** - Building adjacency lists from edge pairs to represent directed graphs
+- **Depth-First Search (DFS)** - Recursive graph traversal for exploring all paths and detecting cycles
+- **Topological Sort** - Ordering nodes in a directed acyclic graph (DAG) so dependencies come first
+- **Cycle Detection** - Identifying cycles in directed graphs using visited/visiting state tracking
+
+---
+
+## 1. Cycle Detection (DFS)
+
+### Intuition
+
+Each course is a **node**, and each prerequisite is a **directed edge**.  
+We want an order of courses such that all prerequisites of a course are taken **before** it.
+
+Using **DFS**, we:
+
+- Detect cycles (which make it impossible to finish all courses)
+- Add a course to the result **after** all its prerequisites are processed  
+  (this naturally gives a valid topological order)
+
+### Algorithm
+
+1. Build a graph where each course points to its prerequisites.
+2. Use two sets:
+    - `cycle` - tracks the current DFS path (for cycle detection)
+    - `visit` - tracks fully processed courses
+3. For each course, run DFS:
+    - If the course is already in `cycle`, a cycle exists - return empty list
+    - DFS all prerequisites first
+    - After processing prerequisites, add the course to the result
+4. If all DFS calls succeed, return the result list (valid course order)
+
+::tabs-start
+
+```python
+class Solution:
+    def findOrder(self, numCourses: int, prerequisites: List[List[int]]) -> List[int]:
+        prereq = {c: [] for c in range(numCourses)}
+        for crs, pre in prerequisites:
+            prereq[crs].append(pre)
+
+        output = []
+        visit, cycle = set(), set()
+
+        def dfs(crs):
+            if crs in cycle:
+                return False
+            if crs in visit:
+                return True
+
+            cycle.add(crs)
+            for pre in prereq[crs]:
+                if dfs(pre) == False:
+                    return False
+            cycle.remove(crs)
+            visit.add(crs)
+            output.append(crs)
+            return True
+
+        for c in range(numCourses):
+            if dfs(c) == False:
+                return []
+        return output
+```
+
+```java
+public class Solution {
+    public int[] findOrder(int numCourses, int[][] prerequisites) {
+        Map<Integer, List<Integer>> prereq = new HashMap<>();
+        for (int[] pair : prerequisites) {
+            prereq.computeIfAbsent(pair[0],
+                k -> new ArrayList<>()).add(pair[1]);
+        }
+
+        List<Integer> output = new ArrayList<>();
+        Set<Integer> visit = new HashSet<>();
+        Set<Integer> cycle = new HashSet<>();
+
+        for (int course = 0; course < numCourses; course++) {
+            if (!dfs(course, prereq, visit, cycle, output)) {
+                return new int[0];
+            }
+        }
+
+        int[] result = new int[numCourses];
+        for (int i = 0; i < numCourses; i++) {
+            result[i] = output.get(i);
+        }
+        return result;
+    }
+
+    private boolean dfs(int course, Map<Integer, List<Integer>> prereq,
+                        Set<Integer> visit, Set<Integer> cycle,
+                        List<Integer> output) {
+
+        if (cycle.contains(course)) {
+            return false;
+        }
+        if (visit.contains(course)) {
+            return true;
+        }
+
+        cycle.add(course);
+        for (int pre : prereq.getOrDefault(course, Collections.emptyList())) {
+            if (!dfs(pre, prereq, visit, cycle, output)) {
+                return false;
+            }
+        }
+        cycle.remove(course);
+        visit.add(course);
+        output.add(course);
+        return true;
+    }
+}
+```
+
+```cpp
+class Solution {
+public:
+    vector<int> findOrder(int numCourses, vector<vector<int>>& prerequisites) {
+        unordered_map<int, vector<int>> prereq;
+        for (const auto& pair : prerequisites) {
+            prereq[pair[0]].push_back(pair[1]);
+        }
+
+        vector<int> output;
+        unordered_set<int> visit;
+        unordered_set<int> cycle;
+
+        for (int course = 0; course < numCourses; course++) {
+            if (!dfs(course, prereq, visit, cycle, output)) {
+                return {};
+            }
+        }
+
+        return output;
+    }
+
+private:
+    bool dfs(int course, const unordered_map<int, vector<int>>& prereq,
+             unordered_set<int>& visit, unordered_set<int>& cycle,
+             vector<int>& output) {
+
+        if (cycle.count(course)) {
+            return false;
+        }
+        if (visit.count(course)) {
+            return true;
+        }
+
+        cycle.insert(course);
+        if (prereq.count(course)) {
+            for (int pre : prereq.at(course)) {
+                if (!dfs(pre, prereq, visit, cycle, output)) {
+                    return false;
+                }
+            }
+        }
+        cycle.erase(course);
+        visit.insert(course);
+        output.push_back(course);
+        return true;
+    }
+};
+```
+
+```javascript
+class Solution {
+    /**
+     * @param {number} numCourses
+     * @param {number[][]} prerequisites
+     * @return {number[]}
+     */
+    findOrder(numCourses, prerequisites) {
+        const prereq = new Map();
+        for (const [course, pre] of prerequisites) {
+            if (!prereq.has(course)) {
+                prereq.set(course, []);
+            }
+            prereq.get(course).push(pre);
+        }
+
+        const output = [];
+        const visit = new Set();
+        const cycle = new Set();
+
+        for (let c = 0; c < numCourses; c++) {
+            if (!this.dfs(c, prereq, visit, cycle, output)) {
+                return [];
+            }
+        }
+
+        return output;
+    }
+
+    /**
+     * @param {number} course
+     * @param {Map} prereq
+     * @param {Set} visit
+     * @param {Set} cycle
+     * @param {number[]} output
+     * @return {boolean}
+     */
+    dfs(course, prereq, visit, cycle, output) {
+        if (cycle.has(course)) {
+            return false;
+        }
+        if (visit.has(course)) {
+            return true;
+        }
+
+        cycle.add(course);
+        for (const pre of prereq.get(course) || []) {
+            if (!this.dfs(pre, prereq, visit, cycle, output)) {
+                return false;
+            }
+        }
+        cycle.delete(course);
+        visit.add(course);
+        output.push(course);
+        return true;
+    }
+}
+```
+
+```csharp
+public class Solution {
+    public int[] FindOrder(int numCourses, int[][] prerequisites) {
+        Dictionary<int, List<int>> prereq = new Dictionary<int, List<int>>();
+        foreach (var pair in prerequisites) {
+            if (!prereq.ContainsKey(pair[0])) {
+                prereq[pair[0]] = new List<int>();
+            }
+            prereq[pair[0]].Add(pair[1]);
+        }
+
+        List<int> output = new List<int>();
+        HashSet<int> visit = new HashSet<int>();
+        HashSet<int> cycle = new HashSet<int>();
+
+        for (int course = 0; course < numCourses; course++) {
+            if (!Dfs(course, prereq, visit, cycle, output)) {
+                return new int[0];
+            }
+        }
+
+        return output.ToArray();
+    }
+
+    private bool Dfs(int course, Dictionary<int, List<int>> prereq,
+                     HashSet<int> visit, HashSet<int> cycle,
+                     List<int> output) {
+
+        if (cycle.Contains(course)) {
+            return false;
+        }
+        if (visit.Contains(course)) {
+            return true;
+        }
+
+        cycle.Add(course);
+        if (prereq.ContainsKey(course)) {
+            foreach (int pre in prereq[course]) {
+                if (!Dfs(pre, prereq, visit, cycle, output)) {
+                    return false;
+                }
+            }
+        }
+        cycle.Remove(course);
+        visit.Add(course);
+        output.Add(course);
+        return true;
+    }
+}
+```
+
+```go
+func findOrder(numCourses int, prerequisites [][]int) []int {
+    prereq := make(map[int][]int)
+    for i := 0; i < numCourses; i++ {
+        prereq[i] = []int{}
+    }
+    for _, pair := range prerequisites {
+        crs, pre := pair[0], pair[1]
+        prereq[crs] = append(prereq[crs], pre)
+    }
+
+    output := []int{}
+    visit := make(map[int]bool)
+    cycle := make(map[int]bool)
+
+    var dfs func(int) bool
+    dfs = func(crs int) bool {
+        if cycle[crs] {
+            return false
+        }
+        if visit[crs] {
+            return true
+        }
+
+        cycle[crs] = true
+        for _, pre := range prereq[crs] {
+            if !dfs(pre) {
+                return false
+            }
+        }
+        cycle[crs] = false
+        visit[crs] = true
+        output = append(output, crs)
+        return true
+    }
+
+    for i := 0; i < numCourses; i++ {
+        if !dfs(i) {
+            return []int{}
+        }
+    }
+
+    return output
+}
+```
+
+```kotlin
+class Solution {
+    fun findOrder(numCourses: Int, prerequisites: Array<IntArray>): IntArray {
+        val prereq = HashMap<Int, MutableList<Int>>()
+        for (i in 0 until numCourses) {
+            prereq[i] = mutableListOf()
+        }
+        for (pair in prerequisites) {
+            val (crs, pre) = pair
+            prereq[crs]?.add(pre)
+        }
+
+        val output = mutableListOf<Int>()
+        val visit = HashSet<Int>()
+        val cycle = HashSet<Int>()
+
+        fun dfs(crs: Int): Boolean {
+            if (crs in cycle) return false
+            if (crs in visit) return true
+
+            cycle.add(crs)
+            for (pre in prereq[crs]!!) {
+                if (!dfs(pre)) return false
+            }
+            cycle.remove(crs)
+            visit.add(crs)
+            output.add(crs)
+            return true
+        }
+
+        for (i in 0 until numCourses) {
+            if (!dfs(i)) return intArrayOf()
+        }
+
+        return output.toIntArray()
+    }
+}
+```
+
+```swift
+class Solution {
+    func findOrder(_ numCourses: Int, _ prerequisites: [[Int]]) -> [Int] {
+        var prereq = [Int: [Int]]()
+        for c in 0..<numCourses {
+            prereq[c] = []
+        }
+        for pair in prerequisites {
+            prereq[pair[0]]!.append(pair[1])
+        }
+
+        var output = [Int]()
+        var visit = Set<Int>()
+        var cycle = Set<Int>()
+
+        func dfs(_ crs: Int) -> Bool {
+            if cycle.contains(crs) {
+                return false
+            }
+            if visit.contains(crs) {
+                return true
+            }
+
+            cycle.insert(crs)
+            for pre in prereq[crs]! {
+                if !dfs(pre) {
+                    return false
+                }
+            }
+            cycle.remove(crs)
+            visit.insert(crs)
+            output.append(crs)
+            return true
+        }
+
+        for c in 0..<numCourses {
+            if !dfs(c) {
+                return []
+            }
+        }
+        return output
+    }
+}
+```
+
+```rust
+impl Solution {
+    pub fn find_order(num_courses: i32, prerequisites: Vec<Vec<i32>>) -> Vec<i32> {
+        let n = num_courses as usize;
+        let mut prereq = vec![vec![]; n];
+        for pair in &prerequisites {
+            prereq[pair[0] as usize].push(pair[1] as usize);
+        }
+
+        let mut output = Vec::new();
+        let mut visit = vec![false; n];
+        let mut cycle = vec![false; n];
+
+        fn dfs(
+            crs: usize, prereq: &Vec<Vec<usize>>,
+            visit: &mut Vec<bool>, cycle: &mut Vec<bool>,
+            output: &mut Vec<i32>,
+        ) -> bool {
+            if cycle[crs] { return false; }
+            if visit[crs] { return true; }
+
+            cycle[crs] = true;
+            for &pre in &prereq[crs] {
+                if !dfs(pre, prereq, visit, cycle, output) {
+                    return false;
+                }
+            }
+            cycle[crs] = false;
+            visit[crs] = true;
+            output.push(crs as i32);
+            true
+        }
+
+        for c in 0..n {
+            if !dfs(c, &prereq, &mut visit, &mut cycle, &mut output) {
+                return vec![];
+            }
+        }
+        output
+    }
+}
+```
+
+::tabs-end
+
+### Time & Space Complexity
+
+- Time complexity: $O(V + E)$
+- Space complexity: $O(V + E)$
+
+> Where $V$ is the number of courses and $E$ is the number of prerequisites.
+
+---
+
+## 2. Topological Sort (Kahn's Algorithm)
+
+### Intuition
+
+Treat each course as a **node** and each prerequisite as a **directed edge**.
+A course can be taken only when **all its prerequisites are completed**.
+
+Kahn's Algorithm works by:
+
+- Always taking courses with **no remaining prerequisites** (`indegree = 0`)
+- Removing them from the graph
+- Gradually unlocking other courses
+
+If at the end some courses are still locked, it means a **cycle exists**, so no valid order is possible.
+
+### Algorithm
+
+1. Build a graph and compute `indegree` for each course
+   (`indegree` = number of prerequisites).
+2. Add all courses with `indegree = 0` to a queue.
+3. While the queue is not empty:
+    - Remove a course and add it to the result.
+    - Reduce the `indegree` of its dependent courses.
+    - If any dependent course reaches `indegree = 0`, add it to the queue.
+4. If all courses are processed, return the result (reverse if edges were stored as course - prerequisite).
+5. Otherwise, return an empty list (cycle detected).
+
+::tabs-start
+
+```python
+class Solution:
+    def findOrder(self, numCourses: int, prerequisites: List[List[int]]) -> List[int]:
+        indegree = [0] * numCourses
+        adj = [[] for i in range(numCourses)]
+        for src, dst in prerequisites:
+            indegree[dst] += 1
+            adj[src].append(dst)
+
+        q = deque()
+        for n in range(numCourses):
+            if indegree[n] == 0:
+                q.append(n)
+
+        finish, output = 0, []
+        while q:
+            node = q.popleft()
+            output.append(node)
+            finish += 1
+            for nei in adj[node]:
+                indegree[nei] -= 1
+                if indegree[nei] == 0:
+                    q.append(nei)
+
+        if finish != numCourses:
+            return []
+        return output[::-1]
+```
+
+```java
+public class Solution {
+    public int[] findOrder(int numCourses, int[][] prerequisites) {
+        int[] indegree = new int[numCourses];
+        List<List<Integer>> adj = new ArrayList<>();
+        for (int i = 0; i < numCourses; i++) {
+            adj.add(new ArrayList<>());
+        }
+        for (int[] pre : prerequisites) {
+            indegree[pre[1]]++;
+            adj.get(pre[0]).add(pre[1]);
+        }
+
+        Queue<Integer> q = new LinkedList<>();
+        for (int i = 0; i < numCourses; i++) {
+            if (indegree[i] == 0) {
+                q.add(i);
+            }
+        }
+
+        int finish = 0;
+        int[] output = new int[numCourses];
+        while (!q.isEmpty()) {
+            int node = q.poll();
+            output[numCourses - finish - 1] = node;
+            finish++;
+            for (int nei : adj.get(node)) {
+                indegree[nei]--;
+                if (indegree[nei] == 0) {
+                    q.add(nei);
+                }
+            }
+        }
+
+        if (finish != numCourses) {
+            return new int[0];
+        }
+        return output;
+    }
+}
+```
+
+```cpp
+class Solution {
+public:
+    vector<int> findOrder(int numCourses, vector<vector<int>>& prerequisites) {
+        vector<int> indegree(numCourses, 0);
+        vector<vector<int>> adj(numCourses);
+
+        for (auto& pre : prerequisites) {
+            indegree[pre[1]]++;
+            adj[pre[0]].push_back(pre[1]);
+        }
+
+        queue<int> q;
+        for (int i = 0; i < numCourses; ++i) {
+            if (indegree[i] == 0) {
+                q.push(i);
+            }
+        }
+
+        int finish = 0;
+        vector<int> output(numCourses);
+        while (!q.empty()) {
+            int node = q.front();q.pop();
+            output[numCourses - finish - 1] = node;
+            finish++;
+            for (int nei : adj[node]) {
+                indegree[nei]--;
+                if (indegree[nei] == 0) {
+                    q.push(nei);
+                }
+            }
+        }
+
+        if (finish != numCourses) {
+            return {};
+        }
+        return output;
+    }
+};
+```
+
+```javascript
+class Solution {
+    /**
+     * @param {number} numCourses
+     * @param {number[][]} prerequisites
+     * @return {number[]}
+     */
+    findOrder(numCourses, prerequisites) {
+        let indegree = Array(numCourses).fill(0);
+        let adj = Array.from({ length: numCourses }, () => []);
+        for (let [src, dst] of prerequisites) {
+            indegree[dst]++;
+            adj[src].push(dst);
+        }
+
+        let q = new Queue();
+        for (let i = 0; i < numCourses; i++) {
+            if (indegree[i] === 0) {
+                q.push(i);
+            }
+        }
+
+        let finish = 0;
+        let output = Array(numCourses);
+        while (!q.isEmpty()) {
+            let node = q.pop();
+            output[numCourses - finish - 1] = node;
+            finish++;
+            for (let nei of adj[node]) {
+                indegree[nei]--;
+                if (indegree[nei] === 0) {
+                    q.push(nei);
+                }
+            }
+        }
+
+        if (finish !== numCourses) {
+            return [];
+        }
+        return output;
+    }
+}
+```
+
+```csharp
+public class Solution {
+    public int[] FindOrder(int numCourses, int[][] prerequisites) {
+        int[] indegree = new int[numCourses];
+        List<List<int>> adj = new List<List<int>>();
+        for (int i = 0; i < numCourses; i++) {
+            adj.Add(new List<int>());
+        }
+        foreach (var pre in prerequisites) {
+            indegree[pre[1]]++;
+            adj[pre[0]].Add(pre[1]);
+        }
+
+        Queue<int> q = new Queue<int>();
+        for (int i = 0; i < numCourses; i++) {
+            if (indegree[i] == 0) {
+                q.Enqueue(i);
+            }
+        }
+
+        int finish = 0;
+        int[] output = new int[numCourses];
+        while (q.Count > 0) {
+            int node = q.Dequeue();
+            output[numCourses - finish - 1] = node;
+            finish++;
+            foreach (var nei in adj[node]) {
+                indegree[nei]--;
+                if (indegree[nei] == 0) {
+                    q.Enqueue(nei);
+                }
+            }
+        }
+
+        if (finish != numCourses) {
+            return new int[0];
+        }
+        return output;
+    }
+}
+```
+
+```go
+func findOrder(numCourses int, prerequisites [][]int) []int {
+    indegree := make([]int, numCourses)
+    adj := make([][]int, numCourses)
+    for _, pair := range prerequisites {
+        src, dst := pair[0], pair[1]
+        indegree[dst]++
+        adj[src] = append(adj[src], dst)
+    }
+
+    q := []int{}
+    for i := 0; i < numCourses; i++ {
+        if indegree[i] == 0 {
+            q = append(q, i)
+        }
+    }
+
+    output := []int{}
+    finish := 0
+    for len(q) > 0 {
+        node := q[0]
+        q = q[1:]
+        output = append(output, node)
+        finish++
+        for _, nei := range adj[node] {
+            indegree[nei]--
+            if indegree[nei] == 0 {
+                q = append(q, nei)
+            }
+        }
+    }
+
+    if finish != numCourses {
+        return []int{}
+    }
+
+    for i, j := 0, len(output)-1; i < j; i, j = i+1, j-1 {
+        output[i], output[j] = output[j], output[i]
+    }
+    return output
+}
+```
+
+```kotlin
+class Solution {
+    fun findOrder(numCourses: Int, prerequisites: Array<IntArray>): IntArray {
+        val indegree = IntArray(numCourses)
+        val adj = Array(numCourses) { mutableListOf<Int>() }
+
+        for (pair in prerequisites) {
+            val (src, dst) = pair
+            indegree[dst]++
+            adj[src].add(dst)
+        }
+
+        val q = ArrayDeque<Int>()
+        for (i in 0 until numCourses) {
+            if (indegree[i] == 0) q.add(i)
+        }
+
+        val output = mutableListOf<Int>()
+        var finish = 0
+        while (q.isNotEmpty()) {
+            val node = q.removeFirst()
+            output.add(node)
+            finish++
+            for (nei in adj[node]) {
+                indegree[nei]--
+                if (indegree[nei] == 0) {
+                    q.add(nei)
+                }
+            }
+        }
+
+        if (finish != numCourses) return intArrayOf()
+
+        output.reverse()
+        return output.toIntArray()
+    }
+}
+```
+
+```swift
+class Solution {
+    func findOrder(_ numCourses: Int, _ prerequisites: [[Int]]) -> [Int] {
+        var indegree = Array(repeating: 0, count: numCourses)
+        var adj = Array(repeating: [Int](), count: numCourses)
+
+        for pair in prerequisites {
+            let src = pair[0]
+            let dst = pair[1]
+            indegree[dst] += 1
+            adj[src].append(dst)
+        }
+
+        var queue = Deque<Int>()
+        for n in 0..<numCourses {
+            if indegree[n] == 0 {
+                queue.append(n)
+            }
+        }
+
+        var finish = 0
+        var output = [Int]()
+        while !queue.isEmpty {
+            let node = queue.popFirst()!
+            output.append(node)
+            finish += 1
+            for nei in adj[node] {
+                indegree[nei] -= 1
+                if indegree[nei] == 0 {
+                    queue.append(nei)
+                }
+            }
+        }
+
+        return finish == numCourses ? output.reversed() : []
+    }
+}
+```
+
+```rust
+impl Solution {
+    pub fn find_order(num_courses: i32, prerequisites: Vec<Vec<i32>>) -> Vec<i32> {
+        let n = num_courses as usize;
+        let mut indegree = vec![0i32; n];
+        let mut adj = vec![vec![]; n];
+
+        for pre in &prerequisites {
+            let (src, dst) = (pre[0] as usize, pre[1] as usize);
+            indegree[dst] += 1;
+            adj[src].push(dst);
+        }
+
+        let mut queue = VecDeque::new();
+        for i in 0..n {
+            if indegree[i] == 0 {
+                queue.push_back(i);
+            }
+        }
+
+        let mut finish = 0;
+        let mut output = vec![0i32; n];
+        while let Some(node) = queue.pop_front() {
+            output[n - finish - 1] = node as i32;
+            finish += 1;
+            for &nei in &adj[node] {
+                indegree[nei] -= 1;
+                if indegree[nei] == 0 {
+                    queue.push_back(nei);
+                }
+            }
+        }
+
+        if finish != n { vec![] } else { output }
+    }
+}
+```
+
+::tabs-end
+
+### Time & Space Complexity
+
+- Time complexity: $O(V + E)$
+- Space complexity: $O(V + E)$
+
+> Where $V$ is the number of courses and $E$ is the number of prerequisites.
+
+---
+
+## 3. Topological Sort (DFS)
+
+### Intuition
+
+We want an order of courses such that **every course appears after its prerequisites**.
+This approach mixes **Topological Sorting** with **DFS-style traversal**.
+
+The idea is:
+
+- Start from courses that have **no prerequisites** (`indegree = 0`)
+- Once we take a course, we "remove" it by decreasing the `indegree` of courses that depend on it
+- When a dependent course's `indegree` becomes `0`, it is now safe to take, so we continue DFS from it
+
+If we can visit all courses this way, a valid order exists.
+If not, a **cycle** is present, making it impossible.
+
+### Algorithm
+
+1. Build a directed graph from prerequisites and compute `indegree` for each course.
+2. For every course with `indegree = 0`, start a DFS.
+3. In DFS:
+    - Add the current course to the result.
+    - Decrease `indegree` of its neighbors.
+    - If any neighbor's `indegree` becomes `0`, recursively DFS on it.
+4. After traversal:
+    - If result contains all courses, return it.
+    - Otherwise, return an empty list (cycle detected).
+
+::tabs-start
+
+```python
+class Solution:
+    def findOrder(self, numCourses: int, prerequisites: List[List[int]]) -> List[int]:
+        adj = [[] for i in range(numCourses)]
+        indegree = [0] * numCourses
+        for nxt, pre in prerequisites:
+            indegree[nxt] += 1
+            adj[pre].append(nxt)
+
+        output = []
+
+        def dfs(node):
+            output.append(node)
+            indegree[node] -= 1
+            for nei in adj[node]:
+                indegree[nei] -= 1
+                if indegree[nei] == 0:
+                    dfs(nei)
+
+        for i in range(numCourses):
+            if indegree[i] == 0:
+                dfs(i)
+
+        return output if len(output) == numCourses else []
+```
+
+```java
+public class Solution {
+    private List<Integer> output = new ArrayList<>();
+    private int[] indegree;
+    private List<List<Integer>> adj;
+
+    private void dfs(int node) {
+        output.add(node);
+        indegree[node]--;
+        for (int nei : adj.get(node)) {
+            indegree[nei]--;
+            if (indegree[nei] == 0) {
+                dfs(nei);
+            }
+        }
+    }
+
+    public int[] findOrder(int numCourses, int[][] prerequisites) {
+        adj = new ArrayList<>();
+        for (int i = 0; i < numCourses; i++) {
+            adj.add(new ArrayList<>());
+        }
+        indegree = new int[numCourses];
+        for (int[] pre : prerequisites) {
+            indegree[pre[0]]++;
+            adj.get(pre[1]).add(pre[0]);
+        }
+
+        for (int i = 0; i < numCourses; i++) {
+            if (indegree[i] == 0) {
+                dfs(i);
+            }
+        }
+
+        if (output.size() != numCourses) return new int[0];
+        int[] res = new int[output.size()];
+        for (int i = 0; i < output.size(); i++) {
+            res[i] = output.get(i);
+        }
+        return res;
+    }
+}
+```
+
+```cpp
+class Solution {
+    vector<int> output;
+    vector<int> indegree;
+    vector<vector<int>> adj;
+
+    void dfs(int node) {
+        output.push_back(node);
+        indegree[node]--;
+        for (int nei : adj[node]) {
+            indegree[nei]--;
+            if (indegree[nei] == 0) {
+                dfs(nei);
+            }
+        }
+    }
+
+public:
+    vector<int> findOrder(int numCourses, vector<vector<int>>& prerequisites) {
+        adj = vector<vector<int>>(numCourses);
+        indegree = vector<int>(numCourses, 0);
+        for (auto& pre : prerequisites) {
+            indegree[pre[0]]++;
+            adj[pre[1]].push_back(pre[0]);
+        }
+
+        for (int i = 0; i < numCourses; i++) {
+            if (indegree[i] == 0) {
+                dfs(i);
+            }
+        }
+
+        if (output.size() != numCourses) return {};
+        return output;
+    }
+};
+```
+
+```javascript
+class Solution {
+    /**
+     * @param {number} numCourses
+     * @param {number[][]} prerequisites
+     * @return {number[]}
+     */
+    findOrder(numCourses, prerequisites) {
+        let adj = Array.from({ length: numCourses }, () => []);
+        let indegree = Array(numCourses).fill(0);
+
+        for (let [nxt, pre] of prerequisites) {
+            indegree[nxt]++;
+            adj[pre].push(nxt);
+        }
+
+        let output = [];
+
+        const dfs = (node) => {
+            output.push(node);
+            indegree[node]--;
+            for (let nei of adj[node]) {
+                indegree[nei]--;
+                if (indegree[nei] === 0) {
+                    dfs(nei);
+                }
+            }
+        };
+
+        for (let i = 0; i < numCourses; i++) {
+            if (indegree[i] === 0) {
+                dfs(i);
+            }
+        }
+
+        return output.length === numCourses ? output : [];
+    }
+}
+```
+
+```csharp
+public class Solution {
+    private List<int> output = new List<int>();
+    private int[] indegree;
+    private List<List<int>> adj;
+
+    private void Dfs(int node) {
+        output.Add(node);
+        indegree[node]--;
+        foreach (var nei in adj[node]) {
+            indegree[nei]--;
+            if (indegree[nei] == 0) {
+                Dfs(nei);
+            }
+        }
+    }
+
+    public int[] FindOrder(int numCourses, int[][] prerequisites) {
+        adj = new List<List<int>>();
+        for (int i = 0; i < numCourses; i++) {
+            adj.Add(new List<int>());
+        }
+        indegree = new int[numCourses];
+        foreach (var pre in prerequisites) {
+            indegree[pre[0]]++;
+            adj[pre[1]].Add(pre[0]);
+        }
+
+        for (int i = 0; i < numCourses; i++) {
+            if (indegree[i] == 0) {
+                Dfs(i);
+            }
+        }
+
+        if (output.Count != numCourses) return new int[0];
+        return output.ToArray();
+    }
+}
+```
+
+```go
+func findOrder(numCourses int, prerequisites [][]int) []int {
+    adj := make([][]int, numCourses)
+    indegree := make([]int, numCourses)
+    for _, pair := range prerequisites {
+        nxt, pre := pair[0], pair[1]
+        indegree[nxt]++
+        adj[pre] = append(adj[pre], nxt)
+    }
+
+    output := []int{}
+
+    var dfs func(int)
+    dfs = func(node int) {
+        output = append(output, node)
+        indegree[node]--
+        for _, nei := range adj[node] {
+            indegree[nei]--
+            if indegree[nei] == 0 {
+                dfs(nei)
+            }
+        }
+    }
+
+    for i := 0; i < numCourses; i++ {
+        if indegree[i] == 0 {
+            dfs(i)
+        }
+    }
+
+    if len(output) == numCourses {
+        return output
+    }
+    return []int{}
+}
+```
+
+```kotlin
+class Solution {
+    fun findOrder(numCourses: Int, prerequisites: Array<IntArray>): IntArray {
+        val adj = Array(numCourses) { mutableListOf<Int>() }
+        val indegree = IntArray(numCourses)
+        for ((nxt, pre) in prerequisites) {
+            indegree[nxt]++
+            adj[pre].add(nxt)
+        }
+
+        val output = mutableListOf<Int>()
+
+        fun dfs(node: Int) {
+            output.add(node)
+            indegree[node]--
+            for (nei in adj[node]) {
+                indegree[nei]--
+                if (indegree[nei] == 0) {
+                    dfs(nei)
+                }
+            }
+        }
+
+        for (i in 0 until numCourses) {
+            if (indegree[i] == 0) {
+                dfs(i)
+            }
+        }
+
+        return if (output.size == numCourses) output.toIntArray() else intArrayOf()
+    }
+}
+```
+
+```swift
+class Solution {
+    func findOrder(_ numCourses: Int, _ prerequisites: [[Int]]) -> [Int] {
+        var adj = Array(repeating: [Int](), count: numCourses)
+        var indegree = Array(repeating: 0, count: numCourses)
+
+        for pair in prerequisites {
+            let nxt = pair[0]
+            let pre = pair[1]
+            indegree[nxt] += 1
+            adj[pre].append(nxt)
+        }
+
+        var output = [Int]()
+
+        func dfs(_ node: Int) {
+            output.append(node)
+            indegree[node] -= 1
+            for nei in adj[node] {
+                indegree[nei] -= 1
+                if indegree[nei] == 0 {
+                    dfs(nei)
+                }
+            }
+        }
+
+        for i in 0..<numCourses {
+            if indegree[i] == 0 {
+                dfs(i)
+            }
+        }
+
+        return output.count == numCourses ? output : []
+    }
+}
+```
+
+```rust
+impl Solution {
+    pub fn find_order(num_courses: i32, prerequisites: Vec<Vec<i32>>) -> Vec<i32> {
+        let n = num_courses as usize;
+        let mut adj = vec![vec![]; n];
+        let mut indegree = vec![0i32; n];
+
+        for pair in &prerequisites {
+            let (nxt, pre) = (pair[0] as usize, pair[1] as usize);
+            indegree[nxt] += 1;
+            adj[pre].push(nxt);
+        }
+
+        let mut output = Vec::new();
+
+        fn dfs(node: usize, adj: &Vec<Vec<usize>>, indegree: &mut Vec<i32>, output: &mut Vec<i32>) {
+            output.push(node as i32);
+            indegree[node] -= 1;
+            for i in 0..adj[node].len() {
+                let nei = adj[node][i];
+                indegree[nei] -= 1;
+                if indegree[nei] == 0 {
+                    dfs(nei, adj, indegree, output);
+                }
+            }
+        }
+
+        for i in 0..n {
+            if indegree[i] == 0 {
+                dfs(i, &adj, &mut indegree, &mut output);
+            }
+        }
+
+        if output.len() == n { output } else { vec![] }
+    }
+}
+```
+
+::tabs-end
+
+### Time & Space Complexity
+
+- Time complexity: $O(V + E)$
+- Space complexity: $O(V + E)$
+
+> Where $V$ is the number of courses and $E$ is the number of prerequisites.
+
+---
+
+## Common Pitfalls
+
+### Confusing Cycle Detection with Visited Tracking
+
+In DFS-based topological sort, you need two separate tracking mechanisms: one for nodes currently in the DFS path (for cycle detection) and one for fully processed nodes. Using only one set leads to either false cycle detection or infinite loops.
+
+```python
+# Wrong: Using single visited set
+def dfs(course):
+    if course in visited:
+        return False  # Incorrectly treats revisit as cycle
+    visited.add(course)
+    for pre in prereq[course]:
+        if not dfs(pre):
+            return False
+    return True
+
+# Correct: Separate cycle and visit tracking
+def dfs(course):
+    if course in cycle:  # Currently in path = cycle
+        return False
+    if course in visit:  # Already processed = skip
+        return True
+    cycle.add(course)
+    for pre in prereq[course]:
+        if not dfs(pre):
+            return False
+    cycle.remove(course)
+    visit.add(course)
+    return True
+```
+
+### Building the Graph in the Wrong Direction
+
+The prerequisite pair `[a, b]` means "to take course `a`, you must first take course `b`". Building edges in the wrong direction results in an incorrect topological order.
+
+```python
+# Wrong: Edge direction reversed
+for crs, pre in prerequisites:
+    adj[pre].append(crs)  # This builds "pre -> crs" but for Kahn's we may need opposite
+
+# The correct direction depends on your algorithm:
+# For DFS that adds after processing: course -> prerequisites
+# For Kahn's: prerequisite -> course (then reverse) or course -> prerequisite
+```
+
+### Forgetting to Handle Disconnected Courses
+
+Courses with no prerequisites and no dependents still need to be included in the output. Forgetting to iterate over all courses means some valid courses might be missing from the result.
+
+```python
+# Wrong: Only processing courses that appear in prerequisites
+for crs, pre in prerequisites:
+    # Only touches courses mentioned in prerequisites
+
+# Correct: Process all courses from 0 to numCourses-1
+for i in range(numCourses):
+    if indegree[i] == 0:
+        queue.append(i)
+```
