@@ -39,6 +39,47 @@ import java.util.Stack;
 public class LargestRectangleInHistogram {
 
     // V0
+    // IDEA: MONO STACK  (SMALL -> BIG) (GPT)
+    /**  Core idea:
+     *
+     *  1. Stack keeps `indices`
+     *     of bars in `increasing` height
+     *     (small -> big)
+     *
+     *  2. When a `smaller` bar appears:
+     *     ->  we finalize rectangles (area) for taller bars !!!!
+     *
+     *
+     *  3. Stack must store `indices` (NOT val)
+     *
+     */
+    public int largestRectangleArea(int[] heights) {
+        int n = heights.length;
+        int maxArea = 0;
+
+        Deque<Integer> st = new ArrayDeque<>(); // store indices
+
+        for (int i = 0; i <= n; i++) {
+            int cur = (i == n) ? 0 : heights[i]; // sentinel 0 to flush stack
+
+            while (!st.isEmpty() && heights[st.peek()] > cur) {
+                int h = heights[st.pop()];
+
+                int right = i;
+                int left = st.isEmpty() ? -1 : st.peek();
+
+                int width = right - left - 1;
+                maxArea = Math.max(maxArea, h * width);
+            }
+
+            st.push(i);
+        }
+
+        return maxArea;
+    }
+
+
+    // V0-0-1-x
     // IDEA : STACK
     // https://www.bilibili.com/list/525438321?sort_field=pubtime&spm_id_from=333.999.0.0&oid=992760704&bvid=BV1Ns4y1o7uB
 //    public int largestRectangleArea(int[] heights) {

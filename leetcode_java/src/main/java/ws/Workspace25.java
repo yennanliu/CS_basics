@@ -2575,12 +2575,60 @@ public class Workspace25 {
      *   IDEA 1) STACK ??????  (FILO)
      *
      */
-    // 16.44 - 17.03 pm
+    // 16.44 - 17.21 pm
     // IDEA 1) STACK ??????  (FILO)
     public int largestRectangleArea(int[] heights) {
+        // edge
 
-        return 0;
+        int maxArea = 0;
+
+
+        // ???
+        // NOTE !!!!
+        // we SHOULD track `idx` instead !!!
+        // e.g. { idx_1, idx_2 ,.. .}
+        //Stack<Integer> st = new Stack<>();
+        // NOTE !!! use `dequeue`
+        Deque<Integer> st = new ArrayDeque<>(); // store indices
+
+        // ???
+        int minHeight = 10000 + 1;// ???
+
+        int n = heights.length;
+        // NOTE !!! <=
+        for(int i = 0; i <= n; i++){
+
+            // NOTE !!!
+            int cur = (i == n) ? 0 : heights[i]; // sentinel 0 to flush stack
+
+            //int cur = heights[i];
+            // ???
+            // NOTE !!! while loop, not if
+            //  if(!st.isEmpty() && heights[st.peek()] <= cur){
+            while (!st.isEmpty() && heights[st.peek()] > cur){
+
+                minHeight = Math.min(cur, minHeight);
+
+                // ????
+
+                int prevIdx = st.pop(); // ???
+
+                maxArea = Math.max(maxArea, Math.max(
+                        minHeight * i,
+                        (i - prevIdx) * heights[prevIdx] // ????
+                )); // ???
+            }
+
+
+            // ???
+            st.add(i);
+        }
+
+        return maxArea;
     }
+
+
+
 
 
 
