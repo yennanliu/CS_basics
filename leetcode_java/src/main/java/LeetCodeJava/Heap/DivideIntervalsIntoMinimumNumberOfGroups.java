@@ -48,9 +48,48 @@ import java.util.*;
 public class DivideIntervalsIntoMinimumNumberOfGroups {
 
     // V0
-//    public int minGroups(int[][] intervals) {
-//
-//    }
+    // IDEA: SORT + SMALL PQ (fixed by gpt)
+    public int minGroups(int[][] intervals) {
+
+        /** NOTE !!!
+         *
+         *   sort on `start` (small -> big)
+         */
+        // 1. sort by start
+        Arrays.sort(intervals, (a, b) -> a[0] - b[0]);
+
+
+        /** NOTE !!!
+         *
+         *   small PQ (`end` time)
+         *
+         *   -> PQ: { end_1, end_2, ... }
+         */
+        // 2. min heap of end times
+        PriorityQueue<Integer> pq = new PriorityQueue<>();
+
+        for (int[] interval : intervals) {
+            int start = interval[0];
+            int end = interval[1];
+
+            /** NOTE !!!
+             *
+             *   reuse same group
+             */
+            // reuse group if possible
+            if (!pq.isEmpty() && pq.peek() < start) {
+                pq.poll();
+            }
+
+            pq.add(end);
+        }
+
+        /** NOTE !!!
+         *
+         *   PQ size is the group cnt
+         */
+        return pq.size();
+    }
 
 
     // V0-1

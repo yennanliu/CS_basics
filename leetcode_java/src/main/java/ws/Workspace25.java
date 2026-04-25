@@ -1974,8 +1974,9 @@ public class Workspace25 {
     // LC 2406
     // 7.30 - 40 am
     /**
-     *  -> Return the minimum number
-     *  of groups you need to make.
+     *  -> Return the `minimum` number
+     *     of `groups`
+     *     you need to make.
      *
      *   s.t. NO overlap for intervals in same group
      *
@@ -2001,11 +2002,97 @@ public class Workspace25 {
      *  ---------------
      *
      *
+     *  ex 1)
+     *
+     *  Input: intervals = [[5,10],[6,8],[1,5],[2,3],[1,10]]
+     *  Output: 3
+     *
+     *
+     *  -> sort:  (1st element small -> big,
+     *             then 2nd element ?? big -> small ???
+     *             )
+     *
+     *   [[1,5], [1,10],[2,3],[5,10],[6,8]],  PQ = { 5 }
+     *      X
+     *
+     *   [[1,10],[2,3],[5,10],[6,8]],  PQ = { 5, 10 }
+     *      x
+     *
+     *  [[2,3],[5,10],[6,8]],  PQ = { 5, 10, 3 }
+     *     x
+     *
+     *  [[5,10],[6,8]],  PQ = { 5, 10, 3, 10 }
+     *     x
+     *
+     *
      *
      */
-    // 15.15 - 25 pm
-    // idea: PQ
+    // 15.47 - 57 pm
+    //  IDEA 1) SORT + big PQ ???
+    // -> PQ:  { end_idx } // ???
     public int minGroups(int[][] intervals) {
+        // edge
+
+        // 1. sort ?? ( start ??? small -> big ???
+        Arrays.sort(intervals, new Comparator<int[]>() {
+            @Override
+            public int compare(int[] o1, int[] o2) {
+                int diff = o1[0] - o2[0]; // ???
+                return diff;
+            }
+        });
+
+        // ??? big PQ ??
+        // save `end` idx ?????
+        /** NOTE !!!
+         *
+         *  -> should be SMALL PQ,
+         *  sort on `end` idx.
+         *  e.g. end (small -> big)
+         *
+         */
+        PriorityQueue<Integer> pq = new PriorityQueue<>(new Comparator<Integer>() {
+            @Override
+            public int compare(Integer o1, Integer o2) {
+                int diff = o2 - o1;
+                return diff;
+            }
+        });
+
+        for(int i = 0; i < intervals.length; i++){
+            int start = intervals[i][0];
+            int end = intervals[i][1];
+
+            // ??? while or if ???
+            //while ()
+            // reuse `same group`
+            /**
+             *   if NO overlapped, reuse same group
+             *
+             *  |-----|  old
+             *           |-------| new
+             *
+             */
+            if(!pq.isEmpty() && pq.peek() < start){
+                pq.poll(); // ???
+            }
+            pq.add(end);
+
+        }
+
+
+        return pq.size();
+    }
+
+
+
+
+
+
+
+
+
+    public int minGroups_97(int[][] intervals) {
         // edge
 
         // note !!
