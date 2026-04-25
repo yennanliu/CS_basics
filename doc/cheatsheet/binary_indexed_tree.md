@@ -222,7 +222,7 @@ class NumArray {
 }
 ```
 
-### 2-7-1) Range Sum Query 2D - Mutable (LC 308) — 2D BIT
+### 2-8) Range Sum Query 2D - Mutable (LC 308) — 2D BIT
 > Extend BIT to 2D: O(log M * log N) per update/query on a matrix.
 
 #### 1D BIT vs 2D BIT

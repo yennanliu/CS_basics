@@ -715,7 +715,7 @@ public int maxProfit(int[] prices) {
 }
 ```
 
-### 2-5) Maximum Subarray Sum with One Deletion (LC 1186)
+### 2-5) Maximum Subarray Sum with One Deletion (LC 1186) — Two DP States
 > dp0[i] = max sum ending at i (no deletion); dp1[i] = max sum with one deletion used.
 
 ```java
@@ -771,7 +771,7 @@ public int canCompleteCircuit(int[] gas, int[] cost) {
 }
 ```
 
-### 2-8) Maximum Length of Subarray with Positive Product (LC 1567)
+### 2-8) Maximum Length of Subarray with Positive Product (LC 1567) — Track Pos/Neg Product Lengths
 > Track lengths with positive and negative product separately; swap on negative number.
 
 ```java

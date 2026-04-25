@@ -1,6 +1,6 @@
 # Progress
 
-# 2026-04-24
+# 2026-04-25
 
 - Needcode DP playlist
 	- https://www.youtube.com/watch?v=73r3KWiEvyk&list=PLot-Xpze53lcvx_tjrr_m2lgD2NsRHlNO
@@ -350,6 +350,9 @@
 		- 239
 		- 862,1425,1438,1696
 		- 1499,2398
+	- todo (20260425)
+		- 42,503
+		- 907,402
 
  	==================================
 
