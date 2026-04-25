@@ -4947,7 +4947,9 @@ This creates a forced flow: `HOLD → SOLD → REST → HOLD`, ensuring cooldown
 - LC 123: Best Time to Buy and Sell Stock III (4 states for 2 transactions)
 - LC 188: Best Time to Buy and Sell Stock IV (2k states for k transactions)
 
-### 2-3-3) N-th Tribonacci Number
+### 2-5) N-th Tribonacci Number (LC 1137) — Rolling Three Variables
+
+> T(n) = T(n-1) + T(n-2) + T(n-3); maintain three rolling variables, no array needed.
 
 ```java
 // java
@@ -4976,7 +4978,9 @@ public int tribonacci(int n) {
 }
 ```
 
-### 2-3-4) Decode Ways (LC 91)
+### 2-6) Decode Ways (LC 91) — Linear DP with One/Two Digit Check
+
+> dp[i] = ways to decode s[0..i]; add dp[i-1] if single digit valid, dp[i-2] if two digits valid.
 
 ```java
 // java
@@ -5048,7 +5052,9 @@ public int numDecodings(String s) {
 - LC 509 Fibonacci Number
 - LC 1137 N-th Tribonacci Number
 
-### 2-4) Longest Increasing Subsequence (LIS)
+### 2-7) Longest Increasing Subsequence (LC 300) — LIS Binary Search / DP
+
+> O(n log n): maintain tails array with binary search; tails[i] = smallest tail of LIS of length i+1.
 
 ```java
 // java
@@ -5149,7 +5155,9 @@ Result: max(dp) = 4
 LIS: [2, 3, 7, 101] or [2, 5, 7, 101] or others
 ```
 
-### 2-5) Sum of Distances in Tree (LC 834) — Re-rooting DP
+### 2-8) Sum of Distances in Tree (LC 834) — Re-rooting DP
+
+> Two-pass DFS: compute root distances, then re-root by adjusting parent answer by ±subtree size.
 
 ```java
 // java
