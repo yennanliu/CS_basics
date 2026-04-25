@@ -138,6 +138,27 @@
     /* ── SCATTER PLOT ────────────────────────────────────── */
     .brush-note{color:var(--text-light);font-size:.78rem}
 
+    /* ── GRAPH ENHANCEMENTS ──────────────────────────────── */
+    .gr-zoom-bar{display:flex;gap:.4rem;align-items:center;flex-wrap:wrap;
+                 margin-bottom:.5rem;background:var(--surface);padding:.6rem 1rem;
+                 border:1px solid var(--border);border-radius:var(--radius)}
+    .traversal-panel{display:none;margin-top:.6rem;background:var(--surface);
+                     border:1px solid var(--border);border-radius:var(--radius);padding:.8rem 1rem}
+    .traversal-panel.open{display:block}
+    .traversal-header{font-weight:700;font-size:.88rem;margin-bottom:.5rem;
+                      display:flex;justify-content:space-between;align-items:center}
+    .traversal-list{display:flex;flex-wrap:wrap;gap:.35rem;max-height:160px;overflow-y:auto;padding:.2rem}
+    .tr-step{display:inline-flex;align-items:center;gap:.3rem;padding:.2rem .55rem;
+             border-radius:12px;font-size:.75rem;border:1px solid var(--border);
+             background:var(--bg);cursor:pointer;transition:all .15s}
+    .tr-step:hover,.tr-step.hl{border-color:var(--accent);background:var(--accent);color:#fff}
+    .tr-step .step-num{font-size:.65rem;opacity:.7;margin-right:.1rem}
+    .cluster-legend{display:flex;gap:.7rem;flex-wrap:wrap;padding:.5rem 1rem;
+                    background:var(--surface);border:1px solid var(--border);
+                    border-radius:var(--radius);margin-bottom:.5rem;font-size:.78rem;align-items:center}
+    .cl-item{display:flex;align-items:center;gap:.3rem}
+    .cl-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+
     @media(max-width:768px){
       .page-header h1{font-size:1.4rem}
       .ctrl-bar{flex-direction:column;align-items:flex-start}
@@ -302,9 +323,10 @@
 ═════════════════════════════════════════════════════════════ -->
 <div id="tab-graph" class="view-panel">
   <div class="panel">
+    <!-- Main controls -->
     <div class="ctrl-bar">
       <label>Seed problem:</label>
-      <input type="text" id="gr-seed" placeholder="e.g. Two Sum" oninput="debounceGraph()" list="gr-dl" style="width:200px">
+      <input type="text" id="gr-seed" placeholder="e.g. Two Sum" oninput="debounceGraph()" list="gr-dl" style="width:180px">
       <datalist id="gr-dl"></datalist>
       <label>Depth:</label>
       <select id="gr-depth" onchange="drawGraph()">
@@ -320,10 +342,42 @@
         <option value="1">1</option><option value="2" selected>2</option>
         <option value="3">3</option>
       </select>
+      <label>Clusters:</label>
+      <select id="gr-clusters" onchange="drawGraph()">
+        <option value="0">Off</option>
+        <option value="3">3</option><option value="5" selected>5</option>
+        <option value="7">7</option><option value="10">10</option>
+      </select>
     </div>
+    <!-- Traversal + zoom controls -->
+    <div class="gr-zoom-bar">
+      <label>Traversal:</label>
+      <select id="gr-traverse" onchange="runTraversal()">
+        <option value="bfs">BFS</option>
+        <option value="dfs">DFS</option>
+      </select>
+      <button class="btn primary" onclick="runTraversal()">▶ Show traversal order</button>
+      <button class="btn" onclick="clearTraversal()">✕ Clear</button>
+      <span style="width:1px;background:var(--border);height:22px;margin:0 .3rem"></span>
+      <button class="btn" onclick="grZoomIn()">＋ Zoom in</button>
+      <button class="btn" onclick="grZoomOut()">－ Zoom out</button>
+      <button class="btn" onclick="grResetZoom()">⟲ Reset</button>
+      <span style="margin-left:auto;color:var(--text-light);font-size:.78rem">
+        Drag to pan · scroll to zoom · click node to open LeetCode
+      </span>
+    </div>
+    <div class="cluster-legend" id="gr-cluster-legend" style="display:none"></div>
     <div class="legend" id="gr-legend"></div>
-    <div class="panel-note">Problems linked when sharing ≥ N tags. Thicker edge = more shared tags. Click node to open LeetCode.</div>
-    <svg id="gr-svg" class="chart-svg" height="580" style="cursor:grab"></svg>
+    <div class="panel-note">Problems linked when sharing ≥ N tags. Thicker edge = more shared tags. Node size = connections. Colors = cluster.</div>
+    <svg id="gr-svg" class="chart-svg" height="600" style="cursor:grab"></svg>
+    <!-- Traversal result panel -->
+    <div class="traversal-panel" id="gr-traversal-panel">
+      <div class="traversal-header">
+        <span id="gr-traversal-title">BFS Traversal Order</span>
+        <span id="gr-traversal-info" style="font-weight:400;color:var(--text-light);font-size:.8rem"></span>
+      </div>
+      <div class="traversal-list" id="gr-traversal-list"></div>
+    </div>
     <div class="tip" id="gr-tip"></div>
   </div>
 </div>
@@ -1241,17 +1295,46 @@ function drawBubble() {
 }
 
 /* ══════════════════════════════════════════════════════════
-   TAB 5 — FORCE GRAPH
+   TAB 5 — FORCE GRAPH (enhanced)
 ══════════════════════════════════════════════════════════ */
 let graphDebounce;
+let grZoomBeh, grSvgSel, grGMain;
+let grCurrentNodes = [], grCurrentEdges = [];
+
 function debounceGraph() { clearTimeout(graphDebounce); graphDebounce=setTimeout(drawGraph,400); }
 
+/* Zoom controls */
+function grZoomIn()    { grSvgSel && grSvgSel.transition().duration(300).call(grZoomBeh.scaleBy, 1.5); }
+function grZoomOut()   { grSvgSel && grSvgSel.transition().duration(300).call(grZoomBeh.scaleBy, 0.65); }
+function grResetZoom() {
+  const W = svgW('gr-svg'), H = 600;
+  grSvgSel && grSvgSel.transition().duration(400)
+    .call(grZoomBeh.transform, d3.zoomIdentity.translate(W/2, H/2).scale(0.9));
+}
+
+/* Simple greedy k-clustering by tag group similarity */
+function assignClusters(nodes, k) {
+  if (!k || k === 0) return nodes.map(n => ({ ...n, cluster: -1 }));
+  // pick k seed nodes spread evenly, then assign each node to closest seed by tag overlap
+  const seeds = [];
+  const step = Math.max(1, Math.floor(nodes.length / k));
+  for (let i = 0; i < k && i * step < nodes.length; i++) seeds.push(nodes[i * step]);
+  const normTags = n => new Set((n.tags||[]).map(t=>t.toLowerCase().replace(/[\s_-]+/g,'-')));
+  const overlap = (a, b) => { const ta=normTags(a); return [...normTags(b)].filter(t=>ta.has(t)).length; };
+  return nodes.map(n => {
+    let best = 0, bestOv = -1;
+    seeds.forEach((s, i) => { const ov = overlap(n, s); if (ov > bestOv) { bestOv=ov; best=i; } });
+    return { ...n, cluster: best };
+  });
+}
+
 function drawGraph() {
-  const seedTitle = (document.getElementById('gr-seed').value||'Two Sum').trim();
-  const depth     = +document.getElementById('gr-depth').value;
-  const maxN      = +document.getElementById('gr-maxn').value;
-  const minShr    = +document.getElementById('gr-minshr').value;
-  const W = svgW('gr-svg'), H = 580;
+  const seedTitle  = (document.getElementById('gr-seed').value||'Two Sum').trim();
+  const depth      = +document.getElementById('gr-depth').value;
+  const maxN       = +document.getElementById('gr-maxn').value;
+  const minShr     = +document.getElementById('gr-minshr').value;
+  const clusterCnt = +document.getElementById('gr-clusters').value;
+  const W = svgW('gr-svg'), H = 600;
 
   // find seed
   let seed = ALL.find(p=>p.title.toLowerCase()===seedTitle.toLowerCase())
@@ -1276,73 +1359,262 @@ function drawGraph() {
         .slice(0,maxN)
         .forEach(({q,sh})=>{
           visited[q.id]=true; nodesMap[q.id]=q;
-          edges.push({source:p.id,target:q.id,weight:sh.length,tags:sh});
+          edges.push({source:p.id, target:q.id, weight:sh.length, sharedTags:sh.slice(0,3)});
           next.push(q);
         });
     });
-    frontier=next; if(!frontier.length)break;
+    frontier=next; if(!frontier.length) break;
   }
 
-  const nodes=Object.values(nodesMap).map(p=>({...p,isSeed:p.id===seed.id}));
+  // compute degree for node sizing
+  const degMap = {};
+  edges.forEach(e => {
+    degMap[e.source] = (degMap[e.source]||0) + 1;
+    degMap[e.target] = (degMap[e.target]||0) + 1;
+  });
 
-  // legend
-  const legEl=document.getElementById('gr-legend');
-  legEl.innerHTML=Object.entries(DIFF_HEX).map(([d,c])=>
+  let rawNodes = Object.values(nodesMap).map(p=>({...p, isSeed:p.id===seed.id, deg:degMap[p.id]||0}));
+  const clusteredNodes = assignClusters(rawNodes, clusterCnt);
+  grCurrentNodes = clusteredNodes;
+  grCurrentEdges = edges;
+
+  // cluster colors
+  const clusterColors = clusterCnt > 0
+    ? Array.from({length:clusterCnt},(_,i)=>PALETTE[(i*3)%PALETTE.length])
+    : null;
+
+  // cluster legend
+  const clLegEl = document.getElementById('gr-cluster-legend');
+  if (clusterCnt > 0 && clusterColors) {
+    clLegEl.style.display = 'flex';
+    clLegEl.innerHTML = '<b style="margin-right:.4rem">Clusters:</b>' +
+      clusterColors.map((c,i) => {
+        const members = clusteredNodes.filter(n=>n.cluster===i);
+        const sample = members.slice(0,2).map(n=>n.title.split(' ').slice(0,2).join(' ')).join(', ');
+        return `<span class="cl-item"><span class="cl-dot" style="background:${c}"></span>C${i+1} (${members.length}) ${sample}</span>`;
+      }).join('');
+  } else {
+    clLegEl.style.display = 'none';
+  }
+
+  // difficulty legend
+  const legEl = document.getElementById('gr-legend');
+  legEl.innerHTML = Object.entries(DIFF_HEX).map(([d,c])=>
     `<span class="legend-item"><span class="legend-dot" style="background:${c}"></span>${d}</span>`
-  ).join('')+
-  `<span class="legend-item"><span class="legend-dot" style="background:var(--accent);outline:3px solid var(--accent);outline-offset:2px"></span>Seed</span>
-   <span style="margin-left:auto;color:var(--text-light);font-size:.78rem">${nodes.length} nodes · ${edges.length} edges</span>`;
+  ).join('') +
+  `<span class="legend-item"><span class="legend-dot" style="background:var(--accent);outline:3px solid gold;outline-offset:2px"></span>Seed</span>` +
+  (clusterCnt > 0 ? `<span class="legend-item" style="color:var(--text-light);font-size:.78rem">Ring = cluster color</span>` : '') +
+  `<span style="margin-left:auto;color:var(--text-light);font-size:.78rem">${clusteredNodes.length} nodes · ${edges.length} edges</span>`;
 
-  const svg=d3.select('#gr-svg');
+  const svg = d3.select('#gr-svg');
   svg.selectAll('*').remove();
-  svg.attr('width',W).attr('height',H);
+  svg.attr('width', W).attr('height', H);
+  grSvgSel = svg;
 
-  const textC=css('--text'),surfC=css('--surface'),borderC=css('--border');
-  const zoom=d3.zoom().scaleExtent([.15,5]).on('zoom',e=>gMain.attr('transform',e.transform));
-  svg.call(zoom);
+  const textC=css('--text'), surfC=css('--surface'), borderC=css('--border');
 
-  const gMain=svg.append('g');
-  const tip=(html,e)=>showTip('gr-tip',html,e);
+  grZoomBeh = d3.zoom().scaleExtent([.1,6])
+    .on('zoom', e => grGMain.attr('transform', e.transform));
+  svg.call(grZoomBeh);
 
-  const edgeSel=gMain.append('g').selectAll('line').data(edges).enter().append('line')
-    .attr('stroke',borderC).attr('stroke-width',d=>Math.min(6,d.weight*1.2)).attr('opacity',.45);
+  grGMain = svg.append('g');
+  const tip = (html,e) => showTip('gr-tip',html,e);
 
-  const nodeSel=gMain.append('g').selectAll('g').data(nodes).enter().append('g')
+  // ── Edge labels (shared tag count) ──────────────────────
+  const edgeLabel = grGMain.append('g').selectAll('text').data(edges).enter().append('text')
+    .attr('text-anchor','middle').attr('font-size','8px').attr('fill',textC).attr('opacity',.45)
+    .style('pointer-events','none')
+    .text(d=>'×'+d.weight);
+
+  // ── Edges ────────────────────────────────────────────────
+  const edgeSel = grGMain.append('g').selectAll('line').data(edges).enter().append('line')
+    .attr('stroke', d => {
+      if (clusterColors) {
+        // color edge by source cluster
+        const sNode = clusteredNodes.find(n=>n.id===d.source||n.id===(d.source&&d.source.id));
+        if (sNode && sNode.cluster >= 0) return clusterColors[sNode.cluster];
+      }
+      return borderC;
+    })
+    .attr('stroke-width', d => Math.max(1, Math.min(7, d.weight * 1.4)))
+    .attr('opacity', .38)
+    .on('mousemove', (ev,d) =>
+      tip(`<div class="tip-title">Shared tags: ${d.weight}</div>${d.sharedTags.join(', ')}`, ev))
+    .on('mouseleave', () => hideTip('gr-tip'));
+
+  // ── Nodes ────────────────────────────────────────────────
+  const maxDeg = d3.max(clusteredNodes, n=>n.deg) || 1;
+  const rScale = d => d.isSeed ? 20 : Math.max(9, 9 + (d.deg/maxDeg)*11);
+
+  const nodeSel = grGMain.append('g').selectAll('g').data(clusteredNodes).enter().append('g')
     .style('cursor','pointer')
     .call(d3.drag()
       .on('start',(ev,d)=>{if(!ev.active)sim.alphaTarget(.3).restart();d.fx=d.x;d.fy=d.y})
       .on('drag', (ev,d)=>{d.fx=ev.x;d.fy=ev.y})
       .on('end',  (ev,d)=>{if(!ev.active)sim.alphaTarget(0);d.fx=null;d.fy=null}))
-    .on('click',(ev,d)=>openLC(d.title))
-    .on('mousemove',(ev,d)=>
+    .on('click', (ev,d) => openLC(d.title))
+    .on('mousemove', (ev,d) =>
       tip(`<div class="tip-title">#${d.id} ${d.title}</div>
-        <span class="diff-${d.difficulty}">${d.difficulty}</span> · ${d.acceptance}% acc<br>
-        <div class="tip-sub">${d.tags.slice(0,5).join(', ')}</div>`,ev))
-    .on('mouseleave',()=>hideTip('gr-tip'));
+        <span class="diff-${d.difficulty}">${d.difficulty}</span> · ${d.acceptance}% acc · ${d.deg} links<br>
+        <div class="tip-sub">${d.tags.slice(0,5).join(', ')}</div>
+        ${d.cluster>=0?`<div class="tip-sub">Cluster ${d.cluster+1}</div>`:''}`, ev))
+    .on('mouseleave', () => hideTip('gr-tip'));
 
+  // outer ring for cluster color
   nodeSel.append('circle')
-    .attr('r',d=>d.isSeed?18:11)
-    .attr('fill',d=>DIFF_HEX[d.difficulty])
-    .attr('stroke',d=>d.isSeed?css('--accent'):surfC)
-    .attr('stroke-width',d=>d.isSeed?4:2).attr('opacity',.9);
+    .attr('r', d => rScale(d) + 4)
+    .attr('fill', 'none')
+    .attr('stroke', d => {
+      if (d.isSeed) return 'gold';
+      if (clusterColors && d.cluster >= 0) return clusterColors[d.cluster];
+      return 'none';
+    })
+    .attr('stroke-width', d => d.isSeed ? 3 : 2.5)
+    .attr('opacity', .85);
 
+  // inner fill by difficulty
+  nodeSel.append('circle')
+    .attr('r', rScale)
+    .attr('fill', d => DIFF_HEX[d.difficulty])
+    .attr('stroke', surfC)
+    .attr('stroke-width', 1.5)
+    .attr('opacity', .9);
+
+  // node labels
   nodeSel.append('text')
-    .attr('dy',d=>d.isSeed?26:16).attr('text-anchor','middle')
-    .attr('fill',textC).attr('font-size',d=>d.isSeed?'10px':'8px')
-    .attr('font-weight',d=>d.isSeed?'700':'400')
+    .attr('dy', d => rScale(d) + 12)
+    .attr('text-anchor','middle')
+    .attr('fill', textC)
+    .attr('font-size', d => d.isSeed ? '10px' : '8px')
+    .attr('font-weight', d => d.isSeed ? '700' : '400')
     .style('pointer-events','none')
-    .text(d=>{const t=d.title;return t.length>18?t.slice(0,16)+'…':t});
+    .text(d => { const t=d.title; return t.length>20 ? t.slice(0,18)+'…' : t; });
 
-  const sim=d3.forceSimulation(nodes)
-    .force('link',d3.forceLink(edges).id(d=>d.id).distance(85).strength(.6))
-    .force('charge',d3.forceManyBody().strength(-230))
-    .force('center',d3.forceCenter(W/2,H/2))
-    .force('collide',d3.forceCollide(22))
-    .on('tick',()=>{
-      edgeSel.attr('x1',d=>d.source.x).attr('y1',d=>d.source.y)
-             .attr('x2',d=>d.target.x).attr('y2',d=>d.target.y);
-      nodeSel.attr('transform',d=>`translate(${d.x},${d.y})`);
+  const sim = d3.forceSimulation(clusteredNodes)
+    .force('link', d3.forceLink(edges).id(d=>d.id).distance(d=>70+d.weight*8).strength(.55))
+    .force('charge', d3.forceManyBody().strength(-280))
+    .force('center', d3.forceCenter(W/2, H/2))
+    .force('collide', d3.forceCollide(d => rScale(d)+8))
+    .on('tick', () => {
+      edgeSel
+        .attr('x1',d=>d.source.x).attr('y1',d=>d.source.y)
+        .attr('x2',d=>d.target.x).attr('y2',d=>d.target.y);
+      edgeLabel
+        .attr('x',d=>(d.source.x+d.target.x)/2)
+        .attr('y',d=>(d.source.y+d.target.y)/2-3);
+      nodeSel.attr('transform', d=>`translate(${d.x},${d.y})`);
     });
+
+  // clear any stale traversal panel
+  clearTraversal();
+}
+
+/* ── BFS / DFS traversal ──────────────────────────────── */
+let grTraversalHighlight = null;
+
+function runTraversal() {
+  const mode = document.getElementById('gr-traverse').value;
+  if (!grCurrentNodes.length) return;
+
+  const seed = grCurrentNodes.find(n=>n.isSeed) || grCurrentNodes[0];
+  const adjMap = {};
+  grCurrentNodes.forEach(n => adjMap[n.id] = []);
+  grCurrentEdges.forEach(e => {
+    const sid = typeof e.source === 'object' ? e.source.id : e.source;
+    const tid = typeof e.target === 'object' ? e.target.id : e.target;
+    if (adjMap[sid]) adjMap[sid].push(tid);
+    if (adjMap[tid]) adjMap[tid].push(sid);
+  });
+
+  const order = [];
+  const seen = new Set();
+
+  if (mode === 'bfs') {
+    const queue = [seed.id];
+    seen.add(seed.id);
+    while (queue.length) {
+      const cur = queue.shift();
+      order.push(cur);
+      (adjMap[cur]||[]).forEach(nb => { if (!seen.has(nb)) { seen.add(nb); queue.push(nb); } });
+    }
+  } else {
+    const stack = [seed.id];
+    while (stack.length) {
+      const cur = stack.pop();
+      if (seen.has(cur)) continue;
+      seen.add(cur); order.push(cur);
+      (adjMap[cur]||[]).reverse().forEach(nb => { if (!seen.has(nb)) stack.push(nb); });
+    }
+  }
+
+  const nodeById = Object.fromEntries(grCurrentNodes.map(n=>[n.id,n]));
+  const panel = document.getElementById('gr-traversal-panel');
+  const list  = document.getElementById('gr-traversal-list');
+  const title = document.getElementById('gr-traversal-title');
+  const info  = document.getElementById('gr-traversal-info');
+
+  title.textContent = (mode === 'bfs' ? '🌊 BFS' : '🔍 DFS') + ' Traversal Order';
+  info.textContent  = `${order.length} nodes visited`;
+  panel.classList.add('open');
+
+  list.innerHTML = order.map((id, i) => {
+    const n = nodeById[id];
+    if (!n) return '';
+    const diffColor = DIFF_HEX[n.difficulty] || '#888';
+    return `<span class="tr-step" data-id="${id}"
+              style="border-color:${diffColor}22"
+              onmouseenter="hlTraversalNode('${id}',true)"
+              onmouseleave="hlTraversalNode('${id}',false)"
+              onclick="openLC('${n.title.replace(/'/g,"\\'")}')">
+              <span class="step-num">${i+1}.</span>
+              <span style="color:${diffColor};font-size:.7rem">●</span>
+              ${n.title.length>22?n.title.slice(0,20)+'…':n.title}
+            </span>`;
+  }).join('');
+
+  // animate highlight on the SVG nodes in traversal order
+  grHighlightTraversalSequence(order, nodeById);
+}
+
+function hlTraversalNode(id, on) {
+  d3.select('#gr-svg').selectAll('g g')
+    .filter(d => d && d.id == id)
+    .select('circle:nth-child(2)')
+    .attr('stroke', on ? 'gold' : css('--surface'))
+    .attr('stroke-width', on ? 4 : 1.5);
+}
+
+function grHighlightTraversalSequence(order, nodeById) {
+  // flash nodes in order with a short delay
+  d3.select('#gr-svg').selectAll('g g').select('circle:nth-child(2)')
+    .attr('opacity', .35);
+  order.forEach((id, i) => {
+    setTimeout(() => {
+      d3.select('#gr-svg').selectAll('g g')
+        .filter(d => d && d.id == id)
+        .select('circle:nth-child(2)')
+        .transition().duration(200)
+        .attr('opacity', 1)
+        .attr('stroke', 'gold')
+        .attr('stroke-width', 3);
+      // highlight step pill
+      const pills = document.querySelectorAll('#gr-traversal-list .tr-step');
+      if (pills[i]) {
+        pills[i].classList.add('hl');
+        setTimeout(() => pills[i].classList.remove('hl'), 400);
+      }
+    }, i * 80);
+  });
+  // restore normal after all done
+  setTimeout(() => {
+    d3.select('#gr-svg').selectAll('g g').select('circle:nth-child(2)')
+      .attr('opacity', .9).attr('stroke', css('--surface')).attr('stroke-width', 1.5);
+  }, order.length * 80 + 600);
+}
+
+function clearTraversal() {
+  document.getElementById('gr-traversal-panel').classList.remove('open');
+  document.getElementById('gr-traversal-list').innerHTML = '';
 }
 
 /* ══════════════════════════════════════════════════════════

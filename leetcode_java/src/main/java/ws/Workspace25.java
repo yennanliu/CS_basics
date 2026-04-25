@@ -2705,6 +2705,12 @@ public class Workspace25 {
 
 
 
+    // LC 2289
+    public int totalSteps(int[] nums) {
+
+        return 0;
+    }
+
 
 
 
