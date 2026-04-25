@@ -2027,10 +2027,16 @@ public class Workspace25 {
      *
      *
      */
+    // 16.23 - 33 PM
+    // IDEA: SCAN LINE
+    public int minGroups(int[][] intervals) {
+        return 0;
+    }
+
     // 15.47 - 57 pm
     //  IDEA 1) SORT + big PQ ???
     // -> PQ:  { end_idx } // ???
-    public int minGroups(int[][] intervals) {
+    public int minGroups_96(int[][] intervals) {
         // edge
 
         // 1. sort ?? ( start ??? small -> big ???

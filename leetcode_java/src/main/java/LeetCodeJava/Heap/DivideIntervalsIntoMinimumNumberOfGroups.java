@@ -71,7 +71,7 @@ public class DivideIntervalsIntoMinimumNumberOfGroups {
      * | 3    | [2, 3]     | 2     | 5                        | 2 > 5 → False → New group                   | [3, 5, 10]           | 3      |
      * | 4    | [5, 10]    | 5     | 3                        | 5 > 3 → True → Reuse group 3                | [5, 10, 10]          | 3      |
      * | 5    | [6, 8]     | 6     | 5                        | 6 > 5 → True → Reuse group 1                | [8, 10, 10]          | 3      |
-     * 
+     *
      *
      */
     public int minGroups(int[][] intervals) {
