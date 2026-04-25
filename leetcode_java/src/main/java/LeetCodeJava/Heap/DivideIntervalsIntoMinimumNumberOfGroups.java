@@ -359,7 +359,7 @@ public class DivideIntervalsIntoMinimumNumberOfGroups {
     }
 
     // V0-2
-    // IDEA: (Sweep Line) (gemini)
+    // IDEA: Scan Line (gemini)
     /**
      *  Instead of intervals, we look at Events.
      *  An interval is just a +1 event at
@@ -383,6 +383,14 @@ public class DivideIntervalsIntoMinimumNumberOfGroups {
             events.add(new int[] { in[1], -1 }); // End event
         }
 
+        /** NOTE !!!
+         *
+         *  how we sort the `events`
+         *
+         *   1. time (small -> big)
+         *   2. status (start -> end)
+         *
+         */
         // Sort by time. If time is same, process START (1) before END (-1)
         // Actually, in this problem, [5,5] overlaps.
         // To handle this, we treat END as occurring slightly AFTER the start
@@ -397,6 +405,56 @@ public class DivideIntervalsIntoMinimumNumberOfGroups {
         }
         return maxGroups;
     }
+
+    // V0-2-X
+    // IDEA:  SCAN LINE + TreeMap (sorted keys) (GPT)
+    /**  NOTE !!!
+     *
+     *  Q: why do need TreeMap ? instead of regular hashmap ?
+     *
+     *  -> Short answer:
+     *        you don’t need a TreeMap—you need `sorted keys`.
+     *        TreeMap just gives you that automatically.
+     *
+     *
+     *  -> In the scan line approach for Divide Intervals
+     *     Into Minimum Number of Groups, you do:
+     *
+     *    - Record events (+1, -1)
+     *    - Process them in `time order` !!!!
+     *
+     *
+     */
+    public int minGroups_2_0_x(int[][] intervals) {
+
+        /** NOTE !!!
+         *
+         *  Actually, we DON'T really need treeMap,
+         *  -> we can simply use a list collect start, end time and status,
+         *     then SORT on `time` (small -> big),
+         *     that's it. it's a simpler and straightforward approach.
+         *     refer VO-2
+         */
+        TreeMap<Integer, Integer> map = new TreeMap<>();
+
+        for (int[] in : intervals) {
+            int start = in[0];
+            int end = in[1];
+
+            map.put(start, map.getOrDefault(start, 0) + 1);
+            map.put(end + 1, map.getOrDefault(end + 1, 0) - 1);
+        }
+
+        int max = 0, cur = 0;
+
+        for (int delta : map.values()) {
+            cur += delta;
+            max = Math.max(max, cur);
+        }
+
+        return max;
+    }
+
 
 
     // V0-3

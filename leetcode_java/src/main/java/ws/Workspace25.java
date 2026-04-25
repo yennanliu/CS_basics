@@ -2030,8 +2030,78 @@ public class Workspace25 {
     // 16.23 - 33 PM
     // IDEA: SCAN LINE
     public int minGroups(int[][] intervals) {
-        return 0;
+        // edge
+
+        // NOTE !!! NO need to sort !!! (FOR SCAN LINE APPROACH)
+        // ????
+        // 1. sort ?? ( start ??? small -> big ???
+//        Arrays.sort(intervals, new Comparator<int[]>() {
+//            @Override
+//            public int compare(int[] o1, int[] o2) {
+//                int diff = o1[0] - o2[0]; // ???
+//                return diff;
+//            }
+//        });
+
+
+        /**
+         *
+         *      *
+         *      *      * Time →
+         *      *      * 1    2    3    4    5    6    7    8    9    10
+         *      *      * ------------------------------------------------
+         *      *      * [1,5]   █████
+         *      *      * [1,10]  ███████████████
+         *      *      * [2,3]        ██
+         *      *      * [5,10]            █████████
+         *      *      * [6,8]                 ███
+         *      *      *
+         *
+         *
+         */
+
+        // ????
+        // { status : idx ???? }
+        TreeMap<Integer, Integer> map = new TreeMap<>();
+
+        // list : [ [idx, status ] ]
+        // start: 1, end: -1
+        //List<Integer[]> list = new ArrayList<>();
+        // ???
+        for(int[] x: intervals){
+            int start = x[0];
+            int end = x[1];
+            // ???
+//            list.add(new Integer[]{x[0], 1});
+//            list.add(new Integer[]{x[1], -1});
+            // NOTE !!!
+//            map.put(1, start);
+//            map.put(-1, end + 1);
+            map.put(start, map.getOrDefault(start, 0) + 1);
+            map.put(end + 1, map.getOrDefault(end + 1, 0) - 1);
+
+        }
+
+        // ???
+        int maxCnt = 0;
+        int cur = 0;
+
+        for(int x: map.values()){
+            cur += x;
+            maxCnt = Math.max(cur, maxCnt);
+        }
+
+        // ???
+       // int groupCnt = 0;
+
+        return maxCnt;
     }
+
+
+
+
+
+
 
     // 15.47 - 57 pm
     //  IDEA 1) SORT + big PQ ???
