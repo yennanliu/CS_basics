@@ -2732,8 +2732,15 @@ public class Workspace25 {
      *
      *
      */
-    //  IDEA 2) STACK ???
+    // IDEA: MONO STACK + DP ?????
     public int totalSteps(int[] nums) {
+
+        return 0;
+    }
+
+
+    //  IDEA 2) STACK ???
+    public int totalSteps_99(int[] nums) {
         // edge
 //        if(isNonDecrease(nums)){
 //            return 0;

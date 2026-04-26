@@ -88,6 +88,78 @@ public class StepsToMakeArrayNonDecreasing {
     }
 
 
+    // V1-2
+    // IDEA: MONO STACK + DP (GPT)
+    /**
+     *
+     * Traverse from right → left
+     * Maintain a stack of indices
+     * Track how many steps each element survives (dp[i])
+     * If nums[i] > nums[j], then j will be removed eventually
+     *
+     */
+    public int totalSteps_1_2(int[] nums) {
+        int n = nums.length;
+        int[] dp = new int[n];
+        Stack<Integer> stack = new Stack<>();
+        int res = 0;
+
+        for (int i = n - 1; i >= 0; i--) {
+            int maxSteps = 0;
+
+            while (!stack.isEmpty() && nums[i] > nums[stack.peek()]) {
+                maxSteps = Math.max(maxSteps + 1, dp[stack.pop()]);
+            }
+
+            dp[i] = maxSteps;
+            res = Math.max(res, dp[i]);
+
+            stack.push(i);
+        }
+
+        return res;
+    }
+
+
+    // V1-3
+    // IDEA: MONO STACK + DP (GPT)
+    public int totalSteps_1_3(int[] nums) {
+        int n = nums.length;
+        int maxSteps = 0;
+
+        // dp[i] = steps required to remove nums[i]
+        int[] dp = new int[n];
+
+        // Stack stores indices of elements in a monotonic decreasing order
+        Stack<Integer> stack = new Stack<>();
+
+        for (int i = 0; i < n; i++) {
+            int currentSteps = 0;
+
+            // While current element is >= the top of the stack,
+            // it means the current element will "survive" longer or
+            // eat the elements that the stack top was supposed to eat.
+            while (!stack.isEmpty() && nums[i] >= nums[stack.peek()]) {
+                currentSteps = Math.max(currentSteps, dp[stack.pop()]);
+            }
+
+            // If stack is not empty, there is a larger element to the left
+            // that will eventually "eat" nums[i].
+            if (!stack.isEmpty()) {
+                dp[i] = currentSteps + 1;
+                maxSteps = Math.max(maxSteps, dp[i]);
+            } else {
+                // No larger element to the left, nums[i] will never be removed.
+                dp[i] = 0;
+            }
+
+            stack.push(i);
+        }
+
+        return maxSteps;
+    }
+
+
 
     // V2
     // IDEA: DP
