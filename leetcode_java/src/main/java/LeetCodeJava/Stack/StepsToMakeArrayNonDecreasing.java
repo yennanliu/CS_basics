@@ -56,6 +56,55 @@ public class StepsToMakeArrayNonDecreasing {
 
     // V0-1
     // IDEA: MONO STACK + DP (gemini)
+    /**  Dry run:
+     *
+     * Let's dry run the optimized $O(N)$
+     * Monotonic Stack code using the example
+     *
+     *
+     * `nums = [10, 1, 2, 7, 1, 3]`.
+     *
+     * ### 🎬 The Setup
+     * * **`dp[i]`**: Steps required to remove `nums[i]`.
+     * * **`stack`**: Stores indices of elements that haven't been "eaten" yet (Monotonic Decreasing).
+     * * **`maxSteps`**: Our global answer.
+     *
+     * ---
+     *
+     * ### 🚶 Step-by-Step Execution
+     *
+     | Step | i | nums[i] | while loop (Pops) | currentSteps (Max of popped DPs) | dp[i] Logic | stack (Indices) |
+     |:----:|:-:|:-------:|:------------------|:----------------------------------|:------------|:----------------|
+     | **1** | 0 | **10** | *Empty* | 0 | stack empty → **0** | `[0]` |
+     | **2** | 1 | **1** | *None* (1 < 10) | 0 | 1 + 0 → **1** | `[0, 1]` |
+     | **3** | 2 | **2** | Pop index 1 (2 > 1) | max(0, dp[1] = 1) = **1** | 1 + 1 → **2** | `[0, 2]` |
+     | **4** | 3 | **7** | Pop index 2 (7 > 2) | max(1, dp[2] = 2) = **2** | 1 + 2 → **3** | `[0, 3]` |
+     | **5** | 4 | **1** | *None* (1 < 7) | 0 | 1 + 0 → **1** | `[0, 3, 4]` |
+     | **6** | 5 | **3** | Pop index 4 (3 > 1) | max(0, dp[4] = 1) = **1** | 1 + 1 → **2** | `[0, 3, 5]` |
+     
+     * **Final `maxSteps` = 3.**
+     *
+     * ---
+     *
+     * ### 🔍 Deep Dive: Why did `dp[3]` (value 7) become 3?
+     *
+     * Looking at the array `[10, 1, 2, 7...]`:
+     * 1.  **Step 1:** `10` eats `1`. Now the array is `[10, 2, 7...]`.
+     * 2.  **Step 2:** `10` eats `2`. Now the array is `[10, 7...]`.
+     * 3.  **Step 3:** `10` eats `7`. Now the array is `[10...]`.
+     *
+     * The `Math.max` in the code captured this perfectly:
+     * * When we encountered **7**, we saw it was larger than **2**.
+     * * We knew **2** took **2 steps** to be removed.
+     * * Therefore, **7** had to wait for those **2 steps** to finish before the "Killer" (`10`) could finally reach it.
+     * * Result: $2 + 1 = 3$.
+     *
+     * ### 📊 Key Takeaway for the Interview
+     * * If `nums[i] < nums[i-1]`, it's eaten immediately in **1 step**.
+     * * If `nums[i] >= nums[i-1]`, it has to "wait out" all the smaller elements to its left until it meets an even bigger "Killer." The `Math.max` keeps track of the longest wait time in that "shadow."
+     *
+     *
+     */
     public int totalSteps_0_1(int[] nums) {
         int n = nums.length;
         int maxSteps = 0;
@@ -84,6 +133,26 @@ public class StepsToMakeArrayNonDecreasing {
         for (int i = 0; i < n; i++) {
             int currentSteps = 0;
 
+            /** Demo:
+             *
+             * ### 📊 Step-by-Step Logic Visualization
+             * Input: `[10, 9, 1, 2, 3]`
+             *
+             * 1. **`10`** is on stack.
+             * 2. **`9`** comes. `9 < 10`. `dp[9] = 0 + 1 = 1`. (Step 1: 10 eats 9).
+             * 3. **`1`** comes. `1 < 9`. `dp[1] = 0 + 1 = 1`. (Step 1: 9 eats 1).
+             * 4. **`2`** comes. `2 > 1`. We enter the `while` loop:
+             *    * We pop `1`. `currentSteps = max(0, dp[1]) = 1`.
+             *    * Now the stack top is `9`. Since `2 < 9`, we stop.
+             *    * `dp[2] = currentSteps + 1 = 2`.
+             *    * **Why 2?** Because in Step 1, `9` eats `1`. Only *then* (Step 2) is `2` exposed to `9` so `9` can eat it.
+             * 5. **`3`** comes. `3 > 2`. We enter the `while` loop:
+             *    * We pop `2`. `currentSteps = max(0, dp[2]) = 2`.
+             *    * Stack top is `9`. Since `3 < 9`, we stop.
+             *    * `dp[3] = currentSteps + 1 = 3`.
+             *    * **Why 3?** It has to wait for `2` to be cleared, which already had to wait for `1` to be cleared.
+             *
+             */
             // While current element is >= the top of the stack,
             // it means the current element will "survive" LONGER or
             // eat the elements that the stack top was supposed to eat.
