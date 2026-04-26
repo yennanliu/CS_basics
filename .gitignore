@@ -29,3 +29,4 @@ ref_code/**/.settings/
 
 # build output
 node_modules
+site/node_modules

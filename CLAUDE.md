@@ -21,6 +21,12 @@ CS_basics is a comprehensive computer science fundamentals repository containing
 - `doc/` - Documentation, cheat sheets, interview resources, and study materials
 - `ref_code/` - Reference code examples
 - `script/` - Utility scripts
+- `site/` - GitHub Pages build tooling
+  - `build-site.js` - Builds HTML pages from markdown docs
+  - `build-leetcode.js` - Generates LeetCode JSON data for the LC Explorer
+  - `style.css` - Site stylesheet
+  - `package.json` / `package-lock.json` - Node.js dependencies (markdown-it, highlight.js)
+  - Run scripts from the project root: `node site/build-site.js`
 
 ## Build and Test Commands
 

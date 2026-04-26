@@ -43,27 +43,27 @@ jobs:
       uses: actions/cache@v4
       with:
         path: ~/.npm
-        key: ${{ runner.os }}-npm-${{ hashFiles('package-lock.json') }}
+        key: ${{ runner.os }}-npm-${{ hashFiles('site/package-lock.json') }}
         restore-keys: |
           ${{ runner.os }}-npm-
 
     - name: Install dependencies
-      run: npm ci
+      run: npm ci --prefix site
 
     - name: Build site
       run: |
         mkdir -p _site/doc
         cp -r doc/pic _site/doc/pic
         mkdir -p _site/faqs
-        node build-site.js
+        node site/build-site.js
 
     - name: Copy CSS
-      run: cp style.css _site/style.css
+      run: cp site/style.css _site/style.css
 
     - name: Bundle vendor assets (highlight.js + fonts)
       run: |
         mkdir -p _site/vendor/highlight
-        cp node_modules/highlight.js/styles/github-dark.min.css _site/vendor/highlight/github-dark.min.css
+        cp site/node_modules/highlight.js/styles/github-dark.min.css _site/vendor/highlight/github-dark.min.css
         curl -sSfL "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" \
           -o _site/vendor/highlight/highlight.min.js
         cp vendor/fonts.css _site/vendor/fonts.css
@@ -102,7 +102,7 @@ jobs:
         fi
 
     - name: Build LeetCode data (JSON only)
-      run: node build-leetcode.js
+      run: node site/build-leetcode.js
 
     - name: Upload artifact
       uses: actions/upload-pages-artifact@v3

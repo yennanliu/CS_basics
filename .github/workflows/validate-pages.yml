@@ -9,11 +9,11 @@ on:
       - '.github/workflows/deploy-pages.yml'
       - '.github/workflows/validate-pages.yml'
       - 'algo_demo/**'
-      - 'build-*.js'
-      - 'ensure-nav-pages.js'
-      - 'package.json'
-      - 'package-lock.json'
-      - 'style.css'
+      - 'site/build-*.js'
+      - 'site/ensure-nav-pages.js'
+      - 'site/package.json'
+      - 'site/package-lock.json'
+      - 'site/style.css'
       - 'vendor/**'
   pull_request:
     branches: [ master ]
@@ -23,11 +23,11 @@ on:
       - '.github/workflows/deploy-pages.yml'
       - '.github/workflows/validate-pages.yml'
       - 'algo_demo/**'
-      - 'build-*.js'
-      - 'ensure-nav-pages.js'
-      - 'package.json'
-      - 'package-lock.json'
-      - 'style.css'
+      - 'site/build-*.js'
+      - 'site/ensure-nav-pages.js'
+      - 'site/package.json'
+      - 'site/package-lock.json'
+      - 'site/style.css'
       - 'vendor/**'
   workflow_dispatch:
 
@@ -48,22 +48,22 @@ jobs:
       uses: actions/cache@v4
       with:
         path: ~/.npm
-        key: ${{ runner.os }}-npm-${{ hashFiles('package-lock.json') }}
+        key: ${{ runner.os }}-npm-${{ hashFiles('site/package-lock.json') }}
         restore-keys: |
           ${{ runner.os }}-npm-
 
     - name: Install dependencies
-      run: npm ci
+      run: npm ci --prefix site
 
     - name: Build site
       run: |
         mkdir -p _site/doc
         cp -r doc/pic _site/doc/pic
         mkdir -p _site/faqs
-        node build-site.js
-        cp style.css _site/style.css
+        node site/build-site.js
+        cp site/style.css _site/style.css
         mkdir -p _site/vendor/highlight
-        cp node_modules/highlight.js/styles/github-dark.min.css _site/vendor/highlight/github-dark.min.css
+        cp site/node_modules/highlight.js/styles/github-dark.min.css _site/vendor/highlight/github-dark.min.css
         curl -sSfL "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" \
           -o _site/vendor/highlight/highlight.min.js
         cp vendor/fonts.css _site/vendor/fonts.css
