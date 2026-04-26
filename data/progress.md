@@ -83,7 +83,6 @@
 	- LC 71
 		- gpt
 			- 32
-			- 1081
 		- gemini
 	- LC 35
 		- gpt

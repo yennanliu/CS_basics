@@ -1106,9 +1106,43 @@ img {
 
 /* highlight.js overrides for consistent look */
 .hljs {
-  background: #1e1e1e !important;
-  color: #d4d4d4 !important;
+  background: #282c34 !important;
+  color: #abb2bf !important;
   padding: 0 !important;
+}
+
+/* Line numbers */
+.hljs-ln {
+  display: block;
+  width: 100%;
+}
+
+.hljs-ln-line {
+  display: flex;
+  align-items: stretch;
+}
+
+.hljs-ln-n {
+  display: inline-block;
+  min-width: 3ch;
+  padding-right: 1.2em;
+  padding-left: 0.5em;
+  color: #636d83;
+  font-size: 0.85em;
+  text-align: right;
+  user-select: none;
+  border-right: 1px solid #3e4451;
+  margin-right: 1em;
+  flex-shrink: 0;
+}
+
+.hljs-ln-n::before {
+  content: attr(data-line-number);
+}
+
+.hljs-ln-code {
+  flex: 1;
+  white-space: pre;
 }
 
 @media (max-width: 768px) {

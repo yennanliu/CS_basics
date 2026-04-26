@@ -337,7 +337,7 @@ const htmlTemplate = (title, bodyContent, currentPage = 'home', basePath = '') =
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>CS</text></svg>">
   <link rel="stylesheet" href="${basePath}style.css">
   <link rel="stylesheet" href="${basePath}vendor/fonts.css">
-  <link rel="stylesheet" href="${basePath}vendor/highlight/github-dark.min.css">
+  <link rel="stylesheet" href="${basePath}vendor/highlight/atom-one-dark.min.css">
   <script src="${basePath}vendor/highlight/highlight.min.js"></script>
   <script>
   // Apply theme before render to prevent flash
@@ -356,6 +356,16 @@ const htmlTemplate = (title, bodyContent, currentPage = 'home', basePath = '') =
       var cls = codeEl.className || '';
       var m = cls.match(/language-(\S+)/) || cls.match(/hljs\s+(\S+)/);
       if (m) lang = m[1];
+
+      // Add line numbers
+      var lines = codeEl.innerHTML.split('\n');
+      if (lines[lines.length - 1] === '') lines.pop();
+      var numbered = lines.map(function(line, i) {
+        return '<span class="hljs-ln-line"><span class="hljs-ln-n" data-line-number="' + (i + 1) + '"></span><span class="hljs-ln-code">' + line + '</span></span>';
+      }).join('\n');
+      codeEl.innerHTML = numbered;
+      codeEl.classList.add('hljs-ln');
+
       var wrapper = document.createElement('div');
       wrapper.className = 'code-block-wrapper';
       pre.parentNode.insertBefore(wrapper, pre);
@@ -373,7 +383,8 @@ const htmlTemplate = (title, bodyContent, currentPage = 'home', basePath = '') =
       btn.className = 'copy-btn';
       btn.textContent = 'Copy';
       btn.addEventListener('click', function() {
-        navigator.clipboard.writeText(codeEl.textContent).then(function() {
+        var text = Array.from(codeEl.querySelectorAll('.hljs-ln-code')).map(function(el) { return el.textContent; }).join('\n');
+        navigator.clipboard.writeText(text).then(function() {
           btn.textContent = 'Copied!';
           btn.classList.add('copied');
           setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
