@@ -3025,6 +3025,9 @@ public class Workspace25 {
      *
      *  IDEA 1) STACK
      *
+     *   1. map ? record the `last idx` of every alphabet
+     *   2. 
+     *
      *  IDEA 2) BRUTE FORCE
      *
      *

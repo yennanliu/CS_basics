@@ -386,7 +386,7 @@ const htmlTemplate = (title, bodyContent, currentPage = 'home', basePath = '') =
         btn.textContent = 'Copy';
         btn.addEventListener('click', function() {
           var text = codeEl
-            ? Array.from(codeEl.querySelectorAll('.ln-code')).map(function(el) { return el.textContent; }).join('\n')
+            ? Array.from(codeEl.querySelectorAll('.ln-code')).map(function(el) { return el.textContent; }).join('\\n')
             : pre.textContent;
           navigator.clipboard.writeText(text).then(function() {
             btn.textContent = 'Copied!';
