@@ -72,6 +72,58 @@ public class CarFleet {
 
     // V0
     // IDEA: pair position and speed, sorting (gpt)
+    public int carFleet(int target, int[] position, int[] speed) {
+        int n = position.length;
+
+        /** NOTE !!!
+         *
+         *   list: { [position_1, speed_1], [positon_2, speed_2], ... }
+         */
+        List<int[]> list = new ArrayList<>();
+        for (int i = 0; i < n; i++) {
+            list.add(new int[] { position[i], speed[i] });
+        }
+
+        /** NOTE !!!
+         *
+         *   sort on `position` (BIG -> SMALL)
+         */
+        // sort by position descending (closest to target first)
+        Collections.sort(list, (a, b) -> b[0] - a[0]);
+
+        int fleet = 0;
+        /** NOTE !!!
+         *
+         *   prevTime init as -1
+         */
+        double prevTime = -1;
+
+        /** NOTE !!!
+         *
+         *   i init as 0
+         */
+        for (int i = 0; i < n; i++) {
+
+            double time = (double) (target - list.get(i)[0]) / list.get(i)[1];
+
+            /** NOTE !!!
+             *
+             *   if `prev`  car CAN NOT catch up new car
+             *   -> new fleet
+             */
+            // if this car cannot catch up → new fleet
+            if (time > prevTime) {
+                fleet++;
+                prevTime = time;
+            }
+        }
+
+        return fleet;
+    }
+
+
+    // V0-0-0-1
+    // IDEA: pair position and speed, sorting (gpt)
     /**
      * IDEA :
      *
@@ -107,7 +159,7 @@ public class CarFleet {
      * time = O(1)
      * space = O(1)
      */
-    public int carFleet(int target, int[] position, int[] speed) {
+    public int carFleet_0_0_0_1(int target, int[] position, int[] speed) {
         int n = position.length;
     /**
      *  NOTE !!!

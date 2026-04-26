@@ -2811,9 +2811,117 @@ public class Workspace25 {
 
 
     // LC 853
+    // 8.48 - 58 am
+    /**
+     *  -> Return the number of car
+     *  fleets that will arrive at the destination.
+     *
+     *
+     *  ----------------
+     *
+     *   IDEA 1) STACK ???
+     *     ( FILO )
+     *
+     *
+     *  ----------------
+     *
+     *
+     *
+     */
+    // IDEA: PAIR SORT ???
     public int carFleet(int target, int[] position, int[] speed) {
+        // edge
 
-        return 0;
+        List<Integer[]> list = new ArrayList<>();
+        for(int i = 0; i < position.length; i++){
+            list.add(new Integer[]{position[i], speed[i]});
+        }
+
+        // NOTE !!!
+        //  // sort by position descending (closest to target first)
+
+        // ??
+        // sort on position ??? (small -> big
+//        Collections.sort(list, new Comparator<Integer[]>() {
+//            @Override
+//            public int compare(Integer[] o1, Integer[] o2) {
+//                int diff = o1[0] - o2[0];
+//                return diff;
+//            }
+//        });
+        Collections.sort(list, (a, b) -> b[0] - a[0]);
+
+        //int fleet = 0;
+        // ???
+        //int prevTime = -1;
+        //float prevTime = ( (float) (target - list.get(0)[0]) / list.get(i)[1] );
+
+        // NOTE !!!
+
+        int fleet = 0;
+        double prevTime = -1;
+
+
+        // ???
+        // NOTE !!! start from i = 0
+        for(int i = 0; i < list.size(); i++){
+            // ???
+           // float prevTime = getTime(target, list.get(i-1));
+            float time = getTime(target, list.get(i));
+            // ???
+            if(time > prevTime){
+                fleet += 1; /// ???
+                prevTime = time;
+            }
+        }
+
+        return fleet;
+    }
+
+    private float getTime(int target, Integer[] input){
+        return ( (float) (target - input[0]) / input[1] );
+    }
+
+
+
+
+
+    public int carFleet_99(int target, int[] position, int[] speed) {
+        // ???
+        // edge
+
+        int fleet = 0;
+
+        int n = position.length;
+
+        // PQ: {  time_1, time_2, .. }
+        // small PQ (small -> big) // ????
+        PriorityQueue<Integer> pq = new PriorityQueue<>(new Comparator<Integer>() {
+            @Override
+            public int compare(Integer o1, Integer o2) {
+                int diff = o1 - o2;
+                return diff;
+            }
+        });
+
+        // ???
+
+
+        // ???
+        for(int i = 0; i < n; i++){
+
+            // ??
+            int time = (target - position[i]) / speed[i];
+            // ???
+            while (!pq.isEmpty() && pq.peek() >= time){
+               pq.poll(); // ???
+            }
+            pq.add(time);
+        }
+
+
+        // ???
+        return pq.size();
     }
 
 
