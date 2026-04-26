@@ -308,7 +308,7 @@ pre code {
   padding: 0;
   font-size: 0.875rem;
   font-weight: 400;
-  line-height: 1.6;
+  line-height: 1.45;
   border: none;
   display: block;
 }
@@ -1114,8 +1114,7 @@ img {
 /* Line numbers (built at build time with .ln-* classes) */
 .ln-row {
   display: flex;
-  align-items: stretch;
-  min-height: 1.6em;
+  align-items: baseline;
 }
 
 .ln-num {
