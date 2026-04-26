@@ -5848,4 +5848,152 @@ START: What type of problem are you solving?
 - **String DP**: Define dp[i][j] carefully (length vs index)
 
 ---
-**Keywords**: DP, dynamic programming, memoization, tabulation, optimal substructure, overlapping subproblems, state transition, knapsack, LCS, LIS, interval DP, tree DP, state machine, bitmask
+
+## Category 9: Monotonic Stack + DP
+
+### Pattern Overview
+
+**When to use**: Problems where each element depends on how long it "survives" before being dominated/removed by a larger element to its left (or right). The key signal is a **simulation that removes elements round by round** — the brute-force is O(N²) per step; the stack+DP collapses the whole process to O(N).
+
+**Core Idea**:
+- Maintain a **monotonic decreasing stack** of indices.
+- `dp[i]` = number of rounds element `i` survives before being removed (0 if never removed).
+- When a new element `nums[i]` pops smaller elements off the stack, those smaller elements will be removed. The key insight: if `nums[i]` must wait for a previously-popped element's chain to clear first, `dp[i]` inherits the **maximum** wait time seen so far.
+
+**Transition (left-to-right scan)**:
+```
+currentSteps = 0
+while stack not empty AND nums[i] >= nums[stack.top()]:
+    currentSteps = max(currentSteps, dp[stack.pop()])
+
+if stack not empty:          // a larger element still blocks nums[i]
+    dp[i] = currentSteps + 1
+else:                        // nums[i] is a new global maximum — never removed
+    dp[i] = 0
+
+answer = max(dp[i]) for all i
+```
+
+**Transition (right-to-left scan — alternative)**:
+```
+for i from n-1 down to 0:
+    maxSteps = 0
+    while stack not empty AND nums[i] > nums[stack.top()]:
+        maxSteps = max(maxSteps + 1, dp[stack.pop()])
+    dp[i] = maxSteps
+    res = max(res, dp[i])
+    stack.push(i)
+```
+
+---
+
+### Template: LC 2289 — Steps to Make Array Non-Decreasing
+
+**Problem**: Each step removes every element `nums[i]` where `nums[i-1] > nums[i]`. Return the number of steps until the array is non-decreasing.
+
+**Why Mono Stack + DP works**:
+- Each element is eventually eaten by the first larger element to its left.
+- The number of steps for `nums[i]` to be eaten equals 1 plus the maximum steps needed by any intermediate smaller element between `nums[i]` and its "killer".
+- The monotonic stack tracks exactly who the current "killer" is.
+
+**Java — left-to-right (forward scan)**:
+```java
+public int totalSteps(int[] nums) {
+    int n = nums.length, maxSteps = 0;
+    int[] dp = new int[n];
+    Stack<Integer> stack = new Stack<>();   // monotonic decreasing (by value)
+
+    for (int i = 0; i < n; i++) {
+        int currentSteps = 0;
+
+        // Pop elements that nums[i] will outlive (nums[i] >= them)
+        while (!stack.isEmpty() && nums[i] >= nums[stack.peek()]) {
+            currentSteps = Math.max(currentSteps, dp[stack.pop()]);
+        }
+
+        if (!stack.isEmpty()) {
+            // A larger element still exists to the left → nums[i] will be removed
+            dp[i] = currentSteps + 1;
+            maxSteps = Math.max(maxSteps, dp[i]);
+        }
+        // else dp[i] = 0 (never removed)
+
+        stack.push(i);
+    }
+    return maxSteps;
+}
+```
+
+**Java — right-to-left (backward scan)**:
+```java
+public int totalSteps(int[] nums) {
+    int n = nums.length, res = 0;
+    int[] dp = new int[n];
+    Stack<Integer> stack = new Stack<>();
+
+    for (int i = n - 1; i >= 0; i--) {
+        int maxSteps = 0;
+        while (!stack.isEmpty() && nums[i] > nums[stack.peek()]) {
+            maxSteps = Math.max(maxSteps + 1, dp[stack.pop()]);
+        }
+        dp[i] = maxSteps;
+        res = Math.max(res, dp[i]);
+        stack.push(i);
+    }
+    return res;
+}
+```
+
+**Dry-run: `nums = [10, 1, 2, 7, 1, 3]`** (forward scan)
+
+| i | nums[i] | Pops | currentSteps | dp[i] | stack (indices) |
+|---|---------|------|-------------|-------|-----------------|
+| 0 | 10 | — | 0 | 0 | [0] |
+| 1 | 1 | none (1 < 10) | 0 | **1** | [0,1] |
+| 2 | 2 | pop 1 (2≥1), dp[1]=1 | 1 | **2** | [0,2] |
+| 3 | 7 | pop 2 (7≥2), dp[2]=2 | 2 | **3** | [0,3] |
+| 4 | 1 | none (1 < 7) | 0 | **1** | [0,3,4] |
+| 5 | 3 | pop 4 (3≥1), dp[4]=1 | 1 | **2** | [0,3,5] |
+
+Answer = **3**.
+
+Why `dp[3] = 3`? Element `7` must wait: step 1 removes `1`, step 2 removes `2`, only then can `10` eat `7` in step 3.
+
+---
+
+### Key Insights
+
+1. **`Math.max(currentSteps, dp[stack.pop()])`** — when `nums[i]` pops multiple elements, it inherits the *longest* chain of removals it had to wait for, not just the most recent one.
+2. **`dp[i] = 0`** when the stack is empty — `nums[i]` is a new global maximum and is never removed.
+3. The **stack invariant** (monotone decreasing by value) ensures that every element still on the stack has a larger element waiting to its left.
+
+---
+
+### Similar LeetCode Problems
+
+| LC # | Problem | What the Stack+DP Tracks | Difficulty |
+|------|---------|--------------------------|------------|
+| **2289** | Steps to Make Array Non-Decreasing | Rounds until element removed | Medium |
+| **84** | Largest Rectangle in Histogram | Previous smaller bar index | Hard |
+| **85** | Maximal Rectangle | Row-by-row histogram (uses LC 84) | Hard |
+| **907** | Sum of Subarray Minimums | Contribution of each min element | Medium |
+| **1856** | Maximum Subarray Min-Product | Max product using mono stack | Medium |
+| **739** | Daily Temperatures | Days until warmer temperature | Medium |
+| **901** | Online Stock Span | Days since last higher price | Medium |
+| **456** | 132 Pattern | Track min prefix + mono stack | Medium |
+| **2866** | Beautiful Towers II | Max height contribution left+right | Medium |
+
+**Pattern recognition checklist**:
+- ✅ Problem involves removing/consuming elements round by round
+- ✅ Each element is dominated by the first larger/smaller neighbor
+- ✅ "How many steps/rounds" until an element is eliminated
+- ✅ Brute-force simulation would be O(N²); need O(N)
+- ✅ Answer is a max over individual element costs
+
+**Common Pitfalls**:
+- Using `>` vs `>=` in the while condition changes whether equal-valued elements eat each other — match exactly to the problem's removal rule.
+- In the forward scan, `dp[i] = 0` (no assignment needed) for stack-empty case; forgetting this means global maxima get wrong dp values.
+- Don't confuse left-scan (`>=`) with right-scan (`>`) — they encode different "who eats whom" semantics.
+
+---
+**Keywords**: DP, dynamic programming, memoization, tabulation, optimal substructure, overlapping subproblems, state transition, knapsack, LCS, LIS, interval DP, tree DP, state machine, bitmask, monotonic stack, mono stack, stack DP

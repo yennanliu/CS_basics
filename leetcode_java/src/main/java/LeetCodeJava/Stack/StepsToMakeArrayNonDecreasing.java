@@ -81,7 +81,7 @@ public class StepsToMakeArrayNonDecreasing {
      | **4** | 3 | **7** | Pop index 2 (7 > 2) | max(1, dp[2] = 2) = **2** | 1 + 2 → **3** | `[0, 3]` |
      | **5** | 4 | **1** | *None* (1 < 7) | 0 | 1 + 0 → **1** | `[0, 3, 4]` |
      | **6** | 5 | **3** | Pop index 4 (3 > 1) | max(0, dp[4] = 1) = **1** | 1 + 1 → **2** | `[0, 3, 5]` |
-     
+
      * **Final `maxSteps` = 3.**
      *
      * ---
