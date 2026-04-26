@@ -77,7 +77,7 @@ public class CarFleet {
 
         /** NOTE !!!
          *
-         *   list: { [position_1, speed_1], [positon_2, speed_2], ... }
+         *   list: { [position_1, speed_1], [position_2, speed_2], ... }
          */
         List<int[]> list = new ArrayList<>();
         for (int i = 0; i < n; i++) {
@@ -87,6 +87,23 @@ public class CarFleet {
         /** NOTE !!!
          *
          *   sort on `position` (BIG -> SMALL)
+         *
+         *
+         *  Why ?
+         *
+         *  ->  because fleet formation depends on who is in `front.`
+         *      If you don’t process cars from closest → farthest,
+         *      you can’t correctly decide who merges into whom.
+         *
+         * ->
+         *     A car can only:
+         *
+         *     catch up to cars `ahead` of it, not behind
+         *     form a fleet with something in front
+         *
+         *    👉 So we must process cars in the order of “who’s ahead first”
+         *
+         *
          */
         // sort by position descending (closest to target first)
         Collections.sort(list, (a, b) -> b[0] - a[0]);
