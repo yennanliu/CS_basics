@@ -57,7 +57,7 @@ public class RemoveKDigits {
             /** NOTE !!!!
              *
              *
-             *  1. while loop
+             *  1. `while` loop
              *  2. MONO STACK
              */
             // 🔥 keep removing bigger digits on the left
@@ -68,6 +68,8 @@ public class RemoveKDigits {
             st.push(ch);
         }
 
+        // 2. IMPORTANT: If k is still > 0, remove digits from the end
+        // (Example: num = "123", k = 1 -> result should be "12")
         // 🔥 still need to remove more? remove from end
         while (k > 0) {
             st.pop();
@@ -90,6 +92,10 @@ public class RemoveKDigits {
             i++;
         }
 
+        /** NOTE !!!!
+         *
+         *  get the `removed zero str` via `sub string`
+         */
         String res = sb.substring(i);
 
         return res.length() == 0 ? "0" : res;
