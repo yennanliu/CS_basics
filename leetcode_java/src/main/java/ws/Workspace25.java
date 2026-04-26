@@ -2999,6 +2999,11 @@ public class Workspace25 {
 
 
 
+    // LC 224
+    public int calculate(String s) {
+
+        return 0;
+    }
 
 
 
