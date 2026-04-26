@@ -2706,10 +2706,103 @@ public class Workspace25 {
 
 
     // LC 2289
+    // 7.41 - 51 am
+    /**
+     *  ->
+     *   Return the number of steps performed
+     *   until nums becomes a non-decreasing array.
+     *
+     *
+     *   0 idx arr: nums
+     *
+     *   -> remove all elements nums[i]
+     *      where
+     *         nums[i-1] > nums[i]
+     *         for idx within arr
+     *
+     *
+     *   ---------------
+     *
+     *   IDEA 1) BRUTE FORCE
+     *
+     *   IDEA 2) STACK ???
+     *
+     *
+     *   ---------------
+     *
+     *
+     */
+    //  IDEA 2) STACK ???
     public int totalSteps(int[] nums) {
+        // edge
+//        if(isNonDecrease(nums)){
+//            return 0;
+//        }
 
-        return 0;
+        //Stack<Integer> st = new Stack<>(); // ??
+        ///  ???
+        int prev = -1;
+        //for(int )
+        // /?? reverse loop ???
+        List<Integer> cache = new ArrayList<>();
+        for(int x: nums){
+            cache.add(x);
+        }
+
+        while (cache != null && isNonDecrease2(cache)){
+            //List<Integer> cache2 = new ArrayList<>(); // ????
+            Stack<Integer> st = new Stack<>(); // ??
+
+            for(int i = nums.length - 1; i > 0; i--){
+                if(nums[i-1] > nums[i]){
+                    continue;
+                }
+                st.add(nums[i]); // ???
+            }
+
+            cache = new ArrayList<>();
+
+            // add back to cache ???
+            for(int x: st){
+                cache.add(x);
+            }
+        }
+
+        // ???
+        return cache.size();
     }
+
+    private boolean isNonDecrease2(List<Integer> list){
+        // ??
+        if(list == null || list.size() == 0){
+            return true;
+        }
+        for(int i = 0; i < list.size() - 1; i++){
+            if(list.get(i) > list.get(i+1)){
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+
+
+    private boolean isNonDecrease(int[] nums){
+        // ??
+        if(nums == null || nums.length == 0){
+            return true;
+        }
+        for(int i = 0; i < nums.length - 1; i++){
+            if(nums[i] > nums[i+1]){
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+
 
 
 

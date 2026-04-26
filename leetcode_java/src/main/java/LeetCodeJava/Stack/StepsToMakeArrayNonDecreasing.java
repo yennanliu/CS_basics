@@ -2,6 +2,8 @@ package LeetCodeJava.Stack;
 
 // https://leetcode.com/problems/steps-to-make-array-non-decreasing/description/
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Stack;
 
 /**
@@ -52,7 +54,39 @@ public class StepsToMakeArrayNonDecreasing {
 //    }
 
 
-    // V1
+    // V1-1
+    // IDEA: BRUTE FORCE + SIMULATION (gpt) (TLE)
+    public int totalSteps_1_1(int[] nums) {
+        List<Integer> list = new ArrayList<>();
+        for (int x : nums)
+            list.add(x);
+
+        int steps = 0;
+
+        while (true) {
+            List<Integer> next = new ArrayList<>();
+            next.add(list.get(0)); // first element always stays
+
+            boolean removed = false;
+
+            for (int i = 1; i < list.size(); i++) {
+                if (list.get(i) >= list.get(i - 1)) {
+                    next.add(list.get(i));
+                } else {
+                    removed = true; // this element is removed in this round
+                }
+            }
+
+            if (!removed)
+                break;
+
+            list = next;
+            steps++;
+        }
+
+        return steps;
+    }
+
 
 
     // V2
