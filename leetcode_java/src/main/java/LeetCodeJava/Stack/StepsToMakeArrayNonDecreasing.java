@@ -90,7 +90,17 @@ public class StepsToMakeArrayNonDecreasing {
 
     // V1-2
     // IDEA: MONO STACK + DP (GPT)
-    /**
+    /**  Key insights:
+     *
+     *
+     * 👉 Each element may “die” after a certain number of
+     *    rounds depending on larger elements to its left.
+     *
+     *
+     * 👉 This is best solved with a monotonic stack + DP,
+     *     not repeated simulation.
+     */
+    /** Steps:
      *
      * Traverse from right → left
      * Maintain a stack of indices
@@ -100,14 +110,92 @@ public class StepsToMakeArrayNonDecreasing {
      */
     public int totalSteps_1_2(int[] nums) {
         int n = nums.length;
+
+        /** NOTE !!!
+         *
+         * dp[i] = how many `rounds` it takes for nums[i] to be `removed.`
+         *
+         * If dp[i] = 0, it never gets removed.
+         *
+         */
         int[] dp = new int[n];
+
+        /** NOTE !!!
+         *
+         * Stack stores `indices` (not values).
+         *
+         * Maintains a `monotonic DECREASING` structure
+         * (from right side perspective).
+         *
+         */
         Stack<Integer> stack = new Stack<>();
+
+        // Tracks the maximum steps among all elements → final answer.
         int res = 0;
 
+        /** NOTE !!!
+         *
+         *  loop from right hand side
+         *
+         *
+         *  Why? Because each element depends on elements to its
+         *  right (who might get removed first).
+         *
+         */
         for (int i = n - 1; i >= 0; i--) {
+
+            /**
+             * Temporary variable:
+             *
+             * Tracks how many rounds current element nums[i]
+             * survives before being removed.
+             *
+             */
             int maxSteps = 0;
 
+            /**
+             * - If nums[i] > nums[j] (where j = stack.peek()):
+             *     - Then nums[j] will be removed
+             *       before or because of nums[i].
+             *
+             *
+             * - So we "resolve" those smaller elements.
+             *
+             *
+             */
             while (!stack.isEmpty() && nums[i] > nums[stack.peek()]) {
+                /** NOTE !!! Core logic:
+                 *
+                 *
+                 *  This is the core logic, broken down:
+                 *
+                 * 1. stack.pop() → remove index j
+                 *
+                 * 2. Two competing timelines:
+                 *       - maxSteps + 1
+                 *              - Means: current element waits
+                 *                       one more round than
+                 *                       previous popped element chain
+                 *      - dp[j]
+                 *              - Means: j itself might survive multiple
+                 *                       rounds before disappearing
+                 *
+                 *  3.
+                 *
+                 *   ```
+                 *   Math.max(maxSteps + 1, dp[j])
+                 *   ```
+                 *
+                 *  ->
+                 *    Interpretation:
+                 *
+                 *     - Current element must wait until
+                 *       all smaller right elements are gone
+                 *
+                 *     - So it inherits the maximum delay
+                 *
+                 *
+                 */
                 maxSteps = Math.max(maxSteps + 1, dp[stack.pop()]);
             }
 

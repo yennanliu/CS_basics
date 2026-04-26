@@ -528,7 +528,7 @@ claude
 1703| [Minimum Adjacent Swaps for K Consecutive Ones](https://leetcode.com/problems/minimum-adjacent-swaps-for-k-consecutive-ones/) |  [Python](./leetcode_python/Stack/minimum-adjacent-swaps-for-k-consecutive-ones.py)  | _O(n)_  | _O(n)_| Hard|heap, sliding window, amazon| AGAIN (not start)
 1896| [Minimum Cost to Change the Final Value of Expression](https://leetcode.com/problems/minimum-cost-to-change-the-final-value-of-expression/) |  [Python](./leetcode_python/Stack/minimum-cost-to-change-the-final-value-of-expression.py)  | _O(n)_  | _O(n)_| Hard|complex, stack, dp, dp+stack, dfs, `amazon`| AGAIN (not start)
 2104 | [Sum of Subarray Ranges](https://leetcode.com/problems/sum-of-subarray-ranges/) | [Python](./leetcode_python/Two_Pointers/sum-of-subarray-ranges.py), [Java](./leetcode_java/src/main/java/LeetCodeJava/Stack/SumOfSubarrayRanges.java) | _O(n)_ | _O(1)_ | Medium |LC 907,  monotonic stack, brute force, 2 pointers, dp, `amazon`| AGAIN******* (4)
-2289 | [Steps to Make Array Non-decreasing](https://leetcode.com/problems/steps-to-make-array-non-decreasing) |[Java](./leetcode_java/src/main/java/LeetCodeJava/Stack/StepsToMakeArrayNonDecreasing.java) | _O(n)_ | _O(1)_ | Medium |stack, dp| AGAIN (1) (not start)
+2289 | [Steps to Make Array Non-decreasing](https://leetcode.com/problems/steps-to-make-array-non-decreasing) |[Java](./leetcode_java/src/main/java/LeetCodeJava/Stack/StepsToMakeArrayNonDecreasing.java) | _O(n)_ | _O(1)_ | Medium |mono stack + dp, good trick| AGAIN****  (1) (not start)
 
 
 
