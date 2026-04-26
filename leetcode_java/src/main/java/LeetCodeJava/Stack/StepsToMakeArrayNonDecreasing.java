@@ -54,6 +54,61 @@ public class StepsToMakeArrayNonDecreasing {
 //    }
 
 
+    // V0-1
+    // IDEA: MONO STACK + DP (gemini)
+    public int totalSteps_0_1(int[] nums) {
+        int n = nums.length;
+        int maxSteps = 0;
+
+        /** NOTE !!!
+         *
+         *   dp[i] = steps required to remove nums[i]
+         */
+        // dp[i] = steps required to remove nums[i]
+        int[] dp = new int[n];
+
+
+        /** NOTE !!!
+         *
+         *   Stack: `indices` of elements
+         *          (monotonic decreasing order)
+         */
+        // Stack stores indices of elements in a monotonic decreasing order
+        Stack<Integer> stack = new Stack<>();
+
+
+        /** NOTE !!!
+         *
+         *  loop from 0 to n
+         */
+        for (int i = 0; i < n; i++) {
+            int currentSteps = 0;
+
+            // While current element is >= the top of the stack,
+            // it means the current element will "survive" LONGER or
+            // eat the elements that the stack top was supposed to eat.
+            while (!stack.isEmpty() && nums[i] >= nums[stack.peek()]) {
+                currentSteps = Math.max(currentSteps, dp[stack.pop()]);
+            }
+
+            // If stack is not empty, there is a larger element to the left
+            // that will eventually "eat" nums[i].
+            if (!stack.isEmpty()) {
+                dp[i] = currentSteps + 1;
+                maxSteps = Math.max(maxSteps, dp[i]);
+            } else {
+                // No larger element to the left, nums[i] will never be removed.
+                dp[i] = 0;
+            }
+
+            stack.push(i);
+        }
+
+        return maxSteps;
+    }
+
+
+
     // V1-1
     // IDEA: BRUTE FORCE + SIMULATION (gpt) (TLE)
     public int totalSteps_1_1(int[] nums) {
@@ -207,46 +262,6 @@ public class StepsToMakeArrayNonDecreasing {
 
         return res;
     }
-
-
-    // V1-3
-    // IDEA: MONO STACK + DP (GPT)
-    public int totalSteps_1_3(int[] nums) {
-        int n = nums.length;
-        int maxSteps = 0;
-
-        // dp[i] = steps required to remove nums[i]
-        int[] dp = new int[n];
-
-        // Stack stores indices of elements in a monotonic decreasing order
-        Stack<Integer> stack = new Stack<>();
-
-        for (int i = 0; i < n; i++) {
-            int currentSteps = 0;
-
-            // While current element is >= the top of the stack,
-            // it means the current element will "survive" longer or
-            // eat the elements that the stack top was supposed to eat.
-            while (!stack.isEmpty() && nums[i] >= nums[stack.peek()]) {
-                currentSteps = Math.max(currentSteps, dp[stack.pop()]);
-            }
-
-            // If stack is not empty, there is a larger element to the left
-            // that will eventually "eat" nums[i].
-            if (!stack.isEmpty()) {
-                dp[i] = currentSteps + 1;
-                maxSteps = Math.max(maxSteps, dp[i]);
-            } else {
-                // No larger element to the left, nums[i] will never be removed.
-                dp[i] = 0;
-            }
-
-            stack.push(i);
-        }
-
-        return maxSteps;
-    }
-
 
 
     // V2
