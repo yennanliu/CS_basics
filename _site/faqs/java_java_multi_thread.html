@@ -9,8 +9,7 @@
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>CS</text></svg>">
   <link rel="stylesheet" href="../style.css">
   <link rel="stylesheet" href="../vendor/fonts.css">
-  <link rel="stylesheet" href="../vendor/highlight/github-dark.min.css">
-  <script src="../vendor/highlight/highlight.min.js"></script>
+  <link rel="stylesheet" href="../vendor/highlight/atom-one-dark.min.css">
   <script>
   // Apply theme before render to prevent flash
   (function() {
@@ -21,40 +20,43 @@
   })();
   </script>
   <script>document.addEventListener('DOMContentLoaded', function() {
-    hljs.highlightAll();
-    document.querySelectorAll('pre code').forEach(function(codeEl) {
-      var pre = codeEl.parentElement;
-      var lang = '';
-      var cls = codeEl.className || '';
-      var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
-      if (m) lang = m[1];
-      var wrapper = document.createElement('div');
-      wrapper.className = 'code-block-wrapper';
-      pre.parentNode.insertBefore(wrapper, pre);
-      var header = document.createElement('div');
-      header.className = 'code-block-header';
-      if (lang) {
-        var label = document.createElement('span');
-        label.className = 'code-lang-label';
-        label.textContent = lang;
-        header.appendChild(label);
-      } else {
-        header.appendChild(document.createElement('span'));
-      }
-      var btn = document.createElement('button');
-      btn.className = 'copy-btn';
-      btn.textContent = 'Copy';
-      btn.addEventListener('click', function() {
-        navigator.clipboard.writeText(codeEl.textContent).then(function() {
-          btn.textContent = 'Copied!';
-          btn.classList.add('copied');
-          setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+    // Code block wrappers + copy buttons (highlighting done at build time)
+    try {
+      document.querySelectorAll('pre').forEach(function(pre) {
+        var codeEl = pre.querySelector('code');
+        var lang = pre.getAttribute('data-lang') || '';
+        var wrapper = document.createElement('div');
+        wrapper.className = 'code-block-wrapper';
+        pre.parentNode.insertBefore(wrapper, pre);
+        var header = document.createElement('div');
+        header.className = 'code-block-header';
+        if (lang) {
+          var label = document.createElement('span');
+          label.className = 'code-lang-label';
+          label.textContent = lang;
+          header.appendChild(label);
+        } else {
+          header.appendChild(document.createElement('span'));
+        }
+        var btn = document.createElement('button');
+        btn.className = 'copy-btn';
+        btn.textContent = 'Copy';
+        btn.addEventListener('click', function() {
+          var text = codeEl
+            ? Array.from(codeEl.querySelectorAll('.ln-code')).map(function(el) { return el.textContent; }).join('
+')
+            : pre.textContent;
+          navigator.clipboard.writeText(text).then(function() {
+            btn.textContent = 'Copied!';
+            btn.classList.add('copied');
+            setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+          });
         });
+        header.appendChild(btn);
+        wrapper.appendChild(header);
+        wrapper.appendChild(pre);
       });
-      header.appendChild(btn);
-      wrapper.appendChild(header);
-      wrapper.appendChild(pre);
-    });
+    } catch(e) { console.error('Code block setup error:', e); }
     document.querySelectorAll('table').forEach(function(table) {
       if (!table.parentElement.classList.contains('table-wrap')) {
         var wrapper = document.createElement('div');
@@ -64,32 +66,36 @@
       }
     });
     // Reading progress bar
-    var progressBar = document.getElementById('reading-progress');
-    if (progressBar) {
-      window.addEventListener('scroll', function() {
-        var winScroll = document.documentElement.scrollTop;
-        var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-        progressBar.style.width = height > 0 ? (winScroll / height * 100) + '%' : '0%';
-      });
-    }
-    // Dark mode toggle
-    var toggle = document.getElementById('theme-toggle');
-    if (toggle) {
-      var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-      toggle.textContent = isDark ? '☀️' : '🌙';
-      toggle.addEventListener('click', function() {
-        var dark = document.documentElement.getAttribute('data-theme') === 'dark';
-        if (dark) {
-          document.documentElement.removeAttribute('data-theme');
-          localStorage.setItem('theme', 'light');
-          toggle.textContent = '🌙';
-        } else {
-          document.documentElement.setAttribute('data-theme', 'dark');
-          localStorage.setItem('theme', 'dark');
-          toggle.textContent = '☀️';
-        }
-      });
-    }
+    try {
+      var progressBar = document.getElementById('reading-progress');
+      if (progressBar) {
+        window.addEventListener('scroll', function() {
+          var winScroll = document.documentElement.scrollTop;
+          var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+          progressBar.style.width = height > 0 ? (winScroll / height * 100) + '%' : '0%';
+        });
+      }
+    } catch(e) {}
+    // Dark mode toggle — isolated so errors elsewhere never prevent this from working
+    try {
+      var toggle = document.getElementById('theme-toggle');
+      if (toggle) {
+        var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+        toggle.textContent = isDark ? '☀️' : '🌙';
+        toggle.addEventListener('click', function() {
+          var dark = document.documentElement.getAttribute('data-theme') === 'dark';
+          if (dark) {
+            document.documentElement.removeAttribute('data-theme');
+            localStorage.setItem('theme', 'light');
+            toggle.textContent = '🌙';
+          } else {
+            document.documentElement.setAttribute('data-theme', 'dark');
+            localStorage.setItem('theme', 'dark');
+            toggle.textContent = '☀️';
+          }
+        });
+      }
+    } catch(e) { console.error('Theme toggle error:', e); }
   });</script>
 </head>
 <body>
@@ -164,31 +170,31 @@
 非同步：呼叫在發出之後，不用等待返回結果，該呼叫直接傳回。</p>
 <h3 id="volatile-explain" tabindex="-1"><a class="header-anchor" href="#volatile-explain"><span>volatile explain ?</span></a></h3>
 <p>在 Java 中，volatile 關鍵字除了保證變數的可見性，還有一個重要的功能是防止 JVM 的指令重新排序。 如果我們將變數宣告為 volatile ，在對這個變數進行讀寫操作的時候，會透過插入特定的 記憶體屏障 的方式來禁止指令重排序。</p>
-<pre><code class="language-java">// java
-// example : Singleton
-
-public class Singleton {
-
-	/** volatile */
-
-    private volatile static Singleton uniqueInstance;
-
-    private Singleton() {
-    }
-
-    public  static Singleton getUniqueInstance() {
-       //先判断对象是否已经实例过，没有实例化过才进入加锁代码
-        if (uniqueInstance == null) {
-            //类对象加锁
-            synchronized (Singleton.class) {
-                if (uniqueInstance == null) {
-                    uniqueInstance = new Singleton();
-                }
-            }
-        }
-        return uniqueInstance;
-    }
-}
+<pre data-lang="java"><code class="hljs language-java"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment">// java</span></span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-comment">// example : Singleton</span></span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Singleton</span> {</span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">	<span class="hljs-comment">/** volatile */</span></span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">    <span class="hljs-keyword">private</span> <span class="hljs-keyword">volatile</span> <span class="hljs-keyword">static</span> Singleton uniqueInstance;</span></span>
+<span class="ln-row"><span class="ln-num">9</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">    <span class="hljs-keyword">private</span> <span class="hljs-title function_">Singleton</span><span class="hljs-params">()</span> {</span></span>
+<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">    }</span></span>
+<span class="ln-row"><span class="ln-num">12</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">    <span class="hljs-keyword">public</span>  <span class="hljs-keyword">static</span> Singleton <span class="hljs-title function_">getUniqueInstance</span><span class="hljs-params">()</span> {</span></span>
+<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">       <span class="hljs-comment">//先判断对象是否已经实例过，没有实例化过才进入加锁代码</span></span></span>
+<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">        <span class="hljs-keyword">if</span> (uniqueInstance == <span class="hljs-literal">null</span>) {</span></span>
+<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">            <span class="hljs-comment">//类对象加锁</span></span></span>
+<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">            <span class="hljs-keyword">synchronized</span> (Singleton.class) {</span></span>
+<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">                <span class="hljs-keyword">if</span> (uniqueInstance == <span class="hljs-literal">null</span>) {</span></span>
+<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">                    uniqueInstance = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Singleton</span>();</span></span>
+<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">                }</span></span>
+<span class="ln-row"><span class="ln-num">21</span><span class="ln-code">            }</span></span>
+<span class="ln-row"><span class="ln-num">22</span><span class="ln-code">        }</span></span>
+<span class="ln-row"><span class="ln-num">23</span><span class="ln-code">        <span class="hljs-keyword">return</span> uniqueInstance;</span></span>
+<span class="ln-row"><span class="ln-num">24</span><span class="ln-code">    }</span></span>
+<span class="ln-row"><span class="ln-num">25</span><span class="ln-code">}</span></span>
 </code></pre>
 <p>uniqueInstance 採用volatile 關鍵字修飾也是必要的， uniqueInstance = new Singleton(); 這段程式碼其實是分為三步驟執行：為uniqueInstance 分配記憶體空間初始化uniqueInstance將uniqueInstance 指向分配的記憶體位址但是由於JVM 具有指令重 排的特性，執行順序有可能變成1-&gt;3-&gt;2。 指令重排在單執行緒環境下不會出現問題，但是在多執行緒環境下會導致一個執行緒獲得還沒有初始化的實例。 例如，執行緒 T1 執行了 1 和 3，此時 T2 呼叫 getUniqueInstance() 後發現 uniqueInstance 不為空，因此傳回 uniqueInstance，但此時 uniqueInstance 還未被初始化。</p>
 <ul>

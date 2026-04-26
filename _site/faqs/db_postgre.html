@@ -9,8 +9,7 @@
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>CS</text></svg>">
   <link rel="stylesheet" href="../style.css">
   <link rel="stylesheet" href="../vendor/fonts.css">
-  <link rel="stylesheet" href="../vendor/highlight/github-dark.min.css">
-  <script src="../vendor/highlight/highlight.min.js"></script>
+  <link rel="stylesheet" href="../vendor/highlight/atom-one-dark.min.css">
   <script>
   // Apply theme before render to prevent flash
   (function() {
@@ -21,40 +20,43 @@
   })();
   </script>
   <script>document.addEventListener('DOMContentLoaded', function() {
-    hljs.highlightAll();
-    document.querySelectorAll('pre code').forEach(function(codeEl) {
-      var pre = codeEl.parentElement;
-      var lang = '';
-      var cls = codeEl.className || '';
-      var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
-      if (m) lang = m[1];
-      var wrapper = document.createElement('div');
-      wrapper.className = 'code-block-wrapper';
-      pre.parentNode.insertBefore(wrapper, pre);
-      var header = document.createElement('div');
-      header.className = 'code-block-header';
-      if (lang) {
-        var label = document.createElement('span');
-        label.className = 'code-lang-label';
-        label.textContent = lang;
-        header.appendChild(label);
-      } else {
-        header.appendChild(document.createElement('span'));
-      }
-      var btn = document.createElement('button');
-      btn.className = 'copy-btn';
-      btn.textContent = 'Copy';
-      btn.addEventListener('click', function() {
-        navigator.clipboard.writeText(codeEl.textContent).then(function() {
-          btn.textContent = 'Copied!';
-          btn.classList.add('copied');
-          setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+    // Code block wrappers + copy buttons (highlighting done at build time)
+    try {
+      document.querySelectorAll('pre').forEach(function(pre) {
+        var codeEl = pre.querySelector('code');
+        var lang = pre.getAttribute('data-lang') || '';
+        var wrapper = document.createElement('div');
+        wrapper.className = 'code-block-wrapper';
+        pre.parentNode.insertBefore(wrapper, pre);
+        var header = document.createElement('div');
+        header.className = 'code-block-header';
+        if (lang) {
+          var label = document.createElement('span');
+          label.className = 'code-lang-label';
+          label.textContent = lang;
+          header.appendChild(label);
+        } else {
+          header.appendChild(document.createElement('span'));
+        }
+        var btn = document.createElement('button');
+        btn.className = 'copy-btn';
+        btn.textContent = 'Copy';
+        btn.addEventListener('click', function() {
+          var text = codeEl
+            ? Array.from(codeEl.querySelectorAll('.ln-code')).map(function(el) { return el.textContent; }).join('
+')
+            : pre.textContent;
+          navigator.clipboard.writeText(text).then(function() {
+            btn.textContent = 'Copied!';
+            btn.classList.add('copied');
+            setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+          });
         });
+        header.appendChild(btn);
+        wrapper.appendChild(header);
+        wrapper.appendChild(pre);
       });
-      header.appendChild(btn);
-      wrapper.appendChild(header);
-      wrapper.appendChild(pre);
-    });
+    } catch(e) { console.error('Code block setup error:', e); }
     document.querySelectorAll('table').forEach(function(table) {
       if (!table.parentElement.classList.contains('table-wrap')) {
         var wrapper = document.createElement('div');
@@ -64,32 +66,36 @@
       }
     });
     // Reading progress bar
-    var progressBar = document.getElementById('reading-progress');
-    if (progressBar) {
-      window.addEventListener('scroll', function() {
-        var winScroll = document.documentElement.scrollTop;
-        var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-        progressBar.style.width = height > 0 ? (winScroll / height * 100) + '%' : '0%';
-      });
-    }
-    // Dark mode toggle
-    var toggle = document.getElementById('theme-toggle');
-    if (toggle) {
-      var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-      toggle.textContent = isDark ? '☀️' : '🌙';
-      toggle.addEventListener('click', function() {
-        var dark = document.documentElement.getAttribute('data-theme') === 'dark';
-        if (dark) {
-          document.documentElement.removeAttribute('data-theme');
-          localStorage.setItem('theme', 'light');
-          toggle.textContent = '🌙';
-        } else {
-          document.documentElement.setAttribute('data-theme', 'dark');
-          localStorage.setItem('theme', 'dark');
-          toggle.textContent = '☀️';
-        }
-      });
-    }
+    try {
+      var progressBar = document.getElementById('reading-progress');
+      if (progressBar) {
+        window.addEventListener('scroll', function() {
+          var winScroll = document.documentElement.scrollTop;
+          var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+          progressBar.style.width = height > 0 ? (winScroll / height * 100) + '%' : '0%';
+        });
+      }
+    } catch(e) {}
+    // Dark mode toggle — isolated so errors elsewhere never prevent this from working
+    try {
+      var toggle = document.getElementById('theme-toggle');
+      if (toggle) {
+        var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+        toggle.textContent = isDark ? '☀️' : '🌙';
+        toggle.addEventListener('click', function() {
+          var dark = document.documentElement.getAttribute('data-theme') === 'dark';
+          if (dark) {
+            document.documentElement.removeAttribute('data-theme');
+            localStorage.setItem('theme', 'light');
+            toggle.textContent = '🌙';
+          } else {
+            document.documentElement.setAttribute('data-theme', 'dark');
+            localStorage.setItem('theme', 'dark');
+            toggle.textContent = '☀️';
+          }
+        });
+      }
+    } catch(e) { console.error('Theme toggle error:', e); }
   });</script>
 </head>
 <body>
@@ -142,58 +148,58 @@
 </li>
 </ul>
 <h3 id="1-array-to-string-array-to-str" tabindex="-1"><a class="header-anchor" href="#1-array-to-string-array-to-str"><span>1) array_to_string : array to str</span></a></h3>
-<pre><code class="language-sql">select array_to_string(array[1,2,3], ',');
-# 123
+<pre data-lang="sql"><code class="hljs language-sql"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-keyword">select</span> array_to_string(<span class="hljs-keyword">array</span>[<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>], <span class="hljs-string">&#x27;,&#x27;</span>);</span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"># <span class="hljs-number">123</span></span></span>
 </code></pre>
 <h3 id="2-cast-type-transform" tabindex="-1"><a class="header-anchor" href="#2-cast-type-transform"><span>2) cast : type transform</span></a></h3>
-<pre><code class="language-sql">select cast(id as varchar) from student;
+<pre data-lang="sql"><code class="hljs language-sql"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-keyword">select</span> <span class="hljs-built_in">cast</span>(id <span class="hljs-keyword">as</span> <span class="hljs-type">varchar</span>) <span class="hljs-keyword">from</span> student;</span></span>
 </code></pre>
 <h3 id="2-to-char-type-transform" tabindex="-1"><a class="header-anchor" href="#2-to-char-type-transform"><span>2’) to_char : type transform</span></a></h3>
-<pre><code class="language-sql">select to_char(write_date, 'yyyy-MM-dd hh24:MI:ss') from student
+<pre data-lang="sql"><code class="hljs language-sql"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-keyword">select</span> to_char(write_date, <span class="hljs-string">&#x27;yyyy-MM-dd hh24:MI:ss&#x27;</span>) <span class="hljs-keyword">from</span> student</span></span>
 </code></pre>
 <h3 id="3-concat-merge-str" tabindex="-1"><a class="header-anchor" href="#3-concat-merge-str"><span>3) Concat : merge str</span></a></h3>
-<pre><code class="language-sql">select
-concat('student:id=', cast(s.id as varchar), 'name:',s.name, 'class:',ci.name)
-from student as s
+<pre data-lang="sql"><code class="hljs language-sql"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-keyword">select</span></span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code">concat(<span class="hljs-string">&#x27;student:id=&#x27;</span>, <span class="hljs-built_in">cast</span>(s.id <span class="hljs-keyword">as</span> <span class="hljs-type">varchar</span>), <span class="hljs-string">&#x27;name:&#x27;</span>,s.name, <span class="hljs-string">&#x27;class:&#x27;</span>,ci.name)</span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"><span class="hljs-keyword">from</span> student <span class="hljs-keyword">as</span> s</span></span>
 </code></pre>
 <h3 id="4-substring-get-sub-str" tabindex="-1"><a class="header-anchor" href="#4-substring-get-sub-str"><span>4) substring : get sub str</span></a></h3>
-<pre><code class="language-sql">select substring('abcd',1,2); 
-# ab
+<pre data-lang="sql"><code class="hljs language-sql"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-keyword">select</span> <span class="hljs-built_in">substring</span>(<span class="hljs-string">&#x27;abcd&#x27;</span>,<span class="hljs-number">1</span>,<span class="hljs-number">2</span>); </span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"># ab</span></span>
 </code></pre>
 <h3 id="5-row-number-get-row-num-user-defined" tabindex="-1"><a class="header-anchor" href="#5-row-number-get-row-num-user-defined"><span>5) row_number() : get row num (user defined)</span></a></h3>
-<pre><code class="language-sql">select
-ROW_NUMBER() OVER (ORDER BY id desc) AS sequence_number,
-id,name
-from
-student
+<pre data-lang="sql"><code class="hljs language-sql"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-keyword">select</span></span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-built_in">ROW_NUMBER</span>() <span class="hljs-keyword">OVER</span> (<span class="hljs-keyword">ORDER</span> <span class="hljs-keyword">BY</span> id <span class="hljs-keyword">desc</span>) <span class="hljs-keyword">AS</span> sequence_number,</span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">id,name</span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"><span class="hljs-keyword">from</span></span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">student</span></span>
 </code></pre>
 <h3 id="6-array-agg-make-elements-to-array" tabindex="-1"><a class="header-anchor" href="#6-array-agg-make-elements-to-array"><span>6) array_agg : make elements to array</span></a></h3>
-<pre><code class="language-sql">select array_agg(name order by name asc) from student
+<pre data-lang="sql"><code class="hljs language-sql"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-keyword">select</span> <span class="hljs-built_in">array_agg</span>(name <span class="hljs-keyword">order</span> <span class="hljs-keyword">by</span> name <span class="hljs-keyword">asc</span>) <span class="hljs-keyword">from</span> student</span></span>
 </code></pre>
 <h3 id="7-array-transform-result-to-array" tabindex="-1"><a class="header-anchor" href="#7-array-transform-result-to-array"><span>7) array : transform result to array</span></a></h3>
-<pre><code class="language-sql">SELECT array(SELECT &quot;name&quot; FROM student);
+<pre data-lang="sql"><code class="hljs language-sql"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-keyword">SELECT</span> <span class="hljs-keyword">array</span>(<span class="hljs-keyword">SELECT</span> &quot;name&quot; <span class="hljs-keyword">FROM</span> student);</span></span>
 </code></pre>
 <h3 id="8-ceil-num-get-int-bigger-one" tabindex="-1"><a class="header-anchor" href="#8-ceil-num-get-int-bigger-one"><span>8) ceil(num) : get int, (bigger one)</span></a></h3>
-<pre><code class="language-sql">SELECT ceil(35.7)
-#36
+<pre data-lang="sql"><code class="hljs language-sql"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-keyword">SELECT</span> <span class="hljs-built_in">ceil</span>(<span class="hljs-number">35.7</span>)</span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code">#<span class="hljs-number">36</span></span></span>
 </code></pre>
 <h3 id="9-floor-num-get-int-smaller-one" tabindex="-1"><a class="header-anchor" href="#9-floor-num-get-int-smaller-one"><span>9) floor(num) : get int, (smaller one)</span></a></h3>
-<pre><code class="language-sql">SELECT floor(35.7)
-#35
+<pre data-lang="sql"><code class="hljs language-sql"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-keyword">SELECT</span> <span class="hljs-built_in">floor</span>(<span class="hljs-number">35.7</span>)</span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code">#<span class="hljs-number">35</span></span></span>
 </code></pre>
 <h3 id="10-round-numeric-int" tabindex="-1"><a class="header-anchor" href="#10-round-numeric-int"><span>10) round(numeric,int)</span></a></h3>
 <h3 id="11-age-timestamp1-timestamp2" tabindex="-1"><a class="header-anchor" href="#11-age-timestamp1-timestamp2"><span>11) age(timestamp1,timestamp2)</span></a></h3>
 <h3 id="12-date-trunc-text-timestamp" tabindex="-1"><a class="header-anchor" href="#12-date-trunc-text-timestamp"><span>12) date_trunc(text,timestamp)</span></a></h3>
-<pre><code class="language-sql">select date_trunc('day',current_timestamp),date_trunc('hour',current_timestamp);
---       date_trunc      |      date_trunc      
--- ------------------------+------------------------
--- 2018-09-16 00:00:00+08 | 2018-09-16 11:00:00+08
+<pre data-lang="sql"><code class="hljs language-sql"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-keyword">select</span> date_trunc(<span class="hljs-string">&#x27;day&#x27;</span>,<span class="hljs-built_in">current_timestamp</span>),date_trunc(<span class="hljs-string">&#x27;hour&#x27;</span>,<span class="hljs-built_in">current_timestamp</span>);</span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-comment">--       date_trunc      |      date_trunc      </span></span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"><span class="hljs-comment">-- ------------------------+------------------------</span></span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"><span class="hljs-comment">-- 2018-09-16 00:00:00+08 | 2018-09-16 11:00:00+08</span></span></span>
 </code></pre>
 <h3 id="13-date-part-text-timestamp" tabindex="-1"><a class="header-anchor" href="#13-date-part-text-timestamp"><span>13) date_part(text,timestamp)</span></a></h3>
-<pre><code class="language-sql">select date_part('hour',now()),date_part('minute',now()),date_part('month',now());
-date_part | date_part | date_part 
--- -----------+-----------+-----------
---         11 |        10 |        9
+<pre data-lang="sql"><code class="hljs language-sql"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-keyword">select</span> date_part(<span class="hljs-string">&#x27;hour&#x27;</span>,now()),date_part(<span class="hljs-string">&#x27;minute&#x27;</span>,now()),date_part(<span class="hljs-string">&#x27;month&#x27;</span>,now());</span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code">date_part <span class="hljs-operator">|</span> date_part <span class="hljs-operator">|</span> date_part </span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"><span class="hljs-comment">-- -----------+-----------+-----------</span></span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"><span class="hljs-comment">--         11 |        10 |        9</span></span></span>
 </code></pre>
 
       </div>

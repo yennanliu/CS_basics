@@ -9,8 +9,7 @@
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>CS</text></svg>">
   <link rel="stylesheet" href="../style.css">
   <link rel="stylesheet" href="../vendor/fonts.css">
-  <link rel="stylesheet" href="../vendor/highlight/github-dark.min.css">
-  <script src="../vendor/highlight/highlight.min.js"></script>
+  <link rel="stylesheet" href="../vendor/highlight/atom-one-dark.min.css">
   <script>
   // Apply theme before render to prevent flash
   (function() {
@@ -21,40 +20,43 @@
   })();
   </script>
   <script>document.addEventListener('DOMContentLoaded', function() {
-    hljs.highlightAll();
-    document.querySelectorAll('pre code').forEach(function(codeEl) {
-      var pre = codeEl.parentElement;
-      var lang = '';
-      var cls = codeEl.className || '';
-      var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
-      if (m) lang = m[1];
-      var wrapper = document.createElement('div');
-      wrapper.className = 'code-block-wrapper';
-      pre.parentNode.insertBefore(wrapper, pre);
-      var header = document.createElement('div');
-      header.className = 'code-block-header';
-      if (lang) {
-        var label = document.createElement('span');
-        label.className = 'code-lang-label';
-        label.textContent = lang;
-        header.appendChild(label);
-      } else {
-        header.appendChild(document.createElement('span'));
-      }
-      var btn = document.createElement('button');
-      btn.className = 'copy-btn';
-      btn.textContent = 'Copy';
-      btn.addEventListener('click', function() {
-        navigator.clipboard.writeText(codeEl.textContent).then(function() {
-          btn.textContent = 'Copied!';
-          btn.classList.add('copied');
-          setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+    // Code block wrappers + copy buttons (highlighting done at build time)
+    try {
+      document.querySelectorAll('pre').forEach(function(pre) {
+        var codeEl = pre.querySelector('code');
+        var lang = pre.getAttribute('data-lang') || '';
+        var wrapper = document.createElement('div');
+        wrapper.className = 'code-block-wrapper';
+        pre.parentNode.insertBefore(wrapper, pre);
+        var header = document.createElement('div');
+        header.className = 'code-block-header';
+        if (lang) {
+          var label = document.createElement('span');
+          label.className = 'code-lang-label';
+          label.textContent = lang;
+          header.appendChild(label);
+        } else {
+          header.appendChild(document.createElement('span'));
+        }
+        var btn = document.createElement('button');
+        btn.className = 'copy-btn';
+        btn.textContent = 'Copy';
+        btn.addEventListener('click', function() {
+          var text = codeEl
+            ? Array.from(codeEl.querySelectorAll('.ln-code')).map(function(el) { return el.textContent; }).join('
+')
+            : pre.textContent;
+          navigator.clipboard.writeText(text).then(function() {
+            btn.textContent = 'Copied!';
+            btn.classList.add('copied');
+            setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+          });
         });
+        header.appendChild(btn);
+        wrapper.appendChild(header);
+        wrapper.appendChild(pre);
       });
-      header.appendChild(btn);
-      wrapper.appendChild(header);
-      wrapper.appendChild(pre);
-    });
+    } catch(e) { console.error('Code block setup error:', e); }
     document.querySelectorAll('table').forEach(function(table) {
       if (!table.parentElement.classList.contains('table-wrap')) {
         var wrapper = document.createElement('div');
@@ -64,32 +66,36 @@
       }
     });
     // Reading progress bar
-    var progressBar = document.getElementById('reading-progress');
-    if (progressBar) {
-      window.addEventListener('scroll', function() {
-        var winScroll = document.documentElement.scrollTop;
-        var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-        progressBar.style.width = height > 0 ? (winScroll / height * 100) + '%' : '0%';
-      });
-    }
-    // Dark mode toggle
-    var toggle = document.getElementById('theme-toggle');
-    if (toggle) {
-      var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-      toggle.textContent = isDark ? '☀️' : '🌙';
-      toggle.addEventListener('click', function() {
-        var dark = document.documentElement.getAttribute('data-theme') === 'dark';
-        if (dark) {
-          document.documentElement.removeAttribute('data-theme');
-          localStorage.setItem('theme', 'light');
-          toggle.textContent = '🌙';
-        } else {
-          document.documentElement.setAttribute('data-theme', 'dark');
-          localStorage.setItem('theme', 'dark');
-          toggle.textContent = '☀️';
-        }
-      });
-    }
+    try {
+      var progressBar = document.getElementById('reading-progress');
+      if (progressBar) {
+        window.addEventListener('scroll', function() {
+          var winScroll = document.documentElement.scrollTop;
+          var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+          progressBar.style.width = height > 0 ? (winScroll / height * 100) + '%' : '0%';
+        });
+      }
+    } catch(e) {}
+    // Dark mode toggle — isolated so errors elsewhere never prevent this from working
+    try {
+      var toggle = document.getElementById('theme-toggle');
+      if (toggle) {
+        var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+        toggle.textContent = isDark ? '☀️' : '🌙';
+        toggle.addEventListener('click', function() {
+          var dark = document.documentElement.getAttribute('data-theme') === 'dark';
+          if (dark) {
+            document.documentElement.removeAttribute('data-theme');
+            localStorage.setItem('theme', 'light');
+            toggle.textContent = '🌙';
+          } else {
+            document.documentElement.setAttribute('data-theme', 'dark');
+            localStorage.setItem('theme', 'dark');
+            toggle.textContent = '☀️';
+          }
+        });
+      }
+    } catch(e) { console.error('Theme toggle error:', e); }
   });</script>
 </head>
 <body>
@@ -192,559 +198,559 @@
 </ol>
 <h3 id="1-2-templates" tabindex="-1"><a class="header-anchor" href="#1-2-templates"><span>1-2) Templates</span></a></h3>
 <h4 id="kmp-template" tabindex="-1"><a class="header-anchor" href="#kmp-template"><span>KMP Template</span></a></h4>
-<pre><code class="language-python">def kmp_search(text, pattern):
-    &quot;&quot;&quot;Find all occurrences of pattern in text using KMP&quot;&quot;&quot;
-
-    def build_lps(pattern):
-        &quot;&quot;&quot;Build Longest Prefix Suffix array&quot;&quot;&quot;
-        m = len(pattern)
-        lps = [0] * m
-        length = 0  # length of previous longest prefix suffix
-        i = 1
-
-        while i &lt; m:
-            if pattern[i] == pattern[length]:
-                length += 1
-                lps[i] = length
-                i += 1
-            else:
-                if length != 0:
-                    # Don't increment i, try with shorter prefix
-                    length = lps[length - 1]
-                else:
-                    lps[i] = 0
-                    i += 1
-        return lps
-
-    if not pattern:
-        return [0]
-
-    n, m = len(text), len(pattern)
-    lps = build_lps(pattern)
-    matches = []
-
-    i = j = 0  # i for text, j for pattern
-    while i &lt; n:
-        if text[i] == pattern[j]:
-            i += 1
-            j += 1
-
-        if j == m:
-            # Found pattern at index i-j
-            matches.append(i - j)
-            j = lps[j - 1]
-        elif i &lt; n and text[i] != pattern[j]:
-            if j != 0:
-                j = lps[j - 1]
-            else:
-                i += 1
-
-    return matches
+<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-keyword">def</span> <span class="hljs-title function_">kmp_search</span>(<span class="hljs-params">text, pattern</span>):</span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code">    <span class="hljs-string">&quot;&quot;&quot;Find all occurrences of pattern in text using KMP&quot;&quot;&quot;</span></span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">build_lps</span>(<span class="hljs-params">pattern</span>):</span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">        <span class="hljs-string">&quot;&quot;&quot;Build Longest Prefix Suffix array&quot;&quot;&quot;</span></span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">        m = <span class="hljs-built_in">len</span>(pattern)</span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">        lps = [<span class="hljs-number">0</span>] * m</span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">        length = <span class="hljs-number">0</span>  <span class="hljs-comment"># length of previous longest prefix suffix</span></span></span>
+<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">        i = <span class="hljs-number">1</span></span></span>
+<span class="ln-row"><span class="ln-num">10</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">        <span class="hljs-keyword">while</span> i &lt; m:</span></span>
+<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">            <span class="hljs-keyword">if</span> pattern[i] == pattern[length]:</span></span>
+<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">                length += <span class="hljs-number">1</span></span></span>
+<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">                lps[i] = length</span></span>
+<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">                i += <span class="hljs-number">1</span></span></span>
+<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">            <span class="hljs-keyword">else</span>:</span></span>
+<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">                <span class="hljs-keyword">if</span> length != <span class="hljs-number">0</span>:</span></span>
+<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">                    <span class="hljs-comment"># Don&#x27;t increment i, try with shorter prefix</span></span></span>
+<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">                    length = lps[length - <span class="hljs-number">1</span>]</span></span>
+<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">                <span class="hljs-keyword">else</span>:</span></span>
+<span class="ln-row"><span class="ln-num">21</span><span class="ln-code">                    lps[i] = <span class="hljs-number">0</span></span></span>
+<span class="ln-row"><span class="ln-num">22</span><span class="ln-code">                    i += <span class="hljs-number">1</span></span></span>
+<span class="ln-row"><span class="ln-num">23</span><span class="ln-code">        <span class="hljs-keyword">return</span> lps</span></span>
+<span class="ln-row"><span class="ln-num">24</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">25</span><span class="ln-code">    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> pattern:</span></span>
+<span class="ln-row"><span class="ln-num">26</span><span class="ln-code">        <span class="hljs-keyword">return</span> [<span class="hljs-number">0</span>]</span></span>
+<span class="ln-row"><span class="ln-num">27</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">28</span><span class="ln-code">    n, m = <span class="hljs-built_in">len</span>(text), <span class="hljs-built_in">len</span>(pattern)</span></span>
+<span class="ln-row"><span class="ln-num">29</span><span class="ln-code">    lps = build_lps(pattern)</span></span>
+<span class="ln-row"><span class="ln-num">30</span><span class="ln-code">    matches = []</span></span>
+<span class="ln-row"><span class="ln-num">31</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">32</span><span class="ln-code">    i = j = <span class="hljs-number">0</span>  <span class="hljs-comment"># i for text, j for pattern</span></span></span>
+<span class="ln-row"><span class="ln-num">33</span><span class="ln-code">    <span class="hljs-keyword">while</span> i &lt; n:</span></span>
+<span class="ln-row"><span class="ln-num">34</span><span class="ln-code">        <span class="hljs-keyword">if</span> text[i] == pattern[j]:</span></span>
+<span class="ln-row"><span class="ln-num">35</span><span class="ln-code">            i += <span class="hljs-number">1</span></span></span>
+<span class="ln-row"><span class="ln-num">36</span><span class="ln-code">            j += <span class="hljs-number">1</span></span></span>
+<span class="ln-row"><span class="ln-num">37</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">38</span><span class="ln-code">        <span class="hljs-keyword">if</span> j == m:</span></span>
+<span class="ln-row"><span class="ln-num">39</span><span class="ln-code">            <span class="hljs-comment"># Found pattern at index i-j</span></span></span>
+<span class="ln-row"><span class="ln-num">40</span><span class="ln-code">            matches.append(i - j)</span></span>
+<span class="ln-row"><span class="ln-num">41</span><span class="ln-code">            j = lps[j - <span class="hljs-number">1</span>]</span></span>
+<span class="ln-row"><span class="ln-num">42</span><span class="ln-code">        <span class="hljs-keyword">elif</span> i &lt; n <span class="hljs-keyword">and</span> text[i] != pattern[j]:</span></span>
+<span class="ln-row"><span class="ln-num">43</span><span class="ln-code">            <span class="hljs-keyword">if</span> j != <span class="hljs-number">0</span>:</span></span>
+<span class="ln-row"><span class="ln-num">44</span><span class="ln-code">                j = lps[j - <span class="hljs-number">1</span>]</span></span>
+<span class="ln-row"><span class="ln-num">45</span><span class="ln-code">            <span class="hljs-keyword">else</span>:</span></span>
+<span class="ln-row"><span class="ln-num">46</span><span class="ln-code">                i += <span class="hljs-number">1</span></span></span>
+<span class="ln-row"><span class="ln-num">47</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">48</span><span class="ln-code">    <span class="hljs-keyword">return</span> matches</span></span>
 </code></pre>
-<pre><code class="language-java">// Java KMP Implementation
-public class KMP {
-    public List&lt;Integer&gt; search(String text, String pattern) {
-        List&lt;Integer&gt; matches = new ArrayList&lt;&gt;();
-        if (pattern.isEmpty()) return matches;
-
-        int[] lps = buildLPS(pattern);
-        int n = text.length(), m = pattern.length();
-        int i = 0, j = 0;
-
-        while (i &lt; n) {
-            if (text.charAt(i) == pattern.charAt(j)) {
-                i++;
-                j++;
-            }
-
-            if (j == m) {
-                matches.add(i - j);
-                j = lps[j - 1];
-            } else if (i &lt; n &amp;&amp; text.charAt(i) != pattern.charAt(j)) {
-                if (j != 0) {
-                    j = lps[j - 1];
-                } else {
-                    i++;
-                }
-            }
-        }
-        return matches;
-    }
-
-    private int[] buildLPS(String pattern) {
-        int m = pattern.length();
-        int[] lps = new int[m];
-        int length = 0;
-        int i = 1;
-
-        while (i &lt; m) {
-            if (pattern.charAt(i) == pattern.charAt(length)) {
-                length++;
-                lps[i] = length;
-                i++;
-            } else {
-                if (length != 0) {
-                    length = lps[length - 1];
-                } else {
-                    lps[i] = 0;
-                    i++;
-                }
-            }
-        }
-        return lps;
-    }
-}
+<pre data-lang="java"><code class="hljs language-java"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment">// Java KMP Implementation</span></span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">KMP</span> {</span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">    <span class="hljs-keyword">public</span> List&lt;Integer&gt; <span class="hljs-title function_">search</span><span class="hljs-params">(String text, String pattern)</span> {</span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">        List&lt;Integer&gt; matches = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();</span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">        <span class="hljs-keyword">if</span> (pattern.isEmpty()) <span class="hljs-keyword">return</span> matches;</span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">        <span class="hljs-type">int</span>[] lps = buildLPS(pattern);</span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">        <span class="hljs-type">int</span> <span class="hljs-variable">n</span> <span class="hljs-operator">=</span> text.length(), m = pattern.length();</span></span>
+<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">        <span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>, j = <span class="hljs-number">0</span>;</span></span>
+<span class="ln-row"><span class="ln-num">10</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">        <span class="hljs-keyword">while</span> (i &lt; n) {</span></span>
+<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">            <span class="hljs-keyword">if</span> (text.charAt(i) == pattern.charAt(j)) {</span></span>
+<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">                i++;</span></span>
+<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">                j++;</span></span>
+<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">            }</span></span>
+<span class="ln-row"><span class="ln-num">16</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">            <span class="hljs-keyword">if</span> (j == m) {</span></span>
+<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">                matches.add(i - j);</span></span>
+<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">                j = lps[j - <span class="hljs-number">1</span>];</span></span>
+<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">            } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (i &lt; n &amp;&amp; text.charAt(i) != pattern.charAt(j)) {</span></span>
+<span class="ln-row"><span class="ln-num">21</span><span class="ln-code">                <span class="hljs-keyword">if</span> (j != <span class="hljs-number">0</span>) {</span></span>
+<span class="ln-row"><span class="ln-num">22</span><span class="ln-code">                    j = lps[j - <span class="hljs-number">1</span>];</span></span>
+<span class="ln-row"><span class="ln-num">23</span><span class="ln-code">                } <span class="hljs-keyword">else</span> {</span></span>
+<span class="ln-row"><span class="ln-num">24</span><span class="ln-code">                    i++;</span></span>
+<span class="ln-row"><span class="ln-num">25</span><span class="ln-code">                }</span></span>
+<span class="ln-row"><span class="ln-num">26</span><span class="ln-code">            }</span></span>
+<span class="ln-row"><span class="ln-num">27</span><span class="ln-code">        }</span></span>
+<span class="ln-row"><span class="ln-num">28</span><span class="ln-code">        <span class="hljs-keyword">return</span> matches;</span></span>
+<span class="ln-row"><span class="ln-num">29</span><span class="ln-code">    }</span></span>
+<span class="ln-row"><span class="ln-num">30</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">31</span><span class="ln-code">    <span class="hljs-keyword">private</span> <span class="hljs-type">int</span>[] buildLPS(String pattern) {</span></span>
+<span class="ln-row"><span class="ln-num">32</span><span class="ln-code">        <span class="hljs-type">int</span> <span class="hljs-variable">m</span> <span class="hljs-operator">=</span> pattern.length();</span></span>
+<span class="ln-row"><span class="ln-num">33</span><span class="ln-code">        <span class="hljs-type">int</span>[] lps = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[m];</span></span>
+<span class="ln-row"><span class="ln-num">34</span><span class="ln-code">        <span class="hljs-type">int</span> <span class="hljs-variable">length</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;</span></span>
+<span class="ln-row"><span class="ln-num">35</span><span class="ln-code">        <span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span>;</span></span>
+<span class="ln-row"><span class="ln-num">36</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">37</span><span class="ln-code">        <span class="hljs-keyword">while</span> (i &lt; m) {</span></span>
+<span class="ln-row"><span class="ln-num">38</span><span class="ln-code">            <span class="hljs-keyword">if</span> (pattern.charAt(i) == pattern.charAt(length)) {</span></span>
+<span class="ln-row"><span class="ln-num">39</span><span class="ln-code">                length++;</span></span>
+<span class="ln-row"><span class="ln-num">40</span><span class="ln-code">                lps[i] = length;</span></span>
+<span class="ln-row"><span class="ln-num">41</span><span class="ln-code">                i++;</span></span>
+<span class="ln-row"><span class="ln-num">42</span><span class="ln-code">            } <span class="hljs-keyword">else</span> {</span></span>
+<span class="ln-row"><span class="ln-num">43</span><span class="ln-code">                <span class="hljs-keyword">if</span> (length != <span class="hljs-number">0</span>) {</span></span>
+<span class="ln-row"><span class="ln-num">44</span><span class="ln-code">                    length = lps[length - <span class="hljs-number">1</span>];</span></span>
+<span class="ln-row"><span class="ln-num">45</span><span class="ln-code">                } <span class="hljs-keyword">else</span> {</span></span>
+<span class="ln-row"><span class="ln-num">46</span><span class="ln-code">                    lps[i] = <span class="hljs-number">0</span>;</span></span>
+<span class="ln-row"><span class="ln-num">47</span><span class="ln-code">                    i++;</span></span>
+<span class="ln-row"><span class="ln-num">48</span><span class="ln-code">                }</span></span>
+<span class="ln-row"><span class="ln-num">49</span><span class="ln-code">            }</span></span>
+<span class="ln-row"><span class="ln-num">50</span><span class="ln-code">        }</span></span>
+<span class="ln-row"><span class="ln-num">51</span><span class="ln-code">        <span class="hljs-keyword">return</span> lps;</span></span>
+<span class="ln-row"><span class="ln-num">52</span><span class="ln-code">    }</span></span>
+<span class="ln-row"><span class="ln-num">53</span><span class="ln-code">}</span></span>
 </code></pre>
 <h4 id="rolling-hash-template" tabindex="-1"><a class="header-anchor" href="#rolling-hash-template"><span>Rolling Hash Template</span></a></h4>
-<pre><code class="language-python">class RollingHash:
-    &quot;&quot;&quot;Rolling hash for efficient substring matching&quot;&quot;&quot;
-
-    def __init__(self, s, base=256, mod=10**9 + 7):
-        self.s = s
-        self.n = len(s)
-        self.base = base
-        self.mod = mod
-
-        # Precompute hash values for all prefixes
-        self.hash_values = [0] * (self.n + 1)
-        self.base_powers = [1] * (self.n + 1)
-
-        for i in range(self.n):
-            self.hash_values[i + 1] = (self.hash_values[i] * base + ord(s[i])) % mod
-            self.base_powers[i + 1] = (self.base_powers[i] * base) % mod
-
-    def get_hash(self, left, right):
-        &quot;&quot;&quot;Get hash of substring s[left:right+1] in O(1)&quot;&quot;&quot;
-        length = right - left + 1
-        result = (self.hash_values[right + 1] -
-                 self.hash_values[left] * self.base_powers[length]) % self.mod
-        return result if result &gt;= 0 else result + self.mod
-
-    def compare_substrings(self, l1, r1, l2, r2):
-        &quot;&quot;&quot;Compare two substrings in O(1) using hash&quot;&quot;&quot;
-        return (r1 - l1 == r2 - l2 and
-                self.get_hash(l1, r1) == self.get_hash(l2, r2))
-
-def rabin_karp_search(text, pattern):
-    &quot;&quot;&quot;Find all occurrences of pattern using Rabin-Karp&quot;&quot;&quot;
-    if not pattern or len(pattern) &gt; len(text):
-        return []
-
-    base = 256
-    mod = 10**9 + 7
-    n, m = len(text), len(pattern)
-
-    # Calculate base^(m-1) % mod
-    base_power = pow(base, m - 1, mod)
-
-    # Calculate initial hashes
-    pattern_hash = 0
-    text_hash = 0
-    for i in range(m):
-        pattern_hash = (pattern_hash * base + ord(pattern[i])) % mod
-        text_hash = (text_hash * base + ord(text[i])) % mod
-
-    matches = []
-
-    # Slide pattern over text
-    for i in range(n - m + 1):
-        # If hash matches, verify character by character
-        if pattern_hash == text_hash:
-            if text[i:i+m] == pattern:
-                matches.append(i)
-
-        # Calculate hash for next window
-        if i &lt; n - m:
-            text_hash = (text_hash - ord(text[i]) * base_power) % mod
-            text_hash = (text_hash * base + ord(text[i + m])) % mod
-            if text_hash &lt; 0:
-                text_hash += mod
-
-    return matches
+<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-keyword">class</span> <span class="hljs-title class_">RollingHash</span>:</span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code">    <span class="hljs-string">&quot;&quot;&quot;Rolling hash for efficient substring matching&quot;&quot;&quot;</span></span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, s, base=<span class="hljs-number">256</span>, mod=<span class="hljs-number">10</span>**<span class="hljs-number">9</span> + <span class="hljs-number">7</span></span>):</span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">        <span class="hljs-variable language_">self</span>.s = s</span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">        <span class="hljs-variable language_">self</span>.n = <span class="hljs-built_in">len</span>(s)</span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">        <span class="hljs-variable language_">self</span>.base = base</span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">        <span class="hljs-variable language_">self</span>.mod = mod</span></span>
+<span class="ln-row"><span class="ln-num">9</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">        <span class="hljs-comment"># Precompute hash values for all prefixes</span></span></span>
+<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">        <span class="hljs-variable language_">self</span>.hash_values = [<span class="hljs-number">0</span>] * (<span class="hljs-variable language_">self</span>.n + <span class="hljs-number">1</span>)</span></span>
+<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">        <span class="hljs-variable language_">self</span>.base_powers = [<span class="hljs-number">1</span>] * (<span class="hljs-variable language_">self</span>.n + <span class="hljs-number">1</span>)</span></span>
+<span class="ln-row"><span class="ln-num">13</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-variable language_">self</span>.n):</span></span>
+<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">            <span class="hljs-variable language_">self</span>.hash_values[i + <span class="hljs-number">1</span>] = (<span class="hljs-variable language_">self</span>.hash_values[i] * base + <span class="hljs-built_in">ord</span>(s[i])) % mod</span></span>
+<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">            <span class="hljs-variable language_">self</span>.base_powers[i + <span class="hljs-number">1</span>] = (<span class="hljs-variable language_">self</span>.base_powers[i] * base) % mod</span></span>
+<span class="ln-row"><span class="ln-num">17</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">get_hash</span>(<span class="hljs-params">self, left, right</span>):</span></span>
+<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">        <span class="hljs-string">&quot;&quot;&quot;Get hash of substring s[left:right+1] in O(1)&quot;&quot;&quot;</span></span></span>
+<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">        length = right - left + <span class="hljs-number">1</span></span></span>
+<span class="ln-row"><span class="ln-num">21</span><span class="ln-code">        result = (<span class="hljs-variable language_">self</span>.hash_values[right + <span class="hljs-number">1</span>] -</span></span>
+<span class="ln-row"><span class="ln-num">22</span><span class="ln-code">                 <span class="hljs-variable language_">self</span>.hash_values[left] * <span class="hljs-variable language_">self</span>.base_powers[length]) % <span class="hljs-variable language_">self</span>.mod</span></span>
+<span class="ln-row"><span class="ln-num">23</span><span class="ln-code">        <span class="hljs-keyword">return</span> result <span class="hljs-keyword">if</span> result &gt;= <span class="hljs-number">0</span> <span class="hljs-keyword">else</span> result + <span class="hljs-variable language_">self</span>.mod</span></span>
+<span class="ln-row"><span class="ln-num">24</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">25</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">compare_substrings</span>(<span class="hljs-params">self, l1, r1, l2, r2</span>):</span></span>
+<span class="ln-row"><span class="ln-num">26</span><span class="ln-code">        <span class="hljs-string">&quot;&quot;&quot;Compare two substrings in O(1) using hash&quot;&quot;&quot;</span></span></span>
+<span class="ln-row"><span class="ln-num">27</span><span class="ln-code">        <span class="hljs-keyword">return</span> (r1 - l1 == r2 - l2 <span class="hljs-keyword">and</span></span></span>
+<span class="ln-row"><span class="ln-num">28</span><span class="ln-code">                <span class="hljs-variable language_">self</span>.get_hash(l1, r1) == <span class="hljs-variable language_">self</span>.get_hash(l2, r2))</span></span>
+<span class="ln-row"><span class="ln-num">29</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">30</span><span class="ln-code"><span class="hljs-keyword">def</span> <span class="hljs-title function_">rabin_karp_search</span>(<span class="hljs-params">text, pattern</span>):</span></span>
+<span class="ln-row"><span class="ln-num">31</span><span class="ln-code">    <span class="hljs-string">&quot;&quot;&quot;Find all occurrences of pattern using Rabin-Karp&quot;&quot;&quot;</span></span></span>
+<span class="ln-row"><span class="ln-num">32</span><span class="ln-code">    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> pattern <span class="hljs-keyword">or</span> <span class="hljs-built_in">len</span>(pattern) &gt; <span class="hljs-built_in">len</span>(text):</span></span>
+<span class="ln-row"><span class="ln-num">33</span><span class="ln-code">        <span class="hljs-keyword">return</span> []</span></span>
+<span class="ln-row"><span class="ln-num">34</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">35</span><span class="ln-code">    base = <span class="hljs-number">256</span></span></span>
+<span class="ln-row"><span class="ln-num">36</span><span class="ln-code">    mod = <span class="hljs-number">10</span>**<span class="hljs-number">9</span> + <span class="hljs-number">7</span></span></span>
+<span class="ln-row"><span class="ln-num">37</span><span class="ln-code">    n, m = <span class="hljs-built_in">len</span>(text), <span class="hljs-built_in">len</span>(pattern)</span></span>
+<span class="ln-row"><span class="ln-num">38</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">39</span><span class="ln-code">    <span class="hljs-comment"># Calculate base^(m-1) % mod</span></span></span>
+<span class="ln-row"><span class="ln-num">40</span><span class="ln-code">    base_power = <span class="hljs-built_in">pow</span>(base, m - <span class="hljs-number">1</span>, mod)</span></span>
+<span class="ln-row"><span class="ln-num">41</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">42</span><span class="ln-code">    <span class="hljs-comment"># Calculate initial hashes</span></span></span>
+<span class="ln-row"><span class="ln-num">43</span><span class="ln-code">    pattern_hash = <span class="hljs-number">0</span></span></span>
+<span class="ln-row"><span class="ln-num">44</span><span class="ln-code">    text_hash = <span class="hljs-number">0</span></span></span>
+<span class="ln-row"><span class="ln-num">45</span><span class="ln-code">    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(m):</span></span>
+<span class="ln-row"><span class="ln-num">46</span><span class="ln-code">        pattern_hash = (pattern_hash * base + <span class="hljs-built_in">ord</span>(pattern[i])) % mod</span></span>
+<span class="ln-row"><span class="ln-num">47</span><span class="ln-code">        text_hash = (text_hash * base + <span class="hljs-built_in">ord</span>(text[i])) % mod</span></span>
+<span class="ln-row"><span class="ln-num">48</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">49</span><span class="ln-code">    matches = []</span></span>
+<span class="ln-row"><span class="ln-num">50</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">51</span><span class="ln-code">    <span class="hljs-comment"># Slide pattern over text</span></span></span>
+<span class="ln-row"><span class="ln-num">52</span><span class="ln-code">    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n - m + <span class="hljs-number">1</span>):</span></span>
+<span class="ln-row"><span class="ln-num">53</span><span class="ln-code">        <span class="hljs-comment"># If hash matches, verify character by character</span></span></span>
+<span class="ln-row"><span class="ln-num">54</span><span class="ln-code">        <span class="hljs-keyword">if</span> pattern_hash == text_hash:</span></span>
+<span class="ln-row"><span class="ln-num">55</span><span class="ln-code">            <span class="hljs-keyword">if</span> text[i:i+m] == pattern:</span></span>
+<span class="ln-row"><span class="ln-num">56</span><span class="ln-code">                matches.append(i)</span></span>
+<span class="ln-row"><span class="ln-num">57</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">58</span><span class="ln-code">        <span class="hljs-comment"># Calculate hash for next window</span></span></span>
+<span class="ln-row"><span class="ln-num">59</span><span class="ln-code">        <span class="hljs-keyword">if</span> i &lt; n - m:</span></span>
+<span class="ln-row"><span class="ln-num">60</span><span class="ln-code">            text_hash = (text_hash - <span class="hljs-built_in">ord</span>(text[i]) * base_power) % mod</span></span>
+<span class="ln-row"><span class="ln-num">61</span><span class="ln-code">            text_hash = (text_hash * base + <span class="hljs-built_in">ord</span>(text[i + m])) % mod</span></span>
+<span class="ln-row"><span class="ln-num">62</span><span class="ln-code">            <span class="hljs-keyword">if</span> text_hash &lt; <span class="hljs-number">0</span>:</span></span>
+<span class="ln-row"><span class="ln-num">63</span><span class="ln-code">                text_hash += mod</span></span>
+<span class="ln-row"><span class="ln-num">64</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">65</span><span class="ln-code">    <span class="hljs-keyword">return</span> matches</span></span>
 </code></pre>
-<pre><code class="language-java">// Java Rolling Hash Implementation
-public class RollingHash {
-    private static final long BASE = 256;
-    private static final long MOD = 1_000_000_007;
-
-    public List&lt;Integer&gt; search(String text, String pattern) {
-        List&lt;Integer&gt; matches = new ArrayList&lt;&gt;();
-        int n = text.length(), m = pattern.length();
-
-        if (m &gt; n) return matches;
-
-        long basePower = 1;
-        for (int i = 0; i &lt; m - 1; i++) {
-            basePower = (basePower * BASE) % MOD;
-        }
-
-        long patternHash = 0, textHash = 0;
-
-        // Calculate initial hashes
-        for (int i = 0; i &lt; m; i++) {
-            patternHash = (patternHash * BASE + pattern.charAt(i)) % MOD;
-            textHash = (textHash * BASE + text.charAt(i)) % MOD;
-        }
-
-        // Slide pattern over text
-        for (int i = 0; i &lt;= n - m; i++) {
-            if (patternHash == textHash) {
-                // Verify character by character
-                if (text.substring(i, i + m).equals(pattern)) {
-                    matches.add(i);
-                }
-            }
-
-            if (i &lt; n - m) {
-                textHash = (textHash - text.charAt(i) * basePower % MOD + MOD) % MOD;
-                textHash = (textHash * BASE + text.charAt(i + m)) % MOD;
-            }
-        }
-
-        return matches;
-    }
-}
+<pre data-lang="java"><code class="hljs language-java"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment">// Java Rolling Hash Implementation</span></span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">RollingHash</span> {</span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">long</span> <span class="hljs-variable">BASE</span> <span class="hljs-operator">=</span> <span class="hljs-number">256</span>;</span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">long</span> <span class="hljs-variable">MOD</span> <span class="hljs-operator">=</span> <span class="hljs-number">1_000_000_007</span>;</span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    <span class="hljs-keyword">public</span> List&lt;Integer&gt; <span class="hljs-title function_">search</span><span class="hljs-params">(String text, String pattern)</span> {</span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">        List&lt;Integer&gt; matches = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();</span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">        <span class="hljs-type">int</span> <span class="hljs-variable">n</span> <span class="hljs-operator">=</span> text.length(), m = pattern.length();</span></span>
+<span class="ln-row"><span class="ln-num">9</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">        <span class="hljs-keyword">if</span> (m &gt; n) <span class="hljs-keyword">return</span> matches;</span></span>
+<span class="ln-row"><span class="ln-num">11</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">        <span class="hljs-type">long</span> <span class="hljs-variable">basePower</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span>;</span></span>
+<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; m - <span class="hljs-number">1</span>; i++) {</span></span>
+<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">            basePower = (basePower * BASE) % MOD;</span></span>
+<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">        }</span></span>
+<span class="ln-row"><span class="ln-num">16</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">        <span class="hljs-type">long</span> <span class="hljs-variable">patternHash</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>, textHash = <span class="hljs-number">0</span>;</span></span>
+<span class="ln-row"><span class="ln-num">18</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">        <span class="hljs-comment">// Calculate initial hashes</span></span></span>
+<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; m; i++) {</span></span>
+<span class="ln-row"><span class="ln-num">21</span><span class="ln-code">            patternHash = (patternHash * BASE + pattern.charAt(i)) % MOD;</span></span>
+<span class="ln-row"><span class="ln-num">22</span><span class="ln-code">            textHash = (textHash * BASE + text.charAt(i)) % MOD;</span></span>
+<span class="ln-row"><span class="ln-num">23</span><span class="ln-code">        }</span></span>
+<span class="ln-row"><span class="ln-num">24</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">25</span><span class="ln-code">        <span class="hljs-comment">// Slide pattern over text</span></span></span>
+<span class="ln-row"><span class="ln-num">26</span><span class="ln-code">        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt;= n - m; i++) {</span></span>
+<span class="ln-row"><span class="ln-num">27</span><span class="ln-code">            <span class="hljs-keyword">if</span> (patternHash == textHash) {</span></span>
+<span class="ln-row"><span class="ln-num">28</span><span class="ln-code">                <span class="hljs-comment">// Verify character by character</span></span></span>
+<span class="ln-row"><span class="ln-num">29</span><span class="ln-code">                <span class="hljs-keyword">if</span> (text.substring(i, i + m).equals(pattern)) {</span></span>
+<span class="ln-row"><span class="ln-num">30</span><span class="ln-code">                    matches.add(i);</span></span>
+<span class="ln-row"><span class="ln-num">31</span><span class="ln-code">                }</span></span>
+<span class="ln-row"><span class="ln-num">32</span><span class="ln-code">            }</span></span>
+<span class="ln-row"><span class="ln-num">33</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">34</span><span class="ln-code">            <span class="hljs-keyword">if</span> (i &lt; n - m) {</span></span>
+<span class="ln-row"><span class="ln-num">35</span><span class="ln-code">                textHash = (textHash - text.charAt(i) * basePower % MOD + MOD) % MOD;</span></span>
+<span class="ln-row"><span class="ln-num">36</span><span class="ln-code">                textHash = (textHash * BASE + text.charAt(i + m)) % MOD;</span></span>
+<span class="ln-row"><span class="ln-num">37</span><span class="ln-code">            }</span></span>
+<span class="ln-row"><span class="ln-num">38</span><span class="ln-code">        }</span></span>
+<span class="ln-row"><span class="ln-num">39</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">40</span><span class="ln-code">        <span class="hljs-keyword">return</span> matches;</span></span>
+<span class="ln-row"><span class="ln-num">41</span><span class="ln-code">    }</span></span>
+<span class="ln-row"><span class="ln-num">42</span><span class="ln-code">}</span></span>
 </code></pre>
 <h3 id="1-3-double-hashing-collision-reduction" tabindex="-1"><a class="header-anchor" href="#1-3-double-hashing-collision-reduction"><span>1-3) Double Hashing (Collision Reduction)</span></a></h3>
-<pre><code class="language-python">class DoubleHash:
-    &quot;&quot;&quot;Double hashing to minimize collision probability&quot;&quot;&quot;
-
-    def __init__(self, s):
-        self.s = s
-        self.n = len(s)
-
-        # Two different bases and moduli
-        self.base1, self.mod1 = 257, 10**9 + 7
-        self.base2, self.mod2 = 263, 10**9 + 9
-
-        # Precompute for both hash functions
-        self.hash1 = [0] * (self.n + 1)
-        self.hash2 = [0] * (self.n + 1)
-        self.pow1 = [1] * (self.n + 1)
-        self.pow2 = [1] * (self.n + 1)
-
-        for i in range(self.n):
-            self.hash1[i + 1] = (self.hash1[i] * self.base1 + ord(s[i])) % self.mod1
-            self.hash2[i + 1] = (self.hash2[i] * self.base2 + ord(s[i])) % self.mod2
-            self.pow1[i + 1] = (self.pow1[i] * self.base1) % self.mod1
-            self.pow2[i + 1] = (self.pow2[i] * self.base2) % self.mod2
-
-    def get_hash(self, left, right):
-        &quot;&quot;&quot;Get double hash tuple for substring&quot;&quot;&quot;
-        length = right - left + 1
-        h1 = (self.hash1[right + 1] - self.hash1[left] * self.pow1[length]) % self.mod1
-        h2 = (self.hash2[right + 1] - self.hash2[left] * self.pow2[length]) % self.mod2
-        return (h1 if h1 &gt;= 0 else h1 + self.mod1,
-                h2 if h2 &gt;= 0 else h2 + self.mod2)
+<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-keyword">class</span> <span class="hljs-title class_">DoubleHash</span>:</span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code">    <span class="hljs-string">&quot;&quot;&quot;Double hashing to minimize collision probability&quot;&quot;&quot;</span></span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, s</span>):</span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">        <span class="hljs-variable language_">self</span>.s = s</span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">        <span class="hljs-variable language_">self</span>.n = <span class="hljs-built_in">len</span>(s)</span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">        <span class="hljs-comment"># Two different bases and moduli</span></span></span>
+<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">        <span class="hljs-variable language_">self</span>.base1, <span class="hljs-variable language_">self</span>.mod1 = <span class="hljs-number">257</span>, <span class="hljs-number">10</span>**<span class="hljs-number">9</span> + <span class="hljs-number">7</span></span></span>
+<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">        <span class="hljs-variable language_">self</span>.base2, <span class="hljs-variable language_">self</span>.mod2 = <span class="hljs-number">263</span>, <span class="hljs-number">10</span>**<span class="hljs-number">9</span> + <span class="hljs-number">9</span></span></span>
+<span class="ln-row"><span class="ln-num">11</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">        <span class="hljs-comment"># Precompute for both hash functions</span></span></span>
+<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">        <span class="hljs-variable language_">self</span>.hash1 = [<span class="hljs-number">0</span>] * (<span class="hljs-variable language_">self</span>.n + <span class="hljs-number">1</span>)</span></span>
+<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">        <span class="hljs-variable language_">self</span>.hash2 = [<span class="hljs-number">0</span>] * (<span class="hljs-variable language_">self</span>.n + <span class="hljs-number">1</span>)</span></span>
+<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">        <span class="hljs-variable language_">self</span>.pow1 = [<span class="hljs-number">1</span>] * (<span class="hljs-variable language_">self</span>.n + <span class="hljs-number">1</span>)</span></span>
+<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">        <span class="hljs-variable language_">self</span>.pow2 = [<span class="hljs-number">1</span>] * (<span class="hljs-variable language_">self</span>.n + <span class="hljs-number">1</span>)</span></span>
+<span class="ln-row"><span class="ln-num">17</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-variable language_">self</span>.n):</span></span>
+<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">            <span class="hljs-variable language_">self</span>.hash1[i + <span class="hljs-number">1</span>] = (<span class="hljs-variable language_">self</span>.hash1[i] * <span class="hljs-variable language_">self</span>.base1 + <span class="hljs-built_in">ord</span>(s[i])) % <span class="hljs-variable language_">self</span>.mod1</span></span>
+<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">            <span class="hljs-variable language_">self</span>.hash2[i + <span class="hljs-number">1</span>] = (<span class="hljs-variable language_">self</span>.hash2[i] * <span class="hljs-variable language_">self</span>.base2 + <span class="hljs-built_in">ord</span>(s[i])) % <span class="hljs-variable language_">self</span>.mod2</span></span>
+<span class="ln-row"><span class="ln-num">21</span><span class="ln-code">            <span class="hljs-variable language_">self</span>.pow1[i + <span class="hljs-number">1</span>] = (<span class="hljs-variable language_">self</span>.pow1[i] * <span class="hljs-variable language_">self</span>.base1) % <span class="hljs-variable language_">self</span>.mod1</span></span>
+<span class="ln-row"><span class="ln-num">22</span><span class="ln-code">            <span class="hljs-variable language_">self</span>.pow2[i + <span class="hljs-number">1</span>] = (<span class="hljs-variable language_">self</span>.pow2[i] * <span class="hljs-variable language_">self</span>.base2) % <span class="hljs-variable language_">self</span>.mod2</span></span>
+<span class="ln-row"><span class="ln-num">23</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">24</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">get_hash</span>(<span class="hljs-params">self, left, right</span>):</span></span>
+<span class="ln-row"><span class="ln-num">25</span><span class="ln-code">        <span class="hljs-string">&quot;&quot;&quot;Get double hash tuple for substring&quot;&quot;&quot;</span></span></span>
+<span class="ln-row"><span class="ln-num">26</span><span class="ln-code">        length = right - left + <span class="hljs-number">1</span></span></span>
+<span class="ln-row"><span class="ln-num">27</span><span class="ln-code">        h1 = (<span class="hljs-variable language_">self</span>.hash1[right + <span class="hljs-number">1</span>] - <span class="hljs-variable language_">self</span>.hash1[left] * <span class="hljs-variable language_">self</span>.pow1[length]) % <span class="hljs-variable language_">self</span>.mod1</span></span>
+<span class="ln-row"><span class="ln-num">28</span><span class="ln-code">        h2 = (<span class="hljs-variable language_">self</span>.hash2[right + <span class="hljs-number">1</span>] - <span class="hljs-variable language_">self</span>.hash2[left] * <span class="hljs-variable language_">self</span>.pow2[length]) % <span class="hljs-variable language_">self</span>.mod2</span></span>
+<span class="ln-row"><span class="ln-num">29</span><span class="ln-code">        <span class="hljs-keyword">return</span> (h1 <span class="hljs-keyword">if</span> h1 &gt;= <span class="hljs-number">0</span> <span class="hljs-keyword">else</span> h1 + <span class="hljs-variable language_">self</span>.mod1,</span></span>
+<span class="ln-row"><span class="ln-num">30</span><span class="ln-code">                h2 <span class="hljs-keyword">if</span> h2 &gt;= <span class="hljs-number">0</span> <span class="hljs-keyword">else</span> h2 + <span class="hljs-variable language_">self</span>.mod2)</span></span>
 </code></pre>
 <h2 id="2-lc-example" tabindex="-1"><a class="header-anchor" href="#2-lc-example"><span>2) LC Example</span></a></h2>
 <h3 id="2-1-find-the-index-of-the-first-occurrence-in-a-string-lc-28" tabindex="-1"><a class="header-anchor" href="#2-1-find-the-index-of-the-first-occurrence-in-a-string-lc-28"><span>2-1) Find the Index of the First Occurrence in a String (LC 28)</span></a></h3>
-<pre><code class="language-python"># KMP Solution
-def strStr(haystack, needle):
-    &quot;&quot;&quot;LC 28: Implement strStr() using KMP&quot;&quot;&quot;
-    if not needle:
-        return 0
-
-    def build_lps(pattern):
-        m = len(pattern)
-        lps = [0] * m
-        length = 0
-        i = 1
-
-        while i &lt; m:
-            if pattern[i] == pattern[length]:
-                length += 1
-                lps[i] = length
-                i += 1
-            else:
-                if length != 0:
-                    length = lps[length - 1]
-                else:
-                    lps[i] = 0
-                    i += 1
-        return lps
-
-    n, m = len(haystack), len(needle)
-    lps = build_lps(needle)
-
-    i = j = 0
-    while i &lt; n:
-        if haystack[i] == needle[j]:
-            i += 1
-            j += 1
-
-        if j == m:
-            return i - j
-        elif i &lt; n and haystack[i] != needle[j]:
-            if j != 0:
-                j = lps[j - 1]
-            else:
-                i += 1
-
-    return -1
-
-# Rolling Hash Solution
-def strStr_hash(haystack, needle):
-    &quot;&quot;&quot;LC 28: Using rolling hash&quot;&quot;&quot;
-    if not needle:
-        return 0
-    if len(needle) &gt; len(haystack):
-        return -1
-
-    base = 256
-    mod = 10**9 + 7
-    n, m = len(haystack), len(needle)
-
-    base_power = pow(base, m - 1, mod)
-
-    needle_hash = 0
-    hay_hash = 0
-
-    for i in range(m):
-        needle_hash = (needle_hash * base + ord(needle[i])) % mod
-        hay_hash = (hay_hash * base + ord(haystack[i])) % mod
-
-    for i in range(n - m + 1):
-        if needle_hash == hay_hash:
-            if haystack[i:i+m] == needle:
-                return i
-
-        if i &lt; n - m:
-            hay_hash = (hay_hash - ord(haystack[i]) * base_power) % mod
-            hay_hash = (hay_hash * base + ord(haystack[i + m])) % mod
-            if hay_hash &lt; 0:
-                hay_hash += mod
-
-    return -1
+<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment"># KMP Solution</span></span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-keyword">def</span> <span class="hljs-title function_">strStr</span>(<span class="hljs-params">haystack, needle</span>):</span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">    <span class="hljs-string">&quot;&quot;&quot;LC 28: Implement strStr() using KMP&quot;&quot;&quot;</span></span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> needle:</span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">        <span class="hljs-keyword">return</span> <span class="hljs-number">0</span></span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">build_lps</span>(<span class="hljs-params">pattern</span>):</span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">        m = <span class="hljs-built_in">len</span>(pattern)</span></span>
+<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">        lps = [<span class="hljs-number">0</span>] * m</span></span>
+<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">        length = <span class="hljs-number">0</span></span></span>
+<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">        i = <span class="hljs-number">1</span></span></span>
+<span class="ln-row"><span class="ln-num">12</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">        <span class="hljs-keyword">while</span> i &lt; m:</span></span>
+<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">            <span class="hljs-keyword">if</span> pattern[i] == pattern[length]:</span></span>
+<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">                length += <span class="hljs-number">1</span></span></span>
+<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">                lps[i] = length</span></span>
+<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">                i += <span class="hljs-number">1</span></span></span>
+<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">            <span class="hljs-keyword">else</span>:</span></span>
+<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">                <span class="hljs-keyword">if</span> length != <span class="hljs-number">0</span>:</span></span>
+<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">                    length = lps[length - <span class="hljs-number">1</span>]</span></span>
+<span class="ln-row"><span class="ln-num">21</span><span class="ln-code">                <span class="hljs-keyword">else</span>:</span></span>
+<span class="ln-row"><span class="ln-num">22</span><span class="ln-code">                    lps[i] = <span class="hljs-number">0</span></span></span>
+<span class="ln-row"><span class="ln-num">23</span><span class="ln-code">                    i += <span class="hljs-number">1</span></span></span>
+<span class="ln-row"><span class="ln-num">24</span><span class="ln-code">        <span class="hljs-keyword">return</span> lps</span></span>
+<span class="ln-row"><span class="ln-num">25</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">26</span><span class="ln-code">    n, m = <span class="hljs-built_in">len</span>(haystack), <span class="hljs-built_in">len</span>(needle)</span></span>
+<span class="ln-row"><span class="ln-num">27</span><span class="ln-code">    lps = build_lps(needle)</span></span>
+<span class="ln-row"><span class="ln-num">28</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">29</span><span class="ln-code">    i = j = <span class="hljs-number">0</span></span></span>
+<span class="ln-row"><span class="ln-num">30</span><span class="ln-code">    <span class="hljs-keyword">while</span> i &lt; n:</span></span>
+<span class="ln-row"><span class="ln-num">31</span><span class="ln-code">        <span class="hljs-keyword">if</span> haystack[i] == needle[j]:</span></span>
+<span class="ln-row"><span class="ln-num">32</span><span class="ln-code">            i += <span class="hljs-number">1</span></span></span>
+<span class="ln-row"><span class="ln-num">33</span><span class="ln-code">            j += <span class="hljs-number">1</span></span></span>
+<span class="ln-row"><span class="ln-num">34</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">35</span><span class="ln-code">        <span class="hljs-keyword">if</span> j == m:</span></span>
+<span class="ln-row"><span class="ln-num">36</span><span class="ln-code">            <span class="hljs-keyword">return</span> i - j</span></span>
+<span class="ln-row"><span class="ln-num">37</span><span class="ln-code">        <span class="hljs-keyword">elif</span> i &lt; n <span class="hljs-keyword">and</span> haystack[i] != needle[j]:</span></span>
+<span class="ln-row"><span class="ln-num">38</span><span class="ln-code">            <span class="hljs-keyword">if</span> j != <span class="hljs-number">0</span>:</span></span>
+<span class="ln-row"><span class="ln-num">39</span><span class="ln-code">                j = lps[j - <span class="hljs-number">1</span>]</span></span>
+<span class="ln-row"><span class="ln-num">40</span><span class="ln-code">            <span class="hljs-keyword">else</span>:</span></span>
+<span class="ln-row"><span class="ln-num">41</span><span class="ln-code">                i += <span class="hljs-number">1</span></span></span>
+<span class="ln-row"><span class="ln-num">42</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">43</span><span class="ln-code">    <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span></span></span>
+<span class="ln-row"><span class="ln-num">44</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">45</span><span class="ln-code"><span class="hljs-comment"># Rolling Hash Solution</span></span></span>
+<span class="ln-row"><span class="ln-num">46</span><span class="ln-code"><span class="hljs-keyword">def</span> <span class="hljs-title function_">strStr_hash</span>(<span class="hljs-params">haystack, needle</span>):</span></span>
+<span class="ln-row"><span class="ln-num">47</span><span class="ln-code">    <span class="hljs-string">&quot;&quot;&quot;LC 28: Using rolling hash&quot;&quot;&quot;</span></span></span>
+<span class="ln-row"><span class="ln-num">48</span><span class="ln-code">    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> needle:</span></span>
+<span class="ln-row"><span class="ln-num">49</span><span class="ln-code">        <span class="hljs-keyword">return</span> <span class="hljs-number">0</span></span></span>
+<span class="ln-row"><span class="ln-num">50</span><span class="ln-code">    <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(needle) &gt; <span class="hljs-built_in">len</span>(haystack):</span></span>
+<span class="ln-row"><span class="ln-num">51</span><span class="ln-code">        <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span></span></span>
+<span class="ln-row"><span class="ln-num">52</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">53</span><span class="ln-code">    base = <span class="hljs-number">256</span></span></span>
+<span class="ln-row"><span class="ln-num">54</span><span class="ln-code">    mod = <span class="hljs-number">10</span>**<span class="hljs-number">9</span> + <span class="hljs-number">7</span></span></span>
+<span class="ln-row"><span class="ln-num">55</span><span class="ln-code">    n, m = <span class="hljs-built_in">len</span>(haystack), <span class="hljs-built_in">len</span>(needle)</span></span>
+<span class="ln-row"><span class="ln-num">56</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">57</span><span class="ln-code">    base_power = <span class="hljs-built_in">pow</span>(base, m - <span class="hljs-number">1</span>, mod)</span></span>
+<span class="ln-row"><span class="ln-num">58</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">59</span><span class="ln-code">    needle_hash = <span class="hljs-number">0</span></span></span>
+<span class="ln-row"><span class="ln-num">60</span><span class="ln-code">    hay_hash = <span class="hljs-number">0</span></span></span>
+<span class="ln-row"><span class="ln-num">61</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">62</span><span class="ln-code">    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(m):</span></span>
+<span class="ln-row"><span class="ln-num">63</span><span class="ln-code">        needle_hash = (needle_hash * base + <span class="hljs-built_in">ord</span>(needle[i])) % mod</span></span>
+<span class="ln-row"><span class="ln-num">64</span><span class="ln-code">        hay_hash = (hay_hash * base + <span class="hljs-built_in">ord</span>(haystack[i])) % mod</span></span>
+<span class="ln-row"><span class="ln-num">65</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">66</span><span class="ln-code">    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n - m + <span class="hljs-number">1</span>):</span></span>
+<span class="ln-row"><span class="ln-num">67</span><span class="ln-code">        <span class="hljs-keyword">if</span> needle_hash == hay_hash:</span></span>
+<span class="ln-row"><span class="ln-num">68</span><span class="ln-code">            <span class="hljs-keyword">if</span> haystack[i:i+m] == needle:</span></span>
+<span class="ln-row"><span class="ln-num">69</span><span class="ln-code">                <span class="hljs-keyword">return</span> i</span></span>
+<span class="ln-row"><span class="ln-num">70</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">71</span><span class="ln-code">        <span class="hljs-keyword">if</span> i &lt; n - m:</span></span>
+<span class="ln-row"><span class="ln-num">72</span><span class="ln-code">            hay_hash = (hay_hash - <span class="hljs-built_in">ord</span>(haystack[i]) * base_power) % mod</span></span>
+<span class="ln-row"><span class="ln-num">73</span><span class="ln-code">            hay_hash = (hay_hash * base + <span class="hljs-built_in">ord</span>(haystack[i + m])) % mod</span></span>
+<span class="ln-row"><span class="ln-num">74</span><span class="ln-code">            <span class="hljs-keyword">if</span> hay_hash &lt; <span class="hljs-number">0</span>:</span></span>
+<span class="ln-row"><span class="ln-num">75</span><span class="ln-code">                hay_hash += mod</span></span>
+<span class="ln-row"><span class="ln-num">76</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">77</span><span class="ln-code">    <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span></span></span>
 </code></pre>
 <h3 id="2-2-repeated-substring-pattern-lc-459" tabindex="-1"><a class="header-anchor" href="#2-2-repeated-substring-pattern-lc-459"><span>2-2) Repeated Substring Pattern (LC 459)</span></a></h3>
-<pre><code class="language-python">def repeatedSubstringPattern(s):
-    &quot;&quot;&quot;LC 459: Check if string is made of repeated pattern&quot;&quot;&quot;
-
-    # Method 1: KMP-based
-    def kmp_solution(s):
-        n = len(s)
-        lps = [0] * n
-        length = 0
-        i = 1
-
-        while i &lt; n:
-            if s[i] == s[length]:
-                length += 1
-                lps[i] = length
-                i += 1
-            else:
-                if length != 0:
-                    length = lps[length - 1]
-                else:
-                    lps[i] = 0
-                    i += 1
-
-        # If lps[n-1] != 0 and n % (n - lps[n-1]) == 0
-        # then string has repeating pattern
-        return lps[n - 1] != 0 and n % (n - lps[n - 1]) == 0
-
-    # Method 2: String rotation trick
-    def rotation_solution(s):
-        # If s is repeated pattern, it will appear in (s+s)[1:-1]
-        return s in (s + s)[1:-1]
-
-    return kmp_solution(s)
+<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-keyword">def</span> <span class="hljs-title function_">repeatedSubstringPattern</span>(<span class="hljs-params">s</span>):</span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code">    <span class="hljs-string">&quot;&quot;&quot;LC 459: Check if string is made of repeated pattern&quot;&quot;&quot;</span></span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">    <span class="hljs-comment"># Method 1: KMP-based</span></span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">kmp_solution</span>(<span class="hljs-params">s</span>):</span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">        n = <span class="hljs-built_in">len</span>(s)</span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">        lps = [<span class="hljs-number">0</span>] * n</span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">        length = <span class="hljs-number">0</span></span></span>
+<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">        i = <span class="hljs-number">1</span></span></span>
+<span class="ln-row"><span class="ln-num">10</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">        <span class="hljs-keyword">while</span> i &lt; n:</span></span>
+<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">            <span class="hljs-keyword">if</span> s[i] == s[length]:</span></span>
+<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">                length += <span class="hljs-number">1</span></span></span>
+<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">                lps[i] = length</span></span>
+<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">                i += <span class="hljs-number">1</span></span></span>
+<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">            <span class="hljs-keyword">else</span>:</span></span>
+<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">                <span class="hljs-keyword">if</span> length != <span class="hljs-number">0</span>:</span></span>
+<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">                    length = lps[length - <span class="hljs-number">1</span>]</span></span>
+<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">                <span class="hljs-keyword">else</span>:</span></span>
+<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">                    lps[i] = <span class="hljs-number">0</span></span></span>
+<span class="ln-row"><span class="ln-num">21</span><span class="ln-code">                    i += <span class="hljs-number">1</span></span></span>
+<span class="ln-row"><span class="ln-num">22</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">23</span><span class="ln-code">        <span class="hljs-comment"># If lps[n-1] != 0 and n % (n - lps[n-1]) == 0</span></span></span>
+<span class="ln-row"><span class="ln-num">24</span><span class="ln-code">        <span class="hljs-comment"># then string has repeating pattern</span></span></span>
+<span class="ln-row"><span class="ln-num">25</span><span class="ln-code">        <span class="hljs-keyword">return</span> lps[n - <span class="hljs-number">1</span>] != <span class="hljs-number">0</span> <span class="hljs-keyword">and</span> n % (n - lps[n - <span class="hljs-number">1</span>]) == <span class="hljs-number">0</span></span></span>
+<span class="ln-row"><span class="ln-num">26</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">27</span><span class="ln-code">    <span class="hljs-comment"># Method 2: String rotation trick</span></span></span>
+<span class="ln-row"><span class="ln-num">28</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">rotation_solution</span>(<span class="hljs-params">s</span>):</span></span>
+<span class="ln-row"><span class="ln-num">29</span><span class="ln-code">        <span class="hljs-comment"># If s is repeated pattern, it will appear in (s+s)[1:-1]</span></span></span>
+<span class="ln-row"><span class="ln-num">30</span><span class="ln-code">        <span class="hljs-keyword">return</span> s <span class="hljs-keyword">in</span> (s + s)[<span class="hljs-number">1</span>:-<span class="hljs-number">1</span>]</span></span>
+<span class="ln-row"><span class="ln-num">31</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">32</span><span class="ln-code">    <span class="hljs-keyword">return</span> kmp_solution(s)</span></span>
 </code></pre>
 <h3 id="2-3-longest-duplicate-substring-lc-1044" tabindex="-1"><a class="header-anchor" href="#2-3-longest-duplicate-substring-lc-1044"><span>2-3) Longest Duplicate Substring (LC 1044)</span></a></h3>
-<pre><code class="language-python">def longestDupSubstring(s):
-    &quot;&quot;&quot;LC 1044: Find longest duplicate substring using binary search + rolling hash&quot;&quot;&quot;
-
-    def has_duplicate(length):
-        &quot;&quot;&quot;Check if there's duplicate substring of given length&quot;&quot;&quot;
-        base = 256
-        mod = 2**63 - 1
-
-        # Calculate base^length
-        base_power = pow(base, length, mod)
-
-        # Initial hash
-        current_hash = 0
-        for i in range(length):
-            current_hash = (current_hash * base + ord(s[i])) % mod
-
-        seen = {current_hash}
-
-        # Rolling hash
-        for i in range(length, len(s)):
-            # Remove leftmost character
-            current_hash = (current_hash - ord(s[i - length]) * base_power) % mod
-            # Add rightmost character
-            current_hash = (current_hash * base + ord(s[i])) % mod
-
-            if current_hash in seen:
-                return i - length + 1
-            seen.add(current_hash)
-
-        return -1
-
-    # Binary search on length
-    left, right = 0, len(s) - 1
-    result_start = -1
-
-    while left &lt;= right:
-        mid = (left + right) // 2
-        start_pos = has_duplicate(mid)
-
-        if start_pos != -1:
-            result_start = start_pos
-            left = mid + 1
-        else:
-            right = mid - 1
-
-    return s[result_start:result_start + right] if result_start != -1 else &quot;&quot;
+<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-keyword">def</span> <span class="hljs-title function_">longestDupSubstring</span>(<span class="hljs-params">s</span>):</span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code">    <span class="hljs-string">&quot;&quot;&quot;LC 1044: Find longest duplicate substring using binary search + rolling hash&quot;&quot;&quot;</span></span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">has_duplicate</span>(<span class="hljs-params">length</span>):</span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">        <span class="hljs-string">&quot;&quot;&quot;Check if there&#x27;s duplicate substring of given length&quot;&quot;&quot;</span></span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">        base = <span class="hljs-number">256</span></span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">        mod = <span class="hljs-number">2</span>**<span class="hljs-number">63</span> - <span class="hljs-number">1</span></span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">        <span class="hljs-comment"># Calculate base^length</span></span></span>
+<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">        base_power = <span class="hljs-built_in">pow</span>(base, length, mod)</span></span>
+<span class="ln-row"><span class="ln-num">11</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">        <span class="hljs-comment"># Initial hash</span></span></span>
+<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">        current_hash = <span class="hljs-number">0</span></span></span>
+<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(length):</span></span>
+<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">            current_hash = (current_hash * base + <span class="hljs-built_in">ord</span>(s[i])) % mod</span></span>
+<span class="ln-row"><span class="ln-num">16</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">        seen = {current_hash}</span></span>
+<span class="ln-row"><span class="ln-num">18</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">        <span class="hljs-comment"># Rolling hash</span></span></span>
+<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(length, <span class="hljs-built_in">len</span>(s)):</span></span>
+<span class="ln-row"><span class="ln-num">21</span><span class="ln-code">            <span class="hljs-comment"># Remove leftmost character</span></span></span>
+<span class="ln-row"><span class="ln-num">22</span><span class="ln-code">            current_hash = (current_hash - <span class="hljs-built_in">ord</span>(s[i - length]) * base_power) % mod</span></span>
+<span class="ln-row"><span class="ln-num">23</span><span class="ln-code">            <span class="hljs-comment"># Add rightmost character</span></span></span>
+<span class="ln-row"><span class="ln-num">24</span><span class="ln-code">            current_hash = (current_hash * base + <span class="hljs-built_in">ord</span>(s[i])) % mod</span></span>
+<span class="ln-row"><span class="ln-num">25</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">26</span><span class="ln-code">            <span class="hljs-keyword">if</span> current_hash <span class="hljs-keyword">in</span> seen:</span></span>
+<span class="ln-row"><span class="ln-num">27</span><span class="ln-code">                <span class="hljs-keyword">return</span> i - length + <span class="hljs-number">1</span></span></span>
+<span class="ln-row"><span class="ln-num">28</span><span class="ln-code">            seen.add(current_hash)</span></span>
+<span class="ln-row"><span class="ln-num">29</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">30</span><span class="ln-code">        <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span></span></span>
+<span class="ln-row"><span class="ln-num">31</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">32</span><span class="ln-code">    <span class="hljs-comment"># Binary search on length</span></span></span>
+<span class="ln-row"><span class="ln-num">33</span><span class="ln-code">    left, right = <span class="hljs-number">0</span>, <span class="hljs-built_in">len</span>(s) - <span class="hljs-number">1</span></span></span>
+<span class="ln-row"><span class="ln-num">34</span><span class="ln-code">    result_start = -<span class="hljs-number">1</span></span></span>
+<span class="ln-row"><span class="ln-num">35</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">36</span><span class="ln-code">    <span class="hljs-keyword">while</span> left &lt;= right:</span></span>
+<span class="ln-row"><span class="ln-num">37</span><span class="ln-code">        mid = (left + right) // <span class="hljs-number">2</span></span></span>
+<span class="ln-row"><span class="ln-num">38</span><span class="ln-code">        start_pos = has_duplicate(mid)</span></span>
+<span class="ln-row"><span class="ln-num">39</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">40</span><span class="ln-code">        <span class="hljs-keyword">if</span> start_pos != -<span class="hljs-number">1</span>:</span></span>
+<span class="ln-row"><span class="ln-num">41</span><span class="ln-code">            result_start = start_pos</span></span>
+<span class="ln-row"><span class="ln-num">42</span><span class="ln-code">            left = mid + <span class="hljs-number">1</span></span></span>
+<span class="ln-row"><span class="ln-num">43</span><span class="ln-code">        <span class="hljs-keyword">else</span>:</span></span>
+<span class="ln-row"><span class="ln-num">44</span><span class="ln-code">            right = mid - <span class="hljs-number">1</span></span></span>
+<span class="ln-row"><span class="ln-num">45</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">46</span><span class="ln-code">    <span class="hljs-keyword">return</span> s[result_start:result_start + right] <span class="hljs-keyword">if</span> result_start != -<span class="hljs-number">1</span> <span class="hljs-keyword">else</span> <span class="hljs-string">&quot;&quot;</span></span></span>
 </code></pre>
 <h3 id="2-4-shortest-palindrome-lc-214" tabindex="-1"><a class="header-anchor" href="#2-4-shortest-palindrome-lc-214"><span>2-4) Shortest Palindrome (LC 214)</span></a></h3>
-<pre><code class="language-python">def shortestPalindrome(s):
-    &quot;&quot;&quot;LC 214: Find shortest palindrome by adding chars to front&quot;&quot;&quot;
-
-    # KMP approach: Find longest palindromic prefix
-    def kmp_solution(s):
-        # Create pattern: s + &quot;#&quot; + reverse(s)
-        # Find longest prefix of s that matches suffix of reverse(s)
-        rev = s[::-1]
-        new_s = s + &quot;#&quot; + rev
-
-        # Build LPS array
-        n = len(new_s)
-        lps = [0] * n
-        length = 0
-        i = 1
-
-        while i &lt; n:
-            if new_s[i] == new_s[length]:
-                length += 1
-                lps[i] = length
-                i += 1
-            else:
-                if length != 0:
-                    length = lps[length - 1]
-                else:
-                    lps[i] = 0
-                    i += 1
-
-        # lps[-1] gives length of longest palindromic prefix
-        palindrome_len = lps[-1]
-
-        # Add reverse of remaining suffix to front
-        return rev[:len(s) - palindrome_len] + s
-
-    return kmp_solution(s)
+<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-keyword">def</span> <span class="hljs-title function_">shortestPalindrome</span>(<span class="hljs-params">s</span>):</span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code">    <span class="hljs-string">&quot;&quot;&quot;LC 214: Find shortest palindrome by adding chars to front&quot;&quot;&quot;</span></span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">    <span class="hljs-comment"># KMP approach: Find longest palindromic prefix</span></span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">kmp_solution</span>(<span class="hljs-params">s</span>):</span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">        <span class="hljs-comment"># Create pattern: s + &quot;#&quot; + reverse(s)</span></span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">        <span class="hljs-comment"># Find longest prefix of s that matches suffix of reverse(s)</span></span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">        rev = s[::-<span class="hljs-number">1</span>]</span></span>
+<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">        new_s = s + <span class="hljs-string">&quot;#&quot;</span> + rev</span></span>
+<span class="ln-row"><span class="ln-num">10</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">        <span class="hljs-comment"># Build LPS array</span></span></span>
+<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">        n = <span class="hljs-built_in">len</span>(new_s)</span></span>
+<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">        lps = [<span class="hljs-number">0</span>] * n</span></span>
+<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">        length = <span class="hljs-number">0</span></span></span>
+<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">        i = <span class="hljs-number">1</span></span></span>
+<span class="ln-row"><span class="ln-num">16</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">        <span class="hljs-keyword">while</span> i &lt; n:</span></span>
+<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">            <span class="hljs-keyword">if</span> new_s[i] == new_s[length]:</span></span>
+<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">                length += <span class="hljs-number">1</span></span></span>
+<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">                lps[i] = length</span></span>
+<span class="ln-row"><span class="ln-num">21</span><span class="ln-code">                i += <span class="hljs-number">1</span></span></span>
+<span class="ln-row"><span class="ln-num">22</span><span class="ln-code">            <span class="hljs-keyword">else</span>:</span></span>
+<span class="ln-row"><span class="ln-num">23</span><span class="ln-code">                <span class="hljs-keyword">if</span> length != <span class="hljs-number">0</span>:</span></span>
+<span class="ln-row"><span class="ln-num">24</span><span class="ln-code">                    length = lps[length - <span class="hljs-number">1</span>]</span></span>
+<span class="ln-row"><span class="ln-num">25</span><span class="ln-code">                <span class="hljs-keyword">else</span>:</span></span>
+<span class="ln-row"><span class="ln-num">26</span><span class="ln-code">                    lps[i] = <span class="hljs-number">0</span></span></span>
+<span class="ln-row"><span class="ln-num">27</span><span class="ln-code">                    i += <span class="hljs-number">1</span></span></span>
+<span class="ln-row"><span class="ln-num">28</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">29</span><span class="ln-code">        <span class="hljs-comment"># lps[-1] gives length of longest palindromic prefix</span></span></span>
+<span class="ln-row"><span class="ln-num">30</span><span class="ln-code">        palindrome_len = lps[-<span class="hljs-number">1</span>]</span></span>
+<span class="ln-row"><span class="ln-num">31</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">32</span><span class="ln-code">        <span class="hljs-comment"># Add reverse of remaining suffix to front</span></span></span>
+<span class="ln-row"><span class="ln-num">33</span><span class="ln-code">        <span class="hljs-keyword">return</span> rev[:<span class="hljs-built_in">len</span>(s) - palindrome_len] + s</span></span>
+<span class="ln-row"><span class="ln-num">34</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">35</span><span class="ln-code">    <span class="hljs-keyword">return</span> kmp_solution(s)</span></span>
 </code></pre>
 <h3 id="2-5-distinct-echo-substrings-lc-1316" tabindex="-1"><a class="header-anchor" href="#2-5-distinct-echo-substrings-lc-1316"><span>2-5) Distinct Echo Substrings (LC 1316)</span></a></h3>
-<pre><code class="language-python">def distinctEchoSubstrings(text):
-    &quot;&quot;&quot;LC 1316: Count distinct echo substrings (repeated twice consecutively)&quot;&quot;&quot;
-
-    rh = RollingHash(text)
-    seen = set()
-    count = 0
-
-    # Try all possible lengths (must be even)
-    for length in range(2, len(text) + 1, 2):
-        half = length // 2
-
-        for start in range(len(text) - length + 1):
-            mid = start + half
-            end = start + length - 1
-
-            # Compare first half with second half
-            if rh.compare_substrings(start, mid - 1, mid, end):
-                substring_hash = rh.get_hash(start, end)
-                if substring_hash not in seen:
-                    seen.add(substring_hash)
-                    count += 1
-
-    return count
+<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-keyword">def</span> <span class="hljs-title function_">distinctEchoSubstrings</span>(<span class="hljs-params">text</span>):</span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code">    <span class="hljs-string">&quot;&quot;&quot;LC 1316: Count distinct echo substrings (repeated twice consecutively)&quot;&quot;&quot;</span></span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">    rh = RollingHash(text)</span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    seen = <span class="hljs-built_in">set</span>()</span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    count = <span class="hljs-number">0</span></span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">    <span class="hljs-comment"># Try all possible lengths (must be even)</span></span></span>
+<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">    <span class="hljs-keyword">for</span> length <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">2</span>, <span class="hljs-built_in">len</span>(text) + <span class="hljs-number">1</span>, <span class="hljs-number">2</span>):</span></span>
+<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">        half = length // <span class="hljs-number">2</span></span></span>
+<span class="ln-row"><span class="ln-num">11</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">        <span class="hljs-keyword">for</span> start <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(text) - length + <span class="hljs-number">1</span>):</span></span>
+<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">            mid = start + half</span></span>
+<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">            end = start + length - <span class="hljs-number">1</span></span></span>
+<span class="ln-row"><span class="ln-num">15</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">            <span class="hljs-comment"># Compare first half with second half</span></span></span>
+<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">            <span class="hljs-keyword">if</span> rh.compare_substrings(start, mid - <span class="hljs-number">1</span>, mid, end):</span></span>
+<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">                substring_hash = rh.get_hash(start, end)</span></span>
+<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">                <span class="hljs-keyword">if</span> substring_hash <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> seen:</span></span>
+<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">                    seen.add(substring_hash)</span></span>
+<span class="ln-row"><span class="ln-num">21</span><span class="ln-code">                    count += <span class="hljs-number">1</span></span></span>
+<span class="ln-row"><span class="ln-num">22</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">23</span><span class="ln-code">    <span class="hljs-keyword">return</span> count</span></span>
 </code></pre>
 <h3 id="2-6-rotate-string-lc-796" tabindex="-1"><a class="header-anchor" href="#2-6-rotate-string-lc-796"><span>2-6) Rotate String (LC 796)</span></a></h3>
-<pre><code class="language-python">def rotateString(s, goal):
-    &quot;&quot;&quot;LC 796: Check if goal is rotation of s&quot;&quot;&quot;
-
-    # If goal is rotation of s, it will be in s+s
-    if len(s) != len(goal):
-        return False
-
-    # Method 1: Simple check
-    return goal in (s + s)
-
-    # Method 2: KMP approach
-    def kmp_approach():
-        if len(s) != len(goal):
-            return False
-
-        # Search for goal in s+s
-        matches = kmp_search(s + s, goal)
-        return len(matches) &gt; 0
-
-    return kmp_approach()
+<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-keyword">def</span> <span class="hljs-title function_">rotateString</span>(<span class="hljs-params">s, goal</span>):</span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code">    <span class="hljs-string">&quot;&quot;&quot;LC 796: Check if goal is rotation of s&quot;&quot;&quot;</span></span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">    <span class="hljs-comment"># If goal is rotation of s, it will be in s+s</span></span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(s) != <span class="hljs-built_in">len</span>(goal):</span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">        <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span></span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">    <span class="hljs-comment"># Method 1: Simple check</span></span></span>
+<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">    <span class="hljs-keyword">return</span> goal <span class="hljs-keyword">in</span> (s + s)</span></span>
+<span class="ln-row"><span class="ln-num">10</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">    <span class="hljs-comment"># Method 2: KMP approach</span></span></span>
+<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">kmp_approach</span>():</span></span>
+<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">        <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(s) != <span class="hljs-built_in">len</span>(goal):</span></span>
+<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">            <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span></span></span>
+<span class="ln-row"><span class="ln-num">15</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">        <span class="hljs-comment"># Search for goal in s+s</span></span></span>
+<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">        matches = kmp_search(s + s, goal)</span></span>
+<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">        <span class="hljs-keyword">return</span> <span class="hljs-built_in">len</span>(matches) &gt; <span class="hljs-number">0</span></span></span>
+<span class="ln-row"><span class="ln-num">19</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">    <span class="hljs-keyword">return</span> kmp_approach()</span></span>
 </code></pre>
 <h3 id="2-7-implement-strstr-variants" tabindex="-1"><a class="header-anchor" href="#2-7-implement-strstr-variants"><span>2-7) Implement strStr() Variants</span></a></h3>
-<pre><code class="language-python"># Count all occurrences
-def count_occurrences(text, pattern):
-    &quot;&quot;&quot;Count all occurrences of pattern in text&quot;&quot;&quot;
-    matches = kmp_search(text, pattern)
-    return len(matches)
-
-# Find all overlapping occurrences
-def find_all_overlapping(text, pattern):
-    &quot;&quot;&quot;Find all overlapping occurrences (including overlaps)&quot;&quot;&quot;
-    n, m = len(text), len(pattern)
-    lps = build_lps(pattern)
-    matches = []
-
-    i = j = 0
-    while i &lt; n:
-        if text[i] == pattern[j]:
-            i += 1
-            j += 1
-
-        if j == m:
-            matches.append(i - j)
-            j = lps[j - 1]  # Continue to find overlapping matches
-        elif i &lt; n and text[i] != pattern[j]:
-            if j != 0:
-                j = lps[j - 1]
-            else:
-                i += 1
-
-    return matches
-
-# Multiple pattern matching
-def multiple_pattern_search(text, patterns):
-    &quot;&quot;&quot;Search for multiple patterns in text&quot;&quot;&quot;
-    results = {}
-    for pattern in patterns:
-        results[pattern] = kmp_search(text, pattern)
-    return results
+<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment"># Count all occurrences</span></span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-keyword">def</span> <span class="hljs-title function_">count_occurrences</span>(<span class="hljs-params">text, pattern</span>):</span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">    <span class="hljs-string">&quot;&quot;&quot;Count all occurrences of pattern in text&quot;&quot;&quot;</span></span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">    matches = kmp_search(text, pattern)</span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    <span class="hljs-keyword">return</span> <span class="hljs-built_in">len</span>(matches)</span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code"><span class="hljs-comment"># Find all overlapping occurrences</span></span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code"><span class="hljs-keyword">def</span> <span class="hljs-title function_">find_all_overlapping</span>(<span class="hljs-params">text, pattern</span>):</span></span>
+<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">    <span class="hljs-string">&quot;&quot;&quot;Find all overlapping occurrences (including overlaps)&quot;&quot;&quot;</span></span></span>
+<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">    n, m = <span class="hljs-built_in">len</span>(text), <span class="hljs-built_in">len</span>(pattern)</span></span>
+<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">    lps = build_lps(pattern)</span></span>
+<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">    matches = []</span></span>
+<span class="ln-row"><span class="ln-num">13</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">    i = j = <span class="hljs-number">0</span></span></span>
+<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">    <span class="hljs-keyword">while</span> i &lt; n:</span></span>
+<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">        <span class="hljs-keyword">if</span> text[i] == pattern[j]:</span></span>
+<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">            i += <span class="hljs-number">1</span></span></span>
+<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">            j += <span class="hljs-number">1</span></span></span>
+<span class="ln-row"><span class="ln-num">19</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">        <span class="hljs-keyword">if</span> j == m:</span></span>
+<span class="ln-row"><span class="ln-num">21</span><span class="ln-code">            matches.append(i - j)</span></span>
+<span class="ln-row"><span class="ln-num">22</span><span class="ln-code">            j = lps[j - <span class="hljs-number">1</span>]  <span class="hljs-comment"># Continue to find overlapping matches</span></span></span>
+<span class="ln-row"><span class="ln-num">23</span><span class="ln-code">        <span class="hljs-keyword">elif</span> i &lt; n <span class="hljs-keyword">and</span> text[i] != pattern[j]:</span></span>
+<span class="ln-row"><span class="ln-num">24</span><span class="ln-code">            <span class="hljs-keyword">if</span> j != <span class="hljs-number">0</span>:</span></span>
+<span class="ln-row"><span class="ln-num">25</span><span class="ln-code">                j = lps[j - <span class="hljs-number">1</span>]</span></span>
+<span class="ln-row"><span class="ln-num">26</span><span class="ln-code">            <span class="hljs-keyword">else</span>:</span></span>
+<span class="ln-row"><span class="ln-num">27</span><span class="ln-code">                i += <span class="hljs-number">1</span></span></span>
+<span class="ln-row"><span class="ln-num">28</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">29</span><span class="ln-code">    <span class="hljs-keyword">return</span> matches</span></span>
+<span class="ln-row"><span class="ln-num">30</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">31</span><span class="ln-code"><span class="hljs-comment"># Multiple pattern matching</span></span></span>
+<span class="ln-row"><span class="ln-num">32</span><span class="ln-code"><span class="hljs-keyword">def</span> <span class="hljs-title function_">multiple_pattern_search</span>(<span class="hljs-params">text, patterns</span>):</span></span>
+<span class="ln-row"><span class="ln-num">33</span><span class="ln-code">    <span class="hljs-string">&quot;&quot;&quot;Search for multiple patterns in text&quot;&quot;&quot;</span></span></span>
+<span class="ln-row"><span class="ln-num">34</span><span class="ln-code">    results = {}</span></span>
+<span class="ln-row"><span class="ln-num">35</span><span class="ln-code">    <span class="hljs-keyword">for</span> pattern <span class="hljs-keyword">in</span> patterns:</span></span>
+<span class="ln-row"><span class="ln-num">36</span><span class="ln-code">        results[pattern] = kmp_search(text, pattern)</span></span>
+<span class="ln-row"><span class="ln-num">37</span><span class="ln-code">    <span class="hljs-keyword">return</span> results</span></span>
 </code></pre>
 <h3 id="2-8-longest-happy-prefix-lc-1392" tabindex="-1"><a class="header-anchor" href="#2-8-longest-happy-prefix-lc-1392"><span>2-8) Longest Happy Prefix (LC 1392)</span></a></h3>
-<pre><code class="language-python">def longestPrefix(s):
-    &quot;&quot;&quot;LC 1392: Find longest happy prefix (prefix == suffix)&quot;&quot;&quot;
-
-    n = len(s)
-    lps = [0] * n
-    length = 0
-    i = 1
-
-    while i &lt; n:
-        if s[i] == s[length]:
-            length += 1
-            lps[i] = length
-            i += 1
-        else:
-            if length != 0:
-                length = lps[length - 1]
-            else:
-                lps[i] = 0
-                i += 1
-
-    # lps[-1] gives length of longest prefix which is also suffix
-    return s[:lps[-1]]
+<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-keyword">def</span> <span class="hljs-title function_">longestPrefix</span>(<span class="hljs-params">s</span>):</span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code">    <span class="hljs-string">&quot;&quot;&quot;LC 1392: Find longest happy prefix (prefix == suffix)&quot;&quot;&quot;</span></span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">    n = <span class="hljs-built_in">len</span>(s)</span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    lps = [<span class="hljs-number">0</span>] * n</span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    length = <span class="hljs-number">0</span></span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">    i = <span class="hljs-number">1</span></span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">    <span class="hljs-keyword">while</span> i &lt; n:</span></span>
+<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">        <span class="hljs-keyword">if</span> s[i] == s[length]:</span></span>
+<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">            length += <span class="hljs-number">1</span></span></span>
+<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">            lps[i] = length</span></span>
+<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">            i += <span class="hljs-number">1</span></span></span>
+<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">        <span class="hljs-keyword">else</span>:</span></span>
+<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">            <span class="hljs-keyword">if</span> length != <span class="hljs-number">0</span>:</span></span>
+<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">                length = lps[length - <span class="hljs-number">1</span>]</span></span>
+<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">            <span class="hljs-keyword">else</span>:</span></span>
+<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">                lps[i] = <span class="hljs-number">0</span></span></span>
+<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">                i += <span class="hljs-number">1</span></span></span>
+<span class="ln-row"><span class="ln-num">20</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">21</span><span class="ln-code">    <span class="hljs-comment"># lps[-1] gives length of longest prefix which is also suffix</span></span></span>
+<span class="ln-row"><span class="ln-num">22</span><span class="ln-code">    <span class="hljs-keyword">return</span> s[:lps[-<span class="hljs-number">1</span>]]</span></span>
 </code></pre>
 <h2 id="3-common-applications" tabindex="-1"><a class="header-anchor" href="#3-common-applications"><span>3) Common Applications</span></a></h2>
 <h3 id="3-1-pattern-matching-problems" tabindex="-1"><a class="header-anchor" href="#3-1-pattern-matching-problems"><span>3-1) Pattern Matching Problems</span></a></h3>
@@ -821,30 +827,30 @@ def multiple_pattern_search(text, patterns):
 <li>LC 1044, 1316, 718, 1062</li>
 </ul>
 <h3 id="5-3-common-patterns" tabindex="-1"><a class="header-anchor" href="#5-3-common-patterns"><span>5-3) Common Patterns</span></a></h3>
-<pre><code class="language-python"># Pattern 1: String in (s+s) for rotation
-def is_rotation(s1, s2):
-    return len(s1) == len(s2) and s2 in (s1 + s1)
-
-# Pattern 2: LPS for periodicity
-def has_period(s):
-    lps = build_lps(s)
-    n = len(s)
-    return lps[n-1] != 0 and n % (n - lps[n-1]) == 0
-
-# Pattern 3: Binary search + hash for optimization
-def find_longest(s, condition):
-    left, right = 0, len(s)
-    result = -1
-
-    while left &lt;= right:
-        mid = (left + right) // 2
-        if check_with_hash(s, mid, condition):
-            result = mid
-            left = mid + 1
-        else:
-            right = mid - 1
-
-    return result
+<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment"># Pattern 1: String in (s+s) for rotation</span></span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-keyword">def</span> <span class="hljs-title function_">is_rotation</span>(<span class="hljs-params">s1, s2</span>):</span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">    <span class="hljs-keyword">return</span> <span class="hljs-built_in">len</span>(s1) == <span class="hljs-built_in">len</span>(s2) <span class="hljs-keyword">and</span> s2 <span class="hljs-keyword">in</span> (s1 + s1)</span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code"><span class="hljs-comment"># Pattern 2: LPS for periodicity</span></span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code"><span class="hljs-keyword">def</span> <span class="hljs-title function_">has_period</span>(<span class="hljs-params">s</span>):</span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">    lps = build_lps(s)</span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">    n = <span class="hljs-built_in">len</span>(s)</span></span>
+<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">    <span class="hljs-keyword">return</span> lps[n-<span class="hljs-number">1</span>] != <span class="hljs-number">0</span> <span class="hljs-keyword">and</span> n % (n - lps[n-<span class="hljs-number">1</span>]) == <span class="hljs-number">0</span></span></span>
+<span class="ln-row"><span class="ln-num">10</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">11</span><span class="ln-code"><span class="hljs-comment"># Pattern 3: Binary search + hash for optimization</span></span></span>
+<span class="ln-row"><span class="ln-num">12</span><span class="ln-code"><span class="hljs-keyword">def</span> <span class="hljs-title function_">find_longest</span>(<span class="hljs-params">s, condition</span>):</span></span>
+<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">    left, right = <span class="hljs-number">0</span>, <span class="hljs-built_in">len</span>(s)</span></span>
+<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">    result = -<span class="hljs-number">1</span></span></span>
+<span class="ln-row"><span class="ln-num">15</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">    <span class="hljs-keyword">while</span> left &lt;= right:</span></span>
+<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">        mid = (left + right) // <span class="hljs-number">2</span></span></span>
+<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">        <span class="hljs-keyword">if</span> check_with_hash(s, mid, condition):</span></span>
+<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">            result = mid</span></span>
+<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">            left = mid + <span class="hljs-number">1</span></span></span>
+<span class="ln-row"><span class="ln-num">21</span><span class="ln-code">        <span class="hljs-keyword">else</span>:</span></span>
+<span class="ln-row"><span class="ln-num">22</span><span class="ln-code">            right = mid - <span class="hljs-number">1</span></span></span>
+<span class="ln-row"><span class="ln-num">23</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">24</span><span class="ln-code">    <span class="hljs-keyword">return</span> result</span></span>
 </code></pre>
 <h2 id="6-summary" tabindex="-1"><a class="header-anchor" href="#6-summary"><span>6) Summary</span></a></h2>
 <h3 id="key-takeaways" tabindex="-1"><a class="header-anchor" href="#key-takeaways"><span>Key Takeaways</span></a></h3>

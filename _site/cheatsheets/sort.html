@@ -9,8 +9,7 @@
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>CS</text></svg>">
   <link rel="stylesheet" href="../style.css">
   <link rel="stylesheet" href="../vendor/fonts.css">
-  <link rel="stylesheet" href="../vendor/highlight/github-dark.min.css">
-  <script src="../vendor/highlight/highlight.min.js"></script>
+  <link rel="stylesheet" href="../vendor/highlight/atom-one-dark.min.css">
   <script>
   // Apply theme before render to prevent flash
   (function() {
@@ -21,40 +20,43 @@
   })();
   </script>
   <script>document.addEventListener('DOMContentLoaded', function() {
-    hljs.highlightAll();
-    document.querySelectorAll('pre code').forEach(function(codeEl) {
-      var pre = codeEl.parentElement;
-      var lang = '';
-      var cls = codeEl.className || '';
-      var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
-      if (m) lang = m[1];
-      var wrapper = document.createElement('div');
-      wrapper.className = 'code-block-wrapper';
-      pre.parentNode.insertBefore(wrapper, pre);
-      var header = document.createElement('div');
-      header.className = 'code-block-header';
-      if (lang) {
-        var label = document.createElement('span');
-        label.className = 'code-lang-label';
-        label.textContent = lang;
-        header.appendChild(label);
-      } else {
-        header.appendChild(document.createElement('span'));
-      }
-      var btn = document.createElement('button');
-      btn.className = 'copy-btn';
-      btn.textContent = 'Copy';
-      btn.addEventListener('click', function() {
-        navigator.clipboard.writeText(codeEl.textContent).then(function() {
-          btn.textContent = 'Copied!';
-          btn.classList.add('copied');
-          setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+    // Code block wrappers + copy buttons (highlighting done at build time)
+    try {
+      document.querySelectorAll('pre').forEach(function(pre) {
+        var codeEl = pre.querySelector('code');
+        var lang = pre.getAttribute('data-lang') || '';
+        var wrapper = document.createElement('div');
+        wrapper.className = 'code-block-wrapper';
+        pre.parentNode.insertBefore(wrapper, pre);
+        var header = document.createElement('div');
+        header.className = 'code-block-header';
+        if (lang) {
+          var label = document.createElement('span');
+          label.className = 'code-lang-label';
+          label.textContent = lang;
+          header.appendChild(label);
+        } else {
+          header.appendChild(document.createElement('span'));
+        }
+        var btn = document.createElement('button');
+        btn.className = 'copy-btn';
+        btn.textContent = 'Copy';
+        btn.addEventListener('click', function() {
+          var text = codeEl
+            ? Array.from(codeEl.querySelectorAll('.ln-code')).map(function(el) { return el.textContent; }).join('
+')
+            : pre.textContent;
+          navigator.clipboard.writeText(text).then(function() {
+            btn.textContent = 'Copied!';
+            btn.classList.add('copied');
+            setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+          });
         });
+        header.appendChild(btn);
+        wrapper.appendChild(header);
+        wrapper.appendChild(pre);
       });
-      header.appendChild(btn);
-      wrapper.appendChild(header);
-      wrapper.appendChild(pre);
-    });
+    } catch(e) { console.error('Code block setup error:', e); }
     document.querySelectorAll('table').forEach(function(table) {
       if (!table.parentElement.classList.contains('table-wrap')) {
         var wrapper = document.createElement('div');
@@ -64,32 +66,36 @@
       }
     });
     // Reading progress bar
-    var progressBar = document.getElementById('reading-progress');
-    if (progressBar) {
-      window.addEventListener('scroll', function() {
-        var winScroll = document.documentElement.scrollTop;
-        var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-        progressBar.style.width = height > 0 ? (winScroll / height * 100) + '%' : '0%';
-      });
-    }
-    // Dark mode toggle
-    var toggle = document.getElementById('theme-toggle');
-    if (toggle) {
-      var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-      toggle.textContent = isDark ? '☀️' : '🌙';
-      toggle.addEventListener('click', function() {
-        var dark = document.documentElement.getAttribute('data-theme') === 'dark';
-        if (dark) {
-          document.documentElement.removeAttribute('data-theme');
-          localStorage.setItem('theme', 'light');
-          toggle.textContent = '🌙';
-        } else {
-          document.documentElement.setAttribute('data-theme', 'dark');
-          localStorage.setItem('theme', 'dark');
-          toggle.textContent = '☀️';
-        }
-      });
-    }
+    try {
+      var progressBar = document.getElementById('reading-progress');
+      if (progressBar) {
+        window.addEventListener('scroll', function() {
+          var winScroll = document.documentElement.scrollTop;
+          var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+          progressBar.style.width = height > 0 ? (winScroll / height * 100) + '%' : '0%';
+        });
+      }
+    } catch(e) {}
+    // Dark mode toggle — isolated so errors elsewhere never prevent this from working
+    try {
+      var toggle = document.getElementById('theme-toggle');
+      if (toggle) {
+        var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+        toggle.textContent = isDark ? '☀️' : '🌙';
+        toggle.addEventListener('click', function() {
+          var dark = document.documentElement.getAttribute('data-theme') === 'dark';
+          if (dark) {
+            document.documentElement.removeAttribute('data-theme');
+            localStorage.setItem('theme', 'light');
+            toggle.textContent = '🌙';
+          } else {
+            document.documentElement.setAttribute('data-theme', 'dark');
+            localStorage.setItem('theme', 'dark');
+            toggle.textContent = '☀️';
+          }
+        });
+      }
+    } catch(e) { console.error('Theme toggle error:', e); }
   });</script>
 </head>
 <body>
@@ -341,439 +347,439 @@
 </tbody>
 </table>
 <h3 id="template-1-quick-sort" tabindex="-1"><a class="header-anchor" href="#template-1-quick-sort"><span>Template 1: Quick Sort</span></a></h3>
-<pre><code class="language-python"># Python - Classic Quick Sort
-def quickSort(arr, low=0, high=None):
-    if high is None:
-        high = len(arr) - 1
-    
-    if low &lt; high:
-        # Partition and get pivot index
-        pi = partition(arr, low, high)
-        
-        # Recursively sort left and right
-        quickSort(arr, low, pi - 1)
-        quickSort(arr, pi + 1, high)
-    
-    return arr
-
-def partition(arr, low, high):
-    # Choose rightmost as pivot
-    pivot = arr[high]
-    i = low - 1  # Smaller element index
-    
-    for j in range(low, high):
-        if arr[j] &lt;= pivot:
-            i += 1
-            arr[i], arr[j] = arr[j], arr[i]
-    
-    arr[i + 1], arr[high] = arr[high], arr[i + 1]
-    return i + 1
-
-# 3-way Quick Sort for duplicates
-def quickSort3Way(arr, low=0, high=None):
-    if high is None:
-        high = len(arr) - 1
-    
-    if low &lt; high:
-        lt, gt = partition3Way(arr, low, high)
-        quickSort3Way(arr, low, lt - 1)
-        quickSort3Way(arr, gt + 1, high)
-    
-    return arr
-
-def partition3Way(arr, low, high):
-    pivot = arr[low]
-    i = low
-    lt = low
-    gt = high
-    
-    while i &lt;= gt:
-        if arr[i] &lt; pivot:
-            arr[lt], arr[i] = arr[i], arr[lt]
-            lt += 1
-            i += 1
-        elif arr[i] &gt; pivot:
-            arr[i], arr[gt] = arr[gt], arr[i]
-            gt -= 1
-        else:
-            i += 1
-    
-    return lt, gt
+<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment"># Python - Classic Quick Sort</span></span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-keyword">def</span> <span class="hljs-title function_">quickSort</span>(<span class="hljs-params">arr, low=<span class="hljs-number">0</span>, high=<span class="hljs-literal">None</span></span>):</span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">    <span class="hljs-keyword">if</span> high <span class="hljs-keyword">is</span> <span class="hljs-literal">None</span>:</span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">        high = <span class="hljs-built_in">len</span>(arr) - <span class="hljs-number">1</span></span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    </span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    <span class="hljs-keyword">if</span> low &lt; high:</span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">        <span class="hljs-comment"># Partition and get pivot index</span></span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">        pi = partition(arr, low, high)</span></span>
+<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">        </span></span>
+<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">        <span class="hljs-comment"># Recursively sort left and right</span></span></span>
+<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">        quickSort(arr, low, pi - <span class="hljs-number">1</span>)</span></span>
+<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">        quickSort(arr, pi + <span class="hljs-number">1</span>, high)</span></span>
+<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">    </span></span>
+<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">    <span class="hljs-keyword">return</span> arr</span></span>
+<span class="ln-row"><span class="ln-num">15</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">16</span><span class="ln-code"><span class="hljs-keyword">def</span> <span class="hljs-title function_">partition</span>(<span class="hljs-params">arr, low, high</span>):</span></span>
+<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">    <span class="hljs-comment"># Choose rightmost as pivot</span></span></span>
+<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">    pivot = arr[high]</span></span>
+<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">    i = low - <span class="hljs-number">1</span>  <span class="hljs-comment"># Smaller element index</span></span></span>
+<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">    </span></span>
+<span class="ln-row"><span class="ln-num">21</span><span class="ln-code">    <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(low, high):</span></span>
+<span class="ln-row"><span class="ln-num">22</span><span class="ln-code">        <span class="hljs-keyword">if</span> arr[j] &lt;= pivot:</span></span>
+<span class="ln-row"><span class="ln-num">23</span><span class="ln-code">            i += <span class="hljs-number">1</span></span></span>
+<span class="ln-row"><span class="ln-num">24</span><span class="ln-code">            arr[i], arr[j] = arr[j], arr[i]</span></span>
+<span class="ln-row"><span class="ln-num">25</span><span class="ln-code">    </span></span>
+<span class="ln-row"><span class="ln-num">26</span><span class="ln-code">    arr[i + <span class="hljs-number">1</span>], arr[high] = arr[high], arr[i + <span class="hljs-number">1</span>]</span></span>
+<span class="ln-row"><span class="ln-num">27</span><span class="ln-code">    <span class="hljs-keyword">return</span> i + <span class="hljs-number">1</span></span></span>
+<span class="ln-row"><span class="ln-num">28</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">29</span><span class="ln-code"><span class="hljs-comment"># 3-way Quick Sort for duplicates</span></span></span>
+<span class="ln-row"><span class="ln-num">30</span><span class="ln-code"><span class="hljs-keyword">def</span> <span class="hljs-title function_">quickSort3Way</span>(<span class="hljs-params">arr, low=<span class="hljs-number">0</span>, high=<span class="hljs-literal">None</span></span>):</span></span>
+<span class="ln-row"><span class="ln-num">31</span><span class="ln-code">    <span class="hljs-keyword">if</span> high <span class="hljs-keyword">is</span> <span class="hljs-literal">None</span>:</span></span>
+<span class="ln-row"><span class="ln-num">32</span><span class="ln-code">        high = <span class="hljs-built_in">len</span>(arr) - <span class="hljs-number">1</span></span></span>
+<span class="ln-row"><span class="ln-num">33</span><span class="ln-code">    </span></span>
+<span class="ln-row"><span class="ln-num">34</span><span class="ln-code">    <span class="hljs-keyword">if</span> low &lt; high:</span></span>
+<span class="ln-row"><span class="ln-num">35</span><span class="ln-code">        lt, gt = partition3Way(arr, low, high)</span></span>
+<span class="ln-row"><span class="ln-num">36</span><span class="ln-code">        quickSort3Way(arr, low, lt - <span class="hljs-number">1</span>)</span></span>
+<span class="ln-row"><span class="ln-num">37</span><span class="ln-code">        quickSort3Way(arr, gt + <span class="hljs-number">1</span>, high)</span></span>
+<span class="ln-row"><span class="ln-num">38</span><span class="ln-code">    </span></span>
+<span class="ln-row"><span class="ln-num">39</span><span class="ln-code">    <span class="hljs-keyword">return</span> arr</span></span>
+<span class="ln-row"><span class="ln-num">40</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">41</span><span class="ln-code"><span class="hljs-keyword">def</span> <span class="hljs-title function_">partition3Way</span>(<span class="hljs-params">arr, low, high</span>):</span></span>
+<span class="ln-row"><span class="ln-num">42</span><span class="ln-code">    pivot = arr[low]</span></span>
+<span class="ln-row"><span class="ln-num">43</span><span class="ln-code">    i = low</span></span>
+<span class="ln-row"><span class="ln-num">44</span><span class="ln-code">    lt = low</span></span>
+<span class="ln-row"><span class="ln-num">45</span><span class="ln-code">    gt = high</span></span>
+<span class="ln-row"><span class="ln-num">46</span><span class="ln-code">    </span></span>
+<span class="ln-row"><span class="ln-num">47</span><span class="ln-code">    <span class="hljs-keyword">while</span> i &lt;= gt:</span></span>
+<span class="ln-row"><span class="ln-num">48</span><span class="ln-code">        <span class="hljs-keyword">if</span> arr[i] &lt; pivot:</span></span>
+<span class="ln-row"><span class="ln-num">49</span><span class="ln-code">            arr[lt], arr[i] = arr[i], arr[lt]</span></span>
+<span class="ln-row"><span class="ln-num">50</span><span class="ln-code">            lt += <span class="hljs-number">1</span></span></span>
+<span class="ln-row"><span class="ln-num">51</span><span class="ln-code">            i += <span class="hljs-number">1</span></span></span>
+<span class="ln-row"><span class="ln-num">52</span><span class="ln-code">        <span class="hljs-keyword">elif</span> arr[i] &gt; pivot:</span></span>
+<span class="ln-row"><span class="ln-num">53</span><span class="ln-code">            arr[i], arr[gt] = arr[gt], arr[i]</span></span>
+<span class="ln-row"><span class="ln-num">54</span><span class="ln-code">            gt -= <span class="hljs-number">1</span></span></span>
+<span class="ln-row"><span class="ln-num">55</span><span class="ln-code">        <span class="hljs-keyword">else</span>:</span></span>
+<span class="ln-row"><span class="ln-num">56</span><span class="ln-code">            i += <span class="hljs-number">1</span></span></span>
+<span class="ln-row"><span class="ln-num">57</span><span class="ln-code">    </span></span>
+<span class="ln-row"><span class="ln-num">58</span><span class="ln-code">    <span class="hljs-keyword">return</span> lt, gt</span></span>
 </code></pre>
-<pre><code class="language-java">// Java - Quick Sort
-public void quickSort(int[] arr, int low, int high) {
-    if (low &lt; high) {
-        int pi = partition(arr, low, high);
-        quickSort(arr, low, pi - 1);
-        quickSort(arr, pi + 1, high);
-    }
-}
-
-private int partition(int[] arr, int low, int high) {
-    int pivot = arr[high];
-    int i = low - 1;
-    
-    for (int j = low; j &lt; high; j++) {
-        if (arr[j] &lt;= pivot) {
-            i++;
-            swap(arr, i, j);
-        }
-    }
-    
-    swap(arr, i + 1, high);
-    return i + 1;
-}
-
-private void swap(int[] arr, int i, int j) {
-    int temp = arr[i];
-    arr[i] = arr[j];
-    arr[j] = temp;
-}
+<pre data-lang="java"><code class="hljs language-java"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment">// Java - Quick Sort</span></span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">quickSort</span><span class="hljs-params">(<span class="hljs-type">int</span>[] arr, <span class="hljs-type">int</span> low, <span class="hljs-type">int</span> high)</span> {</span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">    <span class="hljs-keyword">if</span> (low &lt; high) {</span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">        <span class="hljs-type">int</span> <span class="hljs-variable">pi</span> <span class="hljs-operator">=</span> partition(arr, low, high);</span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">        quickSort(arr, low, pi - <span class="hljs-number">1</span>);</span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">        quickSort(arr, pi + <span class="hljs-number">1</span>, high);</span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">    }</span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">}</span></span>
+<span class="ln-row"><span class="ln-num">9</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">10</span><span class="ln-code"><span class="hljs-keyword">private</span> <span class="hljs-type">int</span> <span class="hljs-title function_">partition</span><span class="hljs-params">(<span class="hljs-type">int</span>[] arr, <span class="hljs-type">int</span> low, <span class="hljs-type">int</span> high)</span> {</span></span>
+<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">    <span class="hljs-type">int</span> <span class="hljs-variable">pivot</span> <span class="hljs-operator">=</span> arr[high];</span></span>
+<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">    <span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> low - <span class="hljs-number">1</span>;</span></span>
+<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">    </span></span>
+<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">j</span> <span class="hljs-operator">=</span> low; j &lt; high; j++) {</span></span>
+<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">        <span class="hljs-keyword">if</span> (arr[j] &lt;= pivot) {</span></span>
+<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">            i++;</span></span>
+<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">            swap(arr, i, j);</span></span>
+<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">        }</span></span>
+<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">    }</span></span>
+<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">    </span></span>
+<span class="ln-row"><span class="ln-num">21</span><span class="ln-code">    swap(arr, i + <span class="hljs-number">1</span>, high);</span></span>
+<span class="ln-row"><span class="ln-num">22</span><span class="ln-code">    <span class="hljs-keyword">return</span> i + <span class="hljs-number">1</span>;</span></span>
+<span class="ln-row"><span class="ln-num">23</span><span class="ln-code">}</span></span>
+<span class="ln-row"><span class="ln-num">24</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">25</span><span class="ln-code"><span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">swap</span><span class="hljs-params">(<span class="hljs-type">int</span>[] arr, <span class="hljs-type">int</span> i, <span class="hljs-type">int</span> j)</span> {</span></span>
+<span class="ln-row"><span class="ln-num">26</span><span class="ln-code">    <span class="hljs-type">int</span> <span class="hljs-variable">temp</span> <span class="hljs-operator">=</span> arr[i];</span></span>
+<span class="ln-row"><span class="ln-num">27</span><span class="ln-code">    arr[i] = arr[j];</span></span>
+<span class="ln-row"><span class="ln-num">28</span><span class="ln-code">    arr[j] = temp;</span></span>
+<span class="ln-row"><span class="ln-num">29</span><span class="ln-code">}</span></span>
 </code></pre>
 <h3 id="template-2-merge-sort" tabindex="-1"><a class="header-anchor" href="#template-2-merge-sort"><span>Template 2: Merge Sort</span></a></h3>
-<pre><code class="language-python"># Python - Merge Sort
-def mergeSort(arr):
-    if len(arr) &lt;= 1:
-        return arr
-    
-    mid = len(arr) // 2
-    left = mergeSort(arr[:mid])
-    right = mergeSort(arr[mid:])
-    
-    return merge(left, right)
-
-def merge(left, right):
-    result = []
-    i = j = 0
-    
-    while i &lt; len(left) and j &lt; len(right):
-        if left[i] &lt;= right[j]:
-            result.append(left[i])
-            i += 1
-        else:
-            result.append(right[j])
-            j += 1
-    
-    result.extend(left[i:])
-    result.extend(right[j:])
-    return result
-
-# In-place merge sort
-def mergeSortInPlace(arr, left=0, right=None):
-    if right is None:
-        right = len(arr) - 1
-    
-    if left &lt; right:
-        mid = (left + right) // 2
-        mergeSortInPlace(arr, left, mid)
-        mergeSortInPlace(arr, mid + 1, right)
-        mergeInPlace(arr, left, mid, right)
-    
-    return arr
-
-def mergeInPlace(arr, left, mid, right):
-    left_arr = arr[left:mid + 1]
-    right_arr = arr[mid + 1:right + 1]
-    
-    i = j = 0
-    k = left
-    
-    while i &lt; len(left_arr) and j &lt; len(right_arr):
-        if left_arr[i] &lt;= right_arr[j]:
-            arr[k] = left_arr[i]
-            i += 1
-        else:
-            arr[k] = right_arr[j]
-            j += 1
-        k += 1
-    
-    while i &lt; len(left_arr):
-        arr[k] = left_arr[i]
-        i += 1
-        k += 1
-    
-    while j &lt; len(right_arr):
-        arr[k] = right_arr[j]
-        j += 1
-        k += 1
+<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment"># Python - Merge Sort</span></span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-keyword">def</span> <span class="hljs-title function_">mergeSort</span>(<span class="hljs-params">arr</span>):</span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">    <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(arr) &lt;= <span class="hljs-number">1</span>:</span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">        <span class="hljs-keyword">return</span> arr</span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    </span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    mid = <span class="hljs-built_in">len</span>(arr) // <span class="hljs-number">2</span></span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">    left = mergeSort(arr[:mid])</span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">    right = mergeSort(arr[mid:])</span></span>
+<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">    </span></span>
+<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">    <span class="hljs-keyword">return</span> merge(left, right)</span></span>
+<span class="ln-row"><span class="ln-num">11</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">12</span><span class="ln-code"><span class="hljs-keyword">def</span> <span class="hljs-title function_">merge</span>(<span class="hljs-params">left, right</span>):</span></span>
+<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">    result = []</span></span>
+<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">    i = j = <span class="hljs-number">0</span></span></span>
+<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">    </span></span>
+<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">    <span class="hljs-keyword">while</span> i &lt; <span class="hljs-built_in">len</span>(left) <span class="hljs-keyword">and</span> j &lt; <span class="hljs-built_in">len</span>(right):</span></span>
+<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">        <span class="hljs-keyword">if</span> left[i] &lt;= right[j]:</span></span>
+<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">            result.append(left[i])</span></span>
+<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">            i += <span class="hljs-number">1</span></span></span>
+<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">        <span class="hljs-keyword">else</span>:</span></span>
+<span class="ln-row"><span class="ln-num">21</span><span class="ln-code">            result.append(right[j])</span></span>
+<span class="ln-row"><span class="ln-num">22</span><span class="ln-code">            j += <span class="hljs-number">1</span></span></span>
+<span class="ln-row"><span class="ln-num">23</span><span class="ln-code">    </span></span>
+<span class="ln-row"><span class="ln-num">24</span><span class="ln-code">    result.extend(left[i:])</span></span>
+<span class="ln-row"><span class="ln-num">25</span><span class="ln-code">    result.extend(right[j:])</span></span>
+<span class="ln-row"><span class="ln-num">26</span><span class="ln-code">    <span class="hljs-keyword">return</span> result</span></span>
+<span class="ln-row"><span class="ln-num">27</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">28</span><span class="ln-code"><span class="hljs-comment"># In-place merge sort</span></span></span>
+<span class="ln-row"><span class="ln-num">29</span><span class="ln-code"><span class="hljs-keyword">def</span> <span class="hljs-title function_">mergeSortInPlace</span>(<span class="hljs-params">arr, left=<span class="hljs-number">0</span>, right=<span class="hljs-literal">None</span></span>):</span></span>
+<span class="ln-row"><span class="ln-num">30</span><span class="ln-code">    <span class="hljs-keyword">if</span> right <span class="hljs-keyword">is</span> <span class="hljs-literal">None</span>:</span></span>
+<span class="ln-row"><span class="ln-num">31</span><span class="ln-code">        right = <span class="hljs-built_in">len</span>(arr) - <span class="hljs-number">1</span></span></span>
+<span class="ln-row"><span class="ln-num">32</span><span class="ln-code">    </span></span>
+<span class="ln-row"><span class="ln-num">33</span><span class="ln-code">    <span class="hljs-keyword">if</span> left &lt; right:</span></span>
+<span class="ln-row"><span class="ln-num">34</span><span class="ln-code">        mid = (left + right) // <span class="hljs-number">2</span></span></span>
+<span class="ln-row"><span class="ln-num">35</span><span class="ln-code">        mergeSortInPlace(arr, left, mid)</span></span>
+<span class="ln-row"><span class="ln-num">36</span><span class="ln-code">        mergeSortInPlace(arr, mid + <span class="hljs-number">1</span>, right)</span></span>
+<span class="ln-row"><span class="ln-num">37</span><span class="ln-code">        mergeInPlace(arr, left, mid, right)</span></span>
+<span class="ln-row"><span class="ln-num">38</span><span class="ln-code">    </span></span>
+<span class="ln-row"><span class="ln-num">39</span><span class="ln-code">    <span class="hljs-keyword">return</span> arr</span></span>
+<span class="ln-row"><span class="ln-num">40</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">41</span><span class="ln-code"><span class="hljs-keyword">def</span> <span class="hljs-title function_">mergeInPlace</span>(<span class="hljs-params">arr, left, mid, right</span>):</span></span>
+<span class="ln-row"><span class="ln-num">42</span><span class="ln-code">    left_arr = arr[left:mid + <span class="hljs-number">1</span>]</span></span>
+<span class="ln-row"><span class="ln-num">43</span><span class="ln-code">    right_arr = arr[mid + <span class="hljs-number">1</span>:right + <span class="hljs-number">1</span>]</span></span>
+<span class="ln-row"><span class="ln-num">44</span><span class="ln-code">    </span></span>
+<span class="ln-row"><span class="ln-num">45</span><span class="ln-code">    i = j = <span class="hljs-number">0</span></span></span>
+<span class="ln-row"><span class="ln-num">46</span><span class="ln-code">    k = left</span></span>
+<span class="ln-row"><span class="ln-num">47</span><span class="ln-code">    </span></span>
+<span class="ln-row"><span class="ln-num">48</span><span class="ln-code">    <span class="hljs-keyword">while</span> i &lt; <span class="hljs-built_in">len</span>(left_arr) <span class="hljs-keyword">and</span> j &lt; <span class="hljs-built_in">len</span>(right_arr):</span></span>
+<span class="ln-row"><span class="ln-num">49</span><span class="ln-code">        <span class="hljs-keyword">if</span> left_arr[i] &lt;= right_arr[j]:</span></span>
+<span class="ln-row"><span class="ln-num">50</span><span class="ln-code">            arr[k] = left_arr[i]</span></span>
+<span class="ln-row"><span class="ln-num">51</span><span class="ln-code">            i += <span class="hljs-number">1</span></span></span>
+<span class="ln-row"><span class="ln-num">52</span><span class="ln-code">        <span class="hljs-keyword">else</span>:</span></span>
+<span class="ln-row"><span class="ln-num">53</span><span class="ln-code">            arr[k] = right_arr[j]</span></span>
+<span class="ln-row"><span class="ln-num">54</span><span class="ln-code">            j += <span class="hljs-number">1</span></span></span>
+<span class="ln-row"><span class="ln-num">55</span><span class="ln-code">        k += <span class="hljs-number">1</span></span></span>
+<span class="ln-row"><span class="ln-num">56</span><span class="ln-code">    </span></span>
+<span class="ln-row"><span class="ln-num">57</span><span class="ln-code">    <span class="hljs-keyword">while</span> i &lt; <span class="hljs-built_in">len</span>(left_arr):</span></span>
+<span class="ln-row"><span class="ln-num">58</span><span class="ln-code">        arr[k] = left_arr[i]</span></span>
+<span class="ln-row"><span class="ln-num">59</span><span class="ln-code">        i += <span class="hljs-number">1</span></span></span>
+<span class="ln-row"><span class="ln-num">60</span><span class="ln-code">        k += <span class="hljs-number">1</span></span></span>
+<span class="ln-row"><span class="ln-num">61</span><span class="ln-code">    </span></span>
+<span class="ln-row"><span class="ln-num">62</span><span class="ln-code">    <span class="hljs-keyword">while</span> j &lt; <span class="hljs-built_in">len</span>(right_arr):</span></span>
+<span class="ln-row"><span class="ln-num">63</span><span class="ln-code">        arr[k] = right_arr[j]</span></span>
+<span class="ln-row"><span class="ln-num">64</span><span class="ln-code">        j += <span class="hljs-number">1</span></span></span>
+<span class="ln-row"><span class="ln-num">65</span><span class="ln-code">        k += <span class="hljs-number">1</span></span></span>
 </code></pre>
-<pre><code class="language-java">// Java - Merge Sort
-public void mergeSort(int[] arr, int left, int right) {
-    if (left &lt; right) {
-        int mid = left + (right - left) / 2;
-        
-        mergeSort(arr, left, mid);
-        mergeSort(arr, mid + 1, right);
-        
-        merge(arr, left, mid, right);
-    }
-}
-
-private void merge(int[] arr, int left, int mid, int right) {
-    int n1 = mid - left + 1;
-    int n2 = right - mid;
-    
-    int[] leftArr = new int[n1];
-    int[] rightArr = new int[n2];
-    
-    for (int i = 0; i &lt; n1; i++) {
-        leftArr[i] = arr[left + i];
-    }
-    for (int j = 0; j &lt; n2; j++) {
-        rightArr[j] = arr[mid + 1 + j];
-    }
-    
-    int i = 0, j = 0, k = left;
-    
-    while (i &lt; n1 &amp;&amp; j &lt; n2) {
-        if (leftArr[i] &lt;= rightArr[j]) {
-            arr[k++] = leftArr[i++];
-        } else {
-            arr[k++] = rightArr[j++];
-        }
-    }
-    
-    while (i &lt; n1) {
-        arr[k++] = leftArr[i++];
-    }
-    
-    while (j &lt; n2) {
-        arr[k++] = rightArr[j++];
-    }
-}
+<pre data-lang="java"><code class="hljs language-java"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment">// Java - Merge Sort</span></span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">mergeSort</span><span class="hljs-params">(<span class="hljs-type">int</span>[] arr, <span class="hljs-type">int</span> left, <span class="hljs-type">int</span> right)</span> {</span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">    <span class="hljs-keyword">if</span> (left &lt; right) {</span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">        <span class="hljs-type">int</span> <span class="hljs-variable">mid</span> <span class="hljs-operator">=</span> left + (right - left) / <span class="hljs-number">2</span>;</span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">        </span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">        mergeSort(arr, left, mid);</span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">        mergeSort(arr, mid + <span class="hljs-number">1</span>, right);</span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">        </span></span>
+<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">        merge(arr, left, mid, right);</span></span>
+<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">    }</span></span>
+<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">}</span></span>
+<span class="ln-row"><span class="ln-num">12</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">13</span><span class="ln-code"><span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">merge</span><span class="hljs-params">(<span class="hljs-type">int</span>[] arr, <span class="hljs-type">int</span> left, <span class="hljs-type">int</span> mid, <span class="hljs-type">int</span> right)</span> {</span></span>
+<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">    <span class="hljs-type">int</span> <span class="hljs-variable">n1</span> <span class="hljs-operator">=</span> mid - left + <span class="hljs-number">1</span>;</span></span>
+<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">    <span class="hljs-type">int</span> <span class="hljs-variable">n2</span> <span class="hljs-operator">=</span> right - mid;</span></span>
+<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">    </span></span>
+<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">    <span class="hljs-type">int</span>[] leftArr = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[n1];</span></span>
+<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">    <span class="hljs-type">int</span>[] rightArr = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[n2];</span></span>
+<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">    </span></span>
+<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; n1; i++) {</span></span>
+<span class="ln-row"><span class="ln-num">21</span><span class="ln-code">        leftArr[i] = arr[left + i];</span></span>
+<span class="ln-row"><span class="ln-num">22</span><span class="ln-code">    }</span></span>
+<span class="ln-row"><span class="ln-num">23</span><span class="ln-code">    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">j</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; j &lt; n2; j++) {</span></span>
+<span class="ln-row"><span class="ln-num">24</span><span class="ln-code">        rightArr[j] = arr[mid + <span class="hljs-number">1</span> + j];</span></span>
+<span class="ln-row"><span class="ln-num">25</span><span class="ln-code">    }</span></span>
+<span class="ln-row"><span class="ln-num">26</span><span class="ln-code">    </span></span>
+<span class="ln-row"><span class="ln-num">27</span><span class="ln-code">    <span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>, j = <span class="hljs-number">0</span>, k = left;</span></span>
+<span class="ln-row"><span class="ln-num">28</span><span class="ln-code">    </span></span>
+<span class="ln-row"><span class="ln-num">29</span><span class="ln-code">    <span class="hljs-keyword">while</span> (i &lt; n1 &amp;&amp; j &lt; n2) {</span></span>
+<span class="ln-row"><span class="ln-num">30</span><span class="ln-code">        <span class="hljs-keyword">if</span> (leftArr[i] &lt;= rightArr[j]) {</span></span>
+<span class="ln-row"><span class="ln-num">31</span><span class="ln-code">            arr[k++] = leftArr[i++];</span></span>
+<span class="ln-row"><span class="ln-num">32</span><span class="ln-code">        } <span class="hljs-keyword">else</span> {</span></span>
+<span class="ln-row"><span class="ln-num">33</span><span class="ln-code">            arr[k++] = rightArr[j++];</span></span>
+<span class="ln-row"><span class="ln-num">34</span><span class="ln-code">        }</span></span>
+<span class="ln-row"><span class="ln-num">35</span><span class="ln-code">    }</span></span>
+<span class="ln-row"><span class="ln-num">36</span><span class="ln-code">    </span></span>
+<span class="ln-row"><span class="ln-num">37</span><span class="ln-code">    <span class="hljs-keyword">while</span> (i &lt; n1) {</span></span>
+<span class="ln-row"><span class="ln-num">38</span><span class="ln-code">        arr[k++] = leftArr[i++];</span></span>
+<span class="ln-row"><span class="ln-num">39</span><span class="ln-code">    }</span></span>
+<span class="ln-row"><span class="ln-num">40</span><span class="ln-code">    </span></span>
+<span class="ln-row"><span class="ln-num">41</span><span class="ln-code">    <span class="hljs-keyword">while</span> (j &lt; n2) {</span></span>
+<span class="ln-row"><span class="ln-num">42</span><span class="ln-code">        arr[k++] = rightArr[j++];</span></span>
+<span class="ln-row"><span class="ln-num">43</span><span class="ln-code">    }</span></span>
+<span class="ln-row"><span class="ln-num">44</span><span class="ln-code">}</span></span>
 </code></pre>
 <h3 id="template-3-custom-comparator-sorting" tabindex="-1"><a class="header-anchor" href="#template-3-custom-comparator-sorting"><span>Template 3: Custom Comparator Sorting</span></a></h3>
-<pre><code class="language-python"># Python - Custom sorting
-class Solution:
-    def customSort(self, items):
-        # Single key
-        items.sort(key=lambda x: x[0])
-        
-        # Multiple keys
-        items.sort(key=lambda x: (x[0], -x[1], x[2]))
-        
-        # Complex comparison
-        def compare(item):
-            # Return tuple of sort keys
-            if condition:
-                return (0, item.value, item.name)
-            else:
-                return (1, -item.priority, item.id)
-        
-        items.sort(key=compare)
-        
-        # Using functools for traditional comparison
-        from functools import cmp_to_key
-        
-        def compare_func(a, b):
-            if a &lt; b:
-                return -1
-            elif a &gt; b:
-                return 1
-            else:
-                return 0
-        
-        items.sort(key=cmp_to_key(compare_func))
-        
-        return items
-
-# Custom class for sorting
-class CustomComparable:
-    def __init__(self, value, priority):
-        self.value = value
-        self.priority = priority
-    
-    def __lt__(self, other):
-        # Define less than for sorting
-        if self.priority != other.priority:
-            return self.priority &gt; other.priority
-        return self.value &lt; other.value
+<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment"># Python - Custom sorting</span></span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:</span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">customSort</span>(<span class="hljs-params">self, items</span>):</span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">        <span class="hljs-comment"># Single key</span></span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">        items.sort(key=<span class="hljs-keyword">lambda</span> x: x[<span class="hljs-number">0</span>])</span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">        </span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">        <span class="hljs-comment"># Multiple keys</span></span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">        items.sort(key=<span class="hljs-keyword">lambda</span> x: (x[<span class="hljs-number">0</span>], -x[<span class="hljs-number">1</span>], x[<span class="hljs-number">2</span>]))</span></span>
+<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">        </span></span>
+<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">        <span class="hljs-comment"># Complex comparison</span></span></span>
+<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">        <span class="hljs-keyword">def</span> <span class="hljs-title function_">compare</span>(<span class="hljs-params">item</span>):</span></span>
+<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">            <span class="hljs-comment"># Return tuple of sort keys</span></span></span>
+<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">            <span class="hljs-keyword">if</span> condition:</span></span>
+<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">                <span class="hljs-keyword">return</span> (<span class="hljs-number">0</span>, item.value, item.name)</span></span>
+<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">            <span class="hljs-keyword">else</span>:</span></span>
+<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">                <span class="hljs-keyword">return</span> (<span class="hljs-number">1</span>, -item.priority, item.<span class="hljs-built_in">id</span>)</span></span>
+<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">        </span></span>
+<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">        items.sort(key=compare)</span></span>
+<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">        </span></span>
+<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">        <span class="hljs-comment"># Using functools for traditional comparison</span></span></span>
+<span class="ln-row"><span class="ln-num">21</span><span class="ln-code">        <span class="hljs-keyword">from</span> functools <span class="hljs-keyword">import</span> cmp_to_key</span></span>
+<span class="ln-row"><span class="ln-num">22</span><span class="ln-code">        </span></span>
+<span class="ln-row"><span class="ln-num">23</span><span class="ln-code">        <span class="hljs-keyword">def</span> <span class="hljs-title function_">compare_func</span>(<span class="hljs-params">a, b</span>):</span></span>
+<span class="ln-row"><span class="ln-num">24</span><span class="ln-code">            <span class="hljs-keyword">if</span> a &lt; b:</span></span>
+<span class="ln-row"><span class="ln-num">25</span><span class="ln-code">                <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span></span></span>
+<span class="ln-row"><span class="ln-num">26</span><span class="ln-code">            <span class="hljs-keyword">elif</span> a &gt; b:</span></span>
+<span class="ln-row"><span class="ln-num">27</span><span class="ln-code">                <span class="hljs-keyword">return</span> <span class="hljs-number">1</span></span></span>
+<span class="ln-row"><span class="ln-num">28</span><span class="ln-code">            <span class="hljs-keyword">else</span>:</span></span>
+<span class="ln-row"><span class="ln-num">29</span><span class="ln-code">                <span class="hljs-keyword">return</span> <span class="hljs-number">0</span></span></span>
+<span class="ln-row"><span class="ln-num">30</span><span class="ln-code">        </span></span>
+<span class="ln-row"><span class="ln-num">31</span><span class="ln-code">        items.sort(key=cmp_to_key(compare_func))</span></span>
+<span class="ln-row"><span class="ln-num">32</span><span class="ln-code">        </span></span>
+<span class="ln-row"><span class="ln-num">33</span><span class="ln-code">        <span class="hljs-keyword">return</span> items</span></span>
+<span class="ln-row"><span class="ln-num">34</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">35</span><span class="ln-code"><span class="hljs-comment"># Custom class for sorting</span></span></span>
+<span class="ln-row"><span class="ln-num">36</span><span class="ln-code"><span class="hljs-keyword">class</span> <span class="hljs-title class_">CustomComparable</span>:</span></span>
+<span class="ln-row"><span class="ln-num">37</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, value, priority</span>):</span></span>
+<span class="ln-row"><span class="ln-num">38</span><span class="ln-code">        <span class="hljs-variable language_">self</span>.value = value</span></span>
+<span class="ln-row"><span class="ln-num">39</span><span class="ln-code">        <span class="hljs-variable language_">self</span>.priority = priority</span></span>
+<span class="ln-row"><span class="ln-num">40</span><span class="ln-code">    </span></span>
+<span class="ln-row"><span class="ln-num">41</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__lt__</span>(<span class="hljs-params">self, other</span>):</span></span>
+<span class="ln-row"><span class="ln-num">42</span><span class="ln-code">        <span class="hljs-comment"># Define less than for sorting</span></span></span>
+<span class="ln-row"><span class="ln-num">43</span><span class="ln-code">        <span class="hljs-keyword">if</span> <span class="hljs-variable language_">self</span>.priority != other.priority:</span></span>
+<span class="ln-row"><span class="ln-num">44</span><span class="ln-code">            <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.priority &gt; other.priority</span></span>
+<span class="ln-row"><span class="ln-num">45</span><span class="ln-code">        <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.value &lt; other.value</span></span>
 </code></pre>
-<pre><code class="language-java">// Java - Custom comparator
-public void customSort(List&lt;Item&gt; items) {
-    // Lambda comparator
-    items.sort((a, b) -&gt; a.value - b.value);
-    
-    // Multiple criteria
-    items.sort((a, b) -&gt; {
-        if (a.priority != b.priority) {
-            return b.priority - a.priority;  // Descending
-        }
-        return a.name.compareTo(b.name);    // Ascending
-    });
-    
-    // Using Comparator methods
-    items.sort(Comparator
-        .comparingInt(Item::getPriority).reversed()
-        .thenComparing(Item::getName));
-    
-    // Custom Comparator class
-    items.sort(new Comparator&lt;Item&gt;() {
-        @Override
-        public int compare(Item a, Item b) {
-            // Custom logic
-            return customCompare(a, b);
-        }
-    });
-}
-
-// Comparable interface
-class Item implements Comparable&lt;Item&gt; {
-    int value;
-    String name;
-    
-    @Override
-    public int compareTo(Item other) {
-        if (this.value != other.value) {
-            return this.value - other.value;
-        }
-        return this.name.compareTo(other.name);
-    }
-}
+<pre data-lang="java"><code class="hljs language-java"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment">// Java - Custom comparator</span></span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">customSort</span><span class="hljs-params">(List&lt;Item&gt; items)</span> {</span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">    <span class="hljs-comment">// Lambda comparator</span></span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">    items.sort((a, b) -&gt; a.value - b.value);</span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    </span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    <span class="hljs-comment">// Multiple criteria</span></span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">    items.sort((a, b) -&gt; {</span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">        <span class="hljs-keyword">if</span> (a.priority != b.priority) {</span></span>
+<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">            <span class="hljs-keyword">return</span> b.priority - a.priority;  <span class="hljs-comment">// Descending</span></span></span>
+<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">        }</span></span>
+<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">        <span class="hljs-keyword">return</span> a.name.compareTo(b.name);    <span class="hljs-comment">// Ascending</span></span></span>
+<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">    });</span></span>
+<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">    </span></span>
+<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">    <span class="hljs-comment">// Using Comparator methods</span></span></span>
+<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">    items.sort(Comparator</span></span>
+<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">        .comparingInt(Item::getPriority).reversed()</span></span>
+<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">        .thenComparing(Item::getName));</span></span>
+<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">    </span></span>
+<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">    <span class="hljs-comment">// Custom Comparator class</span></span></span>
+<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">    items.sort(<span class="hljs-keyword">new</span> <span class="hljs-title class_">Comparator</span>&lt;Item&gt;() {</span></span>
+<span class="ln-row"><span class="ln-num">21</span><span class="ln-code">        <span class="hljs-meta">@Override</span></span></span>
+<span class="ln-row"><span class="ln-num">22</span><span class="ln-code">        <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">compare</span><span class="hljs-params">(Item a, Item b)</span> {</span></span>
+<span class="ln-row"><span class="ln-num">23</span><span class="ln-code">            <span class="hljs-comment">// Custom logic</span></span></span>
+<span class="ln-row"><span class="ln-num">24</span><span class="ln-code">            <span class="hljs-keyword">return</span> customCompare(a, b);</span></span>
+<span class="ln-row"><span class="ln-num">25</span><span class="ln-code">        }</span></span>
+<span class="ln-row"><span class="ln-num">26</span><span class="ln-code">    });</span></span>
+<span class="ln-row"><span class="ln-num">27</span><span class="ln-code">}</span></span>
+<span class="ln-row"><span class="ln-num">28</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">29</span><span class="ln-code"><span class="hljs-comment">// Comparable interface</span></span></span>
+<span class="ln-row"><span class="ln-num">30</span><span class="ln-code"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Item</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">Comparable</span>&lt;Item&gt; {</span></span>
+<span class="ln-row"><span class="ln-num">31</span><span class="ln-code">    <span class="hljs-type">int</span> value;</span></span>
+<span class="ln-row"><span class="ln-num">32</span><span class="ln-code">    String name;</span></span>
+<span class="ln-row"><span class="ln-num">33</span><span class="ln-code">    </span></span>
+<span class="ln-row"><span class="ln-num">34</span><span class="ln-code">    <span class="hljs-meta">@Override</span></span></span>
+<span class="ln-row"><span class="ln-num">35</span><span class="ln-code">    <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">compareTo</span><span class="hljs-params">(Item other)</span> {</span></span>
+<span class="ln-row"><span class="ln-num">36</span><span class="ln-code">        <span class="hljs-keyword">if</span> (<span class="hljs-built_in">this</span>.value != other.value) {</span></span>
+<span class="ln-row"><span class="ln-num">37</span><span class="ln-code">            <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>.value - other.value;</span></span>
+<span class="ln-row"><span class="ln-num">38</span><span class="ln-code">        }</span></span>
+<span class="ln-row"><span class="ln-num">39</span><span class="ln-code">        <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>.name.compareTo(other.name);</span></span>
+<span class="ln-row"><span class="ln-num">40</span><span class="ln-code">    }</span></span>
+<span class="ln-row"><span class="ln-num">41</span><span class="ln-code">}</span></span>
 </code></pre>
 <h3 id="template-4-quick-select-k-th-element" tabindex="-1"><a class="header-anchor" href="#template-4-quick-select-k-th-element"><span>Template 4: Quick Select (K-th Element)</span></a></h3>
-<pre><code class="language-python"># Python - Quick Select for k-th smallest
-def quickSelect(arr, k):
-    # Find k-th smallest (0-indexed)
-    return quickSelectHelper(arr, 0, len(arr) - 1, k - 1)
-
-def quickSelectHelper(arr, left, right, k):
-    if left == right:
-        return arr[left]
-    
-    # Random pivot for better average case
-    import random
-    pivot_idx = random.randint(left, right)
-    pivot_idx = partition(arr, left, right, pivot_idx)
-    
-    if k == pivot_idx:
-        return arr[k]
-    elif k &lt; pivot_idx:
-        return quickSelectHelper(arr, left, pivot_idx - 1, k)
-    else:
-        return quickSelectHelper(arr, pivot_idx + 1, right, k)
-
-def partition(arr, left, right, pivot_idx):
-    pivot = arr[pivot_idx]
-    # Move pivot to end
-    arr[pivot_idx], arr[right] = arr[right], arr[pivot_idx]
-    
-    store_idx = left
-    for i in range(left, right):
-        if arr[i] &lt; pivot:
-            arr[store_idx], arr[i] = arr[i], arr[store_idx]
-            store_idx += 1
-    
-    # Move pivot to final position
-    arr[store_idx], arr[right] = arr[right], arr[store_idx]
-    return store_idx
+<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment"># Python - Quick Select for k-th smallest</span></span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-keyword">def</span> <span class="hljs-title function_">quickSelect</span>(<span class="hljs-params">arr, k</span>):</span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">    <span class="hljs-comment"># Find k-th smallest (0-indexed)</span></span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">    <span class="hljs-keyword">return</span> quickSelectHelper(arr, <span class="hljs-number">0</span>, <span class="hljs-built_in">len</span>(arr) - <span class="hljs-number">1</span>, k - <span class="hljs-number">1</span>)</span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code"><span class="hljs-keyword">def</span> <span class="hljs-title function_">quickSelectHelper</span>(<span class="hljs-params">arr, left, right, k</span>):</span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">    <span class="hljs-keyword">if</span> left == right:</span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">        <span class="hljs-keyword">return</span> arr[left]</span></span>
+<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">    </span></span>
+<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">    <span class="hljs-comment"># Random pivot for better average case</span></span></span>
+<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">    <span class="hljs-keyword">import</span> random</span></span>
+<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">    pivot_idx = random.randint(left, right)</span></span>
+<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">    pivot_idx = partition(arr, left, right, pivot_idx)</span></span>
+<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">    </span></span>
+<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">    <span class="hljs-keyword">if</span> k == pivot_idx:</span></span>
+<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">        <span class="hljs-keyword">return</span> arr[k]</span></span>
+<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">    <span class="hljs-keyword">elif</span> k &lt; pivot_idx:</span></span>
+<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">        <span class="hljs-keyword">return</span> quickSelectHelper(arr, left, pivot_idx - <span class="hljs-number">1</span>, k)</span></span>
+<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">    <span class="hljs-keyword">else</span>:</span></span>
+<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">        <span class="hljs-keyword">return</span> quickSelectHelper(arr, pivot_idx + <span class="hljs-number">1</span>, right, k)</span></span>
+<span class="ln-row"><span class="ln-num">21</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">22</span><span class="ln-code"><span class="hljs-keyword">def</span> <span class="hljs-title function_">partition</span>(<span class="hljs-params">arr, left, right, pivot_idx</span>):</span></span>
+<span class="ln-row"><span class="ln-num">23</span><span class="ln-code">    pivot = arr[pivot_idx]</span></span>
+<span class="ln-row"><span class="ln-num">24</span><span class="ln-code">    <span class="hljs-comment"># Move pivot to end</span></span></span>
+<span class="ln-row"><span class="ln-num">25</span><span class="ln-code">    arr[pivot_idx], arr[right] = arr[right], arr[pivot_idx]</span></span>
+<span class="ln-row"><span class="ln-num">26</span><span class="ln-code">    </span></span>
+<span class="ln-row"><span class="ln-num">27</span><span class="ln-code">    store_idx = left</span></span>
+<span class="ln-row"><span class="ln-num">28</span><span class="ln-code">    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(left, right):</span></span>
+<span class="ln-row"><span class="ln-num">29</span><span class="ln-code">        <span class="hljs-keyword">if</span> arr[i] &lt; pivot:</span></span>
+<span class="ln-row"><span class="ln-num">30</span><span class="ln-code">            arr[store_idx], arr[i] = arr[i], arr[store_idx]</span></span>
+<span class="ln-row"><span class="ln-num">31</span><span class="ln-code">            store_idx += <span class="hljs-number">1</span></span></span>
+<span class="ln-row"><span class="ln-num">32</span><span class="ln-code">    </span></span>
+<span class="ln-row"><span class="ln-num">33</span><span class="ln-code">    <span class="hljs-comment"># Move pivot to final position</span></span></span>
+<span class="ln-row"><span class="ln-num">34</span><span class="ln-code">    arr[store_idx], arr[right] = arr[right], arr[store_idx]</span></span>
+<span class="ln-row"><span class="ln-num">35</span><span class="ln-code">    <span class="hljs-keyword">return</span> store_idx</span></span>
 </code></pre>
 <h3 id="template-5-counting-sort" tabindex="-1"><a class="header-anchor" href="#template-5-counting-sort"><span>Template 5: Counting Sort</span></a></h3>
-<pre><code class="language-python"># Python - Counting Sort
-def countingSort(arr, max_val=None):
-    if not arr:
-        return arr
-    
-    if max_val is None:
-        max_val = max(arr)
-    min_val = min(arr)
-    
-    # Create counting array
-    range_size = max_val - min_val + 1
-    count = [0] * range_size
-    
-    # Count occurrences
-    for num in arr:
-        count[num - min_val] += 1
-    
-    # Reconstruct sorted array
-    idx = 0
-    for i in range(range_size):
-        while count[i] &gt; 0:
-            arr[idx] = i + min_val
-            idx += 1
-            count[i] -= 1
-    
-    return arr
-
-# Stable counting sort
-def stableCountingSort(arr):
-    if not arr:
-        return arr
-    
-    max_val = max(arr)
-    min_val = min(arr)
-    range_size = max_val - min_val + 1
-    
-    count = [0] * range_size
-    output = [0] * len(arr)
-    
-    # Count occurrences
-    for num in arr:
-        count[num - min_val] += 1
-    
-    # Cumulative count
-    for i in range(1, range_size):
-        count[i] += count[i - 1]
-    
-    # Build output array (stable)
-    for i in range(len(arr) - 1, -1, -1):
-        output[count[arr[i] - min_val] - 1] = arr[i]
-        count[arr[i] - min_val] -= 1
-    
-    return output
+<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment"># Python - Counting Sort</span></span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-keyword">def</span> <span class="hljs-title function_">countingSort</span>(<span class="hljs-params">arr, max_val=<span class="hljs-literal">None</span></span>):</span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> arr:</span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">        <span class="hljs-keyword">return</span> arr</span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    </span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    <span class="hljs-keyword">if</span> max_val <span class="hljs-keyword">is</span> <span class="hljs-literal">None</span>:</span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">        max_val = <span class="hljs-built_in">max</span>(arr)</span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">    min_val = <span class="hljs-built_in">min</span>(arr)</span></span>
+<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">    </span></span>
+<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">    <span class="hljs-comment"># Create counting array</span></span></span>
+<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">    range_size = max_val - min_val + <span class="hljs-number">1</span></span></span>
+<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">    count = [<span class="hljs-number">0</span>] * range_size</span></span>
+<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">    </span></span>
+<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">    <span class="hljs-comment"># Count occurrences</span></span></span>
+<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">    <span class="hljs-keyword">for</span> num <span class="hljs-keyword">in</span> arr:</span></span>
+<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">        count[num - min_val] += <span class="hljs-number">1</span></span></span>
+<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">    </span></span>
+<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">    <span class="hljs-comment"># Reconstruct sorted array</span></span></span>
+<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">    idx = <span class="hljs-number">0</span></span></span>
+<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(range_size):</span></span>
+<span class="ln-row"><span class="ln-num">21</span><span class="ln-code">        <span class="hljs-keyword">while</span> count[i] &gt; <span class="hljs-number">0</span>:</span></span>
+<span class="ln-row"><span class="ln-num">22</span><span class="ln-code">            arr[idx] = i + min_val</span></span>
+<span class="ln-row"><span class="ln-num">23</span><span class="ln-code">            idx += <span class="hljs-number">1</span></span></span>
+<span class="ln-row"><span class="ln-num">24</span><span class="ln-code">            count[i] -= <span class="hljs-number">1</span></span></span>
+<span class="ln-row"><span class="ln-num">25</span><span class="ln-code">    </span></span>
+<span class="ln-row"><span class="ln-num">26</span><span class="ln-code">    <span class="hljs-keyword">return</span> arr</span></span>
+<span class="ln-row"><span class="ln-num">27</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">28</span><span class="ln-code"><span class="hljs-comment"># Stable counting sort</span></span></span>
+<span class="ln-row"><span class="ln-num">29</span><span class="ln-code"><span class="hljs-keyword">def</span> <span class="hljs-title function_">stableCountingSort</span>(<span class="hljs-params">arr</span>):</span></span>
+<span class="ln-row"><span class="ln-num">30</span><span class="ln-code">    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> arr:</span></span>
+<span class="ln-row"><span class="ln-num">31</span><span class="ln-code">        <span class="hljs-keyword">return</span> arr</span></span>
+<span class="ln-row"><span class="ln-num">32</span><span class="ln-code">    </span></span>
+<span class="ln-row"><span class="ln-num">33</span><span class="ln-code">    max_val = <span class="hljs-built_in">max</span>(arr)</span></span>
+<span class="ln-row"><span class="ln-num">34</span><span class="ln-code">    min_val = <span class="hljs-built_in">min</span>(arr)</span></span>
+<span class="ln-row"><span class="ln-num">35</span><span class="ln-code">    range_size = max_val - min_val + <span class="hljs-number">1</span></span></span>
+<span class="ln-row"><span class="ln-num">36</span><span class="ln-code">    </span></span>
+<span class="ln-row"><span class="ln-num">37</span><span class="ln-code">    count = [<span class="hljs-number">0</span>] * range_size</span></span>
+<span class="ln-row"><span class="ln-num">38</span><span class="ln-code">    output = [<span class="hljs-number">0</span>] * <span class="hljs-built_in">len</span>(arr)</span></span>
+<span class="ln-row"><span class="ln-num">39</span><span class="ln-code">    </span></span>
+<span class="ln-row"><span class="ln-num">40</span><span class="ln-code">    <span class="hljs-comment"># Count occurrences</span></span></span>
+<span class="ln-row"><span class="ln-num">41</span><span class="ln-code">    <span class="hljs-keyword">for</span> num <span class="hljs-keyword">in</span> arr:</span></span>
+<span class="ln-row"><span class="ln-num">42</span><span class="ln-code">        count[num - min_val] += <span class="hljs-number">1</span></span></span>
+<span class="ln-row"><span class="ln-num">43</span><span class="ln-code">    </span></span>
+<span class="ln-row"><span class="ln-num">44</span><span class="ln-code">    <span class="hljs-comment"># Cumulative count</span></span></span>
+<span class="ln-row"><span class="ln-num">45</span><span class="ln-code">    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>, range_size):</span></span>
+<span class="ln-row"><span class="ln-num">46</span><span class="ln-code">        count[i] += count[i - <span class="hljs-number">1</span>]</span></span>
+<span class="ln-row"><span class="ln-num">47</span><span class="ln-code">    </span></span>
+<span class="ln-row"><span class="ln-num">48</span><span class="ln-code">    <span class="hljs-comment"># Build output array (stable)</span></span></span>
+<span class="ln-row"><span class="ln-num">49</span><span class="ln-code">    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(arr) - <span class="hljs-number">1</span>, -<span class="hljs-number">1</span>, -<span class="hljs-number">1</span>):</span></span>
+<span class="ln-row"><span class="ln-num">50</span><span class="ln-code">        output[count[arr[i] - min_val] - <span class="hljs-number">1</span>] = arr[i]</span></span>
+<span class="ln-row"><span class="ln-num">51</span><span class="ln-code">        count[arr[i] - min_val] -= <span class="hljs-number">1</span></span></span>
+<span class="ln-row"><span class="ln-num">52</span><span class="ln-code">    </span></span>
+<span class="ln-row"><span class="ln-num">53</span><span class="ln-code">    <span class="hljs-keyword">return</span> output</span></span>
 </code></pre>
 <h3 id="template-6-topological-sort" tabindex="-1"><a class="header-anchor" href="#template-6-topological-sort"><span>Template 6: Topological Sort</span></a></h3>
-<pre><code class="language-python"># Python - Topological Sort (Kahn's Algorithm)
-def topologicalSort(numNodes, edges):
-    # Build graph and in-degree
-    graph = defaultdict(list)
-    in_degree = [0] * numNodes
-    
-    for u, v in edges:
-        graph[u].append(v)
-        in_degree[v] += 1
-    
-    # Queue for nodes with no dependencies
-    queue = deque([i for i in range(numNodes) if in_degree[i] == 0])
-    result = []
-    
-    while queue:
-        node = queue.popleft()
-        result.append(node)
-        
-        for neighbor in graph[node]:
-            in_degree[neighbor] -= 1
-            if in_degree[neighbor] == 0:
-                queue.append(neighbor)
-    
-    # Check for cycle
-    if len(result) != numNodes:
-        return []  # Cycle detected
-    
-    return result
-
-# DFS-based Topological Sort
-def topologicalSortDFS(numNodes, edges):
-    graph = defaultdict(list)
-    for u, v in edges:
-        graph[u].append(v)
-    
-    visited = set()
-    stack = []
-    
-    def dfs(node):
-        visited.add(node)
-        for neighbor in graph[node]:
-            if neighbor not in visited:
-                dfs(neighbor)
-        stack.append(node)
-    
-    for i in range(numNodes):
-        if i not in visited:
-            dfs(i)
-    
-    return stack[::-1]
+<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment"># Python - Topological Sort (Kahn&#x27;s Algorithm)</span></span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-keyword">def</span> <span class="hljs-title function_">topologicalSort</span>(<span class="hljs-params">numNodes, edges</span>):</span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">    <span class="hljs-comment"># Build graph and in-degree</span></span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">    graph = defaultdict(<span class="hljs-built_in">list</span>)</span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    in_degree = [<span class="hljs-number">0</span>] * numNodes</span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    </span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">    <span class="hljs-keyword">for</span> u, v <span class="hljs-keyword">in</span> edges:</span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">        graph[u].append(v)</span></span>
+<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">        in_degree[v] += <span class="hljs-number">1</span></span></span>
+<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">    </span></span>
+<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">    <span class="hljs-comment"># Queue for nodes with no dependencies</span></span></span>
+<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">    queue = deque([i <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(numNodes) <span class="hljs-keyword">if</span> in_degree[i] == <span class="hljs-number">0</span>])</span></span>
+<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">    result = []</span></span>
+<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">    </span></span>
+<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">    <span class="hljs-keyword">while</span> queue:</span></span>
+<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">        node = queue.popleft()</span></span>
+<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">        result.append(node)</span></span>
+<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">        </span></span>
+<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">        <span class="hljs-keyword">for</span> neighbor <span class="hljs-keyword">in</span> graph[node]:</span></span>
+<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">            in_degree[neighbor] -= <span class="hljs-number">1</span></span></span>
+<span class="ln-row"><span class="ln-num">21</span><span class="ln-code">            <span class="hljs-keyword">if</span> in_degree[neighbor] == <span class="hljs-number">0</span>:</span></span>
+<span class="ln-row"><span class="ln-num">22</span><span class="ln-code">                queue.append(neighbor)</span></span>
+<span class="ln-row"><span class="ln-num">23</span><span class="ln-code">    </span></span>
+<span class="ln-row"><span class="ln-num">24</span><span class="ln-code">    <span class="hljs-comment"># Check for cycle</span></span></span>
+<span class="ln-row"><span class="ln-num">25</span><span class="ln-code">    <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(result) != numNodes:</span></span>
+<span class="ln-row"><span class="ln-num">26</span><span class="ln-code">        <span class="hljs-keyword">return</span> []  <span class="hljs-comment"># Cycle detected</span></span></span>
+<span class="ln-row"><span class="ln-num">27</span><span class="ln-code">    </span></span>
+<span class="ln-row"><span class="ln-num">28</span><span class="ln-code">    <span class="hljs-keyword">return</span> result</span></span>
+<span class="ln-row"><span class="ln-num">29</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">30</span><span class="ln-code"><span class="hljs-comment"># DFS-based Topological Sort</span></span></span>
+<span class="ln-row"><span class="ln-num">31</span><span class="ln-code"><span class="hljs-keyword">def</span> <span class="hljs-title function_">topologicalSortDFS</span>(<span class="hljs-params">numNodes, edges</span>):</span></span>
+<span class="ln-row"><span class="ln-num">32</span><span class="ln-code">    graph = defaultdict(<span class="hljs-built_in">list</span>)</span></span>
+<span class="ln-row"><span class="ln-num">33</span><span class="ln-code">    <span class="hljs-keyword">for</span> u, v <span class="hljs-keyword">in</span> edges:</span></span>
+<span class="ln-row"><span class="ln-num">34</span><span class="ln-code">        graph[u].append(v)</span></span>
+<span class="ln-row"><span class="ln-num">35</span><span class="ln-code">    </span></span>
+<span class="ln-row"><span class="ln-num">36</span><span class="ln-code">    visited = <span class="hljs-built_in">set</span>()</span></span>
+<span class="ln-row"><span class="ln-num">37</span><span class="ln-code">    stack = []</span></span>
+<span class="ln-row"><span class="ln-num">38</span><span class="ln-code">    </span></span>
+<span class="ln-row"><span class="ln-num">39</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">dfs</span>(<span class="hljs-params">node</span>):</span></span>
+<span class="ln-row"><span class="ln-num">40</span><span class="ln-code">        visited.add(node)</span></span>
+<span class="ln-row"><span class="ln-num">41</span><span class="ln-code">        <span class="hljs-keyword">for</span> neighbor <span class="hljs-keyword">in</span> graph[node]:</span></span>
+<span class="ln-row"><span class="ln-num">42</span><span class="ln-code">            <span class="hljs-keyword">if</span> neighbor <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> visited:</span></span>
+<span class="ln-row"><span class="ln-num">43</span><span class="ln-code">                dfs(neighbor)</span></span>
+<span class="ln-row"><span class="ln-num">44</span><span class="ln-code">        stack.append(node)</span></span>
+<span class="ln-row"><span class="ln-num">45</span><span class="ln-code">    </span></span>
+<span class="ln-row"><span class="ln-num">46</span><span class="ln-code">    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(numNodes):</span></span>
+<span class="ln-row"><span class="ln-num">47</span><span class="ln-code">        <span class="hljs-keyword">if</span> i <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> visited:</span></span>
+<span class="ln-row"><span class="ln-num">48</span><span class="ln-code">            dfs(i)</span></span>
+<span class="ln-row"><span class="ln-num">49</span><span class="ln-code">    </span></span>
+<span class="ln-row"><span class="ln-num">50</span><span class="ln-code">    <span class="hljs-keyword">return</span> stack[::-<span class="hljs-number">1</span>]</span></span>
 </code></pre>
 <h2 id="problems-by-pattern" tabindex="-1"><a class="header-anchor" href="#problems-by-pattern"><span>Problems by Pattern</span></a></h2>
 <h3 id="pattern-based-problem-tables" tabindex="-1"><a class="header-anchor" href="#pattern-based-problem-tables"><span>Pattern-Based Problem Tables</span></a></h3>
@@ -1066,37 +1072,37 @@ def topologicalSortDFS(numNodes, edges):
 </tbody>
 </table>
 <h2 id="pattern-selection-strategy" tabindex="-1"><a class="header-anchor" href="#pattern-selection-strategy"><span>Pattern Selection Strategy</span></a></h2>
-<pre><code>Problem Analysis Flowchart:
-
-1. Need custom ordering rules?
-   ├── YES → Custom Comparator
-   │         ├── Multiple criteria → Tuple comparison
-   │         └── Complex logic → Comparison function
-   └── NO → Continue to 2
-
-2. Dealing with dependencies?
-   ├── YES → Topological Sort
-   │         ├── Detect cycle → Kahn's algorithm
-   │         └── Find ordering → DFS approach
-   └── NO → Continue to 3
-
-3. Working with intervals?
-   ├── YES → Sort by start/end
-   │         ├── Merge overlapping → Greedy merge
-   │         └── Find conflicts → Sweep line
-   └── NO → Continue to 4
-
-4. Finding k-th element?
-   ├── YES → Quick Select or Heap
-   │         ├── One-time query → Quick select O(n)
-   │         └── Multiple queries → Heap O(n log k)
-   └── NO → Continue to 5
-
-5. Limited value range?
-   ├── YES → Counting/Bucket Sort
-   │         ├── Integers → Counting sort
-   │         └── With precision → Bucket sort
-   └── NO → Use standard sorting
+<pre><code class="hljs"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code">Problem Analysis Flowchart:</span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">1. Need custom ordering rules?</span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">   ├── YES → Custom Comparator</span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">   │         ├── Multiple criteria → Tuple comparison</span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">   │         └── Complex logic → Comparison function</span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">   └── NO → Continue to 2</span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">2. Dealing with dependencies?</span></span>
+<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">   ├── YES → Topological Sort</span></span>
+<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">   │         ├── Detect cycle → Kahn's algorithm</span></span>
+<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">   │         └── Find ordering → DFS approach</span></span>
+<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">   └── NO → Continue to 3</span></span>
+<span class="ln-row"><span class="ln-num">14</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">3. Working with intervals?</span></span>
+<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">   ├── YES → Sort by start/end</span></span>
+<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">   │         ├── Merge overlapping → Greedy merge</span></span>
+<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">   │         └── Find conflicts → Sweep line</span></span>
+<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">   └── NO → Continue to 4</span></span>
+<span class="ln-row"><span class="ln-num">20</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">21</span><span class="ln-code">4. Finding k-th element?</span></span>
+<span class="ln-row"><span class="ln-num">22</span><span class="ln-code">   ├── YES → Quick Select or Heap</span></span>
+<span class="ln-row"><span class="ln-num">23</span><span class="ln-code">   │         ├── One-time query → Quick select O(n)</span></span>
+<span class="ln-row"><span class="ln-num">24</span><span class="ln-code">   │         └── Multiple queries → Heap O(n log k)</span></span>
+<span class="ln-row"><span class="ln-num">25</span><span class="ln-code">   └── NO → Continue to 5</span></span>
+<span class="ln-row"><span class="ln-num">26</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">27</span><span class="ln-code">5. Limited value range?</span></span>
+<span class="ln-row"><span class="ln-num">28</span><span class="ln-code">   ├── YES → Counting/Bucket Sort</span></span>
+<span class="ln-row"><span class="ln-num">29</span><span class="ln-code">   │         ├── Integers → Counting sort</span></span>
+<span class="ln-row"><span class="ln-num">30</span><span class="ln-code">   │         └── With precision → Bucket sort</span></span>
+<span class="ln-row"><span class="ln-num">31</span><span class="ln-code">   └── NO → Use standard sorting</span></span>
 </code></pre>
 <h2 id="summary-quick-reference" tabindex="-1"><a class="header-anchor" href="#summary-quick-reference"><span>Summary &amp; Quick Reference</span></a></h2>
 <h3 id="complexity-quick-reference" tabindex="-1"><a class="header-anchor" href="#complexity-quick-reference"><span>Complexity Quick Reference</span></a></h3>
@@ -1206,34 +1212,34 @@ def topologicalSortDFS(numNodes, edges):
 </table>
 <h3 id="common-patterns-tricks" tabindex="-1"><a class="header-anchor" href="#common-patterns-tricks"><span>Common Patterns &amp; Tricks</span></a></h3>
 <h4 id="python-sorting-tricks" tabindex="-1"><a class="header-anchor" href="#python-sorting-tricks"><span><strong>Python Sorting Tricks</strong></span></a></h4>
-<pre><code class="language-python"># Sort with multiple keys
-items.sort(key=lambda x: (x[0], -x[1], x[2]))
-
-# Sort by custom class
-items.sort(key=lambda x: x.priority, reverse=True)
-
-# Stable sort in multiple passes
-items.sort(key=lambda x: x.secondary)  # First
-items.sort(key=lambda x: x.primary)    # Then primary
-
-# In-place vs new list
-arr.sort()           # In-place
-sorted_arr = sorted(arr)  # New list
+<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment"># Sort with multiple keys</span></span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code">items.sort(key=<span class="hljs-keyword">lambda</span> x: (x[<span class="hljs-number">0</span>], -x[<span class="hljs-number">1</span>], x[<span class="hljs-number">2</span>]))</span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"><span class="hljs-comment"># Sort by custom class</span></span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">items.sort(key=<span class="hljs-keyword">lambda</span> x: x.priority, reverse=<span class="hljs-literal">True</span>)</span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code"><span class="hljs-comment"># Stable sort in multiple passes</span></span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">items.sort(key=<span class="hljs-keyword">lambda</span> x: x.secondary)  <span class="hljs-comment"># First</span></span></span>
+<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">items.sort(key=<span class="hljs-keyword">lambda</span> x: x.primary)    <span class="hljs-comment"># Then primary</span></span></span>
+<span class="ln-row"><span class="ln-num">10</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">11</span><span class="ln-code"><span class="hljs-comment"># In-place vs new list</span></span></span>
+<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">arr.sort()           <span class="hljs-comment"># In-place</span></span></span>
+<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">sorted_arr = <span class="hljs-built_in">sorted</span>(arr)  <span class="hljs-comment"># New list</span></span></span>
 </code></pre>
 <h4 id="java-sorting-tricks" tabindex="-1"><a class="header-anchor" href="#java-sorting-tricks"><span><strong>Java Sorting Tricks</strong></span></a></h4>
-<pre><code class="language-java">// Lambda comparator
-Arrays.sort(arr, (a, b) -&gt; a - b);
-
-// Method reference
-Arrays.sort(arr, Integer::compare);
-
-// Comparator chaining
-Arrays.sort(items, Comparator
-    .comparing(Item::getPriority)
-    .thenComparing(Item::getName));
-
-// Reverse order
-Arrays.sort(arr, Collections.reverseOrder());
+<pre data-lang="java"><code class="hljs language-java"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment">// Lambda comparator</span></span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code">Arrays.sort(arr, (a, b) -&gt; a - b);</span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"><span class="hljs-comment">// Method reference</span></span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">Arrays.sort(arr, Integer::compare);</span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code"><span class="hljs-comment">// Comparator chaining</span></span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">Arrays.sort(items, Comparator</span></span>
+<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">    .comparing(Item::getPriority)</span></span>
+<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">    .thenComparing(Item::getName));</span></span>
+<span class="ln-row"><span class="ln-num">11</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">12</span><span class="ln-code"><span class="hljs-comment">// Reverse order</span></span></span>
+<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">Arrays.sort(arr, Collections.reverseOrder());</span></span>
 </code></pre>
 <h3 id="problem-solving-steps" tabindex="-1"><a class="header-anchor" href="#problem-solving-steps"><span>Problem-Solving Steps</span></a></h3>
 <ol>
@@ -1350,444 +1356,444 @@ Arrays.sort(arr, Collections.reverseOrder());
 </ul>
 <h2 id="lc-example" tabindex="-1"><a class="header-anchor" href="#lc-example"><span>LC Example</span></a></h2>
 <h3 id="2-1-pancake-sorting" tabindex="-1"><a class="header-anchor" href="#2-1-pancake-sorting"><span>2-1) Pancake Sorting</span></a></h3>
-<pre><code class="language-python"># python
-# LC 969 Pancake Sorting
-# V0
-# IDEA : pankcake sort + while loop
-# IDEA : 3 STEPS
-#   -&gt; step 1) Find the maximum number in arr
-#   -&gt; step 2) Reverse from 0 to max_idx
-#   -&gt; step 3) Reverse whole list
-# https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/pancake_sort.py
-class Solution(object):
-    def pancakeSort(self, arr):
-        &quot;&quot;&quot;Sort Array with Pancake Sort.
-        :param arr: Collection containing comparable items
-        :return: Collection ordered in ascending order of items
-        Examples:
-        &gt;&gt;&gt; pancake_sort([0, 5, 3, 2, 2])
-        [0, 2, 2, 3, 5]
-        &gt;&gt;&gt; pancake_sort([])
-        []
-        &gt;&gt;&gt; pancake_sort([-2, -5, -45])
-        [-45, -5, -2]
-        &quot;&quot;&quot;
-        cur = len(arr)
-        res = []
-        while cur &gt; 1:
-            # step 1) Find the maximum number in arr
-            max_idx = arr.index(max(arr[0:cur]))
-            res = res + [max_idx+1, cur] # idx is 1 based
-            # step 2) Reverse from 0 to max_idx
-            #arr = arr[max_idx::-1] + arr[max_idx + 1 : len(arr)] # this is OK as well
-            arr = arr[:max_idx][::-1] + arr[max_idx + 1 : len(arr)]
-            # step 3) Reverse whole list
-            #arr = arr[cur - 1 :: -1] + arr[cur : len(arr)] # this is OK as well
-            #arr = arr[:cur - 1][::-1] + arr[cur : len(arr)] # this is OK as well
-            tmp = arr[::-1]
-            arr = tmp
-            cur -= 1
-        print (&quot;arr = &quot; + str(arr))
-        return res
-
-# V1
-# https://leetcode.com/problems/pancake-sorting/discuss/817978/Python-O(n2)-by-simulation-w-Comment
-# https://leetcode.com/problems/pancake-sorting/discuss/330990/Python
-class Solution:
-    def pancakeSort(self, A):
-
-        res = []
-
-        for x in range(len(A), 1, -1):
-            # Carry out pancake-sort from largest number n to smallest number 1
-
-            # find the index of x
-            i = A.index(x)
-
-            # flip first i+1 elements to put x on A[0]
-            # flip first x elements to put x on A[x-1]
-            # now, x is on its corresponding position A[x-1] on ascending order
-            # 
-            &quot;&quot;&quot;
-            # array extend
-            In [10]: x = [1,2,3]
-
-            In [11]: x.extend([4])
-
-            In [12]: x
-            Out[12]: [1, 2, 3, 4]
-
-            In [13]: x = [1,2,3]
-
-            In [14]: x = x + [4]
-
-            In [15]: x
-            Out[15]: [1, 2, 3, 4]
-
-            &quot;&quot;&quot;
-            #res.extend([i + 1, x])
-            res = res + [i + 1, x]
-
-            # update A
-            &quot;&quot;&quot;
-            https://stackoverflow.com/questions/509211/understanding-slice-notation
-
-            a[::-1]    # all items in the array, reversed
-            a[1::-1]   # the first two items, reversed
-            a[:-3:-1]  # the last two items, reversed
-            a[-3::-1]  # everything except the last two items, reversed
-
-            -&gt; A[:i:-1] : last i items, reversed
-
-            &quot;&quot;&quot;
-            A = A[:i:-1] + A[:i]
-        #print (&quot;res = &quot; + str(res))
-        return res
-
-# V1
-# IDEA : RECURSIVE
-# https://leetcode.com/problems/pancake-sorting/discuss/553116/My-python-solution
-# https://leetcode.com/problems/pancake-sorting/discuss/274921/PythonDetailed-Explanation-for-This-Problem
-class Solution:
-    def pancakeSort(self, A):
-        pointer = len(A)
-        result = []
-
-        while pointer &gt; 1:
-            idx = A.index(pointer)
-            result.append(idx + 1)
-            A = A[idx::-1] + A[idx + 1:]
-            result.append(pointer)
-            A = A[pointer - 1::-1] + A[pointer:]
-            pointer -= 1
-            
-        return result
+<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment"># python</span></span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-comment"># LC 969 Pancake Sorting</span></span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"><span class="hljs-comment"># V0</span></span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"><span class="hljs-comment"># IDEA : pankcake sort + while loop</span></span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code"><span class="hljs-comment"># IDEA : 3 STEPS</span></span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code"><span class="hljs-comment">#   -&gt; step 1) Find the maximum number in arr</span></span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code"><span class="hljs-comment">#   -&gt; step 2) Reverse from 0 to max_idx</span></span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code"><span class="hljs-comment">#   -&gt; step 3) Reverse whole list</span></span></span>
+<span class="ln-row"><span class="ln-num">9</span><span class="ln-code"><span class="hljs-comment"># https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/pancake_sort.py</span></span></span>
+<span class="ln-row"><span class="ln-num">10</span><span class="ln-code"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):</span></span>
+<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">pancakeSort</span>(<span class="hljs-params">self, arr</span>):</span></span>
+<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">        <span class="hljs-string">&quot;&quot;&quot;Sort Array with Pancake Sort.</span></span>
+<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">        :param arr: Collection containing comparable items</span></span>
+<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">        :return: Collection ordered in ascending order of items</span></span>
+<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">        Examples:</span></span>
+<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">        &gt;&gt;&gt; pancake_sort([0, 5, 3, 2, 2])</span></span>
+<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">        [0, 2, 2, 3, 5]</span></span>
+<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">        &gt;&gt;&gt; pancake_sort([])</span></span>
+<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">        []</span></span>
+<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">        &gt;&gt;&gt; pancake_sort([-2, -5, -45])</span></span>
+<span class="ln-row"><span class="ln-num">21</span><span class="ln-code">        [-45, -5, -2]</span></span>
+<span class="ln-row"><span class="ln-num">22</span><span class="ln-code">        &quot;&quot;&quot;</span></span></span>
+<span class="ln-row"><span class="ln-num">23</span><span class="ln-code">        cur = <span class="hljs-built_in">len</span>(arr)</span></span>
+<span class="ln-row"><span class="ln-num">24</span><span class="ln-code">        res = []</span></span>
+<span class="ln-row"><span class="ln-num">25</span><span class="ln-code">        <span class="hljs-keyword">while</span> cur &gt; <span class="hljs-number">1</span>:</span></span>
+<span class="ln-row"><span class="ln-num">26</span><span class="ln-code">            <span class="hljs-comment"># step 1) Find the maximum number in arr</span></span></span>
+<span class="ln-row"><span class="ln-num">27</span><span class="ln-code">            max_idx = arr.index(<span class="hljs-built_in">max</span>(arr[<span class="hljs-number">0</span>:cur]))</span></span>
+<span class="ln-row"><span class="ln-num">28</span><span class="ln-code">            res = res + [max_idx+<span class="hljs-number">1</span>, cur] <span class="hljs-comment"># idx is 1 based</span></span></span>
+<span class="ln-row"><span class="ln-num">29</span><span class="ln-code">            <span class="hljs-comment"># step 2) Reverse from 0 to max_idx</span></span></span>
+<span class="ln-row"><span class="ln-num">30</span><span class="ln-code">            <span class="hljs-comment">#arr = arr[max_idx::-1] + arr[max_idx + 1 : len(arr)] # this is OK as well</span></span></span>
+<span class="ln-row"><span class="ln-num">31</span><span class="ln-code">            arr = arr[:max_idx][::-<span class="hljs-number">1</span>] + arr[max_idx + <span class="hljs-number">1</span> : <span class="hljs-built_in">len</span>(arr)]</span></span>
+<span class="ln-row"><span class="ln-num">32</span><span class="ln-code">            <span class="hljs-comment"># step 3) Reverse whole list</span></span></span>
+<span class="ln-row"><span class="ln-num">33</span><span class="ln-code">            <span class="hljs-comment">#arr = arr[cur - 1 :: -1] + arr[cur : len(arr)] # this is OK as well</span></span></span>
+<span class="ln-row"><span class="ln-num">34</span><span class="ln-code">            <span class="hljs-comment">#arr = arr[:cur - 1][::-1] + arr[cur : len(arr)] # this is OK as well</span></span></span>
+<span class="ln-row"><span class="ln-num">35</span><span class="ln-code">            tmp = arr[::-<span class="hljs-number">1</span>]</span></span>
+<span class="ln-row"><span class="ln-num">36</span><span class="ln-code">            arr = tmp</span></span>
+<span class="ln-row"><span class="ln-num">37</span><span class="ln-code">            cur -= <span class="hljs-number">1</span></span></span>
+<span class="ln-row"><span class="ln-num">38</span><span class="ln-code">        <span class="hljs-built_in">print</span> (<span class="hljs-string">&quot;arr = &quot;</span> + <span class="hljs-built_in">str</span>(arr))</span></span>
+<span class="ln-row"><span class="ln-num">39</span><span class="ln-code">        <span class="hljs-keyword">return</span> res</span></span>
+<span class="ln-row"><span class="ln-num">40</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">41</span><span class="ln-code"><span class="hljs-comment"># V1</span></span></span>
+<span class="ln-row"><span class="ln-num">42</span><span class="ln-code"><span class="hljs-comment"># https://leetcode.com/problems/pancake-sorting/discuss/817978/Python-O(n2)-by-simulation-w-Comment</span></span></span>
+<span class="ln-row"><span class="ln-num">43</span><span class="ln-code"><span class="hljs-comment"># https://leetcode.com/problems/pancake-sorting/discuss/330990/Python</span></span></span>
+<span class="ln-row"><span class="ln-num">44</span><span class="ln-code"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:</span></span>
+<span class="ln-row"><span class="ln-num">45</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">pancakeSort</span>(<span class="hljs-params">self, A</span>):</span></span>
+<span class="ln-row"><span class="ln-num">46</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">47</span><span class="ln-code">        res = []</span></span>
+<span class="ln-row"><span class="ln-num">48</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">49</span><span class="ln-code">        <span class="hljs-keyword">for</span> x <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(A), <span class="hljs-number">1</span>, -<span class="hljs-number">1</span>):</span></span>
+<span class="ln-row"><span class="ln-num">50</span><span class="ln-code">            <span class="hljs-comment"># Carry out pancake-sort from largest number n to smallest number 1</span></span></span>
+<span class="ln-row"><span class="ln-num">51</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">52</span><span class="ln-code">            <span class="hljs-comment"># find the index of x</span></span></span>
+<span class="ln-row"><span class="ln-num">53</span><span class="ln-code">            i = A.index(x)</span></span>
+<span class="ln-row"><span class="ln-num">54</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">55</span><span class="ln-code">            <span class="hljs-comment"># flip first i+1 elements to put x on A[0]</span></span></span>
+<span class="ln-row"><span class="ln-num">56</span><span class="ln-code">            <span class="hljs-comment"># flip first x elements to put x on A[x-1]</span></span></span>
+<span class="ln-row"><span class="ln-num">57</span><span class="ln-code">            <span class="hljs-comment"># now, x is on its corresponding position A[x-1] on ascending order</span></span></span>
+<span class="ln-row"><span class="ln-num">58</span><span class="ln-code">            <span class="hljs-comment"># </span></span></span>
+<span class="ln-row"><span class="ln-num">59</span><span class="ln-code">            <span class="hljs-string">&quot;&quot;&quot;</span></span>
+<span class="ln-row"><span class="ln-num">60</span><span class="ln-code">            # array extend</span></span>
+<span class="ln-row"><span class="ln-num">61</span><span class="ln-code">            In [10]: x = [1,2,3]</span></span>
+<span class="ln-row"><span class="ln-num">62</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">63</span><span class="ln-code">            In [11]: x.extend([4])</span></span>
+<span class="ln-row"><span class="ln-num">64</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">65</span><span class="ln-code">            In [12]: x</span></span>
+<span class="ln-row"><span class="ln-num">66</span><span class="ln-code">            Out[12]: [1, 2, 3, 4]</span></span>
+<span class="ln-row"><span class="ln-num">67</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">68</span><span class="ln-code">            In [13]: x = [1,2,3]</span></span>
+<span class="ln-row"><span class="ln-num">69</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">70</span><span class="ln-code">            In [14]: x = x + [4]</span></span>
+<span class="ln-row"><span class="ln-num">71</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">72</span><span class="ln-code">            In [15]: x</span></span>
+<span class="ln-row"><span class="ln-num">73</span><span class="ln-code">            Out[15]: [1, 2, 3, 4]</span></span>
+<span class="ln-row"><span class="ln-num">74</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">75</span><span class="ln-code">            &quot;&quot;&quot;</span></span></span>
+<span class="ln-row"><span class="ln-num">76</span><span class="ln-code">            <span class="hljs-comment">#res.extend([i + 1, x])</span></span></span>
+<span class="ln-row"><span class="ln-num">77</span><span class="ln-code">            res = res + [i + <span class="hljs-number">1</span>, x]</span></span>
+<span class="ln-row"><span class="ln-num">78</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">79</span><span class="ln-code">            <span class="hljs-comment"># update A</span></span></span>
+<span class="ln-row"><span class="ln-num">80</span><span class="ln-code">            <span class="hljs-string">&quot;&quot;&quot;</span></span>
+<span class="ln-row"><span class="ln-num">81</span><span class="ln-code">            https://stackoverflow.com/questions/509211/understanding-slice-notation</span></span>
+<span class="ln-row"><span class="ln-num">82</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">83</span><span class="ln-code">            a[::-1]    # all items in the array, reversed</span></span>
+<span class="ln-row"><span class="ln-num">84</span><span class="ln-code">            a[1::-1]   # the first two items, reversed</span></span>
+<span class="ln-row"><span class="ln-num">85</span><span class="ln-code">            a[:-3:-1]  # the last two items, reversed</span></span>
+<span class="ln-row"><span class="ln-num">86</span><span class="ln-code">            a[-3::-1]  # everything except the last two items, reversed</span></span>
+<span class="ln-row"><span class="ln-num">87</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">88</span><span class="ln-code">            -&gt; A[:i:-1] : last i items, reversed</span></span>
+<span class="ln-row"><span class="ln-num">89</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">90</span><span class="ln-code">            &quot;&quot;&quot;</span></span></span>
+<span class="ln-row"><span class="ln-num">91</span><span class="ln-code">            A = A[:i:-<span class="hljs-number">1</span>] + A[:i]</span></span>
+<span class="ln-row"><span class="ln-num">92</span><span class="ln-code">        <span class="hljs-comment">#print (&quot;res = &quot; + str(res))</span></span></span>
+<span class="ln-row"><span class="ln-num">93</span><span class="ln-code">        <span class="hljs-keyword">return</span> res</span></span>
+<span class="ln-row"><span class="ln-num">94</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">95</span><span class="ln-code"><span class="hljs-comment"># V1</span></span></span>
+<span class="ln-row"><span class="ln-num">96</span><span class="ln-code"><span class="hljs-comment"># IDEA : RECURSIVE</span></span></span>
+<span class="ln-row"><span class="ln-num">97</span><span class="ln-code"><span class="hljs-comment"># https://leetcode.com/problems/pancake-sorting/discuss/553116/My-python-solution</span></span></span>
+<span class="ln-row"><span class="ln-num">98</span><span class="ln-code"><span class="hljs-comment"># https://leetcode.com/problems/pancake-sorting/discuss/274921/PythonDetailed-Explanation-for-This-Problem</span></span></span>
+<span class="ln-row"><span class="ln-num">99</span><span class="ln-code"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:</span></span>
+<span class="ln-row"><span class="ln-num">100</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">pancakeSort</span>(<span class="hljs-params">self, A</span>):</span></span>
+<span class="ln-row"><span class="ln-num">101</span><span class="ln-code">        pointer = <span class="hljs-built_in">len</span>(A)</span></span>
+<span class="ln-row"><span class="ln-num">102</span><span class="ln-code">        result = []</span></span>
+<span class="ln-row"><span class="ln-num">103</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">104</span><span class="ln-code">        <span class="hljs-keyword">while</span> pointer &gt; <span class="hljs-number">1</span>:</span></span>
+<span class="ln-row"><span class="ln-num">105</span><span class="ln-code">            idx = A.index(pointer)</span></span>
+<span class="ln-row"><span class="ln-num">106</span><span class="ln-code">            result.append(idx + <span class="hljs-number">1</span>)</span></span>
+<span class="ln-row"><span class="ln-num">107</span><span class="ln-code">            A = A[idx::-<span class="hljs-number">1</span>] + A[idx + <span class="hljs-number">1</span>:]</span></span>
+<span class="ln-row"><span class="ln-num">108</span><span class="ln-code">            result.append(pointer)</span></span>
+<span class="ln-row"><span class="ln-num">109</span><span class="ln-code">            A = A[pointer - <span class="hljs-number">1</span>::-<span class="hljs-number">1</span>] + A[pointer:]</span></span>
+<span class="ln-row"><span class="ln-num">110</span><span class="ln-code">            pointer -= <span class="hljs-number">1</span></span></span>
+<span class="ln-row"><span class="ln-num">111</span><span class="ln-code">            </span></span>
+<span class="ln-row"><span class="ln-num">112</span><span class="ln-code">        <span class="hljs-keyword">return</span> result</span></span>
 </code></pre>
-<pre><code class="language-java">// java
-// aAlgorithm book (labu) p. 347
-
-// record reverse op array
-LinkedList&lt;Integer&gt; res = new LinkedList&lt;&gt;{};
-
-List&lt;Integer&gt; pancakeSort(int[] cakes){
-	sort(cakes, cakes.length);
-	return res;
-}
-
-// order first N pancakes
-void sort(int[] cakes, int n){
-	// base case
-	if (n == 1) return;
-
-	// find max index
-	int maxCake = 0;
-	int maxCakeIndex = 0;
-	for (int i = 0; i &lt; n; i ++){
-		if (cakes[i] &gt; maxCake){
-			maxCakeIndex = i;
-			maxCake = cakes[i];
-		}
-	}
-	// after 1st flip, put max pancake to the 1st layer
-	reverse(cakes, 0, maxCakeIndex);
-	// record this flip
-	res.add(maxCakeIndex+1);
-	// 2nd flip, make max pancake to the bottom (last layer)
-	reverse(cakes, 0, n-1);
-	// record this flop
-	res.add(n);
-	// recursive call : flip the remaining pancakes
-	sort(cakes, n-1);
-}
-
-/** flip arr[i..j] elements */
-void reverse(int[] arr, int i, int j){
-	while (i &lt; j){
-		int tmp = arr[i];
-		arr[i] = arr[j];
-		arr[j] = tmp;
-		i++;
-		j--;
-	}
-}
+<pre data-lang="java"><code class="hljs language-java"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment">// java</span></span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-comment">// aAlgorithm book (labu) p. 347</span></span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"><span class="hljs-comment">// record reverse op array</span></span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">LinkedList&lt;Integer&gt; res = <span class="hljs-keyword">new</span> <span class="hljs-title class_">LinkedList</span>&lt;&gt;{};</span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">List&lt;Integer&gt; <span class="hljs-title function_">pancakeSort</span><span class="hljs-params">(<span class="hljs-type">int</span>[] cakes)</span>{</span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">	sort(cakes, cakes.length);</span></span>
+<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">	<span class="hljs-keyword">return</span> res;</span></span>
+<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">}</span></span>
+<span class="ln-row"><span class="ln-num">11</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">12</span><span class="ln-code"><span class="hljs-comment">// order first N pancakes</span></span></span>
+<span class="ln-row"><span class="ln-num">13</span><span class="ln-code"><span class="hljs-keyword">void</span> <span class="hljs-title function_">sort</span><span class="hljs-params">(<span class="hljs-type">int</span>[] cakes, <span class="hljs-type">int</span> n)</span>{</span></span>
+<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">	<span class="hljs-comment">// base case</span></span></span>
+<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">	<span class="hljs-keyword">if</span> (n == <span class="hljs-number">1</span>) <span class="hljs-keyword">return</span>;</span></span>
+<span class="ln-row"><span class="ln-num">16</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">	<span class="hljs-comment">// find max index</span></span></span>
+<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">	<span class="hljs-type">int</span> <span class="hljs-variable">maxCake</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;</span></span>
+<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">	<span class="hljs-type">int</span> <span class="hljs-variable">maxCakeIndex</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;</span></span>
+<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">	<span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; n; i ++){</span></span>
+<span class="ln-row"><span class="ln-num">21</span><span class="ln-code">		<span class="hljs-keyword">if</span> (cakes[i] &gt; maxCake){</span></span>
+<span class="ln-row"><span class="ln-num">22</span><span class="ln-code">			maxCakeIndex = i;</span></span>
+<span class="ln-row"><span class="ln-num">23</span><span class="ln-code">			maxCake = cakes[i];</span></span>
+<span class="ln-row"><span class="ln-num">24</span><span class="ln-code">		}</span></span>
+<span class="ln-row"><span class="ln-num">25</span><span class="ln-code">	}</span></span>
+<span class="ln-row"><span class="ln-num">26</span><span class="ln-code">	<span class="hljs-comment">// after 1st flip, put max pancake to the 1st layer</span></span></span>
+<span class="ln-row"><span class="ln-num">27</span><span class="ln-code">	reverse(cakes, <span class="hljs-number">0</span>, maxCakeIndex);</span></span>
+<span class="ln-row"><span class="ln-num">28</span><span class="ln-code">	<span class="hljs-comment">// record this flip</span></span></span>
+<span class="ln-row"><span class="ln-num">29</span><span class="ln-code">	res.add(maxCakeIndex+<span class="hljs-number">1</span>);</span></span>
+<span class="ln-row"><span class="ln-num">30</span><span class="ln-code">	<span class="hljs-comment">// 2nd flip, make max pancake to the bottom (last layer)</span></span></span>
+<span class="ln-row"><span class="ln-num">31</span><span class="ln-code">	reverse(cakes, <span class="hljs-number">0</span>, n-<span class="hljs-number">1</span>);</span></span>
+<span class="ln-row"><span class="ln-num">32</span><span class="ln-code">	<span class="hljs-comment">// record this flop</span></span></span>
+<span class="ln-row"><span class="ln-num">33</span><span class="ln-code">	res.add(n);</span></span>
+<span class="ln-row"><span class="ln-num">34</span><span class="ln-code">	<span class="hljs-comment">// recursive call : flip the remaining pancakes</span></span></span>
+<span class="ln-row"><span class="ln-num">35</span><span class="ln-code">	sort(cakes, n-<span class="hljs-number">1</span>);</span></span>
+<span class="ln-row"><span class="ln-num">36</span><span class="ln-code">}</span></span>
+<span class="ln-row"><span class="ln-num">37</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">38</span><span class="ln-code"><span class="hljs-comment">/** flip arr[i..j] elements */</span></span></span>
+<span class="ln-row"><span class="ln-num">39</span><span class="ln-code"><span class="hljs-keyword">void</span> <span class="hljs-title function_">reverse</span><span class="hljs-params">(<span class="hljs-type">int</span>[] arr, <span class="hljs-type">int</span> i, <span class="hljs-type">int</span> j)</span>{</span></span>
+<span class="ln-row"><span class="ln-num">40</span><span class="ln-code">	<span class="hljs-keyword">while</span> (i &lt; j){</span></span>
+<span class="ln-row"><span class="ln-num">41</span><span class="ln-code">		<span class="hljs-type">int</span> <span class="hljs-variable">tmp</span> <span class="hljs-operator">=</span> arr[i];</span></span>
+<span class="ln-row"><span class="ln-num">42</span><span class="ln-code">		arr[i] = arr[j];</span></span>
+<span class="ln-row"><span class="ln-num">43</span><span class="ln-code">		arr[j] = tmp;</span></span>
+<span class="ln-row"><span class="ln-num">44</span><span class="ln-code">		i++;</span></span>
+<span class="ln-row"><span class="ln-num">45</span><span class="ln-code">		j--;</span></span>
+<span class="ln-row"><span class="ln-num">46</span><span class="ln-code">	}</span></span>
+<span class="ln-row"><span class="ln-num">47</span><span class="ln-code">}</span></span>
 </code></pre>
 <h3 id="2-1-reorder-data-in-log-files" tabindex="-1"><a class="header-anchor" href="#2-1-reorder-data-in-log-files"><span>2-1) Reorder Data in Log Files</span></a></h3>
-<pre><code class="language-python"># LC 937. Reorder Data in Log Files
-# V0
-# IDEA : SORT BY KEY
-class Solution:
-    def reorderLogFiles(self, logs):
-        def f(log):
-            id_, rest = log.split(&quot; &quot;, 1)
-            &quot;&quot;&quot;
-            NOTE !!!
-              2 cases:
-               1) case 1: rest[0].isalpha() =&gt; sort by rest, id_
-               2) case 2: rest[0] is digit =&gt;  DO NOTHING (keep original order)
-
-               syntax:
-                 if condition:
-                    return key1, key2, key3 ....
-            &quot;&quot;&quot;
-            if rest[0].isalpha():
-                return 0, rest, id_
-            else:
-                return 1, None, None
-                #return 100, None, None  # since we need to put Digit-logs behind of Letter-logs, so first key should be ANY DIGIT BIGGER THAN 0 
-
-        logs.sort(key = lambda x : f(x))
-        return logs
-
-# V1
-# IDEA : SORT BY keys
-# https://leetcode.com/problems/reorder-data-in-log-files/solution/
-class Solution:
-    def reorderLogFiles(self, logs):
-
-        def get_key(log):
-            _id, rest = log.split(&quot; &quot;, maxsplit=1)
-            &quot;&quot;&quot;
-            NOTE !!!
-              2 cases:
-               1) case 1: rest[0].isalpha() =&gt; sort by rest, id_
-               2) case 2: rest[0] is digit =&gt;  DO NOTHING (keep original order)
-            &quot;&quot;&quot;
-            return (0, rest, _id) if rest[0].isalpha() else (1, )
-
-        return sorted(logs, key=get_key)
+<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment"># LC 937. Reorder Data in Log Files</span></span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-comment"># V0</span></span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"><span class="hljs-comment"># IDEA : SORT BY KEY</span></span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:</span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">reorderLogFiles</span>(<span class="hljs-params">self, logs</span>):</span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">        <span class="hljs-keyword">def</span> <span class="hljs-title function_">f</span>(<span class="hljs-params">log</span>):</span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">            id_, rest = log.split(<span class="hljs-string">&quot; &quot;</span>, <span class="hljs-number">1</span>)</span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">            <span class="hljs-string">&quot;&quot;&quot;</span></span>
+<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">            NOTE !!!</span></span>
+<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">              2 cases:</span></span>
+<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">               1) case 1: rest[0].isalpha() =&gt; sort by rest, id_</span></span>
+<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">               2) case 2: rest[0] is digit =&gt;  DO NOTHING (keep original order)</span></span>
+<span class="ln-row"><span class="ln-num">13</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">               syntax:</span></span>
+<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">                 if condition:</span></span>
+<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">                    return key1, key2, key3 ....</span></span>
+<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">            &quot;&quot;&quot;</span></span></span>
+<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">            <span class="hljs-keyword">if</span> rest[<span class="hljs-number">0</span>].isalpha():</span></span>
+<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">                <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>, rest, id_</span></span>
+<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">            <span class="hljs-keyword">else</span>:</span></span>
+<span class="ln-row"><span class="ln-num">21</span><span class="ln-code">                <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>, <span class="hljs-literal">None</span>, <span class="hljs-literal">None</span></span></span>
+<span class="ln-row"><span class="ln-num">22</span><span class="ln-code">                <span class="hljs-comment">#return 100, None, None  # since we need to put Digit-logs behind of Letter-logs, so first key should be ANY DIGIT BIGGER THAN 0 </span></span></span>
+<span class="ln-row"><span class="ln-num">23</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">24</span><span class="ln-code">        logs.sort(key = <span class="hljs-keyword">lambda</span> x : f(x))</span></span>
+<span class="ln-row"><span class="ln-num">25</span><span class="ln-code">        <span class="hljs-keyword">return</span> logs</span></span>
+<span class="ln-row"><span class="ln-num">26</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">27</span><span class="ln-code"><span class="hljs-comment"># V1</span></span></span>
+<span class="ln-row"><span class="ln-num">28</span><span class="ln-code"><span class="hljs-comment"># IDEA : SORT BY keys</span></span></span>
+<span class="ln-row"><span class="ln-num">29</span><span class="ln-code"><span class="hljs-comment"># https://leetcode.com/problems/reorder-data-in-log-files/solution/</span></span></span>
+<span class="ln-row"><span class="ln-num">30</span><span class="ln-code"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:</span></span>
+<span class="ln-row"><span class="ln-num">31</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">reorderLogFiles</span>(<span class="hljs-params">self, logs</span>):</span></span>
+<span class="ln-row"><span class="ln-num">32</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">33</span><span class="ln-code">        <span class="hljs-keyword">def</span> <span class="hljs-title function_">get_key</span>(<span class="hljs-params">log</span>):</span></span>
+<span class="ln-row"><span class="ln-num">34</span><span class="ln-code">            _<span class="hljs-built_in">id</span>, rest = log.split(<span class="hljs-string">&quot; &quot;</span>, maxsplit=<span class="hljs-number">1</span>)</span></span>
+<span class="ln-row"><span class="ln-num">35</span><span class="ln-code">            <span class="hljs-string">&quot;&quot;&quot;</span></span>
+<span class="ln-row"><span class="ln-num">36</span><span class="ln-code">            NOTE !!!</span></span>
+<span class="ln-row"><span class="ln-num">37</span><span class="ln-code">              2 cases:</span></span>
+<span class="ln-row"><span class="ln-num">38</span><span class="ln-code">               1) case 1: rest[0].isalpha() =&gt; sort by rest, id_</span></span>
+<span class="ln-row"><span class="ln-num">39</span><span class="ln-code">               2) case 2: rest[0] is digit =&gt;  DO NOTHING (keep original order)</span></span>
+<span class="ln-row"><span class="ln-num">40</span><span class="ln-code">            &quot;&quot;&quot;</span></span></span>
+<span class="ln-row"><span class="ln-num">41</span><span class="ln-code">            <span class="hljs-keyword">return</span> (<span class="hljs-number">0</span>, rest, _<span class="hljs-built_in">id</span>) <span class="hljs-keyword">if</span> rest[<span class="hljs-number">0</span>].isalpha() <span class="hljs-keyword">else</span> (<span class="hljs-number">1</span>, )</span></span>
+<span class="ln-row"><span class="ln-num">42</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">43</span><span class="ln-code">        <span class="hljs-keyword">return</span> <span class="hljs-built_in">sorted</span>(logs, key=get_key)</span></span>
 </code></pre>
 <h3 id="2-2-meeting-rooms" tabindex="-1"><a class="header-anchor" href="#2-2-meeting-rooms"><span>2-2) Meeting Rooms</span></a></h3>
-<pre><code class="language-python"># LC 252. Meeting Rooms
-# V0
-class Solution:
-    def canAttendMeetings(self, intervals):
-        &quot;&quot;&quot;
-        NOTE this
-        &quot;&quot;&quot;
-        intervals.sort(key=lambda x: x[0])
-        for i in range(1, len(intervals)):
-            &quot;&quot;&quot;
-            NOTE this : 
-                -&gt; we compare ntervals[i][0] and ntervals[i-1][1]
-            &quot;&quot;&quot;
-            if intervals[i][0] &lt; intervals[i-1][1]:
-                return False
-        return True
+<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment"># LC 252. Meeting Rooms</span></span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-comment"># V0</span></span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:</span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">canAttendMeetings</span>(<span class="hljs-params">self, intervals</span>):</span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">        <span class="hljs-string">&quot;&quot;&quot;</span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">        NOTE this</span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">        &quot;&quot;&quot;</span></span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">        intervals.sort(key=<span class="hljs-keyword">lambda</span> x: x[<span class="hljs-number">0</span>])</span></span>
+<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>, <span class="hljs-built_in">len</span>(intervals)):</span></span>
+<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">            <span class="hljs-string">&quot;&quot;&quot;</span></span>
+<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">            NOTE this : </span></span>
+<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">                -&gt; we compare ntervals[i][0] and ntervals[i-1][1]</span></span>
+<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">            &quot;&quot;&quot;</span></span></span>
+<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">            <span class="hljs-keyword">if</span> intervals[i][<span class="hljs-number">0</span>] &lt; intervals[i-<span class="hljs-number">1</span>][<span class="hljs-number">1</span>]:</span></span>
+<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">                <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span></span></span>
+<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">        <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span></span></span>
 </code></pre>
 <h3 id="2-3-custom-sort-string" tabindex="-1"><a class="header-anchor" href="#2-3-custom-sort-string"><span>2-3) Custom Sort String</span></a></h3>
-<pre><code class="language-python"># LC 791. Custom Sort String
-# V0
-# IDEA : COUNTER
-from collections import Counter
-class Solution(object):
-    def customSortString(self, order, s):
-        s_map = Counter(s)
-        res = &quot;&quot;
-        for o in order:
-            if o in s_map:
-                res += (o * s_map[o])
-                del s_map[o]
-        for s in s_map:
-            res += s * s_map[s]
-        return res
+<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment"># LC 791. Custom Sort String</span></span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-comment"># V0</span></span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"><span class="hljs-comment"># IDEA : COUNTER</span></span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"><span class="hljs-keyword">from</span> collections <span class="hljs-keyword">import</span> Counter</span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):</span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">customSortString</span>(<span class="hljs-params">self, order, s</span>):</span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">        s_map = Counter(s)</span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">        res = <span class="hljs-string">&quot;&quot;</span></span></span>
+<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">        <span class="hljs-keyword">for</span> o <span class="hljs-keyword">in</span> order:</span></span>
+<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">            <span class="hljs-keyword">if</span> o <span class="hljs-keyword">in</span> s_map:</span></span>
+<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">                res += (o * s_map[o])</span></span>
+<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">                <span class="hljs-keyword">del</span> s_map[o]</span></span>
+<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">        <span class="hljs-keyword">for</span> s <span class="hljs-keyword">in</span> s_map:</span></span>
+<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">            res += s * s_map[s]</span></span>
+<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">        <span class="hljs-keyword">return</span> res</span></span>
 </code></pre>
 <h3 id="2-4-find-k-closest-elements" tabindex="-1"><a class="header-anchor" href="#2-4-find-k-closest-elements"><span>2-4) Find K Closest Elements</span></a></h3>
-<pre><code class="language-python"># LC 658. Find K Closest Elements
-# NOTE : there is also stack, binary search.. approaches
-# V0'
-# IDEA : SORTING
-class Solution:
-    def findClosestElements(self, arr, k, x):
-        # Sort using custom comparator
-        sorted_arr = sorted(arr, key = lambda num: abs(x - num))
-
-        # Only take k elements
-        result = []
-        for i in range(k):
-            result.append(sorted_arr[i])
-        
-        # Sort again to have output in ascending order
-        return sorted(result)
+<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment"># LC 658. Find K Closest Elements</span></span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-comment"># NOTE : there is also stack, binary search.. approaches</span></span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"><span class="hljs-comment"># V0&#x27;</span></span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"><span class="hljs-comment"># IDEA : SORTING</span></span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:</span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">findClosestElements</span>(<span class="hljs-params">self, arr, k, x</span>):</span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">        <span class="hljs-comment"># Sort using custom comparator</span></span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">        sorted_arr = <span class="hljs-built_in">sorted</span>(arr, key = <span class="hljs-keyword">lambda</span> num: <span class="hljs-built_in">abs</span>(x - num))</span></span>
+<span class="ln-row"><span class="ln-num">9</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">        <span class="hljs-comment"># Only take k elements</span></span></span>
+<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">        result = []</span></span>
+<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(k):</span></span>
+<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">            result.append(sorted_arr[i])</span></span>
+<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">        </span></span>
+<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">        <span class="hljs-comment"># Sort again to have output in ascending order</span></span></span>
+<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">        <span class="hljs-keyword">return</span> <span class="hljs-built_in">sorted</span>(result)</span></span>
 </code></pre>
 <h3 id="2-5-largest-number" tabindex="-1"><a class="header-anchor" href="#2-5-largest-number"><span>2-5) Largest Number</span></a></h3>
-<pre><code class="language-python"># LC 179. Largest Number
-# V0
-# IDEA : Sorting via Custom Comparator
-class compare(str):
-    # __lt__ defines &quot;&gt;&quot; operator in python
-    def __lt__(x, y):
-        return x+y &gt; y+x
-
-class Solution:
-    def largestNumber(self, nums):
-        largest = sorted([str(v) for v in nums], key=compare) 
-        largest = ''.join(largest) 
-        return '0' if largest[0] == '0' else largest 
+<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment"># LC 179. Largest Number</span></span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-comment"># V0</span></span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"><span class="hljs-comment"># IDEA : Sorting via Custom Comparator</span></span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"><span class="hljs-keyword">class</span> <span class="hljs-title class_">compare</span>(<span class="hljs-title class_ inherited__">str</span>):</span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    <span class="hljs-comment"># __lt__ defines &quot;&gt;&quot; operator in python</span></span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__lt__</span>(<span class="hljs-params">x, y</span>):</span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">        <span class="hljs-keyword">return</span> x+y &gt; y+x</span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">9</span><span class="ln-code"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:</span></span>
+<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">largestNumber</span>(<span class="hljs-params">self, nums</span>):</span></span>
+<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">        largest = <span class="hljs-built_in">sorted</span>([<span class="hljs-built_in">str</span>(v) <span class="hljs-keyword">for</span> v <span class="hljs-keyword">in</span> nums], key=compare) </span></span>
+<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">        largest = <span class="hljs-string">&#x27;&#x27;</span>.join(largest) </span></span>
+<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">        <span class="hljs-keyword">return</span> <span class="hljs-string">&#x27;0&#x27;</span> <span class="hljs-keyword">if</span> largest[<span class="hljs-number">0</span>] == <span class="hljs-string">&#x27;0&#x27;</span> <span class="hljs-keyword">else</span> largest </span></span>
 </code></pre>
 <h3 id="2-6-permutation-in-string" tabindex="-1"><a class="header-anchor" href="#2-6-permutation-in-string"><span>2-6) Permutation in String</span></a></h3>
-<pre><code class="language-python"># LC 567 
-# V0
-# IDEA : collections + sliding window
-from collections import Counter
-class Solution(object):
-    def checkInclusion(self, s1, s2):
-        if len(s1) &gt; len(s2):
-            return False   
-        l = 0
-        tmp = &quot;&quot;
-        _s1 = Counter(s1)
-        _s2 = Counter()     
-        for i, item in enumerate(s2):
-            ### NOTE : we need to append new element first, then compare
-            _s2[item] += 1
-            tmp = s2[l:i+1]
-            if _s2 == _s1 and len(tmp) &gt; 0:
-                return True
-            if len(tmp) &gt;= len(s1):
-                _s2[tmp[0]] -= 1
-                if _s2[tmp[0]] == 0:
-                    del _s2[tmp[0]]
-                l += 1
-        return False
+<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment"># LC 567 </span></span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-comment"># V0</span></span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"><span class="hljs-comment"># IDEA : collections + sliding window</span></span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"><span class="hljs-keyword">from</span> collections <span class="hljs-keyword">import</span> Counter</span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):</span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">checkInclusion</span>(<span class="hljs-params">self, s1, s2</span>):</span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">        <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(s1) &gt; <span class="hljs-built_in">len</span>(s2):</span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">            <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>   </span></span>
+<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">        l = <span class="hljs-number">0</span></span></span>
+<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">        tmp = <span class="hljs-string">&quot;&quot;</span></span></span>
+<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">        _s1 = Counter(s1)</span></span>
+<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">        _s2 = Counter()     </span></span>
+<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">        <span class="hljs-keyword">for</span> i, item <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(s2):</span></span>
+<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">            <span class="hljs-comment">### NOTE : we need to append new element first, then compare</span></span></span>
+<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">            _s2[item] += <span class="hljs-number">1</span></span></span>
+<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">            tmp = s2[l:i+<span class="hljs-number">1</span>]</span></span>
+<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">            <span class="hljs-keyword">if</span> _s2 == _s1 <span class="hljs-keyword">and</span> <span class="hljs-built_in">len</span>(tmp) &gt; <span class="hljs-number">0</span>:</span></span>
+<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">                <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span></span></span>
+<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">            <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(tmp) &gt;= <span class="hljs-built_in">len</span>(s1):</span></span>
+<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">                _s2[tmp[<span class="hljs-number">0</span>]] -= <span class="hljs-number">1</span></span></span>
+<span class="ln-row"><span class="ln-num">21</span><span class="ln-code">                <span class="hljs-keyword">if</span> _s2[tmp[<span class="hljs-number">0</span>]] == <span class="hljs-number">0</span>:</span></span>
+<span class="ln-row"><span class="ln-num">22</span><span class="ln-code">                    <span class="hljs-keyword">del</span> _s2[tmp[<span class="hljs-number">0</span>]]</span></span>
+<span class="ln-row"><span class="ln-num">23</span><span class="ln-code">                l += <span class="hljs-number">1</span></span></span>
+<span class="ln-row"><span class="ln-num">24</span><span class="ln-code">        <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span></span></span>
 </code></pre>
-<pre><code class="language-java">// java
-// LC 567
-// V2
-// IDEA : SORTING
-// https://leetcode.com/problems/permutation-in-string/editorial/
-public boolean checkInclusion_3(String s1, String s2) {
-    s1 = sort(s1);
-    for (int i = 0; i &lt;= s2.length() - s1.length(); i++) {
-        if (s1.equals(sort(s2.substring(i, i + s1.length()))))
-            return true;
-    }
-    return false;
-}
-
-public String sort(String s) {
-    char[] t = s.toCharArray();
-    Arrays.sort(t);
-    return new String(t);
-} 
+<pre data-lang="java"><code class="hljs language-java"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment">// java</span></span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-comment">// LC 567</span></span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"><span class="hljs-comment">// V2</span></span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"><span class="hljs-comment">// IDEA : SORTING</span></span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code"><span class="hljs-comment">// https://leetcode.com/problems/permutation-in-string/editorial/</span></span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code"><span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">checkInclusion_3</span><span class="hljs-params">(String s1, String s2)</span> {</span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">    s1 = sort(s1);</span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt;= s2.length() - s1.length(); i++) {</span></span>
+<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">        <span class="hljs-keyword">if</span> (s1.equals(sort(s2.substring(i, i + s1.length()))))</span></span>
+<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">            <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;</span></span>
+<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">    }</span></span>
+<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">    <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;</span></span>
+<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">}</span></span>
+<span class="ln-row"><span class="ln-num">14</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">15</span><span class="ln-code"><span class="hljs-keyword">public</span> String <span class="hljs-title function_">sort</span><span class="hljs-params">(String s)</span> {</span></span>
+<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">    <span class="hljs-type">char</span>[] t = s.toCharArray();</span></span>
+<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">    Arrays.sort(t);</span></span>
+<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">    <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">String</span>(t);</span></span>
+<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">} </span></span>
 </code></pre>
 <h3 id="2-7-car-fleet" tabindex="-1"><a class="header-anchor" href="#2-7-car-fleet"><span>2-7) Car Fleet</span></a></h3>
-<pre><code class="language-java">// java
-
-// LC 853. Car Fleet
-
-    // V0
-    // IDEA: pair position and speed, sorting (gpt)
-    /**
-     * IDEA :
-     *
-     * The approach involves sorting the cars by their starting positions
-     * (from farthest to nearest to the target)
-     * and computing their time to reach the target.
-     * We then iterate through these times to count the number of distinct fleets.
-     *
-     *
-     *
-     * Steps in the Code:
-     *  1.  Pair Cars with Their Speeds:
-     *      •   Combine position and speed into a 2D array cars for easier sorting and access.
-     *  2.  Sort Cars by Position Descending:
-     *      •   Use Arrays.sort with a custom comparator to sort cars from farthest to nearest relative to the target.
-     *  3.  Calculate Arrival Times:
-     *      •   Compute the time each car takes to reach the target using the formula:
-     *
-     *  time = (target - position) / speed
-     *
-     *  4.  Count Fleets:
-     *      •   Iterate through the times array:
-     *      •   If the current car’s arrival time is greater than the lastTime (time of the last fleet), it forms a new fleet.
-     *      •   Update lastTime to the current car’s time.
-     *  5.  Return Fleet Count:
-     *      •   The number of distinct times that exceed lastTime corresponds to the number of fleets.
-     *
-     */
-    public int carFleet(int target, int[] position, int[] speed) {
-        int n = position.length;
-        // Pair positions with speeds and `sort by position in descending order`
-        // cars : [position][speed]
-        int[][] cars = new int[n][2];
-        for (int i = 0; i &lt; n; i++) {
-            cars[i][0] = position[i];
-            cars[i][1] = speed[i];
-        }
-
-        /**
-         * NOTE !!!
-         *
-         *  Sort by position descending (simulate the &quot;car arriving&quot; process
-         */
-        Arrays.sort(cars, (a, b) -&gt; b[0] - a[0]); // Sort by position descending
-
-        // Calculate arrival times
-        double[] times = new double[n];
-        for (int i = 0; i &lt; n; i++) {
-            times[i] = (double) (target - cars[i][0]) / cars[i][1];
-        }
-
-        // Count fleets
-        int fleets = 0;
-        double lastTime = 0;
-        for (double time : times) {
-            /**
-             *  4.  Count Fleets:
-             *  •   Iterate through the times array:
-             *  •   If the current car’s arrival time is greater than the lastTime (time of the last fleet), it forms a new fleet.
-             *  •   Update lastTime to the current car’s time.
-             */
-            // If current car's time is greater than the last fleet's time, it forms a new fleet
-            if (time &gt; lastTime) {
-                fleets++;
-                lastTime = time;
-            }
-        }
-
-        return fleets;
-    }
+<pre data-lang="java"><code class="hljs language-java"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment">// java</span></span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"><span class="hljs-comment">// LC 853. Car Fleet</span></span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    <span class="hljs-comment">// V0</span></span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    <span class="hljs-comment">// IDEA: pair position and speed, sorting (gpt)</span></span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">    <span class="hljs-comment">/**</span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">     * IDEA :</span></span>
+<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">     *</span></span>
+<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">     * The approach involves sorting the cars by their starting positions</span></span>
+<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">     * (from farthest to nearest to the target)</span></span>
+<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">     * and computing their time to reach the target.</span></span>
+<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">     * We then iterate through these times to count the number of distinct fleets.</span></span>
+<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">     *</span></span>
+<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">     *</span></span>
+<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">     *</span></span>
+<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">     * Steps in the Code:</span></span>
+<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">     *  1.  Pair Cars with Their Speeds:</span></span>
+<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">     *      •   Combine position and speed into a 2D array cars for easier sorting and access.</span></span>
+<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">     *  2.  Sort Cars by Position Descending:</span></span>
+<span class="ln-row"><span class="ln-num">21</span><span class="ln-code">     *      •   Use Arrays.sort with a custom comparator to sort cars from farthest to nearest relative to the target.</span></span>
+<span class="ln-row"><span class="ln-num">22</span><span class="ln-code">     *  3.  Calculate Arrival Times:</span></span>
+<span class="ln-row"><span class="ln-num">23</span><span class="ln-code">     *      •   Compute the time each car takes to reach the target using the formula:</span></span>
+<span class="ln-row"><span class="ln-num">24</span><span class="ln-code">     *</span></span>
+<span class="ln-row"><span class="ln-num">25</span><span class="ln-code">     *  time = (target - position) / speed</span></span>
+<span class="ln-row"><span class="ln-num">26</span><span class="ln-code">     *</span></span>
+<span class="ln-row"><span class="ln-num">27</span><span class="ln-code">     *  4.  Count Fleets:</span></span>
+<span class="ln-row"><span class="ln-num">28</span><span class="ln-code">     *      •   Iterate through the times array:</span></span>
+<span class="ln-row"><span class="ln-num">29</span><span class="ln-code">     *      •   If the current car’s arrival time is greater than the lastTime (time of the last fleet), it forms a new fleet.</span></span>
+<span class="ln-row"><span class="ln-num">30</span><span class="ln-code">     *      •   Update lastTime to the current car’s time.</span></span>
+<span class="ln-row"><span class="ln-num">31</span><span class="ln-code">     *  5.  Return Fleet Count:</span></span>
+<span class="ln-row"><span class="ln-num">32</span><span class="ln-code">     *      •   The number of distinct times that exceed lastTime corresponds to the number of fleets.</span></span>
+<span class="ln-row"><span class="ln-num">33</span><span class="ln-code">     *</span></span>
+<span class="ln-row"><span class="ln-num">34</span><span class="ln-code">     */</span></span></span>
+<span class="ln-row"><span class="ln-num">35</span><span class="ln-code">    <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">carFleet</span><span class="hljs-params">(<span class="hljs-type">int</span> target, <span class="hljs-type">int</span>[] position, <span class="hljs-type">int</span>[] speed)</span> {</span></span>
+<span class="ln-row"><span class="ln-num">36</span><span class="ln-code">        <span class="hljs-type">int</span> <span class="hljs-variable">n</span> <span class="hljs-operator">=</span> position.length;</span></span>
+<span class="ln-row"><span class="ln-num">37</span><span class="ln-code">        <span class="hljs-comment">// Pair positions with speeds and `sort by position in descending order`</span></span></span>
+<span class="ln-row"><span class="ln-num">38</span><span class="ln-code">        <span class="hljs-comment">// cars : [position][speed]</span></span></span>
+<span class="ln-row"><span class="ln-num">39</span><span class="ln-code">        <span class="hljs-type">int</span>[][] cars = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[n][<span class="hljs-number">2</span>];</span></span>
+<span class="ln-row"><span class="ln-num">40</span><span class="ln-code">        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; n; i++) {</span></span>
+<span class="ln-row"><span class="ln-num">41</span><span class="ln-code">            cars[i][<span class="hljs-number">0</span>] = position[i];</span></span>
+<span class="ln-row"><span class="ln-num">42</span><span class="ln-code">            cars[i][<span class="hljs-number">1</span>] = speed[i];</span></span>
+<span class="ln-row"><span class="ln-num">43</span><span class="ln-code">        }</span></span>
+<span class="ln-row"><span class="ln-num">44</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">45</span><span class="ln-code">        <span class="hljs-comment">/**</span></span>
+<span class="ln-row"><span class="ln-num">46</span><span class="ln-code">         * NOTE !!!</span></span>
+<span class="ln-row"><span class="ln-num">47</span><span class="ln-code">         *</span></span>
+<span class="ln-row"><span class="ln-num">48</span><span class="ln-code">         *  Sort by position descending (simulate the &quot;car arriving&quot; process</span></span>
+<span class="ln-row"><span class="ln-num">49</span><span class="ln-code">         */</span></span></span>
+<span class="ln-row"><span class="ln-num">50</span><span class="ln-code">        Arrays.sort(cars, (a, b) -&gt; b[<span class="hljs-number">0</span>] - a[<span class="hljs-number">0</span>]); <span class="hljs-comment">// Sort by position descending</span></span></span>
+<span class="ln-row"><span class="ln-num">51</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">52</span><span class="ln-code">        <span class="hljs-comment">// Calculate arrival times</span></span></span>
+<span class="ln-row"><span class="ln-num">53</span><span class="ln-code">        <span class="hljs-type">double</span>[] times = <span class="hljs-keyword">new</span> <span class="hljs-title class_">double</span>[n];</span></span>
+<span class="ln-row"><span class="ln-num">54</span><span class="ln-code">        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; n; i++) {</span></span>
+<span class="ln-row"><span class="ln-num">55</span><span class="ln-code">            times[i] = (<span class="hljs-type">double</span>) (target - cars[i][<span class="hljs-number">0</span>]) / cars[i][<span class="hljs-number">1</span>];</span></span>
+<span class="ln-row"><span class="ln-num">56</span><span class="ln-code">        }</span></span>
+<span class="ln-row"><span class="ln-num">57</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">58</span><span class="ln-code">        <span class="hljs-comment">// Count fleets</span></span></span>
+<span class="ln-row"><span class="ln-num">59</span><span class="ln-code">        <span class="hljs-type">int</span> <span class="hljs-variable">fleets</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;</span></span>
+<span class="ln-row"><span class="ln-num">60</span><span class="ln-code">        <span class="hljs-type">double</span> <span class="hljs-variable">lastTime</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;</span></span>
+<span class="ln-row"><span class="ln-num">61</span><span class="ln-code">        <span class="hljs-keyword">for</span> (<span class="hljs-type">double</span> time : times) {</span></span>
+<span class="ln-row"><span class="ln-num">62</span><span class="ln-code">            <span class="hljs-comment">/**</span></span>
+<span class="ln-row"><span class="ln-num">63</span><span class="ln-code">             *  4.  Count Fleets:</span></span>
+<span class="ln-row"><span class="ln-num">64</span><span class="ln-code">             *  •   Iterate through the times array:</span></span>
+<span class="ln-row"><span class="ln-num">65</span><span class="ln-code">             *  •   If the current car’s arrival time is greater than the lastTime (time of the last fleet), it forms a new fleet.</span></span>
+<span class="ln-row"><span class="ln-num">66</span><span class="ln-code">             *  •   Update lastTime to the current car’s time.</span></span>
+<span class="ln-row"><span class="ln-num">67</span><span class="ln-code">             */</span></span></span>
+<span class="ln-row"><span class="ln-num">68</span><span class="ln-code">            <span class="hljs-comment">// If current car&#x27;s time is greater than the last fleet&#x27;s time, it forms a new fleet</span></span></span>
+<span class="ln-row"><span class="ln-num">69</span><span class="ln-code">            <span class="hljs-keyword">if</span> (time &gt; lastTime) {</span></span>
+<span class="ln-row"><span class="ln-num">70</span><span class="ln-code">                fleets++;</span></span>
+<span class="ln-row"><span class="ln-num">71</span><span class="ln-code">                lastTime = time;</span></span>
+<span class="ln-row"><span class="ln-num">72</span><span class="ln-code">            }</span></span>
+<span class="ln-row"><span class="ln-num">73</span><span class="ln-code">        }</span></span>
+<span class="ln-row"><span class="ln-num">74</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">75</span><span class="ln-code">        <span class="hljs-keyword">return</span> fleets;</span></span>
+<span class="ln-row"><span class="ln-num">76</span><span class="ln-code">    }</span></span>
 </code></pre>
 <h3 id="2-7-topk-frequent-words" tabindex="-1"><a class="header-anchor" href="#2-7-topk-frequent-words"><span>2-7)  TopK Frequent Words</span></a></h3>
-<pre><code class="language-java">// java
-// LC 692
-
-// V0-1
-// IDEA: Sort on map key set
-public List&lt;String&gt; topKFrequent_0_1(String[] words, int k) {
-
-    // IDEA: map sorting
-    HashMap&lt;String, Integer&gt; freq = new HashMap&lt;&gt;();
-    for (int i = 0; i &lt; words.length; i++) {
-        freq.put(words[i], freq.getOrDefault(words[i], 0) + 1);
-    }
-    List&lt;String&gt; res = new ArrayList(freq.keySet());
-
-    /**
-     * NOTE !!!
-     *
-     *  we directly sort over map's keySet
-     *  (with the data val, key that read from map)
-     *
-     *
-     *  example:
-     *
-     *          Collections.sort(res,
-     *                 (w1, w2) -&gt; freq.get(w1).equals(freq.get(w2)) ? w1.compareTo(w2) : freq.get(w2) - freq.get(w1));
-     */
-    Collections.sort(res, (x, y) -&gt; {
-        int valDiff = freq.get(y) - freq.get(x); // sort on `value` bigger number first (decreasing order)
-        if (valDiff == 0){
-            // Sort on `key ` with `lexicographically` order (increasing order)
-            //return y.length() - x.length(); // ?
-            return x.compareTo(y);
-        }
-        return valDiff;
-    });
-
-    // get top K result
-    return res.subList(0, k);
-}
+<pre data-lang="java"><code class="hljs language-java"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment">// java</span></span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-comment">// LC 692</span></span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"><span class="hljs-comment">// V0-1</span></span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code"><span class="hljs-comment">// IDEA: Sort on map key set</span></span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code"><span class="hljs-keyword">public</span> List&lt;String&gt; <span class="hljs-title function_">topKFrequent_0_1</span><span class="hljs-params">(String[] words, <span class="hljs-type">int</span> k)</span> {</span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">    <span class="hljs-comment">// IDEA: map sorting</span></span></span>
+<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">    HashMap&lt;String, Integer&gt; freq = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;();</span></span>
+<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; words.length; i++) {</span></span>
+<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">        freq.put(words[i], freq.getOrDefault(words[i], <span class="hljs-number">0</span>) + <span class="hljs-number">1</span>);</span></span>
+<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">    }</span></span>
+<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">    List&lt;String&gt; res = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>(freq.keySet());</span></span>
+<span class="ln-row"><span class="ln-num">14</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">    <span class="hljs-comment">/**</span></span>
+<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">     * NOTE !!!</span></span>
+<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">     *</span></span>
+<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">     *  we directly sort over map&#x27;s keySet</span></span>
+<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">     *  (with the data val, key that read from map)</span></span>
+<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">     *</span></span>
+<span class="ln-row"><span class="ln-num">21</span><span class="ln-code">     *</span></span>
+<span class="ln-row"><span class="ln-num">22</span><span class="ln-code">     *  example:</span></span>
+<span class="ln-row"><span class="ln-num">23</span><span class="ln-code">     *</span></span>
+<span class="ln-row"><span class="ln-num">24</span><span class="ln-code">     *          Collections.sort(res,</span></span>
+<span class="ln-row"><span class="ln-num">25</span><span class="ln-code">     *                 (w1, w2) -&gt; freq.get(w1).equals(freq.get(w2)) ? w1.compareTo(w2) : freq.get(w2) - freq.get(w1));</span></span>
+<span class="ln-row"><span class="ln-num">26</span><span class="ln-code">     */</span></span></span>
+<span class="ln-row"><span class="ln-num">27</span><span class="ln-code">    Collections.sort(res, (x, y) -&gt; {</span></span>
+<span class="ln-row"><span class="ln-num">28</span><span class="ln-code">        <span class="hljs-type">int</span> <span class="hljs-variable">valDiff</span> <span class="hljs-operator">=</span> freq.get(y) - freq.get(x); <span class="hljs-comment">// sort on `value` bigger number first (decreasing order)</span></span></span>
+<span class="ln-row"><span class="ln-num">29</span><span class="ln-code">        <span class="hljs-keyword">if</span> (valDiff == <span class="hljs-number">0</span>){</span></span>
+<span class="ln-row"><span class="ln-num">30</span><span class="ln-code">            <span class="hljs-comment">// Sort on `key ` with `lexicographically` order (increasing order)</span></span></span>
+<span class="ln-row"><span class="ln-num">31</span><span class="ln-code">            <span class="hljs-comment">//return y.length() - x.length(); // ?</span></span></span>
+<span class="ln-row"><span class="ln-num">32</span><span class="ln-code">            <span class="hljs-keyword">return</span> x.compareTo(y);</span></span>
+<span class="ln-row"><span class="ln-num">33</span><span class="ln-code">        }</span></span>
+<span class="ln-row"><span class="ln-num">34</span><span class="ln-code">        <span class="hljs-keyword">return</span> valDiff;</span></span>
+<span class="ln-row"><span class="ln-num">35</span><span class="ln-code">    });</span></span>
+<span class="ln-row"><span class="ln-num">36</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">37</span><span class="ln-code">    <span class="hljs-comment">// get top K result</span></span></span>
+<span class="ln-row"><span class="ln-num">38</span><span class="ln-code">    <span class="hljs-keyword">return</span> res.subList(<span class="hljs-number">0</span>, k);</span></span>
+<span class="ln-row"><span class="ln-num">39</span><span class="ln-code">}</span></span>
 </code></pre>
 
       </div>

@@ -9,8 +9,7 @@
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>CS</text></svg>">
   <link rel="stylesheet" href="../style.css">
   <link rel="stylesheet" href="../vendor/fonts.css">
-  <link rel="stylesheet" href="../vendor/highlight/github-dark.min.css">
-  <script src="../vendor/highlight/highlight.min.js"></script>
+  <link rel="stylesheet" href="../vendor/highlight/atom-one-dark.min.css">
   <script>
   // Apply theme before render to prevent flash
   (function() {
@@ -21,40 +20,43 @@
   })();
   </script>
   <script>document.addEventListener('DOMContentLoaded', function() {
-    hljs.highlightAll();
-    document.querySelectorAll('pre code').forEach(function(codeEl) {
-      var pre = codeEl.parentElement;
-      var lang = '';
-      var cls = codeEl.className || '';
-      var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
-      if (m) lang = m[1];
-      var wrapper = document.createElement('div');
-      wrapper.className = 'code-block-wrapper';
-      pre.parentNode.insertBefore(wrapper, pre);
-      var header = document.createElement('div');
-      header.className = 'code-block-header';
-      if (lang) {
-        var label = document.createElement('span');
-        label.className = 'code-lang-label';
-        label.textContent = lang;
-        header.appendChild(label);
-      } else {
-        header.appendChild(document.createElement('span'));
-      }
-      var btn = document.createElement('button');
-      btn.className = 'copy-btn';
-      btn.textContent = 'Copy';
-      btn.addEventListener('click', function() {
-        navigator.clipboard.writeText(codeEl.textContent).then(function() {
-          btn.textContent = 'Copied!';
-          btn.classList.add('copied');
-          setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+    // Code block wrappers + copy buttons (highlighting done at build time)
+    try {
+      document.querySelectorAll('pre').forEach(function(pre) {
+        var codeEl = pre.querySelector('code');
+        var lang = pre.getAttribute('data-lang') || '';
+        var wrapper = document.createElement('div');
+        wrapper.className = 'code-block-wrapper';
+        pre.parentNode.insertBefore(wrapper, pre);
+        var header = document.createElement('div');
+        header.className = 'code-block-header';
+        if (lang) {
+          var label = document.createElement('span');
+          label.className = 'code-lang-label';
+          label.textContent = lang;
+          header.appendChild(label);
+        } else {
+          header.appendChild(document.createElement('span'));
+        }
+        var btn = document.createElement('button');
+        btn.className = 'copy-btn';
+        btn.textContent = 'Copy';
+        btn.addEventListener('click', function() {
+          var text = codeEl
+            ? Array.from(codeEl.querySelectorAll('.ln-code')).map(function(el) { return el.textContent; }).join('
+')
+            : pre.textContent;
+          navigator.clipboard.writeText(text).then(function() {
+            btn.textContent = 'Copied!';
+            btn.classList.add('copied');
+            setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+          });
         });
+        header.appendChild(btn);
+        wrapper.appendChild(header);
+        wrapper.appendChild(pre);
       });
-      header.appendChild(btn);
-      wrapper.appendChild(header);
-      wrapper.appendChild(pre);
-    });
+    } catch(e) { console.error('Code block setup error:', e); }
     document.querySelectorAll('table').forEach(function(table) {
       if (!table.parentElement.classList.contains('table-wrap')) {
         var wrapper = document.createElement('div');
@@ -64,32 +66,36 @@
       }
     });
     // Reading progress bar
-    var progressBar = document.getElementById('reading-progress');
-    if (progressBar) {
-      window.addEventListener('scroll', function() {
-        var winScroll = document.documentElement.scrollTop;
-        var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-        progressBar.style.width = height > 0 ? (winScroll / height * 100) + '%' : '0%';
-      });
-    }
-    // Dark mode toggle
-    var toggle = document.getElementById('theme-toggle');
-    if (toggle) {
-      var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-      toggle.textContent = isDark ? '☀️' : '🌙';
-      toggle.addEventListener('click', function() {
-        var dark = document.documentElement.getAttribute('data-theme') === 'dark';
-        if (dark) {
-          document.documentElement.removeAttribute('data-theme');
-          localStorage.setItem('theme', 'light');
-          toggle.textContent = '🌙';
-        } else {
-          document.documentElement.setAttribute('data-theme', 'dark');
-          localStorage.setItem('theme', 'dark');
-          toggle.textContent = '☀️';
-        }
-      });
-    }
+    try {
+      var progressBar = document.getElementById('reading-progress');
+      if (progressBar) {
+        window.addEventListener('scroll', function() {
+          var winScroll = document.documentElement.scrollTop;
+          var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+          progressBar.style.width = height > 0 ? (winScroll / height * 100) + '%' : '0%';
+        });
+      }
+    } catch(e) {}
+    // Dark mode toggle — isolated so errors elsewhere never prevent this from working
+    try {
+      var toggle = document.getElementById('theme-toggle');
+      if (toggle) {
+        var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+        toggle.textContent = isDark ? '☀️' : '🌙';
+        toggle.addEventListener('click', function() {
+          var dark = document.documentElement.getAttribute('data-theme') === 'dark';
+          if (dark) {
+            document.documentElement.removeAttribute('data-theme');
+            localStorage.setItem('theme', 'light');
+            toggle.textContent = '🌙';
+          } else {
+            document.documentElement.setAttribute('data-theme', 'dark');
+            localStorage.setItem('theme', 'dark');
+            toggle.textContent = '☀️';
+          }
+        });
+      }
+    } catch(e) { console.error('Theme toggle error:', e); }
   });</script>
 </head>
 <body>
@@ -219,204 +225,204 @@
 </table>
 <h2 id="templates-algorithms" tabindex="-1"><a class="header-anchor" href="#templates-algorithms"><span>Templates &amp; Algorithms</span></a></h2>
 <h3 id="template-1-binary-indexed-tree-fenwick-tree" tabindex="-1"><a class="header-anchor" href="#template-1-binary-indexed-tree-fenwick-tree"><span>Template 1: Binary Indexed Tree (Fenwick Tree)</span></a></h3>
-<pre><code class="language-python">class BIT:
-    &quot;&quot;&quot;Binary Indexed Tree for range sum queries and point updates&quot;&quot;&quot;
-
-    def __init__(self, n):
-        self.n = n
-        self.tree = [0] * (n + 1)  # 1-indexed
-
-    def update(self, i, delta):
-        &quot;&quot;&quot;Add delta to element at index i&quot;&quot;&quot;
-        while i &lt;= self.n:
-            self.tree[i] += delta
-            i += i &amp; (-i)  # Add lowest set bit
-
-    def query(self, i):
-        &quot;&quot;&quot;Get prefix sum from 1 to i&quot;&quot;&quot;
-        total = 0
-        while i &gt; 0:
-            total += self.tree[i]
-            i -= i &amp; (-i)  # Remove lowest set bit
-        return total
-
-    def range_query(self, left, right):
-        &quot;&quot;&quot;Get sum from left to right (inclusive)&quot;&quot;&quot;
-        if left &gt; 1:
-            return self.query(right) - self.query(left - 1)
-        else:
-            return self.query(right)
-
-    def build(self, arr):
-        &quot;&quot;&quot;Build BIT from array (1-indexed)&quot;&quot;&quot;
-        for i in range(1, len(arr)):
-            self.update(i, arr[i])
+<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-keyword">class</span> <span class="hljs-title class_">BIT</span>:</span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code">    <span class="hljs-string">&quot;&quot;&quot;Binary Indexed Tree for range sum queries and point updates&quot;&quot;&quot;</span></span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, n</span>):</span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">        <span class="hljs-variable language_">self</span>.n = n</span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">        <span class="hljs-variable language_">self</span>.tree = [<span class="hljs-number">0</span>] * (n + <span class="hljs-number">1</span>)  <span class="hljs-comment"># 1-indexed</span></span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">update</span>(<span class="hljs-params">self, i, delta</span>):</span></span>
+<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">        <span class="hljs-string">&quot;&quot;&quot;Add delta to element at index i&quot;&quot;&quot;</span></span></span>
+<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">        <span class="hljs-keyword">while</span> i &lt;= <span class="hljs-variable language_">self</span>.n:</span></span>
+<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">            <span class="hljs-variable language_">self</span>.tree[i] += delta</span></span>
+<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">            i += i &amp; (-i)  <span class="hljs-comment"># Add lowest set bit</span></span></span>
+<span class="ln-row"><span class="ln-num">13</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">query</span>(<span class="hljs-params">self, i</span>):</span></span>
+<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">        <span class="hljs-string">&quot;&quot;&quot;Get prefix sum from 1 to i&quot;&quot;&quot;</span></span></span>
+<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">        total = <span class="hljs-number">0</span></span></span>
+<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">        <span class="hljs-keyword">while</span> i &gt; <span class="hljs-number">0</span>:</span></span>
+<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">            total += <span class="hljs-variable language_">self</span>.tree[i]</span></span>
+<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">            i -= i &amp; (-i)  <span class="hljs-comment"># Remove lowest set bit</span></span></span>
+<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">        <span class="hljs-keyword">return</span> total</span></span>
+<span class="ln-row"><span class="ln-num">21</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">22</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">range_query</span>(<span class="hljs-params">self, left, right</span>):</span></span>
+<span class="ln-row"><span class="ln-num">23</span><span class="ln-code">        <span class="hljs-string">&quot;&quot;&quot;Get sum from left to right (inclusive)&quot;&quot;&quot;</span></span></span>
+<span class="ln-row"><span class="ln-num">24</span><span class="ln-code">        <span class="hljs-keyword">if</span> left &gt; <span class="hljs-number">1</span>:</span></span>
+<span class="ln-row"><span class="ln-num">25</span><span class="ln-code">            <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.query(right) - <span class="hljs-variable language_">self</span>.query(left - <span class="hljs-number">1</span>)</span></span>
+<span class="ln-row"><span class="ln-num">26</span><span class="ln-code">        <span class="hljs-keyword">else</span>:</span></span>
+<span class="ln-row"><span class="ln-num">27</span><span class="ln-code">            <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.query(right)</span></span>
+<span class="ln-row"><span class="ln-num">28</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">29</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">build</span>(<span class="hljs-params">self, arr</span>):</span></span>
+<span class="ln-row"><span class="ln-num">30</span><span class="ln-code">        <span class="hljs-string">&quot;&quot;&quot;Build BIT from array (1-indexed)&quot;&quot;&quot;</span></span></span>
+<span class="ln-row"><span class="ln-num">31</span><span class="ln-code">        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>, <span class="hljs-built_in">len</span>(arr)):</span></span>
+<span class="ln-row"><span class="ln-num">32</span><span class="ln-code">            <span class="hljs-variable language_">self</span>.update(i, arr[i])</span></span>
 </code></pre>
 <h3 id="template-2-segment-tree-range-sum" tabindex="-1"><a class="header-anchor" href="#template-2-segment-tree-range-sum"><span>Template 2: Segment Tree (Range Sum)</span></a></h3>
-<pre><code class="language-python">class SegmentTree:
-    &quot;&quot;&quot;Segment Tree for range sum queries and point updates&quot;&quot;&quot;
-
-    def __init__(self, arr):
-        self.n = len(arr)
-        self.tree = [0] * (4 * self.n)  # 4x space for safety
-        self.build(arr, 1, 0, self.n - 1)
-
-    def build(self, arr, node, start, end):
-        &quot;&quot;&quot;Build segment tree recursively&quot;&quot;&quot;
-        if start == end:
-            self.tree[node] = arr[start]
-        else:
-            mid = (start + end) // 2
-            self.build(arr, 2 * node, start, mid)
-            self.build(arr, 2 * node + 1, mid + 1, end)
-            self.tree[node] = self.tree[2 * node] + self.tree[2 * node + 1]
-
-    def update(self, node, start, end, idx, val):
-        &quot;&quot;&quot;Update single element at index idx to val&quot;&quot;&quot;
-        if start == end:
-            self.tree[node] = val
-        else:
-            mid = (start + end) // 2
-            if idx &lt;= mid:
-                self.update(2 * node, start, mid, idx, val)
-            else:
-                self.update(2 * node + 1, mid + 1, end, idx, val)
-            self.tree[node] = self.tree[2 * node] + self.tree[2 * node + 1]
-
-    def query(self, node, start, end, left, right):
-        &quot;&quot;&quot;Query sum in range [left, right]&quot;&quot;&quot;
-        if right &lt; start or end &lt; left:
-            return 0  # No overlap
-
-        if left &lt;= start and end &lt;= right:
-            return self.tree[node]  # Complete overlap
-
-        # Partial overlap
-        mid = (start + end) // 2
-        left_sum = self.query(2 * node, start, mid, left, right)
-        right_sum = self.query(2 * node + 1, mid + 1, end, left, right)
-        return left_sum + right_sum
-
-    # Public interface methods
-    def point_update(self, idx, val):
-        &quot;&quot;&quot;Update element at index idx to val&quot;&quot;&quot;
-        self.update(1, 0, self.n - 1, idx, val)
-
-    def range_sum(self, left, right):
-        &quot;&quot;&quot;Get sum in range [left, right]&quot;&quot;&quot;
-        return self.query(1, 0, self.n - 1, left, right)
+<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-keyword">class</span> <span class="hljs-title class_">SegmentTree</span>:</span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code">    <span class="hljs-string">&quot;&quot;&quot;Segment Tree for range sum queries and point updates&quot;&quot;&quot;</span></span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, arr</span>):</span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">        <span class="hljs-variable language_">self</span>.n = <span class="hljs-built_in">len</span>(arr)</span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">        <span class="hljs-variable language_">self</span>.tree = [<span class="hljs-number">0</span>] * (<span class="hljs-number">4</span> * <span class="hljs-variable language_">self</span>.n)  <span class="hljs-comment"># 4x space for safety</span></span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">        <span class="hljs-variable language_">self</span>.build(arr, <span class="hljs-number">1</span>, <span class="hljs-number">0</span>, <span class="hljs-variable language_">self</span>.n - <span class="hljs-number">1</span>)</span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">build</span>(<span class="hljs-params">self, arr, node, start, end</span>):</span></span>
+<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">        <span class="hljs-string">&quot;&quot;&quot;Build segment tree recursively&quot;&quot;&quot;</span></span></span>
+<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">        <span class="hljs-keyword">if</span> start == end:</span></span>
+<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">            <span class="hljs-variable language_">self</span>.tree[node] = arr[start]</span></span>
+<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">        <span class="hljs-keyword">else</span>:</span></span>
+<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">            mid = (start + end) // <span class="hljs-number">2</span></span></span>
+<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">            <span class="hljs-variable language_">self</span>.build(arr, <span class="hljs-number">2</span> * node, start, mid)</span></span>
+<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">            <span class="hljs-variable language_">self</span>.build(arr, <span class="hljs-number">2</span> * node + <span class="hljs-number">1</span>, mid + <span class="hljs-number">1</span>, end)</span></span>
+<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">            <span class="hljs-variable language_">self</span>.tree[node] = <span class="hljs-variable language_">self</span>.tree[<span class="hljs-number">2</span> * node] + <span class="hljs-variable language_">self</span>.tree[<span class="hljs-number">2</span> * node + <span class="hljs-number">1</span>]</span></span>
+<span class="ln-row"><span class="ln-num">18</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">update</span>(<span class="hljs-params">self, node, start, end, idx, val</span>):</span></span>
+<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">        <span class="hljs-string">&quot;&quot;&quot;Update single element at index idx to val&quot;&quot;&quot;</span></span></span>
+<span class="ln-row"><span class="ln-num">21</span><span class="ln-code">        <span class="hljs-keyword">if</span> start == end:</span></span>
+<span class="ln-row"><span class="ln-num">22</span><span class="ln-code">            <span class="hljs-variable language_">self</span>.tree[node] = val</span></span>
+<span class="ln-row"><span class="ln-num">23</span><span class="ln-code">        <span class="hljs-keyword">else</span>:</span></span>
+<span class="ln-row"><span class="ln-num">24</span><span class="ln-code">            mid = (start + end) // <span class="hljs-number">2</span></span></span>
+<span class="ln-row"><span class="ln-num">25</span><span class="ln-code">            <span class="hljs-keyword">if</span> idx &lt;= mid:</span></span>
+<span class="ln-row"><span class="ln-num">26</span><span class="ln-code">                <span class="hljs-variable language_">self</span>.update(<span class="hljs-number">2</span> * node, start, mid, idx, val)</span></span>
+<span class="ln-row"><span class="ln-num">27</span><span class="ln-code">            <span class="hljs-keyword">else</span>:</span></span>
+<span class="ln-row"><span class="ln-num">28</span><span class="ln-code">                <span class="hljs-variable language_">self</span>.update(<span class="hljs-number">2</span> * node + <span class="hljs-number">1</span>, mid + <span class="hljs-number">1</span>, end, idx, val)</span></span>
+<span class="ln-row"><span class="ln-num">29</span><span class="ln-code">            <span class="hljs-variable language_">self</span>.tree[node] = <span class="hljs-variable language_">self</span>.tree[<span class="hljs-number">2</span> * node] + <span class="hljs-variable language_">self</span>.tree[<span class="hljs-number">2</span> * node + <span class="hljs-number">1</span>]</span></span>
+<span class="ln-row"><span class="ln-num">30</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">31</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">query</span>(<span class="hljs-params">self, node, start, end, left, right</span>):</span></span>
+<span class="ln-row"><span class="ln-num">32</span><span class="ln-code">        <span class="hljs-string">&quot;&quot;&quot;Query sum in range [left, right]&quot;&quot;&quot;</span></span></span>
+<span class="ln-row"><span class="ln-num">33</span><span class="ln-code">        <span class="hljs-keyword">if</span> right &lt; start <span class="hljs-keyword">or</span> end &lt; left:</span></span>
+<span class="ln-row"><span class="ln-num">34</span><span class="ln-code">            <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>  <span class="hljs-comment"># No overlap</span></span></span>
+<span class="ln-row"><span class="ln-num">35</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">36</span><span class="ln-code">        <span class="hljs-keyword">if</span> left &lt;= start <span class="hljs-keyword">and</span> end &lt;= right:</span></span>
+<span class="ln-row"><span class="ln-num">37</span><span class="ln-code">            <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.tree[node]  <span class="hljs-comment"># Complete overlap</span></span></span>
+<span class="ln-row"><span class="ln-num">38</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">39</span><span class="ln-code">        <span class="hljs-comment"># Partial overlap</span></span></span>
+<span class="ln-row"><span class="ln-num">40</span><span class="ln-code">        mid = (start + end) // <span class="hljs-number">2</span></span></span>
+<span class="ln-row"><span class="ln-num">41</span><span class="ln-code">        left_sum = <span class="hljs-variable language_">self</span>.query(<span class="hljs-number">2</span> * node, start, mid, left, right)</span></span>
+<span class="ln-row"><span class="ln-num">42</span><span class="ln-code">        right_sum = <span class="hljs-variable language_">self</span>.query(<span class="hljs-number">2</span> * node + <span class="hljs-number">1</span>, mid + <span class="hljs-number">1</span>, end, left, right)</span></span>
+<span class="ln-row"><span class="ln-num">43</span><span class="ln-code">        <span class="hljs-keyword">return</span> left_sum + right_sum</span></span>
+<span class="ln-row"><span class="ln-num">44</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">45</span><span class="ln-code">    <span class="hljs-comment"># Public interface methods</span></span></span>
+<span class="ln-row"><span class="ln-num">46</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">point_update</span>(<span class="hljs-params">self, idx, val</span>):</span></span>
+<span class="ln-row"><span class="ln-num">47</span><span class="ln-code">        <span class="hljs-string">&quot;&quot;&quot;Update element at index idx to val&quot;&quot;&quot;</span></span></span>
+<span class="ln-row"><span class="ln-num">48</span><span class="ln-code">        <span class="hljs-variable language_">self</span>.update(<span class="hljs-number">1</span>, <span class="hljs-number">0</span>, <span class="hljs-variable language_">self</span>.n - <span class="hljs-number">1</span>, idx, val)</span></span>
+<span class="ln-row"><span class="ln-num">49</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">50</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">range_sum</span>(<span class="hljs-params">self, left, right</span>):</span></span>
+<span class="ln-row"><span class="ln-num">51</span><span class="ln-code">        <span class="hljs-string">&quot;&quot;&quot;Get sum in range [left, right]&quot;&quot;&quot;</span></span></span>
+<span class="ln-row"><span class="ln-num">52</span><span class="ln-code">        <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.query(<span class="hljs-number">1</span>, <span class="hljs-number">0</span>, <span class="hljs-variable language_">self</span>.n - <span class="hljs-number">1</span>, left, right)</span></span>
 </code></pre>
 <h3 id="template-3-segment-tree-with-lazy-propagation" tabindex="-1"><a class="header-anchor" href="#template-3-segment-tree-with-lazy-propagation"><span>Template 3: Segment Tree with Lazy Propagation</span></a></h3>
-<pre><code class="language-python">class LazySegmentTree:
-    &quot;&quot;&quot;Segment Tree with lazy propagation for range updates&quot;&quot;&quot;
-
-    def __init__(self, arr):
-        self.n = len(arr)
-        self.tree = [0] * (4 * self.n)
-        self.lazy = [0] * (4 * self.n)
-        self.build(arr, 1, 0, self.n - 1)
-
-    def build(self, arr, node, start, end):
-        if start == end:
-            self.tree[node] = arr[start]
-        else:
-            mid = (start + end) // 2
-            self.build(arr, 2 * node, start, mid)
-            self.build(arr, 2 * node + 1, mid + 1, end)
-            self.tree[node] = self.tree[2 * node] + self.tree[2 * node + 1]
-
-    def push(self, node, start, end):
-        &quot;&quot;&quot;Push lazy value down to children&quot;&quot;&quot;
-        if self.lazy[node] != 0:
-            self.tree[node] += self.lazy[node] * (end - start + 1)
-
-            if start != end:  # Not a leaf node
-                self.lazy[2 * node] += self.lazy[node]
-                self.lazy[2 * node + 1] += self.lazy[node]
-
-            self.lazy[node] = 0
-
-    def update_range(self, node, start, end, left, right, val):
-        &quot;&quot;&quot;Add val to range [left, right]&quot;&quot;&quot;
-        self.push(node, start, end)
-
-        if start &gt; right or end &lt; left:
-            return
-
-        if start &gt;= left and end &lt;= right:
-            self.lazy[node] += val
-            self.push(node, start, end)
-            return
-
-        mid = (start + end) // 2
-        self.update_range(2 * node, start, mid, left, right, val)
-        self.update_range(2 * node + 1, mid + 1, end, left, right, val)
-
-        self.push(2 * node, start, mid)
-        self.push(2 * node + 1, mid + 1, end)
-        self.tree[node] = self.tree[2 * node] + self.tree[2 * node + 1]
-
-    def query_range(self, node, start, end, left, right):
-        &quot;&quot;&quot;Query sum in range [left, right]&quot;&quot;&quot;
-        if start &gt; right or end &lt; left:
-            return 0
-
-        self.push(node, start, end)
-
-        if start &gt;= left and end &lt;= right:
-            return self.tree[node]
-
-        mid = (start + end) // 2
-        left_sum = self.query_range(2 * node, start, mid, left, right)
-        right_sum = self.query_range(2 * node + 1, mid + 1, end, left, right)
-        return left_sum + right_sum
-
-    # Public interface
-    def range_add(self, left, right, val):
-        &quot;&quot;&quot;Add val to range [left, right]&quot;&quot;&quot;
-        self.update_range(1, 0, self.n - 1, left, right, val)
-
-    def range_sum(self, left, right):
-        &quot;&quot;&quot;Get sum in range [left, right]&quot;&quot;&quot;
-        return self.query_range(1, 0, self.n - 1, left, right)
+<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-keyword">class</span> <span class="hljs-title class_">LazySegmentTree</span>:</span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code">    <span class="hljs-string">&quot;&quot;&quot;Segment Tree with lazy propagation for range updates&quot;&quot;&quot;</span></span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, arr</span>):</span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">        <span class="hljs-variable language_">self</span>.n = <span class="hljs-built_in">len</span>(arr)</span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">        <span class="hljs-variable language_">self</span>.tree = [<span class="hljs-number">0</span>] * (<span class="hljs-number">4</span> * <span class="hljs-variable language_">self</span>.n)</span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">        <span class="hljs-variable language_">self</span>.lazy = [<span class="hljs-number">0</span>] * (<span class="hljs-number">4</span> * <span class="hljs-variable language_">self</span>.n)</span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">        <span class="hljs-variable language_">self</span>.build(arr, <span class="hljs-number">1</span>, <span class="hljs-number">0</span>, <span class="hljs-variable language_">self</span>.n - <span class="hljs-number">1</span>)</span></span>
+<span class="ln-row"><span class="ln-num">9</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">build</span>(<span class="hljs-params">self, arr, node, start, end</span>):</span></span>
+<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">        <span class="hljs-keyword">if</span> start == end:</span></span>
+<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">            <span class="hljs-variable language_">self</span>.tree[node] = arr[start]</span></span>
+<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">        <span class="hljs-keyword">else</span>:</span></span>
+<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">            mid = (start + end) // <span class="hljs-number">2</span></span></span>
+<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">            <span class="hljs-variable language_">self</span>.build(arr, <span class="hljs-number">2</span> * node, start, mid)</span></span>
+<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">            <span class="hljs-variable language_">self</span>.build(arr, <span class="hljs-number">2</span> * node + <span class="hljs-number">1</span>, mid + <span class="hljs-number">1</span>, end)</span></span>
+<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">            <span class="hljs-variable language_">self</span>.tree[node] = <span class="hljs-variable language_">self</span>.tree[<span class="hljs-number">2</span> * node] + <span class="hljs-variable language_">self</span>.tree[<span class="hljs-number">2</span> * node + <span class="hljs-number">1</span>]</span></span>
+<span class="ln-row"><span class="ln-num">18</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">push</span>(<span class="hljs-params">self, node, start, end</span>):</span></span>
+<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">        <span class="hljs-string">&quot;&quot;&quot;Push lazy value down to children&quot;&quot;&quot;</span></span></span>
+<span class="ln-row"><span class="ln-num">21</span><span class="ln-code">        <span class="hljs-keyword">if</span> <span class="hljs-variable language_">self</span>.lazy[node] != <span class="hljs-number">0</span>:</span></span>
+<span class="ln-row"><span class="ln-num">22</span><span class="ln-code">            <span class="hljs-variable language_">self</span>.tree[node] += <span class="hljs-variable language_">self</span>.lazy[node] * (end - start + <span class="hljs-number">1</span>)</span></span>
+<span class="ln-row"><span class="ln-num">23</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">24</span><span class="ln-code">            <span class="hljs-keyword">if</span> start != end:  <span class="hljs-comment"># Not a leaf node</span></span></span>
+<span class="ln-row"><span class="ln-num">25</span><span class="ln-code">                <span class="hljs-variable language_">self</span>.lazy[<span class="hljs-number">2</span> * node] += <span class="hljs-variable language_">self</span>.lazy[node]</span></span>
+<span class="ln-row"><span class="ln-num">26</span><span class="ln-code">                <span class="hljs-variable language_">self</span>.lazy[<span class="hljs-number">2</span> * node + <span class="hljs-number">1</span>] += <span class="hljs-variable language_">self</span>.lazy[node]</span></span>
+<span class="ln-row"><span class="ln-num">27</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">28</span><span class="ln-code">            <span class="hljs-variable language_">self</span>.lazy[node] = <span class="hljs-number">0</span></span></span>
+<span class="ln-row"><span class="ln-num">29</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">30</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">update_range</span>(<span class="hljs-params">self, node, start, end, left, right, val</span>):</span></span>
+<span class="ln-row"><span class="ln-num">31</span><span class="ln-code">        <span class="hljs-string">&quot;&quot;&quot;Add val to range [left, right]&quot;&quot;&quot;</span></span></span>
+<span class="ln-row"><span class="ln-num">32</span><span class="ln-code">        <span class="hljs-variable language_">self</span>.push(node, start, end)</span></span>
+<span class="ln-row"><span class="ln-num">33</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">34</span><span class="ln-code">        <span class="hljs-keyword">if</span> start &gt; right <span class="hljs-keyword">or</span> end &lt; left:</span></span>
+<span class="ln-row"><span class="ln-num">35</span><span class="ln-code">            <span class="hljs-keyword">return</span></span></span>
+<span class="ln-row"><span class="ln-num">36</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">37</span><span class="ln-code">        <span class="hljs-keyword">if</span> start &gt;= left <span class="hljs-keyword">and</span> end &lt;= right:</span></span>
+<span class="ln-row"><span class="ln-num">38</span><span class="ln-code">            <span class="hljs-variable language_">self</span>.lazy[node] += val</span></span>
+<span class="ln-row"><span class="ln-num">39</span><span class="ln-code">            <span class="hljs-variable language_">self</span>.push(node, start, end)</span></span>
+<span class="ln-row"><span class="ln-num">40</span><span class="ln-code">            <span class="hljs-keyword">return</span></span></span>
+<span class="ln-row"><span class="ln-num">41</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">42</span><span class="ln-code">        mid = (start + end) // <span class="hljs-number">2</span></span></span>
+<span class="ln-row"><span class="ln-num">43</span><span class="ln-code">        <span class="hljs-variable language_">self</span>.update_range(<span class="hljs-number">2</span> * node, start, mid, left, right, val)</span></span>
+<span class="ln-row"><span class="ln-num">44</span><span class="ln-code">        <span class="hljs-variable language_">self</span>.update_range(<span class="hljs-number">2</span> * node + <span class="hljs-number">1</span>, mid + <span class="hljs-number">1</span>, end, left, right, val)</span></span>
+<span class="ln-row"><span class="ln-num">45</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">46</span><span class="ln-code">        <span class="hljs-variable language_">self</span>.push(<span class="hljs-number">2</span> * node, start, mid)</span></span>
+<span class="ln-row"><span class="ln-num">47</span><span class="ln-code">        <span class="hljs-variable language_">self</span>.push(<span class="hljs-number">2</span> * node + <span class="hljs-number">1</span>, mid + <span class="hljs-number">1</span>, end)</span></span>
+<span class="ln-row"><span class="ln-num">48</span><span class="ln-code">        <span class="hljs-variable language_">self</span>.tree[node] = <span class="hljs-variable language_">self</span>.tree[<span class="hljs-number">2</span> * node] + <span class="hljs-variable language_">self</span>.tree[<span class="hljs-number">2</span> * node + <span class="hljs-number">1</span>]</span></span>
+<span class="ln-row"><span class="ln-num">49</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">50</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">query_range</span>(<span class="hljs-params">self, node, start, end, left, right</span>):</span></span>
+<span class="ln-row"><span class="ln-num">51</span><span class="ln-code">        <span class="hljs-string">&quot;&quot;&quot;Query sum in range [left, right]&quot;&quot;&quot;</span></span></span>
+<span class="ln-row"><span class="ln-num">52</span><span class="ln-code">        <span class="hljs-keyword">if</span> start &gt; right <span class="hljs-keyword">or</span> end &lt; left:</span></span>
+<span class="ln-row"><span class="ln-num">53</span><span class="ln-code">            <span class="hljs-keyword">return</span> <span class="hljs-number">0</span></span></span>
+<span class="ln-row"><span class="ln-num">54</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">55</span><span class="ln-code">        <span class="hljs-variable language_">self</span>.push(node, start, end)</span></span>
+<span class="ln-row"><span class="ln-num">56</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">57</span><span class="ln-code">        <span class="hljs-keyword">if</span> start &gt;= left <span class="hljs-keyword">and</span> end &lt;= right:</span></span>
+<span class="ln-row"><span class="ln-num">58</span><span class="ln-code">            <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.tree[node]</span></span>
+<span class="ln-row"><span class="ln-num">59</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">60</span><span class="ln-code">        mid = (start + end) // <span class="hljs-number">2</span></span></span>
+<span class="ln-row"><span class="ln-num">61</span><span class="ln-code">        left_sum = <span class="hljs-variable language_">self</span>.query_range(<span class="hljs-number">2</span> * node, start, mid, left, right)</span></span>
+<span class="ln-row"><span class="ln-num">62</span><span class="ln-code">        right_sum = <span class="hljs-variable language_">self</span>.query_range(<span class="hljs-number">2</span> * node + <span class="hljs-number">1</span>, mid + <span class="hljs-number">1</span>, end, left, right)</span></span>
+<span class="ln-row"><span class="ln-num">63</span><span class="ln-code">        <span class="hljs-keyword">return</span> left_sum + right_sum</span></span>
+<span class="ln-row"><span class="ln-num">64</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">65</span><span class="ln-code">    <span class="hljs-comment"># Public interface</span></span></span>
+<span class="ln-row"><span class="ln-num">66</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">range_add</span>(<span class="hljs-params">self, left, right, val</span>):</span></span>
+<span class="ln-row"><span class="ln-num">67</span><span class="ln-code">        <span class="hljs-string">&quot;&quot;&quot;Add val to range [left, right]&quot;&quot;&quot;</span></span></span>
+<span class="ln-row"><span class="ln-num">68</span><span class="ln-code">        <span class="hljs-variable language_">self</span>.update_range(<span class="hljs-number">1</span>, <span class="hljs-number">0</span>, <span class="hljs-variable language_">self</span>.n - <span class="hljs-number">1</span>, left, right, val)</span></span>
+<span class="ln-row"><span class="ln-num">69</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">70</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">range_sum</span>(<span class="hljs-params">self, left, right</span>):</span></span>
+<span class="ln-row"><span class="ln-num">71</span><span class="ln-code">        <span class="hljs-string">&quot;&quot;&quot;Get sum in range [left, right]&quot;&quot;&quot;</span></span></span>
+<span class="ln-row"><span class="ln-num">72</span><span class="ln-code">        <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.query_range(<span class="hljs-number">1</span>, <span class="hljs-number">0</span>, <span class="hljs-variable language_">self</span>.n - <span class="hljs-number">1</span>, left, right)</span></span>
 </code></pre>
 <h3 id="template-4-2d-binary-indexed-tree" tabindex="-1"><a class="header-anchor" href="#template-4-2d-binary-indexed-tree"><span>Template 4: 2D Binary Indexed Tree</span></a></h3>
-<pre><code class="language-python">class BIT2D:
-    &quot;&quot;&quot;2D Binary Indexed Tree for 2D range sum queries&quot;&quot;&quot;
-
-    def __init__(self, rows, cols):
-        self.rows = rows
-        self.cols = cols
-        self.tree = [[0] * (cols + 1) for _ in range(rows + 1)]
-
-    def update(self, row, col, delta):
-        &quot;&quot;&quot;Add delta to element at (row, col)&quot;&quot;&quot;
-        orig_col = col
-        while row &lt;= self.rows:
-            col = orig_col
-            while col &lt;= self.cols:
-                self.tree[row][col] += delta
-                col += col &amp; (-col)
-            row += row &amp; (-row)
-
-    def query(self, row, col):
-        &quot;&quot;&quot;Get sum from (1,1) to (row, col)&quot;&quot;&quot;
-        total = 0
-        orig_col = col
-        while row &gt; 0:
-            col = orig_col
-            while col &gt; 0:
-                total += self.tree[row][col]
-                col -= col &amp; (-col)
-            row -= row &amp; (-row)
-        return total
-
-    def range_query(self, row1, col1, row2, col2):
-        &quot;&quot;&quot;Get sum in rectangle from (row1, col1) to (row2, col2)&quot;&quot;&quot;
-        return (self.query(row2, col2) -
-                self.query(row1 - 1, col2) -
-                self.query(row2, col1 - 1) +
-                self.query(row1 - 1, col1 - 1))
+<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-keyword">class</span> <span class="hljs-title class_">BIT2D</span>:</span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code">    <span class="hljs-string">&quot;&quot;&quot;2D Binary Indexed Tree for 2D range sum queries&quot;&quot;&quot;</span></span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, rows, cols</span>):</span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">        <span class="hljs-variable language_">self</span>.rows = rows</span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">        <span class="hljs-variable language_">self</span>.cols = cols</span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">        <span class="hljs-variable language_">self</span>.tree = [[<span class="hljs-number">0</span>] * (cols + <span class="hljs-number">1</span>) <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(rows + <span class="hljs-number">1</span>)]</span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">update</span>(<span class="hljs-params">self, row, col, delta</span>):</span></span>
+<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">        <span class="hljs-string">&quot;&quot;&quot;Add delta to element at (row, col)&quot;&quot;&quot;</span></span></span>
+<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">        orig_col = col</span></span>
+<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">        <span class="hljs-keyword">while</span> row &lt;= <span class="hljs-variable language_">self</span>.rows:</span></span>
+<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">            col = orig_col</span></span>
+<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">            <span class="hljs-keyword">while</span> col &lt;= <span class="hljs-variable language_">self</span>.cols:</span></span>
+<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">                <span class="hljs-variable language_">self</span>.tree[row][col] += delta</span></span>
+<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">                col += col &amp; (-col)</span></span>
+<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">            row += row &amp; (-row)</span></span>
+<span class="ln-row"><span class="ln-num">18</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">query</span>(<span class="hljs-params">self, row, col</span>):</span></span>
+<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">        <span class="hljs-string">&quot;&quot;&quot;Get sum from (1,1) to (row, col)&quot;&quot;&quot;</span></span></span>
+<span class="ln-row"><span class="ln-num">21</span><span class="ln-code">        total = <span class="hljs-number">0</span></span></span>
+<span class="ln-row"><span class="ln-num">22</span><span class="ln-code">        orig_col = col</span></span>
+<span class="ln-row"><span class="ln-num">23</span><span class="ln-code">        <span class="hljs-keyword">while</span> row &gt; <span class="hljs-number">0</span>:</span></span>
+<span class="ln-row"><span class="ln-num">24</span><span class="ln-code">            col = orig_col</span></span>
+<span class="ln-row"><span class="ln-num">25</span><span class="ln-code">            <span class="hljs-keyword">while</span> col &gt; <span class="hljs-number">0</span>:</span></span>
+<span class="ln-row"><span class="ln-num">26</span><span class="ln-code">                total += <span class="hljs-variable language_">self</span>.tree[row][col]</span></span>
+<span class="ln-row"><span class="ln-num">27</span><span class="ln-code">                col -= col &amp; (-col)</span></span>
+<span class="ln-row"><span class="ln-num">28</span><span class="ln-code">            row -= row &amp; (-row)</span></span>
+<span class="ln-row"><span class="ln-num">29</span><span class="ln-code">        <span class="hljs-keyword">return</span> total</span></span>
+<span class="ln-row"><span class="ln-num">30</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">31</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">range_query</span>(<span class="hljs-params">self, row1, col1, row2, col2</span>):</span></span>
+<span class="ln-row"><span class="ln-num">32</span><span class="ln-code">        <span class="hljs-string">&quot;&quot;&quot;Get sum in rectangle from (row1, col1) to (row2, col2)&quot;&quot;&quot;</span></span></span>
+<span class="ln-row"><span class="ln-num">33</span><span class="ln-code">        <span class="hljs-keyword">return</span> (<span class="hljs-variable language_">self</span>.query(row2, col2) -</span></span>
+<span class="ln-row"><span class="ln-num">34</span><span class="ln-code">                <span class="hljs-variable language_">self</span>.query(row1 - <span class="hljs-number">1</span>, col2) -</span></span>
+<span class="ln-row"><span class="ln-num">35</span><span class="ln-code">                <span class="hljs-variable language_">self</span>.query(row2, col1 - <span class="hljs-number">1</span>) +</span></span>
+<span class="ln-row"><span class="ln-num">36</span><span class="ln-code">                <span class="hljs-variable language_">self</span>.query(row1 - <span class="hljs-number">1</span>, col1 - <span class="hljs-number">1</span>))</span></span>
 </code></pre>
 <h2 id="leetcode-problems-solutions" tabindex="-1"><a class="header-anchor" href="#leetcode-problems-solutions"><span>LeetCode Problems &amp; Solutions</span></a></h2>
 <h3 id="range-sum-query-problems" tabindex="-1"><a class="header-anchor" href="#range-sum-query-problems"><span><strong>Range Sum Query Problems</strong></span></a></h3>
@@ -497,240 +503,240 @@
 </tbody>
 </table>
 <h3 id="lc-307-range-sum-query-mutable" tabindex="-1"><a class="header-anchor" href="#lc-307-range-sum-query-mutable"><span>LC 307: Range Sum Query - Mutable</span></a></h3>
-<pre><code class="language-python">class NumArray:
-    &quot;&quot;&quot;Range Sum Query with updates using BIT&quot;&quot;&quot;
-
-    def __init__(self, nums):
-        self.nums = [0] + nums  # Make 1-indexed
-        self.bit = BIT(len(nums))
-
-        # Build BIT
-        for i in range(1, len(self.nums)):
-            self.bit.update(i, self.nums[i])
-
-    def update(self, index, val):
-        &quot;&quot;&quot;Update element at index to val&quot;&quot;&quot;
-        index += 1  # Convert to 1-indexed
-        delta = val - self.nums[index]
-        self.nums[index] = val
-        self.bit.update(index, delta)
-
-    def sumRange(self, left, right):
-        &quot;&quot;&quot;Sum elements from left to right&quot;&quot;&quot;
-        return self.bit.range_query(left + 1, right + 1)
-
-# Alternative using Segment Tree
-class NumArraySegTree:
-    def __init__(self, nums):
-        self.seg_tree = SegmentTree(nums)
-        self.nums = nums
-
-    def update(self, index, val):
-        self.nums[index] = val
-        self.seg_tree.point_update(index, val)
-
-    def sumRange(self, left, right):
-        return self.seg_tree.range_sum(left, right)
+<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-keyword">class</span> <span class="hljs-title class_">NumArray</span>:</span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code">    <span class="hljs-string">&quot;&quot;&quot;Range Sum Query with updates using BIT&quot;&quot;&quot;</span></span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, nums</span>):</span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">        <span class="hljs-variable language_">self</span>.nums = [<span class="hljs-number">0</span>] + nums  <span class="hljs-comment"># Make 1-indexed</span></span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">        <span class="hljs-variable language_">self</span>.bit = BIT(<span class="hljs-built_in">len</span>(nums))</span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">        <span class="hljs-comment"># Build BIT</span></span></span>
+<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>, <span class="hljs-built_in">len</span>(<span class="hljs-variable language_">self</span>.nums)):</span></span>
+<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">            <span class="hljs-variable language_">self</span>.bit.update(i, <span class="hljs-variable language_">self</span>.nums[i])</span></span>
+<span class="ln-row"><span class="ln-num">11</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">update</span>(<span class="hljs-params">self, index, val</span>):</span></span>
+<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">        <span class="hljs-string">&quot;&quot;&quot;Update element at index to val&quot;&quot;&quot;</span></span></span>
+<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">        index += <span class="hljs-number">1</span>  <span class="hljs-comment"># Convert to 1-indexed</span></span></span>
+<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">        delta = val - <span class="hljs-variable language_">self</span>.nums[index]</span></span>
+<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">        <span class="hljs-variable language_">self</span>.nums[index] = val</span></span>
+<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">        <span class="hljs-variable language_">self</span>.bit.update(index, delta)</span></span>
+<span class="ln-row"><span class="ln-num">18</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">sumRange</span>(<span class="hljs-params">self, left, right</span>):</span></span>
+<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">        <span class="hljs-string">&quot;&quot;&quot;Sum elements from left to right&quot;&quot;&quot;</span></span></span>
+<span class="ln-row"><span class="ln-num">21</span><span class="ln-code">        <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.bit.range_query(left + <span class="hljs-number">1</span>, right + <span class="hljs-number">1</span>)</span></span>
+<span class="ln-row"><span class="ln-num">22</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">23</span><span class="ln-code"><span class="hljs-comment"># Alternative using Segment Tree</span></span></span>
+<span class="ln-row"><span class="ln-num">24</span><span class="ln-code"><span class="hljs-keyword">class</span> <span class="hljs-title class_">NumArraySegTree</span>:</span></span>
+<span class="ln-row"><span class="ln-num">25</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, nums</span>):</span></span>
+<span class="ln-row"><span class="ln-num">26</span><span class="ln-code">        <span class="hljs-variable language_">self</span>.seg_tree = SegmentTree(nums)</span></span>
+<span class="ln-row"><span class="ln-num">27</span><span class="ln-code">        <span class="hljs-variable language_">self</span>.nums = nums</span></span>
+<span class="ln-row"><span class="ln-num">28</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">29</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">update</span>(<span class="hljs-params">self, index, val</span>):</span></span>
+<span class="ln-row"><span class="ln-num">30</span><span class="ln-code">        <span class="hljs-variable language_">self</span>.nums[index] = val</span></span>
+<span class="ln-row"><span class="ln-num">31</span><span class="ln-code">        <span class="hljs-variable language_">self</span>.seg_tree.point_update(index, val)</span></span>
+<span class="ln-row"><span class="ln-num">32</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">33</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">sumRange</span>(<span class="hljs-params">self, left, right</span>):</span></span>
+<span class="ln-row"><span class="ln-num">34</span><span class="ln-code">        <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.seg_tree.range_sum(left, right)</span></span>
 </code></pre>
 <h3 id="lc-315-count-of-smaller-numbers-after-self" tabindex="-1"><a class="header-anchor" href="#lc-315-count-of-smaller-numbers-after-self"><span>LC 315: Count of Smaller Numbers After Self</span></a></h3>
-<pre><code class="language-python">def countSmaller(nums):
-    &quot;&quot;&quot;Count smaller numbers after self using BIT&quot;&quot;&quot;
-    if not nums:
-        return []
-
-    # Coordinate compression
-    sorted_nums = sorted(set(nums))
-    rank = {num: i + 1 for i, num in enumerate(sorted_nums)}
-
-    bit = BIT(len(sorted_nums))
-    result = []
-
-    # Process from right to left
-    for i in range(len(nums) - 1, -1, -1):
-        # Count numbers smaller than nums[i]
-        count = bit.query(rank[nums[i]] - 1) if rank[nums[i]] &gt; 1 else 0
-        result.append(count)
-
-        # Add current number to BIT
-        bit.update(rank[nums[i]], 1)
-
-    return result[::-1]  # Reverse to get correct order
-
-# Alternative using merge sort
-def countSmallerMergeSort(nums):
-    &quot;&quot;&quot;Using merge sort to count inversions&quot;&quot;&quot;
-    def mergeSort(arr):
-        if len(arr) &lt;= 1:
-            return arr, [0] * len(arr)
-
-        mid = len(arr) // 2
-        left, left_counts = mergeSort(arr[:mid])
-        right, right_counts = mergeSort(arr[mid:])
-
-        merged = []
-        counts = [0] * len(arr)
-        i = j = 0
-
-        while i &lt; len(left) and j &lt; len(right):
-            if left[i][0] &lt;= right[j][0]:
-                merged.append(left[i])
-                counts[left[i][1]] += j  # j elements from right are smaller
-                i += 1
-            else:
-                merged.append(right[j])
-                j += 1
-
-        while i &lt; len(left):
-            merged.append(left[i])
-            counts[left[i][1]] += j
-            i += 1
-
-        while j &lt; len(right):
-            merged.append(right[j])
-            j += 1
-
-        return merged, counts
-
-    # Create (value, original_index) pairs
-    indexed_nums = [(nums[i], i) for i in range(len(nums))]
-    _, counts = mergeSort(indexed_nums)
-    return counts
+<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-keyword">def</span> <span class="hljs-title function_">countSmaller</span>(<span class="hljs-params">nums</span>):</span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code">    <span class="hljs-string">&quot;&quot;&quot;Count smaller numbers after self using BIT&quot;&quot;&quot;</span></span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> nums:</span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">        <span class="hljs-keyword">return</span> []</span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    <span class="hljs-comment"># Coordinate compression</span></span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">    sorted_nums = <span class="hljs-built_in">sorted</span>(<span class="hljs-built_in">set</span>(nums))</span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">    rank = {num: i + <span class="hljs-number">1</span> <span class="hljs-keyword">for</span> i, num <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(sorted_nums)}</span></span>
+<span class="ln-row"><span class="ln-num">9</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">    bit = BIT(<span class="hljs-built_in">len</span>(sorted_nums))</span></span>
+<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">    result = []</span></span>
+<span class="ln-row"><span class="ln-num">12</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">    <span class="hljs-comment"># Process from right to left</span></span></span>
+<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(nums) - <span class="hljs-number">1</span>, -<span class="hljs-number">1</span>, -<span class="hljs-number">1</span>):</span></span>
+<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">        <span class="hljs-comment"># Count numbers smaller than nums[i]</span></span></span>
+<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">        count = bit.query(rank[nums[i]] - <span class="hljs-number">1</span>) <span class="hljs-keyword">if</span> rank[nums[i]] &gt; <span class="hljs-number">1</span> <span class="hljs-keyword">else</span> <span class="hljs-number">0</span></span></span>
+<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">        result.append(count)</span></span>
+<span class="ln-row"><span class="ln-num">18</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">        <span class="hljs-comment"># Add current number to BIT</span></span></span>
+<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">        bit.update(rank[nums[i]], <span class="hljs-number">1</span>)</span></span>
+<span class="ln-row"><span class="ln-num">21</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">22</span><span class="ln-code">    <span class="hljs-keyword">return</span> result[::-<span class="hljs-number">1</span>]  <span class="hljs-comment"># Reverse to get correct order</span></span></span>
+<span class="ln-row"><span class="ln-num">23</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">24</span><span class="ln-code"><span class="hljs-comment"># Alternative using merge sort</span></span></span>
+<span class="ln-row"><span class="ln-num">25</span><span class="ln-code"><span class="hljs-keyword">def</span> <span class="hljs-title function_">countSmallerMergeSort</span>(<span class="hljs-params">nums</span>):</span></span>
+<span class="ln-row"><span class="ln-num">26</span><span class="ln-code">    <span class="hljs-string">&quot;&quot;&quot;Using merge sort to count inversions&quot;&quot;&quot;</span></span></span>
+<span class="ln-row"><span class="ln-num">27</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">mergeSort</span>(<span class="hljs-params">arr</span>):</span></span>
+<span class="ln-row"><span class="ln-num">28</span><span class="ln-code">        <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(arr) &lt;= <span class="hljs-number">1</span>:</span></span>
+<span class="ln-row"><span class="ln-num">29</span><span class="ln-code">            <span class="hljs-keyword">return</span> arr, [<span class="hljs-number">0</span>] * <span class="hljs-built_in">len</span>(arr)</span></span>
+<span class="ln-row"><span class="ln-num">30</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">31</span><span class="ln-code">        mid = <span class="hljs-built_in">len</span>(arr) // <span class="hljs-number">2</span></span></span>
+<span class="ln-row"><span class="ln-num">32</span><span class="ln-code">        left, left_counts = mergeSort(arr[:mid])</span></span>
+<span class="ln-row"><span class="ln-num">33</span><span class="ln-code">        right, right_counts = mergeSort(arr[mid:])</span></span>
+<span class="ln-row"><span class="ln-num">34</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">35</span><span class="ln-code">        merged = []</span></span>
+<span class="ln-row"><span class="ln-num">36</span><span class="ln-code">        counts = [<span class="hljs-number">0</span>] * <span class="hljs-built_in">len</span>(arr)</span></span>
+<span class="ln-row"><span class="ln-num">37</span><span class="ln-code">        i = j = <span class="hljs-number">0</span></span></span>
+<span class="ln-row"><span class="ln-num">38</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">39</span><span class="ln-code">        <span class="hljs-keyword">while</span> i &lt; <span class="hljs-built_in">len</span>(left) <span class="hljs-keyword">and</span> j &lt; <span class="hljs-built_in">len</span>(right):</span></span>
+<span class="ln-row"><span class="ln-num">40</span><span class="ln-code">            <span class="hljs-keyword">if</span> left[i][<span class="hljs-number">0</span>] &lt;= right[j][<span class="hljs-number">0</span>]:</span></span>
+<span class="ln-row"><span class="ln-num">41</span><span class="ln-code">                merged.append(left[i])</span></span>
+<span class="ln-row"><span class="ln-num">42</span><span class="ln-code">                counts[left[i][<span class="hljs-number">1</span>]] += j  <span class="hljs-comment"># j elements from right are smaller</span></span></span>
+<span class="ln-row"><span class="ln-num">43</span><span class="ln-code">                i += <span class="hljs-number">1</span></span></span>
+<span class="ln-row"><span class="ln-num">44</span><span class="ln-code">            <span class="hljs-keyword">else</span>:</span></span>
+<span class="ln-row"><span class="ln-num">45</span><span class="ln-code">                merged.append(right[j])</span></span>
+<span class="ln-row"><span class="ln-num">46</span><span class="ln-code">                j += <span class="hljs-number">1</span></span></span>
+<span class="ln-row"><span class="ln-num">47</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">48</span><span class="ln-code">        <span class="hljs-keyword">while</span> i &lt; <span class="hljs-built_in">len</span>(left):</span></span>
+<span class="ln-row"><span class="ln-num">49</span><span class="ln-code">            merged.append(left[i])</span></span>
+<span class="ln-row"><span class="ln-num">50</span><span class="ln-code">            counts[left[i][<span class="hljs-number">1</span>]] += j</span></span>
+<span class="ln-row"><span class="ln-num">51</span><span class="ln-code">            i += <span class="hljs-number">1</span></span></span>
+<span class="ln-row"><span class="ln-num">52</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">53</span><span class="ln-code">        <span class="hljs-keyword">while</span> j &lt; <span class="hljs-built_in">len</span>(right):</span></span>
+<span class="ln-row"><span class="ln-num">54</span><span class="ln-code">            merged.append(right[j])</span></span>
+<span class="ln-row"><span class="ln-num">55</span><span class="ln-code">            j += <span class="hljs-number">1</span></span></span>
+<span class="ln-row"><span class="ln-num">56</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">57</span><span class="ln-code">        <span class="hljs-keyword">return</span> merged, counts</span></span>
+<span class="ln-row"><span class="ln-num">58</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">59</span><span class="ln-code">    <span class="hljs-comment"># Create (value, original_index) pairs</span></span></span>
+<span class="ln-row"><span class="ln-num">60</span><span class="ln-code">    indexed_nums = [(nums[i], i) <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(nums))]</span></span>
+<span class="ln-row"><span class="ln-num">61</span><span class="ln-code">    _, counts = mergeSort(indexed_nums)</span></span>
+<span class="ln-row"><span class="ln-num">62</span><span class="ln-code">    <span class="hljs-keyword">return</span> counts</span></span>
 </code></pre>
 <h3 id="lc-493-reverse-pairs" tabindex="-1"><a class="header-anchor" href="#lc-493-reverse-pairs"><span>LC 493: Reverse Pairs</span></a></h3>
-<pre><code class="language-python">def reversePairs(nums):
-    &quot;&quot;&quot;Count reverse pairs using BIT and coordinate compression&quot;&quot;&quot;
-    if not nums:
-        return 0
-
-    # Get all possible values (including doubled values)
-    values = set(nums)
-    for num in nums:
-        values.add(2 * num)
-
-    # Coordinate compression
-    sorted_values = sorted(values)
-    rank = {val: i + 1 for i, val in enumerate(sorted_values)}
-
-    bit = BIT(len(sorted_values))
-    count = 0
-
-    for num in reversed(nums):
-        # Count how many numbers &gt; 2 * num are already seen
-        target_rank = rank[2 * num]
-        # Query from target_rank+1 to end
-        if target_rank &lt; len(sorted_values):
-            count += bit.query(len(sorted_values)) - bit.query(target_rank)
-
-        # Add current number to BIT
-        bit.update(rank[num], 1)
-
-    return count
-
-# Alternative merge sort approach
-def reversePairsMergeSort(nums):
-    def mergeSort(arr, start, end):
-        if start &gt;= end:
-            return 0
-
-        mid = (start + end) // 2
-        count = mergeSort(arr, start, mid) + mergeSort(arr, mid + 1, end)
-
-        # Count reverse pairs
-        j = mid + 1
-        for i in range(start, mid + 1):
-            while j &lt;= end and arr[i] &gt; 2 * arr[j]:
-                j += 1
-            count += j - (mid + 1)
-
-        # Merge sorted arrays
-        arr[start:end + 1] = sorted(arr[start:end + 1])
-        return count
-
-    return mergeSort(nums, 0, len(nums) - 1)
+<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-keyword">def</span> <span class="hljs-title function_">reversePairs</span>(<span class="hljs-params">nums</span>):</span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code">    <span class="hljs-string">&quot;&quot;&quot;Count reverse pairs using BIT and coordinate compression&quot;&quot;&quot;</span></span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> nums:</span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">        <span class="hljs-keyword">return</span> <span class="hljs-number">0</span></span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    <span class="hljs-comment"># Get all possible values (including doubled values)</span></span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">    values = <span class="hljs-built_in">set</span>(nums)</span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">    <span class="hljs-keyword">for</span> num <span class="hljs-keyword">in</span> nums:</span></span>
+<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">        values.add(<span class="hljs-number">2</span> * num)</span></span>
+<span class="ln-row"><span class="ln-num">10</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">    <span class="hljs-comment"># Coordinate compression</span></span></span>
+<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">    sorted_values = <span class="hljs-built_in">sorted</span>(values)</span></span>
+<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">    rank = {val: i + <span class="hljs-number">1</span> <span class="hljs-keyword">for</span> i, val <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(sorted_values)}</span></span>
+<span class="ln-row"><span class="ln-num">14</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">    bit = BIT(<span class="hljs-built_in">len</span>(sorted_values))</span></span>
+<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">    count = <span class="hljs-number">0</span></span></span>
+<span class="ln-row"><span class="ln-num">17</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">    <span class="hljs-keyword">for</span> num <span class="hljs-keyword">in</span> <span class="hljs-built_in">reversed</span>(nums):</span></span>
+<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">        <span class="hljs-comment"># Count how many numbers &gt; 2 * num are already seen</span></span></span>
+<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">        target_rank = rank[<span class="hljs-number">2</span> * num]</span></span>
+<span class="ln-row"><span class="ln-num">21</span><span class="ln-code">        <span class="hljs-comment"># Query from target_rank+1 to end</span></span></span>
+<span class="ln-row"><span class="ln-num">22</span><span class="ln-code">        <span class="hljs-keyword">if</span> target_rank &lt; <span class="hljs-built_in">len</span>(sorted_values):</span></span>
+<span class="ln-row"><span class="ln-num">23</span><span class="ln-code">            count += bit.query(<span class="hljs-built_in">len</span>(sorted_values)) - bit.query(target_rank)</span></span>
+<span class="ln-row"><span class="ln-num">24</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">25</span><span class="ln-code">        <span class="hljs-comment"># Add current number to BIT</span></span></span>
+<span class="ln-row"><span class="ln-num">26</span><span class="ln-code">        bit.update(rank[num], <span class="hljs-number">1</span>)</span></span>
+<span class="ln-row"><span class="ln-num">27</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">28</span><span class="ln-code">    <span class="hljs-keyword">return</span> count</span></span>
+<span class="ln-row"><span class="ln-num">29</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">30</span><span class="ln-code"><span class="hljs-comment"># Alternative merge sort approach</span></span></span>
+<span class="ln-row"><span class="ln-num">31</span><span class="ln-code"><span class="hljs-keyword">def</span> <span class="hljs-title function_">reversePairsMergeSort</span>(<span class="hljs-params">nums</span>):</span></span>
+<span class="ln-row"><span class="ln-num">32</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">mergeSort</span>(<span class="hljs-params">arr, start, end</span>):</span></span>
+<span class="ln-row"><span class="ln-num">33</span><span class="ln-code">        <span class="hljs-keyword">if</span> start &gt;= end:</span></span>
+<span class="ln-row"><span class="ln-num">34</span><span class="ln-code">            <span class="hljs-keyword">return</span> <span class="hljs-number">0</span></span></span>
+<span class="ln-row"><span class="ln-num">35</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">36</span><span class="ln-code">        mid = (start + end) // <span class="hljs-number">2</span></span></span>
+<span class="ln-row"><span class="ln-num">37</span><span class="ln-code">        count = mergeSort(arr, start, mid) + mergeSort(arr, mid + <span class="hljs-number">1</span>, end)</span></span>
+<span class="ln-row"><span class="ln-num">38</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">39</span><span class="ln-code">        <span class="hljs-comment"># Count reverse pairs</span></span></span>
+<span class="ln-row"><span class="ln-num">40</span><span class="ln-code">        j = mid + <span class="hljs-number">1</span></span></span>
+<span class="ln-row"><span class="ln-num">41</span><span class="ln-code">        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(start, mid + <span class="hljs-number">1</span>):</span></span>
+<span class="ln-row"><span class="ln-num">42</span><span class="ln-code">            <span class="hljs-keyword">while</span> j &lt;= end <span class="hljs-keyword">and</span> arr[i] &gt; <span class="hljs-number">2</span> * arr[j]:</span></span>
+<span class="ln-row"><span class="ln-num">43</span><span class="ln-code">                j += <span class="hljs-number">1</span></span></span>
+<span class="ln-row"><span class="ln-num">44</span><span class="ln-code">            count += j - (mid + <span class="hljs-number">1</span>)</span></span>
+<span class="ln-row"><span class="ln-num">45</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">46</span><span class="ln-code">        <span class="hljs-comment"># Merge sorted arrays</span></span></span>
+<span class="ln-row"><span class="ln-num">47</span><span class="ln-code">        arr[start:end + <span class="hljs-number">1</span>] = <span class="hljs-built_in">sorted</span>(arr[start:end + <span class="hljs-number">1</span>])</span></span>
+<span class="ln-row"><span class="ln-num">48</span><span class="ln-code">        <span class="hljs-keyword">return</span> count</span></span>
+<span class="ln-row"><span class="ln-num">49</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">50</span><span class="ln-code">    <span class="hljs-keyword">return</span> mergeSort(nums, <span class="hljs-number">0</span>, <span class="hljs-built_in">len</span>(nums) - <span class="hljs-number">1</span>)</span></span>
 </code></pre>
 <h3 id="lc-327-count-of-range-sum" tabindex="-1"><a class="header-anchor" href="#lc-327-count-of-range-sum"><span>LC 327: Count of Range Sum</span></a></h3>
-<pre><code class="language-python">def countRangeSum(nums, lower, upper):
-    &quot;&quot;&quot;Count range sums in [lower, upper] using BIT&quot;&quot;&quot;
-    if not nums:
-        return 0
-
-    # Compute prefix sums
-    prefix_sums = [0]
-    for num in nums:
-        prefix_sums.append(prefix_sums[-1] + num)
-
-    # Get all relevant values for coordinate compression
-    values = set(prefix_sums)
-    for ps in prefix_sums:
-        values.add(ps - lower)
-        values.add(ps - upper)
-
-    sorted_values = sorted(values)
-    rank = {val: i + 1 for i, val in enumerate(sorted_values)}
-
-    bit = BIT(len(sorted_values))
-    count = 0
-
-    for ps in prefix_sums:
-        # Count prefix sums in range [ps - upper, ps - lower]
-        left_rank = rank[ps - upper]
-        right_rank = rank[ps - lower]
-        count += bit.range_query(left_rank, right_rank)
-
-        # Add current prefix sum to BIT
-        bit.update(rank[ps], 1)
-
-    return count
+<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-keyword">def</span> <span class="hljs-title function_">countRangeSum</span>(<span class="hljs-params">nums, lower, upper</span>):</span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code">    <span class="hljs-string">&quot;&quot;&quot;Count range sums in [lower, upper] using BIT&quot;&quot;&quot;</span></span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> nums:</span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">        <span class="hljs-keyword">return</span> <span class="hljs-number">0</span></span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    <span class="hljs-comment"># Compute prefix sums</span></span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">    prefix_sums = [<span class="hljs-number">0</span>]</span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">    <span class="hljs-keyword">for</span> num <span class="hljs-keyword">in</span> nums:</span></span>
+<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">        prefix_sums.append(prefix_sums[-<span class="hljs-number">1</span>] + num)</span></span>
+<span class="ln-row"><span class="ln-num">10</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">    <span class="hljs-comment"># Get all relevant values for coordinate compression</span></span></span>
+<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">    values = <span class="hljs-built_in">set</span>(prefix_sums)</span></span>
+<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">    <span class="hljs-keyword">for</span> ps <span class="hljs-keyword">in</span> prefix_sums:</span></span>
+<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">        values.add(ps - lower)</span></span>
+<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">        values.add(ps - upper)</span></span>
+<span class="ln-row"><span class="ln-num">16</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">    sorted_values = <span class="hljs-built_in">sorted</span>(values)</span></span>
+<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">    rank = {val: i + <span class="hljs-number">1</span> <span class="hljs-keyword">for</span> i, val <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(sorted_values)}</span></span>
+<span class="ln-row"><span class="ln-num">19</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">    bit = BIT(<span class="hljs-built_in">len</span>(sorted_values))</span></span>
+<span class="ln-row"><span class="ln-num">21</span><span class="ln-code">    count = <span class="hljs-number">0</span></span></span>
+<span class="ln-row"><span class="ln-num">22</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">23</span><span class="ln-code">    <span class="hljs-keyword">for</span> ps <span class="hljs-keyword">in</span> prefix_sums:</span></span>
+<span class="ln-row"><span class="ln-num">24</span><span class="ln-code">        <span class="hljs-comment"># Count prefix sums in range [ps - upper, ps - lower]</span></span></span>
+<span class="ln-row"><span class="ln-num">25</span><span class="ln-code">        left_rank = rank[ps - upper]</span></span>
+<span class="ln-row"><span class="ln-num">26</span><span class="ln-code">        right_rank = rank[ps - lower]</span></span>
+<span class="ln-row"><span class="ln-num">27</span><span class="ln-code">        count += bit.range_query(left_rank, right_rank)</span></span>
+<span class="ln-row"><span class="ln-num">28</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">29</span><span class="ln-code">        <span class="hljs-comment"># Add current prefix sum to BIT</span></span></span>
+<span class="ln-row"><span class="ln-num">30</span><span class="ln-code">        bit.update(rank[ps], <span class="hljs-number">1</span>)</span></span>
+<span class="ln-row"><span class="ln-num">31</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">32</span><span class="ln-code">    <span class="hljs-keyword">return</span> count</span></span>
 </code></pre>
 <h2 id="advanced-techniques" tabindex="-1"><a class="header-anchor" href="#advanced-techniques"><span>Advanced Techniques</span></a></h2>
 <h3 id="coordinate-compression" tabindex="-1"><a class="header-anchor" href="#coordinate-compression"><span>Coordinate Compression</span></a></h3>
-<pre><code class="language-python">def coordinate_compress(arr):
-    &quot;&quot;&quot;Compress coordinates for BIT usage&quot;&quot;&quot;
-    unique_vals = sorted(set(arr))
-    rank_map = {val: i + 1 for i, val in enumerate(unique_vals)}
-    return rank_map, len(unique_vals)
-
-def use_compression_example():
-    nums = [100, 1, 50, 200, 75]
-    rank_map, max_rank = coordinate_compress(nums)
-    # rank_map = {1: 1, 50: 2, 75: 3, 100: 4, 200: 5}
-
-    bit = BIT(max_rank)
-    for num in nums:
-        bit.update(rank_map[num], 1)  # Add frequency
+<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-keyword">def</span> <span class="hljs-title function_">coordinate_compress</span>(<span class="hljs-params">arr</span>):</span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code">    <span class="hljs-string">&quot;&quot;&quot;Compress coordinates for BIT usage&quot;&quot;&quot;</span></span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">    unique_vals = <span class="hljs-built_in">sorted</span>(<span class="hljs-built_in">set</span>(arr))</span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">    rank_map = {val: i + <span class="hljs-number">1</span> <span class="hljs-keyword">for</span> i, val <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(unique_vals)}</span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    <span class="hljs-keyword">return</span> rank_map, <span class="hljs-built_in">len</span>(unique_vals)</span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code"><span class="hljs-keyword">def</span> <span class="hljs-title function_">use_compression_example</span>():</span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">    nums = [<span class="hljs-number">100</span>, <span class="hljs-number">1</span>, <span class="hljs-number">50</span>, <span class="hljs-number">200</span>, <span class="hljs-number">75</span>]</span></span>
+<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">    rank_map, max_rank = coordinate_compress(nums)</span></span>
+<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">    <span class="hljs-comment"># rank_map = {1: 1, 50: 2, 75: 3, 100: 4, 200: 5}</span></span></span>
+<span class="ln-row"><span class="ln-num">11</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">    bit = BIT(max_rank)</span></span>
+<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">    <span class="hljs-keyword">for</span> num <span class="hljs-keyword">in</span> nums:</span></span>
+<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">        bit.update(rank_map[num], <span class="hljs-number">1</span>)  <span class="hljs-comment"># Add frequency</span></span></span>
 </code></pre>
 <h3 id="range-maximum-query-rmq-segment-tree" tabindex="-1"><a class="header-anchor" href="#range-maximum-query-rmq-segment-tree"><span>Range Maximum Query (RMQ) Segment Tree</span></a></h3>
-<pre><code class="language-python">class RMQSegmentTree:
-    &quot;&quot;&quot;Segment Tree for Range Maximum Queries&quot;&quot;&quot;
-
-    def __init__(self, arr):
-        self.n = len(arr)
-        self.tree = [0] * (4 * self.n)
-        self.build(arr, 1, 0, self.n - 1)
-
-    def build(self, arr, node, start, end):
-        if start == end:
-            self.tree[node] = arr[start]
-        else:
-            mid = (start + end) // 2
-            self.build(arr, 2 * node, start, mid)
-            self.build(arr, 2 * node + 1, mid + 1, end)
-            self.tree[node] = max(self.tree[2 * node], self.tree[2 * node + 1])
-
-    def query_max(self, node, start, end, left, right):
-        if right &lt; start or end &lt; left:
-            return float('-inf')
-
-        if left &lt;= start and end &lt;= right:
-            return self.tree[node]
-
-        mid = (start + end) // 2
-        left_max = self.query_max(2 * node, start, mid, left, right)
-        right_max = self.query_max(2 * node + 1, mid + 1, end, left, right)
-        return max(left_max, right_max)
-
-    def range_max(self, left, right):
-        return self.query_max(1, 0, self.n - 1, left, right)
+<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-keyword">class</span> <span class="hljs-title class_">RMQSegmentTree</span>:</span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code">    <span class="hljs-string">&quot;&quot;&quot;Segment Tree for Range Maximum Queries&quot;&quot;&quot;</span></span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, arr</span>):</span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">        <span class="hljs-variable language_">self</span>.n = <span class="hljs-built_in">len</span>(arr)</span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">        <span class="hljs-variable language_">self</span>.tree = [<span class="hljs-number">0</span>] * (<span class="hljs-number">4</span> * <span class="hljs-variable language_">self</span>.n)</span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">        <span class="hljs-variable language_">self</span>.build(arr, <span class="hljs-number">1</span>, <span class="hljs-number">0</span>, <span class="hljs-variable language_">self</span>.n - <span class="hljs-number">1</span>)</span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">build</span>(<span class="hljs-params">self, arr, node, start, end</span>):</span></span>
+<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">        <span class="hljs-keyword">if</span> start == end:</span></span>
+<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">            <span class="hljs-variable language_">self</span>.tree[node] = arr[start]</span></span>
+<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">        <span class="hljs-keyword">else</span>:</span></span>
+<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">            mid = (start + end) // <span class="hljs-number">2</span></span></span>
+<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">            <span class="hljs-variable language_">self</span>.build(arr, <span class="hljs-number">2</span> * node, start, mid)</span></span>
+<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">            <span class="hljs-variable language_">self</span>.build(arr, <span class="hljs-number">2</span> * node + <span class="hljs-number">1</span>, mid + <span class="hljs-number">1</span>, end)</span></span>
+<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">            <span class="hljs-variable language_">self</span>.tree[node] = <span class="hljs-built_in">max</span>(<span class="hljs-variable language_">self</span>.tree[<span class="hljs-number">2</span> * node], <span class="hljs-variable language_">self</span>.tree[<span class="hljs-number">2</span> * node + <span class="hljs-number">1</span>])</span></span>
+<span class="ln-row"><span class="ln-num">17</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">query_max</span>(<span class="hljs-params">self, node, start, end, left, right</span>):</span></span>
+<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">        <span class="hljs-keyword">if</span> right &lt; start <span class="hljs-keyword">or</span> end &lt; left:</span></span>
+<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">            <span class="hljs-keyword">return</span> <span class="hljs-built_in">float</span>(<span class="hljs-string">&#x27;-inf&#x27;</span>)</span></span>
+<span class="ln-row"><span class="ln-num">21</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">22</span><span class="ln-code">        <span class="hljs-keyword">if</span> left &lt;= start <span class="hljs-keyword">and</span> end &lt;= right:</span></span>
+<span class="ln-row"><span class="ln-num">23</span><span class="ln-code">            <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.tree[node]</span></span>
+<span class="ln-row"><span class="ln-num">24</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">25</span><span class="ln-code">        mid = (start + end) // <span class="hljs-number">2</span></span></span>
+<span class="ln-row"><span class="ln-num">26</span><span class="ln-code">        left_max = <span class="hljs-variable language_">self</span>.query_max(<span class="hljs-number">2</span> * node, start, mid, left, right)</span></span>
+<span class="ln-row"><span class="ln-num">27</span><span class="ln-code">        right_max = <span class="hljs-variable language_">self</span>.query_max(<span class="hljs-number">2</span> * node + <span class="hljs-number">1</span>, mid + <span class="hljs-number">1</span>, end, left, right)</span></span>
+<span class="ln-row"><span class="ln-num">28</span><span class="ln-code">        <span class="hljs-keyword">return</span> <span class="hljs-built_in">max</span>(left_max, right_max)</span></span>
+<span class="ln-row"><span class="ln-num">29</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">30</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">range_max</span>(<span class="hljs-params">self, left, right</span>):</span></span>
+<span class="ln-row"><span class="ln-num">31</span><span class="ln-code">        <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.query_max(<span class="hljs-number">1</span>, <span class="hljs-number">0</span>, <span class="hljs-variable language_">self</span>.n - <span class="hljs-number">1</span>, left, right)</span></span>
 </code></pre>
 <h2 id="performance-analysis" tabindex="-1"><a class="header-anchor" href="#performance-analysis"><span>Performance Analysis</span></a></h2>
 <h3 id="time-complexity-comparison" tabindex="-1"><a class="header-anchor" href="#time-complexity-comparison"><span>Time Complexity Comparison</span></a></h3>
@@ -784,41 +790,41 @@ def use_compression_example():
 </ul>
 <h2 id="implementation-tips" tabindex="-1"><a class="header-anchor" href="#implementation-tips"><span>Implementation Tips</span></a></h2>
 <h3 id="common-pitfalls-solutions" tabindex="-1"><a class="header-anchor" href="#common-pitfalls-solutions"><span>Common Pitfalls &amp; Solutions</span></a></h3>
-<pre><code class="language-python">def bit_pitfalls():
-    &quot;&quot;&quot;Common BIT implementation mistakes&quot;&quot;&quot;
-
-    # ❌ Wrong: 0-indexed BIT
-    # BIT naturally works with 1-indexed arrays
-
-    # ✅ Correct: Convert to 1-indexed
-    def update_correct(bit, index, delta):
-        index += 1  # Convert 0-indexed to 1-indexed
-        while index &lt;= bit.n:
-            bit.tree[index] += delta
-            index += index &amp; (-index)
-
-    # ❌ Wrong: Forgetting coordination compression
-    def wrong_approach(nums):
-        bit = BIT(max(nums))  # Might use too much memory
-
-    # ✅ Correct: Use coordinate compression
-    def correct_approach(nums):
-        rank_map, size = coordinate_compress(nums)
-        bit = BIT(size)
-        for num in nums:
-            bit.update(rank_map[num], 1)
-
-def segment_tree_tips():
-    &quot;&quot;&quot;Segment Tree best practices&quot;&quot;&quot;
-
-    # Use 4n space allocation for safety
-    tree = [0] * (4 * n)
-
-    # Handle edge cases properly
-    def query(node, start, end, left, right):
-        if right &lt; start or end &lt; left:
-            return 0  # Return identity element
-        # ... rest of query logic
+<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-keyword">def</span> <span class="hljs-title function_">bit_pitfalls</span>():</span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code">    <span class="hljs-string">&quot;&quot;&quot;Common BIT implementation mistakes&quot;&quot;&quot;</span></span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">    <span class="hljs-comment"># ❌ Wrong: 0-indexed BIT</span></span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    <span class="hljs-comment"># BIT naturally works with 1-indexed arrays</span></span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">    <span class="hljs-comment"># ✅ Correct: Convert to 1-indexed</span></span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">update_correct</span>(<span class="hljs-params">bit, index, delta</span>):</span></span>
+<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">        index += <span class="hljs-number">1</span>  <span class="hljs-comment"># Convert 0-indexed to 1-indexed</span></span></span>
+<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">        <span class="hljs-keyword">while</span> index &lt;= bit.n:</span></span>
+<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">            bit.tree[index] += delta</span></span>
+<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">            index += index &amp; (-index)</span></span>
+<span class="ln-row"><span class="ln-num">13</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">    <span class="hljs-comment"># ❌ Wrong: Forgetting coordination compression</span></span></span>
+<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">wrong_approach</span>(<span class="hljs-params">nums</span>):</span></span>
+<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">        bit = BIT(<span class="hljs-built_in">max</span>(nums))  <span class="hljs-comment"># Might use too much memory</span></span></span>
+<span class="ln-row"><span class="ln-num">17</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">    <span class="hljs-comment"># ✅ Correct: Use coordinate compression</span></span></span>
+<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">correct_approach</span>(<span class="hljs-params">nums</span>):</span></span>
+<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">        rank_map, size = coordinate_compress(nums)</span></span>
+<span class="ln-row"><span class="ln-num">21</span><span class="ln-code">        bit = BIT(size)</span></span>
+<span class="ln-row"><span class="ln-num">22</span><span class="ln-code">        <span class="hljs-keyword">for</span> num <span class="hljs-keyword">in</span> nums:</span></span>
+<span class="ln-row"><span class="ln-num">23</span><span class="ln-code">            bit.update(rank_map[num], <span class="hljs-number">1</span>)</span></span>
+<span class="ln-row"><span class="ln-num">24</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">25</span><span class="ln-code"><span class="hljs-keyword">def</span> <span class="hljs-title function_">segment_tree_tips</span>():</span></span>
+<span class="ln-row"><span class="ln-num">26</span><span class="ln-code">    <span class="hljs-string">&quot;&quot;&quot;Segment Tree best practices&quot;&quot;&quot;</span></span></span>
+<span class="ln-row"><span class="ln-num">27</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">28</span><span class="ln-code">    <span class="hljs-comment"># Use 4n space allocation for safety</span></span></span>
+<span class="ln-row"><span class="ln-num">29</span><span class="ln-code">    tree = [<span class="hljs-number">0</span>] * (<span class="hljs-number">4</span> * n)</span></span>
+<span class="ln-row"><span class="ln-num">30</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">31</span><span class="ln-code">    <span class="hljs-comment"># Handle edge cases properly</span></span></span>
+<span class="ln-row"><span class="ln-num">32</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">query</span>(<span class="hljs-params">node, start, end, left, right</span>):</span></span>
+<span class="ln-row"><span class="ln-num">33</span><span class="ln-code">        <span class="hljs-keyword">if</span> right &lt; start <span class="hljs-keyword">or</span> end &lt; left:</span></span>
+<span class="ln-row"><span class="ln-num">34</span><span class="ln-code">            <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>  <span class="hljs-comment"># Return identity element</span></span></span>
+<span class="ln-row"><span class="ln-num">35</span><span class="ln-code">        <span class="hljs-comment"># ... rest of query logic</span></span></span>
 </code></pre>
 <h2 id="summary-quick-reference" tabindex="-1"><a class="header-anchor" href="#summary-quick-reference"><span>Summary &amp; Quick Reference</span></a></h2>
 <h3 id="when-to-use-each-structure" tabindex="-1"><a class="header-anchor" href="#when-to-use-each-structure"><span>When to Use Each Structure</span></a></h3>
@@ -877,273 +883,273 @@ def segment_tree_tips():
 <blockquote>
 <p>Segment tree supports O(log N) range sum query and point update.</p>
 </blockquote>
-<pre><code class="language-java">// LC 307 - Range Sum Query - Mutable
-// IDEA: Segment Tree — build, update, query in O(log N)
-// time = O(log N) per op, space = O(N)
-class NumArray {
-    int[] tree;
-    int n;
-    public NumArray(int[] nums) {
-        n = nums.length;
-        tree = new int[2 * n];
-        // build leaves
-        for (int i = 0; i &lt; n; i++) tree[n + i] = nums[i];
-        // build internal nodes
-        for (int i = n - 1; i &gt;= 1; i--) tree[i] = tree[2*i] + tree[2*i+1];
-    }
-    public void update(int i, int val) {
-        tree[n + i] = val;
-        for (int pos = (n + i) &gt;&gt; 1; pos &gt;= 1; pos &gt;&gt;= 1)
-            tree[pos] = tree[2*pos] + tree[2*pos+1];
-    }
-    public int sumRange(int l, int r) {
-        int sum = 0;
-        for (l += n, r += n + 1; l &lt; r; l &gt;&gt;= 1, r &gt;&gt;= 1) {
-            if ((l &amp; 1) == 1) sum += tree[l++];
-            if ((r &amp; 1) == 1) sum += tree[--r];
-        }
-        return sum;
-    }
-}
+<pre data-lang="java"><code class="hljs language-java"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment">// LC 307 - Range Sum Query - Mutable</span></span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-comment">// IDEA: Segment Tree — build, update, query in O(log N)</span></span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"><span class="hljs-comment">// time = O(log N) per op, space = O(N)</span></span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"><span class="hljs-keyword">class</span> <span class="hljs-title class_">NumArray</span> {</span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    <span class="hljs-type">int</span>[] tree;</span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    <span class="hljs-type">int</span> n;</span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">    <span class="hljs-keyword">public</span> <span class="hljs-title function_">NumArray</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums)</span> {</span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">        n = nums.length;</span></span>
+<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">        tree = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[<span class="hljs-number">2</span> * n];</span></span>
+<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">        <span class="hljs-comment">// build leaves</span></span></span>
+<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; n; i++) tree[n + i] = nums[i];</span></span>
+<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">        <span class="hljs-comment">// build internal nodes</span></span></span>
+<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> n - <span class="hljs-number">1</span>; i &gt;= <span class="hljs-number">1</span>; i--) tree[i] = tree[<span class="hljs-number">2</span>*i] + tree[<span class="hljs-number">2</span>*i+<span class="hljs-number">1</span>];</span></span>
+<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">    }</span></span>
+<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">update</span><span class="hljs-params">(<span class="hljs-type">int</span> i, <span class="hljs-type">int</span> val)</span> {</span></span>
+<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">        tree[n + i] = val;</span></span>
+<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">pos</span> <span class="hljs-operator">=</span> (n + i) &gt;&gt; <span class="hljs-number">1</span>; pos &gt;= <span class="hljs-number">1</span>; pos &gt;&gt;= <span class="hljs-number">1</span>)</span></span>
+<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">            tree[pos] = tree[<span class="hljs-number">2</span>*pos] + tree[<span class="hljs-number">2</span>*pos+<span class="hljs-number">1</span>];</span></span>
+<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">    }</span></span>
+<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">    <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">sumRange</span><span class="hljs-params">(<span class="hljs-type">int</span> l, <span class="hljs-type">int</span> r)</span> {</span></span>
+<span class="ln-row"><span class="ln-num">21</span><span class="ln-code">        <span class="hljs-type">int</span> <span class="hljs-variable">sum</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;</span></span>
+<span class="ln-row"><span class="ln-num">22</span><span class="ln-code">        <span class="hljs-keyword">for</span> (l += n, r += n + <span class="hljs-number">1</span>; l &lt; r; l &gt;&gt;= <span class="hljs-number">1</span>, r &gt;&gt;= <span class="hljs-number">1</span>) {</span></span>
+<span class="ln-row"><span class="ln-num">23</span><span class="ln-code">            <span class="hljs-keyword">if</span> ((l &amp; <span class="hljs-number">1</span>) == <span class="hljs-number">1</span>) sum += tree[l++];</span></span>
+<span class="ln-row"><span class="ln-num">24</span><span class="ln-code">            <span class="hljs-keyword">if</span> ((r &amp; <span class="hljs-number">1</span>) == <span class="hljs-number">1</span>) sum += tree[--r];</span></span>
+<span class="ln-row"><span class="ln-num">25</span><span class="ln-code">        }</span></span>
+<span class="ln-row"><span class="ln-num">26</span><span class="ln-code">        <span class="hljs-keyword">return</span> sum;</span></span>
+<span class="ln-row"><span class="ln-num">27</span><span class="ln-code">    }</span></span>
+<span class="ln-row"><span class="ln-num">28</span><span class="ln-code">}</span></span>
 </code></pre>
 <h3 id="2-2-my-calendar-i-lc-729-segment-tree-treemap-for-interval-booking" tabindex="-1"><a class="header-anchor" href="#2-2-my-calendar-i-lc-729-segment-tree-treemap-for-interval-booking"><span>2-2) My Calendar I (LC 729) — Segment Tree / TreeMap for Interval Booking</span></a></h3>
 <blockquote>
 <p>Use TreeMap to check if new booking overlaps with any existing booking.</p>
 </blockquote>
-<pre><code class="language-java">// LC 729 - My Calendar I
-// IDEA: TreeMap — check overlap with floorKey and ceilingKey
-// time = O(log N) per booking, space = O(N)
-class MyCalendar {
-    TreeMap&lt;Integer, Integer&gt; calendar = new TreeMap&lt;&gt;();
-    public boolean book(int start, int end) {
-        Integer prev = calendar.floorKey(start);
-        Integer next = calendar.ceilingKey(start);
-        // No overlap if: prev booking ends before start, AND next booking starts after end
-        if ((prev == null || calendar.get(prev) &lt;= start) &amp;&amp;
-            (next == null || next &gt;= end)) {
-            calendar.put(start, end);
-            return true;
-        }
-        return false;
-    }
-}
+<pre data-lang="java"><code class="hljs language-java"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment">// LC 729 - My Calendar I</span></span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-comment">// IDEA: TreeMap — check overlap with floorKey and ceilingKey</span></span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"><span class="hljs-comment">// time = O(log N) per booking, space = O(N)</span></span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"><span class="hljs-keyword">class</span> <span class="hljs-title class_">MyCalendar</span> {</span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    TreeMap&lt;Integer, Integer&gt; calendar = <span class="hljs-keyword">new</span> <span class="hljs-title class_">TreeMap</span>&lt;&gt;();</span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    <span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">book</span><span class="hljs-params">(<span class="hljs-type">int</span> start, <span class="hljs-type">int</span> end)</span> {</span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">        <span class="hljs-type">Integer</span> <span class="hljs-variable">prev</span> <span class="hljs-operator">=</span> calendar.floorKey(start);</span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">        <span class="hljs-type">Integer</span> <span class="hljs-variable">next</span> <span class="hljs-operator">=</span> calendar.ceilingKey(start);</span></span>
+<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">        <span class="hljs-comment">// No overlap if: prev booking ends before start, AND next booking starts after end</span></span></span>
+<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">        <span class="hljs-keyword">if</span> ((prev == <span class="hljs-literal">null</span> || calendar.get(prev) &lt;= start) &amp;&amp;</span></span>
+<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">            (next == <span class="hljs-literal">null</span> || next &gt;= end)) {</span></span>
+<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">            calendar.put(start, end);</span></span>
+<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">            <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;</span></span>
+<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">        }</span></span>
+<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">        <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;</span></span>
+<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">    }</span></span>
+<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">}</span></span>
 </code></pre>
 <p>This comprehensive guide covers the essential concepts and implementations for Segment Trees and Binary Indexed Trees, with practical examples from LeetCode problems.</p>
 <h3 id="2-3-segment-tree-template-range-sum-with-lazy-propagation" tabindex="-1"><a class="header-anchor" href="#2-3-segment-tree-template-range-sum-with-lazy-propagation"><span>2-3) Segment Tree Template — Range Sum with Lazy Propagation</span></a></h3>
 <blockquote>
 <p>Full segment tree with range-update and range-query in O(log N).</p>
 </blockquote>
-<pre><code class="language-java">// Segment Tree — Lazy Propagation Template
-// time = O(log N) per update/query, space = O(N)
-class SegTree {
-    int[] tree, lazy;
-    int n;
-    SegTree(int[] nums) {
-        n = nums.length;
-        tree = new int[4 * n];
-        lazy = new int[4 * n];
-        build(nums, 0, 0, n - 1);
-    }
-    private void build(int[] nums, int node, int l, int r) {
-        if (l == r) { tree[node] = nums[l]; return; }
-        int mid = (l + r) / 2;
-        build(nums, 2*node+1, l, mid);
-        build(nums, 2*node+2, mid+1, r);
-        tree[node] = tree[2*node+1] + tree[2*node+2];
-    }
-    private void pushDown(int node, int l, int r) {
-        if (lazy[node] != 0) {
-            int mid = (l + r) / 2;
-            tree[2*node+1] += (mid-l+1) * lazy[node]; lazy[2*node+1] += lazy[node];
-            tree[2*node+2] += (r-mid)   * lazy[node]; lazy[2*node+2] += lazy[node];
-            lazy[node] = 0;
-        }
-    }
-    void update(int node, int l, int r, int ql, int qr, int val) {
-        if (ql &gt; r || qr &lt; l) return;
-        if (ql &lt;= l &amp;&amp; r &lt;= qr) { tree[node] += (r-l+1)*val; lazy[node] += val; return; }
-        pushDown(node, l, r);
-        int mid = (l + r) / 2;
-        update(2*node+1, l, mid, ql, qr, val);
-        update(2*node+2, mid+1, r, ql, qr, val);
-        tree[node] = tree[2*node+1] + tree[2*node+2];
-    }
-    int query(int node, int l, int r, int ql, int qr) {
-        if (ql &gt; r || qr &lt; l) return 0;
-        if (ql &lt;= l &amp;&amp; r &lt;= qr) return tree[node];
-        pushDown(node, l, r);
-        int mid = (l + r) / 2;
-        return query(2*node+1, l, mid, ql, qr) + query(2*node+2, mid+1, r, ql, qr);
-    }
-}
+<pre data-lang="java"><code class="hljs language-java"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment">// Segment Tree — Lazy Propagation Template</span></span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-comment">// time = O(log N) per update/query, space = O(N)</span></span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"><span class="hljs-keyword">class</span> <span class="hljs-title class_">SegTree</span> {</span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">    <span class="hljs-type">int</span>[] tree, lazy;</span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    <span class="hljs-type">int</span> n;</span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    SegTree(<span class="hljs-type">int</span>[] nums) {</span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">        n = nums.length;</span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">        tree = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[<span class="hljs-number">4</span> * n];</span></span>
+<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">        lazy = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[<span class="hljs-number">4</span> * n];</span></span>
+<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">        build(nums, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, n - <span class="hljs-number">1</span>);</span></span>
+<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">    }</span></span>
+<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">    <span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">build</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums, <span class="hljs-type">int</span> node, <span class="hljs-type">int</span> l, <span class="hljs-type">int</span> r)</span> {</span></span>
+<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">        <span class="hljs-keyword">if</span> (l == r) { tree[node] = nums[l]; <span class="hljs-keyword">return</span>; }</span></span>
+<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">        <span class="hljs-type">int</span> <span class="hljs-variable">mid</span> <span class="hljs-operator">=</span> (l + r) / <span class="hljs-number">2</span>;</span></span>
+<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">        build(nums, <span class="hljs-number">2</span>*node+<span class="hljs-number">1</span>, l, mid);</span></span>
+<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">        build(nums, <span class="hljs-number">2</span>*node+<span class="hljs-number">2</span>, mid+<span class="hljs-number">1</span>, r);</span></span>
+<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">        tree[node] = tree[<span class="hljs-number">2</span>*node+<span class="hljs-number">1</span>] + tree[<span class="hljs-number">2</span>*node+<span class="hljs-number">2</span>];</span></span>
+<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">    }</span></span>
+<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">    <span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">pushDown</span><span class="hljs-params">(<span class="hljs-type">int</span> node, <span class="hljs-type">int</span> l, <span class="hljs-type">int</span> r)</span> {</span></span>
+<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">        <span class="hljs-keyword">if</span> (lazy[node] != <span class="hljs-number">0</span>) {</span></span>
+<span class="ln-row"><span class="ln-num">21</span><span class="ln-code">            <span class="hljs-type">int</span> <span class="hljs-variable">mid</span> <span class="hljs-operator">=</span> (l + r) / <span class="hljs-number">2</span>;</span></span>
+<span class="ln-row"><span class="ln-num">22</span><span class="ln-code">            tree[<span class="hljs-number">2</span>*node+<span class="hljs-number">1</span>] += (mid-l+<span class="hljs-number">1</span>) * lazy[node]; lazy[<span class="hljs-number">2</span>*node+<span class="hljs-number">1</span>] += lazy[node];</span></span>
+<span class="ln-row"><span class="ln-num">23</span><span class="ln-code">            tree[<span class="hljs-number">2</span>*node+<span class="hljs-number">2</span>] += (r-mid)   * lazy[node]; lazy[<span class="hljs-number">2</span>*node+<span class="hljs-number">2</span>] += lazy[node];</span></span>
+<span class="ln-row"><span class="ln-num">24</span><span class="ln-code">            lazy[node] = <span class="hljs-number">0</span>;</span></span>
+<span class="ln-row"><span class="ln-num">25</span><span class="ln-code">        }</span></span>
+<span class="ln-row"><span class="ln-num">26</span><span class="ln-code">    }</span></span>
+<span class="ln-row"><span class="ln-num">27</span><span class="ln-code">    <span class="hljs-keyword">void</span> <span class="hljs-title function_">update</span><span class="hljs-params">(<span class="hljs-type">int</span> node, <span class="hljs-type">int</span> l, <span class="hljs-type">int</span> r, <span class="hljs-type">int</span> ql, <span class="hljs-type">int</span> qr, <span class="hljs-type">int</span> val)</span> {</span></span>
+<span class="ln-row"><span class="ln-num">28</span><span class="ln-code">        <span class="hljs-keyword">if</span> (ql &gt; r || qr &lt; l) <span class="hljs-keyword">return</span>;</span></span>
+<span class="ln-row"><span class="ln-num">29</span><span class="ln-code">        <span class="hljs-keyword">if</span> (ql &lt;= l &amp;&amp; r &lt;= qr) { tree[node] += (r-l+<span class="hljs-number">1</span>)*val; lazy[node] += val; <span class="hljs-keyword">return</span>; }</span></span>
+<span class="ln-row"><span class="ln-num">30</span><span class="ln-code">        pushDown(node, l, r);</span></span>
+<span class="ln-row"><span class="ln-num">31</span><span class="ln-code">        <span class="hljs-type">int</span> <span class="hljs-variable">mid</span> <span class="hljs-operator">=</span> (l + r) / <span class="hljs-number">2</span>;</span></span>
+<span class="ln-row"><span class="ln-num">32</span><span class="ln-code">        update(<span class="hljs-number">2</span>*node+<span class="hljs-number">1</span>, l, mid, ql, qr, val);</span></span>
+<span class="ln-row"><span class="ln-num">33</span><span class="ln-code">        update(<span class="hljs-number">2</span>*node+<span class="hljs-number">2</span>, mid+<span class="hljs-number">1</span>, r, ql, qr, val);</span></span>
+<span class="ln-row"><span class="ln-num">34</span><span class="ln-code">        tree[node] = tree[<span class="hljs-number">2</span>*node+<span class="hljs-number">1</span>] + tree[<span class="hljs-number">2</span>*node+<span class="hljs-number">2</span>];</span></span>
+<span class="ln-row"><span class="ln-num">35</span><span class="ln-code">    }</span></span>
+<span class="ln-row"><span class="ln-num">36</span><span class="ln-code">    <span class="hljs-type">int</span> <span class="hljs-title function_">query</span><span class="hljs-params">(<span class="hljs-type">int</span> node, <span class="hljs-type">int</span> l, <span class="hljs-type">int</span> r, <span class="hljs-type">int</span> ql, <span class="hljs-type">int</span> qr)</span> {</span></span>
+<span class="ln-row"><span class="ln-num">37</span><span class="ln-code">        <span class="hljs-keyword">if</span> (ql &gt; r || qr &lt; l) <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;</span></span>
+<span class="ln-row"><span class="ln-num">38</span><span class="ln-code">        <span class="hljs-keyword">if</span> (ql &lt;= l &amp;&amp; r &lt;= qr) <span class="hljs-keyword">return</span> tree[node];</span></span>
+<span class="ln-row"><span class="ln-num">39</span><span class="ln-code">        pushDown(node, l, r);</span></span>
+<span class="ln-row"><span class="ln-num">40</span><span class="ln-code">        <span class="hljs-type">int</span> <span class="hljs-variable">mid</span> <span class="hljs-operator">=</span> (l + r) / <span class="hljs-number">2</span>;</span></span>
+<span class="ln-row"><span class="ln-num">41</span><span class="ln-code">        <span class="hljs-keyword">return</span> query(<span class="hljs-number">2</span>*node+<span class="hljs-number">1</span>, l, mid, ql, qr) + query(<span class="hljs-number">2</span>*node+<span class="hljs-number">2</span>, mid+<span class="hljs-number">1</span>, r, ql, qr);</span></span>
+<span class="ln-row"><span class="ln-num">42</span><span class="ln-code">    }</span></span>
+<span class="ln-row"><span class="ln-num">43</span><span class="ln-code">}</span></span>
 </code></pre>
 <h3 id="2-4-corporate-flight-bookings-lc-1109-difference-array" tabindex="-1"><a class="header-anchor" href="#2-4-corporate-flight-bookings-lc-1109-difference-array"><span>2-4) Corporate Flight Bookings (LC 1109) — Difference Array</span></a></h3>
 <blockquote>
 <p>Range-add passengers [first, last]; prefix-sum to get totals per flight.</p>
 </blockquote>
-<pre><code class="language-java">// LC 1109 - Corporate Flight Bookings
-// IDEA: Difference array — range add O(1), prefix sum O(N) for result
-// time = O(N + Q), space = O(N)
-public int[] corpFlightBookings(int[][] bookings, int n) {
-    int[] diff = new int[n + 1];
-    for (int[] b : bookings) {
-        diff[b[0] - 1] += b[2];
-        if (b[1] &lt; n) diff[b[1]] -= b[2];
-    }
-    for (int i = 1; i &lt; n; i++) diff[i] += diff[i-1];
-    return Arrays.copyOf(diff, n);
-}
+<pre data-lang="java"><code class="hljs language-java"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment">// LC 1109 - Corporate Flight Bookings</span></span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-comment">// IDEA: Difference array — range add O(1), prefix sum O(N) for result</span></span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"><span class="hljs-comment">// time = O(N + Q), space = O(N)</span></span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"><span class="hljs-keyword">public</span> <span class="hljs-type">int</span>[] corpFlightBookings(<span class="hljs-type">int</span>[][] bookings, <span class="hljs-type">int</span> n) {</span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    <span class="hljs-type">int</span>[] diff = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[n + <span class="hljs-number">1</span>];</span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span>[] b : bookings) {</span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">        diff[b[<span class="hljs-number">0</span>] - <span class="hljs-number">1</span>] += b[<span class="hljs-number">2</span>];</span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">        <span class="hljs-keyword">if</span> (b[<span class="hljs-number">1</span>] &lt; n) diff[b[<span class="hljs-number">1</span>]] -= b[<span class="hljs-number">2</span>];</span></span>
+<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">    }</span></span>
+<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span>; i &lt; n; i++) diff[i] += diff[i-<span class="hljs-number">1</span>];</span></span>
+<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">    <span class="hljs-keyword">return</span> Arrays.copyOf(diff, n);</span></span>
+<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">}</span></span>
 </code></pre>
 <h3 id="2-5-count-of-smaller-numbers-after-self-lc-315-iterative-segment-tree" tabindex="-1"><a class="header-anchor" href="#2-5-count-of-smaller-numbers-after-self-lc-315-iterative-segment-tree"><span>2-5) Count of Smaller Numbers After Self (LC 315) — Iterative Segment Tree</span></a></h3>
 <blockquote>
 <p>Build segment tree on value range; insert from right to left; query smaller prefix count.</p>
 </blockquote>
-<pre><code class="language-java">// LC 315 - Count of Smaller Numbers After Self (Segment Tree on values)
-// IDEA: Iterative seg tree on [0, 20001] value range; query prefix, then update
-// time = O(N log M), space = O(M)
-public List&lt;Integer&gt; countSmaller(int[] nums) {
-    int offset = 10001, size = 2 * offset + 1;
-    int[] tree = new int[2 * size];
-    Integer[] res = new Integer[nums.length];
-    for (int i = nums.length - 1; i &gt;= 0; i--) {
-        int val = nums[i] + offset;
-        res[i] = queryTree(tree, size, 0, val - 1);
-        updateTree(tree, size, val);
-    }
-    return Arrays.asList(res);
-}
-private void updateTree(int[] t, int n, int i) { for (i+=n; i&gt;0; i&gt;&gt;=1) t[i]++; }
-private int  queryTree(int[] t, int n, int l, int r) {
-    int s=0; for(l+=n,r+=n+1; l&lt;r; l&gt;&gt;=1,r&gt;&gt;=1) {if((l&amp;1)==1)s+=t[l++];if((r&amp;1)==1)s+=t[--r];} return s;
-}
+<pre data-lang="java"><code class="hljs language-java"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment">// LC 315 - Count of Smaller Numbers After Self (Segment Tree on values)</span></span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-comment">// IDEA: Iterative seg tree on [0, 20001] value range; query prefix, then update</span></span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"><span class="hljs-comment">// time = O(N log M), space = O(M)</span></span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"><span class="hljs-keyword">public</span> List&lt;Integer&gt; <span class="hljs-title function_">countSmaller</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums)</span> {</span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    <span class="hljs-type">int</span> <span class="hljs-variable">offset</span> <span class="hljs-operator">=</span> <span class="hljs-number">10001</span>, size = <span class="hljs-number">2</span> * offset + <span class="hljs-number">1</span>;</span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    <span class="hljs-type">int</span>[] tree = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[<span class="hljs-number">2</span> * size];</span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">    Integer[] res = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Integer</span>[nums.length];</span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> nums.length - <span class="hljs-number">1</span>; i &gt;= <span class="hljs-number">0</span>; i--) {</span></span>
+<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">        <span class="hljs-type">int</span> <span class="hljs-variable">val</span> <span class="hljs-operator">=</span> nums[i] + offset;</span></span>
+<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">        res[i] = queryTree(tree, size, <span class="hljs-number">0</span>, val - <span class="hljs-number">1</span>);</span></span>
+<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">        updateTree(tree, size, val);</span></span>
+<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">    }</span></span>
+<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">    <span class="hljs-keyword">return</span> Arrays.asList(res);</span></span>
+<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">}</span></span>
+<span class="ln-row"><span class="ln-num">15</span><span class="ln-code"><span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">updateTree</span><span class="hljs-params">(<span class="hljs-type">int</span>[] t, <span class="hljs-type">int</span> n, <span class="hljs-type">int</span> i)</span> { <span class="hljs-keyword">for</span> (i+=n; i&gt;<span class="hljs-number">0</span>; i&gt;&gt;=<span class="hljs-number">1</span>) t[i]++; }</span></span>
+<span class="ln-row"><span class="ln-num">16</span><span class="ln-code"><span class="hljs-keyword">private</span> <span class="hljs-type">int</span>  <span class="hljs-title function_">queryTree</span><span class="hljs-params">(<span class="hljs-type">int</span>[] t, <span class="hljs-type">int</span> n, <span class="hljs-type">int</span> l, <span class="hljs-type">int</span> r)</span> {</span></span>
+<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">    <span class="hljs-type">int</span> s=<span class="hljs-number">0</span>; <span class="hljs-keyword">for</span>(l+=n,r+=n+<span class="hljs-number">1</span>; l&lt;r; l&gt;&gt;=<span class="hljs-number">1</span>,r&gt;&gt;=<span class="hljs-number">1</span>) {<span class="hljs-keyword">if</span>((l&amp;<span class="hljs-number">1</span>)==<span class="hljs-number">1</span>)s+=t[l++];<span class="hljs-keyword">if</span>((r&amp;<span class="hljs-number">1</span>)==<span class="hljs-number">1</span>)s+=t[--r];} <span class="hljs-keyword">return</span> s;</span></span>
+<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">}</span></span>
 </code></pre>
 <h3 id="2-6-falling-squares-lc-699-segment-tree-max" tabindex="-1"><a class="header-anchor" href="#2-6-falling-squares-lc-699-segment-tree-max"><span>2-6) Falling Squares (LC 699) — Segment Tree Max</span></a></h3>
 <blockquote>
 <p>Each square lands on the highest existing height in its range; track running max height.</p>
 </blockquote>
-<pre><code class="language-java">// LC 699 - Falling Squares (naive O(N^2); segment tree gives O(N log N))
-// IDEA: For each square compute max height in its column range, then update
-// time = O(N^2), space = O(N)
-public List&lt;Integer&gt; fallingSquares(int[][] positions) {
-    List&lt;Integer&gt; ans = new ArrayList&lt;&gt;();
-    int[] heights = new int[positions.length];
-    int maxH = 0;
-    for (int i = 0; i &lt; positions.length; i++) {
-        int l = positions[i][0], sz = positions[i][1], r = l + sz;
-        heights[i] = sz;
-        for (int j = 0; j &lt; i; j++) {
-            int lj = positions[j][0], rj = lj + positions[j][1];
-            if (lj &lt; r &amp;&amp; l &lt; rj)                    // overlap
-                heights[i] = Math.max(heights[i], heights[j] + sz);
-        }
-        maxH = Math.max(maxH, heights[i]);
-        ans.add(maxH);
-    }
-    return ans;
-}
+<pre data-lang="java"><code class="hljs language-java"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment">// LC 699 - Falling Squares (naive O(N^2); segment tree gives O(N log N))</span></span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-comment">// IDEA: For each square compute max height in its column range, then update</span></span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"><span class="hljs-comment">// time = O(N^2), space = O(N)</span></span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"><span class="hljs-keyword">public</span> List&lt;Integer&gt; <span class="hljs-title function_">fallingSquares</span><span class="hljs-params">(<span class="hljs-type">int</span>[][] positions)</span> {</span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    List&lt;Integer&gt; ans = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();</span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    <span class="hljs-type">int</span>[] heights = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[positions.length];</span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">    <span class="hljs-type">int</span> <span class="hljs-variable">maxH</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;</span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; positions.length; i++) {</span></span>
+<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">        <span class="hljs-type">int</span> <span class="hljs-variable">l</span> <span class="hljs-operator">=</span> positions[i][<span class="hljs-number">0</span>], sz = positions[i][<span class="hljs-number">1</span>], r = l + sz;</span></span>
+<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">        heights[i] = sz;</span></span>
+<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">j</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; j &lt; i; j++) {</span></span>
+<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">            <span class="hljs-type">int</span> <span class="hljs-variable">lj</span> <span class="hljs-operator">=</span> positions[j][<span class="hljs-number">0</span>], rj = lj + positions[j][<span class="hljs-number">1</span>];</span></span>
+<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">            <span class="hljs-keyword">if</span> (lj &lt; r &amp;&amp; l &lt; rj)                    <span class="hljs-comment">// overlap</span></span></span>
+<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">                heights[i] = Math.max(heights[i], heights[j] + sz);</span></span>
+<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">        }</span></span>
+<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">        maxH = Math.max(maxH, heights[i]);</span></span>
+<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">        ans.add(maxH);</span></span>
+<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">    }</span></span>
+<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">    <span class="hljs-keyword">return</span> ans;</span></span>
+<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">}</span></span>
 </code></pre>
 <h3 id="2-7-maximum-sum-rectangle-no-larger-than-k-lc-363-prefix-sum-treeset" tabindex="-1"><a class="header-anchor" href="#2-7-maximum-sum-rectangle-no-larger-than-k-lc-363-prefix-sum-treeset"><span>2-7) Maximum Sum Rectangle No Larger Than K (LC 363) — Prefix Sum + TreeSet</span></a></h3>
 <blockquote>
 <p>Fix column bounds; compress to 1D row sums; use TreeSet to find max sum ≤ k.</p>
 </blockquote>
-<pre><code class="language-java">// LC 363 - Max Sum of Rectangle No Larger Than K
-// IDEA: Fix left/right cols; 1D Kadane + TreeSet for sum &lt;= k constraint
-// time = O(M^2 * N log N), space = O(N)
-public int maxSumSubmatrix(int[][] matrix, int k) {
-    int m = matrix.length, n = matrix[0].length, ans = Integer.MIN_VALUE;
-    for (int l = 0; l &lt; n; l++) {
-        int[] rowSum = new int[m];
-        for (int r = l; r &lt; n; r++) {
-            for (int i = 0; i &lt; m; i++) rowSum[i] += matrix[i][r];
-            TreeSet&lt;Integer&gt; set = new TreeSet&lt;&gt;();
-            set.add(0);
-            int curr = 0;
-            for (int s : rowSum) {
-                curr += s;
-                Integer ceiling = set.ceiling(curr - k);
-                if (ceiling != null) ans = Math.max(ans, curr - ceiling);
-                set.add(curr);
-            }
-        }
-    }
-    return ans;
-}
+<pre data-lang="java"><code class="hljs language-java"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment">// LC 363 - Max Sum of Rectangle No Larger Than K</span></span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-comment">// IDEA: Fix left/right cols; 1D Kadane + TreeSet for sum &lt;= k constraint</span></span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"><span class="hljs-comment">// time = O(M^2 * N log N), space = O(N)</span></span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"><span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">maxSumSubmatrix</span><span class="hljs-params">(<span class="hljs-type">int</span>[][] matrix, <span class="hljs-type">int</span> k)</span> {</span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    <span class="hljs-type">int</span> <span class="hljs-variable">m</span> <span class="hljs-operator">=</span> matrix.length, n = matrix[<span class="hljs-number">0</span>].length, ans = Integer.MIN_VALUE;</span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">l</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; l &lt; n; l++) {</span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">        <span class="hljs-type">int</span>[] rowSum = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[m];</span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">r</span> <span class="hljs-operator">=</span> l; r &lt; n; r++) {</span></span>
+<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">            <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; m; i++) rowSum[i] += matrix[i][r];</span></span>
+<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">            TreeSet&lt;Integer&gt; set = <span class="hljs-keyword">new</span> <span class="hljs-title class_">TreeSet</span>&lt;&gt;();</span></span>
+<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">            set.add(<span class="hljs-number">0</span>);</span></span>
+<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">            <span class="hljs-type">int</span> <span class="hljs-variable">curr</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;</span></span>
+<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">            <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> s : rowSum) {</span></span>
+<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">                curr += s;</span></span>
+<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">                <span class="hljs-type">Integer</span> <span class="hljs-variable">ceiling</span> <span class="hljs-operator">=</span> set.ceiling(curr - k);</span></span>
+<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">                <span class="hljs-keyword">if</span> (ceiling != <span class="hljs-literal">null</span>) ans = Math.max(ans, curr - ceiling);</span></span>
+<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">                set.add(curr);</span></span>
+<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">            }</span></span>
+<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">        }</span></span>
+<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">    }</span></span>
+<span class="ln-row"><span class="ln-num">21</span><span class="ln-code">    <span class="hljs-keyword">return</span> ans;</span></span>
+<span class="ln-row"><span class="ln-num">22</span><span class="ln-code">}</span></span>
 </code></pre>
 <h3 id="2-8-range-module-lc-715-segment-tree-treemap" tabindex="-1"><a class="header-anchor" href="#2-8-range-module-lc-715-segment-tree-treemap"><span>2-8) Range Module (LC 715) — Segment Tree / TreeMap</span></a></h3>
 <blockquote>
 <p>Track which ranges are tracked; add, remove, and query ranges efficiently.</p>
 </blockquote>
-<pre><code class="language-java">// LC 715 - Range Module (TreeMap approach)
-// IDEA: TreeMap&lt;start, end&gt; — merge on addRange, split on removeRange
-// time = O(N log N) per op, space = O(N)
-class RangeModule {
-    TreeMap&lt;Integer, Integer&gt; map = new TreeMap&lt;&gt;();
-    public void addRange(int left, int right) {
-        Integer lo = map.floorKey(left), hi = map.floorKey(right);
-        if (lo != null &amp;&amp; map.get(lo) &gt;= left) left = lo;
-        if (hi != null &amp;&amp; map.get(hi) &gt; right) right = map.get(hi);
-        map.subMap(left, right).clear();
-        map.put(left, right);
-    }
-    public boolean queryRange(int left, int right) {
-        Integer lo = map.floorKey(left);
-        return lo != null &amp;&amp; map.get(lo) &gt;= right;
-    }
-    public void removeRange(int left, int right) {
-        Integer lo = map.floorKey(left), hi = map.floorKey(right);
-        if (hi != null &amp;&amp; map.get(hi) &gt; right) map.put(right, map.get(hi));
-        if (lo != null &amp;&amp; map.get(lo) &gt; left)  map.put(lo, left);
-        map.subMap(left, right).clear();
-    }
-}
+<pre data-lang="java"><code class="hljs language-java"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment">// LC 715 - Range Module (TreeMap approach)</span></span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-comment">// IDEA: TreeMap&lt;start, end&gt; — merge on addRange, split on removeRange</span></span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"><span class="hljs-comment">// time = O(N log N) per op, space = O(N)</span></span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"><span class="hljs-keyword">class</span> <span class="hljs-title class_">RangeModule</span> {</span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    TreeMap&lt;Integer, Integer&gt; map = <span class="hljs-keyword">new</span> <span class="hljs-title class_">TreeMap</span>&lt;&gt;();</span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">addRange</span><span class="hljs-params">(<span class="hljs-type">int</span> left, <span class="hljs-type">int</span> right)</span> {</span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">        <span class="hljs-type">Integer</span> <span class="hljs-variable">lo</span> <span class="hljs-operator">=</span> map.floorKey(left), hi = map.floorKey(right);</span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">        <span class="hljs-keyword">if</span> (lo != <span class="hljs-literal">null</span> &amp;&amp; map.get(lo) &gt;= left) left = lo;</span></span>
+<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">        <span class="hljs-keyword">if</span> (hi != <span class="hljs-literal">null</span> &amp;&amp; map.get(hi) &gt; right) right = map.get(hi);</span></span>
+<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">        map.subMap(left, right).clear();</span></span>
+<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">        map.put(left, right);</span></span>
+<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">    }</span></span>
+<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">    <span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">queryRange</span><span class="hljs-params">(<span class="hljs-type">int</span> left, <span class="hljs-type">int</span> right)</span> {</span></span>
+<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">        <span class="hljs-type">Integer</span> <span class="hljs-variable">lo</span> <span class="hljs-operator">=</span> map.floorKey(left);</span></span>
+<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">        <span class="hljs-keyword">return</span> lo != <span class="hljs-literal">null</span> &amp;&amp; map.get(lo) &gt;= right;</span></span>
+<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">    }</span></span>
+<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">removeRange</span><span class="hljs-params">(<span class="hljs-type">int</span> left, <span class="hljs-type">int</span> right)</span> {</span></span>
+<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">        <span class="hljs-type">Integer</span> <span class="hljs-variable">lo</span> <span class="hljs-operator">=</span> map.floorKey(left), hi = map.floorKey(right);</span></span>
+<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">        <span class="hljs-keyword">if</span> (hi != <span class="hljs-literal">null</span> &amp;&amp; map.get(hi) &gt; right) map.put(right, map.get(hi));</span></span>
+<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">        <span class="hljs-keyword">if</span> (lo != <span class="hljs-literal">null</span> &amp;&amp; map.get(lo) &gt; left)  map.put(lo, left);</span></span>
+<span class="ln-row"><span class="ln-num">21</span><span class="ln-code">        map.subMap(left, right).clear();</span></span>
+<span class="ln-row"><span class="ln-num">22</span><span class="ln-code">    }</span></span>
+<span class="ln-row"><span class="ln-num">23</span><span class="ln-code">}</span></span>
 </code></pre>
 <h3 id="2-9-longest-increasing-subsequence-lc-300-segment-tree-on-values" tabindex="-1"><a class="header-anchor" href="#2-9-longest-increasing-subsequence-lc-300-segment-tree-on-values"><span>2-9) Longest Increasing Subsequence (LC 300) — Segment Tree on Values</span></a></h3>
 <blockquote>
 <p>Segment tree on compressed values; query max LIS length for values &lt; current, then update.</p>
 </blockquote>
-<pre><code class="language-java">// LC 300 - LIS via Segment Tree (max query on value range)
-// IDEA: Compress values; seg tree max query for all smaller values; update at current
-// time = O(N log N), space = O(N)
-public int lengthOfLIS(int[] nums) {
-    int[] sorted = nums.clone();
-    Arrays.sort(sorted);
-    Map&lt;Integer, Integer&gt; rank = new HashMap&lt;&gt;();
-    int r = 1;
-    for (int v : sorted) if (!rank.containsKey(v)) rank.put(v, r++);
-    int n = r - 1;
-    int[] tree = new int[2 * (n + 1)];
-    int ans = 0;
-    for (int num : nums) {
-        int pos = rank.get(num);
-        int best = qmax(tree, n, 1, pos - 1) + 1;
-        ans = Math.max(ans, best);
-        umax(tree, n, pos, best);
-    }
-    return ans;
-}
-private int  qmax(int[] t, int n, int l, int r) { int res=0; for(l+=n,r+=n+1;l&lt;r;l&gt;&gt;=1,r&gt;&gt;=1){if((l&amp;1)==1)res=Math.max(res,t[l++]);if((r&amp;1)==1)res=Math.max(res,t[--r]);}return res; }
-private void umax(int[] t, int n, int i, int v) { for(i+=n;i&gt;0;i&gt;&gt;=1) t[i]=Math.max(t[i],v); }
+<pre data-lang="java"><code class="hljs language-java"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment">// LC 300 - LIS via Segment Tree (max query on value range)</span></span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-comment">// IDEA: Compress values; seg tree max query for all smaller values; update at current</span></span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"><span class="hljs-comment">// time = O(N log N), space = O(N)</span></span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"><span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">lengthOfLIS</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums)</span> {</span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    <span class="hljs-type">int</span>[] sorted = nums.clone();</span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    Arrays.sort(sorted);</span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">    Map&lt;Integer, Integer&gt; rank = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;();</span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">    <span class="hljs-type">int</span> <span class="hljs-variable">r</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span>;</span></span>
+<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> v : sorted) <span class="hljs-keyword">if</span> (!rank.containsKey(v)) rank.put(v, r++);</span></span>
+<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">    <span class="hljs-type">int</span> <span class="hljs-variable">n</span> <span class="hljs-operator">=</span> r - <span class="hljs-number">1</span>;</span></span>
+<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">    <span class="hljs-type">int</span>[] tree = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[<span class="hljs-number">2</span> * (n + <span class="hljs-number">1</span>)];</span></span>
+<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">    <span class="hljs-type">int</span> <span class="hljs-variable">ans</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;</span></span>
+<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> num : nums) {</span></span>
+<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">        <span class="hljs-type">int</span> <span class="hljs-variable">pos</span> <span class="hljs-operator">=</span> rank.get(num);</span></span>
+<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">        <span class="hljs-type">int</span> <span class="hljs-variable">best</span> <span class="hljs-operator">=</span> qmax(tree, n, <span class="hljs-number">1</span>, pos - <span class="hljs-number">1</span>) + <span class="hljs-number">1</span>;</span></span>
+<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">        ans = Math.max(ans, best);</span></span>
+<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">        umax(tree, n, pos, best);</span></span>
+<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">    }</span></span>
+<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">    <span class="hljs-keyword">return</span> ans;</span></span>
+<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">}</span></span>
+<span class="ln-row"><span class="ln-num">21</span><span class="ln-code"><span class="hljs-keyword">private</span> <span class="hljs-type">int</span>  <span class="hljs-title function_">qmax</span><span class="hljs-params">(<span class="hljs-type">int</span>[] t, <span class="hljs-type">int</span> n, <span class="hljs-type">int</span> l, <span class="hljs-type">int</span> r)</span> { <span class="hljs-type">int</span> res=<span class="hljs-number">0</span>; <span class="hljs-keyword">for</span>(l+=n,r+=n+<span class="hljs-number">1</span>;l&lt;r;l&gt;&gt;=<span class="hljs-number">1</span>,r&gt;&gt;=<span class="hljs-number">1</span>){<span class="hljs-keyword">if</span>((l&amp;<span class="hljs-number">1</span>)==<span class="hljs-number">1</span>)res=Math.max(res,t[l++]);<span class="hljs-keyword">if</span>((r&amp;<span class="hljs-number">1</span>)==<span class="hljs-number">1</span>)res=Math.max(res,t[--r]);}<span class="hljs-keyword">return</span> res; }</span></span>
+<span class="ln-row"><span class="ln-num">22</span><span class="ln-code"><span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">umax</span><span class="hljs-params">(<span class="hljs-type">int</span>[] t, <span class="hljs-type">int</span> n, <span class="hljs-type">int</span> i, <span class="hljs-type">int</span> v)</span> { <span class="hljs-keyword">for</span>(i+=n;i&gt;<span class="hljs-number">0</span>;i&gt;&gt;=<span class="hljs-number">1</span>) t[i]=Math.max(t[i],v); }</span></span>
 </code></pre>
 <h3 id="2-10-my-calendar-ii-lc-731-segment-tree-treemap" tabindex="-1"><a class="header-anchor" href="#2-10-my-calendar-ii-lc-731-segment-tree-treemap"><span>2-10) My Calendar II (LC 731) — Segment Tree / TreeMap</span></a></h3>
 <blockquote>
 <p>Allow at most 2 overlapping bookings; reject if a third overlap would occur.</p>
 </blockquote>
-<pre><code class="language-java">// LC 731 - My Calendar II
-// IDEA: Two TreeMaps — bookings and double-bookings; reject if new interval hits double-booked region
-// time = O(N^2) worst, space = O(N)
-class MyCalendarTwo {
-    List&lt;int[]&gt; single = new ArrayList&lt;&gt;(), overlap = new ArrayList&lt;&gt;();
-    public boolean book(int start, int end) {
-        for (int[] o : overlap)
-            if (o[0] &lt; end &amp;&amp; start &lt; o[1]) return false;
-        for (int[] s : single) {
-            int lo = Math.max(s[0], start), hi = Math.min(s[1], end);
-            if (lo &lt; hi) overlap.add(new int[]{lo, hi});
-        }
-        single.add(new int[]{start, end});
-        return true;
-    }
-}
+<pre data-lang="java"><code class="hljs language-java"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment">// LC 731 - My Calendar II</span></span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-comment">// IDEA: Two TreeMaps — bookings and double-bookings; reject if new interval hits double-booked region</span></span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"><span class="hljs-comment">// time = O(N^2) worst, space = O(N)</span></span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"><span class="hljs-keyword">class</span> <span class="hljs-title class_">MyCalendarTwo</span> {</span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    List&lt;<span class="hljs-type">int</span>[]&gt; single = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;(), overlap = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();</span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    <span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">book</span><span class="hljs-params">(<span class="hljs-type">int</span> start, <span class="hljs-type">int</span> end)</span> {</span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span>[] o : overlap)</span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">            <span class="hljs-keyword">if</span> (o[<span class="hljs-number">0</span>] &lt; end &amp;&amp; start &lt; o[<span class="hljs-number">1</span>]) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;</span></span>
+<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span>[] s : single) {</span></span>
+<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">            <span class="hljs-type">int</span> <span class="hljs-variable">lo</span> <span class="hljs-operator">=</span> Math.max(s[<span class="hljs-number">0</span>], start), hi = Math.min(s[<span class="hljs-number">1</span>], end);</span></span>
+<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">            <span class="hljs-keyword">if</span> (lo &lt; hi) overlap.add(<span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[]{lo, hi});</span></span>
+<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">        }</span></span>
+<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">        single.add(<span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[]{start, end});</span></span>
+<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">        <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;</span></span>
+<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">    }</span></span>
+<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">}</span></span>
 </code></pre>
 
       </div>

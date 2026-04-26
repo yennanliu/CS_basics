@@ -9,8 +9,7 @@
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>CS</text></svg>">
   <link rel="stylesheet" href="../style.css">
   <link rel="stylesheet" href="../vendor/fonts.css">
-  <link rel="stylesheet" href="../vendor/highlight/github-dark.min.css">
-  <script src="../vendor/highlight/highlight.min.js"></script>
+  <link rel="stylesheet" href="../vendor/highlight/atom-one-dark.min.css">
   <script>
   // Apply theme before render to prevent flash
   (function() {
@@ -21,40 +20,43 @@
   })();
   </script>
   <script>document.addEventListener('DOMContentLoaded', function() {
-    hljs.highlightAll();
-    document.querySelectorAll('pre code').forEach(function(codeEl) {
-      var pre = codeEl.parentElement;
-      var lang = '';
-      var cls = codeEl.className || '';
-      var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
-      if (m) lang = m[1];
-      var wrapper = document.createElement('div');
-      wrapper.className = 'code-block-wrapper';
-      pre.parentNode.insertBefore(wrapper, pre);
-      var header = document.createElement('div');
-      header.className = 'code-block-header';
-      if (lang) {
-        var label = document.createElement('span');
-        label.className = 'code-lang-label';
-        label.textContent = lang;
-        header.appendChild(label);
-      } else {
-        header.appendChild(document.createElement('span'));
-      }
-      var btn = document.createElement('button');
-      btn.className = 'copy-btn';
-      btn.textContent = 'Copy';
-      btn.addEventListener('click', function() {
-        navigator.clipboard.writeText(codeEl.textContent).then(function() {
-          btn.textContent = 'Copied!';
-          btn.classList.add('copied');
-          setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+    // Code block wrappers + copy buttons (highlighting done at build time)
+    try {
+      document.querySelectorAll('pre').forEach(function(pre) {
+        var codeEl = pre.querySelector('code');
+        var lang = pre.getAttribute('data-lang') || '';
+        var wrapper = document.createElement('div');
+        wrapper.className = 'code-block-wrapper';
+        pre.parentNode.insertBefore(wrapper, pre);
+        var header = document.createElement('div');
+        header.className = 'code-block-header';
+        if (lang) {
+          var label = document.createElement('span');
+          label.className = 'code-lang-label';
+          label.textContent = lang;
+          header.appendChild(label);
+        } else {
+          header.appendChild(document.createElement('span'));
+        }
+        var btn = document.createElement('button');
+        btn.className = 'copy-btn';
+        btn.textContent = 'Copy';
+        btn.addEventListener('click', function() {
+          var text = codeEl
+            ? Array.from(codeEl.querySelectorAll('.ln-code')).map(function(el) { return el.textContent; }).join('
+')
+            : pre.textContent;
+          navigator.clipboard.writeText(text).then(function() {
+            btn.textContent = 'Copied!';
+            btn.classList.add('copied');
+            setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+          });
         });
+        header.appendChild(btn);
+        wrapper.appendChild(header);
+        wrapper.appendChild(pre);
       });
-      header.appendChild(btn);
-      wrapper.appendChild(header);
-      wrapper.appendChild(pre);
-    });
+    } catch(e) { console.error('Code block setup error:', e); }
     document.querySelectorAll('table').forEach(function(table) {
       if (!table.parentElement.classList.contains('table-wrap')) {
         var wrapper = document.createElement('div');
@@ -64,32 +66,36 @@
       }
     });
     // Reading progress bar
-    var progressBar = document.getElementById('reading-progress');
-    if (progressBar) {
-      window.addEventListener('scroll', function() {
-        var winScroll = document.documentElement.scrollTop;
-        var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-        progressBar.style.width = height > 0 ? (winScroll / height * 100) + '%' : '0%';
-      });
-    }
-    // Dark mode toggle
-    var toggle = document.getElementById('theme-toggle');
-    if (toggle) {
-      var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-      toggle.textContent = isDark ? '☀️' : '🌙';
-      toggle.addEventListener('click', function() {
-        var dark = document.documentElement.getAttribute('data-theme') === 'dark';
-        if (dark) {
-          document.documentElement.removeAttribute('data-theme');
-          localStorage.setItem('theme', 'light');
-          toggle.textContent = '🌙';
-        } else {
-          document.documentElement.setAttribute('data-theme', 'dark');
-          localStorage.setItem('theme', 'dark');
-          toggle.textContent = '☀️';
-        }
-      });
-    }
+    try {
+      var progressBar = document.getElementById('reading-progress');
+      if (progressBar) {
+        window.addEventListener('scroll', function() {
+          var winScroll = document.documentElement.scrollTop;
+          var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+          progressBar.style.width = height > 0 ? (winScroll / height * 100) + '%' : '0%';
+        });
+      }
+    } catch(e) {}
+    // Dark mode toggle — isolated so errors elsewhere never prevent this from working
+    try {
+      var toggle = document.getElementById('theme-toggle');
+      if (toggle) {
+        var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+        toggle.textContent = isDark ? '☀️' : '🌙';
+        toggle.addEventListener('click', function() {
+          var dark = document.documentElement.getAttribute('data-theme') === 'dark';
+          if (dark) {
+            document.documentElement.removeAttribute('data-theme');
+            localStorage.setItem('theme', 'light');
+            toggle.textContent = '🌙';
+          } else {
+            document.documentElement.setAttribute('data-theme', 'dark');
+            localStorage.setItem('theme', 'dark');
+            toggle.textContent = '☀️';
+          }
+        });
+      }
+    } catch(e) { console.error('Theme toggle error:', e); }
   });</script>
 </head>
 <body>
@@ -216,55 +222,55 @@
 <h2 id="0-concept" tabindex="-1"><a class="header-anchor" href="#0-concept"><span>0) Concept</span></a></h2>
 <h3 id="why-sum-l-r-prefix-r-1-prefix-l" tabindex="-1"><a class="header-anchor" href="#why-sum-l-r-prefix-r-1-prefix-l"><span>Why <code>sum(l, r) = prefix[r+1] - prefix[l]</code></span></a></h3>
 <p><img src="../doc/pic/prefix_sum_2.png"></p></p>
-<pre><code>Given nums:    [ a,  b,  c,  d,  e ]
-Index:           0   1   2   3   4
-
-Build prefix array (size n+1, prefix[0] = 0):
-
-prefix[0] = 0
-prefix[1] = a
-prefix[2] = a + b
-prefix[3] = a + b + c
-prefix[4] = a + b + c + d
-prefix[5] = a + b + c + d + e
-
-Visual:
-
-prefix:  0 |  a  | a+b | a+b+c | a+b+c+d | a+b+c+d+e |
-index:   0    1      2      3        4          5
-
-To get sum(l=1, r=3) = nums[1] + nums[2] + nums[3] = b + c + d:
-
-prefix[r+1] = prefix[4] = a + b + c + d
-prefix[l]   = prefix[1] = a
-                           ─────────────
-prefix[4] - prefix[1]   =     b + c + d  ✓
-
-Visually (what gets cancelled out):
-
-prefix[4]:  [ a | b | c | d ]
-prefix[1]:  [ a ]
-            ─────────────────
-difference:     [ b | c | d ]   ← this is sum(1, 3)
+<pre><code class="hljs"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code">Given nums:    [ a,  b,  c,  d,  e ]</span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code">Index:           0   1   2   3   4</span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">Build prefix array (size n+1, prefix[0] = 0):</span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">prefix[0] = 0</span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">prefix[1] = a</span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">prefix[2] = a + b</span></span>
+<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">prefix[3] = a + b + c</span></span>
+<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">prefix[4] = a + b + c + d</span></span>
+<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">prefix[5] = a + b + c + d + e</span></span>
+<span class="ln-row"><span class="ln-num">12</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">Visual:</span></span>
+<span class="ln-row"><span class="ln-num">14</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">prefix:  0 |  a  | a+b | a+b+c | a+b+c+d | a+b+c+d+e |</span></span>
+<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">index:   0    1      2      3        4          5</span></span>
+<span class="ln-row"><span class="ln-num">17</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">To get sum(l=1, r=3) = nums[1] + nums[2] + nums[3] = b + c + d:</span></span>
+<span class="ln-row"><span class="ln-num">19</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">prefix[r+1] = prefix[4] = a + b + c + d</span></span>
+<span class="ln-row"><span class="ln-num">21</span><span class="ln-code">prefix[l]   = prefix[1] = a</span></span>
+<span class="ln-row"><span class="ln-num">22</span><span class="ln-code">                           ─────────────</span></span>
+<span class="ln-row"><span class="ln-num">23</span><span class="ln-code">prefix[4] - prefix[1]   =     b + c + d  ✓</span></span>
+<span class="ln-row"><span class="ln-num">24</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">25</span><span class="ln-code">Visually (what gets cancelled out):</span></span>
+<span class="ln-row"><span class="ln-num">26</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">27</span><span class="ln-code">prefix[4]:  [ a | b | c | d ]</span></span>
+<span class="ln-row"><span class="ln-num">28</span><span class="ln-code">prefix[1]:  [ a ]</span></span>
+<span class="ln-row"><span class="ln-num">29</span><span class="ln-code">            ─────────────────</span></span>
+<span class="ln-row"><span class="ln-num">30</span><span class="ln-code">difference:     [ b | c | d ]   ← this is sum(1, 3)</span></span>
 </code></pre>
 <p><strong>Why size <code>n+1</code>?</strong> The extra <code>prefix[0] = 0</code> handles the edge case when <code>l = 0</code>:</p>
-<pre><code>sum(0, 2) = prefix[3] - prefix[0]
-          = (a + b + c) - 0
-          = a + b + c  ✓
+<pre><code class="hljs"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code">sum(0, 2) = prefix[3] - prefix[0]</span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code">          = (a + b + c) - 0</span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">          = a + b + c  ✓</span></span>
 </code></pre>
 <p>Without it, we’d need special <code>if (left == 0)</code> checks (see V0 in LC 303).</p>
 <h3 id="concrete-example-lc-303" tabindex="-1"><a class="header-anchor" href="#concrete-example-lc-303"><span>Concrete Example (LC 303)</span></a></h3>
-<pre><code>nums = [-2, 0, 3, -5, 2, -1]
-
-Step 1: Build prefix array
-prefix = [0, -2, -2, 1, -4, -2, -3]
-              ↑    ↑  ↑   ↑   ↑   ↑
-              -2  -2+0 ...        sum of all
-
-Step 2: Query
-sumRange(0, 2) = prefix[3] - prefix[0] = 1 - 0 = 1       ✓  (-2+0+3)
-sumRange(2, 5) = prefix[6] - prefix[2] = -3 - (-2) = -1  ✓  (3-5+2-1)
-sumRange(0, 5) = prefix[6] - prefix[0] = -3 - 0 = -3     ✓  (-2+0+3-5+2-1)
+<pre><code class="hljs"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code">nums = [-2, 0, 3, -5, 2, -1]</span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">Step 1: Build prefix array</span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">prefix = [0, -2, -2, 1, -4, -2, -3]</span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">              ↑    ↑  ↑   ↑   ↑   ↑</span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">              -2  -2+0 ...        sum of all</span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">Step 2: Query</span></span>
+<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">sumRange(0, 2) = prefix[3] - prefix[0] = 1 - 0 = 1       ✓  (-2+0+3)</span></span>
+<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">sumRange(2, 5) = prefix[6] - prefix[2] = -3 - (-2) = -1  ✓  (3-5+2-1)</span></span>
+<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">sumRange(0, 5) = prefix[6] - prefix[0] = -3 - 0 = -3     ✓  (-2+0+3-5+2-1)</span></span>
 </code></pre>
 <h3 id="two-styles-comparison" tabindex="-1"><a class="header-anchor" href="#two-styles-comparison"><span>Two Styles Comparison</span></a></h3>
 <table>
@@ -345,333 +351,333 @@ sumRange(0, 5) = prefix[6] - prefix[0] = -3 - 0 = -3     ✓  (-2+0+3-5+2-1)
 </tbody>
 </table>
 <h3 id="universal-template" tabindex="-1"><a class="header-anchor" href="#universal-template"><span>Universal Template</span></a></h3>
-<pre><code class="language-python">def prefix_sum_solve(nums, target):
-    &quot;&quot;&quot;
-    Universal prefix sum template for most problems
-    &quot;&quot;&quot;
-    # Step 1: Initialize prefix sum and result
-    prefix_sum = 0
-    result = 0
-    
-    # Step 2: HashMap for storing prefix sums (if needed)
-    prefix_map = {0: 1}  # Handle subarrays starting from index 0
-    
-    # Step 3: Iterate through array
-    for num in nums:
-        # Update prefix sum
-        prefix_sum += num
-        
-        # Check condition based on problem type
-        if prefix_sum - target in prefix_map:
-            result += prefix_map[prefix_sum - target]
-        
-        # Update map
-        prefix_map[prefix_sum] = prefix_map.get(prefix_sum, 0) + 1
-    
-    return result
+<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-keyword">def</span> <span class="hljs-title function_">prefix_sum_solve</span>(<span class="hljs-params">nums, target</span>):</span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code">    <span class="hljs-string">&quot;&quot;&quot;</span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">    Universal prefix sum template for most problems</span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">    &quot;&quot;&quot;</span></span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    <span class="hljs-comment"># Step 1: Initialize prefix sum and result</span></span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    prefix_sum = <span class="hljs-number">0</span></span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">    result = <span class="hljs-number">0</span></span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">    </span></span>
+<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">    <span class="hljs-comment"># Step 2: HashMap for storing prefix sums (if needed)</span></span></span>
+<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">    prefix_map = {<span class="hljs-number">0</span>: <span class="hljs-number">1</span>}  <span class="hljs-comment"># Handle subarrays starting from index 0</span></span></span>
+<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">    </span></span>
+<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">    <span class="hljs-comment"># Step 3: Iterate through array</span></span></span>
+<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">    <span class="hljs-keyword">for</span> num <span class="hljs-keyword">in</span> nums:</span></span>
+<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">        <span class="hljs-comment"># Update prefix sum</span></span></span>
+<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">        prefix_sum += num</span></span>
+<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">        </span></span>
+<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">        <span class="hljs-comment"># Check condition based on problem type</span></span></span>
+<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">        <span class="hljs-keyword">if</span> prefix_sum - target <span class="hljs-keyword">in</span> prefix_map:</span></span>
+<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">            result += prefix_map[prefix_sum - target]</span></span>
+<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">        </span></span>
+<span class="ln-row"><span class="ln-num">21</span><span class="ln-code">        <span class="hljs-comment"># Update map</span></span></span>
+<span class="ln-row"><span class="ln-num">22</span><span class="ln-code">        prefix_map[prefix_sum] = prefix_map.get(prefix_sum, <span class="hljs-number">0</span>) + <span class="hljs-number">1</span></span></span>
+<span class="ln-row"><span class="ln-num">23</span><span class="ln-code">    </span></span>
+<span class="ln-row"><span class="ln-num">24</span><span class="ln-code">    <span class="hljs-keyword">return</span> result</span></span>
 </code></pre>
 <h3 id="template-1-basic-prefix-sum-range-queries" tabindex="-1"><a class="header-anchor" href="#template-1-basic-prefix-sum-range-queries"><span>Template 1: Basic Prefix Sum (Range Queries)</span></a></h3>
-<pre><code class="language-python">class PrefixSum:
-    def __init__(self, nums):
-        &quot;&quot;&quot;Build prefix sum array for range queries&quot;&quot;&quot;
-        self.prefix = [0] * (len(nums) + 1)
-        for i in range(len(nums)):
-            self.prefix[i + 1] = self.prefix[i] + nums[i]
-    
-    def range_sum(self, left, right):
-        &quot;&quot;&quot;Get sum of elements from index left to right (inclusive)&quot;&quot;&quot;
-        return self.prefix[right + 1] - self.prefix[left]
+<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-keyword">class</span> <span class="hljs-title class_">PrefixSum</span>:</span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, nums</span>):</span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">        <span class="hljs-string">&quot;&quot;&quot;Build prefix sum array for range queries&quot;&quot;&quot;</span></span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">        <span class="hljs-variable language_">self</span>.prefix = [<span class="hljs-number">0</span>] * (<span class="hljs-built_in">len</span>(nums) + <span class="hljs-number">1</span>)</span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(nums)):</span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">            <span class="hljs-variable language_">self</span>.prefix[i + <span class="hljs-number">1</span>] = <span class="hljs-variable language_">self</span>.prefix[i] + nums[i]</span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">    </span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">range_sum</span>(<span class="hljs-params">self, left, right</span>):</span></span>
+<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">        <span class="hljs-string">&quot;&quot;&quot;Get sum of elements from index left to right (inclusive)&quot;&quot;&quot;</span></span></span>
+<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">        <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.prefix[right + <span class="hljs-number">1</span>] - <span class="hljs-variable language_">self</span>.prefix[left]</span></span>
 </code></pre>
-<pre><code class="language-java">// Java implementation
-class PrefixSum {
-    private int[] prefix;
-    
-    public PrefixSum(int[] nums) {
-        prefix = new int[nums.length + 1];
-        for (int i = 0; i &lt; nums.length; i++) {
-            prefix[i + 1] = prefix[i] + nums[i];
-        }
-    }
-    
-    public int rangeSum(int left, int right) {
-        return prefix[right + 1] - prefix[left];
-    }
-}
+<pre data-lang="java"><code class="hljs language-java"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment">// Java implementation</span></span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-keyword">class</span> <span class="hljs-title class_">PrefixSum</span> {</span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">    <span class="hljs-keyword">private</span> <span class="hljs-type">int</span>[] prefix;</span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">    </span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    <span class="hljs-keyword">public</span> <span class="hljs-title function_">PrefixSum</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums)</span> {</span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">        prefix = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[nums.length + <span class="hljs-number">1</span>];</span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; nums.length; i++) {</span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">            prefix[i + <span class="hljs-number">1</span>] = prefix[i] + nums[i];</span></span>
+<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">        }</span></span>
+<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">    }</span></span>
+<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">    </span></span>
+<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">    <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">rangeSum</span><span class="hljs-params">(<span class="hljs-type">int</span> left, <span class="hljs-type">int</span> right)</span> {</span></span>
+<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">        <span class="hljs-keyword">return</span> prefix[right + <span class="hljs-number">1</span>] - prefix[left];</span></span>
+<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">    }</span></span>
+<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">}</span></span>
 </code></pre>
 <h3 id="template-2-hashmap-prefix-sum-subarray-target-sum" tabindex="-1"><a class="header-anchor" href="#template-2-hashmap-prefix-sum-subarray-target-sum"><span>Template 2: HashMap + Prefix Sum (Subarray Target Sum)</span></a></h3>
-<pre><code class="language-python">def subarray_sum_equals_k(nums, k):
-    &quot;&quot;&quot;Count subarrays with sum equal to k&quot;&quot;&quot;
-    count = 0
-    prefix_sum = 0
-    prefix_map = {0: 1}  # Important: initialize with {0: 1}
-    
-    for num in nums:
-        prefix_sum += num
-        
-        # Check if (prefix_sum - k) exists
-        if prefix_sum - k in prefix_map:
-            count += prefix_map[prefix_sum - k]
-        
-        # Update map
-        prefix_map[prefix_sum] = prefix_map.get(prefix_sum, 0) + 1
-    
-    return count
+<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-keyword">def</span> <span class="hljs-title function_">subarray_sum_equals_k</span>(<span class="hljs-params">nums, k</span>):</span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code">    <span class="hljs-string">&quot;&quot;&quot;Count subarrays with sum equal to k&quot;&quot;&quot;</span></span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">    count = <span class="hljs-number">0</span></span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">    prefix_sum = <span class="hljs-number">0</span></span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    prefix_map = {<span class="hljs-number">0</span>: <span class="hljs-number">1</span>}  <span class="hljs-comment"># Important: initialize with {0: 1}</span></span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    </span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">    <span class="hljs-keyword">for</span> num <span class="hljs-keyword">in</span> nums:</span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">        prefix_sum += num</span></span>
+<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">        </span></span>
+<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">        <span class="hljs-comment"># Check if (prefix_sum - k) exists</span></span></span>
+<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">        <span class="hljs-keyword">if</span> prefix_sum - k <span class="hljs-keyword">in</span> prefix_map:</span></span>
+<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">            count += prefix_map[prefix_sum - k]</span></span>
+<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">        </span></span>
+<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">        <span class="hljs-comment"># Update map</span></span></span>
+<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">        prefix_map[prefix_sum] = prefix_map.get(prefix_sum, <span class="hljs-number">0</span>) + <span class="hljs-number">1</span></span></span>
+<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">    </span></span>
+<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">    <span class="hljs-keyword">return</span> count</span></span>
 </code></pre>
-<pre><code class="language-java">// Java implementation
-public int subarraySum(int[] nums, int k) {
-    int count = 0, prefixSum = 0;
-    Map&lt;Integer, Integer&gt; map = new HashMap&lt;&gt;();
-    map.put(0, 1);  // Handle subarrays starting from index 0
-    
-    for (int num : nums) {
-        prefixSum += num;
-        
-        if (map.containsKey(prefixSum - k)) {
-            count += map.get(prefixSum - k);
-        }
-        
-        map.put(prefixSum, map.getOrDefault(prefixSum, 0) + 1);
-    }
-    
-    return count;
-}
+<pre data-lang="java"><code class="hljs language-java"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment">// Java implementation</span></span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">subarraySum</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums, <span class="hljs-type">int</span> k)</span> {</span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">    <span class="hljs-type">int</span> <span class="hljs-variable">count</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>, prefixSum = <span class="hljs-number">0</span>;</span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">    Map&lt;Integer, Integer&gt; map = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;();</span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    map.put(<span class="hljs-number">0</span>, <span class="hljs-number">1</span>);  <span class="hljs-comment">// Handle subarrays starting from index 0</span></span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    </span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> num : nums) {</span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">        prefixSum += num;</span></span>
+<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">        </span></span>
+<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">        <span class="hljs-keyword">if</span> (map.containsKey(prefixSum - k)) {</span></span>
+<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">            count += map.get(prefixSum - k);</span></span>
+<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">        }</span></span>
+<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">        </span></span>
+<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">        map.put(prefixSum, map.getOrDefault(prefixSum, <span class="hljs-number">0</span>) + <span class="hljs-number">1</span>);</span></span>
+<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">    }</span></span>
+<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">    </span></span>
+<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">    <span class="hljs-keyword">return</span> count;</span></span>
+<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">}</span></span>
 </code></pre>
 <h3 id="template-3-modulo-prefix-sum-divisibility-problems" tabindex="-1"><a class="header-anchor" href="#template-3-modulo-prefix-sum-divisibility-problems"><span>Template 3: Modulo Prefix Sum (Divisibility Problems)</span></a></h3>
-<pre><code class="language-python">def subarray_divisible_by_k(nums, k):
-    &quot;&quot;&quot;Count subarrays with sum divisible by k&quot;&quot;&quot;
-    count = 0
-    prefix_sum = 0
-    remainder_map = {0: 1}  # remainder -&gt; count
-    
-    for num in nums:
-        prefix_sum += num
-        remainder = prefix_sum % k
-        
-        # Handle negative remainders
-        if remainder &lt; 0:
-            remainder += k
-        
-        if remainder in remainder_map:
-            count += remainder_map[remainder]
-        
-        remainder_map[remainder] = remainder_map.get(remainder, 0) + 1
-    
-    return count
+<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-keyword">def</span> <span class="hljs-title function_">subarray_divisible_by_k</span>(<span class="hljs-params">nums, k</span>):</span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code">    <span class="hljs-string">&quot;&quot;&quot;Count subarrays with sum divisible by k&quot;&quot;&quot;</span></span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">    count = <span class="hljs-number">0</span></span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">    prefix_sum = <span class="hljs-number">0</span></span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    remainder_map = {<span class="hljs-number">0</span>: <span class="hljs-number">1</span>}  <span class="hljs-comment"># remainder -&gt; count</span></span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    </span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">    <span class="hljs-keyword">for</span> num <span class="hljs-keyword">in</span> nums:</span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">        prefix_sum += num</span></span>
+<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">        remainder = prefix_sum % k</span></span>
+<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">        </span></span>
+<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">        <span class="hljs-comment"># Handle negative remainders</span></span></span>
+<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">        <span class="hljs-keyword">if</span> remainder &lt; <span class="hljs-number">0</span>:</span></span>
+<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">            remainder += k</span></span>
+<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">        </span></span>
+<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">        <span class="hljs-keyword">if</span> remainder <span class="hljs-keyword">in</span> remainder_map:</span></span>
+<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">            count += remainder_map[remainder]</span></span>
+<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">        </span></span>
+<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">        remainder_map[remainder] = remainder_map.get(remainder, <span class="hljs-number">0</span>) + <span class="hljs-number">1</span></span></span>
+<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">    </span></span>
+<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">    <span class="hljs-keyword">return</span> count</span></span>
 </code></pre>
 <h3 id="template-4-difference-array-range-updates" tabindex="-1"><a class="header-anchor" href="#template-4-difference-array-range-updates"><span>Template 4: Difference Array (Range Updates)</span></a></h3>
-<pre><code class="language-python">def range_addition(length, updates):
-    &quot;&quot;&quot;Apply multiple range additions efficiently&quot;&quot;&quot;
-    # Step 1: Create difference array
-    diff = [0] * (length + 1)
-    
-    # Step 2: Apply range updates to difference array
-    for start, end, val in updates:
-        diff[start] += val
-        diff[end + 1] -= val
-    
-    # Step 3: Compute prefix sum to get final result
-    result = []
-    current_sum = 0
-    for i in range(length):
-        current_sum += diff[i]
-        result.append(current_sum)
-    
-    return result
+<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-keyword">def</span> <span class="hljs-title function_">range_addition</span>(<span class="hljs-params">length, updates</span>):</span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code">    <span class="hljs-string">&quot;&quot;&quot;Apply multiple range additions efficiently&quot;&quot;&quot;</span></span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">    <span class="hljs-comment"># Step 1: Create difference array</span></span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">    diff = [<span class="hljs-number">0</span>] * (length + <span class="hljs-number">1</span>)</span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    </span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    <span class="hljs-comment"># Step 2: Apply range updates to difference array</span></span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">    <span class="hljs-keyword">for</span> start, end, val <span class="hljs-keyword">in</span> updates:</span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">        diff[start] += val</span></span>
+<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">        diff[end + <span class="hljs-number">1</span>] -= val</span></span>
+<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">    </span></span>
+<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">    <span class="hljs-comment"># Step 3: Compute prefix sum to get final result</span></span></span>
+<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">    result = []</span></span>
+<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">    current_sum = <span class="hljs-number">0</span></span></span>
+<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(length):</span></span>
+<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">        current_sum += diff[i]</span></span>
+<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">        result.append(current_sum)</span></span>
+<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">    </span></span>
+<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">    <span class="hljs-keyword">return</span> result</span></span>
 </code></pre>
 <h3 id="template-5-2d-prefix-sum" tabindex="-1"><a class="header-anchor" href="#template-5-2d-prefix-sum"><span>Template 5: 2D Prefix Sum</span></a></h3>
-<pre><code class="language-python">class NumMatrix:
-    def __init__(self, matrix):
-        &quot;&quot;&quot;Build 2D prefix sum matrix&quot;&quot;&quot;
-        if not matrix or not matrix[0]:
-            return
-        
-        m, n = len(matrix), len(matrix[0])
-        self.prefix = [[0] * (n + 1) for _ in range(m + 1)]
-        
-        for i in range(1, m + 1):
-            for j in range(1, n + 1):
-                self.prefix[i][j] = (matrix[i-1][j-1] + 
-                                   self.prefix[i-1][j] + 
-                                   self.prefix[i][j-1] - 
-                                   self.prefix[i-1][j-1])
-    
-    def sumRegion(self, row1, col1, row2, col2):
-        &quot;&quot;&quot;Calculate sum of rectangle from (row1,col1) to (row2,col2)&quot;&quot;&quot;
-        return (self.prefix[row2+1][col2+1] - 
-                self.prefix[row1][col2+1] - 
-                self.prefix[row2+1][col1] + 
-                self.prefix[row1][col1])
+<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-keyword">class</span> <span class="hljs-title class_">NumMatrix</span>:</span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, matrix</span>):</span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">        <span class="hljs-string">&quot;&quot;&quot;Build 2D prefix sum matrix&quot;&quot;&quot;</span></span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> matrix <span class="hljs-keyword">or</span> <span class="hljs-keyword">not</span> matrix[<span class="hljs-number">0</span>]:</span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">            <span class="hljs-keyword">return</span></span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">        </span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">        m, n = <span class="hljs-built_in">len</span>(matrix), <span class="hljs-built_in">len</span>(matrix[<span class="hljs-number">0</span>])</span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">        <span class="hljs-variable language_">self</span>.prefix = [[<span class="hljs-number">0</span>] * (n + <span class="hljs-number">1</span>) <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(m + <span class="hljs-number">1</span>)]</span></span>
+<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">        </span></span>
+<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>, m + <span class="hljs-number">1</span>):</span></span>
+<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">            <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>, n + <span class="hljs-number">1</span>):</span></span>
+<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">                <span class="hljs-variable language_">self</span>.prefix[i][j] = (matrix[i-<span class="hljs-number">1</span>][j-<span class="hljs-number">1</span>] + </span></span>
+<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">                                   <span class="hljs-variable language_">self</span>.prefix[i-<span class="hljs-number">1</span>][j] + </span></span>
+<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">                                   <span class="hljs-variable language_">self</span>.prefix[i][j-<span class="hljs-number">1</span>] - </span></span>
+<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">                                   <span class="hljs-variable language_">self</span>.prefix[i-<span class="hljs-number">1</span>][j-<span class="hljs-number">1</span>])</span></span>
+<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">    </span></span>
+<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">sumRegion</span>(<span class="hljs-params">self, row1, col1, row2, col2</span>):</span></span>
+<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">        <span class="hljs-string">&quot;&quot;&quot;Calculate sum of rectangle from (row1,col1) to (row2,col2)&quot;&quot;&quot;</span></span></span>
+<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">        <span class="hljs-keyword">return</span> (<span class="hljs-variable language_">self</span>.prefix[row2+<span class="hljs-number">1</span>][col2+<span class="hljs-number">1</span>] - </span></span>
+<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">                <span class="hljs-variable language_">self</span>.prefix[row1][col2+<span class="hljs-number">1</span>] - </span></span>
+<span class="ln-row"><span class="ln-num">21</span><span class="ln-code">                <span class="hljs-variable language_">self</span>.prefix[row2+<span class="hljs-number">1</span>][col1] + </span></span>
+<span class="ln-row"><span class="ln-num">22</span><span class="ln-code">                <span class="hljs-variable language_">self</span>.prefix[row1][col1])</span></span>
 </code></pre>
 <h3 id="template-6-transform-and-count" tabindex="-1"><a class="header-anchor" href="#template-6-transform-and-count"><span>Template 6: Transform and Count</span></a></h3>
-<pre><code class="language-python">def count_nice_subarrays(nums, k):
-    &quot;&quot;&quot;Count subarrays with exactly k odd numbers&quot;&quot;&quot;
-    # Transform: odd -&gt; 1, even -&gt; 0
-    transformed = [1 if x % 2 == 1 else 0 for x in nums]
-
-    # Now it's subarray sum equals k problem
-    count = 0
-    prefix_sum = 0
-    prefix_map = {0: 1}
-
-    for val in transformed:
-        prefix_sum += val
-
-        if prefix_sum - k in prefix_map:
-            count += prefix_map[prefix_sum - k]
-
-        prefix_map[prefix_sum] = prefix_map.get(prefix_sum, 0) + 1
-
-    return count
+<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-keyword">def</span> <span class="hljs-title function_">count_nice_subarrays</span>(<span class="hljs-params">nums, k</span>):</span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code">    <span class="hljs-string">&quot;&quot;&quot;Count subarrays with exactly k odd numbers&quot;&quot;&quot;</span></span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">    <span class="hljs-comment"># Transform: odd -&gt; 1, even -&gt; 0</span></span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">    transformed = [<span class="hljs-number">1</span> <span class="hljs-keyword">if</span> x % <span class="hljs-number">2</span> == <span class="hljs-number">1</span> <span class="hljs-keyword">else</span> <span class="hljs-number">0</span> <span class="hljs-keyword">for</span> x <span class="hljs-keyword">in</span> nums]</span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    <span class="hljs-comment"># Now it&#x27;s subarray sum equals k problem</span></span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">    count = <span class="hljs-number">0</span></span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">    prefix_sum = <span class="hljs-number">0</span></span></span>
+<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">    prefix_map = {<span class="hljs-number">0</span>: <span class="hljs-number">1</span>}</span></span>
+<span class="ln-row"><span class="ln-num">10</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">    <span class="hljs-keyword">for</span> val <span class="hljs-keyword">in</span> transformed:</span></span>
+<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">        prefix_sum += val</span></span>
+<span class="ln-row"><span class="ln-num">13</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">        <span class="hljs-keyword">if</span> prefix_sum - k <span class="hljs-keyword">in</span> prefix_map:</span></span>
+<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">            count += prefix_map[prefix_sum - k]</span></span>
+<span class="ln-row"><span class="ln-num">16</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">        prefix_map[prefix_sum] = prefix_map.get(prefix_sum, <span class="hljs-number">0</span>) + <span class="hljs-number">1</span></span></span>
+<span class="ln-row"><span class="ln-num">18</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">    <span class="hljs-keyword">return</span> count</span></span>
 </code></pre>
 <h3 id="template-7-sum-of-distances-left-right-split" tabindex="-1"><a class="header-anchor" href="#template-7-sum-of-distances-left-right-split"><span>Template 7: Sum of Distances (Left-Right Split)</span></a></h3>
 <p>This pattern efficiently calculates sum of absolute differences <code>|i - j|</code> between indices.</p>
 <h4 id="core-idea" tabindex="-1"><a class="header-anchor" href="#core-idea"><span>Core Idea</span></a></h4>
 <p>For a sorted list of indices <code>[i0, i1, i2, ..., ik]</code>, to find sum of distances from <code>ij</code> to all others:</p>
-<pre><code>Instead of: |ij - i0| + |ij - i1| + ... + |ij - ik|  (O(n) per element)
-
-Split into:
-  - Left part:  (ij - i0) + (ij - i1) + ... = ij * countLeft - sumLeft
-  - Right part: (ij+1 - ij) + (ij+2 - ij) + ... = sumRight - ij * countRight
-
-Total: (ij * countLeft - sumLeft) + (sumRight - ij * countRight)
+<pre><code class="hljs"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code">Instead of: |ij - i0| + |ij - i1| + ... + |ij - ik|  (O(n) per element)</span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">Split into:</span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">  - Left part:  (ij - i0) + (ij - i1) + ... = ij * countLeft - sumLeft</span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">  - Right part: (ij+1 - ij) + (ij+2 - ij) + ... = sumRight - ij * countRight</span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">Total: (ij * countLeft - sumLeft) + (sumRight - ij * countRight)</span></span>
 </code></pre>
 <h4 id="visual-explanation" tabindex="-1"><a class="header-anchor" href="#visual-explanation"><span>Visual Explanation</span></a></h4>
-<pre><code>Indices with same value: [2, 5, 8, 12]
-                          ↑  ↑  ↑   ↑
-For index 8 (position 2 in list):
-
-  Left indices: [2, 5]
-    countLeft = 2
-    sumLeft = 2 + 5 = 7
-    distanceLeft = 8 * 2 - 7 = 9  → |8-2| + |8-5| = 6 + 3 = 9 ✓
-
-  Right indices: [12]
-    countRight = 1
-    sumRight = 12
-    distanceRight = 12 - 8 * 1 = 4  → |12-8| = 4 ✓
-
-  Total distance for index 8: 9 + 4 = 13
+<pre><code class="hljs"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code">Indices with same value: [2, 5, 8, 12]</span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code">                          ↑  ↑  ↑   ↑</span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">For index 8 (position 2 in list):</span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">  Left indices: [2, 5]</span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    countLeft = 2</span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">    sumLeft = 2 + 5 = 7</span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">    distanceLeft = 8 * 2 - 7 = 9  → |8-2| + |8-5| = 6 + 3 = 9 ✓</span></span>
+<span class="ln-row"><span class="ln-num">9</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">  Right indices: [12]</span></span>
+<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">    countRight = 1</span></span>
+<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">    sumRight = 12</span></span>
+<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">    distanceRight = 12 - 8 * 1 = 4  → |12-8| = 4 ✓</span></span>
+<span class="ln-row"><span class="ln-num">14</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">  Total distance for index 8: 9 + 4 = 13</span></span>
 </code></pre>
 <h4 id="python-template" tabindex="-1"><a class="header-anchor" href="#python-template"><span>Python Template</span></a></h4>
-<pre><code class="language-python">def sum_of_distances(nums):
-    &quot;&quot;&quot;
-    LC 2615: Calculate sum of |i - j| for all j where nums[j] == nums[i]
-    Time: O(n), Space: O(n)
-    &quot;&quot;&quot;
-    from collections import defaultdict
-
-    n = len(nums)
-    result = [0] * n
-
-    # Step 1: Group indices by value
-    index_map = defaultdict(list)
-    for i, num in enumerate(nums):
-        index_map[num].append(i)
-
-    # Step 2: For each group, calculate distances using prefix sum
-    for indices in index_map.values():
-        m = len(indices)
-        if m == 1:
-            continue  # Single element has distance 0
-
-        # Build prefix sum of indices
-        prefix = [0] * m
-        prefix[0] = indices[0]
-        for i in range(1, m):
-            prefix[i] = prefix[i - 1] + indices[i]
-
-        total_sum = prefix[m - 1]
-
-        # Calculate distance for each index in group
-        for i in range(m):
-            idx = indices[i]
-
-            # Left part: idx * countLeft - sumLeft
-            count_left = i
-            sum_left = prefix[i - 1] if i &gt; 0 else 0
-            left_dist = idx * count_left - sum_left
-
-            # Right part: sumRight - idx * countRight
-            count_right = m - i - 1
-            sum_right = total_sum - prefix[i]
-            right_dist = sum_right - idx * count_right
-
-            result[idx] = left_dist + right_dist
-
-    return result
+<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-keyword">def</span> <span class="hljs-title function_">sum_of_distances</span>(<span class="hljs-params">nums</span>):</span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code">    <span class="hljs-string">&quot;&quot;&quot;</span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">    LC 2615: Calculate sum of |i - j| for all j where nums[j] == nums[i]</span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">    Time: O(n), Space: O(n)</span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    &quot;&quot;&quot;</span></span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    <span class="hljs-keyword">from</span> collections <span class="hljs-keyword">import</span> defaultdict</span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">    n = <span class="hljs-built_in">len</span>(nums)</span></span>
+<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">    result = [<span class="hljs-number">0</span>] * n</span></span>
+<span class="ln-row"><span class="ln-num">10</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">    <span class="hljs-comment"># Step 1: Group indices by value</span></span></span>
+<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">    index_map = defaultdict(<span class="hljs-built_in">list</span>)</span></span>
+<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">    <span class="hljs-keyword">for</span> i, num <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(nums):</span></span>
+<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">        index_map[num].append(i)</span></span>
+<span class="ln-row"><span class="ln-num">15</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">    <span class="hljs-comment"># Step 2: For each group, calculate distances using prefix sum</span></span></span>
+<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">    <span class="hljs-keyword">for</span> indices <span class="hljs-keyword">in</span> index_map.values():</span></span>
+<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">        m = <span class="hljs-built_in">len</span>(indices)</span></span>
+<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">        <span class="hljs-keyword">if</span> m == <span class="hljs-number">1</span>:</span></span>
+<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">            <span class="hljs-keyword">continue</span>  <span class="hljs-comment"># Single element has distance 0</span></span></span>
+<span class="ln-row"><span class="ln-num">21</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">22</span><span class="ln-code">        <span class="hljs-comment"># Build prefix sum of indices</span></span></span>
+<span class="ln-row"><span class="ln-num">23</span><span class="ln-code">        prefix = [<span class="hljs-number">0</span>] * m</span></span>
+<span class="ln-row"><span class="ln-num">24</span><span class="ln-code">        prefix[<span class="hljs-number">0</span>] = indices[<span class="hljs-number">0</span>]</span></span>
+<span class="ln-row"><span class="ln-num">25</span><span class="ln-code">        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>, m):</span></span>
+<span class="ln-row"><span class="ln-num">26</span><span class="ln-code">            prefix[i] = prefix[i - <span class="hljs-number">1</span>] + indices[i]</span></span>
+<span class="ln-row"><span class="ln-num">27</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">28</span><span class="ln-code">        total_sum = prefix[m - <span class="hljs-number">1</span>]</span></span>
+<span class="ln-row"><span class="ln-num">29</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">30</span><span class="ln-code">        <span class="hljs-comment"># Calculate distance for each index in group</span></span></span>
+<span class="ln-row"><span class="ln-num">31</span><span class="ln-code">        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(m):</span></span>
+<span class="ln-row"><span class="ln-num">32</span><span class="ln-code">            idx = indices[i]</span></span>
+<span class="ln-row"><span class="ln-num">33</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">34</span><span class="ln-code">            <span class="hljs-comment"># Left part: idx * countLeft - sumLeft</span></span></span>
+<span class="ln-row"><span class="ln-num">35</span><span class="ln-code">            count_left = i</span></span>
+<span class="ln-row"><span class="ln-num">36</span><span class="ln-code">            sum_left = prefix[i - <span class="hljs-number">1</span>] <span class="hljs-keyword">if</span> i &gt; <span class="hljs-number">0</span> <span class="hljs-keyword">else</span> <span class="hljs-number">0</span></span></span>
+<span class="ln-row"><span class="ln-num">37</span><span class="ln-code">            left_dist = idx * count_left - sum_left</span></span>
+<span class="ln-row"><span class="ln-num">38</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">39</span><span class="ln-code">            <span class="hljs-comment"># Right part: sumRight - idx * countRight</span></span></span>
+<span class="ln-row"><span class="ln-num">40</span><span class="ln-code">            count_right = m - i - <span class="hljs-number">1</span></span></span>
+<span class="ln-row"><span class="ln-num">41</span><span class="ln-code">            sum_right = total_sum - prefix[i]</span></span>
+<span class="ln-row"><span class="ln-num">42</span><span class="ln-code">            right_dist = sum_right - idx * count_right</span></span>
+<span class="ln-row"><span class="ln-num">43</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">44</span><span class="ln-code">            result[idx] = left_dist + right_dist</span></span>
+<span class="ln-row"><span class="ln-num">45</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">46</span><span class="ln-code">    <span class="hljs-keyword">return</span> result</span></span>
 </code></pre>
 <h4 id="java-template" tabindex="-1"><a class="header-anchor" href="#java-template"><span>Java Template</span></a></h4>
-<pre><code class="language-java">// LC 2615 - Sum of Distances
-public long[] distance(int[] nums) {
-    int n = nums.length;
-    long[] res = new long[n];
-    Map&lt;Integer, List&lt;Integer&gt;&gt; map = new HashMap&lt;&gt;();
-
-    // Step 1: Group indices by value
-    for (int i = 0; i &lt; n; i++) {
-        map.computeIfAbsent(nums[i], k -&gt; new ArrayList&lt;&gt;()).add(i);
-    }
-
-    // Step 2: Calculate distances using prefix sum
-    for (List&lt;Integer&gt; indices : map.values()) {
-        int m = indices.size();
-        if (m == 1) continue;
-
-        // Build prefix sum
-        long[] prefix = new long[m];
-        prefix[0] = indices.get(0);
-        for (int i = 1; i &lt; m; i++) {
-            prefix[i] = prefix[i - 1] + indices.get(i);
-        }
-
-        // Calculate distance for each index
-        for (int i = 0; i &lt; m; i++) {
-            int idx = indices.get(i);
-
-            // Left: idx * countLeft - sumLeft
-            long left = (long) idx * i - (i == 0 ? 0 : prefix[i - 1]);
-
-            // Right: sumRight - idx * countRight
-            long right = (prefix[m - 1] - prefix[i]) - (long) idx * (m - i - 1);
-
-            res[idx] = left + right;
-        }
-    }
-
-    return res;
-}
+<pre data-lang="java"><code class="hljs language-java"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment">// LC 2615 - Sum of Distances</span></span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-keyword">public</span> <span class="hljs-type">long</span>[] distance(<span class="hljs-type">int</span>[] nums) {</span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">    <span class="hljs-type">int</span> <span class="hljs-variable">n</span> <span class="hljs-operator">=</span> nums.length;</span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">    <span class="hljs-type">long</span>[] res = <span class="hljs-keyword">new</span> <span class="hljs-title class_">long</span>[n];</span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    Map&lt;Integer, List&lt;Integer&gt;&gt; map = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;();</span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">    <span class="hljs-comment">// Step 1: Group indices by value</span></span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; n; i++) {</span></span>
+<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">        map.computeIfAbsent(nums[i], k -&gt; <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;()).add(i);</span></span>
+<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">    }</span></span>
+<span class="ln-row"><span class="ln-num">11</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">    <span class="hljs-comment">// Step 2: Calculate distances using prefix sum</span></span></span>
+<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">    <span class="hljs-keyword">for</span> (List&lt;Integer&gt; indices : map.values()) {</span></span>
+<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">        <span class="hljs-type">int</span> <span class="hljs-variable">m</span> <span class="hljs-operator">=</span> indices.size();</span></span>
+<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">        <span class="hljs-keyword">if</span> (m == <span class="hljs-number">1</span>) <span class="hljs-keyword">continue</span>;</span></span>
+<span class="ln-row"><span class="ln-num">16</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">        <span class="hljs-comment">// Build prefix sum</span></span></span>
+<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">        <span class="hljs-type">long</span>[] prefix = <span class="hljs-keyword">new</span> <span class="hljs-title class_">long</span>[m];</span></span>
+<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">        prefix[<span class="hljs-number">0</span>] = indices.get(<span class="hljs-number">0</span>);</span></span>
+<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span>; i &lt; m; i++) {</span></span>
+<span class="ln-row"><span class="ln-num">21</span><span class="ln-code">            prefix[i] = prefix[i - <span class="hljs-number">1</span>] + indices.get(i);</span></span>
+<span class="ln-row"><span class="ln-num">22</span><span class="ln-code">        }</span></span>
+<span class="ln-row"><span class="ln-num">23</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">24</span><span class="ln-code">        <span class="hljs-comment">// Calculate distance for each index</span></span></span>
+<span class="ln-row"><span class="ln-num">25</span><span class="ln-code">        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; m; i++) {</span></span>
+<span class="ln-row"><span class="ln-num">26</span><span class="ln-code">            <span class="hljs-type">int</span> <span class="hljs-variable">idx</span> <span class="hljs-operator">=</span> indices.get(i);</span></span>
+<span class="ln-row"><span class="ln-num">27</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">28</span><span class="ln-code">            <span class="hljs-comment">// Left: idx * countLeft - sumLeft</span></span></span>
+<span class="ln-row"><span class="ln-num">29</span><span class="ln-code">            <span class="hljs-type">long</span> <span class="hljs-variable">left</span> <span class="hljs-operator">=</span> (<span class="hljs-type">long</span>) idx * i - (i == <span class="hljs-number">0</span> ? <span class="hljs-number">0</span> : prefix[i - <span class="hljs-number">1</span>]);</span></span>
+<span class="ln-row"><span class="ln-num">30</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">31</span><span class="ln-code">            <span class="hljs-comment">// Right: sumRight - idx * countRight</span></span></span>
+<span class="ln-row"><span class="ln-num">32</span><span class="ln-code">            <span class="hljs-type">long</span> <span class="hljs-variable">right</span> <span class="hljs-operator">=</span> (prefix[m - <span class="hljs-number">1</span>] - prefix[i]) - (<span class="hljs-type">long</span>) idx * (m - i - <span class="hljs-number">1</span>);</span></span>
+<span class="ln-row"><span class="ln-num">33</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">34</span><span class="ln-code">            res[idx] = left + right;</span></span>
+<span class="ln-row"><span class="ln-num">35</span><span class="ln-code">        }</span></span>
+<span class="ln-row"><span class="ln-num">36</span><span class="ln-code">    }</span></span>
+<span class="ln-row"><span class="ln-num">37</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">38</span><span class="ln-code">    <span class="hljs-keyword">return</span> res;</span></span>
+<span class="ln-row"><span class="ln-num">39</span><span class="ln-code">}</span></span>
 </code></pre>
 <h4 id="alternative-running-sum-approach-no-prefix-array" tabindex="-1"><a class="header-anchor" href="#alternative-running-sum-approach-no-prefix-array"><span>Alternative: Running Sum Approach (No Prefix Array)</span></a></h4>
-<pre><code class="language-python">def sum_of_distances_optimized(nums):
-    &quot;&quot;&quot;Space-optimized version using running sums&quot;&quot;&quot;
-    from collections import defaultdict
-
-    n = len(nums)
-    result = [0] * n
-    index_map = defaultdict(list)
-
-    for i, num in enumerate(nums):
-        index_map[num].append(i)
-
-    for indices in index_map.values():
-        m = len(indices)
-        if m == 1:
-            continue
-
-        # Calculate total sum once
-        total_sum = sum(indices)
-
-        prefix_sum = 0
-        for i, idx in enumerate(indices):
-            # Left: idx * i - prefix_sum
-            # Right: (total_sum - prefix_sum - idx) - idx * (m - i - 1)
-            left_dist = idx * i - prefix_sum
-            right_dist = (total_sum - prefix_sum - idx) - idx * (m - i - 1)
-
-            result[idx] = left_dist + right_dist
-            prefix_sum += idx
-
-    return result
+<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-keyword">def</span> <span class="hljs-title function_">sum_of_distances_optimized</span>(<span class="hljs-params">nums</span>):</span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code">    <span class="hljs-string">&quot;&quot;&quot;Space-optimized version using running sums&quot;&quot;&quot;</span></span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">    <span class="hljs-keyword">from</span> collections <span class="hljs-keyword">import</span> defaultdict</span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    n = <span class="hljs-built_in">len</span>(nums)</span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    result = [<span class="hljs-number">0</span>] * n</span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">    index_map = defaultdict(<span class="hljs-built_in">list</span>)</span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">    <span class="hljs-keyword">for</span> i, num <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(nums):</span></span>
+<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">        index_map[num].append(i)</span></span>
+<span class="ln-row"><span class="ln-num">11</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">    <span class="hljs-keyword">for</span> indices <span class="hljs-keyword">in</span> index_map.values():</span></span>
+<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">        m = <span class="hljs-built_in">len</span>(indices)</span></span>
+<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">        <span class="hljs-keyword">if</span> m == <span class="hljs-number">1</span>:</span></span>
+<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">            <span class="hljs-keyword">continue</span></span></span>
+<span class="ln-row"><span class="ln-num">16</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">        <span class="hljs-comment"># Calculate total sum once</span></span></span>
+<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">        total_sum = <span class="hljs-built_in">sum</span>(indices)</span></span>
+<span class="ln-row"><span class="ln-num">19</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">        prefix_sum = <span class="hljs-number">0</span></span></span>
+<span class="ln-row"><span class="ln-num">21</span><span class="ln-code">        <span class="hljs-keyword">for</span> i, idx <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(indices):</span></span>
+<span class="ln-row"><span class="ln-num">22</span><span class="ln-code">            <span class="hljs-comment"># Left: idx * i - prefix_sum</span></span></span>
+<span class="ln-row"><span class="ln-num">23</span><span class="ln-code">            <span class="hljs-comment"># Right: (total_sum - prefix_sum - idx) - idx * (m - i - 1)</span></span></span>
+<span class="ln-row"><span class="ln-num">24</span><span class="ln-code">            left_dist = idx * i - prefix_sum</span></span>
+<span class="ln-row"><span class="ln-num">25</span><span class="ln-code">            right_dist = (total_sum - prefix_sum - idx) - idx * (m - i - <span class="hljs-number">1</span>)</span></span>
+<span class="ln-row"><span class="ln-num">26</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">27</span><span class="ln-code">            result[idx] = left_dist + right_dist</span></span>
+<span class="ln-row"><span class="ln-num">28</span><span class="ln-code">            prefix_sum += idx</span></span>
+<span class="ln-row"><span class="ln-num">29</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">30</span><span class="ln-code">    <span class="hljs-keyword">return</span> result</span></span>
 </code></pre>
 <h4 id="formula-summary" tabindex="-1"><a class="header-anchor" href="#formula-summary"><span>Formula Summary</span></a></h4>
 <table>
@@ -1187,41 +1193,41 @@ public long[] distance(int[] nums) {
 </table>
 <h2 id="pattern-selection-strategy" tabindex="-1"><a class="header-anchor" href="#pattern-selection-strategy"><span>Pattern Selection Strategy</span></a></h2>
 <h3 id="decision-framework-for-prefix-sum-problems" tabindex="-1"><a class="header-anchor" href="#decision-framework-for-prefix-sum-problems"><span>Decision Framework for Prefix Sum Problems</span></a></h3>
-<pre><code>Problem Analysis Flowchart:
-
-1. Need multiple range sum queries?
-   ├── YES → Use Template 1 (Basic Prefix Sum)
-   └── NO → Continue to 2
-
-2. Looking for subarrays with specific sum/count?
-   ├── YES → Continue to 2a
-   └── NO → Continue to 3
-   
-   2a. Exact sum target?
-       ├── YES → Use Template 2 (HashMap + Prefix Sum)
-       └── NO → Continue to 2b
-   
-   2b. Divisibility or modulo involved?
-       ├── YES → Use Template 3 (Modulo Prefix Sum)
-       └── NO → Continue to 2c
-   
-   2c. Count odd/even or binary transformation?
-       ├── YES → Use Template 6 (Transform and Count)
-       └── NO → Use Template 2
-
-3. Multiple range updates needed?
-   ├── YES → Use Template 4 (Difference Array)
-   └── NO → Continue to 4
-
-4. 2D matrix operations?
-   ├── YES → Use Template 5 (2D Prefix Sum)
-   └── NO → Continue to 5
-
-5. Special cases:
-   ├── Product instead of sum → Modified Template 1
-   ├── Tree path sums → Template 2 + Tree traversal
-   ├── Sliding window + prefix → Combine templates
-   └── Advanced merge/sort → Custom approach
+<pre><code class="hljs"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code">Problem Analysis Flowchart:</span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">1. Need multiple range sum queries?</span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">   ├── YES → Use Template 1 (Basic Prefix Sum)</span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">   └── NO → Continue to 2</span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">2. Looking for subarrays with specific sum/count?</span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">   ├── YES → Continue to 2a</span></span>
+<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">   └── NO → Continue to 3</span></span>
+<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">   </span></span>
+<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">   2a. Exact sum target?</span></span>
+<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">       ├── YES → Use Template 2 (HashMap + Prefix Sum)</span></span>
+<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">       └── NO → Continue to 2b</span></span>
+<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">   </span></span>
+<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">   2b. Divisibility or modulo involved?</span></span>
+<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">       ├── YES → Use Template 3 (Modulo Prefix Sum)</span></span>
+<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">       └── NO → Continue to 2c</span></span>
+<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">   </span></span>
+<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">   2c. Count odd/even or binary transformation?</span></span>
+<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">       ├── YES → Use Template 6 (Transform and Count)</span></span>
+<span class="ln-row"><span class="ln-num">21</span><span class="ln-code">       └── NO → Use Template 2</span></span>
+<span class="ln-row"><span class="ln-num">22</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">23</span><span class="ln-code">3. Multiple range updates needed?</span></span>
+<span class="ln-row"><span class="ln-num">24</span><span class="ln-code">   ├── YES → Use Template 4 (Difference Array)</span></span>
+<span class="ln-row"><span class="ln-num">25</span><span class="ln-code">   └── NO → Continue to 4</span></span>
+<span class="ln-row"><span class="ln-num">26</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">27</span><span class="ln-code">4. 2D matrix operations?</span></span>
+<span class="ln-row"><span class="ln-num">28</span><span class="ln-code">   ├── YES → Use Template 5 (2D Prefix Sum)</span></span>
+<span class="ln-row"><span class="ln-num">29</span><span class="ln-code">   └── NO → Continue to 5</span></span>
+<span class="ln-row"><span class="ln-num">30</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">31</span><span class="ln-code">5. Special cases:</span></span>
+<span class="ln-row"><span class="ln-num">32</span><span class="ln-code">   ├── Product instead of sum → Modified Template 1</span></span>
+<span class="ln-row"><span class="ln-num">33</span><span class="ln-code">   ├── Tree path sums → Template 2 + Tree traversal</span></span>
+<span class="ln-row"><span class="ln-num">34</span><span class="ln-code">   ├── Sliding window + prefix → Combine templates</span></span>
+<span class="ln-row"><span class="ln-num">35</span><span class="ln-code">   └── Advanced merge/sort → Custom approach</span></span>
 </code></pre>
 <h3 id="template-selection-guide" tabindex="-1"><a class="header-anchor" href="#template-selection-guide"><span>Template Selection Guide</span></a></h3>
 <table>
@@ -1317,399 +1323,399 @@ public long[] distance(int[] nums) {
 </ul>
 <h2 id="legacy-examples" tabindex="-1"><a class="header-anchor" href="#legacy-examples"><span>Legacy Examples</span></a></h2>
 <h4 id="0-2-1-get-count-of-continuous-sub-array-equals-to-k" tabindex="-1"><a class="header-anchor" href="#0-2-1-get-count-of-continuous-sub-array-equals-to-k"><span>0-2-1) Get count of <code>continuous sub array equals to K</code></span></a></h4>
-<pre><code class="language-java">// java
-// LC 560
-
-// ..
-Map&lt;Integer, Integer&gt; map = new HashMap&lt;&gt;();
-
-// ..
-
-for (int num : nums) {
-    presum += num;
-
-    // Check if there's a prefix sum such that presum - k exists
-    // NOTE !!! below
-    if (map.containsKey(presum - k)) {
-        count += map.get(presum - k);
-    }
-
-    // Update the map with the current prefix sum
-    map.put(presum, map.getOrDefault(presum, 0) + 1);
-}
-
-// ..
-
+<pre data-lang="java"><code class="hljs language-java"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment">// java</span></span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-comment">// LC 560</span></span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"><span class="hljs-comment">// ..</span></span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">Map&lt;Integer, Integer&gt; map = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;();</span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code"><span class="hljs-comment">// ..</span></span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">9</span><span class="ln-code"><span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> num : nums) {</span></span>
+<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">    presum += num;</span></span>
+<span class="ln-row"><span class="ln-num">11</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">    <span class="hljs-comment">// Check if there&#x27;s a prefix sum such that presum - k exists</span></span></span>
+<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">    <span class="hljs-comment">// NOTE !!! below</span></span></span>
+<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">    <span class="hljs-keyword">if</span> (map.containsKey(presum - k)) {</span></span>
+<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">        count += map.get(presum - k);</span></span>
+<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">    }</span></span>
+<span class="ln-row"><span class="ln-num">17</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">    <span class="hljs-comment">// Update the map with the current prefix sum</span></span></span>
+<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">    map.put(presum, map.getOrDefault(presum, <span class="hljs-number">0</span>) + <span class="hljs-number">1</span>);</span></span>
+<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">}</span></span>
+<span class="ln-row"><span class="ln-num">21</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">22</span><span class="ln-code"><span class="hljs-comment">// ..</span></span></span>
+<span class="ln-row"><span class="ln-num">23</span><span class="ln-code"></span></span>
 </code></pre>
 <h4 id="0-2-2-get-prefix-with-range-addition" tabindex="-1"><a class="header-anchor" href="#0-2-2-get-prefix-with-range-addition"><span>0-2-2) get prefix with <code>range addition</code></span></a></h4>
-<pre><code class="language-java">// java
-
-// LC 1094
-
-// ...
-
-int[] prefixSum = new int[1001]; // the biggest array size given by problem
-
-// `init pre prefix sum`
-for (int[] t : trips) {
-    
-    int amount = t[0];
-    int start = t[1];
-    int end = t[2];
-
-    /**
-     *  NOTE !!!!
-     *
-     *   via trick below, we can `efficiently` setup prefix sum
-     *   per start, end index
-     *
-     *   -&gt; we ADD amount at start point (customer pickup up)
-     *   -&gt; we MINUS amount at `end point` (customer drop off)
-     *
-     *   -&gt; via above, we get the `adjusted` `init prefix sum`
-     *   -&gt; so all we need to do next is :
-     *      -&gt; loop over the `init prefix sum`
-     *      -&gt; and keep adding `previous to current val`
-     *      -&gt; e.g. prefixSum[i] = prefixSum[i-1] + prefixSum[i]
-     *
-     */
-    prefixSum[start] += amount;
-    prefixSum[end] -= amount;
-}
-
-// update `prefix sum` array
-for (int i = 1; i &lt; prefixSum.length; i++) {
-    prefixSum[i] += prefixSum[i - 1];
-}
-
-
-// ...
+<pre data-lang="java"><code class="hljs language-java"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment">// java</span></span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"><span class="hljs-comment">// LC 1094</span></span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code"><span class="hljs-comment">// ...</span></span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code"><span class="hljs-type">int</span>[] prefixSum = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[<span class="hljs-number">1001</span>]; <span class="hljs-comment">// the biggest array size given by problem</span></span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">9</span><span class="ln-code"><span class="hljs-comment">// `init pre prefix sum`</span></span></span>
+<span class="ln-row"><span class="ln-num">10</span><span class="ln-code"><span class="hljs-keyword">for</span> (<span class="hljs-type">int</span>[] t : trips) {</span></span>
+<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">    </span></span>
+<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">    <span class="hljs-type">int</span> <span class="hljs-variable">amount</span> <span class="hljs-operator">=</span> t[<span class="hljs-number">0</span>];</span></span>
+<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">    <span class="hljs-type">int</span> <span class="hljs-variable">start</span> <span class="hljs-operator">=</span> t[<span class="hljs-number">1</span>];</span></span>
+<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">    <span class="hljs-type">int</span> <span class="hljs-variable">end</span> <span class="hljs-operator">=</span> t[<span class="hljs-number">2</span>];</span></span>
+<span class="ln-row"><span class="ln-num">15</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">    <span class="hljs-comment">/**</span></span>
+<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">     *  NOTE !!!!</span></span>
+<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">     *</span></span>
+<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">     *   via trick below, we can `efficiently` setup prefix sum</span></span>
+<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">     *   per start, end index</span></span>
+<span class="ln-row"><span class="ln-num">21</span><span class="ln-code">     *</span></span>
+<span class="ln-row"><span class="ln-num">22</span><span class="ln-code">     *   -&gt; we ADD amount at start point (customer pickup up)</span></span>
+<span class="ln-row"><span class="ln-num">23</span><span class="ln-code">     *   -&gt; we MINUS amount at `end point` (customer drop off)</span></span>
+<span class="ln-row"><span class="ln-num">24</span><span class="ln-code">     *</span></span>
+<span class="ln-row"><span class="ln-num">25</span><span class="ln-code">     *   -&gt; via above, we get the `adjusted` `init prefix sum`</span></span>
+<span class="ln-row"><span class="ln-num">26</span><span class="ln-code">     *   -&gt; so all we need to do next is :</span></span>
+<span class="ln-row"><span class="ln-num">27</span><span class="ln-code">     *      -&gt; loop over the `init prefix sum`</span></span>
+<span class="ln-row"><span class="ln-num">28</span><span class="ln-code">     *      -&gt; and keep adding `previous to current val`</span></span>
+<span class="ln-row"><span class="ln-num">29</span><span class="ln-code">     *      -&gt; e.g. prefixSum[i] = prefixSum[i-1] + prefixSum[i]</span></span>
+<span class="ln-row"><span class="ln-num">30</span><span class="ln-code">     *</span></span>
+<span class="ln-row"><span class="ln-num">31</span><span class="ln-code">     */</span></span></span>
+<span class="ln-row"><span class="ln-num">32</span><span class="ln-code">    prefixSum[start] += amount;</span></span>
+<span class="ln-row"><span class="ln-num">33</span><span class="ln-code">    prefixSum[end] -= amount;</span></span>
+<span class="ln-row"><span class="ln-num">34</span><span class="ln-code">}</span></span>
+<span class="ln-row"><span class="ln-num">35</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">36</span><span class="ln-code"><span class="hljs-comment">// update `prefix sum` array</span></span></span>
+<span class="ln-row"><span class="ln-num">37</span><span class="ln-code"><span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span>; i &lt; prefixSum.length; i++) {</span></span>
+<span class="ln-row"><span class="ln-num">38</span><span class="ln-code">    prefixSum[i] += prefixSum[i - <span class="hljs-number">1</span>];</span></span>
+<span class="ln-row"><span class="ln-num">39</span><span class="ln-code">}</span></span>
+<span class="ln-row"><span class="ln-num">40</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">41</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">42</span><span class="ln-code"><span class="hljs-comment">// ...</span></span></span>
 </code></pre>
 <h2 id="1-general-form" tabindex="-1"><a class="header-anchor" href="#1-general-form"><span>1) General form</span></a></h2>
 <h3 id="1-1-basic-op" tabindex="-1"><a class="header-anchor" href="#1-1-basic-op"><span>1-1) Basic OP</span></a></h3>
 <h2 id="2-lc-example" tabindex="-1"><a class="header-anchor" href="#2-lc-example"><span>2) LC Example</span></a></h2>
 <h3 id="2-1-flip-string-to-monotone-increasing" tabindex="-1"><a class="header-anchor" href="#2-1-flip-string-to-monotone-increasing"><span>2-1) Flip String to Monotone Increasing</span></a></h3>
-<pre><code class="language-python"># LC 926. Flip String to Monotone Increasing
-# NOTE : there is also dp approaches
-# V0 
-# IDEA : PREFIX SUM
-class Solution(object):
-    def minFlipsMonoIncr(self, S):
-        # get pre-fix sum
-        P = [0]
-        for x in S:
-            P.append(P[-1] + int(x))
-        # find min
-        res = float('inf')
-        for j in range(len(P)):
-            res = min(res, P[j] + len(S)-j-(P[-1]-P[j]))
-        return res
-
-# V1
-# IDEA : PREFIX SUM
-# https://leetcode.com/problems/flip-string-to-monotone-increasing/solution/
-class Solution(object):
-    def minFlipsMonoIncr(self, S):
-        # get pre-fix sum
-        P = [0]
-        for x in S:
-            P.append(P[-1] + int(x))
-        # return min
-        return min(P[j] + len(S)-j-(P[-1]-P[j])
-                   for j in range(len(P)))
+<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment"># LC 926. Flip String to Monotone Increasing</span></span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-comment"># NOTE : there is also dp approaches</span></span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"><span class="hljs-comment"># V0 </span></span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"><span class="hljs-comment"># IDEA : PREFIX SUM</span></span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):</span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">minFlipsMonoIncr</span>(<span class="hljs-params">self, S</span>):</span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">        <span class="hljs-comment"># get pre-fix sum</span></span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">        P = [<span class="hljs-number">0</span>]</span></span>
+<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">        <span class="hljs-keyword">for</span> x <span class="hljs-keyword">in</span> S:</span></span>
+<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">            P.append(P[-<span class="hljs-number">1</span>] + <span class="hljs-built_in">int</span>(x))</span></span>
+<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">        <span class="hljs-comment"># find min</span></span></span>
+<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">        res = <span class="hljs-built_in">float</span>(<span class="hljs-string">&#x27;inf&#x27;</span>)</span></span>
+<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">        <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(P)):</span></span>
+<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">            res = <span class="hljs-built_in">min</span>(res, P[j] + <span class="hljs-built_in">len</span>(S)-j-(P[-<span class="hljs-number">1</span>]-P[j]))</span></span>
+<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">        <span class="hljs-keyword">return</span> res</span></span>
+<span class="ln-row"><span class="ln-num">16</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">17</span><span class="ln-code"><span class="hljs-comment"># V1</span></span></span>
+<span class="ln-row"><span class="ln-num">18</span><span class="ln-code"><span class="hljs-comment"># IDEA : PREFIX SUM</span></span></span>
+<span class="ln-row"><span class="ln-num">19</span><span class="ln-code"><span class="hljs-comment"># https://leetcode.com/problems/flip-string-to-monotone-increasing/solution/</span></span></span>
+<span class="ln-row"><span class="ln-num">20</span><span class="ln-code"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):</span></span>
+<span class="ln-row"><span class="ln-num">21</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">minFlipsMonoIncr</span>(<span class="hljs-params">self, S</span>):</span></span>
+<span class="ln-row"><span class="ln-num">22</span><span class="ln-code">        <span class="hljs-comment"># get pre-fix sum</span></span></span>
+<span class="ln-row"><span class="ln-num">23</span><span class="ln-code">        P = [<span class="hljs-number">0</span>]</span></span>
+<span class="ln-row"><span class="ln-num">24</span><span class="ln-code">        <span class="hljs-keyword">for</span> x <span class="hljs-keyword">in</span> S:</span></span>
+<span class="ln-row"><span class="ln-num">25</span><span class="ln-code">            P.append(P[-<span class="hljs-number">1</span>] + <span class="hljs-built_in">int</span>(x))</span></span>
+<span class="ln-row"><span class="ln-num">26</span><span class="ln-code">        <span class="hljs-comment"># return min</span></span></span>
+<span class="ln-row"><span class="ln-num">27</span><span class="ln-code">        <span class="hljs-keyword">return</span> <span class="hljs-built_in">min</span>(P[j] + <span class="hljs-built_in">len</span>(S)-j-(P[-<span class="hljs-number">1</span>]-P[j])</span></span>
+<span class="ln-row"><span class="ln-num">28</span><span class="ln-code">                   <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(P)))</span></span>
 </code></pre>
 <h3 id="2-2-range-addition" tabindex="-1"><a class="header-anchor" href="#2-2-range-addition"><span>2-2) Range Addition</span></a></h3>
-<pre><code class="language-python"># LC 370. Range Addition
-# V0
-# IDEA : double loop -&gt; 2 single loops,  prefix sum
-class Solution(object):
-    def getModifiedArray(self, length, updates):
-        # edge case
-        if not length:
-            return
-        if length and not updates:
-            return [0 for i in range(length)]
-        # init res
-        res = [0 for i in range(length)]
-        # get cumsum on start and end idx
-        # then go through res, adjust the sum
-        for _start, _end, val in updates:
-            res[_start] += val
-            if _end+1 &lt; length:
-                res[_end+1] -= val
-
-        #print (&quot;res = &quot; + str(res))
-        cur = 0
-        for i in range(len(res)):
-            cur += res[i]
-            res[i] = cur
-        #print (&quot;--&gt; res = &quot; + str(res))
-        return res
-
-# V0'
-# IDEA : double loop -&gt; 2 single loops,  prefix sum
-class Solution(object):
-    def getModifiedArray(self, length, updates):
-        # NOTE : we init res with (len+1)
-        res = [0] * (length + 1)
-        &quot;&quot;&quot;
-        NOTE !!!
-
-        -&gt; We split double loop into 2 single loops
-        -&gt; Steps)
-            step 1) go through updates,  add val to start and end idx in res
-            step 2) go through res, maintain an aggregated sum (sum) and add it to res[i]
-                e.g. res[i], sum = res[i] + sum, res[i] + sum
-        &quot;&quot;&quot;
-        for start, end, val in updates:
-            res[start] += val
-            res[end+1] -= val
-        
-        sum = 0
-        for i in range(0, length):
-            res[i], sum = res[i] + sum, res[i] + sum
-        
-        # NOTE : we return res[0:-1]
-        return res[0:-1]
-
-# V0'
-# IDEA : double loop -&gt; 2 single loops,  prefix sum
-class Solution(object):
-    def getModifiedArray(self, length, updates):
-        ret = [0] * (length + 1)
-        for start, end, val in updates:
-            ret[start] += val
-            ret[end+1] -= val
-        
-        sum = 0
-        for i in range(0, length):
-            ret[i], sum = ret[i] + sum, ret[i] + sum
-        
-        return ret[0:-1]
+<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment"># LC 370. Range Addition</span></span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-comment"># V0</span></span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"><span class="hljs-comment"># IDEA : double loop -&gt; 2 single loops,  prefix sum</span></span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):</span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">getModifiedArray</span>(<span class="hljs-params">self, length, updates</span>):</span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">        <span class="hljs-comment"># edge case</span></span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> length:</span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">            <span class="hljs-keyword">return</span></span></span>
+<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">        <span class="hljs-keyword">if</span> length <span class="hljs-keyword">and</span> <span class="hljs-keyword">not</span> updates:</span></span>
+<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">            <span class="hljs-keyword">return</span> [<span class="hljs-number">0</span> <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(length)]</span></span>
+<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">        <span class="hljs-comment"># init res</span></span></span>
+<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">        res = [<span class="hljs-number">0</span> <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(length)]</span></span>
+<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">        <span class="hljs-comment"># get cumsum on start and end idx</span></span></span>
+<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">        <span class="hljs-comment"># then go through res, adjust the sum</span></span></span>
+<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">        <span class="hljs-keyword">for</span> _start, _end, val <span class="hljs-keyword">in</span> updates:</span></span>
+<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">            res[_start] += val</span></span>
+<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">            <span class="hljs-keyword">if</span> _end+<span class="hljs-number">1</span> &lt; length:</span></span>
+<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">                res[_end+<span class="hljs-number">1</span>] -= val</span></span>
+<span class="ln-row"><span class="ln-num">19</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">        <span class="hljs-comment">#print (&quot;res = &quot; + str(res))</span></span></span>
+<span class="ln-row"><span class="ln-num">21</span><span class="ln-code">        cur = <span class="hljs-number">0</span></span></span>
+<span class="ln-row"><span class="ln-num">22</span><span class="ln-code">        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(res)):</span></span>
+<span class="ln-row"><span class="ln-num">23</span><span class="ln-code">            cur += res[i]</span></span>
+<span class="ln-row"><span class="ln-num">24</span><span class="ln-code">            res[i] = cur</span></span>
+<span class="ln-row"><span class="ln-num">25</span><span class="ln-code">        <span class="hljs-comment">#print (&quot;--&gt; res = &quot; + str(res))</span></span></span>
+<span class="ln-row"><span class="ln-num">26</span><span class="ln-code">        <span class="hljs-keyword">return</span> res</span></span>
+<span class="ln-row"><span class="ln-num">27</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">28</span><span class="ln-code"><span class="hljs-comment"># V0&#x27;</span></span></span>
+<span class="ln-row"><span class="ln-num">29</span><span class="ln-code"><span class="hljs-comment"># IDEA : double loop -&gt; 2 single loops,  prefix sum</span></span></span>
+<span class="ln-row"><span class="ln-num">30</span><span class="ln-code"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):</span></span>
+<span class="ln-row"><span class="ln-num">31</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">getModifiedArray</span>(<span class="hljs-params">self, length, updates</span>):</span></span>
+<span class="ln-row"><span class="ln-num">32</span><span class="ln-code">        <span class="hljs-comment"># NOTE : we init res with (len+1)</span></span></span>
+<span class="ln-row"><span class="ln-num">33</span><span class="ln-code">        res = [<span class="hljs-number">0</span>] * (length + <span class="hljs-number">1</span>)</span></span>
+<span class="ln-row"><span class="ln-num">34</span><span class="ln-code">        <span class="hljs-string">&quot;&quot;&quot;</span></span>
+<span class="ln-row"><span class="ln-num">35</span><span class="ln-code">        NOTE !!!</span></span>
+<span class="ln-row"><span class="ln-num">36</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">37</span><span class="ln-code">        -&gt; We split double loop into 2 single loops</span></span>
+<span class="ln-row"><span class="ln-num">38</span><span class="ln-code">        -&gt; Steps)</span></span>
+<span class="ln-row"><span class="ln-num">39</span><span class="ln-code">            step 1) go through updates,  add val to start and end idx in res</span></span>
+<span class="ln-row"><span class="ln-num">40</span><span class="ln-code">            step 2) go through res, maintain an aggregated sum (sum) and add it to res[i]</span></span>
+<span class="ln-row"><span class="ln-num">41</span><span class="ln-code">                e.g. res[i], sum = res[i] + sum, res[i] + sum</span></span>
+<span class="ln-row"><span class="ln-num">42</span><span class="ln-code">        &quot;&quot;&quot;</span></span></span>
+<span class="ln-row"><span class="ln-num">43</span><span class="ln-code">        <span class="hljs-keyword">for</span> start, end, val <span class="hljs-keyword">in</span> updates:</span></span>
+<span class="ln-row"><span class="ln-num">44</span><span class="ln-code">            res[start] += val</span></span>
+<span class="ln-row"><span class="ln-num">45</span><span class="ln-code">            res[end+<span class="hljs-number">1</span>] -= val</span></span>
+<span class="ln-row"><span class="ln-num">46</span><span class="ln-code">        </span></span>
+<span class="ln-row"><span class="ln-num">47</span><span class="ln-code">        <span class="hljs-built_in">sum</span> = <span class="hljs-number">0</span></span></span>
+<span class="ln-row"><span class="ln-num">48</span><span class="ln-code">        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">0</span>, length):</span></span>
+<span class="ln-row"><span class="ln-num">49</span><span class="ln-code">            res[i], <span class="hljs-built_in">sum</span> = res[i] + <span class="hljs-built_in">sum</span>, res[i] + <span class="hljs-built_in">sum</span></span></span>
+<span class="ln-row"><span class="ln-num">50</span><span class="ln-code">        </span></span>
+<span class="ln-row"><span class="ln-num">51</span><span class="ln-code">        <span class="hljs-comment"># NOTE : we return res[0:-1]</span></span></span>
+<span class="ln-row"><span class="ln-num">52</span><span class="ln-code">        <span class="hljs-keyword">return</span> res[<span class="hljs-number">0</span>:-<span class="hljs-number">1</span>]</span></span>
+<span class="ln-row"><span class="ln-num">53</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">54</span><span class="ln-code"><span class="hljs-comment"># V0&#x27;</span></span></span>
+<span class="ln-row"><span class="ln-num">55</span><span class="ln-code"><span class="hljs-comment"># IDEA : double loop -&gt; 2 single loops,  prefix sum</span></span></span>
+<span class="ln-row"><span class="ln-num">56</span><span class="ln-code"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):</span></span>
+<span class="ln-row"><span class="ln-num">57</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">getModifiedArray</span>(<span class="hljs-params">self, length, updates</span>):</span></span>
+<span class="ln-row"><span class="ln-num">58</span><span class="ln-code">        ret = [<span class="hljs-number">0</span>] * (length + <span class="hljs-number">1</span>)</span></span>
+<span class="ln-row"><span class="ln-num">59</span><span class="ln-code">        <span class="hljs-keyword">for</span> start, end, val <span class="hljs-keyword">in</span> updates:</span></span>
+<span class="ln-row"><span class="ln-num">60</span><span class="ln-code">            ret[start] += val</span></span>
+<span class="ln-row"><span class="ln-num">61</span><span class="ln-code">            ret[end+<span class="hljs-number">1</span>] -= val</span></span>
+<span class="ln-row"><span class="ln-num">62</span><span class="ln-code">        </span></span>
+<span class="ln-row"><span class="ln-num">63</span><span class="ln-code">        <span class="hljs-built_in">sum</span> = <span class="hljs-number">0</span></span></span>
+<span class="ln-row"><span class="ln-num">64</span><span class="ln-code">        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">0</span>, length):</span></span>
+<span class="ln-row"><span class="ln-num">65</span><span class="ln-code">            ret[i], <span class="hljs-built_in">sum</span> = ret[i] + <span class="hljs-built_in">sum</span>, ret[i] + <span class="hljs-built_in">sum</span></span></span>
+<span class="ln-row"><span class="ln-num">66</span><span class="ln-code">        </span></span>
+<span class="ln-row"><span class="ln-num">67</span><span class="ln-code">        <span class="hljs-keyword">return</span> ret[<span class="hljs-number">0</span>:-<span class="hljs-number">1</span>]</span></span>
 </code></pre>
 <h3 id="2-3-count-number-of-nice-subarrays" tabindex="-1"><a class="header-anchor" href="#2-3-count-number-of-nice-subarrays"><span>2-3) Count Number of Nice Subarrays</span></a></h3>
-<pre><code class="language-python"># 1248. Count Number of Nice Subarrays
-# NOTE : there are also array, window, deque.. approaches
-class Solution:
-    def numberOfSubarrays(self, nums, k):
-        d = collections.defaultdict(int)
-        &quot;&quot;&quot;
-        definition of hash map (in this problem)
-
-            -&gt; d[cum_sum] = number_of_cum_sum_till_now
-
-            -&gt; so at beginning, cum_sum = 0, and its count = 1
-            -&gt; so we init hash map via &quot;d[0] = 1&quot;
-        &quot;&quot;&quot;
-        d[0] = 1
-        # init cum_sum
-        cum_sum = 0
-        res = 0
-        # go to each element
-        for i in nums:
-            ### NOTE : we need to check &quot;if i % 2 == 1&quot; first, so in the next logic, we can append val to result directly
-            if i % 2 == 1:
-                cum_sum += 1
-            &quot;&quot;&quot;
-            NOTE !!! : trick here !!!
-             -&gt; same as 2 sum ...
-             -&gt; if cum_sum - x == k
-                -&gt; x = cum_sum - k
-                -&gt; so we need to check if &quot;cum_sum - k&quot; already in our hash map
-            &quot;&quot;&quot;
-            if cum_sum - k in d:
-                ### NOTE !!! here : we need to use d[cum_sum - k], since this is # of sub string combination that with # of odd numbers  == k
-                res += d[cum_sum - k]
-            ### NOTE !!! : we need to add 1 to count of &quot;cum_sum&quot;, since in current loop, we got a new cur_sum (as above)
-            d[cum_sum] += 1
-        return res
+<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment"># 1248. Count Number of Nice Subarrays</span></span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-comment"># NOTE : there are also array, window, deque.. approaches</span></span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:</span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">numberOfSubarrays</span>(<span class="hljs-params">self, nums, k</span>):</span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">        d = collections.defaultdict(<span class="hljs-built_in">int</span>)</span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">        <span class="hljs-string">&quot;&quot;&quot;</span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">        definition of hash map (in this problem)</span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">            -&gt; d[cum_sum] = number_of_cum_sum_till_now</span></span>
+<span class="ln-row"><span class="ln-num">10</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">            -&gt; so at beginning, cum_sum = 0, and its count = 1</span></span>
+<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">            -&gt; so we init hash map via &quot;d[0] = 1&quot;</span></span>
+<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">        &quot;&quot;&quot;</span></span></span>
+<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">        d[<span class="hljs-number">0</span>] = <span class="hljs-number">1</span></span></span>
+<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">        <span class="hljs-comment"># init cum_sum</span></span></span>
+<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">        cum_sum = <span class="hljs-number">0</span></span></span>
+<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">        res = <span class="hljs-number">0</span></span></span>
+<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">        <span class="hljs-comment"># go to each element</span></span></span>
+<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> nums:</span></span>
+<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">            <span class="hljs-comment">### NOTE : we need to check &quot;if i % 2 == 1&quot; first, so in the next logic, we can append val to result directly</span></span></span>
+<span class="ln-row"><span class="ln-num">21</span><span class="ln-code">            <span class="hljs-keyword">if</span> i % <span class="hljs-number">2</span> == <span class="hljs-number">1</span>:</span></span>
+<span class="ln-row"><span class="ln-num">22</span><span class="ln-code">                cum_sum += <span class="hljs-number">1</span></span></span>
+<span class="ln-row"><span class="ln-num">23</span><span class="ln-code">            <span class="hljs-string">&quot;&quot;&quot;</span></span>
+<span class="ln-row"><span class="ln-num">24</span><span class="ln-code">            NOTE !!! : trick here !!!</span></span>
+<span class="ln-row"><span class="ln-num">25</span><span class="ln-code">             -&gt; same as 2 sum ...</span></span>
+<span class="ln-row"><span class="ln-num">26</span><span class="ln-code">             -&gt; if cum_sum - x == k</span></span>
+<span class="ln-row"><span class="ln-num">27</span><span class="ln-code">                -&gt; x = cum_sum - k</span></span>
+<span class="ln-row"><span class="ln-num">28</span><span class="ln-code">                -&gt; so we need to check if &quot;cum_sum - k&quot; already in our hash map</span></span>
+<span class="ln-row"><span class="ln-num">29</span><span class="ln-code">            &quot;&quot;&quot;</span></span></span>
+<span class="ln-row"><span class="ln-num">30</span><span class="ln-code">            <span class="hljs-keyword">if</span> cum_sum - k <span class="hljs-keyword">in</span> d:</span></span>
+<span class="ln-row"><span class="ln-num">31</span><span class="ln-code">                <span class="hljs-comment">### NOTE !!! here : we need to use d[cum_sum - k], since this is # of sub string combination that with # of odd numbers  == k</span></span></span>
+<span class="ln-row"><span class="ln-num">32</span><span class="ln-code">                res += d[cum_sum - k]</span></span>
+<span class="ln-row"><span class="ln-num">33</span><span class="ln-code">            <span class="hljs-comment">### NOTE !!! : we need to add 1 to count of &quot;cum_sum&quot;, since in current loop, we got a new cur_sum (as above)</span></span></span>
+<span class="ln-row"><span class="ln-num">34</span><span class="ln-code">            d[cum_sum] += <span class="hljs-number">1</span></span></span>
+<span class="ln-row"><span class="ln-num">35</span><span class="ln-code">        <span class="hljs-keyword">return</span> res</span></span>
 </code></pre>
 <h3 id="2-4-maximum-size-subarray-sum-equals-k" tabindex="-1"><a class="header-anchor" href="#2-4-maximum-size-subarray-sum-equals-k"><span>2-4) Maximum Size Subarray Sum Equals k</span></a></h3>
-<pre><code class="language-python"># LC 325. Maximum Size Subarray Sum Equals k
-# V0 
-# time complexity : O(N) | space complexity : O(N)
-# IDEA : HASH TBALE
-# -&gt; have a var acc keep sum of all item in nums,
-# -&gt; and use dic collect acc and its index
-# -&gt; since we want to find nums[i:j] = k  -&gt; so it's a 2 sum problem now
-# -&gt; i.e. if acc - k in dic =&gt; there must be a solution (i,j) of  nums[i:j] = k  
-# -&gt; return the max result 
-# -&gt; ### acc DEMO : given array a = [1,2,3,4,5] ###
-# -&gt; acc_list = [1,3,6,10,15]
-# -&gt; so sum(a[1:3]) = 9 = acc_list[3] - acc_list[1-1] = 10 - 1 = 9 
-class Solution(object):
-    def maxSubArrayLen(self, nums, k):
-
-        result, acc = 0, 0
-        # NOTE !!! we init dic as {0:-1} ({sum:idx})
-        dic = {0: -1}
-
-        for i in range(len(nums)):
-            acc += nums[i]
-            if acc not in dic:
-                ### NOTE : we save idx as dict value
-                dic[acc] = i
-            ### acc - x = k -&gt; so x = acc - k, that's why we check if acc - x in the dic or not
-            if acc - k in dic:
-                result = max(result, i - dic[acc-k])
-        return result
+<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment"># LC 325. Maximum Size Subarray Sum Equals k</span></span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-comment"># V0 </span></span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"><span class="hljs-comment"># time complexity : O(N) | space complexity : O(N)</span></span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"><span class="hljs-comment"># IDEA : HASH TBALE</span></span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code"><span class="hljs-comment"># -&gt; have a var acc keep sum of all item in nums,</span></span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code"><span class="hljs-comment"># -&gt; and use dic collect acc and its index</span></span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code"><span class="hljs-comment"># -&gt; since we want to find nums[i:j] = k  -&gt; so it&#x27;s a 2 sum problem now</span></span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code"><span class="hljs-comment"># -&gt; i.e. if acc - k in dic =&gt; there must be a solution (i,j) of  nums[i:j] = k  </span></span></span>
+<span class="ln-row"><span class="ln-num">9</span><span class="ln-code"><span class="hljs-comment"># -&gt; return the max result </span></span></span>
+<span class="ln-row"><span class="ln-num">10</span><span class="ln-code"><span class="hljs-comment"># -&gt; ### acc DEMO : given array a = [1,2,3,4,5] ###</span></span></span>
+<span class="ln-row"><span class="ln-num">11</span><span class="ln-code"><span class="hljs-comment"># -&gt; acc_list = [1,3,6,10,15]</span></span></span>
+<span class="ln-row"><span class="ln-num">12</span><span class="ln-code"><span class="hljs-comment"># -&gt; so sum(a[1:3]) = 9 = acc_list[3] - acc_list[1-1] = 10 - 1 = 9 </span></span></span>
+<span class="ln-row"><span class="ln-num">13</span><span class="ln-code"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):</span></span>
+<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">maxSubArrayLen</span>(<span class="hljs-params">self, nums, k</span>):</span></span>
+<span class="ln-row"><span class="ln-num">15</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">        result, acc = <span class="hljs-number">0</span>, <span class="hljs-number">0</span></span></span>
+<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">        <span class="hljs-comment"># NOTE !!! we init dic as {0:-1} ({sum:idx})</span></span></span>
+<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">        dic = {<span class="hljs-number">0</span>: -<span class="hljs-number">1</span>}</span></span>
+<span class="ln-row"><span class="ln-num">19</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(nums)):</span></span>
+<span class="ln-row"><span class="ln-num">21</span><span class="ln-code">            acc += nums[i]</span></span>
+<span class="ln-row"><span class="ln-num">22</span><span class="ln-code">            <span class="hljs-keyword">if</span> acc <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> dic:</span></span>
+<span class="ln-row"><span class="ln-num">23</span><span class="ln-code">                <span class="hljs-comment">### NOTE : we save idx as dict value</span></span></span>
+<span class="ln-row"><span class="ln-num">24</span><span class="ln-code">                dic[acc] = i</span></span>
+<span class="ln-row"><span class="ln-num">25</span><span class="ln-code">            <span class="hljs-comment">### acc - x = k -&gt; so x = acc - k, that&#x27;s why we check if acc - x in the dic or not</span></span></span>
+<span class="ln-row"><span class="ln-num">26</span><span class="ln-code">            <span class="hljs-keyword">if</span> acc - k <span class="hljs-keyword">in</span> dic:</span></span>
+<span class="ln-row"><span class="ln-num">27</span><span class="ln-code">                result = <span class="hljs-built_in">max</span>(result, i - dic[acc-k])</span></span>
+<span class="ln-row"><span class="ln-num">28</span><span class="ln-code">        <span class="hljs-keyword">return</span> result</span></span>
 </code></pre>
 <h3 id="2-5-subarray-sum-equals-k" tabindex="-1"><a class="header-anchor" href="#2-5-subarray-sum-equals-k"><span>2-5) Subarray Sum Equals K</span></a></h3>
-<pre><code class="language-java">// java
-// LC 560
-public int subarraySum(int[] nums, int k) {
-    /**
-     * NOTE !!!
-     *
-     *   use Map to store prefix sum and its count
-     *
-     *   map : {prefixSum: count}
-     *
-     *
-     *   -&gt; since &quot;same preSum may have multiple combination&quot; within hashMap,
-     *      so it's needed to track preSum COUNT, instead of its index
-     */
-    Map&lt;Integer, Integer&gt; map = new HashMap&lt;&gt;();
-    int presum = 0;
-    int count = 0;
-
-    /** 
-     *  NOTE !!!
-     *
-     *  Initialize the map with prefix sum 0 (to handle subarrays starting at index 0)
-     */
-    map.put(0, 1);
-
-    for (int num : nums) {
-        presum += num;
-
-        // Check if there's a prefix sum such that presum - k exists
-        if (map.containsKey(presum - k)) {
-            count += map.get(presum - k);
-        }
-
-        // Update the map with the current prefix sum
-        map.put(presum, map.getOrDefault(presum, 0) + 1);
-    }
-
-    return count;
-}
+<pre data-lang="java"><code class="hljs language-java"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment">// java</span></span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-comment">// LC 560</span></span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"><span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">subarraySum</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums, <span class="hljs-type">int</span> k)</span> {</span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">    <span class="hljs-comment">/**</span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">     * NOTE !!!</span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">     *</span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">     *   use Map to store prefix sum and its count</span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">     *</span></span>
+<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">     *   map : {prefixSum: count}</span></span>
+<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">     *</span></span>
+<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">     *</span></span>
+<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">     *   -&gt; since &quot;same preSum may have multiple combination&quot; within hashMap,</span></span>
+<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">     *      so it&#x27;s needed to track preSum COUNT, instead of its index</span></span>
+<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">     */</span></span></span>
+<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">    Map&lt;Integer, Integer&gt; map = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;();</span></span>
+<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">    <span class="hljs-type">int</span> <span class="hljs-variable">presum</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;</span></span>
+<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">    <span class="hljs-type">int</span> <span class="hljs-variable">count</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;</span></span>
+<span class="ln-row"><span class="ln-num">18</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">    <span class="hljs-comment">/** </span></span>
+<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">     *  NOTE !!!</span></span>
+<span class="ln-row"><span class="ln-num">21</span><span class="ln-code">     *</span></span>
+<span class="ln-row"><span class="ln-num">22</span><span class="ln-code">     *  Initialize the map with prefix sum 0 (to handle subarrays starting at index 0)</span></span>
+<span class="ln-row"><span class="ln-num">23</span><span class="ln-code">     */</span></span></span>
+<span class="ln-row"><span class="ln-num">24</span><span class="ln-code">    map.put(<span class="hljs-number">0</span>, <span class="hljs-number">1</span>);</span></span>
+<span class="ln-row"><span class="ln-num">25</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">26</span><span class="ln-code">    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> num : nums) {</span></span>
+<span class="ln-row"><span class="ln-num">27</span><span class="ln-code">        presum += num;</span></span>
+<span class="ln-row"><span class="ln-num">28</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">29</span><span class="ln-code">        <span class="hljs-comment">// Check if there&#x27;s a prefix sum such that presum - k exists</span></span></span>
+<span class="ln-row"><span class="ln-num">30</span><span class="ln-code">        <span class="hljs-keyword">if</span> (map.containsKey(presum - k)) {</span></span>
+<span class="ln-row"><span class="ln-num">31</span><span class="ln-code">            count += map.get(presum - k);</span></span>
+<span class="ln-row"><span class="ln-num">32</span><span class="ln-code">        }</span></span>
+<span class="ln-row"><span class="ln-num">33</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">34</span><span class="ln-code">        <span class="hljs-comment">// Update the map with the current prefix sum</span></span></span>
+<span class="ln-row"><span class="ln-num">35</span><span class="ln-code">        map.put(presum, map.getOrDefault(presum, <span class="hljs-number">0</span>) + <span class="hljs-number">1</span>);</span></span>
+<span class="ln-row"><span class="ln-num">36</span><span class="ln-code">    }</span></span>
+<span class="ln-row"><span class="ln-num">37</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">38</span><span class="ln-code">    <span class="hljs-keyword">return</span> count;</span></span>
+<span class="ln-row"><span class="ln-num">39</span><span class="ln-code">}</span></span>
 </code></pre>
 <h3 id="2-6-continuous-subarray-sum" tabindex="-1"><a class="header-anchor" href="#2-6-continuous-subarray-sum"><span>2-6) Continuous Subarray Sum</span></a></h3>
-<pre><code class="language-java">// java
-// LC 523
-// V1
-// IDEA : HASHMAP
-// https://leetcode.com/problems/continuous-subarray-sum/editorial/
-// https://github.com/yennanliu/CS_basics/blob/master/doc/pic/presum_mod.png
-public boolean checkSubarraySum_1(int[] nums, int k) {
-    int prefixMod = 0;
-    HashMap&lt;Integer, Integer&gt; modSeen = new HashMap&lt;&gt;();
-    modSeen.put(0, -1);
-
-    for (int i = 0; i &lt; nums.length; i++) {
-        /**
-         * NOTE !!! we get `mod of prefixSum`, instead of get prefixSum
-         */
-        prefixMod = (prefixMod + nums[i]) % k;
-
-        if (modSeen.containsKey(prefixMod)) {
-            // ensures that the size of subarray is at least 2
-            if (i - modSeen.get(prefixMod) &gt; 1) {
-                return true;
-            }
-        } else {
-            // mark the value of prefixMod with the current index.
-            modSeen.put(prefixMod, i);
-        }
-    }
-
-    return false;
-}
+<pre data-lang="java"><code class="hljs language-java"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment">// java</span></span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-comment">// LC 523</span></span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"><span class="hljs-comment">// V1</span></span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"><span class="hljs-comment">// IDEA : HASHMAP</span></span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code"><span class="hljs-comment">// https://leetcode.com/problems/continuous-subarray-sum/editorial/</span></span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code"><span class="hljs-comment">// https://github.com/yennanliu/CS_basics/blob/master/doc/pic/presum_mod.png</span></span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code"><span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">checkSubarraySum_1</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums, <span class="hljs-type">int</span> k)</span> {</span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">    <span class="hljs-type">int</span> <span class="hljs-variable">prefixMod</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;</span></span>
+<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">    HashMap&lt;Integer, Integer&gt; modSeen = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;();</span></span>
+<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">    modSeen.put(<span class="hljs-number">0</span>, -<span class="hljs-number">1</span>);</span></span>
+<span class="ln-row"><span class="ln-num">11</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; nums.length; i++) {</span></span>
+<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">        <span class="hljs-comment">/**</span></span>
+<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">         * NOTE !!! we get `mod of prefixSum`, instead of get prefixSum</span></span>
+<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">         */</span></span></span>
+<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">        prefixMod = (prefixMod + nums[i]) % k;</span></span>
+<span class="ln-row"><span class="ln-num">17</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">        <span class="hljs-keyword">if</span> (modSeen.containsKey(prefixMod)) {</span></span>
+<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">            <span class="hljs-comment">// ensures that the size of subarray is at least 2</span></span></span>
+<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">            <span class="hljs-keyword">if</span> (i - modSeen.get(prefixMod) &gt; <span class="hljs-number">1</span>) {</span></span>
+<span class="ln-row"><span class="ln-num">21</span><span class="ln-code">                <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;</span></span>
+<span class="ln-row"><span class="ln-num">22</span><span class="ln-code">            }</span></span>
+<span class="ln-row"><span class="ln-num">23</span><span class="ln-code">        } <span class="hljs-keyword">else</span> {</span></span>
+<span class="ln-row"><span class="ln-num">24</span><span class="ln-code">            <span class="hljs-comment">// mark the value of prefixMod with the current index.</span></span></span>
+<span class="ln-row"><span class="ln-num">25</span><span class="ln-code">            modSeen.put(prefixMod, i);</span></span>
+<span class="ln-row"><span class="ln-num">26</span><span class="ln-code">        }</span></span>
+<span class="ln-row"><span class="ln-num">27</span><span class="ln-code">    }</span></span>
+<span class="ln-row"><span class="ln-num">28</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">29</span><span class="ln-code">    <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;</span></span>
+<span class="ln-row"><span class="ln-num">30</span><span class="ln-code">}</span></span>
 </code></pre>
 <h3 id="2-7-max-chunks-to-make-sorted" tabindex="-1"><a class="header-anchor" href="#2-7-max-chunks-to-make-sorted"><span>2-7) Max Chunks To Make Sorted</span></a></h3>
-<pre><code class="language-java">// java
-// LC 769
-// V1-1
-// https://leetcode.com/problems/max-chunks-to-make-sorted/editorial/
-// IDEA: Prefix Sums
-/**
- *  IDEA:
- *
- *  An important observation is that a segment of the
- *  array can form a valid chunk if, when sorted,
- *  it matches the corresponding segment
- *  in the fully sorted version of the array.
- *
- * Since the numbers in arr belong to the range [0, n - 1], we can simplify the problem by using the property of sums. Specifically, for any index, it suffices to check whether the sum of the elements in arr up to that index is equal to the sum of the elements in the corresponding prefix of the sorted array.
- *
- * If these sums are equal, it guarantees that the elements in the current segment of arr match the elements in the corresponding segment of the sorted array (possibly in a different order). When this condition is satisfied, we can form a new chunk — either starting from the beginning of the array or the end of the previous chunk.
- *
- * For example, consider arr = [1, 2, 0, 3, 4] and the sorted version sortedArr = [0, 1, 2, 3, 4]. We find the valid segments as follows:
- *
- * Segment [0, 0] is not valid, since sum = 1 and sortedSum = 0.
- * Segment [0, 1] is not valid, since sum = 1 + 2 = 3 and sortedSum = 0 + 1 = 1.
- * Segment [0, 2] is valid, since sum = 1 + 2 + 0 = 3 and sortedSum = 0 + 1 + 2 = 3.
- * Segment [3, 3] is valid, because sum = 1 + 2 + 0 + 3 = 6 and sortedSum = 0 + 1 + 2 + 3 = 6.
- * Segment [4, 4] is valid, because sum = 1 + 2 + 0 + 3 + 4 = 10 and sortedSum = 0 + 1 + 2 + 3 + 4 = 10.
- * Therefore, the answer here is 3.
- *
- * Algorithm
- * - Initialize n to the size of the arr array.
- * - Initialize chunks, prefixSum, and sortedPrefixSum to 0.
- * - Iterate over arr with i from 0 to n - 1:
- *    - Increment prefixSum by arr[i].
- *    - Increment sortedPrefixSum by i.
- *    - Check if prefixSum == sortedPrefixSum:
- *        - If so, increment chunks by 1.
- * - Return chunks.
- *
- */
-public int maxChunksToSorted_1_1(int[] arr) {
-    int n = arr.length;
-    int chunks = 0, prefixSum = 0, sortedPrefixSum = 0;
-
-    // Iterate over the array
-    for (int i = 0; i &lt; n; i++) {
-        // Update prefix sum of `arr`
-        prefixSum += arr[i];
-        // Update prefix sum of the sorted array
-        sortedPrefixSum += i;
-
-        // If the two sums are equal, the two prefixes contain the same elements; a chunk can be formed
-        if (prefixSum == sortedPrefixSum) {
-            chunks++;
-        }
-    }
-    return chunks;
-}
+<pre data-lang="java"><code class="hljs language-java"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment">// java</span></span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-comment">// LC 769</span></span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"><span class="hljs-comment">// V1-1</span></span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"><span class="hljs-comment">// https://leetcode.com/problems/max-chunks-to-make-sorted/editorial/</span></span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code"><span class="hljs-comment">// IDEA: Prefix Sums</span></span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code"><span class="hljs-comment">/**</span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code"> *  IDEA:</span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code"> *</span></span>
+<span class="ln-row"><span class="ln-num">9</span><span class="ln-code"> *  An important observation is that a segment of the</span></span>
+<span class="ln-row"><span class="ln-num">10</span><span class="ln-code"> *  array can form a valid chunk if, when sorted,</span></span>
+<span class="ln-row"><span class="ln-num">11</span><span class="ln-code"> *  it matches the corresponding segment</span></span>
+<span class="ln-row"><span class="ln-num">12</span><span class="ln-code"> *  in the fully sorted version of the array.</span></span>
+<span class="ln-row"><span class="ln-num">13</span><span class="ln-code"> *</span></span>
+<span class="ln-row"><span class="ln-num">14</span><span class="ln-code"> * Since the numbers in arr belong to the range [0, n - 1], we can simplify the problem by using the property of sums. Specifically, for any index, it suffices to check whether the sum of the elements in arr up to that index is equal to the sum of the elements in the corresponding prefix of the sorted array.</span></span>
+<span class="ln-row"><span class="ln-num">15</span><span class="ln-code"> *</span></span>
+<span class="ln-row"><span class="ln-num">16</span><span class="ln-code"> * If these sums are equal, it guarantees that the elements in the current segment of arr match the elements in the corresponding segment of the sorted array (possibly in a different order). When this condition is satisfied, we can form a new chunk — either starting from the beginning of the array or the end of the previous chunk.</span></span>
+<span class="ln-row"><span class="ln-num">17</span><span class="ln-code"> *</span></span>
+<span class="ln-row"><span class="ln-num">18</span><span class="ln-code"> * For example, consider arr = [1, 2, 0, 3, 4] and the sorted version sortedArr = [0, 1, 2, 3, 4]. We find the valid segments as follows:</span></span>
+<span class="ln-row"><span class="ln-num">19</span><span class="ln-code"> *</span></span>
+<span class="ln-row"><span class="ln-num">20</span><span class="ln-code"> * Segment [0, 0] is not valid, since sum = 1 and sortedSum = 0.</span></span>
+<span class="ln-row"><span class="ln-num">21</span><span class="ln-code"> * Segment [0, 1] is not valid, since sum = 1 + 2 = 3 and sortedSum = 0 + 1 = 1.</span></span>
+<span class="ln-row"><span class="ln-num">22</span><span class="ln-code"> * Segment [0, 2] is valid, since sum = 1 + 2 + 0 = 3 and sortedSum = 0 + 1 + 2 = 3.</span></span>
+<span class="ln-row"><span class="ln-num">23</span><span class="ln-code"> * Segment [3, 3] is valid, because sum = 1 + 2 + 0 + 3 = 6 and sortedSum = 0 + 1 + 2 + 3 = 6.</span></span>
+<span class="ln-row"><span class="ln-num">24</span><span class="ln-code"> * Segment [4, 4] is valid, because sum = 1 + 2 + 0 + 3 + 4 = 10 and sortedSum = 0 + 1 + 2 + 3 + 4 = 10.</span></span>
+<span class="ln-row"><span class="ln-num">25</span><span class="ln-code"> * Therefore, the answer here is 3.</span></span>
+<span class="ln-row"><span class="ln-num">26</span><span class="ln-code"> *</span></span>
+<span class="ln-row"><span class="ln-num">27</span><span class="ln-code"> * Algorithm</span></span>
+<span class="ln-row"><span class="ln-num">28</span><span class="ln-code"> * - Initialize n to the size of the arr array.</span></span>
+<span class="ln-row"><span class="ln-num">29</span><span class="ln-code"> * - Initialize chunks, prefixSum, and sortedPrefixSum to 0.</span></span>
+<span class="ln-row"><span class="ln-num">30</span><span class="ln-code"> * - Iterate over arr with i from 0 to n - 1:</span></span>
+<span class="ln-row"><span class="ln-num">31</span><span class="ln-code"> *    - Increment prefixSum by arr[i].</span></span>
+<span class="ln-row"><span class="ln-num">32</span><span class="ln-code"> *    - Increment sortedPrefixSum by i.</span></span>
+<span class="ln-row"><span class="ln-num">33</span><span class="ln-code"> *    - Check if prefixSum == sortedPrefixSum:</span></span>
+<span class="ln-row"><span class="ln-num">34</span><span class="ln-code"> *        - If so, increment chunks by 1.</span></span>
+<span class="ln-row"><span class="ln-num">35</span><span class="ln-code"> * - Return chunks.</span></span>
+<span class="ln-row"><span class="ln-num">36</span><span class="ln-code"> *</span></span>
+<span class="ln-row"><span class="ln-num">37</span><span class="ln-code"> */</span></span></span>
+<span class="ln-row"><span class="ln-num">38</span><span class="ln-code"><span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">maxChunksToSorted_1_1</span><span class="hljs-params">(<span class="hljs-type">int</span>[] arr)</span> {</span></span>
+<span class="ln-row"><span class="ln-num">39</span><span class="ln-code">    <span class="hljs-type">int</span> <span class="hljs-variable">n</span> <span class="hljs-operator">=</span> arr.length;</span></span>
+<span class="ln-row"><span class="ln-num">40</span><span class="ln-code">    <span class="hljs-type">int</span> <span class="hljs-variable">chunks</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>, prefixSum = <span class="hljs-number">0</span>, sortedPrefixSum = <span class="hljs-number">0</span>;</span></span>
+<span class="ln-row"><span class="ln-num">41</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">42</span><span class="ln-code">    <span class="hljs-comment">// Iterate over the array</span></span></span>
+<span class="ln-row"><span class="ln-num">43</span><span class="ln-code">    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; n; i++) {</span></span>
+<span class="ln-row"><span class="ln-num">44</span><span class="ln-code">        <span class="hljs-comment">// Update prefix sum of `arr`</span></span></span>
+<span class="ln-row"><span class="ln-num">45</span><span class="ln-code">        prefixSum += arr[i];</span></span>
+<span class="ln-row"><span class="ln-num">46</span><span class="ln-code">        <span class="hljs-comment">// Update prefix sum of the sorted array</span></span></span>
+<span class="ln-row"><span class="ln-num">47</span><span class="ln-code">        sortedPrefixSum += i;</span></span>
+<span class="ln-row"><span class="ln-num">48</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">49</span><span class="ln-code">        <span class="hljs-comment">// If the two sums are equal, the two prefixes contain the same elements; a chunk can be formed</span></span></span>
+<span class="ln-row"><span class="ln-num">50</span><span class="ln-code">        <span class="hljs-keyword">if</span> (prefixSum == sortedPrefixSum) {</span></span>
+<span class="ln-row"><span class="ln-num">51</span><span class="ln-code">            chunks++;</span></span>
+<span class="ln-row"><span class="ln-num">52</span><span class="ln-code">        }</span></span>
+<span class="ln-row"><span class="ln-num">53</span><span class="ln-code">    }</span></span>
+<span class="ln-row"><span class="ln-num">54</span><span class="ln-code">    <span class="hljs-keyword">return</span> chunks;</span></span>
+<span class="ln-row"><span class="ln-num">55</span><span class="ln-code">}</span></span>
 </code></pre>
 <h3 id="2-8-maximum-sum-of-two-non-overlapping-subarrays" tabindex="-1"><a class="header-anchor" href="#2-8-maximum-sum-of-two-non-overlapping-subarrays"><span>2-8) Maximum Sum of Two Non-Overlapping Subarrays</span></a></h3>
-<pre><code class="language-java">// java
-// LC 1031
-
-// V1
-// https://leetcode.ca/2018-09-26-1031-Maximum-Sum-of-Two-Non-Overlapping-Subarrays/
-// IDEA: PREFIX SUM
-public int maxSumTwoNoOverlap_1(int[] nums, int firstLen, int secondLen) {
-    int n = nums.length;
-    int[] s = new int[n + 1];
-    for (int i = 0; i &lt; n; ++i) {
-        s[i + 1] = s[i] + nums[i];
-    }
-    int ans = 0;
-    // case 1)  check `firstLen`, then `secondLen`
-    for (int i = firstLen, t = 0; i + secondLen - 1 &lt; n; ++i) {
-        t = Math.max(t, s[i] - s[i - firstLen]);
-        ans = Math.max(ans, t + s[i + secondLen] - s[i]);
-    }
-    // case 2)  check  `secondLen`, then `firstLen`
-    for (int i = secondLen, t = 0; i + firstLen - 1 &lt; n; ++i) {
-        t = Math.max(t, s[i] - s[i - secondLen]);
-        ans = Math.max(ans, t + s[i + firstLen] - s[i]);
-    }
-    return ans;
-}
+<pre data-lang="java"><code class="hljs language-java"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment">// java</span></span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-comment">// LC 1031</span></span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"><span class="hljs-comment">// V1</span></span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code"><span class="hljs-comment">// https://leetcode.ca/2018-09-26-1031-Maximum-Sum-of-Two-Non-Overlapping-Subarrays/</span></span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code"><span class="hljs-comment">// IDEA: PREFIX SUM</span></span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code"><span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">maxSumTwoNoOverlap_1</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums, <span class="hljs-type">int</span> firstLen, <span class="hljs-type">int</span> secondLen)</span> {</span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">    <span class="hljs-type">int</span> <span class="hljs-variable">n</span> <span class="hljs-operator">=</span> nums.length;</span></span>
+<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">    <span class="hljs-type">int</span>[] s = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[n + <span class="hljs-number">1</span>];</span></span>
+<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; n; ++i) {</span></span>
+<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">        s[i + <span class="hljs-number">1</span>] = s[i] + nums[i];</span></span>
+<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">    }</span></span>
+<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">    <span class="hljs-type">int</span> <span class="hljs-variable">ans</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;</span></span>
+<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">    <span class="hljs-comment">// case 1)  check `firstLen`, then `secondLen`</span></span></span>
+<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> firstLen, t = <span class="hljs-number">0</span>; i + secondLen - <span class="hljs-number">1</span> &lt; n; ++i) {</span></span>
+<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">        t = Math.max(t, s[i] - s[i - firstLen]);</span></span>
+<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">        ans = Math.max(ans, t + s[i + secondLen] - s[i]);</span></span>
+<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">    }</span></span>
+<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">    <span class="hljs-comment">// case 2)  check  `secondLen`, then `firstLen`</span></span></span>
+<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> secondLen, t = <span class="hljs-number">0</span>; i + firstLen - <span class="hljs-number">1</span> &lt; n; ++i) {</span></span>
+<span class="ln-row"><span class="ln-num">21</span><span class="ln-code">        t = Math.max(t, s[i] - s[i - secondLen]);</span></span>
+<span class="ln-row"><span class="ln-num">22</span><span class="ln-code">        ans = Math.max(ans, t + s[i + firstLen] - s[i]);</span></span>
+<span class="ln-row"><span class="ln-num">23</span><span class="ln-code">    }</span></span>
+<span class="ln-row"><span class="ln-num">24</span><span class="ln-code">    <span class="hljs-keyword">return</span> ans;</span></span>
+<span class="ln-row"><span class="ln-num">25</span><span class="ln-code">}</span></span>
 </code></pre>
 <h3 id="2-9-maximum-side-length-of-a-square-with-sum-threshold-lc-1292" tabindex="-1"><a class="header-anchor" href="#2-9-maximum-side-length-of-a-square-with-sum-threshold-lc-1292"><span>2-9) Maximum Side Length of a Square with Sum ≤ Threshold (LC 1292)</span></a></h3>
 <p><strong>Pattern:</strong> 2D Prefix Sum + Binary Search <strong>or</strong> 2D Prefix Sum + Greedy</p>
@@ -1720,55 +1726,55 @@ public int maxSumTwoNoOverlap_1(int[] nums, int firstLen, int secondLen) {
 <li><strong>Greedy approach</strong>: Single pass over all cells; at each cell <code>(i,j)</code>, only test if a square of side <code>maxSide+1</code> fits. If yes, increment <code>maxSide</code>. → O(m·n)</li>
 </ol>
 <p><strong>2D Prefix Sum formula (square ending at (i,j) with side <code>k</code>):</strong></p>
-<pre><code>sum = P[i][j] - P[i-k][j] - P[i][j-k] + P[i-k][j-k]
+<pre><code class="hljs"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code">sum = P[i][j] - P[i-k][j] - P[i][j-k] + P[i-k][j-k]</span></span>
 </code></pre>
 <p><strong>Binary Search approach (Java):</strong></p>
-<pre><code class="language-java">// LC 1292 - V1 Binary Search
-public int maxSideLength(int[][] mat, int threshold) {
-    int m = mat.length, n = mat[0].length;
-    int[][] P = new int[m + 1][n + 1];
-    for (int i = 1; i &lt;= m; i++)
-        for (int j = 1; j &lt;= n; j++)
-            P[i][j] = mat[i-1][j-1] + P[i-1][j] + P[i][j-1] - P[i-1][j-1];
-
-    int l = 1, r = Math.min(m, n), ans = 0;
-    while (l &lt;= r) {
-        int mid = (l + r) / 2;
-        boolean found = false;
-        outer:
-        for (int i = mid; i &lt;= m; i++) {
-            for (int j = mid; j &lt;= n; j++) {
-                int sum = P[i][j] - P[i-mid][j] - P[i][j-mid] + P[i-mid][j-mid];
-                if (sum &lt;= threshold) { found = true; break outer; }
-            }
-        }
-        if (found) { ans = mid; l = mid + 1; }
-        else r = mid - 1;
-    }
-    return ans;
-}
+<pre data-lang="java"><code class="hljs language-java"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment">// LC 1292 - V1 Binary Search</span></span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">maxSideLength</span><span class="hljs-params">(<span class="hljs-type">int</span>[][] mat, <span class="hljs-type">int</span> threshold)</span> {</span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">    <span class="hljs-type">int</span> <span class="hljs-variable">m</span> <span class="hljs-operator">=</span> mat.length, n = mat[<span class="hljs-number">0</span>].length;</span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">    <span class="hljs-type">int</span>[][] P = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[m + <span class="hljs-number">1</span>][n + <span class="hljs-number">1</span>];</span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span>; i &lt;= m; i++)</span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">j</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span>; j &lt;= n; j++)</span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">            P[i][j] = mat[i-<span class="hljs-number">1</span>][j-<span class="hljs-number">1</span>] + P[i-<span class="hljs-number">1</span>][j] + P[i][j-<span class="hljs-number">1</span>] - P[i-<span class="hljs-number">1</span>][j-<span class="hljs-number">1</span>];</span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">    <span class="hljs-type">int</span> <span class="hljs-variable">l</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span>, r = Math.min(m, n), ans = <span class="hljs-number">0</span>;</span></span>
+<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">    <span class="hljs-keyword">while</span> (l &lt;= r) {</span></span>
+<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">        <span class="hljs-type">int</span> <span class="hljs-variable">mid</span> <span class="hljs-operator">=</span> (l + r) / <span class="hljs-number">2</span>;</span></span>
+<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">        <span class="hljs-type">boolean</span> <span class="hljs-variable">found</span> <span class="hljs-operator">=</span> <span class="hljs-literal">false</span>;</span></span>
+<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">        outer:</span></span>
+<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> mid; i &lt;= m; i++) {</span></span>
+<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">            <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">j</span> <span class="hljs-operator">=</span> mid; j &lt;= n; j++) {</span></span>
+<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">                <span class="hljs-type">int</span> <span class="hljs-variable">sum</span> <span class="hljs-operator">=</span> P[i][j] - P[i-mid][j] - P[i][j-mid] + P[i-mid][j-mid];</span></span>
+<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">                <span class="hljs-keyword">if</span> (sum &lt;= threshold) { found = <span class="hljs-literal">true</span>; <span class="hljs-keyword">break</span> outer; }</span></span>
+<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">            }</span></span>
+<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">        }</span></span>
+<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">        <span class="hljs-keyword">if</span> (found) { ans = mid; l = mid + <span class="hljs-number">1</span>; }</span></span>
+<span class="ln-row"><span class="ln-num">21</span><span class="ln-code">        <span class="hljs-keyword">else</span> r = mid - <span class="hljs-number">1</span>;</span></span>
+<span class="ln-row"><span class="ln-num">22</span><span class="ln-code">    }</span></span>
+<span class="ln-row"><span class="ln-num">23</span><span class="ln-code">    <span class="hljs-keyword">return</span> ans;</span></span>
+<span class="ln-row"><span class="ln-num">24</span><span class="ln-code">}</span></span>
 </code></pre>
 <p><strong>Greedy approach (Java):</strong></p>
-<pre><code class="language-java">// LC 1292 - V0 Greedy (O(m*n), optimal)
-public int maxSideLength(int[][] mat, int threshold) {
-    int m = mat.length, n = mat[0].length;
-    int[][] P = new int[m + 1][n + 1];
-    for (int i = 1; i &lt;= m; i++)
-        for (int j = 1; j &lt;= n; j++)
-            P[i][j] = mat[i-1][j-1] + P[i-1][j] + P[i][j-1] - P[i-1][j-1];
-
-    int maxSide = 0;
-    for (int i = 1; i &lt;= m; i++) {
-        for (int j = 1; j &lt;= n; j++) {
-            int k = maxSide + 1;           // only try to improve by 1
-            if (i &gt;= k &amp;&amp; j &gt;= k) {
-                int sum = P[i][j] - P[i-k][j] - P[i][j-k] + P[i-k][j-k];
-                if (sum &lt;= threshold) maxSide++;
-            }
-        }
-    }
-    return maxSide;
-}
+<pre data-lang="java"><code class="hljs language-java"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment">// LC 1292 - V0 Greedy (O(m*n), optimal)</span></span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">maxSideLength</span><span class="hljs-params">(<span class="hljs-type">int</span>[][] mat, <span class="hljs-type">int</span> threshold)</span> {</span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">    <span class="hljs-type">int</span> <span class="hljs-variable">m</span> <span class="hljs-operator">=</span> mat.length, n = mat[<span class="hljs-number">0</span>].length;</span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">    <span class="hljs-type">int</span>[][] P = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[m + <span class="hljs-number">1</span>][n + <span class="hljs-number">1</span>];</span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span>; i &lt;= m; i++)</span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">j</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span>; j &lt;= n; j++)</span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">            P[i][j] = mat[i-<span class="hljs-number">1</span>][j-<span class="hljs-number">1</span>] + P[i-<span class="hljs-number">1</span>][j] + P[i][j-<span class="hljs-number">1</span>] - P[i-<span class="hljs-number">1</span>][j-<span class="hljs-number">1</span>];</span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">    <span class="hljs-type">int</span> <span class="hljs-variable">maxSide</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;</span></span>
+<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span>; i &lt;= m; i++) {</span></span>
+<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">j</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span>; j &lt;= n; j++) {</span></span>
+<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">            <span class="hljs-type">int</span> <span class="hljs-variable">k</span> <span class="hljs-operator">=</span> maxSide + <span class="hljs-number">1</span>;           <span class="hljs-comment">// only try to improve by 1</span></span></span>
+<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">            <span class="hljs-keyword">if</span> (i &gt;= k &amp;&amp; j &gt;= k) {</span></span>
+<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">                <span class="hljs-type">int</span> <span class="hljs-variable">sum</span> <span class="hljs-operator">=</span> P[i][j] - P[i-k][j] - P[i][j-k] + P[i-k][j-k];</span></span>
+<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">                <span class="hljs-keyword">if</span> (sum &lt;= threshold) maxSide++;</span></span>
+<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">            }</span></span>
+<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">        }</span></span>
+<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">    }</span></span>
+<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">    <span class="hljs-keyword">return</span> maxSide;</span></span>
+<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">}</span></span>
 </code></pre>
 <p><strong>Why Greedy works:</strong> We only need to know the <em>maximum</em> achievable side length. Scanning left-to-right, top-to-bottom ensures we never miss a valid square — if a larger square exists somewhere, it will be discovered when we reach its bottom-right corner.</p>
 <p><strong>Similar LCs:</strong></p>
@@ -1809,103 +1815,103 @@ public int maxSideLength(int[][] mat, int threshold) {
 </tbody>
 </table>
 <h3 id="2-11-sum-of-distances-pattern-7" tabindex="-1"><a class="header-anchor" href="#2-11-sum-of-distances-pattern-7"><span>2-11) Sum of Distances (Pattern 7)</span></a></h3>
-<pre><code class="language-java">// java
-// LC 2615 - Sum of Distances
-// IDEA: HashMap + Prefix Sum (Left-Right Split)
-/**
- * Core Formula:
- *   For index i in a group of identical elements:
- *   - leftDistance  = i * countLeft - sumLeft
- *   - rightDistance = sumRight - i * countRight
- *   - totalDistance = leftDistance + rightDistance
- *
- * Why this works:
- *   |i - j| for all j &lt; i = (i - j1) + (i - j2) + ...
- *                         = i * count - (j1 + j2 + ...)
- *                         = i * countLeft - sumLeft
- */
-public long[] distance(int[] nums) {
-    int n = nums.length;
-    long[] res = new long[n];
-    Map&lt;Integer, List&lt;Integer&gt;&gt; map = new HashMap&lt;&gt;();
-
-    // Step 1: Group indices by value
-    for (int i = 0; i &lt; n; i++) {
-        map.computeIfAbsent(nums[i], k -&gt; new ArrayList&lt;&gt;()).add(i);
-    }
-
-    // Step 2: For each group, calculate distances using prefix sum
-    for (List&lt;Integer&gt; list : map.values()) {
-        int m = list.size();
-        if (m == 1) continue;  // Single element has distance 0
-
-        // Build prefix sum of indices
-        long[] prefix = new long[m];
-        prefix[0] = list.get(0);
-        for (int i = 1; i &lt; m; i++) {
-            prefix[i] = prefix[i - 1] + list.get(i);
-        }
-
-        // Calculate distance for each index in the group
-        for (int i = 0; i &lt; m; i++) {
-            int idx = list.get(i);
-
-            // Left part: idx * countLeft - sumLeft
-            long left = (long) idx * i - (i == 0 ? 0 : prefix[i - 1]);
-
-            // Right part: sumRight - idx * countRight
-            long right = (prefix[m - 1] - prefix[i]) - (long) idx * (m - i - 1);
-
-            res[idx] = left + right;
-        }
-    }
-
-    return res;
-}
+<pre data-lang="java"><code class="hljs language-java"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment">// java</span></span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-comment">// LC 2615 - Sum of Distances</span></span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"><span class="hljs-comment">// IDEA: HashMap + Prefix Sum (Left-Right Split)</span></span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"><span class="hljs-comment">/**</span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code"> * Core Formula:</span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code"> *   For index i in a group of identical elements:</span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code"> *   - leftDistance  = i * countLeft - sumLeft</span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code"> *   - rightDistance = sumRight - i * countRight</span></span>
+<span class="ln-row"><span class="ln-num">9</span><span class="ln-code"> *   - totalDistance = leftDistance + rightDistance</span></span>
+<span class="ln-row"><span class="ln-num">10</span><span class="ln-code"> *</span></span>
+<span class="ln-row"><span class="ln-num">11</span><span class="ln-code"> * Why this works:</span></span>
+<span class="ln-row"><span class="ln-num">12</span><span class="ln-code"> *   |i - j| for all j &lt; i = (i - j1) + (i - j2) + ...</span></span>
+<span class="ln-row"><span class="ln-num">13</span><span class="ln-code"> *                         = i * count - (j1 + j2 + ...)</span></span>
+<span class="ln-row"><span class="ln-num">14</span><span class="ln-code"> *                         = i * countLeft - sumLeft</span></span>
+<span class="ln-row"><span class="ln-num">15</span><span class="ln-code"> */</span></span></span>
+<span class="ln-row"><span class="ln-num">16</span><span class="ln-code"><span class="hljs-keyword">public</span> <span class="hljs-type">long</span>[] distance(<span class="hljs-type">int</span>[] nums) {</span></span>
+<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">    <span class="hljs-type">int</span> <span class="hljs-variable">n</span> <span class="hljs-operator">=</span> nums.length;</span></span>
+<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">    <span class="hljs-type">long</span>[] res = <span class="hljs-keyword">new</span> <span class="hljs-title class_">long</span>[n];</span></span>
+<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">    Map&lt;Integer, List&lt;Integer&gt;&gt; map = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;();</span></span>
+<span class="ln-row"><span class="ln-num">20</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">21</span><span class="ln-code">    <span class="hljs-comment">// Step 1: Group indices by value</span></span></span>
+<span class="ln-row"><span class="ln-num">22</span><span class="ln-code">    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; n; i++) {</span></span>
+<span class="ln-row"><span class="ln-num">23</span><span class="ln-code">        map.computeIfAbsent(nums[i], k -&gt; <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;()).add(i);</span></span>
+<span class="ln-row"><span class="ln-num">24</span><span class="ln-code">    }</span></span>
+<span class="ln-row"><span class="ln-num">25</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">26</span><span class="ln-code">    <span class="hljs-comment">// Step 2: For each group, calculate distances using prefix sum</span></span></span>
+<span class="ln-row"><span class="ln-num">27</span><span class="ln-code">    <span class="hljs-keyword">for</span> (List&lt;Integer&gt; list : map.values()) {</span></span>
+<span class="ln-row"><span class="ln-num">28</span><span class="ln-code">        <span class="hljs-type">int</span> <span class="hljs-variable">m</span> <span class="hljs-operator">=</span> list.size();</span></span>
+<span class="ln-row"><span class="ln-num">29</span><span class="ln-code">        <span class="hljs-keyword">if</span> (m == <span class="hljs-number">1</span>) <span class="hljs-keyword">continue</span>;  <span class="hljs-comment">// Single element has distance 0</span></span></span>
+<span class="ln-row"><span class="ln-num">30</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">31</span><span class="ln-code">        <span class="hljs-comment">// Build prefix sum of indices</span></span></span>
+<span class="ln-row"><span class="ln-num">32</span><span class="ln-code">        <span class="hljs-type">long</span>[] prefix = <span class="hljs-keyword">new</span> <span class="hljs-title class_">long</span>[m];</span></span>
+<span class="ln-row"><span class="ln-num">33</span><span class="ln-code">        prefix[<span class="hljs-number">0</span>] = list.get(<span class="hljs-number">0</span>);</span></span>
+<span class="ln-row"><span class="ln-num">34</span><span class="ln-code">        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span>; i &lt; m; i++) {</span></span>
+<span class="ln-row"><span class="ln-num">35</span><span class="ln-code">            prefix[i] = prefix[i - <span class="hljs-number">1</span>] + list.get(i);</span></span>
+<span class="ln-row"><span class="ln-num">36</span><span class="ln-code">        }</span></span>
+<span class="ln-row"><span class="ln-num">37</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">38</span><span class="ln-code">        <span class="hljs-comment">// Calculate distance for each index in the group</span></span></span>
+<span class="ln-row"><span class="ln-num">39</span><span class="ln-code">        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; m; i++) {</span></span>
+<span class="ln-row"><span class="ln-num">40</span><span class="ln-code">            <span class="hljs-type">int</span> <span class="hljs-variable">idx</span> <span class="hljs-operator">=</span> list.get(i);</span></span>
+<span class="ln-row"><span class="ln-num">41</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">42</span><span class="ln-code">            <span class="hljs-comment">// Left part: idx * countLeft - sumLeft</span></span></span>
+<span class="ln-row"><span class="ln-num">43</span><span class="ln-code">            <span class="hljs-type">long</span> <span class="hljs-variable">left</span> <span class="hljs-operator">=</span> (<span class="hljs-type">long</span>) idx * i - (i == <span class="hljs-number">0</span> ? <span class="hljs-number">0</span> : prefix[i - <span class="hljs-number">1</span>]);</span></span>
+<span class="ln-row"><span class="ln-num">44</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">45</span><span class="ln-code">            <span class="hljs-comment">// Right part: sumRight - idx * countRight</span></span></span>
+<span class="ln-row"><span class="ln-num">46</span><span class="ln-code">            <span class="hljs-type">long</span> <span class="hljs-variable">right</span> <span class="hljs-operator">=</span> (prefix[m - <span class="hljs-number">1</span>] - prefix[i]) - (<span class="hljs-type">long</span>) idx * (m - i - <span class="hljs-number">1</span>);</span></span>
+<span class="ln-row"><span class="ln-num">47</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">48</span><span class="ln-code">            res[idx] = left + right;</span></span>
+<span class="ln-row"><span class="ln-num">49</span><span class="ln-code">        }</span></span>
+<span class="ln-row"><span class="ln-num">50</span><span class="ln-code">    }</span></span>
+<span class="ln-row"><span class="ln-num">51</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">52</span><span class="ln-code">    <span class="hljs-keyword">return</span> res;</span></span>
+<span class="ln-row"><span class="ln-num">53</span><span class="ln-code">}</span></span>
 </code></pre>
-<pre><code class="language-python"># python
-# LC 2615 - Sum of Distances
-# V0: HashMap + Prefix Sum
-def distance(nums):
-    from collections import defaultdict
-
-    n = len(nums)
-    result = [0] * n
-    index_map = defaultdict(list)
-
-    # Group indices by value
-    for i, num in enumerate(nums):
-        index_map[num].append(i)
-
-    # Calculate distances for each group
-    for indices in index_map.values():
-        m = len(indices)
-        if m == 1:
-            continue
-
-        # Build prefix sum
-        prefix = [0] * m
-        prefix[0] = indices[0]
-        for i in range(1, m):
-            prefix[i] = prefix[i - 1] + indices[i]
-
-        total_sum = prefix[m - 1]
-
-        # Calculate distance using left-right split
-        for i in range(m):
-            idx = indices[i]
-
-            # Left: idx * countLeft - sumLeft
-            sum_left = prefix[i - 1] if i &gt; 0 else 0
-            left_dist = idx * i - sum_left
-
-            # Right: sumRight - idx * countRight
-            sum_right = total_sum - prefix[i]
-            right_dist = sum_right - idx * (m - i - 1)
-
-            result[idx] = left_dist + right_dist
-
-    return result
+<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment"># python</span></span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-comment"># LC 2615 - Sum of Distances</span></span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"><span class="hljs-comment"># V0: HashMap + Prefix Sum</span></span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"><span class="hljs-keyword">def</span> <span class="hljs-title function_">distance</span>(<span class="hljs-params">nums</span>):</span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    <span class="hljs-keyword">from</span> collections <span class="hljs-keyword">import</span> defaultdict</span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">    n = <span class="hljs-built_in">len</span>(nums)</span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">    result = [<span class="hljs-number">0</span>] * n</span></span>
+<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">    index_map = defaultdict(<span class="hljs-built_in">list</span>)</span></span>
+<span class="ln-row"><span class="ln-num">10</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">    <span class="hljs-comment"># Group indices by value</span></span></span>
+<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">    <span class="hljs-keyword">for</span> i, num <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(nums):</span></span>
+<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">        index_map[num].append(i)</span></span>
+<span class="ln-row"><span class="ln-num">14</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">    <span class="hljs-comment"># Calculate distances for each group</span></span></span>
+<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">    <span class="hljs-keyword">for</span> indices <span class="hljs-keyword">in</span> index_map.values():</span></span>
+<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">        m = <span class="hljs-built_in">len</span>(indices)</span></span>
+<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">        <span class="hljs-keyword">if</span> m == <span class="hljs-number">1</span>:</span></span>
+<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">            <span class="hljs-keyword">continue</span></span></span>
+<span class="ln-row"><span class="ln-num">20</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">21</span><span class="ln-code">        <span class="hljs-comment"># Build prefix sum</span></span></span>
+<span class="ln-row"><span class="ln-num">22</span><span class="ln-code">        prefix = [<span class="hljs-number">0</span>] * m</span></span>
+<span class="ln-row"><span class="ln-num">23</span><span class="ln-code">        prefix[<span class="hljs-number">0</span>] = indices[<span class="hljs-number">0</span>]</span></span>
+<span class="ln-row"><span class="ln-num">24</span><span class="ln-code">        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>, m):</span></span>
+<span class="ln-row"><span class="ln-num">25</span><span class="ln-code">            prefix[i] = prefix[i - <span class="hljs-number">1</span>] + indices[i]</span></span>
+<span class="ln-row"><span class="ln-num">26</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">27</span><span class="ln-code">        total_sum = prefix[m - <span class="hljs-number">1</span>]</span></span>
+<span class="ln-row"><span class="ln-num">28</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">29</span><span class="ln-code">        <span class="hljs-comment"># Calculate distance using left-right split</span></span></span>
+<span class="ln-row"><span class="ln-num">30</span><span class="ln-code">        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(m):</span></span>
+<span class="ln-row"><span class="ln-num">31</span><span class="ln-code">            idx = indices[i]</span></span>
+<span class="ln-row"><span class="ln-num">32</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">33</span><span class="ln-code">            <span class="hljs-comment"># Left: idx * countLeft - sumLeft</span></span></span>
+<span class="ln-row"><span class="ln-num">34</span><span class="ln-code">            sum_left = prefix[i - <span class="hljs-number">1</span>] <span class="hljs-keyword">if</span> i &gt; <span class="hljs-number">0</span> <span class="hljs-keyword">else</span> <span class="hljs-number">0</span></span></span>
+<span class="ln-row"><span class="ln-num">35</span><span class="ln-code">            left_dist = idx * i - sum_left</span></span>
+<span class="ln-row"><span class="ln-num">36</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">37</span><span class="ln-code">            <span class="hljs-comment"># Right: sumRight - idx * countRight</span></span></span>
+<span class="ln-row"><span class="ln-num">38</span><span class="ln-code">            sum_right = total_sum - prefix[i]</span></span>
+<span class="ln-row"><span class="ln-num">39</span><span class="ln-code">            right_dist = sum_right - idx * (m - i - <span class="hljs-number">1</span>)</span></span>
+<span class="ln-row"><span class="ln-num">40</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">41</span><span class="ln-code">            result[idx] = left_dist + right_dist</span></span>
+<span class="ln-row"><span class="ln-num">42</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">43</span><span class="ln-code">    <span class="hljs-keyword">return</span> result</span></span>
 </code></pre>
 <h2 id="summary-quick-reference" tabindex="-1"><a class="header-anchor" href="#summary-quick-reference"><span>Summary &amp; Quick Reference</span></a></h2>
 <h3 id="complexity-quick-reference" tabindex="-1"><a class="header-anchor" href="#complexity-quick-reference"><span>Complexity Quick Reference</span></a></h3>
@@ -2006,61 +2012,61 @@ def distance(nums):
 </table>
 <h3 id="core-mathematical-insights" tabindex="-1"><a class="header-anchor" href="#core-mathematical-insights"><span>Core Mathematical Insights</span></a></h3>
 <h4 id="prefix-sum-formula" tabindex="-1"><a class="header-anchor" href="#prefix-sum-formula"><span><strong>Prefix Sum Formula</strong></span></a></h4>
-<pre><code class="language-python"># For 1D array: sum of subarray [i, j] (inclusive)
-subarray_sum = prefix[j + 1] - prefix[i]
-
-# For 2D matrix: sum of rectangle from (r1,c1) to (r2,c2)
-rectangle_sum = prefix[r2+1][c2+1] - prefix[r1][c2+1] - prefix[r2+1][c1] + prefix[r1][c1]
+<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment"># For 1D array: sum of subarray [i, j] (inclusive)</span></span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code">subarray_sum = prefix[j + <span class="hljs-number">1</span>] - prefix[i]</span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"><span class="hljs-comment"># For 2D matrix: sum of rectangle from (r1,c1) to (r2,c2)</span></span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">rectangle_sum = prefix[r2+<span class="hljs-number">1</span>][c2+<span class="hljs-number">1</span>] - prefix[r1][c2+<span class="hljs-number">1</span>] - prefix[r2+<span class="hljs-number">1</span>][c1] + prefix[r1][c1]</span></span>
 </code></pre>
 <h4 id="hashmap-key-insights" tabindex="-1"><a class="header-anchor" href="#hashmap-key-insights"><span><strong>HashMap Key Insights</strong></span></a></h4>
-<pre><code class="language-python"># If prefix_sum[j] - prefix_sum[i] = k
-# Then prefix_sum[i] = prefix_sum[j] - k
-# So check if (current_prefix_sum - k) exists in map
-
-# For divisibility: if (sum[j] - sum[i]) % k = 0
-# Then sum[j] % k = sum[i] % k
-# So check if (current_sum % k) exists in remainder map
+<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment"># If prefix_sum[j] - prefix_sum[i] = k</span></span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-comment"># Then prefix_sum[i] = prefix_sum[j] - k</span></span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"><span class="hljs-comment"># So check if (current_prefix_sum - k) exists in map</span></span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code"><span class="hljs-comment"># For divisibility: if (sum[j] - sum[i]) % k = 0</span></span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code"><span class="hljs-comment"># Then sum[j] % k = sum[i] % k</span></span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code"><span class="hljs-comment"># So check if (current_sum % k) exists in remainder map</span></span></span>
 </code></pre>
 <h3 id="common-patterns-tricks" tabindex="-1"><a class="header-anchor" href="#common-patterns-tricks"><span>Common Patterns &amp; Tricks</span></a></h3>
 <h4 id="pattern-1-two-sum-extended" tabindex="-1"><a class="header-anchor" href="#pattern-1-two-sum-extended"><span><strong>Pattern 1: Two Sum Extended</strong></span></a></h4>
-<pre><code class="language-python"># Convert &quot;find subarray with sum = k&quot; to &quot;find two prefix sums with diff = k&quot;
-def subarray_sum_equals_k(nums, k):
-    prefix_sum = 0
-    count = 0
-    prefix_map = {0: 1}  # Critical: handle subarrays from index 0
-    
-    for num in nums:
-        prefix_sum += num
-        count += prefix_map.get(prefix_sum - k, 0)
-        prefix_map[prefix_sum] = prefix_map.get(prefix_sum, 0) + 1
-    
-    return count
+<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment"># Convert &quot;find subarray with sum = k&quot; to &quot;find two prefix sums with diff = k&quot;</span></span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-keyword">def</span> <span class="hljs-title function_">subarray_sum_equals_k</span>(<span class="hljs-params">nums, k</span>):</span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">    prefix_sum = <span class="hljs-number">0</span></span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">    count = <span class="hljs-number">0</span></span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    prefix_map = {<span class="hljs-number">0</span>: <span class="hljs-number">1</span>}  <span class="hljs-comment"># Critical: handle subarrays from index 0</span></span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    </span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">    <span class="hljs-keyword">for</span> num <span class="hljs-keyword">in</span> nums:</span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">        prefix_sum += num</span></span>
+<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">        count += prefix_map.get(prefix_sum - k, <span class="hljs-number">0</span>)</span></span>
+<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">        prefix_map[prefix_sum] = prefix_map.get(prefix_sum, <span class="hljs-number">0</span>) + <span class="hljs-number">1</span></span></span>
+<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">    </span></span>
+<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">    <span class="hljs-keyword">return</span> count</span></span>
 </code></pre>
 <h4 id="pattern-2-difference-array-magic" tabindex="-1"><a class="header-anchor" href="#pattern-2-difference-array-magic"><span><strong>Pattern 2: Difference Array Magic</strong></span></a></h4>
-<pre><code class="language-python"># Apply multiple range updates [start, end, val] efficiently
-def range_addition(length, updates):
-    diff = [0] * (length + 1)  # Extra space for end+1 indexing
-    
-    for start, end, val in updates:
-        diff[start] += val      # Mark start
-        diff[end + 1] -= val    # Mark end+1 (undo effect)
-    
-    # Convert difference array to result using prefix sum
-    result = []
-    current = 0
-    for i in range(length):
-        current += diff[i]      # This is prefix sum computation!
-        result.append(current)
-    
-    return result
+<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment"># Apply multiple range updates [start, end, val] efficiently</span></span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-keyword">def</span> <span class="hljs-title function_">range_addition</span>(<span class="hljs-params">length, updates</span>):</span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">    diff = [<span class="hljs-number">0</span>] * (length + <span class="hljs-number">1</span>)  <span class="hljs-comment"># Extra space for end+1 indexing</span></span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">    </span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    <span class="hljs-keyword">for</span> start, end, val <span class="hljs-keyword">in</span> updates:</span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">        diff[start] += val      <span class="hljs-comment"># Mark start</span></span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">        diff[end + <span class="hljs-number">1</span>] -= val    <span class="hljs-comment"># Mark end+1 (undo effect)</span></span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">    </span></span>
+<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">    <span class="hljs-comment"># Convert difference array to result using prefix sum</span></span></span>
+<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">    result = []</span></span>
+<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">    current = <span class="hljs-number">0</span></span></span>
+<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(length):</span></span>
+<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">        current += diff[i]      <span class="hljs-comment"># This is prefix sum computation!</span></span></span>
+<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">        result.append(current)</span></span>
+<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">    </span></span>
+<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">    <span class="hljs-keyword">return</span> result</span></span>
 </code></pre>
 <h4 id="pattern-3-transform-before-sum" tabindex="-1"><a class="header-anchor" href="#pattern-3-transform-before-sum"><span><strong>Pattern 3: Transform Before Sum</strong></span></a></h4>
-<pre><code class="language-python"># Many problems can be reduced to simpler prefix sum problems
-def count_nice_subarrays(nums, k):
-    # Transform: odd numbers → 1, even numbers → 0
-    # Problem becomes: count subarrays with sum = k
-    binary_array = [1 if x % 2 == 1 else 0 for x in nums]
-    return subarray_sum_equals_k(binary_array, k)
+<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment"># Many problems can be reduced to simpler prefix sum problems</span></span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-keyword">def</span> <span class="hljs-title function_">count_nice_subarrays</span>(<span class="hljs-params">nums, k</span>):</span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">    <span class="hljs-comment"># Transform: odd numbers → 1, even numbers → 0</span></span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">    <span class="hljs-comment"># Problem becomes: count subarrays with sum = k</span></span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    binary_array = [<span class="hljs-number">1</span> <span class="hljs-keyword">if</span> x % <span class="hljs-number">2</span> == <span class="hljs-number">1</span> <span class="hljs-keyword">else</span> <span class="hljs-number">0</span> <span class="hljs-keyword">for</span> x <span class="hljs-keyword">in</span> nums]</span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    <span class="hljs-keyword">return</span> subarray_sum_equals_k(binary_array, k)</span></span>
 </code></pre>
 <h3 id="problem-solving-steps" tabindex="-1"><a class="header-anchor" href="#problem-solving-steps"><span>Problem-Solving Steps</span></a></h3>
 <ol>

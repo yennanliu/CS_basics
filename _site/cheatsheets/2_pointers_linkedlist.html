@@ -9,8 +9,7 @@
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>CS</text></svg>">
   <link rel="stylesheet" href="../style.css">
   <link rel="stylesheet" href="../vendor/fonts.css">
-  <link rel="stylesheet" href="../vendor/highlight/github-dark.min.css">
-  <script src="../vendor/highlight/highlight.min.js"></script>
+  <link rel="stylesheet" href="../vendor/highlight/atom-one-dark.min.css">
   <script>
   // Apply theme before render to prevent flash
   (function() {
@@ -21,40 +20,43 @@
   })();
   </script>
   <script>document.addEventListener('DOMContentLoaded', function() {
-    hljs.highlightAll();
-    document.querySelectorAll('pre code').forEach(function(codeEl) {
-      var pre = codeEl.parentElement;
-      var lang = '';
-      var cls = codeEl.className || '';
-      var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
-      if (m) lang = m[1];
-      var wrapper = document.createElement('div');
-      wrapper.className = 'code-block-wrapper';
-      pre.parentNode.insertBefore(wrapper, pre);
-      var header = document.createElement('div');
-      header.className = 'code-block-header';
-      if (lang) {
-        var label = document.createElement('span');
-        label.className = 'code-lang-label';
-        label.textContent = lang;
-        header.appendChild(label);
-      } else {
-        header.appendChild(document.createElement('span'));
-      }
-      var btn = document.createElement('button');
-      btn.className = 'copy-btn';
-      btn.textContent = 'Copy';
-      btn.addEventListener('click', function() {
-        navigator.clipboard.writeText(codeEl.textContent).then(function() {
-          btn.textContent = 'Copied!';
-          btn.classList.add('copied');
-          setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+    // Code block wrappers + copy buttons (highlighting done at build time)
+    try {
+      document.querySelectorAll('pre').forEach(function(pre) {
+        var codeEl = pre.querySelector('code');
+        var lang = pre.getAttribute('data-lang') || '';
+        var wrapper = document.createElement('div');
+        wrapper.className = 'code-block-wrapper';
+        pre.parentNode.insertBefore(wrapper, pre);
+        var header = document.createElement('div');
+        header.className = 'code-block-header';
+        if (lang) {
+          var label = document.createElement('span');
+          label.className = 'code-lang-label';
+          label.textContent = lang;
+          header.appendChild(label);
+        } else {
+          header.appendChild(document.createElement('span'));
+        }
+        var btn = document.createElement('button');
+        btn.className = 'copy-btn';
+        btn.textContent = 'Copy';
+        btn.addEventListener('click', function() {
+          var text = codeEl
+            ? Array.from(codeEl.querySelectorAll('.ln-code')).map(function(el) { return el.textContent; }).join('
+')
+            : pre.textContent;
+          navigator.clipboard.writeText(text).then(function() {
+            btn.textContent = 'Copied!';
+            btn.classList.add('copied');
+            setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+          });
         });
+        header.appendChild(btn);
+        wrapper.appendChild(header);
+        wrapper.appendChild(pre);
       });
-      header.appendChild(btn);
-      wrapper.appendChild(header);
-      wrapper.appendChild(pre);
-    });
+    } catch(e) { console.error('Code block setup error:', e); }
     document.querySelectorAll('table').forEach(function(table) {
       if (!table.parentElement.classList.contains('table-wrap')) {
         var wrapper = document.createElement('div');
@@ -64,32 +66,36 @@
       }
     });
     // Reading progress bar
-    var progressBar = document.getElementById('reading-progress');
-    if (progressBar) {
-      window.addEventListener('scroll', function() {
-        var winScroll = document.documentElement.scrollTop;
-        var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-        progressBar.style.width = height > 0 ? (winScroll / height * 100) + '%' : '0%';
-      });
-    }
-    // Dark mode toggle
-    var toggle = document.getElementById('theme-toggle');
-    if (toggle) {
-      var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-      toggle.textContent = isDark ? '☀️' : '🌙';
-      toggle.addEventListener('click', function() {
-        var dark = document.documentElement.getAttribute('data-theme') === 'dark';
-        if (dark) {
-          document.documentElement.removeAttribute('data-theme');
-          localStorage.setItem('theme', 'light');
-          toggle.textContent = '🌙';
-        } else {
-          document.documentElement.setAttribute('data-theme', 'dark');
-          localStorage.setItem('theme', 'dark');
-          toggle.textContent = '☀️';
-        }
-      });
-    }
+    try {
+      var progressBar = document.getElementById('reading-progress');
+      if (progressBar) {
+        window.addEventListener('scroll', function() {
+          var winScroll = document.documentElement.scrollTop;
+          var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+          progressBar.style.width = height > 0 ? (winScroll / height * 100) + '%' : '0%';
+        });
+      }
+    } catch(e) {}
+    // Dark mode toggle — isolated so errors elsewhere never prevent this from working
+    try {
+      var toggle = document.getElementById('theme-toggle');
+      if (toggle) {
+        var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+        toggle.textContent = isDark ? '☀️' : '🌙';
+        toggle.addEventListener('click', function() {
+          var dark = document.documentElement.getAttribute('data-theme') === 'dark';
+          if (dark) {
+            document.documentElement.removeAttribute('data-theme');
+            localStorage.setItem('theme', 'light');
+            toggle.textContent = '🌙';
+          } else {
+            document.documentElement.setAttribute('data-theme', 'dark');
+            localStorage.setItem('theme', 'dark');
+            toggle.textContent = '☀️';
+          }
+        });
+      }
+    } catch(e) { console.error('Theme toggle error:', e); }
   });</script>
 </head>
 <body>
@@ -177,138 +183,138 @@
 <h2 id="1-general-form" tabindex="-1"><a class="header-anchor" href="#1-general-form"><span>1) General form</span></a></h2>
 <h3 id="1-1-basic-op" tabindex="-1"><a class="header-anchor" href="#1-1-basic-op"><span>1-1) Basic OP</span></a></h3>
 <h4 id="1-1-1-check-if-there-is-a-circular-linked-list" tabindex="-1"><a class="header-anchor" href="#1-1-1-check-if-there-is-a-circular-linked-list"><span>1-1-1 : Check if there is a circular linked list</span></a></h4>
-<pre><code class="language-java">// java
-boolean hasCycle(ListNode head){
-    fast = slow = head;
-    // NOTE : while loop condition
-    while (fast != null and fast.next != null){
-        /** NOTE : need to do move slow, fast pointer then compare them */
-        slow = slow.next;
-        fast = fast.next.next;
-        if (fast == slow){
-            return True
-        }
-    }
-    return False;
-}
+<pre data-lang="java"><code class="hljs language-java"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment">// java</span></span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-type">boolean</span> <span class="hljs-title function_">hasCycle</span><span class="hljs-params">(ListNode head)</span>{</span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">    fast = slow = head;</span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">    <span class="hljs-comment">// NOTE : while loop condition</span></span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    <span class="hljs-keyword">while</span> (fast != <span class="hljs-literal">null</span> and fast.next != <span class="hljs-literal">null</span>){</span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">        <span class="hljs-comment">/** NOTE : need to do move slow, fast pointer then compare them */</span></span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">        slow = slow.next;</span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">        fast = fast.next.next;</span></span>
+<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">        <span class="hljs-keyword">if</span> (fast == slow){</span></span>
+<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">            <span class="hljs-keyword">return</span> True</span></span>
+<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">        }</span></span>
+<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">    }</span></span>
+<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">    <span class="hljs-keyword">return</span> False;</span></span>
+<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">}</span></span>
 </code></pre>
 <h4 id="1-1-2-return-the-ring-start-point-of-circular-linked-list" tabindex="-1"><a class="header-anchor" href="#1-1-2-return-the-ring-start-point-of-circular-linked-list"><span>1-1-2 : return the “ring start point” of circular linked list</span></a></h4>
-<pre><code class="language-java">// java
-// LC 141
-ListNode detectCycle(ListNode head){
-    ListNode fast, slow;
-    fast = slow = head;
-    while (fast != null and fast.next != null){
-        /** NOTE !!! We move pointers first */
-        fast = fast.next.next;
-        slow = slow.next;
-        if (fast == slow){
-            break;
-        }
-    }
-    slow = head;
-    // may need below logic to check whether is cycle linked list or not
-    // if (! fast or ! fast.next){
-    //     return null;
-    // }
-    while (slow != fast){
-        slow = slow.next;
-        fast = fast.next;
-    }
-    return slow;
-}
+<pre data-lang="java"><code class="hljs language-java"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment">// java</span></span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-comment">// LC 141</span></span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">ListNode <span class="hljs-title function_">detectCycle</span><span class="hljs-params">(ListNode head)</span>{</span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">    ListNode fast, slow;</span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    fast = slow = head;</span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    <span class="hljs-keyword">while</span> (fast != <span class="hljs-literal">null</span> and fast.next != <span class="hljs-literal">null</span>){</span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">        <span class="hljs-comment">/** NOTE !!! We move pointers first */</span></span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">        fast = fast.next.next;</span></span>
+<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">        slow = slow.next;</span></span>
+<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">        <span class="hljs-keyword">if</span> (fast == slow){</span></span>
+<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">            <span class="hljs-keyword">break</span>;</span></span>
+<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">        }</span></span>
+<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">    }</span></span>
+<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">    slow = head;</span></span>
+<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">    <span class="hljs-comment">// may need below logic to check whether is cycle linked list or not</span></span></span>
+<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">    <span class="hljs-comment">// if (! fast or ! fast.next){</span></span></span>
+<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">    <span class="hljs-comment">//     return null;</span></span></span>
+<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">    <span class="hljs-comment">// }</span></span></span>
+<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">    <span class="hljs-keyword">while</span> (slow != fast){</span></span>
+<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">        slow = slow.next;</span></span>
+<span class="ln-row"><span class="ln-num">21</span><span class="ln-code">        fast = fast.next;</span></span>
+<span class="ln-row"><span class="ln-num">22</span><span class="ln-code">    }</span></span>
+<span class="ln-row"><span class="ln-num">23</span><span class="ln-code">    <span class="hljs-keyword">return</span> slow;</span></span>
+<span class="ln-row"><span class="ln-num">24</span><span class="ln-code">}</span></span>
 </code></pre>
-<pre><code class="language-python"># LC 142. Linked List Cycle II
-# python
-class Solution:
-    def detectCycle(self, head):
-        if not head or not head.next:
-            return
-        slow = fast = head
-        while fast and fast.next:
-            fast = fast.next.next
-            slow = slow.next
-            if fast == slow:
-                break
-        #print (&quot;slow = &quot; + str(slow) + &quot; fast = &quot; + str(fast))
-        ### NOTE : via below condition check if is a cycle linked list
-        if not fast or not fast.next:
-            return
-        &quot;&quot;&quot;
-        ### NOTE : re-init slow or fast as head (from starting point)
-        -&gt; can init slow or head
-        &quot;&quot;&quot;
-        slow = head
-        #fast = head 
-        &quot;&quot;&quot;
-        ### NOTE : check while slow != fast
-        ### NOTE : use the same speed
-        &quot;&quot;&quot;
-        while slow != fast:
-            # NOTE this !!! : fast, slow move SAME speed (in this step)
-            fast = fast.next
-            slow = slow.next
-        return slow
-
-# V0'
-# IDEA : SET
-class Solution(object):
-    def detectCycle(self, head):
-        if not head or not head.next:
-            return
-        s = set()
-        while head:
-            s.add(head)
-            head = head.next
-            if head in s:
-                return head
-        return
+<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment"># LC 142. Linked List Cycle II</span></span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-comment"># python</span></span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:</span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">detectCycle</span>(<span class="hljs-params">self, head</span>):</span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> head <span class="hljs-keyword">or</span> <span class="hljs-keyword">not</span> head.<span class="hljs-built_in">next</span>:</span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">            <span class="hljs-keyword">return</span></span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">        slow = fast = head</span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">        <span class="hljs-keyword">while</span> fast <span class="hljs-keyword">and</span> fast.<span class="hljs-built_in">next</span>:</span></span>
+<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">            fast = fast.<span class="hljs-built_in">next</span>.<span class="hljs-built_in">next</span></span></span>
+<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">            slow = slow.<span class="hljs-built_in">next</span></span></span>
+<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">            <span class="hljs-keyword">if</span> fast == slow:</span></span>
+<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">                <span class="hljs-keyword">break</span></span></span>
+<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">        <span class="hljs-comment">#print (&quot;slow = &quot; + str(slow) + &quot; fast = &quot; + str(fast))</span></span></span>
+<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">        <span class="hljs-comment">### NOTE : via below condition check if is a cycle linked list</span></span></span>
+<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> fast <span class="hljs-keyword">or</span> <span class="hljs-keyword">not</span> fast.<span class="hljs-built_in">next</span>:</span></span>
+<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">            <span class="hljs-keyword">return</span></span></span>
+<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">        <span class="hljs-string">&quot;&quot;&quot;</span></span>
+<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">        ### NOTE : re-init slow or fast as head (from starting point)</span></span>
+<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">        -&gt; can init slow or head</span></span>
+<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">        &quot;&quot;&quot;</span></span></span>
+<span class="ln-row"><span class="ln-num">21</span><span class="ln-code">        slow = head</span></span>
+<span class="ln-row"><span class="ln-num">22</span><span class="ln-code">        <span class="hljs-comment">#fast = head </span></span></span>
+<span class="ln-row"><span class="ln-num">23</span><span class="ln-code">        <span class="hljs-string">&quot;&quot;&quot;</span></span>
+<span class="ln-row"><span class="ln-num">24</span><span class="ln-code">        ### NOTE : check while slow != fast</span></span>
+<span class="ln-row"><span class="ln-num">25</span><span class="ln-code">        ### NOTE : use the same speed</span></span>
+<span class="ln-row"><span class="ln-num">26</span><span class="ln-code">        &quot;&quot;&quot;</span></span></span>
+<span class="ln-row"><span class="ln-num">27</span><span class="ln-code">        <span class="hljs-keyword">while</span> slow != fast:</span></span>
+<span class="ln-row"><span class="ln-num">28</span><span class="ln-code">            <span class="hljs-comment"># NOTE this !!! : fast, slow move SAME speed (in this step)</span></span></span>
+<span class="ln-row"><span class="ln-num">29</span><span class="ln-code">            fast = fast.<span class="hljs-built_in">next</span></span></span>
+<span class="ln-row"><span class="ln-num">30</span><span class="ln-code">            slow = slow.<span class="hljs-built_in">next</span></span></span>
+<span class="ln-row"><span class="ln-num">31</span><span class="ln-code">        <span class="hljs-keyword">return</span> slow</span></span>
+<span class="ln-row"><span class="ln-num">32</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">33</span><span class="ln-code"><span class="hljs-comment"># V0&#x27;</span></span></span>
+<span class="ln-row"><span class="ln-num">34</span><span class="ln-code"><span class="hljs-comment"># IDEA : SET</span></span></span>
+<span class="ln-row"><span class="ln-num">35</span><span class="ln-code"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):</span></span>
+<span class="ln-row"><span class="ln-num">36</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">detectCycle</span>(<span class="hljs-params">self, head</span>):</span></span>
+<span class="ln-row"><span class="ln-num">37</span><span class="ln-code">        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> head <span class="hljs-keyword">or</span> <span class="hljs-keyword">not</span> head.<span class="hljs-built_in">next</span>:</span></span>
+<span class="ln-row"><span class="ln-num">38</span><span class="ln-code">            <span class="hljs-keyword">return</span></span></span>
+<span class="ln-row"><span class="ln-num">39</span><span class="ln-code">        s = <span class="hljs-built_in">set</span>()</span></span>
+<span class="ln-row"><span class="ln-num">40</span><span class="ln-code">        <span class="hljs-keyword">while</span> head:</span></span>
+<span class="ln-row"><span class="ln-num">41</span><span class="ln-code">            s.add(head)</span></span>
+<span class="ln-row"><span class="ln-num">42</span><span class="ln-code">            head = head.<span class="hljs-built_in">next</span></span></span>
+<span class="ln-row"><span class="ln-num">43</span><span class="ln-code">            <span class="hljs-keyword">if</span> head <span class="hljs-keyword">in</span> s:</span></span>
+<span class="ln-row"><span class="ln-num">44</span><span class="ln-code">                <span class="hljs-keyword">return</span> head</span></span>
+<span class="ln-row"><span class="ln-num">45</span><span class="ln-code">        <span class="hljs-keyword">return</span></span></span>
 </code></pre>
 <h4 id="1-1-3-find-mid-point-of-a-single-linked-list" tabindex="-1"><a class="header-anchor" href="#1-1-3-find-mid-point-of-a-single-linked-list"><span>1-1-3 : find mid point of a single linked list</span></a></h4>
-<pre><code class="language-java">// java
-while (fast != null and fast.next != null){
-    fast = fast.next.next;
-    slow = slow.next;
-}
-return slow;
+<pre data-lang="java"><code class="hljs language-java"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment">// java</span></span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-keyword">while</span> (fast != <span class="hljs-literal">null</span> and fast.next != <span class="hljs-literal">null</span>){</span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">    fast = fast.next.next;</span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">    slow = slow.next;</span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">}</span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code"><span class="hljs-keyword">return</span> slow;</span></span>
 </code></pre>
 <h4 id="1-1-4-find-last-k-elements-in-a-single-linked-list" tabindex="-1"><a class="header-anchor" href="#1-1-4-find-last-k-elements-in-a-single-linked-list"><span>1-1-4 : find last k elements in a single linked list</span></a></h4>
-<pre><code class="language-java">// java
-ListNode fast, slow;
-slow = fast = head;
-while (k &gt; 0){
-    fast = fast.next;
-    k -= 1;
-}
-while (fast != null){
-    fast = fast.next;
-    slow = slow.next;
-}
-return slow;
+<pre data-lang="java"><code class="hljs language-java"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment">// java</span></span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code">ListNode fast, slow;</span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">slow = fast = head;</span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"><span class="hljs-keyword">while</span> (k &gt; <span class="hljs-number">0</span>){</span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    fast = fast.next;</span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    k -= <span class="hljs-number">1</span>;</span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">}</span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code"><span class="hljs-keyword">while</span> (fast != <span class="hljs-literal">null</span>){</span></span>
+<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">    fast = fast.next;</span></span>
+<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">    slow = slow.next;</span></span>
+<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">}</span></span>
+<span class="ln-row"><span class="ln-num">12</span><span class="ln-code"><span class="hljs-keyword">return</span> slow;</span></span>
 </code></pre>
 <h2 id="2-lc-example" tabindex="-1"><a class="header-anchor" href="#2-lc-example"><span>2) LC Example</span></a></h2>
 <h3 id="2-1-remove-duplicates-from-sorted-list" tabindex="-1"><a class="header-anchor" href="#2-1-remove-duplicates-from-sorted-list"><span>2-1) Remove Duplicates from Sorted List</span></a></h3>
-<pre><code class="language-java">// LC 83 (LC 26)
-// https://labuladong.online/algo/essential-technique/array-two-pointers-summary/#%E5%8E%9F%E5%9C%B0%E4%BF%AE%E6%94%B9
-class Solution {
-    public ListNode deleteDuplicates(ListNode head) {
-        if (head == null) return null;
-        ListNode slow = head, fast = head;
-        while (fast != null) {
-            if (fast.val != slow.val) {
-                // nums[slow] = nums[fast];
-                slow.next = fast;
-                // slow++;
-                slow = slow.next;
-            }
-            // fast++
-            fast = fast.next;
-        }
-        // 断开与后面重复元素的连接
-        slow.next = null;
-        return head;
-    }
-}
+<pre data-lang="java"><code class="hljs language-java"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment">// LC 83 (LC 26)</span></span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-comment">// https://labuladong.online/algo/essential-technique/array-two-pointers-summary/#%E5%8E%9F%E5%9C%B0%E4%BF%AE%E6%94%B9</span></span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span> {</span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">    <span class="hljs-keyword">public</span> ListNode <span class="hljs-title function_">deleteDuplicates</span><span class="hljs-params">(ListNode head)</span> {</span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">        <span class="hljs-keyword">if</span> (head == <span class="hljs-literal">null</span>) <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;</span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">        <span class="hljs-type">ListNode</span> <span class="hljs-variable">slow</span> <span class="hljs-operator">=</span> head, fast = head;</span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">        <span class="hljs-keyword">while</span> (fast != <span class="hljs-literal">null</span>) {</span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">            <span class="hljs-keyword">if</span> (fast.val != slow.val) {</span></span>
+<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">                <span class="hljs-comment">// nums[slow] = nums[fast];</span></span></span>
+<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">                slow.next = fast;</span></span>
+<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">                <span class="hljs-comment">// slow++;</span></span></span>
+<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">                slow = slow.next;</span></span>
+<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">            }</span></span>
+<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">            <span class="hljs-comment">// fast++</span></span></span>
+<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">            fast = fast.next;</span></span>
+<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">        }</span></span>
+<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">        <span class="hljs-comment">// 断开与后面重复元素的连接</span></span></span>
+<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">        slow.next = <span class="hljs-literal">null</span>;</span></span>
+<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">        <span class="hljs-keyword">return</span> head;</span></span>
+<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">    }</span></span>
+<span class="ln-row"><span class="ln-num">21</span><span class="ln-code">}</span></span>
 </code></pre>
 
       </div>

@@ -9,8 +9,7 @@
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>CS</text></svg>">
   <link rel="stylesheet" href="../style.css">
   <link rel="stylesheet" href="../vendor/fonts.css">
-  <link rel="stylesheet" href="../vendor/highlight/github-dark.min.css">
-  <script src="../vendor/highlight/highlight.min.js"></script>
+  <link rel="stylesheet" href="../vendor/highlight/atom-one-dark.min.css">
   <script>
   // Apply theme before render to prevent flash
   (function() {
@@ -21,40 +20,43 @@
   })();
   </script>
   <script>document.addEventListener('DOMContentLoaded', function() {
-    hljs.highlightAll();
-    document.querySelectorAll('pre code').forEach(function(codeEl) {
-      var pre = codeEl.parentElement;
-      var lang = '';
-      var cls = codeEl.className || '';
-      var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
-      if (m) lang = m[1];
-      var wrapper = document.createElement('div');
-      wrapper.className = 'code-block-wrapper';
-      pre.parentNode.insertBefore(wrapper, pre);
-      var header = document.createElement('div');
-      header.className = 'code-block-header';
-      if (lang) {
-        var label = document.createElement('span');
-        label.className = 'code-lang-label';
-        label.textContent = lang;
-        header.appendChild(label);
-      } else {
-        header.appendChild(document.createElement('span'));
-      }
-      var btn = document.createElement('button');
-      btn.className = 'copy-btn';
-      btn.textContent = 'Copy';
-      btn.addEventListener('click', function() {
-        navigator.clipboard.writeText(codeEl.textContent).then(function() {
-          btn.textContent = 'Copied!';
-          btn.classList.add('copied');
-          setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+    // Code block wrappers + copy buttons (highlighting done at build time)
+    try {
+      document.querySelectorAll('pre').forEach(function(pre) {
+        var codeEl = pre.querySelector('code');
+        var lang = pre.getAttribute('data-lang') || '';
+        var wrapper = document.createElement('div');
+        wrapper.className = 'code-block-wrapper';
+        pre.parentNode.insertBefore(wrapper, pre);
+        var header = document.createElement('div');
+        header.className = 'code-block-header';
+        if (lang) {
+          var label = document.createElement('span');
+          label.className = 'code-lang-label';
+          label.textContent = lang;
+          header.appendChild(label);
+        } else {
+          header.appendChild(document.createElement('span'));
+        }
+        var btn = document.createElement('button');
+        btn.className = 'copy-btn';
+        btn.textContent = 'Copy';
+        btn.addEventListener('click', function() {
+          var text = codeEl
+            ? Array.from(codeEl.querySelectorAll('.ln-code')).map(function(el) { return el.textContent; }).join('
+')
+            : pre.textContent;
+          navigator.clipboard.writeText(text).then(function() {
+            btn.textContent = 'Copied!';
+            btn.classList.add('copied');
+            setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+          });
         });
+        header.appendChild(btn);
+        wrapper.appendChild(header);
+        wrapper.appendChild(pre);
       });
-      header.appendChild(btn);
-      wrapper.appendChild(header);
-      wrapper.appendChild(pre);
-    });
+    } catch(e) { console.error('Code block setup error:', e); }
     document.querySelectorAll('table').forEach(function(table) {
       if (!table.parentElement.classList.contains('table-wrap')) {
         var wrapper = document.createElement('div');
@@ -64,32 +66,36 @@
       }
     });
     // Reading progress bar
-    var progressBar = document.getElementById('reading-progress');
-    if (progressBar) {
-      window.addEventListener('scroll', function() {
-        var winScroll = document.documentElement.scrollTop;
-        var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-        progressBar.style.width = height > 0 ? (winScroll / height * 100) + '%' : '0%';
-      });
-    }
-    // Dark mode toggle
-    var toggle = document.getElementById('theme-toggle');
-    if (toggle) {
-      var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-      toggle.textContent = isDark ? '☀️' : '🌙';
-      toggle.addEventListener('click', function() {
-        var dark = document.documentElement.getAttribute('data-theme') === 'dark';
-        if (dark) {
-          document.documentElement.removeAttribute('data-theme');
-          localStorage.setItem('theme', 'light');
-          toggle.textContent = '🌙';
-        } else {
-          document.documentElement.setAttribute('data-theme', 'dark');
-          localStorage.setItem('theme', 'dark');
-          toggle.textContent = '☀️';
-        }
-      });
-    }
+    try {
+      var progressBar = document.getElementById('reading-progress');
+      if (progressBar) {
+        window.addEventListener('scroll', function() {
+          var winScroll = document.documentElement.scrollTop;
+          var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+          progressBar.style.width = height > 0 ? (winScroll / height * 100) + '%' : '0%';
+        });
+      }
+    } catch(e) {}
+    // Dark mode toggle — isolated so errors elsewhere never prevent this from working
+    try {
+      var toggle = document.getElementById('theme-toggle');
+      if (toggle) {
+        var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+        toggle.textContent = isDark ? '☀️' : '🌙';
+        toggle.addEventListener('click', function() {
+          var dark = document.documentElement.getAttribute('data-theme') === 'dark';
+          if (dark) {
+            document.documentElement.removeAttribute('data-theme');
+            localStorage.setItem('theme', 'light');
+            toggle.textContent = '🌙';
+          } else {
+            document.documentElement.setAttribute('data-theme', 'dark');
+            localStorage.setItem('theme', 'dark');
+            toggle.textContent = '☀️';
+          }
+        });
+      }
+    } catch(e) { console.error('Theme toggle error:', e); }
   });</script>
 </head>
 <body>
@@ -249,232 +255,232 @@
 </tbody>
 </table>
 <h3 id="universal-interval-template" tabindex="-1"><a class="header-anchor" href="#universal-interval-template"><span>Universal Interval Template</span></a></h3>
-<pre><code class="language-python">def solve_interval_problem(intervals):
-    &quot;&quot;&quot;
-    Universal template for interval problems
-    &quot;&quot;&quot;
-    # Step 1: Handle edge cases
-    if not intervals or len(intervals) &lt;= 1:
-        return intervals
-    
-    # Step 2: Sort intervals (by start time or end time based on problem)
-    intervals.sort(key=lambda x: x[0])  # Sort by start time
-    # intervals.sort(key=lambda x: x[1])  # Sort by end time for greedy problems
-    
-    # Step 3: Initialize result
-    result = []
-    
-    # Step 4: Process intervals sequentially
-    for current in intervals:
-        # Step 5: Check overlap condition with last processed interval
-        if not result or no_overlap_condition(result[-1], current):
-            result.append(current)
-        else:
-            # Step 6: Handle overlap (merge, count, or remove)
-            handle_overlap(result, current)
-    
-    return result
-
-def no_overlap_condition(prev, curr):
-    &quot;&quot;&quot;Check if two intervals don't overlap&quot;&quot;&quot;
-    return prev[1] &lt; curr[0]  # prev ends before curr starts
-
-def handle_overlap(result, current):
-    &quot;&quot;&quot;Handle overlapping intervals based on problem type&quot;&quot;&quot;
-    # For merging: extend the last interval
-    result[-1][1] = max(result[-1][1], current[1])
-    # For counting: increment counter
-    # For removal: choose which interval to keep
+<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-keyword">def</span> <span class="hljs-title function_">solve_interval_problem</span>(<span class="hljs-params">intervals</span>):</span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code">    <span class="hljs-string">&quot;&quot;&quot;</span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">    Universal template for interval problems</span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">    &quot;&quot;&quot;</span></span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    <span class="hljs-comment"># Step 1: Handle edge cases</span></span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> intervals <span class="hljs-keyword">or</span> <span class="hljs-built_in">len</span>(intervals) &lt;= <span class="hljs-number">1</span>:</span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">        <span class="hljs-keyword">return</span> intervals</span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">    </span></span>
+<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">    <span class="hljs-comment"># Step 2: Sort intervals (by start time or end time based on problem)</span></span></span>
+<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">    intervals.sort(key=<span class="hljs-keyword">lambda</span> x: x[<span class="hljs-number">0</span>])  <span class="hljs-comment"># Sort by start time</span></span></span>
+<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">    <span class="hljs-comment"># intervals.sort(key=lambda x: x[1])  # Sort by end time for greedy problems</span></span></span>
+<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">    </span></span>
+<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">    <span class="hljs-comment"># Step 3: Initialize result</span></span></span>
+<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">    result = []</span></span>
+<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">    </span></span>
+<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">    <span class="hljs-comment"># Step 4: Process intervals sequentially</span></span></span>
+<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">    <span class="hljs-keyword">for</span> current <span class="hljs-keyword">in</span> intervals:</span></span>
+<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">        <span class="hljs-comment"># Step 5: Check overlap condition with last processed interval</span></span></span>
+<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> result <span class="hljs-keyword">or</span> no_overlap_condition(result[-<span class="hljs-number">1</span>], current):</span></span>
+<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">            result.append(current)</span></span>
+<span class="ln-row"><span class="ln-num">21</span><span class="ln-code">        <span class="hljs-keyword">else</span>:</span></span>
+<span class="ln-row"><span class="ln-num">22</span><span class="ln-code">            <span class="hljs-comment"># Step 6: Handle overlap (merge, count, or remove)</span></span></span>
+<span class="ln-row"><span class="ln-num">23</span><span class="ln-code">            handle_overlap(result, current)</span></span>
+<span class="ln-row"><span class="ln-num">24</span><span class="ln-code">    </span></span>
+<span class="ln-row"><span class="ln-num">25</span><span class="ln-code">    <span class="hljs-keyword">return</span> result</span></span>
+<span class="ln-row"><span class="ln-num">26</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">27</span><span class="ln-code"><span class="hljs-keyword">def</span> <span class="hljs-title function_">no_overlap_condition</span>(<span class="hljs-params">prev, curr</span>):</span></span>
+<span class="ln-row"><span class="ln-num">28</span><span class="ln-code">    <span class="hljs-string">&quot;&quot;&quot;Check if two intervals don&#x27;t overlap&quot;&quot;&quot;</span></span></span>
+<span class="ln-row"><span class="ln-num">29</span><span class="ln-code">    <span class="hljs-keyword">return</span> prev[<span class="hljs-number">1</span>] &lt; curr[<span class="hljs-number">0</span>]  <span class="hljs-comment"># prev ends before curr starts</span></span></span>
+<span class="ln-row"><span class="ln-num">30</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">31</span><span class="ln-code"><span class="hljs-keyword">def</span> <span class="hljs-title function_">handle_overlap</span>(<span class="hljs-params">result, current</span>):</span></span>
+<span class="ln-row"><span class="ln-num">32</span><span class="ln-code">    <span class="hljs-string">&quot;&quot;&quot;Handle overlapping intervals based on problem type&quot;&quot;&quot;</span></span></span>
+<span class="ln-row"><span class="ln-num">33</span><span class="ln-code">    <span class="hljs-comment"># For merging: extend the last interval</span></span></span>
+<span class="ln-row"><span class="ln-num">34</span><span class="ln-code">    result[-<span class="hljs-number">1</span>][<span class="hljs-number">1</span>] = <span class="hljs-built_in">max</span>(result[-<span class="hljs-number">1</span>][<span class="hljs-number">1</span>], current[<span class="hljs-number">1</span>])</span></span>
+<span class="ln-row"><span class="ln-num">35</span><span class="ln-code">    <span class="hljs-comment"># For counting: increment counter</span></span></span>
+<span class="ln-row"><span class="ln-num">36</span><span class="ln-code">    <span class="hljs-comment"># For removal: choose which interval to keep</span></span></span>
 </code></pre>
 <h3 id="specific-templates" tabindex="-1"><a class="header-anchor" href="#specific-templates"><span>Specific Templates</span></a></h3>
 <h4 id="template-1-interval-merging-lc-56-57" tabindex="-1"><a class="header-anchor" href="#template-1-interval-merging-lc-56-57"><span>Template 1: Interval Merging (LC 56, 57)</span></a></h4>
-<pre><code class="language-python">def merge_intervals(intervals):
-    &quot;&quot;&quot;
-    Merge overlapping intervals
-    Time: O(n log n), Space: O(n)
-    &quot;&quot;&quot;
-    if not intervals:
-        return []
-    
-    # Sort by start time
-    intervals.sort(key=lambda x: x[0])
-    merged = [intervals[0]]
-    
-    for current in intervals[1:]:
-        last = merged[-1]
-        
-        # No overlap: add current interval
-        if last[1] &lt; current[0]:
-            merged.append(current)
-        # Overlap: merge intervals
-        else:
-            last[1] = max(last[1], current[1])
-    
-    return merged
-
-# Java version
-public int[][] merge(int[][] intervals) {
-    if (intervals.length &lt;= 1) return intervals;
-    
-    Arrays.sort(intervals, (a, b) -&gt; Integer.compare(a[0], b[0]));
-    List&lt;int[]&gt; merged = new ArrayList&lt;&gt;();
-    
-    for (int[] current : intervals) {
-        if (merged.isEmpty() || merged.get(merged.size() - 1)[1] &lt; current[0]) {
-            merged.add(current);
-        } else {
-            merged.get(merged.size() - 1)[1] = Math.max(
-                merged.get(merged.size() - 1)[1], current[1]
-            );
-        }
-    }
-    
-    return merged.toArray(new int[merged.size()][]);
-}
+<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-keyword">def</span> <span class="hljs-title function_">merge_intervals</span>(<span class="hljs-params">intervals</span>):</span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code">    <span class="hljs-string">&quot;&quot;&quot;</span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">    Merge overlapping intervals</span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">    Time: O(n log n), Space: O(n)</span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    &quot;&quot;&quot;</span></span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> intervals:</span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">        <span class="hljs-keyword">return</span> []</span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">    </span></span>
+<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">    <span class="hljs-comment"># Sort by start time</span></span></span>
+<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">    intervals.sort(key=<span class="hljs-keyword">lambda</span> x: x[<span class="hljs-number">0</span>])</span></span>
+<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">    merged = [intervals[<span class="hljs-number">0</span>]]</span></span>
+<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">    </span></span>
+<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">    <span class="hljs-keyword">for</span> current <span class="hljs-keyword">in</span> intervals[<span class="hljs-number">1</span>:]:</span></span>
+<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">        last = merged[-<span class="hljs-number">1</span>]</span></span>
+<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">        </span></span>
+<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">        <span class="hljs-comment"># No overlap: add current interval</span></span></span>
+<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">        <span class="hljs-keyword">if</span> last[<span class="hljs-number">1</span>] &lt; current[<span class="hljs-number">0</span>]:</span></span>
+<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">            merged.append(current)</span></span>
+<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">        <span class="hljs-comment"># Overlap: merge intervals</span></span></span>
+<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">        <span class="hljs-keyword">else</span>:</span></span>
+<span class="ln-row"><span class="ln-num">21</span><span class="ln-code">            last[<span class="hljs-number">1</span>] = <span class="hljs-built_in">max</span>(last[<span class="hljs-number">1</span>], current[<span class="hljs-number">1</span>])</span></span>
+<span class="ln-row"><span class="ln-num">22</span><span class="ln-code">    </span></span>
+<span class="ln-row"><span class="ln-num">23</span><span class="ln-code">    <span class="hljs-keyword">return</span> merged</span></span>
+<span class="ln-row"><span class="ln-num">24</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">25</span><span class="ln-code"><span class="hljs-comment"># Java version</span></span></span>
+<span class="ln-row"><span class="ln-num">26</span><span class="ln-code">public <span class="hljs-built_in">int</span>[][] merge(<span class="hljs-built_in">int</span>[][] intervals) {</span></span>
+<span class="ln-row"><span class="ln-num">27</span><span class="ln-code">    <span class="hljs-keyword">if</span> (intervals.length &lt;= <span class="hljs-number">1</span>) <span class="hljs-keyword">return</span> intervals;</span></span>
+<span class="ln-row"><span class="ln-num">28</span><span class="ln-code">    </span></span>
+<span class="ln-row"><span class="ln-num">29</span><span class="ln-code">    Arrays.sort(intervals, (a, b) -&gt; Integer.compare(a[<span class="hljs-number">0</span>], b[<span class="hljs-number">0</span>]));</span></span>
+<span class="ln-row"><span class="ln-num">30</span><span class="ln-code">    <span class="hljs-type">List</span>&lt;<span class="hljs-built_in">int</span>[]&gt; merged = new ArrayList&lt;&gt;();</span></span>
+<span class="ln-row"><span class="ln-num">31</span><span class="ln-code">    </span></span>
+<span class="ln-row"><span class="ln-num">32</span><span class="ln-code">    <span class="hljs-keyword">for</span> (<span class="hljs-built_in">int</span>[] current : intervals) {</span></span>
+<span class="ln-row"><span class="ln-num">33</span><span class="ln-code">        <span class="hljs-keyword">if</span> (merged.isEmpty() || merged.get(merged.size() - <span class="hljs-number">1</span>)[<span class="hljs-number">1</span>] &lt; current[<span class="hljs-number">0</span>]) {</span></span>
+<span class="ln-row"><span class="ln-num">34</span><span class="ln-code">            merged.add(current);</span></span>
+<span class="ln-row"><span class="ln-num">35</span><span class="ln-code">        } <span class="hljs-keyword">else</span> {</span></span>
+<span class="ln-row"><span class="ln-num">36</span><span class="ln-code">            merged.get(merged.size() - <span class="hljs-number">1</span>)[<span class="hljs-number">1</span>] = Math.<span class="hljs-built_in">max</span>(</span></span>
+<span class="ln-row"><span class="ln-num">37</span><span class="ln-code">                merged.get(merged.size() - <span class="hljs-number">1</span>)[<span class="hljs-number">1</span>], current[<span class="hljs-number">1</span>]</span></span>
+<span class="ln-row"><span class="ln-num">38</span><span class="ln-code">            );</span></span>
+<span class="ln-row"><span class="ln-num">39</span><span class="ln-code">        }</span></span>
+<span class="ln-row"><span class="ln-num">40</span><span class="ln-code">    }</span></span>
+<span class="ln-row"><span class="ln-num">41</span><span class="ln-code">    </span></span>
+<span class="ln-row"><span class="ln-num">42</span><span class="ln-code">    <span class="hljs-keyword">return</span> merged.toArray(new <span class="hljs-built_in">int</span>[merged.size()][]);</span></span>
+<span class="ln-row"><span class="ln-num">43</span><span class="ln-code">}</span></span>
 </code></pre>
 <h4 id="template-2-greedy-scheduling-lc-435-452" tabindex="-1"><a class="header-anchor" href="#template-2-greedy-scheduling-lc-435-452"><span>Template 2: Greedy Scheduling (LC 435, 452)</span></a></h4>
-<pre><code class="language-python">def min_intervals_to_remove(intervals):
-    &quot;&quot;&quot;
-    Find minimum intervals to remove for non-overlapping set
-    Time: O(n log n), Space: O(1)
-    &quot;&quot;&quot;
-    if not intervals:
-        return 0
-    
-    # Sort by end time (greedy strategy)
-    intervals.sort(key=lambda x: x[1])
-    
-    count = 0
-    prev_end = intervals[0][1]
-    
-    for i in range(1, len(intervals)):
-        # Overlap detected
-        if intervals[i][0] &lt; prev_end:
-            count += 1  # Remove current interval
-        else:
-            prev_end = intervals[i][1]  # Update end time
-    
-    return count
-
-# Java version
-public int eraseOverlapIntervals(int[][] intervals) {
-    if (intervals.length &lt;= 1) return 0;
-    
-    Arrays.sort(intervals, (a, b) -&gt; Integer.compare(a[1], b[1]));
-    
-    int count = 0;
-    int prevEnd = intervals[0][1];
-    
-    for (int i = 1; i &lt; intervals.length; i++) {
-        if (intervals[i][0] &lt; prevEnd) {
-            count++;
-        } else {
-            prevEnd = intervals[i][1];
-        }
-    }
-    
-    return count;
-}
+<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-keyword">def</span> <span class="hljs-title function_">min_intervals_to_remove</span>(<span class="hljs-params">intervals</span>):</span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code">    <span class="hljs-string">&quot;&quot;&quot;</span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">    Find minimum intervals to remove for non-overlapping set</span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">    Time: O(n log n), Space: O(1)</span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    &quot;&quot;&quot;</span></span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> intervals:</span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">        <span class="hljs-keyword">return</span> <span class="hljs-number">0</span></span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">    </span></span>
+<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">    <span class="hljs-comment"># Sort by end time (greedy strategy)</span></span></span>
+<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">    intervals.sort(key=<span class="hljs-keyword">lambda</span> x: x[<span class="hljs-number">1</span>])</span></span>
+<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">    </span></span>
+<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">    count = <span class="hljs-number">0</span></span></span>
+<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">    prev_end = intervals[<span class="hljs-number">0</span>][<span class="hljs-number">1</span>]</span></span>
+<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">    </span></span>
+<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>, <span class="hljs-built_in">len</span>(intervals)):</span></span>
+<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">        <span class="hljs-comment"># Overlap detected</span></span></span>
+<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">        <span class="hljs-keyword">if</span> intervals[i][<span class="hljs-number">0</span>] &lt; prev_end:</span></span>
+<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">            count += <span class="hljs-number">1</span>  <span class="hljs-comment"># Remove current interval</span></span></span>
+<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">        <span class="hljs-keyword">else</span>:</span></span>
+<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">            prev_end = intervals[i][<span class="hljs-number">1</span>]  <span class="hljs-comment"># Update end time</span></span></span>
+<span class="ln-row"><span class="ln-num">21</span><span class="ln-code">    </span></span>
+<span class="ln-row"><span class="ln-num">22</span><span class="ln-code">    <span class="hljs-keyword">return</span> count</span></span>
+<span class="ln-row"><span class="ln-num">23</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">24</span><span class="ln-code"><span class="hljs-comment"># Java version</span></span></span>
+<span class="ln-row"><span class="ln-num">25</span><span class="ln-code">public <span class="hljs-built_in">int</span> eraseOverlapIntervals(<span class="hljs-built_in">int</span>[][] intervals) {</span></span>
+<span class="ln-row"><span class="ln-num">26</span><span class="ln-code">    <span class="hljs-keyword">if</span> (intervals.length &lt;= <span class="hljs-number">1</span>) <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;</span></span>
+<span class="ln-row"><span class="ln-num">27</span><span class="ln-code">    </span></span>
+<span class="ln-row"><span class="ln-num">28</span><span class="ln-code">    Arrays.sort(intervals, (a, b) -&gt; Integer.compare(a[<span class="hljs-number">1</span>], b[<span class="hljs-number">1</span>]));</span></span>
+<span class="ln-row"><span class="ln-num">29</span><span class="ln-code">    </span></span>
+<span class="ln-row"><span class="ln-num">30</span><span class="ln-code">    <span class="hljs-built_in">int</span> count = <span class="hljs-number">0</span>;</span></span>
+<span class="ln-row"><span class="ln-num">31</span><span class="ln-code">    <span class="hljs-built_in">int</span> prevEnd = intervals[<span class="hljs-number">0</span>][<span class="hljs-number">1</span>];</span></span>
+<span class="ln-row"><span class="ln-num">32</span><span class="ln-code">    </span></span>
+<span class="ln-row"><span class="ln-num">33</span><span class="ln-code">    <span class="hljs-keyword">for</span> (<span class="hljs-built_in">int</span> i = <span class="hljs-number">1</span>; i &lt; intervals.length; i++) {</span></span>
+<span class="ln-row"><span class="ln-num">34</span><span class="ln-code">        <span class="hljs-keyword">if</span> (intervals[i][<span class="hljs-number">0</span>] &lt; prevEnd) {</span></span>
+<span class="ln-row"><span class="ln-num">35</span><span class="ln-code">            count++;</span></span>
+<span class="ln-row"><span class="ln-num">36</span><span class="ln-code">        } <span class="hljs-keyword">else</span> {</span></span>
+<span class="ln-row"><span class="ln-num">37</span><span class="ln-code">            prevEnd = intervals[i][<span class="hljs-number">1</span>];</span></span>
+<span class="ln-row"><span class="ln-num">38</span><span class="ln-code">        }</span></span>
+<span class="ln-row"><span class="ln-num">39</span><span class="ln-code">    }</span></span>
+<span class="ln-row"><span class="ln-num">40</span><span class="ln-code">    </span></span>
+<span class="ln-row"><span class="ln-num">41</span><span class="ln-code">    <span class="hljs-keyword">return</span> count;</span></span>
+<span class="ln-row"><span class="ln-num">42</span><span class="ln-code">}</span></span>
 </code></pre>
 <h4 id="template-3-two-pointer-intersection-lc-986" tabindex="-1"><a class="header-anchor" href="#template-3-two-pointer-intersection-lc-986"><span>Template 3: Two Pointer Intersection (LC 986)</span></a></h4>
-<pre><code class="language-python">def interval_intersection(firstList, secondList):
-    &quot;&quot;&quot;
-    Find intersection of two interval lists
-    Time: O(m + n), Space: O(min(m, n))
-    &quot;&quot;&quot;
-    result = []
-    i = j = 0
-    
-    while i &lt; len(firstList) and j &lt; len(secondList):
-        # Find intersection
-        start = max(firstList[i][0], secondList[j][0])
-        end = min(firstList[i][1], secondList[j][1])
-        
-        # Valid intersection
-        if start &lt;= end:
-            result.append([start, end])
-        
-        # Move pointer of interval that ends first
-        if firstList[i][1] &lt; secondList[j][1]:
-            i += 1
-        else:
-            j += 1
-    
-    return result
+<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-keyword">def</span> <span class="hljs-title function_">interval_intersection</span>(<span class="hljs-params">firstList, secondList</span>):</span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code">    <span class="hljs-string">&quot;&quot;&quot;</span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">    Find intersection of two interval lists</span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">    Time: O(m + n), Space: O(min(m, n))</span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    &quot;&quot;&quot;</span></span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    result = []</span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">    i = j = <span class="hljs-number">0</span></span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">    </span></span>
+<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">    <span class="hljs-keyword">while</span> i &lt; <span class="hljs-built_in">len</span>(firstList) <span class="hljs-keyword">and</span> j &lt; <span class="hljs-built_in">len</span>(secondList):</span></span>
+<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">        <span class="hljs-comment"># Find intersection</span></span></span>
+<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">        start = <span class="hljs-built_in">max</span>(firstList[i][<span class="hljs-number">0</span>], secondList[j][<span class="hljs-number">0</span>])</span></span>
+<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">        end = <span class="hljs-built_in">min</span>(firstList[i][<span class="hljs-number">1</span>], secondList[j][<span class="hljs-number">1</span>])</span></span>
+<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">        </span></span>
+<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">        <span class="hljs-comment"># Valid intersection</span></span></span>
+<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">        <span class="hljs-keyword">if</span> start &lt;= end:</span></span>
+<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">            result.append([start, end])</span></span>
+<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">        </span></span>
+<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">        <span class="hljs-comment"># Move pointer of interval that ends first</span></span></span>
+<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">        <span class="hljs-keyword">if</span> firstList[i][<span class="hljs-number">1</span>] &lt; secondList[j][<span class="hljs-number">1</span>]:</span></span>
+<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">            i += <span class="hljs-number">1</span></span></span>
+<span class="ln-row"><span class="ln-num">21</span><span class="ln-code">        <span class="hljs-keyword">else</span>:</span></span>
+<span class="ln-row"><span class="ln-num">22</span><span class="ln-code">            j += <span class="hljs-number">1</span></span></span>
+<span class="ln-row"><span class="ln-num">23</span><span class="ln-code">    </span></span>
+<span class="ln-row"><span class="ln-num">24</span><span class="ln-code">    <span class="hljs-keyword">return</span> result</span></span>
 </code></pre>
 <h4 id="template-4-meeting-rooms-with-priority-queue-lc-253" tabindex="-1"><a class="header-anchor" href="#template-4-meeting-rooms-with-priority-queue-lc-253"><span>Template 4: Meeting Rooms with Priority Queue (LC 253)</span></a></h4>
-<pre><code class="language-python">import heapq
-
-def min_meeting_rooms(intervals):
-    &quot;&quot;&quot;
-    Find minimum meeting rooms required
-    Time: O(n log n), Space: O(n)
-    &quot;&quot;&quot;
-    if not intervals:
-        return 0
-    
-    # Sort by start time
-    intervals.sort(key=lambda x: x[0])
-    
-    # Min heap to track end times
-    heap = []
-    
-    for start, end in intervals:
-        # If earliest meeting ends before current starts
-        if heap and heap[0] &lt;= start:
-            heapq.heappop(heap)
-        
-        # Add current meeting's end time
-        heapq.heappush(heap, end)
-    
-    return len(heap)
-
-# Java version
-public int minMeetingRooms(int[][] intervals) {
-    if (intervals.length == 0) return 0;
-    
-    Arrays.sort(intervals, (a, b) -&gt; Integer.compare(a[0], b[0]));
-    PriorityQueue&lt;Integer&gt; heap = new PriorityQueue&lt;&gt;();
-    
-    for (int[] interval : intervals) {
-        if (!heap.isEmpty() &amp;&amp; heap.peek() &lt;= interval[0]) {
-            heap.poll();
-        }
-        heap.offer(interval[1]);
-    }
-    
-    return heap.size();
-}
+<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-keyword">import</span> heapq</span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"><span class="hljs-keyword">def</span> <span class="hljs-title function_">min_meeting_rooms</span>(<span class="hljs-params">intervals</span>):</span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">    <span class="hljs-string">&quot;&quot;&quot;</span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    Find minimum meeting rooms required</span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    Time: O(n log n), Space: O(n)</span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">    &quot;&quot;&quot;</span></span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> intervals:</span></span>
+<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">        <span class="hljs-keyword">return</span> <span class="hljs-number">0</span></span></span>
+<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">    </span></span>
+<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">    <span class="hljs-comment"># Sort by start time</span></span></span>
+<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">    intervals.sort(key=<span class="hljs-keyword">lambda</span> x: x[<span class="hljs-number">0</span>])</span></span>
+<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">    </span></span>
+<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">    <span class="hljs-comment"># Min heap to track end times</span></span></span>
+<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">    heap = []</span></span>
+<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">    </span></span>
+<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">    <span class="hljs-keyword">for</span> start, end <span class="hljs-keyword">in</span> intervals:</span></span>
+<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">        <span class="hljs-comment"># If earliest meeting ends before current starts</span></span></span>
+<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">        <span class="hljs-keyword">if</span> heap <span class="hljs-keyword">and</span> heap[<span class="hljs-number">0</span>] &lt;= start:</span></span>
+<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">            heapq.heappop(heap)</span></span>
+<span class="ln-row"><span class="ln-num">21</span><span class="ln-code">        </span></span>
+<span class="ln-row"><span class="ln-num">22</span><span class="ln-code">        <span class="hljs-comment"># Add current meeting&#x27;s end time</span></span></span>
+<span class="ln-row"><span class="ln-num">23</span><span class="ln-code">        heapq.heappush(heap, end)</span></span>
+<span class="ln-row"><span class="ln-num">24</span><span class="ln-code">    </span></span>
+<span class="ln-row"><span class="ln-num">25</span><span class="ln-code">    <span class="hljs-keyword">return</span> <span class="hljs-built_in">len</span>(heap)</span></span>
+<span class="ln-row"><span class="ln-num">26</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">27</span><span class="ln-code"><span class="hljs-comment"># Java version</span></span></span>
+<span class="ln-row"><span class="ln-num">28</span><span class="ln-code">public <span class="hljs-built_in">int</span> minMeetingRooms(<span class="hljs-built_in">int</span>[][] intervals) {</span></span>
+<span class="ln-row"><span class="ln-num">29</span><span class="ln-code">    <span class="hljs-keyword">if</span> (intervals.length == <span class="hljs-number">0</span>) <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;</span></span>
+<span class="ln-row"><span class="ln-num">30</span><span class="ln-code">    </span></span>
+<span class="ln-row"><span class="ln-num">31</span><span class="ln-code">    Arrays.sort(intervals, (a, b) -&gt; Integer.compare(a[<span class="hljs-number">0</span>], b[<span class="hljs-number">0</span>]));</span></span>
+<span class="ln-row"><span class="ln-num">32</span><span class="ln-code">    PriorityQueue&lt;Integer&gt; heap = new PriorityQueue&lt;&gt;();</span></span>
+<span class="ln-row"><span class="ln-num">33</span><span class="ln-code">    </span></span>
+<span class="ln-row"><span class="ln-num">34</span><span class="ln-code">    <span class="hljs-keyword">for</span> (<span class="hljs-built_in">int</span>[] interval : intervals) {</span></span>
+<span class="ln-row"><span class="ln-num">35</span><span class="ln-code">        <span class="hljs-keyword">if</span> (!heap.isEmpty() &amp;&amp; heap.peek() &lt;= interval[<span class="hljs-number">0</span>]) {</span></span>
+<span class="ln-row"><span class="ln-num">36</span><span class="ln-code">            heap.poll();</span></span>
+<span class="ln-row"><span class="ln-num">37</span><span class="ln-code">        }</span></span>
+<span class="ln-row"><span class="ln-num">38</span><span class="ln-code">        heap.offer(interval[<span class="hljs-number">1</span>]);</span></span>
+<span class="ln-row"><span class="ln-num">39</span><span class="ln-code">    }</span></span>
+<span class="ln-row"><span class="ln-num">40</span><span class="ln-code">    </span></span>
+<span class="ln-row"><span class="ln-num">41</span><span class="ln-code">    <span class="hljs-keyword">return</span> heap.size();</span></span>
+<span class="ln-row"><span class="ln-num">42</span><span class="ln-code">}</span></span>
 </code></pre>
 <h4 id="template-5-calendar-booking-lc-729" tabindex="-1"><a class="header-anchor" href="#template-5-calendar-booking-lc-729"><span>Template 5: Calendar Booking (LC 729)</span></a></h4>
-<pre><code class="language-python">class MyCalendar:
-    &quot;&quot;&quot;
-    Calendar with overlap detection using binary search
-    Time: O(log n) per booking, Space: O(n)
-    &quot;&quot;&quot;
-    def __init__(self):
-        self.bookings = []
-    
-    def book(self, start, end):
-        # Binary search for insertion position
-        left, right = 0, len(self.bookings)
-        
-        while left &lt; right:
-            mid = (left + right) // 2
-            if self.bookings[mid][1] &lt;= start:
-                left = mid + 1
-            else:
-                right = mid
-        
-        # Check overlap with neighbors
-        if left &gt; 0 and self.bookings[left - 1][1] &gt; start:
-            return False
-        if left &lt; len(self.bookings) and self.bookings[left][0] &lt; end:
-            return False
-        
-        # No overlap, insert booking
-        self.bookings.insert(left, [start, end])
-        return True
+<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-keyword">class</span> <span class="hljs-title class_">MyCalendar</span>:</span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code">    <span class="hljs-string">&quot;&quot;&quot;</span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">    Calendar with overlap detection using binary search</span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">    Time: O(log n) per booking, Space: O(n)</span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    &quot;&quot;&quot;</span></span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self</span>):</span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">        <span class="hljs-variable language_">self</span>.bookings = []</span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">    </span></span>
+<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">book</span>(<span class="hljs-params">self, start, end</span>):</span></span>
+<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">        <span class="hljs-comment"># Binary search for insertion position</span></span></span>
+<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">        left, right = <span class="hljs-number">0</span>, <span class="hljs-built_in">len</span>(<span class="hljs-variable language_">self</span>.bookings)</span></span>
+<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">        </span></span>
+<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">        <span class="hljs-keyword">while</span> left &lt; right:</span></span>
+<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">            mid = (left + right) // <span class="hljs-number">2</span></span></span>
+<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">            <span class="hljs-keyword">if</span> <span class="hljs-variable language_">self</span>.bookings[mid][<span class="hljs-number">1</span>] &lt;= start:</span></span>
+<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">                left = mid + <span class="hljs-number">1</span></span></span>
+<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">            <span class="hljs-keyword">else</span>:</span></span>
+<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">                right = mid</span></span>
+<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">        </span></span>
+<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">        <span class="hljs-comment"># Check overlap with neighbors</span></span></span>
+<span class="ln-row"><span class="ln-num">21</span><span class="ln-code">        <span class="hljs-keyword">if</span> left &gt; <span class="hljs-number">0</span> <span class="hljs-keyword">and</span> <span class="hljs-variable language_">self</span>.bookings[left - <span class="hljs-number">1</span>][<span class="hljs-number">1</span>] &gt; start:</span></span>
+<span class="ln-row"><span class="ln-num">22</span><span class="ln-code">            <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span></span></span>
+<span class="ln-row"><span class="ln-num">23</span><span class="ln-code">        <span class="hljs-keyword">if</span> left &lt; <span class="hljs-built_in">len</span>(<span class="hljs-variable language_">self</span>.bookings) <span class="hljs-keyword">and</span> <span class="hljs-variable language_">self</span>.bookings[left][<span class="hljs-number">0</span>] &lt; end:</span></span>
+<span class="ln-row"><span class="ln-num">24</span><span class="ln-code">            <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span></span></span>
+<span class="ln-row"><span class="ln-num">25</span><span class="ln-code">        </span></span>
+<span class="ln-row"><span class="ln-num">26</span><span class="ln-code">        <span class="hljs-comment"># No overlap, insert booking</span></span></span>
+<span class="ln-row"><span class="ln-num">27</span><span class="ln-code">        <span class="hljs-variable language_">self</span>.bookings.insert(left, [start, end])</span></span>
+<span class="ln-row"><span class="ln-num">28</span><span class="ln-code">        <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span></span></span>
 </code></pre>
 <h2 id="3-problems-by-pattern" tabindex="-1"><a class="header-anchor" href="#3-problems-by-pattern"><span>3) Problems by Pattern</span></a></h2>
 <h3 id="merging-pattern-problems" tabindex="-1"><a class="header-anchor" href="#merging-pattern-problems"><span><strong>Merging Pattern Problems</strong></span></a></h3>
@@ -773,43 +779,43 @@ public int minMeetingRooms(int[][] intervals) {
 </table>
 <h2 id="4-pattern-selection-strategy" tabindex="-1"><a class="header-anchor" href="#4-pattern-selection-strategy"><span>4) Pattern Selection Strategy</span></a></h2>
 <h3 id="decision-framework-flowchart" tabindex="-1"><a class="header-anchor" href="#decision-framework-flowchart"><span>Decision Framework Flowchart</span></a></h3>
-<pre><code>Problem Analysis for Interval Problems:
-
-1. Are you merging overlapping intervals?
-   ├── YES → Use Merge Template (LC 56, 57)
-   │   ├── Single interval insertion? → Insert Interval Template
-   │   └── Multiple overlaps? → Standard Merge Template
-   └── NO → Continue to 2
-
-2. Are you finding maximum non-overlapping intervals?
-   ├── YES → Use Greedy Template (LC 435, 452)
-   │   ├── Sort by end time
-   │   └── Greedy selection strategy
-   └── NO → Continue to 3
-
-3. Are you finding intersections between interval lists?
-   ├── YES → Use Two Pointer Template (LC 986)
-   │   ├── Two sorted lists? → Standard Two Pointer
-   │   └── Multiple lists? → Merge then process
-   └── NO → Continue to 4
-
-4. Are you managing meeting rooms or resources?
-   ├── YES → Use Priority Queue Template (LC 253)
-   │   ├── Count resources needed? → Min heap approach
-   │   └── Check availability? → Sort + scan
-   └── NO → Continue to 5
-
-5. Are you handling dynamic bookings/calendar?
-   ├── YES → Use Calendar Template (LC 729-732)
-   │   ├── Single booking? → Binary search insertion
-   │   ├── Double booking allowed? → Two lists approach
-   │   └── K-booking? → Timeline/sweep line
-   └── NO → Consider Advanced Templates
-
-6. Advanced cases (Skyline, Rectangles, etc.)
-   ├── Coordinate compression needed?
-   ├── Sweep line algorithm required?
-   └── Segment tree for range operations?
+<pre><code class="hljs"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code">Problem Analysis for Interval Problems:</span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">1. Are you merging overlapping intervals?</span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">   ├── YES → Use Merge Template (LC 56, 57)</span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">   │   ├── Single interval insertion? → Insert Interval Template</span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">   │   └── Multiple overlaps? → Standard Merge Template</span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">   └── NO → Continue to 2</span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">2. Are you finding maximum non-overlapping intervals?</span></span>
+<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">   ├── YES → Use Greedy Template (LC 435, 452)</span></span>
+<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">   │   ├── Sort by end time</span></span>
+<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">   │   └── Greedy selection strategy</span></span>
+<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">   └── NO → Continue to 3</span></span>
+<span class="ln-row"><span class="ln-num">14</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">3. Are you finding intersections between interval lists?</span></span>
+<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">   ├── YES → Use Two Pointer Template (LC 986)</span></span>
+<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">   │   ├── Two sorted lists? → Standard Two Pointer</span></span>
+<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">   │   └── Multiple lists? → Merge then process</span></span>
+<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">   └── NO → Continue to 4</span></span>
+<span class="ln-row"><span class="ln-num">20</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">21</span><span class="ln-code">4. Are you managing meeting rooms or resources?</span></span>
+<span class="ln-row"><span class="ln-num">22</span><span class="ln-code">   ├── YES → Use Priority Queue Template (LC 253)</span></span>
+<span class="ln-row"><span class="ln-num">23</span><span class="ln-code">   │   ├── Count resources needed? → Min heap approach</span></span>
+<span class="ln-row"><span class="ln-num">24</span><span class="ln-code">   │   └── Check availability? → Sort + scan</span></span>
+<span class="ln-row"><span class="ln-num">25</span><span class="ln-code">   └── NO → Continue to 5</span></span>
+<span class="ln-row"><span class="ln-num">26</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">27</span><span class="ln-code">5. Are you handling dynamic bookings/calendar?</span></span>
+<span class="ln-row"><span class="ln-num">28</span><span class="ln-code">   ├── YES → Use Calendar Template (LC 729-732)</span></span>
+<span class="ln-row"><span class="ln-num">29</span><span class="ln-code">   │   ├── Single booking? → Binary search insertion</span></span>
+<span class="ln-row"><span class="ln-num">30</span><span class="ln-code">   │   ├── Double booking allowed? → Two lists approach</span></span>
+<span class="ln-row"><span class="ln-num">31</span><span class="ln-code">   │   └── K-booking? → Timeline/sweep line</span></span>
+<span class="ln-row"><span class="ln-num">32</span><span class="ln-code">   └── NO → Consider Advanced Templates</span></span>
+<span class="ln-row"><span class="ln-num">33</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">34</span><span class="ln-code">6. Advanced cases (Skyline, Rectangles, etc.)</span></span>
+<span class="ln-row"><span class="ln-num">35</span><span class="ln-code">   ├── Coordinate compression needed?</span></span>
+<span class="ln-row"><span class="ln-num">36</span><span class="ln-code">   ├── Sweep line algorithm required?</span></span>
+<span class="ln-row"><span class="ln-num">37</span><span class="ln-code">   └── Segment tree for range operations?</span></span>
 </code></pre>
 <h3 id="template-selection-guide" tabindex="-1"><a class="header-anchor" href="#template-selection-guide"><span>Template Selection Guide</span></a></h3>
 <p><strong>Quick Decision Tree:</strong></p>
@@ -823,48 +829,48 @@ public int minMeetingRooms(int[][] intervals) {
 <h2 id="5-key-patterns-overlap-detection" tabindex="-1"><a class="header-anchor" href="#5-key-patterns-overlap-detection"><span>5) Key Patterns &amp; Overlap Detection</span></a></h2>
 <h3 id="overlap-detection-methods" tabindex="-1"><a class="header-anchor" href="#overlap-detection-methods"><span>Overlap Detection Methods</span></a></h3>
 <h4 id="method-1-after-sorting-by-start-time" tabindex="-1"><a class="header-anchor" href="#method-1-after-sorting-by-start-time"><span>Method 1: After Sorting by Start Time</span></a></h4>
-<pre><code class="language-python">def has_overlap(interval1, interval2):
-    &quot;&quot;&quot;Check if two intervals overlap (sorted by start)&quot;&quot;&quot;
-    return interval1[1] &gt; interval2[0]
+<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-keyword">def</span> <span class="hljs-title function_">has_overlap</span>(<span class="hljs-params">interval1, interval2</span>):</span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code">    <span class="hljs-string">&quot;&quot;&quot;Check if two intervals overlap (sorted by start)&quot;&quot;&quot;</span></span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">    <span class="hljs-keyword">return</span> interval1[<span class="hljs-number">1</span>] &gt; interval2[<span class="hljs-number">0</span>]</span></span>
 </code></pre>
 <h4 id="method-2-general-case-any-order" tabindex="-1"><a class="header-anchor" href="#method-2-general-case-any-order"><span>Method 2: General Case (Any Order)</span></a></h4>
-<pre><code class="language-python">def has_overlap(interval1, interval2):
-    &quot;&quot;&quot;Check if two intervals overlap (any order)&quot;&quot;&quot;
-    start1, end1 = interval1
-    start2, end2 = interval2
-    return start1 &lt; end2 and start2 &lt; end1
+<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-keyword">def</span> <span class="hljs-title function_">has_overlap</span>(<span class="hljs-params">interval1, interval2</span>):</span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code">    <span class="hljs-string">&quot;&quot;&quot;Check if two intervals overlap (any order)&quot;&quot;&quot;</span></span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">    start1, end1 = interval1</span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">    start2, end2 = interval2</span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    <span class="hljs-keyword">return</span> start1 &lt; end2 <span class="hljs-keyword">and</span> start2 &lt; end1</span></span>
 </code></pre>
 <h3 id="overlap-visualization" tabindex="-1"><a class="header-anchor" href="#overlap-visualization"><span>Overlap Visualization</span></a></h3>
-<pre><code>Case 1 - No Overlap:
-|----| interval1
-        |----| interval2
-
-Case 2 - Overlap:
-|-------|
-    |-------|
-
-Case 3 - Complete Overlap:
-|-----------|
-   |-----|
+<pre><code class="hljs"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code">Case 1 - No Overlap:</span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code">|----| interval1</span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">        |----| interval2</span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">Case 2 - Overlap:</span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">|-------|</span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">    |-------|</span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">Case 3 - Complete Overlap:</span></span>
+<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">|-----------|</span></span>
+<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">   |-----|</span></span>
 </code></pre>
 <h3 id="common-interval-operations" tabindex="-1"><a class="header-anchor" href="#common-interval-operations"><span>Common Interval Operations</span></a></h3>
-<pre><code class="language-python">def merge_two_intervals(a, b):
-    &quot;&quot;&quot;Merge two overlapping intervals&quot;&quot;&quot;
-    return [min(a[0], b[0]), max(a[1], b[1])]
-
-def interval_length(interval):
-    &quot;&quot;&quot;Calculate interval length&quot;&quot;&quot;
-    return interval[1] - interval[0]
-
-def intervals_intersection(a, b):
-    &quot;&quot;&quot;Find intersection of two intervals&quot;&quot;&quot;
-    start = max(a[0], b[0])
-    end = min(a[1], b[1])
-    return [start, end] if start &lt;= end else None
-
-def point_in_interval(point, interval):
-    &quot;&quot;&quot;Check if point is in interval&quot;&quot;&quot;
-    return interval[0] &lt;= point &lt;= interval[1]
+<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-keyword">def</span> <span class="hljs-title function_">merge_two_intervals</span>(<span class="hljs-params">a, b</span>):</span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code">    <span class="hljs-string">&quot;&quot;&quot;Merge two overlapping intervals&quot;&quot;&quot;</span></span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">    <span class="hljs-keyword">return</span> [<span class="hljs-built_in">min</span>(a[<span class="hljs-number">0</span>], b[<span class="hljs-number">0</span>]), <span class="hljs-built_in">max</span>(a[<span class="hljs-number">1</span>], b[<span class="hljs-number">1</span>])]</span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code"><span class="hljs-keyword">def</span> <span class="hljs-title function_">interval_length</span>(<span class="hljs-params">interval</span>):</span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    <span class="hljs-string">&quot;&quot;&quot;Calculate interval length&quot;&quot;&quot;</span></span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">    <span class="hljs-keyword">return</span> interval[<span class="hljs-number">1</span>] - interval[<span class="hljs-number">0</span>]</span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">9</span><span class="ln-code"><span class="hljs-keyword">def</span> <span class="hljs-title function_">intervals_intersection</span>(<span class="hljs-params">a, b</span>):</span></span>
+<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">    <span class="hljs-string">&quot;&quot;&quot;Find intersection of two intervals&quot;&quot;&quot;</span></span></span>
+<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">    start = <span class="hljs-built_in">max</span>(a[<span class="hljs-number">0</span>], b[<span class="hljs-number">0</span>])</span></span>
+<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">    end = <span class="hljs-built_in">min</span>(a[<span class="hljs-number">1</span>], b[<span class="hljs-number">1</span>])</span></span>
+<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">    <span class="hljs-keyword">return</span> [start, end] <span class="hljs-keyword">if</span> start &lt;= end <span class="hljs-keyword">else</span> <span class="hljs-literal">None</span></span></span>
+<span class="ln-row"><span class="ln-num">14</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">15</span><span class="ln-code"><span class="hljs-keyword">def</span> <span class="hljs-title function_">point_in_interval</span>(<span class="hljs-params">point, interval</span>):</span></span>
+<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">    <span class="hljs-string">&quot;&quot;&quot;Check if point is in interval&quot;&quot;&quot;</span></span></span>
+<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">    <span class="hljs-keyword">return</span> interval[<span class="hljs-number">0</span>] &lt;= point &lt;= interval[<span class="hljs-number">1</span>]</span></span>
 </code></pre>
 <h2 id="6-summary-quick-reference" tabindex="-1"><a class="header-anchor" href="#6-summary-quick-reference"><span>6) Summary &amp; Quick Reference</span></a></h2>
 <h3 id="complexity-quick-reference" tabindex="-1"><a class="header-anchor" href="#complexity-quick-reference"><span>Complexity Quick Reference</span></a></h3>
@@ -955,32 +961,32 @@ def point_in_interval(point, interval):
 </table>
 <h3 id="common-patterns-tricks" tabindex="-1"><a class="header-anchor" href="#common-patterns-tricks"><span>Common Patterns &amp; Tricks</span></a></h3>
 <h4 id="pattern-1-merge-overlapping" tabindex="-1"><a class="header-anchor" href="#pattern-1-merge-overlapping"><span><strong>Pattern 1: Merge Overlapping</strong></span></a></h4>
-<pre><code class="language-python"># Standard merging after sorting
-intervals.sort()
-merged = [intervals[0]]
-for curr in intervals[1:]:
-    if merged[-1][1] &lt; curr[0]:
-        merged.append(curr)
-    else:
-        merged[-1][1] = max(merged[-1][1], curr[1])
+<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment"># Standard merging after sorting</span></span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code">intervals.sort()</span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">merged = [intervals[<span class="hljs-number">0</span>]]</span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"><span class="hljs-keyword">for</span> curr <span class="hljs-keyword">in</span> intervals[<span class="hljs-number">1</span>:]:</span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    <span class="hljs-keyword">if</span> merged[-<span class="hljs-number">1</span>][<span class="hljs-number">1</span>] &lt; curr[<span class="hljs-number">0</span>]:</span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">        merged.append(curr)</span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">    <span class="hljs-keyword">else</span>:</span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">        merged[-<span class="hljs-number">1</span>][<span class="hljs-number">1</span>] = <span class="hljs-built_in">max</span>(merged[-<span class="hljs-number">1</span>][<span class="hljs-number">1</span>], curr[<span class="hljs-number">1</span>])</span></span>
 </code></pre>
 <h4 id="pattern-2-greedy-selection" tabindex="-1"><a class="header-anchor" href="#pattern-2-greedy-selection"><span><strong>Pattern 2: Greedy Selection</strong></span></a></h4>
-<pre><code class="language-python"># Sort by end time for optimal selection
-intervals.sort(key=lambda x: x[1])
-count = 1
-prev_end = intervals[0][1]
-for start, end in intervals[1:]:
-    if start &gt;= prev_end:
-        count += 1
-        prev_end = end
+<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment"># Sort by end time for optimal selection</span></span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code">intervals.sort(key=<span class="hljs-keyword">lambda</span> x: x[<span class="hljs-number">1</span>])</span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">count = <span class="hljs-number">1</span></span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">prev_end = intervals[<span class="hljs-number">0</span>][<span class="hljs-number">1</span>]</span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code"><span class="hljs-keyword">for</span> start, end <span class="hljs-keyword">in</span> intervals[<span class="hljs-number">1</span>:]:</span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    <span class="hljs-keyword">if</span> start &gt;= prev_end:</span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">        count += <span class="hljs-number">1</span></span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">        prev_end = end</span></span>
 </code></pre>
 <h4 id="pattern-3-timeline-events" tabindex="-1"><a class="header-anchor" href="#pattern-3-timeline-events"><span><strong>Pattern 3: Timeline Events</strong></span></a></h4>
-<pre><code class="language-python"># Convert intervals to events for sweep line
-events = []
-for start, end in intervals:
-    events.append((start, 1))    # start event
-    events.append((end, -1))     # end event
-events.sort()
+<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment"># Convert intervals to events for sweep line</span></span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code">events = []</span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"><span class="hljs-keyword">for</span> start, end <span class="hljs-keyword">in</span> intervals:</span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">    events.append((start, <span class="hljs-number">1</span>))    <span class="hljs-comment"># start event</span></span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    events.append((end, -<span class="hljs-number">1</span>))     <span class="hljs-comment"># end event</span></span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">events.sort()</span></span>
 </code></pre>
 <h3 id="problem-solving-steps" tabindex="-1"><a class="header-anchor" href="#problem-solving-steps"><span>Problem-Solving Steps</span></a></h3>
 <ol>
@@ -1021,19 +1027,19 @@ events.sort()
 </ol>
 <h3 id="data-structure-conversion-tricks" tabindex="-1"><a class="header-anchor" href="#data-structure-conversion-tricks"><span>Data Structure Conversion Tricks</span></a></h3>
 <h4 id="list-to-array-java" tabindex="-1"><a class="header-anchor" href="#list-to-array-java"><span>List to Array (Java)</span></a></h4>
-<pre><code class="language-java">List&lt;int[]&gt; result = new ArrayList&lt;&gt;();
-// ... populate result
-return result.toArray(new int[result.size()][]);
+<pre data-lang="java"><code class="hljs language-java"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code">List&lt;<span class="hljs-type">int</span>[]&gt; result = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();</span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-comment">// ... populate result</span></span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"><span class="hljs-keyword">return</span> result.toArray(<span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[result.size()][]);</span></span>
 </code></pre>
 <h4 id="efficient-merging-in-python" tabindex="-1"><a class="header-anchor" href="#efficient-merging-in-python"><span>Efficient Merging in Python</span></a></h4>
-<pre><code class="language-python"># Using list comprehension for functional style
-def merge_intervals(intervals):
-    intervals.sort()
-    result = [intervals[0]]
-    [result.append(curr) if result[-1][1] &lt; curr[0] 
-     else result[-1].__setitem__(1, max(result[-1][1], curr[1]))
-     for curr in intervals[1:]]
-    return result
+<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment"># Using list comprehension for functional style</span></span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-keyword">def</span> <span class="hljs-title function_">merge_intervals</span>(<span class="hljs-params">intervals</span>):</span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">    intervals.sort()</span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">    result = [intervals[<span class="hljs-number">0</span>]]</span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    [result.append(curr) <span class="hljs-keyword">if</span> result[-<span class="hljs-number">1</span>][<span class="hljs-number">1</span>] &lt; curr[<span class="hljs-number">0</span>] </span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">     <span class="hljs-keyword">else</span> result[-<span class="hljs-number">1</span>].__setitem__(<span class="hljs-number">1</span>, <span class="hljs-built_in">max</span>(result[-<span class="hljs-number">1</span>][<span class="hljs-number">1</span>], curr[<span class="hljs-number">1</span>]))</span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">     <span class="hljs-keyword">for</span> curr <span class="hljs-keyword">in</span> intervals[<span class="hljs-number">1</span>:]]</span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">    <span class="hljs-keyword">return</span> result</span></span>
 </code></pre>
 <h3 id="related-topics" tabindex="-1"><a class="header-anchor" href="#related-topics"><span>Related Topics</span></a></h3>
 <ul>
@@ -1049,227 +1055,227 @@ def merge_intervals(intervals):
 <blockquote>
 <p>Sort by start time; merge overlapping intervals by comparing with last merged.</p>
 </blockquote>
-<pre><code class="language-java">// LC 56 - Merge Intervals
-// IDEA: Sort by start, merge when current.start &lt;= last.end
-// time = O(N log N), space = O(N)
-public int[][] merge(int[][] intervals) {
-    Arrays.sort(intervals, (a, b) -&gt; a[0] - b[0]);
-    List&lt;int[]&gt; merged = new ArrayList&lt;&gt;();
-    for (int[] interval : intervals) {
-        if (merged.isEmpty() || merged.get(merged.size()-1)[1] &lt; interval[0]) {
-            merged.add(interval);
-        } else {
-            merged.get(merged.size()-1)[1] = Math.max(merged.get(merged.size()-1)[1], interval[1]);
-        }
-    }
-    return merged.toArray(new int[merged.size()][]);
-}
+<pre data-lang="java"><code class="hljs language-java"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment">// LC 56 - Merge Intervals</span></span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-comment">// IDEA: Sort by start, merge when current.start &lt;= last.end</span></span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"><span class="hljs-comment">// time = O(N log N), space = O(N)</span></span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"><span class="hljs-keyword">public</span> <span class="hljs-type">int</span>[][] merge(<span class="hljs-type">int</span>[][] intervals) {</span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    Arrays.sort(intervals, (a, b) -&gt; a[<span class="hljs-number">0</span>] - b[<span class="hljs-number">0</span>]);</span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    List&lt;<span class="hljs-type">int</span>[]&gt; merged = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();</span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span>[] interval : intervals) {</span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">        <span class="hljs-keyword">if</span> (merged.isEmpty() || merged.get(merged.size()-<span class="hljs-number">1</span>)[<span class="hljs-number">1</span>] &lt; interval[<span class="hljs-number">0</span>]) {</span></span>
+<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">            merged.add(interval);</span></span>
+<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">        } <span class="hljs-keyword">else</span> {</span></span>
+<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">            merged.get(merged.size()-<span class="hljs-number">1</span>)[<span class="hljs-number">1</span>] = Math.max(merged.get(merged.size()-<span class="hljs-number">1</span>)[<span class="hljs-number">1</span>], interval[<span class="hljs-number">1</span>]);</span></span>
+<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">        }</span></span>
+<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">    }</span></span>
+<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">    <span class="hljs-keyword">return</span> merged.toArray(<span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[merged.size()][]);</span></span>
+<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">}</span></span>
 </code></pre>
 <h3 id="2-2-non-overlapping-intervals-lc-435-greedy-interval-scheduling" tabindex="-1"><a class="header-anchor" href="#2-2-non-overlapping-intervals-lc-435-greedy-interval-scheduling"><span>2-2) Non-overlapping Intervals (LC 435) — Greedy Interval Scheduling</span></a></h3>
 <blockquote>
 <p>Sort by end time; greedily keep intervals that end earliest to minimize removals.</p>
 </blockquote>
-<pre><code class="language-java">// LC 435 - Non-overlapping Intervals
-// IDEA: Greedy — sort by end, count overlapping intervals to remove
-// time = O(N log N), space = O(1)
-public int eraseOverlapIntervals(int[][] intervals) {
-    Arrays.sort(intervals, (a, b) -&gt; a[1] - b[1]);
-    int removals = 0, prevEnd = Integer.MIN_VALUE;
-    for (int[] interval : intervals) {
-        if (interval[0] &lt; prevEnd) {
-            removals++;   // overlap: remove current (keep the one ending earlier)
-        } else {
-            prevEnd = interval[1];
-        }
-    }
-    return removals;
-}
+<pre data-lang="java"><code class="hljs language-java"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment">// LC 435 - Non-overlapping Intervals</span></span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-comment">// IDEA: Greedy — sort by end, count overlapping intervals to remove</span></span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"><span class="hljs-comment">// time = O(N log N), space = O(1)</span></span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"><span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">eraseOverlapIntervals</span><span class="hljs-params">(<span class="hljs-type">int</span>[][] intervals)</span> {</span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    Arrays.sort(intervals, (a, b) -&gt; a[<span class="hljs-number">1</span>] - b[<span class="hljs-number">1</span>]);</span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    <span class="hljs-type">int</span> <span class="hljs-variable">removals</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>, prevEnd = Integer.MIN_VALUE;</span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span>[] interval : intervals) {</span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">        <span class="hljs-keyword">if</span> (interval[<span class="hljs-number">0</span>] &lt; prevEnd) {</span></span>
+<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">            removals++;   <span class="hljs-comment">// overlap: remove current (keep the one ending earlier)</span></span></span>
+<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">        } <span class="hljs-keyword">else</span> {</span></span>
+<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">            prevEnd = interval[<span class="hljs-number">1</span>];</span></span>
+<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">        }</span></span>
+<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">    }</span></span>
+<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">    <span class="hljs-keyword">return</span> removals;</span></span>
+<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">}</span></span>
 </code></pre>
 <h3 id="2-3-insert-interval-lc-57-linear-scan-merge" tabindex="-1"><a class="header-anchor" href="#2-3-insert-interval-lc-57-linear-scan-merge"><span>2-3) Insert Interval (LC 57) — Linear Scan + Merge</span></a></h3>
 <blockquote>
 <p>Insert new interval and merge all overlapping intervals in one pass.</p>
 </blockquote>
-<pre><code class="language-java">// LC 57 - Insert Interval
-// IDEA: Three phases — add non-overlapping left, merge overlapping, add right
-// time = O(N), space = O(N)
-public int[][] insert(int[][] intervals, int[] newInterval) {
-    List&lt;int[]&gt; result = new ArrayList&lt;&gt;();
-    int i = 0, n = intervals.length;
-    // Phase 1: add all intervals that end before newInterval starts
-    while (i &lt; n &amp;&amp; intervals[i][1] &lt; newInterval[0]) result.add(intervals[i++]);
-    // Phase 2: merge overlapping intervals
-    while (i &lt; n &amp;&amp; intervals[i][0] &lt;= newInterval[1]) {
-        newInterval[0] = Math.min(newInterval[0], intervals[i][0]);
-        newInterval[1] = Math.max(newInterval[1], intervals[i][1]);
-        i++;
-    }
-    result.add(newInterval);
-    // Phase 3: add remaining intervals
-    while (i &lt; n) result.add(intervals[i++]);
-    return result.toArray(new int[result.size()][]);
-}
+<pre data-lang="java"><code class="hljs language-java"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment">// LC 57 - Insert Interval</span></span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-comment">// IDEA: Three phases — add non-overlapping left, merge overlapping, add right</span></span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"><span class="hljs-comment">// time = O(N), space = O(N)</span></span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"><span class="hljs-keyword">public</span> <span class="hljs-type">int</span>[][] insert(<span class="hljs-type">int</span>[][] intervals, <span class="hljs-type">int</span>[] newInterval) {</span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    List&lt;<span class="hljs-type">int</span>[]&gt; result = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();</span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    <span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>, n = intervals.length;</span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">    <span class="hljs-comment">// Phase 1: add all intervals that end before newInterval starts</span></span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">    <span class="hljs-keyword">while</span> (i &lt; n &amp;&amp; intervals[i][<span class="hljs-number">1</span>] &lt; newInterval[<span class="hljs-number">0</span>]) result.add(intervals[i++]);</span></span>
+<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">    <span class="hljs-comment">// Phase 2: merge overlapping intervals</span></span></span>
+<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">    <span class="hljs-keyword">while</span> (i &lt; n &amp;&amp; intervals[i][<span class="hljs-number">0</span>] &lt;= newInterval[<span class="hljs-number">1</span>]) {</span></span>
+<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">        newInterval[<span class="hljs-number">0</span>] = Math.min(newInterval[<span class="hljs-number">0</span>], intervals[i][<span class="hljs-number">0</span>]);</span></span>
+<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">        newInterval[<span class="hljs-number">1</span>] = Math.max(newInterval[<span class="hljs-number">1</span>], intervals[i][<span class="hljs-number">1</span>]);</span></span>
+<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">        i++;</span></span>
+<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">    }</span></span>
+<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">    result.add(newInterval);</span></span>
+<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">    <span class="hljs-comment">// Phase 3: add remaining intervals</span></span></span>
+<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">    <span class="hljs-keyword">while</span> (i &lt; n) result.add(intervals[i++]);</span></span>
+<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">    <span class="hljs-keyword">return</span> result.toArray(<span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[result.size()][]);</span></span>
+<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">}</span></span>
 </code></pre>
 <h3 id="2-4-meeting-rooms-ii-lc-253-min-heap-on-end-times" tabindex="-1"><a class="header-anchor" href="#2-4-meeting-rooms-ii-lc-253-min-heap-on-end-times"><span>2-4) Meeting Rooms II (LC 253) — Min-Heap on End Times</span></a></h3>
 <blockquote>
 <p>Sort by start; heap tracks earliest ending room — reuse if room ends before next meeting.</p>
 </blockquote>
-<pre><code class="language-java">// LC 253 - Meeting Rooms II
-// IDEA: Sort by start; min-heap of end times — reuse room if heap.peek() &lt;= start
-// time = O(N log N), space = O(N)
-public int minMeetingRooms(int[][] intervals) {
-    Arrays.sort(intervals, (a, b) -&gt; a[0] - b[0]);
-    PriorityQueue&lt;Integer&gt; heap = new PriorityQueue&lt;&gt;();
-    for (int[] iv : intervals) {
-        if (!heap.isEmpty() &amp;&amp; heap.peek() &lt;= iv[0]) heap.poll();
-        heap.offer(iv[1]);
-    }
-    return heap.size();
-}
+<pre data-lang="java"><code class="hljs language-java"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment">// LC 253 - Meeting Rooms II</span></span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-comment">// IDEA: Sort by start; min-heap of end times — reuse room if heap.peek() &lt;= start</span></span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"><span class="hljs-comment">// time = O(N log N), space = O(N)</span></span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"><span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">minMeetingRooms</span><span class="hljs-params">(<span class="hljs-type">int</span>[][] intervals)</span> {</span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    Arrays.sort(intervals, (a, b) -&gt; a[<span class="hljs-number">0</span>] - b[<span class="hljs-number">0</span>]);</span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    PriorityQueue&lt;Integer&gt; heap = <span class="hljs-keyword">new</span> <span class="hljs-title class_">PriorityQueue</span>&lt;&gt;();</span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span>[] iv : intervals) {</span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">        <span class="hljs-keyword">if</span> (!heap.isEmpty() &amp;&amp; heap.peek() &lt;= iv[<span class="hljs-number">0</span>]) heap.poll();</span></span>
+<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">        heap.offer(iv[<span class="hljs-number">1</span>]);</span></span>
+<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">    }</span></span>
+<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">    <span class="hljs-keyword">return</span> heap.size();</span></span>
+<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">}</span></span>
 </code></pre>
 <h3 id="2-5-minimum-number-of-arrows-to-burst-balloons-lc-452-greedy" tabindex="-1"><a class="header-anchor" href="#2-5-minimum-number-of-arrows-to-burst-balloons-lc-452-greedy"><span>2-5) Minimum Number of Arrows to Burst Balloons (LC 452) — Greedy</span></a></h3>
 <blockquote>
 <p>Sort by end; one arrow at interval’s end bursts all overlapping; advance when gap appears.</p>
 </blockquote>
-<pre><code class="language-java">// LC 452 - Minimum Number of Arrows to Burst Balloons
-// IDEA: Greedy — sort by end; new arrow only when next start &gt; current end
-// time = O(N log N), space = O(1)
-public int findMinArrowShots(int[][] points) {
-    Arrays.sort(points, (a, b) -&gt; Integer.compare(a[1], b[1]));
-    int arrows = 1, end = points[0][1];
-    for (int i = 1; i &lt; points.length; i++)
-        if (points[i][0] &gt; end) { arrows++; end = points[i][1]; }
-    return arrows;
-}
+<pre data-lang="java"><code class="hljs language-java"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment">// LC 452 - Minimum Number of Arrows to Burst Balloons</span></span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-comment">// IDEA: Greedy — sort by end; new arrow only when next start &gt; current end</span></span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"><span class="hljs-comment">// time = O(N log N), space = O(1)</span></span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"><span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">findMinArrowShots</span><span class="hljs-params">(<span class="hljs-type">int</span>[][] points)</span> {</span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    Arrays.sort(points, (a, b) -&gt; Integer.compare(a[<span class="hljs-number">1</span>], b[<span class="hljs-number">1</span>]));</span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    <span class="hljs-type">int</span> <span class="hljs-variable">arrows</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span>, end = points[<span class="hljs-number">0</span>][<span class="hljs-number">1</span>];</span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span>; i &lt; points.length; i++)</span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">        <span class="hljs-keyword">if</span> (points[i][<span class="hljs-number">0</span>] &gt; end) { arrows++; end = points[i][<span class="hljs-number">1</span>]; }</span></span>
+<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">    <span class="hljs-keyword">return</span> arrows;</span></span>
+<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">}</span></span>
 </code></pre>
 <h3 id="2-6-non-overlapping-intervals-lc-435-greedy" tabindex="-1"><a class="header-anchor" href="#2-6-non-overlapping-intervals-lc-435-greedy"><span>2-6) Non-Overlapping Intervals (LC 435) — Greedy</span></a></h3>
 <blockquote>
 <p>Sort by end; keep interval with earliest end greedily; count how many must be removed.</p>
 </blockquote>
-<pre><code class="language-java">// LC 435 - Non-Overlapping Intervals
-// IDEA: Greedy — sort by end; skip (remove) overlapping intervals
-// time = O(N log N), space = O(1)
-public int eraseOverlapIntervals(int[][] intervals) {
-    Arrays.sort(intervals, (a, b) -&gt; a[1] - b[1]);
-    int removals = 0, end = Integer.MIN_VALUE;
-    for (int[] iv : intervals) {
-        if (iv[0] &gt;= end) end = iv[1];
-        else removals++;
-    }
-    return removals;
-}
+<pre data-lang="java"><code class="hljs language-java"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment">// LC 435 - Non-Overlapping Intervals</span></span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-comment">// IDEA: Greedy — sort by end; skip (remove) overlapping intervals</span></span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"><span class="hljs-comment">// time = O(N log N), space = O(1)</span></span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"><span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">eraseOverlapIntervals</span><span class="hljs-params">(<span class="hljs-type">int</span>[][] intervals)</span> {</span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    Arrays.sort(intervals, (a, b) -&gt; a[<span class="hljs-number">1</span>] - b[<span class="hljs-number">1</span>]);</span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    <span class="hljs-type">int</span> <span class="hljs-variable">removals</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>, end = Integer.MIN_VALUE;</span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span>[] iv : intervals) {</span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">        <span class="hljs-keyword">if</span> (iv[<span class="hljs-number">0</span>] &gt;= end) end = iv[<span class="hljs-number">1</span>];</span></span>
+<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">        <span class="hljs-keyword">else</span> removals++;</span></span>
+<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">    }</span></span>
+<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">    <span class="hljs-keyword">return</span> removals;</span></span>
+<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">}</span></span>
 </code></pre>
 <h3 id="2-7-interval-list-intersections-lc-986-two-pointers" tabindex="-1"><a class="header-anchor" href="#2-7-interval-list-intersections-lc-986-two-pointers"><span>2-7) Interval List Intersections (LC 986) — Two Pointers</span></a></h3>
 <blockquote>
 <p>Advance the pointer whose interval ends first; record overlap when ranges intersect.</p>
 </blockquote>
-<pre><code class="language-java">// LC 986 - Interval List Intersections
-// IDEA: Two pointers — compute intersection, advance pointer with smaller end
-// time = O(M+N), space = O(M+N)
-public int[][] intervalIntersection(int[][] A, int[][] B) {
-    List&lt;int[]&gt; res = new ArrayList&lt;&gt;();
-    int i = 0, j = 0;
-    while (i &lt; A.length &amp;&amp; j &lt; B.length) {
-        int lo = Math.max(A[i][0], B[j][0]);
-        int hi = Math.min(A[i][1], B[j][1]);
-        if (lo &lt;= hi) res.add(new int[]{lo, hi});
-        if (A[i][1] &lt; B[j][1]) i++;
-        else j++;
-    }
-    return res.toArray(new int[res.size()][]);
-}
+<pre data-lang="java"><code class="hljs language-java"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment">// LC 986 - Interval List Intersections</span></span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-comment">// IDEA: Two pointers — compute intersection, advance pointer with smaller end</span></span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"><span class="hljs-comment">// time = O(M+N), space = O(M+N)</span></span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"><span class="hljs-keyword">public</span> <span class="hljs-type">int</span>[][] intervalIntersection(<span class="hljs-type">int</span>[][] A, <span class="hljs-type">int</span>[][] B) {</span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    List&lt;<span class="hljs-type">int</span>[]&gt; res = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();</span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    <span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>, j = <span class="hljs-number">0</span>;</span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">    <span class="hljs-keyword">while</span> (i &lt; A.length &amp;&amp; j &lt; B.length) {</span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">        <span class="hljs-type">int</span> <span class="hljs-variable">lo</span> <span class="hljs-operator">=</span> Math.max(A[i][<span class="hljs-number">0</span>], B[j][<span class="hljs-number">0</span>]);</span></span>
+<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">        <span class="hljs-type">int</span> <span class="hljs-variable">hi</span> <span class="hljs-operator">=</span> Math.min(A[i][<span class="hljs-number">1</span>], B[j][<span class="hljs-number">1</span>]);</span></span>
+<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">        <span class="hljs-keyword">if</span> (lo &lt;= hi) res.add(<span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[]{lo, hi});</span></span>
+<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">        <span class="hljs-keyword">if</span> (A[i][<span class="hljs-number">1</span>] &lt; B[j][<span class="hljs-number">1</span>]) i++;</span></span>
+<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">        <span class="hljs-keyword">else</span> j++;</span></span>
+<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">    }</span></span>
+<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">    <span class="hljs-keyword">return</span> res.toArray(<span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[res.size()][]);</span></span>
+<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">}</span></span>
 </code></pre>
 <h3 id="2-8-remove-covered-intervals-lc-1288-sort-greedy" tabindex="-1"><a class="header-anchor" href="#2-8-remove-covered-intervals-lc-1288-sort-greedy"><span>2-8) Remove Covered Intervals (LC 1288) — Sort + Greedy</span></a></h3>
 <blockquote>
 <p>Sort by start asc, end desc; interval is covered if its end ≤ current max end.</p>
 </blockquote>
-<pre><code class="language-java">// LC 1288 - Remove Covered Intervals
-// IDEA: Sort start ASC, end DESC; count intervals not covered by running maxEnd
-// time = O(N log N), space = O(1)
-public int removeCoveredIntervals(int[][] intervals) {
-    Arrays.sort(intervals, (a, b) -&gt; a[0] != b[0] ? a[0] - b[0] : b[1] - a[1]);
-    int count = 0, maxEnd = 0;
-    for (int[] iv : intervals)
-        if (iv[1] &gt; maxEnd) { count++; maxEnd = iv[1]; }
-    return count;
-}
+<pre data-lang="java"><code class="hljs language-java"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment">// LC 1288 - Remove Covered Intervals</span></span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-comment">// IDEA: Sort start ASC, end DESC; count intervals not covered by running maxEnd</span></span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"><span class="hljs-comment">// time = O(N log N), space = O(1)</span></span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"><span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">removeCoveredIntervals</span><span class="hljs-params">(<span class="hljs-type">int</span>[][] intervals)</span> {</span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    Arrays.sort(intervals, (a, b) -&gt; a[<span class="hljs-number">0</span>] != b[<span class="hljs-number">0</span>] ? a[<span class="hljs-number">0</span>] - b[<span class="hljs-number">0</span>] : b[<span class="hljs-number">1</span>] - a[<span class="hljs-number">1</span>]);</span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    <span class="hljs-type">int</span> <span class="hljs-variable">count</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>, maxEnd = <span class="hljs-number">0</span>;</span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span>[] iv : intervals)</span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">        <span class="hljs-keyword">if</span> (iv[<span class="hljs-number">1</span>] &gt; maxEnd) { count++; maxEnd = iv[<span class="hljs-number">1</span>]; }</span></span>
+<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">    <span class="hljs-keyword">return</span> count;</span></span>
+<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">}</span></span>
 </code></pre>
 <h3 id="2-9-video-stitching-lc-1024-greedy-interval-cover" tabindex="-1"><a class="header-anchor" href="#2-9-video-stitching-lc-1024-greedy-interval-cover"><span>2-9) Video Stitching (LC 1024) — Greedy Interval Cover</span></a></h3>
 <blockquote>
 <p>Sort by start; at each frontier pick the clip extending coverage the furthest.</p>
 </blockquote>
-<pre><code class="language-java">// LC 1024 - Video Stitching
-// IDEA: Greedy — at current end, pick clip reaching farthest next position
-// time = O(N log N), space = O(1)
-public int videoStitching(int[][] clips, int time) {
-    Arrays.sort(clips, (a, b) -&gt; a[0] - b[0]);
-    int count = 0, curEnd = 0, farthest = 0, i = 0;
-    while (i &lt; clips.length &amp;&amp; curEnd &lt; time) {
-        while (i &lt; clips.length &amp;&amp; clips[i][0] &lt;= curEnd)
-            farthest = Math.max(farthest, clips[i++][1]);
-        if (farthest == curEnd) return -1;
-        curEnd = farthest;
-        count++;
-    }
-    return curEnd &gt;= time ? count : -1;
-}
+<pre data-lang="java"><code class="hljs language-java"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment">// LC 1024 - Video Stitching</span></span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-comment">// IDEA: Greedy — at current end, pick clip reaching farthest next position</span></span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"><span class="hljs-comment">// time = O(N log N), space = O(1)</span></span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"><span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">videoStitching</span><span class="hljs-params">(<span class="hljs-type">int</span>[][] clips, <span class="hljs-type">int</span> time)</span> {</span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    Arrays.sort(clips, (a, b) -&gt; a[<span class="hljs-number">0</span>] - b[<span class="hljs-number">0</span>]);</span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    <span class="hljs-type">int</span> <span class="hljs-variable">count</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>, curEnd = <span class="hljs-number">0</span>, farthest = <span class="hljs-number">0</span>, i = <span class="hljs-number">0</span>;</span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">    <span class="hljs-keyword">while</span> (i &lt; clips.length &amp;&amp; curEnd &lt; time) {</span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">        <span class="hljs-keyword">while</span> (i &lt; clips.length &amp;&amp; clips[i][<span class="hljs-number">0</span>] &lt;= curEnd)</span></span>
+<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">            farthest = Math.max(farthest, clips[i++][<span class="hljs-number">1</span>]);</span></span>
+<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">        <span class="hljs-keyword">if</span> (farthest == curEnd) <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>;</span></span>
+<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">        curEnd = farthest;</span></span>
+<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">        count++;</span></span>
+<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">    }</span></span>
+<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">    <span class="hljs-keyword">return</span> curEnd &gt;= time ? count : -<span class="hljs-number">1</span>;</span></span>
+<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">}</span></span>
 </code></pre>
 <h3 id="2-10-maximum-profit-in-job-scheduling-lc-1235-dp-binary-search" tabindex="-1"><a class="header-anchor" href="#2-10-maximum-profit-in-job-scheduling-lc-1235-dp-binary-search"><span>2-10) Maximum Profit in Job Scheduling (LC 1235) — DP + Binary Search</span></a></h3>
 <blockquote>
 <p>Sort jobs by end; dp[i] = max profit using first i jobs; binary search for last non-conflicting job.</p>
 </blockquote>
-<pre><code class="language-java">// LC 1235 - Maximum Profit in Job Scheduling
-// IDEA: Sort by end; DP + binary search for latest non-overlapping job
-// time = O(N log N), space = O(N)
-public int jobScheduling(int[] startTime, int[] endTime, int[] profit) {
-    int n = startTime.length;
-    int[][] jobs = new int[n][3];
-    for (int i = 0; i &lt; n; i++) jobs[i] = new int[]{endTime[i], startTime[i], profit[i]};
-    Arrays.sort(jobs, (a, b) -&gt; a[0] - b[0]);
-    int[] dp = new int[n + 1];
-    for (int i = 0; i &lt; n; i++) {
-        int lo = 0, hi = i;
-        while (lo &lt; hi) {
-            int mid = (lo + hi + 1) / 2;
-            if (jobs[mid-1][0] &lt;= jobs[i][1]) lo = mid;
-            else hi = mid - 1;
-        }
-        dp[i+1] = Math.max(dp[i], dp[lo] + jobs[i][2]);
-    }
-    return dp[n];
-}
+<pre data-lang="java"><code class="hljs language-java"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment">// LC 1235 - Maximum Profit in Job Scheduling</span></span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-comment">// IDEA: Sort by end; DP + binary search for latest non-overlapping job</span></span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"><span class="hljs-comment">// time = O(N log N), space = O(N)</span></span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"><span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">jobScheduling</span><span class="hljs-params">(<span class="hljs-type">int</span>[] startTime, <span class="hljs-type">int</span>[] endTime, <span class="hljs-type">int</span>[] profit)</span> {</span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    <span class="hljs-type">int</span> <span class="hljs-variable">n</span> <span class="hljs-operator">=</span> startTime.length;</span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    <span class="hljs-type">int</span>[][] jobs = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[n][<span class="hljs-number">3</span>];</span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; n; i++) jobs[i] = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[]{endTime[i], startTime[i], profit[i]};</span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">    Arrays.sort(jobs, (a, b) -&gt; a[<span class="hljs-number">0</span>] - b[<span class="hljs-number">0</span>]);</span></span>
+<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">    <span class="hljs-type">int</span>[] dp = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[n + <span class="hljs-number">1</span>];</span></span>
+<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; n; i++) {</span></span>
+<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">        <span class="hljs-type">int</span> <span class="hljs-variable">lo</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>, hi = i;</span></span>
+<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">        <span class="hljs-keyword">while</span> (lo &lt; hi) {</span></span>
+<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">            <span class="hljs-type">int</span> <span class="hljs-variable">mid</span> <span class="hljs-operator">=</span> (lo + hi + <span class="hljs-number">1</span>) / <span class="hljs-number">2</span>;</span></span>
+<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">            <span class="hljs-keyword">if</span> (jobs[mid-<span class="hljs-number">1</span>][<span class="hljs-number">0</span>] &lt;= jobs[i][<span class="hljs-number">1</span>]) lo = mid;</span></span>
+<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">            <span class="hljs-keyword">else</span> hi = mid - <span class="hljs-number">1</span>;</span></span>
+<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">        }</span></span>
+<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">        dp[i+<span class="hljs-number">1</span>] = Math.max(dp[i], dp[lo] + jobs[i][<span class="hljs-number">2</span>]);</span></span>
+<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">    }</span></span>
+<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">    <span class="hljs-keyword">return</span> dp[n];</span></span>
+<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">}</span></span>
 </code></pre>
 <h3 id="2-11-my-calendar-i-lc-729-treemap-overlap-check" tabindex="-1"><a class="header-anchor" href="#2-11-my-calendar-i-lc-729-treemap-overlap-check"><span>2-11) My Calendar I (LC 729) — TreeMap Overlap Check</span></a></h3>
 <blockquote>
 <p>TreeMap floor/ceiling gives O(log N) overlap detection per booking.</p>
 </blockquote>
-<pre><code class="language-java">// LC 729 - My Calendar I
-// IDEA: TreeMap — O(log N) overlap check with floorKey / ceilingKey
-// time = O(log N) per booking, space = O(N)
-class MyCalendar {
-    TreeMap&lt;Integer, Integer&gt; cal = new TreeMap&lt;&gt;();
-    public boolean book(int start, int end) {
-        Integer prev = cal.floorKey(start), next = cal.ceilingKey(start);
-        if ((prev == null || cal.get(prev) &lt;= start) &amp;&amp; (next == null || next &gt;= end)) {
-            cal.put(start, end);
-            return true;
-        }
-        return false;
-    }
-}
+<pre data-lang="java"><code class="hljs language-java"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment">// LC 729 - My Calendar I</span></span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-comment">// IDEA: TreeMap — O(log N) overlap check with floorKey / ceilingKey</span></span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"><span class="hljs-comment">// time = O(log N) per booking, space = O(N)</span></span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"><span class="hljs-keyword">class</span> <span class="hljs-title class_">MyCalendar</span> {</span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    TreeMap&lt;Integer, Integer&gt; cal = <span class="hljs-keyword">new</span> <span class="hljs-title class_">TreeMap</span>&lt;&gt;();</span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    <span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">book</span><span class="hljs-params">(<span class="hljs-type">int</span> start, <span class="hljs-type">int</span> end)</span> {</span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">        <span class="hljs-type">Integer</span> <span class="hljs-variable">prev</span> <span class="hljs-operator">=</span> cal.floorKey(start), next = cal.ceilingKey(start);</span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">        <span class="hljs-keyword">if</span> ((prev == <span class="hljs-literal">null</span> || cal.get(prev) &lt;= start) &amp;&amp; (next == <span class="hljs-literal">null</span> || next &gt;= end)) {</span></span>
+<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">            cal.put(start, end);</span></span>
+<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">            <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;</span></span>
+<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">        }</span></span>
+<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">        <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;</span></span>
+<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">    }</span></span>
+<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">}</span></span>
 </code></pre>
 <h3 id="2-12-meeting-rooms-i-lc-252-sort-adjacent-check" tabindex="-1"><a class="header-anchor" href="#2-12-meeting-rooms-i-lc-252-sort-adjacent-check"><span>2-12) Meeting Rooms I (LC 252) — Sort + Adjacent Check</span></a></h3>
 <blockquote>
 <p>Sort by start time; if any meeting starts before previous ends, overlap exists.</p>
 </blockquote>
-<pre><code class="language-java">// LC 252 - Meeting Rooms
-// IDEA: Sort by start; adjacent overlap check
-// time = O(N log N), space = O(1)
-public boolean canAttendMeetings(int[][] intervals) {
-    Arrays.sort(intervals, (a, b) -&gt; a[0] - b[0]);
-    for (int i = 1; i &lt; intervals.length; i++)
-        if (intervals[i][0] &lt; intervals[i-1][1]) return false;
-    return true;
-}
+<pre data-lang="java"><code class="hljs language-java"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment">// LC 252 - Meeting Rooms</span></span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-comment">// IDEA: Sort by start; adjacent overlap check</span></span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"><span class="hljs-comment">// time = O(N log N), space = O(1)</span></span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"><span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">canAttendMeetings</span><span class="hljs-params">(<span class="hljs-type">int</span>[][] intervals)</span> {</span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    Arrays.sort(intervals, (a, b) -&gt; a[<span class="hljs-number">0</span>] - b[<span class="hljs-number">0</span>]);</span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span>; i &lt; intervals.length; i++)</span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">        <span class="hljs-keyword">if</span> (intervals[i][<span class="hljs-number">0</span>] &lt; intervals[i-<span class="hljs-number">1</span>][<span class="hljs-number">1</span>]) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;</span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">    <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;</span></span>
+<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">}</span></span>
 </code></pre>
 
       </div>

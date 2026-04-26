@@ -9,8 +9,7 @@
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>CS</text></svg>">
   <link rel="stylesheet" href="../style.css">
   <link rel="stylesheet" href="../vendor/fonts.css">
-  <link rel="stylesheet" href="../vendor/highlight/github-dark.min.css">
-  <script src="../vendor/highlight/highlight.min.js"></script>
+  <link rel="stylesheet" href="../vendor/highlight/atom-one-dark.min.css">
   <script>
   // Apply theme before render to prevent flash
   (function() {
@@ -21,40 +20,43 @@
   })();
   </script>
   <script>document.addEventListener('DOMContentLoaded', function() {
-    hljs.highlightAll();
-    document.querySelectorAll('pre code').forEach(function(codeEl) {
-      var pre = codeEl.parentElement;
-      var lang = '';
-      var cls = codeEl.className || '';
-      var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
-      if (m) lang = m[1];
-      var wrapper = document.createElement('div');
-      wrapper.className = 'code-block-wrapper';
-      pre.parentNode.insertBefore(wrapper, pre);
-      var header = document.createElement('div');
-      header.className = 'code-block-header';
-      if (lang) {
-        var label = document.createElement('span');
-        label.className = 'code-lang-label';
-        label.textContent = lang;
-        header.appendChild(label);
-      } else {
-        header.appendChild(document.createElement('span'));
-      }
-      var btn = document.createElement('button');
-      btn.className = 'copy-btn';
-      btn.textContent = 'Copy';
-      btn.addEventListener('click', function() {
-        navigator.clipboard.writeText(codeEl.textContent).then(function() {
-          btn.textContent = 'Copied!';
-          btn.classList.add('copied');
-          setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+    // Code block wrappers + copy buttons (highlighting done at build time)
+    try {
+      document.querySelectorAll('pre').forEach(function(pre) {
+        var codeEl = pre.querySelector('code');
+        var lang = pre.getAttribute('data-lang') || '';
+        var wrapper = document.createElement('div');
+        wrapper.className = 'code-block-wrapper';
+        pre.parentNode.insertBefore(wrapper, pre);
+        var header = document.createElement('div');
+        header.className = 'code-block-header';
+        if (lang) {
+          var label = document.createElement('span');
+          label.className = 'code-lang-label';
+          label.textContent = lang;
+          header.appendChild(label);
+        } else {
+          header.appendChild(document.createElement('span'));
+        }
+        var btn = document.createElement('button');
+        btn.className = 'copy-btn';
+        btn.textContent = 'Copy';
+        btn.addEventListener('click', function() {
+          var text = codeEl
+            ? Array.from(codeEl.querySelectorAll('.ln-code')).map(function(el) { return el.textContent; }).join('
+')
+            : pre.textContent;
+          navigator.clipboard.writeText(text).then(function() {
+            btn.textContent = 'Copied!';
+            btn.classList.add('copied');
+            setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+          });
         });
+        header.appendChild(btn);
+        wrapper.appendChild(header);
+        wrapper.appendChild(pre);
       });
-      header.appendChild(btn);
-      wrapper.appendChild(header);
-      wrapper.appendChild(pre);
-    });
+    } catch(e) { console.error('Code block setup error:', e); }
     document.querySelectorAll('table').forEach(function(table) {
       if (!table.parentElement.classList.contains('table-wrap')) {
         var wrapper = document.createElement('div');
@@ -64,32 +66,36 @@
       }
     });
     // Reading progress bar
-    var progressBar = document.getElementById('reading-progress');
-    if (progressBar) {
-      window.addEventListener('scroll', function() {
-        var winScroll = document.documentElement.scrollTop;
-        var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-        progressBar.style.width = height > 0 ? (winScroll / height * 100) + '%' : '0%';
-      });
-    }
-    // Dark mode toggle
-    var toggle = document.getElementById('theme-toggle');
-    if (toggle) {
-      var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-      toggle.textContent = isDark ? '☀️' : '🌙';
-      toggle.addEventListener('click', function() {
-        var dark = document.documentElement.getAttribute('data-theme') === 'dark';
-        if (dark) {
-          document.documentElement.removeAttribute('data-theme');
-          localStorage.setItem('theme', 'light');
-          toggle.textContent = '🌙';
-        } else {
-          document.documentElement.setAttribute('data-theme', 'dark');
-          localStorage.setItem('theme', 'dark');
-          toggle.textContent = '☀️';
-        }
-      });
-    }
+    try {
+      var progressBar = document.getElementById('reading-progress');
+      if (progressBar) {
+        window.addEventListener('scroll', function() {
+          var winScroll = document.documentElement.scrollTop;
+          var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+          progressBar.style.width = height > 0 ? (winScroll / height * 100) + '%' : '0%';
+        });
+      }
+    } catch(e) {}
+    // Dark mode toggle — isolated so errors elsewhere never prevent this from working
+    try {
+      var toggle = document.getElementById('theme-toggle');
+      if (toggle) {
+        var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+        toggle.textContent = isDark ? '☀️' : '🌙';
+        toggle.addEventListener('click', function() {
+          var dark = document.documentElement.getAttribute('data-theme') === 'dark';
+          if (dark) {
+            document.documentElement.removeAttribute('data-theme');
+            localStorage.setItem('theme', 'light');
+            toggle.textContent = '🌙';
+          } else {
+            document.documentElement.setAttribute('data-theme', 'dark');
+            localStorage.setItem('theme', 'dark');
+            toggle.textContent = '☀️';
+          }
+        });
+      }
+    } catch(e) { console.error('Theme toggle error:', e); }
   });</script>
 </head>
 <body>
@@ -169,220 +175,220 @@
 <h3 id="0-2-pattern" tabindex="-1"><a class="header-anchor" href="#0-2-pattern"><span>0-2) Pattern</span></a></h3>
 <h2 id="1-general-form" tabindex="-1"><a class="header-anchor" href="#1-general-form"><span>1) General form</span></a></h2>
 <h4 id="1-0-get-element-if-existed-in-collecitons-custom-sort" tabindex="-1"><a class="header-anchor" href="#1-0-get-element-if-existed-in-collecitons-custom-sort"><span>1-0) get element if existed in collecitons (custom sort)</span></a></h4>
-<pre><code class="language-python"># LC 791. Custom Sort String
-# ...
-s_map = Counter(s)
-res = &quot;&quot;
-for o in order:
-    if o in s_map:
-        res += (o * s_map[o])
-        del s_map[o]
-for s in s_map:
-    res += (s * s_map[s])
-# ...
+<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment"># LC 791. Custom Sort String</span></span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-comment"># ...</span></span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">s_map = Counter(s)</span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">res = <span class="hljs-string">&quot;&quot;</span></span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code"><span class="hljs-keyword">for</span> o <span class="hljs-keyword">in</span> order:</span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    <span class="hljs-keyword">if</span> o <span class="hljs-keyword">in</span> s_map:</span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">        res += (o * s_map[o])</span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">        <span class="hljs-keyword">del</span> s_map[o]</span></span>
+<span class="ln-row"><span class="ln-num">9</span><span class="ln-code"><span class="hljs-keyword">for</span> s <span class="hljs-keyword">in</span> s_map:</span></span>
+<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">    res += (s * s_map[s])</span></span>
+<span class="ln-row"><span class="ln-num">11</span><span class="ln-code"><span class="hljs-comment"># ...</span></span></span>
 </code></pre>
 <h4 id="1-1-collection-counter" tabindex="-1"><a class="header-anchor" href="#1-1-collection-counter"><span>1-1) collection.Counter</span></a></h4>
-<pre><code class="language-python">import collections
-s = ['a','b','c','c']
-c= collections.Counter(s)
-print (c)
-print (c.keys())
-print (c.values())
+<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-keyword">import</span> collections</span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code">s = [<span class="hljs-string">&#x27;a&#x27;</span>,<span class="hljs-string">&#x27;b&#x27;</span>,<span class="hljs-string">&#x27;c&#x27;</span>,<span class="hljs-string">&#x27;c&#x27;</span>]</span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">c= collections.Counter(s)</span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"><span class="hljs-built_in">print</span> (c)</span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code"><span class="hljs-built_in">print</span> (c.keys())</span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code"><span class="hljs-built_in">print</span> (c.values())</span></span>
 </code></pre>
 <h4 id="1-2-important-method-most-common" tabindex="-1"><a class="header-anchor" href="#1-2-important-method-most-common"><span>1-2) Important method - most_common()</span></a></h4>
-<pre><code class="language-python"># 451 Sort Characters By Frequency
-import collections
-s = ['a','b','c','c']
-count = collections.Counter(s).most_common()
-for item, freq in count:
-    print (item, freq)   
-#c 2
-#a 1
-#b 1
+<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment"># 451 Sort Characters By Frequency</span></span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-keyword">import</span> collections</span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">s = [<span class="hljs-string">&#x27;a&#x27;</span>,<span class="hljs-string">&#x27;b&#x27;</span>,<span class="hljs-string">&#x27;c&#x27;</span>,<span class="hljs-string">&#x27;c&#x27;</span>]</span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">count = collections.Counter(s).most_common()</span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code"><span class="hljs-keyword">for</span> item, freq <span class="hljs-keyword">in</span> count:</span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    <span class="hljs-built_in">print</span> (item, freq)   </span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code"><span class="hljs-comment">#c 2</span></span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code"><span class="hljs-comment">#a 1</span></span></span>
+<span class="ln-row"><span class="ln-num">9</span><span class="ln-code"><span class="hljs-comment">#b 1</span></span></span>
 </code></pre>
 <h4 id="1-3-collection-defaultdict-int-list" tabindex="-1"><a class="header-anchor" href="#1-3-collection-defaultdict-int-list"><span>1-3) collection.defaultdict (int, list…)</span></a></h4>
-<pre><code class="language-python">import collections
-s = ['a','b','c','c']
-count = collections.defaultdict(int)
-for i in s:
-    count[i] += 1 
-
-print (count)
-print (dict(count))
+<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-keyword">import</span> collections</span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code">s = [<span class="hljs-string">&#x27;a&#x27;</span>,<span class="hljs-string">&#x27;b&#x27;</span>,<span class="hljs-string">&#x27;c&#x27;</span>,<span class="hljs-string">&#x27;c&#x27;</span>]</span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">count = collections.defaultdict(<span class="hljs-built_in">int</span>)</span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"><span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> s:</span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    count[i] += <span class="hljs-number">1</span> </span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code"><span class="hljs-built_in">print</span> (count)</span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code"><span class="hljs-built_in">print</span> (<span class="hljs-built_in">dict</span>(count))</span></span>
 </code></pre>
-<pre><code class="language-python">import collections
-s=[('yellow', 1), ('blue', 2), ('yellow', 3), ('blue', 4), ('red', 1)]
-count = collections.defaultdict(list)
-for k, v in s:
-    count[k].append(v)
-
-print (count)
-print (count.keys())
-print (count.values())
-print(count.items())
+<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-keyword">import</span> collections</span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code">s=[(<span class="hljs-string">&#x27;yellow&#x27;</span>, <span class="hljs-number">1</span>), (<span class="hljs-string">&#x27;blue&#x27;</span>, <span class="hljs-number">2</span>), (<span class="hljs-string">&#x27;yellow&#x27;</span>, <span class="hljs-number">3</span>), (<span class="hljs-string">&#x27;blue&#x27;</span>, <span class="hljs-number">4</span>), (<span class="hljs-string">&#x27;red&#x27;</span>, <span class="hljs-number">1</span>)]</span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">count = collections.defaultdict(<span class="hljs-built_in">list</span>)</span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"><span class="hljs-keyword">for</span> k, v <span class="hljs-keyword">in</span> s:</span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    count[k].append(v)</span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code"><span class="hljs-built_in">print</span> (count)</span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code"><span class="hljs-built_in">print</span> (count.keys())</span></span>
+<span class="ln-row"><span class="ln-num">9</span><span class="ln-code"><span class="hljs-built_in">print</span> (count.values())</span></span>
+<span class="ln-row"><span class="ln-num">10</span><span class="ln-code"><span class="hljs-built_in">print</span>(count.items())</span></span>
 </code></pre>
 <h4 id="1-3-collection-update" tabindex="-1"><a class="header-anchor" href="#1-3-collection-update"><span>1-3) collection.update()</span></a></h4>
-<pre><code class="language-python"># LC # 554 rick Wall
-import collections
-In [87]: _counter = collections.Counter()
-
-In [88]: _counter
-Out[88]: Counter()
-
-In [89]: _counter.update([1])
-
-In [90]: _counter
-Out[90]: Counter({1: 1})
-
-In [91]: _counter.update([1])
-
-In [92]: _counter
-Out[92]: Counter({1: 2})
-
-In [93]: _counter.update([2])
-
-In [94]: _counter
-Out[94]: Counter({1: 2, 2: 1})
+<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment"># LC # 554 rick Wall</span></span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-keyword">import</span> collections</span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">In [<span class="hljs-number">87</span>]: _counter = collections.Counter()</span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">In [<span class="hljs-number">88</span>]: _counter</span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">Out[<span class="hljs-number">88</span>]: Counter()</span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">In [<span class="hljs-number">89</span>]: _counter.update([<span class="hljs-number">1</span>])</span></span>
+<span class="ln-row"><span class="ln-num">9</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">In [<span class="hljs-number">90</span>]: _counter</span></span>
+<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">Out[<span class="hljs-number">90</span>]: Counter({<span class="hljs-number">1</span>: <span class="hljs-number">1</span>})</span></span>
+<span class="ln-row"><span class="ln-num">12</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">In [<span class="hljs-number">91</span>]: _counter.update([<span class="hljs-number">1</span>])</span></span>
+<span class="ln-row"><span class="ln-num">14</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">In [<span class="hljs-number">92</span>]: _counter</span></span>
+<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">Out[<span class="hljs-number">92</span>]: Counter({<span class="hljs-number">1</span>: <span class="hljs-number">2</span>})</span></span>
+<span class="ln-row"><span class="ln-num">17</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">In [<span class="hljs-number">93</span>]: _counter.update([<span class="hljs-number">2</span>])</span></span>
+<span class="ln-row"><span class="ln-num">19</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">In [<span class="hljs-number">94</span>]: _counter</span></span>
+<span class="ln-row"><span class="ln-num">21</span><span class="ln-code">Out[<span class="hljs-number">94</span>]: Counter({<span class="hljs-number">1</span>: <span class="hljs-number">2</span>, <span class="hljs-number">2</span>: <span class="hljs-number">1</span>})</span></span>
 </code></pre>
 <h3 id="1-4-ordereddict-hashmap-linked-list" tabindex="-1"><a class="header-anchor" href="#1-4-ordereddict-hashmap-linked-list"><span>1-4) <code>OrderedDict </code> ( hashmap + linked list)</span></a></h3>
-<pre><code class="language-python"># LC 146 LRU Cache
-
-# There is a structure called ordered dictionary, it combines behind both hashmap and linked list. In Python this structure is called OrderedDict and in Java LinkedHashMap.
-
-# https://docs.python.org/3/library/collections.html#collections.OrderedDict
-# https://codertw.com/%E7%A8%8B%E5%BC%8F%E8%AA%9E%E8%A8%80/367557/
-# https://www.w3help.cc/a/202107/420653.html
-
-&quot;&quot;&quot;
-
-# OrderedDict = hashmap + linked list
-# CAN make dict ordering (default dict is NOT ordering)
-# Return an instance of a dict subclass that has methods specialized for rearranging dictionary order
-
-* popitem(last=True)
-    The popitem() method for ordered dictionaries returns and removes a (key, value) pair. The pairs are returned in LIFO order if last is true or FIFO order if false.
-
-* move_to_end(key, last=True)
-    Move an existing key to either end of an ordered dictionary. The item is moved to the right end if last is true (the default) or to the beginning if last is false. Raises KeyError if the key does not exist:
-
-&quot;&quot;&quot;
-
-#----------------------------
-# example 0
-#----------------------------
-
-# default dict
-In [34]: d = {}
-    ...: d['a'] = 'A'
-    ...: d['b'] = 'B'
-    ...: d['c'] = 'C'
-    ...: d['d'] = 'D'
-    ...: d['e'] = 'E'
-    ...:
-    ...: for k, v in d.items():
-    ...:     print (k, v)
-    ...:
-# NON ordering
-a A
-b B
-c C
-d D
-e E
-
-# OrderedDict
-In [35]: from collections import OrderedDict
-    ...: d = OrderedDict()
-    ...: d['a'] = 'A'
-    ...: d['b'] = 'B'
-    ...: d['c'] = 'C'
-    ...: d['d'] = 'D'
-    ...: d['e'] = 'E'
-    ...:
-    ...: for k, v in d.items():
-    ...:     print (k, v)
-    ...:
-
-# ordering !!!
-a A
-b B
-c C
-d D
-e E
-
-
-#----------------------------
-# example 1
-#----------------------------
-In [28]:  d = OrderedDict.fromkeys('abcde')
-
-In [29]: d
-Out[29]: OrderedDict([('a', None), ('b', None), ('c', None), ('d', None), ('e', None)])
-
-In [30]: d.move_to_end('b')
-
-In [31]: &quot;&quot;.join(d)
-Out[31]: 'acdeb'
-
-In [32]:
-
-In [32]: d.move_to_end('b', last=False)
-
-In [33]: &quot;&quot;.join(d)
-Out[33]: 'bacde'
-
-#----------------------------
-# example 2
-#----------------------------
-class LastUpdatedOrderedDict(OrderedDict):
-    'Store items in the order the keys were last added'
-
-    def __setitem__(self, key, value):
-        super().__setitem__(key, value)
-        self.move_to_end(key)
-
-#----------------------------
-# example 3
-#----------------------------
-from time import time
-
-class TimeBoundedLRU:
-    &quot;LRU Cache that invalidates and refreshes old entries.&quot;
-
-    def __init__(self, func, maxsize=128, maxage=30):
-        self.cache = OrderedDict()      # { args : (timestamp, result)}
-        self.func = func
-        self.maxsize = maxsize
-        self.maxage = maxage
-
-    def __call__(self, *args):
-        if args in self.cache:
-            self.cache.move_to_end(args)
-            timestamp, result = self.cache[args]
-            if time() - timestamp &lt;= self.maxage:
-                return result
-        result = self.func(*args)
-        self.cache[args] = time(), result
-        if len(self.cache) &gt; self.maxsize:
-            self.cache.popitem(0)
-        return result
+<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment"># LC 146 LRU Cache</span></span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"><span class="hljs-comment"># There is a structure called ordered dictionary, it combines behind both hashmap and linked list. In Python this structure is called OrderedDict and in Java LinkedHashMap.</span></span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code"><span class="hljs-comment"># https://docs.python.org/3/library/collections.html#collections.OrderedDict</span></span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code"><span class="hljs-comment"># https://codertw.com/%E7%A8%8B%E5%BC%8F%E8%AA%9E%E8%A8%80/367557/</span></span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code"><span class="hljs-comment"># https://www.w3help.cc/a/202107/420653.html</span></span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">9</span><span class="ln-code"><span class="hljs-string">&quot;&quot;&quot;</span></span>
+<span class="ln-row"><span class="ln-num">10</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">11</span><span class="ln-code"># OrderedDict = hashmap + linked list</span></span>
+<span class="ln-row"><span class="ln-num">12</span><span class="ln-code"># CAN make dict ordering (default dict is NOT ordering)</span></span>
+<span class="ln-row"><span class="ln-num">13</span><span class="ln-code"># Return an instance of a dict subclass that has methods specialized for rearranging dictionary order</span></span>
+<span class="ln-row"><span class="ln-num">14</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">* popitem(last=True)</span></span>
+<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">    The popitem() method for ordered dictionaries returns and removes a (key, value) pair. The pairs are returned in LIFO order if last is true or FIFO order if false.</span></span>
+<span class="ln-row"><span class="ln-num">17</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">* move_to_end(key, last=True)</span></span>
+<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">    Move an existing key to either end of an ordered dictionary. The item is moved to the right end if last is true (the default) or to the beginning if last is false. Raises KeyError if the key does not exist:</span></span>
+<span class="ln-row"><span class="ln-num">20</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">21</span><span class="ln-code">&quot;&quot;&quot;</span></span></span>
+<span class="ln-row"><span class="ln-num">22</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">23</span><span class="ln-code"><span class="hljs-comment">#----------------------------</span></span></span>
+<span class="ln-row"><span class="ln-num">24</span><span class="ln-code"><span class="hljs-comment"># example 0</span></span></span>
+<span class="ln-row"><span class="ln-num">25</span><span class="ln-code"><span class="hljs-comment">#----------------------------</span></span></span>
+<span class="ln-row"><span class="ln-num">26</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">27</span><span class="ln-code"><span class="hljs-comment"># default dict</span></span></span>
+<span class="ln-row"><span class="ln-num">28</span><span class="ln-code">In [<span class="hljs-number">34</span>]: d = {}</span></span>
+<span class="ln-row"><span class="ln-num">29</span><span class="ln-code">    ...: d[<span class="hljs-string">&#x27;a&#x27;</span>] = <span class="hljs-string">&#x27;A&#x27;</span></span></span>
+<span class="ln-row"><span class="ln-num">30</span><span class="ln-code">    ...: d[<span class="hljs-string">&#x27;b&#x27;</span>] = <span class="hljs-string">&#x27;B&#x27;</span></span></span>
+<span class="ln-row"><span class="ln-num">31</span><span class="ln-code">    ...: d[<span class="hljs-string">&#x27;c&#x27;</span>] = <span class="hljs-string">&#x27;C&#x27;</span></span></span>
+<span class="ln-row"><span class="ln-num">32</span><span class="ln-code">    ...: d[<span class="hljs-string">&#x27;d&#x27;</span>] = <span class="hljs-string">&#x27;D&#x27;</span></span></span>
+<span class="ln-row"><span class="ln-num">33</span><span class="ln-code">    ...: d[<span class="hljs-string">&#x27;e&#x27;</span>] = <span class="hljs-string">&#x27;E&#x27;</span></span></span>
+<span class="ln-row"><span class="ln-num">34</span><span class="ln-code">    ...:</span></span>
+<span class="ln-row"><span class="ln-num">35</span><span class="ln-code">    ...: <span class="hljs-keyword">for</span> k, v <span class="hljs-keyword">in</span> d.items():</span></span>
+<span class="ln-row"><span class="ln-num">36</span><span class="ln-code">    ...:     <span class="hljs-built_in">print</span> (k, v)</span></span>
+<span class="ln-row"><span class="ln-num">37</span><span class="ln-code">    ...:</span></span>
+<span class="ln-row"><span class="ln-num">38</span><span class="ln-code"><span class="hljs-comment"># NON ordering</span></span></span>
+<span class="ln-row"><span class="ln-num">39</span><span class="ln-code">a A</span></span>
+<span class="ln-row"><span class="ln-num">40</span><span class="ln-code">b B</span></span>
+<span class="ln-row"><span class="ln-num">41</span><span class="ln-code">c C</span></span>
+<span class="ln-row"><span class="ln-num">42</span><span class="ln-code">d D</span></span>
+<span class="ln-row"><span class="ln-num">43</span><span class="ln-code">e E</span></span>
+<span class="ln-row"><span class="ln-num">44</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">45</span><span class="ln-code"><span class="hljs-comment"># OrderedDict</span></span></span>
+<span class="ln-row"><span class="ln-num">46</span><span class="ln-code">In [<span class="hljs-number">35</span>]: <span class="hljs-keyword">from</span> collections <span class="hljs-keyword">import</span> OrderedDict</span></span>
+<span class="ln-row"><span class="ln-num">47</span><span class="ln-code">    ...: d = OrderedDict()</span></span>
+<span class="ln-row"><span class="ln-num">48</span><span class="ln-code">    ...: d[<span class="hljs-string">&#x27;a&#x27;</span>] = <span class="hljs-string">&#x27;A&#x27;</span></span></span>
+<span class="ln-row"><span class="ln-num">49</span><span class="ln-code">    ...: d[<span class="hljs-string">&#x27;b&#x27;</span>] = <span class="hljs-string">&#x27;B&#x27;</span></span></span>
+<span class="ln-row"><span class="ln-num">50</span><span class="ln-code">    ...: d[<span class="hljs-string">&#x27;c&#x27;</span>] = <span class="hljs-string">&#x27;C&#x27;</span></span></span>
+<span class="ln-row"><span class="ln-num">51</span><span class="ln-code">    ...: d[<span class="hljs-string">&#x27;d&#x27;</span>] = <span class="hljs-string">&#x27;D&#x27;</span></span></span>
+<span class="ln-row"><span class="ln-num">52</span><span class="ln-code">    ...: d[<span class="hljs-string">&#x27;e&#x27;</span>] = <span class="hljs-string">&#x27;E&#x27;</span></span></span>
+<span class="ln-row"><span class="ln-num">53</span><span class="ln-code">    ...:</span></span>
+<span class="ln-row"><span class="ln-num">54</span><span class="ln-code">    ...: <span class="hljs-keyword">for</span> k, v <span class="hljs-keyword">in</span> d.items():</span></span>
+<span class="ln-row"><span class="ln-num">55</span><span class="ln-code">    ...:     <span class="hljs-built_in">print</span> (k, v)</span></span>
+<span class="ln-row"><span class="ln-num">56</span><span class="ln-code">    ...:</span></span>
+<span class="ln-row"><span class="ln-num">57</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">58</span><span class="ln-code"><span class="hljs-comment"># ordering !!!</span></span></span>
+<span class="ln-row"><span class="ln-num">59</span><span class="ln-code">a A</span></span>
+<span class="ln-row"><span class="ln-num">60</span><span class="ln-code">b B</span></span>
+<span class="ln-row"><span class="ln-num">61</span><span class="ln-code">c C</span></span>
+<span class="ln-row"><span class="ln-num">62</span><span class="ln-code">d D</span></span>
+<span class="ln-row"><span class="ln-num">63</span><span class="ln-code">e E</span></span>
+<span class="ln-row"><span class="ln-num">64</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">65</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">66</span><span class="ln-code"><span class="hljs-comment">#----------------------------</span></span></span>
+<span class="ln-row"><span class="ln-num">67</span><span class="ln-code"><span class="hljs-comment"># example 1</span></span></span>
+<span class="ln-row"><span class="ln-num">68</span><span class="ln-code"><span class="hljs-comment">#----------------------------</span></span></span>
+<span class="ln-row"><span class="ln-num">69</span><span class="ln-code">In [<span class="hljs-number">28</span>]:  d = OrderedDict.fromkeys(<span class="hljs-string">&#x27;abcde&#x27;</span>)</span></span>
+<span class="ln-row"><span class="ln-num">70</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">71</span><span class="ln-code">In [<span class="hljs-number">29</span>]: d</span></span>
+<span class="ln-row"><span class="ln-num">72</span><span class="ln-code">Out[<span class="hljs-number">29</span>]: OrderedDict([(<span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-literal">None</span>), (<span class="hljs-string">&#x27;b&#x27;</span>, <span class="hljs-literal">None</span>), (<span class="hljs-string">&#x27;c&#x27;</span>, <span class="hljs-literal">None</span>), (<span class="hljs-string">&#x27;d&#x27;</span>, <span class="hljs-literal">None</span>), (<span class="hljs-string">&#x27;e&#x27;</span>, <span class="hljs-literal">None</span>)])</span></span>
+<span class="ln-row"><span class="ln-num">73</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">74</span><span class="ln-code">In [<span class="hljs-number">30</span>]: d.move_to_end(<span class="hljs-string">&#x27;b&#x27;</span>)</span></span>
+<span class="ln-row"><span class="ln-num">75</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">76</span><span class="ln-code">In [<span class="hljs-number">31</span>]: <span class="hljs-string">&quot;&quot;</span>.join(d)</span></span>
+<span class="ln-row"><span class="ln-num">77</span><span class="ln-code">Out[<span class="hljs-number">31</span>]: <span class="hljs-string">&#x27;acdeb&#x27;</span></span></span>
+<span class="ln-row"><span class="ln-num">78</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">79</span><span class="ln-code">In [<span class="hljs-number">32</span>]:</span></span>
+<span class="ln-row"><span class="ln-num">80</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">81</span><span class="ln-code">In [<span class="hljs-number">32</span>]: d.move_to_end(<span class="hljs-string">&#x27;b&#x27;</span>, last=<span class="hljs-literal">False</span>)</span></span>
+<span class="ln-row"><span class="ln-num">82</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">83</span><span class="ln-code">In [<span class="hljs-number">33</span>]: <span class="hljs-string">&quot;&quot;</span>.join(d)</span></span>
+<span class="ln-row"><span class="ln-num">84</span><span class="ln-code">Out[<span class="hljs-number">33</span>]: <span class="hljs-string">&#x27;bacde&#x27;</span></span></span>
+<span class="ln-row"><span class="ln-num">85</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">86</span><span class="ln-code"><span class="hljs-comment">#----------------------------</span></span></span>
+<span class="ln-row"><span class="ln-num">87</span><span class="ln-code"><span class="hljs-comment"># example 2</span></span></span>
+<span class="ln-row"><span class="ln-num">88</span><span class="ln-code"><span class="hljs-comment">#----------------------------</span></span></span>
+<span class="ln-row"><span class="ln-num">89</span><span class="ln-code"><span class="hljs-keyword">class</span> <span class="hljs-title class_">LastUpdatedOrderedDict</span>(<span class="hljs-title class_ inherited__">OrderedDict</span>):</span></span>
+<span class="ln-row"><span class="ln-num">90</span><span class="ln-code">    <span class="hljs-string">&#x27;Store items in the order the keys were last added&#x27;</span></span></span>
+<span class="ln-row"><span class="ln-num">91</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">92</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__setitem__</span>(<span class="hljs-params">self, key, value</span>):</span></span>
+<span class="ln-row"><span class="ln-num">93</span><span class="ln-code">        <span class="hljs-built_in">super</span>().__setitem__(key, value)</span></span>
+<span class="ln-row"><span class="ln-num">94</span><span class="ln-code">        <span class="hljs-variable language_">self</span>.move_to_end(key)</span></span>
+<span class="ln-row"><span class="ln-num">95</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">96</span><span class="ln-code"><span class="hljs-comment">#----------------------------</span></span></span>
+<span class="ln-row"><span class="ln-num">97</span><span class="ln-code"><span class="hljs-comment"># example 3</span></span></span>
+<span class="ln-row"><span class="ln-num">98</span><span class="ln-code"><span class="hljs-comment">#----------------------------</span></span></span>
+<span class="ln-row"><span class="ln-num">99</span><span class="ln-code"><span class="hljs-keyword">from</span> time <span class="hljs-keyword">import</span> time</span></span>
+<span class="ln-row"><span class="ln-num">100</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">101</span><span class="ln-code"><span class="hljs-keyword">class</span> <span class="hljs-title class_">TimeBoundedLRU</span>:</span></span>
+<span class="ln-row"><span class="ln-num">102</span><span class="ln-code">    <span class="hljs-string">&quot;LRU Cache that invalidates and refreshes old entries.&quot;</span></span></span>
+<span class="ln-row"><span class="ln-num">103</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">104</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, func, maxsize=<span class="hljs-number">128</span>, maxage=<span class="hljs-number">30</span></span>):</span></span>
+<span class="ln-row"><span class="ln-num">105</span><span class="ln-code">        <span class="hljs-variable language_">self</span>.cache = OrderedDict()      <span class="hljs-comment"># { args : (timestamp, result)}</span></span></span>
+<span class="ln-row"><span class="ln-num">106</span><span class="ln-code">        <span class="hljs-variable language_">self</span>.func = func</span></span>
+<span class="ln-row"><span class="ln-num">107</span><span class="ln-code">        <span class="hljs-variable language_">self</span>.maxsize = maxsize</span></span>
+<span class="ln-row"><span class="ln-num">108</span><span class="ln-code">        <span class="hljs-variable language_">self</span>.maxage = maxage</span></span>
+<span class="ln-row"><span class="ln-num">109</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">110</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__call__</span>(<span class="hljs-params">self, *args</span>):</span></span>
+<span class="ln-row"><span class="ln-num">111</span><span class="ln-code">        <span class="hljs-keyword">if</span> args <span class="hljs-keyword">in</span> <span class="hljs-variable language_">self</span>.cache:</span></span>
+<span class="ln-row"><span class="ln-num">112</span><span class="ln-code">            <span class="hljs-variable language_">self</span>.cache.move_to_end(args)</span></span>
+<span class="ln-row"><span class="ln-num">113</span><span class="ln-code">            timestamp, result = <span class="hljs-variable language_">self</span>.cache[args]</span></span>
+<span class="ln-row"><span class="ln-num">114</span><span class="ln-code">            <span class="hljs-keyword">if</span> time() - timestamp &lt;= <span class="hljs-variable language_">self</span>.maxage:</span></span>
+<span class="ln-row"><span class="ln-num">115</span><span class="ln-code">                <span class="hljs-keyword">return</span> result</span></span>
+<span class="ln-row"><span class="ln-num">116</span><span class="ln-code">        result = <span class="hljs-variable language_">self</span>.func(*args)</span></span>
+<span class="ln-row"><span class="ln-num">117</span><span class="ln-code">        <span class="hljs-variable language_">self</span>.cache[args] = time(), result</span></span>
+<span class="ln-row"><span class="ln-num">118</span><span class="ln-code">        <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(<span class="hljs-variable language_">self</span>.cache) &gt; <span class="hljs-variable language_">self</span>.maxsize:</span></span>
+<span class="ln-row"><span class="ln-num">119</span><span class="ln-code">            <span class="hljs-variable language_">self</span>.cache.popitem(<span class="hljs-number">0</span>)</span></span>
+<span class="ln-row"><span class="ln-num">120</span><span class="ln-code">        <span class="hljs-keyword">return</span> result</span></span>
 </code></pre>
 <h2 id="2-lc-example" tabindex="-1"><a class="header-anchor" href="#2-lc-example"><span>2) LC Example</span></a></h2>
 <h3 id="2-1-custom-sort-string" tabindex="-1"><a class="header-anchor" href="#2-1-custom-sort-string"><span>2-1) Custom Sort String</span></a></h3>
-<pre><code class="language-python"># LC 791. Custom Sort String
-# V0
-# IDEA : COUNTER
-from collections import Counter
-class Solution(object):
-    def customSortString(self, order, s):
-        s_map = Counter(s)
-        res = &quot;&quot;
-        for o in order:
-            if o in s_map:
-                res += (o * s_map[o])
-                del s_map[o]
-        for s in s_map:
-            res += s * s_map[s]
-        return res
+<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment"># LC 791. Custom Sort String</span></span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-comment"># V0</span></span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"><span class="hljs-comment"># IDEA : COUNTER</span></span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"><span class="hljs-keyword">from</span> collections <span class="hljs-keyword">import</span> Counter</span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):</span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">customSortString</span>(<span class="hljs-params">self, order, s</span>):</span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">        s_map = Counter(s)</span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">        res = <span class="hljs-string">&quot;&quot;</span></span></span>
+<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">        <span class="hljs-keyword">for</span> o <span class="hljs-keyword">in</span> order:</span></span>
+<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">            <span class="hljs-keyword">if</span> o <span class="hljs-keyword">in</span> s_map:</span></span>
+<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">                res += (o * s_map[o])</span></span>
+<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">                <span class="hljs-keyword">del</span> s_map[o]</span></span>
+<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">        <span class="hljs-keyword">for</span> s <span class="hljs-keyword">in</span> s_map:</span></span>
+<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">            res += s * s_map[s]</span></span>
+<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">        <span class="hljs-keyword">return</span> res</span></span>
 </code></pre>
 
       </div>

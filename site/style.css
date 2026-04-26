@@ -295,22 +295,22 @@ code {
 }
 
 pre {
-  background: #1e1e1e;
+  background: #282c34;
   padding: 1.25rem;
   border-radius: 8px;
   overflow-x: auto;
   margin: 1.5rem 0;
-  border: 1px solid #333;
+  border: 1px solid #3e4451;
 }
 
 pre code {
   background: none;
   padding: 0;
-  color: #d4d4d4;
   font-size: 0.875rem;
   font-weight: 400;
   line-height: 1.6;
   border: none;
+  display: block;
 }
 
 /* Inline code in headings */
@@ -1105,28 +1105,24 @@ img {
 }
 
 /* highlight.js overrides for consistent look */
+/* hljs base — colors come from atom-one-dark.min.css; just reset padding */
 .hljs {
-  background: #282c34 !important;
-  color: #abb2bf !important;
+  background: transparent !important;
   padding: 0 !important;
 }
 
-/* Line numbers */
-.hljs-ln {
-  display: block;
-  width: 100%;
-}
-
-.hljs-ln-line {
+/* Line numbers (built at build time with .ln-* classes) */
+.ln-row {
   display: flex;
   align-items: stretch;
+  min-height: 1.6em;
 }
 
-.hljs-ln-n {
+.ln-num {
   display: inline-block;
   min-width: 3ch;
-  padding-right: 1.2em;
-  padding-left: 0.5em;
+  padding-right: 1em;
+  padding-left: 0.4em;
   color: #636d83;
   font-size: 0.85em;
   text-align: right;
@@ -1136,11 +1132,7 @@ img {
   flex-shrink: 0;
 }
 
-.hljs-ln-n::before {
-  content: attr(data-line-number);
-}
-
-.hljs-ln-code {
+.ln-code {
   flex: 1;
   white-space: pre;
 }

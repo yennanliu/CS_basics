@@ -9,8 +9,7 @@
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>CS</text></svg>">
   <link rel="stylesheet" href="../style.css">
   <link rel="stylesheet" href="../vendor/fonts.css">
-  <link rel="stylesheet" href="../vendor/highlight/github-dark.min.css">
-  <script src="../vendor/highlight/highlight.min.js"></script>
+  <link rel="stylesheet" href="../vendor/highlight/atom-one-dark.min.css">
   <script>
   // Apply theme before render to prevent flash
   (function() {
@@ -21,40 +20,43 @@
   })();
   </script>
   <script>document.addEventListener('DOMContentLoaded', function() {
-    hljs.highlightAll();
-    document.querySelectorAll('pre code').forEach(function(codeEl) {
-      var pre = codeEl.parentElement;
-      var lang = '';
-      var cls = codeEl.className || '';
-      var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
-      if (m) lang = m[1];
-      var wrapper = document.createElement('div');
-      wrapper.className = 'code-block-wrapper';
-      pre.parentNode.insertBefore(wrapper, pre);
-      var header = document.createElement('div');
-      header.className = 'code-block-header';
-      if (lang) {
-        var label = document.createElement('span');
-        label.className = 'code-lang-label';
-        label.textContent = lang;
-        header.appendChild(label);
-      } else {
-        header.appendChild(document.createElement('span'));
-      }
-      var btn = document.createElement('button');
-      btn.className = 'copy-btn';
-      btn.textContent = 'Copy';
-      btn.addEventListener('click', function() {
-        navigator.clipboard.writeText(codeEl.textContent).then(function() {
-          btn.textContent = 'Copied!';
-          btn.classList.add('copied');
-          setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+    // Code block wrappers + copy buttons (highlighting done at build time)
+    try {
+      document.querySelectorAll('pre').forEach(function(pre) {
+        var codeEl = pre.querySelector('code');
+        var lang = pre.getAttribute('data-lang') || '';
+        var wrapper = document.createElement('div');
+        wrapper.className = 'code-block-wrapper';
+        pre.parentNode.insertBefore(wrapper, pre);
+        var header = document.createElement('div');
+        header.className = 'code-block-header';
+        if (lang) {
+          var label = document.createElement('span');
+          label.className = 'code-lang-label';
+          label.textContent = lang;
+          header.appendChild(label);
+        } else {
+          header.appendChild(document.createElement('span'));
+        }
+        var btn = document.createElement('button');
+        btn.className = 'copy-btn';
+        btn.textContent = 'Copy';
+        btn.addEventListener('click', function() {
+          var text = codeEl
+            ? Array.from(codeEl.querySelectorAll('.ln-code')).map(function(el) { return el.textContent; }).join('
+')
+            : pre.textContent;
+          navigator.clipboard.writeText(text).then(function() {
+            btn.textContent = 'Copied!';
+            btn.classList.add('copied');
+            setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+          });
         });
+        header.appendChild(btn);
+        wrapper.appendChild(header);
+        wrapper.appendChild(pre);
       });
-      header.appendChild(btn);
-      wrapper.appendChild(header);
-      wrapper.appendChild(pre);
-    });
+    } catch(e) { console.error('Code block setup error:', e); }
     document.querySelectorAll('table').forEach(function(table) {
       if (!table.parentElement.classList.contains('table-wrap')) {
         var wrapper = document.createElement('div');
@@ -64,32 +66,36 @@
       }
     });
     // Reading progress bar
-    var progressBar = document.getElementById('reading-progress');
-    if (progressBar) {
-      window.addEventListener('scroll', function() {
-        var winScroll = document.documentElement.scrollTop;
-        var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-        progressBar.style.width = height > 0 ? (winScroll / height * 100) + '%' : '0%';
-      });
-    }
-    // Dark mode toggle
-    var toggle = document.getElementById('theme-toggle');
-    if (toggle) {
-      var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-      toggle.textContent = isDark ? '☀️' : '🌙';
-      toggle.addEventListener('click', function() {
-        var dark = document.documentElement.getAttribute('data-theme') === 'dark';
-        if (dark) {
-          document.documentElement.removeAttribute('data-theme');
-          localStorage.setItem('theme', 'light');
-          toggle.textContent = '🌙';
-        } else {
-          document.documentElement.setAttribute('data-theme', 'dark');
-          localStorage.setItem('theme', 'dark');
-          toggle.textContent = '☀️';
-        }
-      });
-    }
+    try {
+      var progressBar = document.getElementById('reading-progress');
+      if (progressBar) {
+        window.addEventListener('scroll', function() {
+          var winScroll = document.documentElement.scrollTop;
+          var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+          progressBar.style.width = height > 0 ? (winScroll / height * 100) + '%' : '0%';
+        });
+      }
+    } catch(e) {}
+    // Dark mode toggle — isolated so errors elsewhere never prevent this from working
+    try {
+      var toggle = document.getElementById('theme-toggle');
+      if (toggle) {
+        var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+        toggle.textContent = isDark ? '☀️' : '🌙';
+        toggle.addEventListener('click', function() {
+          var dark = document.documentElement.getAttribute('data-theme') === 'dark';
+          if (dark) {
+            document.documentElement.removeAttribute('data-theme');
+            localStorage.setItem('theme', 'light');
+            toggle.textContent = '🌙';
+          } else {
+            document.documentElement.setAttribute('data-theme', 'dark');
+            localStorage.setItem('theme', 'dark');
+            toggle.textContent = '☀️';
+          }
+        });
+      }
+    } catch(e) { console.error('Theme toggle error:', e); }
   });</script>
 </head>
 <body>
@@ -141,108 +147,108 @@
 </ul>
 <h2 id="pattern-1-print-in-order-sequence-control" tabindex="-1"><a class="header-anchor" href="#pattern-1-print-in-order-sequence-control"><span>Pattern 1: Print in Order / Sequence Control</span></a></h2>
 <h3 id="using-countdownlatch" tabindex="-1"><a class="header-anchor" href="#using-countdownlatch"><span>Using CountDownLatch</span></a></h3>
-<pre><code class="language-java">// LC 1114 — Print in Order
-class Foo {
-    private CountDownLatch latch1 = new CountDownLatch(1);
-    private CountDownLatch latch2 = new CountDownLatch(1);
-
-    public void first(Runnable printFirst) throws InterruptedException {
-        printFirst.run();
-        latch1.countDown();
-    }
-
-    public void second(Runnable printSecond) throws InterruptedException {
-        latch1.await();
-        printSecond.run();
-        latch2.countDown();
-    }
-
-    public void third(Runnable printThird) throws InterruptedException {
-        latch2.await();
-        printThird.run();
-    }
-}
+<pre data-lang="java"><code class="hljs language-java"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment">// LC 1114 — Print in Order</span></span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Foo</span> {</span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">    <span class="hljs-keyword">private</span> <span class="hljs-type">CountDownLatch</span> <span class="hljs-variable">latch1</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">CountDownLatch</span>(<span class="hljs-number">1</span>);</span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">    <span class="hljs-keyword">private</span> <span class="hljs-type">CountDownLatch</span> <span class="hljs-variable">latch2</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">CountDownLatch</span>(<span class="hljs-number">1</span>);</span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">first</span><span class="hljs-params">(Runnable printFirst)</span> <span class="hljs-keyword">throws</span> InterruptedException {</span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">        printFirst.run();</span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">        latch1.countDown();</span></span>
+<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">    }</span></span>
+<span class="ln-row"><span class="ln-num">10</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">second</span><span class="hljs-params">(Runnable printSecond)</span> <span class="hljs-keyword">throws</span> InterruptedException {</span></span>
+<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">        latch1.await();</span></span>
+<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">        printSecond.run();</span></span>
+<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">        latch2.countDown();</span></span>
+<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">    }</span></span>
+<span class="ln-row"><span class="ln-num">16</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">third</span><span class="hljs-params">(Runnable printThird)</span> <span class="hljs-keyword">throws</span> InterruptedException {</span></span>
+<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">        latch2.await();</span></span>
+<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">        printThird.run();</span></span>
+<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">    }</span></span>
+<span class="ln-row"><span class="ln-num">21</span><span class="ln-code">}</span></span>
 </code></pre>
 <h3 id="using-semaphore" tabindex="-1"><a class="header-anchor" href="#using-semaphore"><span>Using Semaphore</span></a></h3>
-<pre><code class="language-java">// LC 1115 — Print FooBar Alternately
-class FooBar {
-    private int n;
-    private Semaphore fooSem = new Semaphore(1);
-    private Semaphore barSem = new Semaphore(0);
-
-    public FooBar(int n) { this.n = n; }
-
-    public void foo(Runnable printFoo) throws InterruptedException {
-        for (int i = 0; i &lt; n; i++) {
-            fooSem.acquire();
-            printFoo.run();
-            barSem.release();
-        }
-    }
-
-    public void bar(Runnable printBar) throws InterruptedException {
-        for (int i = 0; i &lt; n; i++) {
-            barSem.acquire();
-            printBar.run();
-            fooSem.release();
-        }
-    }
-}
+<pre data-lang="java"><code class="hljs language-java"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment">// LC 1115 — Print FooBar Alternately</span></span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-keyword">class</span> <span class="hljs-title class_">FooBar</span> {</span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">    <span class="hljs-keyword">private</span> <span class="hljs-type">int</span> n;</span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">    <span class="hljs-keyword">private</span> <span class="hljs-type">Semaphore</span> <span class="hljs-variable">fooSem</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Semaphore</span>(<span class="hljs-number">1</span>);</span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    <span class="hljs-keyword">private</span> <span class="hljs-type">Semaphore</span> <span class="hljs-variable">barSem</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Semaphore</span>(<span class="hljs-number">0</span>);</span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">    <span class="hljs-keyword">public</span> <span class="hljs-title function_">FooBar</span><span class="hljs-params">(<span class="hljs-type">int</span> n)</span> { <span class="hljs-built_in">this</span>.n = n; }</span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">foo</span><span class="hljs-params">(Runnable printFoo)</span> <span class="hljs-keyword">throws</span> InterruptedException {</span></span>
+<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; n; i++) {</span></span>
+<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">            fooSem.acquire();</span></span>
+<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">            printFoo.run();</span></span>
+<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">            barSem.release();</span></span>
+<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">        }</span></span>
+<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">    }</span></span>
+<span class="ln-row"><span class="ln-num">16</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">bar</span><span class="hljs-params">(Runnable printBar)</span> <span class="hljs-keyword">throws</span> InterruptedException {</span></span>
+<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; n; i++) {</span></span>
+<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">            barSem.acquire();</span></span>
+<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">            printBar.run();</span></span>
+<span class="ln-row"><span class="ln-num">21</span><span class="ln-code">            fooSem.release();</span></span>
+<span class="ln-row"><span class="ln-num">22</span><span class="ln-code">        }</span></span>
+<span class="ln-row"><span class="ln-num">23</span><span class="ln-code">    }</span></span>
+<span class="ln-row"><span class="ln-num">24</span><span class="ln-code">}</span></span>
 </code></pre>
 <h2 id="pattern-2-producer-consumer-bounded-buffer" tabindex="-1"><a class="header-anchor" href="#pattern-2-producer-consumer-bounded-buffer"><span>Pattern 2: Producer-Consumer / Bounded Buffer</span></a></h2>
-<pre><code class="language-java">// LC 1188 — Design Bounded Blocking Queue
-class BoundedBlockingQueue {
-    private Queue&lt;Integer&gt; queue = new LinkedList&lt;&gt;();
-    private int capacity;
-    private ReentrantLock lock = new ReentrantLock();
-    private Condition notFull = lock.newCondition();
-    private Condition notEmpty = lock.newCondition();
-
-    public BoundedBlockingQueue(int capacity) { this.capacity = capacity; }
-
-    public void enqueue(int element) throws InterruptedException {
-        lock.lock();
-        try {
-            while (queue.size() == capacity) notFull.await();
-            queue.offer(element);
-            notEmpty.signal();
-        } finally { lock.unlock(); }
-    }
-
-    public int dequeue() throws InterruptedException {
-        lock.lock();
-        try {
-            while (queue.isEmpty()) notEmpty.await();
-            int val = queue.poll();
-            notFull.signal();
-            return val;
-        } finally { lock.unlock(); }
-    }
-
-    public int size() { lock.lock(); try { return queue.size(); } finally { lock.unlock(); } }
-}
+<pre data-lang="java"><code class="hljs language-java"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment">// LC 1188 — Design Bounded Blocking Queue</span></span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-keyword">class</span> <span class="hljs-title class_">BoundedBlockingQueue</span> {</span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">    <span class="hljs-keyword">private</span> Queue&lt;Integer&gt; queue = <span class="hljs-keyword">new</span> <span class="hljs-title class_">LinkedList</span>&lt;&gt;();</span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">    <span class="hljs-keyword">private</span> <span class="hljs-type">int</span> capacity;</span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    <span class="hljs-keyword">private</span> <span class="hljs-type">ReentrantLock</span> <span class="hljs-variable">lock</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">ReentrantLock</span>();</span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    <span class="hljs-keyword">private</span> <span class="hljs-type">Condition</span> <span class="hljs-variable">notFull</span> <span class="hljs-operator">=</span> lock.newCondition();</span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">    <span class="hljs-keyword">private</span> <span class="hljs-type">Condition</span> <span class="hljs-variable">notEmpty</span> <span class="hljs-operator">=</span> lock.newCondition();</span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">    <span class="hljs-keyword">public</span> <span class="hljs-title function_">BoundedBlockingQueue</span><span class="hljs-params">(<span class="hljs-type">int</span> capacity)</span> { <span class="hljs-built_in">this</span>.capacity = capacity; }</span></span>
+<span class="ln-row"><span class="ln-num">10</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">enqueue</span><span class="hljs-params">(<span class="hljs-type">int</span> element)</span> <span class="hljs-keyword">throws</span> InterruptedException {</span></span>
+<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">        lock.lock();</span></span>
+<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">        <span class="hljs-keyword">try</span> {</span></span>
+<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">            <span class="hljs-keyword">while</span> (queue.size() == capacity) notFull.await();</span></span>
+<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">            queue.offer(element);</span></span>
+<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">            notEmpty.signal();</span></span>
+<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">        } <span class="hljs-keyword">finally</span> { lock.unlock(); }</span></span>
+<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">    }</span></span>
+<span class="ln-row"><span class="ln-num">19</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">    <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">dequeue</span><span class="hljs-params">()</span> <span class="hljs-keyword">throws</span> InterruptedException {</span></span>
+<span class="ln-row"><span class="ln-num">21</span><span class="ln-code">        lock.lock();</span></span>
+<span class="ln-row"><span class="ln-num">22</span><span class="ln-code">        <span class="hljs-keyword">try</span> {</span></span>
+<span class="ln-row"><span class="ln-num">23</span><span class="ln-code">            <span class="hljs-keyword">while</span> (queue.isEmpty()) notEmpty.await();</span></span>
+<span class="ln-row"><span class="ln-num">24</span><span class="ln-code">            <span class="hljs-type">int</span> <span class="hljs-variable">val</span> <span class="hljs-operator">=</span> queue.poll();</span></span>
+<span class="ln-row"><span class="ln-num">25</span><span class="ln-code">            notFull.signal();</span></span>
+<span class="ln-row"><span class="ln-num">26</span><span class="ln-code">            <span class="hljs-keyword">return</span> val;</span></span>
+<span class="ln-row"><span class="ln-num">27</span><span class="ln-code">        } <span class="hljs-keyword">finally</span> { lock.unlock(); }</span></span>
+<span class="ln-row"><span class="ln-num">28</span><span class="ln-code">    }</span></span>
+<span class="ln-row"><span class="ln-num">29</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">30</span><span class="ln-code">    <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">size</span><span class="hljs-params">()</span> { lock.lock(); <span class="hljs-keyword">try</span> { <span class="hljs-keyword">return</span> queue.size(); } <span class="hljs-keyword">finally</span> { lock.unlock(); } }</span></span>
+<span class="ln-row"><span class="ln-num">31</span><span class="ln-code">}</span></span>
 </code></pre>
 <h2 id="pattern-3-read-write-lock-h2o-problem" tabindex="-1"><a class="header-anchor" href="#pattern-3-read-write-lock-h2o-problem"><span>Pattern 3: Read-Write Lock / H2O Problem</span></a></h2>
-<pre><code class="language-java">// LC 1117 — Building H2O
-class H2O {
-    private Semaphore hSem = new Semaphore(2);
-    private Semaphore oSem = new Semaphore(0);
-    private CyclicBarrier barrier = new CyclicBarrier(3, () -&gt; {
-        hSem.release(2);
-    });
-
-    public void hydrogen(Runnable releaseHydrogen) throws InterruptedException {
-        hSem.acquire();
-        releaseHydrogen.run();
-        try { barrier.await(); } catch (BrokenBarrierException e) {}
-    }
-
-    public void oxygen(Runnable releaseOxygen) throws InterruptedException {
-        oSem.acquire();  // wait for 2 H first — actually, simpler approach below
-        releaseOxygen.run();
-        try { barrier.await(); } catch (BrokenBarrierException e) {}
-    }
-}
+<pre data-lang="java"><code class="hljs language-java"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment">// LC 1117 — Building H2O</span></span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-keyword">class</span> <span class="hljs-title class_">H2O</span> {</span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">    <span class="hljs-keyword">private</span> <span class="hljs-type">Semaphore</span> <span class="hljs-variable">hSem</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Semaphore</span>(<span class="hljs-number">2</span>);</span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">    <span class="hljs-keyword">private</span> <span class="hljs-type">Semaphore</span> <span class="hljs-variable">oSem</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Semaphore</span>(<span class="hljs-number">0</span>);</span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    <span class="hljs-keyword">private</span> <span class="hljs-type">CyclicBarrier</span> <span class="hljs-variable">barrier</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">CyclicBarrier</span>(<span class="hljs-number">3</span>, () -&gt; {</span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">        hSem.release(<span class="hljs-number">2</span>);</span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">    });</span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">hydrogen</span><span class="hljs-params">(Runnable releaseHydrogen)</span> <span class="hljs-keyword">throws</span> InterruptedException {</span></span>
+<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">        hSem.acquire();</span></span>
+<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">        releaseHydrogen.run();</span></span>
+<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">        <span class="hljs-keyword">try</span> { barrier.await(); } <span class="hljs-keyword">catch</span> (BrokenBarrierException e) {}</span></span>
+<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">    }</span></span>
+<span class="ln-row"><span class="ln-num">14</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">oxygen</span><span class="hljs-params">(Runnable releaseOxygen)</span> <span class="hljs-keyword">throws</span> InterruptedException {</span></span>
+<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">        oSem.acquire();  <span class="hljs-comment">// wait for 2 H first — actually, simpler approach below</span></span></span>
+<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">        releaseOxygen.run();</span></span>
+<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">        <span class="hljs-keyword">try</span> { barrier.await(); } <span class="hljs-keyword">catch</span> (BrokenBarrierException e) {}</span></span>
+<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">    }</span></span>
+<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">}</span></span>
 </code></pre>
 <h2 id="key-concurrency-primitives" tabindex="-1"><a class="header-anchor" href="#key-concurrency-primitives"><span>Key Concurrency Primitives</span></a></h2>
 <table>

@@ -9,8 +9,7 @@
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>CS</text></svg>">
   <link rel="stylesheet" href="../style.css">
   <link rel="stylesheet" href="../vendor/fonts.css">
-  <link rel="stylesheet" href="../vendor/highlight/github-dark.min.css">
-  <script src="../vendor/highlight/highlight.min.js"></script>
+  <link rel="stylesheet" href="../vendor/highlight/atom-one-dark.min.css">
   <script>
   // Apply theme before render to prevent flash
   (function() {
@@ -21,40 +20,43 @@
   })();
   </script>
   <script>document.addEventListener('DOMContentLoaded', function() {
-    hljs.highlightAll();
-    document.querySelectorAll('pre code').forEach(function(codeEl) {
-      var pre = codeEl.parentElement;
-      var lang = '';
-      var cls = codeEl.className || '';
-      var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
-      if (m) lang = m[1];
-      var wrapper = document.createElement('div');
-      wrapper.className = 'code-block-wrapper';
-      pre.parentNode.insertBefore(wrapper, pre);
-      var header = document.createElement('div');
-      header.className = 'code-block-header';
-      if (lang) {
-        var label = document.createElement('span');
-        label.className = 'code-lang-label';
-        label.textContent = lang;
-        header.appendChild(label);
-      } else {
-        header.appendChild(document.createElement('span'));
-      }
-      var btn = document.createElement('button');
-      btn.className = 'copy-btn';
-      btn.textContent = 'Copy';
-      btn.addEventListener('click', function() {
-        navigator.clipboard.writeText(codeEl.textContent).then(function() {
-          btn.textContent = 'Copied!';
-          btn.classList.add('copied');
-          setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+    // Code block wrappers + copy buttons (highlighting done at build time)
+    try {
+      document.querySelectorAll('pre').forEach(function(pre) {
+        var codeEl = pre.querySelector('code');
+        var lang = pre.getAttribute('data-lang') || '';
+        var wrapper = document.createElement('div');
+        wrapper.className = 'code-block-wrapper';
+        pre.parentNode.insertBefore(wrapper, pre);
+        var header = document.createElement('div');
+        header.className = 'code-block-header';
+        if (lang) {
+          var label = document.createElement('span');
+          label.className = 'code-lang-label';
+          label.textContent = lang;
+          header.appendChild(label);
+        } else {
+          header.appendChild(document.createElement('span'));
+        }
+        var btn = document.createElement('button');
+        btn.className = 'copy-btn';
+        btn.textContent = 'Copy';
+        btn.addEventListener('click', function() {
+          var text = codeEl
+            ? Array.from(codeEl.querySelectorAll('.ln-code')).map(function(el) { return el.textContent; }).join('
+')
+            : pre.textContent;
+          navigator.clipboard.writeText(text).then(function() {
+            btn.textContent = 'Copied!';
+            btn.classList.add('copied');
+            setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+          });
         });
+        header.appendChild(btn);
+        wrapper.appendChild(header);
+        wrapper.appendChild(pre);
       });
-      header.appendChild(btn);
-      wrapper.appendChild(header);
-      wrapper.appendChild(pre);
-    });
+    } catch(e) { console.error('Code block setup error:', e); }
     document.querySelectorAll('table').forEach(function(table) {
       if (!table.parentElement.classList.contains('table-wrap')) {
         var wrapper = document.createElement('div');
@@ -64,32 +66,36 @@
       }
     });
     // Reading progress bar
-    var progressBar = document.getElementById('reading-progress');
-    if (progressBar) {
-      window.addEventListener('scroll', function() {
-        var winScroll = document.documentElement.scrollTop;
-        var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-        progressBar.style.width = height > 0 ? (winScroll / height * 100) + '%' : '0%';
-      });
-    }
-    // Dark mode toggle
-    var toggle = document.getElementById('theme-toggle');
-    if (toggle) {
-      var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-      toggle.textContent = isDark ? '☀️' : '🌙';
-      toggle.addEventListener('click', function() {
-        var dark = document.documentElement.getAttribute('data-theme') === 'dark';
-        if (dark) {
-          document.documentElement.removeAttribute('data-theme');
-          localStorage.setItem('theme', 'light');
-          toggle.textContent = '🌙';
-        } else {
-          document.documentElement.setAttribute('data-theme', 'dark');
-          localStorage.setItem('theme', 'dark');
-          toggle.textContent = '☀️';
-        }
-      });
-    }
+    try {
+      var progressBar = document.getElementById('reading-progress');
+      if (progressBar) {
+        window.addEventListener('scroll', function() {
+          var winScroll = document.documentElement.scrollTop;
+          var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+          progressBar.style.width = height > 0 ? (winScroll / height * 100) + '%' : '0%';
+        });
+      }
+    } catch(e) {}
+    // Dark mode toggle — isolated so errors elsewhere never prevent this from working
+    try {
+      var toggle = document.getElementById('theme-toggle');
+      if (toggle) {
+        var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+        toggle.textContent = isDark ? '☀️' : '🌙';
+        toggle.addEventListener('click', function() {
+          var dark = document.documentElement.getAttribute('data-theme') === 'dark';
+          if (dark) {
+            document.documentElement.removeAttribute('data-theme');
+            localStorage.setItem('theme', 'light');
+            toggle.textContent = '🌙';
+          } else {
+            document.documentElement.setAttribute('data-theme', 'dark');
+            localStorage.setItem('theme', 'dark');
+            toggle.textContent = '☀️';
+          }
+        });
+      }
+    } catch(e) { console.error('Theme toggle error:', e); }
   });</script>
 </head>
 <body>
@@ -235,18 +241,18 @@ part, the execution machines will take care for the <code>Group by</code> step</
 <li><a href="http://www.bigdatainterview.com/explain-spark-architecture-or-what-happens-when-submit-a-spark-job/">http://www.bigdatainterview.com/explain-spark-architecture-or-what-happens-when-submit-a-spark-job/</a></li>
 </ul>
 <p>2’. <code>spark-submit</code> cmd explain ?</p>
-<pre><code class="language-bash"># pattern
-./bin/spark-submit \
-  --master &lt;master-url&gt; \
-  --deploy-mode &lt;deploy-mode&gt; \
-  --conf &lt;key&lt;=&lt;value&gt; \
-  --driver-memory &lt;amount of memory&gt; \
-  --executor-memory &lt;amount of memory&gt; \
-  --executor-cores &lt;number of cores&gt;  \
-  --jars  &lt;comma separated dependencies&gt;
-  --class &lt;main-class&gt; \
-  &lt;application-jar&gt; \
-  [application-arguments]
+<pre data-lang="bash"><code class="hljs language-bash"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment"># pattern</span></span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code">./bin/spark-submit \</span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">  --master &lt;master-url&gt; \</span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">  --deploy-mode &lt;deploy-mode&gt; \</span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">  --conf &lt;key&lt;=&lt;value&gt; \</span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">  --driver-memory &lt;amount of memory&gt; \</span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">  --executor-memory &lt;amount of memory&gt; \</span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">  --executor-cores &lt;number of cores&gt;  \</span></span>
+<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">  --jars  &lt;comma separated dependencies&gt;</span></span>
+<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">  --class &lt;main-class&gt; \</span></span>
+<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">  &lt;application-jar&gt; \</span></span>
+<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">  [application-arguments]</span></span>
 </code></pre>
 <ul>
 <li><a href="https://sparkbyexamples.com/spark/spark-submit-command/">https://sparkbyexamples.com/spark/spark-submit-command/</a></li>
@@ -589,12 +595,12 @@ e.g. :<code>map</code>, <code>flatmap</code>, <code>reducebykey</code>, <code>fi
 </li>
 </ol>
 <p>i.e.</p>
-<pre><code class="language-scala">// reduceByKey
-rdd.reduceByKey(_.sum)
-
-// groupByKey
-rdd.groupByKey().mapValue(_.sum)
-
+<pre data-lang="scala"><code class="hljs language-scala"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment">// reduceByKey</span></span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code">rdd.reduceByKey(_.sum)</span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"><span class="hljs-comment">// groupByKey</span></span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">rdd.groupByKey().mapValue(_.sum)</span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code"></span></span>
 </code></pre>
 <ol start="34">
 <li>Explain <code>application</code>, <code>job</code>, <code>stage</code> , <code>task</code>?</li>

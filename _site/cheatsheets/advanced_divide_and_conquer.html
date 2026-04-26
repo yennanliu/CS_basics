@@ -9,8 +9,7 @@
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>CS</text></svg>">
   <link rel="stylesheet" href="../style.css">
   <link rel="stylesheet" href="../vendor/fonts.css">
-  <link rel="stylesheet" href="../vendor/highlight/github-dark.min.css">
-  <script src="../vendor/highlight/highlight.min.js"></script>
+  <link rel="stylesheet" href="../vendor/highlight/atom-one-dark.min.css">
   <script>
   // Apply theme before render to prevent flash
   (function() {
@@ -21,40 +20,43 @@
   })();
   </script>
   <script>document.addEventListener('DOMContentLoaded', function() {
-    hljs.highlightAll();
-    document.querySelectorAll('pre code').forEach(function(codeEl) {
-      var pre = codeEl.parentElement;
-      var lang = '';
-      var cls = codeEl.className || '';
-      var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
-      if (m) lang = m[1];
-      var wrapper = document.createElement('div');
-      wrapper.className = 'code-block-wrapper';
-      pre.parentNode.insertBefore(wrapper, pre);
-      var header = document.createElement('div');
-      header.className = 'code-block-header';
-      if (lang) {
-        var label = document.createElement('span');
-        label.className = 'code-lang-label';
-        label.textContent = lang;
-        header.appendChild(label);
-      } else {
-        header.appendChild(document.createElement('span'));
-      }
-      var btn = document.createElement('button');
-      btn.className = 'copy-btn';
-      btn.textContent = 'Copy';
-      btn.addEventListener('click', function() {
-        navigator.clipboard.writeText(codeEl.textContent).then(function() {
-          btn.textContent = 'Copied!';
-          btn.classList.add('copied');
-          setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+    // Code block wrappers + copy buttons (highlighting done at build time)
+    try {
+      document.querySelectorAll('pre').forEach(function(pre) {
+        var codeEl = pre.querySelector('code');
+        var lang = pre.getAttribute('data-lang') || '';
+        var wrapper = document.createElement('div');
+        wrapper.className = 'code-block-wrapper';
+        pre.parentNode.insertBefore(wrapper, pre);
+        var header = document.createElement('div');
+        header.className = 'code-block-header';
+        if (lang) {
+          var label = document.createElement('span');
+          label.className = 'code-lang-label';
+          label.textContent = lang;
+          header.appendChild(label);
+        } else {
+          header.appendChild(document.createElement('span'));
+        }
+        var btn = document.createElement('button');
+        btn.className = 'copy-btn';
+        btn.textContent = 'Copy';
+        btn.addEventListener('click', function() {
+          var text = codeEl
+            ? Array.from(codeEl.querySelectorAll('.ln-code')).map(function(el) { return el.textContent; }).join('
+')
+            : pre.textContent;
+          navigator.clipboard.writeText(text).then(function() {
+            btn.textContent = 'Copied!';
+            btn.classList.add('copied');
+            setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+          });
         });
+        header.appendChild(btn);
+        wrapper.appendChild(header);
+        wrapper.appendChild(pre);
       });
-      header.appendChild(btn);
-      wrapper.appendChild(header);
-      wrapper.appendChild(pre);
-    });
+    } catch(e) { console.error('Code block setup error:', e); }
     document.querySelectorAll('table').forEach(function(table) {
       if (!table.parentElement.classList.contains('table-wrap')) {
         var wrapper = document.createElement('div');
@@ -64,32 +66,36 @@
       }
     });
     // Reading progress bar
-    var progressBar = document.getElementById('reading-progress');
-    if (progressBar) {
-      window.addEventListener('scroll', function() {
-        var winScroll = document.documentElement.scrollTop;
-        var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-        progressBar.style.width = height > 0 ? (winScroll / height * 100) + '%' : '0%';
-      });
-    }
-    // Dark mode toggle
-    var toggle = document.getElementById('theme-toggle');
-    if (toggle) {
-      var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-      toggle.textContent = isDark ? '☀️' : '🌙';
-      toggle.addEventListener('click', function() {
-        var dark = document.documentElement.getAttribute('data-theme') === 'dark';
-        if (dark) {
-          document.documentElement.removeAttribute('data-theme');
-          localStorage.setItem('theme', 'light');
-          toggle.textContent = '🌙';
-        } else {
-          document.documentElement.setAttribute('data-theme', 'dark');
-          localStorage.setItem('theme', 'dark');
-          toggle.textContent = '☀️';
-        }
-      });
-    }
+    try {
+      var progressBar = document.getElementById('reading-progress');
+      if (progressBar) {
+        window.addEventListener('scroll', function() {
+          var winScroll = document.documentElement.scrollTop;
+          var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+          progressBar.style.width = height > 0 ? (winScroll / height * 100) + '%' : '0%';
+        });
+      }
+    } catch(e) {}
+    // Dark mode toggle — isolated so errors elsewhere never prevent this from working
+    try {
+      var toggle = document.getElementById('theme-toggle');
+      if (toggle) {
+        var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+        toggle.textContent = isDark ? '☀️' : '🌙';
+        toggle.addEventListener('click', function() {
+          var dark = document.documentElement.getAttribute('data-theme') === 'dark';
+          if (dark) {
+            document.documentElement.removeAttribute('data-theme');
+            localStorage.setItem('theme', 'light');
+            toggle.textContent = '🌙';
+          } else {
+            document.documentElement.setAttribute('data-theme', 'dark');
+            localStorage.setItem('theme', 'dark');
+            toggle.textContent = '☀️';
+          }
+        });
+      }
+    } catch(e) { console.error('Theme toggle error:', e); }
   });</script>
 </head>
 <body>
@@ -127,9 +133,9 @@
       <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">Advanced Divide And Conquer</span></nav>
       <div class="cheatsheet-header">
         <h1>Advanced Divide And Conquer</h1>
-        <span class="last-updated">Last updated: Sep 29, 2025</span>
+        <span class="last-updated">Last updated: Apr 25, 2026</span>
       </div>
-      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#overview">Overview</a></li><li class="toc-sub"><a href="#key-properties">Key Properties</a></li><li class="toc-sub"><a href="#core-characteristics">Core Characteristics</a></li><li><a href="#problem-categories">Problem Categories</a></li><li class="toc-sub"><a href="#category-1-inversion-counting">Category 1: Inversion Counting</a></li><li class="toc-sub"><a href="#category-2-range-sum-problems">Category 2: Range Sum Problems</a></li><li class="toc-sub"><a href="#category-3-array-reconstruction">Category 3: Array Reconstruction</a></li><li><a href="#templates-algorithms">Templates &amp; Algorithms</a></li><li class="toc-sub"><a href="#template-comparison-table">Template Comparison Table</a></li><li class="toc-sub"><a href="#template-1-basic-inversion-counting">Template 1: Basic Inversion Counting</a></li><li class="toc-sub"><a href="#template-2-conditional-inversion-counting">Template 2: Conditional Inversion Counting</a></li><li class="toc-sub"><a href="#template-3-range-sum-divide-and-conquer">Template 3: Range Sum Divide and Conquer</a></li><li class="toc-sub"><a href="#template-4-array-reconstruction">Template 4: Array Reconstruction</a></li><li><a href="#problems-by-pattern">Problems by Pattern</a></li><li class="toc-sub"><a href="#inversion-counting-problems">Inversion Counting Problems</a></li><li class="toc-sub"><a href="#range-query-problems">Range Query Problems</a></li><li><a href="#lc-examples">LC Examples</a></li><li class="toc-sub"><a href="#1-count-of-smaller-numbers-after-self-lc-315">1. Count of Smaller Numbers After Self (LC 315)</a></li><li class="toc-sub"><a href="#2-reverse-pairs-lc-493">2. Reverse Pairs (LC 493)</a></li><li class="toc-sub"><a href="#3-count-of-range-sum-lc-327">3. Count of Range Sum (LC 327)</a></li><li><a href="#advanced-techniques">Advanced Techniques</a></li><li class="toc-sub"><a href="#optimization-strategies">Optimization Strategies</a></li><li class="toc-sub"><a href="#custom-merge-logic-patterns">Custom Merge Logic Patterns</a></li><li><a href="#performance-optimization-tips">Performance Optimization Tips</a></li><li class="toc-sub"><a href="#time-complexity-analysis">Time Complexity Analysis</a></li><li class="toc-sub"><a href="#space-optimization">Space Optimization</a></li><li><a href="#summary-quick-reference">Summary &amp; Quick Reference</a></li><li class="toc-sub"><a href="#common-d-c-patterns">Common D&amp;C Patterns</a></li><li class="toc-sub"><a href="#time-complexity-guide">Time Complexity Guide</a></li><li class="toc-sub"><a href="#common-mistakes-tips">Common Mistakes &amp; Tips</a></li><li class="toc-sub"><a href="#interview-tips">Interview Tips</a></li></ul></div>
+      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#overview">Overview</a></li><li class="toc-sub"><a href="#key-properties">Key Properties</a></li><li class="toc-sub"><a href="#core-characteristics">Core Characteristics</a></li><li><a href="#problem-categories">Problem Categories</a></li><li class="toc-sub"><a href="#category-1-inversion-counting">Category 1: Inversion Counting</a></li><li class="toc-sub"><a href="#category-2-range-sum-problems">Category 2: Range Sum Problems</a></li><li class="toc-sub"><a href="#category-3-array-reconstruction">Category 3: Array Reconstruction</a></li><li><a href="#templates-algorithms">Templates &amp; Algorithms</a></li><li class="toc-sub"><a href="#template-comparison-table">Template Comparison Table</a></li><li class="toc-sub"><a href="#template-1-basic-inversion-counting">Template 1: Basic Inversion Counting</a></li><li class="toc-sub"><a href="#template-2-conditional-inversion-counting">Template 2: Conditional Inversion Counting</a></li><li class="toc-sub"><a href="#template-3-range-sum-divide-and-conquer">Template 3: Range Sum Divide and Conquer</a></li><li class="toc-sub"><a href="#template-4-array-reconstruction">Template 4: Array Reconstruction</a></li><li><a href="#problems-by-pattern">Problems by Pattern</a></li><li class="toc-sub"><a href="#inversion-counting-problems">Inversion Counting Problems</a></li><li class="toc-sub"><a href="#range-query-problems">Range Query Problems</a></li><li><a href="#lc-examples">LC Examples</a></li><li class="toc-sub"><a href="#2-1-count-of-smaller-numbers-after-self-lc-315-merge-sort-with-index-tracking">2-1) Count of Smaller Numbers After Self (LC 315) — Merge Sort with Index Tracking</a></li><li class="toc-sub"><a href="#2-2-reverse-pairs-lc-493-merge-sort-count-before-merge">2-2) Reverse Pairs (LC 493) — Merge Sort Count Before Merge</a></li><li class="toc-sub"><a href="#2-3-count-of-range-sum-lc-327-merge-sort-on-prefix-sums">2-3) Count of Range Sum (LC 327) — Merge Sort on Prefix Sums</a></li><li><a href="#advanced-techniques">Advanced Techniques</a></li><li class="toc-sub"><a href="#optimization-strategies">Optimization Strategies</a></li><li class="toc-sub"><a href="#custom-merge-logic-patterns">Custom Merge Logic Patterns</a></li><li><a href="#performance-optimization-tips">Performance Optimization Tips</a></li><li class="toc-sub"><a href="#time-complexity-analysis">Time Complexity Analysis</a></li><li class="toc-sub"><a href="#space-optimization">Space Optimization</a></li><li><a href="#summary-quick-reference">Summary &amp; Quick Reference</a></li><li class="toc-sub"><a href="#common-d-c-patterns">Common D&amp;C Patterns</a></li><li class="toc-sub"><a href="#time-complexity-guide">Time Complexity Guide</a></li><li class="toc-sub"><a href="#common-mistakes-tips">Common Mistakes &amp; Tips</a></li><li class="toc-sub"><a href="#interview-tips">Interview Tips</a></li></ul></div>
       <div class="cheatsheet-content">
         <h1 id="advanced-divide-and-conquer" tabindex="-1"><a class="header-anchor" href="#advanced-divide-and-conquer"><span>Advanced Divide and Conquer</span></a></h1>
 <h2 id="overview" tabindex="-1"><a class="header-anchor" href="#overview"><span>Overview</span></a></h2>
@@ -208,204 +214,204 @@
 </tbody>
 </table>
 <h3 id="template-1-basic-inversion-counting" tabindex="-1"><a class="header-anchor" href="#template-1-basic-inversion-counting"><span>Template 1: Basic Inversion Counting</span></a></h3>
-<pre><code class="language-python">def count_inversions(arr):
-    &quot;&quot;&quot;Count total number of inversions using merge sort&quot;&quot;&quot;
-    def merge_and_count(arr, temp, left, mid, right):
-        i, j, k = left, mid + 1, left
-        inv_count = 0
-
-        # Merge with inversion counting
-        while i &lt;= mid and j &lt;= right:
-            if arr[i] &lt;= arr[j]:
-                temp[k] = arr[i]
-                i += 1
-            else:
-                temp[k] = arr[j]
-                # Count inversions: all elements from i to mid are &gt; arr[j]
-                inv_count += (mid - i + 1)
-                j += 1
-            k += 1
-
-        # Copy remaining elements
-        while i &lt;= mid:
-            temp[k] = arr[i]
-            i += 1
-            k += 1
-        while j &lt;= right:
-            temp[k] = arr[j]
-            j += 1
-            k += 1
-
-        # Copy back to original array
-        for i in range(left, right + 1):
-            arr[i] = temp[i]
-
-        return inv_count
-
-    def merge_sort_and_count(arr, temp, left, right):
-        inv_count = 0
-        if left &lt; right:
-            mid = (left + right) // 2
-            inv_count += merge_sort_and_count(arr, temp, left, mid)
-            inv_count += merge_sort_and_count(arr, temp, mid + 1, right)
-            inv_count += merge_and_count(arr, temp, left, mid, right)
-        return inv_count
-
-    temp = [0] * len(arr)
-    return merge_sort_and_count(arr[:], temp, 0, len(arr) - 1)
+<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-keyword">def</span> <span class="hljs-title function_">count_inversions</span>(<span class="hljs-params">arr</span>):</span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code">    <span class="hljs-string">&quot;&quot;&quot;Count total number of inversions using merge sort&quot;&quot;&quot;</span></span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">merge_and_count</span>(<span class="hljs-params">arr, temp, left, mid, right</span>):</span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">        i, j, k = left, mid + <span class="hljs-number">1</span>, left</span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">        inv_count = <span class="hljs-number">0</span></span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">        <span class="hljs-comment"># Merge with inversion counting</span></span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">        <span class="hljs-keyword">while</span> i &lt;= mid <span class="hljs-keyword">and</span> j &lt;= right:</span></span>
+<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">            <span class="hljs-keyword">if</span> arr[i] &lt;= arr[j]:</span></span>
+<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">                temp[k] = arr[i]</span></span>
+<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">                i += <span class="hljs-number">1</span></span></span>
+<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">            <span class="hljs-keyword">else</span>:</span></span>
+<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">                temp[k] = arr[j]</span></span>
+<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">                <span class="hljs-comment"># Count inversions: all elements from i to mid are &gt; arr[j]</span></span></span>
+<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">                inv_count += (mid - i + <span class="hljs-number">1</span>)</span></span>
+<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">                j += <span class="hljs-number">1</span></span></span>
+<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">            k += <span class="hljs-number">1</span></span></span>
+<span class="ln-row"><span class="ln-num">18</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">        <span class="hljs-comment"># Copy remaining elements</span></span></span>
+<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">        <span class="hljs-keyword">while</span> i &lt;= mid:</span></span>
+<span class="ln-row"><span class="ln-num">21</span><span class="ln-code">            temp[k] = arr[i]</span></span>
+<span class="ln-row"><span class="ln-num">22</span><span class="ln-code">            i += <span class="hljs-number">1</span></span></span>
+<span class="ln-row"><span class="ln-num">23</span><span class="ln-code">            k += <span class="hljs-number">1</span></span></span>
+<span class="ln-row"><span class="ln-num">24</span><span class="ln-code">        <span class="hljs-keyword">while</span> j &lt;= right:</span></span>
+<span class="ln-row"><span class="ln-num">25</span><span class="ln-code">            temp[k] = arr[j]</span></span>
+<span class="ln-row"><span class="ln-num">26</span><span class="ln-code">            j += <span class="hljs-number">1</span></span></span>
+<span class="ln-row"><span class="ln-num">27</span><span class="ln-code">            k += <span class="hljs-number">1</span></span></span>
+<span class="ln-row"><span class="ln-num">28</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">29</span><span class="ln-code">        <span class="hljs-comment"># Copy back to original array</span></span></span>
+<span class="ln-row"><span class="ln-num">30</span><span class="ln-code">        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(left, right + <span class="hljs-number">1</span>):</span></span>
+<span class="ln-row"><span class="ln-num">31</span><span class="ln-code">            arr[i] = temp[i]</span></span>
+<span class="ln-row"><span class="ln-num">32</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">33</span><span class="ln-code">        <span class="hljs-keyword">return</span> inv_count</span></span>
+<span class="ln-row"><span class="ln-num">34</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">35</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">merge_sort_and_count</span>(<span class="hljs-params">arr, temp, left, right</span>):</span></span>
+<span class="ln-row"><span class="ln-num">36</span><span class="ln-code">        inv_count = <span class="hljs-number">0</span></span></span>
+<span class="ln-row"><span class="ln-num">37</span><span class="ln-code">        <span class="hljs-keyword">if</span> left &lt; right:</span></span>
+<span class="ln-row"><span class="ln-num">38</span><span class="ln-code">            mid = (left + right) // <span class="hljs-number">2</span></span></span>
+<span class="ln-row"><span class="ln-num">39</span><span class="ln-code">            inv_count += merge_sort_and_count(arr, temp, left, mid)</span></span>
+<span class="ln-row"><span class="ln-num">40</span><span class="ln-code">            inv_count += merge_sort_and_count(arr, temp, mid + <span class="hljs-number">1</span>, right)</span></span>
+<span class="ln-row"><span class="ln-num">41</span><span class="ln-code">            inv_count += merge_and_count(arr, temp, left, mid, right)</span></span>
+<span class="ln-row"><span class="ln-num">42</span><span class="ln-code">        <span class="hljs-keyword">return</span> inv_count</span></span>
+<span class="ln-row"><span class="ln-num">43</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">44</span><span class="ln-code">    temp = [<span class="hljs-number">0</span>] * <span class="hljs-built_in">len</span>(arr)</span></span>
+<span class="ln-row"><span class="ln-num">45</span><span class="ln-code">    <span class="hljs-keyword">return</span> merge_sort_and_count(arr[:], temp, <span class="hljs-number">0</span>, <span class="hljs-built_in">len</span>(arr) - <span class="hljs-number">1</span>)</span></span>
 </code></pre>
 <h3 id="template-2-conditional-inversion-counting" tabindex="-1"><a class="header-anchor" href="#template-2-conditional-inversion-counting"><span>Template 2: Conditional Inversion Counting</span></a></h3>
-<pre><code class="language-python">def count_reverse_pairs(nums):
-    &quot;&quot;&quot;Count pairs where nums[i] &gt; 2 * nums[j] for i &lt; j&quot;&quot;&quot;
-    def merge_and_count(nums, temp, left, mid, right):
-        # Count reverse pairs first (before sorting)
-        count = 0
-        j = mid + 1
-        for i in range(left, mid + 1):
-            while j &lt;= right and nums[i] &gt; 2 * nums[j]:
-                j += 1
-            count += j - (mid + 1)
-
-        # Now perform regular merge
-        i, j, k = left, mid + 1, left
-        while i &lt;= mid and j &lt;= right:
-            if nums[i] &lt;= nums[j]:
-                temp[k] = nums[i]
-                i += 1
-            else:
-                temp[k] = nums[j]
-                j += 1
-            k += 1
-
-        while i &lt;= mid:
-            temp[k] = nums[i]
-            i += 1
-            k += 1
-        while j &lt;= right:
-            temp[k] = nums[j]
-            j += 1
-            k += 1
-
-        for i in range(left, right + 1):
-            nums[i] = temp[i]
-
-        return count
-
-    def merge_sort_and_count(nums, temp, left, right):
-        count = 0
-        if left &lt; right:
-            mid = (left + right) // 2
-            count += merge_sort_and_count(nums, temp, left, mid)
-            count += merge_sort_and_count(nums, temp, mid + 1, right)
-            count += merge_and_count(nums, temp, left, mid, right)
-        return count
-
-    temp = [0] * len(nums)
-    return merge_sort_and_count(nums[:], temp, 0, len(nums) - 1)
+<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-keyword">def</span> <span class="hljs-title function_">count_reverse_pairs</span>(<span class="hljs-params">nums</span>):</span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code">    <span class="hljs-string">&quot;&quot;&quot;Count pairs where nums[i] &gt; 2 * nums[j] for i &lt; j&quot;&quot;&quot;</span></span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">merge_and_count</span>(<span class="hljs-params">nums, temp, left, mid, right</span>):</span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">        <span class="hljs-comment"># Count reverse pairs first (before sorting)</span></span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">        count = <span class="hljs-number">0</span></span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">        j = mid + <span class="hljs-number">1</span></span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(left, mid + <span class="hljs-number">1</span>):</span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">            <span class="hljs-keyword">while</span> j &lt;= right <span class="hljs-keyword">and</span> nums[i] &gt; <span class="hljs-number">2</span> * nums[j]:</span></span>
+<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">                j += <span class="hljs-number">1</span></span></span>
+<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">            count += j - (mid + <span class="hljs-number">1</span>)</span></span>
+<span class="ln-row"><span class="ln-num">11</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">        <span class="hljs-comment"># Now perform regular merge</span></span></span>
+<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">        i, j, k = left, mid + <span class="hljs-number">1</span>, left</span></span>
+<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">        <span class="hljs-keyword">while</span> i &lt;= mid <span class="hljs-keyword">and</span> j &lt;= right:</span></span>
+<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">            <span class="hljs-keyword">if</span> nums[i] &lt;= nums[j]:</span></span>
+<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">                temp[k] = nums[i]</span></span>
+<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">                i += <span class="hljs-number">1</span></span></span>
+<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">            <span class="hljs-keyword">else</span>:</span></span>
+<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">                temp[k] = nums[j]</span></span>
+<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">                j += <span class="hljs-number">1</span></span></span>
+<span class="ln-row"><span class="ln-num">21</span><span class="ln-code">            k += <span class="hljs-number">1</span></span></span>
+<span class="ln-row"><span class="ln-num">22</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">23</span><span class="ln-code">        <span class="hljs-keyword">while</span> i &lt;= mid:</span></span>
+<span class="ln-row"><span class="ln-num">24</span><span class="ln-code">            temp[k] = nums[i]</span></span>
+<span class="ln-row"><span class="ln-num">25</span><span class="ln-code">            i += <span class="hljs-number">1</span></span></span>
+<span class="ln-row"><span class="ln-num">26</span><span class="ln-code">            k += <span class="hljs-number">1</span></span></span>
+<span class="ln-row"><span class="ln-num">27</span><span class="ln-code">        <span class="hljs-keyword">while</span> j &lt;= right:</span></span>
+<span class="ln-row"><span class="ln-num">28</span><span class="ln-code">            temp[k] = nums[j]</span></span>
+<span class="ln-row"><span class="ln-num">29</span><span class="ln-code">            j += <span class="hljs-number">1</span></span></span>
+<span class="ln-row"><span class="ln-num">30</span><span class="ln-code">            k += <span class="hljs-number">1</span></span></span>
+<span class="ln-row"><span class="ln-num">31</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">32</span><span class="ln-code">        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(left, right + <span class="hljs-number">1</span>):</span></span>
+<span class="ln-row"><span class="ln-num">33</span><span class="ln-code">            nums[i] = temp[i]</span></span>
+<span class="ln-row"><span class="ln-num">34</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">35</span><span class="ln-code">        <span class="hljs-keyword">return</span> count</span></span>
+<span class="ln-row"><span class="ln-num">36</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">37</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">merge_sort_and_count</span>(<span class="hljs-params">nums, temp, left, right</span>):</span></span>
+<span class="ln-row"><span class="ln-num">38</span><span class="ln-code">        count = <span class="hljs-number">0</span></span></span>
+<span class="ln-row"><span class="ln-num">39</span><span class="ln-code">        <span class="hljs-keyword">if</span> left &lt; right:</span></span>
+<span class="ln-row"><span class="ln-num">40</span><span class="ln-code">            mid = (left + right) // <span class="hljs-number">2</span></span></span>
+<span class="ln-row"><span class="ln-num">41</span><span class="ln-code">            count += merge_sort_and_count(nums, temp, left, mid)</span></span>
+<span class="ln-row"><span class="ln-num">42</span><span class="ln-code">            count += merge_sort_and_count(nums, temp, mid + <span class="hljs-number">1</span>, right)</span></span>
+<span class="ln-row"><span class="ln-num">43</span><span class="ln-code">            count += merge_and_count(nums, temp, left, mid, right)</span></span>
+<span class="ln-row"><span class="ln-num">44</span><span class="ln-code">        <span class="hljs-keyword">return</span> count</span></span>
+<span class="ln-row"><span class="ln-num">45</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">46</span><span class="ln-code">    temp = [<span class="hljs-number">0</span>] * <span class="hljs-built_in">len</span>(nums)</span></span>
+<span class="ln-row"><span class="ln-num">47</span><span class="ln-code">    <span class="hljs-keyword">return</span> merge_sort_and_count(nums[:], temp, <span class="hljs-number">0</span>, <span class="hljs-built_in">len</span>(nums) - <span class="hljs-number">1</span>)</span></span>
 </code></pre>
 <h3 id="template-3-range-sum-divide-and-conquer" tabindex="-1"><a class="header-anchor" href="#template-3-range-sum-divide-and-conquer"><span>Template 3: Range Sum Divide and Conquer</span></a></h3>
-<pre><code class="language-python">def count_range_sum(nums, lower, upper):
-    &quot;&quot;&quot;Count subarrays with sum in [lower, upper]&quot;&quot;&quot;
-    def merge_and_count(prefix_sums, temp, left, mid, right):
-        count = 0
-        j = k = mid + 1
-
-        # For each prefix sum in left half
-        for i in range(left, mid + 1):
-            # Find range [j, k) where prefix_sums[j] - prefix_sums[i] is in [lower, upper]
-            while j &lt;= right and prefix_sums[j] - prefix_sums[i] &lt; lower:
-                j += 1
-            while k &lt;= right and prefix_sums[k] - prefix_sums[i] &lt;= upper:
-                k += 1
-            count += k - j
-
-        # Regular merge
-        i, j, p = left, mid + 1, left
-        while i &lt;= mid and j &lt;= right:
-            if prefix_sums[i] &lt;= prefix_sums[j]:
-                temp[p] = prefix_sums[i]
-                i += 1
-            else:
-                temp[p] = prefix_sums[j]
-                j += 1
-            p += 1
-
-        while i &lt;= mid:
-            temp[p] = prefix_sums[i]
-            i += 1
-            p += 1
-        while j &lt;= right:
-            temp[p] = prefix_sums[j]
-            j += 1
-            p += 1
-
-        for i in range(left, right + 1):
-            prefix_sums[i] = temp[i]
-
-        return count
-
-    def divide_and_conquer(prefix_sums, temp, left, right):
-        if left &gt;= right:
-            return 0
-
-        mid = (left + right) // 2
-        count = divide_and_conquer(prefix_sums, temp, left, mid)
-        count += divide_and_conquer(prefix_sums, temp, mid + 1, right)
-        count += merge_and_count(prefix_sums, temp, left, mid, right)
-        return count
-
-    # Build prefix sums
-    prefix_sums = [0]
-    for num in nums:
-        prefix_sums.append(prefix_sums[-1] + num)
-
-    temp = [0] * len(prefix_sums)
-    return divide_and_conquer(prefix_sums, temp, 0, len(prefix_sums) - 1)
+<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-keyword">def</span> <span class="hljs-title function_">count_range_sum</span>(<span class="hljs-params">nums, lower, upper</span>):</span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code">    <span class="hljs-string">&quot;&quot;&quot;Count subarrays with sum in [lower, upper]&quot;&quot;&quot;</span></span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">merge_and_count</span>(<span class="hljs-params">prefix_sums, temp, left, mid, right</span>):</span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">        count = <span class="hljs-number">0</span></span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">        j = k = mid + <span class="hljs-number">1</span></span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">        <span class="hljs-comment"># For each prefix sum in left half</span></span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(left, mid + <span class="hljs-number">1</span>):</span></span>
+<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">            <span class="hljs-comment"># Find range [j, k) where prefix_sums[j] - prefix_sums[i] is in [lower, upper]</span></span></span>
+<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">            <span class="hljs-keyword">while</span> j &lt;= right <span class="hljs-keyword">and</span> prefix_sums[j] - prefix_sums[i] &lt; lower:</span></span>
+<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">                j += <span class="hljs-number">1</span></span></span>
+<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">            <span class="hljs-keyword">while</span> k &lt;= right <span class="hljs-keyword">and</span> prefix_sums[k] - prefix_sums[i] &lt;= upper:</span></span>
+<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">                k += <span class="hljs-number">1</span></span></span>
+<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">            count += k - j</span></span>
+<span class="ln-row"><span class="ln-num">15</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">        <span class="hljs-comment"># Regular merge</span></span></span>
+<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">        i, j, p = left, mid + <span class="hljs-number">1</span>, left</span></span>
+<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">        <span class="hljs-keyword">while</span> i &lt;= mid <span class="hljs-keyword">and</span> j &lt;= right:</span></span>
+<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">            <span class="hljs-keyword">if</span> prefix_sums[i] &lt;= prefix_sums[j]:</span></span>
+<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">                temp[p] = prefix_sums[i]</span></span>
+<span class="ln-row"><span class="ln-num">21</span><span class="ln-code">                i += <span class="hljs-number">1</span></span></span>
+<span class="ln-row"><span class="ln-num">22</span><span class="ln-code">            <span class="hljs-keyword">else</span>:</span></span>
+<span class="ln-row"><span class="ln-num">23</span><span class="ln-code">                temp[p] = prefix_sums[j]</span></span>
+<span class="ln-row"><span class="ln-num">24</span><span class="ln-code">                j += <span class="hljs-number">1</span></span></span>
+<span class="ln-row"><span class="ln-num">25</span><span class="ln-code">            p += <span class="hljs-number">1</span></span></span>
+<span class="ln-row"><span class="ln-num">26</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">27</span><span class="ln-code">        <span class="hljs-keyword">while</span> i &lt;= mid:</span></span>
+<span class="ln-row"><span class="ln-num">28</span><span class="ln-code">            temp[p] = prefix_sums[i]</span></span>
+<span class="ln-row"><span class="ln-num">29</span><span class="ln-code">            i += <span class="hljs-number">1</span></span></span>
+<span class="ln-row"><span class="ln-num">30</span><span class="ln-code">            p += <span class="hljs-number">1</span></span></span>
+<span class="ln-row"><span class="ln-num">31</span><span class="ln-code">        <span class="hljs-keyword">while</span> j &lt;= right:</span></span>
+<span class="ln-row"><span class="ln-num">32</span><span class="ln-code">            temp[p] = prefix_sums[j]</span></span>
+<span class="ln-row"><span class="ln-num">33</span><span class="ln-code">            j += <span class="hljs-number">1</span></span></span>
+<span class="ln-row"><span class="ln-num">34</span><span class="ln-code">            p += <span class="hljs-number">1</span></span></span>
+<span class="ln-row"><span class="ln-num">35</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">36</span><span class="ln-code">        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(left, right + <span class="hljs-number">1</span>):</span></span>
+<span class="ln-row"><span class="ln-num">37</span><span class="ln-code">            prefix_sums[i] = temp[i]</span></span>
+<span class="ln-row"><span class="ln-num">38</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">39</span><span class="ln-code">        <span class="hljs-keyword">return</span> count</span></span>
+<span class="ln-row"><span class="ln-num">40</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">41</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">divide_and_conquer</span>(<span class="hljs-params">prefix_sums, temp, left, right</span>):</span></span>
+<span class="ln-row"><span class="ln-num">42</span><span class="ln-code">        <span class="hljs-keyword">if</span> left &gt;= right:</span></span>
+<span class="ln-row"><span class="ln-num">43</span><span class="ln-code">            <span class="hljs-keyword">return</span> <span class="hljs-number">0</span></span></span>
+<span class="ln-row"><span class="ln-num">44</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">45</span><span class="ln-code">        mid = (left + right) // <span class="hljs-number">2</span></span></span>
+<span class="ln-row"><span class="ln-num">46</span><span class="ln-code">        count = divide_and_conquer(prefix_sums, temp, left, mid)</span></span>
+<span class="ln-row"><span class="ln-num">47</span><span class="ln-code">        count += divide_and_conquer(prefix_sums, temp, mid + <span class="hljs-number">1</span>, right)</span></span>
+<span class="ln-row"><span class="ln-num">48</span><span class="ln-code">        count += merge_and_count(prefix_sums, temp, left, mid, right)</span></span>
+<span class="ln-row"><span class="ln-num">49</span><span class="ln-code">        <span class="hljs-keyword">return</span> count</span></span>
+<span class="ln-row"><span class="ln-num">50</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">51</span><span class="ln-code">    <span class="hljs-comment"># Build prefix sums</span></span></span>
+<span class="ln-row"><span class="ln-num">52</span><span class="ln-code">    prefix_sums = [<span class="hljs-number">0</span>]</span></span>
+<span class="ln-row"><span class="ln-num">53</span><span class="ln-code">    <span class="hljs-keyword">for</span> num <span class="hljs-keyword">in</span> nums:</span></span>
+<span class="ln-row"><span class="ln-num">54</span><span class="ln-code">        prefix_sums.append(prefix_sums[-<span class="hljs-number">1</span>] + num)</span></span>
+<span class="ln-row"><span class="ln-num">55</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">56</span><span class="ln-code">    temp = [<span class="hljs-number">0</span>] * <span class="hljs-built_in">len</span>(prefix_sums)</span></span>
+<span class="ln-row"><span class="ln-num">57</span><span class="ln-code">    <span class="hljs-keyword">return</span> divide_and_conquer(prefix_sums, temp, <span class="hljs-number">0</span>, <span class="hljs-built_in">len</span>(prefix_sums) - <span class="hljs-number">1</span>)</span></span>
 </code></pre>
 <h3 id="template-4-array-reconstruction" tabindex="-1"><a class="header-anchor" href="#template-4-array-reconstruction"><span>Template 4: Array Reconstruction</span></a></h3>
-<pre><code class="language-python">def create_sorted_array(instructions):
-    &quot;&quot;&quot;Create sorted array with minimum cost&quot;&quot;&quot;
-    def merge_and_count(arr, temp, left, mid, right):
-        smaller_count = [0] * len(arr)
-        larger_count = [0] * len(arr)
-
-        # Count smaller and larger elements during merge
-        i, j = left, mid + 1
-        for k in range(left, right + 1):
-            if i &gt; mid:
-                temp[k] = arr[j]
-                j += 1
-            elif j &gt; right:
-                temp[k] = arr[i]
-                # Count how many elements from right half are smaller
-                smaller_count[arr[i][1]] += (right - mid)
-                i += 1
-            elif arr[i][0] &lt;= arr[j][0]:
-                temp[k] = arr[i]
-                smaller_count[arr[i][1]] += (j - mid - 1)
-                i += 1
-            else:
-                temp[k] = arr[j]
-                j += 1
-
-        # Copy back
-        for k in range(left, right + 1):
-            arr[k] = temp[k]
-
-        return smaller_count, larger_count
-
-    def merge_sort_with_count(arr, temp, left, right):
-        if left &gt;= right:
-            return
-
-        mid = (left + right) // 2
-        merge_sort_with_count(arr, temp, left, mid)
-        merge_sort_with_count(arr, temp, mid + 1, right)
-        merge_and_count(arr, temp, left, mid, right)
-
-    # Implementation depends on specific problem
-    # This is a general framework for array reconstruction
-    pass
+<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-keyword">def</span> <span class="hljs-title function_">create_sorted_array</span>(<span class="hljs-params">instructions</span>):</span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code">    <span class="hljs-string">&quot;&quot;&quot;Create sorted array with minimum cost&quot;&quot;&quot;</span></span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">merge_and_count</span>(<span class="hljs-params">arr, temp, left, mid, right</span>):</span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">        smaller_count = [<span class="hljs-number">0</span>] * <span class="hljs-built_in">len</span>(arr)</span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">        larger_count = [<span class="hljs-number">0</span>] * <span class="hljs-built_in">len</span>(arr)</span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">        <span class="hljs-comment"># Count smaller and larger elements during merge</span></span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">        i, j = left, mid + <span class="hljs-number">1</span></span></span>
+<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">        <span class="hljs-keyword">for</span> k <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(left, right + <span class="hljs-number">1</span>):</span></span>
+<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">            <span class="hljs-keyword">if</span> i &gt; mid:</span></span>
+<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">                temp[k] = arr[j]</span></span>
+<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">                j += <span class="hljs-number">1</span></span></span>
+<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">            <span class="hljs-keyword">elif</span> j &gt; right:</span></span>
+<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">                temp[k] = arr[i]</span></span>
+<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">                <span class="hljs-comment"># Count how many elements from right half are smaller</span></span></span>
+<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">                smaller_count[arr[i][<span class="hljs-number">1</span>]] += (right - mid)</span></span>
+<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">                i += <span class="hljs-number">1</span></span></span>
+<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">            <span class="hljs-keyword">elif</span> arr[i][<span class="hljs-number">0</span>] &lt;= arr[j][<span class="hljs-number">0</span>]:</span></span>
+<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">                temp[k] = arr[i]</span></span>
+<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">                smaller_count[arr[i][<span class="hljs-number">1</span>]] += (j - mid - <span class="hljs-number">1</span>)</span></span>
+<span class="ln-row"><span class="ln-num">21</span><span class="ln-code">                i += <span class="hljs-number">1</span></span></span>
+<span class="ln-row"><span class="ln-num">22</span><span class="ln-code">            <span class="hljs-keyword">else</span>:</span></span>
+<span class="ln-row"><span class="ln-num">23</span><span class="ln-code">                temp[k] = arr[j]</span></span>
+<span class="ln-row"><span class="ln-num">24</span><span class="ln-code">                j += <span class="hljs-number">1</span></span></span>
+<span class="ln-row"><span class="ln-num">25</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">26</span><span class="ln-code">        <span class="hljs-comment"># Copy back</span></span></span>
+<span class="ln-row"><span class="ln-num">27</span><span class="ln-code">        <span class="hljs-keyword">for</span> k <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(left, right + <span class="hljs-number">1</span>):</span></span>
+<span class="ln-row"><span class="ln-num">28</span><span class="ln-code">            arr[k] = temp[k]</span></span>
+<span class="ln-row"><span class="ln-num">29</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">30</span><span class="ln-code">        <span class="hljs-keyword">return</span> smaller_count, larger_count</span></span>
+<span class="ln-row"><span class="ln-num">31</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">32</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">merge_sort_with_count</span>(<span class="hljs-params">arr, temp, left, right</span>):</span></span>
+<span class="ln-row"><span class="ln-num">33</span><span class="ln-code">        <span class="hljs-keyword">if</span> left &gt;= right:</span></span>
+<span class="ln-row"><span class="ln-num">34</span><span class="ln-code">            <span class="hljs-keyword">return</span></span></span>
+<span class="ln-row"><span class="ln-num">35</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">36</span><span class="ln-code">        mid = (left + right) // <span class="hljs-number">2</span></span></span>
+<span class="ln-row"><span class="ln-num">37</span><span class="ln-code">        merge_sort_with_count(arr, temp, left, mid)</span></span>
+<span class="ln-row"><span class="ln-num">38</span><span class="ln-code">        merge_sort_with_count(arr, temp, mid + <span class="hljs-number">1</span>, right)</span></span>
+<span class="ln-row"><span class="ln-num">39</span><span class="ln-code">        merge_and_count(arr, temp, left, mid, right)</span></span>
+<span class="ln-row"><span class="ln-num">40</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">41</span><span class="ln-code">    <span class="hljs-comment"># Implementation depends on specific problem</span></span></span>
+<span class="ln-row"><span class="ln-num">42</span><span class="ln-code">    <span class="hljs-comment"># This is a general framework for array reconstruction</span></span></span>
+<span class="ln-row"><span class="ln-num">43</span><span class="ln-code">    <span class="hljs-keyword">pass</span></span></span>
 </code></pre>
 <h2 id="problems-by-pattern" tabindex="-1"><a class="header-anchor" href="#problems-by-pattern"><span>Problems by Pattern</span></a></h2>
 <h3 id="inversion-counting-problems" tabindex="-1"><a class="header-anchor" href="#inversion-counting-problems"><span><strong>Inversion Counting Problems</strong></span></a></h3>
@@ -471,259 +477,348 @@
 </tbody>
 </table>
 <h2 id="lc-examples" tabindex="-1"><a class="header-anchor" href="#lc-examples"><span>LC Examples</span></a></h2>
-<h3 id="1-count-of-smaller-numbers-after-self-lc-315" tabindex="-1"><a class="header-anchor" href="#1-count-of-smaller-numbers-after-self-lc-315"><span>1. Count of Smaller Numbers After Self (LC 315)</span></a></h3>
-<pre><code class="language-python">def countSmaller(nums):
-    &quot;&quot;&quot;Count how many numbers after each element are smaller&quot;&quot;&quot;
-    def merge_and_count(indices, temp, left, mid, right):
-        # Count smaller elements to the right
-        i, j, k = left, mid + 1, left
-
-        while i &lt;= mid and j &lt;= right:
-            if nums[indices[i]] &lt;= nums[indices[j]]:
-                temp[k] = indices[i]
-                # All elements from mid+1 to j-1 are smaller than nums[indices[i]]
-                counts[indices[i]] += (j - mid - 1)
-                i += 1
-            else:
-                temp[k] = indices[j]
-                j += 1
-            k += 1
-
-        # Process remaining elements
-        while i &lt;= mid:
-            temp[k] = indices[i]
-            counts[indices[i]] += (j - mid - 1)
-            i += 1
-            k += 1
-        while j &lt;= right:
-            temp[k] = indices[j]
-            j += 1
-            k += 1
-
-        # Copy back
-        for i in range(left, right + 1):
-            indices[i] = temp[i]
-
-    def merge_sort(indices, temp, left, right):
-        if left &gt;= right:
-            return
-
-        mid = (left + right) // 2
-        merge_sort(indices, temp, left, mid)
-        merge_sort(indices, temp, mid + 1, right)
-        merge_and_count(indices, temp, left, mid, right)
-
-    n = len(nums)
-    counts = [0] * n
-    indices = list(range(n))
-    temp = [0] * n
-
-    merge_sort(indices, temp, 0, n - 1)
-    return counts
+<h3 id="2-1-count-of-smaller-numbers-after-self-lc-315-merge-sort-with-index-tracking" tabindex="-1"><a class="header-anchor" href="#2-1-count-of-smaller-numbers-after-self-lc-315-merge-sort-with-index-tracking"><span>2-1) Count of Smaller Numbers After Self (LC 315) — Merge Sort with Index Tracking</span></a></h3>
+<blockquote>
+<p>During merge, count how many right-half elements moved past each left-half element.</p>
+</blockquote>
+<pre data-lang="java"><code class="hljs language-java"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment">// LC 315 - Count of Smaller Numbers After Self</span></span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-comment">// IDEA: Merge sort on indices; each right-side element that passes left side increments its count</span></span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"><span class="hljs-comment">// time = O(N log N), space = O(N)</span></span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"><span class="hljs-keyword">public</span> List&lt;Integer&gt; <span class="hljs-title function_">countSmaller</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums)</span> {</span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    <span class="hljs-type">int</span> <span class="hljs-variable">n</span> <span class="hljs-operator">=</span> nums.length;</span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    <span class="hljs-type">int</span>[] counts = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[n], indices = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[n];</span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; n; i++) indices[i] = i;</span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">    mergeSort(nums, indices, counts, <span class="hljs-number">0</span>, n - <span class="hljs-number">1</span>);</span></span>
+<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">    List&lt;Integer&gt; res = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();</span></span>
+<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> c : counts) res.add(c);</span></span>
+<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">    <span class="hljs-keyword">return</span> res;</span></span>
+<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">}</span></span>
+<span class="ln-row"><span class="ln-num">13</span><span class="ln-code"><span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">mergeSort</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums, <span class="hljs-type">int</span>[] idx, <span class="hljs-type">int</span>[] counts, <span class="hljs-type">int</span> l, <span class="hljs-type">int</span> r)</span> {</span></span>
+<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">    <span class="hljs-keyword">if</span> (l &gt;= r) <span class="hljs-keyword">return</span>;</span></span>
+<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">    <span class="hljs-type">int</span> <span class="hljs-variable">mid</span> <span class="hljs-operator">=</span> (l + r) / <span class="hljs-number">2</span>;</span></span>
+<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">    mergeSort(nums, idx, counts, l, mid);</span></span>
+<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">    mergeSort(nums, idx, counts, mid + <span class="hljs-number">1</span>, r);</span></span>
+<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">    <span class="hljs-type">int</span>[] tmp = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[r - l + <span class="hljs-number">1</span>];</span></span>
+<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">    <span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> l, j = mid + <span class="hljs-number">1</span>, k = <span class="hljs-number">0</span>, rightMoved = <span class="hljs-number">0</span>;</span></span>
+<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">    <span class="hljs-keyword">while</span> (i &lt;= mid &amp;&amp; j &lt;= r) {</span></span>
+<span class="ln-row"><span class="ln-num">21</span><span class="ln-code">        <span class="hljs-keyword">if</span> (nums[idx[j]] &lt; nums[idx[i]]) { tmp[k++] = idx[j++]; rightMoved++; }</span></span>
+<span class="ln-row"><span class="ln-num">22</span><span class="ln-code">        <span class="hljs-keyword">else</span> { counts[idx[i]] += rightMoved; tmp[k++] = idx[i++]; }</span></span>
+<span class="ln-row"><span class="ln-num">23</span><span class="ln-code">    }</span></span>
+<span class="ln-row"><span class="ln-num">24</span><span class="ln-code">    <span class="hljs-keyword">while</span> (i &lt;= mid) { counts[idx[i]] += rightMoved; tmp[k++] = idx[i++]; }</span></span>
+<span class="ln-row"><span class="ln-num">25</span><span class="ln-code">    <span class="hljs-keyword">while</span> (j &lt;= r) tmp[k++] = idx[j++];</span></span>
+<span class="ln-row"><span class="ln-num">26</span><span class="ln-code">    System.arraycopy(tmp, <span class="hljs-number">0</span>, idx, l, tmp.length);</span></span>
+<span class="ln-row"><span class="ln-num">27</span><span class="ln-code">}</span></span>
 </code></pre>
-<h3 id="2-reverse-pairs-lc-493" tabindex="-1"><a class="header-anchor" href="#2-reverse-pairs-lc-493"><span>2. Reverse Pairs (LC 493)</span></a></h3>
-<pre><code class="language-python">def reversePairs(nums):
-    &quot;&quot;&quot;Count pairs where nums[i] &gt; 2 * nums[j] for i &lt; j&quot;&quot;&quot;
-    def merge_and_count(nums, temp, left, mid, right):
-        # Count reverse pairs first
-        count = 0
-        j = mid + 1
-        for i in range(left, mid + 1):
-            while j &lt;= right and nums[i] &gt; 2 * nums[j]:
-                j += 1
-            count += j - (mid + 1)
-
-        # Regular merge
-        i, j, k = left, mid + 1, left
-        while i &lt;= mid and j &lt;= right:
-            if nums[i] &lt;= nums[j]:
-                temp[k] = nums[i]
-                i += 1
-            else:
-                temp[k] = nums[j]
-                j += 1
-            k += 1
-
-        while i &lt;= mid:
-            temp[k] = nums[i]
-            i += 1
-            k += 1
-        while j &lt;= right:
-            temp[k] = nums[j]
-            j += 1
-            k += 1
-
-        for i in range(left, right + 1):
-            nums[i] = temp[i]
-
-        return count
-
-    def merge_sort_and_count(nums, temp, left, right):
-        count = 0
-        if left &lt; right:
-            mid = (left + right) // 2
-            count += merge_sort_and_count(nums, temp, left, mid)
-            count += merge_sort_and_count(nums, temp, mid + 1, right)
-            count += merge_and_count(nums, temp, left, mid, right)
-        return count
-
-    temp = [0] * len(nums)
-    return merge_sort_and_count(nums[:], temp, 0, len(nums) - 1)
+<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-keyword">def</span> <span class="hljs-title function_">countSmaller</span>(<span class="hljs-params">nums</span>):</span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code">    <span class="hljs-string">&quot;&quot;&quot;Count how many numbers after each element are smaller&quot;&quot;&quot;</span></span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">merge_and_count</span>(<span class="hljs-params">indices, temp, left, mid, right</span>):</span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">        <span class="hljs-comment"># Count smaller elements to the right</span></span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">        i, j, k = left, mid + <span class="hljs-number">1</span>, left</span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">        <span class="hljs-keyword">while</span> i &lt;= mid <span class="hljs-keyword">and</span> j &lt;= right:</span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">            <span class="hljs-keyword">if</span> nums[indices[i]] &lt;= nums[indices[j]]:</span></span>
+<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">                temp[k] = indices[i]</span></span>
+<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">                <span class="hljs-comment"># All elements from mid+1 to j-1 are smaller than nums[indices[i]]</span></span></span>
+<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">                counts[indices[i]] += (j - mid - <span class="hljs-number">1</span>)</span></span>
+<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">                i += <span class="hljs-number">1</span></span></span>
+<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">            <span class="hljs-keyword">else</span>:</span></span>
+<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">                temp[k] = indices[j]</span></span>
+<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">                j += <span class="hljs-number">1</span></span></span>
+<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">            k += <span class="hljs-number">1</span></span></span>
+<span class="ln-row"><span class="ln-num">17</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">        <span class="hljs-comment"># Process remaining elements</span></span></span>
+<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">        <span class="hljs-keyword">while</span> i &lt;= mid:</span></span>
+<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">            temp[k] = indices[i]</span></span>
+<span class="ln-row"><span class="ln-num">21</span><span class="ln-code">            counts[indices[i]] += (j - mid - <span class="hljs-number">1</span>)</span></span>
+<span class="ln-row"><span class="ln-num">22</span><span class="ln-code">            i += <span class="hljs-number">1</span></span></span>
+<span class="ln-row"><span class="ln-num">23</span><span class="ln-code">            k += <span class="hljs-number">1</span></span></span>
+<span class="ln-row"><span class="ln-num">24</span><span class="ln-code">        <span class="hljs-keyword">while</span> j &lt;= right:</span></span>
+<span class="ln-row"><span class="ln-num">25</span><span class="ln-code">            temp[k] = indices[j]</span></span>
+<span class="ln-row"><span class="ln-num">26</span><span class="ln-code">            j += <span class="hljs-number">1</span></span></span>
+<span class="ln-row"><span class="ln-num">27</span><span class="ln-code">            k += <span class="hljs-number">1</span></span></span>
+<span class="ln-row"><span class="ln-num">28</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">29</span><span class="ln-code">        <span class="hljs-comment"># Copy back</span></span></span>
+<span class="ln-row"><span class="ln-num">30</span><span class="ln-code">        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(left, right + <span class="hljs-number">1</span>):</span></span>
+<span class="ln-row"><span class="ln-num">31</span><span class="ln-code">            indices[i] = temp[i]</span></span>
+<span class="ln-row"><span class="ln-num">32</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">33</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">merge_sort</span>(<span class="hljs-params">indices, temp, left, right</span>):</span></span>
+<span class="ln-row"><span class="ln-num">34</span><span class="ln-code">        <span class="hljs-keyword">if</span> left &gt;= right:</span></span>
+<span class="ln-row"><span class="ln-num">35</span><span class="ln-code">            <span class="hljs-keyword">return</span></span></span>
+<span class="ln-row"><span class="ln-num">36</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">37</span><span class="ln-code">        mid = (left + right) // <span class="hljs-number">2</span></span></span>
+<span class="ln-row"><span class="ln-num">38</span><span class="ln-code">        merge_sort(indices, temp, left, mid)</span></span>
+<span class="ln-row"><span class="ln-num">39</span><span class="ln-code">        merge_sort(indices, temp, mid + <span class="hljs-number">1</span>, right)</span></span>
+<span class="ln-row"><span class="ln-num">40</span><span class="ln-code">        merge_and_count(indices, temp, left, mid, right)</span></span>
+<span class="ln-row"><span class="ln-num">41</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">42</span><span class="ln-code">    n = <span class="hljs-built_in">len</span>(nums)</span></span>
+<span class="ln-row"><span class="ln-num">43</span><span class="ln-code">    counts = [<span class="hljs-number">0</span>] * n</span></span>
+<span class="ln-row"><span class="ln-num">44</span><span class="ln-code">    indices = <span class="hljs-built_in">list</span>(<span class="hljs-built_in">range</span>(n))</span></span>
+<span class="ln-row"><span class="ln-num">45</span><span class="ln-code">    temp = [<span class="hljs-number">0</span>] * n</span></span>
+<span class="ln-row"><span class="ln-num">46</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">47</span><span class="ln-code">    merge_sort(indices, temp, <span class="hljs-number">0</span>, n - <span class="hljs-number">1</span>)</span></span>
+<span class="ln-row"><span class="ln-num">48</span><span class="ln-code">    <span class="hljs-keyword">return</span> counts</span></span>
 </code></pre>
-<h3 id="3-count-of-range-sum-lc-327" tabindex="-1"><a class="header-anchor" href="#3-count-of-range-sum-lc-327"><span>3. Count of Range Sum (LC 327)</span></a></h3>
-<pre><code class="language-python">def countRangeSum(nums, lower, upper):
-    &quot;&quot;&quot;Count subarrays with sum in [lower, upper]&quot;&quot;&quot;
-    def merge_and_count(prefix_sums, temp, left, mid, right):
-        count = 0
-        j = k = mid + 1
-
-        for i in range(left, mid + 1):
-            # Find range where prefix_sums[x] - prefix_sums[i] is in [lower, upper]
-            while j &lt;= right and prefix_sums[j] - prefix_sums[i] &lt; lower:
-                j += 1
-            while k &lt;= right and prefix_sums[k] - prefix_sums[i] &lt;= upper:
-                k += 1
-            count += k - j
-
-        # Merge sorted arrays
-        i, j, p = left, mid + 1, left
-        while i &lt;= mid and j &lt;= right:
-            if prefix_sums[i] &lt;= prefix_sums[j]:
-                temp[p] = prefix_sums[i]
-                i += 1
-            else:
-                temp[p] = prefix_sums[j]
-                j += 1
-            p += 1
-
-        while i &lt;= mid:
-            temp[p] = prefix_sums[i]
-            i += 1
-            p += 1
-        while j &lt;= right:
-            temp[p] = prefix_sums[j]
-            j += 1
-            p += 1
-
-        for i in range(left, right + 1):
-            prefix_sums[i] = temp[i]
-
-        return count
-
-    def divide_and_conquer(prefix_sums, temp, left, right):
-        if left &gt;= right:
-            return 0
-
-        mid = (left + right) // 2
-        count = divide_and_conquer(prefix_sums, temp, left, mid)
-        count += divide_and_conquer(prefix_sums, temp, mid + 1, right)
-        count += merge_and_count(prefix_sums, temp, left, mid, right)
-        return count
-
-    # Build prefix sum array
-    prefix_sums = [0]
-    for num in nums:
-        prefix_sums.append(prefix_sums[-1] + num)
-
-    temp = [0] * len(prefix_sums)
-    return divide_and_conquer(prefix_sums, temp, 0, len(prefix_sums) - 1)
+<h3 id="2-2-reverse-pairs-lc-493-merge-sort-count-before-merge" tabindex="-1"><a class="header-anchor" href="#2-2-reverse-pairs-lc-493-merge-sort-count-before-merge"><span>2-2) Reverse Pairs (LC 493) — Merge Sort Count Before Merge</span></a></h3>
+<blockquote>
+<p>Count cross-half pairs (nums[i] &gt; 2*nums[j]) with two pointers before doing the merge.</p>
+</blockquote>
+<pre data-lang="java"><code class="hljs language-java"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment">// LC 493 - Reverse Pairs</span></span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-comment">// IDEA: Merge sort — count i&gt;2j pairs across halves first, then merge normally</span></span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"><span class="hljs-comment">// time = O(N log N), space = O(N)</span></span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"><span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">reversePairs</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums)</span> {</span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    <span class="hljs-keyword">return</span> mergeSort(nums, <span class="hljs-number">0</span>, nums.length - <span class="hljs-number">1</span>);</span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">}</span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code"><span class="hljs-keyword">private</span> <span class="hljs-type">int</span> <span class="hljs-title function_">mergeSort</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums, <span class="hljs-type">int</span> l, <span class="hljs-type">int</span> r)</span> {</span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">    <span class="hljs-keyword">if</span> (l &gt;= r) <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;</span></span>
+<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">    <span class="hljs-type">int</span> <span class="hljs-variable">mid</span> <span class="hljs-operator">=</span> (l + r) / <span class="hljs-number">2</span>;</span></span>
+<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">    <span class="hljs-type">int</span> <span class="hljs-variable">count</span> <span class="hljs-operator">=</span> mergeSort(nums, l, mid) + mergeSort(nums, mid + <span class="hljs-number">1</span>, r);</span></span>
+<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">    <span class="hljs-type">int</span> <span class="hljs-variable">j</span> <span class="hljs-operator">=</span> mid + <span class="hljs-number">1</span>;</span></span>
+<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> l; i &lt;= mid; i++) {</span></span>
+<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">        <span class="hljs-keyword">while</span> (j &lt;= r &amp;&amp; nums[i] &gt; <span class="hljs-number">2L</span> * nums[j]) j++;</span></span>
+<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">        count += j - (mid + <span class="hljs-number">1</span>);</span></span>
+<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">    }</span></span>
+<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">    <span class="hljs-type">int</span>[] tmp = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[r - l + <span class="hljs-number">1</span>];</span></span>
+<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">    <span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> l, k = <span class="hljs-number">0</span>; j = mid + <span class="hljs-number">1</span>;</span></span>
+<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">    <span class="hljs-keyword">while</span> (i &lt;= mid &amp;&amp; j &lt;= r) tmp[k++] = nums[i] &lt;= nums[j] ? nums[i++] : nums[j++];</span></span>
+<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">    <span class="hljs-keyword">while</span> (i &lt;= mid) tmp[k++] = nums[i++];</span></span>
+<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">    <span class="hljs-keyword">while</span> (j &lt;= r)   tmp[k++] = nums[j++];</span></span>
+<span class="ln-row"><span class="ln-num">21</span><span class="ln-code">    System.arraycopy(tmp, <span class="hljs-number">0</span>, nums, l, tmp.length);</span></span>
+<span class="ln-row"><span class="ln-num">22</span><span class="ln-code">    <span class="hljs-keyword">return</span> count;</span></span>
+<span class="ln-row"><span class="ln-num">23</span><span class="ln-code">}</span></span>
+</code></pre>
+<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-keyword">def</span> <span class="hljs-title function_">reversePairs</span>(<span class="hljs-params">nums</span>):</span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code">    <span class="hljs-string">&quot;&quot;&quot;Count pairs where nums[i] &gt; 2 * nums[j] for i &lt; j&quot;&quot;&quot;</span></span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">merge_and_count</span>(<span class="hljs-params">nums, temp, left, mid, right</span>):</span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">        <span class="hljs-comment"># Count reverse pairs first</span></span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">        count = <span class="hljs-number">0</span></span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">        j = mid + <span class="hljs-number">1</span></span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(left, mid + <span class="hljs-number">1</span>):</span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">            <span class="hljs-keyword">while</span> j &lt;= right <span class="hljs-keyword">and</span> nums[i] &gt; <span class="hljs-number">2</span> * nums[j]:</span></span>
+<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">                j += <span class="hljs-number">1</span></span></span>
+<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">            count += j - (mid + <span class="hljs-number">1</span>)</span></span>
+<span class="ln-row"><span class="ln-num">11</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">        <span class="hljs-comment"># Regular merge</span></span></span>
+<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">        i, j, k = left, mid + <span class="hljs-number">1</span>, left</span></span>
+<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">        <span class="hljs-keyword">while</span> i &lt;= mid <span class="hljs-keyword">and</span> j &lt;= right:</span></span>
+<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">            <span class="hljs-keyword">if</span> nums[i] &lt;= nums[j]:</span></span>
+<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">                temp[k] = nums[i]</span></span>
+<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">                i += <span class="hljs-number">1</span></span></span>
+<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">            <span class="hljs-keyword">else</span>:</span></span>
+<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">                temp[k] = nums[j]</span></span>
+<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">                j += <span class="hljs-number">1</span></span></span>
+<span class="ln-row"><span class="ln-num">21</span><span class="ln-code">            k += <span class="hljs-number">1</span></span></span>
+<span class="ln-row"><span class="ln-num">22</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">23</span><span class="ln-code">        <span class="hljs-keyword">while</span> i &lt;= mid:</span></span>
+<span class="ln-row"><span class="ln-num">24</span><span class="ln-code">            temp[k] = nums[i]</span></span>
+<span class="ln-row"><span class="ln-num">25</span><span class="ln-code">            i += <span class="hljs-number">1</span></span></span>
+<span class="ln-row"><span class="ln-num">26</span><span class="ln-code">            k += <span class="hljs-number">1</span></span></span>
+<span class="ln-row"><span class="ln-num">27</span><span class="ln-code">        <span class="hljs-keyword">while</span> j &lt;= right:</span></span>
+<span class="ln-row"><span class="ln-num">28</span><span class="ln-code">            temp[k] = nums[j]</span></span>
+<span class="ln-row"><span class="ln-num">29</span><span class="ln-code">            j += <span class="hljs-number">1</span></span></span>
+<span class="ln-row"><span class="ln-num">30</span><span class="ln-code">            k += <span class="hljs-number">1</span></span></span>
+<span class="ln-row"><span class="ln-num">31</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">32</span><span class="ln-code">        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(left, right + <span class="hljs-number">1</span>):</span></span>
+<span class="ln-row"><span class="ln-num">33</span><span class="ln-code">            nums[i] = temp[i]</span></span>
+<span class="ln-row"><span class="ln-num">34</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">35</span><span class="ln-code">        <span class="hljs-keyword">return</span> count</span></span>
+<span class="ln-row"><span class="ln-num">36</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">37</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">merge_sort_and_count</span>(<span class="hljs-params">nums, temp, left, right</span>):</span></span>
+<span class="ln-row"><span class="ln-num">38</span><span class="ln-code">        count = <span class="hljs-number">0</span></span></span>
+<span class="ln-row"><span class="ln-num">39</span><span class="ln-code">        <span class="hljs-keyword">if</span> left &lt; right:</span></span>
+<span class="ln-row"><span class="ln-num">40</span><span class="ln-code">            mid = (left + right) // <span class="hljs-number">2</span></span></span>
+<span class="ln-row"><span class="ln-num">41</span><span class="ln-code">            count += merge_sort_and_count(nums, temp, left, mid)</span></span>
+<span class="ln-row"><span class="ln-num">42</span><span class="ln-code">            count += merge_sort_and_count(nums, temp, mid + <span class="hljs-number">1</span>, right)</span></span>
+<span class="ln-row"><span class="ln-num">43</span><span class="ln-code">            count += merge_and_count(nums, temp, left, mid, right)</span></span>
+<span class="ln-row"><span class="ln-num">44</span><span class="ln-code">        <span class="hljs-keyword">return</span> count</span></span>
+<span class="ln-row"><span class="ln-num">45</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">46</span><span class="ln-code">    temp = [<span class="hljs-number">0</span>] * <span class="hljs-built_in">len</span>(nums)</span></span>
+<span class="ln-row"><span class="ln-num">47</span><span class="ln-code">    <span class="hljs-keyword">return</span> merge_sort_and_count(nums[:], temp, <span class="hljs-number">0</span>, <span class="hljs-built_in">len</span>(nums) - <span class="hljs-number">1</span>)</span></span>
+</code></pre>
+<h3 id="2-3-count-of-range-sum-lc-327-merge-sort-on-prefix-sums" tabindex="-1"><a class="header-anchor" href="#2-3-count-of-range-sum-lc-327-merge-sort-on-prefix-sums"><span>2-3) Count of Range Sum (LC 327) — Merge Sort on Prefix Sums</span></a></h3>
+<blockquote>
+<p>Build prefix sum array; count cross-half pairs (prefixSum[j] - prefixSum[i]) in [lower, upper].</p>
+</blockquote>
+<pre data-lang="java"><code class="hljs language-java"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment">// LC 327 - Count of Range Sum</span></span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-comment">// IDEA: Merge sort on prefix sums; count cross pairs in [lower, upper] before merging</span></span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"><span class="hljs-comment">// time = O(N log N), space = O(N)</span></span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"><span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">countRangeSum</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums, <span class="hljs-type">int</span> lower, <span class="hljs-type">int</span> upper)</span> {</span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    <span class="hljs-type">int</span> <span class="hljs-variable">n</span> <span class="hljs-operator">=</span> nums.length;</span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    <span class="hljs-type">long</span>[] prefix = <span class="hljs-keyword">new</span> <span class="hljs-title class_">long</span>[n + <span class="hljs-number">1</span>];</span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; n; i++) prefix[i + <span class="hljs-number">1</span>] = prefix[i] + nums[i];</span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">    <span class="hljs-keyword">return</span> mergeSort(prefix, <span class="hljs-number">0</span>, n, lower, upper);</span></span>
+<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">}</span></span>
+<span class="ln-row"><span class="ln-num">10</span><span class="ln-code"><span class="hljs-keyword">private</span> <span class="hljs-type">int</span> <span class="hljs-title function_">mergeSort</span><span class="hljs-params">(<span class="hljs-type">long</span>[] p, <span class="hljs-type">int</span> l, <span class="hljs-type">int</span> r, <span class="hljs-type">int</span> lo, <span class="hljs-type">int</span> hi)</span> {</span></span>
+<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">    <span class="hljs-keyword">if</span> (l &gt;= r) <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;</span></span>
+<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">    <span class="hljs-type">int</span> <span class="hljs-variable">mid</span> <span class="hljs-operator">=</span> (l + r) / <span class="hljs-number">2</span>;</span></span>
+<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">    <span class="hljs-type">int</span> <span class="hljs-variable">count</span> <span class="hljs-operator">=</span> mergeSort(p, l, mid, lo, hi) + mergeSort(p, mid + <span class="hljs-number">1</span>, r, lo, hi);</span></span>
+<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">    <span class="hljs-type">int</span> <span class="hljs-variable">j</span> <span class="hljs-operator">=</span> mid + <span class="hljs-number">1</span>, k = mid + <span class="hljs-number">1</span>;</span></span>
+<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> l; i &lt;= mid; i++) {</span></span>
+<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">        <span class="hljs-keyword">while</span> (j &lt;= r &amp;&amp; p[j] - p[i] &lt; lo) j++;</span></span>
+<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">        <span class="hljs-keyword">while</span> (k &lt;= r &amp;&amp; p[k] - p[i] &lt;= hi) k++;</span></span>
+<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">        count += k - j;</span></span>
+<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">    }</span></span>
+<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">    <span class="hljs-type">long</span>[] tmp = <span class="hljs-keyword">new</span> <span class="hljs-title class_">long</span>[r - l + <span class="hljs-number">1</span>];</span></span>
+<span class="ln-row"><span class="ln-num">21</span><span class="ln-code">    <span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> l, a = mid + <span class="hljs-number">1</span>, idx = <span class="hljs-number">0</span>;</span></span>
+<span class="ln-row"><span class="ln-num">22</span><span class="ln-code">    <span class="hljs-keyword">while</span> (i &lt;= mid &amp;&amp; a &lt;= r) tmp[idx++] = p[i] &lt;= p[a] ? p[i++] : p[a++];</span></span>
+<span class="ln-row"><span class="ln-num">23</span><span class="ln-code">    <span class="hljs-keyword">while</span> (i &lt;= mid) tmp[idx++] = p[i++];</span></span>
+<span class="ln-row"><span class="ln-num">24</span><span class="ln-code">    <span class="hljs-keyword">while</span> (a &lt;= r)   tmp[idx++] = p[a++];</span></span>
+<span class="ln-row"><span class="ln-num">25</span><span class="ln-code">    System.arraycopy(tmp, <span class="hljs-number">0</span>, p, l, tmp.length);</span></span>
+<span class="ln-row"><span class="ln-num">26</span><span class="ln-code">    <span class="hljs-keyword">return</span> count;</span></span>
+<span class="ln-row"><span class="ln-num">27</span><span class="ln-code">}</span></span>
+</code></pre>
+<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-keyword">def</span> <span class="hljs-title function_">countRangeSum</span>(<span class="hljs-params">nums, lower, upper</span>):</span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code">    <span class="hljs-string">&quot;&quot;&quot;Count subarrays with sum in [lower, upper]&quot;&quot;&quot;</span></span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">merge_and_count</span>(<span class="hljs-params">prefix_sums, temp, left, mid, right</span>):</span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">        count = <span class="hljs-number">0</span></span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">        j = k = mid + <span class="hljs-number">1</span></span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(left, mid + <span class="hljs-number">1</span>):</span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">            <span class="hljs-comment"># Find range where prefix_sums[x] - prefix_sums[i] is in [lower, upper]</span></span></span>
+<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">            <span class="hljs-keyword">while</span> j &lt;= right <span class="hljs-keyword">and</span> prefix_sums[j] - prefix_sums[i] &lt; lower:</span></span>
+<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">                j += <span class="hljs-number">1</span></span></span>
+<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">            <span class="hljs-keyword">while</span> k &lt;= right <span class="hljs-keyword">and</span> prefix_sums[k] - prefix_sums[i] &lt;= upper:</span></span>
+<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">                k += <span class="hljs-number">1</span></span></span>
+<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">            count += k - j</span></span>
+<span class="ln-row"><span class="ln-num">14</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">        <span class="hljs-comment"># Merge sorted arrays</span></span></span>
+<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">        i, j, p = left, mid + <span class="hljs-number">1</span>, left</span></span>
+<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">        <span class="hljs-keyword">while</span> i &lt;= mid <span class="hljs-keyword">and</span> j &lt;= right:</span></span>
+<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">            <span class="hljs-keyword">if</span> prefix_sums[i] &lt;= prefix_sums[j]:</span></span>
+<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">                temp[p] = prefix_sums[i]</span></span>
+<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">                i += <span class="hljs-number">1</span></span></span>
+<span class="ln-row"><span class="ln-num">21</span><span class="ln-code">            <span class="hljs-keyword">else</span>:</span></span>
+<span class="ln-row"><span class="ln-num">22</span><span class="ln-code">                temp[p] = prefix_sums[j]</span></span>
+<span class="ln-row"><span class="ln-num">23</span><span class="ln-code">                j += <span class="hljs-number">1</span></span></span>
+<span class="ln-row"><span class="ln-num">24</span><span class="ln-code">            p += <span class="hljs-number">1</span></span></span>
+<span class="ln-row"><span class="ln-num">25</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">26</span><span class="ln-code">        <span class="hljs-keyword">while</span> i &lt;= mid:</span></span>
+<span class="ln-row"><span class="ln-num">27</span><span class="ln-code">            temp[p] = prefix_sums[i]</span></span>
+<span class="ln-row"><span class="ln-num">28</span><span class="ln-code">            i += <span class="hljs-number">1</span></span></span>
+<span class="ln-row"><span class="ln-num">29</span><span class="ln-code">            p += <span class="hljs-number">1</span></span></span>
+<span class="ln-row"><span class="ln-num">30</span><span class="ln-code">        <span class="hljs-keyword">while</span> j &lt;= right:</span></span>
+<span class="ln-row"><span class="ln-num">31</span><span class="ln-code">            temp[p] = prefix_sums[j]</span></span>
+<span class="ln-row"><span class="ln-num">32</span><span class="ln-code">            j += <span class="hljs-number">1</span></span></span>
+<span class="ln-row"><span class="ln-num">33</span><span class="ln-code">            p += <span class="hljs-number">1</span></span></span>
+<span class="ln-row"><span class="ln-num">34</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">35</span><span class="ln-code">        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(left, right + <span class="hljs-number">1</span>):</span></span>
+<span class="ln-row"><span class="ln-num">36</span><span class="ln-code">            prefix_sums[i] = temp[i]</span></span>
+<span class="ln-row"><span class="ln-num">37</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">38</span><span class="ln-code">        <span class="hljs-keyword">return</span> count</span></span>
+<span class="ln-row"><span class="ln-num">39</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">40</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">divide_and_conquer</span>(<span class="hljs-params">prefix_sums, temp, left, right</span>):</span></span>
+<span class="ln-row"><span class="ln-num">41</span><span class="ln-code">        <span class="hljs-keyword">if</span> left &gt;= right:</span></span>
+<span class="ln-row"><span class="ln-num">42</span><span class="ln-code">            <span class="hljs-keyword">return</span> <span class="hljs-number">0</span></span></span>
+<span class="ln-row"><span class="ln-num">43</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">44</span><span class="ln-code">        mid = (left + right) // <span class="hljs-number">2</span></span></span>
+<span class="ln-row"><span class="ln-num">45</span><span class="ln-code">        count = divide_and_conquer(prefix_sums, temp, left, mid)</span></span>
+<span class="ln-row"><span class="ln-num">46</span><span class="ln-code">        count += divide_and_conquer(prefix_sums, temp, mid + <span class="hljs-number">1</span>, right)</span></span>
+<span class="ln-row"><span class="ln-num">47</span><span class="ln-code">        count += merge_and_count(prefix_sums, temp, left, mid, right)</span></span>
+<span class="ln-row"><span class="ln-num">48</span><span class="ln-code">        <span class="hljs-keyword">return</span> count</span></span>
+<span class="ln-row"><span class="ln-num">49</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">50</span><span class="ln-code">    <span class="hljs-comment"># Build prefix sum array</span></span></span>
+<span class="ln-row"><span class="ln-num">51</span><span class="ln-code">    prefix_sums = [<span class="hljs-number">0</span>]</span></span>
+<span class="ln-row"><span class="ln-num">52</span><span class="ln-code">    <span class="hljs-keyword">for</span> num <span class="hljs-keyword">in</span> nums:</span></span>
+<span class="ln-row"><span class="ln-num">53</span><span class="ln-code">        prefix_sums.append(prefix_sums[-<span class="hljs-number">1</span>] + num)</span></span>
+<span class="ln-row"><span class="ln-num">54</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">55</span><span class="ln-code">    temp = [<span class="hljs-number">0</span>] * <span class="hljs-built_in">len</span>(prefix_sums)</span></span>
+<span class="ln-row"><span class="ln-num">56</span><span class="ln-code">    <span class="hljs-keyword">return</span> divide_and_conquer(prefix_sums, temp, <span class="hljs-number">0</span>, <span class="hljs-built_in">len</span>(prefix_sums) - <span class="hljs-number">1</span>)</span></span>
 </code></pre>
 <h2 id="advanced-techniques" tabindex="-1"><a class="header-anchor" href="#advanced-techniques"><span>Advanced Techniques</span></a></h2>
 <h3 id="optimization-strategies" tabindex="-1"><a class="header-anchor" href="#optimization-strategies"><span>Optimization Strategies</span></a></h3>
-<pre><code class="language-python">def divide_and_conquer_optimizations():
-    &quot;&quot;&quot;Various optimization techniques for D&amp;C&quot;&quot;&quot;
-
-    # 1. In-place operations to reduce space
-    def in_place_merge(arr, left, mid, right):
-        # Reduce auxiliary space usage
-        pass
-
-    # 2. Iterative bottom-up approach
-    def iterative_merge_sort(arr):
-        n = len(arr)
-        size = 1
-        while size &lt; n:
-            left = 0
-            while left &lt; n - 1:
-                mid = min(left + size - 1, n - 1)
-                right = min(left + 2 * size - 1, n - 1)
-                # merge(arr, left, mid, right)
-                left += 2 * size
-            size *= 2
-
-    # 3. Parallel divide and conquer
-    def parallel_merge_sort(arr):
-        # Use threading for large datasets
-        pass
-
-    # 4. Hybrid approach with insertion sort for small subarrays
-    def hybrid_merge_sort(arr, threshold=10):
-        if len(arr) &lt;= threshold:
-            return insertion_sort(arr)
-        # Regular merge sort for larger arrays
+<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-keyword">def</span> <span class="hljs-title function_">divide_and_conquer_optimizations</span>():</span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code">    <span class="hljs-string">&quot;&quot;&quot;Various optimization techniques for D&amp;C&quot;&quot;&quot;</span></span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">    <span class="hljs-comment"># 1. In-place operations to reduce space</span></span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">in_place_merge</span>(<span class="hljs-params">arr, left, mid, right</span>):</span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">        <span class="hljs-comment"># Reduce auxiliary space usage</span></span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">        <span class="hljs-keyword">pass</span></span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">    <span class="hljs-comment"># 2. Iterative bottom-up approach</span></span></span>
+<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">iterative_merge_sort</span>(<span class="hljs-params">arr</span>):</span></span>
+<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">        n = <span class="hljs-built_in">len</span>(arr)</span></span>
+<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">        size = <span class="hljs-number">1</span></span></span>
+<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">        <span class="hljs-keyword">while</span> size &lt; n:</span></span>
+<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">            left = <span class="hljs-number">0</span></span></span>
+<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">            <span class="hljs-keyword">while</span> left &lt; n - <span class="hljs-number">1</span>:</span></span>
+<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">                mid = <span class="hljs-built_in">min</span>(left + size - <span class="hljs-number">1</span>, n - <span class="hljs-number">1</span>)</span></span>
+<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">                right = <span class="hljs-built_in">min</span>(left + <span class="hljs-number">2</span> * size - <span class="hljs-number">1</span>, n - <span class="hljs-number">1</span>)</span></span>
+<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">                <span class="hljs-comment"># merge(arr, left, mid, right)</span></span></span>
+<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">                left += <span class="hljs-number">2</span> * size</span></span>
+<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">            size *= <span class="hljs-number">2</span></span></span>
+<span class="ln-row"><span class="ln-num">21</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">22</span><span class="ln-code">    <span class="hljs-comment"># 3. Parallel divide and conquer</span></span></span>
+<span class="ln-row"><span class="ln-num">23</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">parallel_merge_sort</span>(<span class="hljs-params">arr</span>):</span></span>
+<span class="ln-row"><span class="ln-num">24</span><span class="ln-code">        <span class="hljs-comment"># Use threading for large datasets</span></span></span>
+<span class="ln-row"><span class="ln-num">25</span><span class="ln-code">        <span class="hljs-keyword">pass</span></span></span>
+<span class="ln-row"><span class="ln-num">26</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">27</span><span class="ln-code">    <span class="hljs-comment"># 4. Hybrid approach with insertion sort for small subarrays</span></span></span>
+<span class="ln-row"><span class="ln-num">28</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">hybrid_merge_sort</span>(<span class="hljs-params">arr, threshold=<span class="hljs-number">10</span></span>):</span></span>
+<span class="ln-row"><span class="ln-num">29</span><span class="ln-code">        <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(arr) &lt;= threshold:</span></span>
+<span class="ln-row"><span class="ln-num">30</span><span class="ln-code">            <span class="hljs-keyword">return</span> insertion_sort(arr)</span></span>
+<span class="ln-row"><span class="ln-num">31</span><span class="ln-code">        <span class="hljs-comment"># Regular merge sort for larger arrays</span></span></span>
 </code></pre>
 <h3 id="custom-merge-logic-patterns" tabindex="-1"><a class="header-anchor" href="#custom-merge-logic-patterns"><span>Custom Merge Logic Patterns</span></a></h3>
-<pre><code class="language-python">class AdvancedMergePatterns:
-    &quot;&quot;&quot;Advanced merge logic for specific problems&quot;&quot;&quot;
-
-    def merge_with_multiple_conditions(self, arr1, arr2):
-        &quot;&quot;&quot;Merge with multiple counting conditions&quot;&quot;&quot;
-        result = []
-        i = j = 0
-        counts = {&quot;condition1&quot;: 0, &quot;condition2&quot;: 0}
-
-        while i &lt; len(arr1) and j &lt; len(arr2):
-            if self.condition1(arr1[i], arr2[j]):
-                counts[&quot;condition1&quot;] += len(arr2) - j
-            if self.condition2(arr1[i], arr2[j]):
-                counts[&quot;condition2&quot;] += len(arr2) - j
-
-            if arr1[i] &lt;= arr2[j]:
-                result.append(arr1[i])
-                i += 1
-            else:
-                result.append(arr2[j])
-                j += 1
-
-        return result + arr1[i:] + arr2[j:], counts
-
-    def merge_with_reconstruction(self, left_part, right_part):
-        &quot;&quot;&quot;Merge while reconstructing array with specific properties&quot;&quot;&quot;
-        # Custom merge logic for array reconstruction problems
-        pass
+<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-keyword">class</span> <span class="hljs-title class_">AdvancedMergePatterns</span>:</span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code">    <span class="hljs-string">&quot;&quot;&quot;Advanced merge logic for specific problems&quot;&quot;&quot;</span></span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">merge_with_multiple_conditions</span>(<span class="hljs-params">self, arr1, arr2</span>):</span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">        <span class="hljs-string">&quot;&quot;&quot;Merge with multiple counting conditions&quot;&quot;&quot;</span></span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">        result = []</span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">        i = j = <span class="hljs-number">0</span></span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">        counts = {<span class="hljs-string">&quot;condition1&quot;</span>: <span class="hljs-number">0</span>, <span class="hljs-string">&quot;condition2&quot;</span>: <span class="hljs-number">0</span>}</span></span>
+<span class="ln-row"><span class="ln-num">9</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">        <span class="hljs-keyword">while</span> i &lt; <span class="hljs-built_in">len</span>(arr1) <span class="hljs-keyword">and</span> j &lt; <span class="hljs-built_in">len</span>(arr2):</span></span>
+<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">            <span class="hljs-keyword">if</span> <span class="hljs-variable language_">self</span>.condition1(arr1[i], arr2[j]):</span></span>
+<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">                counts[<span class="hljs-string">&quot;condition1&quot;</span>] += <span class="hljs-built_in">len</span>(arr2) - j</span></span>
+<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">            <span class="hljs-keyword">if</span> <span class="hljs-variable language_">self</span>.condition2(arr1[i], arr2[j]):</span></span>
+<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">                counts[<span class="hljs-string">&quot;condition2&quot;</span>] += <span class="hljs-built_in">len</span>(arr2) - j</span></span>
+<span class="ln-row"><span class="ln-num">15</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">            <span class="hljs-keyword">if</span> arr1[i] &lt;= arr2[j]:</span></span>
+<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">                result.append(arr1[i])</span></span>
+<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">                i += <span class="hljs-number">1</span></span></span>
+<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">            <span class="hljs-keyword">else</span>:</span></span>
+<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">                result.append(arr2[j])</span></span>
+<span class="ln-row"><span class="ln-num">21</span><span class="ln-code">                j += <span class="hljs-number">1</span></span></span>
+<span class="ln-row"><span class="ln-num">22</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">23</span><span class="ln-code">        <span class="hljs-keyword">return</span> result + arr1[i:] + arr2[j:], counts</span></span>
+<span class="ln-row"><span class="ln-num">24</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">25</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">merge_with_reconstruction</span>(<span class="hljs-params">self, left_part, right_part</span>):</span></span>
+<span class="ln-row"><span class="ln-num">26</span><span class="ln-code">        <span class="hljs-string">&quot;&quot;&quot;Merge while reconstructing array with specific properties&quot;&quot;&quot;</span></span></span>
+<span class="ln-row"><span class="ln-num">27</span><span class="ln-code">        <span class="hljs-comment"># Custom merge logic for array reconstruction problems</span></span></span>
+<span class="ln-row"><span class="ln-num">28</span><span class="ln-code">        <span class="hljs-keyword">pass</span></span></span>
 </code></pre>
 <h2 id="performance-optimization-tips" tabindex="-1"><a class="header-anchor" href="#performance-optimization-tips"><span>Performance Optimization Tips</span></a></h2>
 <h3 id="time-complexity-analysis" tabindex="-1"><a class="header-anchor" href="#time-complexity-analysis"><span>Time Complexity Analysis</span></a></h3>
-<pre><code class="language-python">def complexity_analysis():
-    &quot;&quot;&quot;Analyze time complexity of different D&amp;C approaches&quot;&quot;&quot;
-
-    # Standard divide and conquer: T(n) = 2T(n/2) + O(n) = O(n log n)
-    # With k-way division: T(n) = kT(n/k) + O(n) = O(n log n) if k is constant
-    # With additional work per level: T(n) = 2T(n/2) + O(n^c)
-    #   - If c &lt; 1: O(n log n)
-    #   - If c = 1: O(n log n)
-    #   - If c &gt; 1: O(n^c)
-
-    pass
+<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-keyword">def</span> <span class="hljs-title function_">complexity_analysis</span>():</span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code">    <span class="hljs-string">&quot;&quot;&quot;Analyze time complexity of different D&amp;C approaches&quot;&quot;&quot;</span></span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">    <span class="hljs-comment"># Standard divide and conquer: T(n) = 2T(n/2) + O(n) = O(n log n)</span></span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    <span class="hljs-comment"># With k-way division: T(n) = kT(n/k) + O(n) = O(n log n) if k is constant</span></span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    <span class="hljs-comment"># With additional work per level: T(n) = 2T(n/2) + O(n^c)</span></span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">    <span class="hljs-comment">#   - If c &lt; 1: O(n log n)</span></span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">    <span class="hljs-comment">#   - If c = 1: O(n log n)</span></span></span>
+<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">    <span class="hljs-comment">#   - If c &gt; 1: O(n^c)</span></span></span>
+<span class="ln-row"><span class="ln-num">10</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">    <span class="hljs-keyword">pass</span></span></span>
 </code></pre>
 <h3 id="space-optimization" tabindex="-1"><a class="header-anchor" href="#space-optimization"><span>Space Optimization</span></a></h3>
-<pre><code class="language-python">def space_optimizations():
-    &quot;&quot;&quot;Techniques to reduce space complexity&quot;&quot;&quot;
-
-    # 1. Reuse auxiliary arrays
-    def reuse_temp_array(arr):
-        temp = [0] * len(arr)  # Create once, reuse everywhere
-        # Pass temp to all recursive calls
-
-    # 2. In-place merge (complex but saves space)
-    def in_place_merge_technique(arr, left, mid, right):
-        # Advanced in-place merging algorithms
-        pass
-
-    # 3. Iterative approach to eliminate recursion stack
-    def iterative_divide_conquer(arr):
-        # Bottom-up approach to save stack space
-        pass
+<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-keyword">def</span> <span class="hljs-title function_">space_optimizations</span>():</span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code">    <span class="hljs-string">&quot;&quot;&quot;Techniques to reduce space complexity&quot;&quot;&quot;</span></span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">    <span class="hljs-comment"># 1. Reuse auxiliary arrays</span></span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">reuse_temp_array</span>(<span class="hljs-params">arr</span>):</span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">        temp = [<span class="hljs-number">0</span>] * <span class="hljs-built_in">len</span>(arr)  <span class="hljs-comment"># Create once, reuse everywhere</span></span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">        <span class="hljs-comment"># Pass temp to all recursive calls</span></span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">    <span class="hljs-comment"># 2. In-place merge (complex but saves space)</span></span></span>
+<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">in_place_merge_technique</span>(<span class="hljs-params">arr, left, mid, right</span>):</span></span>
+<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">        <span class="hljs-comment"># Advanced in-place merging algorithms</span></span></span>
+<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">        <span class="hljs-keyword">pass</span></span></span>
+<span class="ln-row"><span class="ln-num">13</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">    <span class="hljs-comment"># 3. Iterative approach to eliminate recursion stack</span></span></span>
+<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">iterative_divide_conquer</span>(<span class="hljs-params">arr</span>):</span></span>
+<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">        <span class="hljs-comment"># Bottom-up approach to save stack space</span></span></span>
+<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">        <span class="hljs-keyword">pass</span></span></span>
 </code></pre>
 <h2 id="summary-quick-reference" tabindex="-1"><a class="header-anchor" href="#summary-quick-reference"><span>Summary &amp; Quick Reference</span></a></h2>
 <h3 id="common-d-c-patterns" tabindex="-1"><a class="header-anchor" href="#common-d-c-patterns"><span>Common D&amp;C Patterns</span></a></h3>

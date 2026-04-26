@@ -9,8 +9,7 @@
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>CS</text></svg>">
   <link rel="stylesheet" href="../style.css">
   <link rel="stylesheet" href="../vendor/fonts.css">
-  <link rel="stylesheet" href="../vendor/highlight/github-dark.min.css">
-  <script src="../vendor/highlight/highlight.min.js"></script>
+  <link rel="stylesheet" href="../vendor/highlight/atom-one-dark.min.css">
   <script>
   // Apply theme before render to prevent flash
   (function() {
@@ -21,40 +20,43 @@
   })();
   </script>
   <script>document.addEventListener('DOMContentLoaded', function() {
-    hljs.highlightAll();
-    document.querySelectorAll('pre code').forEach(function(codeEl) {
-      var pre = codeEl.parentElement;
-      var lang = '';
-      var cls = codeEl.className || '';
-      var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
-      if (m) lang = m[1];
-      var wrapper = document.createElement('div');
-      wrapper.className = 'code-block-wrapper';
-      pre.parentNode.insertBefore(wrapper, pre);
-      var header = document.createElement('div');
-      header.className = 'code-block-header';
-      if (lang) {
-        var label = document.createElement('span');
-        label.className = 'code-lang-label';
-        label.textContent = lang;
-        header.appendChild(label);
-      } else {
-        header.appendChild(document.createElement('span'));
-      }
-      var btn = document.createElement('button');
-      btn.className = 'copy-btn';
-      btn.textContent = 'Copy';
-      btn.addEventListener('click', function() {
-        navigator.clipboard.writeText(codeEl.textContent).then(function() {
-          btn.textContent = 'Copied!';
-          btn.classList.add('copied');
-          setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+    // Code block wrappers + copy buttons (highlighting done at build time)
+    try {
+      document.querySelectorAll('pre').forEach(function(pre) {
+        var codeEl = pre.querySelector('code');
+        var lang = pre.getAttribute('data-lang') || '';
+        var wrapper = document.createElement('div');
+        wrapper.className = 'code-block-wrapper';
+        pre.parentNode.insertBefore(wrapper, pre);
+        var header = document.createElement('div');
+        header.className = 'code-block-header';
+        if (lang) {
+          var label = document.createElement('span');
+          label.className = 'code-lang-label';
+          label.textContent = lang;
+          header.appendChild(label);
+        } else {
+          header.appendChild(document.createElement('span'));
+        }
+        var btn = document.createElement('button');
+        btn.className = 'copy-btn';
+        btn.textContent = 'Copy';
+        btn.addEventListener('click', function() {
+          var text = codeEl
+            ? Array.from(codeEl.querySelectorAll('.ln-code')).map(function(el) { return el.textContent; }).join('
+')
+            : pre.textContent;
+          navigator.clipboard.writeText(text).then(function() {
+            btn.textContent = 'Copied!';
+            btn.classList.add('copied');
+            setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+          });
         });
+        header.appendChild(btn);
+        wrapper.appendChild(header);
+        wrapper.appendChild(pre);
       });
-      header.appendChild(btn);
-      wrapper.appendChild(header);
-      wrapper.appendChild(pre);
-    });
+    } catch(e) { console.error('Code block setup error:', e); }
     document.querySelectorAll('table').forEach(function(table) {
       if (!table.parentElement.classList.contains('table-wrap')) {
         var wrapper = document.createElement('div');
@@ -64,32 +66,36 @@
       }
     });
     // Reading progress bar
-    var progressBar = document.getElementById('reading-progress');
-    if (progressBar) {
-      window.addEventListener('scroll', function() {
-        var winScroll = document.documentElement.scrollTop;
-        var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-        progressBar.style.width = height > 0 ? (winScroll / height * 100) + '%' : '0%';
-      });
-    }
-    // Dark mode toggle
-    var toggle = document.getElementById('theme-toggle');
-    if (toggle) {
-      var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-      toggle.textContent = isDark ? '☀️' : '🌙';
-      toggle.addEventListener('click', function() {
-        var dark = document.documentElement.getAttribute('data-theme') === 'dark';
-        if (dark) {
-          document.documentElement.removeAttribute('data-theme');
-          localStorage.setItem('theme', 'light');
-          toggle.textContent = '🌙';
-        } else {
-          document.documentElement.setAttribute('data-theme', 'dark');
-          localStorage.setItem('theme', 'dark');
-          toggle.textContent = '☀️';
-        }
-      });
-    }
+    try {
+      var progressBar = document.getElementById('reading-progress');
+      if (progressBar) {
+        window.addEventListener('scroll', function() {
+          var winScroll = document.documentElement.scrollTop;
+          var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+          progressBar.style.width = height > 0 ? (winScroll / height * 100) + '%' : '0%';
+        });
+      }
+    } catch(e) {}
+    // Dark mode toggle — isolated so errors elsewhere never prevent this from working
+    try {
+      var toggle = document.getElementById('theme-toggle');
+      if (toggle) {
+        var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+        toggle.textContent = isDark ? '☀️' : '🌙';
+        toggle.addEventListener('click', function() {
+          var dark = document.documentElement.getAttribute('data-theme') === 'dark';
+          if (dark) {
+            document.documentElement.removeAttribute('data-theme');
+            localStorage.setItem('theme', 'light');
+            toggle.textContent = '🌙';
+          } else {
+            document.documentElement.setAttribute('data-theme', 'dark');
+            localStorage.setItem('theme', 'dark');
+            toggle.textContent = '☀️';
+          }
+        });
+      }
+    } catch(e) { console.error('Theme toggle error:', e); }
   });</script>
 </head>
 <body>
@@ -138,7 +144,7 @@ Covers: Time/Space complexity, classic LC problems, and math intuitions</p>
 </blockquote>
 <hr>
 <h2 id="1-big-o-quick-reference" tabindex="-1"><a class="header-anchor" href="#1-big-o-quick-reference"><span>1. Big-O Quick Reference</span></a></h2>
-<pre><code>O(1) &lt; O(log N) &lt; O(√N) &lt; O(N) &lt; O(N log N) &lt; O(N²) &lt; O(N³) &lt; O(2^N) &lt; O(N!)
+<pre><code class="hljs"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code">O(1) &lt; O(log N) &lt; O(√N) &lt; O(N) &lt; O(N log N) &lt; O(N²) &lt; O(N³) &lt; O(2^N) &lt; O(N!)</span></span>
 </code></pre>
 <table>
 <thead>
@@ -790,60 +796,60 @@ Covers: Time/Space complexity, classic LC problems, and math intuitions</p>
 <hr>
 <h2 id="3-math-tricks-intuitions" tabindex="-1"><a class="header-anchor" href="#3-math-tricks-intuitions"><span>3. Math Tricks &amp; Intuitions</span></a></h2>
 <h3 id="3-1-geometric-series-why-n-n-2-n-4-2n-not-n-log-n" tabindex="-1"><a class="header-anchor" href="#3-1-geometric-series-why-n-n-2-n-4-2n-not-n-log-n"><span>3-1) Geometric Series — Why N + N/2 + N/4 + … = 2N (NOT N log N!)</span></a></h3>
-<pre><code>S = N + N/2 + N/4 + N/8 + ...
-  = N × (1 + 1/2 + 1/4 + 1/8 + ...)
-  = N × 1/(1 - 1/2)      ← geometric series formula: 1/(1-r) for |r| &lt; 1
-  = N × 2
-  = 2N
+<pre><code class="hljs"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code">S = N + N/2 + N/4 + N/8 + ...</span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code">  = N × (1 + 1/2 + 1/4 + 1/8 + ...)</span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">  = N × 1/(1 - 1/2)      ← geometric series formula: 1/(1-r) for |r| &lt; 1</span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">  = N × 2</span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">  = 2N</span></span>
 </code></pre>
 <p><strong>→ O(N)</strong>, NOT O(N log N)</p>
 <p><strong>Why this matters in algorithms:</strong></p>
-<pre><code>Example: Heapify (build heap from array)
-  - Leaf level (N/2 nodes): 0 swaps each   → N/2 × 0
-  - Level above (N/4 nodes): 1 swap each   → N/4 × 1
-  - Level above (N/8 nodes): 2 swaps each  → N/8 × 2
-  - ...
-  - Root (1 node): log N swaps             → 1 × log N
-
-  Total = N/4 + 2·N/8 + 3·N/16 + ...
-        = N × (1/4 + 2/8 + 3/16 + ...) ≈ N
-  → O(N)  ← This is why heapify is O(N), not O(N log N)!
+<pre><code class="hljs"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code">Example: Heapify (build heap from array)</span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code">  - Leaf level (N/2 nodes): 0 swaps each   → N/2 × 0</span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">  - Level above (N/4 nodes): 1 swap each   → N/4 × 1</span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">  - Level above (N/8 nodes): 2 swaps each  → N/8 × 2</span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">  - ...</span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">  - Root (1 node): log N swaps             → 1 × log N</span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">  Total = N/4 + 2·N/8 + 3·N/16 + ...</span></span>
+<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">        = N × (1/4 + 2/8 + 3/16 + ...) ≈ N</span></span>
+<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">  → O(N)  ← This is why heapify is O(N), not O(N log N)!</span></span>
 </code></pre>
-<pre><code>Example: Segment tree build
-  - Leaf nodes: N
-  - Internal nodes: N - 1
-  - Work at each node: O(1)
-  → Total: O(N)
+<pre><code class="hljs"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code">Example: Segment tree build</span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code">  - Leaf nodes: N</span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">  - Internal nodes: N - 1</span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">  - Work at each node: O(1)</span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">  → Total: O(N)</span></span>
 </code></pre>
-<pre><code>Example: Amortized cost of dynamic array doubling
-  Insert N elements:
-  Copies at resizes: 1 + 2 + 4 + 8 + ... + N = 2N
-  → Amortized O(1) per insert
+<pre><code class="hljs"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code">Example: Amortized cost of dynamic array doubling</span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code">  Insert N elements:</span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">  Copies at resizes: 1 + 2 + 4 + 8 + ... + N = 2N</span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">  → Amortized O(1) per insert</span></span>
 </code></pre>
 <hr>
 <h3 id="3-2-why-merge-sort-is-o-n-log-n-not-the-same-as-above" tabindex="-1"><a class="header-anchor" href="#3-2-why-merge-sort-is-o-n-log-n-not-the-same-as-above"><span>3-2) Why Merge Sort is O(N log N) — NOT the same as above</span></a></h3>
-<pre><code>Level 0:   1 merge of size N     → N work
-Level 1:   2 merges of size N/2  → N work
-Level 2:   4 merges of size N/4  → N work
-...
-Level k:   2^k merges of size N/2^k → N work
-
-Total levels = log₂(N)
-Total work   = N × log₂(N)
-→ O(N log N)
+<pre><code class="hljs"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code">Level 0:   1 merge of size N     → N work</span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code">Level 1:   2 merges of size N/2  → N work</span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">Level 2:   4 merges of size N/4  → N work</span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">...</span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">Level k:   2^k merges of size N/2^k → N work</span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">Total levels = log₂(N)</span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">Total work   = N × log₂(N)</span></span>
+<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">→ O(N log N)</span></span>
 </code></pre>
 <p><strong>Key difference:</strong></p>
 <ul>
 <li>Geometric series: work <strong>halves</strong> each level → sum converges to 2N</li>
 <li>Merge sort: work <strong>stays the same</strong> each level → sum = N × levels = N log N</li>
 </ul>
-<pre><code>Geometric (converging):     Merge Sort (constant per level):
-Level 0:  N                 Level 0:  N
-Level 1:  N/2               Level 1:  N/2 + N/2 = N
-Level 2:  N/4               Level 2:  N/4+N/4+N/4+N/4 = N
-Level 3:  N/8               Level 3:  N
-...                         ...
-Sum ≈ 2N  ✓ O(N)            Sum = N × log N  ✓ O(N log N)
+<pre><code class="hljs"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code">Geometric (converging):     Merge Sort (constant per level):</span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code">Level 0:  N                 Level 0:  N</span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">Level 1:  N/2               Level 1:  N/2 + N/2 = N</span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">Level 2:  N/4               Level 2:  N/4+N/4+N/4+N/4 = N</span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">Level 3:  N/8               Level 3:  N</span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">...                         ...</span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">Sum ≈ 2N  ✓ O(N)            Sum = N × log N  ✓ O(N log N)</span></span>
 </code></pre>
 <hr>
 <h3 id="3-2b-case-study-lc-109-convert-sorted-list-to-bst-o-n-log-n-time-o-log-n-space" tabindex="-1"><a class="header-anchor" href="#3-2b-case-study-lc-109-convert-sorted-list-to-bst-o-n-log-n-time-o-log-n-space"><span>3-2b) Case Study: LC 109 — Convert Sorted List to BST (O(N log N) time, O(log N) space)</span></a></h3>
@@ -858,56 +864,56 @@ AND the classic illustration of why recursive space = tree height, NOT number of
 <li>Recursively build left and right subtrees</li>
 </ol>
 <p><strong>The expensive part:</strong> finding the middle node scans from head every call.</p>
-<pre><code>N = 8, getNodeByIdx(head, mid) ≈ O(N) per call
-
-Level 0:  build(0..7)                             → scan ~N    = N
-Level 1:  build(0..2) + build(4..7)               → N/2 + N/2  = N
-Level 2:  build(0..0)+build(2..2)+build(4..5)+... → N/4×4      = N
-Level 3:  8 leaf calls                             → N/8×8      = N
+<pre><code class="hljs"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code">N = 8, getNodeByIdx(head, mid) ≈ O(N) per call</span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">Level 0:  build(0..7)                             → scan ~N    = N</span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">Level 1:  build(0..2) + build(4..7)               → N/2 + N/2  = N</span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">Level 2:  build(0..0)+build(2..2)+build(4..5)+... → N/4×4      = N</span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">Level 3:  8 leaf calls                             → N/8×8      = N</span></span>
 </code></pre>
 <p>Visual:</p>
-<pre><code>                N
-           /         \
-        N/2           N/2
-       /   \         /   \
-     N/4   N/4    N/4   N/4
+<pre><code class="hljs"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code">                N</span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code">           /         \</span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">        N/2           N/2</span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">       /   \         /   \</span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">     N/4   N/4    N/4   N/4</span></span>
 </code></pre>
 <p>Each level = <strong>N total work</strong>. Number of levels = <strong>log N</strong> (balanced BST height).</p>
-<pre><code>Total = N + N + N + ... (log N times) = N × log N → O(N log N)
+<pre><code class="hljs"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code">Total = N + N + N + ... (log N times) = N × log N → O(N log N)</span></span>
 </code></pre>
 <p><strong>Compare to geometric series (heapify):</strong></p>
-<pre><code>Heapify:        N/2 + N/4 + N/8 + ... = N  →  O(N)      (work HALVES per level)
-BST from list:  N   + N   + N   + ... = N log N → O(N log N) (work CONSTANT per level)
+<pre><code class="hljs"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code">Heapify:        N/2 + N/4 + N/8 + ... = N  →  O(N)      (work HALVES per level)</span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code">BST from list:  N   + N   + N   + ... = N log N → O(N log N) (work CONSTANT per level)</span></span>
 </code></pre>
 <h4 id="why-space-o-log-n-recursion-stack-depth-not-number-of-nodes" tabindex="-1"><a class="header-anchor" href="#why-space-o-log-n-recursion-stack-depth-not-number-of-nodes"><span>Why Space = O(log N)  ← recursion stack depth, NOT number of nodes</span></a></h4>
 <p><strong>Key Rule:</strong></p>
-<pre><code>Space complexity for DFS recursion = maximum recursion stack depth
-                                    = tree height
+<pre><code class="hljs"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code">Space complexity for DFS recursion = maximum recursion stack depth</span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code">                                    = tree height</span></span>
 </code></pre>
 <p>Recursion does NOT hold both branches on the stack simultaneously.
 It goes <strong>one branch at a time</strong> (depth-first):</p>
-<pre><code>build(root)           ← frame 1 on stack
-  -&gt; build(left)      ← frame 2 on stack
-       -&gt; build(left) ← frame 3 on stack
-            -&gt; null   ← returns, pops frame 3
+<pre><code class="hljs"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code">build(root)           ← frame 1 on stack</span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code">  -&gt; build(left)      ← frame 2 on stack</span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">       -&gt; build(left) ← frame 3 on stack</span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">            -&gt; null   ← returns, pops frame 3</span></span>
 </code></pre>
 <p><strong>Visual for N = 7 (sorted list: 1→2→3→4→5→6→7):</strong></p>
-<pre><code>Balanced BST built:
-        4
-      /   \
-     2     6
-    / \   / \
-   1   3 5   7
-
-Tree height = 3
-
-Max stack at any moment (going down leftmost path):
-  build(0,6)  → root 4   ← frame 1
-  build(0,2)  → root 2   ← frame 2
-  build(0,0)  → root 1   ← frame 3
-  build(0,-1) → null     ← frame 4, then returns
-
-Stack depth ≈ log₂(7) ≈ 3
+<pre><code class="hljs"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code">Balanced BST built:</span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code">        4</span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">      /   \</span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">     2     6</span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    / \   / \</span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">   1   3 5   7</span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">Tree height = 3</span></span>
+<span class="ln-row"><span class="ln-num">9</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">Max stack at any moment (going down leftmost path):</span></span>
+<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">  build(0,6)  → root 4   ← frame 1</span></span>
+<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">  build(0,2)  → root 2   ← frame 2</span></span>
+<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">  build(0,0)  → root 1   ← frame 3</span></span>
+<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">  build(0,-1) → null     ← frame 4, then returns</span></span>
+<span class="ln-row"><span class="ln-num">15</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">Stack depth ≈ log₂(7) ≈ 3</span></span>
 </code></pre>
 <p><strong>N vs height:</strong></p>
 <table>
@@ -937,66 +943,66 @@ Stack depth ≈ log₂(7) ≈ 3
 </tbody>
 </table>
 <p><strong>Why NOT O(N)?</strong> O(N) stack only occurs with a <strong>skewed</strong> tree:</p>
-<pre><code>1
- \
-  2
-   \
-    3       ← each node is a stack frame → O(N) depth
-     \
-      4
+<pre><code class="hljs"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code">1</span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"> \</span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">  2</span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">   \</span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    3       ← each node is a stack frame → O(N) depth</span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">     \</span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">      4</span></span>
 </code></pre>
 <p>LC 109 always picks the <strong>middle</strong> → guaranteed balanced → stack depth = O(log N).</p>
 <h4 id="summary" tabindex="-1"><a class="header-anchor" href="#summary"><span>Summary</span></a></h4>
-<pre><code>Algorithm Variant              | Time        | Space    | How?
--------------------------------|-------------|----------|--------------------------------------
-V0-1: getNodeByIdx (from head) | O(N log N)  | O(log N) | N scan × log N levels; balanced tree
-V0-2: slow/fast pointer        | O(N log N)  | O(log N) | O(N) per split × log N levels
-V0-3: in-order simulation      | O(N)        | O(log N) | advance pointer once per node (!)
+<pre><code class="hljs"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code">Algorithm Variant              | Time        | Space    | How?</span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code">-------------------------------|-------------|----------|--------------------------------------</span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">V0-1: getNodeByIdx (from head) | O(N log N)  | O(log N) | N scan × log N levels; balanced tree</span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">V0-2: slow/fast pointer        | O(N log N)  | O(log N) | O(N) per split × log N levels</span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">V0-3: in-order simulation      | O(N)        | O(log N) | advance pointer once per node (!)</span></span>
 </code></pre>
 <blockquote>
 <p><strong>Interview tip:</strong> V0-3 (in-order simulation with a shared pointer) is the <strong>optimal O(N)</strong> approach.
 It avoids re-scanning by advancing the list pointer in sync with BST in-order traversal.</p>
 </blockquote>
-<pre><code>Interview rule of thumb for recursion:
-  Space = recursion stack depth
-  Balanced tree → O(log N)
-  Skewed tree   → O(N)
-  N work per level × log N levels → O(N log N)  ← &quot;merge sort&quot; pattern
+<pre><code class="hljs"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code">Interview rule of thumb for recursion:</span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code">  Space = recursion stack depth</span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">  Balanced tree → O(log N)</span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">  Skewed tree   → O(N)</span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">  N work per level × log N levels → O(N log N)  ← &quot;merge sort&quot; pattern</span></span>
 </code></pre>
 <hr>
 <h3 id="3-3-arithmetic-series-why-1-2-3-n-n-n-1-2-n-2" tabindex="-1"><a class="header-anchor" href="#3-3-arithmetic-series-why-1-2-3-n-n-n-1-2-n-2"><span>3-3) Arithmetic Series — Why 1 + 2 + 3 + … + N = N(N+1)/2 ≈ N²/2</span></a></h3>
-<pre><code>S = 1 + 2 + 3 + ... + N
-  = N(N+1)/2
-  ≈ N²/2
-  → O(N²)
+<pre><code class="hljs"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code">S = 1 + 2 + 3 + ... + N</span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code">  = N(N+1)/2</span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">  ≈ N²/2</span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">  → O(N²)</span></span>
 </code></pre>
 <p><strong>Where this appears:</strong></p>
-<pre><code>Bubble sort comparisons:
-  Round 1: N-1 comparisons
-  Round 2: N-2 comparisons
-  ...
-  Round N-1: 1 comparison
-  Total = (N-1) + (N-2) + ... + 1 = N(N-1)/2 → O(N²)
-
-Counting all pairs in array:
-  For each i, compare with all j &gt; i
-  Total pairs = N(N-1)/2 → O(N²)
+<pre><code class="hljs"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code">Bubble sort comparisons:</span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code">  Round 1: N-1 comparisons</span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">  Round 2: N-2 comparisons</span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">  ...</span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">  Round N-1: 1 comparison</span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">  Total = (N-1) + (N-2) + ... + 1 = N(N-1)/2 → O(N²)</span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">Counting all pairs in array:</span></span>
+<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">  For each i, compare with all j &gt; i</span></span>
+<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">  Total pairs = N(N-1)/2 → O(N²)</span></span>
 </code></pre>
 <hr>
 <h3 id="3-4-logarithm-identities-for-complexity-analysis" tabindex="-1"><a class="header-anchor" href="#3-4-logarithm-identities-for-complexity-analysis"><span>3-4) Logarithm Identities (for complexity analysis)</span></a></h3>
-<pre><code>log₂(N) ≈ ln(N) / 0.693           # log base conversion
-log₂(N²) = 2 log₂(N)              # power rule
-log₂(N·M) = log₂(N) + log₂(M)    # product rule
-log₂(2^N) = N                     # inverse
-
-2^(log₂ N) = N                    # inverse
-log₂(N!) ≈ N log₂ N  (Stirling)   # N! ≈ (N/e)^N × √(2πN)
-
-How many times can you halve N before reaching 1?
-  → log₂(N) times   (binary search, tree height)
-
-How many times can you double 1 before reaching N?
-  → log₂(N) times   (binary tree levels)
+<pre><code class="hljs"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code">log₂(N) ≈ ln(N) / 0.693           # log base conversion</span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code">log₂(N²) = 2 log₂(N)              # power rule</span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">log₂(N·M) = log₂(N) + log₂(M)    # product rule</span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">log₂(2^N) = N                     # inverse</span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">2^(log₂ N) = N                    # inverse</span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">log₂(N!) ≈ N log₂ N  (Stirling)   # N! ≈ (N/e)^N × √(2πN)</span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">How many times can you halve N before reaching 1?</span></span>
+<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">  → log₂(N) times   (binary search, tree height)</span></span>
+<span class="ln-row"><span class="ln-num">11</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">How many times can you double 1 before reaching N?</span></span>
+<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">  → log₂(N) times   (binary tree levels)</span></span>
 </code></pre>
 <hr>
 <h3 id="3-5-powers-of-2-quick-reference" tabindex="-1"><a class="header-anchor" href="#3-5-powers-of-2-quick-reference"><span>3-5) Powers of 2 — Quick Reference</span></a></h3>
@@ -1042,33 +1048,33 @@ How many times can you double 1 before reaching N?
 </tbody>
 </table>
 <p><strong>Why this matters for complexity:</strong></p>
-<pre><code>N = 10^9 operations → too slow for 1 second (typical limit: 10^8 ops/sec)
-N = 10^6 → fine for O(N log N)
-N = 10^5 → fine for O(N²)... barely
-N = 20   → OK for O(2^N)
-N = 12   → OK for O(N!)
+<pre><code class="hljs"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code">N = 10^9 operations → too slow for 1 second (typical limit: 10^8 ops/sec)</span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code">N = 10^6 → fine for O(N log N)</span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">N = 10^5 → fine for O(N²)... barely</span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">N = 20   → OK for O(2^N)</span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">N = 12   → OK for O(N!)</span></span>
 </code></pre>
 <hr>
 <h3 id="3-6-harmonic-series-why-1-1-2-1-3-1-n-ln-n" tabindex="-1"><a class="header-anchor" href="#3-6-harmonic-series-why-1-1-2-1-3-1-n-ln-n"><span>3-6) Harmonic Series — Why 1 + 1/2 + 1/3 + … + 1/N ≈ ln(N)</span></a></h3>
-<pre><code>H(N) = 1 + 1/2 + 1/3 + ... + 1/N ≈ ln(N) ≈ O(log N)
+<pre><code class="hljs"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code">H(N) = 1 + 1/2 + 1/3 + ... + 1/N ≈ ln(N) ≈ O(log N)</span></span>
 </code></pre>
 <p><strong>Where this appears:</strong></p>
-<pre><code>Sieve of Eratosthenes: O(N log log N)
-  - Cross out multiples of 2: N/2 ops
-  - Cross out multiples of 3: N/3 ops
-  - Cross out multiples of 5: N/5 ops
-  - Total ≈ N × (1/2 + 1/3 + 1/5 + ...) = N × log log N
-
-Average case of Quick Sort partitioning ≈ O(N log N)
+<pre><code class="hljs"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code">Sieve of Eratosthenes: O(N log log N)</span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code">  - Cross out multiples of 2: N/2 ops</span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">  - Cross out multiples of 3: N/3 ops</span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">  - Cross out multiples of 5: N/5 ops</span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">  - Total ≈ N × (1/2 + 1/3 + 1/5 + ...) = N × log log N</span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">Average case of Quick Sort partitioning ≈ O(N log N)</span></span>
 </code></pre>
 <hr>
 <h3 id="3-7-counting-subsets-and-permutations" tabindex="-1"><a class="header-anchor" href="#3-7-counting-subsets-and-permutations"><span>3-7) Counting Subsets and Permutations</span></a></h3>
-<pre><code>Subsets of N elements:       2^N
-Permutations of N elements:  N!
-Combinations C(N, K):        N! / (K! × (N-K)!)
-
-Stirling's approximation:    N! ≈ √(2πN) × (N/e)^N
-→ log(N!) ≈ N log N         (explains why permutation algos are O(N log N) in log space)
+<pre><code class="hljs"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code">Subsets of N elements:       2^N</span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code">Permutations of N elements:  N!</span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">Combinations C(N, K):        N! / (K! × (N-K)!)</span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">Stirling's approximation:    N! ≈ √(2πN) × (N/e)^N</span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">→ log(N!) ≈ N log N         (explains why permutation algos are O(N log N) in log space)</span></span>
 </code></pre>
 <p><strong>Classic LC:</strong></p>
 <ul>
@@ -1079,11 +1085,11 @@ Stirling's approximation:    N! ≈ √(2πN) × (N/e)^N
 <hr>
 <h3 id="3-8-recurrence-relations-master-theorem" tabindex="-1"><a class="header-anchor" href="#3-8-recurrence-relations-master-theorem"><span>3-8) Recurrence Relations — Master Theorem</span></a></h3>
 <p>For <code>T(N) = a·T(N/b) + f(N)</code>:</p>
-<pre><code>Compare f(N) vs N^(log_b(a)):
-
-Case 1: f(N) = O(N^(log_b(a) - ε))  →  T(N) = O(N^log_b(a))
-Case 2: f(N) = Θ(N^log_b(a))         →  T(N) = O(N^log_b(a) × log N)
-Case 3: f(N) = Ω(N^(log_b(a) + ε))  →  T(N) = O(f(N))
+<pre><code class="hljs"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code">Compare f(N) vs N^(log_b(a)):</span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">Case 1: f(N) = O(N^(log_b(a) - ε))  →  T(N) = O(N^log_b(a))</span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">Case 2: f(N) = Θ(N^log_b(a))         →  T(N) = O(N^log_b(a) × log N)</span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">Case 3: f(N) = Ω(N^(log_b(a) + ε))  →  T(N) = O(f(N))</span></span>
 </code></pre>
 <p><strong>Common examples:</strong></p>
 <table>
@@ -1150,22 +1156,22 @@ Case 3: f(N) = Ω(N^(log_b(a) + ε))  →  T(N) = O(f(N))
 </table>
 <hr>
 <h3 id="3-9-ascii-tricks-for-character-problems" tabindex="-1"><a class="header-anchor" href="#3-9-ascii-tricks-for-character-problems"><span>3-9) ASCII Tricks for Character Problems</span></a></h3>
-<pre><code>'a' - 'A' = 32     (difference between lowercase and uppercase)
-'a' = 97,  'A' = 65
-'z' = 122, 'Z' = 90
-'0' = 48,  '9' = 57
-
-Detect same letter different case:
-  Math.abs(char1 - char2) == 32   → O(1) check
-  (see LC 1544 Make The String Great)
-
-Convert case:
-  lowercase → uppercase:  c - 32  (or c &amp; ~32 or c ^ 32)
-  uppercase → lowercase:  c + 32  (or c | 32)
-
-Index in alphabet:
-  c - 'a'  (0-indexed: 'a'→0, 'b'→1, ..., 'z'→25)
-  c - 'A'  (same for uppercase)
+<pre><code class="hljs"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code">'a' - 'A' = 32     (difference between lowercase and uppercase)</span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code">'a' = 97,  'A' = 65</span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">'z' = 122, 'Z' = 90</span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">'0' = 48,  '9' = 57</span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">Detect same letter different case:</span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">  Math.abs(char1 - char2) == 32   → O(1) check</span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">  (see LC 1544 Make The String Great)</span></span>
+<span class="ln-row"><span class="ln-num">9</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">Convert case:</span></span>
+<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">  lowercase → uppercase:  c - 32  (or c &amp; ~32 or c ^ 32)</span></span>
+<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">  uppercase → lowercase:  c + 32  (or c | 32)</span></span>
+<span class="ln-row"><span class="ln-num">13</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">Index in alphabet:</span></span>
+<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">  c - 'a'  (0-indexed: 'a'→0, 'b'→1, ..., 'z'→25)</span></span>
+<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">  c - 'A'  (same for uppercase)</span></span>
 </code></pre>
 <hr>
 <h2 id="4-classic-google-interview-problems-complexity-summary" tabindex="-1"><a class="header-anchor" href="#4-classic-google-interview-problems-complexity-summary"><span>4. Classic Google Interview Problems — Complexity Summary</span></a></h2>
@@ -1417,48 +1423,48 @@ Index in alphabet:
 <hr>
 <h2 id="5-space-complexity-patterns" tabindex="-1"><a class="header-anchor" href="#5-space-complexity-patterns"><span>5. Space Complexity Patterns</span></a></h2>
 <h3 id="stack-space-recursion" tabindex="-1"><a class="header-anchor" href="#stack-space-recursion"><span>Stack Space (Recursion)</span></a></h3>
-<pre><code>Balanced BST / heap:     O(log N)  ← tree height
-Skewed BST / linked list: O(N)     ← degenerates to linear
-General graph DFS:        O(V)
+<pre><code class="hljs"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code">Balanced BST / heap:     O(log N)  ← tree height</span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code">Skewed BST / linked list: O(N)     ← degenerates to linear</span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">General graph DFS:        O(V)</span></span>
 </code></pre>
 <h3 id="when-to-use-in-place-algorithms" tabindex="-1"><a class="header-anchor" href="#when-to-use-in-place-algorithms"><span>When to Use In-Place Algorithms</span></a></h3>
-<pre><code>O(1) extra space tricks:
-  - Two pointers (reverse array, palindrome)
-  - Floyd's cycle detection
-  - Morris tree traversal
-  - Partition in-place (quick sort, Dutch flag)
-  - Bit manipulation for visited flags (if N ≤ 64)
+<pre><code class="hljs"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code">O(1) extra space tricks:</span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code">  - Two pointers (reverse array, palindrome)</span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">  - Floyd's cycle detection</span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">  - Morris tree traversal</span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">  - Partition in-place (quick sort, Dutch flag)</span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">  - Bit manipulation for visited flags (if N ≤ 64)</span></span>
 </code></pre>
 <h3 id="space-time-tradeoffs" tabindex="-1"><a class="header-anchor" href="#space-time-tradeoffs"><span>Space-Time Tradeoffs</span></a></h3>
-<pre><code>Problem                 | Naive Space | Optimized Space | Time Trade-off
-------------------------|-------------|-----------------|---------------
-DP (2D → 1D rolling)   | O(M·N)      | O(N)            | Same time
-Memoization → Bottom-up| O(N) stack  | O(1) or O(N)    | Same time
-Fibonacci               | O(N)        | O(1)            | Same O(N)
-KMP vs Naive search     | O(M)        | —               | O(N+M) vs O(N·M)
+<pre><code class="hljs"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code">Problem                 | Naive Space | Optimized Space | Time Trade-off</span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code">------------------------|-------------|-----------------|---------------</span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">DP (2D → 1D rolling)   | O(M·N)      | O(N)            | Same time</span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">Memoization → Bottom-up| O(N) stack  | O(1) or O(N)    | Same time</span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">Fibonacci               | O(N)        | O(1)            | Same O(N)</span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">KMP vs Naive search     | O(M)        | —               | O(N+M) vs O(N·M)</span></span>
 </code></pre>
 <hr>
 <h2 id="6-interview-decision-guide" tabindex="-1"><a class="header-anchor" href="#6-interview-decision-guide"><span>6. Interview Decision Guide</span></a></h2>
-<pre><code>Input Size → Reasonable Complexity:
-
-N ≤ 10        → O(N!) or O(2^N)     backtracking, all permutations
-N ≤ 20        → O(2^N)              bitmask DP, subsets
-N ≤ 100       → O(N³)               Floyd-Warshall, 3-loop DP
-N ≤ 1,000     → O(N²)               nested loops, naive DP
-N ≤ 100,000   → O(N log N)          sorting, heap, balanced BST
-N ≤ 1,000,000 → O(N) or O(N log N) single/two pass, sliding window
-N ≤ 10^9      → O(log N) or O(√N)  binary search, math tricks
+<pre><code class="hljs"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code">Input Size → Reasonable Complexity:</span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">N ≤ 10        → O(N!) or O(2^N)     backtracking, all permutations</span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">N ≤ 20        → O(2^N)              bitmask DP, subsets</span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">N ≤ 100       → O(N³)               Floyd-Warshall, 3-loop DP</span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">N ≤ 1,000     → O(N²)               nested loops, naive DP</span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">N ≤ 100,000   → O(N log N)          sorting, heap, balanced BST</span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">N ≤ 1,000,000 → O(N) or O(N log N) single/two pass, sliding window</span></span>
+<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">N ≤ 10^9      → O(log N) or O(√N)  binary search, math tricks</span></span>
 </code></pre>
 <hr>
 <h2 id="7-quick-sanity-checks" tabindex="-1"><a class="header-anchor" href="#7-quick-sanity-checks"><span>7. Quick Sanity Checks</span></a></h2>
-<pre><code>1. O(N log N) sort first → enables O(N) or O(log N) operations after
-2. Two passes O(N) each = still O(N)
-3. Nested loops with early break ≠ necessarily O(N²)
-4. Recursion depth × work per call = space × time relationship
-5. BFS uses O(W) space; DFS uses O(H) space — choose based on graph shape
-6. HashMap insert/lookup = O(1) avg but O(N) worst — mention in interview
-7. N + N/2 + N/4 + ... = 2N = O(N)  ← geometric series always converges!
-8. Heapify = O(N),  building heap by N inserts = O(N log N)  ← different!
+<pre><code class="hljs"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code">1. O(N log N) sort first → enables O(N) or O(log N) operations after</span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code">2. Two passes O(N) each = still O(N)</span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">3. Nested loops with early break ≠ necessarily O(N²)</span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">4. Recursion depth × work per call = space × time relationship</span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">5. BFS uses O(W) space; DFS uses O(H) space — choose based on graph shape</span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">6. HashMap insert/lookup = O(1) avg but O(N) worst — mention in interview</span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">7. N + N/2 + N/4 + ... = 2N = O(N)  ← geometric series always converges!</span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">8. Heapify = O(N),  building heap by N inserts = O(N log N)  ← different!</span></span>
 </code></pre>
 
       </div>

@@ -9,8 +9,7 @@
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>CS</text></svg>">
   <link rel="stylesheet" href="../style.css">
   <link rel="stylesheet" href="../vendor/fonts.css">
-  <link rel="stylesheet" href="../vendor/highlight/github-dark.min.css">
-  <script src="../vendor/highlight/highlight.min.js"></script>
+  <link rel="stylesheet" href="../vendor/highlight/atom-one-dark.min.css">
   <script>
   // Apply theme before render to prevent flash
   (function() {
@@ -21,40 +20,43 @@
   })();
   </script>
   <script>document.addEventListener('DOMContentLoaded', function() {
-    hljs.highlightAll();
-    document.querySelectorAll('pre code').forEach(function(codeEl) {
-      var pre = codeEl.parentElement;
-      var lang = '';
-      var cls = codeEl.className || '';
-      var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
-      if (m) lang = m[1];
-      var wrapper = document.createElement('div');
-      wrapper.className = 'code-block-wrapper';
-      pre.parentNode.insertBefore(wrapper, pre);
-      var header = document.createElement('div');
-      header.className = 'code-block-header';
-      if (lang) {
-        var label = document.createElement('span');
-        label.className = 'code-lang-label';
-        label.textContent = lang;
-        header.appendChild(label);
-      } else {
-        header.appendChild(document.createElement('span'));
-      }
-      var btn = document.createElement('button');
-      btn.className = 'copy-btn';
-      btn.textContent = 'Copy';
-      btn.addEventListener('click', function() {
-        navigator.clipboard.writeText(codeEl.textContent).then(function() {
-          btn.textContent = 'Copied!';
-          btn.classList.add('copied');
-          setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+    // Code block wrappers + copy buttons (highlighting done at build time)
+    try {
+      document.querySelectorAll('pre').forEach(function(pre) {
+        var codeEl = pre.querySelector('code');
+        var lang = pre.getAttribute('data-lang') || '';
+        var wrapper = document.createElement('div');
+        wrapper.className = 'code-block-wrapper';
+        pre.parentNode.insertBefore(wrapper, pre);
+        var header = document.createElement('div');
+        header.className = 'code-block-header';
+        if (lang) {
+          var label = document.createElement('span');
+          label.className = 'code-lang-label';
+          label.textContent = lang;
+          header.appendChild(label);
+        } else {
+          header.appendChild(document.createElement('span'));
+        }
+        var btn = document.createElement('button');
+        btn.className = 'copy-btn';
+        btn.textContent = 'Copy';
+        btn.addEventListener('click', function() {
+          var text = codeEl
+            ? Array.from(codeEl.querySelectorAll('.ln-code')).map(function(el) { return el.textContent; }).join('
+')
+            : pre.textContent;
+          navigator.clipboard.writeText(text).then(function() {
+            btn.textContent = 'Copied!';
+            btn.classList.add('copied');
+            setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+          });
         });
+        header.appendChild(btn);
+        wrapper.appendChild(header);
+        wrapper.appendChild(pre);
       });
-      header.appendChild(btn);
-      wrapper.appendChild(header);
-      wrapper.appendChild(pre);
-    });
+    } catch(e) { console.error('Code block setup error:', e); }
     document.querySelectorAll('table').forEach(function(table) {
       if (!table.parentElement.classList.contains('table-wrap')) {
         var wrapper = document.createElement('div');
@@ -64,32 +66,36 @@
       }
     });
     // Reading progress bar
-    var progressBar = document.getElementById('reading-progress');
-    if (progressBar) {
-      window.addEventListener('scroll', function() {
-        var winScroll = document.documentElement.scrollTop;
-        var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-        progressBar.style.width = height > 0 ? (winScroll / height * 100) + '%' : '0%';
-      });
-    }
-    // Dark mode toggle
-    var toggle = document.getElementById('theme-toggle');
-    if (toggle) {
-      var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-      toggle.textContent = isDark ? '☀️' : '🌙';
-      toggle.addEventListener('click', function() {
-        var dark = document.documentElement.getAttribute('data-theme') === 'dark';
-        if (dark) {
-          document.documentElement.removeAttribute('data-theme');
-          localStorage.setItem('theme', 'light');
-          toggle.textContent = '🌙';
-        } else {
-          document.documentElement.setAttribute('data-theme', 'dark');
-          localStorage.setItem('theme', 'dark');
-          toggle.textContent = '☀️';
-        }
-      });
-    }
+    try {
+      var progressBar = document.getElementById('reading-progress');
+      if (progressBar) {
+        window.addEventListener('scroll', function() {
+          var winScroll = document.documentElement.scrollTop;
+          var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+          progressBar.style.width = height > 0 ? (winScroll / height * 100) + '%' : '0%';
+        });
+      }
+    } catch(e) {}
+    // Dark mode toggle — isolated so errors elsewhere never prevent this from working
+    try {
+      var toggle = document.getElementById('theme-toggle');
+      if (toggle) {
+        var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+        toggle.textContent = isDark ? '☀️' : '🌙';
+        toggle.addEventListener('click', function() {
+          var dark = document.documentElement.getAttribute('data-theme') === 'dark';
+          if (dark) {
+            document.documentElement.removeAttribute('data-theme');
+            localStorage.setItem('theme', 'light');
+            toggle.textContent = '🌙';
+          } else {
+            document.documentElement.setAttribute('data-theme', 'dark');
+            localStorage.setItem('theme', 'dark');
+            toggle.textContent = '☀️';
+          }
+        });
+      }
+    } catch(e) { console.error('Theme toggle error:', e); }
   });</script>
 </head>
 <body>
@@ -183,246 +189,246 @@
 <h3 id="1-1-basic-op" tabindex="-1"><a class="header-anchor" href="#1-1-basic-op"><span>1-1) Basic OP</span></a></h3>
 <h2 id="2-lc-example" tabindex="-1"><a class="header-anchor" href="#2-lc-example"><span>2) LC Example</span></a></h2>
 <h3 id="2-1-gray-code" tabindex="-1"><a class="header-anchor" href="#2-1-gray-code"><span>2-1) Gray Code</span></a></h3>
-<pre><code class="language-python"># LC 89 Gray Code
-# V0
-# IDEA : bit op
-# https://blog.csdn.net/qqxx6661/article/details/78371259
-# DEMO
-# i = 0 bin(i) = 0b0 bin(i &gt;&gt; 1) = 0b0 bin(i &gt;&gt; 1) ^ i  = 0b0
-# i = 1 bin(i) = 0b1 bin(i &gt;&gt; 1) = 0b0 bin(i &gt;&gt; 1) ^ i  = 0b1
-# i = 2 bin(i) = 0b10 bin(i &gt;&gt; 1) = 0b1 bin(i &gt;&gt; 1) ^ i  = 0b11
-# i = 3 bin(i) = 0b11 bin(i &gt;&gt; 1) = 0b1 bin(i &gt;&gt; 1) ^ i  = 0b10
-# i = 4 bin(i) = 0b100 bin(i &gt;&gt; 1) = 0b10 bin(i &gt;&gt; 1) ^ i  = 0b110
-# i = 5 bin(i) = 0b101 bin(i &gt;&gt; 1) = 0b10 bin(i &gt;&gt; 1) ^ i  = 0b111
-# i = 6 bin(i) = 0b110 bin(i &gt;&gt; 1) = 0b11 bin(i &gt;&gt; 1) ^ i  = 0b101
-# i = 7 bin(i) = 0b111 bin(i &gt;&gt; 1) = 0b11 bin(i &gt;&gt; 1) ^ i  = 0b100
-# i = 8 bin(i) = 0b1000 bin(i &gt;&gt; 1) = 0b100 bin(i &gt;&gt; 1) ^ i  = 0b1100
-# i = 9 bin(i) = 0b1001 bin(i &gt;&gt; 1) = 0b100 bin(i &gt;&gt; 1) ^ i  = 0b1101
-# i = 10 bin(i) = 0b1010 bin(i &gt;&gt; 1) = 0b101 bin(i &gt;&gt; 1) ^ i  = 0b1111
-# i = 11 bin(i) = 0b1011 bin(i &gt;&gt; 1) = 0b101 bin(i &gt;&gt; 1) ^ i  = 0b1110
-# i = 12 bin(i) = 0b1100 bin(i &gt;&gt; 1) = 0b110 bin(i &gt;&gt; 1) ^ i  = 0b1010
-# i = 13 bin(i) = 0b1101 bin(i &gt;&gt; 1) = 0b110 bin(i &gt;&gt; 1) ^ i  = 0b1011
-# i = 14 bin(i) = 0b1110 bin(i &gt;&gt; 1) = 0b111 bin(i &gt;&gt; 1) ^ i  = 0b1001
-# i = 15 bin(i) = 0b1111 bin(i &gt;&gt; 1) = 0b111 bin(i &gt;&gt; 1) ^ i  = 0b1000
-class Solution(object):
-    def grayCode(self, n):
-        res = []
-        size = 2**n
-        for i in range(size):
-            print (&quot;i = &quot; + str(i) + &quot; bin(i) = &quot; + str(bin(i)) + &quot; bin(i &gt;&gt; 1) = &quot; + str(bin(i &gt;&gt; 1))  + &quot; bin(i &gt;&gt; 1) ^ i  = &quot; + str( bin((i &gt;&gt; 1) ^ i) )  )
-            &quot;&quot;&quot;
-            NOTE : 
-              step 1) we move 1 digit right in every iteration (i &gt;&gt; 1), for keep adding space
-              step 2) we do (i &gt;&gt; 1) ^ i. for getting &quot;inverse&quot; binary code with i
-              step 3) append and return the result 
-            &quot;&quot;&quot;
-            res.append((i &gt;&gt; 1) ^ i)
-        return res
-
-# V1'
-# https://ithelp.ithome.com.tw/articles/10213273
-# DEMO
-# In [23]: add=1
-
-# In [24]: add = add &lt;&lt; 1
-
-# In [25]: add
-# Out[25]: 2
-
-# In [26]: add = add &lt;&lt; 1
-
-# In [27]: add
-# Out[27]: 4
-
-# In [28]: add = add &lt;&lt; 1
-
-# In [29]: add
-# Out[29]: 8
-
-# In [30]: add = add &lt;&lt; 1
-
-# In [31]: add
-# Out[31]: 16
-
-# In [32]: add = add &lt;&lt; 1
-
-# In [33]: add
-# Out[33]: 32
-#
-class Solution:
-    def grayCode(self, n):
-        res = [0]
-        add = 1
-        for _ in range(n):
-            for i in range(add):
-                res.append(res[add - 1 - i] + add);
-            add &lt;&lt;= 1
-        return res
+<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment"># LC 89 Gray Code</span></span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-comment"># V0</span></span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"><span class="hljs-comment"># IDEA : bit op</span></span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"><span class="hljs-comment"># https://blog.csdn.net/qqxx6661/article/details/78371259</span></span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code"><span class="hljs-comment"># DEMO</span></span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code"><span class="hljs-comment"># i = 0 bin(i) = 0b0 bin(i &gt;&gt; 1) = 0b0 bin(i &gt;&gt; 1) ^ i  = 0b0</span></span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code"><span class="hljs-comment"># i = 1 bin(i) = 0b1 bin(i &gt;&gt; 1) = 0b0 bin(i &gt;&gt; 1) ^ i  = 0b1</span></span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code"><span class="hljs-comment"># i = 2 bin(i) = 0b10 bin(i &gt;&gt; 1) = 0b1 bin(i &gt;&gt; 1) ^ i  = 0b11</span></span></span>
+<span class="ln-row"><span class="ln-num">9</span><span class="ln-code"><span class="hljs-comment"># i = 3 bin(i) = 0b11 bin(i &gt;&gt; 1) = 0b1 bin(i &gt;&gt; 1) ^ i  = 0b10</span></span></span>
+<span class="ln-row"><span class="ln-num">10</span><span class="ln-code"><span class="hljs-comment"># i = 4 bin(i) = 0b100 bin(i &gt;&gt; 1) = 0b10 bin(i &gt;&gt; 1) ^ i  = 0b110</span></span></span>
+<span class="ln-row"><span class="ln-num">11</span><span class="ln-code"><span class="hljs-comment"># i = 5 bin(i) = 0b101 bin(i &gt;&gt; 1) = 0b10 bin(i &gt;&gt; 1) ^ i  = 0b111</span></span></span>
+<span class="ln-row"><span class="ln-num">12</span><span class="ln-code"><span class="hljs-comment"># i = 6 bin(i) = 0b110 bin(i &gt;&gt; 1) = 0b11 bin(i &gt;&gt; 1) ^ i  = 0b101</span></span></span>
+<span class="ln-row"><span class="ln-num">13</span><span class="ln-code"><span class="hljs-comment"># i = 7 bin(i) = 0b111 bin(i &gt;&gt; 1) = 0b11 bin(i &gt;&gt; 1) ^ i  = 0b100</span></span></span>
+<span class="ln-row"><span class="ln-num">14</span><span class="ln-code"><span class="hljs-comment"># i = 8 bin(i) = 0b1000 bin(i &gt;&gt; 1) = 0b100 bin(i &gt;&gt; 1) ^ i  = 0b1100</span></span></span>
+<span class="ln-row"><span class="ln-num">15</span><span class="ln-code"><span class="hljs-comment"># i = 9 bin(i) = 0b1001 bin(i &gt;&gt; 1) = 0b100 bin(i &gt;&gt; 1) ^ i  = 0b1101</span></span></span>
+<span class="ln-row"><span class="ln-num">16</span><span class="ln-code"><span class="hljs-comment"># i = 10 bin(i) = 0b1010 bin(i &gt;&gt; 1) = 0b101 bin(i &gt;&gt; 1) ^ i  = 0b1111</span></span></span>
+<span class="ln-row"><span class="ln-num">17</span><span class="ln-code"><span class="hljs-comment"># i = 11 bin(i) = 0b1011 bin(i &gt;&gt; 1) = 0b101 bin(i &gt;&gt; 1) ^ i  = 0b1110</span></span></span>
+<span class="ln-row"><span class="ln-num">18</span><span class="ln-code"><span class="hljs-comment"># i = 12 bin(i) = 0b1100 bin(i &gt;&gt; 1) = 0b110 bin(i &gt;&gt; 1) ^ i  = 0b1010</span></span></span>
+<span class="ln-row"><span class="ln-num">19</span><span class="ln-code"><span class="hljs-comment"># i = 13 bin(i) = 0b1101 bin(i &gt;&gt; 1) = 0b110 bin(i &gt;&gt; 1) ^ i  = 0b1011</span></span></span>
+<span class="ln-row"><span class="ln-num">20</span><span class="ln-code"><span class="hljs-comment"># i = 14 bin(i) = 0b1110 bin(i &gt;&gt; 1) = 0b111 bin(i &gt;&gt; 1) ^ i  = 0b1001</span></span></span>
+<span class="ln-row"><span class="ln-num">21</span><span class="ln-code"><span class="hljs-comment"># i = 15 bin(i) = 0b1111 bin(i &gt;&gt; 1) = 0b111 bin(i &gt;&gt; 1) ^ i  = 0b1000</span></span></span>
+<span class="ln-row"><span class="ln-num">22</span><span class="ln-code"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):</span></span>
+<span class="ln-row"><span class="ln-num">23</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">grayCode</span>(<span class="hljs-params">self, n</span>):</span></span>
+<span class="ln-row"><span class="ln-num">24</span><span class="ln-code">        res = []</span></span>
+<span class="ln-row"><span class="ln-num">25</span><span class="ln-code">        size = <span class="hljs-number">2</span>**n</span></span>
+<span class="ln-row"><span class="ln-num">26</span><span class="ln-code">        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(size):</span></span>
+<span class="ln-row"><span class="ln-num">27</span><span class="ln-code">            <span class="hljs-built_in">print</span> (<span class="hljs-string">&quot;i = &quot;</span> + <span class="hljs-built_in">str</span>(i) + <span class="hljs-string">&quot; bin(i) = &quot;</span> + <span class="hljs-built_in">str</span>(<span class="hljs-built_in">bin</span>(i)) + <span class="hljs-string">&quot; bin(i &gt;&gt; 1) = &quot;</span> + <span class="hljs-built_in">str</span>(<span class="hljs-built_in">bin</span>(i &gt;&gt; <span class="hljs-number">1</span>))  + <span class="hljs-string">&quot; bin(i &gt;&gt; 1) ^ i  = &quot;</span> + <span class="hljs-built_in">str</span>( <span class="hljs-built_in">bin</span>((i &gt;&gt; <span class="hljs-number">1</span>) ^ i) )  )</span></span>
+<span class="ln-row"><span class="ln-num">28</span><span class="ln-code">            <span class="hljs-string">&quot;&quot;&quot;</span></span>
+<span class="ln-row"><span class="ln-num">29</span><span class="ln-code">            NOTE : </span></span>
+<span class="ln-row"><span class="ln-num">30</span><span class="ln-code">              step 1) we move 1 digit right in every iteration (i &gt;&gt; 1), for keep adding space</span></span>
+<span class="ln-row"><span class="ln-num">31</span><span class="ln-code">              step 2) we do (i &gt;&gt; 1) ^ i. for getting &quot;inverse&quot; binary code with i</span></span>
+<span class="ln-row"><span class="ln-num">32</span><span class="ln-code">              step 3) append and return the result </span></span>
+<span class="ln-row"><span class="ln-num">33</span><span class="ln-code">            &quot;&quot;&quot;</span></span></span>
+<span class="ln-row"><span class="ln-num">34</span><span class="ln-code">            res.append((i &gt;&gt; <span class="hljs-number">1</span>) ^ i)</span></span>
+<span class="ln-row"><span class="ln-num">35</span><span class="ln-code">        <span class="hljs-keyword">return</span> res</span></span>
+<span class="ln-row"><span class="ln-num">36</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">37</span><span class="ln-code"><span class="hljs-comment"># V1&#x27;</span></span></span>
+<span class="ln-row"><span class="ln-num">38</span><span class="ln-code"><span class="hljs-comment"># https://ithelp.ithome.com.tw/articles/10213273</span></span></span>
+<span class="ln-row"><span class="ln-num">39</span><span class="ln-code"><span class="hljs-comment"># DEMO</span></span></span>
+<span class="ln-row"><span class="ln-num">40</span><span class="ln-code"><span class="hljs-comment"># In [23]: add=1</span></span></span>
+<span class="ln-row"><span class="ln-num">41</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">42</span><span class="ln-code"><span class="hljs-comment"># In [24]: add = add &lt;&lt; 1</span></span></span>
+<span class="ln-row"><span class="ln-num">43</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">44</span><span class="ln-code"><span class="hljs-comment"># In [25]: add</span></span></span>
+<span class="ln-row"><span class="ln-num">45</span><span class="ln-code"><span class="hljs-comment"># Out[25]: 2</span></span></span>
+<span class="ln-row"><span class="ln-num">46</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">47</span><span class="ln-code"><span class="hljs-comment"># In [26]: add = add &lt;&lt; 1</span></span></span>
+<span class="ln-row"><span class="ln-num">48</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">49</span><span class="ln-code"><span class="hljs-comment"># In [27]: add</span></span></span>
+<span class="ln-row"><span class="ln-num">50</span><span class="ln-code"><span class="hljs-comment"># Out[27]: 4</span></span></span>
+<span class="ln-row"><span class="ln-num">51</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">52</span><span class="ln-code"><span class="hljs-comment"># In [28]: add = add &lt;&lt; 1</span></span></span>
+<span class="ln-row"><span class="ln-num">53</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">54</span><span class="ln-code"><span class="hljs-comment"># In [29]: add</span></span></span>
+<span class="ln-row"><span class="ln-num">55</span><span class="ln-code"><span class="hljs-comment"># Out[29]: 8</span></span></span>
+<span class="ln-row"><span class="ln-num">56</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">57</span><span class="ln-code"><span class="hljs-comment"># In [30]: add = add &lt;&lt; 1</span></span></span>
+<span class="ln-row"><span class="ln-num">58</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">59</span><span class="ln-code"><span class="hljs-comment"># In [31]: add</span></span></span>
+<span class="ln-row"><span class="ln-num">60</span><span class="ln-code"><span class="hljs-comment"># Out[31]: 16</span></span></span>
+<span class="ln-row"><span class="ln-num">61</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">62</span><span class="ln-code"><span class="hljs-comment"># In [32]: add = add &lt;&lt; 1</span></span></span>
+<span class="ln-row"><span class="ln-num">63</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">64</span><span class="ln-code"><span class="hljs-comment"># In [33]: add</span></span></span>
+<span class="ln-row"><span class="ln-num">65</span><span class="ln-code"><span class="hljs-comment"># Out[33]: 32</span></span></span>
+<span class="ln-row"><span class="ln-num">66</span><span class="ln-code"><span class="hljs-comment">#</span></span></span>
+<span class="ln-row"><span class="ln-num">67</span><span class="ln-code"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:</span></span>
+<span class="ln-row"><span class="ln-num">68</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">grayCode</span>(<span class="hljs-params">self, n</span>):</span></span>
+<span class="ln-row"><span class="ln-num">69</span><span class="ln-code">        res = [<span class="hljs-number">0</span>]</span></span>
+<span class="ln-row"><span class="ln-num">70</span><span class="ln-code">        add = <span class="hljs-number">1</span></span></span>
+<span class="ln-row"><span class="ln-num">71</span><span class="ln-code">        <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n):</span></span>
+<span class="ln-row"><span class="ln-num">72</span><span class="ln-code">            <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(add):</span></span>
+<span class="ln-row"><span class="ln-num">73</span><span class="ln-code">                res.append(res[add - <span class="hljs-number">1</span> - i] + add);</span></span>
+<span class="ln-row"><span class="ln-num">74</span><span class="ln-code">            add &lt;&lt;= <span class="hljs-number">1</span></span></span>
+<span class="ln-row"><span class="ln-num">75</span><span class="ln-code">        <span class="hljs-keyword">return</span> res</span></span>
 </code></pre>
 <h3 id="2-2-reverse-bits" tabindex="-1"><a class="header-anchor" href="#2-2-reverse-bits"><span>2-2) Reverse Bits</span></a></h3>
-<pre><code class="language-python"># 190. Reverse Bits
-# V0
-class Solution:
-    def reverseBits(self, n):
-        s = bin(n)[2:]
-        s = &quot;0&quot;*(32 - len(s)) + s
-        t = s[::-1]
-        return int(t,2)
-
-# V0'
-# DEMO
-# n = 10100101000001111010011100
-# n =       10100101000001111010011100
-class Solution:
-    def reverseBits(self, n):
-        n = bin(n)[2:]         # convert to binary, and remove the usual 0b prefix
-        print (&quot;n = &quot; + str(n))
-        n = '%32s' % n         # print number into a pre-formatted string with space-padding
-        print (&quot;n = &quot; + str(n))
-        n = n.replace(' ','0') # Convert the useful space-padding into zeros
-        # Now we have a  proper binary representation, so we can make the final transformation
-        return int(n[::-1],2)
-
-# V0'' 
-class Solution(object):
-    def reverseBits(self, n):
-        #b = bin(n)[:1:-1]
-        b = bin(n)[2:][::-1]
-        return int(b + '0'*(32-len(b)), 2)
+<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment"># 190. Reverse Bits</span></span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-comment"># V0</span></span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:</span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">reverseBits</span>(<span class="hljs-params">self, n</span>):</span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">        s = <span class="hljs-built_in">bin</span>(n)[<span class="hljs-number">2</span>:]</span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">        s = <span class="hljs-string">&quot;0&quot;</span>*(<span class="hljs-number">32</span> - <span class="hljs-built_in">len</span>(s)) + s</span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">        t = s[::-<span class="hljs-number">1</span>]</span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">        <span class="hljs-keyword">return</span> <span class="hljs-built_in">int</span>(t,<span class="hljs-number">2</span>)</span></span>
+<span class="ln-row"><span class="ln-num">9</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">10</span><span class="ln-code"><span class="hljs-comment"># V0&#x27;</span></span></span>
+<span class="ln-row"><span class="ln-num">11</span><span class="ln-code"><span class="hljs-comment"># DEMO</span></span></span>
+<span class="ln-row"><span class="ln-num">12</span><span class="ln-code"><span class="hljs-comment"># n = 10100101000001111010011100</span></span></span>
+<span class="ln-row"><span class="ln-num">13</span><span class="ln-code"><span class="hljs-comment"># n =       10100101000001111010011100</span></span></span>
+<span class="ln-row"><span class="ln-num">14</span><span class="ln-code"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:</span></span>
+<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">reverseBits</span>(<span class="hljs-params">self, n</span>):</span></span>
+<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">        n = <span class="hljs-built_in">bin</span>(n)[<span class="hljs-number">2</span>:]         <span class="hljs-comment"># convert to binary, and remove the usual 0b prefix</span></span></span>
+<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">        <span class="hljs-built_in">print</span> (<span class="hljs-string">&quot;n = &quot;</span> + <span class="hljs-built_in">str</span>(n))</span></span>
+<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">        n = <span class="hljs-string">&#x27;%32s&#x27;</span> % n         <span class="hljs-comment"># print number into a pre-formatted string with space-padding</span></span></span>
+<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">        <span class="hljs-built_in">print</span> (<span class="hljs-string">&quot;n = &quot;</span> + <span class="hljs-built_in">str</span>(n))</span></span>
+<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">        n = n.replace(<span class="hljs-string">&#x27; &#x27;</span>,<span class="hljs-string">&#x27;0&#x27;</span>) <span class="hljs-comment"># Convert the useful space-padding into zeros</span></span></span>
+<span class="ln-row"><span class="ln-num">21</span><span class="ln-code">        <span class="hljs-comment"># Now we have a  proper binary representation, so we can make the final transformation</span></span></span>
+<span class="ln-row"><span class="ln-num">22</span><span class="ln-code">        <span class="hljs-keyword">return</span> <span class="hljs-built_in">int</span>(n[::-<span class="hljs-number">1</span>],<span class="hljs-number">2</span>)</span></span>
+<span class="ln-row"><span class="ln-num">23</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">24</span><span class="ln-code"><span class="hljs-comment"># V0&#x27;&#x27; </span></span></span>
+<span class="ln-row"><span class="ln-num">25</span><span class="ln-code"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):</span></span>
+<span class="ln-row"><span class="ln-num">26</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">reverseBits</span>(<span class="hljs-params">self, n</span>):</span></span>
+<span class="ln-row"><span class="ln-num">27</span><span class="ln-code">        <span class="hljs-comment">#b = bin(n)[:1:-1]</span></span></span>
+<span class="ln-row"><span class="ln-num">28</span><span class="ln-code">        b = <span class="hljs-built_in">bin</span>(n)[<span class="hljs-number">2</span>:][::-<span class="hljs-number">1</span>]</span></span>
+<span class="ln-row"><span class="ln-num">29</span><span class="ln-code">        <span class="hljs-keyword">return</span> <span class="hljs-built_in">int</span>(b + <span class="hljs-string">&#x27;0&#x27;</span>*(<span class="hljs-number">32</span>-<span class="hljs-built_in">len</span>(b)), <span class="hljs-number">2</span>)</span></span>
 </code></pre>
 <h3 id="2-3-power-of-two" tabindex="-1"><a class="header-anchor" href="#2-3-power-of-two"><span>2-3) Power of Two</span></a></h3>
-<pre><code class="language-python"># LC 231. Power of Two
-# NOTE : there is also brute force approach
-# V0'
-# IDEA : BIT OP
-# IDEA : Bitwise operators : Turn off the Rightmost 1-bit
-# https://leetcode.com/problems/power-of-two/solution/
-class Solution(object):
-    def isPowerOfTwo(self, n):
-        if n == 0:
-            return False
-        return n &amp; (n - 1) == 0
+<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment"># LC 231. Power of Two</span></span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-comment"># NOTE : there is also brute force approach</span></span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"><span class="hljs-comment"># V0&#x27;</span></span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"><span class="hljs-comment"># IDEA : BIT OP</span></span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code"><span class="hljs-comment"># IDEA : Bitwise operators : Turn off the Rightmost 1-bit</span></span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code"><span class="hljs-comment"># https://leetcode.com/problems/power-of-two/solution/</span></span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):</span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">isPowerOfTwo</span>(<span class="hljs-params">self, n</span>):</span></span>
+<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">        <span class="hljs-keyword">if</span> n == <span class="hljs-number">0</span>:</span></span>
+<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">            <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span></span></span>
+<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">        <span class="hljs-keyword">return</span> n &amp; (n - <span class="hljs-number">1</span>) == <span class="hljs-number">0</span></span></span>
 </code></pre>
 <h3 id="2-4-add-binary" tabindex="-1"><a class="header-anchor" href="#2-4-add-binary"><span>2-4) Add Binary</span></a></h3>
-<pre><code class="language-python"># LC 67. Add Binary
-# V0
-# IDEA : Bit-by-Bit Computation
-class Solution:
-    def addBinary(self, a, b):
-        n = max(len(a), len(b))
-        &quot;&quot;&quot;
-        NOTE : zfill syntax
-            -&gt; fill n-1 &quot;0&quot; to a string at beginning
-
-            example :
-                In [10]: x = '1'
-
-                In [11]: x.zfill(2)
-                Out[11]: '01'
-
-                In [12]: x.zfill(3)
-                Out[12]: '001'
-
-                In [13]: x.zfill(4)
-                Out[13]: '0001'
-
-                In [14]: x.zfill(10)
-                Out[14]: '0000000001'
-        &quot;&quot;&quot;
-        a, b = a.zfill(n), b.zfill(n)
-        
-        carry = 0
-        answer = []
-        for i in range(n - 1, -1, -1):
-            if a[i] == '1':
-                carry += 1
-            if b[i] == '1':
-                carry += 1
-                
-            if carry % 2 == 1:
-                answer.append('1')
-            else:
-                answer.append('0')
-            
-            carry //= 2
-        
-        if carry == 1:
-            answer.append('1')
-        answer.reverse()
-        
-        return ''.join(answer)
-
-# V0''''
-# IDEA : py default
-class Solution:
-    def addBinary(self, a, b) -&gt; str:
-        return '{0:b}'.format(int(a, 2) + int(b, 2))
-
-# V0''''
-# IDEA : Bit Manipulation
-class Solution:
-    def addBinary(self, a, b) -&gt; str:
-        x, y = int(a, 2), int(b, 2)
-        while y:
-            answer = x ^ y
-            carry = (x &amp; y) &lt;&lt; 1
-            x, y = answer, carry
-        return bin(x)[2:]
+<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment"># LC 67. Add Binary</span></span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-comment"># V0</span></span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"><span class="hljs-comment"># IDEA : Bit-by-Bit Computation</span></span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:</span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">addBinary</span>(<span class="hljs-params">self, a, b</span>):</span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">        n = <span class="hljs-built_in">max</span>(<span class="hljs-built_in">len</span>(a), <span class="hljs-built_in">len</span>(b))</span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">        <span class="hljs-string">&quot;&quot;&quot;</span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">        NOTE : zfill syntax</span></span>
+<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">            -&gt; fill n-1 &quot;0&quot; to a string at beginning</span></span>
+<span class="ln-row"><span class="ln-num">10</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">            example :</span></span>
+<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">                In [10]: x = &#x27;1&#x27;</span></span>
+<span class="ln-row"><span class="ln-num">13</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">                In [11]: x.zfill(2)</span></span>
+<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">                Out[11]: &#x27;01&#x27;</span></span>
+<span class="ln-row"><span class="ln-num">16</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">                In [12]: x.zfill(3)</span></span>
+<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">                Out[12]: &#x27;001&#x27;</span></span>
+<span class="ln-row"><span class="ln-num">19</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">                In [13]: x.zfill(4)</span></span>
+<span class="ln-row"><span class="ln-num">21</span><span class="ln-code">                Out[13]: &#x27;0001&#x27;</span></span>
+<span class="ln-row"><span class="ln-num">22</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">23</span><span class="ln-code">                In [14]: x.zfill(10)</span></span>
+<span class="ln-row"><span class="ln-num">24</span><span class="ln-code">                Out[14]: &#x27;0000000001&#x27;</span></span>
+<span class="ln-row"><span class="ln-num">25</span><span class="ln-code">        &quot;&quot;&quot;</span></span></span>
+<span class="ln-row"><span class="ln-num">26</span><span class="ln-code">        a, b = a.zfill(n), b.zfill(n)</span></span>
+<span class="ln-row"><span class="ln-num">27</span><span class="ln-code">        </span></span>
+<span class="ln-row"><span class="ln-num">28</span><span class="ln-code">        carry = <span class="hljs-number">0</span></span></span>
+<span class="ln-row"><span class="ln-num">29</span><span class="ln-code">        answer = []</span></span>
+<span class="ln-row"><span class="ln-num">30</span><span class="ln-code">        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n - <span class="hljs-number">1</span>, -<span class="hljs-number">1</span>, -<span class="hljs-number">1</span>):</span></span>
+<span class="ln-row"><span class="ln-num">31</span><span class="ln-code">            <span class="hljs-keyword">if</span> a[i] == <span class="hljs-string">&#x27;1&#x27;</span>:</span></span>
+<span class="ln-row"><span class="ln-num">32</span><span class="ln-code">                carry += <span class="hljs-number">1</span></span></span>
+<span class="ln-row"><span class="ln-num">33</span><span class="ln-code">            <span class="hljs-keyword">if</span> b[i] == <span class="hljs-string">&#x27;1&#x27;</span>:</span></span>
+<span class="ln-row"><span class="ln-num">34</span><span class="ln-code">                carry += <span class="hljs-number">1</span></span></span>
+<span class="ln-row"><span class="ln-num">35</span><span class="ln-code">                </span></span>
+<span class="ln-row"><span class="ln-num">36</span><span class="ln-code">            <span class="hljs-keyword">if</span> carry % <span class="hljs-number">2</span> == <span class="hljs-number">1</span>:</span></span>
+<span class="ln-row"><span class="ln-num">37</span><span class="ln-code">                answer.append(<span class="hljs-string">&#x27;1&#x27;</span>)</span></span>
+<span class="ln-row"><span class="ln-num">38</span><span class="ln-code">            <span class="hljs-keyword">else</span>:</span></span>
+<span class="ln-row"><span class="ln-num">39</span><span class="ln-code">                answer.append(<span class="hljs-string">&#x27;0&#x27;</span>)</span></span>
+<span class="ln-row"><span class="ln-num">40</span><span class="ln-code">            </span></span>
+<span class="ln-row"><span class="ln-num">41</span><span class="ln-code">            carry //= <span class="hljs-number">2</span></span></span>
+<span class="ln-row"><span class="ln-num">42</span><span class="ln-code">        </span></span>
+<span class="ln-row"><span class="ln-num">43</span><span class="ln-code">        <span class="hljs-keyword">if</span> carry == <span class="hljs-number">1</span>:</span></span>
+<span class="ln-row"><span class="ln-num">44</span><span class="ln-code">            answer.append(<span class="hljs-string">&#x27;1&#x27;</span>)</span></span>
+<span class="ln-row"><span class="ln-num">45</span><span class="ln-code">        answer.reverse()</span></span>
+<span class="ln-row"><span class="ln-num">46</span><span class="ln-code">        </span></span>
+<span class="ln-row"><span class="ln-num">47</span><span class="ln-code">        <span class="hljs-keyword">return</span> <span class="hljs-string">&#x27;&#x27;</span>.join(answer)</span></span>
+<span class="ln-row"><span class="ln-num">48</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">49</span><span class="ln-code"><span class="hljs-comment"># V0&#x27;&#x27;&#x27;&#x27;</span></span></span>
+<span class="ln-row"><span class="ln-num">50</span><span class="ln-code"><span class="hljs-comment"># IDEA : py default</span></span></span>
+<span class="ln-row"><span class="ln-num">51</span><span class="ln-code"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:</span></span>
+<span class="ln-row"><span class="ln-num">52</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">addBinary</span>(<span class="hljs-params">self, a, b</span>) -&gt; <span class="hljs-built_in">str</span>:</span></span>
+<span class="ln-row"><span class="ln-num">53</span><span class="ln-code">        <span class="hljs-keyword">return</span> <span class="hljs-string">&#x27;{0:b}&#x27;</span>.<span class="hljs-built_in">format</span>(<span class="hljs-built_in">int</span>(a, <span class="hljs-number">2</span>) + <span class="hljs-built_in">int</span>(b, <span class="hljs-number">2</span>))</span></span>
+<span class="ln-row"><span class="ln-num">54</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">55</span><span class="ln-code"><span class="hljs-comment"># V0&#x27;&#x27;&#x27;&#x27;</span></span></span>
+<span class="ln-row"><span class="ln-num">56</span><span class="ln-code"><span class="hljs-comment"># IDEA : Bit Manipulation</span></span></span>
+<span class="ln-row"><span class="ln-num">57</span><span class="ln-code"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:</span></span>
+<span class="ln-row"><span class="ln-num">58</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">addBinary</span>(<span class="hljs-params">self, a, b</span>) -&gt; <span class="hljs-built_in">str</span>:</span></span>
+<span class="ln-row"><span class="ln-num">59</span><span class="ln-code">        x, y = <span class="hljs-built_in">int</span>(a, <span class="hljs-number">2</span>), <span class="hljs-built_in">int</span>(b, <span class="hljs-number">2</span>)</span></span>
+<span class="ln-row"><span class="ln-num">60</span><span class="ln-code">        <span class="hljs-keyword">while</span> y:</span></span>
+<span class="ln-row"><span class="ln-num">61</span><span class="ln-code">            answer = x ^ y</span></span>
+<span class="ln-row"><span class="ln-num">62</span><span class="ln-code">            carry = (x &amp; y) &lt;&lt; <span class="hljs-number">1</span></span></span>
+<span class="ln-row"><span class="ln-num">63</span><span class="ln-code">            x, y = answer, carry</span></span>
+<span class="ln-row"><span class="ln-num">64</span><span class="ln-code">        <span class="hljs-keyword">return</span> <span class="hljs-built_in">bin</span>(x)[<span class="hljs-number">2</span>:]</span></span>
 </code></pre>
 <h3 id="2-5-sum-of-two-integers" tabindex="-1"><a class="header-anchor" href="#2-5-sum-of-two-integers"><span>2-5) Sum of Two Integers</span></a></h3>
-<pre><code class="language-python"># 371. Sum of Two Integers
-# V0'
-# https://blog.csdn.net/fuxuemingzhu/article/details/79379939
-#########
-# XOR op:
-#########
-# https://stackoverflow.com/questions/14526584/what-does-the-xor-operator-do
-# XOR is a binary operation, it stands for &quot;exclusive or&quot;, that is to say the resulting bit evaluates to one if only exactly one of the bits is set.
-# -&gt; XOR : RETURN 1 if only one &quot;1&quot;, return 0 else 
-# -&gt; XOR extra : Exclusive or or exclusive disjunction is a logical operation that is true if and only if its arguments differ. It is symbolized by the prefix operator J and by the infix operators XOR, EOR, EXOR, ⊻, ⩒, ⩛, ⊕, ↮, and ≢. Wikipedia
-# a | b | a ^ b
-# --|---|------
-# 0 | 0 | 0
-# 0 | 1 | 1
-# 1 | 0 | 1
-# 1 | 1 | 0
-# This operation is performed between every two corresponding bits of a number.
-# Example: 7 ^ 10
-# In binary: 0111 ^ 1010
-#   0111
-# ^ 1010
-# ======
-#   1101 = 13
-class Solution(object):
-    def getSum(self, a, b):
-        &quot;&quot;&quot;
-        :type a: int
-        :type b: int
-        :rtype: int
-        &quot;&quot;&quot;
-        # 32 bits integer max
-        MAX = 2**31-1  #0x7FFFFFFF
-        # 32 bits interger min
-        MIN = 2**31    #0x80000000
-        # mask to get last 32 bits
-        mask = 2**32-1 #0xFFFFFFFF
-        while b != 0:
-            # ^ get different bits and &amp; gets double 1s, &lt;&lt; moves carry
-            a, b = (a ^ b) &amp; mask, ((a &amp; b) &lt;&lt; 1) &amp; mask
-        # if a is negative, get a's 32 bits complement positive first
-        # then get 32-bit positive's Python complement negative
-        return a if a &lt;= MAX else ~(a ^ mask)
-
-# V0'
-# https://blog.csdn.net/fuxuemingzhu/article/details/79379939
-class Solution():
-    def getSum(self, a, b):
-        MAX = 2**31-1  #0x7fffffff
-        MIN = 2**31    #0x80000000
-        mask = 2**32-1 #0xFFFFFFFF
-        while b != 0:
-            a, b = (a ^ b) &amp; mask, ((a &amp; b) &lt;&lt; 1)
-        return a if a &lt;= MAX else ~(a ^ mask)
+<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment"># 371. Sum of Two Integers</span></span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-comment"># V0&#x27;</span></span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"><span class="hljs-comment"># https://blog.csdn.net/fuxuemingzhu/article/details/79379939</span></span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"><span class="hljs-comment">#########</span></span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code"><span class="hljs-comment"># XOR op:</span></span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code"><span class="hljs-comment">#########</span></span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code"><span class="hljs-comment"># https://stackoverflow.com/questions/14526584/what-does-the-xor-operator-do</span></span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code"><span class="hljs-comment"># XOR is a binary operation, it stands for &quot;exclusive or&quot;, that is to say the resulting bit evaluates to one if only exactly one of the bits is set.</span></span></span>
+<span class="ln-row"><span class="ln-num">9</span><span class="ln-code"><span class="hljs-comment"># -&gt; XOR : RETURN 1 if only one &quot;1&quot;, return 0 else </span></span></span>
+<span class="ln-row"><span class="ln-num">10</span><span class="ln-code"><span class="hljs-comment"># -&gt; XOR extra : Exclusive or or exclusive disjunction is a logical operation that is true if and only if its arguments differ. It is symbolized by the prefix operator J and by the infix operators XOR, EOR, EXOR, ⊻, ⩒, ⩛, ⊕, ↮, and ≢. Wikipedia</span></span></span>
+<span class="ln-row"><span class="ln-num">11</span><span class="ln-code"><span class="hljs-comment"># a | b | a ^ b</span></span></span>
+<span class="ln-row"><span class="ln-num">12</span><span class="ln-code"><span class="hljs-comment"># --|---|------</span></span></span>
+<span class="ln-row"><span class="ln-num">13</span><span class="ln-code"><span class="hljs-comment"># 0 | 0 | 0</span></span></span>
+<span class="ln-row"><span class="ln-num">14</span><span class="ln-code"><span class="hljs-comment"># 0 | 1 | 1</span></span></span>
+<span class="ln-row"><span class="ln-num">15</span><span class="ln-code"><span class="hljs-comment"># 1 | 0 | 1</span></span></span>
+<span class="ln-row"><span class="ln-num">16</span><span class="ln-code"><span class="hljs-comment"># 1 | 1 | 0</span></span></span>
+<span class="ln-row"><span class="ln-num">17</span><span class="ln-code"><span class="hljs-comment"># This operation is performed between every two corresponding bits of a number.</span></span></span>
+<span class="ln-row"><span class="ln-num">18</span><span class="ln-code"><span class="hljs-comment"># Example: 7 ^ 10</span></span></span>
+<span class="ln-row"><span class="ln-num">19</span><span class="ln-code"><span class="hljs-comment"># In binary: 0111 ^ 1010</span></span></span>
+<span class="ln-row"><span class="ln-num">20</span><span class="ln-code"><span class="hljs-comment">#   0111</span></span></span>
+<span class="ln-row"><span class="ln-num">21</span><span class="ln-code"><span class="hljs-comment"># ^ 1010</span></span></span>
+<span class="ln-row"><span class="ln-num">22</span><span class="ln-code"><span class="hljs-comment"># ======</span></span></span>
+<span class="ln-row"><span class="ln-num">23</span><span class="ln-code"><span class="hljs-comment">#   1101 = 13</span></span></span>
+<span class="ln-row"><span class="ln-num">24</span><span class="ln-code"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):</span></span>
+<span class="ln-row"><span class="ln-num">25</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">getSum</span>(<span class="hljs-params">self, a, b</span>):</span></span>
+<span class="ln-row"><span class="ln-num">26</span><span class="ln-code">        <span class="hljs-string">&quot;&quot;&quot;</span></span>
+<span class="ln-row"><span class="ln-num">27</span><span class="ln-code">        :type a: int</span></span>
+<span class="ln-row"><span class="ln-num">28</span><span class="ln-code">        :type b: int</span></span>
+<span class="ln-row"><span class="ln-num">29</span><span class="ln-code">        :rtype: int</span></span>
+<span class="ln-row"><span class="ln-num">30</span><span class="ln-code">        &quot;&quot;&quot;</span></span></span>
+<span class="ln-row"><span class="ln-num">31</span><span class="ln-code">        <span class="hljs-comment"># 32 bits integer max</span></span></span>
+<span class="ln-row"><span class="ln-num">32</span><span class="ln-code">        MAX = <span class="hljs-number">2</span>**<span class="hljs-number">31</span>-<span class="hljs-number">1</span>  <span class="hljs-comment">#0x7FFFFFFF</span></span></span>
+<span class="ln-row"><span class="ln-num">33</span><span class="ln-code">        <span class="hljs-comment"># 32 bits interger min</span></span></span>
+<span class="ln-row"><span class="ln-num">34</span><span class="ln-code">        MIN = <span class="hljs-number">2</span>**<span class="hljs-number">31</span>    <span class="hljs-comment">#0x80000000</span></span></span>
+<span class="ln-row"><span class="ln-num">35</span><span class="ln-code">        <span class="hljs-comment"># mask to get last 32 bits</span></span></span>
+<span class="ln-row"><span class="ln-num">36</span><span class="ln-code">        mask = <span class="hljs-number">2</span>**<span class="hljs-number">32</span>-<span class="hljs-number">1</span> <span class="hljs-comment">#0xFFFFFFFF</span></span></span>
+<span class="ln-row"><span class="ln-num">37</span><span class="ln-code">        <span class="hljs-keyword">while</span> b != <span class="hljs-number">0</span>:</span></span>
+<span class="ln-row"><span class="ln-num">38</span><span class="ln-code">            <span class="hljs-comment"># ^ get different bits and &amp; gets double 1s, &lt;&lt; moves carry</span></span></span>
+<span class="ln-row"><span class="ln-num">39</span><span class="ln-code">            a, b = (a ^ b) &amp; mask, ((a &amp; b) &lt;&lt; <span class="hljs-number">1</span>) &amp; mask</span></span>
+<span class="ln-row"><span class="ln-num">40</span><span class="ln-code">        <span class="hljs-comment"># if a is negative, get a&#x27;s 32 bits complement positive first</span></span></span>
+<span class="ln-row"><span class="ln-num">41</span><span class="ln-code">        <span class="hljs-comment"># then get 32-bit positive&#x27;s Python complement negative</span></span></span>
+<span class="ln-row"><span class="ln-num">42</span><span class="ln-code">        <span class="hljs-keyword">return</span> a <span class="hljs-keyword">if</span> a &lt;= MAX <span class="hljs-keyword">else</span> ~(a ^ mask)</span></span>
+<span class="ln-row"><span class="ln-num">43</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">44</span><span class="ln-code"><span class="hljs-comment"># V0&#x27;</span></span></span>
+<span class="ln-row"><span class="ln-num">45</span><span class="ln-code"><span class="hljs-comment"># https://blog.csdn.net/fuxuemingzhu/article/details/79379939</span></span></span>
+<span class="ln-row"><span class="ln-num">46</span><span class="ln-code"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>():</span></span>
+<span class="ln-row"><span class="ln-num">47</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">getSum</span>(<span class="hljs-params">self, a, b</span>):</span></span>
+<span class="ln-row"><span class="ln-num">48</span><span class="ln-code">        MAX = <span class="hljs-number">2</span>**<span class="hljs-number">31</span>-<span class="hljs-number">1</span>  <span class="hljs-comment">#0x7fffffff</span></span></span>
+<span class="ln-row"><span class="ln-num">49</span><span class="ln-code">        MIN = <span class="hljs-number">2</span>**<span class="hljs-number">31</span>    <span class="hljs-comment">#0x80000000</span></span></span>
+<span class="ln-row"><span class="ln-num">50</span><span class="ln-code">        mask = <span class="hljs-number">2</span>**<span class="hljs-number">32</span>-<span class="hljs-number">1</span> <span class="hljs-comment">#0xFFFFFFFF</span></span></span>
+<span class="ln-row"><span class="ln-num">51</span><span class="ln-code">        <span class="hljs-keyword">while</span> b != <span class="hljs-number">0</span>:</span></span>
+<span class="ln-row"><span class="ln-num">52</span><span class="ln-code">            a, b = (a ^ b) &amp; mask, ((a &amp; b) &lt;&lt; <span class="hljs-number">1</span>)</span></span>
+<span class="ln-row"><span class="ln-num">53</span><span class="ln-code">        <span class="hljs-keyword">return</span> a <span class="hljs-keyword">if</span> a &lt;= MAX <span class="hljs-keyword">else</span> ~(a ^ mask)</span></span>
 </code></pre>
 
       </div>

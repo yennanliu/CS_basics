@@ -3013,6 +3013,30 @@ public class Workspace25 {
     }
 
 
+    // LC 316
+    // 7.46 - 56 am
+    /**
+     * ->  remove duplicate letters
+     * so that every letter
+     * appears `once and only once`
+     *
+     *
+     * -----------------------
+     *
+     *  IDEA 1) STACK
+     *
+     *  IDEA 2) BRUTE FORCE
+     *
+     *
+     *  -----------------------
+     *
+     *
+     */
+    //  IDEA 1) STACK
+    public String removeDuplicateLetters(String s) {
+
+        return null;
+    }
 
 
 

@@ -9,8 +9,7 @@
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>CS</text></svg>">
   <link rel="stylesheet" href="../style.css">
   <link rel="stylesheet" href="../vendor/fonts.css">
-  <link rel="stylesheet" href="../vendor/highlight/github-dark.min.css">
-  <script src="../vendor/highlight/highlight.min.js"></script>
+  <link rel="stylesheet" href="../vendor/highlight/atom-one-dark.min.css">
   <script>
   // Apply theme before render to prevent flash
   (function() {
@@ -21,40 +20,43 @@
   })();
   </script>
   <script>document.addEventListener('DOMContentLoaded', function() {
-    hljs.highlightAll();
-    document.querySelectorAll('pre code').forEach(function(codeEl) {
-      var pre = codeEl.parentElement;
-      var lang = '';
-      var cls = codeEl.className || '';
-      var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
-      if (m) lang = m[1];
-      var wrapper = document.createElement('div');
-      wrapper.className = 'code-block-wrapper';
-      pre.parentNode.insertBefore(wrapper, pre);
-      var header = document.createElement('div');
-      header.className = 'code-block-header';
-      if (lang) {
-        var label = document.createElement('span');
-        label.className = 'code-lang-label';
-        label.textContent = lang;
-        header.appendChild(label);
-      } else {
-        header.appendChild(document.createElement('span'));
-      }
-      var btn = document.createElement('button');
-      btn.className = 'copy-btn';
-      btn.textContent = 'Copy';
-      btn.addEventListener('click', function() {
-        navigator.clipboard.writeText(codeEl.textContent).then(function() {
-          btn.textContent = 'Copied!';
-          btn.classList.add('copied');
-          setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+    // Code block wrappers + copy buttons (highlighting done at build time)
+    try {
+      document.querySelectorAll('pre').forEach(function(pre) {
+        var codeEl = pre.querySelector('code');
+        var lang = pre.getAttribute('data-lang') || '';
+        var wrapper = document.createElement('div');
+        wrapper.className = 'code-block-wrapper';
+        pre.parentNode.insertBefore(wrapper, pre);
+        var header = document.createElement('div');
+        header.className = 'code-block-header';
+        if (lang) {
+          var label = document.createElement('span');
+          label.className = 'code-lang-label';
+          label.textContent = lang;
+          header.appendChild(label);
+        } else {
+          header.appendChild(document.createElement('span'));
+        }
+        var btn = document.createElement('button');
+        btn.className = 'copy-btn';
+        btn.textContent = 'Copy';
+        btn.addEventListener('click', function() {
+          var text = codeEl
+            ? Array.from(codeEl.querySelectorAll('.ln-code')).map(function(el) { return el.textContent; }).join('
+')
+            : pre.textContent;
+          navigator.clipboard.writeText(text).then(function() {
+            btn.textContent = 'Copied!';
+            btn.classList.add('copied');
+            setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+          });
         });
+        header.appendChild(btn);
+        wrapper.appendChild(header);
+        wrapper.appendChild(pre);
       });
-      header.appendChild(btn);
-      wrapper.appendChild(header);
-      wrapper.appendChild(pre);
-    });
+    } catch(e) { console.error('Code block setup error:', e); }
     document.querySelectorAll('table').forEach(function(table) {
       if (!table.parentElement.classList.contains('table-wrap')) {
         var wrapper = document.createElement('div');
@@ -64,32 +66,36 @@
       }
     });
     // Reading progress bar
-    var progressBar = document.getElementById('reading-progress');
-    if (progressBar) {
-      window.addEventListener('scroll', function() {
-        var winScroll = document.documentElement.scrollTop;
-        var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-        progressBar.style.width = height > 0 ? (winScroll / height * 100) + '%' : '0%';
-      });
-    }
-    // Dark mode toggle
-    var toggle = document.getElementById('theme-toggle');
-    if (toggle) {
-      var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-      toggle.textContent = isDark ? '☀️' : '🌙';
-      toggle.addEventListener('click', function() {
-        var dark = document.documentElement.getAttribute('data-theme') === 'dark';
-        if (dark) {
-          document.documentElement.removeAttribute('data-theme');
-          localStorage.setItem('theme', 'light');
-          toggle.textContent = '🌙';
-        } else {
-          document.documentElement.setAttribute('data-theme', 'dark');
-          localStorage.setItem('theme', 'dark');
-          toggle.textContent = '☀️';
-        }
-      });
-    }
+    try {
+      var progressBar = document.getElementById('reading-progress');
+      if (progressBar) {
+        window.addEventListener('scroll', function() {
+          var winScroll = document.documentElement.scrollTop;
+          var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+          progressBar.style.width = height > 0 ? (winScroll / height * 100) + '%' : '0%';
+        });
+      }
+    } catch(e) {}
+    // Dark mode toggle — isolated so errors elsewhere never prevent this from working
+    try {
+      var toggle = document.getElementById('theme-toggle');
+      if (toggle) {
+        var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+        toggle.textContent = isDark ? '☀️' : '🌙';
+        toggle.addEventListener('click', function() {
+          var dark = document.documentElement.getAttribute('data-theme') === 'dark';
+          if (dark) {
+            document.documentElement.removeAttribute('data-theme');
+            localStorage.setItem('theme', 'light');
+            toggle.textContent = '🌙';
+          } else {
+            document.documentElement.setAttribute('data-theme', 'dark');
+            localStorage.setItem('theme', 'dark');
+            toggle.textContent = '☀️';
+          }
+        });
+      }
+    } catch(e) { console.error('Theme toggle error:', e); }
   });</script>
 </head>
 <body>
@@ -127,9 +133,9 @@
       <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">Kadane Algorithm</span></nav>
       <div class="cheatsheet-header">
         <h1>Kadane Algorithm</h1>
-        <span class="last-updated">Last updated: Mar 10, 2026</span>
+        <span class="last-updated">Last updated: Apr 25, 2026</span>
       </div>
-      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#0-concept">0) Concept</a></li><li class="toc-sub"><a href="#0-0-core-principle">0-0) Core Principle</a></li><li class="toc-sub"><a href="#0-1-types">0-1) Types</a></li><li class="toc-sub"><a href="#0-2-algorithm-pattern-template">0-2) Algorithm Pattern / Template</a></li><li><a href="#1-pattern-specific-implementations">1) Pattern-Specific Implementations</a></li><li class="toc-sub"><a href="#1-1-classic-maximum-subarray-sum-lc-53">1-1) Classic Maximum Subarray Sum (LC 53)</a></li><li class="toc-sub"><a href="#1-2-maximum-subarray-sum-with-index-tracking">1-2) Maximum Subarray Sum with Index Tracking</a></li><li class="toc-sub"><a href="#1-3-maximum-product-subarray-lc-152">1-3) Maximum Product Subarray (LC 152)</a></li><li class="toc-sub"><a href="#1-4-circular-maximum-subarray-lc-918">1-4) Circular Maximum Subarray (LC 918)</a></li><li class="toc-sub"><a href="#1-5-maximum-subarray-sum-with-one-deletion-lc-1186">1-5) Maximum Subarray Sum with One Deletion (LC 1186)</a></li><li><a href="#2-related-leetcode-problems">2) Related LeetCode Problems</a></li><li class="toc-sub"><a href="#kadane-s-algorithm-direct-applications">Kadane’s Algorithm Direct Applications</a></li><li class="toc-sub"><a href="#related-patterns">Related Patterns</a></li><li><a href="#3-common-mistakes-edge-cases">3) Common Mistakes &amp; Edge Cases</a></li><li class="toc-sub"><a href="#common-mistakes">🚫 Common Mistakes</a></li><li class="toc-sub"><a href="#edge-cases">⚠️ Edge Cases</a></li><li><a href="#4-interview-tips-complexity-analysis">4) Interview Tips &amp; Complexity Analysis</a></li><li class="toc-sub"><a href="#interview-strategy">💡 Interview Strategy</a></li><li class="toc-sub"><a href="#complexity-analysis">📊 Complexity Analysis</a></li><li class="toc-sub"><a href="#interview-talking-points">🎯 Interview Talking Points</a></li><li class="toc-sub"><a href="#optimization-techniques">🔧 Optimization Techniques</a></li><li class="toc-sub"><a href="#related-patterns-1">📚 Related Patterns</a></li><li><a href="#5-references">5) References</a></li><li><a href="#summary">Summary</a></li><li><a href="#lc-examples">LC Examples</a></li><li class="toc-sub"><a href="#2-1-maximum-subarray-lc-53-kadane-s-algorithm">2-1) Maximum Subarray (LC 53) — Kadane’s Algorithm</a></li><li class="toc-sub"><a href="#2-2-maximum-product-subarray-lc-152-track-min-max">2-2) Maximum Product Subarray (LC 152) — Track Min &amp; Max</a></li><li class="toc-sub"><a href="#2-3-maximum-sum-circular-subarray-lc-918-kadane-total-sum-trick">2-3) Maximum Sum Circular Subarray (LC 918) — Kadane + Total Sum Trick</a></li><li class="toc-sub"><a href="#2-4-best-time-to-buy-and-sell-stock-lc-121-kadane-variant">2-4) Best Time to Buy and Sell Stock (LC 121) — Kadane Variant</a></li><li class="toc-sub"><a href="#2-5-maximum-subarray-sum-with-one-deletion-lc-1186">2-5) Maximum Subarray Sum with One Deletion (LC 1186)</a></li><li class="toc-sub"><a href="#2-6-longest-turbulent-subarray-lc-978-kadane-variant">2-6) Longest Turbulent Subarray (LC 978) — Kadane Variant</a></li><li class="toc-sub"><a href="#2-7-gas-station-lc-134-greedy-kadane-on-circular">2-7) Gas Station (LC 134) — Greedy / Kadane on Circular</a></li><li class="toc-sub"><a href="#2-8-maximum-length-of-subarray-with-positive-product-lc-1567">2-8) Maximum Length of Subarray with Positive Product (LC 1567)</a></li><li class="toc-sub"><a href="#2-9-maximum-score-of-spliced-array-lc-2321-kadane-on-difference">2-9) Maximum Score of Spliced Array (LC 2321) — Kadane on Difference</a></li><li class="toc-sub"><a href="#2-10-k-concatenation-maximum-sum-lc-1191-kadane-math">2-10) K-Concatenation Maximum Sum (LC 1191) — Kadane + Math</a></li><li class="toc-sub"><a href="#2-11-find-maximum-sum-of-almost-unique-subarray-lc-2841-sliding-window-kadane">2-11) Find Maximum Sum of Almost Unique Subarray (LC 2841) — Sliding Window Kadane</a></li></ul></div>
+      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#0-concept">0) Concept</a></li><li class="toc-sub"><a href="#0-0-core-principle">0-0) Core Principle</a></li><li class="toc-sub"><a href="#0-1-types">0-1) Types</a></li><li class="toc-sub"><a href="#0-2-algorithm-pattern-template">0-2) Algorithm Pattern / Template</a></li><li><a href="#1-pattern-specific-implementations">1) Pattern-Specific Implementations</a></li><li class="toc-sub"><a href="#1-1-classic-maximum-subarray-sum-lc-53">1-1) Classic Maximum Subarray Sum (LC 53)</a></li><li class="toc-sub"><a href="#1-2-maximum-subarray-sum-with-index-tracking">1-2) Maximum Subarray Sum with Index Tracking</a></li><li class="toc-sub"><a href="#1-3-maximum-product-subarray-lc-152">1-3) Maximum Product Subarray (LC 152)</a></li><li class="toc-sub"><a href="#1-4-circular-maximum-subarray-lc-918">1-4) Circular Maximum Subarray (LC 918)</a></li><li class="toc-sub"><a href="#1-5-maximum-subarray-sum-with-one-deletion-lc-1186">1-5) Maximum Subarray Sum with One Deletion (LC 1186)</a></li><li><a href="#2-related-leetcode-problems">2) Related LeetCode Problems</a></li><li class="toc-sub"><a href="#kadane-s-algorithm-direct-applications">Kadane’s Algorithm Direct Applications</a></li><li class="toc-sub"><a href="#related-patterns">Related Patterns</a></li><li><a href="#3-common-mistakes-edge-cases">3) Common Mistakes &amp; Edge Cases</a></li><li class="toc-sub"><a href="#common-mistakes">🚫 Common Mistakes</a></li><li class="toc-sub"><a href="#edge-cases">⚠️ Edge Cases</a></li><li><a href="#4-interview-tips-complexity-analysis">4) Interview Tips &amp; Complexity Analysis</a></li><li class="toc-sub"><a href="#interview-strategy">💡 Interview Strategy</a></li><li class="toc-sub"><a href="#complexity-analysis">📊 Complexity Analysis</a></li><li class="toc-sub"><a href="#interview-talking-points">🎯 Interview Talking Points</a></li><li class="toc-sub"><a href="#optimization-techniques">🔧 Optimization Techniques</a></li><li class="toc-sub"><a href="#related-patterns-1">📚 Related Patterns</a></li><li><a href="#5-references">5) References</a></li><li><a href="#summary">Summary</a></li><li><a href="#lc-examples">LC Examples</a></li><li class="toc-sub"><a href="#2-1-maximum-subarray-lc-53-kadane-s-algorithm">2-1) Maximum Subarray (LC 53) — Kadane’s Algorithm</a></li><li class="toc-sub"><a href="#2-2-maximum-product-subarray-lc-152-track-min-max">2-2) Maximum Product Subarray (LC 152) — Track Min &amp; Max</a></li><li class="toc-sub"><a href="#2-3-maximum-sum-circular-subarray-lc-918-kadane-total-sum-trick">2-3) Maximum Sum Circular Subarray (LC 918) — Kadane + Total Sum Trick</a></li><li class="toc-sub"><a href="#2-4-best-time-to-buy-and-sell-stock-lc-121-kadane-variant">2-4) Best Time to Buy and Sell Stock (LC 121) — Kadane Variant</a></li><li class="toc-sub"><a href="#2-5-maximum-subarray-sum-with-one-deletion-lc-1186-two-dp-states">2-5) Maximum Subarray Sum with One Deletion (LC 1186) — Two DP States</a></li><li class="toc-sub"><a href="#2-6-longest-turbulent-subarray-lc-978-kadane-variant">2-6) Longest Turbulent Subarray (LC 978) — Kadane Variant</a></li><li class="toc-sub"><a href="#2-7-gas-station-lc-134-greedy-kadane-on-circular">2-7) Gas Station (LC 134) — Greedy / Kadane on Circular</a></li><li class="toc-sub"><a href="#2-8-maximum-length-of-subarray-with-positive-product-lc-1567-track-pos-neg-product-lengths">2-8) Maximum Length of Subarray with Positive Product (LC 1567) — Track Pos/Neg Product Lengths</a></li><li class="toc-sub"><a href="#2-9-maximum-score-of-spliced-array-lc-2321-kadane-on-difference">2-9) Maximum Score of Spliced Array (LC 2321) — Kadane on Difference</a></li><li class="toc-sub"><a href="#2-10-k-concatenation-maximum-sum-lc-1191-kadane-math">2-10) K-Concatenation Maximum Sum (LC 1191) — Kadane + Math</a></li><li class="toc-sub"><a href="#2-11-find-maximum-sum-of-almost-unique-subarray-lc-2841-sliding-window-kadane">2-11) Find Maximum Sum of Almost Unique Subarray (LC 2841) — Sliding Window Kadane</a></li></ul></div>
       <div class="cheatsheet-content">
         <h1 id="kadane-s-algorithm" tabindex="-1"><a class="header-anchor" href="#kadane-s-algorithm"><span>Kadane’s Algorithm</span></a></h1>
 <ul>
@@ -170,37 +176,37 @@
 </ol>
 <h3 id="0-2-algorithm-pattern-template" tabindex="-1"><a class="header-anchor" href="#0-2-algorithm-pattern-template"><span>0-2) Algorithm Pattern / Template</span></a></h3>
 <p><strong>Basic Kadane’s Algorithm (Sum):</strong></p>
-<pre><code class="language-python"># Python
-def kadane(nums):
-    if not nums:
-        return 0
-
-    current_max = global_max = nums[0]
-
-    for i in range(1, len(nums)):
-        # At each position: extend current subarray OR start new subarray
-        current_max = max(nums[i], current_max + nums[i])
-        global_max = max(global_max, current_max)
-
-    return global_max
+<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment"># Python</span></span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-keyword">def</span> <span class="hljs-title function_">kadane</span>(<span class="hljs-params">nums</span>):</span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> nums:</span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">        <span class="hljs-keyword">return</span> <span class="hljs-number">0</span></span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    current_max = global_max = nums[<span class="hljs-number">0</span>]</span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>, <span class="hljs-built_in">len</span>(nums)):</span></span>
+<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">        <span class="hljs-comment"># At each position: extend current subarray OR start new subarray</span></span></span>
+<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">        current_max = <span class="hljs-built_in">max</span>(nums[i], current_max + nums[i])</span></span>
+<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">        global_max = <span class="hljs-built_in">max</span>(global_max, current_max)</span></span>
+<span class="ln-row"><span class="ln-num">12</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">    <span class="hljs-keyword">return</span> global_max</span></span>
 </code></pre>
-<pre><code class="language-java">// Java
-public int kadane(int[] nums) {
-    if (nums == null || nums.length == 0) {
-        return 0;
-    }
-
-    int currentMax = nums[0];
-    int globalMax = nums[0];
-
-    // Start from index 1 since we initialized with nums[0]
-    for (int i = 1; i &lt; nums.length; i++) {
-        currentMax = Math.max(nums[i], currentMax + nums[i]);
-        globalMax = Math.max(globalMax, currentMax);
-    }
-
-    return globalMax;
-}
+<pre data-lang="java"><code class="hljs language-java"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment">// Java</span></span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">kadane</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums)</span> {</span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">    <span class="hljs-keyword">if</span> (nums == <span class="hljs-literal">null</span> || nums.length == <span class="hljs-number">0</span>) {</span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">        <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;</span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    }</span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">    <span class="hljs-type">int</span> <span class="hljs-variable">currentMax</span> <span class="hljs-operator">=</span> nums[<span class="hljs-number">0</span>];</span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">    <span class="hljs-type">int</span> <span class="hljs-variable">globalMax</span> <span class="hljs-operator">=</span> nums[<span class="hljs-number">0</span>];</span></span>
+<span class="ln-row"><span class="ln-num">9</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">    <span class="hljs-comment">// Start from index 1 since we initialized with nums[0]</span></span></span>
+<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span>; i &lt; nums.length; i++) {</span></span>
+<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">        currentMax = Math.max(nums[i], currentMax + nums[i]);</span></span>
+<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">        globalMax = Math.max(globalMax, currentMax);</span></span>
+<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">    }</span></span>
+<span class="ln-row"><span class="ln-num">15</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">    <span class="hljs-keyword">return</span> globalMax;</span></span>
+<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">}</span></span>
 </code></pre>
 <p><strong>Important Edge Cases:</strong></p>
 <ul>
@@ -212,105 +218,105 @@ public int kadane(int[] nums) {
 <h2 id="1-pattern-specific-implementations" tabindex="-1"><a class="header-anchor" href="#1-pattern-specific-implementations"><span>1) Pattern-Specific Implementations</span></a></h2>
 <h3 id="1-1-classic-maximum-subarray-sum-lc-53" tabindex="-1"><a class="header-anchor" href="#1-1-classic-maximum-subarray-sum-lc-53"><span>1-1) Classic Maximum Subarray Sum (LC 53)</span></a></h3>
 <p><strong>Problem:</strong> Find the contiguous subarray with the largest sum.</p>
-<pre><code class="language-python"># Python
-def maxSubArray(nums):
-    &quot;&quot;&quot;
-    Time: O(n)
-    Space: O(1)
-    &quot;&quot;&quot;
-    current_sum = max_sum = nums[0]
-
-    for i in range(1, len(nums)):
-        current_sum = max(nums[i], current_sum + nums[i])
-        max_sum = max(max_sum, current_sum)
-
-    return max_sum
+<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment"># Python</span></span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-keyword">def</span> <span class="hljs-title function_">maxSubArray</span>(<span class="hljs-params">nums</span>):</span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">    <span class="hljs-string">&quot;&quot;&quot;</span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">    Time: O(n)</span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    Space: O(1)</span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    &quot;&quot;&quot;</span></span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">    current_sum = max_sum = nums[<span class="hljs-number">0</span>]</span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>, <span class="hljs-built_in">len</span>(nums)):</span></span>
+<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">        current_sum = <span class="hljs-built_in">max</span>(nums[i], current_sum + nums[i])</span></span>
+<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">        max_sum = <span class="hljs-built_in">max</span>(max_sum, current_sum)</span></span>
+<span class="ln-row"><span class="ln-num">12</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">    <span class="hljs-keyword">return</span> max_sum</span></span>
 </code></pre>
-<pre><code class="language-java">// Java
-// LC 53 - Maximum Subarray
-public int maxSubArray(int[] nums) {
-    if (nums == null || nums.length == 0) {
-        return 0;
-    }
-
-    /**
-     * time = O(N)
-     * space = O(1)
-     */
-    int currentSum = nums[0];
-    int maxSum = nums[0];
-
-    for (int i = 1; i &lt; nums.length; i++) {
-        // Choose: start new subarray or extend current
-        currentSum = Math.max(nums[i], currentSum + nums[i]);
-        maxSum = Math.max(maxSum, currentSum);
-    }
-
-    return maxSum;
-}
+<pre data-lang="java"><code class="hljs language-java"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment">// Java</span></span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-comment">// LC 53 - Maximum Subarray</span></span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"><span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">maxSubArray</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums)</span> {</span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">    <span class="hljs-keyword">if</span> (nums == <span class="hljs-literal">null</span> || nums.length == <span class="hljs-number">0</span>) {</span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">        <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;</span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    }</span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">    <span class="hljs-comment">/**</span></span>
+<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">     * time = O(N)</span></span>
+<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">     * space = O(1)</span></span>
+<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">     */</span></span></span>
+<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">    <span class="hljs-type">int</span> <span class="hljs-variable">currentSum</span> <span class="hljs-operator">=</span> nums[<span class="hljs-number">0</span>];</span></span>
+<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">    <span class="hljs-type">int</span> <span class="hljs-variable">maxSum</span> <span class="hljs-operator">=</span> nums[<span class="hljs-number">0</span>];</span></span>
+<span class="ln-row"><span class="ln-num">14</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span>; i &lt; nums.length; i++) {</span></span>
+<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">        <span class="hljs-comment">// Choose: start new subarray or extend current</span></span></span>
+<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">        currentSum = Math.max(nums[i], currentSum + nums[i]);</span></span>
+<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">        maxSum = Math.max(maxSum, currentSum);</span></span>
+<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">    }</span></span>
+<span class="ln-row"><span class="ln-num">20</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">21</span><span class="ln-code">    <span class="hljs-keyword">return</span> maxSum;</span></span>
+<span class="ln-row"><span class="ln-num">22</span><span class="ln-code">}</span></span>
 </code></pre>
 <hr>
 <h3 id="1-2-maximum-subarray-sum-with-index-tracking" tabindex="-1"><a class="header-anchor" href="#1-2-maximum-subarray-sum-with-index-tracking"><span>1-2) Maximum Subarray Sum with Index Tracking</span></a></h3>
 <p><strong>Variant:</strong> Return not just the sum, but also start/end indices of the maximum subarray.</p>
-<pre><code class="language-python"># Python
-def maxSubArrayWithIndices(nums):
-    &quot;&quot;&quot;
-    Time: O(n)
-    Space: O(1)
-    Returns: (max_sum, start_index, end_index)
-    &quot;&quot;&quot;
-    current_sum = max_sum = nums[0]
-    start = end = temp_start = 0
-
-    for i in range(1, len(nums)):
-        if current_sum &lt; 0:
-            current_sum = nums[i]
-            temp_start = i
-        else:
-            current_sum += nums[i]
-
-        if current_sum &gt; max_sum:
-            max_sum = current_sum
-            start = temp_start
-            end = i
-
-    return max_sum, start, end
+<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment"># Python</span></span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-keyword">def</span> <span class="hljs-title function_">maxSubArrayWithIndices</span>(<span class="hljs-params">nums</span>):</span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">    <span class="hljs-string">&quot;&quot;&quot;</span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">    Time: O(n)</span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    Space: O(1)</span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    Returns: (max_sum, start_index, end_index)</span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">    &quot;&quot;&quot;</span></span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">    current_sum = max_sum = nums[<span class="hljs-number">0</span>]</span></span>
+<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">    start = end = temp_start = <span class="hljs-number">0</span></span></span>
+<span class="ln-row"><span class="ln-num">10</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>, <span class="hljs-built_in">len</span>(nums)):</span></span>
+<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">        <span class="hljs-keyword">if</span> current_sum &lt; <span class="hljs-number">0</span>:</span></span>
+<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">            current_sum = nums[i]</span></span>
+<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">            temp_start = i</span></span>
+<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">        <span class="hljs-keyword">else</span>:</span></span>
+<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">            current_sum += nums[i]</span></span>
+<span class="ln-row"><span class="ln-num">17</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">        <span class="hljs-keyword">if</span> current_sum &gt; max_sum:</span></span>
+<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">            max_sum = current_sum</span></span>
+<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">            start = temp_start</span></span>
+<span class="ln-row"><span class="ln-num">21</span><span class="ln-code">            end = i</span></span>
+<span class="ln-row"><span class="ln-num">22</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">23</span><span class="ln-code">    <span class="hljs-keyword">return</span> max_sum, start, end</span></span>
 </code></pre>
-<pre><code class="language-java">// Java
-public class SubarrayResult {
-    int sum;
-    int start;
-    int end;
-
-    SubarrayResult(int sum, int start, int end) {
-        this.sum = sum;
-        this.start = start;
-        this.end = end;
-    }
-}
-
-public SubarrayResult maxSubArrayWithIndices(int[] nums) {
-    int currentSum = nums[0];
-    int maxSum = nums[0];
-    int start = 0, end = 0, tempStart = 0;
-
-    for (int i = 1; i &lt; nums.length; i++) {
-        if (currentSum &lt; 0) {
-            currentSum = nums[i];
-            tempStart = i;
-        } else {
-            currentSum += nums[i];
-        }
-
-        if (currentSum &gt; maxSum) {
-            maxSum = currentSum;
-            start = tempStart;
-            end = i;
-        }
-    }
-
-    return new SubarrayResult(maxSum, start, end);
-}
+<pre data-lang="java"><code class="hljs language-java"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment">// Java</span></span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">SubarrayResult</span> {</span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">    <span class="hljs-type">int</span> sum;</span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">    <span class="hljs-type">int</span> start;</span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    <span class="hljs-type">int</span> end;</span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">    SubarrayResult(<span class="hljs-type">int</span> sum, <span class="hljs-type">int</span> start, <span class="hljs-type">int</span> end) {</span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">        <span class="hljs-built_in">this</span>.sum = sum;</span></span>
+<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">        <span class="hljs-built_in">this</span>.start = start;</span></span>
+<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">        <span class="hljs-built_in">this</span>.end = end;</span></span>
+<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">    }</span></span>
+<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">}</span></span>
+<span class="ln-row"><span class="ln-num">13</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">14</span><span class="ln-code"><span class="hljs-keyword">public</span> SubarrayResult <span class="hljs-title function_">maxSubArrayWithIndices</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums)</span> {</span></span>
+<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">    <span class="hljs-type">int</span> <span class="hljs-variable">currentSum</span> <span class="hljs-operator">=</span> nums[<span class="hljs-number">0</span>];</span></span>
+<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">    <span class="hljs-type">int</span> <span class="hljs-variable">maxSum</span> <span class="hljs-operator">=</span> nums[<span class="hljs-number">0</span>];</span></span>
+<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">    <span class="hljs-type">int</span> <span class="hljs-variable">start</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>, end = <span class="hljs-number">0</span>, tempStart = <span class="hljs-number">0</span>;</span></span>
+<span class="ln-row"><span class="ln-num">18</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span>; i &lt; nums.length; i++) {</span></span>
+<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">        <span class="hljs-keyword">if</span> (currentSum &lt; <span class="hljs-number">0</span>) {</span></span>
+<span class="ln-row"><span class="ln-num">21</span><span class="ln-code">            currentSum = nums[i];</span></span>
+<span class="ln-row"><span class="ln-num">22</span><span class="ln-code">            tempStart = i;</span></span>
+<span class="ln-row"><span class="ln-num">23</span><span class="ln-code">        } <span class="hljs-keyword">else</span> {</span></span>
+<span class="ln-row"><span class="ln-num">24</span><span class="ln-code">            currentSum += nums[i];</span></span>
+<span class="ln-row"><span class="ln-num">25</span><span class="ln-code">        }</span></span>
+<span class="ln-row"><span class="ln-num">26</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">27</span><span class="ln-code">        <span class="hljs-keyword">if</span> (currentSum &gt; maxSum) {</span></span>
+<span class="ln-row"><span class="ln-num">28</span><span class="ln-code">            maxSum = currentSum;</span></span>
+<span class="ln-row"><span class="ln-num">29</span><span class="ln-code">            start = tempStart;</span></span>
+<span class="ln-row"><span class="ln-num">30</span><span class="ln-code">            end = i;</span></span>
+<span class="ln-row"><span class="ln-num">31</span><span class="ln-code">        }</span></span>
+<span class="ln-row"><span class="ln-num">32</span><span class="ln-code">    }</span></span>
+<span class="ln-row"><span class="ln-num">33</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">34</span><span class="ln-code">    <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">SubarrayResult</span>(maxSum, start, end);</span></span>
+<span class="ln-row"><span class="ln-num">35</span><span class="ln-code">}</span></span>
 </code></pre>
 <hr>
 <h3 id="1-3-maximum-product-subarray-lc-152" tabindex="-1"><a class="header-anchor" href="#1-3-maximum-product-subarray-lc-152"><span>1-3) Maximum Product Subarray (LC 152)</span></a></h3>
@@ -325,75 +331,75 @@ public SubarrayResult maxSubArrayWithIndices(int[] nums) {
 </ol>
 </li>
 </ul>
-<pre><code class="language-python"># Python
-def maxProduct(nums):
-    &quot;&quot;&quot;
-    Time: O(n)
-    Space: O(1)
-    &quot;&quot;&quot;
-    if not nums:
-        return 0
-
-    max_prod = min_prod = result = nums[0]
-
-    for i in range(1, len(nums)):
-        if nums[i] &lt; 0:
-            # Swap max and min when multiplying by negative
-            max_prod, min_prod = min_prod, max_prod
-
-        max_prod = max(nums[i], max_prod * nums[i])
-        min_prod = min(nums[i], min_prod * nums[i])
-
-        result = max(result, max_prod)
-
-    return result
+<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment"># Python</span></span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-keyword">def</span> <span class="hljs-title function_">maxProduct</span>(<span class="hljs-params">nums</span>):</span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">    <span class="hljs-string">&quot;&quot;&quot;</span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">    Time: O(n)</span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    Space: O(1)</span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    &quot;&quot;&quot;</span></span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> nums:</span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">        <span class="hljs-keyword">return</span> <span class="hljs-number">0</span></span></span>
+<span class="ln-row"><span class="ln-num">9</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">    max_prod = min_prod = result = nums[<span class="hljs-number">0</span>]</span></span>
+<span class="ln-row"><span class="ln-num">11</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>, <span class="hljs-built_in">len</span>(nums)):</span></span>
+<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">        <span class="hljs-keyword">if</span> nums[i] &lt; <span class="hljs-number">0</span>:</span></span>
+<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">            <span class="hljs-comment"># Swap max and min when multiplying by negative</span></span></span>
+<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">            max_prod, min_prod = min_prod, max_prod</span></span>
+<span class="ln-row"><span class="ln-num">16</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">        max_prod = <span class="hljs-built_in">max</span>(nums[i], max_prod * nums[i])</span></span>
+<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">        min_prod = <span class="hljs-built_in">min</span>(nums[i], min_prod * nums[i])</span></span>
+<span class="ln-row"><span class="ln-num">19</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">        result = <span class="hljs-built_in">max</span>(result, max_prod)</span></span>
+<span class="ln-row"><span class="ln-num">21</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">22</span><span class="ln-code">    <span class="hljs-keyword">return</span> result</span></span>
 </code></pre>
-<pre><code class="language-java">// Java
-// LC 152 - Maximum Product Subarray
-public int maxProduct(int[] nums) {
-    if (nums == null || nums.length == 0) {
-        return 0;
-    }
-
-    /**
-     * time = O(N)
-     * space = O(1)
-     *
-     * Key: Track both max and min products
-     * - maxProd: maximum product ending at current position
-     * - minProd: minimum product ending at current position
-     *            (needed because negative × negative = positive)
-     */
-    int maxProd = nums[0];
-    int minProd = nums[0];
-    int result = nums[0];
-
-    for (int i = 1; i &lt; nums.length; i++) {
-        // Cache maxProd before updating (needed for minProd calculation)
-        int temp = maxProd;
-
-        // Update maxProd: choose from 3 options
-        maxProd = Math.max(nums[i],
-                    Math.max(nums[i] * maxProd, nums[i] * minProd));
-
-        // Update minProd: choose from 3 options
-        minProd = Math.min(nums[i],
-                    Math.min(nums[i] * temp, nums[i] * minProd));
-
-        // Update global result
-        result = Math.max(result, maxProd);
-    }
-
-    return result;
-}
+<pre data-lang="java"><code class="hljs language-java"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment">// Java</span></span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-comment">// LC 152 - Maximum Product Subarray</span></span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"><span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">maxProduct</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums)</span> {</span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">    <span class="hljs-keyword">if</span> (nums == <span class="hljs-literal">null</span> || nums.length == <span class="hljs-number">0</span>) {</span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">        <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;</span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    }</span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">    <span class="hljs-comment">/**</span></span>
+<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">     * time = O(N)</span></span>
+<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">     * space = O(1)</span></span>
+<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">     *</span></span>
+<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">     * Key: Track both max and min products</span></span>
+<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">     * - maxProd: maximum product ending at current position</span></span>
+<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">     * - minProd: minimum product ending at current position</span></span>
+<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">     *            (needed because negative × negative = positive)</span></span>
+<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">     */</span></span></span>
+<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">    <span class="hljs-type">int</span> <span class="hljs-variable">maxProd</span> <span class="hljs-operator">=</span> nums[<span class="hljs-number">0</span>];</span></span>
+<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">    <span class="hljs-type">int</span> <span class="hljs-variable">minProd</span> <span class="hljs-operator">=</span> nums[<span class="hljs-number">0</span>];</span></span>
+<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">    <span class="hljs-type">int</span> <span class="hljs-variable">result</span> <span class="hljs-operator">=</span> nums[<span class="hljs-number">0</span>];</span></span>
+<span class="ln-row"><span class="ln-num">20</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">21</span><span class="ln-code">    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span>; i &lt; nums.length; i++) {</span></span>
+<span class="ln-row"><span class="ln-num">22</span><span class="ln-code">        <span class="hljs-comment">// Cache maxProd before updating (needed for minProd calculation)</span></span></span>
+<span class="ln-row"><span class="ln-num">23</span><span class="ln-code">        <span class="hljs-type">int</span> <span class="hljs-variable">temp</span> <span class="hljs-operator">=</span> maxProd;</span></span>
+<span class="ln-row"><span class="ln-num">24</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">25</span><span class="ln-code">        <span class="hljs-comment">// Update maxProd: choose from 3 options</span></span></span>
+<span class="ln-row"><span class="ln-num">26</span><span class="ln-code">        maxProd = Math.max(nums[i],</span></span>
+<span class="ln-row"><span class="ln-num">27</span><span class="ln-code">                    Math.max(nums[i] * maxProd, nums[i] * minProd));</span></span>
+<span class="ln-row"><span class="ln-num">28</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">29</span><span class="ln-code">        <span class="hljs-comment">// Update minProd: choose from 3 options</span></span></span>
+<span class="ln-row"><span class="ln-num">30</span><span class="ln-code">        minProd = Math.min(nums[i],</span></span>
+<span class="ln-row"><span class="ln-num">31</span><span class="ln-code">                    Math.min(nums[i] * temp, nums[i] * minProd));</span></span>
+<span class="ln-row"><span class="ln-num">32</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">33</span><span class="ln-code">        <span class="hljs-comment">// Update global result</span></span></span>
+<span class="ln-row"><span class="ln-num">34</span><span class="ln-code">        result = Math.max(result, maxProd);</span></span>
+<span class="ln-row"><span class="ln-num">35</span><span class="ln-code">    }</span></span>
+<span class="ln-row"><span class="ln-num">36</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">37</span><span class="ln-code">    <span class="hljs-keyword">return</span> result;</span></span>
+<span class="ln-row"><span class="ln-num">38</span><span class="ln-code">}</span></span>
 </code></pre>
 <p><strong>Step-by-Step Example:</strong> <code>nums = [2, 3, -2, 4]</code></p>
-<pre><code>Index | nums[i] | maxProd              | minProd              | result
-----------------------------------------------------------------------
-  0   |    2    |     2                |     2                |   2
-  1   |    3    | max(3,6,6)=6        | min(3,6,6)=3         |   6
-  2   |   -2    | max(-2,-12,-6)=-2   | min(-2,-12,-6)=-12   |   6
-  3   |    4    | max(4,-8,-48)=4     | min(4,-8,-48)=-48    |   6
+<pre><code class="hljs"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code">Index | nums[i] | maxProd              | minProd              | result</span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code">----------------------------------------------------------------------</span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">  0   |    2    |     2                |     2                |   2</span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">  1   |    3    | max(3,6,6)=6        | min(3,6,6)=3         |   6</span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">  2   |   -2    | max(-2,-12,-6)=-2   | min(-2,-12,-6)=-12   |   6</span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">  3   |    4    | max(4,-8,-48)=4     | min(4,-8,-48)=-48    |   6</span></span>
 </code></pre>
 <p><strong>Final Answer:</strong> 6 (subarray [2,3] has product 6)</p>
 <hr>
@@ -404,72 +410,72 @@ public int maxProduct(int[] nums) {
 <li><strong>Circular</strong>: Maximum subarray wraps around edges</li>
 </ol>
 <p><strong>Circular Maximum = Total Sum - Minimum Subarray</strong></p>
-<pre><code class="language-python"># Python
-def maxSubarraySumCircular(nums):
-    &quot;&quot;&quot;
-    Time: O(n)
-    Space: O(1)
-    &quot;&quot;&quot;
-    def kadane(arr):
-        current = maximum = arr[0]
-        for i in range(1, len(arr)):
-            current = max(arr[i], current + arr[i])
-            maximum = max(maximum, current)
-        return maximum
-
-    # Case 1: Maximum subarray is normal (non-circular)
-    max_normal = kadane(nums)
-
-    # Case 2: Maximum subarray is circular
-    # Circular max = Total sum - minimum subarray
-    total_sum = sum(nums)
-
-    # Find minimum subarray (negate array and find max)
-    negated = [-x for x in nums]
-    max_negated = kadane(negated)
-    min_subarray = -max_negated
-
-    max_circular = total_sum - min_subarray
-
-    # Edge case: if all numbers are negative
-    if max_circular == 0:
-        return max_normal
-
-    return max(max_normal, max_circular)
+<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment"># Python</span></span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-keyword">def</span> <span class="hljs-title function_">maxSubarraySumCircular</span>(<span class="hljs-params">nums</span>):</span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">    <span class="hljs-string">&quot;&quot;&quot;</span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">    Time: O(n)</span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    Space: O(1)</span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    &quot;&quot;&quot;</span></span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">kadane</span>(<span class="hljs-params">arr</span>):</span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">        current = maximum = arr[<span class="hljs-number">0</span>]</span></span>
+<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>, <span class="hljs-built_in">len</span>(arr)):</span></span>
+<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">            current = <span class="hljs-built_in">max</span>(arr[i], current + arr[i])</span></span>
+<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">            maximum = <span class="hljs-built_in">max</span>(maximum, current)</span></span>
+<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">        <span class="hljs-keyword">return</span> maximum</span></span>
+<span class="ln-row"><span class="ln-num">13</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">    <span class="hljs-comment"># Case 1: Maximum subarray is normal (non-circular)</span></span></span>
+<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">    max_normal = kadane(nums)</span></span>
+<span class="ln-row"><span class="ln-num">16</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">    <span class="hljs-comment"># Case 2: Maximum subarray is circular</span></span></span>
+<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">    <span class="hljs-comment"># Circular max = Total sum - minimum subarray</span></span></span>
+<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">    total_sum = <span class="hljs-built_in">sum</span>(nums)</span></span>
+<span class="ln-row"><span class="ln-num">20</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">21</span><span class="ln-code">    <span class="hljs-comment"># Find minimum subarray (negate array and find max)</span></span></span>
+<span class="ln-row"><span class="ln-num">22</span><span class="ln-code">    negated = [-x <span class="hljs-keyword">for</span> x <span class="hljs-keyword">in</span> nums]</span></span>
+<span class="ln-row"><span class="ln-num">23</span><span class="ln-code">    max_negated = kadane(negated)</span></span>
+<span class="ln-row"><span class="ln-num">24</span><span class="ln-code">    min_subarray = -max_negated</span></span>
+<span class="ln-row"><span class="ln-num">25</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">26</span><span class="ln-code">    max_circular = total_sum - min_subarray</span></span>
+<span class="ln-row"><span class="ln-num">27</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">28</span><span class="ln-code">    <span class="hljs-comment"># Edge case: if all numbers are negative</span></span></span>
+<span class="ln-row"><span class="ln-num">29</span><span class="ln-code">    <span class="hljs-keyword">if</span> max_circular == <span class="hljs-number">0</span>:</span></span>
+<span class="ln-row"><span class="ln-num">30</span><span class="ln-code">        <span class="hljs-keyword">return</span> max_normal</span></span>
+<span class="ln-row"><span class="ln-num">31</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">32</span><span class="ln-code">    <span class="hljs-keyword">return</span> <span class="hljs-built_in">max</span>(max_normal, max_circular)</span></span>
 </code></pre>
-<pre><code class="language-java">// Java
-// LC 918 - Maximum Sum Circular Subarray
-public int maxSubarraySumCircular(int[] nums) {
-    /**
-     * time = O(N)
-     * space = O(1)
-     */
-    int curMax = 0;
-    int curMin = 0;
-    int maxSum = nums[0];
-    int minSum = nums[0];
-    int totalSum = 0;
-
-    for (int num : nums) {
-        // Normal Kadane's for maximum
-        curMax = Math.max(curMax, 0) + num;
-        maxSum = Math.max(maxSum, curMax);
-
-        // Kadane's for minimum (find minimum subarray)
-        curMin = Math.min(curMin, 0) + num;
-        minSum = Math.min(minSum, curMin);
-
-        totalSum += num;
-    }
-
-    // Edge case: all negative numbers
-    if (totalSum == minSum) {
-        return maxSum;
-    }
-
-    // Return max of normal case or circular case
-    return Math.max(maxSum, totalSum - minSum);
-}
+<pre data-lang="java"><code class="hljs language-java"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment">// Java</span></span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-comment">// LC 918 - Maximum Sum Circular Subarray</span></span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"><span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">maxSubarraySumCircular</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums)</span> {</span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">    <span class="hljs-comment">/**</span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">     * time = O(N)</span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">     * space = O(1)</span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">     */</span></span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">    <span class="hljs-type">int</span> <span class="hljs-variable">curMax</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;</span></span>
+<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">    <span class="hljs-type">int</span> <span class="hljs-variable">curMin</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;</span></span>
+<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">    <span class="hljs-type">int</span> <span class="hljs-variable">maxSum</span> <span class="hljs-operator">=</span> nums[<span class="hljs-number">0</span>];</span></span>
+<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">    <span class="hljs-type">int</span> <span class="hljs-variable">minSum</span> <span class="hljs-operator">=</span> nums[<span class="hljs-number">0</span>];</span></span>
+<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">    <span class="hljs-type">int</span> <span class="hljs-variable">totalSum</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;</span></span>
+<span class="ln-row"><span class="ln-num">13</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> num : nums) {</span></span>
+<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">        <span class="hljs-comment">// Normal Kadane&#x27;s for maximum</span></span></span>
+<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">        curMax = Math.max(curMax, <span class="hljs-number">0</span>) + num;</span></span>
+<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">        maxSum = Math.max(maxSum, curMax);</span></span>
+<span class="ln-row"><span class="ln-num">18</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">        <span class="hljs-comment">// Kadane&#x27;s for minimum (find minimum subarray)</span></span></span>
+<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">        curMin = Math.min(curMin, <span class="hljs-number">0</span>) + num;</span></span>
+<span class="ln-row"><span class="ln-num">21</span><span class="ln-code">        minSum = Math.min(minSum, curMin);</span></span>
+<span class="ln-row"><span class="ln-num">22</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">23</span><span class="ln-code">        totalSum += num;</span></span>
+<span class="ln-row"><span class="ln-num">24</span><span class="ln-code">    }</span></span>
+<span class="ln-row"><span class="ln-num">25</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">26</span><span class="ln-code">    <span class="hljs-comment">// Edge case: all negative numbers</span></span></span>
+<span class="ln-row"><span class="ln-num">27</span><span class="ln-code">    <span class="hljs-keyword">if</span> (totalSum == minSum) {</span></span>
+<span class="ln-row"><span class="ln-num">28</span><span class="ln-code">        <span class="hljs-keyword">return</span> maxSum;</span></span>
+<span class="ln-row"><span class="ln-num">29</span><span class="ln-code">    }</span></span>
+<span class="ln-row"><span class="ln-num">30</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">31</span><span class="ln-code">    <span class="hljs-comment">// Return max of normal case or circular case</span></span></span>
+<span class="ln-row"><span class="ln-num">32</span><span class="ln-code">    <span class="hljs-keyword">return</span> Math.max(maxSum, totalSum - minSum);</span></span>
+<span class="ln-row"><span class="ln-num">33</span><span class="ln-code">}</span></span>
 </code></pre>
 <p><strong>Why it works:</strong></p>
 <ul>
@@ -479,56 +485,56 @@ public int maxSubarraySumCircular(int[] nums) {
 <hr>
 <h3 id="1-5-maximum-subarray-sum-with-one-deletion-lc-1186" tabindex="-1"><a class="header-anchor" href="#1-5-maximum-subarray-sum-with-one-deletion-lc-1186"><span>1-5) Maximum Subarray Sum with One Deletion (LC 1186)</span></a></h3>
 <p><strong>Problem:</strong> You can delete at most one element to maximize subarray sum.</p>
-<pre><code class="language-python"># Python
-def maximumSum(arr):
-    &quot;&quot;&quot;
-    Time: O(n)
-    Space: O(1)
-
-    Track two states:
-    - no_delete: max sum without any deletion
-    - one_delete: max sum with exactly one deletion
-    &quot;&quot;&quot;
-    n = len(arr)
-    no_delete = arr[0]
-    one_delete = 0
-    result = arr[0]
-
-    for i in range(1, n):
-        # With one deletion: either delete current or extend previous deletion
-        one_delete = max(one_delete + arr[i], no_delete)
-
-        # Without deletion: standard Kadane's
-        no_delete = max(arr[i], no_delete + arr[i])
-
-        result = max(result, max(no_delete, one_delete))
-
-    return result
+<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment"># Python</span></span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-keyword">def</span> <span class="hljs-title function_">maximumSum</span>(<span class="hljs-params">arr</span>):</span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">    <span class="hljs-string">&quot;&quot;&quot;</span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">    Time: O(n)</span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    Space: O(1)</span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">    Track two states:</span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">    - no_delete: max sum without any deletion</span></span>
+<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">    - one_delete: max sum with exactly one deletion</span></span>
+<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">    &quot;&quot;&quot;</span></span></span>
+<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">    n = <span class="hljs-built_in">len</span>(arr)</span></span>
+<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">    no_delete = arr[<span class="hljs-number">0</span>]</span></span>
+<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">    one_delete = <span class="hljs-number">0</span></span></span>
+<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">    result = arr[<span class="hljs-number">0</span>]</span></span>
+<span class="ln-row"><span class="ln-num">15</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>, n):</span></span>
+<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">        <span class="hljs-comment"># With one deletion: either delete current or extend previous deletion</span></span></span>
+<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">        one_delete = <span class="hljs-built_in">max</span>(one_delete + arr[i], no_delete)</span></span>
+<span class="ln-row"><span class="ln-num">19</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">        <span class="hljs-comment"># Without deletion: standard Kadane&#x27;s</span></span></span>
+<span class="ln-row"><span class="ln-num">21</span><span class="ln-code">        no_delete = <span class="hljs-built_in">max</span>(arr[i], no_delete + arr[i])</span></span>
+<span class="ln-row"><span class="ln-num">22</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">23</span><span class="ln-code">        result = <span class="hljs-built_in">max</span>(result, <span class="hljs-built_in">max</span>(no_delete, one_delete))</span></span>
+<span class="ln-row"><span class="ln-num">24</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">25</span><span class="ln-code">    <span class="hljs-keyword">return</span> result</span></span>
 </code></pre>
-<pre><code class="language-java">// Java
-// LC 1186 - Maximum Subarray Sum with One Deletion
-public int maximumSum(int[] arr) {
-    /**
-     * time = O(N)
-     * space = O(1)
-     */
-    int n = arr.length;
-    int noDelete = arr[0];
-    int oneDelete = 0;
-    int result = arr[0];
-
-    for (int i = 1; i &lt; n; i++) {
-        // With one deletion: max of (extend with deletion, delete current)
-        oneDelete = Math.max(oneDelete + arr[i], noDelete);
-
-        // Without deletion: standard Kadane's
-        noDelete = Math.max(arr[i], noDelete + arr[i]);
-
-        result = Math.max(result, Math.max(noDelete, oneDelete));
-    }
-
-    return result;
-}
+<pre data-lang="java"><code class="hljs language-java"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment">// Java</span></span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-comment">// LC 1186 - Maximum Subarray Sum with One Deletion</span></span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"><span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">maximumSum</span><span class="hljs-params">(<span class="hljs-type">int</span>[] arr)</span> {</span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">    <span class="hljs-comment">/**</span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">     * time = O(N)</span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">     * space = O(1)</span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">     */</span></span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">    <span class="hljs-type">int</span> <span class="hljs-variable">n</span> <span class="hljs-operator">=</span> arr.length;</span></span>
+<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">    <span class="hljs-type">int</span> <span class="hljs-variable">noDelete</span> <span class="hljs-operator">=</span> arr[<span class="hljs-number">0</span>];</span></span>
+<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">    <span class="hljs-type">int</span> <span class="hljs-variable">oneDelete</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;</span></span>
+<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">    <span class="hljs-type">int</span> <span class="hljs-variable">result</span> <span class="hljs-operator">=</span> arr[<span class="hljs-number">0</span>];</span></span>
+<span class="ln-row"><span class="ln-num">12</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span>; i &lt; n; i++) {</span></span>
+<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">        <span class="hljs-comment">// With one deletion: max of (extend with deletion, delete current)</span></span></span>
+<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">        oneDelete = Math.max(oneDelete + arr[i], noDelete);</span></span>
+<span class="ln-row"><span class="ln-num">16</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">        <span class="hljs-comment">// Without deletion: standard Kadane&#x27;s</span></span></span>
+<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">        noDelete = Math.max(arr[i], noDelete + arr[i]);</span></span>
+<span class="ln-row"><span class="ln-num">19</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">        result = Math.max(result, Math.max(noDelete, oneDelete));</span></span>
+<span class="ln-row"><span class="ln-num">21</span><span class="ln-code">    }</span></span>
+<span class="ln-row"><span class="ln-num">22</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">23</span><span class="ln-code">    <span class="hljs-keyword">return</span> result;</span></span>
+<span class="ln-row"><span class="ln-num">24</span><span class="ln-code">}</span></span>
 </code></pre>
 <hr>
 <h2 id="2-related-leetcode-problems" tabindex="-1"><a class="header-anchor" href="#2-related-leetcode-problems"><span>2) Related LeetCode Problems</span></a></h2>
@@ -606,49 +612,49 @@ public int maximumSum(int[] arr) {
 <ol>
 <li>
 <p><strong>Forgetting Edge Cases</strong></p>
-<pre><code class="language-java">// ❌ WRONG: Not handling empty arrays
-if (nums.length == 0) return 0;
-
-// ✅ CORRECT: Check for null and empty
-if (nums == null || nums.length == 0) return 0;
+<pre data-lang="java"><code class="hljs language-java"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment">// ❌ WRONG: Not handling empty arrays</span></span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-keyword">if</span> (nums.length == <span class="hljs-number">0</span>) <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;</span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"><span class="hljs-comment">// ✅ CORRECT: Check for null and empty</span></span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code"><span class="hljs-keyword">if</span> (nums == <span class="hljs-literal">null</span> || nums.length == <span class="hljs-number">0</span>) <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;</span></span>
 </code></pre>
 </li>
 <li>
 <p><strong>All Negative Arrays</strong></p>
-<pre><code class="language-python"># ❌ WRONG: Returning 0 for all negative
-if max_sum &lt; 0:
-    return 0
-
-# ✅ CORRECT: Return maximum element
-# Kadane's handles this naturally by initializing with nums[0]
+<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment"># ❌ WRONG: Returning 0 for all negative</span></span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-keyword">if</span> max_sum &lt; <span class="hljs-number">0</span>:</span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span></span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code"><span class="hljs-comment"># ✅ CORRECT: Return maximum element</span></span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code"><span class="hljs-comment"># Kadane&#x27;s handles this naturally by initializing with nums[0]</span></span></span>
 </code></pre>
 </li>
 <li>
 <p><strong>Product Problems: Not Tracking Minimum</strong></p>
-<pre><code class="language-java">// ❌ WRONG: Only tracking max product
-maxProd = Math.max(nums[i], maxProd * nums[i]);
-
-// ✅ CORRECT: Track both max and min
-maxProd = Math.max(nums[i], Math.max(maxProd * nums[i], minProd * nums[i]));
+<pre data-lang="java"><code class="hljs language-java"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment">// ❌ WRONG: Only tracking max product</span></span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code">maxProd = Math.max(nums[i], maxProd * nums[i]);</span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"><span class="hljs-comment">// ✅ CORRECT: Track both max and min</span></span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">maxProd = Math.max(nums[i], Math.max(maxProd * nums[i], minProd * nums[i]));</span></span>
 </code></pre>
 </li>
 <li>
 <p><strong>Index Tracking: Off-by-One Errors</strong></p>
-<pre><code class="language-python"># ❌ WRONG: Starting loop from 0 when initialized with nums[0]
-for i in range(len(nums)):  # Recounts nums[0]
-
-# ✅ CORRECT: Start from 1
-for i in range(1, len(nums)):
+<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment"># ❌ WRONG: Starting loop from 0 when initialized with nums[0]</span></span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(nums)):  <span class="hljs-comment"># Recounts nums[0]</span></span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"><span class="hljs-comment"># ✅ CORRECT: Start from 1</span></span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code"><span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>, <span class="hljs-built_in">len</span>(nums)):</span></span>
 </code></pre>
 </li>
 <li>
 <p><strong>Circular Arrays: Missing Edge Case</strong></p>
-<pre><code class="language-java">// ❌ WRONG: Not checking if all numbers are negative
-return Math.max(maxSum, totalSum - minSum);
-
-// ✅ CORRECT: Handle case where minSum = totalSum
-if (totalSum == minSum) return maxSum;
-return Math.max(maxSum, totalSum - minSum);
+<pre data-lang="java"><code class="hljs language-java"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment">// ❌ WRONG: Not checking if all numbers are negative</span></span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-keyword">return</span> Math.max(maxSum, totalSum - minSum);</span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"><span class="hljs-comment">// ✅ CORRECT: Handle case where minSum = totalSum</span></span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code"><span class="hljs-keyword">if</span> (totalSum == minSum) <span class="hljs-keyword">return</span> maxSum;</span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code"><span class="hljs-keyword">return</span> Math.max(maxSum, totalSum - minSum);</span></span>
 </code></pre>
 </li>
 </ol>
@@ -673,23 +679,23 @@ return Math.max(maxSum, totalSum - minSum);
 <li>“Stock profit” → Kadane’s variant</li>
 </ul>
 <h4 id="problem-solving-framework" tabindex="-1"><a class="header-anchor" href="#problem-solving-framework"><span>Problem-Solving Framework:</span></a></h4>
-<pre><code>1. Identify the optimization metric:
-   ├─ Sum → Standard Kadane's
-   ├─ Product → Track max and min
-   ├─ With constraints → Multiple state tracking
-   └─ Circular → Consider wraparound
-
-2. Choose the pattern:
-   ├─ Single pass? → O(n) Kadane's
-   ├─ Need indices? → Track start/end
-   ├─ Need actual subarray? → Store elements
-   └─ Multiple subarrays? → Modified approach
-
-3. Handle edge cases:
-   ├─ All negative → Maximum element
-   ├─ Empty array → Return 0 or error
-   ├─ Single element → Return element
-   └─ Zeros → Reset logic for product
+<pre><code class="hljs"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code">1. Identify the optimization metric:</span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code">   ├─ Sum → Standard Kadane's</span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">   ├─ Product → Track max and min</span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">   ├─ With constraints → Multiple state tracking</span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">   └─ Circular → Consider wraparound</span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">2. Choose the pattern:</span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">   ├─ Single pass? → O(n) Kadane's</span></span>
+<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">   ├─ Need indices? → Track start/end</span></span>
+<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">   ├─ Need actual subarray? → Store elements</span></span>
+<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">   └─ Multiple subarrays? → Modified approach</span></span>
+<span class="ln-row"><span class="ln-num">12</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">3. Handle edge cases:</span></span>
+<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">   ├─ All negative → Maximum element</span></span>
+<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">   ├─ Empty array → Return 0 or error</span></span>
+<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">   ├─ Single element → Return element</span></span>
+<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">   └─ Zeros → Reset logic for product</span></span>
 </code></pre>
 <h3 id="complexity-analysis" tabindex="-1"><a class="header-anchor" href="#complexity-analysis"><span>📊 Complexity Analysis</span></a></h3>
 <table>
@@ -829,210 +835,210 @@ return Math.max(maxSum, totalSum - minSum);
 <blockquote>
 <p>Track local max ending at each index; reset when local max drops below current element.</p>
 </blockquote>
-<pre><code class="language-java">// LC 53 - Maximum Subarray
-// IDEA: Kadane — localMax = max(nums[i], nums[i] + localMax)
-// time = O(N), space = O(1)
-public int maxSubArray(int[] nums) {
-    int localMax = nums[0], globalMax = nums[0];
-    for (int i = 1; i &lt; nums.length; i++) {
-        localMax = Math.max(nums[i], nums[i] + localMax);
-        globalMax = Math.max(globalMax, localMax);
-    }
-    return globalMax;
-}
+<pre data-lang="java"><code class="hljs language-java"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment">// LC 53 - Maximum Subarray</span></span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-comment">// IDEA: Kadane — localMax = max(nums[i], nums[i] + localMax)</span></span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"><span class="hljs-comment">// time = O(N), space = O(1)</span></span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"><span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">maxSubArray</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums)</span> {</span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    <span class="hljs-type">int</span> <span class="hljs-variable">localMax</span> <span class="hljs-operator">=</span> nums[<span class="hljs-number">0</span>], globalMax = nums[<span class="hljs-number">0</span>];</span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span>; i &lt; nums.length; i++) {</span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">        localMax = Math.max(nums[i], nums[i] + localMax);</span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">        globalMax = Math.max(globalMax, localMax);</span></span>
+<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">    }</span></span>
+<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">    <span class="hljs-keyword">return</span> globalMax;</span></span>
+<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">}</span></span>
 </code></pre>
 <h3 id="2-2-maximum-product-subarray-lc-152-track-min-max" tabindex="-1"><a class="header-anchor" href="#2-2-maximum-product-subarray-lc-152-track-min-max"><span>2-2) Maximum Product Subarray (LC 152) — Track Min &amp; Max</span></a></h3>
 <blockquote>
 <p>Track both max and min product (min can become max when multiplied by negative).</p>
 </blockquote>
-<pre><code class="language-java">// LC 152 - Maximum Product Subarray
-// IDEA: Kadane variant — track both curMax and curMin for sign flips
-// time = O(N), space = O(1)
-public int maxProduct(int[] nums) {
-    int curMax = nums[0], curMin = nums[0], globalMax = nums[0];
-    for (int i = 1; i &lt; nums.length; i++) {
-        int temp = curMax;
-        curMax = Math.max(nums[i], Math.max(curMax * nums[i], curMin * nums[i]));
-        curMin = Math.min(nums[i], Math.min(temp * nums[i], curMin * nums[i]));
-        globalMax = Math.max(globalMax, curMax);
-    }
-    return globalMax;
-}
+<pre data-lang="java"><code class="hljs language-java"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment">// LC 152 - Maximum Product Subarray</span></span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-comment">// IDEA: Kadane variant — track both curMax and curMin for sign flips</span></span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"><span class="hljs-comment">// time = O(N), space = O(1)</span></span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"><span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">maxProduct</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums)</span> {</span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    <span class="hljs-type">int</span> <span class="hljs-variable">curMax</span> <span class="hljs-operator">=</span> nums[<span class="hljs-number">0</span>], curMin = nums[<span class="hljs-number">0</span>], globalMax = nums[<span class="hljs-number">0</span>];</span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span>; i &lt; nums.length; i++) {</span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">        <span class="hljs-type">int</span> <span class="hljs-variable">temp</span> <span class="hljs-operator">=</span> curMax;</span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">        curMax = Math.max(nums[i], Math.max(curMax * nums[i], curMin * nums[i]));</span></span>
+<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">        curMin = Math.min(nums[i], Math.min(temp * nums[i], curMin * nums[i]));</span></span>
+<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">        globalMax = Math.max(globalMax, curMax);</span></span>
+<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">    }</span></span>
+<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">    <span class="hljs-keyword">return</span> globalMax;</span></span>
+<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">}</span></span>
 </code></pre>
 <h3 id="2-3-maximum-sum-circular-subarray-lc-918-kadane-total-sum-trick" tabindex="-1"><a class="header-anchor" href="#2-3-maximum-sum-circular-subarray-lc-918-kadane-total-sum-trick"><span>2-3) Maximum Sum Circular Subarray (LC 918) — Kadane + Total Sum Trick</span></a></h3>
 <blockquote>
 <p>Max circular subarray = max(normal max subarray, total sum - min subarray).</p>
 </blockquote>
-<pre><code class="language-java">// LC 918 - Maximum Sum Circular Subarray
-// IDEA: max circular = max(kadane result, total - minSubarray)
-// time = O(N), space = O(1)
-public int maxSubarraySumCircular(int[] nums) {
-    int totalSum = 0, curMax = 0, curMin = 0, maxSum = nums[0], minSum = nums[0];
-    for (int num : nums) {
-        curMax = Math.max(curMax + num, num);
-        maxSum = Math.max(maxSum, curMax);
-        curMin = Math.min(curMin + num, num);
-        minSum = Math.min(minSum, curMin);
-        totalSum += num;
-    }
-    // if all negative, maxSum is the answer (totalSum - minSum = 0 is invalid)
-    return maxSum &gt; 0 ? Math.max(maxSum, totalSum - minSum) : maxSum;
-}
+<pre data-lang="java"><code class="hljs language-java"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment">// LC 918 - Maximum Sum Circular Subarray</span></span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-comment">// IDEA: max circular = max(kadane result, total - minSubarray)</span></span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"><span class="hljs-comment">// time = O(N), space = O(1)</span></span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"><span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">maxSubarraySumCircular</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums)</span> {</span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    <span class="hljs-type">int</span> <span class="hljs-variable">totalSum</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>, curMax = <span class="hljs-number">0</span>, curMin = <span class="hljs-number">0</span>, maxSum = nums[<span class="hljs-number">0</span>], minSum = nums[<span class="hljs-number">0</span>];</span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> num : nums) {</span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">        curMax = Math.max(curMax + num, num);</span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">        maxSum = Math.max(maxSum, curMax);</span></span>
+<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">        curMin = Math.min(curMin + num, num);</span></span>
+<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">        minSum = Math.min(minSum, curMin);</span></span>
+<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">        totalSum += num;</span></span>
+<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">    }</span></span>
+<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">    <span class="hljs-comment">// if all negative, maxSum is the answer (totalSum - minSum = 0 is invalid)</span></span></span>
+<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">    <span class="hljs-keyword">return</span> maxSum &gt; <span class="hljs-number">0</span> ? Math.max(maxSum, totalSum - minSum) : maxSum;</span></span>
+<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">}</span></span>
 </code></pre>
 <h3 id="2-4-best-time-to-buy-and-sell-stock-lc-121-kadane-variant" tabindex="-1"><a class="header-anchor" href="#2-4-best-time-to-buy-and-sell-stock-lc-121-kadane-variant"><span>2-4) Best Time to Buy and Sell Stock (LC 121) — Kadane Variant</span></a></h3>
 <blockquote>
 <p>Track running minimum price; max profit = current price − running minimum.</p>
 </blockquote>
-<pre><code class="language-java">// LC 121 - Best Time to Buy and Sell Stock
-// IDEA: Kadane variant — running minimum, update max profit each step
-// time = O(N), space = O(1)
-public int maxProfit(int[] prices) {
-    int minPrice = Integer.MAX_VALUE, maxProfit = 0;
-    for (int price : prices) {
-        minPrice = Math.min(minPrice, price);
-        maxProfit = Math.max(maxProfit, price - minPrice);
-    }
-    return maxProfit;
-}
+<pre data-lang="java"><code class="hljs language-java"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment">// LC 121 - Best Time to Buy and Sell Stock</span></span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-comment">// IDEA: Kadane variant — running minimum, update max profit each step</span></span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"><span class="hljs-comment">// time = O(N), space = O(1)</span></span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"><span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">maxProfit</span><span class="hljs-params">(<span class="hljs-type">int</span>[] prices)</span> {</span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    <span class="hljs-type">int</span> <span class="hljs-variable">minPrice</span> <span class="hljs-operator">=</span> Integer.MAX_VALUE, maxProfit = <span class="hljs-number">0</span>;</span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> price : prices) {</span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">        minPrice = Math.min(minPrice, price);</span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">        maxProfit = Math.max(maxProfit, price - minPrice);</span></span>
+<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">    }</span></span>
+<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">    <span class="hljs-keyword">return</span> maxProfit;</span></span>
+<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">}</span></span>
 </code></pre>
-<h3 id="2-5-maximum-subarray-sum-with-one-deletion-lc-1186" tabindex="-1"><a class="header-anchor" href="#2-5-maximum-subarray-sum-with-one-deletion-lc-1186"><span>2-5) Maximum Subarray Sum with One Deletion (LC 1186)</span></a></h3>
+<h3 id="2-5-maximum-subarray-sum-with-one-deletion-lc-1186-two-dp-states" tabindex="-1"><a class="header-anchor" href="#2-5-maximum-subarray-sum-with-one-deletion-lc-1186-two-dp-states"><span>2-5) Maximum Subarray Sum with One Deletion (LC 1186) — Two DP States</span></a></h3>
 <blockquote>
 <p>dp0[i] = max sum ending at i (no deletion); dp1[i] = max sum with one deletion used.</p>
 </blockquote>
-<pre><code class="language-java">// LC 1186 - Maximum Subarray Sum with One Deletion
-// IDEA: Two DP states — dp0 (no deletion), dp1 (one deletion used)
-// time = O(N), space = O(1)
-public int maximumSum(int[] arr) {
-    int dp0 = arr[0], dp1 = 0, ans = arr[0];
-    for (int i = 1; i &lt; arr.length; i++) {
-        dp1 = Math.max(dp0, dp1 + arr[i]);  // delete arr[i] or extend with deletion
-        dp0 = Math.max(arr[i], dp0 + arr[i]);
-        ans = Math.max(ans, Math.max(dp0, dp1));
-    }
-    return ans;
-}
+<pre data-lang="java"><code class="hljs language-java"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment">// LC 1186 - Maximum Subarray Sum with One Deletion</span></span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-comment">// IDEA: Two DP states — dp0 (no deletion), dp1 (one deletion used)</span></span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"><span class="hljs-comment">// time = O(N), space = O(1)</span></span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"><span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">maximumSum</span><span class="hljs-params">(<span class="hljs-type">int</span>[] arr)</span> {</span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    <span class="hljs-type">int</span> <span class="hljs-variable">dp0</span> <span class="hljs-operator">=</span> arr[<span class="hljs-number">0</span>], dp1 = <span class="hljs-number">0</span>, ans = arr[<span class="hljs-number">0</span>];</span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span>; i &lt; arr.length; i++) {</span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">        dp1 = Math.max(dp0, dp1 + arr[i]);  <span class="hljs-comment">// delete arr[i] or extend with deletion</span></span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">        dp0 = Math.max(arr[i], dp0 + arr[i]);</span></span>
+<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">        ans = Math.max(ans, Math.max(dp0, dp1));</span></span>
+<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">    }</span></span>
+<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">    <span class="hljs-keyword">return</span> ans;</span></span>
+<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">}</span></span>
 </code></pre>
 <h3 id="2-6-longest-turbulent-subarray-lc-978-kadane-variant" tabindex="-1"><a class="header-anchor" href="#2-6-longest-turbulent-subarray-lc-978-kadane-variant"><span>2-6) Longest Turbulent Subarray (LC 978) — Kadane Variant</span></a></h3>
 <blockquote>
 <p>Track lengths of increasing and decreasing alternating windows; reset on equality.</p>
 </blockquote>
-<pre><code class="language-java">// LC 978 - Longest Turbulent Subarray
-// IDEA: Kadane variant — track alternating inc/dec window lengths
-// time = O(N), space = O(1)
-public int maxTurbulenceSize(int[] arr) {
-    int inc = 1, dec = 1, ans = 1;
-    for (int i = 1; i &lt; arr.length; i++) {
-        if (arr[i] &gt; arr[i-1])      { inc = dec + 1; dec = 1; }
-        else if (arr[i] &lt; arr[i-1]) { dec = inc + 1; inc = 1; }
-        else                         { inc = 1; dec = 1; }
-        ans = Math.max(ans, Math.max(inc, dec));
-    }
-    return ans;
-}
+<pre data-lang="java"><code class="hljs language-java"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment">// LC 978 - Longest Turbulent Subarray</span></span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-comment">// IDEA: Kadane variant — track alternating inc/dec window lengths</span></span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"><span class="hljs-comment">// time = O(N), space = O(1)</span></span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"><span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">maxTurbulenceSize</span><span class="hljs-params">(<span class="hljs-type">int</span>[] arr)</span> {</span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    <span class="hljs-type">int</span> <span class="hljs-variable">inc</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span>, dec = <span class="hljs-number">1</span>, ans = <span class="hljs-number">1</span>;</span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span>; i &lt; arr.length; i++) {</span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">        <span class="hljs-keyword">if</span> (arr[i] &gt; arr[i-<span class="hljs-number">1</span>])      { inc = dec + <span class="hljs-number">1</span>; dec = <span class="hljs-number">1</span>; }</span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">        <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (arr[i] &lt; arr[i-<span class="hljs-number">1</span>]) { dec = inc + <span class="hljs-number">1</span>; inc = <span class="hljs-number">1</span>; }</span></span>
+<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">        <span class="hljs-keyword">else</span>                         { inc = <span class="hljs-number">1</span>; dec = <span class="hljs-number">1</span>; }</span></span>
+<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">        ans = Math.max(ans, Math.max(inc, dec));</span></span>
+<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">    }</span></span>
+<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">    <span class="hljs-keyword">return</span> ans;</span></span>
+<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">}</span></span>
 </code></pre>
 <h3 id="2-7-gas-station-lc-134-greedy-kadane-on-circular" tabindex="-1"><a class="header-anchor" href="#2-7-gas-station-lc-134-greedy-kadane-on-circular"><span>2-7) Gas Station (LC 134) — Greedy / Kadane on Circular</span></a></h3>
 <blockquote>
 <p>If total gas &gt;= total cost, a solution exists; start from the first surplus reset point.</p>
 </blockquote>
-<pre><code class="language-java">// LC 134 - Gas Station
-// IDEA: Greedy — if total surplus &gt;= 0, start from where tank went negative
-// time = O(N), space = O(1)
-public int canCompleteCircuit(int[] gas, int[] cost) {
-    int total = 0, curr = 0, start = 0;
-    for (int i = 0; i &lt; gas.length; i++) {
-        int diff = gas[i] - cost[i];
-        total += diff;
-        curr  += diff;
-        if (curr &lt; 0) { start = i + 1; curr = 0; }
-    }
-    return total &gt;= 0 ? start : -1;
-}
+<pre data-lang="java"><code class="hljs language-java"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment">// LC 134 - Gas Station</span></span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-comment">// IDEA: Greedy — if total surplus &gt;= 0, start from where tank went negative</span></span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"><span class="hljs-comment">// time = O(N), space = O(1)</span></span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"><span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">canCompleteCircuit</span><span class="hljs-params">(<span class="hljs-type">int</span>[] gas, <span class="hljs-type">int</span>[] cost)</span> {</span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    <span class="hljs-type">int</span> <span class="hljs-variable">total</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>, curr = <span class="hljs-number">0</span>, start = <span class="hljs-number">0</span>;</span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; gas.length; i++) {</span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">        <span class="hljs-type">int</span> <span class="hljs-variable">diff</span> <span class="hljs-operator">=</span> gas[i] - cost[i];</span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">        total += diff;</span></span>
+<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">        curr  += diff;</span></span>
+<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">        <span class="hljs-keyword">if</span> (curr &lt; <span class="hljs-number">0</span>) { start = i + <span class="hljs-number">1</span>; curr = <span class="hljs-number">0</span>; }</span></span>
+<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">    }</span></span>
+<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">    <span class="hljs-keyword">return</span> total &gt;= <span class="hljs-number">0</span> ? start : -<span class="hljs-number">1</span>;</span></span>
+<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">}</span></span>
 </code></pre>
-<h3 id="2-8-maximum-length-of-subarray-with-positive-product-lc-1567" tabindex="-1"><a class="header-anchor" href="#2-8-maximum-length-of-subarray-with-positive-product-lc-1567"><span>2-8) Maximum Length of Subarray with Positive Product (LC 1567)</span></a></h3>
+<h3 id="2-8-maximum-length-of-subarray-with-positive-product-lc-1567-track-pos-neg-product-lengths" tabindex="-1"><a class="header-anchor" href="#2-8-maximum-length-of-subarray-with-positive-product-lc-1567-track-pos-neg-product-lengths"><span>2-8) Maximum Length of Subarray with Positive Product (LC 1567) — Track Pos/Neg Product Lengths</span></a></h3>
 <blockquote>
 <p>Track lengths with positive and negative product separately; swap on negative number.</p>
 </blockquote>
-<pre><code class="language-java">// LC 1567 - Maximum Length of Subarray with Positive Product
-// IDEA: pos = length with positive product, neg = with negative product; swap on negatives
-// time = O(N), space = O(1)
-public int getMaxLen(int[] nums) {
-    int pos = 0, neg = 0, ans = 0;
-    for (int num : nums) {
-        if (num == 0) { pos = 0; neg = 0; }
-        else if (num &gt; 0) { pos++; neg = neg &gt; 0 ? neg + 1 : 0; }
-        else { int tmp = pos; pos = neg &gt; 0 ? neg + 1 : 0; neg = tmp + 1; }
-        ans = Math.max(ans, pos);
-    }
-    return ans;
-}
+<pre data-lang="java"><code class="hljs language-java"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment">// LC 1567 - Maximum Length of Subarray with Positive Product</span></span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-comment">// IDEA: pos = length with positive product, neg = with negative product; swap on negatives</span></span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"><span class="hljs-comment">// time = O(N), space = O(1)</span></span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"><span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">getMaxLen</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums)</span> {</span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    <span class="hljs-type">int</span> <span class="hljs-variable">pos</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>, neg = <span class="hljs-number">0</span>, ans = <span class="hljs-number">0</span>;</span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> num : nums) {</span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">        <span class="hljs-keyword">if</span> (num == <span class="hljs-number">0</span>) { pos = <span class="hljs-number">0</span>; neg = <span class="hljs-number">0</span>; }</span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">        <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (num &gt; <span class="hljs-number">0</span>) { pos++; neg = neg &gt; <span class="hljs-number">0</span> ? neg + <span class="hljs-number">1</span> : <span class="hljs-number">0</span>; }</span></span>
+<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">        <span class="hljs-keyword">else</span> { <span class="hljs-type">int</span> <span class="hljs-variable">tmp</span> <span class="hljs-operator">=</span> pos; pos = neg &gt; <span class="hljs-number">0</span> ? neg + <span class="hljs-number">1</span> : <span class="hljs-number">0</span>; neg = tmp + <span class="hljs-number">1</span>; }</span></span>
+<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">        ans = Math.max(ans, pos);</span></span>
+<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">    }</span></span>
+<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">    <span class="hljs-keyword">return</span> ans;</span></span>
+<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">}</span></span>
 </code></pre>
 <h3 id="2-9-maximum-score-of-spliced-array-lc-2321-kadane-on-difference" tabindex="-1"><a class="header-anchor" href="#2-9-maximum-score-of-spliced-array-lc-2321-kadane-on-difference"><span>2-9) Maximum Score of Spliced Array (LC 2321) — Kadane on Difference</span></a></h3>
 <blockquote>
 <p>Max gain from swapping subarray = max subarray sum of (nums2[i] - nums1[i]).</p>
 </blockquote>
-<pre><code class="language-java">// LC 2321 - Maximum Score of Spliced Array
-// IDEA: Kadane on difference arrays — gain from swapping a subarray
-// time = O(N), space = O(1)
-public int[] maximumsSplicedArray(int[] nums1, int[] nums2) {
-    int sum1 = 0, sum2 = 0;
-    for (int i = 0; i &lt; nums1.length; i++) { sum1 += nums1[i]; sum2 += nums2[i]; }
-    return new int[]{ sum1 + maxGain(nums2, nums1), sum2 + maxGain(nums1, nums2) };
-}
-private int maxGain(int[] a, int[] b) {  // max(b[i]-a[i]) subarray sum
-    int curr = 0, best = 0;
-    for (int i = 0; i &lt; a.length; i++) {
-        curr = Math.max(0, curr + b[i] - a[i]);
-        best = Math.max(best, curr);
-    }
-    return best;
-}
+<pre data-lang="java"><code class="hljs language-java"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment">// LC 2321 - Maximum Score of Spliced Array</span></span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-comment">// IDEA: Kadane on difference arrays — gain from swapping a subarray</span></span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"><span class="hljs-comment">// time = O(N), space = O(1)</span></span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"><span class="hljs-keyword">public</span> <span class="hljs-type">int</span>[] maximumsSplicedArray(<span class="hljs-type">int</span>[] nums1, <span class="hljs-type">int</span>[] nums2) {</span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    <span class="hljs-type">int</span> <span class="hljs-variable">sum1</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>, sum2 = <span class="hljs-number">0</span>;</span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; nums1.length; i++) { sum1 += nums1[i]; sum2 += nums2[i]; }</span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">    <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[]{ sum1 + maxGain(nums2, nums1), sum2 + maxGain(nums1, nums2) };</span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">}</span></span>
+<span class="ln-row"><span class="ln-num">9</span><span class="ln-code"><span class="hljs-keyword">private</span> <span class="hljs-type">int</span> <span class="hljs-title function_">maxGain</span><span class="hljs-params">(<span class="hljs-type">int</span>[] a, <span class="hljs-type">int</span>[] b)</span> {  <span class="hljs-comment">// max(b[i]-a[i]) subarray sum</span></span></span>
+<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">    <span class="hljs-type">int</span> <span class="hljs-variable">curr</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>, best = <span class="hljs-number">0</span>;</span></span>
+<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; a.length; i++) {</span></span>
+<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">        curr = Math.max(<span class="hljs-number">0</span>, curr + b[i] - a[i]);</span></span>
+<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">        best = Math.max(best, curr);</span></span>
+<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">    }</span></span>
+<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">    <span class="hljs-keyword">return</span> best;</span></span>
+<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">}</span></span>
 </code></pre>
 <h3 id="2-10-k-concatenation-maximum-sum-lc-1191-kadane-math" tabindex="-1"><a class="header-anchor" href="#2-10-k-concatenation-maximum-sum-lc-1191-kadane-math"><span>2-10) K-Concatenation Maximum Sum (LC 1191) — Kadane + Math</span></a></h3>
 <blockquote>
 <p>For k &gt;= 2: answer = maxSubarray(2 copies) + max(0, totalSum) × (k − 2).</p>
 </blockquote>
-<pre><code class="language-java">// LC 1191 - K-Concatenation Maximum Sum
-// IDEA: Kadane on 1 or 2 copies; if total positive, add total*(k-2)
-// time = O(N), space = O(1)
-public int kConcatenationMaxSum(int[] arr, int k) {
-    int MOD = 1_000_000_007;
-    long total = 0;
-    for (int x : arr) total += x;
-    long base = kadane(arr, Math.min(k, 2));
-    long ans = base + (k &gt; 2 &amp;&amp; total &gt; 0 ? total % MOD * (k - 2) % MOD : 0);
-    return (int)(ans % MOD);
-}
-private long kadane(int[] arr, int repeat) {
-    long curr = 0, best = 0;
-    for (int t = 0; t &lt; repeat; t++)
-        for (int x : arr) { curr = Math.max(x, curr + x); best = Math.max(best, curr); }
-    return best;
-}
+<pre data-lang="java"><code class="hljs language-java"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment">// LC 1191 - K-Concatenation Maximum Sum</span></span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-comment">// IDEA: Kadane on 1 or 2 copies; if total positive, add total*(k-2)</span></span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"><span class="hljs-comment">// time = O(N), space = O(1)</span></span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"><span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">kConcatenationMaxSum</span><span class="hljs-params">(<span class="hljs-type">int</span>[] arr, <span class="hljs-type">int</span> k)</span> {</span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    <span class="hljs-type">int</span> <span class="hljs-variable">MOD</span> <span class="hljs-operator">=</span> <span class="hljs-number">1_000_000_007</span>;</span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    <span class="hljs-type">long</span> <span class="hljs-variable">total</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;</span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> x : arr) total += x;</span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">    <span class="hljs-type">long</span> <span class="hljs-variable">base</span> <span class="hljs-operator">=</span> kadane(arr, Math.min(k, <span class="hljs-number">2</span>));</span></span>
+<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">    <span class="hljs-type">long</span> <span class="hljs-variable">ans</span> <span class="hljs-operator">=</span> base + (k &gt; <span class="hljs-number">2</span> &amp;&amp; total &gt; <span class="hljs-number">0</span> ? total % MOD * (k - <span class="hljs-number">2</span>) % MOD : <span class="hljs-number">0</span>);</span></span>
+<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">    <span class="hljs-keyword">return</span> (<span class="hljs-type">int</span>)(ans % MOD);</span></span>
+<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">}</span></span>
+<span class="ln-row"><span class="ln-num">12</span><span class="ln-code"><span class="hljs-keyword">private</span> <span class="hljs-type">long</span> <span class="hljs-title function_">kadane</span><span class="hljs-params">(<span class="hljs-type">int</span>[] arr, <span class="hljs-type">int</span> repeat)</span> {</span></span>
+<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">    <span class="hljs-type">long</span> <span class="hljs-variable">curr</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>, best = <span class="hljs-number">0</span>;</span></span>
+<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">t</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; t &lt; repeat; t++)</span></span>
+<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> x : arr) { curr = Math.max(x, curr + x); best = Math.max(best, curr); }</span></span>
+<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">    <span class="hljs-keyword">return</span> best;</span></span>
+<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">}</span></span>
 </code></pre>
 <h3 id="2-11-find-maximum-sum-of-almost-unique-subarray-lc-2841-sliding-window-kadane" tabindex="-1"><a class="header-anchor" href="#2-11-find-maximum-sum-of-almost-unique-subarray-lc-2841-sliding-window-kadane"><span>2-11) Find Maximum Sum of Almost Unique Subarray (LC 2841) — Sliding Window Kadane</span></a></h3>
 <blockquote>
 <p>Fixed-size window of length k; count distinct elements using HashMap; maximize sum.</p>
 </blockquote>
-<pre><code class="language-java">// LC 2841 - Almost Unique Subarray (fixed window Kadane variant)
-// IDEA: Sliding window — maintain sum and frequency map for window of size k
-// time = O(N), space = O(k)
-public long maxSum(List&lt;Integer&gt; nums, int m, int k) {
-    Map&lt;Integer, Integer&gt; freq = new HashMap&lt;&gt;();
-    long windowSum = 0, ans = 0;
-    int n = nums.size();
-    for (int i = 0; i &lt; n; i++) {
-        freq.merge(nums.get(i), 1, Integer::sum);
-        windowSum += nums.get(i);
-        if (i &gt;= k) {
-            int out = nums.get(i - k);
-            windowSum -= out;
-            freq.merge(out, -1, Integer::sum);
-            if (freq.get(out) == 0) freq.remove(out);
-        }
-        if (i &gt;= k - 1 &amp;&amp; freq.size() &gt;= m) ans = Math.max(ans, windowSum);
-    }
-    return ans;
-}
+<pre data-lang="java"><code class="hljs language-java"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment">// LC 2841 - Almost Unique Subarray (fixed window Kadane variant)</span></span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-comment">// IDEA: Sliding window — maintain sum and frequency map for window of size k</span></span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"><span class="hljs-comment">// time = O(N), space = O(k)</span></span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"><span class="hljs-keyword">public</span> <span class="hljs-type">long</span> <span class="hljs-title function_">maxSum</span><span class="hljs-params">(List&lt;Integer&gt; nums, <span class="hljs-type">int</span> m, <span class="hljs-type">int</span> k)</span> {</span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    Map&lt;Integer, Integer&gt; freq = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;();</span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    <span class="hljs-type">long</span> <span class="hljs-variable">windowSum</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>, ans = <span class="hljs-number">0</span>;</span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">    <span class="hljs-type">int</span> <span class="hljs-variable">n</span> <span class="hljs-operator">=</span> nums.size();</span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; n; i++) {</span></span>
+<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">        freq.merge(nums.get(i), <span class="hljs-number">1</span>, Integer::sum);</span></span>
+<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">        windowSum += nums.get(i);</span></span>
+<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">        <span class="hljs-keyword">if</span> (i &gt;= k) {</span></span>
+<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">            <span class="hljs-type">int</span> <span class="hljs-variable">out</span> <span class="hljs-operator">=</span> nums.get(i - k);</span></span>
+<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">            windowSum -= out;</span></span>
+<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">            freq.merge(out, -<span class="hljs-number">1</span>, Integer::sum);</span></span>
+<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">            <span class="hljs-keyword">if</span> (freq.get(out) == <span class="hljs-number">0</span>) freq.remove(out);</span></span>
+<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">        }</span></span>
+<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">        <span class="hljs-keyword">if</span> (i &gt;= k - <span class="hljs-number">1</span> &amp;&amp; freq.size() &gt;= m) ans = Math.max(ans, windowSum);</span></span>
+<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">    }</span></span>
+<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">    <span class="hljs-keyword">return</span> ans;</span></span>
+<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">}</span></span>
 </code></pre>
 
       </div>

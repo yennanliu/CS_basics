@@ -9,8 +9,7 @@
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>CS</text></svg>">
   <link rel="stylesheet" href="../style.css">
   <link rel="stylesheet" href="../vendor/fonts.css">
-  <link rel="stylesheet" href="../vendor/highlight/github-dark.min.css">
-  <script src="../vendor/highlight/highlight.min.js"></script>
+  <link rel="stylesheet" href="../vendor/highlight/atom-one-dark.min.css">
   <script>
   // Apply theme before render to prevent flash
   (function() {
@@ -21,40 +20,43 @@
   })();
   </script>
   <script>document.addEventListener('DOMContentLoaded', function() {
-    hljs.highlightAll();
-    document.querySelectorAll('pre code').forEach(function(codeEl) {
-      var pre = codeEl.parentElement;
-      var lang = '';
-      var cls = codeEl.className || '';
-      var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
-      if (m) lang = m[1];
-      var wrapper = document.createElement('div');
-      wrapper.className = 'code-block-wrapper';
-      pre.parentNode.insertBefore(wrapper, pre);
-      var header = document.createElement('div');
-      header.className = 'code-block-header';
-      if (lang) {
-        var label = document.createElement('span');
-        label.className = 'code-lang-label';
-        label.textContent = lang;
-        header.appendChild(label);
-      } else {
-        header.appendChild(document.createElement('span'));
-      }
-      var btn = document.createElement('button');
-      btn.className = 'copy-btn';
-      btn.textContent = 'Copy';
-      btn.addEventListener('click', function() {
-        navigator.clipboard.writeText(codeEl.textContent).then(function() {
-          btn.textContent = 'Copied!';
-          btn.classList.add('copied');
-          setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+    // Code block wrappers + copy buttons (highlighting done at build time)
+    try {
+      document.querySelectorAll('pre').forEach(function(pre) {
+        var codeEl = pre.querySelector('code');
+        var lang = pre.getAttribute('data-lang') || '';
+        var wrapper = document.createElement('div');
+        wrapper.className = 'code-block-wrapper';
+        pre.parentNode.insertBefore(wrapper, pre);
+        var header = document.createElement('div');
+        header.className = 'code-block-header';
+        if (lang) {
+          var label = document.createElement('span');
+          label.className = 'code-lang-label';
+          label.textContent = lang;
+          header.appendChild(label);
+        } else {
+          header.appendChild(document.createElement('span'));
+        }
+        var btn = document.createElement('button');
+        btn.className = 'copy-btn';
+        btn.textContent = 'Copy';
+        btn.addEventListener('click', function() {
+          var text = codeEl
+            ? Array.from(codeEl.querySelectorAll('.ln-code')).map(function(el) { return el.textContent; }).join('
+')
+            : pre.textContent;
+          navigator.clipboard.writeText(text).then(function() {
+            btn.textContent = 'Copied!';
+            btn.classList.add('copied');
+            setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+          });
         });
+        header.appendChild(btn);
+        wrapper.appendChild(header);
+        wrapper.appendChild(pre);
       });
-      header.appendChild(btn);
-      wrapper.appendChild(header);
-      wrapper.appendChild(pre);
-    });
+    } catch(e) { console.error('Code block setup error:', e); }
     document.querySelectorAll('table').forEach(function(table) {
       if (!table.parentElement.classList.contains('table-wrap')) {
         var wrapper = document.createElement('div');
@@ -64,32 +66,36 @@
       }
     });
     // Reading progress bar
-    var progressBar = document.getElementById('reading-progress');
-    if (progressBar) {
-      window.addEventListener('scroll', function() {
-        var winScroll = document.documentElement.scrollTop;
-        var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-        progressBar.style.width = height > 0 ? (winScroll / height * 100) + '%' : '0%';
-      });
-    }
-    // Dark mode toggle
-    var toggle = document.getElementById('theme-toggle');
-    if (toggle) {
-      var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-      toggle.textContent = isDark ? '☀️' : '🌙';
-      toggle.addEventListener('click', function() {
-        var dark = document.documentElement.getAttribute('data-theme') === 'dark';
-        if (dark) {
-          document.documentElement.removeAttribute('data-theme');
-          localStorage.setItem('theme', 'light');
-          toggle.textContent = '🌙';
-        } else {
-          document.documentElement.setAttribute('data-theme', 'dark');
-          localStorage.setItem('theme', 'dark');
-          toggle.textContent = '☀️';
-        }
-      });
-    }
+    try {
+      var progressBar = document.getElementById('reading-progress');
+      if (progressBar) {
+        window.addEventListener('scroll', function() {
+          var winScroll = document.documentElement.scrollTop;
+          var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+          progressBar.style.width = height > 0 ? (winScroll / height * 100) + '%' : '0%';
+        });
+      }
+    } catch(e) {}
+    // Dark mode toggle — isolated so errors elsewhere never prevent this from working
+    try {
+      var toggle = document.getElementById('theme-toggle');
+      if (toggle) {
+        var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+        toggle.textContent = isDark ? '☀️' : '🌙';
+        toggle.addEventListener('click', function() {
+          var dark = document.documentElement.getAttribute('data-theme') === 'dark';
+          if (dark) {
+            document.documentElement.removeAttribute('data-theme');
+            localStorage.setItem('theme', 'light');
+            toggle.textContent = '🌙';
+          } else {
+            document.documentElement.setAttribute('data-theme', 'dark');
+            localStorage.setItem('theme', 'dark');
+            toggle.textContent = '☀️';
+          }
+        });
+      }
+    } catch(e) { console.error('Theme toggle error:', e); }
   });</script>
 </head>
 <body>
@@ -141,38 +147,38 @@
 </ul>
 <h2 id="pattern-1-modular-arithmetic" tabindex="-1"><a class="header-anchor" href="#pattern-1-modular-arithmetic"><span>Pattern 1: Modular Arithmetic</span></a></h2>
 <h3 id="basics" tabindex="-1"><a class="header-anchor" href="#basics"><span>Basics</span></a></h3>
-<pre><code>(a + b) % m = ((a % m) + (b % m)) % m
-(a * b) % m = ((a % m) * (b % m)) % m
-(a - b) % m = ((a % m) - (b % m) + m) % m   ← add m to avoid negative
-
-Division: (a / b) % m = (a * b^(-1)) % m  where b^(-1) = modular inverse
+<pre><code class="hljs"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code">(a + b) % m = ((a % m) + (b % m)) % m</span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code">(a * b) % m = ((a % m) * (b % m)) % m</span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">(a - b) % m = ((a % m) - (b % m) + m) % m   ← add m to avoid negative</span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">Division: (a / b) % m = (a * b^(-1)) % m  where b^(-1) = modular inverse</span></span>
 </code></pre>
 <h3 id="modular-exponentiation-fast-power" tabindex="-1"><a class="header-anchor" href="#modular-exponentiation-fast-power"><span>Modular Exponentiation (Fast Power)</span></a></h3>
-<pre><code class="language-java">// Time: O(log exp), Space: O(1)
-long modPow(long base, long exp, long mod) {
-    long result = 1;
-    base %= mod;
-    while (exp &gt; 0) {
-        if ((exp &amp; 1) == 1) result = result * base % mod;
-        exp &gt;&gt;= 1;
-        base = base * base % mod;
-    }
-    return result;
-}
+<pre data-lang="java"><code class="hljs language-java"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment">// Time: O(log exp), Space: O(1)</span></span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-type">long</span> <span class="hljs-title function_">modPow</span><span class="hljs-params">(<span class="hljs-type">long</span> base, <span class="hljs-type">long</span> exp, <span class="hljs-type">long</span> mod)</span> {</span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">    <span class="hljs-type">long</span> <span class="hljs-variable">result</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span>;</span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">    base %= mod;</span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    <span class="hljs-keyword">while</span> (exp &gt; <span class="hljs-number">0</span>) {</span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">        <span class="hljs-keyword">if</span> ((exp &amp; <span class="hljs-number">1</span>) == <span class="hljs-number">1</span>) result = result * base % mod;</span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">        exp &gt;&gt;= <span class="hljs-number">1</span>;</span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">        base = base * base % mod;</span></span>
+<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">    }</span></span>
+<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">    <span class="hljs-keyword">return</span> result;</span></span>
+<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">}</span></span>
 </code></pre>
-<pre><code class="language-python"># Python has built-in: pow(base, exp, mod)
+<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment"># Python has built-in: pow(base, exp, mod)</span></span></span>
 </code></pre>
 <h3 id="modular-inverse-when-mod-is-prime" tabindex="-1"><a class="header-anchor" href="#modular-inverse-when-mod-is-prime"><span>Modular Inverse (when mod is prime)</span></a></h3>
-<pre><code>b^(-1) mod p = b^(p-2) mod p    (Fermat's little theorem)
+<pre><code class="hljs"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code">b^(-1) mod p = b^(p-2) mod p    (Fermat's little theorem)</span></span>
 </code></pre>
 <p><strong>Classic LC:</strong> LC 1808 (Maximize Number of Nice Divisors), LC 372 (Super Pow)</p>
 <h2 id="pattern-2-gcd-lcm" tabindex="-1"><a class="header-anchor" href="#pattern-2-gcd-lcm"><span>Pattern 2: GCD / LCM</span></a></h2>
-<pre><code class="language-java">int gcd(int a, int b) { return b == 0 ? a : gcd(b, a % b); }
-long lcm(long a, long b) { return a / gcd(a, b) * b; }  // divide first to avoid overflow
+<pre data-lang="java"><code class="hljs language-java"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-type">int</span> <span class="hljs-title function_">gcd</span><span class="hljs-params">(<span class="hljs-type">int</span> a, <span class="hljs-type">int</span> b)</span> { <span class="hljs-keyword">return</span> b == <span class="hljs-number">0</span> ? a : gcd(b, a % b); }</span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-type">long</span> <span class="hljs-title function_">lcm</span><span class="hljs-params">(<span class="hljs-type">long</span> a, <span class="hljs-type">long</span> b)</span> { <span class="hljs-keyword">return</span> a / gcd(a, b) * b; }  <span class="hljs-comment">// divide first to avoid overflow</span></span></span>
 </code></pre>
-<pre><code class="language-python">from math import gcd
-lcm = a * b // gcd(a, b)
-# Python 3.9+: math.lcm(a, b)
+<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-keyword">from</span> math <span class="hljs-keyword">import</span> gcd</span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code">lcm = a * b // gcd(a, b)</span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"><span class="hljs-comment"># Python 3.9+: math.lcm(a, b)</span></span></span>
 </code></pre>
 <p><strong>Classic LC:</strong></p>
 <ul>
@@ -182,133 +188,133 @@ lcm = a * b // gcd(a, b)
 </ul>
 <h2 id="pattern-3-prime-numbers-sieve" tabindex="-1"><a class="header-anchor" href="#pattern-3-prime-numbers-sieve"><span>Pattern 3: Prime Numbers &amp; Sieve</span></a></h2>
 <h3 id="sieve-of-eratosthenes" tabindex="-1"><a class="header-anchor" href="#sieve-of-eratosthenes"><span>Sieve of Eratosthenes</span></a></h3>
-<pre><code class="language-java">// Time: O(N log log N), Space: O(N)
-boolean[] sieve(int n) {
-    boolean[] isPrime = new boolean[n + 1];
-    Arrays.fill(isPrime, true);
-    isPrime[0] = isPrime[1] = false;
-    for (int i = 2; i * i &lt;= n; i++) {
-        if (isPrime[i]) {
-            for (int j = i * i; j &lt;= n; j += i) {
-                isPrime[j] = false;
-            }
-        }
-    }
-    return isPrime;
-}
+<pre data-lang="java"><code class="hljs language-java"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment">// Time: O(N log log N), Space: O(N)</span></span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-type">boolean</span>[] sieve(<span class="hljs-type">int</span> n) {</span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">    <span class="hljs-type">boolean</span>[] isPrime = <span class="hljs-keyword">new</span> <span class="hljs-title class_">boolean</span>[n + <span class="hljs-number">1</span>];</span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">    Arrays.fill(isPrime, <span class="hljs-literal">true</span>);</span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    isPrime[<span class="hljs-number">0</span>] = isPrime[<span class="hljs-number">1</span>] = <span class="hljs-literal">false</span>;</span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">2</span>; i * i &lt;= n; i++) {</span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">        <span class="hljs-keyword">if</span> (isPrime[i]) {</span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">            <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">j</span> <span class="hljs-operator">=</span> i * i; j &lt;= n; j += i) {</span></span>
+<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">                isPrime[j] = <span class="hljs-literal">false</span>;</span></span>
+<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">            }</span></span>
+<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">        }</span></span>
+<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">    }</span></span>
+<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">    <span class="hljs-keyword">return</span> isPrime;</span></span>
+<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">}</span></span>
 </code></pre>
 <h3 id="prime-factorization" tabindex="-1"><a class="header-anchor" href="#prime-factorization"><span>Prime Factorization</span></a></h3>
-<pre><code class="language-java">// Time: O(√N)
-List&lt;int[]&gt; primeFactors(int n) {
-    List&lt;int[]&gt; factors = new ArrayList&lt;&gt;();
-    for (int i = 2; i * i &lt;= n; i++) {
-        int count = 0;
-        while (n % i == 0) { n /= i; count++; }
-        if (count &gt; 0) factors.add(new int[]{i, count});
-    }
-    if (n &gt; 1) factors.add(new int[]{n, 1});
-    return factors;
-}
+<pre data-lang="java"><code class="hljs language-java"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment">// Time: O(√N)</span></span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code">List&lt;<span class="hljs-type">int</span>[]&gt; primeFactors(<span class="hljs-type">int</span> n) {</span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">    List&lt;<span class="hljs-type">int</span>[]&gt; factors = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();</span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">2</span>; i * i &lt;= n; i++) {</span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">        <span class="hljs-type">int</span> <span class="hljs-variable">count</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;</span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">        <span class="hljs-keyword">while</span> (n % i == <span class="hljs-number">0</span>) { n /= i; count++; }</span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">        <span class="hljs-keyword">if</span> (count &gt; <span class="hljs-number">0</span>) factors.add(<span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[]{i, count});</span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">    }</span></span>
+<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">    <span class="hljs-keyword">if</span> (n &gt; <span class="hljs-number">1</span>) factors.add(<span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[]{n, <span class="hljs-number">1</span>});</span></span>
+<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">    <span class="hljs-keyword">return</span> factors;</span></span>
+<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">}</span></span>
 </code></pre>
 <p><strong>Classic LC:</strong> LC 204 (Count Primes), LC 952 (Largest Component by Common Factor)</p>
 <h2 id="pattern-4-combinations-counting" tabindex="-1"><a class="header-anchor" href="#pattern-4-combinations-counting"><span>Pattern 4: Combinations &amp; Counting</span></a></h2>
 <h3 id="ncr-with-pascal-s-triangle" tabindex="-1"><a class="header-anchor" href="#ncr-with-pascal-s-triangle"><span>nCr with Pascal’s Triangle</span></a></h3>
-<pre><code class="language-java">// Time: O(N·K), Space: O(N·K)
-long[][] pascal(int n) {
-    long[][] C = new long[n + 1][n + 1];
-    for (int i = 0; i &lt;= n; i++) {
-        C[i][0] = 1;
-        for (int j = 1; j &lt;= i; j++) {
-            C[i][j] = C[i-1][j-1] + C[i-1][j];  // add % MOD if needed
-        }
-    }
-    return C;
-}
+<pre data-lang="java"><code class="hljs language-java"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment">// Time: O(N·K), Space: O(N·K)</span></span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-type">long</span>[][] pascal(<span class="hljs-type">int</span> n) {</span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">    <span class="hljs-type">long</span>[][] C = <span class="hljs-keyword">new</span> <span class="hljs-title class_">long</span>[n + <span class="hljs-number">1</span>][n + <span class="hljs-number">1</span>];</span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt;= n; i++) {</span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">        C[i][<span class="hljs-number">0</span>] = <span class="hljs-number">1</span>;</span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">j</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span>; j &lt;= i; j++) {</span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">            C[i][j] = C[i-<span class="hljs-number">1</span>][j-<span class="hljs-number">1</span>] + C[i-<span class="hljs-number">1</span>][j];  <span class="hljs-comment">// add % MOD if needed</span></span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">        }</span></span>
+<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">    }</span></span>
+<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">    <span class="hljs-keyword">return</span> C;</span></span>
+<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">}</span></span>
 </code></pre>
 <h3 id="ncr-with-modular-inverse-for-large-n" tabindex="-1"><a class="header-anchor" href="#ncr-with-modular-inverse-for-large-n"><span>nCr with Modular Inverse (for large N)</span></a></h3>
-<pre><code class="language-python">MOD = 10**9 + 7
-
-def nCr(n, r):
-    if r &gt; n: return 0
-    num = den = 1
-    for i in range(r):
-        num = num * (n - i) % MOD
-        den = den * (i + 1) % MOD
-    return num * pow(den, MOD - 2, MOD) % MOD
+<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code">MOD = <span class="hljs-number">10</span>**<span class="hljs-number">9</span> + <span class="hljs-number">7</span></span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"><span class="hljs-keyword">def</span> <span class="hljs-title function_">nCr</span>(<span class="hljs-params">n, r</span>):</span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">    <span class="hljs-keyword">if</span> r &gt; n: <span class="hljs-keyword">return</span> <span class="hljs-number">0</span></span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    num = den = <span class="hljs-number">1</span></span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(r):</span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">        num = num * (n - i) % MOD</span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">        den = den * (i + <span class="hljs-number">1</span>) % MOD</span></span>
+<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">    <span class="hljs-keyword">return</span> num * <span class="hljs-built_in">pow</span>(den, MOD - <span class="hljs-number">2</span>, MOD) % MOD</span></span>
 </code></pre>
 <h3 id="catalan-numbers" tabindex="-1"><a class="header-anchor" href="#catalan-numbers"><span>Catalan Numbers</span></a></h3>
-<pre><code>C(n) = C(2n, n) / (n+1) = (2n)! / ((n+1)! * n!)
-
-C(0)=1, C(1)=1, C(2)=2, C(3)=5, C(4)=14, C(5)=42
-
-Applications:
-  - Number of valid parentheses sequences of length 2n
-  - Number of unique BSTs with n nodes
-  - Number of ways to triangulate a polygon with n+2 sides
+<pre><code class="hljs"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code">C(n) = C(2n, n) / (n+1) = (2n)! / ((n+1)! * n!)</span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">C(0)=1, C(1)=1, C(2)=2, C(3)=5, C(4)=14, C(5)=42</span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">Applications:</span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">  - Number of valid parentheses sequences of length 2n</span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">  - Number of unique BSTs with n nodes</span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">  - Number of ways to triangulate a polygon with n+2 sides</span></span>
 </code></pre>
 <p><strong>Classic LC:</strong> LC 96 (Unique BSTs), LC 22 (Generate Parentheses count)</p>
 <h2 id="pattern-5-reservoir-sampling-random" tabindex="-1"><a class="header-anchor" href="#pattern-5-reservoir-sampling-random"><span>Pattern 5: Reservoir Sampling &amp; Random</span></a></h2>
 <h3 id="reservoir-sampling-k-1" tabindex="-1"><a class="header-anchor" href="#reservoir-sampling-k-1"><span>Reservoir Sampling (K=1)</span></a></h3>
-<pre><code class="language-java">// Select 1 random element from stream of unknown length
-// Each element has 1/n probability of being chosen
-// Time: O(N), Space: O(1)
-Random rand = new Random();
-int result = 0;
-int count = 0;
-for (int val : stream) {
-    count++;
-    if (rand.nextInt(count) == 0) {
-        result = val;
-    }
-}
+<pre data-lang="java"><code class="hljs language-java"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment">// Select 1 random element from stream of unknown length</span></span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-comment">// Each element has 1/n probability of being chosen</span></span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"><span class="hljs-comment">// Time: O(N), Space: O(1)</span></span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"><span class="hljs-type">Random</span> <span class="hljs-variable">rand</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Random</span>();</span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code"><span class="hljs-type">int</span> <span class="hljs-variable">result</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;</span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code"><span class="hljs-type">int</span> <span class="hljs-variable">count</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;</span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code"><span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> val : stream) {</span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">    count++;</span></span>
+<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">    <span class="hljs-keyword">if</span> (rand.nextInt(count) == <span class="hljs-number">0</span>) {</span></span>
+<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">        result = val;</span></span>
+<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">    }</span></span>
+<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">}</span></span>
 </code></pre>
 <p><strong>Classic LC:</strong> LC 382 (Linked List Random Node), LC 398 (Random Pick Index)</p>
 <h3 id="fisher-yates-shuffle" tabindex="-1"><a class="header-anchor" href="#fisher-yates-shuffle"><span>Fisher-Yates Shuffle</span></a></h3>
-<pre><code class="language-java">// Time: O(N), Space: O(1) extra
-void shuffle(int[] arr) {
-    Random rand = new Random();
-    for (int i = arr.length - 1; i &gt; 0; i--) {
-        int j = rand.nextInt(i + 1);
-        int tmp = arr[i]; arr[i] = arr[j]; arr[j] = tmp;
-    }
-}
+<pre data-lang="java"><code class="hljs language-java"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment">// Time: O(N), Space: O(1) extra</span></span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-keyword">void</span> <span class="hljs-title function_">shuffle</span><span class="hljs-params">(<span class="hljs-type">int</span>[] arr)</span> {</span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">    <span class="hljs-type">Random</span> <span class="hljs-variable">rand</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Random</span>();</span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> arr.length - <span class="hljs-number">1</span>; i &gt; <span class="hljs-number">0</span>; i--) {</span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">        <span class="hljs-type">int</span> <span class="hljs-variable">j</span> <span class="hljs-operator">=</span> rand.nextInt(i + <span class="hljs-number">1</span>);</span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">        <span class="hljs-type">int</span> <span class="hljs-variable">tmp</span> <span class="hljs-operator">=</span> arr[i]; arr[i] = arr[j]; arr[j] = tmp;</span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">    }</span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">}</span></span>
 </code></pre>
 <p><strong>Classic LC:</strong> LC 384 (Shuffle an Array)</p>
 <h3 id="weighted-random-binary-search-on-prefix-sum" tabindex="-1"><a class="header-anchor" href="#weighted-random-binary-search-on-prefix-sum"><span>Weighted Random / Binary Search on Prefix Sum</span></a></h3>
 <p><strong>Classic LC:</strong> LC 528 (Random Pick with Weight) — O(log N) per pick</p>
 <h2 id="pattern-6-geometry-computational-geometry" tabindex="-1"><a class="header-anchor" href="#pattern-6-geometry-computational-geometry"><span>Pattern 6: Geometry / Computational Geometry</span></a></h2>
 <h3 id="cross-product-orientation-test" tabindex="-1"><a class="header-anchor" href="#cross-product-orientation-test"><span>Cross Product (Orientation Test)</span></a></h3>
-<pre><code class="language-java">// Returns &gt; 0 if counter-clockwise, &lt; 0 if clockwise, 0 if collinear
-long cross(int[] O, int[] A, int[] B) {
-    return (long)(A[0] - O[0]) * (B[1] - O[1])
-         - (long)(A[1] - O[1]) * (B[0] - O[0]);
-}
+<pre data-lang="java"><code class="hljs language-java"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment">// Returns &gt; 0 if counter-clockwise, &lt; 0 if clockwise, 0 if collinear</span></span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-type">long</span> <span class="hljs-title function_">cross</span><span class="hljs-params">(<span class="hljs-type">int</span>[] O, <span class="hljs-type">int</span>[] A, <span class="hljs-type">int</span>[] B)</span> {</span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">    <span class="hljs-keyword">return</span> (<span class="hljs-type">long</span>)(A[<span class="hljs-number">0</span>] - O[<span class="hljs-number">0</span>]) * (B[<span class="hljs-number">1</span>] - O[<span class="hljs-number">1</span>])</span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">         - (<span class="hljs-type">long</span>)(A[<span class="hljs-number">1</span>] - O[<span class="hljs-number">1</span>]) * (B[<span class="hljs-number">0</span>] - O[<span class="hljs-number">0</span>]);</span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">}</span></span>
 </code></pre>
 <h3 id="convex-hull-andrew-s-monotone-chain" tabindex="-1"><a class="header-anchor" href="#convex-hull-andrew-s-monotone-chain"><span>Convex Hull (Andrew’s Monotone Chain)</span></a></h3>
-<pre><code class="language-python"># Time: O(N log N), Space: O(N)
-def convex_hull(points):
-    points.sort()
-    lower = []
-    for p in points:
-        while len(lower) &gt;= 2 and cross(lower[-2], lower[-1], p) &lt;= 0:
-            lower.pop()
-        lower.append(p)
-    upper = []
-    for p in reversed(points):
-        while len(upper) &gt;= 2 and cross(upper[-2], upper[-1], p) &lt;= 0:
-            upper.pop()
-        upper.append(p)
-    return lower[:-1] + upper[:-1]
-
-def cross(O, A, B):
-    return (A[0]-O[0])*(B[1]-O[1]) - (A[1]-O[1])*(B[0]-O[0])
+<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment"># Time: O(N log N), Space: O(N)</span></span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-keyword">def</span> <span class="hljs-title function_">convex_hull</span>(<span class="hljs-params">points</span>):</span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">    points.sort()</span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">    lower = []</span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    <span class="hljs-keyword">for</span> p <span class="hljs-keyword">in</span> points:</span></span>
+<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">        <span class="hljs-keyword">while</span> <span class="hljs-built_in">len</span>(lower) &gt;= <span class="hljs-number">2</span> <span class="hljs-keyword">and</span> cross(lower[-<span class="hljs-number">2</span>], lower[-<span class="hljs-number">1</span>], p) &lt;= <span class="hljs-number">0</span>:</span></span>
+<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">            lower.pop()</span></span>
+<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">        lower.append(p)</span></span>
+<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">    upper = []</span></span>
+<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">    <span class="hljs-keyword">for</span> p <span class="hljs-keyword">in</span> <span class="hljs-built_in">reversed</span>(points):</span></span>
+<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">        <span class="hljs-keyword">while</span> <span class="hljs-built_in">len</span>(upper) &gt;= <span class="hljs-number">2</span> <span class="hljs-keyword">and</span> cross(upper[-<span class="hljs-number">2</span>], upper[-<span class="hljs-number">1</span>], p) &lt;= <span class="hljs-number">0</span>:</span></span>
+<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">            upper.pop()</span></span>
+<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">        upper.append(p)</span></span>
+<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">    <span class="hljs-keyword">return</span> lower[:-<span class="hljs-number">1</span>] + upper[:-<span class="hljs-number">1</span>]</span></span>
+<span class="ln-row"><span class="ln-num">15</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">16</span><span class="ln-code"><span class="hljs-keyword">def</span> <span class="hljs-title function_">cross</span>(<span class="hljs-params">O, A, B</span>):</span></span>
+<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">    <span class="hljs-keyword">return</span> (A[<span class="hljs-number">0</span>]-O[<span class="hljs-number">0</span>])*(B[<span class="hljs-number">1</span>]-O[<span class="hljs-number">1</span>]) - (A[<span class="hljs-number">1</span>]-O[<span class="hljs-number">1</span>])*(B[<span class="hljs-number">0</span>]-O[<span class="hljs-number">0</span>])</span></span>
 </code></pre>
 <h3 id="distance-line-formulas" tabindex="-1"><a class="header-anchor" href="#distance-line-formulas"><span>Distance &amp; Line Formulas</span></a></h3>
-<pre><code>Euclidean distance: sqrt((x2-x1)² + (y2-y1)²)
-Manhattan distance: |x2-x1| + |y2-y1|
-
-Tip: Avoid sqrt when possible — compare squared distances instead.
-Tip: Use long to avoid integer overflow in distance calculations.
+<pre><code class="hljs"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code">Euclidean distance: sqrt((x2-x1)² + (y2-y1)²)</span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code">Manhattan distance: |x2-x1| + |y2-y1|</span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"></span></span>
+<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">Tip: Avoid sqrt when possible — compare squared distances instead.</span></span>
+<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">Tip: Use long to avoid integer overflow in distance calculations.</span></span>
 </code></pre>
 <p><strong>Classic LC:</strong></p>
 <ul>
@@ -319,16 +325,16 @@ Tip: Use long to avoid integer overflow in distance calculations.
 </ul>
 <h2 id="pattern-7-bit-counting-number-theory" tabindex="-1"><a class="header-anchor" href="#pattern-7-bit-counting-number-theory"><span>Pattern 7: Bit Counting &amp; Number Theory</span></a></h2>
 <h3 id="count-divisors" tabindex="-1"><a class="header-anchor" href="#count-divisors"><span>Count Divisors</span></a></h3>
-<pre><code>Number of divisors of n = product of (e_i + 1) for each prime factor p_i^e_i
-Example: 12 = 2² × 3¹ → (2+1)(1+1) = 6 divisors
+<pre><code class="hljs"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code">Number of divisors of n = product of (e_i + 1) for each prime factor p_i^e_i</span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code">Example: 12 = 2² × 3¹ → (2+1)(1+1) = 6 divisors</span></span>
 </code></pre>
 <h3 id="euler-s-totient" tabindex="-1"><a class="header-anchor" href="#euler-s-totient"><span>Euler’s Totient</span></a></h3>
-<pre><code>φ(n) = count of integers in [1, n] coprime to n
-φ(p) = p - 1  for prime p
-φ(p^k) = p^k - p^(k-1)
+<pre><code class="hljs"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code">φ(n) = count of integers in [1, n] coprime to n</span></span>
+<span class="ln-row"><span class="ln-num">2</span><span class="ln-code">φ(p) = p - 1  for prime p</span></span>
+<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">φ(p^k) = p^k - p^(k-1)</span></span>
 </code></pre>
 <h3 id="sum-of-digits-digital-root" tabindex="-1"><a class="header-anchor" href="#sum-of-digits-digital-root"><span>Sum of Digits / Digital Root</span></a></h3>
-<pre><code>Digital root of n = 1 + (n-1) % 9  (for n &gt; 0)
+<pre><code class="hljs"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code">Digital root of n = 1 + (n-1) % 9  (for n &gt; 0)</span></span>
 </code></pre>
 <p><strong>Classic LC:</strong> LC 258 (Add Digits), LC 1922 (Count Good Numbers)</p>
 <h2 id="lc-example" tabindex="-1"><a class="header-anchor" href="#lc-example"><span>LC Example</span></a></h2>

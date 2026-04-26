@@ -64,8 +64,6 @@ jobs:
         cp site/style.css _site/style.css
         mkdir -p _site/vendor/highlight
         cp site/node_modules/highlight.js/styles/atom-one-dark.min.css _site/vendor/highlight/atom-one-dark.min.css
-        curl -sSfL "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" \
-          -o _site/vendor/highlight/highlight.min.js
         cp vendor/fonts.css _site/vendor/fonts.css
         curl -sSfL "https://fonts.gstatic.com/s/inter/v20/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa1ZL7W0Q5nw.woff2" \
           -o _site/vendor/inter.woff2
