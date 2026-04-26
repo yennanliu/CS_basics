@@ -43,9 +43,57 @@ import java.util.Stack;
 public class RemoveKDigits {
 
     // V0
-//    public String removeKdigits(String num, int k) {
-//
-//    }
+    // IDEA: MONO STACK (fixed by gpt)
+    public String removeKdigits(String num, int k) {
+        // edge
+        if (num == null || num.length() == 0)
+            return "0";
+        if (k >= num.length())
+            return "0";
+
+        Stack<Character> st = new Stack<>();
+
+        for (char ch : num.toCharArray()) {
+            /** NOTE !!!!
+             *
+             *
+             *  1. while loop
+             *  2. MONO STACK
+             */
+            // 🔥 keep removing bigger digits on the left
+            while (!st.isEmpty() && k > 0 && st.peek() > ch) {
+                st.pop();
+                k--;
+            }
+            st.push(ch);
+        }
+
+        // 🔥 still need to remove more? remove from end
+        while (k > 0) {
+            st.pop();
+            k--;
+        }
+
+        // build result
+        StringBuilder sb = new StringBuilder();
+        for (char ch : st) {
+            sb.append(ch);
+        }
+
+        /** NOTE !!!!
+         *
+         *  trick to `remove leading zeros`
+         */
+        // remove leading zeros
+        int i = 0;
+        while (i < sb.length() && sb.charAt(i) == '0') {
+            i++;
+        }
+
+        String res = sb.substring(i);
+
+        return res.length() == 0 ? "0" : res;
+    }
 
 
     // V0-0-1
@@ -317,6 +365,7 @@ public class RemoveKDigits {
         // Handle edge case where result might be empty
         return sb.length() > 0 ? sb.toString() : "0";
     }
+
 
 
 

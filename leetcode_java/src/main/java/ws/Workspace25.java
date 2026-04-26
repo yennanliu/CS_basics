@@ -2925,6 +2925,82 @@ public class Workspace25 {
     }
 
 
+    // LC 402
+    // 9.37 - 47 AM
+    /**
+     *  -> return the smallest possible integer
+     *  after removing k digits from num.
+     *
+     *
+     *  --------------
+     *
+     *  IDEA 1) STACK ???? + `ZERO PREFIX` HANDLING
+     *
+     *
+     *  --------------
+     *
+     *
+     */
+    //  IDEA 1) STACK ???? + `ZERO PREFIX` HANDLING
+    public String removeKdigits(String num, int k) {
+        // edge
+        if(num == null){
+            return num;
+        }
+        if(k <= 0){
+            return num;
+        }
+        if(k == num.length()){
+            return "0";
+        }
+
+        Stack<Character> st = new Stack<>();
+        for(char ch: num.toCharArray()){
+            if(st.isEmpty()){
+                st.add(ch);
+                continue;
+            }
+            // ???? if or while ????
+            if(k > 0 && st.peek() - ch > 0){
+                st.pop(); // ??
+                k -= 1;
+                // /??
+                if(k == 0){
+                    break;
+                }
+            }
+            // ???
+            st.add(ch);
+        }
+
+        StringBuilder sb = new StringBuilder();
+        // ???
+        // find `first NON zero` idx
+        int firstNonZeroIdx = 0;
+        int idx = 0;
+        for(int ch: st){
+            if(ch != '0'){
+                firstNonZeroIdx = idx;
+                break;
+            }
+            idx += 1;
+        }
+
+        int idx2 = 0;
+        for(int ch: st){
+            if(idx2 >= firstNonZeroIdx){
+                sb.append(ch);
+            }
+            idx2 += 1;
+        }
+
+        return sb.toString();
+    }
+
+
+
+
+
 
 
 
