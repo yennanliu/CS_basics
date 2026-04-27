@@ -3107,6 +3107,11 @@ public class Workspace25 {
     }
 
 
+    // LC 1099
+    public int twoSumLessThanK(int[] nums, int k) {
+        return 0;
+    }
+
 
 
 
