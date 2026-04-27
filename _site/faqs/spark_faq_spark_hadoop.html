@@ -19,54 +19,18 @@
     }
   })();
   </script>
-  <script>document.addEventListener('DOMContentLoaded', function() {
-    document.querySelectorAll('pre code').forEach(function(codeEl) {
-      var pre = codeEl.parentElement;
-      var lang = '';
-      var cls = codeEl.className || '';
-      var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
-      if (m) lang = m[1];
-
-      // Add line numbers
-      var lines = codeEl.innerHTML.split('
-');
-      if (lines[lines.length - 1] === '') lines.pop();
-      var numbered = lines.map(function(line, i) {
-        return '<span class="hljs-ln-line"><span class="hljs-ln-n" data-line-number="' + (i + 1) + '"></span><span class="hljs-ln-code">' + line + '</span></span>';
-      }).join('
-');
-      codeEl.innerHTML = numbered;
-      codeEl.classList.add('hljs-ln');
-
-      var wrapper = document.createElement('div');
-      wrapper.className = 'code-block-wrapper';
-      pre.parentNode.insertBefore(wrapper, pre);
-      var header = document.createElement('div');
-      header.className = 'code-block-header';
-      if (lang) {
-        var label = document.createElement('span');
-        label.className = 'code-lang-label';
-        label.textContent = lang;
-        header.appendChild(label);
-      } else {
-        header.appendChild(document.createElement('span'));
-      }
-      var btn = document.createElement('button');
-      btn.className = 'copy-btn';
-      btn.textContent = 'Copy';
-      btn.addEventListener('click', function() {
-        var text = Array.from(codeEl.querySelectorAll('.hljs-ln-code')).map(function(el) { return el.textContent; }).join('
-');
-        navigator.clipboard.writeText(text).then(function() {
-          btn.textContent = 'Copied!';
-          btn.classList.add('copied');
-          setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
-        });
-      });
-      header.appendChild(btn);
-      wrapper.appendChild(header);
-      wrapper.appendChild(pre);
+  <script>
+  function copyCode(btn) {
+    var pre = btn.closest('.code-block-wrapper').querySelector('pre');
+    var text = pre ? pre.innerText : '';
+    navigator.clipboard.writeText(text).then(function() {
+      btn.textContent = 'Copied!';
+      btn.classList.add('copied');
+      setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
     });
+  }
+  </script>
+  <script>document.addEventListener('DOMContentLoaded', function() {
     document.querySelectorAll('table').forEach(function(table) {
       if (!table.parentElement.classList.contains('table-wrap')) {
         var wrapper = document.createElement('div');
@@ -247,7 +211,7 @@ part, the execution machines will take care for the <code>Group by</code> step</
 <li><a href="http://www.bigdatainterview.com/explain-spark-architecture-or-what-happens-when-submit-a-spark-job/">http://www.bigdatainterview.com/explain-spark-architecture-or-what-happens-when-submit-a-spark-job/</a></li>
 </ul>
 <p>2’. <code>spark-submit</code> cmd explain ?</p>
-<pre data-lang="bash"><code class="hljs language-bash"><span class="hljs-comment"># pattern</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="bash"><code class="hljs language-bash"><span class="hljs-comment"># pattern</span>
 ./bin/spark-submit \
   --master &lt;master-url&gt; \
   --deploy-mode &lt;deploy-mode&gt; \
@@ -259,7 +223,7 @@ part, the execution machines will take care for the <code>Group by</code> step</
   --class &lt;main-class&gt; \
   &lt;application-jar&gt; \
   [application-arguments]
-</code></pre>
+</code></pre></div>
 <ul>
 <li><a href="https://sparkbyexamples.com/spark/spark-submit-command/">https://sparkbyexamples.com/spark/spark-submit-command/</a></li>
 </ul>
@@ -601,13 +565,13 @@ e.g. :<code>map</code>, <code>flatmap</code>, <code>reducebykey</code>, <code>fi
 </li>
 </ol>
 <p>i.e.</p>
-<pre data-lang="scala"><code class="hljs language-scala"><span class="hljs-comment">// reduceByKey</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">scala</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="scala"><code class="hljs language-scala"><span class="hljs-comment">// reduceByKey</span>
 rdd.reduceByKey(_.sum)
 
 <span class="hljs-comment">// groupByKey</span>
 rdd.groupByKey().mapValue(_.sum)
 
-</code></pre>
+</code></pre></div>
 <ol start="34">
 <li>Explain <code>application</code>, <code>job</code>, <code>stage</code> , <code>task</code>?</li>
 </ol>

@@ -19,54 +19,18 @@
     }
   })();
   </script>
-  <script>document.addEventListener('DOMContentLoaded', function() {
-    document.querySelectorAll('pre code').forEach(function(codeEl) {
-      var pre = codeEl.parentElement;
-      var lang = '';
-      var cls = codeEl.className || '';
-      var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
-      if (m) lang = m[1];
-
-      // Add line numbers
-      var lines = codeEl.innerHTML.split('
-');
-      if (lines[lines.length - 1] === '') lines.pop();
-      var numbered = lines.map(function(line, i) {
-        return '<span class="hljs-ln-line"><span class="hljs-ln-n" data-line-number="' + (i + 1) + '"></span><span class="hljs-ln-code">' + line + '</span></span>';
-      }).join('
-');
-      codeEl.innerHTML = numbered;
-      codeEl.classList.add('hljs-ln');
-
-      var wrapper = document.createElement('div');
-      wrapper.className = 'code-block-wrapper';
-      pre.parentNode.insertBefore(wrapper, pre);
-      var header = document.createElement('div');
-      header.className = 'code-block-header';
-      if (lang) {
-        var label = document.createElement('span');
-        label.className = 'code-lang-label';
-        label.textContent = lang;
-        header.appendChild(label);
-      } else {
-        header.appendChild(document.createElement('span'));
-      }
-      var btn = document.createElement('button');
-      btn.className = 'copy-btn';
-      btn.textContent = 'Copy';
-      btn.addEventListener('click', function() {
-        var text = Array.from(codeEl.querySelectorAll('.hljs-ln-code')).map(function(el) { return el.textContent; }).join('
-');
-        navigator.clipboard.writeText(text).then(function() {
-          btn.textContent = 'Copied!';
-          btn.classList.add('copied');
-          setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
-        });
-      });
-      header.appendChild(btn);
-      wrapper.appendChild(header);
-      wrapper.appendChild(pre);
+  <script>
+  function copyCode(btn) {
+    var pre = btn.closest('.code-block-wrapper').querySelector('pre');
+    var text = pre ? pre.innerText : '';
+    navigator.clipboard.writeText(text).then(function() {
+      btn.textContent = 'Copied!';
+      btn.classList.add('copied');
+      setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
     });
+  }
+  </script>
+  <script>document.addEventListener('DOMContentLoaded', function() {
     document.querySelectorAll('table').forEach(function(table) {
       if (!table.parentElement.classList.contains('table-wrap')) {
         var wrapper = document.createElement('div');
@@ -248,7 +212,7 @@
 <li><strong>PostgreSQL</strong>: <code>Read Committed</code></li>
 </ul>
 <h4 id="mysql" tabindex="-1"><a class="header-anchor" href="#mysql"><span>設定隔離級別 (MySQL)</span></a></h4>
-<pre data-lang="sql"><code class="hljs language-sql"><span class="hljs-comment">-- 設定 Session 級別</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">sql</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="sql"><code class="hljs language-sql"><span class="hljs-comment">-- 設定 Session 級別</span>
 <span class="hljs-keyword">SET</span> SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;
 <span class="hljs-keyword">START</span> TRANSACTION;
 <span class="hljs-comment">-- 執行查詢</span>
@@ -260,7 +224,7 @@
 <span class="hljs-comment">-- 查看當前隔離級別</span>
 <span class="hljs-keyword">SELECT</span> @<span class="hljs-variable">@session</span>.transaction_isolation;  <span class="hljs-comment">-- Session 級別</span>
 <span class="hljs-keyword">SELECT</span> @<span class="hljs-variable">@global</span>.transaction_isolation;   <span class="hljs-comment">-- 全域級別</span>
-</code></pre>
+</code></pre></div>
 <h4 id="-5" tabindex="-1"><a class="header-anchor" href="#-5"><span>使用場景建議</span></a></h4>
 <table>
 <thead>
@@ -302,12 +266,12 @@
 <li><strong>使用場景</strong>：資料庫備份</li>
 <li><strong>效果</strong>：資料庫中所有表變為唯讀狀態</li>
 </ul>
-<pre data-lang="sql"><code class="hljs language-sql"><span class="hljs-comment">-- 加全域鎖</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">sql</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="sql"><code class="hljs language-sql"><span class="hljs-comment">-- 加全域鎖</span>
 FLUSH TABLES <span class="hljs-keyword">WITH</span> READ LOCK;
 
 <span class="hljs-comment">-- 解鎖</span>
 UNLOCK TABLES;
-</code></pre>
+</code></pre></div>
 <h4 id="1-2-2" tabindex="-1"><a class="header-anchor" href="#1-2-2"><span>1.2.2 表級鎖</span></a></h4>
 <p><strong>類型</strong>：</p>
 <ul>
@@ -341,7 +305,7 @@ UNLOCK TABLES;
 </tr>
 </tbody>
 </table>
-<pre data-lang="sql"><code class="hljs language-sql"><span class="hljs-comment">-- 加讀鎖</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">sql</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="sql"><code class="hljs language-sql"><span class="hljs-comment">-- 加讀鎖</span>
 LOCK TABLES authors READ;
 
 <span class="hljs-comment">-- 加寫鎖</span>
@@ -349,7 +313,7 @@ LOCK TABLES comment WRITE;
 
 <span class="hljs-comment">-- 解鎖當前 Session 所有表鎖</span>
 UNLOCK TABLES;
-</code></pre>
+</code></pre></div>
 <p><strong>意向鎖</strong>：</p>
 <ul>
 <li>在使用 InnoDB 引擎的表中對某些記錄加行級鎖之前，需要先在表級加意向鎖</li>
@@ -371,12 +335,12 @@ UNLOCK TABLES;
 <li>併發性能好</li>
 </ul>
 <p><strong>Record Lock (記錄鎖)</strong>：</p>
-<pre data-lang="sql"><code class="hljs language-sql"><span class="hljs-comment">-- 對讀取的記錄加共享鎖 (S鎖)</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">sql</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="sql"><code class="hljs language-sql"><span class="hljs-comment">-- 對讀取的記錄加共享鎖 (S鎖)</span>
 <span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">FROM</span> authors <span class="hljs-keyword">WHERE</span> id <span class="hljs-operator">=</span> <span class="hljs-number">1</span> LOCK <span class="hljs-keyword">IN</span> SHARE MODE;
 
 <span class="hljs-comment">-- 對讀取的記錄加獨佔鎖 (X鎖)</span>
 <span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">FROM</span> authors <span class="hljs-keyword">WHERE</span> id <span class="hljs-operator">=</span> <span class="hljs-number">1</span> <span class="hljs-keyword">FOR</span> <span class="hljs-keyword">UPDATE</span>;
-</code></pre>
+</code></pre></div>
 <p><strong>Gap Lock (間隙鎖)</strong>：</p>
 <ul>
 <li>鎖定兩個索引之間的間隙，防止其他事務在此範圍內插入或修改記錄</li>
@@ -453,7 +417,7 @@ UNLOCK TABLES;
 <li>預估成本</li>
 </ul>
 <h4 id="-8" tabindex="-1"><a class="header-anchor" href="#-8"><span>取得執行計畫</span></a></h4>
-<pre data-lang="sql"><code class="hljs language-sql"><span class="hljs-comment">-- MySQL / PostgreSQL</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">sql</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="sql"><code class="hljs language-sql"><span class="hljs-comment">-- MySQL / PostgreSQL</span>
 EXPLAIN <span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">FROM</span> orders <span class="hljs-keyword">WHERE</span> status <span class="hljs-operator">=</span> <span class="hljs-string">&#x27;shipped&#x27;</span>;
 
 <span class="hljs-comment">-- PostgreSQL - 包含實際執行時間</span>
@@ -461,7 +425,7 @@ EXPLAIN ANALYZE <span class="hljs-keyword">SELECT</span> <span class="hljs-opera
 
 <span class="hljs-comment">-- MySQL - JSON 格式，更詳細</span>
 EXPLAIN FORMAT<span class="hljs-operator">=</span>JSON <span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">FROM</span> orders <span class="hljs-keyword">WHERE</span> status <span class="hljs-operator">=</span> <span class="hljs-string">&#x27;shipped&#x27;</span>;
-</code></pre>
+</code></pre></div>
 <h4 id="-9" tabindex="-1"><a class="header-anchor" href="#-9"><span>執行計畫關鍵指標</span></a></h4>
 <table>
 <thead>
@@ -536,26 +500,26 @@ EXPLAIN FORMAT<span class="hljs-operator">=</span>JSON <span class="hljs-keyword
 </ul>
 <h4 id="-11" tabindex="-1"><a class="header-anchor" href="#-11"><span>優化範例</span></a></h4>
 <p><strong>問題查詢</strong>：</p>
-<pre data-lang="sql"><code class="hljs language-sql"><span class="hljs-keyword">SELECT</span> o.id, o.order_date, c.name
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">sql</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="sql"><code class="hljs language-sql"><span class="hljs-keyword">SELECT</span> o.id, o.order_date, c.name
 <span class="hljs-keyword">FROM</span> orders o
 <span class="hljs-keyword">JOIN</span> customers c <span class="hljs-keyword">ON</span> o.customer_id <span class="hljs-operator">=</span> c.id
 <span class="hljs-keyword">WHERE</span> o.status <span class="hljs-operator">=</span> <span class="hljs-string">&#x27;shipped&#x27;</span> <span class="hljs-keyword">AND</span> c.region <span class="hljs-operator">=</span> <span class="hljs-string">&#x27;US&#x27;</span>
 <span class="hljs-keyword">ORDER</span> <span class="hljs-keyword">BY</span> o.order_date <span class="hljs-keyword">DESC</span>
 LIMIT <span class="hljs-number">100</span>;
-</code></pre>
+</code></pre></div>
 <p><strong>執行 EXPLAIN 發現問題</strong>：</p>
 <ul>
 <li><code>customers</code> 表進行全表掃描 (type=ALL, key=NULL)</li>
 <li><code>orders</code> 表使用 filesort</li>
 </ul>
 <p><strong>優化方案</strong>：</p>
-<pre data-lang="sql"><code class="hljs language-sql"><span class="hljs-comment">-- 添加索引</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">sql</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="sql"><code class="hljs language-sql"><span class="hljs-comment">-- 添加索引</span>
 <span class="hljs-keyword">CREATE</span> INDEX idx_customers_region <span class="hljs-keyword">ON</span> customers(region);
 <span class="hljs-keyword">CREATE</span> INDEX idx_orders_status_date <span class="hljs-keyword">ON</span> orders(status, order_date <span class="hljs-keyword">DESC</span>);
 
 <span class="hljs-comment">-- 可選：覆蓋索引</span>
 <span class="hljs-keyword">CREATE</span> INDEX idx_orders_covering <span class="hljs-keyword">ON</span> orders(status, order_date <span class="hljs-keyword">DESC</span>, customer_id, id);
-</code></pre>
+</code></pre></div>
 <h4 id="-12" tabindex="-1"><a class="header-anchor" href="#-12"><span>常見問題與修復</span></a></h4>
 <table>
 <thead>
@@ -655,7 +619,7 @@ LIMIT <span class="hljs-number">100</span>;
 </ol>
 <h4 id="2-2-1-setnx-set-if-not-exists" tabindex="-1"><a class="header-anchor" href="#2-2-1-setnx-set-if-not-exists"><span>2.2.1 SETNX (Set if Not Exists)</span></a></h4>
 <p>最簡單的鎖實現方式：</p>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">import</span> redis
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">import</span> redis
 r = redis.Redis()
 
 lock_key = <span class="hljs-string">&quot;lock:my_resource&quot;</span>
@@ -671,11 +635,11 @@ lock_key = <span class="hljs-string">&quot;lock:my_resource&quot;</span>
 <span class="hljs-keyword">else</span>:
     <span class="hljs-comment"># 未取得鎖，稍後重試</span>
     <span class="hljs-keyword">pass</span>
-</code></pre>
+</code></pre></div>
 <p><strong>問題</strong>：如果程式在釋放鎖之前崩潰，會造成死鎖</p>
 <h4 id="2-2-2-set-with-expiration" tabindex="-1"><a class="header-anchor" href="#2-2-2-set-with-expiration"><span>2.2.2 SET with Expiration (推薦)</span></a></h4>
 <p>使用 <code>SET</code> 命令搭配 <code>NX</code> 和 <code>EX</code> 選項，原子地設定鎖和過期時間：</p>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">import</span> redis
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">import</span> redis
 r = redis.Redis()
 
 lock_key = <span class="hljs-string">&quot;lock:my_resource&quot;</span>
@@ -692,10 +656,10 @@ lock_timeout = <span class="hljs-number">10</span>  <span class="hljs-comment">#
 <span class="hljs-keyword">else</span>:
     <span class="hljs-comment"># 未取得鎖，稍後重試</span>
     <span class="hljs-keyword">pass</span>
-</code></pre>
+</code></pre></div>
 <h4 id="2-2-3-redlock" tabindex="-1"><a class="header-anchor" href="#2-2-3-redlock"><span>2.2.3 Redlock 演算法</span></a></h4>
 <p>用於多個 Redis 實例的分散式鎖，提供容錯能力：</p>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">from</span> redis <span class="hljs-keyword">import</span> Redis
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">from</span> redis <span class="hljs-keyword">import</span> Redis
 <span class="hljs-keyword">from</span> redlock <span class="hljs-keyword">import</span> Redlock
 
 <span class="hljs-comment"># 連接多個 Redis 實例</span>
@@ -714,7 +678,7 @@ lock = dlock.lock(lock_key, <span class="hljs-number">10000</span>)  <span class
 <span class="hljs-keyword">else</span>:
     <span class="hljs-comment"># 未取得鎖</span>
     <span class="hljs-keyword">pass</span>
-</code></pre>
+</code></pre></div>
 <p><strong>工作原理</strong>：</p>
 <ul>
 <li>嘗試在多個 Redis 節點 (如 5 個) 上獲取鎖</li>
@@ -759,7 +723,7 @@ lock = dlock.lock(lock_key, <span class="hljs-number">10000</span>)  <span class
 </tbody>
 </table>
 <h4 id="spring-boot-cache-aside" tabindex="-1"><a class="header-anchor" href="#spring-boot-cache-aside"><span>Spring Boot 快取實現 (Cache-Aside)</span></a></h4>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-meta">@Service</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-meta">@Service</span>
 <span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">UserService</span> {
 
     <span class="hljs-meta">@Autowired</span>
@@ -783,7 +747,7 @@ lock = dlock.lock(lock_key, <span class="hljs-number">10000</span>)  <span class
         <span class="hljs-keyword">return</span> userRepository.save(user);
     }
 }
-</code></pre>
+</code></pre></div>
 <h4 id="-16" tabindex="-1"><a class="header-anchor" href="#-16"><span>快取一致性策略</span></a></h4>
 <table>
 <thead>
@@ -845,14 +809,14 @@ lock = dlock.lock(lock_key, <span class="hljs-number">10000</span>)  <span class
 </ul>
 <p><strong>4. 序列化格式</strong></p>
 <p>Redis 需要快速的序列化，建議使用 <strong>JSON</strong> 或 <strong>String</strong> 而非 Java 原生序列化：</p>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-meta">@Bean</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-meta">@Bean</span>
 <span class="hljs-keyword">public</span> RedisTemplate&lt;String, Object&gt; <span class="hljs-title function_">redisTemplate</span><span class="hljs-params">(RedisConnectionFactory factory)</span> {
     RedisTemplate&lt;String, Object&gt; template = <span class="hljs-keyword">new</span> <span class="hljs-title class_">RedisTemplate</span>&lt;&gt;();
     template.setConnectionFactory(factory);
     template.setValueSerializer(<span class="hljs-keyword">new</span> <span class="hljs-title class_">Jackson2JsonRedisSerializer</span>&lt;&gt;(Object.class));
     <span class="hljs-keyword">return</span> template;
 }
-</code></pre>
+</code></pre></div>
 <hr>
 <h2 id="3" tabindex="-1"><a class="header-anchor" href="#3"><span>3. 分散式系統</span></a></h2>
 <h3 id="3-1-global-transaction" tabindex="-1"><a class="header-anchor" href="#3-1-global-transaction"><span>3.1 全域事務 (Global Transaction)</span></a></h3>
@@ -1227,8 +1191,8 @@ lock = dlock.lock(lock_key, <span class="hljs-number">10000</span>)  <span class
 <li><strong>Signature</strong>：使用 Header 中指定的演算法 (HMAC、RSA、ECDSA) 對 Header 和 Payload 進行簽名</li>
 </ul>
 <p><strong>範例</strong>：</p>
-<pre><code class="hljs">eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
-</code></pre>
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
+</code></pre></div>
 <h4 id="jwt-1" tabindex="-1"><a class="header-anchor" href="#jwt-1"><span>JWT 的優點</span></a></h4>
 <ul>
 <li>✅ 無狀態：伺服器不需要存儲 session</li>
@@ -1261,8 +1225,8 @@ lock = dlock.lock(lock_key, <span class="hljs-number">10000</span>)  <span class
 <h4 id="middleware" tabindex="-1"><a class="header-anchor" href="#middleware"><span>什麼是 Middleware？</span></a></h4>
 <p>Middleware 是位於<strong>傳入請求和核心應用邏輯之間的程式碼層</strong>，用於攔截、修改或處理請求和回應，而不改變主要業務邏輯。</p>
 <p><strong>流程</strong>：</p>
-<pre><code class="hljs">Client → Middleware → App → Middleware → Response → Client
-</code></pre>
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Client → Middleware → App → Middleware → Response → Client
+</code></pre></div>
 <h4 id="middleware-1" tabindex="-1"><a class="header-anchor" href="#middleware-1"><span>為什麼使用 Middleware？</span></a></h4>
 <p>Middleware 讓你可以將常見關注點從核心應用邏輯中解耦：</p>
 <table>
@@ -1300,7 +1264,7 @@ lock = dlock.lock(lock_key, <span class="hljs-number">10000</span>)  <span class
 </tbody>
 </table>
 <h4 id="flask" tabindex="-1"><a class="header-anchor" href="#flask"><span>Flask 範例</span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">from</span> flask <span class="hljs-keyword">import</span> Flask, request
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">from</span> flask <span class="hljs-keyword">import</span> Flask, request
 
 app = Flask(__name__)
 
@@ -1318,9 +1282,9 @@ app = Flask(__name__)
 <span class="hljs-meta">@app.route(<span class="hljs-params"><span class="hljs-string">&quot;/hello&quot;</span></span>)</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">hello</span>():
     <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;Hello, World!&quot;</span>
-</code></pre>
+</code></pre></div>
 <h4 id="flask-middleware" tabindex="-1"><a class="header-anchor" href="#flask-middleware"><span>Flask 認證 Middleware 範例</span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">from</span> flask <span class="hljs-keyword">import</span> Flask, request, jsonify, abort
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">from</span> flask <span class="hljs-keyword">import</span> Flask, request, jsonify, abort
 
 app = Flask(__name__)
 
@@ -1360,9 +1324,9 @@ VALID_API_TOKENS = {
 
 <span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">&quot;__main__&quot;</span>:
     app.run(debug=<span class="hljs-literal">True</span>)
-</code></pre>
+</code></pre></div>
 <h4 id="express-node-js" tabindex="-1"><a class="header-anchor" href="#express-node-js"><span>Express (Node.js) 範例</span></a></h4>
-<pre data-lang="javascript"><code class="hljs language-javascript"><span class="hljs-keyword">const</span> express = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;express&#x27;</span>);
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">javascript</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="javascript"><code class="hljs language-javascript"><span class="hljs-keyword">const</span> express = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;express&#x27;</span>);
 <span class="hljs-keyword">const</span> app = <span class="hljs-title function_">express</span>();
 
 <span class="hljs-comment">// 日誌 middleware</span>
@@ -1382,7 +1346,7 @@ app.<span class="hljs-title function_">use</span>(<span class="hljs-function">(<
 app.<span class="hljs-title function_">get</span>(<span class="hljs-string">&#x27;/api/data&#x27;</span>, <span class="hljs-function">(<span class="hljs-params">req, res</span>) =&gt;</span> {
   res.<span class="hljs-title function_">send</span>({ <span class="hljs-attr">message</span>: <span class="hljs-string">&#x27;Protected data&#x27;</span> });
 });
-</code></pre>
+</code></pre></div>
 <h4 id="-22" tabindex="-1"><a class="header-anchor" href="#-22"><span>核心概念</span></a></h4>
 <ul>
 <li>Middleware 通常是<strong>無狀態的</strong>，獨立處理每個請求</li>
@@ -1461,8 +1425,8 @@ app.<span class="hljs-title function_">get</span>(<span class="hljs-string">&#x2
 <li><strong>Controller</strong>：處理用戶輸入，協調 Model 和 View</li>
 </ul>
 <p><strong>流程</strong>：</p>
-<pre><code class="hljs">User → Controller → Model → Controller → View → User
-</code></pre>
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">User → Controller → Model → Controller → View → User
+</code></pre></div>
 <p><strong>優點</strong>：</p>
 <ul>
 <li>✅ 職責分離</li>
@@ -1482,8 +1446,8 @@ app.<span class="hljs-title function_">get</span>(<span class="hljs-string">&#x2
 <li><strong>ViewModel</strong>：View 的抽象，處理 View 的展示邏輯和狀態</li>
 </ul>
 <p><strong>流程</strong>：</p>
-<pre><code class="hljs">User → View ↔ ViewModel ↔ Model
-</code></pre>
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">User → View ↔ ViewModel ↔ Model
+</code></pre></div>
 <p><strong>特點</strong>：</p>
 <ul>
 <li>View 和 ViewModel 之間通過資料綁定 (Data Binding) 自動同步</li>

@@ -19,54 +19,18 @@
     }
   })();
   </script>
-  <script>document.addEventListener('DOMContentLoaded', function() {
-    document.querySelectorAll('pre code').forEach(function(codeEl) {
-      var pre = codeEl.parentElement;
-      var lang = '';
-      var cls = codeEl.className || '';
-      var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
-      if (m) lang = m[1];
-
-      // Add line numbers
-      var lines = codeEl.innerHTML.split('
-');
-      if (lines[lines.length - 1] === '') lines.pop();
-      var numbered = lines.map(function(line, i) {
-        return '<span class="hljs-ln-line"><span class="hljs-ln-n" data-line-number="' + (i + 1) + '"></span><span class="hljs-ln-code">' + line + '</span></span>';
-      }).join('
-');
-      codeEl.innerHTML = numbered;
-      codeEl.classList.add('hljs-ln');
-
-      var wrapper = document.createElement('div');
-      wrapper.className = 'code-block-wrapper';
-      pre.parentNode.insertBefore(wrapper, pre);
-      var header = document.createElement('div');
-      header.className = 'code-block-header';
-      if (lang) {
-        var label = document.createElement('span');
-        label.className = 'code-lang-label';
-        label.textContent = lang;
-        header.appendChild(label);
-      } else {
-        header.appendChild(document.createElement('span'));
-      }
-      var btn = document.createElement('button');
-      btn.className = 'copy-btn';
-      btn.textContent = 'Copy';
-      btn.addEventListener('click', function() {
-        var text = Array.from(codeEl.querySelectorAll('.hljs-ln-code')).map(function(el) { return el.textContent; }).join('
-');
-        navigator.clipboard.writeText(text).then(function() {
-          btn.textContent = 'Copied!';
-          btn.classList.add('copied');
-          setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
-        });
-      });
-      header.appendChild(btn);
-      wrapper.appendChild(header);
-      wrapper.appendChild(pre);
+  <script>
+  function copyCode(btn) {
+    var pre = btn.closest('.code-block-wrapper').querySelector('pre');
+    var text = pre ? pre.innerText : '';
+    navigator.clipboard.writeText(text).then(function() {
+      btn.textContent = 'Copied!';
+      btn.classList.add('copied');
+      setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
     });
+  }
+  </script>
+  <script>document.addEventListener('DOMContentLoaded', function() {
     document.querySelectorAll('table').forEach(function(table) {
       if (!table.parentElement.classList.contains('table-wrap')) {
         var wrapper = document.createElement('div');
@@ -181,7 +145,7 @@
 <h3 id="0-2-pattern" tabindex="-1"><a class="header-anchor" href="#0-2-pattern"><span>0-2) Pattern</span></a></h3>
 <h2 id="1-general-form" tabindex="-1"><a class="header-anchor" href="#1-general-form"><span>1) General form</span></a></h2>
 <h4 id="1-0-get-element-if-existed-in-collecitons-custom-sort" tabindex="-1"><a class="header-anchor" href="#1-0-get-element-if-existed-in-collecitons-custom-sort"><span>1-0) get element if existed in collecitons (custom sort)</span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 791. Custom Sort String</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 791. Custom Sort String</span>
 <span class="hljs-comment"># ...</span>
 s_map = Counter(s)
 res = <span class="hljs-string">&quot;&quot;</span>
@@ -192,17 +156,17 @@ res = <span class="hljs-string">&quot;&quot;</span>
 <span class="hljs-keyword">for</span> s <span class="hljs-keyword">in</span> s_map:
     res += (s * s_map[s])
 <span class="hljs-comment"># ...</span>
-</code></pre>
+</code></pre></div>
 <h4 id="1-1-collection-counter" tabindex="-1"><a class="header-anchor" href="#1-1-collection-counter"><span>1-1) collection.Counter</span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">import</span> collections
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">import</span> collections
 s = [<span class="hljs-string">&#x27;a&#x27;</span>,<span class="hljs-string">&#x27;b&#x27;</span>,<span class="hljs-string">&#x27;c&#x27;</span>,<span class="hljs-string">&#x27;c&#x27;</span>]
 c= collections.Counter(s)
 <span class="hljs-built_in">print</span> (c)
 <span class="hljs-built_in">print</span> (c.keys())
 <span class="hljs-built_in">print</span> (c.values())
-</code></pre>
+</code></pre></div>
 <h4 id="1-2-important-method-most-common" tabindex="-1"><a class="header-anchor" href="#1-2-important-method-most-common"><span>1-2) Important method - most_common()</span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># 451 Sort Characters By Frequency</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># 451 Sort Characters By Frequency</span>
 <span class="hljs-keyword">import</span> collections
 s = [<span class="hljs-string">&#x27;a&#x27;</span>,<span class="hljs-string">&#x27;b&#x27;</span>,<span class="hljs-string">&#x27;c&#x27;</span>,<span class="hljs-string">&#x27;c&#x27;</span>]
 count = collections.Counter(s).most_common()
@@ -211,9 +175,9 @@ count = collections.Counter(s).most_common()
 <span class="hljs-comment">#c 2</span>
 <span class="hljs-comment">#a 1</span>
 <span class="hljs-comment">#b 1</span>
-</code></pre>
+</code></pre></div>
 <h4 id="1-3-collection-defaultdict-int-list" tabindex="-1"><a class="header-anchor" href="#1-3-collection-defaultdict-int-list"><span>1-3) collection.defaultdict (int, list…)</span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">import</span> collections
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">import</span> collections
 s = [<span class="hljs-string">&#x27;a&#x27;</span>,<span class="hljs-string">&#x27;b&#x27;</span>,<span class="hljs-string">&#x27;c&#x27;</span>,<span class="hljs-string">&#x27;c&#x27;</span>]
 count = collections.defaultdict(<span class="hljs-built_in">int</span>)
 <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> s:
@@ -221,8 +185,8 @@ count = collections.defaultdict(<span class="hljs-built_in">int</span>)
 
 <span class="hljs-built_in">print</span> (count)
 <span class="hljs-built_in">print</span> (<span class="hljs-built_in">dict</span>(count))
-</code></pre>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">import</span> collections
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">import</span> collections
 s=[(<span class="hljs-string">&#x27;yellow&#x27;</span>, <span class="hljs-number">1</span>), (<span class="hljs-string">&#x27;blue&#x27;</span>, <span class="hljs-number">2</span>), (<span class="hljs-string">&#x27;yellow&#x27;</span>, <span class="hljs-number">3</span>), (<span class="hljs-string">&#x27;blue&#x27;</span>, <span class="hljs-number">4</span>), (<span class="hljs-string">&#x27;red&#x27;</span>, <span class="hljs-number">1</span>)]
 count = collections.defaultdict(<span class="hljs-built_in">list</span>)
 <span class="hljs-keyword">for</span> k, v <span class="hljs-keyword">in</span> s:
@@ -232,9 +196,9 @@ count = collections.defaultdict(<span class="hljs-built_in">list</span>)
 <span class="hljs-built_in">print</span> (count.keys())
 <span class="hljs-built_in">print</span> (count.values())
 <span class="hljs-built_in">print</span>(count.items())
-</code></pre>
+</code></pre></div>
 <h4 id="1-3-collection-update" tabindex="-1"><a class="header-anchor" href="#1-3-collection-update"><span>1-3) collection.update()</span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC # 554 rick Wall</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC # 554 rick Wall</span>
 <span class="hljs-keyword">import</span> collections
 In [<span class="hljs-number">87</span>]: _counter = collections.Counter()
 
@@ -255,9 +219,9 @@ In [<span class="hljs-number">93</span>]: _counter.update([<span class="hljs-num
 
 In [<span class="hljs-number">94</span>]: _counter
 Out[<span class="hljs-number">94</span>]: Counter({<span class="hljs-number">1</span>: <span class="hljs-number">2</span>, <span class="hljs-number">2</span>: <span class="hljs-number">1</span>})
-</code></pre>
+</code></pre></div>
 <h3 id="1-4-ordereddict-hashmap-linked-list" tabindex="-1"><a class="header-anchor" href="#1-4-ordereddict-hashmap-linked-list"><span>1-4) <code>OrderedDict </code> ( hashmap + linked list)</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 146 LRU Cache</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 146 LRU Cache</span>
 
 <span class="hljs-comment"># There is a structure called ordered dictionary, it combines behind both hashmap and linked list. In Python this structure is called OrderedDict and in Java LinkedHashMap.</span>
 
@@ -377,10 +341,10 @@ Out[<span class="hljs-number">33</span>]: <span class="hljs-string">&#x27;bacde&
         <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(<span class="hljs-variable language_">self</span>.cache) &gt; <span class="hljs-variable language_">self</span>.maxsize:
             <span class="hljs-variable language_">self</span>.cache.popitem(<span class="hljs-number">0</span>)
         <span class="hljs-keyword">return</span> result
-</code></pre>
+</code></pre></div>
 <h2 id="2-lc-example" tabindex="-1"><a class="header-anchor" href="#2-lc-example"><span>2) LC Example</span></a></h2>
 <h3 id="2-1-custom-sort-string" tabindex="-1"><a class="header-anchor" href="#2-1-custom-sort-string"><span>2-1) Custom Sort String</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 791. Custom Sort String</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 791. Custom Sort String</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># IDEA : COUNTER</span>
 <span class="hljs-keyword">from</span> collections <span class="hljs-keyword">import</span> Counter
@@ -395,7 +359,7 @@ Out[<span class="hljs-number">33</span>]: <span class="hljs-string">&#x27;bacde&
         <span class="hljs-keyword">for</span> s <span class="hljs-keyword">in</span> s_map:
             res += s * s_map[s]
         <span class="hljs-keyword">return</span> res
-</code></pre>
+</code></pre></div>
 
       </div>
       <div class="cheatsheet-footer">

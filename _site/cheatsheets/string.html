@@ -19,54 +19,18 @@
     }
   })();
   </script>
-  <script>document.addEventListener('DOMContentLoaded', function() {
-    document.querySelectorAll('pre code').forEach(function(codeEl) {
-      var pre = codeEl.parentElement;
-      var lang = '';
-      var cls = codeEl.className || '';
-      var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
-      if (m) lang = m[1];
-
-      // Add line numbers
-      var lines = codeEl.innerHTML.split('
-');
-      if (lines[lines.length - 1] === '') lines.pop();
-      var numbered = lines.map(function(line, i) {
-        return '<span class="hljs-ln-line"><span class="hljs-ln-n" data-line-number="' + (i + 1) + '"></span><span class="hljs-ln-code">' + line + '</span></span>';
-      }).join('
-');
-      codeEl.innerHTML = numbered;
-      codeEl.classList.add('hljs-ln');
-
-      var wrapper = document.createElement('div');
-      wrapper.className = 'code-block-wrapper';
-      pre.parentNode.insertBefore(wrapper, pre);
-      var header = document.createElement('div');
-      header.className = 'code-block-header';
-      if (lang) {
-        var label = document.createElement('span');
-        label.className = 'code-lang-label';
-        label.textContent = lang;
-        header.appendChild(label);
-      } else {
-        header.appendChild(document.createElement('span'));
-      }
-      var btn = document.createElement('button');
-      btn.className = 'copy-btn';
-      btn.textContent = 'Copy';
-      btn.addEventListener('click', function() {
-        var text = Array.from(codeEl.querySelectorAll('.hljs-ln-code')).map(function(el) { return el.textContent; }).join('
-');
-        navigator.clipboard.writeText(text).then(function() {
-          btn.textContent = 'Copied!';
-          btn.classList.add('copied');
-          setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
-        });
-      });
-      header.appendChild(btn);
-      wrapper.appendChild(header);
-      wrapper.appendChild(pre);
+  <script>
+  function copyCode(btn) {
+    var pre = btn.closest('.code-block-wrapper').querySelector('pre');
+    var text = pre ? pre.innerText : '';
+    navigator.clipboard.writeText(text).then(function() {
+      btn.textContent = 'Copied!';
+      btn.classList.add('copied');
+      setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
     });
+  }
+  </script>
+  <script>document.addEventListener('DOMContentLoaded', function() {
     document.querySelectorAll('table').forEach(function(table) {
       if (!table.parentElement.classList.contains('table-wrap')) {
         var wrapper = document.createElement('div');
@@ -263,7 +227,7 @@
 </tbody>
 </table>
 <h3 id="template-1-two-pointers-pattern" tabindex="-1"><a class="header-anchor" href="#template-1-two-pointers-pattern"><span>Template 1: Two Pointers Pattern</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - Two pointers for palindrome</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - Two pointers for palindrome</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">isPalindrome</span>(<span class="hljs-params">s</span>):
     left, right = <span class="hljs-number">0</span>, <span class="hljs-built_in">len</span>(s) - <span class="hljs-number">1</span>
     
@@ -314,8 +278,8 @@
         right -= <span class="hljs-number">1</span>
     
     <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
-</code></pre>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java - Two pointers</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java - Two pointers</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">isPalindrome</span><span class="hljs-params">(String s)</span> {
     <span class="hljs-type">int</span> <span class="hljs-variable">left</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>, right = s.length() - <span class="hljs-number">1</span>;
     
@@ -338,9 +302,9 @@
     
     <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
 }
-</code></pre>
+</code></pre></div>
 <h3 id="template-2-sliding-window-pattern" tabindex="-1"><a class="header-anchor" href="#template-2-sliding-window-pattern"><span>Template 2: Sliding Window Pattern</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - Variable size sliding window</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - Variable size sliding window</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">longestSubstringKDistinct</span>(<span class="hljs-params">s, k</span>):
     <span class="hljs-keyword">if</span> k == <span class="hljs-number">0</span>:
         <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>
@@ -398,8 +362,8 @@
             left += <span class="hljs-number">1</span>
     
     <span class="hljs-keyword">return</span> s[min_start:min_start + min_len] <span class="hljs-keyword">if</span> min_len != <span class="hljs-built_in">float</span>(<span class="hljs-string">&#x27;inf&#x27;</span>) <span class="hljs-keyword">else</span> <span class="hljs-string">&quot;&quot;</span>
-</code></pre>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java - Sliding window</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java - Sliding window</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">lengthOfLongestSubstringKDistinct</span><span class="hljs-params">(String s, <span class="hljs-type">int</span> k)</span> {
     <span class="hljs-keyword">if</span> (k == <span class="hljs-number">0</span>) <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
     
@@ -425,9 +389,9 @@
     
     <span class="hljs-keyword">return</span> maxLen;
 }
-</code></pre>
+</code></pre></div>
 <h3 id="template-3-string-pattern-matching-kmp" tabindex="-1"><a class="header-anchor" href="#template-3-string-pattern-matching-kmp"><span>Template 3: String Pattern Matching (KMP)</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - KMP pattern matching</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - KMP pattern matching</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">KMP</span>(<span class="hljs-params">text, pattern</span>):
     <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> pattern:
         <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>
@@ -504,9 +468,9 @@
                 text_hash += prime
     
     <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>
-</code></pre>
+</code></pre></div>
 <h3 id="template-4-palindrome-patterns" tabindex="-1"><a class="header-anchor" href="#template-4-palindrome-patterns"><span>Template 4: Palindrome Patterns</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - Expand from center</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - Expand from center</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">longestPalindrome</span>(<span class="hljs-params">s</span>):
     <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> s:
         <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;&quot;</span>
@@ -549,7 +513,7 @@
         expandFromCenter(i, i + <span class="hljs-number">1</span>)  <span class="hljs-comment"># Even length</span>
 
     <span class="hljs-keyword">return</span> count
-</code></pre>
+</code></pre></div>
 <hr>
 <h4 id="template-4-1-manacher-s-algorithm-o-n-palindrome-detection" tabindex="-1"><a class="header-anchor" href="#template-4-1-manacher-s-algorithm-o-n-palindrome-detection"><span>Template 4.1: Manacher’s Algorithm (O(n) Palindrome Detection)</span></a></h4>
 <p><strong>Core Concept:</strong>
@@ -561,12 +525,12 @@ Manacher’s algorithm finds the longest palindromic substring in <strong>linear
 <li>Uses concept of “mirror” positions across palindrome center</li>
 </ul>
 <p><strong>Why It’s Faster:</strong></p>
-<pre><code class="hljs">Standard approach: Check each center independently → O(n²)
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Standard approach: Check each center independently → O(n²)
 Manacher's: Use already-found palindromes to skip comparisons → O(n)
 
 Example: If we know s[5..15] is palindrome with center at 10:
 When checking position 12, we can use info from mirror position 8!
-</code></pre>
+</code></pre></div>
 <p><strong>Algorithm Overview:</strong></p>
 <ol>
 <li>Transform string to handle even/odd lengths uniformly: “aba” → “#a#b#a#”</li>
@@ -582,7 +546,7 @@ When checking position 12, we can use info from mirror position 8!
 </ol>
 <hr>
 <h5 id="python-implementation" tabindex="-1"><a class="header-anchor" href="#python-implementation"><span>Python Implementation</span></a></h5>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Manacher&#x27;s Algorithm - Longest Palindromic Substring</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Manacher&#x27;s Algorithm - Longest Palindromic Substring</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">longestPalindrome_manacher</span>(<span class="hljs-params">s</span>):
     <span class="hljs-string">&quot;&quot;&quot;
     Find longest palindromic substring using Manacher&#x27;s algorithm.
@@ -674,9 +638,9 @@ When checking position 12, we can use info from mirror position 8!
     <span class="hljs-comment"># Each radius P[i] contributes (P[i] + 1) // 2 palindromes</span>
     <span class="hljs-comment"># Example: radius 3 in &quot;#a#b#a#&quot; → palindromes: &quot;a&quot;, &quot;aba&quot;</span>
     <span class="hljs-keyword">return</span> <span class="hljs-built_in">sum</span>((p + <span class="hljs-number">1</span>) // <span class="hljs-number">2</span> <span class="hljs-keyword">for</span> p <span class="hljs-keyword">in</span> P)
-</code></pre>
+</code></pre></div>
 <h5 id="java-implementation" tabindex="-1"><a class="header-anchor" href="#java-implementation"><span>Java Implementation</span></a></h5>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 5 - Longest Palindromic Substring (Manacher&#x27;s)</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 5 - Longest Palindromic Substring (Manacher&#x27;s)</span>
 <span class="hljs-comment">/**
  * time = O(N)
  * space = O(N)
@@ -732,10 +696,10 @@ When checking position 12, we can use info from mirror position 8!
         <span class="hljs-keyword">return</span> s.substring(start, start + maxLen);
     }
 }
-</code></pre>
+</code></pre></div>
 <hr>
 <h5 id="visual-example-step-by-step-walkthrough" tabindex="-1"><a class="header-anchor" href="#visual-example-step-by-step-walkthrough"><span>Visual Example: Step-by-Step Walkthrough</span></a></h5>
-<pre><code class="hljs">Input: s = &quot;babcbabcbaccba&quot;
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Input: s = &quot;babcbabcbaccba&quot;
 
 Step 1: Transform string
 s = &quot;babcbabcbaccba&quot;
@@ -779,10 +743,10 @@ P:        0  1  0  3  0  1  0  7  0  1  0  3  0  ...
 
 Maximum: P[7]=7 (center at position 7)
 Longest palindrome: &quot;babcbab&quot; (length 7)
-</code></pre>
+</code></pre></div>
 <hr>
 <h5 id="mirror-property-explanation" tabindex="-1"><a class="header-anchor" href="#mirror-property-explanation"><span>Mirror Property Explanation</span></a></h5>
-<pre><code class="hljs">Key Concept: If we know palindrome boundaries, we can use symmetry!
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Key Concept: If we know palindrome boundaries, we can use symmetry!
 
 Example:
     Center C=10, Right boundary R=15
@@ -801,22 +765,22 @@ Why? Because everything inside the large palindrome is mirrored!
 
 We still need to try expanding beyond this initial value,
 but we skip redundant comparisons within the mirror region.
-</code></pre>
+</code></pre></div>
 <hr>
 <h5 id="complexity-analysis" tabindex="-1"><a class="header-anchor" href="#complexity-analysis"><span>Complexity Analysis</span></a></h5>
 <p><strong>Time Complexity: O(n)</strong></p>
-<pre><code class="hljs">Each character is visited at most twice:
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Each character is visited at most twice:
 1. Once when updating C and R (moving R forward)
 2. Once when checking as center i
 
 Key insight: R only moves forward, never backward
 Total expansions across all positions ≤ n
-</code></pre>
+</code></pre></div>
 <p><strong>Space Complexity: O(n)</strong></p>
-<pre><code class="hljs">- Transformed string T: O(n)
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">- Transformed string T: O(n)
 - Palindrome array P: O(n)
 - Total: O(n)
-</code></pre>
+</code></pre></div>
 <p><strong>Comparison:</strong></p>
 <table>
 <thead>
@@ -901,14 +865,14 @@ Total expansions across all positions ≤ n
 <hr>
 <h5 id="interview-tips" tabindex="-1"><a class="header-anchor" href="#interview-tips"><span>Interview Tips</span></a></h5>
 <p><strong>1. Recognition:</strong></p>
-<pre><code class="hljs">Follow-up: &quot;Can you do better than O(n²)?&quot;
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Follow-up: &quot;Can you do better than O(n²)?&quot;
 → Think Manacher's algorithm for palindrome problems
 
 Interviewer: &quot;What's the optimal time complexity?&quot;
 → O(n) with Manacher's for longest palindrome
-</code></pre>
+</code></pre></div>
 <p><strong>2. When to Use:</strong></p>
-<pre><code class="hljs">✅ Large input strings (n &gt; 10,000)
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">✅ Large input strings (n &gt; 10,000)
 ✅ Follow-up asks for O(n) solution
 ✅ Need to find longest palindrome
 ✅ Want to show advanced knowledge
@@ -916,7 +880,7 @@ Interviewer: &quot;What's the optimal time complexity?&quot;
 ❌ Short strings (expand from center is simpler)
 ❌ Need all palindromic substrings (Manacher's doesn't help much)
 ❌ Interview time is limited (complex implementation)
-</code></pre>
+</code></pre></div>
 <p><strong>3. Common Mistakes:</strong></p>
 <ul>
 <li>Off-by-one errors in mirror calculation: <code>mirror = 2*C - i</code></li>
@@ -925,7 +889,7 @@ Interviewer: &quot;What's the optimal time complexity?&quot;
 <li>Not updating C and R correctly</li>
 </ul>
 <p><strong>4. Simplified Implementation:</strong></p>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Minimal Manacher&#x27;s (easier to code in interview)</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Minimal Manacher&#x27;s (easier to code in interview)</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">longestPalindrome</span>(<span class="hljs-params">s</span>):
     T = <span class="hljs-string">&#x27;#&#x27;</span>.join(<span class="hljs-string">&#x27;^{}$&#x27;</span>.<span class="hljs-built_in">format</span>(s))
     n = <span class="hljs-built_in">len</span>(T)
@@ -943,7 +907,7 @@ Interviewer: &quot;What's the optimal time complexity?&quot;
 
     max_len, idx = <span class="hljs-built_in">max</span>((l, i) <span class="hljs-keyword">for</span> i, l <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(P))
     <span class="hljs-keyword">return</span> s[(idx-max_len)//<span class="hljs-number">2</span>:(idx+max_len)//<span class="hljs-number">2</span>]
-</code></pre>
+</code></pre></div>
 <p><strong>5. Talking Points:</strong></p>
 <ul>
 <li>“Manacher’s uses mirror symmetry to avoid redundant expansions”</li>
@@ -952,18 +916,18 @@ Interviewer: &quot;What's the optimal time complexity?&quot;
 <li>“Trade-off: O(n) time for O(n) space and implementation complexity”</li>
 </ul>
 <p><strong>6. Alternative for Interviews:</strong></p>
-<pre><code class="hljs">If time is limited, mention Manacher's exists but implement O(n²):
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">If time is limited, mention Manacher's exists but implement O(n²):
 &quot;The optimal O(n) solution uses Manacher's algorithm, but
 I'll implement the O(n²) expand-from-center approach which
 is more straightforward and works well for most cases.&quot;
 
 Then demonstrate understanding by explaining Manacher's concept.
-</code></pre>
+</code></pre></div>
 <hr>
 <h5 id="advanced-why-manacher-s-works-proof-sketch" tabindex="-1"><a class="header-anchor" href="#advanced-why-manacher-s-works-proof-sketch"><span>Advanced: Why Manacher’s Works (Proof Sketch)</span></a></h5>
 <p><strong>Claim</strong>: Total number of character comparisons is O(n).</p>
 <p><strong>Proof</strong>:</p>
-<pre><code class="hljs">Let R be the right boundary of the rightmost palindrome found.
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Let R be the right boundary of the rightmost palindrome found.
 
 Key observations:
 1. R never decreases (only moves forward or stays same)
@@ -982,10 +946,10 @@ Since R increases from 0 to at most n, and each character
 comparison increases R by 1, total comparisons ≤ n.
 
 Therefore, time complexity is O(n). □
-</code></pre>
+</code></pre></div>
 <hr>
 <h3 id="template-5-string-transformation" tabindex="-1"><a class="header-anchor" href="#template-5-string-transformation"><span>Template 5: String Transformation</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - String to integer (atoi)</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - String to integer (atoi)</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">myAtoi</span>(<span class="hljs-params">s</span>):
     s = s.strip()
     <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> s:
@@ -1029,9 +993,9 @@ Therefore, time complexity is O(n). □
             num -= val * count
     
     <span class="hljs-keyword">return</span> <span class="hljs-string">&#x27;&#x27;</span>.join(result)
-</code></pre>
+</code></pre></div>
 <h3 id="template-6-string-dp" tabindex="-1"><a class="header-anchor" href="#template-6-string-dp"><span>Template 6: String DP</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - Edit distance</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - Edit distance</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">minDistance</span>(<span class="hljs-params">word1, word2</span>):
     m, n = <span class="hljs-built_in">len</span>(word1), <span class="hljs-built_in">len</span>(word2)
     dp = [[<span class="hljs-number">0</span>] * (n + <span class="hljs-number">1</span>) <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(m + <span class="hljs-number">1</span>)]
@@ -1069,9 +1033,9 @@ Therefore, time complexity is O(n). □
                 dp[i][j] = <span class="hljs-built_in">max</span>(dp[i-<span class="hljs-number">1</span>][j], dp[i][j-<span class="hljs-number">1</span>])
     
     <span class="hljs-keyword">return</span> dp[m][n]
-</code></pre>
+</code></pre></div>
 <h3 id="template-7-incremental-prefix-validation" tabindex="-1"><a class="header-anchor" href="#template-7-incremental-prefix-validation"><span>Template 7: Incremental Prefix Validation</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - LC 720 Longest Word in Dictionary</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - LC 720 Longest Word in Dictionary</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">longestWord</span>(<span class="hljs-params">words</span>):
     <span class="hljs-string">&quot;&quot;&quot;
     Pattern: Build words incrementally by validating immediate prefix
@@ -1134,8 +1098,8 @@ Therefore, time complexity is O(n). □
                 result = word
 
     <span class="hljs-keyword">return</span> result
-</code></pre>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java - LC 720 Longest Word in Dictionary</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java - LC 720 Longest Word in Dictionary</span>
 <span class="hljs-keyword">public</span> String <span class="hljs-title function_">longestWord</span><span class="hljs-params">(String[] words)</span> {
     <span class="hljs-comment">/**
      * Pattern: Incremental Prefix Validation
@@ -1218,7 +1182,7 @@ Therefore, time complexity is O(n). □
 
     <span class="hljs-keyword">return</span> result;
 }
-</code></pre>
+</code></pre></div>
 <p><strong>Key Insights:</strong></p>
 <ol>
 <li>
@@ -1231,13 +1195,13 @@ Therefore, time complexity is O(n). □
 </li>
 <li>
 <p><strong>Why Sorting Works:</strong></p>
-<pre><code class="hljs">Before: [&quot;world&quot;,&quot;worl&quot;,&quot;wor&quot;,&quot;wo&quot;,&quot;w&quot;]
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Before: [&quot;world&quot;,&quot;worl&quot;,&quot;wor&quot;,&quot;wo&quot;,&quot;w&quot;]
 After:  [&quot;w&quot;,&quot;wo&quot;,&quot;wor&quot;,&quot;worl&quot;,&quot;world&quot;]
 
 When processing &quot;world&quot;:
   - &quot;worl&quot; has already been processed
   - If &quot;worl&quot; is in built, all shorter prefixes are guaranteed valid
-</code></pre>
+</code></pre></div>
 </li>
 <li>
 <p><strong>Complexity Breakdown:</strong></p>
@@ -1259,7 +1223,7 @@ When processing &quot;world&quot;:
 </ol>
 <h2 id="basic-string-operations" tabindex="-1"><a class="header-anchor" href="#basic-string-operations"><span>Basic String Operations</span></a></h2>
 <h3 id="python-string-operations" tabindex="-1"><a class="header-anchor" href="#python-string-operations"><span>Python String Operations</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># String &lt;-&gt; List conversion</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># String &lt;-&gt; List conversion</span>
 s = <span class="hljs-string">&quot;abcd&quot;</span>
 char_list = <span class="hljs-built_in">list</span>(s)           <span class="hljs-comment"># [&#x27;a&#x27;, &#x27;b&#x27;, &#x27;c&#x27;, &#x27;d&#x27;]</span>
 back_to_string = <span class="hljs-string">&#x27;&#x27;</span>.join(char_list)  <span class="hljs-comment"># &quot;abcd&quot;</span>
@@ -1294,9 +1258,9 @@ ord_val = <span class="hljs-built_in">ord</span>(char)           <span class="hl
 back_to_char = <span class="hljs-built_in">chr</span>(<span class="hljs-number">97</span>)        <span class="hljs-comment"># &#x27;a&#x27;</span>
 is_alpha = char.isalpha()     <span class="hljs-comment"># True</span>
 is_digit = <span class="hljs-string">&#x27;5&#x27;</span>.isdigit()      <span class="hljs-comment"># True</span>
-</code></pre>
+</code></pre></div>
 <h3 id="java-string-operations" tabindex="-1"><a class="header-anchor" href="#java-string-operations"><span>Java String Operations</span></a></h3>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// String operations in Java</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// String operations in Java</span>
 <span class="hljs-type">String</span> <span class="hljs-variable">s</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;abcd&quot;</span>;
 
 <span class="hljs-comment">// String to char array</span>
@@ -1325,33 +1289,33 @@ String[] words = str.split(<span class="hljs-string">&quot; &quot;</span>);
 <span class="hljs-type">char</span> <span class="hljs-variable">backToChar</span> <span class="hljs-operator">=</span> (<span class="hljs-type">char</span>) <span class="hljs-number">97</span>;  <span class="hljs-comment">// &#x27;a&#x27;</span>
 <span class="hljs-type">boolean</span> <span class="hljs-variable">isLetter</span> <span class="hljs-operator">=</span> Character.isLetter(c);
 <span class="hljs-type">boolean</span> <span class="hljs-variable">isDigit</span> <span class="hljs-operator">=</span> Character.isDigit(<span class="hljs-string">&#x27;5&#x27;</span>);
-</code></pre>
+</code></pre></div>
 <h3 id="string-manipulation-tricks" tabindex="-1"><a class="header-anchor" href="#string-manipulation-tricks"><span>String Manipulation Tricks</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># go through elements in str AVOID index out of range error</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># go through elements in str AVOID index out of range error</span>
 x = <span class="hljs-string">&#x27;1234&#x27;</span>
 
 <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(x)):
     <span class="hljs-keyword">if</span>  i == <span class="hljs-built_in">len</span>(x)-<span class="hljs-number">1</span> <span class="hljs-keyword">or</span> x[i] != x[i+<span class="hljs-number">1</span>]:
         <span class="hljs-built_in">print</span> (x[i])
-</code></pre>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># string -&gt; array</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># string -&gt; array</span>
 
 a = <span class="hljs-number">1234</span>
 a_array = <span class="hljs-built_in">list</span>(<span class="hljs-built_in">str</span>(a))
 
 In [<span class="hljs-number">12</span>]: a_array
 Out[<span class="hljs-number">12</span>]: [<span class="hljs-string">&#x27;1&#x27;</span>, <span class="hljs-string">&#x27;2&#x27;</span>, <span class="hljs-string">&#x27;3&#x27;</span>, <span class="hljs-string">&#x27;4&#x27;</span>]
-</code></pre>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// split string (java)</span>
 <span class="hljs-comment">/** NOTE !!! split string via .split(&quot;&quot;) */</span>
 
  <span class="hljs-keyword">for</span> (String x : s.split(<span class="hljs-string">&quot;&quot;</span>)){
     System.out.println(x);
  }
-</code></pre>
+</code></pre></div>
 <h4 id="1-8-group-sub-string" tabindex="-1"><a class="header-anchor" href="#1-8-group-sub-string"><span>1-8) Group sub-string</span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 696. Count Binary Substrings</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 696. Count Binary Substrings</span>
 <span class="hljs-comment"># ...</span>
 groups = [<span class="hljs-number">1</span>]
 <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>, <span class="hljs-built_in">len</span>(s)):
@@ -1369,16 +1333,16 @@ ans = <span class="hljs-number">0</span>
     &quot;&quot;&quot;</span>
     ans += mins(groups[i-<span class="hljs-number">1</span>], groups[i])
 <span class="hljs-comment"># ...</span>
-</code></pre>
+</code></pre></div>
 <h4 id="1-9-rotate-string" tabindex="-1"><a class="header-anchor" href="#1-9-rotate-string"><span>1-9) Rotate string</span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 796. Rotate String</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 796. Rotate String</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">rotateString</span>(<span class="hljs-params">self, A, B</span>):
         <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(A)):
             <span class="hljs-keyword">if</span> A[i:] + A[:i] == B:
                 <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
         <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
-</code></pre>
+</code></pre></div>
 <h2 id="problems-by-pattern" tabindex="-1"><a class="header-anchor" href="#problems-by-pattern"><span>Problems by Pattern</span></a></h2>
 <h3 id="pattern-based-problem-tables" tabindex="-1"><a class="header-anchor" href="#pattern-based-problem-tables"><span>Pattern-Based Problem Tables</span></a></h3>
 <h4 id="two-pointers-problems" tabindex="-1"><a class="header-anchor" href="#two-pointers-problems"><span><strong>Two Pointers Problems</strong></span></a></h4>
@@ -1762,7 +1726,7 @@ ans = <span class="hljs-number">0</span>
 <li>Dictionary-based word validation</li>
 </ul>
 <p><strong>Key Trick:</strong></p>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Instead of checking ALL prefixes (O(M²) per word):</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Instead of checking ALL prefixes (O(M²) per word):</span>
 <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span>; i &lt; word.length(); i++) {
     <span class="hljs-keyword">if</span> (!dict.contains(word.substring(<span class="hljs-number">0</span>, i))) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
 }
@@ -1771,9 +1735,9 @@ ans = <span class="hljs-number">0</span>
 <span class="hljs-keyword">if</span> (word.length() == <span class="hljs-number">1</span> || dict.contains(word.substring(<span class="hljs-number">0</span>, word.length() - <span class="hljs-number">1</span>))) {
     <span class="hljs-comment">// Valid!</span>
 }
-</code></pre>
+</code></pre></div>
 <h2 id="pattern-selection-strategy" tabindex="-1"><a class="header-anchor" href="#pattern-selection-strategy"><span>Pattern Selection Strategy</span></a></h2>
-<pre><code class="hljs">Problem Analysis Flowchart:
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Problem Analysis Flowchart:
 
 1. Processing from both ends?
    ├── YES → Two Pointers
@@ -1816,7 +1780,7 @@ ans = <span class="hljs-number">0</span>
    │         ├── Sort + HashSet → O(N log N)
    │         └── Check immediate prefix only
    └── NO → Use appropriate combination
-</code></pre>
+</code></pre></div>
 <h2 id="summary-quick-reference" tabindex="-1"><a class="header-anchor" href="#summary-quick-reference"><span>Summary &amp; Quick Reference</span></a></h2>
 <h3 id="complexity-quick-reference" tabindex="-1"><a class="header-anchor" href="#complexity-quick-reference"><span>Complexity Quick Reference</span></a></h3>
 <table>
@@ -1918,16 +1882,16 @@ ans = <span class="hljs-number">0</span>
 <h3 id="common-patterns-tricks" tabindex="-1"><a class="header-anchor" href="#common-patterns-tricks"><span>Common Patterns &amp; Tricks</span></a></h3>
 <h4 id="ascii-case-difference-trick-char1-char2-32" tabindex="-1"><a class="header-anchor" href="#ascii-case-difference-trick-char1-char2-32"><span><strong>ASCII Case Difference Trick (|char1 - char2| == 32)</strong></span></a></h4>
 <p>A powerful trick for detecting <strong>same letter but different case</strong> (e.g., <code>'a'</code> vs <code>'A'</code>):</p>
-<pre><code class="hljs">Math.abs('a' - 'A') == 32   // true
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Math.abs('a' - 'A') == 32   // true
 Math.abs('z' - 'Z') == 32   // true
 Math.abs('a' - 'B') == 33   // false (different letters)
-</code></pre>
+</code></pre></div>
 <p><strong>Why 32?</strong> In ASCII, lowercase letters start at 97 (<code>'a'</code>) and uppercase at 65 (<code>'A'</code>). The difference is always exactly 32 for the same letter.</p>
 <p><strong>Classic Use Case: LC 1544 - Make The String Great (Stack)</strong></p>
 <blockquote>
 <p>Remove adjacent pairs where same letter but different case until no such pair remains.</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java - Stack approach using |char1 - char2| == 32</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java - Stack approach using |char1 - char2| == 32</span>
 <span class="hljs-keyword">public</span> String <span class="hljs-title function_">makeGood</span><span class="hljs-params">(String s)</span> {
     Stack&lt;Character&gt; stack = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Stack</span>&lt;&gt;();
 
@@ -1955,8 +1919,8 @@ Math.abs('a' - 'B') == 33   // false (different letters)
     }
     <span class="hljs-keyword">return</span> sb.toString();
 }
-</code></pre>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java - StringBuilder variant (more concise)</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java - StringBuilder variant (more concise)</span>
 <span class="hljs-keyword">public</span> String <span class="hljs-title function_">makeGood</span><span class="hljs-params">(String s)</span> {
     <span class="hljs-type">StringBuilder</span> <span class="hljs-variable">sb</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">StringBuilder</span>();
     <span class="hljs-keyword">for</span> (<span class="hljs-type">char</span> c : s.toCharArray()) {
@@ -1969,8 +1933,8 @@ Math.abs('a' - 'B') == 33   // false (different letters)
     }
     <span class="hljs-keyword">return</span> sb.toString();
 }
-</code></pre>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python equivalent</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python equivalent</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">makeGood</span>(<span class="hljs-params">s: <span class="hljs-built_in">str</span></span>) -&gt; <span class="hljs-built_in">str</span>:
     stack = []
     <span class="hljs-keyword">for</span> c <span class="hljs-keyword">in</span> s:
@@ -1979,7 +1943,7 @@ Math.abs('a' - 'B') == 33   // false (different letters)
         <span class="hljs-keyword">else</span>:
             stack.append(c)
     <span class="hljs-keyword">return</span> <span class="hljs-string">&#x27;&#x27;</span>.join(stack)
-</code></pre>
+</code></pre></div>
 <p><strong>Key Insight:</strong> This trick generalizes to any problem requiring adjacent pair cancellation where pairs are defined by ASCII distance. Combine with a Stack for O(N) time, O(N) space.</p>
 <table>
 <thead>
@@ -2009,21 +1973,21 @@ Math.abs('a' - 'B') == 33   // false (different letters)
 </table>
 <hr>
 <h4 id="string-building-performance" tabindex="-1"><a class="header-anchor" href="#string-building-performance"><span><strong>String Building Performance</strong></span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python: Use list and join</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python: Use list and join</span>
 result = []
 <span class="hljs-keyword">for</span> item <span class="hljs-keyword">in</span> items:
     result.append(process(item))
 <span class="hljs-keyword">return</span> <span class="hljs-string">&#x27;&#x27;</span>.join(result)
-</code></pre>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java: Use StringBuilder</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java: Use StringBuilder</span>
 <span class="hljs-type">StringBuilder</span> <span class="hljs-variable">sb</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">StringBuilder</span>();
 <span class="hljs-keyword">for</span> (String item : items) {
     sb.append(process(item));
 }
 <span class="hljs-keyword">return</span> sb.toString();
-</code></pre>
+</code></pre></div>
 <h4 id="palindrome-optimization" tabindex="-1"><a class="header-anchor" href="#palindrome-optimization"><span><strong>Palindrome Optimization</strong></span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Check palindrome efficiently</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Check palindrome efficiently</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">isPalindrome</span>(<span class="hljs-params">s</span>):
     <span class="hljs-keyword">return</span> s == s[::-<span class="hljs-number">1</span>]
 
@@ -2031,7 +1995,7 @@ result = []
 <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(s)):
     expandAroundCenter(i, i)      <span class="hljs-comment"># Odd length</span>
     expandAroundCenter(i, i + <span class="hljs-number">1</span>)  <span class="hljs-comment"># Even length</span>
-</code></pre>
+</code></pre></div>
 <h3 id="problem-solving-steps" tabindex="-1"><a class="header-anchor" href="#problem-solving-steps"><span>Problem-Solving Steps</span></a></h3>
 <ol>
 <li>
@@ -2137,7 +2101,7 @@ result = []
 <ul>
 <li>go through 2 string, keep comparing digits in eash string</li>
 </ul>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># 165 Compare Version Number</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># 165 Compare Version Number</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># IDEA : STRING + while op</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
@@ -2190,12 +2154,12 @@ result = []
             <span class="hljs-keyword">elif</span> temp1 &gt; temp2:
                 <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>
         <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>
-</code></pre>
+</code></pre></div>
 <h3 id="2-2-add-two-numbers-ii-decode-string" tabindex="-1"><a class="header-anchor" href="#2-2-add-two-numbers-ii-decode-string"><span>2-2) Add Two Numbers II,  Decode String</span></a></h3>
 <ul>
 <li>String -&gt; Int</li>
 </ul>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># 445 Add Two Numbers II</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># 445 Add Two Numbers II</span>
 <span class="hljs-comment"># 394 Decode String</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">str_2_int</span>(<span class="hljs-params">x</span>):
     r=<span class="hljs-number">0</span>
@@ -2231,9 +2195,9 @@ In [<span class="hljs-number">64</span>]: <span class="hljs-keyword">for</span> 
 
 In [<span class="hljs-number">65</span>]: ans
 Out[<span class="hljs-number">65</span>]: <span class="hljs-number">5634</span>
-</code></pre>
+</code></pre></div>
 <h3 id="2-3-count-and-say" tabindex="-1"><a class="header-anchor" href="#2-3-count-and-say"><span>2-3) Count and say</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 038 Count and say</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 038 Count and say</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># IDEA : ITERATION</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
@@ -2254,9 +2218,9 @@ Out[<span class="hljs-number">65</span>]: <span class="hljs-number">5634</span>
             res = val
             val = <span class="hljs-string">&quot;&quot;</span>
         <span class="hljs-keyword">return</span> res
-</code></pre>
+</code></pre></div>
 <h3 id="2-4-monotone-increasing-digits" tabindex="-1"><a class="header-anchor" href="#2-4-monotone-increasing-digits"><span>2-4) Monotone Increasing Digits</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 738 Monotone Increasing Digits</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 738 Monotone Increasing Digits</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">monotoneIncreasingDigits</span>(<span class="hljs-params">self, N</span>):
         s = <span class="hljs-built_in">list</span>(<span class="hljs-built_in">str</span>(N));
@@ -2273,9 +2237,9 @@ Out[<span class="hljs-number">65</span>]: <span class="hljs-number">5634</span>
                 s[i] = <span class="hljs-built_in">str</span>(<span class="hljs-built_in">int</span>(s[i]) - <span class="hljs-number">1</span>)
         s = <span class="hljs-string">&quot;&quot;</span>.join(s)        
         <span class="hljs-keyword">return</span> <span class="hljs-built_in">int</span>(s) 
-</code></pre>
+</code></pre></div>
 <h3 id="2-5-validate-ip-address" tabindex="-1"><a class="header-anchor" href="#2-5-validate-ip-address"><span>2-5) Validate IP Address</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 468. Validate IP Address</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 468. Validate IP Address</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># IDEA : Divide and Conquer</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
@@ -2311,9 +2275,9 @@ Out[<span class="hljs-number">65</span>]: <span class="hljs-number">5634</span>
             <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.validate_IPv6(IP)
         <span class="hljs-keyword">else</span>:
             <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;Neither&quot;</span>
-</code></pre>
+</code></pre></div>
 <h3 id="2-6-string-to-integer-atoi" tabindex="-1"><a class="header-anchor" href="#2-6-string-to-integer-atoi"><span>2-6) String to Integer (atoi)</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 008</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 008</span>
 <span class="hljs-comment"># V0&#x27;</span>
 <span class="hljs-comment"># IDEA : string op</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
@@ -2372,9 +2336,9 @@ Out[<span class="hljs-number">65</span>]: <span class="hljs-number">5634</span>
         res = res <span class="hljs-keyword">if</span> res &lt;= <span class="hljs-number">2</span>**<span class="hljs-number">31</span> - <span class="hljs-number">1</span> <span class="hljs-keyword">else</span> <span class="hljs-number">2</span>**<span class="hljs-number">31</span> - <span class="hljs-number">1</span>    <span class="hljs-comment"># 2**31 == 2147483648</span>
         res = res <span class="hljs-keyword">if</span> res &gt;= -<span class="hljs-number">1</span> * <span class="hljs-number">2</span>**<span class="hljs-number">31</span>  <span class="hljs-keyword">else</span> -<span class="hljs-number">1</span> * <span class="hljs-number">2</span>**<span class="hljs-number">31</span>   <span class="hljs-comment"># -(1)*(2**31) == - 2147483648</span>
         <span class="hljs-keyword">return</span> res
-</code></pre>
+</code></pre></div>
 <h3 id="2-7-license-key-formatting" tabindex="-1"><a class="header-anchor" href="#2-7-license-key-formatting"><span>2-7) License Key Formatting</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 482. License Key Formatting</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 482. License Key Formatting</span>
 <span class="hljs-comment"># ref : LC 725. Split Linked List in Parts</span>
 
 <span class="hljs-comment"># V0</span>
@@ -2424,9 +2388,9 @@ Out[<span class="hljs-number">65</span>]: <span class="hljs-number">5634</span>
             <span class="hljs-comment">#res.append(s_[i:i+k])</span>
             res += (<span class="hljs-string">&quot;&quot;</span>.join(s_[i:i+k]) + <span class="hljs-string">&quot;-&quot;</span>)
         <span class="hljs-keyword">return</span> res.strip(<span class="hljs-string">&quot;-&quot;</span>)
-</code></pre>
+</code></pre></div>
 <h3 id="2-8-repeated-string-match" tabindex="-1"><a class="header-anchor" href="#2-8-repeated-string-match"><span>2-8) Repeated String Match</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 686. Repeated String Match</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 686. Repeated String Match</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># IDEA : BRUTE FORCE</span>
 <span class="hljs-comment"># https://leetcode.com/problems/repeated-string-match/discuss/108090/Intuitive-Python-2-liner</span>
@@ -2468,9 +2432,9 @@ Out[<span class="hljs-number">65</span>]: <span class="hljs-number">5634</span>
                 <span class="hljs-keyword">return</span> res
             res += <span class="hljs-number">1</span>
         <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>
-</code></pre>
+</code></pre></div>
 <h3 id="2-9-count-binary-substrings" tabindex="-1"><a class="header-anchor" href="#2-9-count-binary-substrings"><span>2-9) Count Binary Substrings</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 696. Count Binary Substrings</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 696. Count Binary Substrings</span>
 <span class="hljs-comment"># V0 </span>
 <span class="hljs-comment"># IDEA :  Group By Character + continous sub-string</span>
 <span class="hljs-comment"># https://leetcode.com/problems/count-binary-substrings/solution/</span>
@@ -2527,9 +2491,9 @@ Out[<span class="hljs-number">65</span>]: <span class="hljs-number">5634</span>
                 cur += <span class="hljs-number">1</span>
 
         <span class="hljs-keyword">return</span> ans + <span class="hljs-built_in">min</span>(prev, cur)
-</code></pre>
+</code></pre></div>
 <h3 id="2-10-roman-to-integer" tabindex="-1"><a class="header-anchor" href="#2-10-roman-to-integer"><span>2-10) Roman to Integer</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 13. Roman to Integer</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 13. Roman to Integer</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">romanToInt</span>(<span class="hljs-params">self, s</span>):
@@ -2551,9 +2515,9 @@ Out[<span class="hljs-number">65</span>]: <span class="hljs-number">5634</span>
             <span class="hljs-keyword">else</span>:
                 res += roman[s[i]]
         <span class="hljs-keyword">return</span> res
-</code></pre>
+</code></pre></div>
 <h3 id="2-11-ount-unique-characters-of-all-substrings-of-a-given-string" tabindex="-1"><a class="header-anchor" href="#2-11-ount-unique-characters-of-all-substrings-of-a-given-string"><span>2-11) ount Unique Characters of All Substrings of a Given String</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 828. Count Unique Characters of All Substrings of a Given String</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 828. Count Unique Characters of All Substrings of a Given String</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
      <span class="hljs-keyword">def</span> <span class="hljs-title function_">uniqueLetterString</span>(<span class="hljs-params">self, S</span>):
@@ -2596,9 +2560,9 @@ Out[<span class="hljs-number">65</span>]: <span class="hljs-number">5634</span>
                 k, j = index[c]
                 res += (<span class="hljs-built_in">len</span>(S) - j) * (j - k)
             <span class="hljs-keyword">return</span> res % (<span class="hljs-number">10</span>**<span class="hljs-number">9</span> + <span class="hljs-number">7</span>)
-</code></pre>
+</code></pre></div>
 <h3 id="2-12-palindromic-substrings" tabindex="-1"><a class="header-anchor" href="#2-12-palindromic-substrings"><span>2-12) Palindromic Substrings</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 647. Palindromic Substrings</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 647. Palindromic Substrings</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># IDEA : BRUTE FORCE</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
@@ -2611,9 +2575,9 @@ Out[<span class="hljs-number">65</span>]: <span class="hljs-number">5634</span>
                 <span class="hljs-keyword">if</span> s[i:j] == s[i:j][::-<span class="hljs-number">1</span>]:
                     count += <span class="hljs-number">1</span>
         <span class="hljs-keyword">return</span> count
-</code></pre>
+</code></pre></div>
 <h3 id="2-13-repeated-substring-pattern" tabindex="-1"><a class="header-anchor" href="#2-13-repeated-substring-pattern"><span>2-13) Repeated Substring Pattern</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 459. Repeated Substring Pattern</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 459. Repeated Substring Pattern</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># IDEA : # only have to go through till HALF of s&#x27;s length, since it&#x27;s not possbile to find the SubstringPattern if len(s[:x]) &gt; size//2</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
@@ -2633,7 +2597,7 @@ Out[<span class="hljs-number">65</span>]: <span class="hljs-number">5634</span>
             tmp += s[i]
             i += <span class="hljs-number">1</span>
         <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
-</code></pre>
+</code></pre></div>
 <h3 id="2-14-reverse-only-letters" tabindex="-1"><a class="header-anchor" href="#2-14-reverse-only-letters"><span>2-14) Reverse Only Letters</span></a></h3>
 <p><strong>Pattern: Selective Character Reversal</strong></p>
 <ul>
@@ -2642,7 +2606,7 @@ Out[<span class="hljs-number">65</span>]: <span class="hljs-number">5634</span>
 <li>Two approaches: Two Pointers or Stack</li>
 </ul>
 <h4 id="approach-1-two-pointers-optimal" tabindex="-1"><a class="header-anchor" href="#approach-1-two-pointers-optimal"><span>Approach 1: Two Pointers (Optimal)</span></a></h4>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 917. Reverse Only Letters</span>
 <span class="hljs-comment">/**
  * Pattern: Two pointers with selective swap
@@ -2715,9 +2679,9 @@ Out[<span class="hljs-number">65</span>]: <span class="hljs-number">5634</span>
 
     <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">String</span>(arr);
 }
-</code></pre>
+</code></pre></div>
 <p><strong>Character Validation Methods:</strong></p>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// Key methods for character checking</span>
 
 <span class="hljs-type">char</span> <span class="hljs-variable">x</span> <span class="hljs-operator">=</span> <span class="hljs-string">&#x27;a&#x27;</span>;
@@ -2737,8 +2701,8 @@ Character.isWhitespace(<span class="hljs-string">&#x27; &#x27;</span>);   <span 
 <span class="hljs-comment">// Case conversion</span>
 Character.toLowerCase(<span class="hljs-string">&#x27;A&#x27;</span>);    <span class="hljs-comment">// &#x27;a&#x27;</span>
 Character.toUpperCase(<span class="hljs-string">&#x27;b&#x27;</span>);    <span class="hljs-comment">// &#x27;B&#x27;</span>
-</code></pre>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
 <span class="hljs-comment"># Character checking methods</span>
 
 char = <span class="hljs-string">&#x27;a&#x27;</span>
@@ -2758,9 +2722,9 @@ char.isalnum()      <span class="hljs-comment"># True</span>
 <span class="hljs-comment"># Case conversion</span>
 char.upper()        <span class="hljs-comment"># &#x27;A&#x27;</span>
 char.lower()        <span class="hljs-comment"># &#x27;a&#x27;</span>
-</code></pre>
+</code></pre></div>
 <h4 id="approach-2-stack-filo" tabindex="-1"><a class="header-anchor" href="#approach-2-stack-filo"><span>Approach 2: Stack (FILO)</span></a></h4>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 917. Reverse Only Letters</span>
 <span class="hljs-comment">/**  IDEA: Stack-based reversal (FILO - First In Last Out)
  *
@@ -2810,9 +2774,9 @@ char.lower()        <span class="hljs-comment"># &#x27;a&#x27;</span>
 
     <span class="hljs-keyword">return</span> ans.toString();
 }
-</code></pre>
+</code></pre></div>
 <p><strong>Stack Pattern Visualization:</strong></p>
-<pre><code class="hljs">Input: &quot;Test1ng-Leet=code-Q!&quot;
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Input: &quot;Test1ng-Leet=code-Q!&quot;
 
 Step 1: Build Stack (push letters only)
 Stack building:
@@ -2844,7 +2808,7 @@ Step 2: Build Result (pop letters, keep non-letters)
   ... continue ...
 
 Final: &quot;Qedo1ct-eeLg=ntse-T!&quot;
-</code></pre>
+</code></pre></div>
 <p><strong>Comparison:</strong></p>
 <table>
 <thead>
@@ -2886,7 +2850,7 @@ Final: &quot;Qedo1ct-eeLg=ntse-T!&quot;
 <li>Handle prefix case: shorter word must come first</li>
 </ul>
 <h4 id="approach-array-mapping-adjacent-word-comparison" tabindex="-1"><a class="header-anchor" href="#approach-array-mapping-adjacent-word-comparison"><span>Approach: Array Mapping + Adjacent Word Comparison</span></a></h4>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 953. Verifying an Alien Dictionary</span>
 <span class="hljs-comment">/**
  * Pattern: Custom order mapping + pairwise comparison
@@ -2954,9 +2918,9 @@ Final: &quot;Qedo1ct-eeLg=ntse-T!&quot;
     <span class="hljs-comment">// The shorter word must come first.</span>
     <span class="hljs-keyword">return</span> len1 &lt;= len2;
 }
-</code></pre>
+</code></pre></div>
 <p><strong>Key Insights:</strong></p>
-<pre><code class="hljs">Why int[26] array instead of HashMap?
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Why int[26] array instead of HashMap?
   - Characters are lowercase English letters only (a-z)
   - alienOrder[ch - 'a'] = rank  -&gt;  O(1) lookup, no boxing overhead
   - Classic trick: char - 'a' maps 'a'-&gt;0, 'b'-&gt;1, ..., 'z'-&gt;25
@@ -2969,7 +2933,7 @@ Why return len1 &lt;= len2 at the end?
   - If all characters match up to minLen, the shorter word must come first
   - &quot;app&quot; &lt; &quot;apple&quot; in any lexicographic order
   - &quot;apple&quot; before &quot;app&quot; is INVALID (Example 3 in problem)
-</code></pre>
+</code></pre></div>
 <p><strong>Similar Problems:</strong></p>
 <ul>
 <li>LC 953 Verifying an Alien Dictionary (this pattern)</li>
@@ -2984,7 +2948,7 @@ Why return len1 &lt;= len2 at the end?
 <li>Two-pointer subsequence check is the core technique</li>
 </ul>
 <h4 id="approach-1-iterate-subsequence-check-in-place-best-tracking-optimal" tabindex="-1"><a class="header-anchor" href="#approach-1-iterate-subsequence-check-in-place-best-tracking-optimal"><span>Approach 1: Iterate + Subsequence Check + In-place Best Tracking (Optimal)</span></a></h4>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 524. Longest Word in Dictionary through Deleting</span>
 <span class="hljs-comment">/**
  * Pattern: Two-pointer subsequence check + greedy best tracking
@@ -3055,9 +3019,9 @@ Why return len1 &lt;= len2 at the end?
     <span class="hljs-comment">// If j reached end, all chars of target were found in order</span>
     <span class="hljs-keyword">return</span> j == target.length();
 }
-</code></pre>
+</code></pre></div>
 <h4 id="approach-2-sort-first-return-first-match" tabindex="-1"><a class="header-anchor" href="#approach-2-sort-first-return-first-match"><span>Approach 2: Sort First + Return First Match</span></a></h4>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 524. Longest Word in Dictionary through Deleting</span>
 <span class="hljs-comment">/**
  * Pattern: Pre-sort dictionary by (length DESC, lexicographic ASC),
@@ -3083,9 +3047,9 @@ Why return len1 &lt;= len2 at the end?
     }
     <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;&quot;</span>;
 }
-</code></pre>
+</code></pre></div>
 <p><strong>Key Insights:</strong></p>
-<pre><code class="hljs">Two-pointer subsequence check:
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Two-pointer subsequence check:
   - i (source pointer) ALWAYS advances
   - j (target pointer) advances ONLY on character match
   - If j == target.length() at the end, target is a subsequence
@@ -3100,7 +3064,7 @@ Sorting approach trade-off:
   - Pro: simpler logic (return first match)
   - Con: O(N log N) sorting overhead
   - Approach 1 (no sort) is generally preferred
-</code></pre>
+</code></pre></div>
 <p><strong>Similar Problems:</strong></p>
 <ul>
 <li>LC 524 Longest Word in Dictionary through Deleting (this pattern)</li>

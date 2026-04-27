@@ -19,54 +19,18 @@
     }
   })();
   </script>
-  <script>document.addEventListener('DOMContentLoaded', function() {
-    document.querySelectorAll('pre code').forEach(function(codeEl) {
-      var pre = codeEl.parentElement;
-      var lang = '';
-      var cls = codeEl.className || '';
-      var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
-      if (m) lang = m[1];
-
-      // Add line numbers
-      var lines = codeEl.innerHTML.split('
-');
-      if (lines[lines.length - 1] === '') lines.pop();
-      var numbered = lines.map(function(line, i) {
-        return '<span class="hljs-ln-line"><span class="hljs-ln-n" data-line-number="' + (i + 1) + '"></span><span class="hljs-ln-code">' + line + '</span></span>';
-      }).join('
-');
-      codeEl.innerHTML = numbered;
-      codeEl.classList.add('hljs-ln');
-
-      var wrapper = document.createElement('div');
-      wrapper.className = 'code-block-wrapper';
-      pre.parentNode.insertBefore(wrapper, pre);
-      var header = document.createElement('div');
-      header.className = 'code-block-header';
-      if (lang) {
-        var label = document.createElement('span');
-        label.className = 'code-lang-label';
-        label.textContent = lang;
-        header.appendChild(label);
-      } else {
-        header.appendChild(document.createElement('span'));
-      }
-      var btn = document.createElement('button');
-      btn.className = 'copy-btn';
-      btn.textContent = 'Copy';
-      btn.addEventListener('click', function() {
-        var text = Array.from(codeEl.querySelectorAll('.hljs-ln-code')).map(function(el) { return el.textContent; }).join('
-');
-        navigator.clipboard.writeText(text).then(function() {
-          btn.textContent = 'Copied!';
-          btn.classList.add('copied');
-          setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
-        });
-      });
-      header.appendChild(btn);
-      wrapper.appendChild(header);
-      wrapper.appendChild(pre);
+  <script>
+  function copyCode(btn) {
+    var pre = btn.closest('.code-block-wrapper').querySelector('pre');
+    var text = pre ? pre.innerText : '';
+    navigator.clipboard.writeText(text).then(function() {
+      btn.textContent = 'Copied!';
+      btn.classList.add('copied');
+      setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
     });
+  }
+  </script>
+  <script>document.addEventListener('DOMContentLoaded', function() {
     document.querySelectorAll('table').forEach(function(table) {
       if (!table.parentElement.classList.contains('table-wrap')) {
         var wrapper = document.createElement('div');
@@ -225,7 +189,7 @@
 </table>
 <h2 id="implementation-patterns" tabindex="-1"><a class="header-anchor" href="#implementation-patterns"><span>Implementation Patterns</span></a></h2>
 <h3 id="pattern-1-basic-tree-bfs" tabindex="-1"><a class="header-anchor" href="#pattern-1-basic-tree-bfs"><span>Pattern 1: Basic Tree BFS</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">from</span> collections <span class="hljs-keyword">import</span> deque
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">from</span> collections <span class="hljs-keyword">import</span> deque
 
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">bfs_tree</span>(<span class="hljs-params">root</span>):
     <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> root:
@@ -244,9 +208,9 @@
             queue.append(node.right)
     
     <span class="hljs-keyword">return</span> result
-</code></pre>
+</code></pre></div>
 <h3 id="pattern-2-level-by-level-bfs" tabindex="-1"><a class="header-anchor" href="#pattern-2-level-by-level-bfs"><span>Pattern 2: Level-by-Level BFS</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">bfs_levels</span>(<span class="hljs-params">root</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">bfs_levels</span>(<span class="hljs-params">root</span>):
     <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> root:
         <span class="hljs-keyword">return</span> []
     
@@ -269,9 +233,9 @@
         levels.append(current_level)
     
     <span class="hljs-keyword">return</span> levels
-</code></pre>
+</code></pre></div>
 <h3 id="pattern-3-graph-bfs-with-visited-set" tabindex="-1"><a class="header-anchor" href="#pattern-3-graph-bfs-with-visited-set"><span>Pattern 3: Graph BFS with Visited Set</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">bfs_graph</span>(<span class="hljs-params">start, graph</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">bfs_graph</span>(<span class="hljs-params">start, graph</span>):
     queue = deque([start])
     visited = <span class="hljs-built_in">set</span>([start])
     result = []
@@ -286,9 +250,9 @@
                 queue.append(neighbor)
     
     <span class="hljs-keyword">return</span> result
-</code></pre>
+</code></pre></div>
 <h3 id="pattern-4-multi-source-bfs-distance-calculation" tabindex="-1"><a class="header-anchor" href="#pattern-4-multi-source-bfs-distance-calculation"><span>Pattern 4: Multi-Source BFS (Distance Calculation)</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">multi_source_bfs</span>(<span class="hljs-params">grid, sources</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">multi_source_bfs</span>(<span class="hljs-params">grid, sources</span>):
     <span class="hljs-string">&quot;&quot;&quot;Start BFS from multiple sources simultaneously&quot;&quot;&quot;</span>
     queue = deque(sources)  <span class="hljs-comment"># All sources at once</span>
     visited = <span class="hljs-built_in">set</span>(sources)
@@ -303,9 +267,9 @@
                 <span class="hljs-keyword">and</span> (nx, ny) <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> visited):
                 visited.add((nx, ny))
                 queue.append((nx, ny))
-</code></pre>
+</code></pre></div>
 <p><strong>Java Implementation (LC 542 - 01 Matrix Pattern):</strong></p>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">/**
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">/**
  * Pattern: Multi-Source BFS for Distance Calculation
  * Use case: Calculate shortest distance from each cell to any source cell
  * Key insight: Start BFS from ALL sources simultaneously - first visit guarantees shortest path
@@ -354,9 +318,9 @@
 
     <span class="hljs-keyword">return</span> mat;
 }
-</code></pre>
+</code></pre></div>
 <p><strong>Alternative: Using MAX_VALUE for initialization (allows for optimization)</strong></p>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">public</span> <span class="hljs-type">int</span>[][] multiSourceBFS_optimized(<span class="hljs-type">int</span>[][] mat) {
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">public</span> <span class="hljs-type">int</span>[][] multiSourceBFS_optimized(<span class="hljs-type">int</span>[][] mat) {
     <span class="hljs-type">int</span> <span class="hljs-variable">rows</span> <span class="hljs-operator">=</span> mat.length;
     <span class="hljs-type">int</span> <span class="hljs-variable">cols</span> <span class="hljs-operator">=</span> mat[<span class="hljs-number">0</span>].length;
     Queue&lt;<span class="hljs-type">int</span>[]&gt; queue = <span class="hljs-keyword">new</span> <span class="hljs-title class_">LinkedList</span>&lt;&gt;();
@@ -417,9 +381,9 @@
 
     <span class="hljs-keyword">return</span> mat;
 }
-</code></pre>
+</code></pre></div>
 <p><strong>Concrete Example: LC 542 - 01 Matrix</strong></p>
-<pre><code class="hljs">Problem: Find distance to nearest 0 for each cell
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Problem: Find distance to nearest 0 for each cell
 Input:  [[0,0,0],     Output: [[0,0,0],
          [0,1,0],              [0,1,0],
          [1,1,1]]              [1,2,1]]
@@ -448,7 +412,7 @@ Step 3 - BFS Layer 2 (distance = 2):
   Final: [[0, 0, 0],
           [0, 1, 0],
           [1, 2, 1]]
-</code></pre>
+</code></pre></div>
 <p><strong>Why This Pattern Works:</strong></p>
 <ol>
 <li><strong>Simultaneous Expansion</strong>: All sources expand at same rate → layer by layer</li>
@@ -463,7 +427,7 @@ Step 3 - BFS Layer 2 (distance = 2):
 <li><strong>Principle</strong>: Flip the problem - instead of “how far is this 1 from any 0?”, ask “how far can all 0s reach?”</li>
 </ul>
 <h3 id="pattern-4-5-dfs-multi-source-bfs-island-expansion" tabindex="-1"><a class="header-anchor" href="#pattern-4-5-dfs-multi-source-bfs-island-expansion"><span>Pattern 4.5: DFS + Multi-Source BFS (Island Expansion)</span></a></h3>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">/**
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">/**
  * Pattern: DFS to identify first component, then Multi-Source BFS to find shortest distance to second component
  * Use case: Find shortest bridge between two islands, connect two separate regions
  * Key insight: DFS marks entire first island, BFS expands from ALL cells of first island simultaneously
@@ -539,9 +503,9 @@ Step 3 - BFS Layer 2 (distance = 2):
     dfsMarkIsland(grid, x, y + <span class="hljs-number">1</span>, queue);
     dfsMarkIsland(grid, x, y - <span class="hljs-number">1</span>, queue);
 }
-</code></pre>
+</code></pre></div>
 <p><strong>Concrete Example: LC 934 - Shortest Bridge</strong></p>
-<pre><code class="hljs">Problem: Connect two islands with minimum number of flips (0→1)
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Problem: Connect two islands with minimum number of flips (0→1)
 Grid: [[0,1],     Two islands: Island A at (0,1), Island B at (1,0)
        [1,0]]     Need to flip 1 cell to connect them
 
@@ -567,7 +531,7 @@ Key insight:
 - DFS ensures we mark ENTIRE first island (not just one cell)
 - Multi-source BFS expands from ALL boundary cells simultaneously
 - This guarantees we find the absolute shortest bridge
-</code></pre>
+</code></pre></div>
 <p><strong>Why This Pattern Works:</strong></p>
 <ol>
 <li><strong>Complete Coverage</strong>: DFS ensures we find the entire first island, not just part of it</li>
@@ -621,7 +585,7 @@ Key insight:
 <li>LC 994 (Rotting Oranges): Time for infection to spread</li>
 <li>LC 1162 (As Far from Land): Distance to nearest land</li>
 </ul>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Simultaneous Multi-Source BFS Template</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Simultaneous Multi-Source BFS Template</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span>[][] simultaneousMultiSourceBFS(<span class="hljs-type">int</span>[][] grid) {
     Queue&lt;<span class="hljs-type">int</span>[]&gt; queue = <span class="hljs-keyword">new</span> <span class="hljs-title class_">LinkedList</span>&lt;&gt;();
     <span class="hljs-type">boolean</span>[][] visited = <span class="hljs-keyword">new</span> <span class="hljs-title class_">boolean</span>[rows][cols];
@@ -643,7 +607,7 @@ Key insight:
         <span class="hljs-comment">// First visit to any cell = shortest distance from ANY source</span>
     }
 }
-</code></pre>
+</code></pre></div>
 <h4 id="type-2-independent-bfs-runs-one-bfs-per-source" tabindex="-1"><a class="header-anchor" href="#type-2-independent-bfs-runs-one-bfs-per-source"><span><strong>Type 2: Independent BFS Runs</strong> (One BFS per source)</span></a></h4>
 <ul>
 <li><strong>Goal</strong>: Find <strong>SUM of distances</strong> or <strong>aggregate metric</strong> across ALL sources</li>
@@ -656,7 +620,7 @@ Key insight:
 <ul>
 <li>LC 317 (Shortest Distance from All Buildings): Sum of distances to all buildings</li>
 </ul>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Independent BFS Runs Template - LC 317 Pattern</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Independent BFS Runs Template - LC 317 Pattern</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">independentBFSRuns</span><span class="hljs-params">(<span class="hljs-type">int</span>[][] grid)</span> {
     <span class="hljs-type">int</span> <span class="hljs-variable">rows</span> <span class="hljs-operator">=</span> grid.length;
     <span class="hljs-type">int</span> <span class="hljs-variable">cols</span> <span class="hljs-operator">=</span> grid[<span class="hljs-number">0</span>].length;
@@ -733,7 +697,7 @@ Key insight:
         }
     }
 }
-</code></pre>
+</code></pre></div>
 <h4 id="comparison-table" tabindex="-1"><a class="header-anchor" href="#comparison-table"><span><strong>Comparison Table</strong></span></a></h4>
 <table>
 <thead>
@@ -779,7 +743,7 @@ Key insight:
 <h4 id="why-fresh-visited-arrays-in-independent-bfs" tabindex="-1"><a class="header-anchor" href="#why-fresh-visited-arrays-in-independent-bfs"><span><strong>Why Fresh Visited Arrays in Independent BFS?</strong></span></a></h4>
 <p><strong>The Key Question:</strong> <em>“Why can’t we reuse the visited array across different buildings in LC 317?”</em></p>
 <p><strong>The Answer:</strong></p>
-<pre><code class="hljs">Building A runs BFS:
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Building A runs BFS:
   - Visits land cell (2,3) and marks it visited ✓
   - Calculates: distance from A to (2,3) = 5 steps
 
@@ -789,10 +753,10 @@ Building B runs BFS:
 
 But we NEED both distances because:
   - totalDist[2][3] = distFromA + distFromB + distFromC + ...
-</code></pre>
+</code></pre></div>
 <p><strong>Each building needs to “see” every empty cell independently</strong> to contribute its distance.</p>
 <h4 id="common-mistake-example" tabindex="-1"><a class="header-anchor" href="#common-mistake-example"><span><strong>Common Mistake Example</strong></span></a></h4>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// ❌ WRONG - Reusing visited array</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// ❌ WRONG - Reusing visited array</span>
 <span class="hljs-type">boolean</span>[][] visited = <span class="hljs-keyword">new</span> <span class="hljs-title class_">boolean</span>[rows][cols];  <span class="hljs-comment">// Created ONCE</span>
 
 <span class="hljs-keyword">for</span> (Building b : allBuildings) {
@@ -805,10 +769,10 @@ But we NEED both distances because:
     <span class="hljs-type">boolean</span>[][] visited = <span class="hljs-keyword">new</span> <span class="hljs-title class_">boolean</span>[rows][cols];  <span class="hljs-comment">// Fresh each time</span>
     bfs(b, visited);  <span class="hljs-comment">// Each building can visit all reachable cells</span>
 }
-</code></pre>
+</code></pre></div>
 <h4 id="optimization-grid-value-trick-space-efficient-alternative" tabindex="-1"><a class="header-anchor" href="#optimization-grid-value-trick-space-efficient-alternative"><span><strong>Optimization: Grid Value Trick</strong> (Space-efficient alternative)</span></a></h4>
 <p>Instead of creating fresh <code>boolean[][] visited</code> arrays, modify the grid itself:</p>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 317 Optimization: Decrement empty cells for each building</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 317 Optimization: Decrement empty cells for each building</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">shortestDistance</span><span class="hljs-params">(<span class="hljs-type">int</span>[][] grid)</span> {
     <span class="hljs-type">int</span>[][] totalDist = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[rows][cols];
     <span class="hljs-type">int</span> <span class="hljs-variable">emptyValue</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;  <span class="hljs-comment">// Changes with each BFS: 0 → -1 → -2 → -3...</span>
@@ -837,9 +801,9 @@ But we NEED both distances because:
     <span class="hljs-comment">// After processing, change to (targetValue - 1)</span>
     <span class="hljs-comment">// This ensures cell must be reached by ALL previous buildings</span>
 }
-</code></pre>
+</code></pre></div>
 <p><strong>How Grid Trick Works:</strong></p>
-<pre><code class="hljs">Initial grid: All empty cells = 0
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Initial grid: All empty cells = 0
 
 Building 1 BFS:
   - Visit cells with value 0
@@ -855,7 +819,7 @@ Building 3 BFS:
   - Only visit cells with value -2
   - Change them to -3
   - Only cells reachable by ALL 3 buildings = -3
-</code></pre>
+</code></pre></div>
 <p><strong>Benefits:</strong></p>
 <ul>
 <li>✅ No need for <code>boolean[][] visited</code> arrays (saves space)</li>
@@ -909,7 +873,7 @@ Building 3 BFS:
 </tbody>
 </table>
 <h3 id="pattern-5-bfs-with-path-tracking" tabindex="-1"><a class="header-anchor" href="#pattern-5-bfs-with-path-tracking"><span>Pattern 5: BFS with Path Tracking</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">bfs_with_path</span>(<span class="hljs-params">start, target</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">bfs_with_path</span>(<span class="hljs-params">start, target</span>):
     queue = deque([(start, [start])])
     visited = {start}
 
@@ -925,9 +889,9 @@ Building 3 BFS:
                 queue.append((neighbor, path + [neighbor]))
 
     <span class="hljs-keyword">return</span> <span class="hljs-literal">None</span>
-</code></pre>
+</code></pre></div>
 <h3 id="pattern-6-sort-repeated-bfs-sequential-shortest-paths" tabindex="-1"><a class="header-anchor" href="#pattern-6-sort-repeated-bfs-sequential-shortest-paths"><span>Pattern 6: Sort + Repeated BFS (Sequential Shortest Paths)</span></a></h3>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">/**
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">/**
  * Pattern: Sort targets by priority, then repeatedly call BFS to find shortest paths
  * Use case: Visit multiple targets in specific order, minimize total travel distance
  * Key insight: BFS guarantees shortest path between each pair of consecutive targets
@@ -1028,9 +992,9 @@ Building 3 BFS:
 
     <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>; <span class="hljs-comment">// Unreachable</span>
 }
-</code></pre>
+</code></pre></div>
 <p><strong>Concrete Example: LC 675 - Cut Off Trees for Golf Event</strong></p>
-<pre><code class="hljs">Problem: Cut trees in forest from shortest to tallest, return minimum steps
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Problem: Cut trees in forest from shortest to tallest, return minimum steps
 Grid: [[1,2,3],    Trees: (0,1)=2, (0,2)=3, (1,2)=4, (2,0)=7, (2,1)=6, (2,2)=5
        [0,0,4],    Sorted: 2→3→4→5→6→7
        [7,6,5]]
@@ -1044,7 +1008,7 @@ Path: (0,0) →[1 step]→ (0,1) cut 2
 Total: 1+2+1+1+1+1 = 7 steps (Note: Problem statement has different expected output)
 
 Key insight: Must cut in sorted order, BFS finds shortest path between each pair
-</code></pre>
+</code></pre></div>
 <p><strong>Pattern Characteristics:</strong></p>
 <ul>
 <li><strong>Sort Phase</strong>: O(k log k) where k = number of targets</li>
@@ -1075,7 +1039,7 @@ Key insight: Must cut in sorted order, BFS finds shortest path between each pair
 <li>LC 317: Shortest Distance from All Buildings (multi-source BFS)</li>
 </ul>
 <h3 id="pattern-7-bfs-backtracking-state-space-exploration" tabindex="-1"><a class="header-anchor" href="#pattern-7-bfs-backtracking-state-space-exploration"><span>Pattern 7: BFS + Backtracking (State Space Exploration)</span></a></h3>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">/**
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">/**
  * Pattern: BFS + Backtracking for exploring transformations
  * Use case: Word transformations, state space exploration where each state can transform to multiple neighbors
  * Key insight: Modify state in-place, explore all neighbors, restore state before moving to next position
@@ -1176,9 +1140,9 @@ Key insight: Must cut in sorted order, BFS finds shortest path between each pair
 
     <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;  <span class="hljs-comment">// No path found</span>
 }
-</code></pre>
+</code></pre></div>
 <p><strong>Concrete Example: LC 127 - Word Ladder</strong></p>
-<pre><code class="hljs">Problem: Transform &quot;hit&quot; → &quot;cog&quot; using dictionary [&quot;hot&quot;,&quot;dot&quot;,&quot;dog&quot;,&quot;lot&quot;,&quot;log&quot;,&quot;cog&quot;]
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Problem: Transform &quot;hit&quot; → &quot;cog&quot; using dictionary [&quot;hot&quot;,&quot;dot&quot;,&quot;dog&quot;,&quot;lot&quot;,&quot;log&quot;,&quot;cog&quot;]
 Expected: 5 (hit → hot → dot → dog → cog)
 
 BFS + Backtracking Execution:
@@ -1223,9 +1187,9 @@ Layer 4: Queue = [cog], steps = 5
   Process &quot;cog&quot;:
     cur.equals(endWord) == true
   RETURN steps = 5 ✓
-</code></pre>
+</code></pre></div>
 <p><strong>Why Backtracking is Essential Here:</strong></p>
-<pre><code class="hljs">❌ Naive Approach (without backtracking):
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">❌ Naive Approach (without backtracking):
    For each position, generate ONE new word per letter
    Problem: Must process all positions with CORRECT base state
 
@@ -1237,7 +1201,7 @@ Layer 4: Queue = [cog], steps = 5
    5. Continue to position 2, etc.
 
    Result: Each position explored independently with correct base state
-</code></pre>
+</code></pre></div>
 <p><strong>Pattern Characteristics:</strong></p>
 <ul>
 <li><strong>State Modification</strong>: In-place modification of mutable state (char array)</li>
@@ -1331,7 +1295,7 @@ Layer 4: Queue = [cog], steps = 5
 <li>LC 1008: Construct Binary Search Tree from Preorder Traversal (different pattern)</li>
 </ul>
 <h3 id="pattern-8-bfs-on-abstract-graph-route-level-bfs" tabindex="-1"><a class="header-anchor" href="#pattern-8-bfs-on-abstract-graph-route-level-bfs"><span>Pattern 8: BFS on Abstract Graph (Route-Level BFS)</span></a></h3>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">/**
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">/**
  * Pattern: BFS where nodes are ROUTES (buses/lines), not physical locations
  * Use case: Find minimum number of transfers/buses to reach a destination
  * Key insight: Build stop→routes mapping, BFS on routes with two visited sets (buses + stops)
@@ -1389,9 +1353,9 @@ Layer 4: Queue = [cog], steps = 5
 
     <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>;
 }
-</code></pre>
+</code></pre></div>
 <p><strong>Concrete Example: LC 815 - Bus Routes</strong></p>
-<pre><code class="hljs">Problem: Find minimum buses to travel from source=1 to target=6
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Problem: Find minimum buses to travel from source=1 to target=6
 Routes: [[1,2,7], [3,6,7]]
   Route 0: stops 1→2→7→1→...
   Route 1: stops 3→6→7→3→...
@@ -1421,17 +1385,17 @@ Step 2 - BFS:
     Process Route 1 → check stops [3, 6, 7]:
       Stop 3: not target
       Stop 6: == target! → return busCount = 2 ✓
-</code></pre>
+</code></pre></div>
 <p><strong>Why Two Visited Sets?</strong></p>
-<pre><code class="hljs">visitedRoutes: Prevents boarding the same bus twice (infinite loop)
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">visitedRoutes: Prevents boarding the same bus twice (infinite loop)
 visitedStops:  Prevents re-processing transfer points
                (stop 7 connects Routes 0 and 1, but once explored, no need to revisit)
 
 Without visitedStops: Every stop would re-check all its routes
   → Redundant work, potentially O(N²*M) instead of O(N*M)
-</code></pre>
+</code></pre></div>
 <p><strong>Why BFS on Routes, Not Stops?</strong></p>
-<pre><code class="hljs">❌ BFS on stops: Queue = [stop1, stop2, ...]
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">❌ BFS on stops: Queue = [stop1, stop2, ...]
    Problem: How do you define &quot;neighbors&quot; of a stop?
    All other stops on the SAME route → huge adjacency list
    Loses the concept of &quot;how many buses taken&quot;
@@ -1440,7 +1404,7 @@ Without visitedStops: Every stop would re-check all its routes
    Each BFS layer = one bus ride
    Transfer = finding a new route at a shared stop
    busCount directly maps to BFS depth
-</code></pre>
+</code></pre></div>
 <p><strong>When to Use This Pattern:</strong></p>
 <ul>
 <li>Minimum number of transfers/vehicles/connections</li>
@@ -1457,7 +1421,7 @@ Without visitedStops: Every stop would re-check all its routes
 </ul>
 <hr>
 <h3 id="pattern-8-bfs-dfs-find-all-shortest-paths-dag-enumeration" tabindex="-1"><a class="header-anchor" href="#pattern-8-bfs-dfs-find-all-shortest-paths-dag-enumeration"><span>Pattern 8: BFS + DFS (Find All Shortest Paths - DAG Enumeration)</span></a></h3>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">/**
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">/**
  * Pattern: BFS to build shortest-path DAG, then DFS to enumerate all paths
  * Use case: Find ALL shortest transformation sequences (not just one)
  * Key insight: BFS builds a reverse graph of predecessors, DFS reconstructs all valid paths
@@ -1600,9 +1564,9 @@ Without visitedStops: Every stop would re-check all its routes
     <span class="hljs-comment">// Backtrack: remove current word before returning</span>
     path.remove(<span class="hljs-number">0</span>);
 }
-</code></pre>
+</code></pre></div>
 <p><strong>Concrete Example: LC 126 - Word Ladder II</strong></p>
-<pre><code class="hljs">Problem: Find ALL shortest paths from &quot;hit&quot; to &quot;cog&quot;
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Problem: Find ALL shortest paths from &quot;hit&quot; to &quot;cog&quot;
 Dictionary: [&quot;hot&quot;,&quot;dot&quot;,&quot;dog&quot;,&quot;lot&quot;,&quot;log&quot;,&quot;cog&quot;]
 Expected: [[&quot;hit&quot;,&quot;hot&quot;,&quot;dot&quot;,&quot;dog&quot;,&quot;cog&quot;], [&quot;hit&quot;,&quot;hot&quot;,&quot;lot&quot;,&quot;log&quot;,&quot;cog&quot;]]
 
@@ -1697,7 +1661,7 @@ dfs(cog):
           result = [[hit, hot, dot, dog, cog], [hit, hot, lot, log, cog]]
 
 Final result: 2 paths found ✓
-</code></pre>
+</code></pre></div>
 <p><strong>Why This Pattern Works:</strong></p>
 <ol>
 <li>
@@ -1990,7 +1954,7 @@ Final result: 2 paths found ✓
 </tbody>
 </table>
 <h4 id="why-o-v-e-for-adjacency-list" tabindex="-1"><a class="header-anchor" href="#why-o-v-e-for-adjacency-list"><span>Why O(V + E) for Adjacency List?</span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Detailed analysis of BFS with adjacency list</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Detailed analysis of BFS with adjacency list</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">bfs_analysis</span>(<span class="hljs-params">graph, start</span>):
     queue = deque([start])        <span class="hljs-comment"># O(1)</span>
     visited = {start}             <span class="hljs-comment"># O(1)</span>
@@ -2009,7 +1973,7 @@ Final result: 2 paths found ✓
     <span class="hljs-comment"># - Inner for loop: Sum of deg(v) for all v = 2E (undirected) or E (directed)</span>
     <span class="hljs-comment"># - Each operation inside: O(1)</span>
     <span class="hljs-comment"># Total: O(V + E)</span>
-</code></pre>
+</code></pre></div>
 <h2 id="common-mistakes-tips" tabindex="-1"><a class="header-anchor" href="#common-mistakes-tips"><span>Common Mistakes &amp; Tips</span></a></h2>
 <h3 id="common-mistakes" tabindex="-1"><a class="header-anchor" href="#common-mistakes"><span>❌ Common Mistakes</span></a></h3>
 <ol>
@@ -2029,9 +1993,9 @@ Final result: 2 paths found ✓
 <h3 id="when-to-update-grid-status-count-mark-before-vs-after-enqueue" tabindex="-1"><a class="header-anchor" href="#when-to-update-grid-status-count-mark-before-vs-after-enqueue"><span>When to Update Grid Status &amp; Count (Mark Before vs After Enqueue)</span></a></h3>
 <p>A critical BFS implementation detail: <strong>always mark a cell as visited (update grid status and counters) BEFORE adding it to the queue</strong>, not when you dequeue it.</p>
 <h4 id="the-rule" tabindex="-1"><a class="header-anchor" href="#the-rule"><span>The Rule</span></a></h4>
-<pre><code class="hljs">Mark visited + update count → THEN add to queue
-</code></pre>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// CORRECT: Mark BEFORE enqueue</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Mark visited + update count → THEN add to queue
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// CORRECT: Mark BEFORE enqueue</span>
 <span class="hljs-keyword">if</span> (grid[nr][nc] == <span class="hljs-number">1</span>) {
     grid[nr][nc] = <span class="hljs-number">2</span>;       <span class="hljs-comment">// mark immediately</span>
     freshOrange--;           <span class="hljs-comment">// update count immediately</span>
@@ -2041,17 +2005,17 @@ Final result: 2 paths found ✓
 <span class="hljs-comment">// WRONG: Mark AFTER dequeue</span>
 <span class="hljs-type">int</span>[] cur = q.poll();
 grid[cur[<span class="hljs-number">0</span>]][cur[<span class="hljs-number">1</span>]] = <span class="hljs-number">2</span>;   <span class="hljs-comment">// too late! duplicates already in queue</span>
-</code></pre>
+</code></pre></div>
 <h4 id="why-this-matters" tabindex="-1"><a class="header-anchor" href="#why-this-matters"><span>Why This Matters</span></a></h4>
 <p>If you defer marking until dequeue, <strong>multiple neighbors can enqueue the same cell</strong> before any of them processes it:</p>
-<pre><code class="hljs">BFS Layer 1: Cells A and B are both neighbors of cell X (fresh orange)
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">BFS Layer 1: Cells A and B are both neighbors of cell X (fresh orange)
 
 Thread of execution:
   1. Process A → sees X is fresh → enqueues X
   2. Process B → sees X is STILL fresh (not marked yet!) → enqueues X AGAIN
   3. Dequeue X → mark as rotten, freshOrange--
   4. Dequeue X again → already rotten, but freshOrange-- happens again! (WRONG)
-</code></pre>
+</code></pre></div>
 <p><strong>Result</strong>: Double-counting, incorrect answers, or wasted processing.</p>
 <h4 id="mark-before-enqueue-guarantees" tabindex="-1"><a class="header-anchor" href="#mark-before-enqueue-guarantees"><span>Mark-Before-Enqueue guarantees:</span></a></h4>
 <table>
@@ -2081,7 +2045,7 @@ Thread of execution:
 </tbody>
 </table>
 <h4 id="concrete-example-lc-994-rotting-oranges" tabindex="-1"><a class="header-anchor" href="#concrete-example-lc-994-rotting-oranges"><span>Concrete Example: LC 994 - Rotting Oranges</span></a></h4>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// From RottingOranges.java - V0 solution</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// From RottingOranges.java - V0 solution</span>
 <span class="hljs-keyword">while</span> (!q.isEmpty() &amp;&amp; freshOrange &gt; <span class="hljs-number">0</span>) {
     <span class="hljs-type">int</span> <span class="hljs-variable">size</span> <span class="hljs-operator">=</span> q.size();
     time++;
@@ -2103,7 +2067,7 @@ Thread of execution:
         }
     }
 }
-</code></pre>
+</code></pre></div>
 <p>If we deferred <code>grid[nr][nc] = 2</code> until dequeue, two rotten neighbors processing in the same layer could both enqueue the same fresh orange, leading to <code>freshOrange</code> going negative and returning a wrong answer.</p>
 <h4 id="cases-where-this-applies" tabindex="-1"><a class="header-anchor" href="#cases-where-this-applies"><span>Cases Where This Applies</span></a></h4>
 <table>
@@ -2134,7 +2098,7 @@ Thread of execution:
 </table>
 <h4 id="when-using-a-separate-visited-set" tabindex="-1"><a class="header-anchor" href="#when-using-a-separate-visited-set"><span>When Using a Separate <code>visited</code> Set</span></a></h4>
 <p>The same principle applies — add to <code>visited</code> <strong>when enqueuing</strong>, not when dequeuing:</p>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// CORRECT</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// CORRECT</span>
 <span class="hljs-keyword">if</span> (!visited[nr][nc]) {
     visited[nr][nc] = <span class="hljs-literal">true</span>;          <span class="hljs-comment">// mark BEFORE enqueue</span>
     queue.offer(<span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[]{nr, nc});
@@ -2143,7 +2107,7 @@ Thread of execution:
 <span class="hljs-comment">// WRONG</span>
 <span class="hljs-type">int</span>[] cur = queue.poll();
 visited[cur[<span class="hljs-number">0</span>]][cur[<span class="hljs-number">1</span>]] = <span class="hljs-literal">true</span>;      <span class="hljs-comment">// too late</span>
-</code></pre>
+</code></pre></div>
 <h4 id="related-leetcode-problems" tabindex="-1"><a class="header-anchor" href="#related-leetcode-problems"><span>Related LeetCode Problems</span></a></h4>
 <table>
 <thead>
@@ -2191,7 +2155,7 @@ visited[cur[<span class="hljs-number">0</span>]][cur[<span class="hljs-number">1
 <p>A common source of bugs in level-by-level BFS is <strong>where to place the time/distance increment</strong>. There are two valid approaches, each with different trade-offs.</p>
 <h4 id="the-two-approaches" tabindex="-1"><a class="header-anchor" href="#the-two-approaches"><span>The Two Approaches</span></a></h4>
 <p><strong>Approach A: Increment at BEGINNING of level (before processing)</strong></p>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// From LC 994 - RottingOranges.java V0</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// From LC 994 - RottingOranges.java V0</span>
 <span class="hljs-keyword">while</span> (!queue.isEmpty() &amp;&amp; freshOrange &gt; <span class="hljs-number">0</span>) {  <span class="hljs-comment">// <span class="hljs-doctag">NOTE:</span> extra condition!</span>
     <span class="hljs-type">int</span> <span class="hljs-variable">size</span> <span class="hljs-operator">=</span> queue.size();
     time++;  <span class="hljs-comment">// Increment FIRST - we&#x27;re about to process a &quot;minute&quot; level</span>
@@ -2202,9 +2166,9 @@ visited[cur[<span class="hljs-number">0</span>]][cur[<span class="hljs-number">1
     }
 }
 <span class="hljs-keyword">return</span> freshOrange == <span class="hljs-number">0</span> ? time : -<span class="hljs-number">1</span>;
-</code></pre>
+</code></pre></div>
 <p><strong>Approach B: Increment at END of level (only if work was done)</strong></p>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// From LC 994 - RottingOranges.java V0-0-2, V0-1, V0-4</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// From LC 994 - RottingOranges.java V0-0-2, V0-1, V0-4</span>
 <span class="hljs-keyword">while</span> (!queue.isEmpty()) {
     <span class="hljs-type">int</span> <span class="hljs-variable">size</span> <span class="hljs-operator">=</span> queue.size();
     <span class="hljs-type">boolean</span> <span class="hljs-variable">rottedThisMinute</span> <span class="hljs-operator">=</span> <span class="hljs-literal">false</span>;
@@ -2220,7 +2184,7 @@ visited[cur[<span class="hljs-number">0</span>]][cur[<span class="hljs-number">1
     <span class="hljs-keyword">if</span> (rottedThisMinute) time++;  <span class="hljs-comment">// Only count if actual infection happened</span>
 }
 <span class="hljs-keyword">return</span> freshOrange == <span class="hljs-number">0</span> ? time : -<span class="hljs-number">1</span>;
-</code></pre>
+</code></pre></div>
 <h4 id="detailed-comparison" tabindex="-1"><a class="header-anchor" href="#detailed-comparison"><span>Detailed Comparison</span></a></h4>
 <table>
 <thead>
@@ -2260,7 +2224,7 @@ visited[cur[<span class="hljs-number">0</span>]][cur[<span class="hljs-number">1
 </table>
 <h4 id="why-approach-a-needs-freshorange-0-in-while-condition" tabindex="-1"><a class="header-anchor" href="#why-approach-a-needs-freshorange-0-in-while-condition"><span>Why Approach A Needs <code>freshOrange &gt; 0</code> in While Condition</span></a></h4>
 <p><strong>The Problem:</strong> If we only check <code>!queue.isEmpty()</code>, we’ll increment time for processing already-rotten cells that have nothing left to infect.</p>
-<pre><code class="hljs">Scenario: After all oranges are infected
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Scenario: After all oranges are infected
 
 Layer N: Queue = [(2,1)], freshOrange = 1
   - time++ → time = 4
@@ -2270,16 +2234,16 @@ Layer N: Queue = [(2,1)], freshOrange = 1
 Layer N+1: Queue = [(2,2)], freshOrange = 0
   - WITHOUT `freshOrange &gt; 0`: time++ → time = 5 (WRONG! over-count)
   - WITH `freshOrange &gt; 0`: Exit loop, return time = 4 (CORRECT!)
-</code></pre>
+</code></pre></div>
 <p><strong>The Key Insight:</strong> When <code>freshOrange == 0</code>, all oranges are ALREADY infected (marked as 2). The queue may still contain rotten cells, but they have no fresh neighbors to infect. Processing them would waste time and over-count.</p>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// CORRECT: Exit early when nothing left to infect</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// CORRECT: Exit early when nothing left to infect</span>
 <span class="hljs-keyword">while</span> (!queue.isEmpty() &amp;&amp; freshOrange &gt; <span class="hljs-number">0</span>) {
     time++;
     <span class="hljs-comment">// ...</span>
 }
-</code></pre>
+</code></pre></div>
 <h4 id="why-approach-b-naturally-handles-edge-cases" tabindex="-1"><a class="header-anchor" href="#why-approach-b-naturally-handles-edge-cases"><span>Why Approach B Naturally Handles Edge Cases</span></a></h4>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">while</span> (!queue.isEmpty()) {
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">while</span> (!queue.isEmpty()) {
     <span class="hljs-type">int</span> <span class="hljs-variable">size</span> <span class="hljs-operator">=</span> queue.size();
     <span class="hljs-type">boolean</span> <span class="hljs-variable">rottedThisMinute</span> <span class="hljs-operator">=</span> <span class="hljs-literal">false</span>;
 
@@ -2292,7 +2256,7 @@ Layer N+1: Queue = [(2,2)], freshOrange = 0
 
     <span class="hljs-keyword">if</span> (rottedThisMinute) time++;  <span class="hljs-comment">// Only count if actual infection happened</span>
 }
-</code></pre>
+</code></pre></div>
 <p><strong>Why it works:</strong></p>
 <ul>
 <li>Even if queue has items (previously infected cells)</li>
@@ -2300,12 +2264,12 @@ Layer N+1: Queue = [(2,2)], freshOrange = 0
 <li>No increment → no over-counting</li>
 </ul>
 <h4 id="concrete-example-lc-994-rotting-oranges-1" tabindex="-1"><a class="header-anchor" href="#concrete-example-lc-994-rotting-oranges-1"><span>Concrete Example: LC 994 - Rotting Oranges</span></a></h4>
-<pre><code class="hljs">Grid: [[2,1,1],    Initial: 6 fresh oranges, 1 rotten at (0,0)
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Grid: [[2,1,1],    Initial: 6 fresh oranges, 1 rotten at (0,0)
        [1,1,0],
        [0,1,1]]    Expected answer: 4 minutes
-</code></pre>
+</code></pre></div>
 <p><strong>Approach A Trace (time++ at beginning with <code>freshOrange &gt; 0</code>):</strong></p>
-<pre><code class="hljs">Initial: Queue=[(0,0)], fresh=6, time=0
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Initial: Queue=[(0,0)], fresh=6, time=0
 
 Check: queue not empty &amp;&amp; fresh&gt;0 → TRUE
   time++ → time=1
@@ -2332,9 +2296,9 @@ Check: queue not empty &amp;&amp; fresh&gt;0 → TRUE
 Check: queue not empty &amp;&amp; fresh&gt;0 → FALSE (fresh=0)
   EXIT LOOP
   Return fresh==0 ? time : -1 → time=4 ✓ CORRECT!
-</code></pre>
+</code></pre></div>
 <p><strong>What if we removed <code>freshOrange &gt; 0</code> from while condition?</strong></p>
-<pre><code class="hljs">...continuing from above...
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">...continuing from above...
 
 Check: queue not empty → TRUE (Queue=[(2,2)])
   time++ → time=5  ← WRONG! Over-counting
@@ -2342,7 +2306,7 @@ Check: queue not empty → TRUE (Queue=[(2,2)])
   Queue=[]
 
 Return time=5 ✗ WRONG!
-</code></pre>
+</code></pre></div>
 <h4 id="decision-guide-which-approach-to-use" tabindex="-1"><a class="header-anchor" href="#decision-guide-which-approach-to-use"><span>Decision Guide: Which Approach to Use?</span></a></h4>
 <p><strong>Use Approach A (time++ at beginning) when:</strong></p>
 <ul>
@@ -2418,7 +2382,7 @@ Return time=5 ✗ WRONG!
 <hr>
 <h2 id="advanced-techniques" tabindex="-1"><a class="header-anchor" href="#advanced-techniques"><span>Advanced Techniques</span></a></h2>
 <h3 id="bidirectional-bfs" tabindex="-1"><a class="header-anchor" href="#bidirectional-bfs"><span>Bidirectional BFS</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">bidirectional_bfs</span>(<span class="hljs-params">start, end</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">bidirectional_bfs</span>(<span class="hljs-params">start, end</span>):
     <span class="hljs-string">&quot;&quot;&quot;Meet in the middle - faster for long paths&quot;&quot;&quot;</span>
     <span class="hljs-keyword">if</span> start == end:
         <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>
@@ -2438,9 +2402,9 @@ Return time=5 ✗ WRONG!
                 <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
     
     <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
-</code></pre>
+</code></pre></div>
 <h3 id="bfs-with-priority-dijkstra-like" tabindex="-1"><a class="header-anchor" href="#bfs-with-priority-dijkstra-like"><span>BFS with Priority (Dijkstra-like)</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">import</span> heapq
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">import</span> heapq
 
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">weighted_bfs</span>(<span class="hljs-params">start, end, graph</span>):
     <span class="hljs-string">&quot;&quot;&quot;BFS variant for weighted graphs&quot;&quot;&quot;</span>
@@ -2463,13 +2427,13 @@ Return time=5 ✗ WRONG!
                 heapq.heappush(heap, (new_dist, neighbor))
     
     <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>
-</code></pre>
+</code></pre></div>
 <h2 id="core-concepts-summary" tabindex="-1"><a class="header-anchor" href="#core-concepts-summary"><span>Core Concepts Summary</span></a></h2>
 <h3 id="multi-source-bfs-distance-calculation-lc-542-pattern" tabindex="-1"><a class="header-anchor" href="#multi-source-bfs-distance-calculation-lc-542-pattern"><span>Multi-Source BFS Distance Calculation (LC 542 Pattern)</span></a></h3>
 <p><strong>The Problem Type:</strong>
 Calculate shortest distance from each cell to ANY source cell in a grid.</p>
 <p><strong>Why Multi-Source BFS?</strong></p>
-<pre><code class="hljs">❌ Naive Approach: Start BFS from each target cell
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">❌ Naive Approach: Start BFS from each target cell
    - For each 1, run BFS to find nearest 0
    - Time: O(m×n) targets × O(m×n) BFS = O(m²×n²) ❌
 
@@ -2477,21 +2441,21 @@ Calculate shortest distance from each cell to ANY source cell in a grid.</p>
    - Add all 0s to queue initially
    - Run single BFS that expands from all sources
    - Time: O(m×n) - each cell visited once ✅
-</code></pre>
+</code></pre></div>
 <p><strong>Key Implementation Details:</strong></p>
 <ol>
 <li>
 <p><strong>Initialization Strategy:</strong></p>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Option A: Use sentinel value -1</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Option A: Use sentinel value -1</span>
 mat[r][c] = -<span class="hljs-number">1</span>;  <span class="hljs-comment">// Easier to check: if (mat[nr][nc] == -1)</span>
 
 <span class="hljs-comment">// Option B: Use MAX_VALUE</span>
 mat[r][c] = Integer.MAX_VALUE;  <span class="hljs-comment">// Easier for comparison: if (mat[nr][nc] &gt; mat[r][c] + 1)</span>
-</code></pre>
+</code></pre></div>
 </li>
 <li>
 <p><strong>The Update Condition:</strong></p>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Why only update when new distance is shorter?</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Why only update when new distance is shorter?</span>
 <span class="hljs-keyword">if</span> (mat[nr][nc] &gt; mat[r][c] + <span class="hljs-number">1</span>) {
     mat[nr][nc] = mat[r][c] + <span class="hljs-number">1</span>;
     queue.offer(<span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[]{nr, nc});
@@ -2501,11 +2465,11 @@ mat[r][c] = Integer.MAX_VALUE;  <span class="hljs-comment">// Easier for compari
 <span class="hljs-comment">// - In unweighted BFS, first visit = shortest path</span>
 <span class="hljs-comment">// - If cell already has distance ≤ current + 1, it has a better path</span>
 <span class="hljs-comment">// - Prevents redundant re-processing and ensures O(m×n) time</span>
-</code></pre>
+</code></pre></div>
 </li>
 <li>
 <p><strong>Why First Visit = Shortest Distance:</strong></p>
-<pre><code class="hljs">BFS expands in layers (level-by-level):
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">BFS expands in layers (level-by-level):
 Layer 0: All sources (distance = 0)
 Layer 1: All cells 1 step away (distance = 1)
 Layer 2: All cells 2 steps away (distance = 2)
@@ -2513,7 +2477,7 @@ Layer 2: All cells 2 steps away (distance = 2)
 
 When BFS first reaches a cell, it MUST be via the shortest path
 because all shorter paths were explored in earlier layers.
-</code></pre>
+</code></pre></div>
 </li>
 </ol>
 <p><strong>Pattern Recognition - Use Multi-Source BFS When:</strong></p>
@@ -2706,7 +2670,7 @@ because all shorter paths were explored in earlier layers.
 <blockquote>
 <p>Spread rot from all initial rotten oranges simultaneously level by level.</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 994 - Rotting Oranges</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 994 - Rotting Oranges</span>
 <span class="hljs-comment">// IDEA: Multi-source BFS</span>
 <span class="hljs-comment">// time = O(M*N), space = O(M*N)</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">orangesRotting</span><span class="hljs-params">(<span class="hljs-type">int</span>[][] grid)</span> {
@@ -2738,12 +2702,12 @@ because all shorter paths were explored in earlier layers.
     }
     <span class="hljs-keyword">return</span> fresh == <span class="hljs-number">0</span> ? minutes : -<span class="hljs-number">1</span>;
 }
-</code></pre>
+</code></pre></div>
 <h3 id="2-2-word-ladder-lc-127-bfs-shortest-transformation" tabindex="-1"><a class="header-anchor" href="#2-2-word-ladder-lc-127-bfs-shortest-transformation"><span>2-2) Word Ladder (LC 127) — BFS Shortest Transformation</span></a></h3>
 <blockquote>
 <p>BFS on word graph; each edge connects words differing by one letter.</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 127 - Word Ladder</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 127 - Word Ladder</span>
 <span class="hljs-comment">// IDEA: BFS level by level on word transformations</span>
 <span class="hljs-comment">// time = O(M^2 * N), space = O(M^2 * N)  M=word length, N=wordList size</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">ladderLength</span><span class="hljs-params">(String beginWord, String endWord, List&lt;String&gt; wordList)</span> {
@@ -2772,12 +2736,12 @@ because all shorter paths were explored in earlier layers.
     }
     <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
 }
-</code></pre>
+</code></pre></div>
 <h3 id="2-3-word-ladder-ii-lc-126-bfs-dfs-all-shortest-paths" tabindex="-1"><a class="header-anchor" href="#2-3-word-ladder-ii-lc-126-bfs-dfs-all-shortest-paths"><span>2-3) Word Ladder II (LC 126) — BFS + DFS All Shortest Paths</span></a></h3>
 <blockquote>
 <p>BFS builds a DAG of shortest-path predecessors; DFS enumerates all valid paths.</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 126 - Word Ladder II</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 126 - Word Ladder II</span>
 <span class="hljs-comment">// IDEA: BFS to build predecessors map, then DFS to reconstruct all shortest paths</span>
 <span class="hljs-comment">// time = O(N * M * 26 + output), space = O(N * M)</span>
 <span class="hljs-keyword">public</span> List&lt;List&lt;String&gt;&gt; <span class="hljs-title function_">findLadders</span><span class="hljs-params">(String beginWord, String endWord, List&lt;String&gt; wordList)</span> {
@@ -2849,7 +2813,7 @@ because all shorter paths were explored in earlier layers.
     }
     path.remove(<span class="hljs-number">0</span>);
 }
-</code></pre>
+</code></pre></div>
 <p><strong>Key Differences from LC 127:</strong></p>
 <ul>
 <li><strong>LC 127 (Pattern 7)</strong>: BFS + Backtracking → Find ONE shortest path, early exit</li>
@@ -2861,7 +2825,7 @@ because all shorter paths were explored in earlier layers.
 <blockquote>
 <p>BFS from top-left to bottom-right through 0-cells (8-directional).</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 1091 - Shortest Path in Binary Matrix</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 1091 - Shortest Path in Binary Matrix</span>
 <span class="hljs-comment">// IDEA: BFS — shortest path in unweighted graph</span>
 <span class="hljs-comment">// time = O(N^2), space = O(N^2)</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">shortestPathBinaryMatrix</span><span class="hljs-params">(<span class="hljs-type">int</span>[][] grid)</span> {
@@ -2885,12 +2849,12 @@ because all shorter paths were explored in earlier layers.
     }
     <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>;
 }
-</code></pre>
+</code></pre></div>
 <h3 id="2-4-01-matrix-lc-542-multi-source-bfs-from-all-zeros" tabindex="-1"><a class="header-anchor" href="#2-4-01-matrix-lc-542-multi-source-bfs-from-all-zeros"><span>2-4) 01 Matrix (LC 542) — Multi-source BFS from All Zeros</span></a></h3>
 <blockquote>
 <p>Start BFS from all 0-cells simultaneously; distance propagates outward.</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 542 - 01 Matrix</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 542 - 01 Matrix</span>
 <span class="hljs-comment">// IDEA: Multi-source BFS — enqueue all 0s first, then expand</span>
 <span class="hljs-comment">// time = O(M*N), space = O(M*N)</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span>[][] updateMatrix(<span class="hljs-type">int</span>[][] mat) {
@@ -2915,12 +2879,12 @@ because all shorter paths were explored in earlier layers.
     }
     <span class="hljs-keyword">return</span> dist;
 }
-</code></pre>
+</code></pre></div>
 <h3 id="2-5-open-the-lock-lc-752-bfs-on-state-space" tabindex="-1"><a class="header-anchor" href="#2-5-open-the-lock-lc-752-bfs-on-state-space"><span>2-5) Open the Lock (LC 752) — BFS on State Space</span></a></h3>
 <blockquote>
 <p>Model each lock combination as a node; BFS finds minimum turns to reach target.</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 752 - Open the Lock</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 752 - Open the Lock</span>
 <span class="hljs-comment">// IDEA: BFS on 4-digit combinations; each turn = 1 step</span>
 <span class="hljs-comment">// time = O(10^4 * 4 * 2), space = O(10^4)</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">openLock</span><span class="hljs-params">(String[] deadends, String target)</span> {
@@ -2954,12 +2918,12 @@ because all shorter paths were explored in earlier layers.
     }
     <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>;
 }
-</code></pre>
+</code></pre></div>
 <h3 id="2-6-surrounded-regions-lc-130-bfs-from-border" tabindex="-1"><a class="header-anchor" href="#2-6-surrounded-regions-lc-130-bfs-from-border"><span>2-6) Surrounded Regions (LC 130) — BFS from Border</span></a></h3>
 <blockquote>
 <p>BFS from all border ‘O’ cells; mark reachable ones safe; flip the rest.</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 130 - Surrounded Regions</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 130 - Surrounded Regions</span>
 <span class="hljs-comment">// IDEA: BFS from border O-cells to find non-surrounded regions</span>
 <span class="hljs-comment">// time = O(M*N), space = O(M*N)</span>
 <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">solve</span><span class="hljs-params">(<span class="hljs-type">char</span>[][] board)</span> {
@@ -2983,12 +2947,12 @@ because all shorter paths were explored in earlier layers.
     <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i=<span class="hljs-number">0</span>;i&lt;m;i++) <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> j=<span class="hljs-number">0</span>;j&lt;n;j++)
         board[i][j] = board[i][j]==<span class="hljs-string">&#x27;S&#x27;</span> ? <span class="hljs-string">&#x27;O&#x27;</span> : (board[i][j]==<span class="hljs-string">&#x27;O&#x27;</span> ? <span class="hljs-string">&#x27;X&#x27;</span> : board[i][j]);
 }
-</code></pre>
+</code></pre></div>
 <h3 id="2-7-course-schedule-lc-207-bfs-topological-sort-kahn-s" tabindex="-1"><a class="header-anchor" href="#2-7-course-schedule-lc-207-bfs-topological-sort-kahn-s"><span>2-7) Course Schedule (LC 207) — BFS Topological Sort (Kahn’s)</span></a></h3>
 <blockquote>
 <p>Build in-degree array; BFS processes nodes with zero in-degree iteratively.</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 207 - Course Schedule</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 207 - Course Schedule</span>
 <span class="hljs-comment">// IDEA: Kahn&#x27;s BFS topological sort — detect cycle in directed graph</span>
 <span class="hljs-comment">// time = O(V+E), space = O(V+E)</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">canFinish</span><span class="hljs-params">(<span class="hljs-type">int</span> numCourses, <span class="hljs-type">int</span>[][] prerequisites)</span> {
@@ -3010,12 +2974,12 @@ because all shorter paths were explored in earlier layers.
     }
     <span class="hljs-keyword">return</span> processed == numCourses;
 }
-</code></pre>
+</code></pre></div>
 <h3 id="2-8-walls-and-gates-lc-286-multi-source-bfs" tabindex="-1"><a class="header-anchor" href="#2-8-walls-and-gates-lc-286-multi-source-bfs"><span>2-8) Walls and Gates (LC 286) — Multi-source BFS</span></a></h3>
 <blockquote>
 <p>Start BFS from all gates (0s) simultaneously; fill rooms with shortest distance.</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 286 - Walls and Gates</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 286 - Walls and Gates</span>
 <span class="hljs-comment">// IDEA: Multi-source BFS from all gates — propagate distances</span>
 <span class="hljs-comment">// time = O(M*N), space = O(M*N)</span>
 <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">wallsAndGates</span><span class="hljs-params">(<span class="hljs-type">int</span>[][] rooms)</span> {
@@ -3037,7 +3001,7 @@ because all shorter paths were explored in earlier layers.
         }
     }
 }
-</code></pre>
+</code></pre></div>
 <h3 id="2-9-minimum-height-trees-lc-310-bfs-leaf-trimming" tabindex="-1"><a class="header-anchor" href="#2-9-minimum-height-trees-lc-310-bfs-leaf-trimming"><span>2-9) Minimum Height Trees (LC 310) — BFS Leaf Trimming</span></a></h3>
 <blockquote>
 <p>Repeatedly remove leaf nodes; the remaining 1-2 nodes are the roots of MHTs.</p>
@@ -3050,12 +3014,12 @@ because all shorter paths were explored in earlier layers.
 <li>Repeat until ≤ 2 nodes remain. These are the <strong>centroids</strong> (MHT roots)</li>
 <li>Why ≤ 2? A tree has at most 2 centroids (diameter even → 2, diameter odd → 1)</li>
 </ul>
-<pre><code class="hljs">Example: 0 - 1 - 2 - 3 - 4
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Example: 0 - 1 - 2 - 3 - 4
 
 Layer 1: remove 0, 4  (leaves)
 Layer 2: remove 1, 3  (new leaves)
 Result:  [2] ✅        (centroid)
-</code></pre>
+</code></pre></div>
 <p><strong>Why NOT brute force?</strong></p>
 <ul>
 <li>BFS from every node to compute height → O(N²) → TLE</li>
@@ -3090,7 +3054,7 @@ Result:  [2] ✅        (centroid)
 </table>
 <p><strong>Two Implementation Styles:</strong></p>
 <p>Style 1 — <code>int[] degree</code> array (simpler, preferred):</p>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 310 - Minimum Height Trees</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 310 - Minimum Height Trees</span>
 <span class="hljs-comment">// IDEA: BFS leaf trimming with degree array</span>
 <span class="hljs-comment">// time = O(N), space = O(N)</span>
 <span class="hljs-keyword">public</span> List&lt;Integer&gt; <span class="hljs-title function_">findMinHeightTrees</span><span class="hljs-params">(<span class="hljs-type">int</span> n, <span class="hljs-type">int</span>[][] edges)</span> {
@@ -3125,9 +3089,9 @@ Result:  [2] ✅        (centroid)
     }
     <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;(leaves);
 }
-</code></pre>
+</code></pre></div>
 <p>Style 2 — <code>Set&lt;Integer&gt;</code> adjacency (O(1) removal, tracks actual edges):</p>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 310 - Using Set for adjacency</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 310 - Using Set for adjacency</span>
 <span class="hljs-comment">// time = O(N), space = O(N)</span>
 <span class="hljs-keyword">public</span> List&lt;Integer&gt; <span class="hljs-title function_">findMinHeightTrees_set</span><span class="hljs-params">(<span class="hljs-type">int</span> n, <span class="hljs-type">int</span>[][] edges)</span> {
     <span class="hljs-keyword">if</span> (n == <span class="hljs-number">1</span>) <span class="hljs-keyword">return</span> Collections.singletonList(<span class="hljs-number">0</span>);
@@ -3149,7 +3113,7 @@ Result:  [2] ✅        (centroid)
     }
     <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;(leaves);
 }
-</code></pre>
+</code></pre></div>
 <p><strong>Classic Similar LCs:</strong></p>
 <table>
 <thead>
@@ -3211,7 +3175,7 @@ Result:  [2] ✅        (centroid)
 <blockquote>
 <p>Model board as graph; BFS finds minimum dice rolls to reach final square.</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 909 - Snakes and Ladders</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 909 - Snakes and Ladders</span>
 <span class="hljs-comment">// IDEA: BFS — each square is a node, dice roll = edges</span>
 <span class="hljs-comment">// time = O(N^2), space = O(N^2)</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">snakesAndLadders</span><span class="hljs-params">(<span class="hljs-type">int</span>[][] board)</span> {
@@ -3239,12 +3203,12 @@ Result:  [2] ✅        (centroid)
     }
     <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>;
 }
-</code></pre>
+</code></pre></div>
 <h3 id="2-11-bus-routes-lc-815-route-level-bfs" tabindex="-1"><a class="header-anchor" href="#2-11-bus-routes-lc-815-route-level-bfs"><span>2-11) Bus Routes (LC 815) — Route-Level BFS</span></a></h3>
 <blockquote>
 <p>Map stops to routes; BFS on route IDs counts minimum buses to reach target.</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 815 - Bus Routes</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 815 - Bus Routes</span>
 <span class="hljs-comment">// IDEA: BFS on bus route IDs — each layer = one bus ride</span>
 <span class="hljs-comment">// time = O(N*M), space = O(N*M)  N=routes, M=avg stops per route</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">numBusesToDestination</span><span class="hljs-params">(<span class="hljs-type">int</span>[][] routes, <span class="hljs-type">int</span> source, <span class="hljs-type">int</span> target)</span> {
@@ -3285,12 +3249,12 @@ Result:  [2] ✅        (centroid)
     }
     <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>;
 }
-</code></pre>
+</code></pre></div>
 <h3 id="2-12-pacific-atlantic-water-flow-lc-417-bfs-from-both-oceans" tabindex="-1"><a class="header-anchor" href="#2-12-pacific-atlantic-water-flow-lc-417-bfs-from-both-oceans"><span>2-12) Pacific Atlantic Water Flow (LC 417) — BFS from Both Oceans</span></a></h3>
 <blockquote>
 <p>BFS backward from Pacific and Atlantic borders; cells in both sets can flow to both.</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 417 - Pacific Atlantic Water Flow</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 417 - Pacific Atlantic Water Flow</span>
 <span class="hljs-comment">// IDEA: BFS from Pacific border + Atlantic border; intersection = answer</span>
 <span class="hljs-comment">// time = O(M*N), space = O(M*N)</span>
 <span class="hljs-keyword">public</span> List&lt;List&lt;Integer&gt;&gt; <span class="hljs-title function_">pacificAtlantic</span><span class="hljs-params">(<span class="hljs-type">int</span>[][] heights)</span> {
@@ -3324,12 +3288,12 @@ Result:  [2] ✅        (centroid)
         }
     }
 }
-</code></pre>
+</code></pre></div>
 <h3 id="2-13-perfect-squares-lc-279-bfs-on-abstract-graph-number-decomposition" tabindex="-1"><a class="header-anchor" href="#2-13-perfect-squares-lc-279-bfs-on-abstract-graph-number-decomposition"><span>2-13) Perfect Squares (LC 279) — BFS on Abstract Graph (Number Decomposition)</span></a></h3>
 <blockquote>
 <p>BFS from <code>n</code> toward <code>0</code>; each level subtracts a perfect square. First time we reach 0 = minimum count.</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 279 - Perfect Squares</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 279 - Perfect Squares</span>
 <span class="hljs-comment">// IDEA: BFS — treat each number as a node, edges = subtracting a perfect square</span>
 <span class="hljs-comment">// time = O(N * sqrt(N)), space = O(N)</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">numSquares</span><span class="hljs-params">(<span class="hljs-type">int</span> n)</span> {
@@ -3371,7 +3335,7 @@ Result:  [2] ✅        (centroid)
     }
     <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>;
 }
-</code></pre>
+</code></pre></div>
 
       </div>
       <div class="cheatsheet-footer">

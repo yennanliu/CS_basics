@@ -19,54 +19,18 @@
     }
   })();
   </script>
-  <script>document.addEventListener('DOMContentLoaded', function() {
-    document.querySelectorAll('pre code').forEach(function(codeEl) {
-      var pre = codeEl.parentElement;
-      var lang = '';
-      var cls = codeEl.className || '';
-      var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
-      if (m) lang = m[1];
-
-      // Add line numbers
-      var lines = codeEl.innerHTML.split('
-');
-      if (lines[lines.length - 1] === '') lines.pop();
-      var numbered = lines.map(function(line, i) {
-        return '<span class="hljs-ln-line"><span class="hljs-ln-n" data-line-number="' + (i + 1) + '"></span><span class="hljs-ln-code">' + line + '</span></span>';
-      }).join('
-');
-      codeEl.innerHTML = numbered;
-      codeEl.classList.add('hljs-ln');
-
-      var wrapper = document.createElement('div');
-      wrapper.className = 'code-block-wrapper';
-      pre.parentNode.insertBefore(wrapper, pre);
-      var header = document.createElement('div');
-      header.className = 'code-block-header';
-      if (lang) {
-        var label = document.createElement('span');
-        label.className = 'code-lang-label';
-        label.textContent = lang;
-        header.appendChild(label);
-      } else {
-        header.appendChild(document.createElement('span'));
-      }
-      var btn = document.createElement('button');
-      btn.className = 'copy-btn';
-      btn.textContent = 'Copy';
-      btn.addEventListener('click', function() {
-        var text = Array.from(codeEl.querySelectorAll('.hljs-ln-code')).map(function(el) { return el.textContent; }).join('
-');
-        navigator.clipboard.writeText(text).then(function() {
-          btn.textContent = 'Copied!';
-          btn.classList.add('copied');
-          setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
-        });
-      });
-      header.appendChild(btn);
-      wrapper.appendChild(header);
-      wrapper.appendChild(pre);
+  <script>
+  function copyCode(btn) {
+    var pre = btn.closest('.code-block-wrapper').querySelector('pre');
+    var text = pre ? pre.innerText : '';
+    navigator.clipboard.writeText(text).then(function() {
+      btn.textContent = 'Copied!';
+      btn.classList.add('copied');
+      setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
     });
+  }
+  </script>
+  <script>document.addEventListener('DOMContentLoaded', function() {
     document.querySelectorAll('table').forEach(function(table) {
       if (!table.parentElement.classList.contains('table-wrap')) {
         var wrapper = document.createElement('div');
@@ -191,10 +155,10 @@
 </table>
 <h3 id="core-principle" tabindex="-1"><a class="header-anchor" href="#core-principle"><span>Core Principle</span></a></h3>
 <p>For a problem F(X) where X is the input:</p>
-<pre><code class="hljs">1. Break down into smaller scopes: x₀, x₁, ..., xₙ ∈ X
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">1. Break down into smaller scopes: x₀, x₁, ..., xₙ ∈ X
 2. Recursively solve: F(x₀), F(x₁), ..., F(xₙ)
 3. Combine results to solve F(X)
-</code></pre>
+</code></pre></div>
 <h3 id="quick-tips" tabindex="-1"><a class="header-anchor" href="#quick-tips"><span>Quick Tips</span></a></h3>
 <ul>
 <li><strong>When in doubt</strong>: Write down the <strong>recurrence relationship</strong> (how F(n) relates to F(n-1), F(n-2), etc.)</li>
@@ -207,7 +171,7 @@
 <h3 id="1-2-complexity-analysis" tabindex="-1"><a class="header-anchor" href="#1-2-complexity-analysis"><span>1-2) Complexity Analysis</span></a></h3>
 <p><strong>Time Complexity</strong>:
 Think of recursion as a <strong>tree structure</strong>:</p>
-<pre><code class="hljs">        fib(5)
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">        fib(5)
        /      \
     fib(4)    fib(3)
     /    \     /    \
@@ -216,7 +180,7 @@ fib(3)  fib(2) fib(2) fib(1)
 fib(2) fib(1) fib(1) fib(0)
  /   \
 fib(1) fib(0)
-</code></pre>
+</code></pre></div>
 <p>Given a recursion algorithm: <strong>O(T) = R × O(S)</strong></p>
 <ul>
 <li><strong>R</strong> = number of recursion invocations</li>
@@ -249,12 +213,12 @@ fib(1) fib(0)
 <h2 id="2-patterns" tabindex="-1"><a class="header-anchor" href="#2-patterns"><span>2) Patterns</span></a></h2>
 <h3 id="2-1-basic-operation" tabindex="-1"><a class="header-anchor" href="#2-1-basic-operation"><span>2-1) Basic Operation</span></a></h3>
 <p>Endless loop through elements in list (common in backtracking/generation):</p>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Example: LC 22 (Generate Parentheses)</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Example: LC 22 (Generate Parentheses)</span>
 _<span class="hljs-built_in">list</span> = [<span class="hljs-string">&quot;(&quot;</span>, <span class="hljs-string">&quot;)&quot;</span>]
 <span class="hljs-keyword">for</span> x <span class="hljs-keyword">in</span> _<span class="hljs-built_in">list</span>:
     _tmp = tmp + x
     <span class="hljs-built_in">help</span>(_tmp)
-</code></pre>
+</code></pre></div>
 <hr>
 <h3 id="2-2-top-down-recursion" tabindex="-1"><a class="header-anchor" href="#2-2-top-down-recursion"><span>2-2) Top-Down Recursion</span></a></h3>
 <p><strong>Definition</strong>: Start from the root and make decisions at each node based on information passed down from parent nodes. Also known as “preorder” approach.</p>
@@ -287,7 +251,7 @@ _<span class="hljs-built_in">list</span> = [<span class="hljs-string">&quot;(&qu
 <li>Can have higher space complexity due to call stack</li>
 </ul>
 <p><strong>Pattern</strong>:</p>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">topDown</span>(<span class="hljs-params">node, parentInfo</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">topDown</span>(<span class="hljs-params">node, parentInfo</span>):
     <span class="hljs-comment"># Base case</span>
     <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> node:
         <span class="hljs-keyword">return</span> baseResult
@@ -302,7 +266,7 @@ _<span class="hljs-built_in">list</span> = [<span class="hljs-string">&quot;(&qu
 
     <span class="hljs-comment"># Combine results</span>
     <span class="hljs-keyword">return</span> combineResults(currentResult, leftResult, rightResult)
-</code></pre>
+</code></pre></div>
 <p><strong>Common LeetCode Problems</strong>:</p>
 <ul>
 <li>LC 104: Maximum Depth of Binary Tree</li>
@@ -316,7 +280,7 @@ _<span class="hljs-built_in">list</span> = [<span class="hljs-string">&quot;(&qu
 <li>LC 437: Path Sum III</li>
 </ul>
 <p><strong>Example - Path Sum (LC 112)</strong>:</p>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">hasPathSum</span>(<span class="hljs-params">self, root, targetSum</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">hasPathSum</span>(<span class="hljs-params">self, root, targetSum</span>):
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">topDown</span>(<span class="hljs-params">node, currentSum</span>):
         <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> node:
             <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
@@ -332,7 +296,7 @@ _<span class="hljs-built_in">list</span> = [<span class="hljs-string">&quot;(&qu
                 topDown(node.right, currentSum))
 
     <span class="hljs-keyword">return</span> topDown(root, <span class="hljs-number">0</span>)
-</code></pre>
+</code></pre></div>
 <h3 id="2-3-bottom-up-recursion" tabindex="-1"><a class="header-anchor" href="#2-3-bottom-up-recursion"><span>2-3) Bottom-Up Recursion</span></a></h3>
 <p><strong>Definition</strong>: Start from leaf nodes and build up the solution by combining results from child nodes. Also known as “postorder” approach.</p>
 <p><strong>Time Complexity</strong>:</p>
@@ -365,7 +329,7 @@ _<span class="hljs-built_in">list</span> = [<span class="hljs-string">&quot;(&qu
 <li>May need to return multiple values from recursive calls</li>
 </ul>
 <p><strong>Pattern</strong>:</p>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">bottomUp</span>(<span class="hljs-params">node</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">bottomUp</span>(<span class="hljs-params">node</span>):
     <span class="hljs-comment"># Base case</span>
     <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> node:
         <span class="hljs-keyword">return</span> baseResult
@@ -378,7 +342,7 @@ _<span class="hljs-built_in">list</span> = [<span class="hljs-string">&quot;(&qu
     currentResult = processNode(node, leftResult, rightResult)
 
     <span class="hljs-keyword">return</span> currentResult
-</code></pre>
+</code></pre></div>
 <p><strong>Common LeetCode Problems</strong>:</p>
 <ul>
 <li>LC 104: Maximum Depth of Binary Tree</li>
@@ -392,7 +356,7 @@ _<span class="hljs-built_in">list</span> = [<span class="hljs-string">&quot;(&qu
 <li>LC 1372: Longest ZigZag Path in a Binary Tree</li>
 </ul>
 <p><strong>Example - Maximum Depth (LC 104)</strong>:</p>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">maxDepth</span>(<span class="hljs-params">self, root</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">maxDepth</span>(<span class="hljs-params">self, root</span>):
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">bottomUp</span>(<span class="hljs-params">node</span>):
         <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> node:
             <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>
@@ -405,9 +369,9 @@ _<span class="hljs-built_in">list</span> = [<span class="hljs-string">&quot;(&qu
         <span class="hljs-keyword">return</span> <span class="hljs-built_in">max</span>(leftDepth, rightDepth) + <span class="hljs-number">1</span>
 
     <span class="hljs-keyword">return</span> bottomUp(root)
-</code></pre>
+</code></pre></div>
 <p><strong>Example - Balanced Binary Tree (LC 110)</strong>:</p>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">isBalanced</span>(<span class="hljs-params">self, root</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">isBalanced</span>(<span class="hljs-params">self, root</span>):
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">bottomUp</span>(<span class="hljs-params">node</span>):
         <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> node:
             <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>, <span class="hljs-number">0</span>  <span class="hljs-comment"># (isBalanced, height)</span>
@@ -430,7 +394,7 @@ _<span class="hljs-built_in">list</span> = [<span class="hljs-string">&quot;(&qu
 
     balanced, _ = bottomUp(root)
     <span class="hljs-keyword">return</span> balanced
-</code></pre>
+</code></pre></div>
 <p><strong>Comparison Table</strong>:</p>
 <table>
 <thead>
@@ -477,7 +441,7 @@ _<span class="hljs-built_in">list</span> = [<span class="hljs-string">&quot;(&qu
 <h3 id="2-4-pass-state-to-next-recursion" tabindex="-1"><a class="header-anchor" href="#2-4-pass-state-to-next-recursion"><span>2-4) Pass State to Next Recursion</span></a></h3>
 <p>Pass accumulated state/context as parameters to child recursive calls. Useful when you need to track information from parent nodes.</p>
 <p><strong>Example: LC 404 (Sum of Left Leaves)</strong></p>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 404 - Sum of Left Leaves</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 404 - Sum of Left Leaves</span>
 <span class="hljs-comment">// IDEA: Pre-order traversal, pass isLeft flag to track if node is left child</span>
 <span class="hljs-keyword">private</span> <span class="hljs-type">int</span> <span class="hljs-title function_">processSubtree</span><span class="hljs-params">(TreeNode subtree, <span class="hljs-type">boolean</span> isLeft)</span> {
     <span class="hljs-comment">// Base case: empty subtree</span>
@@ -493,13 +457,13 @@ _<span class="hljs-built_in">list</span> = [<span class="hljs-string">&quot;(&qu
     <span class="hljs-comment">// Recursive case: process left and right subtrees</span>
     <span class="hljs-keyword">return</span> processSubtree(subtree.left, <span class="hljs-literal">true</span>) + processSubtree(subtree.right, <span class="hljs-literal">false</span>);
 }
-</code></pre>
+</code></pre></div>
 <p><strong>Key Insight</strong>: By passing <code>isLeft</code> as a parameter, we track parent context without needing global state.</p>
 <hr>
 <h3 id="2-5-any-true-status-in-recursion" tabindex="-1"><a class="header-anchor" href="#2-5-any-true-status-in-recursion"><span>2-5) Any-True Status in Recursion</span></a></h3>
 <p>When you need to find ANY true result among recursive calls, use OR logic. Stop early if any recursive call returns true.</p>
 <p><strong>Example: LC 572 (Subtree of Another Tree)</strong></p>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 572 - Subtree of Another Tree</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 572 - Subtree of Another Tree</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">isSubtree</span><span class="hljs-params">(TreeNode root, TreeNode subRoot)</span> {
     <span class="hljs-comment">// Check if subtree rooted at &#x27;root&#x27; matches &#x27;subRoot&#x27;</span>
     <span class="hljs-comment">// Use OR: if ANY recursive call returns true, short-circuit and return true</span>
@@ -516,7 +480,7 @@ _<span class="hljs-built_in">list</span> = [<span class="hljs-string">&quot;(&qu
         &amp;&amp; isSameTree(node1.left, node2.left) 
         &amp;&amp; isSameTree(node1.right, node2.right);
 }
-</code></pre>
+</code></pre></div>
 <p><strong>Key Insight</strong>: Using OR (<code>||</code>) allows early exit when a true result is found, avoiding unnecessary recursive calls.</p>
 <hr>
 <h3 id="2-6-cartesian-product-construction" tabindex="-1"><a class="header-anchor" href="#2-6-cartesian-product-construction"><span>2-6) Cartesian Product Construction</span></a></h3>
@@ -530,13 +494,13 @@ _<span class="hljs-built_in">list</span> = [<span class="hljs-string">&quot;(&qu
 <li>Any problem where you partition a range and combine all sub-results</li>
 </ul>
 <p><strong>Pattern</strong>:</p>
-<pre><code class="hljs">1. Pick each element i in [start, end] as the &quot;root&quot; / split point
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">1. Pick each element i in [start, end] as the &quot;root&quot; / split point
 2. Recursively build all left results from [start, i-1]
 3. Recursively build all right results from [i+1, end]
 4. Cartesian product: for each left × right, construct and collect result
 5. Base case: empty range → return [null/None] (one empty result, NOT empty list)
-</code></pre>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Template: Recursive Construction via Cartesian Product</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Template: Recursive Construction via Cartesian Product</span>
 <span class="hljs-keyword">private</span> List&lt;TreeNode&gt; <span class="hljs-title function_">build</span><span class="hljs-params">(<span class="hljs-type">int</span> start, <span class="hljs-type">int</span> end)</span> {
     List&lt;TreeNode&gt; res = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();
     <span class="hljs-keyword">if</span> (start &gt; end) {
@@ -552,7 +516,7 @@ _<span class="hljs-built_in">list</span> = [<span class="hljs-string">&quot;(&qu
     }
     <span class="hljs-keyword">return</span> res;
 }
-</code></pre>
+</code></pre></div>
 <p><strong>Key Insight</strong>: Base case must return <code>[null]</code> (list containing null), NOT empty list. Otherwise Cartesian product loses all trees with empty left/right subtrees.</p>
 <p><strong>Optimization</strong>: Add memoization with <code>Map&lt;Pair&lt;Integer,Integer&gt;, List&lt;TreeNode&gt;&gt;</code> to avoid recomputing overlapping subproblems.</p>
 <p><strong>Common LeetCode Problems</strong>:</p>
@@ -564,7 +528,7 @@ _<span class="hljs-built_in">list</span> = [<span class="hljs-string">&quot;(&qu
 <li>LC 1382: Balance a Binary Search Tree</li>
 </ul>
 <p><strong>Example — LC 95: Unique Binary Search Trees II</strong>:</p>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">generateTrees</span>(<span class="hljs-params">n</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">generateTrees</span>(<span class="hljs-params">n</span>):
     <span class="hljs-keyword">if</span> n == <span class="hljs-number">0</span>: <span class="hljs-keyword">return</span> []
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">generate</span>(<span class="hljs-params">start, end</span>):
         <span class="hljs-keyword">if</span> start &gt; end:
@@ -579,7 +543,7 @@ _<span class="hljs-built_in">list</span> = [<span class="hljs-string">&quot;(&qu
                     all_trees.append(root)
         <span class="hljs-keyword">return</span> all_trees
     <span class="hljs-keyword">return</span> generate(<span class="hljs-number">1</span>, n)
-</code></pre>
+</code></pre></div>
 <hr>
 <h2 id="3-advanced-techniques" tabindex="-1"><a class="header-anchor" href="#3-advanced-techniques"><span>3) Advanced Techniques</span></a></h2>
 <h3 id="3-1-memoization" tabindex="-1"><a class="header-anchor" href="#3-1-memoization"><span>3-1) Memoization</span></a></h3>
@@ -591,7 +555,7 @@ _<span class="hljs-built_in">list</span> = [<span class="hljs-string">&quot;(&qu
 <li>Trade space for time (use a hash map for cache)</li>
 </ul>
 <p><strong>Example 1: Fibonacci</strong></p>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Without memoization: O(2^n) — exponential</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Without memoization: O(2^n) — exponential</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">fibonacci</span>(<span class="hljs-params">n</span>):
     <span class="hljs-keyword">if</span> n &lt; <span class="hljs-number">2</span>:
         <span class="hljs-keyword">return</span> n
@@ -610,9 +574,9 @@ _<span class="hljs-built_in">list</span> = [<span class="hljs-string">&quot;(&qu
         cache[n] = res
         <span class="hljs-keyword">return</span> res
     <span class="hljs-keyword">return</span> helper(n)
-</code></pre>
+</code></pre></div>
 <p><strong>Example 2: Climbing Stairs (LC 70)</strong></p>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Without memoization: O(2^n)</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Without memoization: O(2^n)</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">climbStairs</span>(<span class="hljs-params">self, n</span>):
         <span class="hljs-keyword">if</span> n == <span class="hljs-number">1</span>:
@@ -635,17 +599,17 @@ _<span class="hljs-built_in">list</span> = [<span class="hljs-string">&quot;(&qu
             cache[n] = res
             <span class="hljs-keyword">return</span> res
         <span class="hljs-keyword">return</span> helper(n)
-</code></pre>
+</code></pre></div>
 <p><strong>Reference</strong>: <a href="https://leetcode.com/explore/learn/card/recursion-i/255/recursion-memoization/1495/">https://leetcode.com/explore/learn/card/recursion-i/255/recursion-memoization/1495/</a></p>
 <hr>
 <h3 id="3-2-divide-conquer" tabindex="-1"><a class="header-anchor" href="#3-2-divide-conquer"><span>3-2) Divide &amp; Conquer</span></a></h3>
 <p><strong>Template</strong>:</p>
-<pre><code class="hljs">1. Divide: Split problem into subproblems
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">1. Divide: Split problem into subproblems
 2. Conquer: Solve each subproblem recursively
 3. Combine: Merge subproblem results
-</code></pre>
+</code></pre></div>
 <p><strong>Pseudo-code</strong>:</p>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">divide_and_conquer</span>(<span class="hljs-params">problem</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">divide_and_conquer</span>(<span class="hljs-params">problem</span>):
     <span class="hljs-comment"># (1) Divide</span>
     subproblems = divide(problem)
     
@@ -654,7 +618,7 @@ _<span class="hljs-built_in">list</span> = [<span class="hljs-string">&quot;(&qu
     
     <span class="hljs-comment"># (3) Combine</span>
     <span class="hljs-keyword">return</span> combine(results)
-</code></pre>
+</code></pre></div>
 <p><strong>Common Examples</strong>:</p>
 <ul>
 <li>Merge Sort — O(n log n)</li>
@@ -679,16 +643,16 @@ _<span class="hljs-built_in">list</span> = [<span class="hljs-string">&quot;(&qu
 <li>Reduce function call overhead</li>
 </ul>
 <p><strong>How to Convert</strong>:</p>
-<pre><code class="hljs">1. Use a stack or queue to replace the system call stack
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">1. Use a stack or queue to replace the system call stack
 2. At each recursion point, push parameters onto data structure
 3. Replace recursive chain with loop over the data structure
-</code></pre>
+</code></pre></div>
 <p><strong>Example</strong>: <a href="https://leetcode.com/explore/learn/card/recursion-ii/503/recursion-to-iteration/2693/">https://leetcode.com/explore/learn/card/recursion-ii/503/recursion-to-iteration/2693/</a></p>
 <hr>
 <h2 id="4-complete-leetcode-examples" tabindex="-1"><a class="header-anchor" href="#4-complete-leetcode-examples"><span>4) Complete LeetCode Examples</span></a></h2>
 <h3 id="4-1-symmetric-tree-lc-101" tabindex="-1"><a class="header-anchor" href="#4-1-symmetric-tree-lc-101"><span>4-1) Symmetric Tree (LC 101)</span></a></h3>
 <p><strong>Pattern</strong>: Bottom-up recursion, comparing two subtrees in parallel.</p>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">isSymmetric</span>(<span class="hljs-params">self, root</span>):
         <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> root:
             <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
@@ -700,11 +664,11 @@ _<span class="hljs-built_in">list</span> = [<span class="hljs-string">&quot;(&qu
         <span class="hljs-keyword">if</span> left.val != right.val:
             <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
         <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.mirror(left.left, right.right) <span class="hljs-keyword">and</span> <span class="hljs-variable language_">self</span>.mirror(left.right, right.left)
-</code></pre>
+</code></pre></div>
 <hr>
 <h3 id="4-2-one-edit-distance-lc-161" tabindex="-1"><a class="header-anchor" href="#4-2-one-edit-distance-lc-161"><span>4-2) One Edit Distance (LC 161)</span></a></h3>
 <p><strong>Pattern</strong>: Pruning branches early (abs difference &gt; 1), then checking each position.</p>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">isOneEditDistance</span>(<span class="hljs-params">self, s, t</span>):
         m, n = <span class="hljs-built_in">len</span>(s), <span class="hljs-built_in">len</span>(t)
         <span class="hljs-keyword">if</span> <span class="hljs-built_in">abs</span>(m - n) &gt; <span class="hljs-number">1</span>:
@@ -717,11 +681,11 @@ _<span class="hljs-built_in">list</span> = [<span class="hljs-string">&quot;(&qu
                     <span class="hljs-keyword">return</span> s[i + <span class="hljs-number">1</span>:] == t[i + <span class="hljs-number">1</span>:]
                 <span class="hljs-keyword">return</span> s[i:] == t[i + <span class="hljs-number">1</span>:]
         <span class="hljs-keyword">return</span> m != n
-</code></pre>
+</code></pre></div>
 <hr>
 <h3 id="4-3-merge-two-sorted-lists-lc-21" tabindex="-1"><a class="header-anchor" href="#4-3-merge-two-sorted-lists-lc-21"><span>4-3) Merge Two Sorted Lists (LC 21)</span></a></h3>
 <p><strong>Pattern</strong>: Simple recursion with local state update.</p>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">mergeTwoLists</span>(<span class="hljs-params">self, l1, l2</span>):
         <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> l1 <span class="hljs-keyword">or</span> <span class="hljs-keyword">not</span> l2:
             <span class="hljs-keyword">return</span> l1 <span class="hljs-keyword">or</span> l2
@@ -731,11 +695,11 @@ _<span class="hljs-built_in">list</span> = [<span class="hljs-string">&quot;(&qu
         <span class="hljs-keyword">else</span>:
             l2.<span class="hljs-built_in">next</span> = <span class="hljs-variable language_">self</span>.mergeTwoLists(l1, l2.<span class="hljs-built_in">next</span>)
             <span class="hljs-keyword">return</span> l2
-</code></pre>
+</code></pre></div>
 <hr>
 <h3 id="4-4-subtree-of-another-tree-lc-572" tabindex="-1"><a class="header-anchor" href="#4-4-subtree-of-another-tree-lc-572"><span>4-4) Subtree of Another Tree (LC 572)</span></a></h3>
 <p><strong>Pattern</strong>: Any-true status with recursive helper.</p>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">isSubtree</span>(<span class="hljs-params">self, root, subRoot</span>):
         <span class="hljs-keyword">def</span> <span class="hljs-title function_">isSameTree</span>(<span class="hljs-params">p, q</span>):
             <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> p <span class="hljs-keyword">and</span> <span class="hljs-keyword">not</span> q:
@@ -754,9 +718,9 @@ _<span class="hljs-built_in">list</span> = [<span class="hljs-string">&quot;(&qu
         <span class="hljs-keyword">return</span> (isSameTree(root, subRoot) <span class="hljs-keyword">or</span> 
                 <span class="hljs-variable language_">self</span>.isSubtree(root.left, subRoot) <span class="hljs-keyword">or</span> 
                 <span class="hljs-variable language_">self</span>.isSubtree(root.right, subRoot))
-</code></pre>
+</code></pre></div>
 <p><strong>Java Version</strong>:</p>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">isSubtree</span><span class="hljs-params">(TreeNode root, TreeNode subRoot)</span> {
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">isSubtree</span><span class="hljs-params">(TreeNode root, TreeNode subRoot)</span> {
     <span class="hljs-keyword">if</span> (root == <span class="hljs-literal">null</span>) {
         <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
     }
@@ -774,7 +738,7 @@ _<span class="hljs-built_in">list</span> = [<span class="hljs-string">&quot;(&qu
            isIdentical(node1.left, node2.left) &amp;&amp; 
            isIdentical(node1.right, node2.right);
 }
-</code></pre>
+</code></pre></div>
 
       </div>
       <div class="cheatsheet-footer">

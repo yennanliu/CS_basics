@@ -19,54 +19,18 @@
     }
   })();
   </script>
-  <script>document.addEventListener('DOMContentLoaded', function() {
-    document.querySelectorAll('pre code').forEach(function(codeEl) {
-      var pre = codeEl.parentElement;
-      var lang = '';
-      var cls = codeEl.className || '';
-      var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
-      if (m) lang = m[1];
-
-      // Add line numbers
-      var lines = codeEl.innerHTML.split('
-');
-      if (lines[lines.length - 1] === '') lines.pop();
-      var numbered = lines.map(function(line, i) {
-        return '<span class="hljs-ln-line"><span class="hljs-ln-n" data-line-number="' + (i + 1) + '"></span><span class="hljs-ln-code">' + line + '</span></span>';
-      }).join('
-');
-      codeEl.innerHTML = numbered;
-      codeEl.classList.add('hljs-ln');
-
-      var wrapper = document.createElement('div');
-      wrapper.className = 'code-block-wrapper';
-      pre.parentNode.insertBefore(wrapper, pre);
-      var header = document.createElement('div');
-      header.className = 'code-block-header';
-      if (lang) {
-        var label = document.createElement('span');
-        label.className = 'code-lang-label';
-        label.textContent = lang;
-        header.appendChild(label);
-      } else {
-        header.appendChild(document.createElement('span'));
-      }
-      var btn = document.createElement('button');
-      btn.className = 'copy-btn';
-      btn.textContent = 'Copy';
-      btn.addEventListener('click', function() {
-        var text = Array.from(codeEl.querySelectorAll('.hljs-ln-code')).map(function(el) { return el.textContent; }).join('
-');
-        navigator.clipboard.writeText(text).then(function() {
-          btn.textContent = 'Copied!';
-          btn.classList.add('copied');
-          setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
-        });
-      });
-      header.appendChild(btn);
-      wrapper.appendChild(header);
-      wrapper.appendChild(pre);
+  <script>
+  function copyCode(btn) {
+    var pre = btn.closest('.code-block-wrapper').querySelector('pre');
+    var text = pre ? pre.innerText : '';
+    navigator.clipboard.writeText(text).then(function() {
+      btn.textContent = 'Copied!';
+      btn.classList.add('copied');
+      setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
     });
+  }
+  </script>
+  <script>document.addEventListener('DOMContentLoaded', function() {
     document.querySelectorAll('table').forEach(function(table) {
       if (!table.parentElement.classList.contains('table-wrap')) {
         var wrapper = document.createElement('div');
@@ -217,7 +181,7 @@
 </ul>
 <h2 id="templates-algorithms" tabindex="-1"><a class="header-anchor" href="#templates-algorithms"><span>Templates &amp; Algorithms</span></a></h2>
 <h3 id="template-1-sliding-window-maximum-decreasing-deque" tabindex="-1"><a class="header-anchor" href="#template-1-sliding-window-maximum-decreasing-deque"><span>Template 1: Sliding Window Maximum (Decreasing Deque)</span></a></h3>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java — LC 239 Sliding Window Maximum</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java — LC 239 Sliding Window Maximum</span>
 <span class="hljs-comment">// Time: O(N), Space: O(K)</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span>[] maxSlidingWindow(<span class="hljs-type">int</span>[] nums, <span class="hljs-type">int</span> k) {
     <span class="hljs-type">int</span> <span class="hljs-variable">n</span> <span class="hljs-operator">=</span> nums.length;
@@ -241,8 +205,8 @@
     }
     <span class="hljs-keyword">return</span> result;
 }
-</code></pre>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python — LC 239 Sliding Window Maximum</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python — LC 239 Sliding Window Maximum</span>
 <span class="hljs-comment"># Time: O(N), Space: O(K)</span>
 <span class="hljs-keyword">from</span> collections <span class="hljs-keyword">import</span> deque
 
@@ -260,9 +224,9 @@
         <span class="hljs-keyword">if</span> i &gt;= k - <span class="hljs-number">1</span>:
             result.append(nums[dq[<span class="hljs-number">0</span>]])
     <span class="hljs-keyword">return</span> result
-</code></pre>
+</code></pre></div>
 <h3 id="template-2-dp-optimization-jump-game-vi-lc-1696" tabindex="-1"><a class="header-anchor" href="#template-2-dp-optimization-jump-game-vi-lc-1696"><span>Template 2: DP Optimization — Jump Game VI (LC 1696)</span></a></h3>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java — LC 1696 Jump Game VI</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java — LC 1696 Jump Game VI</span>
 <span class="hljs-comment">// dp[i] = max(dp[j] for j in [i-k, i-1]) + nums[i]</span>
 <span class="hljs-comment">// Time: O(N), Space: O(N)</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">maxResult</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums, <span class="hljs-type">int</span> k)</span> {
@@ -286,8 +250,8 @@
     }
     <span class="hljs-keyword">return</span> dp[n - <span class="hljs-number">1</span>];
 }
-</code></pre>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python — LC 1696 Jump Game VI</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python — LC 1696 Jump Game VI</span>
 <span class="hljs-keyword">from</span> collections <span class="hljs-keyword">import</span> deque
 
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">maxResult</span>(<span class="hljs-params">nums, k</span>):
@@ -304,9 +268,9 @@
             dq.pop()
         dq.append(i)
     <span class="hljs-keyword">return</span> dp[-<span class="hljs-number">1</span>]
-</code></pre>
+</code></pre></div>
 <h3 id="template-3-shortest-subarray-with-sum-k-lc-862" tabindex="-1"><a class="header-anchor" href="#template-3-shortest-subarray-with-sum-k-lc-862"><span>Template 3: Shortest Subarray with Sum ≥ K (LC 862)</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python — LC 862 (handles negative numbers via prefix sum + monotonic deque)</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python — LC 862 (handles negative numbers via prefix sum + monotonic deque)</span>
 <span class="hljs-comment"># Time: O(N), Space: O(N)</span>
 <span class="hljs-keyword">from</span> collections <span class="hljs-keyword">import</span> deque
 
@@ -329,9 +293,9 @@
         dq.append(i)
 
     <span class="hljs-keyword">return</span> ans <span class="hljs-keyword">if</span> ans &lt;= n <span class="hljs-keyword">else</span> -<span class="hljs-number">1</span>
-</code></pre>
+</code></pre></div>
 <h2 id="key-decision-guide" tabindex="-1"><a class="header-anchor" href="#key-decision-guide"><span>Key Decision Guide</span></a></h2>
-<pre><code class="hljs">Need sliding window max/min?
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Need sliding window max/min?
   → Monotonic Deque: O(N) time, O(K) space
   → Alternative: Heap O(N log N) — slower but simpler
 
@@ -343,7 +307,7 @@ Subarray sum with negative numbers?
 
 Need BOTH min and max in window?
   → Two deques: one increasing, one decreasing
-</code></pre>
+</code></pre></div>
 <h2 id="lc-example" tabindex="-1"><a class="header-anchor" href="#lc-example"><span>LC Example</span></a></h2>
 <table>
 <thead>

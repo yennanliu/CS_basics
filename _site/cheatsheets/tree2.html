@@ -19,54 +19,18 @@
     }
   })();
   </script>
-  <script>document.addEventListener('DOMContentLoaded', function() {
-    document.querySelectorAll('pre code').forEach(function(codeEl) {
-      var pre = codeEl.parentElement;
-      var lang = '';
-      var cls = codeEl.className || '';
-      var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
-      if (m) lang = m[1];
-
-      // Add line numbers
-      var lines = codeEl.innerHTML.split('
-');
-      if (lines[lines.length - 1] === '') lines.pop();
-      var numbered = lines.map(function(line, i) {
-        return '<span class="hljs-ln-line"><span class="hljs-ln-n" data-line-number="' + (i + 1) + '"></span><span class="hljs-ln-code">' + line + '</span></span>';
-      }).join('
-');
-      codeEl.innerHTML = numbered;
-      codeEl.classList.add('hljs-ln');
-
-      var wrapper = document.createElement('div');
-      wrapper.className = 'code-block-wrapper';
-      pre.parentNode.insertBefore(wrapper, pre);
-      var header = document.createElement('div');
-      header.className = 'code-block-header';
-      if (lang) {
-        var label = document.createElement('span');
-        label.className = 'code-lang-label';
-        label.textContent = lang;
-        header.appendChild(label);
-      } else {
-        header.appendChild(document.createElement('span'));
-      }
-      var btn = document.createElement('button');
-      btn.className = 'copy-btn';
-      btn.textContent = 'Copy';
-      btn.addEventListener('click', function() {
-        var text = Array.from(codeEl.querySelectorAll('.hljs-ln-code')).map(function(el) { return el.textContent; }).join('
-');
-        navigator.clipboard.writeText(text).then(function() {
-          btn.textContent = 'Copied!';
-          btn.classList.add('copied');
-          setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
-        });
-      });
-      header.appendChild(btn);
-      wrapper.appendChild(header);
-      wrapper.appendChild(pre);
+  <script>
+  function copyCode(btn) {
+    var pre = btn.closest('.code-block-wrapper').querySelector('pre');
+    var text = pre ? pre.innerText : '';
+    navigator.clipboard.writeText(text).then(function() {
+      btn.textContent = 'Copied!';
+      btn.classList.add('copied');
+      setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
     });
+  }
+  </script>
+  <script>document.addEventListener('DOMContentLoaded', function() {
     document.querySelectorAll('table').forEach(function(table) {
       if (!table.parentElement.classList.contains('table-wrap')) {
         var wrapper = document.createElement('div');
@@ -157,7 +121,7 @@
 <strong>Time Complexity</strong>: O(n)
 <strong>Space Complexity</strong>: O(h) for recursion stack</p>
 <h4 id="template-code" tabindex="-1"><a class="header-anchor" href="#template-code"><span>Template Code</span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - Recursive</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - Recursive</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">preorder_traversal</span>(<span class="hljs-params">root</span>):
     result = []
 
@@ -196,8 +160,8 @@
             stack.append(node.left)
 
     <span class="hljs-keyword">return</span> result
-</code></pre>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java - Recursive</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java - Recursive</span>
 <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">preorderTraversal</span><span class="hljs-params">(TreeNode root, List&lt;Integer&gt; result)</span> {
     <span class="hljs-keyword">if</span> (root == <span class="hljs-literal">null</span>) <span class="hljs-keyword">return</span>;
 
@@ -224,7 +188,7 @@
 
     <span class="hljs-keyword">return</span> result;
 }
-</code></pre>
+</code></pre></div>
 <h4 id="leetcode-problems" tabindex="-1"><a class="header-anchor" href="#leetcode-problems"><span>LeetCode Problems</span></a></h4>
 <ul>
 <li>LC 144: Binary Tree Preorder Traversal (Easy)</li>
@@ -237,7 +201,7 @@
 <strong>Time Complexity</strong>: O(n)
 <strong>Space Complexity</strong>: O(h)</p>
 <h4 id="template-code-1" tabindex="-1"><a class="header-anchor" href="#template-code-1"><span>Template Code</span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - Recursive</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - Recursive</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">inorder_traversal</span>(<span class="hljs-params">root</span>):
     result = []
 
@@ -277,8 +241,8 @@
         current = current.right
 
     <span class="hljs-keyword">return</span> result
-</code></pre>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java - Recursive</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java - Recursive</span>
 <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">inorderTraversal</span><span class="hljs-params">(TreeNode root, List&lt;Integer&gt; result)</span> {
     <span class="hljs-keyword">if</span> (root == <span class="hljs-literal">null</span>) <span class="hljs-keyword">return</span>;
 
@@ -306,7 +270,7 @@
 
     <span class="hljs-keyword">return</span> result;
 }
-</code></pre>
+</code></pre></div>
 <h4 id="leetcode-problems-1" tabindex="-1"><a class="header-anchor" href="#leetcode-problems-1"><span>LeetCode Problems</span></a></h4>
 <ul>
 <li>LC 94: Binary Tree Inorder Traversal (Easy)</li>
@@ -320,7 +284,7 @@
 <strong>Time Complexity</strong>: O(n)
 <strong>Space Complexity</strong>: O(h)</p>
 <h4 id="template-code-2" tabindex="-1"><a class="header-anchor" href="#template-code-2"><span>Template Code</span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - Recursive</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - Recursive</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">postorder_traversal</span>(<span class="hljs-params">root</span>):
     result = []
 
@@ -364,8 +328,8 @@
         result.append(stack2.pop().val)
 
     <span class="hljs-keyword">return</span> result
-</code></pre>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java - Recursive</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java - Recursive</span>
 <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">postorderTraversal</span><span class="hljs-params">(TreeNode root, List&lt;Integer&gt; result)</span> {
     <span class="hljs-keyword">if</span> (root == <span class="hljs-literal">null</span>) <span class="hljs-keyword">return</span>;
 
@@ -373,7 +337,7 @@
     postorderTraversal(root.right, result);  <span class="hljs-comment">// Right subtree</span>
     result.add(root.val);                    <span class="hljs-comment">// Current node</span>
 }
-</code></pre>
+</code></pre></div>
 <h4 id="leetcode-problems-2" tabindex="-1"><a class="header-anchor" href="#leetcode-problems-2"><span>LeetCode Problems</span></a></h4>
 <ul>
 <li>LC 145: Binary Tree Postorder Traversal (Easy)</li>
@@ -386,7 +350,7 @@
 <strong>Time Complexity</strong>: O(n)
 <strong>Space Complexity</strong>: O(w) where w is max width</p>
 <h4 id="template-code-3" tabindex="-1"><a class="header-anchor" href="#template-code-3"><span>Template Code</span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - BFS with Level Grouping</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - BFS with Level Grouping</span>
 <span class="hljs-keyword">from</span> collections <span class="hljs-keyword">import</span> deque
 
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">level_order_traversal</span>(<span class="hljs-params">root</span>):
@@ -431,8 +395,8 @@
             queue.append(node.right)
 
     <span class="hljs-keyword">return</span> result
-</code></pre>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java - BFS with Level Grouping</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java - BFS with Level Grouping</span>
 <span class="hljs-keyword">public</span> List&lt;List&lt;Integer&gt;&gt; <span class="hljs-title function_">levelOrder</span><span class="hljs-params">(TreeNode root)</span> {
     List&lt;List&lt;Integer&gt;&gt; result = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();
     <span class="hljs-keyword">if</span> (root == <span class="hljs-literal">null</span>) <span class="hljs-keyword">return</span> result;
@@ -457,7 +421,7 @@
 
     <span class="hljs-keyword">return</span> result;
 }
-</code></pre>
+</code></pre></div>
 <h4 id="leetcode-problems-3" tabindex="-1"><a class="header-anchor" href="#leetcode-problems-3"><span>LeetCode Problems</span></a></h4>
 <ul>
 <li>LC 102: Binary Tree Level Order Traversal (Medium)</li>
@@ -472,7 +436,7 @@
 <strong>Time Complexity</strong>: O(n)
 <strong>Space Complexity</strong>: O(w)</p>
 <h4 id="template-code-4" tabindex="-1"><a class="header-anchor" href="#template-code-4"><span>Template Code</span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - Zigzag Level Order</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - Zigzag Level Order</span>
 <span class="hljs-keyword">from</span> collections <span class="hljs-keyword">import</span> deque
 
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">zigzag_level_order</span>(<span class="hljs-params">root</span>):
@@ -505,8 +469,8 @@
         left_to_right = <span class="hljs-keyword">not</span> left_to_right
 
     <span class="hljs-keyword">return</span> result
-</code></pre>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java - Zigzag Level Order</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java - Zigzag Level Order</span>
 <span class="hljs-keyword">public</span> List&lt;List&lt;Integer&gt;&gt; <span class="hljs-title function_">zigzagLevelOrder</span><span class="hljs-params">(TreeNode root)</span> {
     List&lt;List&lt;Integer&gt;&gt; result = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();
     <span class="hljs-keyword">if</span> (root == <span class="hljs-literal">null</span>) <span class="hljs-keyword">return</span> result;
@@ -538,7 +502,7 @@
 
     <span class="hljs-keyword">return</span> result;
 }
-</code></pre>
+</code></pre></div>
 <h4 id="leetcode-problems-4" tabindex="-1"><a class="header-anchor" href="#leetcode-problems-4"><span>LeetCode Problems</span></a></h4>
 <ul>
 <li>LC 103: Binary Tree Zigzag Level Order Traversal (Medium)</li>
@@ -551,7 +515,7 @@
 <strong>Time Complexity</strong>: O(n)
 <strong>Space Complexity</strong>: O(h)</p>
 <h4 id="template-code-5" tabindex="-1"><a class="header-anchor" href="#template-code-5"><span>Template Code</span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - Height Calculation</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - Height Calculation</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">max_depth</span>(<span class="hljs-params">root</span>):
     <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> root:
         <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>
@@ -560,8 +524,8 @@
     right_height = max_depth(root.right)
 
     <span class="hljs-keyword">return</span> <span class="hljs-number">1</span> + <span class="hljs-built_in">max</span>(left_height, right_height)
-</code></pre>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java - Height Calculation</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java - Height Calculation</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">maxDepth</span><span class="hljs-params">(TreeNode root)</span> {
     <span class="hljs-keyword">if</span> (root == <span class="hljs-literal">null</span>) {
         <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
@@ -572,7 +536,7 @@
 
     <span class="hljs-keyword">return</span> <span class="hljs-number">1</span> + Math.max(leftHeight, rightHeight);
 }
-</code></pre>
+</code></pre></div>
 <h4 id="leetcode-problems-5" tabindex="-1"><a class="header-anchor" href="#leetcode-problems-5"><span>LeetCode Problems</span></a></h4>
 <ul>
 <li>LC 104: Maximum Depth of Binary Tree (Easy)</li>
@@ -584,7 +548,7 @@
 <strong>Time Complexity</strong>: O(n) worst case, better in practice
 <strong>Space Complexity</strong>: O(w)</p>
 <h4 id="template-code-6" tabindex="-1"><a class="header-anchor" href="#template-code-6"><span>Template Code</span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - Minimum Depth</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - Minimum Depth</span>
 <span class="hljs-keyword">from</span> collections <span class="hljs-keyword">import</span> deque
 
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">min_depth</span>(<span class="hljs-params">root</span>):
@@ -606,8 +570,8 @@
             queue.append((node.right, depth + <span class="hljs-number">1</span>))
 
     <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>
-</code></pre>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java - Minimum Depth</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java - Minimum Depth</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">minDepth</span><span class="hljs-params">(TreeNode root)</span> {
     <span class="hljs-keyword">if</span> (root == <span class="hljs-literal">null</span>) <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
 
@@ -634,7 +598,7 @@
 
     <span class="hljs-keyword">return</span> depth;
 }
-</code></pre>
+</code></pre></div>
 <h4 id="leetcode-problems-6" tabindex="-1"><a class="header-anchor" href="#leetcode-problems-6"><span>LeetCode Problems</span></a></h4>
 <ul>
 <li>LC 111: Minimum Depth of Binary Tree (Easy)</li>
@@ -646,7 +610,7 @@
 <strong>Time Complexity</strong>: O(n)
 <strong>Space Complexity</strong>: O(h)</p>
 <h4 id="template-code-7" tabindex="-1"><a class="header-anchor" href="#template-code-7"><span>Template Code</span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - Balanced Tree Check</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - Balanced Tree Check</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">is_balanced</span>(<span class="hljs-params">root</span>):
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">check_height</span>(<span class="hljs-params">node</span>):
         <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> node:
@@ -667,8 +631,8 @@
         <span class="hljs-keyword">return</span> <span class="hljs-number">1</span> + <span class="hljs-built_in">max</span>(left_height, right_height)
 
     <span class="hljs-keyword">return</span> check_height(root) != -<span class="hljs-number">1</span>
-</code></pre>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java - Balanced Tree Check</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java - Balanced Tree Check</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">isBalanced</span><span class="hljs-params">(TreeNode root)</span> {
     <span class="hljs-keyword">return</span> checkHeight(root) != -<span class="hljs-number">1</span>;
 }
@@ -690,7 +654,7 @@
 
     <span class="hljs-keyword">return</span> <span class="hljs-number">1</span> + Math.max(leftHeight, rightHeight);
 }
-</code></pre>
+</code></pre></div>
 <h4 id="leetcode-problems-7" tabindex="-1"><a class="header-anchor" href="#leetcode-problems-7"><span>LeetCode Problems</span></a></h4>
 <ul>
 <li>LC 110: Balanced Binary Tree (Easy)</li>
@@ -702,7 +666,7 @@
 <strong>Time Complexity</strong>: O(n)
 <strong>Space Complexity</strong>: O(h)</p>
 <h4 id="template-code-8" tabindex="-1"><a class="header-anchor" href="#template-code-8"><span>Template Code</span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - Symmetric Tree</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - Symmetric Tree</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">is_symmetric</span>(<span class="hljs-params">root</span>):
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">is_mirror</span>(<span class="hljs-params">left, right</span>):
         <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> left <span class="hljs-keyword">and</span> <span class="hljs-keyword">not</span> right:
@@ -717,8 +681,8 @@
     <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> root:
         <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
     <span class="hljs-keyword">return</span> is_mirror(root.left, root.right)
-</code></pre>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java - Symmetric Tree</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java - Symmetric Tree</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">isSymmetric</span><span class="hljs-params">(TreeNode root)</span> {
     <span class="hljs-keyword">if</span> (root == <span class="hljs-literal">null</span>) <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
     <span class="hljs-keyword">return</span> isMirror(root.left, root.right);
@@ -732,7 +696,7 @@
            isMirror(left.left, right.right) &amp;&amp;
            isMirror(left.right, right.left);
 }
-</code></pre>
+</code></pre></div>
 <h4 id="leetcode-problems-8" tabindex="-1"><a class="header-anchor" href="#leetcode-problems-8"><span>LeetCode Problems</span></a></h4>
 <ul>
 <li>LC 101: Symmetric Tree (Easy)</li>
@@ -744,7 +708,7 @@
 <strong>Time Complexity</strong>: O(n)
 <strong>Space Complexity</strong>: O(h)</p>
 <h4 id="template-code-9" tabindex="-1"><a class="header-anchor" href="#template-code-9"><span>Template Code</span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - Same Tree</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - Same Tree</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">is_same_tree</span>(<span class="hljs-params">p, q</span>):
     <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> p <span class="hljs-keyword">and</span> <span class="hljs-keyword">not</span> q:
         <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
@@ -754,8 +718,8 @@
     <span class="hljs-keyword">return</span> (p.val == q.val <span class="hljs-keyword">and</span>
             is_same_tree(p.left, q.left) <span class="hljs-keyword">and</span>
             is_same_tree(p.right, q.right))
-</code></pre>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java - Same Tree</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java - Same Tree</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">isSameTree</span><span class="hljs-params">(TreeNode p, TreeNode q)</span> {
     <span class="hljs-keyword">if</span> (p == <span class="hljs-literal">null</span> &amp;&amp; q == <span class="hljs-literal">null</span>) <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
     <span class="hljs-keyword">if</span> (p == <span class="hljs-literal">null</span> || q == <span class="hljs-literal">null</span>) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
@@ -764,7 +728,7 @@
            isSameTree(p.left, q.left) &amp;&amp;
            isSameTree(p.right, q.right);
 }
-</code></pre>
+</code></pre></div>
 <h4 id="leetcode-problems-9" tabindex="-1"><a class="header-anchor" href="#leetcode-problems-9"><span>LeetCode Problems</span></a></h4>
 <ul>
 <li>LC 100: Same Tree (Easy)</li>
@@ -778,7 +742,7 @@
 <strong>Time Complexity</strong>: O(n)
 <strong>Space Complexity</strong>: O(h)</p>
 <h4 id="template-code-10" tabindex="-1"><a class="header-anchor" href="#template-code-10"><span>Template Code</span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - Binary Tree Maximum Path Sum</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - Binary Tree Maximum Path Sum</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">max_path_sum</span>(<span class="hljs-params">root</span>):
     max_sum = <span class="hljs-built_in">float</span>(<span class="hljs-string">&#x27;-inf&#x27;</span>)
 
@@ -801,8 +765,8 @@
 
     max_gain(root)
     <span class="hljs-keyword">return</span> max_sum
-</code></pre>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java - Binary Tree Maximum Path Sum</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java - Binary Tree Maximum Path Sum</span>
 <span class="hljs-keyword">private</span> <span class="hljs-type">int</span> <span class="hljs-variable">maxSum</span> <span class="hljs-operator">=</span> Integer.MIN_VALUE;
 
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">maxPathSum</span><span class="hljs-params">(TreeNode root)</span> {
@@ -821,7 +785,7 @@
 
     <span class="hljs-keyword">return</span> node.val + Math.max(leftGain, rightGain);
 }
-</code></pre>
+</code></pre></div>
 <h4 id="leetcode-problems-10" tabindex="-1"><a class="header-anchor" href="#leetcode-problems-10"><span>LeetCode Problems</span></a></h4>
 <ul>
 <li>LC 124: Binary Tree Maximum Path Sum (Hard)</li>
@@ -833,7 +797,7 @@
 <strong>Time Complexity</strong>: O(n)
 <strong>Space Complexity</strong>: O(h)</p>
 <h4 id="template-code-11" tabindex="-1"><a class="header-anchor" href="#template-code-11"><span>Template Code</span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - Path Sum</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - Path Sum</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">has_path_sum</span>(<span class="hljs-params">root, target_sum</span>):
     <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> root:
         <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
@@ -846,8 +810,8 @@
     remaining = target_sum - root.val
     <span class="hljs-keyword">return</span> (has_path_sum(root.left, remaining) <span class="hljs-keyword">or</span>
             has_path_sum(root.right, remaining))
-</code></pre>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java - Path Sum</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java - Path Sum</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">hasPathSum</span><span class="hljs-params">(TreeNode root, <span class="hljs-type">int</span> targetSum)</span> {
     <span class="hljs-keyword">if</span> (root == <span class="hljs-literal">null</span>) {
         <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
@@ -861,7 +825,7 @@
     <span class="hljs-keyword">return</span> hasPathSum(root.left, remaining) ||
            hasPathSum(root.right, remaining);
 }
-</code></pre>
+</code></pre></div>
 <h4 id="leetcode-problems-11" tabindex="-1"><a class="header-anchor" href="#leetcode-problems-11"><span>LeetCode Problems</span></a></h4>
 <ul>
 <li>LC 112: Path Sum (Easy)</li>
@@ -873,7 +837,7 @@
 <strong>Time Complexity</strong>: O(n)
 <strong>Space Complexity</strong>: O(h)</p>
 <h4 id="template-code-12" tabindex="-1"><a class="header-anchor" href="#template-code-12"><span>Template Code</span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - Path Sum II</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - Path Sum II</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">path_sum</span>(<span class="hljs-params">root, target_sum</span>):
     result = []
 
@@ -893,8 +857,8 @@
 
     dfs(root, target_sum, [])
     <span class="hljs-keyword">return</span> result
-</code></pre>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java - Path Sum II</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java - Path Sum II</span>
 <span class="hljs-keyword">public</span> List&lt;List&lt;Integer&gt;&gt; <span class="hljs-title function_">pathSum</span><span class="hljs-params">(TreeNode root, <span class="hljs-type">int</span> targetSum)</span> {
     List&lt;List&lt;Integer&gt;&gt; result = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();
     List&lt;Integer&gt; path = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();
@@ -917,7 +881,7 @@
 
     path.remove(path.size() - <span class="hljs-number">1</span>);  <span class="hljs-comment">// Backtrack</span>
 }
-</code></pre>
+</code></pre></div>
 <h4 id="leetcode-problems-12" tabindex="-1"><a class="header-anchor" href="#leetcode-problems-12"><span>LeetCode Problems</span></a></h4>
 <ul>
 <li>LC 113: Path Sum II (Medium)</li>
@@ -930,7 +894,7 @@
 <strong>Time Complexity</strong>: O(n)
 <strong>Space Complexity</strong>: O(n)</p>
 <h4 id="template-code-13" tabindex="-1"><a class="header-anchor" href="#template-code-13"><span>Template Code</span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - Path Sum III</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - Path Sum III</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">path_sum</span>(<span class="hljs-params">root, target_sum</span>):
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">dfs</span>(<span class="hljs-params">node, current_sum</span>):
         <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> node:
@@ -955,8 +919,8 @@
 
     prefix_sum = {<span class="hljs-number">0</span>: <span class="hljs-number">1</span>}
     <span class="hljs-keyword">return</span> dfs(root, <span class="hljs-number">0</span>)
-</code></pre>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java - Path Sum III</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java - Path Sum III</span>
 <span class="hljs-keyword">private</span> <span class="hljs-type">int</span> <span class="hljs-variable">count</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
 
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">pathSum</span><span class="hljs-params">(TreeNode root, <span class="hljs-type">int</span> targetSum)</span> {
@@ -981,7 +945,7 @@
 
     prefixSum.put(currentSum, prefixSum.get(currentSum) - <span class="hljs-number">1</span>);
 }
-</code></pre>
+</code></pre></div>
 <h4 id="leetcode-problems-13" tabindex="-1"><a class="header-anchor" href="#leetcode-problems-13"><span>LeetCode Problems</span></a></h4>
 <ul>
 <li>LC 437: Path Sum III (Medium)</li>
@@ -993,7 +957,7 @@
 <strong>Time Complexity</strong>: O(n)
 <strong>Space Complexity</strong>: O(h)</p>
 <h4 id="template-code-14" tabindex="-1"><a class="header-anchor" href="#template-code-14"><span>Template Code</span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - Sum Root to Leaf Numbers</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - Sum Root to Leaf Numbers</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">sum_numbers</span>(<span class="hljs-params">root</span>):
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">dfs</span>(<span class="hljs-params">node, current_number</span>):
         <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> node:
@@ -1009,8 +973,8 @@
         <span class="hljs-keyword">return</span> dfs(node.left, current_number) + dfs(node.right, current_number)
 
     <span class="hljs-keyword">return</span> dfs(root, <span class="hljs-number">0</span>)
-</code></pre>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java - Sum Root to Leaf Numbers</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java - Sum Root to Leaf Numbers</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">sumNumbers</span><span class="hljs-params">(TreeNode root)</span> {
     <span class="hljs-keyword">return</span> dfs(root, <span class="hljs-number">0</span>);
 }
@@ -1026,7 +990,7 @@
 
     <span class="hljs-keyword">return</span> dfs(node.left, currentNumber) + dfs(node.right, currentNumber);
 }
-</code></pre>
+</code></pre></div>
 <h4 id="leetcode-problems-14" tabindex="-1"><a class="header-anchor" href="#leetcode-problems-14"><span>LeetCode Problems</span></a></h4>
 <ul>
 <li>LC 129: Sum Root to Leaf Numbers (Medium)</li>
@@ -1038,7 +1002,7 @@
 <strong>Time Complexity</strong>: O(n)
 <strong>Space Complexity</strong>: O(h)</p>
 <h4 id="template-code-15" tabindex="-1"><a class="header-anchor" href="#template-code-15"><span>Template Code</span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - Count Good Nodes</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - Count Good Nodes</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">good_nodes</span>(<span class="hljs-params">root</span>):
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">dfs</span>(<span class="hljs-params">node, max_so_far</span>):
         <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> node:
@@ -1053,8 +1017,8 @@
         <span class="hljs-keyword">return</span> count
 
     <span class="hljs-keyword">return</span> dfs(root, <span class="hljs-built_in">float</span>(<span class="hljs-string">&#x27;-inf&#x27;</span>))
-</code></pre>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java - Count Good Nodes</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java - Count Good Nodes</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">goodNodes</span><span class="hljs-params">(TreeNode root)</span> {
     <span class="hljs-keyword">return</span> dfs(root, Integer.MIN_VALUE);
 }
@@ -1070,7 +1034,7 @@
 
     <span class="hljs-keyword">return</span> count;
 }
-</code></pre>
+</code></pre></div>
 <h4 id="leetcode-problems-15" tabindex="-1"><a class="header-anchor" href="#leetcode-problems-15"><span>LeetCode Problems</span></a></h4>
 <ul>
 <li>LC 1448: Count Good Nodes in Binary Tree (Medium)</li>
@@ -1082,7 +1046,7 @@
 <strong>Time Complexity</strong>: O(n)
 <strong>Space Complexity</strong>: O(h)</p>
 <h4 id="template-code-16" tabindex="-1"><a class="header-anchor" href="#template-code-16"><span>Template Code</span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - Diameter of Binary Tree</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - Diameter of Binary Tree</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">diameter_of_binary_tree</span>(<span class="hljs-params">root</span>):
     diameter = <span class="hljs-number">0</span>
 
@@ -1102,8 +1066,8 @@
 
     depth(root)
     <span class="hljs-keyword">return</span> diameter
-</code></pre>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java - Diameter of Binary Tree</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java - Diameter of Binary Tree</span>
 <span class="hljs-keyword">private</span> <span class="hljs-type">int</span> <span class="hljs-variable">diameter</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
 
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">diameterOfBinaryTree</span><span class="hljs-params">(TreeNode root)</span> {
@@ -1121,7 +1085,7 @@
 
     <span class="hljs-keyword">return</span> <span class="hljs-number">1</span> + Math.max(leftDepth, rightDepth);
 }
-</code></pre>
+</code></pre></div>
 <h4 id="leetcode-problems-16" tabindex="-1"><a class="header-anchor" href="#leetcode-problems-16"><span>LeetCode Problems</span></a></h4>
 <ul>
 <li>LC 543: Diameter of Binary Tree (Easy)</li>
@@ -1133,7 +1097,7 @@
 <strong>Time Complexity</strong>: O(n)
 <strong>Space Complexity</strong>: O(h)</p>
 <h4 id="template-code-17" tabindex="-1"><a class="header-anchor" href="#template-code-17"><span>Template Code</span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - Longest Univalue Path</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - Longest Univalue Path</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">longest_univalue_path</span>(<span class="hljs-params">root</span>):
     longest = <span class="hljs-number">0</span>
 
@@ -1155,8 +1119,8 @@
 
     dfs(root)
     <span class="hljs-keyword">return</span> longest
-</code></pre>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java - Longest Univalue Path</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java - Longest Univalue Path</span>
 <span class="hljs-keyword">private</span> <span class="hljs-type">int</span> <span class="hljs-variable">longest</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
 
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">longestUnivaluePath</span><span class="hljs-params">(TreeNode root)</span> {
@@ -1183,7 +1147,7 @@
 
     <span class="hljs-keyword">return</span> Math.max(leftPath, rightPath);
 }
-</code></pre>
+</code></pre></div>
 <h4 id="leetcode-problems-17" tabindex="-1"><a class="header-anchor" href="#leetcode-problems-17"><span>LeetCode Problems</span></a></h4>
 <ul>
 <li>LC 687: Longest Univalue Path (Medium)</li>
@@ -1196,7 +1160,7 @@
 <strong>Time Complexity</strong>: O(n)
 <strong>Space Complexity</strong>: O(h)</p>
 <h4 id="template-code-18" tabindex="-1"><a class="header-anchor" href="#template-code-18"><span>Template Code</span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - Lowest Common Ancestor</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - Lowest Common Ancestor</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">lowest_common_ancestor</span>(<span class="hljs-params">root, p, q</span>):
     <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> root <span class="hljs-keyword">or</span> root == p <span class="hljs-keyword">or</span> root == q:
         <span class="hljs-keyword">return</span> root
@@ -1210,8 +1174,8 @@
 
     <span class="hljs-comment"># Return non-null child</span>
     <span class="hljs-keyword">return</span> left <span class="hljs-keyword">if</span> left <span class="hljs-keyword">else</span> right
-</code></pre>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java - Lowest Common Ancestor</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java - Lowest Common Ancestor</span>
 <span class="hljs-keyword">public</span> TreeNode <span class="hljs-title function_">lowestCommonAncestor</span><span class="hljs-params">(TreeNode root, TreeNode p, TreeNode q)</span> {
     <span class="hljs-keyword">if</span> (root == <span class="hljs-literal">null</span> || root == p || root == q) {
         <span class="hljs-keyword">return</span> root;
@@ -1226,7 +1190,7 @@
 
     <span class="hljs-keyword">return</span> left != <span class="hljs-literal">null</span> ? left : right;
 }
-</code></pre>
+</code></pre></div>
 <h4 id="leetcode-problems-18" tabindex="-1"><a class="header-anchor" href="#leetcode-problems-18"><span>LeetCode Problems</span></a></h4>
 <ul>
 <li>LC 236: Lowest Common Ancestor of a Binary Tree (Medium)</li>
@@ -1238,7 +1202,7 @@
 <strong>Time Complexity</strong>: O(h)
 <strong>Space Complexity</strong>: O(1) iterative</p>
 <h4 id="template-code-19" tabindex="-1"><a class="header-anchor" href="#template-code-19"><span>Template Code</span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - LCA of BST</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - LCA of BST</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">lowest_common_ancestor_bst</span>(<span class="hljs-params">root, p, q</span>):
     <span class="hljs-keyword">while</span> root:
         <span class="hljs-comment"># Both in left subtree</span>
@@ -1252,8 +1216,8 @@
             <span class="hljs-keyword">return</span> root
 
     <span class="hljs-keyword">return</span> <span class="hljs-literal">None</span>
-</code></pre>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java - LCA of BST</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java - LCA of BST</span>
 <span class="hljs-keyword">public</span> TreeNode <span class="hljs-title function_">lowestCommonAncestor</span><span class="hljs-params">(TreeNode root, TreeNode p, TreeNode q)</span> {
     <span class="hljs-keyword">while</span> (root != <span class="hljs-literal">null</span>) {
         <span class="hljs-keyword">if</span> (p.val &lt; root.val &amp;&amp; q.val &lt; root.val) {
@@ -1267,7 +1231,7 @@
 
     <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;
 }
-</code></pre>
+</code></pre></div>
 <h4 id="leetcode-problems-19" tabindex="-1"><a class="header-anchor" href="#leetcode-problems-19"><span>LeetCode Problems</span></a></h4>
 <ul>
 <li>LC 235: Lowest Common Ancestor of a Binary Search Tree (Easy)</li>
@@ -1279,7 +1243,7 @@
 <strong>Time Complexity</strong>: O(n)
 <strong>Space Complexity</strong>: O(h)</p>
 <h4 id="template-code-20" tabindex="-1"><a class="header-anchor" href="#template-code-20"><span>Template Code</span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - Find Distance in Binary Tree</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - Find Distance in Binary Tree</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">find_distance</span>(<span class="hljs-params">root, p, q</span>):
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">find_lca</span>(<span class="hljs-params">node, p, q</span>):
         <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> node <span class="hljs-keyword">or</span> node.val == p <span class="hljs-keyword">or</span> node.val == q:
@@ -1309,8 +1273,8 @@
 
     lca = find_lca(root, p, q)
     <span class="hljs-keyword">return</span> get_distance(lca, p) + get_distance(lca, q)
-</code></pre>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java - Find Distance in Binary Tree</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java - Find Distance in Binary Tree</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">findDistance</span><span class="hljs-params">(TreeNode root, <span class="hljs-type">int</span> p, <span class="hljs-type">int</span> q)</span> {
     <span class="hljs-type">TreeNode</span> <span class="hljs-variable">lca</span> <span class="hljs-operator">=</span> findLCA(root, p, q);
     <span class="hljs-keyword">return</span> getDistance(lca, p) + getDistance(lca, q);
@@ -1339,7 +1303,7 @@
     <span class="hljs-keyword">if</span> (rightDist != -<span class="hljs-number">1</span>) <span class="hljs-keyword">return</span> rightDist + <span class="hljs-number">1</span>;
     <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>;
 }
-</code></pre>
+</code></pre></div>
 <h4 id="leetcode-problems-20" tabindex="-1"><a class="header-anchor" href="#leetcode-problems-20"><span>LeetCode Problems</span></a></h4>
 <ul>
 <li>LC 1740: Find Distance in a Binary Tree (Medium)</li>
@@ -1351,7 +1315,7 @@
 <strong>Time Complexity</strong>: O(n)
 <strong>Space Complexity</strong>: O(n)</p>
 <h4 id="template-code-21" tabindex="-1"><a class="header-anchor" href="#template-code-21"><span>Template Code</span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - All Nodes Distance K</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - All Nodes Distance K</span>
 <span class="hljs-keyword">from</span> collections <span class="hljs-keyword">import</span> defaultdict, deque
 
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">distance_k</span>(<span class="hljs-params">root, target, k</span>):
@@ -1388,8 +1352,8 @@
                 queue.append((neighbor, distance + <span class="hljs-number">1</span>))
 
     <span class="hljs-keyword">return</span> result
-</code></pre>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java - All Nodes Distance K</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java - All Nodes Distance K</span>
 Map&lt;Integer, List&lt;Integer&gt;&gt; graph = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;();
 
 <span class="hljs-keyword">public</span> List&lt;Integer&gt; <span class="hljs-title function_">distanceK</span><span class="hljs-params">(TreeNode root, TreeNode target, <span class="hljs-type">int</span> k)</span> {
@@ -1434,7 +1398,7 @@ Map&lt;Integer, List&lt;Integer&gt;&gt; graph = <span class="hljs-keyword">new</
         <span class="hljs-keyword">if</span> (child.right != <span class="hljs-literal">null</span>) buildGraph(child, child.right);
     }
 }
-</code></pre>
+</code></pre></div>
 <h4 id="leetcode-problems-21" tabindex="-1"><a class="header-anchor" href="#leetcode-problems-21"><span>LeetCode Problems</span></a></h4>
 <ul>
 <li>LC 863: All Nodes Distance K in Binary Tree (Medium)</li>
@@ -1447,14 +1411,14 @@ Map&lt;Integer, List&lt;Integer&gt;&gt; graph = <span class="hljs-keyword">new</
 <strong>Time Complexity</strong>: O(n)
 <strong>Space Complexity</strong>: O(h)</p>
 <h4 id="template-code-22" tabindex="-1"><a class="header-anchor" href="#template-code-22"><span>Template Code</span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - Height Calculation</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - Height Calculation</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">height</span>(<span class="hljs-params">root</span>):
     <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> root:
         <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>
 
     <span class="hljs-keyword">return</span> <span class="hljs-number">1</span> + <span class="hljs-built_in">max</span>(height(root.left), height(root.right))
-</code></pre>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java - Height Calculation</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java - Height Calculation</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">height</span><span class="hljs-params">(TreeNode root)</span> {
     <span class="hljs-keyword">if</span> (root == <span class="hljs-literal">null</span>) {
         <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
@@ -1462,7 +1426,7 @@ Map&lt;Integer, List&lt;Integer&gt;&gt; graph = <span class="hljs-keyword">new</
 
     <span class="hljs-keyword">return</span> <span class="hljs-number">1</span> + Math.max(height(root.left), height(root.right));
 }
-</code></pre>
+</code></pre></div>
 <h4 id="leetcode-problems-22" tabindex="-1"><a class="header-anchor" href="#leetcode-problems-22"><span>LeetCode Problems</span></a></h4>
 <ul>
 <li>LC 104: Maximum Depth of Binary Tree (Easy)</li>
@@ -1474,7 +1438,7 @@ Map&lt;Integer, List&lt;Integer&gt;&gt; graph = <span class="hljs-keyword">new</
 <strong>Time Complexity</strong>: O(n)
 <strong>Space Complexity</strong>: O(h)</p>
 <h4 id="template-code-23" tabindex="-1"><a class="header-anchor" href="#template-code-23"><span>Template Code</span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - Minimum Depth DFS</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - Minimum Depth DFS</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">min_depth</span>(<span class="hljs-params">root</span>):
     <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> root:
         <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>
@@ -1486,8 +1450,8 @@ Map&lt;Integer, List&lt;Integer&gt;&gt; graph = <span class="hljs-keyword">new</
         <span class="hljs-keyword">return</span> <span class="hljs-number">1</span> + min_depth(root.left)
 
     <span class="hljs-keyword">return</span> <span class="hljs-number">1</span> + <span class="hljs-built_in">min</span>(min_depth(root.left), min_depth(root.right))
-</code></pre>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java - Minimum Depth DFS</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java - Minimum Depth DFS</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">minDepth</span><span class="hljs-params">(TreeNode root)</span> {
     <span class="hljs-keyword">if</span> (root == <span class="hljs-literal">null</span>) <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
 
@@ -1500,7 +1464,7 @@ Map&lt;Integer, List&lt;Integer&gt;&gt; graph = <span class="hljs-keyword">new</
 
     <span class="hljs-keyword">return</span> <span class="hljs-number">1</span> + Math.min(minDepth(root.left), minDepth(root.right));
 }
-</code></pre>
+</code></pre></div>
 <h4 id="leetcode-problems-23" tabindex="-1"><a class="header-anchor" href="#leetcode-problems-23"><span>LeetCode Problems</span></a></h4>
 <ul>
 <li>LC 111: Minimum Depth of Binary Tree (Easy)</li>
@@ -1512,7 +1476,7 @@ Map&lt;Integer, List&lt;Integer&gt;&gt; graph = <span class="hljs-keyword">new</
 <strong>Time Complexity</strong>: O(n)
 <strong>Space Complexity</strong>: O(h)</p>
 <h4 id="template-code-24" tabindex="-1"><a class="header-anchor" href="#template-code-24"><span>Template Code</span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - Balanced Binary Tree</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - Balanced Binary Tree</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">is_balanced</span>(<span class="hljs-params">root</span>):
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">check_height</span>(<span class="hljs-params">node</span>):
         <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> node:
@@ -1532,8 +1496,8 @@ Map&lt;Integer, List&lt;Integer&gt;&gt; graph = <span class="hljs-keyword">new</
         <span class="hljs-keyword">return</span> <span class="hljs-number">1</span> + <span class="hljs-built_in">max</span>(left_height, right_height)
 
     <span class="hljs-keyword">return</span> check_height(root) != -<span class="hljs-number">1</span>
-</code></pre>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java - Balanced Binary Tree</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java - Balanced Binary Tree</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">isBalanced</span><span class="hljs-params">(TreeNode root)</span> {
     <span class="hljs-keyword">return</span> checkHeight(root) != -<span class="hljs-number">1</span>;
 }
@@ -1553,7 +1517,7 @@ Map&lt;Integer, List&lt;Integer&gt;&gt; graph = <span class="hljs-keyword">new</
 
     <span class="hljs-keyword">return</span> <span class="hljs-number">1</span> + Math.max(leftHeight, rightHeight);
 }
-</code></pre>
+</code></pre></div>
 <h4 id="leetcode-problems-24" tabindex="-1"><a class="header-anchor" href="#leetcode-problems-24"><span>LeetCode Problems</span></a></h4>
 <ul>
 <li>LC 110: Balanced Binary Tree (Easy)</li>
@@ -1565,7 +1529,7 @@ Map&lt;Integer, List&lt;Integer&gt;&gt; graph = <span class="hljs-keyword">new</
 <strong>Time Complexity</strong>: O(n)
 <strong>Space Complexity</strong>: O(w)</p>
 <h4 id="template-code-25" tabindex="-1"><a class="header-anchor" href="#template-code-25"><span>Template Code</span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - Find Bottom Left Tree Value</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - Find Bottom Left Tree Value</span>
 <span class="hljs-keyword">from</span> collections <span class="hljs-keyword">import</span> deque
 
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">find_bottom_left_value</span>(<span class="hljs-params">root</span>):
@@ -1588,8 +1552,8 @@ Map&lt;Integer, List&lt;Integer&gt;&gt; graph = <span class="hljs-keyword">new</
                 queue.append(node.right)
 
     <span class="hljs-keyword">return</span> leftmost
-</code></pre>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java - Find Bottom Left Tree Value</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java - Find Bottom Left Tree Value</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">findBottomLeftValue</span><span class="hljs-params">(TreeNode root)</span> {
     Queue&lt;TreeNode&gt; queue = <span class="hljs-keyword">new</span> <span class="hljs-title class_">LinkedList</span>&lt;&gt;();
     queue.offer(root);
@@ -1612,7 +1576,7 @@ Map&lt;Integer, List&lt;Integer&gt;&gt; graph = <span class="hljs-keyword">new</
 
     <span class="hljs-keyword">return</span> leftmost;
 }
-</code></pre>
+</code></pre></div>
 <h4 id="leetcode-problems-25" tabindex="-1"><a class="header-anchor" href="#leetcode-problems-25"><span>LeetCode Problems</span></a></h4>
 <ul>
 <li>LC 513: Find Bottom Left Tree Value (Medium)</li>
@@ -1625,7 +1589,7 @@ Map&lt;Integer, List&lt;Integer&gt;&gt; graph = <span class="hljs-keyword">new</
 <strong>Time Complexity</strong>: O(n)
 <strong>Space Complexity</strong>: O(n)</p>
 <h4 id="template-code-26" tabindex="-1"><a class="header-anchor" href="#template-code-26"><span>Template Code</span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - Build Tree from Preorder and Inorder</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - Build Tree from Preorder and Inorder</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">build_tree</span>(<span class="hljs-params">preorder, inorder</span>):
     <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> preorder <span class="hljs-keyword">or</span> <span class="hljs-keyword">not</span> inorder:
         <span class="hljs-keyword">return</span> <span class="hljs-literal">None</span>
@@ -1658,8 +1622,8 @@ Map&lt;Integer, List&lt;Integer&gt;&gt; graph = <span class="hljs-keyword">new</
     root.right = build_tree_post(inorder[root_index+<span class="hljs-number">1</span>:], postorder[root_index:-<span class="hljs-number">1</span>])
 
     <span class="hljs-keyword">return</span> root
-</code></pre>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java - Build Tree from Preorder and Inorder</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java - Build Tree from Preorder and Inorder</span>
 <span class="hljs-keyword">private</span> <span class="hljs-type">int</span> <span class="hljs-variable">preIndex</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
 <span class="hljs-keyword">private</span> Map&lt;Integer, Integer&gt; inorderMap = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;();
 
@@ -1683,7 +1647,7 @@ Map&lt;Integer, List&lt;Integer&gt;&gt; graph = <span class="hljs-keyword">new</
 
     <span class="hljs-keyword">return</span> root;
 }
-</code></pre>
+</code></pre></div>
 <h4 id="leetcode-problems-26" tabindex="-1"><a class="header-anchor" href="#leetcode-problems-26"><span>LeetCode Problems</span></a></h4>
 <ul>
 <li>LC 105: Construct Binary Tree from Preorder and Inorder Traversal (Medium)</li>
@@ -1696,7 +1660,7 @@ Map&lt;Integer, List&lt;Integer&gt;&gt; graph = <span class="hljs-keyword">new</
 <strong>Time Complexity</strong>: O(n)
 <strong>Space Complexity</strong>: O(n)</p>
 <h4 id="template-code-27" tabindex="-1"><a class="header-anchor" href="#template-code-27"><span>Template Code</span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - Serialize and Deserialize</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - Serialize and Deserialize</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">Codec</span>:
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">serialize</span>(<span class="hljs-params">self, root</span>):
         <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> root:
@@ -1717,8 +1681,8 @@ Map&lt;Integer, List&lt;Integer&gt;&gt; graph = <span class="hljs-keyword">new</
 
         values = <span class="hljs-built_in">iter</span>(data.split(<span class="hljs-string">&quot;,&quot;</span>))
         <span class="hljs-keyword">return</span> build()
-</code></pre>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java - Serialize and Deserialize</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java - Serialize and Deserialize</span>
 <span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Codec</span> {
     <span class="hljs-keyword">public</span> String <span class="hljs-title function_">serialize</span><span class="hljs-params">(TreeNode root)</span> {
         <span class="hljs-keyword">if</span> (root == <span class="hljs-literal">null</span>) {
@@ -1745,7 +1709,7 @@ Map&lt;Integer, List&lt;Integer&gt;&gt; graph = <span class="hljs-keyword">new</
         <span class="hljs-keyword">return</span> node;
     }
 }
-</code></pre>
+</code></pre></div>
 <h4 id="leetcode-problems-27" tabindex="-1"><a class="header-anchor" href="#leetcode-problems-27"><span>LeetCode Problems</span></a></h4>
 <ul>
 <li>LC 297: Serialize and Deserialize Binary Tree (Hard)</li>
@@ -1758,7 +1722,7 @@ Map&lt;Integer, List&lt;Integer&gt;&gt; graph = <span class="hljs-keyword">new</
 <strong>Time Complexity</strong>: O(n)
 <strong>Space Complexity</strong>: O(h)</p>
 <h4 id="template-code-28" tabindex="-1"><a class="header-anchor" href="#template-code-28"><span>Template Code</span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - Construct String from Binary Tree</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - Construct String from Binary Tree</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">tree2str</span>(<span class="hljs-params">root</span>):
     <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> root:
         <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;&quot;</span>
@@ -1770,8 +1734,8 @@ Map&lt;Integer, List&lt;Integer&gt;&gt; graph = <span class="hljs-keyword">new</
         <span class="hljs-keyword">return</span> <span class="hljs-string">f&quot;<span class="hljs-subst">{root.val}</span>(<span class="hljs-subst">{tree2str(root.left)}</span>)&quot;</span>
 
     <span class="hljs-keyword">return</span> <span class="hljs-string">f&quot;<span class="hljs-subst">{root.val}</span>(<span class="hljs-subst">{tree2str(root.left)}</span>)(<span class="hljs-subst">{tree2str(root.right)}</span>)&quot;</span>
-</code></pre>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java - Construct String from Binary Tree</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java - Construct String from Binary Tree</span>
 <span class="hljs-keyword">public</span> String <span class="hljs-title function_">tree2str</span><span class="hljs-params">(TreeNode root)</span> {
     <span class="hljs-keyword">if</span> (root == <span class="hljs-literal">null</span>) <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;&quot;</span>;
 
@@ -1785,7 +1749,7 @@ Map&lt;Integer, List&lt;Integer&gt;&gt; graph = <span class="hljs-keyword">new</
 
     <span class="hljs-keyword">return</span> root.val + <span class="hljs-string">&quot;(&quot;</span> + tree2str(root.left) + <span class="hljs-string">&quot;)(&quot;</span> + tree2str(root.right) + <span class="hljs-string">&quot;)&quot;</span>;
 }
-</code></pre>
+</code></pre></div>
 <h4 id="leetcode-problems-28" tabindex="-1"><a class="header-anchor" href="#leetcode-problems-28"><span>LeetCode Problems</span></a></h4>
 <ul>
 <li>LC 606: Construct String from Binary Tree (Easy)</li>
@@ -1798,7 +1762,7 @@ Map&lt;Integer, List&lt;Integer&gt;&gt; graph = <span class="hljs-keyword">new</
 <strong>Time Complexity</strong>: O(n)
 <strong>Space Complexity</strong>: O(h)</p>
 <h4 id="template-code-29" tabindex="-1"><a class="header-anchor" href="#template-code-29"><span>Template Code</span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - Invert Binary Tree</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - Invert Binary Tree</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">invert_tree</span>(<span class="hljs-params">root</span>):
     <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> root:
         <span class="hljs-keyword">return</span> <span class="hljs-literal">None</span>
@@ -1811,8 +1775,8 @@ Map&lt;Integer, List&lt;Integer&gt;&gt; graph = <span class="hljs-keyword">new</
     invert_tree(root.right)
 
     <span class="hljs-keyword">return</span> root
-</code></pre>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java - Invert Binary Tree</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java - Invert Binary Tree</span>
 <span class="hljs-keyword">public</span> TreeNode <span class="hljs-title function_">invertTree</span><span class="hljs-params">(TreeNode root)</span> {
     <span class="hljs-keyword">if</span> (root == <span class="hljs-literal">null</span>) <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;
 
@@ -1826,7 +1790,7 @@ Map&lt;Integer, List&lt;Integer&gt;&gt; graph = <span class="hljs-keyword">new</
 
     <span class="hljs-keyword">return</span> root;
 }
-</code></pre>
+</code></pre></div>
 <h4 id="leetcode-problems-29" tabindex="-1"><a class="header-anchor" href="#leetcode-problems-29"><span>LeetCode Problems</span></a></h4>
 <ul>
 <li>LC 226: Invert Binary Tree (Easy)</li>
@@ -1838,7 +1802,7 @@ Map&lt;Integer, List&lt;Integer&gt;&gt; graph = <span class="hljs-keyword">new</
 <strong>Time Complexity</strong>: O(n)
 <strong>Space Complexity</strong>: O(h)</p>
 <h4 id="template-code-30" tabindex="-1"><a class="header-anchor" href="#template-code-30"><span>Template Code</span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - Flatten Binary Tree to Linked List</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - Flatten Binary Tree to Linked List</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">flatten</span>(<span class="hljs-params">root</span>):
     <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> root:
         <span class="hljs-keyword">return</span>
@@ -1858,8 +1822,8 @@ Map&lt;Integer, List&lt;Integer&gt;&gt; graph = <span class="hljs-keyword">new</
     <span class="hljs-keyword">while</span> current.right:
         current = current.right
     current.right = right
-</code></pre>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java - Flatten Binary Tree to Linked List</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java - Flatten Binary Tree to Linked List</span>
 <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">flatten</span><span class="hljs-params">(TreeNode root)</span> {
     <span class="hljs-keyword">if</span> (root == <span class="hljs-literal">null</span>) <span class="hljs-keyword">return</span>;
 
@@ -1877,7 +1841,7 @@ Map&lt;Integer, List&lt;Integer&gt;&gt; graph = <span class="hljs-keyword">new</
     }
     current.right = right;
 }
-</code></pre>
+</code></pre></div>
 <h4 id="leetcode-problems-30" tabindex="-1"><a class="header-anchor" href="#leetcode-problems-30"><span>LeetCode Problems</span></a></h4>
 <ul>
 <li>LC 114: Flatten Binary Tree to Linked List (Medium)</li>
@@ -1889,7 +1853,7 @@ Map&lt;Integer, List&lt;Integer&gt;&gt; graph = <span class="hljs-keyword">new</
 <strong>Time Complexity</strong>: O(min(n, m))
 <strong>Space Complexity</strong>: O(min(h1, h2))</p>
 <h4 id="template-code-31" tabindex="-1"><a class="header-anchor" href="#template-code-31"><span>Template Code</span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - Merge Two Binary Trees</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - Merge Two Binary Trees</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">merge_trees</span>(<span class="hljs-params">t1, t2</span>):
     <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> t1 <span class="hljs-keyword">and</span> <span class="hljs-keyword">not</span> t2:
         <span class="hljs-keyword">return</span> <span class="hljs-literal">None</span>
@@ -1906,8 +1870,8 @@ Map&lt;Integer, List&lt;Integer&gt;&gt; graph = <span class="hljs-keyword">new</
     merged.right = merge_trees(t1.right, t2.right)
 
     <span class="hljs-keyword">return</span> merged
-</code></pre>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java - Merge Two Binary Trees</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java - Merge Two Binary Trees</span>
 <span class="hljs-keyword">public</span> TreeNode <span class="hljs-title function_">mergeTrees</span><span class="hljs-params">(TreeNode t1, TreeNode t2)</span> {
     <span class="hljs-keyword">if</span> (t1 == <span class="hljs-literal">null</span> &amp;&amp; t2 == <span class="hljs-literal">null</span>) <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;
     <span class="hljs-keyword">if</span> (t1 == <span class="hljs-literal">null</span>) <span class="hljs-keyword">return</span> t2;
@@ -1920,7 +1884,7 @@ Map&lt;Integer, List&lt;Integer&gt;&gt; graph = <span class="hljs-keyword">new</
 
     <span class="hljs-keyword">return</span> merged;
 }
-</code></pre>
+</code></pre></div>
 <h4 id="leetcode-problems-31" tabindex="-1"><a class="header-anchor" href="#leetcode-problems-31"><span>LeetCode Problems</span></a></h4>
 <ul>
 <li>LC 617: Merge Two Binary Trees (Easy)</li>
@@ -2205,25 +2169,25 @@ Map&lt;Integer, List&lt;Integer&gt;&gt; graph = <span class="hljs-keyword">new</
 </ul>
 <hr>
 <p><strong>Note</strong>: All templates assume TreeNode definition:</p>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">TreeNode</span>:
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">TreeNode</span>:
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, val=<span class="hljs-number">0</span>, left=<span class="hljs-literal">None</span>, right=<span class="hljs-literal">None</span></span>):
         <span class="hljs-variable language_">self</span>.val = val
         <span class="hljs-variable language_">self</span>.left = left
         <span class="hljs-variable language_">self</span>.right = right
-</code></pre>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">class</span> <span class="hljs-title class_">TreeNode</span> {
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">class</span> <span class="hljs-title class_">TreeNode</span> {
     <span class="hljs-type">int</span> val;
     TreeNode left;
     TreeNode right;
     TreeNode(<span class="hljs-type">int</span> x) { val = x; }
 }
-</code></pre>
+</code></pre></div>
 <h2 id="lc-examples" tabindex="-1"><a class="header-anchor" href="#lc-examples"><span>LC Examples</span></a></h2>
 <h3 id="2-1-binary-tree-level-order-traversal-lc-102-bfs" tabindex="-1"><a class="header-anchor" href="#2-1-binary-tree-level-order-traversal-lc-102-bfs"><span>2-1) Binary Tree Level Order Traversal (LC 102) — BFS</span></a></h3>
 <blockquote>
 <p>Use a queue; process all nodes at each level before advancing.</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 102 - Binary Tree Level Order Traversal</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 102 - Binary Tree Level Order Traversal</span>
 <span class="hljs-comment">// IDEA: BFS — process level by level using queue size</span>
 <span class="hljs-comment">// time = O(N), space = O(N)</span>
 <span class="hljs-keyword">public</span> List&lt;List&lt;Integer&gt;&gt; <span class="hljs-title function_">levelOrder</span><span class="hljs-params">(TreeNode root)</span> {
@@ -2244,12 +2208,12 @@ Map&lt;Integer, List&lt;Integer&gt;&gt; graph = <span class="hljs-keyword">new</
     }
     <span class="hljs-keyword">return</span> result;
 }
-</code></pre>
+</code></pre></div>
 <h3 id="2-2-construct-binary-tree-from-preorder-and-inorder-lc-105-recursion" tabindex="-1"><a class="header-anchor" href="#2-2-construct-binary-tree-from-preorder-and-inorder-lc-105-recursion"><span>2-2) Construct Binary Tree from Preorder and Inorder (LC 105) — Recursion</span></a></h3>
 <blockquote>
 <p>Root is preorder[0]; find root in inorder to split left/right subtrees.</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 105 - Construct Binary Tree from Preorder and Inorder Traversal</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 105 - Construct Binary Tree from Preorder and Inorder Traversal</span>
 <span class="hljs-comment">// IDEA: Recursion — preorder gives root, inorder gives left/right split</span>
 <span class="hljs-comment">// time = O(N), space = O(N)</span>
 <span class="hljs-keyword">public</span> TreeNode <span class="hljs-title function_">buildTree</span><span class="hljs-params">(<span class="hljs-type">int</span>[] preorder, <span class="hljs-type">int</span>[] inorder)</span> {
@@ -2266,12 +2230,12 @@ Map&lt;Integer, List&lt;Integer&gt;&gt; graph = <span class="hljs-keyword">new</
     root.right = build(pre, preL + leftSize + <span class="hljs-number">1</span>, preR, in, inRoot + <span class="hljs-number">1</span>, inR, map);
     <span class="hljs-keyword">return</span> root;
 }
-</code></pre>
+</code></pre></div>
 <h3 id="2-3-serialize-and-deserialize-binary-tree-lc-297-bfs-dfs" tabindex="-1"><a class="header-anchor" href="#2-3-serialize-and-deserialize-binary-tree-lc-297-bfs-dfs"><span>2-3) Serialize and Deserialize Binary Tree (LC 297) — BFS / DFS</span></a></h3>
 <blockquote>
 <p>Encode tree as level-order string; decode by reconstructing node by node.</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 297 - Serialize and Deserialize Binary Tree</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 297 - Serialize and Deserialize Binary Tree</span>
 <span class="hljs-comment">// IDEA: Level-order BFS for serialize; reconstruct with queue for deserialize</span>
 <span class="hljs-comment">// time = O(N), space = O(N)</span>
 <span class="hljs-keyword">public</span> String <span class="hljs-title function_">serialize</span><span class="hljs-params">(TreeNode root)</span> {
@@ -2304,12 +2268,12 @@ Map&lt;Integer, List&lt;Integer&gt;&gt; graph = <span class="hljs-keyword">new</
     }
     <span class="hljs-keyword">return</span> root;
 }
-</code></pre>
+</code></pre></div>
 <h3 id="2-4-lowest-common-ancestor-of-binary-tree-lc-236-dfs-post-order" tabindex="-1"><a class="header-anchor" href="#2-4-lowest-common-ancestor-of-binary-tree-lc-236-dfs-post-order"><span>2-4) Lowest Common Ancestor of Binary Tree (LC 236) — DFS Post-order</span></a></h3>
 <blockquote>
 <p>If both left and right subtrees return non-null, current node is the LCA.</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 236 - Lowest Common Ancestor of a Binary Tree</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 236 - Lowest Common Ancestor of a Binary Tree</span>
 <span class="hljs-comment">// IDEA: DFS — if both sides find a target, current node is LCA</span>
 <span class="hljs-comment">// time = O(N), space = O(H)</span>
 <span class="hljs-keyword">public</span> TreeNode <span class="hljs-title function_">lowestCommonAncestor</span><span class="hljs-params">(TreeNode root, TreeNode p, TreeNode q)</span> {
@@ -2319,12 +2283,12 @@ Map&lt;Integer, List&lt;Integer&gt;&gt; graph = <span class="hljs-keyword">new</
     <span class="hljs-keyword">if</span> (left != <span class="hljs-literal">null</span> &amp;&amp; right != <span class="hljs-literal">null</span>) <span class="hljs-keyword">return</span> root;
     <span class="hljs-keyword">return</span> left != <span class="hljs-literal">null</span> ? left : right;
 }
-</code></pre>
+</code></pre></div>
 <h3 id="2-5-binary-tree-maximum-path-sum-lc-124-dfs-with-global-max" tabindex="-1"><a class="header-anchor" href="#2-5-binary-tree-maximum-path-sum-lc-124-dfs-with-global-max"><span>2-5) Binary Tree Maximum Path Sum (LC 124) — DFS with Global Max</span></a></h3>
 <blockquote>
 <p>For each node, max path through it = node.val + max(0, leftGain) + max(0, rightGain).</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 124 - Binary Tree Maximum Path Sum</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 124 - Binary Tree Maximum Path Sum</span>
 <span class="hljs-comment">// IDEA: Post-order DFS — update global max at each node; return max gain upward</span>
 <span class="hljs-comment">// time = O(N), space = O(H)</span>
 <span class="hljs-type">int</span> <span class="hljs-variable">maxSum</span> <span class="hljs-operator">=</span> Integer.MIN_VALUE;
@@ -2339,12 +2303,12 @@ Map&lt;Integer, List&lt;Integer&gt;&gt; graph = <span class="hljs-keyword">new</
     maxSum = Math.max(maxSum, node.val + left + right);
     <span class="hljs-keyword">return</span> node.val + Math.max(left, right);
 }
-</code></pre>
+</code></pre></div>
 <h3 id="2-6-validate-binary-search-tree-lc-98-dfs-with-bounds" tabindex="-1"><a class="header-anchor" href="#2-6-validate-binary-search-tree-lc-98-dfs-with-bounds"><span>2-6) Validate Binary Search Tree (LC 98) — DFS with Bounds</span></a></h3>
 <blockquote>
 <p>Pass valid range (lo, hi) recursively; each node must be strictly within bounds.</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 98 - Validate Binary Search Tree</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 98 - Validate Binary Search Tree</span>
 <span class="hljs-comment">// IDEA: DFS with min/max bounds — value must be in (lo, hi)</span>
 <span class="hljs-comment">// time = O(N), space = O(H)</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">isValidBST</span><span class="hljs-params">(TreeNode root)</span> {
@@ -2355,12 +2319,12 @@ Map&lt;Integer, List&lt;Integer&gt;&gt; graph = <span class="hljs-keyword">new</
     <span class="hljs-keyword">if</span> (node.val &lt;= lo || node.val &gt;= hi) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
     <span class="hljs-keyword">return</span> validate(node.left, lo, node.val) &amp;&amp; validate(node.right, node.val, hi);
 }
-</code></pre>
+</code></pre></div>
 <h3 id="2-7-binary-tree-right-side-view-lc-199-bfs-level-order" tabindex="-1"><a class="header-anchor" href="#2-7-binary-tree-right-side-view-lc-199-bfs-level-order"><span>2-7) Binary Tree Right Side View (LC 199) — BFS Level Order</span></a></h3>
 <blockquote>
 <p>BFS level by level; record the last node of each level as right-side visible.</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 199 - Binary Tree Right Side View</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 199 - Binary Tree Right Side View</span>
 <span class="hljs-comment">// IDEA: BFS — collect rightmost (last) node value per level</span>
 <span class="hljs-comment">// time = O(N), space = O(N)</span>
 <span class="hljs-keyword">public</span> List&lt;Integer&gt; <span class="hljs-title function_">rightSideView</span><span class="hljs-params">(TreeNode root)</span> {
@@ -2379,12 +2343,12 @@ Map&lt;Integer, List&lt;Integer&gt;&gt; graph = <span class="hljs-keyword">new</
     }
     <span class="hljs-keyword">return</span> res;
 }
-</code></pre>
+</code></pre></div>
 <h3 id="2-8-diameter-of-binary-tree-lc-543-dfs-post-order" tabindex="-1"><a class="header-anchor" href="#2-8-diameter-of-binary-tree-lc-543-dfs-post-order"><span>2-8) Diameter of Binary Tree (LC 543) — DFS Post-order</span></a></h3>
 <blockquote>
 <p>Diameter at each node = left depth + right depth; track global maximum.</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 543 - Diameter of Binary Tree</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 543 - Diameter of Binary Tree</span>
 <span class="hljs-comment">// IDEA: Post-order DFS — diameter through node = leftDepth + rightDepth</span>
 <span class="hljs-comment">// time = O(N), space = O(H)</span>
 <span class="hljs-type">int</span> <span class="hljs-variable">diameter</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
@@ -2398,12 +2362,12 @@ Map&lt;Integer, List&lt;Integer&gt;&gt; graph = <span class="hljs-keyword">new</
     diameter = Math.max(diameter, l + r);
     <span class="hljs-keyword">return</span> <span class="hljs-number">1</span> + Math.max(l, r);
 }
-</code></pre>
+</code></pre></div>
 <h3 id="2-9-path-sum-ii-lc-113-dfs-backtracking" tabindex="-1"><a class="header-anchor" href="#2-9-path-sum-ii-lc-113-dfs-backtracking"><span>2-9) Path Sum II (LC 113) — DFS Backtracking</span></a></h3>
 <blockquote>
 <p>DFS from root to leaves; backtrack on return; collect paths summing to target.</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 113 - Path Sum II</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 113 - Path Sum II</span>
 <span class="hljs-comment">// IDEA: DFS backtracking — explore paths, add to result at leaf if sum matches</span>
 <span class="hljs-comment">// time = O(N^2), space = O(N)</span>
 <span class="hljs-keyword">public</span> List&lt;List&lt;Integer&gt;&gt; <span class="hljs-title function_">pathSum</span><span class="hljs-params">(TreeNode root, <span class="hljs-type">int</span> target)</span> {
@@ -2420,12 +2384,12 @@ Map&lt;Integer, List&lt;Integer&gt;&gt; graph = <span class="hljs-keyword">new</
     dfs(node.right, rem - node.val, path, res);
     path.remove(path.size() - <span class="hljs-number">1</span>);
 }
-</code></pre>
+</code></pre></div>
 <h3 id="2-10-flatten-binary-tree-to-linked-list-lc-114-morris-traversal" tabindex="-1"><a class="header-anchor" href="#2-10-flatten-binary-tree-to-linked-list-lc-114-morris-traversal"><span>2-10) Flatten Binary Tree to Linked List (LC 114) — Morris Traversal</span></a></h3>
 <blockquote>
 <p>Find rightmost of left subtree; attach right subtree there; then move left to right.</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 114 - Flatten Binary Tree to Linked List</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 114 - Flatten Binary Tree to Linked List</span>
 <span class="hljs-comment">// IDEA: In-place — attach right subtree to rightmost of left; move left → right</span>
 <span class="hljs-comment">// time = O(N), space = O(1)</span>
 <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">flatten</span><span class="hljs-params">(TreeNode root)</span> {
@@ -2441,12 +2405,12 @@ Map&lt;Integer, List&lt;Integer&gt;&gt; graph = <span class="hljs-keyword">new</
         curr = curr.right;
     }
 }
-</code></pre>
+</code></pre></div>
 <h3 id="2-11-balanced-binary-tree-lc-110-dfs-post-order" tabindex="-1"><a class="header-anchor" href="#2-11-balanced-binary-tree-lc-110-dfs-post-order"><span>2-11) Balanced Binary Tree (LC 110) — DFS Post-order</span></a></h3>
 <blockquote>
 <p>Return -1 from any unbalanced subtree; propagate -1 upward to short-circuit check.</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 110 - Balanced Binary Tree</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 110 - Balanced Binary Tree</span>
 <span class="hljs-comment">// IDEA: Post-order DFS — return height or -1 if unbalanced; propagate upward</span>
 <span class="hljs-comment">// time = O(N), space = O(H)</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">isBalanced</span><span class="hljs-params">(TreeNode root)</span> {
@@ -2458,7 +2422,7 @@ Map&lt;Integer, List&lt;Integer&gt;&gt; graph = <span class="hljs-keyword">new</
     <span class="hljs-keyword">if</span> (l == -<span class="hljs-number">1</span> || r == -<span class="hljs-number">1</span> || Math.abs(l - r) &gt; <span class="hljs-number">1</span>) <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>;
     <span class="hljs-keyword">return</span> <span class="hljs-number">1</span> + Math.max(l, r);
 }
-</code></pre>
+</code></pre></div>
 
       </div>
       <div class="cheatsheet-footer">

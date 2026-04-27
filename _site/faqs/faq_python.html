@@ -19,54 +19,18 @@
     }
   })();
   </script>
-  <script>document.addEventListener('DOMContentLoaded', function() {
-    document.querySelectorAll('pre code').forEach(function(codeEl) {
-      var pre = codeEl.parentElement;
-      var lang = '';
-      var cls = codeEl.className || '';
-      var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
-      if (m) lang = m[1];
-
-      // Add line numbers
-      var lines = codeEl.innerHTML.split('
-');
-      if (lines[lines.length - 1] === '') lines.pop();
-      var numbered = lines.map(function(line, i) {
-        return '<span class="hljs-ln-line"><span class="hljs-ln-n" data-line-number="' + (i + 1) + '"></span><span class="hljs-ln-code">' + line + '</span></span>';
-      }).join('
-');
-      codeEl.innerHTML = numbered;
-      codeEl.classList.add('hljs-ln');
-
-      var wrapper = document.createElement('div');
-      wrapper.className = 'code-block-wrapper';
-      pre.parentNode.insertBefore(wrapper, pre);
-      var header = document.createElement('div');
-      header.className = 'code-block-header';
-      if (lang) {
-        var label = document.createElement('span');
-        label.className = 'code-lang-label';
-        label.textContent = lang;
-        header.appendChild(label);
-      } else {
-        header.appendChild(document.createElement('span'));
-      }
-      var btn = document.createElement('button');
-      btn.className = 'copy-btn';
-      btn.textContent = 'Copy';
-      btn.addEventListener('click', function() {
-        var text = Array.from(codeEl.querySelectorAll('.hljs-ln-code')).map(function(el) { return el.textContent; }).join('
-');
-        navigator.clipboard.writeText(text).then(function() {
-          btn.textContent = 'Copied!';
-          btn.classList.add('copied');
-          setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
-        });
-      });
-      header.appendChild(btn);
-      wrapper.appendChild(header);
-      wrapper.appendChild(pre);
+  <script>
+  function copyCode(btn) {
+    var pre = btn.closest('.code-block-wrapper').querySelector('pre');
+    var text = pre ? pre.innerText : '';
+    navigator.clipboard.writeText(text).then(function() {
+      btn.textContent = 'Copied!';
+      btn.classList.add('copied');
+      setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
     });
+  }
+  </script>
+  <script>document.addEventListener('DOMContentLoaded', function() {
     document.querySelectorAll('table').forEach(function(table) {
       if (!table.parentElement.classList.contains('table-wrap')) {
         var wrapper = document.createElement('div');
@@ -169,7 +133,7 @@
 <p>In short, Decorator is the way pass 1 function as an argument into another function then to another brand new function. (below example)</p>
 </li>
 </ul>
-<pre data-lang="python"><code class="hljs language-python">
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python">
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">decorator</span>(<span class="hljs-params">fn</span>):
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">inner</span>(<span class="hljs-params">n</span>):
         <span class="hljs-keyword">return</span> fn(n) + <span class="hljs-number">1</span>
@@ -187,8 +151,8 @@ f = decorator(f) <span class="hljs-comment"># pass f as arg into decorator as br
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">f</span>(<span class="hljs-params">n</span>):
     <span class="hljs-keyword">return</span> n + <span class="hljs-number">1</span>
 
-</code></pre>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># more detailed example</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># more detailed example</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">wrap_with_prints</span>(<span class="hljs-params">fn</span>):
     <span class="hljs-comment"># This will only happen when a function decorated</span>
     <span class="hljs-comment"># with @wrap_with_prints is defined</span>
@@ -218,7 +182,7 @@ func_to_decorate()
 <span class="hljs-comment"># Running the function that was decorated.</span>
 <span class="hljs-comment"># Done running func_to_decorate</span>
 
-</code></pre>
+</code></pre></div>
 <ul>
 <li><a href="https://www.pythoncentral.io/python-decorators-overview/">https://www.pythoncentral.io/python-decorators-overview/</a></li>
 </ul>
@@ -226,7 +190,7 @@ func_to_decorate()
 <ul>
 <li>The idea of generators is to calculate a series of results one-by-one on demand (on the fly). In the simplest case, a generator can be used as a list, where each element is calculated lazily. Lets compare a list and a generator that do the same thing - return powers of two:</li>
 </ul>
-<pre data-lang="python"><code class="hljs language-python">
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python">
 <span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-comment"># First, we define a list</span>
 <span class="hljs-meta">&gt;&gt;&gt; </span>the_list = [<span class="hljs-number">2</span>**x <span class="hljs-keyword">for</span> x <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">5</span>)]
 &gt;&gt;&gt;
@@ -270,7 +234,7 @@ Traceback (most recent call last):
   File <span class="hljs-string">&quot;&quot;</span>, line <span class="hljs-number">1</span>, <span class="hljs-keyword">in</span>
 TypeError: <span class="hljs-built_in">object</span> of <span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;generator&#x27;</span> has no <span class="hljs-built_in">len</span>()
 
-</code></pre>
+</code></pre></div>
 <ul>
 <li>
 <p>Iterating over the list and the generator looks completely the same. However, although the <code>generator</code> is iterable, <code>it is not a collection</code>, and thus has no length. Collections (lists, tuples, sets, etc) keep all values in memory and we can access them whenever needed.<code>A generator calculates the values on the fly and forgets them</code>, so it does not have any overview about the own result set.</p>
@@ -293,7 +257,7 @@ put in all kinds of objects in lists.  The result will be a new list resulting f
 <p>The list comprehension always returns a result list.</p>
 </li>
 </ul>
-<pre data-lang="python"><code class="hljs language-python">
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python">
 <span class="hljs-comment"># for loop append to a list </span>
 new_list = []
 <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> old_list:
@@ -303,7 +267,7 @@ new_list = []
 <span class="hljs-comment"># via list comprehensions  (for loop append to a list )</span>
 new_list = [expression(i) <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> old_list <span class="hljs-keyword">if</span> <span class="hljs-built_in">filter</span>(i)]
 
-</code></pre>
+</code></pre></div>
 <ul>
 <li><a href="https://www.pythonforbeginners.com/basics/list-comprehensions-in-python">https://www.pythonforbeginners.com/basics/list-comprehensions-in-python</a></li>
 </ul>
@@ -318,7 +282,7 @@ new_list = [expression(i) <span class="hljs-keyword">for</span> i <span class="h
 <ul>
 <li>i.e. <code>x = '99023430990999', y = '99'. The func should return [0, 8, 11, 12]</code></li>
 </ul>
-<pre data-lang="python"><code class="hljs language-python">
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python">
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">findall</span>(<span class="hljs-params">x, y</span>):
     <span class="hljs-string">&#x27;&#x27;&#x27;Yields all the positions of
     the pattern p in the string s.&#x27;&#x27;&#x27;</span>
@@ -351,12 +315,12 @@ new_list = [expression(i) <span class="hljs-keyword">for</span> i <span class="h
 <span class="hljs-comment"># y = &#x27;78&#x27;</span>
 <span class="hljs-comment"># [i for i in findall(x, y)]</span>
 
-</code></pre>
+</code></pre></div>
 <h2 id="defaultdict" tabindex="-1"><a class="header-anchor" href="#defaultdict"><span>Defaultdict</span></a></h2>
 <h4 id="1-given-an-array-richer-1-0-2-1-3-1-3-7-4-3-5-3-6-3-with-the-form-ppl-richer-ppl" tabindex="-1"><a class="header-anchor" href="#1-given-an-array-richer-1-0-2-1-3-1-3-7-4-3-5-3-6-3-with-the-form-ppl-richer-ppl"><span>1) Given an array : richer = [[1,0],[2,1],[3,1],[3,7],[4,3],[5,3],[6,3]] with the form :[ppl, richer ppl]</span></a></h4>
 <p><code>(i.e.:</code>0&gt;1<code>,</code>1&gt;2<code>,</code>1&gt;3<code>...) </code>Find the list
 of ppl with ppl that richer than them?</p>
-<pre data-lang="python"><code class="hljs language-python">richer = [[<span class="hljs-number">1</span>,<span class="hljs-number">0</span>],[<span class="hljs-number">2</span>,<span class="hljs-number">1</span>],[<span class="hljs-number">3</span>,<span class="hljs-number">1</span>],[<span class="hljs-number">3</span>,<span class="hljs-number">7</span>],[<span class="hljs-number">4</span>,<span class="hljs-number">3</span>],[<span class="hljs-number">5</span>,<span class="hljs-number">3</span>],[<span class="hljs-number">6</span>,<span class="hljs-number">3</span>]]
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python">richer = [[<span class="hljs-number">1</span>,<span class="hljs-number">0</span>],[<span class="hljs-number">2</span>,<span class="hljs-number">1</span>],[<span class="hljs-number">3</span>,<span class="hljs-number">1</span>],[<span class="hljs-number">3</span>,<span class="hljs-number">7</span>],[<span class="hljs-number">4</span>,<span class="hljs-number">3</span>],[<span class="hljs-number">5</span>,<span class="hljs-number">3</span>],[<span class="hljs-number">6</span>,<span class="hljs-number">3</span>]]
 <span class="hljs-keyword">import</span> collections 
 ppl_richer = collections.defaultdict(<span class="hljs-built_in">list</span>)
 <span class="hljs-keyword">for</span> i, j <span class="hljs-keyword">in</span> richer:
@@ -367,10 +331,10 @@ ppl_richer = collections.defaultdict(<span class="hljs-built_in">list</span>)
 <span class="hljs-comment">#&gt;&gt;&gt; defaultdict(&lt;class &#x27;list&#x27;&gt;, {1: [0], 2: [1], 3: [1, 7], 4: [3], 5: [3], 6: [3]})</span>
 
 
-</code></pre>
+</code></pre></div>
 <h2 id="subarray" tabindex="-1"><a class="header-anchor" href="#subarray"><span>Subarray</span></a></h2>
 <h4 id="1-find-the-sub-array-as-list-by-multiple" tabindex="-1"><a class="header-anchor" href="#1-find-the-sub-array-as-list-by-multiple"><span>1) Find the sub-array as list by multiple?</span></a></h4>
-<pre data-lang="python"><code class="hljs language-python">
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python">
 array = [ i <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">31</span>) ]
 multiple_2 = array[<span class="hljs-number">2</span>::<span class="hljs-number">2</span>]
 multiple_3 = array[<span class="hljs-number">3</span>::<span class="hljs-number">3</span>]
@@ -385,7 +349,7 @@ multiple_5 = array[<span class="hljs-number">5</span>::<span class="hljs-number"
 <span class="hljs-comment"># In [44]: multiple_5</span>
 <span class="hljs-comment"># Out[44]: [5, 10, 15, 20, 25, 30]</span>
 
-</code></pre>
+</code></pre></div>
 
       </div>
       <div class="cheatsheet-footer">

@@ -19,54 +19,18 @@
     }
   })();
   </script>
-  <script>document.addEventListener('DOMContentLoaded', function() {
-    document.querySelectorAll('pre code').forEach(function(codeEl) {
-      var pre = codeEl.parentElement;
-      var lang = '';
-      var cls = codeEl.className || '';
-      var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
-      if (m) lang = m[1];
-
-      // Add line numbers
-      var lines = codeEl.innerHTML.split('
-');
-      if (lines[lines.length - 1] === '') lines.pop();
-      var numbered = lines.map(function(line, i) {
-        return '<span class="hljs-ln-line"><span class="hljs-ln-n" data-line-number="' + (i + 1) + '"></span><span class="hljs-ln-code">' + line + '</span></span>';
-      }).join('
-');
-      codeEl.innerHTML = numbered;
-      codeEl.classList.add('hljs-ln');
-
-      var wrapper = document.createElement('div');
-      wrapper.className = 'code-block-wrapper';
-      pre.parentNode.insertBefore(wrapper, pre);
-      var header = document.createElement('div');
-      header.className = 'code-block-header';
-      if (lang) {
-        var label = document.createElement('span');
-        label.className = 'code-lang-label';
-        label.textContent = lang;
-        header.appendChild(label);
-      } else {
-        header.appendChild(document.createElement('span'));
-      }
-      var btn = document.createElement('button');
-      btn.className = 'copy-btn';
-      btn.textContent = 'Copy';
-      btn.addEventListener('click', function() {
-        var text = Array.from(codeEl.querySelectorAll('.hljs-ln-code')).map(function(el) { return el.textContent; }).join('
-');
-        navigator.clipboard.writeText(text).then(function() {
-          btn.textContent = 'Copied!';
-          btn.classList.add('copied');
-          setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
-        });
-      });
-      header.appendChild(btn);
-      wrapper.appendChild(header);
-      wrapper.appendChild(pre);
+  <script>
+  function copyCode(btn) {
+    var pre = btn.closest('.code-block-wrapper').querySelector('pre');
+    var text = pre ? pre.innerText : '';
+    navigator.clipboard.writeText(text).then(function() {
+      btn.textContent = 'Copied!';
+      btn.classList.add('copied');
+      setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
     });
+  }
+  </script>
+  <script>document.addEventListener('DOMContentLoaded', function() {
     document.querySelectorAll('table').forEach(function(table) {
       if (!table.parentElement.classList.contains('table-wrap')) {
         var wrapper = document.createElement('div');
@@ -246,7 +210,7 @@
 </tbody>
 </table>
 <h3 id="universal-template" tabindex="-1"><a class="header-anchor" href="#universal-template"><span>Universal Template</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">monotonic_stack_template</span>(<span class="hljs-params">arr</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">monotonic_stack_template</span>(<span class="hljs-params">arr</span>):
     <span class="hljs-string">&quot;&quot;&quot;
     Universal template for monotonic stack problems
     Modify the condition and processing logic based on problem requirements
@@ -284,8 +248,8 @@
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">process_remaining_element</span>(<span class="hljs-params">popped_idx, result</span>):
     <span class="hljs-string">&quot;&quot;&quot;Process elements remaining in stack at the end&quot;&quot;&quot;</span>
     <span class="hljs-keyword">pass</span>
-</code></pre>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java Universal Template</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java Universal Template</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span>[] monotonicStackTemplate(<span class="hljs-type">int</span>[] arr) {
     Stack&lt;Integer&gt; stack = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Stack</span>&lt;&gt;();
     <span class="hljs-type">int</span>[] result = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[arr.length];
@@ -314,9 +278,9 @@
     <span class="hljs-comment">// Define condition based on problem requirements</span>
     <span class="hljs-keyword">return</span> arr[stack.peek()] &lt;= arr[currentIdx]; <span class="hljs-comment">// For next greater</span>
 }
-</code></pre>
+</code></pre></div>
 <h3 id="template-1-next-greater-element-decreasing-stack" tabindex="-1"><a class="header-anchor" href="#template-1-next-greater-element-decreasing-stack"><span>Template 1: Next Greater Element (Decreasing Stack)</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">next_greater_element</span>(<span class="hljs-params">nums</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">next_greater_element</span>(<span class="hljs-params">nums</span>):
     <span class="hljs-string">&quot;&quot;&quot;
     Find next greater element for each element
     LC 496, LC 503, LC 739
@@ -334,8 +298,8 @@
         stack.append(i)
     
     <span class="hljs-keyword">return</span> result
-</code></pre>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java Template 1</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java Template 1</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span>[] nextGreaterElement(<span class="hljs-type">int</span>[] nums) {
     <span class="hljs-type">int</span> <span class="hljs-variable">n</span> <span class="hljs-operator">=</span> nums.length;
     <span class="hljs-type">int</span>[] result = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[n];
@@ -351,9 +315,9 @@
     
     <span class="hljs-keyword">return</span> result;
 }
-</code></pre>
+</code></pre></div>
 <h3 id="template-2-next-smaller-element-increasing-stack" tabindex="-1"><a class="header-anchor" href="#template-2-next-smaller-element-increasing-stack"><span>Template 2: Next Smaller Element (Increasing Stack)</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">next_smaller_element</span>(<span class="hljs-params">nums</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">next_smaller_element</span>(<span class="hljs-params">nums</span>):
     <span class="hljs-string">&quot;&quot;&quot;
     Find next smaller element for each element
     Used in LC 84, LC 42
@@ -371,9 +335,9 @@
         stack.append(i)
     
     <span class="hljs-keyword">return</span> result
-</code></pre>
+</code></pre></div>
 <h3 id="template-3-largest-rectangle-in-histogram" tabindex="-1"><a class="header-anchor" href="#template-3-largest-rectangle-in-histogram"><span>Template 3: Largest Rectangle in Histogram</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">largest_rectangle_area</span>(<span class="hljs-params">heights</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">largest_rectangle_area</span>(<span class="hljs-params">heights</span>):
     <span class="hljs-string">&quot;&quot;&quot;
     Find largest rectangle area in histogram
     LC 84, LC 85
@@ -392,8 +356,8 @@
         stack.append(i)
     
     <span class="hljs-keyword">return</span> max_area
-</code></pre>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java Template 3</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java Template 3</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">largestRectangleArea</span><span class="hljs-params">(<span class="hljs-type">int</span>[] heights)</span> {
     Stack&lt;Integer&gt; stack = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Stack</span>&lt;&gt;();
     <span class="hljs-type">int</span> <span class="hljs-variable">maxArea</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
@@ -413,9 +377,9 @@
     
     <span class="hljs-keyword">return</span> maxArea;
 }
-</code></pre>
+</code></pre></div>
 <h3 id="template-4-circular-array-processing" tabindex="-1"><a class="header-anchor" href="#template-4-circular-array-processing"><span>Template 4: Circular Array Processing</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">next_greater_circular</span>(<span class="hljs-params">nums</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">next_greater_circular</span>(<span class="hljs-params">nums</span>):
     <span class="hljs-string">&quot;&quot;&quot;
     Find next greater element in circular array
     LC 503
@@ -436,9 +400,9 @@
             stack.append(i)
     
     <span class="hljs-keyword">return</span> result
-</code></pre>
+</code></pre></div>
 <h3 id="template-5-stack-with-additional-information" tabindex="-1"><a class="header-anchor" href="#template-5-stack-with-additional-information"><span>Template 5: Stack with Additional Information</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">monotonic_stack_with_info</span>(<span class="hljs-params">nums</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">monotonic_stack_with_info</span>(<span class="hljs-params">nums</span>):
     <span class="hljs-string">&quot;&quot;&quot;
     Store additional information with stack elements
     Used for complex calculations
@@ -457,9 +421,9 @@
         stack.append((i, val, additional_info))
     
     <span class="hljs-keyword">return</span> result
-</code></pre>
+</code></pre></div>
 <h3 id="template-6-pattern-validation-132-pattern" tabindex="-1"><a class="header-anchor" href="#template-6-pattern-validation-132-pattern"><span>Template 6: Pattern Validation (132 Pattern)</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">find_132_pattern</span>(<span class="hljs-params">nums</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">find_132_pattern</span>(<span class="hljs-params">nums</span>):
     <span class="hljs-string">&quot;&quot;&quot;
     Find 132 pattern in array
     LC 456
@@ -483,7 +447,7 @@
         stack.append(nums[i])
     
     <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
-</code></pre>
+</code></pre></div>
 <h2 id="problems-by-pattern" tabindex="-1"><a class="header-anchor" href="#problems-by-pattern"><span>Problems by Pattern</span></a></h2>
 <h3 id="pattern-based-problem-classification" tabindex="-1"><a class="header-anchor" href="#pattern-based-problem-classification"><span>Pattern-Based Problem Classification</span></a></h3>
 <h4 id="pattern-1-next-previous-greater-element-problems" tabindex="-1"><a class="header-anchor" href="#pattern-1-next-previous-greater-element-problems"><span><strong>Pattern 1: Next/Previous Greater Element Problems</strong></span></a></h4>
@@ -965,7 +929,7 @@
 </ul>
 <h2 id="pattern-selection-strategy" tabindex="-1"><a class="header-anchor" href="#pattern-selection-strategy"><span>Pattern Selection Strategy</span></a></h2>
 <h3 id="decision-framework-flowchart" tabindex="-1"><a class="header-anchor" href="#decision-framework-flowchart"><span>Decision Framework Flowchart</span></a></h3>
-<pre><code class="hljs">Problem Analysis for Monotonic Stack:
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Problem Analysis for Monotonic Stack:
 
 1. Does the problem involve finding next/previous elements?
    ├── YES: Next/Previous GREATER elements?
@@ -1002,7 +966,7 @@
    ├── YES: Use Template 4 (Circular Processing)
    └── NO: Consider if monotonic stack is the right approach
        └── May need different data structure/algorithm
-</code></pre>
+</code></pre></div>
 <h3 id="step-by-step-problem-analysis" tabindex="-1"><a class="header-anchor" href="#step-by-step-problem-analysis"><span>Step-by-Step Problem Analysis</span></a></h3>
 <ol>
 <li>
@@ -1195,7 +1159,7 @@
 </table>
 <h3 id="common-patterns-tricks" tabindex="-1"><a class="header-anchor" href="#common-patterns-tricks"><span>Common Patterns &amp; Tricks</span></a></h3>
 <h4 id="next-greater-element-pattern" tabindex="-1"><a class="header-anchor" href="#next-greater-element-pattern"><span><strong>Next Greater Element Pattern</strong></span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Standard next greater element</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Standard next greater element</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">next_greater_elements</span>(<span class="hljs-params">nums</span>):
     stack, result = [], [-<span class="hljs-number">1</span>] * <span class="hljs-built_in">len</span>(nums)
     <span class="hljs-keyword">for</span> i, num <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(nums):
@@ -1203,9 +1167,9 @@
             result[stack.pop()] = num
         stack.append(i)
     <span class="hljs-keyword">return</span> result
-</code></pre>
+</code></pre></div>
 <h4 id="contribution-method-for-subarrays" tabindex="-1"><a class="header-anchor" href="#contribution-method-for-subarrays"><span><strong>Contribution Method for Subarrays</strong></span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Count contribution of each element</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Count contribution of each element</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">sum_subarray_mins</span>(<span class="hljs-params">arr</span>):
     n = <span class="hljs-built_in">len</span>(arr)
     left = [-<span class="hljs-number">1</span>] * n    <span class="hljs-comment"># Previous smaller element</span>
@@ -1224,9 +1188,9 @@
     <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n):
         result += arr[i] * (i - left[i]) * (right[i] - i)
     <span class="hljs-keyword">return</span> result % (<span class="hljs-number">10</span>**<span class="hljs-number">9</span> + <span class="hljs-number">7</span>)
-</code></pre>
+</code></pre></div>
 <h4 id="histogram-area-calculation" tabindex="-1"><a class="header-anchor" href="#histogram-area-calculation"><span><strong>Histogram Area Calculation</strong></span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Largest rectangle with height as key</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Largest rectangle with height as key</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">largest_rectangle_area</span>(<span class="hljs-params">heights</span>):
     stack = []
     max_area = <span class="hljs-number">0</span>
@@ -1237,7 +1201,7 @@
             max_area = <span class="hljs-built_in">max</span>(max_area, height * width)
         stack.append(i)
     <span class="hljs-keyword">return</span> max_area
-</code></pre>
+</code></pre></div>
 <h3 id="problem-solving-steps" tabindex="-1"><a class="header-anchor" href="#problem-solving-steps"><span>Problem-Solving Steps</span></a></h3>
 <ol>
 <li>
@@ -1361,7 +1325,7 @@
 <blockquote>
 <p>Stack stores indices; pop when a warmer day is found.</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 739 - Daily Temperatures</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 739 - Daily Temperatures</span>
 <span class="hljs-comment">// IDEA: Monotonic decreasing stack — pop when current &gt; stack top</span>
 <span class="hljs-comment">// time = O(N), space = O(N)</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span>[] dailyTemperatures(<span class="hljs-type">int</span>[] temperatures) {
@@ -1377,12 +1341,12 @@
     }
     <span class="hljs-keyword">return</span> ans;
 }
-</code></pre>
+</code></pre></div>
 <h3 id="2-2-largest-rectangle-in-histogram-lc-84-monotonic-increasing-stack" tabindex="-1"><a class="header-anchor" href="#2-2-largest-rectangle-in-histogram-lc-84-monotonic-increasing-stack"><span>2-2) Largest Rectangle in Histogram (LC 84) — Monotonic Increasing Stack</span></a></h3>
 <blockquote>
 <p>Pop a bar when a shorter bar arrives; compute area using width from stack.</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 84 - Largest Rectangle in Histogram</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 84 - Largest Rectangle in Histogram</span>
 <span class="hljs-comment">// IDEA: Monotonic increasing stack — pop and compute area on shorter bar</span>
 <span class="hljs-comment">// time = O(N), space = O(N)</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">largestRectangleArea</span><span class="hljs-params">(<span class="hljs-type">int</span>[] heights)</span> {
@@ -1399,12 +1363,12 @@
     }
     <span class="hljs-keyword">return</span> maxArea;
 }
-</code></pre>
+</code></pre></div>
 <h3 id="2-3-next-greater-element-i-lc-496-monotonic-stack-hashmap" tabindex="-1"><a class="header-anchor" href="#2-3-next-greater-element-i-lc-496-monotonic-stack-hashmap"><span>2-3) Next Greater Element I (LC 496) — Monotonic Stack + HashMap</span></a></h3>
 <blockquote>
 <p>Precompute next greater element for nums2, then answer queries for nums1.</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 496 - Next Greater Element I</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 496 - Next Greater Element I</span>
 <span class="hljs-comment">// IDEA: Monotonic decreasing stack on nums2; store results in map</span>
 <span class="hljs-comment">// time = O(M + N), space = O(M)</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span>[] nextGreaterElement(<span class="hljs-type">int</span>[] nums1, <span class="hljs-type">int</span>[] nums2) {
@@ -1422,12 +1386,12 @@
     }
     <span class="hljs-keyword">return</span> ans;
 }
-</code></pre>
+</code></pre></div>
 <h3 id="2-4-trapping-rain-water-lc-42-monotonic-stack" tabindex="-1"><a class="header-anchor" href="#2-4-trapping-rain-water-lc-42-monotonic-stack"><span>2-4) Trapping Rain Water (LC 42) — Monotonic Stack</span></a></h3>
 <blockquote>
 <p>Pop a bar when a taller bar arrives; water trapped = (min height difference) * width.</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 42 - Trapping Rain Water</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 42 - Trapping Rain Water</span>
 <span class="hljs-comment">// IDEA: Monotonic stack — pop when taller bar found, water fills between boundaries</span>
 <span class="hljs-comment">// time = O(N), space = O(N)</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">trap</span><span class="hljs-params">(<span class="hljs-type">int</span>[] height)</span> {
@@ -1446,12 +1410,12 @@
     }
     <span class="hljs-keyword">return</span> water;
 }
-</code></pre>
+</code></pre></div>
 <h3 id="2-5-next-greater-element-ii-lc-503-circular-monotonic-stack" tabindex="-1"><a class="header-anchor" href="#2-5-next-greater-element-ii-lc-503-circular-monotonic-stack"><span>2-5) Next Greater Element II (LC 503) — Circular Monotonic Stack</span></a></h3>
 <blockquote>
 <p>Process array twice (or use modulo) to handle circular next-greater queries.</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 503 - Next Greater Element II (circular array)</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 503 - Next Greater Element II (circular array)</span>
 <span class="hljs-comment">// IDEA: Monotonic stack — traverse 2n indices with modulo for circular effect</span>
 <span class="hljs-comment">// time = O(N), space = O(N)</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span>[] nextGreaterElements(<span class="hljs-type">int</span>[] nums) {
@@ -1467,12 +1431,12 @@
     }
     <span class="hljs-keyword">return</span> ans;
 }
-</code></pre>
+</code></pre></div>
 <h3 id="2-6-online-stock-span-lc-901-monotonic-decreasing-stack" tabindex="-1"><a class="header-anchor" href="#2-6-online-stock-span-lc-901-monotonic-decreasing-stack"><span>2-6) Online Stock Span (LC 901) — Monotonic Decreasing Stack</span></a></h3>
 <blockquote>
 <p>Pop all previous prices &lt;= current; span = days since last greater price.</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 901 - Online Stock Span</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 901 - Online Stock Span</span>
 <span class="hljs-comment">// IDEA: Monotonic decreasing stack storing [price, span] pairs</span>
 <span class="hljs-comment">// time = O(1) amortized per call, space = O(N)</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">StockSpanner</span> {
@@ -1486,12 +1450,12 @@
         <span class="hljs-keyword">return</span> span;
     }
 }
-</code></pre>
+</code></pre></div>
 <h3 id="2-7-sum-of-subarray-minimums-lc-907-monotonic-stack" tabindex="-1"><a class="header-anchor" href="#2-7-sum-of-subarray-minimums-lc-907-monotonic-stack"><span>2-7) Sum of Subarray Minimums (LC 907) — Monotonic Stack</span></a></h3>
 <blockquote>
 <p>For each element, find left/right boundaries where it is the minimum; use monotonic stack.</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 907 - Sum of Subarray Minimums</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 907 - Sum of Subarray Minimums</span>
 <span class="hljs-comment">// IDEA: Monotonic stack — for each element find left &amp; right span as minimum</span>
 <span class="hljs-comment">// time = O(N), space = O(N)</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">sumSubarrayMins</span><span class="hljs-params">(<span class="hljs-type">int</span>[] arr)</span> {
@@ -1516,12 +1480,12 @@
     <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; n; i++) ans = (ans + (<span class="hljs-type">long</span>) arr[i] * left[i] * right[i]) % MOD;
     <span class="hljs-keyword">return</span> (<span class="hljs-type">int</span>) ans;
 }
-</code></pre>
+</code></pre></div>
 <h3 id="2-8-remove-k-digits-lc-402-monotonic-increasing-stack" tabindex="-1"><a class="header-anchor" href="#2-8-remove-k-digits-lc-402-monotonic-increasing-stack"><span>2-8) Remove K Digits (LC 402) — Monotonic Increasing Stack</span></a></h3>
 <blockquote>
 <p>Maintain increasing stack; remove digits when a smaller digit arrives.</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 402 - Remove K Digits</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 402 - Remove K Digits</span>
 <span class="hljs-comment">// IDEA: Greedy + monotonic increasing stack — remove larger digits greedily</span>
 <span class="hljs-comment">// time = O(N), space = O(N)</span>
 <span class="hljs-keyword">public</span> String <span class="hljs-title function_">removeKdigits</span><span class="hljs-params">(String num, <span class="hljs-type">int</span> k)</span> {
@@ -1545,12 +1509,12 @@
     }
     <span class="hljs-keyword">return</span> sb.length() == <span class="hljs-number">0</span> ? <span class="hljs-string">&quot;0&quot;</span> : sb.toString();
 }
-</code></pre>
+</code></pre></div>
 <h3 id="2-9-maximal-rectangle-lc-85-histogram-monotonic-stack" tabindex="-1"><a class="header-anchor" href="#2-9-maximal-rectangle-lc-85-histogram-monotonic-stack"><span>2-9) Maximal Rectangle (LC 85) — Histogram + Monotonic Stack</span></a></h3>
 <blockquote>
 <p>For each row, compute histogram heights; apply LC 84 largest rectangle logic per row.</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 85 - Maximal Rectangle</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 85 - Maximal Rectangle</span>
 <span class="hljs-comment">// IDEA: For each row build histogram; apply largestRectangleArea (LC 84) logic</span>
 <span class="hljs-comment">// time = O(M*N), space = O(N)</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">maximalRectangle</span><span class="hljs-params">(<span class="hljs-type">char</span>[][] matrix)</span> {
@@ -1578,12 +1542,12 @@
     }
     <span class="hljs-keyword">return</span> max;
 }
-</code></pre>
+</code></pre></div>
 <h3 id="2-10-car-fleet-lc-853-monotonic-stack-on-speed" tabindex="-1"><a class="header-anchor" href="#2-10-car-fleet-lc-853-monotonic-stack-on-speed"><span>2-10) Car Fleet (LC 853) — Monotonic Stack on Speed</span></a></h3>
 <blockquote>
 <p>Sort by position; stack tracks fleets — a car joining a fleet is removed.</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 853 - Car Fleet</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 853 - Car Fleet</span>
 <span class="hljs-comment">// IDEA: Sort by position DESC; use stack to count distinct fleets</span>
 <span class="hljs-comment">// time = O(N log N), space = O(N)</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">carFleet</span><span class="hljs-params">(<span class="hljs-type">int</span> target, <span class="hljs-type">int</span>[] position, <span class="hljs-type">int</span>[] speed)</span> {
@@ -1599,12 +1563,12 @@
     }
     <span class="hljs-keyword">return</span> stack.size();
 }
-</code></pre>
+</code></pre></div>
 <h3 id="2-11-asteroid-collision-lc-735-stack-simulation" tabindex="-1"><a class="header-anchor" href="#2-11-asteroid-collision-lc-735-stack-simulation"><span>2-11) Asteroid Collision (LC 735) — Stack Simulation</span></a></h3>
 <blockquote>
 <p>Right-moving asteroids stay on stack; left-moving collide with top until stable.</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 735 - Asteroid Collision</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 735 - Asteroid Collision</span>
 <span class="hljs-comment">// IDEA: Stack — simulate collisions between right (+) and left (-) asteroids</span>
 <span class="hljs-comment">// time = O(N), space = O(N)</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span>[] asteroidCollision(<span class="hljs-type">int</span>[] asteroids) {
@@ -1622,7 +1586,7 @@
     <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> res.length - <span class="hljs-number">1</span>; i &gt;= <span class="hljs-number">0</span>; i--) res[i] = stack.pop();
     <span class="hljs-keyword">return</span> res;
 }
-</code></pre>
+</code></pre></div>
 
       </div>
       <div class="cheatsheet-footer">

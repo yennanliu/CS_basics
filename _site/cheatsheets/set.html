@@ -19,54 +19,18 @@
     }
   })();
   </script>
-  <script>document.addEventListener('DOMContentLoaded', function() {
-    document.querySelectorAll('pre code').forEach(function(codeEl) {
-      var pre = codeEl.parentElement;
-      var lang = '';
-      var cls = codeEl.className || '';
-      var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
-      if (m) lang = m[1];
-
-      // Add line numbers
-      var lines = codeEl.innerHTML.split('
-');
-      if (lines[lines.length - 1] === '') lines.pop();
-      var numbered = lines.map(function(line, i) {
-        return '<span class="hljs-ln-line"><span class="hljs-ln-n" data-line-number="' + (i + 1) + '"></span><span class="hljs-ln-code">' + line + '</span></span>';
-      }).join('
-');
-      codeEl.innerHTML = numbered;
-      codeEl.classList.add('hljs-ln');
-
-      var wrapper = document.createElement('div');
-      wrapper.className = 'code-block-wrapper';
-      pre.parentNode.insertBefore(wrapper, pre);
-      var header = document.createElement('div');
-      header.className = 'code-block-header';
-      if (lang) {
-        var label = document.createElement('span');
-        label.className = 'code-lang-label';
-        label.textContent = lang;
-        header.appendChild(label);
-      } else {
-        header.appendChild(document.createElement('span'));
-      }
-      var btn = document.createElement('button');
-      btn.className = 'copy-btn';
-      btn.textContent = 'Copy';
-      btn.addEventListener('click', function() {
-        var text = Array.from(codeEl.querySelectorAll('.hljs-ln-code')).map(function(el) { return el.textContent; }).join('
-');
-        navigator.clipboard.writeText(text).then(function() {
-          btn.textContent = 'Copied!';
-          btn.classList.add('copied');
-          setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
-        });
-      });
-      header.appendChild(btn);
-      wrapper.appendChild(header);
-      wrapper.appendChild(pre);
+  <script>
+  function copyCode(btn) {
+    var pre = btn.closest('.code-block-wrapper').querySelector('pre');
+    var text = pre ? pre.innerText : '';
+    navigator.clipboard.writeText(text).then(function() {
+      btn.textContent = 'Copied!';
+      btn.classList.add('copied');
+      setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
     });
+  }
+  </script>
+  <script>document.addEventListener('DOMContentLoaded', function() {
     document.querySelectorAll('table').forEach(function(table) {
       if (!table.parentElement.classList.contains('table-wrap')) {
         var wrapper = document.createElement('div');
@@ -221,7 +185,7 @@
 </table>
 <h3 id="0-2-pattern" tabindex="-1"><a class="header-anchor" href="#0-2-pattern"><span>0-2) Pattern</span></a></h3>
 <h4 id="pattern-1-set-operations" tabindex="-1"><a class="header-anchor" href="#pattern-1-set-operations"><span>Pattern 1: Set Operations</span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Union, Intersection, Difference</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Union, Intersection, Difference</span>
 s1 = {<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>}
 s2 = {<span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>}
 
@@ -229,9 +193,9 @@ union = s1 | s2          <span class="hljs-comment"># {1, 2, 3, 4}</span>
 intersection = s1 &amp; s2   <span class="hljs-comment"># {2, 3}</span>
 difference = s1 - s2     <span class="hljs-comment"># {1}</span>
 symmetric_diff = s1 ^ s2 <span class="hljs-comment"># {1, 4}</span>
-</code></pre>
+</code></pre></div>
 <h4 id="pattern-2-duplicate-detection" tabindex="-1"><a class="header-anchor" href="#pattern-2-duplicate-detection"><span>Pattern 2: Duplicate Detection</span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Check for duplicates in array</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Check for duplicates in array</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">has_duplicate</span>(<span class="hljs-params">nums</span>):
     <span class="hljs-keyword">return</span> <span class="hljs-built_in">len</span>(nums) != <span class="hljs-built_in">len</span>(<span class="hljs-built_in">set</span>(nums))
 
@@ -244,9 +208,9 @@ symmetric_diff = s1 ^ s2 <span class="hljs-comment"># {1, 4}</span>
             duplicates.add(num)
         seen.add(num)
     <span class="hljs-keyword">return</span> duplicates
-</code></pre>
+</code></pre></div>
 <h4 id="pattern-3-two-set-tracking" tabindex="-1"><a class="header-anchor" href="#pattern-3-two-set-tracking"><span>Pattern 3: Two-Set Tracking</span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Track visited and current path (for cycle detection)</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Track visited and current path (for cycle detection)</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">has_cycle</span>(<span class="hljs-params">graph, start</span>):
     visited = <span class="hljs-built_in">set</span>()
     current_path = <span class="hljs-built_in">set</span>()
@@ -268,9 +232,9 @@ symmetric_diff = s1 ^ s2 <span class="hljs-comment"># {1, 4}</span>
         <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
 
     <span class="hljs-keyword">return</span> dfs(start)
-</code></pre>
+</code></pre></div>
 <h4 id="pattern-4-set-for-path-ancestry-tracking" tabindex="-1"><a class="header-anchor" href="#pattern-4-set-for-path-ancestry-tracking"><span>Pattern 4: Set for Path/Ancestry Tracking</span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 1650 - Find LCA using set to track ancestors</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 1650 - Find LCA using set to track ancestors</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">lowestCommonAncestor</span>(<span class="hljs-params">p, q</span>):
     <span class="hljs-comment"># Track all ancestors of p</span>
     ancestors = <span class="hljs-built_in">set</span>()
@@ -284,11 +248,11 @@ symmetric_diff = s1 ^ s2 <span class="hljs-comment"># {1, 4}</span>
             <span class="hljs-keyword">return</span> q
         q = q.parent
     <span class="hljs-keyword">return</span> <span class="hljs-literal">None</span>
-</code></pre>
+</code></pre></div>
 <h2 id="1-general-form" tabindex="-1"><a class="header-anchor" href="#1-general-form"><span>1) General form</span></a></h2>
 <h3 id="1-1-basic-op" tabindex="-1"><a class="header-anchor" href="#1-1-basic-op"><span>1-1) Basic OP</span></a></h3>
 <h4 id="1-1-1-set-creation-and-basic-operations" tabindex="-1"><a class="header-anchor" href="#1-1-1-set-creation-and-basic-operations"><span>1-1-1) Set Creation and Basic Operations</span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python</span>
 <span class="hljs-comment"># Create empty set</span>
 s = <span class="hljs-built_in">set</span>()
 s = {}  <span class="hljs-comment"># Wrong! This creates a dict</span>
@@ -315,8 +279,8 @@ s.pop()         <span class="hljs-comment"># Remove and return arbitrary element
 
 <span class="hljs-comment"># Clear all</span>
 s.clear()
-</code></pre>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java</span>
 <span class="hljs-comment">// Create HashSet</span>
 Set&lt;Integer&gt; set = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashSet</span>&lt;&gt;();
 
@@ -343,9 +307,9 @@ set.clear();
 <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> num : set) {
     System.out.println(num);
 }
-</code></pre>
+</code></pre></div>
 <h4 id="1-1-2-set-operations" tabindex="-1"><a class="header-anchor" href="#1-1-2-set-operations"><span>1-1-2) Set Operations</span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python set operations</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python set operations</span>
 s1 = {<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>}
 s2 = {<span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>, <span class="hljs-number">6</span>}
 
@@ -371,8 +335,8 @@ is_superset = s1.issuperset(s2) <span class="hljs-comment"># False</span>
 
 <span class="hljs-comment"># Disjoint check (no common elements)</span>
 is_disjoint = s1.isdisjoint(s2) <span class="hljs-comment"># False</span>
-</code></pre>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java set operations</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java set operations</span>
 Set&lt;Integer&gt; s1 = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashSet</span>&lt;&gt;(Arrays.asList(<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>));
 Set&lt;Integer&gt; s2 = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashSet</span>&lt;&gt;(Arrays.asList(<span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>, <span class="hljs-number">6</span>));
 
@@ -390,9 +354,9 @@ difference.removeAll(s2);  <span class="hljs-comment">// {1, 2}</span>
 
 <span class="hljs-comment">// Subset check</span>
 <span class="hljs-type">boolean</span> <span class="hljs-variable">isSubset</span> <span class="hljs-operator">=</span> s2.containsAll(s1);  <span class="hljs-comment">// false</span>
-</code></pre>
+</code></pre></div>
 <h4 id="1-1-3-converting-between-collections" tabindex="-1"><a class="header-anchor" href="#1-1-3-converting-between-collections"><span>1-1-3) Converting Between Collections</span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python conversions</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python conversions</span>
 arr = [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>]
 
 <span class="hljs-comment"># Array to set (remove duplicates)</span>
@@ -410,8 +374,8 @@ char_set = <span class="hljs-built_in">set</span>(<span class="hljs-string">&quo
 <span class="hljs-comment"># Set to string</span>
 s = {<span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;b&#x27;</span>, <span class="hljs-string">&#x27;c&#x27;</span>}
 string = <span class="hljs-string">&#x27;&#x27;</span>.join(<span class="hljs-built_in">sorted</span>(s))  <span class="hljs-comment"># &#x27;abc&#x27;</span>
-</code></pre>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java conversions</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java conversions</span>
 Integer[] arr = {<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>};
 
 <span class="hljs-comment">// Array to set</span>
@@ -425,10 +389,10 @@ List&lt;Integer&gt; list = <span class="hljs-keyword">new</span> <span class="hl
 
 <span class="hljs-comment">// List to set</span>
 Set&lt;Integer&gt; set2 = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashSet</span>&lt;&gt;(list);
-</code></pre>
+</code></pre></div>
 <h2 id="2-lc-example" tabindex="-1"><a class="header-anchor" href="#2-lc-example"><span>2) LC Example</span></a></h2>
 <h3 id="2-1-lowest-common-ancestor-of-a-binary-tree-iii" tabindex="-1"><a class="header-anchor" href="#2-1-lowest-common-ancestor-of-a-binary-tree-iii"><span>2-1) Lowest Common Ancestor of a Binary Tree III</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 1650. Lowest Common Ancestor of a Binary Tree III</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 1650. Lowest Common Ancestor of a Binary Tree III</span>
 <span class="hljs-comment"># NOTE : there are also dict, recursive.. approaches</span>
 
 <span class="hljs-comment"># V0&#x27;&#x27;</span>
@@ -448,9 +412,9 @@ Set&lt;Integer&gt; set2 = <span class="hljs-keyword">new</span> <span class="hlj
             <span class="hljs-keyword">if</span> q <span class="hljs-keyword">in</span> visited:
                 <span class="hljs-keyword">return</span> q
             q = q.parent
-</code></pre>
+</code></pre></div>
 <h3 id="2-2-contains-duplicate" tabindex="-1"><a class="header-anchor" href="#2-2-contains-duplicate"><span>2-2) Contains Duplicate</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 217. Contains Duplicate</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 217. Contains Duplicate</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># IDEA: Set to detect duplicates</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
@@ -467,8 +431,8 @@ Set&lt;Integer&gt; set2 = <span class="hljs-keyword">new</span> <span class="hlj
                 <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
             seen.add(num)
         <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
-</code></pre>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java</span>
 <span class="hljs-comment">// LC 217</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">containsDuplicate</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums)</span> {
     Set&lt;Integer&gt; seen = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashSet</span>&lt;&gt;();
@@ -480,9 +444,9 @@ Set&lt;Integer&gt; set2 = <span class="hljs-keyword">new</span> <span class="hlj
     }
     <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
 }
-</code></pre>
+</code></pre></div>
 <h3 id="2-3-intersection-of-two-arrays" tabindex="-1"><a class="header-anchor" href="#2-3-intersection-of-two-arrays"><span>2-3) Intersection of Two Arrays</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 349. Intersection of Two Arrays</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 349. Intersection of Two Arrays</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># IDEA: Set intersection</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
@@ -496,8 +460,8 @@ Set&lt;Integer&gt; set2 = <span class="hljs-keyword">new</span> <span class="hlj
         set1 = <span class="hljs-built_in">set</span>(nums1)
         set2 = <span class="hljs-built_in">set</span>(nums2)
         <span class="hljs-keyword">return</span> <span class="hljs-built_in">list</span>(set1.intersection(set2))
-</code></pre>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java</span>
 <span class="hljs-comment">// LC 349</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span>[] intersection(<span class="hljs-type">int</span>[] nums1, <span class="hljs-type">int</span>[] nums2) {
     Set&lt;Integer&gt; set1 = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashSet</span>&lt;&gt;();
@@ -514,9 +478,9 @@ Set&lt;Integer&gt; set2 = <span class="hljs-keyword">new</span> <span class="hlj
 
     <span class="hljs-keyword">return</span> result.stream().mapToInt(i -&gt; i).toArray();
 }
-</code></pre>
+</code></pre></div>
 <h3 id="2-4-happy-number" tabindex="-1"><a class="header-anchor" href="#2-4-happy-number"><span>2-4) Happy Number</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 202. Happy Number</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 202. Happy Number</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># IDEA: Use set to detect cycles</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
@@ -535,9 +499,9 @@ Set&lt;Integer&gt; set2 = <span class="hljs-keyword">new</span> <span class="hlj
             n = get_next(n)
 
         <span class="hljs-keyword">return</span> n == <span class="hljs-number">1</span>
-</code></pre>
+</code></pre></div>
 <h3 id="2-5-longest-consecutive-sequence" tabindex="-1"><a class="header-anchor" href="#2-5-longest-consecutive-sequence"><span>2-5) Longest Consecutive Sequence</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 128. Longest Consecutive Sequence</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 128. Longest Consecutive Sequence</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># IDEA: Set for O(1) lookups</span>
 <span class="hljs-comment"># Time: O(n), Space: O(n)</span>
@@ -562,8 +526,8 @@ Set&lt;Integer&gt; set2 = <span class="hljs-keyword">new</span> <span class="hlj
                 max_length = <span class="hljs-built_in">max</span>(max_length, length)
 
         <span class="hljs-keyword">return</span> max_length
-</code></pre>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java</span>
 <span class="hljs-comment">// LC 128</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">longestConsecutive</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums)</span> {
     Set&lt;Integer&gt; numSet = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashSet</span>&lt;&gt;();
@@ -590,9 +554,9 @@ Set&lt;Integer&gt; set2 = <span class="hljs-keyword">new</span> <span class="hlj
 
     <span class="hljs-keyword">return</span> maxLength;
 }
-</code></pre>
+</code></pre></div>
 <h3 id="2-6-single-number" tabindex="-1"><a class="header-anchor" href="#2-6-single-number"><span>2-6) Single Number</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 136. Single Number</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 136. Single Number</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># IDEA: XOR all numbers (duplicates cancel out)</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
@@ -607,9 +571,9 @@ Set&lt;Integer&gt; set2 = <span class="hljs-keyword">new</span> <span class="hlj
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">singleNumber</span>(<span class="hljs-params">self, nums</span>):
         <span class="hljs-keyword">return</span> <span class="hljs-number">2</span> * <span class="hljs-built_in">sum</span>(<span class="hljs-built_in">set</span>(nums)) - <span class="hljs-built_in">sum</span>(nums)
-</code></pre>
+</code></pre></div>
 <h3 id="2-7-valid-sudoku" tabindex="-1"><a class="header-anchor" href="#2-7-valid-sudoku"><span>2-7) Valid Sudoku</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 36. Valid Sudoku</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 36. Valid Sudoku</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># IDEA: Use sets to track seen values</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
@@ -636,9 +600,9 @@ Set&lt;Integer&gt; set2 = <span class="hljs-keyword">new</span> <span class="hlj
                     seen.add(box_key)
 
         <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
-</code></pre>
+</code></pre></div>
 <h3 id="2-8-number-of-distinct-islands" tabindex="-1"><a class="header-anchor" href="#2-8-number-of-distinct-islands"><span>2-8) Number of Distinct Islands</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 694. Number of Distinct Islands</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 694. Number of Distinct Islands</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># IDEA: Use set to store unique island shapes</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
@@ -667,9 +631,9 @@ Set&lt;Integer&gt; set2 = <span class="hljs-keyword">new</span> <span class="hlj
                     shapes.add(<span class="hljs-built_in">tuple</span>(path))
 
         <span class="hljs-keyword">return</span> <span class="hljs-built_in">len</span>(shapes)
-</code></pre>
+</code></pre></div>
 <h3 id="2-9-linked-list-cycle-detection" tabindex="-1"><a class="header-anchor" href="#2-9-linked-list-cycle-detection"><span>2-9) Linked List Cycle Detection</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 141. Linked List Cycle</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 141. Linked List Cycle</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># IDEA: Use set to track visited nodes</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
@@ -702,9 +666,9 @@ Set&lt;Integer&gt; set2 = <span class="hljs-keyword">new</span> <span class="hlj
             fast = fast.<span class="hljs-built_in">next</span>.<span class="hljs-built_in">next</span>
 
         <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
-</code></pre>
+</code></pre></div>
 <h3 id="2-10-word-pattern" tabindex="-1"><a class="header-anchor" href="#2-10-word-pattern"><span>2-10) Word Pattern</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 290. Word Pattern</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 290. Word Pattern</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># IDEA: Use 2 sets to track bijection</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
@@ -731,7 +695,7 @@ Set&lt;Integer&gt; set2 = <span class="hljs-keyword">new</span> <span class="hlj
                 word_to_char[word] = c
 
         <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
-</code></pre>
+</code></pre></div>
 <h2 id="problem-categories" tabindex="-1"><a class="header-anchor" href="#problem-categories"><span>Problem Categories</span></a></h2>
 <h3 id="category-1-duplicate-detection-10-problems" tabindex="-1"><a class="header-anchor" href="#category-1-duplicate-detection-10-problems"><span>Category 1: Duplicate Detection (10 problems)</span></a></h3>
 <table>
@@ -1113,7 +1077,7 @@ Set&lt;Integer&gt; set2 = <span class="hljs-keyword">new</span> <span class="hlj
 </table>
 <h2 id="decision-framework" tabindex="-1"><a class="header-anchor" href="#decision-framework"><span>Decision Framework</span></a></h2>
 <h3 id="when-to-use-set-vs-other-data-structures" tabindex="-1"><a class="header-anchor" href="#when-to-use-set-vs-other-data-structures"><span>When to Use Set vs Other Data Structures</span></a></h3>
-<pre><code class="hljs">Problem Analysis:
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Problem Analysis:
 
 1. Need to track unique elements?
    ├── YES → Consider Set
@@ -1142,7 +1106,7 @@ Set&lt;Integer&gt; set2 = <span class="hljs-keyword">new</span> <span class="hlj
    ├── YES → Convert to Set first
    │   └── O(n) conversion + O(1) lookups
    └── NO → Linear search may be fine
-</code></pre>
+</code></pre></div>
 <h3 id="set-vs-hashmap-choice" tabindex="-1"><a class="header-anchor" href="#set-vs-hashmap-choice"><span>Set vs HashMap Choice</span></a></h3>
 <table>
 <thead>

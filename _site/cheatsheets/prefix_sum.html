@@ -19,54 +19,18 @@
     }
   })();
   </script>
-  <script>document.addEventListener('DOMContentLoaded', function() {
-    document.querySelectorAll('pre code').forEach(function(codeEl) {
-      var pre = codeEl.parentElement;
-      var lang = '';
-      var cls = codeEl.className || '';
-      var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
-      if (m) lang = m[1];
-
-      // Add line numbers
-      var lines = codeEl.innerHTML.split('
-');
-      if (lines[lines.length - 1] === '') lines.pop();
-      var numbered = lines.map(function(line, i) {
-        return '<span class="hljs-ln-line"><span class="hljs-ln-n" data-line-number="' + (i + 1) + '"></span><span class="hljs-ln-code">' + line + '</span></span>';
-      }).join('
-');
-      codeEl.innerHTML = numbered;
-      codeEl.classList.add('hljs-ln');
-
-      var wrapper = document.createElement('div');
-      wrapper.className = 'code-block-wrapper';
-      pre.parentNode.insertBefore(wrapper, pre);
-      var header = document.createElement('div');
-      header.className = 'code-block-header';
-      if (lang) {
-        var label = document.createElement('span');
-        label.className = 'code-lang-label';
-        label.textContent = lang;
-        header.appendChild(label);
-      } else {
-        header.appendChild(document.createElement('span'));
-      }
-      var btn = document.createElement('button');
-      btn.className = 'copy-btn';
-      btn.textContent = 'Copy';
-      btn.addEventListener('click', function() {
-        var text = Array.from(codeEl.querySelectorAll('.hljs-ln-code')).map(function(el) { return el.textContent; }).join('
-');
-        navigator.clipboard.writeText(text).then(function() {
-          btn.textContent = 'Copied!';
-          btn.classList.add('copied');
-          setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
-        });
-      });
-      header.appendChild(btn);
-      wrapper.appendChild(header);
-      wrapper.appendChild(pre);
+  <script>
+  function copyCode(btn) {
+    var pre = btn.closest('.code-block-wrapper').querySelector('pre');
+    var text = pre ? pre.innerText : '';
+    navigator.clipboard.writeText(text).then(function() {
+      btn.textContent = 'Copied!';
+      btn.classList.add('copied');
+      setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
     });
+  }
+  </script>
+  <script>document.addEventListener('DOMContentLoaded', function() {
     document.querySelectorAll('table').forEach(function(table) {
       if (!table.parentElement.classList.contains('table-wrap')) {
         var wrapper = document.createElement('div');
@@ -228,7 +192,7 @@
 <h2 id="0-concept" tabindex="-1"><a class="header-anchor" href="#0-concept"><span>0) Concept</span></a></h2>
 <h3 id="why-sum-l-r-prefix-r-1-prefix-l" tabindex="-1"><a class="header-anchor" href="#why-sum-l-r-prefix-r-1-prefix-l"><span>Why <code>sum(l, r) = prefix[r+1] - prefix[l]</code></span></a></h3>
 <p><img src="../doc/pic/prefix_sum_2.png"></p></p>
-<pre><code class="hljs">Given nums:    [ a,  b,  c,  d,  e ]
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Given nums:    [ a,  b,  c,  d,  e ]
 Index:           0   1   2   3   4
 
 Build prefix array (size n+1, prefix[0] = 0):
@@ -258,15 +222,15 @@ prefix[4]:  [ a | b | c | d ]
 prefix[1]:  [ a ]
             ─────────────────
 difference:     [ b | c | d ]   ← this is sum(1, 3)
-</code></pre>
+</code></pre></div>
 <p><strong>Why size <code>n+1</code>?</strong> The extra <code>prefix[0] = 0</code> handles the edge case when <code>l = 0</code>:</p>
-<pre><code class="hljs">sum(0, 2) = prefix[3] - prefix[0]
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">sum(0, 2) = prefix[3] - prefix[0]
           = (a + b + c) - 0
           = a + b + c  ✓
-</code></pre>
+</code></pre></div>
 <p>Without it, we’d need special <code>if (left == 0)</code> checks (see V0 in LC 303).</p>
 <h3 id="concrete-example-lc-303" tabindex="-1"><a class="header-anchor" href="#concrete-example-lc-303"><span>Concrete Example (LC 303)</span></a></h3>
-<pre><code class="hljs">nums = [-2, 0, 3, -5, 2, -1]
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">nums = [-2, 0, 3, -5, 2, -1]
 
 Step 1: Build prefix array
 prefix = [0, -2, -2, 1, -4, -2, -3]
@@ -277,7 +241,7 @@ Step 2: Query
 sumRange(0, 2) = prefix[3] - prefix[0] = 1 - 0 = 1       ✓  (-2+0+3)
 sumRange(2, 5) = prefix[6] - prefix[2] = -3 - (-2) = -1  ✓  (3-5+2-1)
 sumRange(0, 5) = prefix[6] - prefix[0] = -3 - 0 = -3     ✓  (-2+0+3-5+2-1)
-</code></pre>
+</code></pre></div>
 <h3 id="two-styles-comparison" tabindex="-1"><a class="header-anchor" href="#two-styles-comparison"><span>Two Styles Comparison</span></a></h3>
 <table>
 <thead>
@@ -357,7 +321,7 @@ sumRange(0, 5) = prefix[6] - prefix[0] = -3 - 0 = -3     ✓  (-2+0+3-5+2-1)
 </tbody>
 </table>
 <h3 id="universal-template" tabindex="-1"><a class="header-anchor" href="#universal-template"><span>Universal Template</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">prefix_sum_solve</span>(<span class="hljs-params">nums, target</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">prefix_sum_solve</span>(<span class="hljs-params">nums, target</span>):
     <span class="hljs-string">&quot;&quot;&quot;
     Universal prefix sum template for most problems
     &quot;&quot;&quot;</span>
@@ -381,9 +345,9 @@ sumRange(0, 5) = prefix[6] - prefix[0] = -3 - 0 = -3     ✓  (-2+0+3-5+2-1)
         prefix_map[prefix_sum] = prefix_map.get(prefix_sum, <span class="hljs-number">0</span>) + <span class="hljs-number">1</span>
     
     <span class="hljs-keyword">return</span> result
-</code></pre>
+</code></pre></div>
 <h3 id="template-1-basic-prefix-sum-range-queries" tabindex="-1"><a class="header-anchor" href="#template-1-basic-prefix-sum-range-queries"><span>Template 1: Basic Prefix Sum (Range Queries)</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">PrefixSum</span>:
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">PrefixSum</span>:
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, nums</span>):
         <span class="hljs-string">&quot;&quot;&quot;Build prefix sum array for range queries&quot;&quot;&quot;</span>
         <span class="hljs-variable language_">self</span>.prefix = [<span class="hljs-number">0</span>] * (<span class="hljs-built_in">len</span>(nums) + <span class="hljs-number">1</span>)
@@ -393,8 +357,8 @@ sumRange(0, 5) = prefix[6] - prefix[0] = -3 - 0 = -3     ✓  (-2+0+3-5+2-1)
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">range_sum</span>(<span class="hljs-params">self, left, right</span>):
         <span class="hljs-string">&quot;&quot;&quot;Get sum of elements from index left to right (inclusive)&quot;&quot;&quot;</span>
         <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.prefix[right + <span class="hljs-number">1</span>] - <span class="hljs-variable language_">self</span>.prefix[left]
-</code></pre>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java implementation</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java implementation</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">PrefixSum</span> {
     <span class="hljs-keyword">private</span> <span class="hljs-type">int</span>[] prefix;
     
@@ -409,9 +373,9 @@ sumRange(0, 5) = prefix[6] - prefix[0] = -3 - 0 = -3     ✓  (-2+0+3-5+2-1)
         <span class="hljs-keyword">return</span> prefix[right + <span class="hljs-number">1</span>] - prefix[left];
     }
 }
-</code></pre>
+</code></pre></div>
 <h3 id="template-2-hashmap-prefix-sum-subarray-target-sum" tabindex="-1"><a class="header-anchor" href="#template-2-hashmap-prefix-sum-subarray-target-sum"><span>Template 2: HashMap + Prefix Sum (Subarray Target Sum)</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">subarray_sum_equals_k</span>(<span class="hljs-params">nums, k</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">subarray_sum_equals_k</span>(<span class="hljs-params">nums, k</span>):
     <span class="hljs-string">&quot;&quot;&quot;Count subarrays with sum equal to k&quot;&quot;&quot;</span>
     count = <span class="hljs-number">0</span>
     prefix_sum = <span class="hljs-number">0</span>
@@ -428,8 +392,8 @@ sumRange(0, 5) = prefix[6] - prefix[0] = -3 - 0 = -3     ✓  (-2+0+3-5+2-1)
         prefix_map[prefix_sum] = prefix_map.get(prefix_sum, <span class="hljs-number">0</span>) + <span class="hljs-number">1</span>
     
     <span class="hljs-keyword">return</span> count
-</code></pre>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java implementation</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java implementation</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">subarraySum</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums, <span class="hljs-type">int</span> k)</span> {
     <span class="hljs-type">int</span> <span class="hljs-variable">count</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>, prefixSum = <span class="hljs-number">0</span>;
     Map&lt;Integer, Integer&gt; map = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;();
@@ -447,9 +411,9 @@ sumRange(0, 5) = prefix[6] - prefix[0] = -3 - 0 = -3     ✓  (-2+0+3-5+2-1)
     
     <span class="hljs-keyword">return</span> count;
 }
-</code></pre>
+</code></pre></div>
 <h3 id="template-3-modulo-prefix-sum-divisibility-problems" tabindex="-1"><a class="header-anchor" href="#template-3-modulo-prefix-sum-divisibility-problems"><span>Template 3: Modulo Prefix Sum (Divisibility Problems)</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">subarray_divisible_by_k</span>(<span class="hljs-params">nums, k</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">subarray_divisible_by_k</span>(<span class="hljs-params">nums, k</span>):
     <span class="hljs-string">&quot;&quot;&quot;Count subarrays with sum divisible by k&quot;&quot;&quot;</span>
     count = <span class="hljs-number">0</span>
     prefix_sum = <span class="hljs-number">0</span>
@@ -469,9 +433,9 @@ sumRange(0, 5) = prefix[6] - prefix[0] = -3 - 0 = -3     ✓  (-2+0+3-5+2-1)
         remainder_map[remainder] = remainder_map.get(remainder, <span class="hljs-number">0</span>) + <span class="hljs-number">1</span>
     
     <span class="hljs-keyword">return</span> count
-</code></pre>
+</code></pre></div>
 <h3 id="template-4-difference-array-range-updates" tabindex="-1"><a class="header-anchor" href="#template-4-difference-array-range-updates"><span>Template 4: Difference Array (Range Updates)</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">range_addition</span>(<span class="hljs-params">length, updates</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">range_addition</span>(<span class="hljs-params">length, updates</span>):
     <span class="hljs-string">&quot;&quot;&quot;Apply multiple range additions efficiently&quot;&quot;&quot;</span>
     <span class="hljs-comment"># Step 1: Create difference array</span>
     diff = [<span class="hljs-number">0</span>] * (length + <span class="hljs-number">1</span>)
@@ -489,9 +453,9 @@ sumRange(0, 5) = prefix[6] - prefix[0] = -3 - 0 = -3     ✓  (-2+0+3-5+2-1)
         result.append(current_sum)
     
     <span class="hljs-keyword">return</span> result
-</code></pre>
+</code></pre></div>
 <h3 id="template-5-2d-prefix-sum" tabindex="-1"><a class="header-anchor" href="#template-5-2d-prefix-sum"><span>Template 5: 2D Prefix Sum</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">NumMatrix</span>:
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">NumMatrix</span>:
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, matrix</span>):
         <span class="hljs-string">&quot;&quot;&quot;Build 2D prefix sum matrix&quot;&quot;&quot;</span>
         <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> matrix <span class="hljs-keyword">or</span> <span class="hljs-keyword">not</span> matrix[<span class="hljs-number">0</span>]:
@@ -513,9 +477,9 @@ sumRange(0, 5) = prefix[6] - prefix[0] = -3 - 0 = -3     ✓  (-2+0+3-5+2-1)
                 <span class="hljs-variable language_">self</span>.prefix[row1][col2+<span class="hljs-number">1</span>] - 
                 <span class="hljs-variable language_">self</span>.prefix[row2+<span class="hljs-number">1</span>][col1] + 
                 <span class="hljs-variable language_">self</span>.prefix[row1][col1])
-</code></pre>
+</code></pre></div>
 <h3 id="template-6-transform-and-count" tabindex="-1"><a class="header-anchor" href="#template-6-transform-and-count"><span>Template 6: Transform and Count</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">count_nice_subarrays</span>(<span class="hljs-params">nums, k</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">count_nice_subarrays</span>(<span class="hljs-params">nums, k</span>):
     <span class="hljs-string">&quot;&quot;&quot;Count subarrays with exactly k odd numbers&quot;&quot;&quot;</span>
     <span class="hljs-comment"># Transform: odd -&gt; 1, even -&gt; 0</span>
     transformed = [<span class="hljs-number">1</span> <span class="hljs-keyword">if</span> x % <span class="hljs-number">2</span> == <span class="hljs-number">1</span> <span class="hljs-keyword">else</span> <span class="hljs-number">0</span> <span class="hljs-keyword">for</span> x <span class="hljs-keyword">in</span> nums]
@@ -534,21 +498,21 @@ sumRange(0, 5) = prefix[6] - prefix[0] = -3 - 0 = -3     ✓  (-2+0+3-5+2-1)
         prefix_map[prefix_sum] = prefix_map.get(prefix_sum, <span class="hljs-number">0</span>) + <span class="hljs-number">1</span>
 
     <span class="hljs-keyword">return</span> count
-</code></pre>
+</code></pre></div>
 <h3 id="template-7-sum-of-distances-left-right-split" tabindex="-1"><a class="header-anchor" href="#template-7-sum-of-distances-left-right-split"><span>Template 7: Sum of Distances (Left-Right Split)</span></a></h3>
 <p>This pattern efficiently calculates sum of absolute differences <code>|i - j|</code> between indices.</p>
 <h4 id="core-idea" tabindex="-1"><a class="header-anchor" href="#core-idea"><span>Core Idea</span></a></h4>
 <p>For a sorted list of indices <code>[i0, i1, i2, ..., ik]</code>, to find sum of distances from <code>ij</code> to all others:</p>
-<pre><code class="hljs">Instead of: |ij - i0| + |ij - i1| + ... + |ij - ik|  (O(n) per element)
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Instead of: |ij - i0| + |ij - i1| + ... + |ij - ik|  (O(n) per element)
 
 Split into:
   - Left part:  (ij - i0) + (ij - i1) + ... = ij * countLeft - sumLeft
   - Right part: (ij+1 - ij) + (ij+2 - ij) + ... = sumRight - ij * countRight
 
 Total: (ij * countLeft - sumLeft) + (sumRight - ij * countRight)
-</code></pre>
+</code></pre></div>
 <h4 id="visual-explanation" tabindex="-1"><a class="header-anchor" href="#visual-explanation"><span>Visual Explanation</span></a></h4>
-<pre><code class="hljs">Indices with same value: [2, 5, 8, 12]
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Indices with same value: [2, 5, 8, 12]
                           ↑  ↑  ↑   ↑
 For index 8 (position 2 in list):
 
@@ -563,9 +527,9 @@ For index 8 (position 2 in list):
     distanceRight = 12 - 8 * 1 = 4  → |12-8| = 4 ✓
 
   Total distance for index 8: 9 + 4 = 13
-</code></pre>
+</code></pre></div>
 <h4 id="python-template" tabindex="-1"><a class="header-anchor" href="#python-template"><span>Python Template</span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">sum_of_distances</span>(<span class="hljs-params">nums</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">sum_of_distances</span>(<span class="hljs-params">nums</span>):
     <span class="hljs-string">&quot;&quot;&quot;
     LC 2615: Calculate sum of |i - j| for all j where nums[j] == nums[i]
     Time: O(n), Space: O(n)
@@ -611,9 +575,9 @@ For index 8 (position 2 in list):
             result[idx] = left_dist + right_dist
 
     <span class="hljs-keyword">return</span> result
-</code></pre>
+</code></pre></div>
 <h4 id="java-template" tabindex="-1"><a class="header-anchor" href="#java-template"><span>Java Template</span></a></h4>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 2615 - Sum of Distances</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 2615 - Sum of Distances</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">long</span>[] distance(<span class="hljs-type">int</span>[] nums) {
     <span class="hljs-type">int</span> <span class="hljs-variable">n</span> <span class="hljs-operator">=</span> nums.length;
     <span class="hljs-type">long</span>[] res = <span class="hljs-keyword">new</span> <span class="hljs-title class_">long</span>[n];
@@ -652,9 +616,9 @@ For index 8 (position 2 in list):
 
     <span class="hljs-keyword">return</span> res;
 }
-</code></pre>
+</code></pre></div>
 <h4 id="alternative-running-sum-approach-no-prefix-array" tabindex="-1"><a class="header-anchor" href="#alternative-running-sum-approach-no-prefix-array"><span>Alternative: Running Sum Approach (No Prefix Array)</span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">sum_of_distances_optimized</span>(<span class="hljs-params">nums</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">sum_of_distances_optimized</span>(<span class="hljs-params">nums</span>):
     <span class="hljs-string">&quot;&quot;&quot;Space-optimized version using running sums&quot;&quot;&quot;</span>
     <span class="hljs-keyword">from</span> collections <span class="hljs-keyword">import</span> defaultdict
 
@@ -684,7 +648,7 @@ For index 8 (position 2 in list):
             prefix_sum += idx
 
     <span class="hljs-keyword">return</span> result
-</code></pre>
+</code></pre></div>
 <h4 id="formula-summary" tabindex="-1"><a class="header-anchor" href="#formula-summary"><span>Formula Summary</span></a></h4>
 <table>
 <thead>
@@ -1199,7 +1163,7 @@ For index 8 (position 2 in list):
 </table>
 <h2 id="pattern-selection-strategy" tabindex="-1"><a class="header-anchor" href="#pattern-selection-strategy"><span>Pattern Selection Strategy</span></a></h2>
 <h3 id="decision-framework-for-prefix-sum-problems" tabindex="-1"><a class="header-anchor" href="#decision-framework-for-prefix-sum-problems"><span>Decision Framework for Prefix Sum Problems</span></a></h3>
-<pre><code class="hljs">Problem Analysis Flowchart:
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Problem Analysis Flowchart:
 
 1. Need multiple range sum queries?
    ├── YES → Use Template 1 (Basic Prefix Sum)
@@ -1234,7 +1198,7 @@ For index 8 (position 2 in list):
    ├── Tree path sums → Template 2 + Tree traversal
    ├── Sliding window + prefix → Combine templates
    └── Advanced merge/sort → Custom approach
-</code></pre>
+</code></pre></div>
 <h3 id="template-selection-guide" tabindex="-1"><a class="header-anchor" href="#template-selection-guide"><span>Template Selection Guide</span></a></h3>
 <table>
 <thead>
@@ -1329,7 +1293,7 @@ For index 8 (position 2 in list):
 </ul>
 <h2 id="legacy-examples" tabindex="-1"><a class="header-anchor" href="#legacy-examples"><span>Legacy Examples</span></a></h2>
 <h4 id="0-2-1-get-count-of-continuous-sub-array-equals-to-k" tabindex="-1"><a class="header-anchor" href="#0-2-1-get-count-of-continuous-sub-array-equals-to-k"><span>0-2-1) Get count of <code>continuous sub array equals to K</code></span></a></h4>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 560</span>
 
 <span class="hljs-comment">// ..</span>
@@ -1352,9 +1316,9 @@ Map&lt;Integer, Integer&gt; map = <span class="hljs-keyword">new</span> <span cl
 
 <span class="hljs-comment">// ..</span>
 
-</code></pre>
+</code></pre></div>
 <h4 id="0-2-2-get-prefix-with-range-addition" tabindex="-1"><a class="header-anchor" href="#0-2-2-get-prefix-with-range-addition"><span>0-2-2) get prefix with <code>range addition</code></span></a></h4>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 
 <span class="hljs-comment">// LC 1094</span>
 
@@ -1396,12 +1360,12 @@ Map&lt;Integer, Integer&gt; map = <span class="hljs-keyword">new</span> <span cl
 
 
 <span class="hljs-comment">// ...</span>
-</code></pre>
+</code></pre></div>
 <h2 id="1-general-form" tabindex="-1"><a class="header-anchor" href="#1-general-form"><span>1) General form</span></a></h2>
 <h3 id="1-1-basic-op" tabindex="-1"><a class="header-anchor" href="#1-1-basic-op"><span>1-1) Basic OP</span></a></h3>
 <h2 id="2-lc-example" tabindex="-1"><a class="header-anchor" href="#2-lc-example"><span>2) LC Example</span></a></h2>
 <h3 id="2-1-flip-string-to-monotone-increasing" tabindex="-1"><a class="header-anchor" href="#2-1-flip-string-to-monotone-increasing"><span>2-1) Flip String to Monotone Increasing</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 926. Flip String to Monotone Increasing</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 926. Flip String to Monotone Increasing</span>
 <span class="hljs-comment"># NOTE : there is also dp approaches</span>
 <span class="hljs-comment"># V0 </span>
 <span class="hljs-comment"># IDEA : PREFIX SUM</span>
@@ -1429,9 +1393,9 @@ Map&lt;Integer, Integer&gt; map = <span class="hljs-keyword">new</span> <span cl
         <span class="hljs-comment"># return min</span>
         <span class="hljs-keyword">return</span> <span class="hljs-built_in">min</span>(P[j] + <span class="hljs-built_in">len</span>(S)-j-(P[-<span class="hljs-number">1</span>]-P[j])
                    <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(P)))
-</code></pre>
+</code></pre></div>
 <h3 id="2-2-range-addition" tabindex="-1"><a class="header-anchor" href="#2-2-range-addition"><span>2-2) Range Addition</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 370. Range Addition</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 370. Range Addition</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># IDEA : double loop -&gt; 2 single loops,  prefix sum</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
@@ -1498,9 +1462,9 @@ Map&lt;Integer, Integer&gt; map = <span class="hljs-keyword">new</span> <span cl
             ret[i], <span class="hljs-built_in">sum</span> = ret[i] + <span class="hljs-built_in">sum</span>, ret[i] + <span class="hljs-built_in">sum</span>
         
         <span class="hljs-keyword">return</span> ret[<span class="hljs-number">0</span>:-<span class="hljs-number">1</span>]
-</code></pre>
+</code></pre></div>
 <h3 id="2-3-count-number-of-nice-subarrays" tabindex="-1"><a class="header-anchor" href="#2-3-count-number-of-nice-subarrays"><span>2-3) Count Number of Nice Subarrays</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># 1248. Count Number of Nice Subarrays</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># 1248. Count Number of Nice Subarrays</span>
 <span class="hljs-comment"># NOTE : there are also array, window, deque.. approaches</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">numberOfSubarrays</span>(<span class="hljs-params">self, nums, k</span>):
@@ -1535,9 +1499,9 @@ Map&lt;Integer, Integer&gt; map = <span class="hljs-keyword">new</span> <span cl
             <span class="hljs-comment">### NOTE !!! : we need to add 1 to count of &quot;cum_sum&quot;, since in current loop, we got a new cur_sum (as above)</span>
             d[cum_sum] += <span class="hljs-number">1</span>
         <span class="hljs-keyword">return</span> res
-</code></pre>
+</code></pre></div>
 <h3 id="2-4-maximum-size-subarray-sum-equals-k" tabindex="-1"><a class="header-anchor" href="#2-4-maximum-size-subarray-sum-equals-k"><span>2-4) Maximum Size Subarray Sum Equals k</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 325. Maximum Size Subarray Sum Equals k</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 325. Maximum Size Subarray Sum Equals k</span>
 <span class="hljs-comment"># V0 </span>
 <span class="hljs-comment"># time complexity : O(N) | space complexity : O(N)</span>
 <span class="hljs-comment"># IDEA : HASH TBALE</span>
@@ -1565,9 +1529,9 @@ Map&lt;Integer, Integer&gt; map = <span class="hljs-keyword">new</span> <span cl
             <span class="hljs-keyword">if</span> acc - k <span class="hljs-keyword">in</span> dic:
                 result = <span class="hljs-built_in">max</span>(result, i - dic[acc-k])
         <span class="hljs-keyword">return</span> result
-</code></pre>
+</code></pre></div>
 <h3 id="2-5-subarray-sum-equals-k" tabindex="-1"><a class="header-anchor" href="#2-5-subarray-sum-equals-k"><span>2-5) Subarray Sum Equals K</span></a></h3>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 560</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">subarraySum</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums, <span class="hljs-type">int</span> k)</span> {
     <span class="hljs-comment">/**
@@ -1606,9 +1570,9 @@ Map&lt;Integer, Integer&gt; map = <span class="hljs-keyword">new</span> <span cl
 
     <span class="hljs-keyword">return</span> count;
 }
-</code></pre>
+</code></pre></div>
 <h3 id="2-6-continuous-subarray-sum" tabindex="-1"><a class="header-anchor" href="#2-6-continuous-subarray-sum"><span>2-6) Continuous Subarray Sum</span></a></h3>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 523</span>
 <span class="hljs-comment">// V1</span>
 <span class="hljs-comment">// IDEA : HASHMAP</span>
@@ -1638,9 +1602,9 @@ Map&lt;Integer, Integer&gt; map = <span class="hljs-keyword">new</span> <span cl
 
     <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
 }
-</code></pre>
+</code></pre></div>
 <h3 id="2-7-max-chunks-to-make-sorted" tabindex="-1"><a class="header-anchor" href="#2-7-max-chunks-to-make-sorted"><span>2-7) Max Chunks To Make Sorted</span></a></h3>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 769</span>
 <span class="hljs-comment">// V1-1</span>
 <span class="hljs-comment">// https://leetcode.com/problems/max-chunks-to-make-sorted/editorial/</span>
@@ -1695,9 +1659,9 @@ Map&lt;Integer, Integer&gt; map = <span class="hljs-keyword">new</span> <span cl
     }
     <span class="hljs-keyword">return</span> chunks;
 }
-</code></pre>
+</code></pre></div>
 <h3 id="2-8-maximum-sum-of-two-non-overlapping-subarrays" tabindex="-1"><a class="header-anchor" href="#2-8-maximum-sum-of-two-non-overlapping-subarrays"><span>2-8) Maximum Sum of Two Non-Overlapping Subarrays</span></a></h3>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 1031</span>
 
 <span class="hljs-comment">// V1</span>
@@ -1722,7 +1686,7 @@ Map&lt;Integer, Integer&gt; map = <span class="hljs-keyword">new</span> <span cl
     }
     <span class="hljs-keyword">return</span> ans;
 }
-</code></pre>
+</code></pre></div>
 <h3 id="2-9-maximum-side-length-of-a-square-with-sum-threshold-lc-1292" tabindex="-1"><a class="header-anchor" href="#2-9-maximum-side-length-of-a-square-with-sum-threshold-lc-1292"><span>2-9) Maximum Side Length of a Square with Sum ≤ Threshold (LC 1292)</span></a></h3>
 <p><strong>Pattern:</strong> 2D Prefix Sum + Binary Search <strong>or</strong> 2D Prefix Sum + Greedy</p>
 <p><strong>Core Idea:</strong></p>
@@ -1732,10 +1696,10 @@ Map&lt;Integer, Integer&gt; map = <span class="hljs-keyword">new</span> <span cl
 <li><strong>Greedy approach</strong>: Single pass over all cells; at each cell <code>(i,j)</code>, only test if a square of side <code>maxSide+1</code> fits. If yes, increment <code>maxSide</code>. → O(m·n)</li>
 </ol>
 <p><strong>2D Prefix Sum formula (square ending at (i,j) with side <code>k</code>):</strong></p>
-<pre><code class="hljs">sum = P[i][j] - P[i-k][j] - P[i][j-k] + P[i-k][j-k]
-</code></pre>
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">sum = P[i][j] - P[i-k][j] - P[i][j-k] + P[i-k][j-k]
+</code></pre></div>
 <p><strong>Binary Search approach (Java):</strong></p>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 1292 - V1 Binary Search</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 1292 - V1 Binary Search</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">maxSideLength</span><span class="hljs-params">(<span class="hljs-type">int</span>[][] mat, <span class="hljs-type">int</span> threshold)</span> {
     <span class="hljs-type">int</span> <span class="hljs-variable">m</span> <span class="hljs-operator">=</span> mat.length, n = mat[<span class="hljs-number">0</span>].length;
     <span class="hljs-type">int</span>[][] P = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[m + <span class="hljs-number">1</span>][n + <span class="hljs-number">1</span>];
@@ -1759,9 +1723,9 @@ Map&lt;Integer, Integer&gt; map = <span class="hljs-keyword">new</span> <span cl
     }
     <span class="hljs-keyword">return</span> ans;
 }
-</code></pre>
+</code></pre></div>
 <p><strong>Greedy approach (Java):</strong></p>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 1292 - V0 Greedy (O(m*n), optimal)</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 1292 - V0 Greedy (O(m*n), optimal)</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">maxSideLength</span><span class="hljs-params">(<span class="hljs-type">int</span>[][] mat, <span class="hljs-type">int</span> threshold)</span> {
     <span class="hljs-type">int</span> <span class="hljs-variable">m</span> <span class="hljs-operator">=</span> mat.length, n = mat[<span class="hljs-number">0</span>].length;
     <span class="hljs-type">int</span>[][] P = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[m + <span class="hljs-number">1</span>][n + <span class="hljs-number">1</span>];
@@ -1781,7 +1745,7 @@ Map&lt;Integer, Integer&gt; map = <span class="hljs-keyword">new</span> <span cl
     }
     <span class="hljs-keyword">return</span> maxSide;
 }
-</code></pre>
+</code></pre></div>
 <p><strong>Why Greedy works:</strong> We only need to know the <em>maximum</em> achievable side length. Scanning left-to-right, top-to-bottom ensures we never miss a valid square — if a larger square exists somewhere, it will be discovered when we reach its bottom-right corner.</p>
 <p><strong>Similar LCs:</strong></p>
 <table>
@@ -1821,7 +1785,7 @@ Map&lt;Integer, Integer&gt; map = <span class="hljs-keyword">new</span> <span cl
 </tbody>
 </table>
 <h3 id="2-11-sum-of-distances-pattern-7" tabindex="-1"><a class="header-anchor" href="#2-11-sum-of-distances-pattern-7"><span>2-11) Sum of Distances (Pattern 7)</span></a></h3>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 2615 - Sum of Distances</span>
 <span class="hljs-comment">// IDEA: HashMap + Prefix Sum (Left-Right Split)</span>
 <span class="hljs-comment">/**
@@ -1874,8 +1838,8 @@ Map&lt;Integer, Integer&gt; map = <span class="hljs-keyword">new</span> <span cl
 
     <span class="hljs-keyword">return</span> res;
 }
-</code></pre>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
 <span class="hljs-comment"># LC 2615 - Sum of Distances</span>
 <span class="hljs-comment"># V0: HashMap + Prefix Sum</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">distance</span>(<span class="hljs-params">nums</span>):
@@ -1918,7 +1882,7 @@ Map&lt;Integer, Integer&gt; map = <span class="hljs-keyword">new</span> <span cl
             result[idx] = left_dist + right_dist
 
     <span class="hljs-keyword">return</span> result
-</code></pre>
+</code></pre></div>
 <h2 id="summary-quick-reference" tabindex="-1"><a class="header-anchor" href="#summary-quick-reference"><span>Summary &amp; Quick Reference</span></a></h2>
 <h3 id="complexity-quick-reference" tabindex="-1"><a class="header-anchor" href="#complexity-quick-reference"><span>Complexity Quick Reference</span></a></h3>
 <table>
@@ -2018,24 +1982,24 @@ Map&lt;Integer, Integer&gt; map = <span class="hljs-keyword">new</span> <span cl
 </table>
 <h3 id="core-mathematical-insights" tabindex="-1"><a class="header-anchor" href="#core-mathematical-insights"><span>Core Mathematical Insights</span></a></h3>
 <h4 id="prefix-sum-formula" tabindex="-1"><a class="header-anchor" href="#prefix-sum-formula"><span><strong>Prefix Sum Formula</strong></span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># For 1D array: sum of subarray [i, j] (inclusive)</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># For 1D array: sum of subarray [i, j] (inclusive)</span>
 subarray_sum = prefix[j + <span class="hljs-number">1</span>] - prefix[i]
 
 <span class="hljs-comment"># For 2D matrix: sum of rectangle from (r1,c1) to (r2,c2)</span>
 rectangle_sum = prefix[r2+<span class="hljs-number">1</span>][c2+<span class="hljs-number">1</span>] - prefix[r1][c2+<span class="hljs-number">1</span>] - prefix[r2+<span class="hljs-number">1</span>][c1] + prefix[r1][c1]
-</code></pre>
+</code></pre></div>
 <h4 id="hashmap-key-insights" tabindex="-1"><a class="header-anchor" href="#hashmap-key-insights"><span><strong>HashMap Key Insights</strong></span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># If prefix_sum[j] - prefix_sum[i] = k</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># If prefix_sum[j] - prefix_sum[i] = k</span>
 <span class="hljs-comment"># Then prefix_sum[i] = prefix_sum[j] - k</span>
 <span class="hljs-comment"># So check if (current_prefix_sum - k) exists in map</span>
 
 <span class="hljs-comment"># For divisibility: if (sum[j] - sum[i]) % k = 0</span>
 <span class="hljs-comment"># Then sum[j] % k = sum[i] % k</span>
 <span class="hljs-comment"># So check if (current_sum % k) exists in remainder map</span>
-</code></pre>
+</code></pre></div>
 <h3 id="common-patterns-tricks" tabindex="-1"><a class="header-anchor" href="#common-patterns-tricks"><span>Common Patterns &amp; Tricks</span></a></h3>
 <h4 id="pattern-1-two-sum-extended" tabindex="-1"><a class="header-anchor" href="#pattern-1-two-sum-extended"><span><strong>Pattern 1: Two Sum Extended</strong></span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Convert &quot;find subarray with sum = k&quot; to &quot;find two prefix sums with diff = k&quot;</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Convert &quot;find subarray with sum = k&quot; to &quot;find two prefix sums with diff = k&quot;</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">subarray_sum_equals_k</span>(<span class="hljs-params">nums, k</span>):
     prefix_sum = <span class="hljs-number">0</span>
     count = <span class="hljs-number">0</span>
@@ -2047,9 +2011,9 @@ rectangle_sum = prefix[r2+<span class="hljs-number">1</span>][c2+<span class="hl
         prefix_map[prefix_sum] = prefix_map.get(prefix_sum, <span class="hljs-number">0</span>) + <span class="hljs-number">1</span>
     
     <span class="hljs-keyword">return</span> count
-</code></pre>
+</code></pre></div>
 <h4 id="pattern-2-difference-array-magic" tabindex="-1"><a class="header-anchor" href="#pattern-2-difference-array-magic"><span><strong>Pattern 2: Difference Array Magic</strong></span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Apply multiple range updates [start, end, val] efficiently</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Apply multiple range updates [start, end, val] efficiently</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">range_addition</span>(<span class="hljs-params">length, updates</span>):
     diff = [<span class="hljs-number">0</span>] * (length + <span class="hljs-number">1</span>)  <span class="hljs-comment"># Extra space for end+1 indexing</span>
     
@@ -2065,15 +2029,15 @@ rectangle_sum = prefix[r2+<span class="hljs-number">1</span>][c2+<span class="hl
         result.append(current)
     
     <span class="hljs-keyword">return</span> result
-</code></pre>
+</code></pre></div>
 <h4 id="pattern-3-transform-before-sum" tabindex="-1"><a class="header-anchor" href="#pattern-3-transform-before-sum"><span><strong>Pattern 3: Transform Before Sum</strong></span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Many problems can be reduced to simpler prefix sum problems</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Many problems can be reduced to simpler prefix sum problems</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">count_nice_subarrays</span>(<span class="hljs-params">nums, k</span>):
     <span class="hljs-comment"># Transform: odd numbers → 1, even numbers → 0</span>
     <span class="hljs-comment"># Problem becomes: count subarrays with sum = k</span>
     binary_array = [<span class="hljs-number">1</span> <span class="hljs-keyword">if</span> x % <span class="hljs-number">2</span> == <span class="hljs-number">1</span> <span class="hljs-keyword">else</span> <span class="hljs-number">0</span> <span class="hljs-keyword">for</span> x <span class="hljs-keyword">in</span> nums]
     <span class="hljs-keyword">return</span> subarray_sum_equals_k(binary_array, k)
-</code></pre>
+</code></pre></div>
 <h3 id="problem-solving-steps" tabindex="-1"><a class="header-anchor" href="#problem-solving-steps"><span>Problem-Solving Steps</span></a></h3>
 <ol>
 <li>

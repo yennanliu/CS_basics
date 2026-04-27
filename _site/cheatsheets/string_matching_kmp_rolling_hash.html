@@ -19,54 +19,18 @@
     }
   })();
   </script>
-  <script>document.addEventListener('DOMContentLoaded', function() {
-    document.querySelectorAll('pre code').forEach(function(codeEl) {
-      var pre = codeEl.parentElement;
-      var lang = '';
-      var cls = codeEl.className || '';
-      var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
-      if (m) lang = m[1];
-
-      // Add line numbers
-      var lines = codeEl.innerHTML.split('
-');
-      if (lines[lines.length - 1] === '') lines.pop();
-      var numbered = lines.map(function(line, i) {
-        return '<span class="hljs-ln-line"><span class="hljs-ln-n" data-line-number="' + (i + 1) + '"></span><span class="hljs-ln-code">' + line + '</span></span>';
-      }).join('
-');
-      codeEl.innerHTML = numbered;
-      codeEl.classList.add('hljs-ln');
-
-      var wrapper = document.createElement('div');
-      wrapper.className = 'code-block-wrapper';
-      pre.parentNode.insertBefore(wrapper, pre);
-      var header = document.createElement('div');
-      header.className = 'code-block-header';
-      if (lang) {
-        var label = document.createElement('span');
-        label.className = 'code-lang-label';
-        label.textContent = lang;
-        header.appendChild(label);
-      } else {
-        header.appendChild(document.createElement('span'));
-      }
-      var btn = document.createElement('button');
-      btn.className = 'copy-btn';
-      btn.textContent = 'Copy';
-      btn.addEventListener('click', function() {
-        var text = Array.from(codeEl.querySelectorAll('.hljs-ln-code')).map(function(el) { return el.textContent; }).join('
-');
-        navigator.clipboard.writeText(text).then(function() {
-          btn.textContent = 'Copied!';
-          btn.classList.add('copied');
-          setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
-        });
-      });
-      header.appendChild(btn);
-      wrapper.appendChild(header);
-      wrapper.appendChild(pre);
+  <script>
+  function copyCode(btn) {
+    var pre = btn.closest('.code-block-wrapper').querySelector('pre');
+    var text = pre ? pre.innerText : '';
+    navigator.clipboard.writeText(text).then(function() {
+      btn.textContent = 'Copied!';
+      btn.classList.add('copied');
+      setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
     });
+  }
+  </script>
+  <script>document.addEventListener('DOMContentLoaded', function() {
     document.querySelectorAll('table').forEach(function(table) {
       if (!table.parentElement.classList.contains('table-wrap')) {
         var wrapper = document.createElement('div');
@@ -204,7 +168,7 @@
 </ol>
 <h3 id="1-2-templates" tabindex="-1"><a class="header-anchor" href="#1-2-templates"><span>1-2) Templates</span></a></h3>
 <h4 id="kmp-template" tabindex="-1"><a class="header-anchor" href="#kmp-template"><span>KMP Template</span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">kmp_search</span>(<span class="hljs-params">text, pattern</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">kmp_search</span>(<span class="hljs-params">text, pattern</span>):
     <span class="hljs-string">&quot;&quot;&quot;Find all occurrences of pattern in text using KMP&quot;&quot;&quot;</span>
 
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">build_lps</span>(<span class="hljs-params">pattern</span>):
@@ -252,8 +216,8 @@
                 i += <span class="hljs-number">1</span>
 
     <span class="hljs-keyword">return</span> matches
-</code></pre>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java KMP Implementation</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java KMP Implementation</span>
 <span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">KMP</span> {
     <span class="hljs-keyword">public</span> List&lt;Integer&gt; <span class="hljs-title function_">search</span><span class="hljs-params">(String text, String pattern)</span> {
         List&lt;Integer&gt; matches = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();
@@ -306,9 +270,9 @@
         <span class="hljs-keyword">return</span> lps;
     }
 }
-</code></pre>
+</code></pre></div>
 <h4 id="rolling-hash-template" tabindex="-1"><a class="header-anchor" href="#rolling-hash-template"><span>Rolling Hash Template</span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">RollingHash</span>:
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">RollingHash</span>:
     <span class="hljs-string">&quot;&quot;&quot;Rolling hash for efficient substring matching&quot;&quot;&quot;</span>
 
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, s, base=<span class="hljs-number">256</span>, mod=<span class="hljs-number">10</span>**<span class="hljs-number">9</span> + <span class="hljs-number">7</span></span>):
@@ -373,8 +337,8 @@
                 text_hash += mod
 
     <span class="hljs-keyword">return</span> matches
-</code></pre>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java Rolling Hash Implementation</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java Rolling Hash Implementation</span>
 <span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">RollingHash</span> {
     <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">long</span> <span class="hljs-variable">BASE</span> <span class="hljs-operator">=</span> <span class="hljs-number">256</span>;
     <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">long</span> <span class="hljs-variable">MOD</span> <span class="hljs-operator">=</span> <span class="hljs-number">1_000_000_007</span>;
@@ -416,9 +380,9 @@
         <span class="hljs-keyword">return</span> matches;
     }
 }
-</code></pre>
+</code></pre></div>
 <h3 id="1-3-double-hashing-collision-reduction" tabindex="-1"><a class="header-anchor" href="#1-3-double-hashing-collision-reduction"><span>1-3) Double Hashing (Collision Reduction)</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">DoubleHash</span>:
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">DoubleHash</span>:
     <span class="hljs-string">&quot;&quot;&quot;Double hashing to minimize collision probability&quot;&quot;&quot;</span>
 
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, s</span>):
@@ -448,10 +412,10 @@
         h2 = (<span class="hljs-variable language_">self</span>.hash2[right + <span class="hljs-number">1</span>] - <span class="hljs-variable language_">self</span>.hash2[left] * <span class="hljs-variable language_">self</span>.pow2[length]) % <span class="hljs-variable language_">self</span>.mod2
         <span class="hljs-keyword">return</span> (h1 <span class="hljs-keyword">if</span> h1 &gt;= <span class="hljs-number">0</span> <span class="hljs-keyword">else</span> h1 + <span class="hljs-variable language_">self</span>.mod1,
                 h2 <span class="hljs-keyword">if</span> h2 &gt;= <span class="hljs-number">0</span> <span class="hljs-keyword">else</span> h2 + <span class="hljs-variable language_">self</span>.mod2)
-</code></pre>
+</code></pre></div>
 <h2 id="2-lc-example" tabindex="-1"><a class="header-anchor" href="#2-lc-example"><span>2) LC Example</span></a></h2>
 <h3 id="2-1-find-the-index-of-the-first-occurrence-in-a-string-lc-28" tabindex="-1"><a class="header-anchor" href="#2-1-find-the-index-of-the-first-occurrence-in-a-string-lc-28"><span>2-1) Find the Index of the First Occurrence in a String (LC 28)</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># KMP Solution</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># KMP Solution</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">strStr</span>(<span class="hljs-params">haystack, needle</span>):
     <span class="hljs-string">&quot;&quot;&quot;LC 28: Implement strStr() using KMP&quot;&quot;&quot;</span>
     <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> needle:
@@ -528,9 +492,9 @@
                 hay_hash += mod
 
     <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>
-</code></pre>
+</code></pre></div>
 <h3 id="2-2-repeated-substring-pattern-lc-459" tabindex="-1"><a class="header-anchor" href="#2-2-repeated-substring-pattern-lc-459"><span>2-2) Repeated Substring Pattern (LC 459)</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">repeatedSubstringPattern</span>(<span class="hljs-params">s</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">repeatedSubstringPattern</span>(<span class="hljs-params">s</span>):
     <span class="hljs-string">&quot;&quot;&quot;LC 459: Check if string is made of repeated pattern&quot;&quot;&quot;</span>
 
     <span class="hljs-comment"># Method 1: KMP-based</span>
@@ -562,9 +526,9 @@
         <span class="hljs-keyword">return</span> s <span class="hljs-keyword">in</span> (s + s)[<span class="hljs-number">1</span>:-<span class="hljs-number">1</span>]
 
     <span class="hljs-keyword">return</span> kmp_solution(s)
-</code></pre>
+</code></pre></div>
 <h3 id="2-3-longest-duplicate-substring-lc-1044" tabindex="-1"><a class="header-anchor" href="#2-3-longest-duplicate-substring-lc-1044"><span>2-3) Longest Duplicate Substring (LC 1044)</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">longestDupSubstring</span>(<span class="hljs-params">s</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">longestDupSubstring</span>(<span class="hljs-params">s</span>):
     <span class="hljs-string">&quot;&quot;&quot;LC 1044: Find longest duplicate substring using binary search + rolling hash&quot;&quot;&quot;</span>
 
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">has_duplicate</span>(<span class="hljs-params">length</span>):
@@ -610,9 +574,9 @@
             right = mid - <span class="hljs-number">1</span>
 
     <span class="hljs-keyword">return</span> s[result_start:result_start + right] <span class="hljs-keyword">if</span> result_start != -<span class="hljs-number">1</span> <span class="hljs-keyword">else</span> <span class="hljs-string">&quot;&quot;</span>
-</code></pre>
+</code></pre></div>
 <h3 id="2-4-shortest-palindrome-lc-214" tabindex="-1"><a class="header-anchor" href="#2-4-shortest-palindrome-lc-214"><span>2-4) Shortest Palindrome (LC 214)</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">shortestPalindrome</span>(<span class="hljs-params">s</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">shortestPalindrome</span>(<span class="hljs-params">s</span>):
     <span class="hljs-string">&quot;&quot;&quot;LC 214: Find shortest palindrome by adding chars to front&quot;&quot;&quot;</span>
 
     <span class="hljs-comment"># KMP approach: Find longest palindromic prefix</span>
@@ -647,9 +611,9 @@
         <span class="hljs-keyword">return</span> rev[:<span class="hljs-built_in">len</span>(s) - palindrome_len] + s
 
     <span class="hljs-keyword">return</span> kmp_solution(s)
-</code></pre>
+</code></pre></div>
 <h3 id="2-5-distinct-echo-substrings-lc-1316" tabindex="-1"><a class="header-anchor" href="#2-5-distinct-echo-substrings-lc-1316"><span>2-5) Distinct Echo Substrings (LC 1316)</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">distinctEchoSubstrings</span>(<span class="hljs-params">text</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">distinctEchoSubstrings</span>(<span class="hljs-params">text</span>):
     <span class="hljs-string">&quot;&quot;&quot;LC 1316: Count distinct echo substrings (repeated twice consecutively)&quot;&quot;&quot;</span>
 
     rh = RollingHash(text)
@@ -672,9 +636,9 @@
                     count += <span class="hljs-number">1</span>
 
     <span class="hljs-keyword">return</span> count
-</code></pre>
+</code></pre></div>
 <h3 id="2-6-rotate-string-lc-796" tabindex="-1"><a class="header-anchor" href="#2-6-rotate-string-lc-796"><span>2-6) Rotate String (LC 796)</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">rotateString</span>(<span class="hljs-params">s, goal</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">rotateString</span>(<span class="hljs-params">s, goal</span>):
     <span class="hljs-string">&quot;&quot;&quot;LC 796: Check if goal is rotation of s&quot;&quot;&quot;</span>
 
     <span class="hljs-comment"># If goal is rotation of s, it will be in s+s</span>
@@ -694,9 +658,9 @@
         <span class="hljs-keyword">return</span> <span class="hljs-built_in">len</span>(matches) &gt; <span class="hljs-number">0</span>
 
     <span class="hljs-keyword">return</span> kmp_approach()
-</code></pre>
+</code></pre></div>
 <h3 id="2-7-implement-strstr-variants" tabindex="-1"><a class="header-anchor" href="#2-7-implement-strstr-variants"><span>2-7) Implement strStr() Variants</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Count all occurrences</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Count all occurrences</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">count_occurrences</span>(<span class="hljs-params">text, pattern</span>):
     <span class="hljs-string">&quot;&quot;&quot;Count all occurrences of pattern in text&quot;&quot;&quot;</span>
     matches = kmp_search(text, pattern)
@@ -733,9 +697,9 @@
     <span class="hljs-keyword">for</span> pattern <span class="hljs-keyword">in</span> patterns:
         results[pattern] = kmp_search(text, pattern)
     <span class="hljs-keyword">return</span> results
-</code></pre>
+</code></pre></div>
 <h3 id="2-8-longest-happy-prefix-lc-1392" tabindex="-1"><a class="header-anchor" href="#2-8-longest-happy-prefix-lc-1392"><span>2-8) Longest Happy Prefix (LC 1392)</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">longestPrefix</span>(<span class="hljs-params">s</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">longestPrefix</span>(<span class="hljs-params">s</span>):
     <span class="hljs-string">&quot;&quot;&quot;LC 1392: Find longest happy prefix (prefix == suffix)&quot;&quot;&quot;</span>
 
     n = <span class="hljs-built_in">len</span>(s)
@@ -757,7 +721,7 @@
 
     <span class="hljs-comment"># lps[-1] gives length of longest prefix which is also suffix</span>
     <span class="hljs-keyword">return</span> s[:lps[-<span class="hljs-number">1</span>]]
-</code></pre>
+</code></pre></div>
 <h2 id="3-common-applications" tabindex="-1"><a class="header-anchor" href="#3-common-applications"><span>3) Common Applications</span></a></h2>
 <h3 id="3-1-pattern-matching-problems" tabindex="-1"><a class="header-anchor" href="#3-1-pattern-matching-problems"><span>3-1) Pattern Matching Problems</span></a></h3>
 <ul>
@@ -833,7 +797,7 @@
 <li>LC 1044, 1316, 718, 1062</li>
 </ul>
 <h3 id="5-3-common-patterns" tabindex="-1"><a class="header-anchor" href="#5-3-common-patterns"><span>5-3) Common Patterns</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Pattern 1: String in (s+s) for rotation</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Pattern 1: String in (s+s) for rotation</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">is_rotation</span>(<span class="hljs-params">s1, s2</span>):
     <span class="hljs-keyword">return</span> <span class="hljs-built_in">len</span>(s1) == <span class="hljs-built_in">len</span>(s2) <span class="hljs-keyword">and</span> s2 <span class="hljs-keyword">in</span> (s1 + s1)
 
@@ -857,7 +821,7 @@
             right = mid - <span class="hljs-number">1</span>
 
     <span class="hljs-keyword">return</span> result
-</code></pre>
+</code></pre></div>
 <h2 id="6-summary" tabindex="-1"><a class="header-anchor" href="#6-summary"><span>6) Summary</span></a></h2>
 <h3 id="key-takeaways" tabindex="-1"><a class="header-anchor" href="#key-takeaways"><span>Key Takeaways</span></a></h3>
 <ol>

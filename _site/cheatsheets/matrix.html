@@ -19,54 +19,18 @@
     }
   })();
   </script>
-  <script>document.addEventListener('DOMContentLoaded', function() {
-    document.querySelectorAll('pre code').forEach(function(codeEl) {
-      var pre = codeEl.parentElement;
-      var lang = '';
-      var cls = codeEl.className || '';
-      var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
-      if (m) lang = m[1];
-
-      // Add line numbers
-      var lines = codeEl.innerHTML.split('
-');
-      if (lines[lines.length - 1] === '') lines.pop();
-      var numbered = lines.map(function(line, i) {
-        return '<span class="hljs-ln-line"><span class="hljs-ln-n" data-line-number="' + (i + 1) + '"></span><span class="hljs-ln-code">' + line + '</span></span>';
-      }).join('
-');
-      codeEl.innerHTML = numbered;
-      codeEl.classList.add('hljs-ln');
-
-      var wrapper = document.createElement('div');
-      wrapper.className = 'code-block-wrapper';
-      pre.parentNode.insertBefore(wrapper, pre);
-      var header = document.createElement('div');
-      header.className = 'code-block-header';
-      if (lang) {
-        var label = document.createElement('span');
-        label.className = 'code-lang-label';
-        label.textContent = lang;
-        header.appendChild(label);
-      } else {
-        header.appendChild(document.createElement('span'));
-      }
-      var btn = document.createElement('button');
-      btn.className = 'copy-btn';
-      btn.textContent = 'Copy';
-      btn.addEventListener('click', function() {
-        var text = Array.from(codeEl.querySelectorAll('.hljs-ln-code')).map(function(el) { return el.textContent; }).join('
-');
-        navigator.clipboard.writeText(text).then(function() {
-          btn.textContent = 'Copied!';
-          btn.classList.add('copied');
-          setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
-        });
-      });
-      header.appendChild(btn);
-      wrapper.appendChild(header);
-      wrapper.appendChild(pre);
+  <script>
+  function copyCode(btn) {
+    var pre = btn.closest('.code-block-wrapper').querySelector('pre');
+    var text = pre ? pre.innerText : '';
+    navigator.clipboard.writeText(text).then(function() {
+      btn.textContent = 'Copied!';
+      btn.classList.add('copied');
+      setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
     });
+  }
+  </script>
+  <script>document.addEventListener('DOMContentLoaded', function() {
     document.querySelectorAll('table').forEach(function(table) {
       if (!table.parentElement.classList.contains('table-wrap')) {
         var wrapper = document.createElement('div');
@@ -253,7 +217,7 @@
 </tbody>
 </table>
 <h3 id="universal-matrix-template" tabindex="-1"><a class="header-anchor" href="#universal-matrix-template"><span>Universal Matrix Template</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">solve_matrix_problem</span>(<span class="hljs-params">matrix</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">solve_matrix_problem</span>(<span class="hljs-params">matrix</span>):
     <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> matrix <span class="hljs-keyword">or</span> <span class="hljs-keyword">not</span> matrix[<span class="hljs-number">0</span>]:
         <span class="hljs-keyword">return</span> default_result
     
@@ -276,10 +240,10 @@
     <span class="hljs-comment"># - Apply logic</span>
     <span class="hljs-comment"># - Update result</span>
     <span class="hljs-keyword">pass</span>
-</code></pre>
+</code></pre></div>
 <h3 id="pattern-specific-templates" tabindex="-1"><a class="header-anchor" href="#pattern-specific-templates"><span>Pattern-Specific Templates</span></a></h3>
 <h4 id="template-1-matrix-traversal-spiral-diagonal" tabindex="-1"><a class="header-anchor" href="#template-1-matrix-traversal-spiral-diagonal"><span>Template 1: Matrix Traversal (Spiral/Diagonal)</span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">spiral_traversal</span>(<span class="hljs-params">matrix</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">spiral_traversal</span>(<span class="hljs-params">matrix</span>):
     <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> matrix <span class="hljs-keyword">or</span> <span class="hljs-keyword">not</span> matrix[<span class="hljs-number">0</span>]:
         <span class="hljs-keyword">return</span> []
     
@@ -314,9 +278,9 @@
             left += <span class="hljs-number">1</span>
     
     <span class="hljs-keyword">return</span> result
-</code></pre>
+</code></pre></div>
 <h4 id="template-2-matrix-transformation-rotate-transpose" tabindex="-1"><a class="header-anchor" href="#template-2-matrix-transformation-rotate-transpose"><span>Template 2: Matrix Transformation (Rotate/Transpose)</span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">rotate_matrix_90_clockwise</span>(<span class="hljs-params">matrix</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">rotate_matrix_90_clockwise</span>(<span class="hljs-params">matrix</span>):
     <span class="hljs-string">&quot;&quot;&quot;
     Two-step approach: Transpose + Reverse rows
     &quot;&quot;&quot;</span>
@@ -348,9 +312,9 @@
             result[j][i] = matrix[i][j]
     
     <span class="hljs-keyword">return</span> result
-</code></pre>
+</code></pre></div>
 <h4 id="template-3-matrix-search" tabindex="-1"><a class="header-anchor" href="#template-3-matrix-search"><span>Template 3: Matrix Search</span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">search_matrix_binary</span>(<span class="hljs-params">matrix, target</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">search_matrix_binary</span>(<span class="hljs-params">matrix, target</span>):
     <span class="hljs-string">&quot;&quot;&quot;
     Binary search on sorted matrix (treat as 1D array)
     &quot;&quot;&quot;</span>
@@ -394,9 +358,9 @@
             row += <span class="hljs-number">1</span>  <span class="hljs-comment"># Move down</span>
     
     <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
-</code></pre>
+</code></pre></div>
 <h4 id="template-4-matrix-modification" tabindex="-1"><a class="header-anchor" href="#template-4-matrix-modification"><span>Template 4: Matrix Modification</span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">set_matrix_zeros</span>(<span class="hljs-params">matrix</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">set_matrix_zeros</span>(<span class="hljs-params">matrix</span>):
     <span class="hljs-string">&quot;&quot;&quot;
     Set entire row and column to zero if any element is zero
     &quot;&quot;&quot;</span>
@@ -429,9 +393,9 @@
     <span class="hljs-keyword">if</span> first_col_zero:
         <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(rows):
             matrix[i][<span class="hljs-number">0</span>] = <span class="hljs-number">0</span>
-</code></pre>
+</code></pre></div>
 <h4 id="template-5-matrix-multiplication" tabindex="-1"><a class="header-anchor" href="#template-5-matrix-multiplication"><span>Template 5: Matrix Multiplication</span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">multiply_matrices</span>(<span class="hljs-params">A, B</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">multiply_matrices</span>(<span class="hljs-params">A, B</span>):
     <span class="hljs-string">&quot;&quot;&quot;
     Standard matrix multiplication: C[i][j] = sum(A[i][k] * B[k][j])
     &quot;&quot;&quot;</span>
@@ -471,9 +435,9 @@
                     result[i][j] += A[i][k] * B[k][j]
     
     <span class="hljs-keyword">return</span> result
-</code></pre>
+</code></pre></div>
 <h4 id="template-6-2d-prefix-sum-range-sum-query" tabindex="-1"><a class="header-anchor" href="#template-6-2d-prefix-sum-range-sum-query"><span>Template 6: 2D Prefix Sum (Range Sum Query)</span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">build_prefix_sum_2d</span>(<span class="hljs-params">mat</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">build_prefix_sum_2d</span>(<span class="hljs-params">mat</span>):
     <span class="hljs-string">&quot;&quot;&quot;
     Build 2D prefix sum matrix for O(1) range sum queries.
 
@@ -537,9 +501,9 @@
             res[i][j] = range_sum_2d(pref, r1, c1, r2, c2)
 
     <span class="hljs-keyword">return</span> res
-</code></pre>
+</code></pre></div>
 <h4 id="template-7-matrix-path-dp" tabindex="-1"><a class="header-anchor" href="#template-7-matrix-path-dp"><span>Template 7: Matrix Path DP</span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">min_path_sum</span>(<span class="hljs-params">grid</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">min_path_sum</span>(<span class="hljs-params">grid</span>):
     <span class="hljs-string">&quot;&quot;&quot;
     Find minimum path sum from top-left to bottom-right
     &quot;&quot;&quot;</span>
@@ -578,7 +542,7 @@
             dp[i][j] = dp[i-<span class="hljs-number">1</span>][j] + dp[i][j-<span class="hljs-number">1</span>]
     
     <span class="hljs-keyword">return</span> dp[m-<span class="hljs-number">1</span>][n-<span class="hljs-number">1</span>]
-</code></pre>
+</code></pre></div>
 <h3 id="essential-matrix-properties" tabindex="-1"><a class="header-anchor" href="#essential-matrix-properties"><span>Essential Matrix Properties</span></a></h3>
 <h4 id="diagonal-properties" tabindex="-1"><a class="header-anchor" href="#diagonal-properties"><span>Diagonal Properties</span></a></h4>
 <h5 id="primary-diagonal-main-diagonal" tabindex="-1"><a class="header-anchor" href="#primary-diagonal-main-diagonal"><span>Primary Diagonal (Main Diagonal)</span></a></h5>
@@ -596,7 +560,7 @@
 <li><strong>Elements</strong>: (0,n-1), (1,n-2), (2,n-3), …, (n-1,0)</li>
 </ul>
 <h5 id="visual-example-4-4-matrix-n-4" tabindex="-1"><a class="header-anchor" href="#visual-example-4-4-matrix-n-4"><span>Visual Example (4×4 Matrix, n=4)</span></a></h5>
-<pre data-lang="text"><code class="hljs language-text">Primary Diagonal (i, i):           Secondary Diagonal (i, n-1-i):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">Primary Diagonal (i, i):           Secondary Diagonal (i, n-1-i):
 
       Col 0   Col 1   Col 2   Col 3        Col 0   Col 1   Col 2   Col 3
 Row 0 [ X ]   [ . ]   [ . ]   [ . ]  Row 0 [ . ]   [ . ]   [ . ]   [ X ]  ← (0, 3)
@@ -612,20 +576,20 @@ Row 0 [ P ]   [ . ]   [ . ]   [ S ]    P = Primary, S = Secondary
 Row 1 [ . ]   [ P ]   [ S ]   [ . ]
 Row 2 [ . ]   [ S ]   [ P ]   [ . ]
 Row 3 [ S ]   [ . ]   [ . ]   [ P ]
-</code></pre>
+</code></pre></div>
 <h5 id="edge-case-odd-sized-matrix-diagonals-intersect" tabindex="-1"><a class="header-anchor" href="#edge-case-odd-sized-matrix-diagonals-intersect"><span>Edge Case: Odd-Sized Matrix (Diagonals Intersect)</span></a></h5>
 <p>When matrix size <code>n</code> is <strong>odd</strong>, the primary and secondary diagonals <strong>intersect</strong> at the center cell.</p>
-<pre data-lang="text"><code class="hljs language-text">3×3 Matrix (n=3):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">text</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="text"><code class="hljs language-text">3×3 Matrix (n=3):
       Col 0   Col 1   Col 2
 Row 0 [ P ]   [ . ]   [ S ]    (0,0) and (0,2)
 Row 1 [ . ]   [P&amp;S]   [ . ]    (1,1) is BOTH primary AND secondary!
 Row 2 [ S ]   [ . ]   [ P ]    (2,0) and (2,2)
 
 Center cell (1,1): i=1, i=1 (primary) AND n-1-i=3-1-1=1 (secondary)
-</code></pre>
+</code></pre></div>
 <p><strong>Important</strong>: When iterating both diagonals, avoid double-counting the center cell!</p>
 <h5 id="diagonal-access-template-python" tabindex="-1"><a class="header-anchor" href="#diagonal-access-template-python"><span>Diagonal Access Template (Python)</span></a></h5>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">get_diagonal_elements</span>(<span class="hljs-params">matrix</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">get_diagonal_elements</span>(<span class="hljs-params">matrix</span>):
     <span class="hljs-string">&quot;&quot;&quot;
     Get all elements on both diagonals of a square matrix.
     &quot;&quot;&quot;</span>
@@ -660,9 +624,9 @@ Center cell (1,1): i=1, i=1 (primary) AND n-1-i=3-1-1=1 (secondary)
             result = process(matrix[i][n - <span class="hljs-number">1</span> - i], result)
 
     <span class="hljs-keyword">return</span> result
-</code></pre>
+</code></pre></div>
 <h5 id="diagonal-access-template-java" tabindex="-1"><a class="header-anchor" href="#diagonal-access-template-java"><span>Diagonal Access Template (Java)</span></a></h5>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// From LC 2614 - Prime In Diagonal</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// From LC 2614 - Prime In Diagonal</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">diagonalPrime</span><span class="hljs-params">(<span class="hljs-type">int</span>[][] nums)</span> {
     <span class="hljs-type">int</span> <span class="hljs-variable">n</span> <span class="hljs-operator">=</span> nums.length;
     <span class="hljs-type">int</span> <span class="hljs-variable">maxPrime</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
@@ -682,7 +646,7 @@ Center cell (1,1): i=1, i=1 (primary) AND n-1-i=3-1-1=1 (secondary)
     }
     <span class="hljs-keyword">return</span> maxPrime;
 }
-</code></pre>
+</code></pre></div>
 <h5 id="diagonal-coordinate-summary-table" tabindex="-1"><a class="header-anchor" href="#diagonal-coordinate-summary-table"><span>Diagonal Coordinate Summary Table</span></a></h5>
 <table>
 <thead>
@@ -746,7 +710,7 @@ Center cell (1,1): i=1, i=1 (primary) AND n-1-i=3-1-1=1 (secondary)
 </tbody>
 </table>
 <h4 id="coordinate-system" tabindex="-1"><a class="header-anchor" href="#coordinate-system"><span>Coordinate System</span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Standard matrix indexing: matrix[row][col]</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Standard matrix indexing: matrix[row][col]</span>
 <span class="hljs-comment"># For matrix[i][j]:</span>
 <span class="hljs-comment"># - i represents row (vertical position)</span>
 <span class="hljs-comment"># - j represents column (horizontal position)</span>
@@ -760,7 +724,7 @@ directions_8 = [(<span class="hljs-number">0</span>,<span class="hljs-number">1<
 <span class="hljs-comment"># Boundary checking</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">is_valid</span>(<span class="hljs-params">row, col, rows, cols</span>):
     <span class="hljs-keyword">return</span> <span class="hljs-number">0</span> &lt;= row &lt; rows <span class="hljs-keyword">and</span> <span class="hljs-number">0</span> &lt;= col &lt; cols
-</code></pre>
+</code></pre></div>
 <h2 id="problems-by-pattern" tabindex="-1"><a class="header-anchor" href="#problems-by-pattern"><span>Problems by Pattern</span></a></h2>
 <h3 id="pattern-based-problem-classification" tabindex="-1"><a class="header-anchor" href="#pattern-based-problem-classification"><span>Pattern-Based Problem Classification</span></a></h3>
 <h4 id="pattern-1-matrix-traversal-problems" tabindex="-1"><a class="header-anchor" href="#pattern-1-matrix-traversal-problems"><span><strong>Pattern 1: Matrix Traversal Problems</strong></span></a></h4>
@@ -1349,7 +1313,7 @@ directions_8 = [(<span class="hljs-number">0</span>,<span class="hljs-number">1<
 </tbody>
 </table>
 <h3 id="pattern-selection-strategy" tabindex="-1"><a class="header-anchor" href="#pattern-selection-strategy"><span>Pattern Selection Strategy</span></a></h3>
-<pre><code class="hljs">Matrix Problem Analysis Flowchart:
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Matrix Problem Analysis Flowchart:
 
 1. Is the problem about traversing matrix in a specific order?
    ├── YES → Use Matrix Traversal Template
@@ -1392,7 +1356,7 @@ directions_8 = [(<span class="hljs-number">0</span>,<span class="hljs-number">1<
    │   ├── Min/Max path cost? → DP with optimization
    │   └── Complex constraints? → DFS + memoization
    └── NO → Use Universal Matrix Template
-</code></pre>
+</code></pre></div>
 <h3 id="implementation-decision-tree" tabindex="-1"><a class="header-anchor" href="#implementation-decision-tree"><span>Implementation Decision Tree</span></a></h3>
 <h4 id="step-1-problem-classification" tabindex="-1"><a class="header-anchor" href="#step-1-problem-classification"><span><strong>Step 1: Problem Classification</strong></span></a></h4>
 <ol>
@@ -1419,7 +1383,7 @@ directions_8 = [(<span class="hljs-number">0</span>,<span class="hljs-number">1<
 </ol>
 <h2 id="code-examples-implementations" tabindex="-1"><a class="header-anchor" href="#code-examples-implementations"><span>Code Examples &amp; Implementations</span></a></h2>
 <h3 id="advanced-example-1-set-matrix-zeroes-lc-73" tabindex="-1"><a class="header-anchor" href="#advanced-example-1-set-matrix-zeroes-lc-73"><span>Advanced Example 1: Set Matrix Zeroes (LC 73)</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">setZeroes</span>(<span class="hljs-params">matrix</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">setZeroes</span>(<span class="hljs-params">matrix</span>):
     <span class="hljs-string">&quot;&quot;&quot;
     Set entire row and column to zero if element is zero
     Time: O(m*n), Space: O(1)
@@ -1453,9 +1417,9 @@ directions_8 = [(<span class="hljs-number">0</span>,<span class="hljs-number">1<
     <span class="hljs-keyword">if</span> first_col_zero:
         <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(rows):
             matrix[i][<span class="hljs-number">0</span>] = <span class="hljs-number">0</span>
-</code></pre>
+</code></pre></div>
 <h3 id="advanced-example-2-search-2d-matrix-ii-lc-240" tabindex="-1"><a class="header-anchor" href="#advanced-example-2-search-2d-matrix-ii-lc-240"><span>Advanced Example 2: Search 2D Matrix II (LC 240)</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">searchMatrix</span>(<span class="hljs-params">matrix, target</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">searchMatrix</span>(<span class="hljs-params">matrix, target</span>):
     <span class="hljs-string">&quot;&quot;&quot;
     Search in row-wise and column-wise sorted matrix
     Time: O(m+n), Space: O(1)
@@ -1476,9 +1440,9 @@ directions_8 = [(<span class="hljs-number">0</span>,<span class="hljs-number">1<
             row += <span class="hljs-number">1</span>  <span class="hljs-comment"># Eliminate current row</span>
     
     <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
-</code></pre>
+</code></pre></div>
 <h3 id="advanced-example-3-image-smoother-lc-661" tabindex="-1"><a class="header-anchor" href="#advanced-example-3-image-smoother-lc-661"><span>Advanced Example 3: Image Smoother (LC 661)</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">imageSmoother</span>(<span class="hljs-params">M</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">imageSmoother</span>(<span class="hljs-params">M</span>):
     <span class="hljs-string">&quot;&quot;&quot;
     Smooth image by averaging 8-connected neighbors
     Time: O(m*n), Space: O(m*n)
@@ -1506,7 +1470,7 @@ directions_8 = [(<span class="hljs-number">0</span>,<span class="hljs-number">1<
             result[i][j] = total // count
     
     <span class="hljs-keyword">return</span> result
-</code></pre>
+</code></pre></div>
 <h2 id="summary-quick-reference" tabindex="-1"><a class="header-anchor" href="#summary-quick-reference"><span>Summary &amp; Quick Reference</span></a></h2>
 <h3 id="complexity-quick-reference" tabindex="-1"><a class="header-anchor" href="#complexity-quick-reference"><span>Complexity Quick Reference</span></a></h3>
 <table>
@@ -1641,31 +1605,31 @@ directions_8 = [(<span class="hljs-number">0</span>,<span class="hljs-number">1<
 </table>
 <h3 id="common-patterns-tricks" tabindex="-1"><a class="header-anchor" href="#common-patterns-tricks"><span>Common Patterns &amp; Tricks</span></a></h3>
 <h4 id="boundary-tracking-spiral" tabindex="-1"><a class="header-anchor" href="#boundary-tracking-spiral"><span><strong>Boundary Tracking (Spiral)</strong></span></a></h4>
-<pre data-lang="python"><code class="hljs language-python">top, bottom = <span class="hljs-number">0</span>, rows - <span class="hljs-number">1</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python">top, bottom = <span class="hljs-number">0</span>, rows - <span class="hljs-number">1</span>
 left, right = <span class="hljs-number">0</span>, cols - <span class="hljs-number">1</span>
 <span class="hljs-keyword">while</span> top &lt;= bottom <span class="hljs-keyword">and</span> left &lt;= right:
     <span class="hljs-comment"># Process boundaries and update them</span>
-</code></pre>
+</code></pre></div>
 <h4 id="direction-vectors" tabindex="-1"><a class="header-anchor" href="#direction-vectors"><span><strong>Direction Vectors</strong></span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># 4-directional movement</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># 4-directional movement</span>
 directions = [(<span class="hljs-number">0</span>,<span class="hljs-number">1</span>), (<span class="hljs-number">1</span>,<span class="hljs-number">0</span>), (<span class="hljs-number">0</span>,-<span class="hljs-number">1</span>), (-<span class="hljs-number">1</span>,<span class="hljs-number">0</span>)]
 <span class="hljs-comment"># 8-directional movement  </span>
 directions = [(di,dj) <span class="hljs-keyword">for</span> di <span class="hljs-keyword">in</span> [-<span class="hljs-number">1</span>,<span class="hljs-number">0</span>,<span class="hljs-number">1</span>] <span class="hljs-keyword">for</span> dj <span class="hljs-keyword">in</span> [-<span class="hljs-number">1</span>,<span class="hljs-number">0</span>,<span class="hljs-number">1</span>]]
-</code></pre>
+</code></pre></div>
 <h4 id="in-place-modifications" tabindex="-1"><a class="header-anchor" href="#in-place-modifications"><span><strong>In-Place Modifications</strong></span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Use first row/column as markers</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Use first row/column as markers</span>
 first_row_zero = <span class="hljs-built_in">any</span>(matrix[<span class="hljs-number">0</span>][j] == <span class="hljs-number">0</span> <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(cols))
 first_col_zero = <span class="hljs-built_in">any</span>(matrix[i][<span class="hljs-number">0</span>] == <span class="hljs-number">0</span> <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(rows))
-</code></pre>
+</code></pre></div>
 <h4 id="coordinate-transformation" tabindex="-1"><a class="header-anchor" href="#coordinate-transformation"><span><strong>Coordinate Transformation</strong></span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># 90° clockwise rotation: (i,j) → (j, n-1-i)</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># 90° clockwise rotation: (i,j) → (j, n-1-i)</span>
 <span class="hljs-comment"># Transpose: (i,j) → (j,i)</span>
 <span class="hljs-comment"># Flip horizontal: (i,j) → (i, n-1-j)</span>
-</code></pre>
+</code></pre></div>
 <h4 id="matrix-to-1d-index-conversion" tabindex="-1"><a class="header-anchor" href="#matrix-to-1d-index-conversion"><span><strong>Matrix to 1D Index Conversion</strong></span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Matrix[row][col] → index = row * cols + col</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Matrix[row][col] → index = row * cols + col</span>
 <span class="hljs-comment"># Index → row = index // cols, col = index % cols</span>
-</code></pre>
+</code></pre></div>
 <h3 id="problem-solving-steps" tabindex="-1"><a class="header-anchor" href="#problem-solving-steps"><span>Problem-Solving Steps</span></a></h3>
 <ol>
 <li>
@@ -1787,7 +1751,7 @@ first_col_zero = <span class="hljs-built_in">any</span>(matrix[i][<span class="h
 <blockquote>
 <p>Traverse matrix in spiral order using boundary pointers.</p>
 </blockquote>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 54 - Spiral Matrix</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 54 - Spiral Matrix</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># IDEA : 4 cases: right, down, left, up + boundary condition</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
@@ -1817,8 +1781,8 @@ first_col_zero = <span class="hljs-built_in">any</span>(matrix[i][<span class="h
             top += <span class="hljs-number">1</span>
             bottom -= <span class="hljs-number">1</span>
         <span class="hljs-keyword">return</span> res
-</code></pre>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 54 - Spiral Matrix</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 54 - Spiral Matrix</span>
 <span class="hljs-comment">// IDEA: Four boundary pointers (left, right, top, bottom); shrink after each direction</span>
 <span class="hljs-comment">// time = O(M*N), space = O(1)</span>
 <span class="hljs-keyword">public</span> List&lt;Integer&gt; <span class="hljs-title function_">spiralOrder</span><span class="hljs-params">(<span class="hljs-type">int</span>[][] matrix)</span> {
@@ -1833,13 +1797,13 @@ first_col_zero = <span class="hljs-built_in">any</span>(matrix[i][<span class="h
     }
     <span class="hljs-keyword">return</span> res;
 }
-</code></pre>
+</code></pre></div>
 <hr>
 <h3 id="2-2-rotate-image-lc-48-pattern-transformation" tabindex="-1"><a class="header-anchor" href="#2-2-rotate-image-lc-48-pattern-transformation"><span>2-2) Rotate Image (LC 48) — Pattern: Transformation</span></a></h3>
 <blockquote>
 <p>Rotate matrix 90° clockwise in-place: Transpose then reverse each row.</p>
 </blockquote>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 48 - Rotate Image</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 48 - Rotate Image</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># IDEA : TRANSPOSE (i,j -&gt; j,i) -&gt; REVERSE each row</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
@@ -1856,8 +1820,8 @@ first_col_zero = <span class="hljs-built_in">any</span>(matrix[i][<span class="h
         <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(l):
             matrix[i] = matrix[i][::-<span class="hljs-number">1</span>]
         <span class="hljs-keyword">return</span> matrix
-</code></pre>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 48 - Rotate Image</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 48 - Rotate Image</span>
 <span class="hljs-comment">// IDEA: Transpose (swap [i][j] with [j][i]) then reverse each row</span>
 <span class="hljs-comment">// time = O(N^2), space = O(1)</span>
 <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">rotate</span><span class="hljs-params">(<span class="hljs-type">int</span>[][] matrix)</span> {
@@ -1866,13 +1830,13 @@ first_col_zero = <span class="hljs-built_in">any</span>(matrix[i][<span class="h
         <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">j</span> <span class="hljs-operator">=</span> i + <span class="hljs-number">1</span>; j &lt; n; j++) { <span class="hljs-type">int</span> <span class="hljs-variable">t</span> <span class="hljs-operator">=</span> matrix[i][j]; matrix[i][j] = matrix[j][i]; matrix[j][i] = t; }
     <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span>[] row : matrix) { <span class="hljs-type">int</span> <span class="hljs-variable">l</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>, r = row.length - <span class="hljs-number">1</span>; <span class="hljs-keyword">while</span> (l &lt; r) { <span class="hljs-type">int</span> <span class="hljs-variable">t</span> <span class="hljs-operator">=</span> row[l]; row[l++] = row[r]; row[r--] = t; } }
 }
-</code></pre>
+</code></pre></div>
 <hr>
 <h3 id="2-3-search-a-2d-matrix-lc-74-pattern-search-binary-search" tabindex="-1"><a class="header-anchor" href="#2-3-search-a-2d-matrix-lc-74-pattern-search-binary-search"><span>2-3) Search a 2D Matrix (LC 74) — Pattern: Search (Binary Search)</span></a></h3>
 <blockquote>
 <p>Treat the fully sorted matrix as a 1D array and binary search.</p>
 </blockquote>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 74 - Search a 2D Matrix</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 74 - Search a 2D Matrix</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># IDEA : BINARY SEARCH — treat matrix as flat sorted array</span>
 <span class="hljs-comment"># Time: O(log(m*n)), Space: O(1)</span>
@@ -1892,8 +1856,8 @@ first_col_zero = <span class="hljs-built_in">any</span>(matrix[i][<span class="h
             <span class="hljs-keyword">else</span>:
                 right = mid - <span class="hljs-number">1</span>
         <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
-</code></pre>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 74 - Search a 2D Matrix</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 74 - Search a 2D Matrix</span>
 <span class="hljs-comment">// IDEA: Binary search treating matrix as flat 1D array; row = mid/n, col = mid%n</span>
 <span class="hljs-comment">// time = O(log(M*N)), space = O(1)</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">searchMatrix</span><span class="hljs-params">(<span class="hljs-type">int</span>[][] matrix, <span class="hljs-type">int</span> target)</span> {
@@ -1906,13 +1870,13 @@ first_col_zero = <span class="hljs-built_in">any</span>(matrix[i][<span class="h
     }
     <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
 }
-</code></pre>
+</code></pre></div>
 <hr>
 <h3 id="2-4-search-a-2d-matrix-ii-lc-240-pattern-search-elimination" tabindex="-1"><a class="header-anchor" href="#2-4-search-a-2d-matrix-ii-lc-240-pattern-search-elimination"><span>2-4) Search a 2D Matrix II (LC 240) — Pattern: Search (Elimination)</span></a></h3>
 <blockquote>
 <p>Start from top-right corner; eliminate a row or column each step.</p>
 </blockquote>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 240 - Search a 2D Matrix II</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 240 - Search a 2D Matrix II</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># IDEA : Start from top-right, eliminate row/col each iteration</span>
 <span class="hljs-comment"># Time: O(m+n), Space: O(1)</span>
@@ -1929,8 +1893,8 @@ first_col_zero = <span class="hljs-built_in">any</span>(matrix[i][<span class="h
             <span class="hljs-keyword">else</span>:
                 col -= <span class="hljs-number">1</span>      <span class="hljs-comment"># eliminate current column</span>
         <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
-</code></pre>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 240 - Search a 2D Matrix II</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 240 - Search a 2D Matrix II</span>
 <span class="hljs-comment">// IDEA: Start top-right; if val &gt; target shrink col, if val &lt; target grow row</span>
 <span class="hljs-comment">// time = O(M+N), space = O(1)</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">searchMatrix</span><span class="hljs-params">(<span class="hljs-type">int</span>[][] matrix, <span class="hljs-type">int</span> target)</span> {
@@ -1942,13 +1906,13 @@ first_col_zero = <span class="hljs-built_in">any</span>(matrix[i][<span class="h
     }
     <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
 }
-</code></pre>
+</code></pre></div>
 <hr>
 <h3 id="2-5-set-matrix-zeroes-lc-73-pattern-modification" tabindex="-1"><a class="header-anchor" href="#2-5-set-matrix-zeroes-lc-73-pattern-modification"><span>2-5) Set Matrix Zeroes (LC 73) — Pattern: Modification</span></a></h3>
 <blockquote>
 <p>Mark which rows/columns need zeroing, then apply in two passes.</p>
 </blockquote>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 73 - Set Matrix Zeroes</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 73 - Set Matrix Zeroes</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># IDEA : collect zero positions first, then set rows/cols to 0</span>
 <span class="hljs-comment"># Time: O(m*n), Space: O(m+n)</span>
@@ -1971,8 +1935,8 @@ first_col_zero = <span class="hljs-built_in">any</span>(matrix[i][<span class="h
         <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> x_zeros:
             <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(l):
                 matrix[i][j] = <span class="hljs-number">0</span>
-</code></pre>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 73 - Set Matrix Zeroes</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 73 - Set Matrix Zeroes</span>
 <span class="hljs-comment">// IDEA: Use first row/col as markers; scan once to mark, once to apply</span>
 <span class="hljs-comment">// time = O(M*N), space = O(1)</span>
 <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">setZeroes</span><span class="hljs-params">(<span class="hljs-type">int</span>[][] matrix)</span> {
@@ -1987,13 +1951,13 @@ first_col_zero = <span class="hljs-built_in">any</span>(matrix[i][<span class="h
     <span class="hljs-keyword">if</span> (firstRowZero) Arrays.fill(matrix[<span class="hljs-number">0</span>], <span class="hljs-number">0</span>);
     <span class="hljs-keyword">if</span> (firstColZero) <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; m; i++) matrix[i][<span class="hljs-number">0</span>] = <span class="hljs-number">0</span>;
 }
-</code></pre>
+</code></pre></div>
 <hr>
 <h3 id="2-6-number-of-islands-lc-200-pattern-dfs-bfs-on-matrix" tabindex="-1"><a class="header-anchor" href="#2-6-number-of-islands-lc-200-pattern-dfs-bfs-on-matrix"><span>2-6) Number of Islands (LC 200) — Pattern: DFS/BFS on Matrix</span></a></h3>
 <blockquote>
 <p>Count connected components of '1’s by DFS-sinking each island.</p>
 </blockquote>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 200 - Number of Islands</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 200 - Number of Islands</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># IDEA : DFS — sink each visited land cell to &#x27;0&#x27;</span>
 <span class="hljs-comment"># Time: O(m*n), Space: O(m*n) recursion stack</span>
@@ -2017,8 +1981,8 @@ first_col_zero = <span class="hljs-built_in">any</span>(matrix[i][<span class="h
                     count += <span class="hljs-number">1</span>
                     dfs(grid, j, i)
         <span class="hljs-keyword">return</span> count
-</code></pre>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 200 - Number of Islands</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 200 - Number of Islands</span>
 <span class="hljs-comment">// IDEA: DFS from each unvisited &#x27;1&#x27;; sink visited cells to &#x27;0&#x27;</span>
 <span class="hljs-comment">// time = O(M*N), space = O(M*N) recursion stack</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">numIslands</span><span class="hljs-params">(<span class="hljs-type">char</span>[][] grid)</span> {
@@ -2033,13 +1997,13 @@ first_col_zero = <span class="hljs-built_in">any</span>(matrix[i][<span class="h
     grid[i][j] = <span class="hljs-string">&#x27;0&#x27;</span>;
     dfs(grid, i+<span class="hljs-number">1</span>, j); dfs(grid, i-<span class="hljs-number">1</span>, j); dfs(grid, i, j+<span class="hljs-number">1</span>); dfs(grid, i, j-<span class="hljs-number">1</span>);
 }
-</code></pre>
+</code></pre></div>
 <hr>
 <h3 id="2-7-minimum-path-sum-lc-64-pattern-matrix-path-dp" tabindex="-1"><a class="header-anchor" href="#2-7-minimum-path-sum-lc-64-pattern-matrix-path-dp"><span>2-7) Minimum Path Sum (LC 64) — Pattern: Matrix Path DP</span></a></h3>
 <blockquote>
 <p>DP where each cell accumulates the minimum cost to reach it.</p>
 </blockquote>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 64 - Minimum Path Sum</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 64 - Minimum Path Sum</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># IDEA : DP — dp[i][j] = grid[i][j] + min(dp[i-1][j], dp[i][j-1])</span>
 <span class="hljs-comment"># Time: O(m*n), Space: O(1) (modify grid in-place)</span>
@@ -2059,8 +2023,8 @@ first_col_zero = <span class="hljs-built_in">any</span>(matrix[i][<span class="h
             <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>, n):
                 grid[i][j] += <span class="hljs-built_in">min</span>(grid[i-<span class="hljs-number">1</span>][j], grid[i][j-<span class="hljs-number">1</span>])
         <span class="hljs-keyword">return</span> grid[-<span class="hljs-number">1</span>][-<span class="hljs-number">1</span>]
-</code></pre>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 64 - Minimum Path Sum</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 64 - Minimum Path Sum</span>
 <span class="hljs-comment">// IDEA: DP in-place; dp[i][j] += min(dp[i-1][j], dp[i][j-1])</span>
 <span class="hljs-comment">// time = O(M*N), space = O(1)</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">minPathSum</span><span class="hljs-params">(<span class="hljs-type">int</span>[][] grid)</span> {
@@ -2072,13 +2036,13 @@ first_col_zero = <span class="hljs-built_in">any</span>(matrix[i][<span class="h
             grid[i][j] += Math.min(grid[i-<span class="hljs-number">1</span>][j], grid[i][j-<span class="hljs-number">1</span>]);
     <span class="hljs-keyword">return</span> grid[m-<span class="hljs-number">1</span>][n-<span class="hljs-number">1</span>];
 }
-</code></pre>
+</code></pre></div>
 <hr>
 <h3 id="2-8-maximal-square-lc-221-pattern-2d-dp" tabindex="-1"><a class="header-anchor" href="#2-8-maximal-square-lc-221-pattern-2d-dp"><span>2-8) Maximal Square (LC 221) — Pattern: 2D DP</span></a></h3>
 <blockquote>
 <p><code>dp[i][j]</code> = side length of largest square with bottom-right at (i,j).</p>
 </blockquote>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 221 - Maximal Square</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 221 - Maximal Square</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># IDEA : DP — dp[i][j] = min(dp[i-1][j], dp[i][j-1], dp[i-1][j-1]) + 1</span>
 <span class="hljs-comment"># Time: O(m*n), Space: O(m*n)</span>
@@ -2096,8 +2060,8 @@ first_col_zero = <span class="hljs-built_in">any</span>(matrix[i][<span class="h
                     dp[i][j] = <span class="hljs-built_in">min</span>(dp[i-<span class="hljs-number">1</span>][j-<span class="hljs-number">1</span>], dp[i][j-<span class="hljs-number">1</span>], dp[i-<span class="hljs-number">1</span>][j]) + <span class="hljs-number">1</span>
                 ans = <span class="hljs-built_in">max</span>(ans, dp[i][j])
         <span class="hljs-keyword">return</span> ans * ans
-</code></pre>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 221 - Maximal Square</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 221 - Maximal Square</span>
 <span class="hljs-comment">// IDEA: dp[i][j] = min(left, top, diag) + 1 when cell is &#x27;1&#x27;; ans = max dp^2</span>
 <span class="hljs-comment">// time = O(M*N), space = O(M*N)</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">maximalSquare</span><span class="hljs-params">(<span class="hljs-type">char</span>[][] matrix)</span> {
@@ -2111,13 +2075,13 @@ first_col_zero = <span class="hljs-built_in">any</span>(matrix[i][<span class="h
             }
     <span class="hljs-keyword">return</span> ans * ans;
 }
-</code></pre>
+</code></pre></div>
 <hr>
 <h3 id="2-9-game-of-life-lc-289-pattern-in-place-state-transition" tabindex="-1"><a class="header-anchor" href="#2-9-game-of-life-lc-289-pattern-in-place-state-transition"><span>2-9) Game of Life (LC 289) — Pattern: In-Place State Transition</span></a></h3>
 <blockquote>
 <p>Simulate next state for all cells simultaneously using 8-neighbor rules.</p>
 </blockquote>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 289 - Game of Life</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 289 - Game of Life</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># IDEA : copy board, apply all 4 rules using 8-directional neighbors</span>
 <span class="hljs-comment"># Time: O(m*n), Space: O(m*n)</span>
@@ -2139,8 +2103,8 @@ first_col_zero = <span class="hljs-built_in">any</span>(matrix[i][<span class="h
                 <span class="hljs-comment"># Rule 4: dead cell becomes alive</span>
                 <span class="hljs-keyword">elif</span> copy_board[row][col] == <span class="hljs-number">0</span> <span class="hljs-keyword">and</span> live_neighbors == <span class="hljs-number">3</span>:
                     board[row][col] = <span class="hljs-number">1</span>
-</code></pre>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 289 - Game of Life</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 289 - Game of Life</span>
 <span class="hljs-comment">// IDEA: Encode next state in same cell: 2 = was dead now alive, -1 = was alive now dead</span>
 <span class="hljs-comment">// time = O(M*N), space = O(1)</span>
 <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">gameOfLife</span><span class="hljs-params">(<span class="hljs-type">int</span>[][] board)</span> {
@@ -2154,13 +2118,13 @@ first_col_zero = <span class="hljs-built_in">any</span>(matrix[i][<span class="h
     }
     <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; m; i++) <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">j</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; j &lt; n; j++) board[i][j] = board[i][j] &gt; <span class="hljs-number">0</span> ? <span class="hljs-number">1</span> : <span class="hljs-number">0</span>;
 }
-</code></pre>
+</code></pre></div>
 <hr>
 <h3 id="2-10-matrix-block-sum-lc-1314-pattern-2d-prefix-sum" tabindex="-1"><a class="header-anchor" href="#2-10-matrix-block-sum-lc-1314-pattern-2d-prefix-sum"><span>2-10) Matrix Block Sum (LC 1314) — Pattern: 2D Prefix Sum</span></a></h3>
 <blockquote>
 <p>Build 2D prefix sum matrix, then query O(1) for each cell’s block sum.</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 1314 - Matrix Block Sum</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 1314 - Matrix Block Sum</span>
 <span class="hljs-comment">// V0</span>
 <span class="hljs-comment">// IDEA: 2D Prefix Sum (Summed-Area Table)</span>
 <span class="hljs-comment">// Time: O(m*n), Space: O(m*n)</span>
@@ -2213,9 +2177,9 @@ first_col_zero = <span class="hljs-built_in">any</span>(matrix[i][<span class="h
 
     <span class="hljs-keyword">return</span> res;
 }
-</code></pre>
+</code></pre></div>
 <p><strong>Visual Explanation of 2D Prefix Sum Query:</strong></p>
-<pre><code class="hljs">For rectangle (r1,c1) to (r2,c2):
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">For rectangle (r1,c1) to (r2,c2):
 
      0    c1        c2   n
    ┌──────┬─────────┬────┐
@@ -2231,7 +2195,7 @@ r2 ├──────┼─────────┼────┤
 
 TARGET = pref[r2+1][c2+1] - A - C + TopLeft
        = pref[r2+1][c2+1] - pref[r1][c2+1] - pref[r2+1][c1] + pref[r1][c1]
-</code></pre>
+</code></pre></div>
 <p><strong>Similar Problems:</strong></p>
 <ul>
 <li>LC 304: Range Sum Query 2D - Immutable (same 2D prefix sum)</li>

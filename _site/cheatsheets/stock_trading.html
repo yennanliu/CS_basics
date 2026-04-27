@@ -19,54 +19,18 @@
     }
   })();
   </script>
-  <script>document.addEventListener('DOMContentLoaded', function() {
-    document.querySelectorAll('pre code').forEach(function(codeEl) {
-      var pre = codeEl.parentElement;
-      var lang = '';
-      var cls = codeEl.className || '';
-      var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
-      if (m) lang = m[1];
-
-      // Add line numbers
-      var lines = codeEl.innerHTML.split('
-');
-      if (lines[lines.length - 1] === '') lines.pop();
-      var numbered = lines.map(function(line, i) {
-        return '<span class="hljs-ln-line"><span class="hljs-ln-n" data-line-number="' + (i + 1) + '"></span><span class="hljs-ln-code">' + line + '</span></span>';
-      }).join('
-');
-      codeEl.innerHTML = numbered;
-      codeEl.classList.add('hljs-ln');
-
-      var wrapper = document.createElement('div');
-      wrapper.className = 'code-block-wrapper';
-      pre.parentNode.insertBefore(wrapper, pre);
-      var header = document.createElement('div');
-      header.className = 'code-block-header';
-      if (lang) {
-        var label = document.createElement('span');
-        label.className = 'code-lang-label';
-        label.textContent = lang;
-        header.appendChild(label);
-      } else {
-        header.appendChild(document.createElement('span'));
-      }
-      var btn = document.createElement('button');
-      btn.className = 'copy-btn';
-      btn.textContent = 'Copy';
-      btn.addEventListener('click', function() {
-        var text = Array.from(codeEl.querySelectorAll('.hljs-ln-code')).map(function(el) { return el.textContent; }).join('
-');
-        navigator.clipboard.writeText(text).then(function() {
-          btn.textContent = 'Copied!';
-          btn.classList.add('copied');
-          setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
-        });
-      });
-      header.appendChild(btn);
-      wrapper.appendChild(header);
-      wrapper.appendChild(pre);
+  <script>
+  function copyCode(btn) {
+    var pre = btn.closest('.code-block-wrapper').querySelector('pre');
+    var text = pre ? pre.innerText : '';
+    navigator.clipboard.writeText(text).then(function() {
+      btn.textContent = 'Copied!';
+      btn.classList.add('copied');
+      setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
     });
+  }
+  </script>
+  <script>document.addEventListener('DOMContentLoaded', function() {
     document.querySelectorAll('table').forEach(function(table) {
       if (!table.parentElement.classList.contains('table-wrap')) {
         var wrapper = document.createElement('div');
@@ -167,21 +131,21 @@
 <h2 id="1-general-form" tabindex="-1"><a class="header-anchor" href="#1-general-form"><span>1) General Form</span></a></h2>
 <h3 id="1-1-basic-op" tabindex="-1"><a class="header-anchor" href="#1-1-basic-op"><span>1-1) Basic OP</span></a></h3>
 <h4 id="state-definition" tabindex="-1"><a class="header-anchor" href="#state-definition"><span>State Definition</span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Basic states</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Basic states</span>
 hold[i] = <span class="hljs-built_in">max</span> profit when holding stock at day i
 sold[i] = <span class="hljs-built_in">max</span> profit when <span class="hljs-keyword">not</span> holding stock at day i
 
 <span class="hljs-comment"># With transaction count</span>
 buy[i][k] = <span class="hljs-built_in">max</span> profit after at most k transactions, currently holding
 sell[i][k] = <span class="hljs-built_in">max</span> profit after at most k transactions, currently <span class="hljs-keyword">not</span> holding
-</code></pre>
+</code></pre></div>
 <h4 id="state-transitions" tabindex="-1"><a class="header-anchor" href="#state-transitions"><span>State Transitions</span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Basic transitions</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Basic transitions</span>
 hold[i] = <span class="hljs-built_in">max</span>(hold[i-<span class="hljs-number">1</span>], sold[i-<span class="hljs-number">1</span>] - prices[i])  <span class="hljs-comment"># Keep holding or buy</span>
 sold[i] = <span class="hljs-built_in">max</span>(sold[i-<span class="hljs-number">1</span>], hold[i-<span class="hljs-number">1</span>] + prices[i])  <span class="hljs-comment"># Keep not holding or sell</span>
-</code></pre>
+</code></pre></div>
 <h4 id="template-code" tabindex="-1"><a class="header-anchor" href="#template-code"><span>Template Code</span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">maxProfit</span>(<span class="hljs-params">prices</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">maxProfit</span>(<span class="hljs-params">prices</span>):
     n = <span class="hljs-built_in">len</span>(prices)
     <span class="hljs-keyword">if</span> n &lt;= <span class="hljs-number">1</span>:
         <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>
@@ -196,10 +160,10 @@ sold[i] = <span class="hljs-built_in">max</span>(sold[i-<span class="hljs-number
         hold, sold = new_hold, new_sold
     
     <span class="hljs-keyword">return</span> sold  <span class="hljs-comment"># Must end without holding stock</span>
-</code></pre>
+</code></pre></div>
 <h2 id="2-lc-examples" tabindex="-1"><a class="header-anchor" href="#2-lc-examples"><span>2) LC Examples</span></a></h2>
 <h3 id="lc-121-best-time-to-buy-and-sell-stock-single-transaction" tabindex="-1"><a class="header-anchor" href="#lc-121-best-time-to-buy-and-sell-stock-single-transaction"><span>LC 121: Best Time to Buy and Sell Stock (Single Transaction)</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">maxProfit</span>(<span class="hljs-params">prices</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">maxProfit</span>(<span class="hljs-params">prices</span>):
     <span class="hljs-string">&quot;&quot;&quot;
     At most 1 transaction (1 buy + 1 sell)
     Track minimum price seen so far and max profit
@@ -223,9 +187,9 @@ sold[i] = <span class="hljs-built_in">max</span>(sold[i-<span class="hljs-number
         sold = <span class="hljs-built_in">max</span>(sold, hold + prices[i])   <span class="hljs-comment"># Sell at prices[i] or keep sold</span>
     
     <span class="hljs-keyword">return</span> sold
-</code></pre>
+</code></pre></div>
 <h3 id="lc-122-best-time-to-buy-and-sell-stock-ii-unlimited-transactions" tabindex="-1"><a class="header-anchor" href="#lc-122-best-time-to-buy-and-sell-stock-ii-unlimited-transactions"><span>LC 122: Best Time to Buy and Sell Stock II (Unlimited Transactions)</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">maxProfit</span>(<span class="hljs-params">prices</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">maxProfit</span>(<span class="hljs-params">prices</span>):
     <span class="hljs-string">&quot;&quot;&quot;
     Unlimited transactions - greedy approach
     Buy before every price increase
@@ -246,9 +210,9 @@ sold[i] = <span class="hljs-built_in">max</span>(sold[i-<span class="hljs-number
         sold = <span class="hljs-built_in">max</span>(sold, hold + prices[i])
     
     <span class="hljs-keyword">return</span> sold
-</code></pre>
+</code></pre></div>
 <h3 id="lc-714-best-time-to-buy-and-sell-stock-with-transaction-fee" tabindex="-1"><a class="header-anchor" href="#lc-714-best-time-to-buy-and-sell-stock-with-transaction-fee"><span>LC 714: Best Time to Buy and Sell Stock with Transaction Fee</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">maxProfit</span>(<span class="hljs-params">prices, fee</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">maxProfit</span>(<span class="hljs-params">prices, fee</span>):
     <span class="hljs-string">&quot;&quot;&quot;
     Unlimited transactions with fee
     Pay fee when selling
@@ -261,9 +225,9 @@ sold[i] = <span class="hljs-built_in">max</span>(sold[i-<span class="hljs-number
         sold = <span class="hljs-built_in">max</span>(sold, hold + prices[i] - fee)  <span class="hljs-comment"># Subtract fee when selling</span>
     
     <span class="hljs-keyword">return</span> sold
-</code></pre>
+</code></pre></div>
 <h3 id="lc-309-best-time-to-buy-and-sell-stock-with-cooldown" tabindex="-1"><a class="header-anchor" href="#lc-309-best-time-to-buy-and-sell-stock-with-cooldown"><span>LC 309: Best Time to Buy and Sell Stock with Cooldown</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">maxProfit</span>(<span class="hljs-params">prices</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">maxProfit</span>(<span class="hljs-params">prices</span>):
     <span class="hljs-string">&quot;&quot;&quot;
     Unlimited transactions with 1 day cooldown
     After selling, must wait 1 day before buying
@@ -283,9 +247,9 @@ sold[i] = <span class="hljs-built_in">max</span>(sold[i-<span class="hljs-number
         rest = <span class="hljs-built_in">max</span>(prev_sold, prev_rest)              <span class="hljs-comment"># Continue resting</span>
     
     <span class="hljs-keyword">return</span> <span class="hljs-built_in">max</span>(sold, rest)  <span class="hljs-comment"># Don&#x27;t hold stock at the end</span>
-</code></pre>
+</code></pre></div>
 <h3 id="lc-123-best-time-to-buy-and-sell-stock-iii-at-most-2-transactions" tabindex="-1"><a class="header-anchor" href="#lc-123-best-time-to-buy-and-sell-stock-iii-at-most-2-transactions"><span>LC 123: Best Time to Buy and Sell Stock III (At Most 2 Transactions)</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">maxProfit</span>(<span class="hljs-params">prices</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">maxProfit</span>(<span class="hljs-params">prices</span>):
     <span class="hljs-string">&quot;&quot;&quot;
     At most 2 transactions (k=2)
     Track states for each transaction
@@ -304,9 +268,9 @@ sold[i] = <span class="hljs-built_in">max</span>(sold[i-<span class="hljs-number
         sell2 = <span class="hljs-built_in">max</span>(sell2, buy2 + prices[i])   <span class="hljs-comment"># Second sell</span>
     
     <span class="hljs-keyword">return</span> sell2
-</code></pre>
+</code></pre></div>
 <h3 id="lc-188-best-time-to-buy-and-sell-stock-iv-at-most-k-transactions" tabindex="-1"><a class="header-anchor" href="#lc-188-best-time-to-buy-and-sell-stock-iv-at-most-k-transactions"><span>LC 188: Best Time to Buy and Sell Stock IV (At Most K Transactions)</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">maxProfit</span>(<span class="hljs-params">k, prices</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">maxProfit</span>(<span class="hljs-params">k, prices</span>):
     <span class="hljs-string">&quot;&quot;&quot;
     At most k transactions
     Optimize for large k (unlimited case)
@@ -333,9 +297,9 @@ sold[i] = <span class="hljs-built_in">max</span>(sold[i-<span class="hljs-number
             sell[j] = <span class="hljs-built_in">max</span>(sell[j], buy[j] + prices[i])
     
     <span class="hljs-keyword">return</span> sell[k-<span class="hljs-number">1</span>]
-</code></pre>
+</code></pre></div>
 <h3 id="lc-1235-maximum-profit-in-job-scheduling-weighted-job-scheduling" tabindex="-1"><a class="header-anchor" href="#lc-1235-maximum-profit-in-job-scheduling-weighted-job-scheduling"><span>LC 1235: Maximum Profit in Job Scheduling (Weighted Job Scheduling)</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">jobScheduling</span>(<span class="hljs-params">startTime, endTime, profit</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">jobScheduling</span>(<span class="hljs-params">startTime, endTime, profit</span>):
     <span class="hljs-string">&quot;&quot;&quot;
     Similar to stock trading but with weighted intervals
     Use DP with binary search for optimization
@@ -375,7 +339,7 @@ sold[i] = <span class="hljs-built_in">max</span>(sold[i-<span class="hljs-number
         dp[i] = <span class="hljs-built_in">max</span>(profit_without, profit_with)
     
     <span class="hljs-keyword">return</span> dp[n-<span class="hljs-number">1</span>]
-</code></pre>
+</code></pre></div>
 <h2 id="3-key-patterns-techniques" tabindex="-1"><a class="header-anchor" href="#3-key-patterns-techniques"><span>3) Key Patterns &amp; Techniques</span></a></h2>
 <h3 id="pattern-1-state-machine-dp" tabindex="-1"><a class="header-anchor" href="#pattern-1-state-machine-dp"><span>Pattern 1: State Machine DP</span></a></h3>
 <ul>

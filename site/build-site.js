@@ -23,13 +23,14 @@ const md = new MarkdownIt({
   linkify: true,
   typographer: true,
   highlight: function(str, lang) {
+    const escapedStr = md.utils.escapeHtml(str);
     if (lang && hljs.getLanguage(lang)) {
       try {
         const highlighted = hljs.highlight(str, { language: lang, ignoreIllegals: true }).value;
         return `<pre data-lang="${lang}"><code class="hljs language-${lang}">${highlighted}</code></pre>`;
       } catch (_) {}
     }
-    return `<pre><code class="hljs">${md.utils.escapeHtml(str)}</code></pre>`;
+    return `<pre><code class="hljs">${escapedStr}</code></pre>`;
   }
 }).use(markdownItAnchor, {
   slugify: slugify,
@@ -40,6 +41,29 @@ const md = new MarkdownIt({
   permalinkBefore: true,
   permalinkSymbol: '#'
 });
+
+// Wrap highlighted code blocks with a header (language label + copy button)
+function wrapCodeBlocks(html) {
+  // Blocks with a known language: <pre data-lang="X"><code ...>...</code></pre>
+  html = html.replace(
+    /<pre data-lang="([^"]+)">(<code[\s\S]*?<\/code>)<\/pre>/g,
+    (_, lang, inner) =>
+      `<div class="code-block-wrapper">` +
+      `<div class="code-block-header"><span class="code-lang-label">${lang}</span>` +
+      `<button class="copy-btn" onclick="copyCode(this)">Copy</button></div>` +
+      `<pre data-lang="${lang}">${inner}</pre></div>`
+  );
+  // Blocks without a language: plain <pre><code ...>...</code></pre>
+  html = html.replace(
+    /<pre>(<code[\s\S]*?<\/code>)<\/pre>/g,
+    (_, inner) =>
+      `<div class="code-block-wrapper">` +
+      `<div class="code-block-header"><span></span>` +
+      `<button class="copy-btn" onclick="copyCode(this)">Copy</button></div>` +
+      `<pre>${inner}</pre></div>`
+  );
+  return html;
+}
 
 // Function to process links - convert cheatsheet links to internal, keep GitHub code links as external
 function processLinks(html) {
@@ -87,13 +111,13 @@ function processLinks(html) {
 
 // Read README
 const readme = fs.readFileSync('README.md', 'utf8');
-const content = processLinks(md.render(readme));
+const content = wrapCodeBlocks(processLinks(md.render(readme)));
 
 // Read Resource.md if exists
 let resourceContent = '';
 if (fs.existsSync('doc/Resource.md')) {
   const resource = fs.readFileSync('doc/Resource.md', 'utf8');
-  resourceContent = processLinks(md.render(resource));
+  resourceContent = wrapCodeBlocks(processLinks(md.render(resource)));
 }
 
 // Function to generate table of contents
@@ -164,7 +188,7 @@ if (fs.existsSync(cheatsheetDir)) {
 
     // Render and process links
     let htmlContent = md.render(rawContent);
-    htmlContent = processLinks(htmlContent);
+    htmlContent = wrapCodeBlocks(processLinks(htmlContent));
     htmlContent = ensureHeadingIds(htmlContent);
 
     // Generate table of contents
@@ -266,7 +290,7 @@ if (fs.existsSync(faqDir)) {
 
     // Render and process links
     let htmlContent = md.render(rawContent);
-    htmlContent = processLinks(htmlContent);
+    htmlContent = wrapCodeBlocks(processLinks(htmlContent));
     htmlContent = ensureHeadingIds(htmlContent);
 
     const toc = generateTOC(htmlContent);
@@ -357,51 +381,18 @@ const htmlTemplate = (title, bodyContent, currentPage = 'home', basePath = '') =
     }
   })();
   </script>
-  <script>document.addEventListener('DOMContentLoaded', function() {
-    document.querySelectorAll('pre code').forEach(function(codeEl) {
-      var pre = codeEl.parentElement;
-      var lang = '';
-      var cls = codeEl.className || '';
-      var m = cls.match(/language-(\S+)/) || cls.match(/hljs\s+(\S+)/);
-      if (m) lang = m[1];
-
-      // Add line numbers
-      var lines = codeEl.innerHTML.split('\n');
-      if (lines[lines.length - 1] === '') lines.pop();
-      var numbered = lines.map(function(line, i) {
-        return '<span class="hljs-ln-line"><span class="hljs-ln-n" data-line-number="' + (i + 1) + '"></span><span class="hljs-ln-code">' + line + '</span></span>';
-      }).join('\n');
-      codeEl.innerHTML = numbered;
-      codeEl.classList.add('hljs-ln');
-
-      var wrapper = document.createElement('div');
-      wrapper.className = 'code-block-wrapper';
-      pre.parentNode.insertBefore(wrapper, pre);
-      var header = document.createElement('div');
-      header.className = 'code-block-header';
-      if (lang) {
-        var label = document.createElement('span');
-        label.className = 'code-lang-label';
-        label.textContent = lang;
-        header.appendChild(label);
-      } else {
-        header.appendChild(document.createElement('span'));
-      }
-      var btn = document.createElement('button');
-      btn.className = 'copy-btn';
-      btn.textContent = 'Copy';
-      btn.addEventListener('click', function() {
-        var text = Array.from(codeEl.querySelectorAll('.hljs-ln-code')).map(function(el) { return el.textContent; }).join('\n');
-        navigator.clipboard.writeText(text).then(function() {
-          btn.textContent = 'Copied!';
-          btn.classList.add('copied');
-          setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
-        });
-      });
-      header.appendChild(btn);
-      wrapper.appendChild(header);
-      wrapper.appendChild(pre);
+  <script>
+  function copyCode(btn) {
+    var pre = btn.closest('.code-block-wrapper').querySelector('pre');
+    var text = pre ? pre.innerText : '';
+    navigator.clipboard.writeText(text).then(function() {
+      btn.textContent = 'Copied!';
+      btn.classList.add('copied');
+      setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
     });
+  }
+  </script>
+  <script>document.addEventListener('DOMContentLoaded', function() {
     document.querySelectorAll('table').forEach(function(table) {
       if (!table.parentElement.classList.contains('table-wrap')) {
         var wrapper = document.createElement('div');
@@ -597,7 +588,7 @@ if (faqs.length > 0) {
 if (fs.existsSync('doc/pattern_recognition.md')) {
   const patternRaw = fs.readFileSync('doc/pattern_recognition.md', 'utf8');
   let patternHtml = md.render(patternRaw);
-  patternHtml = processLinks(patternHtml);
+  patternHtml = wrapCodeBlocks(processLinks(patternHtml));
   patternHtml = ensureHeadingIds(patternHtml);
   const patternToc = generateTOC(patternHtml);
 

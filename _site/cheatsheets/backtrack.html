@@ -19,54 +19,18 @@
     }
   })();
   </script>
-  <script>document.addEventListener('DOMContentLoaded', function() {
-    document.querySelectorAll('pre code').forEach(function(codeEl) {
-      var pre = codeEl.parentElement;
-      var lang = '';
-      var cls = codeEl.className || '';
-      var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
-      if (m) lang = m[1];
-
-      // Add line numbers
-      var lines = codeEl.innerHTML.split('
-');
-      if (lines[lines.length - 1] === '') lines.pop();
-      var numbered = lines.map(function(line, i) {
-        return '<span class="hljs-ln-line"><span class="hljs-ln-n" data-line-number="' + (i + 1) + '"></span><span class="hljs-ln-code">' + line + '</span></span>';
-      }).join('
-');
-      codeEl.innerHTML = numbered;
-      codeEl.classList.add('hljs-ln');
-
-      var wrapper = document.createElement('div');
-      wrapper.className = 'code-block-wrapper';
-      pre.parentNode.insertBefore(wrapper, pre);
-      var header = document.createElement('div');
-      header.className = 'code-block-header';
-      if (lang) {
-        var label = document.createElement('span');
-        label.className = 'code-lang-label';
-        label.textContent = lang;
-        header.appendChild(label);
-      } else {
-        header.appendChild(document.createElement('span'));
-      }
-      var btn = document.createElement('button');
-      btn.className = 'copy-btn';
-      btn.textContent = 'Copy';
-      btn.addEventListener('click', function() {
-        var text = Array.from(codeEl.querySelectorAll('.hljs-ln-code')).map(function(el) { return el.textContent; }).join('
-');
-        navigator.clipboard.writeText(text).then(function() {
-          btn.textContent = 'Copied!';
-          btn.classList.add('copied');
-          setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
-        });
-      });
-      header.appendChild(btn);
-      wrapper.appendChild(header);
-      wrapper.appendChild(pre);
+  <script>
+  function copyCode(btn) {
+    var pre = btn.closest('.code-block-wrapper').querySelector('pre');
+    var text = pre ? pre.innerText : '';
+    navigator.clipboard.writeText(text).then(function() {
+      btn.textContent = 'Copied!';
+      btn.classList.add('copied');
+      setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
     });
+  }
+  </script>
+  <script>document.addEventListener('DOMContentLoaded', function() {
     document.querySelectorAll('table').forEach(function(table) {
       if (!table.parentElement.classList.contains('table-wrap')) {
         var wrapper = document.createElement('div');
@@ -180,7 +144,7 @@
 <p>pattern</p>
 </li>
 </ul>
-<pre><code class="hljs"># pseudo code 
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs"># pseudo code 
 
 result = []
 
@@ -197,7 +161,7 @@ def backtrack(路徑, 選擇清單):
 
 - start_idx
 - early quit
-</code></pre>
+</code></pre></div>
 <h2 id="0-concept" tabindex="-1"><a class="header-anchor" href="#0-concept"><span>0) Concept</span></a></h2>
 <ul>
 <li>
@@ -521,17 +485,17 @@ def backtrack(路徑, 選擇清單):
 <hr>
 <h2 id="quick-example" tabindex="-1"><a class="header-anchor" href="#quick-example"><span>🔧 Quick Example</span></a></h2>
 <h3 id="example-1-coin-change-ii-518" tabindex="-1"><a class="header-anchor" href="#example-1-coin-change-ii-518"><span>Example 1: <strong>Coin Change II</strong> (518)</span></a></h3>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Unlimited coin usage</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Unlimited coin usage</span>
 <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> start; i &lt; coins.length; i++) {
     backtrack(i, currentSum + coins[i]); <span class="hljs-comment">// use coin[i] again</span>
 }
-</code></pre>
+</code></pre></div>
 <h3 id="example-2-combination-sum-ii-40" tabindex="-1"><a class="header-anchor" href="#example-2-combination-sum-ii-40"><span>Example 2: <strong>Combination Sum II</strong> (40)</span></a></h3>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Use each number at most once</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Use each number at most once</span>
 <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> start; i &lt; candidates.length; i++) {
     backtrack(i + <span class="hljs-number">1</span>, currentSum + candidates[i]); <span class="hljs-comment">// can&#x27;t reuse candidates[i]</span>
 }
-</code></pre>
+</code></pre></div>
 <hr>
 <h2 id="key-takeaway" tabindex="-1"><a class="header-anchor" href="#key-takeaway"><span>🧠 Key Takeaway</span></a></h2>
 <blockquote>
@@ -716,7 +680,7 @@ def backtrack(路徑, 選擇清單):
 <li>backtrack. find minumum case. transform the problem to <code>tree-problem</code>. via <code>start</code> remove already used numbers and return all cases</li>
 <li>Need <code>!cur.contains(nums[i])</code> -&gt; to NOT add duplicated element</li>
 </ul>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># V1</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># V1</span>
 <span class="hljs-comment"># ...</span>
 cur = []
 res = []
@@ -737,8 +701,8 @@ res = []
         &quot;&quot;&quot;</span>
         cur.pop(-<span class="hljs-number">1</span>)
 <span class="hljs-comment"># ...</span>
-</code></pre>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-keyword">public</span> List&lt;List&lt;Integer&gt;&gt; <span class="hljs-title function_">subsets</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums)</span> {
     <span class="hljs-comment">// ...</span>
     <span class="hljs-built_in">this</span>.getSubSet(start_idx, nums, cur, res);
@@ -785,7 +749,7 @@ res = []
         }
     }
 }
-</code></pre>
+</code></pre></div>
 </li>
 <li>
 <p><code>Subsets I</code></p>
@@ -793,7 +757,7 @@ res = []
 <li>LC 78</li>
 <li>start idx + backtrack</li>
 </ul>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 78</span>
 <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">getSubSet</span><span class="hljs-params">(<span class="hljs-type">int</span> start_idx, <span class="hljs-type">int</span>[] nums, List&lt;Integer&gt; cur, List&lt;List&lt;Integer&gt;&gt; res)</span>{
 
@@ -835,7 +799,7 @@ res = []
         }
     }
 
-</code></pre>
+</code></pre></div>
 </li>
 <li>
 <p><code>Subsets II</code></p>
@@ -844,7 +808,7 @@ res = []
 <li>start idx + backtrack + dedup (seen)</li>
 <li>dedup : can use dict counter or idx</li>
 </ul>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 90</span>
 <span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">backtrack</span><span class="hljs-params">(List&lt;List&lt;Integer&gt;&gt; list, List&lt;Integer&gt; tempList, <span class="hljs-type">int</span> [] nums, <span class="hljs-type">int</span> start)</span>{
     list.add(<span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;(tempList));
@@ -864,7 +828,7 @@ res = []
         tempList.remove(tempList.size() - <span class="hljs-number">1</span>);
     }
 }
-</code></pre>
+</code></pre></div>
 </li>
 <li>
 <p>Type 2) : <code>Permutations (排列組合)</code> (全排列)</p>
@@ -874,7 +838,7 @@ res = []
 <li>backtrack. via <code>contains</code> remove already used numbers and return all cases</li>
 <li><code>NO NEED</code> to use start_idx</li>
 </ul>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># ...</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># ...</span>
 res = []
 cur = []
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">help</span>(<span class="hljs-params">cur</span>):
@@ -890,14 +854,14 @@ cur = []
             <span class="hljs-built_in">help</span>(cur)
             cur.pop(-<span class="hljs-number">1</span>)
 <span class="hljs-comment"># ...</span>
-</code></pre>
+</code></pre></div>
 </li>
 <li>
 <p><code>Permutations I (排列組合)</code></p>
 <ul>
 <li>LC 46</li>
 </ul>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">permute</span>(<span class="hljs-params">self, nums</span>):
         <span class="hljs-keyword">def</span> <span class="hljs-title function_">help</span>(<span class="hljs-params">cur</span>):
@@ -926,14 +890,14 @@ cur = []
         <span class="hljs-keyword">return</span> res
     ```
 
-</code></pre>
+</code></pre></div>
 </li>
 <li>
 <p><code>Permutations II (排列組合)</code></p>
 <ul>
 <li>LC 47</li>
 </ul>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">permuteUnique</span>(<span class="hljs-params">self, nums</span>):
         <span class="hljs-keyword">def</span> <span class="hljs-title function_">help</span>(<span class="hljs-params">res, cur, cnt</span>):
@@ -964,7 +928,7 @@ cur = []
         cur = []
         <span class="hljs-built_in">help</span>(res, cur, _cnt)
         <span class="hljs-keyword">return</span> res
-</code></pre>
+</code></pre></div>
 </li>
 <li>
 <p>Type 3) : <code>Combinations (組成)</code></p>
@@ -972,7 +936,7 @@ cur = []
 <li>LC 77</li>
 <li>(for loop call help func) +  start_idx + for loop + + check if len == k + pop(-1)</li>
 </ul>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># ...</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># ...</span>
 cur = []
 res = []
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">help</span>(<span class="hljs-params">idx, cur</span>):
@@ -984,7 +948,7 @@ res = []
         <span class="hljs-built_in">help</span>(idx+<span class="hljs-number">1</span>, cur)
         cur.pop(-<span class="hljs-number">1</span>)
 <span class="hljs-comment"># ...</span>
-</code></pre>
+</code></pre></div>
 </li>
 <li>
 <p>Combination sum</p>
@@ -1003,7 +967,7 @@ res = []
 <ul>
 <li>LC 39</li>
 </ul>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// https://leetcode.com/problems/subsets/solutions/27281/a-general-approach-to-backtracking-questions-in-java-subsets-permutations-combination-sum-palindrome-partitioning/</span>
 <span class="hljs-keyword">public</span> List&lt;List&lt;Integer&gt;&gt; <span class="hljs-title function_">combinationSum</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums, <span class="hljs-type">int</span> target)</span> {
     List&lt;List&lt;Integer&gt;&gt; list = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();
@@ -1028,14 +992,14 @@ res = []
         }
     }
 }
-</code></pre>
+</code></pre></div>
 </li>
 <li>
 <p>Combination Sum II</p>
 <ul>
 <li>LC 40</li>
 </ul>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// https://leetcode.com/problems/subsets/solutions/27281/a-general-approach-to-backtracking-questions-in-java-subsets-permutations-combination-sum-palindrome-partitioning/</span>
  <span class="hljs-keyword">public</span> List&lt;List&lt;Integer&gt;&gt; <span class="hljs-title function_">combinationSum2</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums, <span class="hljs-type">int</span> target)</span> {
     List&lt;List&lt;Integer&gt;&gt; list = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();
@@ -1057,14 +1021,14 @@ res = []
         }
     }
 }        
-</code></pre>
+</code></pre></div>
 </li>
 <li>
 <p>Palindrome Partitioning</p>
 <ul>
 <li>LC 131</li>
 </ul>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// https://leetcode.com/problems/subsets/solutions/27281/a-general-approach-to-backtracking-questions-in-java-subsets-permutations-combination-sum-palindrome-partitioning/</span>
 <span class="hljs-keyword">public</span> List&lt;List&lt;String&gt;&gt; <span class="hljs-title function_">partition</span><span class="hljs-params">(String s)</span> {
    List&lt;List&lt;String&gt;&gt; list = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();
@@ -1093,7 +1057,7 @@ res = []
       <span class="hljs-keyword">if</span>(s.charAt(low++) != s.charAt(high--)) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
    <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
 } 
-</code></pre>
+</code></pre></div>
 </li>
 </ul>
 </li>
@@ -1123,7 +1087,7 @@ res = []
 <li>Avoid recomputing same states</li>
 </ul>
 <p><strong>Common Pruning Patterns</strong>:</p>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">backtrack_with_pruning</span>(<span class="hljs-params">path, choices, target</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">backtrack_with_pruning</span>(<span class="hljs-params">path, choices, target</span>):
     <span class="hljs-comment"># Early termination (constraint pruning)</span>
     <span class="hljs-keyword">if</span> current_sum &gt; target:
         <span class="hljs-keyword">return</span>  <span class="hljs-comment"># No need to continue</span>
@@ -1152,10 +1116,10 @@ res = []
 
         <span class="hljs-comment"># Undo choice</span>
         path.pop()
-</code></pre>
+</code></pre></div>
 <p><strong>Pruning Examples</strong>:</p>
 <p><strong>1. Sum-based Pruning (LC 39 Combination Sum)</strong>:</p>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">combinationSum</span>(<span class="hljs-params">candidates, target</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">combinationSum</span>(<span class="hljs-params">candidates, target</span>):
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">backtrack</span>(<span class="hljs-params">start, path, current_sum</span>):
         <span class="hljs-comment"># Pruning: if current sum exceeds target</span>
         <span class="hljs-keyword">if</span> current_sum &gt; target:
@@ -1178,9 +1142,9 @@ res = []
     result = []
     backtrack(<span class="hljs-number">0</span>, [], <span class="hljs-number">0</span>)
     <span class="hljs-keyword">return</span> result
-</code></pre>
+</code></pre></div>
 <p><strong>2. Duplicate Pruning (LC 40 Combination Sum II)</strong>:</p>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">combinationSum2</span>(<span class="hljs-params">candidates, target</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">combinationSum2</span>(<span class="hljs-params">candidates, target</span>):
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">backtrack</span>(<span class="hljs-params">start, path, current_sum</span>):
         <span class="hljs-keyword">if</span> current_sum == target:
             result.append(path[:])
@@ -1203,9 +1167,9 @@ res = []
     result = []
     backtrack(<span class="hljs-number">0</span>, [], <span class="hljs-number">0</span>)
     <span class="hljs-keyword">return</span> result
-</code></pre>
+</code></pre></div>
 <p><strong>3. Bound Pruning (LC 698 Partition to K Equal Sum Subsets)</strong>:</p>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">canPartitionKSubsets</span>(<span class="hljs-params">nums, k</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">canPartitionKSubsets</span>(<span class="hljs-params">nums, k</span>):
     total = <span class="hljs-built_in">sum</span>(nums)
     <span class="hljs-keyword">if</span> total % k != <span class="hljs-number">0</span>:
         <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
@@ -1234,7 +1198,7 @@ res = []
         <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
 
     <span class="hljs-keyword">return</span> backtrack(<span class="hljs-number">0</span>, [<span class="hljs-number">0</span>] * k)
-</code></pre>
+</code></pre></div>
 <h4 id="partitioning-patterns" tabindex="-1"><a class="header-anchor" href="#partitioning-patterns"><span><strong>Partitioning Patterns</strong></span></a></h4>
 <p><strong>Definition</strong>: Divide input into groups or segments based on certain criteria.</p>
 <p><strong>Common Partitioning Types</strong>:</p>
@@ -1255,7 +1219,7 @@ res = []
 </ul>
 <p><strong>Partitioning Templates</strong>:</p>
 <p><strong>1. String Partitioning Template</strong>:</p>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">partition_string</span>(<span class="hljs-params">s, is_valid_partition</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">partition_string</span>(<span class="hljs-params">s, is_valid_partition</span>):
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">backtrack</span>(<span class="hljs-params">start, current_partition</span>):
         <span class="hljs-keyword">if</span> start == <span class="hljs-built_in">len</span>(s):
             result.append(current_partition[:])
@@ -1271,9 +1235,9 @@ res = []
     result = []
     backtrack(<span class="hljs-number">0</span>, [])
     <span class="hljs-keyword">return</span> result
-</code></pre>
+</code></pre></div>
 <p><strong>2. Array Partitioning Template</strong>:</p>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">partition_array</span>(<span class="hljs-params">nums, k, target_sum</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">partition_array</span>(<span class="hljs-params">nums, k, target_sum</span>):
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">backtrack</span>(<span class="hljs-params">index, groups</span>):
         <span class="hljs-keyword">if</span> index == <span class="hljs-built_in">len</span>(nums):
             <span class="hljs-keyword">return</span> <span class="hljs-built_in">all</span>(<span class="hljs-built_in">sum</span>(group) == target_sum <span class="hljs-keyword">for</span> group <span class="hljs-keyword">in</span> groups)
@@ -1292,10 +1256,10 @@ res = []
         <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
 
     <span class="hljs-keyword">return</span> backtrack(<span class="hljs-number">0</span>, [[] <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(k)])
-</code></pre>
+</code></pre></div>
 <p><strong>Partitioning Examples</strong>:</p>
 <p><strong>1. Palindrome Partitioning (LC 131)</strong>:</p>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">partition</span>(<span class="hljs-params">s</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">partition</span>(<span class="hljs-params">s</span>):
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">is_palindrome</span>(<span class="hljs-params">string</span>):
         <span class="hljs-keyword">return</span> string == string[::-<span class="hljs-number">1</span>]
 
@@ -1314,9 +1278,9 @@ res = []
     result = []
     backtrack(<span class="hljs-number">0</span>, [])
     <span class="hljs-keyword">return</span> result
-</code></pre>
+</code></pre></div>
 <p><strong>2. Partition Equal Subset Sum (LC 416)</strong>:</p>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">canPartition</span>(<span class="hljs-params">nums</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">canPartition</span>(<span class="hljs-params">nums</span>):
     total = <span class="hljs-built_in">sum</span>(nums)
     <span class="hljs-keyword">if</span> total % <span class="hljs-number">2</span> != <span class="hljs-number">0</span>:
         <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
@@ -1337,9 +1301,9 @@ res = []
         <span class="hljs-keyword">return</span> backtrack(index + <span class="hljs-number">1</span>, current_sum)
 
     <span class="hljs-keyword">return</span> backtrack(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>)
-</code></pre>
+</code></pre></div>
 <p><strong>3. Partition to K Equal Sum Subsets (LC 698)</strong>:</p>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">canPartitionKSubsets</span>(<span class="hljs-params">nums, k</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">canPartitionKSubsets</span>(<span class="hljs-params">nums, k</span>):
     total = <span class="hljs-built_in">sum</span>(nums)
     <span class="hljs-keyword">if</span> total % k != <span class="hljs-number">0</span>:
         <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
@@ -1366,10 +1330,10 @@ res = []
         <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
 
     <span class="hljs-keyword">return</span> backtrack(<span class="hljs-number">0</span>, [<span class="hljs-number">0</span>] * k)
-</code></pre>
+</code></pre></div>
 <p><strong>Advanced Partitioning Techniques</strong>:</p>
 <p><strong>1. Memoized Partitioning</strong>:</p>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">partition_with_memo</span>(<span class="hljs-params">nums</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">partition_with_memo</span>(<span class="hljs-params">nums</span>):
     memo = {}
 
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">backtrack</span>(<span class="hljs-params">index, state_tuple</span>):
@@ -1390,9 +1354,9 @@ res = []
         <span class="hljs-keyword">return</span> result
 
     <span class="hljs-keyword">return</span> backtrack(<span class="hljs-number">0</span>, initial_state)
-</code></pre>
+</code></pre></div>
 <p><strong>2. Optimized Partitioning with Early Termination</strong>:</p>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">optimized_partition</span>(<span class="hljs-params">nums, k</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">optimized_partition</span>(<span class="hljs-params">nums, k</span>):
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">backtrack</span>(<span class="hljs-params">index, groups, remaining_sum</span>):
         <span class="hljs-keyword">if</span> index == <span class="hljs-built_in">len</span>(nums):
             <span class="hljs-keyword">return</span> remaining_sum == <span class="hljs-number">0</span>
@@ -1414,7 +1378,7 @@ res = []
         <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
 
     <span class="hljs-keyword">return</span> backtrack(<span class="hljs-number">0</span>, [[] <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(k)], <span class="hljs-built_in">sum</span>(nums))
-</code></pre>
+</code></pre></div>
 <p><strong>Pruning and Partitioning Comparison</strong>:</p>
 <table>
 <thead>
@@ -1459,7 +1423,7 @@ res = []
 </tbody>
 </table>
 <h3 id="0-3-advanced-backtracking-patterns" tabindex="-1"><a class="header-anchor" href="#0-3-advanced-backtracking-patterns"><span>0-3) Advanced Backtracking Patterns</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python pseudo code 1</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python pseudo code 1</span>
 <span class="hljs-comment"># https://leetcode.com/explore/learn/card/recursion-ii/472/backtracking/2793/</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">backtrack</span>(<span class="hljs-params">candidate</span>):
     <span class="hljs-keyword">if</span> find_solution(candidate):
@@ -1475,16 +1439,16 @@ res = []
             backtrack(next_candidate)
             <span class="hljs-comment"># backtrack</span>
             remove(next_candidate)
-</code></pre>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python pseudo code 2</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python pseudo code 2</span>
 <span class="hljs-keyword">for</span> choice <span class="hljs-keyword">in</span> choice_list:
     <span class="hljs-comment"># do choice</span>
     routes.add(choice)
     backtrack(routes, choice_list)
     <span class="hljs-comment"># undo choice</span>
     routes.remove(choice)
-</code></pre>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python pseudo code 3</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python pseudo code 3</span>
 result = []
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">backtrack</span>(<span class="hljs-params">route, choice_list</span>):
     <span class="hljs-keyword">if</span> end_condition:
@@ -1496,12 +1460,12 @@ result = []
         do_choice   <span class="hljs-comment">### this one is necessary</span>
         backtrack(route, choice_list)
         undo_choice <span class="hljs-comment">### this one is necessary</span>
-</code></pre>
+</code></pre></div>
 <h2 id="1-general-form" tabindex="-1"><a class="header-anchor" href="#1-general-form"><span>1) General form</span></a></h2>
 <h3 id="1-1-basic-op" tabindex="-1"><a class="header-anchor" href="#1-1-basic-op"><span>1-1) Basic OP</span></a></h3>
 <h3 id="1-2-trick" tabindex="-1"><a class="header-anchor" href="#1-2-trick"><span>1-2) Trick</span></a></h3>
 <h4 id="1-2-1-append-to-cache-with-idx" tabindex="-1"><a class="header-anchor" href="#1-2-1-append-to-cache-with-idx"><span>1-2-1) append to cache with idx</span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 131. Palindrome Partitioning</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 131. Palindrome Partitioning</span>
 
 <span class="hljs-comment"># ...</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">help</span>(<span class="hljs-params">s, res, path</span>):
@@ -1516,9 +1480,9 @@ result = []
             &quot;&quot;&quot;</span>
             <span class="hljs-built_in">help</span>(s[i:], res, path + [s[:i]])
 <span class="hljs-comment"># ...</span>
-</code></pre>
+</code></pre></div>
 <h4 id="1-2-2-avoid-add-duplicated-element-in-same-level-same-recursion-call" tabindex="-1"><a class="header-anchor" href="#1-2-2-avoid-add-duplicated-element-in-same-level-same-recursion-call"><span>1-2-2) avoid add <code>duplicated</code> element in <code>same level</code> (same recursion call)</span></a></h4>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 40</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 40</span>
 <span class="hljs-comment">// java</span>
 <span class="hljs-comment">// ...</span>
 
@@ -1535,8 +1499,8 @@ result = []
 }
 
 <span class="hljs-comment">// ...</span>
-</code></pre>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 90</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 90</span>
 <span class="hljs-comment">// java</span>
 
 <span class="hljs-comment">// ...</span>
@@ -1553,8 +1517,8 @@ result = []
     <span class="hljs-comment">// ...</span>
 }
 <span class="hljs-comment">// ...</span>
-</code></pre>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 47</span>
 <span class="hljs-comment">// ...</span>
 
@@ -1563,9 +1527,9 @@ result = []
     <span class="hljs-keyword">continue</span>;
             
 <span class="hljs-comment">// ...</span>
-</code></pre>
+</code></pre></div>
 <h4 id="1-2-3-not-do-undo-on-primary-variable" tabindex="-1"><a class="header-anchor" href="#1-2-3-not-do-undo-on-primary-variable"><span>1-2-3) NOT do <code>undo</code> on primary variable</span></a></h4>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 79</span>
 
 <span class="hljs-comment">// https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/LeetCodeJava/BackTrack/WordSearch.java#L133</span>
@@ -1580,9 +1544,9 @@ result = []
 
 <span class="hljs-comment">// 2) We don&#x27;t need start_idx -= 1; because start_idx is passed by value, not by reference. So modifying it in the recursive call doesn&#x27;t affect the caller&#x27;s start_idx. We&#x27;re already handling the correct index in each recursive call by passing start_idx + 1.</span>
 
-</code></pre>
+</code></pre></div>
 <p><strong>Important Note: When Backtracking is NOT Needed</strong></p>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 1740</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 1740</span>
 <span class="hljs-comment">// NOTE !!! we don&#x27;t need a `backtrack` below,</span>
 <span class="hljs-comment">// since `int` is a `primitive dtype in java</span>
 <span class="hljs-comment">//  -&gt;     Each recursive call gets its own copy of move.</span>
@@ -1610,7 +1574,7 @@ result = []
     <span class="hljs-comment">// we need a backtrack (undo)</span>
     <span class="hljs-keyword">return</span> right;
 }
-</code></pre>
+</code></pre></div>
 <p><strong>When to Use Backtracking (Undo)</strong>:</p>
 <table>
 <thead>
@@ -1639,7 +1603,7 @@ result = []
 </tbody>
 </table>
 <p><strong>Example: When Backtracking IS Needed</strong>:</p>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Mutable shared state - NEEDS backtracking</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Mutable shared state - NEEDS backtracking</span>
 <span class="hljs-keyword">void</span> <span class="hljs-title function_">backtrack</span><span class="hljs-params">(List&lt;Integer&gt; path, <span class="hljs-type">int</span>[] nums)</span> {
     <span class="hljs-keyword">if</span> (path.size() == nums.length) {
         result.add(<span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;(path));
@@ -1651,9 +1615,9 @@ result = []
         path.remove(path.size()-<span class="hljs-number">1</span>); <span class="hljs-comment">// MUST undo - backtrack!</span>
     }
 }
-</code></pre>
+</code></pre></div>
 <p><strong>Example: When Backtracking is NOT Needed</strong>:</p>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Primitive types - NO backtracking needed</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Primitive types - NO backtracking needed</span>
 <span class="hljs-type">int</span> <span class="hljs-title function_">dfs</span><span class="hljs-params">(TreeNode root, <span class="hljs-type">int</span> depth)</span> {
     <span class="hljs-keyword">if</span> (root == <span class="hljs-literal">null</span>) <span class="hljs-keyword">return</span> depth;
 
@@ -1664,9 +1628,9 @@ result = []
     <span class="hljs-comment">// because depth was passed by value</span>
     <span class="hljs-keyword">return</span> Math.max(left, right);
 }
-</code></pre>
+</code></pre></div>
 <h3 id="1-3-if-true-return-true-right-after-recursive-call" tabindex="-1"><a class="header-anchor" href="#1-3-if-true-return-true-right-after-recursive-call"><span>1-3)  if <code>true</code>, return true right after recursive call</span></a></h3>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC  698</span>
 
 <span class="hljs-comment">// ...</span>
@@ -1675,10 +1639,10 @@ result = []
         }
 
 <span class="hljs-comment">// ...</span>
-</code></pre>
+</code></pre></div>
 <h2 id="2-lc-example" tabindex="-1"><a class="header-anchor" href="#2-lc-example"><span>2) LC Example</span></a></h2>
 <h3 id="2-1-letter-combinations-of-a-phone-number" tabindex="-1"><a class="header-anchor" href="#2-1-letter-combinations-of-a-phone-number"><span>2-1) Letter Combinations of a Phone Number</span></a></h3>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 17</span>
 <span class="hljs-comment">// V0</span>
 <span class="hljs-comment">// IDEA: BACKTRACK + start_idx (on digit)</span>
@@ -1763,8 +1727,8 @@ List&lt;String&gt; _res = <span class="hljs-keyword">new</span> <span class="hlj
         <span class="hljs-comment">// start_idx -= 1; // this is WRONG!!!</span>
     }
 }
-</code></pre>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># 017   Letter Combinations of a Phone Number</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># 017   Letter Combinations of a Phone Number</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># IDEA : backtracking</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
@@ -1839,9 +1803,9 @@ List&lt;String&gt; _res = <span class="hljs-keyword">new</span> <span class="hlj
         <span class="hljs-keyword">for</span> e <span class="hljs-keyword">in</span> digits:
             res = [w + c <span class="hljs-keyword">for</span> c <span class="hljs-keyword">in</span> d[e] <span class="hljs-keyword">for</span> w <span class="hljs-keyword">in</span> res]
         <span class="hljs-keyword">return</span> res
-</code></pre>
+</code></pre></div>
 <h3 id="2-2-combination-sum" tabindex="-1"><a class="header-anchor" href="#2-2-combination-sum"><span>2-2) combination-sum</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 039, LC 040 combination-sum</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 039, LC 040 combination-sum</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># IDEA : DFS + BACKTRACK</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
@@ -1862,9 +1826,9 @@ List&lt;String&gt; _res = <span class="hljs-keyword">new</span> <span class="hlj
         tmp = []
         dfs(tmp)
         <span class="hljs-keyword">return</span> res
-</code></pre>
+</code></pre></div>
 <h3 id="2-3-word-search" tabindex="-1"><a class="header-anchor" href="#2-3-word-search"><span>2-3) Word Search</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 079 Word Search</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 079 Word Search</span>
 
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># IDEA : DFS + backtracking</span>
@@ -1905,8 +1869,8 @@ List&lt;String&gt; _res = <span class="hljs-keyword">new</span> <span class="hlj
         visited[i][j] = <span class="hljs-literal">False</span>
 
         <span class="hljs-keyword">return</span> result
-</code></pre>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 079</span>
 <span class="hljs-comment">// V0&#x27;</span>
 <span class="hljs-comment">// IDEA : DFS + BACKTRACK (modified by GPT)</span>
@@ -1979,9 +1943,9 @@ List&lt;String&gt; _res = <span class="hljs-keyword">new</span> <span class="hlj
 
     <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
 }
-</code></pre>
+</code></pre></div>
 <h3 id="2-4-subsets" tabindex="-1"><a class="header-anchor" href="#2-4-subsets"><span>2-4) Subsets</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 078 Subsets</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 078 Subsets</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># IDEA : Backtracking</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
@@ -2043,8 +2007,8 @@ List&lt;String&gt; _res = <span class="hljs-keyword">new</span> <span class="hlj
         res = []
         dfs(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, [])
         <span class="hljs-keyword">return</span> res
-</code></pre>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 78</span>
 <span class="hljs-comment">// V0&#x27;</span>
 <span class="hljs-comment">// IDEA : Backtracking</span>
@@ -2122,8 +2086,8 @@ List&lt;String&gt; _res = <span class="hljs-keyword">new</span> <span class="hlj
             helper(ans, start + <span class="hljs-number">1</span>, nums, list);
         }
     }    
-</code></pre>
-<pre data-lang="c++"><code class="hljs language-c++"><span class="hljs-comment">// c++</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">c++</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="c++"><code class="hljs language-c++"><span class="hljs-comment">// c++</span>
 <span class="hljs-comment">// backtrack</span>
 <span class="hljs-comment">// (algorithm book (labu) p.303)</span>
 
@@ -2152,9 +2116,9 @@ vector&lt;vector&lt;<span class="hljs-type">int</span>&gt;&gt; <span class="hljs
         track.<span class="hljs-built_in">pop_back</span>();
     }
 }
-</code></pre>
+</code></pre></div>
 <h3 id="2-4-subsets-ii" tabindex="-1"><a class="header-anchor" href="#2-4-subsets-ii"><span>2-4’) Subsets II</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 90 Subsets II</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 90 Subsets II</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># IDEA : BACKTRACKING + LC 078 Subsets</span>
 <span class="hljs-keyword">from</span> collections <span class="hljs-keyword">import</span> Counter
@@ -2207,9 +2171,9 @@ vector&lt;vector&lt;<span class="hljs-type">int</span>&gt;&gt; <span class="hljs
                     ans.append(temp) 
         <span class="hljs-keyword">return</span> ans
 
-</code></pre>
+</code></pre></div>
 <h3 id="2-5-combinations" tabindex="-1"><a class="header-anchor" href="#2-5-combinations"><span>2-5) Combinations</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 77. Combinations</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 77. Combinations</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># BACKTRACK</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
@@ -2251,8 +2215,8 @@ vector&lt;vector&lt;<span class="hljs-type">int</span>&gt;&gt; <span class="hljs
             go(i+<span class="hljs-number">1</span>,ma,ans)
         go(<span class="hljs-number">1</span>,<span class="hljs-number">0</span>,[])
         <span class="hljs-keyword">return</span> res
-</code></pre>
-<pre data-lang="c++"><code class="hljs language-c++"><span class="hljs-comment">// c++</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">c++</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="c++"><code class="hljs language-c++"><span class="hljs-comment">// c++</span>
 <span class="hljs-comment">// backtrack</span>
 <span class="hljs-comment">// (algorithm book (labu) p.305)</span>
 
@@ -2285,9 +2249,9 @@ vector&lt;vector&lt;<span class="hljs-type">int</span>&gt;&gt; <span class="hljs
         track.<span class="hljs-built_in">pop_back</span>();
     }
 }
-</code></pre>
+</code></pre></div>
 <h3 id="2-6-permutations" tabindex="-1"><a class="header-anchor" href="#2-6-permutations"><span>2-6) Permutations</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 46. Permutations</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 46. Permutations</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># IDEA : BACKTRACK, </span>
 <span class="hljs-comment"># similar idea as LC 77 -&gt; difference : contains VS start</span>
@@ -2333,8 +2297,8 @@ vector&lt;vector&lt;<span class="hljs-type">int</span>&gt;&gt; <span class="hljs
                     visited[i] = <span class="hljs-number">1</span>
                     dfs(path + [nums[i]])
                     visited[i] = <span class="hljs-number">0</span>    <span class="hljs-comment">### to check if &quot;visited[i] = 0&quot; is necessary</span>
-</code></pre>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 46. Permutations</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 46. Permutations</span>
     List&lt;List&lt;Integer&gt;&gt; ans = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();
 
     <span class="hljs-comment">// V0</span>
@@ -2382,9 +2346,9 @@ vector&lt;vector&lt;<span class="hljs-type">int</span>&gt;&gt; <span class="hljs
             }
         }
     }
-</code></pre>
+</code></pre></div>
 <h3 id="2-7-generate-parentheses" tabindex="-1"><a class="header-anchor" href="#2-7-generate-parentheses"><span>2-7) Generate Parentheses</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
 <span class="hljs-comment"># LC 022 Generate Parentheses</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># IDEA : bracktrack + Valid Parentheses (LC 020)</span>
@@ -2445,8 +2409,8 @@ vector&lt;vector&lt;<span class="hljs-type">int</span>&gt;&gt; <span class="hljs
             <span class="hljs-variable language_">self</span>.dfs(res, left - <span class="hljs-number">1</span>, right, path + <span class="hljs-string">&#x27;(&#x27;</span>)
         <span class="hljs-keyword">if</span> left &lt; right:
             <span class="hljs-variable language_">self</span>.dfs(res, left, right - <span class="hljs-number">1</span>, path + <span class="hljs-string">&#x27;)&#x27;</span>)
-</code></pre>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 022 Generate Parentheses</span>
 <span class="hljs-comment">// (algorithm book (labu) p.316)</span>
 
@@ -2484,8 +2448,8 @@ vector&lt;String&gt; <span class="hljs-title function_">generateParentheses</spa
     backtrack(left, right - <span class="hljs-number">1</span>, track, res);
     track.push_back(); <span class="hljs-comment">// undo choice</span>
 }
-</code></pre>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// V2</span>
 <span class="hljs-comment">// IDEA :  Backtracking, Keep Candidate Valid</span>
 <span class="hljs-comment">// https://leetcode.com/problems/generate-parentheses/editorial/</span>
@@ -2512,9 +2476,9 @@ vector&lt;String&gt; <span class="hljs-title function_">generateParentheses</spa
         curString.deleteCharAt(curString.length() - <span class="hljs-number">1</span>);
     }
 }
-</code></pre>
+</code></pre></div>
 <h3 id="2-8-palindrome-partitioning" tabindex="-1"><a class="header-anchor" href="#2-8-palindrome-partitioning"><span>2-8) Palindrome Partitioning</span></a></h3>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 131</span>
 <span class="hljs-comment">// V0-1</span>
 <span class="hljs-comment">// IDEA: BACKTRACK + start_idx (fixed by gpt)</span>
@@ -2591,8 +2555,8 @@ List&lt;List&lt;String&gt;&gt; partitionRes = <span class="hljs-keyword">new</sp
     }
     <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
 }
-</code></pre>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 131 Palindrome Partitioning</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 131 Palindrome Partitioning</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># IDEA : BACKTRCK, similar as LC 046 permutations</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
@@ -2639,9 +2603,9 @@ List&lt;List&lt;String&gt;&gt; partitionRes = <span class="hljs-keyword">new</sp
 
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">isPalindrome</span>(<span class="hljs-params">self, x</span>):
         <span class="hljs-keyword">return</span> x == x[::-<span class="hljs-number">1</span>]
-</code></pre>
+</code></pre></div>
 <h3 id="2-9-restore-ip-addresses" tabindex="-1"><a class="header-anchor" href="#2-9-restore-ip-addresses"><span>2-9) Restore IP Addresses</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># 093 Restore IP Addresses</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># 093 Restore IP Addresses</span>
 <span class="hljs-comment"># V0 </span>
 <span class="hljs-comment"># IDEA : DFS</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
@@ -2667,9 +2631,9 @@ List&lt;List&lt;String&gt;&gt; partitionRes = <span class="hljs-keyword">new</sp
             <span class="hljs-comment"># e.g. 030 is not accepted form, while 30 is OK</span>
             <span class="hljs-keyword">if</span> <span class="hljs-built_in">str</span>(number) == s[:i] <span class="hljs-keyword">and</span> number &lt;= <span class="hljs-number">255</span>:
                 <span class="hljs-variable language_">self</span>.dfs(s[i:], path + [s[:i]], res)
-</code></pre>
+</code></pre></div>
 <h3 id="2-9-word-break" tabindex="-1"><a class="header-anchor" href="#2-9-word-break"><span>2-9) Word Break</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 139 Word Break</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 139 Word Break</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># IDEA : BFS</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
@@ -2688,9 +2652,9 @@ List&lt;List&lt;String&gt;&gt; partitionRes = <span class="hljs-keyword">new</sp
                             <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>  
                         q.append(j)
                 visited[i]=<span class="hljs-literal">True</span>
-</code></pre>
+</code></pre></div>
 <h3 id="2-10-word-break-ii" tabindex="-1"><a class="header-anchor" href="#2-10-word-break-ii"><span>2-10) Word Break II</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 140 Word Break II</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 140 Word Break II</span>
 <span class="hljs-comment"># NOTE : there is also dfs, dp approaches</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># IDEA : BACKTRCK, LC 078 Subsets</span>
@@ -2764,9 +2728,9 @@ List&lt;List&lt;String&gt;&gt; partitionRes = <span class="hljs-keyword">new</sp
             <span class="hljs-keyword">for</span> parent <span class="hljs-keyword">in</span> parents[r[<span class="hljs-number">0</span>]]:
                 stack.append([parent]+r)
         <span class="hljs-keyword">return</span> res
-</code></pre>
+</code></pre></div>
 <h3 id="2-11-course-schedule" tabindex="-1"><a class="header-anchor" href="#2-11-course-schedule"><span>2-11) Course Schedule</span></a></h3>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 207</span>
 <span class="hljs-comment">// V0</span>
 <span class="hljs-comment">// IDEA : DFS (fix by gpt)</span>
@@ -2863,7 +2827,7 @@ List&lt;List&lt;String&gt;&gt; partitionRes = <span class="hljs-keyword">new</sp
     preMap.get(crs).clear(); <span class="hljs-comment">// Clear prerequisites as the course is confirmed to be processed</span>
     <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
 }
-</code></pre>
+</code></pre></div>
 
       </div>
       <div class="cheatsheet-footer">

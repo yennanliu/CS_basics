@@ -19,54 +19,18 @@
     }
   })();
   </script>
-  <script>document.addEventListener('DOMContentLoaded', function() {
-    document.querySelectorAll('pre code').forEach(function(codeEl) {
-      var pre = codeEl.parentElement;
-      var lang = '';
-      var cls = codeEl.className || '';
-      var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
-      if (m) lang = m[1];
-
-      // Add line numbers
-      var lines = codeEl.innerHTML.split('
-');
-      if (lines[lines.length - 1] === '') lines.pop();
-      var numbered = lines.map(function(line, i) {
-        return '<span class="hljs-ln-line"><span class="hljs-ln-n" data-line-number="' + (i + 1) + '"></span><span class="hljs-ln-code">' + line + '</span></span>';
-      }).join('
-');
-      codeEl.innerHTML = numbered;
-      codeEl.classList.add('hljs-ln');
-
-      var wrapper = document.createElement('div');
-      wrapper.className = 'code-block-wrapper';
-      pre.parentNode.insertBefore(wrapper, pre);
-      var header = document.createElement('div');
-      header.className = 'code-block-header';
-      if (lang) {
-        var label = document.createElement('span');
-        label.className = 'code-lang-label';
-        label.textContent = lang;
-        header.appendChild(label);
-      } else {
-        header.appendChild(document.createElement('span'));
-      }
-      var btn = document.createElement('button');
-      btn.className = 'copy-btn';
-      btn.textContent = 'Copy';
-      btn.addEventListener('click', function() {
-        var text = Array.from(codeEl.querySelectorAll('.hljs-ln-code')).map(function(el) { return el.textContent; }).join('
-');
-        navigator.clipboard.writeText(text).then(function() {
-          btn.textContent = 'Copied!';
-          btn.classList.add('copied');
-          setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
-        });
-      });
-      header.appendChild(btn);
-      wrapper.appendChild(header);
-      wrapper.appendChild(pre);
+  <script>
+  function copyCode(btn) {
+    var pre = btn.closest('.code-block-wrapper').querySelector('pre');
+    var text = pre ? pre.innerText : '';
+    navigator.clipboard.writeText(text).then(function() {
+      btn.textContent = 'Copied!';
+      btn.classList.add('copied');
+      setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
     });
+  }
+  </script>
+  <script>document.addEventListener('DOMContentLoaded', function() {
     document.querySelectorAll('table').forEach(function(table) {
       if (!table.parentElement.classList.contains('table-wrap')) {
         var wrapper = document.createElement('div');
@@ -202,7 +166,7 @@
 <li>Multiple data structures often needed (HashMap + List, HashMap + Heap, etc.)</li>
 </ul>
 <h4 id="step-3-define-class-structure" tabindex="-1"><a class="header-anchor" href="#step-3-define-class-structure"><span>Step 3: Define Class Structure</span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">DesignName</span>:
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">DesignName</span>:
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, params</span>):
         <span class="hljs-comment"># Initialize data structures</span>
         <span class="hljs-variable language_">self</span>.data_structure1 = {}
@@ -215,7 +179,7 @@
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">operation2</span>(<span class="hljs-params">self, params</span>):
         <span class="hljs-comment"># Implement operation</span>
         <span class="hljs-keyword">pass</span>
-</code></pre>
+</code></pre></div>
 <h4 id="step-4-implement-core-operations" tabindex="-1"><a class="header-anchor" href="#step-4-implement-core-operations"><span>Step 4: Implement Core Operations</span></a></h4>
 <ul>
 <li>Focus on the required methods</li>
@@ -293,11 +257,11 @@
 <li>Trade-off: Space (keeping old data) vs Time (cleanup overhead)</li>
 </ul>
 <h3 id="notice-5-defaultdict-and-counter" tabindex="-1"><a class="header-anchor" href="#notice-5-defaultdict-and-counter"><span>Notice 5: defaultdict and Counter</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">from</span> collections <span class="hljs-keyword">import</span> defaultdict, Counter
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">from</span> collections <span class="hljs-keyword">import</span> defaultdict, Counter
 <span class="hljs-comment"># Avoid key existence checks</span>
 followers = defaultdict(<span class="hljs-built_in">set</span>)  <span class="hljs-comment"># Auto-creates empty set</span>
 tweet_count = defaultdict(<span class="hljs-built_in">int</span>)  <span class="hljs-comment"># Auto-creates 0</span>
-</code></pre>
+</code></pre></div>
 <h2 id="1-4-classic-lc-problems-by-category" tabindex="-1"><a class="header-anchor" href="#1-4-classic-lc-problems-by-category"><span>1-4) Classic LC Problems by Category</span></a></h2>
 <h3 id="category-1-cache-design" tabindex="-1"><a class="header-anchor" href="#category-1-cache-design"><span>Category 1: Cache Design ⭐⭐⭐</span></a></h3>
 <ul>
@@ -363,7 +327,7 @@ tweet_count = defaultdict(<span class="hljs-built_in">int</span>)  <span class="
 </ul>
 <h2 id="2-lc-example" tabindex="-1"><a class="header-anchor" href="#2-lc-example"><span>2) LC Example</span></a></h2>
 <h4 id="2-1-design-file-system" tabindex="-1"><a class="header-anchor" href="#2-1-design-file-system"><span>2-1) Design File System</span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 1166. Design File System</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 1166. Design File System</span>
 <span class="hljs-comment"># V1</span>
 <span class="hljs-comment"># IDEA : dict</span>
 <span class="hljs-comment"># https://leetcode.com/problems/design-file-system/discuss/365925/Python-dict-solution</span>
@@ -384,9 +348,9 @@ tweet_count = defaultdict(<span class="hljs-built_in">int</span>)  <span class="
         
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">get</span>(<span class="hljs-params">self, path: <span class="hljs-built_in">str</span></span>) -&gt; <span class="hljs-built_in">int</span>:
         <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.d.get(path, -<span class="hljs-number">1</span>)
-</code></pre>
+</code></pre></div>
 <h4 id="2-2-design-in-memory-file-system" tabindex="-1"><a class="header-anchor" href="#2-2-design-in-memory-file-system"><span>2-2) Design In-Memory File System</span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 588. Design In-Memory File System</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 588. Design In-Memory File System</span>
 
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># IDEA : Dict</span>
@@ -464,9 +428,9 @@ tweet_count = defaultdict(<span class="hljs-built_in">int</span>)  <span class="
             <span class="hljs-keyword">else</span>:
                 <span class="hljs-keyword">return</span> node, <span class="hljs-string">&#x27;file&#x27;</span>
         <span class="hljs-keyword">return</span> node, <span class="hljs-string">&#x27;dir&#x27;</span>
-</code></pre>
+</code></pre></div>
 <h4 id="2-3-lru-cache" tabindex="-1"><a class="header-anchor" href="#2-3-lru-cache"><span>2-3) LRU Cache</span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 146 LRU Cache (Least Recently Used (LRU) cache)</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 146 LRU Cache (Least Recently Used (LRU) cache)</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># IDEA : ARRAY + LRU (implement LRU via array)</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">LRUCache</span>(<span class="hljs-title class_ inherited__">object</span>):
@@ -555,9 +519,9 @@ tweet_count = defaultdict(<span class="hljs-built_in">int</span>)  <span class="
         <span class="hljs-variable language_">self</span>[key] = value
         <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(<span class="hljs-variable language_">self</span>) &gt; <span class="hljs-variable language_">self</span>.capacity:
             <span class="hljs-variable language_">self</span>.popitem(last = <span class="hljs-literal">False</span>)
-</code></pre>
+</code></pre></div>
 <h4 id="2-4-lfu-cache" tabindex="-1"><a class="header-anchor" href="#2-4-lfu-cache"><span>2-4) LFU Cache</span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 460. LFU Cache</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 460. LFU Cache</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-keyword">from</span> collections <span class="hljs-keyword">import</span> OrderedDict
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">Node</span>:
@@ -617,9 +581,9 @@ tweet_count = defaultdict(<span class="hljs-built_in">int</span>)  <span class="
             <span class="hljs-variable language_">self</span>.count_node[<span class="hljs-number">1</span>][key]=node
             <span class="hljs-variable language_">self</span>.minV=<span class="hljs-number">1</span>
 
-</code></pre>
+</code></pre></div>
 <h4 id="2-5-design-twitter" tabindex="-1"><a class="header-anchor" href="#2-5-design-twitter"><span>2-5) Design Twitter</span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 355  Design Twitter</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 355  Design Twitter</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># https://github.com/labuladong/fucking-algorithm/blob/master/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E7%B3%BB%E5%88%97/%E8%AE%BE%E8%AE%A1Twitter.md</span>
 <span class="hljs-keyword">from</span> collections <span class="hljs-keyword">import</span> defaultdict
@@ -668,12 +632,12 @@ tweet_count = defaultdict(<span class="hljs-built_in">int</span>)  <span class="
 
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">unfollow</span>(<span class="hljs-params">self, followerId, followeeId</span>):
         <span class="hljs-variable language_">self</span>.follower_followees_map[followerId].discard(followeeId)
-</code></pre>
+</code></pre></div>
 <h4 id="2-6-design-log-storage-system" tabindex="-1"><a class="header-anchor" href="#2-6-design-log-storage-system"><span>2-6) Design Log Storage System</span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 635 Design Log Storage System</span>
-</code></pre>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 635 Design Log Storage System</span>
+</code></pre></div>
 <h4 id="2-7-design-search-autocomplete-system" tabindex="-1"><a class="header-anchor" href="#2-7-design-search-autocomplete-system"><span>2-7) Design Search Autocomplete System</span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 642 Design Search Autocomplete System</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 642 Design Search Autocomplete System</span>
 <span class="hljs-comment"># V1</span>
 <span class="hljs-comment"># IDEA : DICT TRIE</span>
 <span class="hljs-comment"># http://bookshadow.com/weblog/2017/07/16/leetcode-design-search-autocomplete-system/</span>
@@ -723,9 +687,9 @@ tweet_count = defaultdict(<span class="hljs-built_in">int</span>)  <span class="
                 node.children[letter] = child
             node = child
             child.sentences.add(sentence)
-</code></pre>
+</code></pre></div>
 <h4 id="2-8-insert-delete-getrandom-o-1" tabindex="-1"><a class="header-anchor" href="#2-8-insert-delete-getrandom-o-1"><span>2-8) Insert Delete GetRandom O(1)</span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 380. Insert Delete GetRandom O(1)</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 380. Insert Delete GetRandom O(1)</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># IDEA: HashMap + ArrayList</span>
 <span class="hljs-comment"># - HashMap: stores value -&gt; index mapping for O(1) lookup</span>
@@ -759,9 +723,9 @@ tweet_count = defaultdict(<span class="hljs-built_in">int</span>)  <span class="
 
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">getRandom</span>(<span class="hljs-params">self</span>) -&gt; <span class="hljs-built_in">int</span>:
         <span class="hljs-keyword">return</span> random.choice(<span class="hljs-variable language_">self</span>.<span class="hljs-built_in">list</span>)
-</code></pre>
+</code></pre></div>
 <h4 id="2-9-design-hit-counter" tabindex="-1"><a class="header-anchor" href="#2-9-design-hit-counter"><span>2-9) Design Hit Counter</span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 362. Design Hit Counter</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 362. Design Hit Counter</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># IDEA: Queue with timestamps (sliding window)</span>
 <span class="hljs-keyword">from</span> collections <span class="hljs-keyword">import</span> deque
@@ -801,9 +765,9 @@ tweet_count = defaultdict(<span class="hljs-built_in">int</span>)  <span class="
             <span class="hljs-keyword">if</span> timestamp - <span class="hljs-variable language_">self</span>.times[i] &lt; <span class="hljs-number">300</span>:
                 total += <span class="hljs-variable language_">self</span>.hits[i]
         <span class="hljs-keyword">return</span> total
-</code></pre>
+</code></pre></div>
 <h4 id="2-10-design-tic-tac-toe" tabindex="-1"><a class="header-anchor" href="#2-10-design-tic-tac-toe"><span>2-10) Design Tic-Tac-Toe</span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 348. Design Tic-Tac-Toe</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 348. Design Tic-Tac-Toe</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># IDEA: Track row/col/diagonal sums</span>
 <span class="hljs-comment"># - Each player has a unique value (+1 for player1, -1 for player2)</span>
@@ -838,9 +802,9 @@ tweet_count = defaultdict(<span class="hljs-built_in">int</span>)  <span class="
             <span class="hljs-keyword">return</span> player
 
         <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>
-</code></pre>
+</code></pre></div>
 <h4 id="2-11-design-underground-system" tabindex="-1"><a class="header-anchor" href="#2-11-design-underground-system"><span>2-11) Design Underground System</span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 1396. Design Underground System</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 1396. Design Underground System</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># IDEA: Two HashMaps</span>
 <span class="hljs-comment"># - checkInMap: id -&gt; (stationName, time)</span>
@@ -865,9 +829,9 @@ tweet_count = defaultdict(<span class="hljs-built_in">int</span>)  <span class="
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">getAverageTime</span>(<span class="hljs-params">self, startStation: <span class="hljs-built_in">str</span>, endStation: <span class="hljs-built_in">str</span></span>) -&gt; <span class="hljs-built_in">float</span>:
         total_time, count = <span class="hljs-variable language_">self</span>.travel[(startStation, endStation)]
         <span class="hljs-keyword">return</span> total_time / count
-</code></pre>
+</code></pre></div>
 <h4 id="2-12-design-snake-game" tabindex="-1"><a class="header-anchor" href="#2-12-design-snake-game"><span>2-12) Design Snake Game</span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 353. Design Snake Game</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 353. Design Snake Game</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># IDEA: Queue for snake body + Set for fast collision check</span>
 <span class="hljs-keyword">from</span> collections <span class="hljs-keyword">import</span> deque
@@ -916,9 +880,9 @@ tweet_count = defaultdict(<span class="hljs-built_in">int</span>)  <span class="
         <span class="hljs-variable language_">self</span>.snake_set.add((new_r, new_c))
 
         <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.score
-</code></pre>
+</code></pre></div>
 <h4 id="2-13-time-based-key-value-store" tabindex="-1"><a class="header-anchor" href="#2-13-time-based-key-value-store"><span>2-13) Time Based Key-Value Store</span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 981. Time Based Key-Value Store</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 981. Time Based Key-Value Store</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># IDEA: HashMap + Binary Search</span>
 <span class="hljs-comment"># - HashMap: key -&gt; list of (timestamp, value) pairs</span>
@@ -970,9 +934,9 @@ tweet_count = defaultdict(<span class="hljs-built_in">int</span>)  <span class="
                 right = mid - <span class="hljs-number">1</span>
 
         <span class="hljs-keyword">return</span> result
-</code></pre>
+</code></pre></div>
 <h4 id="2-14-design-add-and-search-words-data-structure" tabindex="-1"><a class="header-anchor" href="#2-14-design-add-and-search-words-data-structure"><span>2-14) Design Add and Search Words Data Structure</span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 211. Design Add and Search Words Data Structure</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 211. Design Add and Search Words Data Structure</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># IDEA: Trie with wildcard support</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">TrieNode</span>:
@@ -1012,9 +976,9 @@ tweet_count = defaultdict(<span class="hljs-built_in">int</span>)  <span class="
             <span class="hljs-keyword">if</span> char <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> node.children:
                 <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
             <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.search_helper(word, index + <span class="hljs-number">1</span>, node.children[char])
-</code></pre>
+</code></pre></div>
 <h4 id="2-15-all-o-1-data-structure" tabindex="-1"><a class="header-anchor" href="#2-15-all-o-1-data-structure"><span>2-15) All O(1) Data Structure</span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 432. All O`one Data Structure</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 432. All O`one Data Structure</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># IDEA: HashMap + Doubly Linked List of Buckets</span>
 <span class="hljs-comment"># - Each bucket contains all keys with the same count</span>
@@ -1110,7 +1074,7 @@ tweet_count = defaultdict(<span class="hljs-built_in">int</span>)  <span class="
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">_remove_node</span>(<span class="hljs-params">self, node</span>):
         node.prev.<span class="hljs-built_in">next</span> = node.<span class="hljs-built_in">next</span>
         node.<span class="hljs-built_in">next</span>.prev = node.prev
-</code></pre>
+</code></pre></div>
 <hr>
 <h2 id="3-system-design-coding-patterns" tabindex="-1"><a class="header-anchor" href="#3-system-design-coding-patterns"><span>3) System Design Coding Patterns</span></a></h2>
 <h3 id="3-1-consistent-hashing" tabindex="-1"><a class="header-anchor" href="#3-1-consistent-hashing"><span>3-1) Consistent Hashing</span></a></h3>
@@ -1128,7 +1092,7 @@ tweet_count = defaultdict(<span class="hljs-built_in">int</span>)  <span class="
 <li>Typical: 100-200 virtual nodes per physical node</li>
 </ul>
 <p><strong>Implementation:</strong></p>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># V0 - Consistent Hashing with Virtual Nodes</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># V0 - Consistent Hashing with Virtual Nodes</span>
 <span class="hljs-keyword">import</span> hashlib
 <span class="hljs-keyword">import</span> bisect
 <span class="hljs-keyword">from</span> typing <span class="hljs-keyword">import</span> <span class="hljs-type">List</span>, <span class="hljs-type">Optional</span>
@@ -1245,9 +1209,9 @@ tweet_count = defaultdict(<span class="hljs-built_in">int</span>)  <span class="
                 distribution[node] += <span class="hljs-number">1</span>
 
         <span class="hljs-keyword">return</span> distribution
-</code></pre>
+</code></pre></div>
 <p><strong>Java Implementation:</strong></p>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java - Consistent Hashing with Virtual Nodes</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java - Consistent Hashing with Virtual Nodes</span>
 <span class="hljs-keyword">import</span> java.security.MessageDigest;
 <span class="hljs-keyword">import</span> java.security.NoSuchAlgorithmException;
 <span class="hljs-keyword">import</span> java.util.*;
@@ -1371,9 +1335,9 @@ tweet_count = defaultdict(<span class="hljs-built_in">int</span>)  <span class="
         <span class="hljs-keyword">return</span> result;
     }
 }
-</code></pre>
+</code></pre></div>
 <p><strong>Usage Example:</strong></p>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Create consistent hashing with 150 virtual nodes per physical node</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Create consistent hashing with 150 virtual nodes per physical node</span>
 ch = ConsistentHashing(virtual_nodes=<span class="hljs-number">150</span>)
 
 <span class="hljs-comment"># Add nodes</span>
@@ -1393,7 +1357,7 @@ ch.remove_node(<span class="hljs-string">&quot;node2&quot;</span>)
 <span class="hljs-comment"># Check distribution</span>
 distribution = ch.get_distribution()
 <span class="hljs-comment"># {&#x27;node1&#x27;: 5012, &#x27;node2&#x27;: 4988} - roughly even distribution</span>
-</code></pre>
+</code></pre></div>
 <p><strong>LeetCode Related Problems:</strong></p>
 <ul>
 <li>LC 535 - Encode and Decode TinyURL (hash-based mapping)</li>
@@ -1415,7 +1379,7 @@ distribution = ch.get_distribution()
 <li>Leaky Bucket: Smooth output rate, no bursts</li>
 </ul>
 <p><strong>Implementation:</strong></p>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 359 - Logger Rate Limiter (simplified variant)</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 359 - Logger Rate Limiter (simplified variant)</span>
 <span class="hljs-comment"># V0 - Token Bucket Rate Limiter</span>
 <span class="hljs-keyword">import</span> time
 <span class="hljs-keyword">from</span> threading <span class="hljs-keyword">import</span> Lock
@@ -1519,9 +1483,9 @@ distribution = ch.get_distribution()
             <span class="hljs-comment"># Update last_refill even if rejected</span>
             <span class="hljs-variable language_">self</span>.users[user_id] = [user_tokens, now]
             <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
-</code></pre>
+</code></pre></div>
 <p><strong>Java Implementation:</strong></p>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java - Token Bucket Rate Limiter</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java - Token Bucket Rate Limiter</span>
 <span class="hljs-keyword">import</span> java.util.concurrent.ConcurrentHashMap;
 <span class="hljs-keyword">import</span> java.util.Map;
 
@@ -1625,9 +1589,9 @@ distribution = ch.get_distribution()
         }
     }
 }
-</code></pre>
+</code></pre></div>
 <p><strong>LC 359 - Logger Rate Limiter (Simplified)</strong></p>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 359 - Logger Rate Limiter</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 359 - Logger Rate Limiter</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">Logger</span>:
     <span class="hljs-string">&quot;&quot;&quot;
     Simplified rate limiter: only 1 message per key every 10 seconds
@@ -1653,9 +1617,9 @@ distribution = ch.get_distribution()
             <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
 
         <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
-</code></pre>
+</code></pre></div>
 <p><strong>Usage Example:</strong></p>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Create rate limiter: 10 requests per second, burst up to 20</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Create rate limiter: 10 requests per second, burst up to 20</span>
 limiter = TokenBucketRateLimiter(capacity=<span class="hljs-number">20</span>, refill_rate=<span class="hljs-number">10</span>)
 
 <span class="hljs-comment"># Handle requests</span>
@@ -1670,7 +1634,7 @@ limiter = TokenBucketRateLimiter(capacity=<span class="hljs-number">20</span>, r
 <span class="hljs-comment"># Requests 0-19: ALLOWED (burst uses all tokens)</span>
 <span class="hljs-comment"># Requests 20-24: RATE LIMITED (no tokens left)</span>
 <span class="hljs-comment"># After 1 second: 10 new tokens available</span>
-</code></pre>
+</code></pre></div>
 <hr>
 <h3 id="3-3-rate-limiter-leaky-bucket" tabindex="-1"><a class="header-anchor" href="#3-3-rate-limiter-leaky-bucket"><span>3-3) Rate Limiter - Leaky Bucket</span></a></h3>
 <p><strong>Concept:</strong></p>
@@ -1682,7 +1646,7 @@ limiter = TokenBucketRateLimiter(capacity=<span class="hljs-number">20</span>, r
 <li><strong>Difference from Token Bucket</strong>: Smooths bursts, no immediate processing of burst</li>
 </ul>
 <p><strong>Implementation:</strong></p>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># V0 - Leaky Bucket Rate Limiter</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># V0 - Leaky Bucket Rate Limiter</span>
 <span class="hljs-keyword">import</span> time
 <span class="hljs-keyword">from</span> collections <span class="hljs-keyword">import</span> deque
 <span class="hljs-keyword">from</span> threading <span class="hljs-keyword">import</span> Lock
@@ -1792,9 +1756,9 @@ limiter = TokenBucketRateLimiter(capacity=<span class="hljs-number">20</span>, r
 
             <span class="hljs-variable language_">self</span>.users[user_id] = (queue, last_leak)
             <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
-</code></pre>
+</code></pre></div>
 <p><strong>Java Implementation:</strong></p>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java - Leaky Bucket Rate Limiter</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java - Leaky Bucket Rate Limiter</span>
 <span class="hljs-keyword">import</span> java.util.*;
 <span class="hljs-keyword">import</span> java.util.concurrent.ConcurrentHashMap;
 
@@ -1846,7 +1810,7 @@ limiter = TokenBucketRateLimiter(capacity=<span class="hljs-number">20</span>, r
         <span class="hljs-keyword">return</span> queue.size();
     }
 }
-</code></pre>
+</code></pre></div>
 <p><strong>Comparison: Token Bucket vs Leaky Bucket</strong></p>
 <table>
 <thead>
@@ -1899,7 +1863,7 @@ limiter = TokenBucketRateLimiter(capacity=<span class="hljs-number">20</span>, r
 <li><strong>Types</strong>: Round Robin, Weighted Round Robin, Least Connections, Consistent Hashing</li>
 </ul>
 <p><strong>Implementation:</strong></p>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># V0 - Load Balancer Implementations</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># V0 - Load Balancer Implementations</span>
 <span class="hljs-keyword">from</span> typing <span class="hljs-keyword">import</span> <span class="hljs-type">List</span>, <span class="hljs-type">Optional</span>
 <span class="hljs-keyword">import</span> time
 <span class="hljs-keyword">from</span> threading <span class="hljs-keyword">import</span> Lock
@@ -2085,9 +2049,9 @@ limiter = TokenBucketRateLimiter(capacity=<span class="hljs-number">20</span>, r
         <span class="hljs-keyword">with</span> <span class="hljs-variable language_">self</span>.lock:
             <span class="hljs-keyword">if</span> server <span class="hljs-keyword">in</span> <span class="hljs-variable language_">self</span>.connections:
                 <span class="hljs-variable language_">self</span>.connections[server] = <span class="hljs-built_in">max</span>(<span class="hljs-number">0</span>, <span class="hljs-variable language_">self</span>.connections[server] - <span class="hljs-number">1</span>)
-</code></pre>
+</code></pre></div>
 <p><strong>Java Implementation:</strong></p>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java - Round Robin Load Balancer</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java - Round Robin Load Balancer</span>
 <span class="hljs-keyword">import</span> java.util.*;
 <span class="hljs-keyword">import</span> java.util.concurrent.atomic.AtomicInteger;
 
@@ -2156,9 +2120,9 @@ limiter = TokenBucketRateLimiter(capacity=<span class="hljs-number">20</span>, r
         connections.computeIfPresent(server, (k, v) -&gt; Math.max(<span class="hljs-number">0</span>, v - <span class="hljs-number">1</span>));
     }
 }
-</code></pre>
+</code></pre></div>
 <p><strong>Usage Example:</strong></p>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Round Robin</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Round Robin</span>
 rr_lb = RoundRobinLoadBalancer([<span class="hljs-string">&quot;server1&quot;</span>, <span class="hljs-string">&quot;server2&quot;</span>, <span class="hljs-string">&quot;server3&quot;</span>])
 <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">6</span>):
     <span class="hljs-built_in">print</span>(rr_lb.get_server())
@@ -2175,7 +2139,7 @@ lc_lb = LeastConnectionsLoadBalancer([<span class="hljs-string">&quot;server1&qu
 server = lc_lb.get_server()  <span class="hljs-comment"># Returns server with fewest connections</span>
 <span class="hljs-comment"># ... process request ...</span>
 lc_lb.release_connection(server)  <span class="hljs-comment"># Release when done</span>
-</code></pre>
+</code></pre></div>
 <p><strong>Load Balancing Algorithm Comparison:</strong></p>
 <table>
 <thead>

@@ -19,54 +19,18 @@
     }
   })();
   </script>
-  <script>document.addEventListener('DOMContentLoaded', function() {
-    document.querySelectorAll('pre code').forEach(function(codeEl) {
-      var pre = codeEl.parentElement;
-      var lang = '';
-      var cls = codeEl.className || '';
-      var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
-      if (m) lang = m[1];
-
-      // Add line numbers
-      var lines = codeEl.innerHTML.split('
-');
-      if (lines[lines.length - 1] === '') lines.pop();
-      var numbered = lines.map(function(line, i) {
-        return '<span class="hljs-ln-line"><span class="hljs-ln-n" data-line-number="' + (i + 1) + '"></span><span class="hljs-ln-code">' + line + '</span></span>';
-      }).join('
-');
-      codeEl.innerHTML = numbered;
-      codeEl.classList.add('hljs-ln');
-
-      var wrapper = document.createElement('div');
-      wrapper.className = 'code-block-wrapper';
-      pre.parentNode.insertBefore(wrapper, pre);
-      var header = document.createElement('div');
-      header.className = 'code-block-header';
-      if (lang) {
-        var label = document.createElement('span');
-        label.className = 'code-lang-label';
-        label.textContent = lang;
-        header.appendChild(label);
-      } else {
-        header.appendChild(document.createElement('span'));
-      }
-      var btn = document.createElement('button');
-      btn.className = 'copy-btn';
-      btn.textContent = 'Copy';
-      btn.addEventListener('click', function() {
-        var text = Array.from(codeEl.querySelectorAll('.hljs-ln-code')).map(function(el) { return el.textContent; }).join('
-');
-        navigator.clipboard.writeText(text).then(function() {
-          btn.textContent = 'Copied!';
-          btn.classList.add('copied');
-          setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
-        });
-      });
-      header.appendChild(btn);
-      wrapper.appendChild(header);
-      wrapper.appendChild(pre);
+  <script>
+  function copyCode(btn) {
+    var pre = btn.closest('.code-block-wrapper').querySelector('pre');
+    var text = pre ? pre.innerText : '';
+    navigator.clipboard.writeText(text).then(function() {
+      btn.textContent = 'Copied!';
+      btn.classList.add('copied');
+      setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
     });
+  }
+  </script>
+  <script>document.addEventListener('DOMContentLoaded', function() {
     document.querySelectorAll('table').forEach(function(table) {
       if (!table.parentElement.classList.contains('table-wrap')) {
         var wrapper = document.createElement('div');
@@ -261,7 +225,7 @@
 </tbody>
 </table>
 <h3 id="universal-interval-template" tabindex="-1"><a class="header-anchor" href="#universal-interval-template"><span>Universal Interval Template</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">solve_interval_problem</span>(<span class="hljs-params">intervals</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">solve_interval_problem</span>(<span class="hljs-params">intervals</span>):
     <span class="hljs-string">&quot;&quot;&quot;
     Universal template for interval problems
     &quot;&quot;&quot;</span>
@@ -297,10 +261,10 @@
     result[-<span class="hljs-number">1</span>][<span class="hljs-number">1</span>] = <span class="hljs-built_in">max</span>(result[-<span class="hljs-number">1</span>][<span class="hljs-number">1</span>], current[<span class="hljs-number">1</span>])
     <span class="hljs-comment"># For counting: increment counter</span>
     <span class="hljs-comment"># For removal: choose which interval to keep</span>
-</code></pre>
+</code></pre></div>
 <h3 id="specific-templates" tabindex="-1"><a class="header-anchor" href="#specific-templates"><span>Specific Templates</span></a></h3>
 <h4 id="template-1-interval-merging-lc-56-57" tabindex="-1"><a class="header-anchor" href="#template-1-interval-merging-lc-56-57"><span>Template 1: Interval Merging (LC 56, 57)</span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">merge_intervals</span>(<span class="hljs-params">intervals</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">merge_intervals</span>(<span class="hljs-params">intervals</span>):
     <span class="hljs-string">&quot;&quot;&quot;
     Merge overlapping intervals
     Time: O(n log n), Space: O(n)
@@ -343,9 +307,9 @@ public <span class="hljs-built_in">int</span>[][] merge(<span class="hljs-built_
     
     <span class="hljs-keyword">return</span> merged.toArray(new <span class="hljs-built_in">int</span>[merged.size()][]);
 }
-</code></pre>
+</code></pre></div>
 <h4 id="template-2-greedy-scheduling-lc-435-452" tabindex="-1"><a class="header-anchor" href="#template-2-greedy-scheduling-lc-435-452"><span>Template 2: Greedy Scheduling (LC 435, 452)</span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">min_intervals_to_remove</span>(<span class="hljs-params">intervals</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">min_intervals_to_remove</span>(<span class="hljs-params">intervals</span>):
     <span class="hljs-string">&quot;&quot;&quot;
     Find minimum intervals to remove for non-overlapping set
     Time: O(n log n), Space: O(1)
@@ -387,9 +351,9 @@ public <span class="hljs-built_in">int</span> eraseOverlapIntervals(<span class=
     
     <span class="hljs-keyword">return</span> count;
 }
-</code></pre>
+</code></pre></div>
 <h4 id="template-3-two-pointer-intersection-lc-986" tabindex="-1"><a class="header-anchor" href="#template-3-two-pointer-intersection-lc-986"><span>Template 3: Two Pointer Intersection (LC 986)</span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">interval_intersection</span>(<span class="hljs-params">firstList, secondList</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">interval_intersection</span>(<span class="hljs-params">firstList, secondList</span>):
     <span class="hljs-string">&quot;&quot;&quot;
     Find intersection of two interval lists
     Time: O(m + n), Space: O(min(m, n))
@@ -413,9 +377,9 @@ public <span class="hljs-built_in">int</span> eraseOverlapIntervals(<span class=
             j += <span class="hljs-number">1</span>
     
     <span class="hljs-keyword">return</span> result
-</code></pre>
+</code></pre></div>
 <h4 id="template-4-meeting-rooms-with-priority-queue-lc-253" tabindex="-1"><a class="header-anchor" href="#template-4-meeting-rooms-with-priority-queue-lc-253"><span>Template 4: Meeting Rooms with Priority Queue (LC 253)</span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">import</span> heapq
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">import</span> heapq
 
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">min_meeting_rooms</span>(<span class="hljs-params">intervals</span>):
     <span class="hljs-string">&quot;&quot;&quot;
@@ -457,9 +421,9 @@ public <span class="hljs-built_in">int</span> minMeetingRooms(<span class="hljs-
     
     <span class="hljs-keyword">return</span> heap.size();
 }
-</code></pre>
+</code></pre></div>
 <h4 id="template-5-calendar-booking-lc-729" tabindex="-1"><a class="header-anchor" href="#template-5-calendar-booking-lc-729"><span>Template 5: Calendar Booking (LC 729)</span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">MyCalendar</span>:
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">MyCalendar</span>:
     <span class="hljs-string">&quot;&quot;&quot;
     Calendar with overlap detection using binary search
     Time: O(log n) per booking, Space: O(n)
@@ -487,7 +451,7 @@ public <span class="hljs-built_in">int</span> minMeetingRooms(<span class="hljs-
         <span class="hljs-comment"># No overlap, insert booking</span>
         <span class="hljs-variable language_">self</span>.bookings.insert(left, [start, end])
         <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
-</code></pre>
+</code></pre></div>
 <h2 id="3-problems-by-pattern" tabindex="-1"><a class="header-anchor" href="#3-problems-by-pattern"><span>3) Problems by Pattern</span></a></h2>
 <h3 id="merging-pattern-problems" tabindex="-1"><a class="header-anchor" href="#merging-pattern-problems"><span><strong>Merging Pattern Problems</strong></span></a></h3>
 <table>
@@ -785,7 +749,7 @@ public <span class="hljs-built_in">int</span> minMeetingRooms(<span class="hljs-
 </table>
 <h2 id="4-pattern-selection-strategy" tabindex="-1"><a class="header-anchor" href="#4-pattern-selection-strategy"><span>4) Pattern Selection Strategy</span></a></h2>
 <h3 id="decision-framework-flowchart" tabindex="-1"><a class="header-anchor" href="#decision-framework-flowchart"><span>Decision Framework Flowchart</span></a></h3>
-<pre><code class="hljs">Problem Analysis for Interval Problems:
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Problem Analysis for Interval Problems:
 
 1. Are you merging overlapping intervals?
    ├── YES → Use Merge Template (LC 56, 57)
@@ -822,7 +786,7 @@ public <span class="hljs-built_in">int</span> minMeetingRooms(<span class="hljs-
    ├── Coordinate compression needed?
    ├── Sweep line algorithm required?
    └── Segment tree for range operations?
-</code></pre>
+</code></pre></div>
 <h3 id="template-selection-guide" tabindex="-1"><a class="header-anchor" href="#template-selection-guide"><span>Template Selection Guide</span></a></h3>
 <p><strong>Quick Decision Tree:</strong></p>
 <ol>
@@ -835,19 +799,19 @@ public <span class="hljs-built_in">int</span> minMeetingRooms(<span class="hljs-
 <h2 id="5-key-patterns-overlap-detection" tabindex="-1"><a class="header-anchor" href="#5-key-patterns-overlap-detection"><span>5) Key Patterns &amp; Overlap Detection</span></a></h2>
 <h3 id="overlap-detection-methods" tabindex="-1"><a class="header-anchor" href="#overlap-detection-methods"><span>Overlap Detection Methods</span></a></h3>
 <h4 id="method-1-after-sorting-by-start-time" tabindex="-1"><a class="header-anchor" href="#method-1-after-sorting-by-start-time"><span>Method 1: After Sorting by Start Time</span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">has_overlap</span>(<span class="hljs-params">interval1, interval2</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">has_overlap</span>(<span class="hljs-params">interval1, interval2</span>):
     <span class="hljs-string">&quot;&quot;&quot;Check if two intervals overlap (sorted by start)&quot;&quot;&quot;</span>
     <span class="hljs-keyword">return</span> interval1[<span class="hljs-number">1</span>] &gt; interval2[<span class="hljs-number">0</span>]
-</code></pre>
+</code></pre></div>
 <h4 id="method-2-general-case-any-order" tabindex="-1"><a class="header-anchor" href="#method-2-general-case-any-order"><span>Method 2: General Case (Any Order)</span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">has_overlap</span>(<span class="hljs-params">interval1, interval2</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">has_overlap</span>(<span class="hljs-params">interval1, interval2</span>):
     <span class="hljs-string">&quot;&quot;&quot;Check if two intervals overlap (any order)&quot;&quot;&quot;</span>
     start1, end1 = interval1
     start2, end2 = interval2
     <span class="hljs-keyword">return</span> start1 &lt; end2 <span class="hljs-keyword">and</span> start2 &lt; end1
-</code></pre>
+</code></pre></div>
 <h3 id="overlap-visualization" tabindex="-1"><a class="header-anchor" href="#overlap-visualization"><span>Overlap Visualization</span></a></h3>
-<pre><code class="hljs">Case 1 - No Overlap:
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Case 1 - No Overlap:
 |----| interval1
         |----| interval2
 
@@ -858,9 +822,9 @@ Case 2 - Overlap:
 Case 3 - Complete Overlap:
 |-----------|
    |-----|
-</code></pre>
+</code></pre></div>
 <h3 id="common-interval-operations" tabindex="-1"><a class="header-anchor" href="#common-interval-operations"><span>Common Interval Operations</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">merge_two_intervals</span>(<span class="hljs-params">a, b</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">merge_two_intervals</span>(<span class="hljs-params">a, b</span>):
     <span class="hljs-string">&quot;&quot;&quot;Merge two overlapping intervals&quot;&quot;&quot;</span>
     <span class="hljs-keyword">return</span> [<span class="hljs-built_in">min</span>(a[<span class="hljs-number">0</span>], b[<span class="hljs-number">0</span>]), <span class="hljs-built_in">max</span>(a[<span class="hljs-number">1</span>], b[<span class="hljs-number">1</span>])]
 
@@ -877,7 +841,7 @@ Case 3 - Complete Overlap:
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">point_in_interval</span>(<span class="hljs-params">point, interval</span>):
     <span class="hljs-string">&quot;&quot;&quot;Check if point is in interval&quot;&quot;&quot;</span>
     <span class="hljs-keyword">return</span> interval[<span class="hljs-number">0</span>] &lt;= point &lt;= interval[<span class="hljs-number">1</span>]
-</code></pre>
+</code></pre></div>
 <h2 id="6-summary-quick-reference" tabindex="-1"><a class="header-anchor" href="#6-summary-quick-reference"><span>6) Summary &amp; Quick Reference</span></a></h2>
 <h3 id="complexity-quick-reference" tabindex="-1"><a class="header-anchor" href="#complexity-quick-reference"><span>Complexity Quick Reference</span></a></h3>
 <table>
@@ -967,7 +931,7 @@ Case 3 - Complete Overlap:
 </table>
 <h3 id="common-patterns-tricks" tabindex="-1"><a class="header-anchor" href="#common-patterns-tricks"><span>Common Patterns &amp; Tricks</span></a></h3>
 <h4 id="pattern-1-merge-overlapping" tabindex="-1"><a class="header-anchor" href="#pattern-1-merge-overlapping"><span><strong>Pattern 1: Merge Overlapping</strong></span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Standard merging after sorting</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Standard merging after sorting</span>
 intervals.sort()
 merged = [intervals[<span class="hljs-number">0</span>]]
 <span class="hljs-keyword">for</span> curr <span class="hljs-keyword">in</span> intervals[<span class="hljs-number">1</span>:]:
@@ -975,9 +939,9 @@ merged = [intervals[<span class="hljs-number">0</span>]]
         merged.append(curr)
     <span class="hljs-keyword">else</span>:
         merged[-<span class="hljs-number">1</span>][<span class="hljs-number">1</span>] = <span class="hljs-built_in">max</span>(merged[-<span class="hljs-number">1</span>][<span class="hljs-number">1</span>], curr[<span class="hljs-number">1</span>])
-</code></pre>
+</code></pre></div>
 <h4 id="pattern-2-greedy-selection" tabindex="-1"><a class="header-anchor" href="#pattern-2-greedy-selection"><span><strong>Pattern 2: Greedy Selection</strong></span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Sort by end time for optimal selection</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Sort by end time for optimal selection</span>
 intervals.sort(key=<span class="hljs-keyword">lambda</span> x: x[<span class="hljs-number">1</span>])
 count = <span class="hljs-number">1</span>
 prev_end = intervals[<span class="hljs-number">0</span>][<span class="hljs-number">1</span>]
@@ -985,15 +949,15 @@ prev_end = intervals[<span class="hljs-number">0</span>][<span class="hljs-numbe
     <span class="hljs-keyword">if</span> start &gt;= prev_end:
         count += <span class="hljs-number">1</span>
         prev_end = end
-</code></pre>
+</code></pre></div>
 <h4 id="pattern-3-timeline-events" tabindex="-1"><a class="header-anchor" href="#pattern-3-timeline-events"><span><strong>Pattern 3: Timeline Events</strong></span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Convert intervals to events for sweep line</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Convert intervals to events for sweep line</span>
 events = []
 <span class="hljs-keyword">for</span> start, end <span class="hljs-keyword">in</span> intervals:
     events.append((start, <span class="hljs-number">1</span>))    <span class="hljs-comment"># start event</span>
     events.append((end, -<span class="hljs-number">1</span>))     <span class="hljs-comment"># end event</span>
 events.sort()
-</code></pre>
+</code></pre></div>
 <h3 id="problem-solving-steps" tabindex="-1"><a class="header-anchor" href="#problem-solving-steps"><span>Problem-Solving Steps</span></a></h3>
 <ol>
 <li><strong>Identify Pattern</strong>: Merging, scheduling, intersection, or resource management?</li>
@@ -1033,12 +997,12 @@ events.sort()
 </ol>
 <h3 id="data-structure-conversion-tricks" tabindex="-1"><a class="header-anchor" href="#data-structure-conversion-tricks"><span>Data Structure Conversion Tricks</span></a></h3>
 <h4 id="list-to-array-java" tabindex="-1"><a class="header-anchor" href="#list-to-array-java"><span>List to Array (Java)</span></a></h4>
-<pre data-lang="java"><code class="hljs language-java">List&lt;<span class="hljs-type">int</span>[]&gt; result = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java">List&lt;<span class="hljs-type">int</span>[]&gt; result = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();
 <span class="hljs-comment">// ... populate result</span>
 <span class="hljs-keyword">return</span> result.toArray(<span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[result.size()][]);
-</code></pre>
+</code></pre></div>
 <h4 id="efficient-merging-in-python" tabindex="-1"><a class="header-anchor" href="#efficient-merging-in-python"><span>Efficient Merging in Python</span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Using list comprehension for functional style</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Using list comprehension for functional style</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">merge_intervals</span>(<span class="hljs-params">intervals</span>):
     intervals.sort()
     result = [intervals[<span class="hljs-number">0</span>]]
@@ -1046,7 +1010,7 @@ events.sort()
      <span class="hljs-keyword">else</span> result[-<span class="hljs-number">1</span>].__setitem__(<span class="hljs-number">1</span>, <span class="hljs-built_in">max</span>(result[-<span class="hljs-number">1</span>][<span class="hljs-number">1</span>], curr[<span class="hljs-number">1</span>]))
      <span class="hljs-keyword">for</span> curr <span class="hljs-keyword">in</span> intervals[<span class="hljs-number">1</span>:]]
     <span class="hljs-keyword">return</span> result
-</code></pre>
+</code></pre></div>
 <h3 id="related-topics" tabindex="-1"><a class="header-anchor" href="#related-topics"><span>Related Topics</span></a></h3>
 <ul>
 <li><strong>Greedy Algorithms</strong>: Interval scheduling optimization</li>
@@ -1061,7 +1025,7 @@ events.sort()
 <blockquote>
 <p>Sort by start time; merge overlapping intervals by comparing with last merged.</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 56 - Merge Intervals</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 56 - Merge Intervals</span>
 <span class="hljs-comment">// IDEA: Sort by start, merge when current.start &lt;= last.end</span>
 <span class="hljs-comment">// time = O(N log N), space = O(N)</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span>[][] merge(<span class="hljs-type">int</span>[][] intervals) {
@@ -1076,12 +1040,12 @@ events.sort()
     }
     <span class="hljs-keyword">return</span> merged.toArray(<span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[merged.size()][]);
 }
-</code></pre>
+</code></pre></div>
 <h3 id="2-2-non-overlapping-intervals-lc-435-greedy-interval-scheduling" tabindex="-1"><a class="header-anchor" href="#2-2-non-overlapping-intervals-lc-435-greedy-interval-scheduling"><span>2-2) Non-overlapping Intervals (LC 435) — Greedy Interval Scheduling</span></a></h3>
 <blockquote>
 <p>Sort by end time; greedily keep intervals that end earliest to minimize removals.</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 435 - Non-overlapping Intervals</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 435 - Non-overlapping Intervals</span>
 <span class="hljs-comment">// IDEA: Greedy — sort by end, count overlapping intervals to remove</span>
 <span class="hljs-comment">// time = O(N log N), space = O(1)</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">eraseOverlapIntervals</span><span class="hljs-params">(<span class="hljs-type">int</span>[][] intervals)</span> {
@@ -1096,12 +1060,12 @@ events.sort()
     }
     <span class="hljs-keyword">return</span> removals;
 }
-</code></pre>
+</code></pre></div>
 <h3 id="2-3-insert-interval-lc-57-linear-scan-merge" tabindex="-1"><a class="header-anchor" href="#2-3-insert-interval-lc-57-linear-scan-merge"><span>2-3) Insert Interval (LC 57) — Linear Scan + Merge</span></a></h3>
 <blockquote>
 <p>Insert new interval and merge all overlapping intervals in one pass.</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 57 - Insert Interval</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 57 - Insert Interval</span>
 <span class="hljs-comment">// IDEA: Three phases — add non-overlapping left, merge overlapping, add right</span>
 <span class="hljs-comment">// time = O(N), space = O(N)</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span>[][] insert(<span class="hljs-type">int</span>[][] intervals, <span class="hljs-type">int</span>[] newInterval) {
@@ -1120,12 +1084,12 @@ events.sort()
     <span class="hljs-keyword">while</span> (i &lt; n) result.add(intervals[i++]);
     <span class="hljs-keyword">return</span> result.toArray(<span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[result.size()][]);
 }
-</code></pre>
+</code></pre></div>
 <h3 id="2-4-meeting-rooms-ii-lc-253-min-heap-on-end-times" tabindex="-1"><a class="header-anchor" href="#2-4-meeting-rooms-ii-lc-253-min-heap-on-end-times"><span>2-4) Meeting Rooms II (LC 253) — Min-Heap on End Times</span></a></h3>
 <blockquote>
 <p>Sort by start; heap tracks earliest ending room — reuse if room ends before next meeting.</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 253 - Meeting Rooms II</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 253 - Meeting Rooms II</span>
 <span class="hljs-comment">// IDEA: Sort by start; min-heap of end times — reuse room if heap.peek() &lt;= start</span>
 <span class="hljs-comment">// time = O(N log N), space = O(N)</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">minMeetingRooms</span><span class="hljs-params">(<span class="hljs-type">int</span>[][] intervals)</span> {
@@ -1137,12 +1101,12 @@ events.sort()
     }
     <span class="hljs-keyword">return</span> heap.size();
 }
-</code></pre>
+</code></pre></div>
 <h3 id="2-5-minimum-number-of-arrows-to-burst-balloons-lc-452-greedy" tabindex="-1"><a class="header-anchor" href="#2-5-minimum-number-of-arrows-to-burst-balloons-lc-452-greedy"><span>2-5) Minimum Number of Arrows to Burst Balloons (LC 452) — Greedy</span></a></h3>
 <blockquote>
 <p>Sort by end; one arrow at interval’s end bursts all overlapping; advance when gap appears.</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 452 - Minimum Number of Arrows to Burst Balloons</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 452 - Minimum Number of Arrows to Burst Balloons</span>
 <span class="hljs-comment">// IDEA: Greedy — sort by end; new arrow only when next start &gt; current end</span>
 <span class="hljs-comment">// time = O(N log N), space = O(1)</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">findMinArrowShots</span><span class="hljs-params">(<span class="hljs-type">int</span>[][] points)</span> {
@@ -1152,12 +1116,12 @@ events.sort()
         <span class="hljs-keyword">if</span> (points[i][<span class="hljs-number">0</span>] &gt; end) { arrows++; end = points[i][<span class="hljs-number">1</span>]; }
     <span class="hljs-keyword">return</span> arrows;
 }
-</code></pre>
+</code></pre></div>
 <h3 id="2-6-non-overlapping-intervals-lc-435-greedy" tabindex="-1"><a class="header-anchor" href="#2-6-non-overlapping-intervals-lc-435-greedy"><span>2-6) Non-Overlapping Intervals (LC 435) — Greedy</span></a></h3>
 <blockquote>
 <p>Sort by end; keep interval with earliest end greedily; count how many must be removed.</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 435 - Non-Overlapping Intervals</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 435 - Non-Overlapping Intervals</span>
 <span class="hljs-comment">// IDEA: Greedy — sort by end; skip (remove) overlapping intervals</span>
 <span class="hljs-comment">// time = O(N log N), space = O(1)</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">eraseOverlapIntervals</span><span class="hljs-params">(<span class="hljs-type">int</span>[][] intervals)</span> {
@@ -1169,12 +1133,12 @@ events.sort()
     }
     <span class="hljs-keyword">return</span> removals;
 }
-</code></pre>
+</code></pre></div>
 <h3 id="2-7-interval-list-intersections-lc-986-two-pointers" tabindex="-1"><a class="header-anchor" href="#2-7-interval-list-intersections-lc-986-two-pointers"><span>2-7) Interval List Intersections (LC 986) — Two Pointers</span></a></h3>
 <blockquote>
 <p>Advance the pointer whose interval ends first; record overlap when ranges intersect.</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 986 - Interval List Intersections</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 986 - Interval List Intersections</span>
 <span class="hljs-comment">// IDEA: Two pointers — compute intersection, advance pointer with smaller end</span>
 <span class="hljs-comment">// time = O(M+N), space = O(M+N)</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span>[][] intervalIntersection(<span class="hljs-type">int</span>[][] A, <span class="hljs-type">int</span>[][] B) {
@@ -1189,12 +1153,12 @@ events.sort()
     }
     <span class="hljs-keyword">return</span> res.toArray(<span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[res.size()][]);
 }
-</code></pre>
+</code></pre></div>
 <h3 id="2-8-remove-covered-intervals-lc-1288-sort-greedy" tabindex="-1"><a class="header-anchor" href="#2-8-remove-covered-intervals-lc-1288-sort-greedy"><span>2-8) Remove Covered Intervals (LC 1288) — Sort + Greedy</span></a></h3>
 <blockquote>
 <p>Sort by start asc, end desc; interval is covered if its end ≤ current max end.</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 1288 - Remove Covered Intervals</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 1288 - Remove Covered Intervals</span>
 <span class="hljs-comment">// IDEA: Sort start ASC, end DESC; count intervals not covered by running maxEnd</span>
 <span class="hljs-comment">// time = O(N log N), space = O(1)</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">removeCoveredIntervals</span><span class="hljs-params">(<span class="hljs-type">int</span>[][] intervals)</span> {
@@ -1204,12 +1168,12 @@ events.sort()
         <span class="hljs-keyword">if</span> (iv[<span class="hljs-number">1</span>] &gt; maxEnd) { count++; maxEnd = iv[<span class="hljs-number">1</span>]; }
     <span class="hljs-keyword">return</span> count;
 }
-</code></pre>
+</code></pre></div>
 <h3 id="2-9-video-stitching-lc-1024-greedy-interval-cover" tabindex="-1"><a class="header-anchor" href="#2-9-video-stitching-lc-1024-greedy-interval-cover"><span>2-9) Video Stitching (LC 1024) — Greedy Interval Cover</span></a></h3>
 <blockquote>
 <p>Sort by start; at each frontier pick the clip extending coverage the furthest.</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 1024 - Video Stitching</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 1024 - Video Stitching</span>
 <span class="hljs-comment">// IDEA: Greedy — at current end, pick clip reaching farthest next position</span>
 <span class="hljs-comment">// time = O(N log N), space = O(1)</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">videoStitching</span><span class="hljs-params">(<span class="hljs-type">int</span>[][] clips, <span class="hljs-type">int</span> time)</span> {
@@ -1224,12 +1188,12 @@ events.sort()
     }
     <span class="hljs-keyword">return</span> curEnd &gt;= time ? count : -<span class="hljs-number">1</span>;
 }
-</code></pre>
+</code></pre></div>
 <h3 id="2-10-maximum-profit-in-job-scheduling-lc-1235-dp-binary-search" tabindex="-1"><a class="header-anchor" href="#2-10-maximum-profit-in-job-scheduling-lc-1235-dp-binary-search"><span>2-10) Maximum Profit in Job Scheduling (LC 1235) — DP + Binary Search</span></a></h3>
 <blockquote>
 <p>Sort jobs by end; dp[i] = max profit using first i jobs; binary search for last non-conflicting job.</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 1235 - Maximum Profit in Job Scheduling</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 1235 - Maximum Profit in Job Scheduling</span>
 <span class="hljs-comment">// IDEA: Sort by end; DP + binary search for latest non-overlapping job</span>
 <span class="hljs-comment">// time = O(N log N), space = O(N)</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">jobScheduling</span><span class="hljs-params">(<span class="hljs-type">int</span>[] startTime, <span class="hljs-type">int</span>[] endTime, <span class="hljs-type">int</span>[] profit)</span> {
@@ -1249,12 +1213,12 @@ events.sort()
     }
     <span class="hljs-keyword">return</span> dp[n];
 }
-</code></pre>
+</code></pre></div>
 <h3 id="2-11-my-calendar-i-lc-729-treemap-overlap-check" tabindex="-1"><a class="header-anchor" href="#2-11-my-calendar-i-lc-729-treemap-overlap-check"><span>2-11) My Calendar I (LC 729) — TreeMap Overlap Check</span></a></h3>
 <blockquote>
 <p>TreeMap floor/ceiling gives O(log N) overlap detection per booking.</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 729 - My Calendar I</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 729 - My Calendar I</span>
 <span class="hljs-comment">// IDEA: TreeMap — O(log N) overlap check with floorKey / ceilingKey</span>
 <span class="hljs-comment">// time = O(log N) per booking, space = O(N)</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">MyCalendar</span> {
@@ -1268,12 +1232,12 @@ events.sort()
         <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
     }
 }
-</code></pre>
+</code></pre></div>
 <h3 id="2-12-meeting-rooms-i-lc-252-sort-adjacent-check" tabindex="-1"><a class="header-anchor" href="#2-12-meeting-rooms-i-lc-252-sort-adjacent-check"><span>2-12) Meeting Rooms I (LC 252) — Sort + Adjacent Check</span></a></h3>
 <blockquote>
 <p>Sort by start time; if any meeting starts before previous ends, overlap exists.</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 252 - Meeting Rooms</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 252 - Meeting Rooms</span>
 <span class="hljs-comment">// IDEA: Sort by start; adjacent overlap check</span>
 <span class="hljs-comment">// time = O(N log N), space = O(1)</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">canAttendMeetings</span><span class="hljs-params">(<span class="hljs-type">int</span>[][] intervals)</span> {
@@ -1282,7 +1246,7 @@ events.sort()
         <span class="hljs-keyword">if</span> (intervals[i][<span class="hljs-number">0</span>] &lt; intervals[i-<span class="hljs-number">1</span>][<span class="hljs-number">1</span>]) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
     <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
 }
-</code></pre>
+</code></pre></div>
 
       </div>
       <div class="cheatsheet-footer">

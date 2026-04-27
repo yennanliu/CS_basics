@@ -19,54 +19,18 @@
     }
   })();
   </script>
-  <script>document.addEventListener('DOMContentLoaded', function() {
-    document.querySelectorAll('pre code').forEach(function(codeEl) {
-      var pre = codeEl.parentElement;
-      var lang = '';
-      var cls = codeEl.className || '';
-      var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
-      if (m) lang = m[1];
-
-      // Add line numbers
-      var lines = codeEl.innerHTML.split('
-');
-      if (lines[lines.length - 1] === '') lines.pop();
-      var numbered = lines.map(function(line, i) {
-        return '<span class="hljs-ln-line"><span class="hljs-ln-n" data-line-number="' + (i + 1) + '"></span><span class="hljs-ln-code">' + line + '</span></span>';
-      }).join('
-');
-      codeEl.innerHTML = numbered;
-      codeEl.classList.add('hljs-ln');
-
-      var wrapper = document.createElement('div');
-      wrapper.className = 'code-block-wrapper';
-      pre.parentNode.insertBefore(wrapper, pre);
-      var header = document.createElement('div');
-      header.className = 'code-block-header';
-      if (lang) {
-        var label = document.createElement('span');
-        label.className = 'code-lang-label';
-        label.textContent = lang;
-        header.appendChild(label);
-      } else {
-        header.appendChild(document.createElement('span'));
-      }
-      var btn = document.createElement('button');
-      btn.className = 'copy-btn';
-      btn.textContent = 'Copy';
-      btn.addEventListener('click', function() {
-        var text = Array.from(codeEl.querySelectorAll('.hljs-ln-code')).map(function(el) { return el.textContent; }).join('
-');
-        navigator.clipboard.writeText(text).then(function() {
-          btn.textContent = 'Copied!';
-          btn.classList.add('copied');
-          setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
-        });
-      });
-      header.appendChild(btn);
-      wrapper.appendChild(header);
-      wrapper.appendChild(pre);
+  <script>
+  function copyCode(btn) {
+    var pre = btn.closest('.code-block-wrapper').querySelector('pre');
+    var text = pre ? pre.innerText : '';
+    navigator.clipboard.writeText(text).then(function() {
+      btn.textContent = 'Copied!';
+      btn.classList.add('copied');
+      setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
     });
+  }
+  </script>
+  <script>document.addEventListener('DOMContentLoaded', function() {
     document.querySelectorAll('table').forEach(function(table) {
       if (!table.parentElement.classList.contains('table-wrap')) {
         var wrapper = document.createElement('div');
@@ -182,7 +146,7 @@
 </ol>
 <h3 id="0-2-algorithm-pattern-template" tabindex="-1"><a class="header-anchor" href="#0-2-algorithm-pattern-template"><span>0-2) Algorithm Pattern / Template</span></a></h3>
 <p><strong>Basic Kadane’s Algorithm (Sum):</strong></p>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">kadane</span>(<span class="hljs-params">nums</span>):
     <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> nums:
         <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>
@@ -195,8 +159,8 @@
         global_max = <span class="hljs-built_in">max</span>(global_max, current_max)
 
     <span class="hljs-keyword">return</span> global_max
-</code></pre>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">kadane</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums)</span> {
     <span class="hljs-keyword">if</span> (nums == <span class="hljs-literal">null</span> || nums.length == <span class="hljs-number">0</span>) {
         <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
@@ -213,7 +177,7 @@
 
     <span class="hljs-keyword">return</span> globalMax;
 }
-</code></pre>
+</code></pre></div>
 <p><strong>Important Edge Cases:</strong></p>
 <ul>
 <li>All negative numbers → return the maximum single element</li>
@@ -224,7 +188,7 @@
 <h2 id="1-pattern-specific-implementations" tabindex="-1"><a class="header-anchor" href="#1-pattern-specific-implementations"><span>1) Pattern-Specific Implementations</span></a></h2>
 <h3 id="1-1-classic-maximum-subarray-sum-lc-53" tabindex="-1"><a class="header-anchor" href="#1-1-classic-maximum-subarray-sum-lc-53"><span>1-1) Classic Maximum Subarray Sum (LC 53)</span></a></h3>
 <p><strong>Problem:</strong> Find the contiguous subarray with the largest sum.</p>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">maxSubArray</span>(<span class="hljs-params">nums</span>):
     <span class="hljs-string">&quot;&quot;&quot;
     Time: O(n)
@@ -237,8 +201,8 @@
         max_sum = <span class="hljs-built_in">max</span>(max_sum, current_sum)
 
     <span class="hljs-keyword">return</span> max_sum
-</code></pre>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java</span>
 <span class="hljs-comment">// LC 53 - Maximum Subarray</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">maxSubArray</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums)</span> {
     <span class="hljs-keyword">if</span> (nums == <span class="hljs-literal">null</span> || nums.length == <span class="hljs-number">0</span>) {
@@ -260,11 +224,11 @@
 
     <span class="hljs-keyword">return</span> maxSum;
 }
-</code></pre>
+</code></pre></div>
 <hr>
 <h3 id="1-2-maximum-subarray-sum-with-index-tracking" tabindex="-1"><a class="header-anchor" href="#1-2-maximum-subarray-sum-with-index-tracking"><span>1-2) Maximum Subarray Sum with Index Tracking</span></a></h3>
 <p><strong>Variant:</strong> Return not just the sum, but also start/end indices of the maximum subarray.</p>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">maxSubArrayWithIndices</span>(<span class="hljs-params">nums</span>):
     <span class="hljs-string">&quot;&quot;&quot;
     Time: O(n)
@@ -287,8 +251,8 @@
             end = i
 
     <span class="hljs-keyword">return</span> max_sum, start, end
-</code></pre>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java</span>
 <span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">SubarrayResult</span> {
     <span class="hljs-type">int</span> sum;
     <span class="hljs-type">int</span> start;
@@ -323,7 +287,7 @@
 
     <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">SubarrayResult</span>(maxSum, start, end);
 }
-</code></pre>
+</code></pre></div>
 <hr>
 <h3 id="1-3-maximum-product-subarray-lc-152" tabindex="-1"><a class="header-anchor" href="#1-3-maximum-product-subarray-lc-152"><span>1-3) Maximum Product Subarray (LC 152)</span></a></h3>
 <p><strong>Key Insight:</strong> Track both maximum and minimum products because negative × negative = positive.</p>
@@ -337,7 +301,7 @@
 </ol>
 </li>
 </ul>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">maxProduct</span>(<span class="hljs-params">nums</span>):
     <span class="hljs-string">&quot;&quot;&quot;
     Time: O(n)
@@ -359,8 +323,8 @@
         result = <span class="hljs-built_in">max</span>(result, max_prod)
 
     <span class="hljs-keyword">return</span> result
-</code></pre>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java</span>
 <span class="hljs-comment">// LC 152 - Maximum Product Subarray</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">maxProduct</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums)</span> {
     <span class="hljs-keyword">if</span> (nums == <span class="hljs-literal">null</span> || nums.length == <span class="hljs-number">0</span>) {
@@ -398,15 +362,15 @@
 
     <span class="hljs-keyword">return</span> result;
 }
-</code></pre>
+</code></pre></div>
 <p><strong>Step-by-Step Example:</strong> <code>nums = [2, 3, -2, 4]</code></p>
-<pre><code class="hljs">Index | nums[i] | maxProd              | minProd              | result
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Index | nums[i] | maxProd              | minProd              | result
 ----------------------------------------------------------------------
   0   |    2    |     2                |     2                |   2
   1   |    3    | max(3,6,6)=6        | min(3,6,6)=3         |   6
   2   |   -2    | max(-2,-12,-6)=-2   | min(-2,-12,-6)=-12   |   6
   3   |    4    | max(4,-8,-48)=4     | min(4,-8,-48)=-48    |   6
-</code></pre>
+</code></pre></div>
 <p><strong>Final Answer:</strong> 6 (subarray [2,3] has product 6)</p>
 <hr>
 <h3 id="1-4-circular-maximum-subarray-lc-918" tabindex="-1"><a class="header-anchor" href="#1-4-circular-maximum-subarray-lc-918"><span>1-4) Circular Maximum Subarray (LC 918)</span></a></h3>
@@ -416,7 +380,7 @@
 <li><strong>Circular</strong>: Maximum subarray wraps around edges</li>
 </ol>
 <p><strong>Circular Maximum = Total Sum - Minimum Subarray</strong></p>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">maxSubarraySumCircular</span>(<span class="hljs-params">nums</span>):
     <span class="hljs-string">&quot;&quot;&quot;
     Time: O(n)
@@ -448,8 +412,8 @@
         <span class="hljs-keyword">return</span> max_normal
 
     <span class="hljs-keyword">return</span> <span class="hljs-built_in">max</span>(max_normal, max_circular)
-</code></pre>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java</span>
 <span class="hljs-comment">// LC 918 - Maximum Sum Circular Subarray</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">maxSubarraySumCircular</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums)</span> {
     <span class="hljs-comment">/**
@@ -482,7 +446,7 @@
     <span class="hljs-comment">// Return max of normal case or circular case</span>
     <span class="hljs-keyword">return</span> Math.max(maxSum, totalSum - minSum);
 }
-</code></pre>
+</code></pre></div>
 <p><strong>Why it works:</strong></p>
 <ul>
 <li>If max subarray wraps around, removing the middle part (minimum subarray) leaves the maximum</li>
@@ -491,7 +455,7 @@
 <hr>
 <h3 id="1-5-maximum-subarray-sum-with-one-deletion-lc-1186" tabindex="-1"><a class="header-anchor" href="#1-5-maximum-subarray-sum-with-one-deletion-lc-1186"><span>1-5) Maximum Subarray Sum with One Deletion (LC 1186)</span></a></h3>
 <p><strong>Problem:</strong> You can delete at most one element to maximize subarray sum.</p>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">maximumSum</span>(<span class="hljs-params">arr</span>):
     <span class="hljs-string">&quot;&quot;&quot;
     Time: O(n)
@@ -516,8 +480,8 @@
         result = <span class="hljs-built_in">max</span>(result, <span class="hljs-built_in">max</span>(no_delete, one_delete))
 
     <span class="hljs-keyword">return</span> result
-</code></pre>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java</span>
 <span class="hljs-comment">// LC 1186 - Maximum Subarray Sum with One Deletion</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">maximumSum</span><span class="hljs-params">(<span class="hljs-type">int</span>[] arr)</span> {
     <span class="hljs-comment">/**
@@ -541,7 +505,7 @@
 
     <span class="hljs-keyword">return</span> result;
 }
-</code></pre>
+</code></pre></div>
 <hr>
 <h2 id="2-related-leetcode-problems" tabindex="-1"><a class="header-anchor" href="#2-related-leetcode-problems"><span>2) Related LeetCode Problems</span></a></h2>
 <h3 id="kadane-s-algorithm-direct-applications" tabindex="-1"><a class="header-anchor" href="#kadane-s-algorithm-direct-applications"><span>Kadane’s Algorithm Direct Applications</span></a></h3>
@@ -618,50 +582,50 @@
 <ol>
 <li>
 <p><strong>Forgetting Edge Cases</strong></p>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// ❌ WRONG: Not handling empty arrays</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// ❌ WRONG: Not handling empty arrays</span>
 <span class="hljs-keyword">if</span> (nums.length == <span class="hljs-number">0</span>) <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
 
 <span class="hljs-comment">// ✅ CORRECT: Check for null and empty</span>
 <span class="hljs-keyword">if</span> (nums == <span class="hljs-literal">null</span> || nums.length == <span class="hljs-number">0</span>) <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
-</code></pre>
+</code></pre></div>
 </li>
 <li>
 <p><strong>All Negative Arrays</strong></p>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># ❌ WRONG: Returning 0 for all negative</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># ❌ WRONG: Returning 0 for all negative</span>
 <span class="hljs-keyword">if</span> max_sum &lt; <span class="hljs-number">0</span>:
     <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>
 
 <span class="hljs-comment"># ✅ CORRECT: Return maximum element</span>
 <span class="hljs-comment"># Kadane&#x27;s handles this naturally by initializing with nums[0]</span>
-</code></pre>
+</code></pre></div>
 </li>
 <li>
 <p><strong>Product Problems: Not Tracking Minimum</strong></p>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// ❌ WRONG: Only tracking max product</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// ❌ WRONG: Only tracking max product</span>
 maxProd = Math.max(nums[i], maxProd * nums[i]);
 
 <span class="hljs-comment">// ✅ CORRECT: Track both max and min</span>
 maxProd = Math.max(nums[i], Math.max(maxProd * nums[i], minProd * nums[i]));
-</code></pre>
+</code></pre></div>
 </li>
 <li>
 <p><strong>Index Tracking: Off-by-One Errors</strong></p>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># ❌ WRONG: Starting loop from 0 when initialized with nums[0]</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># ❌ WRONG: Starting loop from 0 when initialized with nums[0]</span>
 <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(nums)):  <span class="hljs-comment"># Recounts nums[0]</span>
 
 <span class="hljs-comment"># ✅ CORRECT: Start from 1</span>
 <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>, <span class="hljs-built_in">len</span>(nums)):
-</code></pre>
+</code></pre></div>
 </li>
 <li>
 <p><strong>Circular Arrays: Missing Edge Case</strong></p>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// ❌ WRONG: Not checking if all numbers are negative</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// ❌ WRONG: Not checking if all numbers are negative</span>
 <span class="hljs-keyword">return</span> Math.max(maxSum, totalSum - minSum);
 
 <span class="hljs-comment">// ✅ CORRECT: Handle case where minSum = totalSum</span>
 <span class="hljs-keyword">if</span> (totalSum == minSum) <span class="hljs-keyword">return</span> maxSum;
 <span class="hljs-keyword">return</span> Math.max(maxSum, totalSum - minSum);
-</code></pre>
+</code></pre></div>
 </li>
 </ol>
 <h3 id="edge-cases" tabindex="-1"><a class="header-anchor" href="#edge-cases"><span>⚠️ Edge Cases</span></a></h3>
@@ -685,7 +649,7 @@ maxProd = Math.max(nums[i], Math.max(maxProd * nums[i], minProd * nums[i]));
 <li>“Stock profit” → Kadane’s variant</li>
 </ul>
 <h4 id="problem-solving-framework" tabindex="-1"><a class="header-anchor" href="#problem-solving-framework"><span>Problem-Solving Framework:</span></a></h4>
-<pre><code class="hljs">1. Identify the optimization metric:
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">1. Identify the optimization metric:
    ├─ Sum → Standard Kadane's
    ├─ Product → Track max and min
    ├─ With constraints → Multiple state tracking
@@ -702,7 +666,7 @@ maxProd = Math.max(nums[i], Math.max(maxProd * nums[i], minProd * nums[i]));
    ├─ Empty array → Return 0 or error
    ├─ Single element → Return element
    └─ Zeros → Reset logic for product
-</code></pre>
+</code></pre></div>
 <h3 id="complexity-analysis" tabindex="-1"><a class="header-anchor" href="#complexity-analysis"><span>📊 Complexity Analysis</span></a></h3>
 <table>
 <thead>
@@ -841,7 +805,7 @@ maxProd = Math.max(nums[i], Math.max(maxProd * nums[i], minProd * nums[i]));
 <blockquote>
 <p>Track local max ending at each index; reset when local max drops below current element.</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 53 - Maximum Subarray</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 53 - Maximum Subarray</span>
 <span class="hljs-comment">// IDEA: Kadane — localMax = max(nums[i], nums[i] + localMax)</span>
 <span class="hljs-comment">// time = O(N), space = O(1)</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">maxSubArray</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums)</span> {
@@ -852,12 +816,12 @@ maxProd = Math.max(nums[i], Math.max(maxProd * nums[i], minProd * nums[i]));
     }
     <span class="hljs-keyword">return</span> globalMax;
 }
-</code></pre>
+</code></pre></div>
 <h3 id="2-2-maximum-product-subarray-lc-152-track-min-max" tabindex="-1"><a class="header-anchor" href="#2-2-maximum-product-subarray-lc-152-track-min-max"><span>2-2) Maximum Product Subarray (LC 152) — Track Min &amp; Max</span></a></h3>
 <blockquote>
 <p>Track both max and min product (min can become max when multiplied by negative).</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 152 - Maximum Product Subarray</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 152 - Maximum Product Subarray</span>
 <span class="hljs-comment">// IDEA: Kadane variant — track both curMax and curMin for sign flips</span>
 <span class="hljs-comment">// time = O(N), space = O(1)</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">maxProduct</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums)</span> {
@@ -870,12 +834,12 @@ maxProd = Math.max(nums[i], Math.max(maxProd * nums[i], minProd * nums[i]));
     }
     <span class="hljs-keyword">return</span> globalMax;
 }
-</code></pre>
+</code></pre></div>
 <h3 id="2-3-maximum-sum-circular-subarray-lc-918-kadane-total-sum-trick" tabindex="-1"><a class="header-anchor" href="#2-3-maximum-sum-circular-subarray-lc-918-kadane-total-sum-trick"><span>2-3) Maximum Sum Circular Subarray (LC 918) — Kadane + Total Sum Trick</span></a></h3>
 <blockquote>
 <p>Max circular subarray = max(normal max subarray, total sum - min subarray).</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 918 - Maximum Sum Circular Subarray</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 918 - Maximum Sum Circular Subarray</span>
 <span class="hljs-comment">// IDEA: max circular = max(kadane result, total - minSubarray)</span>
 <span class="hljs-comment">// time = O(N), space = O(1)</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">maxSubarraySumCircular</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums)</span> {
@@ -890,12 +854,12 @@ maxProd = Math.max(nums[i], Math.max(maxProd * nums[i], minProd * nums[i]));
     <span class="hljs-comment">// if all negative, maxSum is the answer (totalSum - minSum = 0 is invalid)</span>
     <span class="hljs-keyword">return</span> maxSum &gt; <span class="hljs-number">0</span> ? Math.max(maxSum, totalSum - minSum) : maxSum;
 }
-</code></pre>
+</code></pre></div>
 <h3 id="2-4-best-time-to-buy-and-sell-stock-lc-121-kadane-variant" tabindex="-1"><a class="header-anchor" href="#2-4-best-time-to-buy-and-sell-stock-lc-121-kadane-variant"><span>2-4) Best Time to Buy and Sell Stock (LC 121) — Kadane Variant</span></a></h3>
 <blockquote>
 <p>Track running minimum price; max profit = current price − running minimum.</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 121 - Best Time to Buy and Sell Stock</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 121 - Best Time to Buy and Sell Stock</span>
 <span class="hljs-comment">// IDEA: Kadane variant — running minimum, update max profit each step</span>
 <span class="hljs-comment">// time = O(N), space = O(1)</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">maxProfit</span><span class="hljs-params">(<span class="hljs-type">int</span>[] prices)</span> {
@@ -906,12 +870,12 @@ maxProd = Math.max(nums[i], Math.max(maxProd * nums[i], minProd * nums[i]));
     }
     <span class="hljs-keyword">return</span> maxProfit;
 }
-</code></pre>
+</code></pre></div>
 <h3 id="2-5-maximum-subarray-sum-with-one-deletion-lc-1186-two-dp-states" tabindex="-1"><a class="header-anchor" href="#2-5-maximum-subarray-sum-with-one-deletion-lc-1186-two-dp-states"><span>2-5) Maximum Subarray Sum with One Deletion (LC 1186) — Two DP States</span></a></h3>
 <blockquote>
 <p>dp0[i] = max sum ending at i (no deletion); dp1[i] = max sum with one deletion used.</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 1186 - Maximum Subarray Sum with One Deletion</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 1186 - Maximum Subarray Sum with One Deletion</span>
 <span class="hljs-comment">// IDEA: Two DP states — dp0 (no deletion), dp1 (one deletion used)</span>
 <span class="hljs-comment">// time = O(N), space = O(1)</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">maximumSum</span><span class="hljs-params">(<span class="hljs-type">int</span>[] arr)</span> {
@@ -923,12 +887,12 @@ maxProd = Math.max(nums[i], Math.max(maxProd * nums[i], minProd * nums[i]));
     }
     <span class="hljs-keyword">return</span> ans;
 }
-</code></pre>
+</code></pre></div>
 <h3 id="2-6-longest-turbulent-subarray-lc-978-kadane-variant" tabindex="-1"><a class="header-anchor" href="#2-6-longest-turbulent-subarray-lc-978-kadane-variant"><span>2-6) Longest Turbulent Subarray (LC 978) — Kadane Variant</span></a></h3>
 <blockquote>
 <p>Track lengths of increasing and decreasing alternating windows; reset on equality.</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 978 - Longest Turbulent Subarray</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 978 - Longest Turbulent Subarray</span>
 <span class="hljs-comment">// IDEA: Kadane variant — track alternating inc/dec window lengths</span>
 <span class="hljs-comment">// time = O(N), space = O(1)</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">maxTurbulenceSize</span><span class="hljs-params">(<span class="hljs-type">int</span>[] arr)</span> {
@@ -941,12 +905,12 @@ maxProd = Math.max(nums[i], Math.max(maxProd * nums[i], minProd * nums[i]));
     }
     <span class="hljs-keyword">return</span> ans;
 }
-</code></pre>
+</code></pre></div>
 <h3 id="2-7-gas-station-lc-134-greedy-kadane-on-circular" tabindex="-1"><a class="header-anchor" href="#2-7-gas-station-lc-134-greedy-kadane-on-circular"><span>2-7) Gas Station (LC 134) — Greedy / Kadane on Circular</span></a></h3>
 <blockquote>
 <p>If total gas &gt;= total cost, a solution exists; start from the first surplus reset point.</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 134 - Gas Station</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 134 - Gas Station</span>
 <span class="hljs-comment">// IDEA: Greedy — if total surplus &gt;= 0, start from where tank went negative</span>
 <span class="hljs-comment">// time = O(N), space = O(1)</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">canCompleteCircuit</span><span class="hljs-params">(<span class="hljs-type">int</span>[] gas, <span class="hljs-type">int</span>[] cost)</span> {
@@ -959,12 +923,12 @@ maxProd = Math.max(nums[i], Math.max(maxProd * nums[i], minProd * nums[i]));
     }
     <span class="hljs-keyword">return</span> total &gt;= <span class="hljs-number">0</span> ? start : -<span class="hljs-number">1</span>;
 }
-</code></pre>
+</code></pre></div>
 <h3 id="2-8-maximum-length-of-subarray-with-positive-product-lc-1567-track-pos-neg-product-lengths" tabindex="-1"><a class="header-anchor" href="#2-8-maximum-length-of-subarray-with-positive-product-lc-1567-track-pos-neg-product-lengths"><span>2-8) Maximum Length of Subarray with Positive Product (LC 1567) — Track Pos/Neg Product Lengths</span></a></h3>
 <blockquote>
 <p>Track lengths with positive and negative product separately; swap on negative number.</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 1567 - Maximum Length of Subarray with Positive Product</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 1567 - Maximum Length of Subarray with Positive Product</span>
 <span class="hljs-comment">// IDEA: pos = length with positive product, neg = with negative product; swap on negatives</span>
 <span class="hljs-comment">// time = O(N), space = O(1)</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">getMaxLen</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums)</span> {
@@ -977,12 +941,12 @@ maxProd = Math.max(nums[i], Math.max(maxProd * nums[i], minProd * nums[i]));
     }
     <span class="hljs-keyword">return</span> ans;
 }
-</code></pre>
+</code></pre></div>
 <h3 id="2-9-maximum-score-of-spliced-array-lc-2321-kadane-on-difference" tabindex="-1"><a class="header-anchor" href="#2-9-maximum-score-of-spliced-array-lc-2321-kadane-on-difference"><span>2-9) Maximum Score of Spliced Array (LC 2321) — Kadane on Difference</span></a></h3>
 <blockquote>
 <p>Max gain from swapping subarray = max subarray sum of (nums2[i] - nums1[i]).</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 2321 - Maximum Score of Spliced Array</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 2321 - Maximum Score of Spliced Array</span>
 <span class="hljs-comment">// IDEA: Kadane on difference arrays — gain from swapping a subarray</span>
 <span class="hljs-comment">// time = O(N), space = O(1)</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span>[] maximumsSplicedArray(<span class="hljs-type">int</span>[] nums1, <span class="hljs-type">int</span>[] nums2) {
@@ -998,12 +962,12 @@ maxProd = Math.max(nums[i], Math.max(maxProd * nums[i], minProd * nums[i]));
     }
     <span class="hljs-keyword">return</span> best;
 }
-</code></pre>
+</code></pre></div>
 <h3 id="2-10-k-concatenation-maximum-sum-lc-1191-kadane-math" tabindex="-1"><a class="header-anchor" href="#2-10-k-concatenation-maximum-sum-lc-1191-kadane-math"><span>2-10) K-Concatenation Maximum Sum (LC 1191) — Kadane + Math</span></a></h3>
 <blockquote>
 <p>For k &gt;= 2: answer = maxSubarray(2 copies) + max(0, totalSum) × (k − 2).</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 1191 - K-Concatenation Maximum Sum</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 1191 - K-Concatenation Maximum Sum</span>
 <span class="hljs-comment">// IDEA: Kadane on 1 or 2 copies; if total positive, add total*(k-2)</span>
 <span class="hljs-comment">// time = O(N), space = O(1)</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">kConcatenationMaxSum</span><span class="hljs-params">(<span class="hljs-type">int</span>[] arr, <span class="hljs-type">int</span> k)</span> {
@@ -1020,12 +984,12 @@ maxProd = Math.max(nums[i], Math.max(maxProd * nums[i], minProd * nums[i]));
         <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> x : arr) { curr = Math.max(x, curr + x); best = Math.max(best, curr); }
     <span class="hljs-keyword">return</span> best;
 }
-</code></pre>
+</code></pre></div>
 <h3 id="2-11-find-maximum-sum-of-almost-unique-subarray-lc-2841-sliding-window-kadane" tabindex="-1"><a class="header-anchor" href="#2-11-find-maximum-sum-of-almost-unique-subarray-lc-2841-sliding-window-kadane"><span>2-11) Find Maximum Sum of Almost Unique Subarray (LC 2841) — Sliding Window Kadane</span></a></h3>
 <blockquote>
 <p>Fixed-size window of length k; count distinct elements using HashMap; maximize sum.</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 2841 - Almost Unique Subarray (fixed window Kadane variant)</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 2841 - Almost Unique Subarray (fixed window Kadane variant)</span>
 <span class="hljs-comment">// IDEA: Sliding window — maintain sum and frequency map for window of size k</span>
 <span class="hljs-comment">// time = O(N), space = O(k)</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">long</span> <span class="hljs-title function_">maxSum</span><span class="hljs-params">(List&lt;Integer&gt; nums, <span class="hljs-type">int</span> m, <span class="hljs-type">int</span> k)</span> {
@@ -1045,7 +1009,7 @@ maxProd = Math.max(nums[i], Math.max(maxProd * nums[i], minProd * nums[i]));
     }
     <span class="hljs-keyword">return</span> ans;
 }
-</code></pre>
+</code></pre></div>
 
       </div>
       <div class="cheatsheet-footer">

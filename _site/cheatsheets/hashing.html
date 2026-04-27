@@ -19,54 +19,18 @@
     }
   })();
   </script>
-  <script>document.addEventListener('DOMContentLoaded', function() {
-    document.querySelectorAll('pre code').forEach(function(codeEl) {
-      var pre = codeEl.parentElement;
-      var lang = '';
-      var cls = codeEl.className || '';
-      var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
-      if (m) lang = m[1];
-
-      // Add line numbers
-      var lines = codeEl.innerHTML.split('
-');
-      if (lines[lines.length - 1] === '') lines.pop();
-      var numbered = lines.map(function(line, i) {
-        return '<span class="hljs-ln-line"><span class="hljs-ln-n" data-line-number="' + (i + 1) + '"></span><span class="hljs-ln-code">' + line + '</span></span>';
-      }).join('
-');
-      codeEl.innerHTML = numbered;
-      codeEl.classList.add('hljs-ln');
-
-      var wrapper = document.createElement('div');
-      wrapper.className = 'code-block-wrapper';
-      pre.parentNode.insertBefore(wrapper, pre);
-      var header = document.createElement('div');
-      header.className = 'code-block-header';
-      if (lang) {
-        var label = document.createElement('span');
-        label.className = 'code-lang-label';
-        label.textContent = lang;
-        header.appendChild(label);
-      } else {
-        header.appendChild(document.createElement('span'));
-      }
-      var btn = document.createElement('button');
-      btn.className = 'copy-btn';
-      btn.textContent = 'Copy';
-      btn.addEventListener('click', function() {
-        var text = Array.from(codeEl.querySelectorAll('.hljs-ln-code')).map(function(el) { return el.textContent; }).join('
-');
-        navigator.clipboard.writeText(text).then(function() {
-          btn.textContent = 'Copied!';
-          btn.classList.add('copied');
-          setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
-        });
-      });
-      header.appendChild(btn);
-      wrapper.appendChild(header);
-      wrapper.appendChild(pre);
+  <script>
+  function copyCode(btn) {
+    var pre = btn.closest('.code-block-wrapper').querySelector('pre');
+    var text = pre ? pre.innerText : '';
+    navigator.clipboard.writeText(text).then(function() {
+      btn.textContent = 'Copied!';
+      btn.classList.add('copied');
+      setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
     });
+  }
+  </script>
+  <script>document.addEventListener('DOMContentLoaded', function() {
     document.querySelectorAll('table').forEach(function(table) {
       if (!table.parentElement.classList.contains('table-wrap')) {
         var wrapper = document.createElement('div');
@@ -220,7 +184,7 @@
 </tbody>
 </table>
 <h3 id="template-1-frequency-counter" tabindex="-1"><a class="header-anchor" href="#template-1-frequency-counter"><span>Template 1: Frequency Counter</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">frequency_counter_template</span>(<span class="hljs-params">arr</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">frequency_counter_template</span>(<span class="hljs-params">arr</span>):
     <span class="hljs-string">&quot;&quot;&quot;Basic frequency counting template&quot;&quot;&quot;</span>
     <span class="hljs-keyword">from</span> collections <span class="hljs-keyword">import</span> Counter, defaultdict
 
@@ -238,9 +202,9 @@
         manual_count[item] = manual_count.get(item, <span class="hljs-number">0</span>) + <span class="hljs-number">1</span>
 
     <span class="hljs-keyword">return</span> count, freq, manual_count
-</code></pre>
+</code></pre></div>
 <h3 id="template-2-rolling-hash-rabin-karp" tabindex="-1"><a class="header-anchor" href="#template-2-rolling-hash-rabin-karp"><span>Template 2: Rolling Hash (Rabin-Karp)</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">rolling_hash_template</span>(<span class="hljs-params">text, pattern</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">rolling_hash_template</span>(<span class="hljs-params">text, pattern</span>):
     <span class="hljs-string">&quot;&quot;&quot;Rolling hash for pattern matching&quot;&quot;&quot;</span>
     <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(pattern) &gt; <span class="hljs-built_in">len</span>(text):
         <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>
@@ -283,9 +247,9 @@
             <span class="hljs-keyword">return</span> i + <span class="hljs-number">1</span>
 
     <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>
-</code></pre>
+</code></pre></div>
 <h3 id="template-3-hashset-for-cycle-detection" tabindex="-1"><a class="header-anchor" href="#template-3-hashset-for-cycle-detection"><span>Template 3: HashSet for Cycle Detection</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">cycle_detection_template</span>(<span class="hljs-params">start_value, next_function</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">cycle_detection_template</span>(<span class="hljs-params">start_value, next_function</span>):
     <span class="hljs-string">&quot;&quot;&quot;Detect cycles using HashSet&quot;&quot;&quot;</span>
     seen = <span class="hljs-built_in">set</span>()
     current = start_value
@@ -320,9 +284,9 @@
         fast = next_function(fast)
 
     <span class="hljs-keyword">return</span> slow  <span class="hljs-comment"># Start of cycle</span>
-</code></pre>
+</code></pre></div>
 <h3 id="template-4-group-by-hash-key" tabindex="-1"><a class="header-anchor" href="#template-4-group-by-hash-key"><span>Template 4: Group by Hash Key</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">group_by_hash_template</span>(<span class="hljs-params">items, key_function</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">group_by_hash_template</span>(<span class="hljs-params">items, key_function</span>):
     <span class="hljs-string">&quot;&quot;&quot;Group items by hash key&quot;&quot;&quot;</span>
     <span class="hljs-keyword">from</span> collections <span class="hljs-keyword">import</span> defaultdict
 
@@ -344,7 +308,7 @@
         groups[key].append(s)
 
     <span class="hljs-keyword">return</span> <span class="hljs-built_in">list</span>(groups.values())
-</code></pre>
+</code></pre></div>
 <h2 id="problems-by-pattern" tabindex="-1"><a class="header-anchor" href="#problems-by-pattern"><span>Problems by Pattern</span></a></h2>
 <h3 id="frequency-maps-problems" tabindex="-1"><a class="header-anchor" href="#frequency-maps-problems"><span><strong>Frequency Maps Problems</strong></span></a></h3>
 <table>
@@ -480,7 +444,7 @@
 <blockquote>
 <p>Count character frequencies in both strings; maps must be equal.</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 242 - Valid Anagram</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 242 - Valid Anagram</span>
 <span class="hljs-comment">// IDEA: Count char frequencies; both strings must have same counts</span>
 <span class="hljs-comment">// time = O(N), space = O(1) (fixed 26-char alphabet)</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">isAnagram</span><span class="hljs-params">(String s, String t)</span> {
@@ -491,8 +455,8 @@
     <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> v : count) <span class="hljs-keyword">if</span> (v != <span class="hljs-number">0</span>) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
     <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
 }
-</code></pre>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">isAnagram</span>(<span class="hljs-params">s, t</span>):
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">isAnagram</span>(<span class="hljs-params">s, t</span>):
     <span class="hljs-string">&quot;&quot;&quot;Check if two strings are anagrams&quot;&quot;&quot;</span>
     <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(s) != <span class="hljs-built_in">len</span>(t):
         <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
@@ -517,12 +481,12 @@
 
     <span class="hljs-comment"># Method 3: Sorting (not using hash)</span>
     <span class="hljs-keyword">return</span> <span class="hljs-built_in">sorted</span>(s) == <span class="hljs-built_in">sorted</span>(t)
-</code></pre>
+</code></pre></div>
 <h3 id="2-2-group-anagrams-lc-49-sort-key-hashmap" tabindex="-1"><a class="header-anchor" href="#2-2-group-anagrams-lc-49-sort-key-hashmap"><span>2-2) Group Anagrams (LC 49) — Sort-Key HashMap</span></a></h3>
 <blockquote>
 <p>Use sorted string as key; all anagrams share the same key.</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 49 - Group Anagrams</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 49 - Group Anagrams</span>
 <span class="hljs-comment">// IDEA: Sort each string to get canonical key; group by key in HashMap</span>
 <span class="hljs-comment">// time = O(N * K log K), space = O(NK)  K = max string length</span>
 <span class="hljs-keyword">public</span> List&lt;List&lt;String&gt;&gt; <span class="hljs-title function_">groupAnagrams</span><span class="hljs-params">(String[] strs)</span> {
@@ -535,8 +499,8 @@
     }
     <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;(map.values());
 }
-</code></pre>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">groupAnagrams</span>(<span class="hljs-params">strs</span>):
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">groupAnagrams</span>(<span class="hljs-params">strs</span>):
     <span class="hljs-string">&quot;&quot;&quot;Group strings that are anagrams&quot;&quot;&quot;</span>
     <span class="hljs-keyword">from</span> collections <span class="hljs-keyword">import</span> defaultdict
 
@@ -561,12 +525,12 @@
         groups[key].append(s)
 
     <span class="hljs-keyword">return</span> <span class="hljs-built_in">list</span>(groups.values())
-</code></pre>
+</code></pre></div>
 <h3 id="2-3-happy-number-lc-202-hashset-cycle-detection" tabindex="-1"><a class="header-anchor" href="#2-3-happy-number-lc-202-hashset-cycle-detection"><span>2-3) Happy Number (LC 202) — HashSet Cycle Detection</span></a></h3>
 <blockquote>
 <p>Sum digit squares repeatedly; use a set to detect if we revisit a number before reaching 1.</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 202 - Happy Number</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 202 - Happy Number</span>
 <span class="hljs-comment">// IDEA: HashSet to detect cycle in digit-square sum sequence</span>
 <span class="hljs-comment">// time = O(log N), space = O(log N)</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">isHappy</span><span class="hljs-params">(<span class="hljs-type">int</span> n)</span> {
@@ -578,8 +542,8 @@
     }
     <span class="hljs-keyword">return</span> n == <span class="hljs-number">1</span>;
 }
-</code></pre>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">isHappy</span>(<span class="hljs-params">n</span>):
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">isHappy</span>(<span class="hljs-params">n</span>):
     <span class="hljs-string">&quot;&quot;&quot;Detect if number leads to 1 or cycles&quot;&quot;&quot;</span>
 
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">get_sum_of_squares</span>(<span class="hljs-params">num</span>):
@@ -610,12 +574,12 @@
             <span class="hljs-keyword">break</span>
 
     <span class="hljs-keyword">return</span> slow == <span class="hljs-number">1</span>
-</code></pre>
+</code></pre></div>
 <h3 id="2-4-longest-consecutive-sequence-lc-128-hashset-start-detection" tabindex="-1"><a class="header-anchor" href="#2-4-longest-consecutive-sequence-lc-128-hashset-start-detection"><span>2-4) Longest Consecutive Sequence (LC 128) — HashSet Start Detection</span></a></h3>
 <blockquote>
 <p>Only expand from sequence starts (num−1 not in set) to avoid redundant counting.</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 128 - Longest Consecutive Sequence</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 128 - Longest Consecutive Sequence</span>
 <span class="hljs-comment">// IDEA: HashSet; for each sequence start (num-1 absent), count forward</span>
 <span class="hljs-comment">// time = O(N), space = O(N)</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">longestConsecutive</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums)</span> {
@@ -631,8 +595,8 @@
     }
     <span class="hljs-keyword">return</span> best;
 }
-</code></pre>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">longestConsecutive</span>(<span class="hljs-params">nums</span>):
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">longestConsecutive</span>(<span class="hljs-params">nums</span>):
     <span class="hljs-string">&quot;&quot;&quot;Find longest consecutive sequence&quot;&quot;&quot;</span>
     <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> nums:
         <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>
@@ -655,12 +619,12 @@
             longest = <span class="hljs-built_in">max</span>(longest, current_length)
 
     <span class="hljs-keyword">return</span> longest
-</code></pre>
+</code></pre></div>
 <h3 id="2-5-repeated-dna-sequences-lc-187-sliding-window-hashset" tabindex="-1"><a class="header-anchor" href="#2-5-repeated-dna-sequences-lc-187-sliding-window-hashset"><span>2-5) Repeated DNA Sequences (LC 187) — Sliding Window HashSet</span></a></h3>
 <blockquote>
 <p>Slide a 10-char window; add to seen set; collect duplicates in result set.</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 187 - Repeated DNA Sequences</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 187 - Repeated DNA Sequences</span>
 <span class="hljs-comment">// IDEA: Slide 10-char window with HashSet; add to result if already seen</span>
 <span class="hljs-comment">// time = O(N), space = O(N)</span>
 <span class="hljs-keyword">public</span> List&lt;String&gt; <span class="hljs-title function_">findRepeatedDnaSequences</span><span class="hljs-params">(String s)</span> {
@@ -671,8 +635,8 @@
     }
     <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;(result);
 }
-</code></pre>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">findRepeatedDnaSequences</span>(<span class="hljs-params">s</span>):
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">findRepeatedDnaSequences</span>(<span class="hljs-params">s</span>):
     <span class="hljs-string">&quot;&quot;&quot;Find repeated 10-character DNA sequences using rolling hash&quot;&quot;&quot;</span>
     <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(s) &lt; <span class="hljs-number">10</span>:
         <span class="hljs-keyword">return</span> []
@@ -726,12 +690,12 @@
         <span class="hljs-keyword">return</span> <span class="hljs-built_in">list</span>(repeated)
 
     <span class="hljs-keyword">return</span> rolling_hash_dna(s)
-</code></pre>
+</code></pre></div>
 <h3 id="2-6-top-k-frequent-elements-lc-347-bucket-sort-by-frequency" tabindex="-1"><a class="header-anchor" href="#2-6-top-k-frequent-elements-lc-347-bucket-sort-by-frequency"><span>2-6) Top K Frequent Elements (LC 347) — Bucket Sort by Frequency</span></a></h3>
 <blockquote>
 <p>Place elements in buckets indexed by frequency; collect top k from highest buckets.</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 347 - Top K Frequent Elements</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 347 - Top K Frequent Elements</span>
 <span class="hljs-comment">// IDEA: Count frequencies, then bucket sort by frequency; collect from high buckets</span>
 <span class="hljs-comment">// time = O(N), space = O(N)</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span>[] topKFrequent(<span class="hljs-type">int</span>[] nums, <span class="hljs-type">int</span> k) {
@@ -748,8 +712,8 @@
         <span class="hljs-keyword">if</span> (buckets[i] != <span class="hljs-literal">null</span>) <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> v : buckets[i]) <span class="hljs-keyword">if</span> (idx &lt; k) res[idx++] = v;
     <span class="hljs-keyword">return</span> res;
 }
-</code></pre>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">topKFrequent</span>(<span class="hljs-params">nums, k</span>):
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">topKFrequent</span>(<span class="hljs-params">nums, k</span>):
     <span class="hljs-string">&quot;&quot;&quot;Find k most frequent elements&quot;&quot;&quot;</span>
     <span class="hljs-keyword">from</span> collections <span class="hljs-keyword">import</span> Counter
     <span class="hljs-keyword">import</span> heapq
@@ -779,10 +743,10 @@
                 <span class="hljs-keyword">return</span> result[:k]
 
     <span class="hljs-keyword">return</span> result
-</code></pre>
+</code></pre></div>
 <h2 id="advanced-techniques" tabindex="-1"><a class="header-anchor" href="#advanced-techniques"><span>Advanced Techniques</span></a></h2>
 <h3 id="custom-hash-functions" tabindex="-1"><a class="header-anchor" href="#custom-hash-functions"><span>Custom Hash Functions</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">custom_hash_techniques</span>():
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">custom_hash_techniques</span>():
     <span class="hljs-string">&quot;&quot;&quot;Various custom hashing approaches&quot;&quot;&quot;</span>
 
     <span class="hljs-comment"># 1. Polynomial rolling hash</span>
@@ -805,9 +769,9 @@
     <span class="hljs-comment"># 4. String hash ignoring order</span>
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">unordered_hash</span>(<span class="hljs-params">s</span>):
         <span class="hljs-keyword">return</span> <span class="hljs-built_in">sum</span>(<span class="hljs-built_in">hash</span>(c) <span class="hljs-keyword">for</span> c <span class="hljs-keyword">in</span> s)
-</code></pre>
+</code></pre></div>
 <h3 id="hash-based-data-structures" tabindex="-1"><a class="header-anchor" href="#hash-based-data-structures"><span>Hash-based Data Structures</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">HashBasedStructures</span>:
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">HashBasedStructures</span>:
     <span class="hljs-string">&quot;&quot;&quot;Examples of hash-based data structures&quot;&quot;&quot;</span>
 
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self</span>):
@@ -833,10 +797,10 @@
             key = key_func(item)
             <span class="hljs-variable language_">self</span>.groups[key].append(item)
         <span class="hljs-keyword">return</span> <span class="hljs-built_in">dict</span>(<span class="hljs-variable language_">self</span>.groups)
-</code></pre>
+</code></pre></div>
 <h2 id="performance-optimization-tips" tabindex="-1"><a class="header-anchor" href="#performance-optimization-tips"><span>Performance Optimization Tips</span></a></h2>
 <h3 id="hash-table-best-practices" tabindex="-1"><a class="header-anchor" href="#hash-table-best-practices"><span>Hash Table Best Practices</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">optimization_tips</span>():
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">optimization_tips</span>():
     <span class="hljs-string">&quot;&quot;&quot;Performance optimization techniques&quot;&quot;&quot;</span>
 
     <span class="hljs-comment"># 1. Pre-size hash tables when possible</span>
@@ -858,7 +822,7 @@
     <span class="hljs-comment"># 4. Consider memory vs speed tradeoffs</span>
     memory_efficient = <span class="hljs-built_in">set</span>()  <span class="hljs-comment"># Only stores keys</span>
     feature_rich = defaultdict(<span class="hljs-built_in">list</span>)  <span class="hljs-comment"># Stores key-value pairs</span>
-</code></pre>
+</code></pre></div>
 <h2 id="summary-quick-reference" tabindex="-1"><a class="header-anchor" href="#summary-quick-reference"><span>Summary &amp; Quick Reference</span></a></h2>
 <h3 id="common-hash-patterns" tabindex="-1"><a class="header-anchor" href="#common-hash-patterns"><span>Common Hash Patterns</span></a></h3>
 <table>

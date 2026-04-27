@@ -19,54 +19,18 @@
     }
   })();
   </script>
-  <script>document.addEventListener('DOMContentLoaded', function() {
-    document.querySelectorAll('pre code').forEach(function(codeEl) {
-      var pre = codeEl.parentElement;
-      var lang = '';
-      var cls = codeEl.className || '';
-      var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
-      if (m) lang = m[1];
-
-      // Add line numbers
-      var lines = codeEl.innerHTML.split('
-');
-      if (lines[lines.length - 1] === '') lines.pop();
-      var numbered = lines.map(function(line, i) {
-        return '<span class="hljs-ln-line"><span class="hljs-ln-n" data-line-number="' + (i + 1) + '"></span><span class="hljs-ln-code">' + line + '</span></span>';
-      }).join('
-');
-      codeEl.innerHTML = numbered;
-      codeEl.classList.add('hljs-ln');
-
-      var wrapper = document.createElement('div');
-      wrapper.className = 'code-block-wrapper';
-      pre.parentNode.insertBefore(wrapper, pre);
-      var header = document.createElement('div');
-      header.className = 'code-block-header';
-      if (lang) {
-        var label = document.createElement('span');
-        label.className = 'code-lang-label';
-        label.textContent = lang;
-        header.appendChild(label);
-      } else {
-        header.appendChild(document.createElement('span'));
-      }
-      var btn = document.createElement('button');
-      btn.className = 'copy-btn';
-      btn.textContent = 'Copy';
-      btn.addEventListener('click', function() {
-        var text = Array.from(codeEl.querySelectorAll('.hljs-ln-code')).map(function(el) { return el.textContent; }).join('
-');
-        navigator.clipboard.writeText(text).then(function() {
-          btn.textContent = 'Copied!';
-          btn.classList.add('copied');
-          setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
-        });
-      });
-      header.appendChild(btn);
-      wrapper.appendChild(header);
-      wrapper.appendChild(pre);
+  <script>
+  function copyCode(btn) {
+    var pre = btn.closest('.code-block-wrapper').querySelector('pre');
+    var text = pre ? pre.innerText : '';
+    navigator.clipboard.writeText(text).then(function() {
+      btn.textContent = 'Copied!';
+      btn.classList.add('copied');
+      setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
     });
+  }
+  </script>
+  <script>document.addEventListener('DOMContentLoaded', function() {
     document.querySelectorAll('table').forEach(function(table) {
       if (!table.parentElement.classList.contains('table-wrap')) {
         var wrapper = document.createElement('div');
@@ -155,7 +119,7 @@
 <h3 id="1-1-priority-queue-heap" tabindex="-1"><a class="header-anchor" href="#1-1-priority-queue-heap"><span>1.1) Priority Queue (Heap)</span></a></h3>
 <p><strong>Key Concept</strong>: Java’s <code>PriorityQueue</code> is a <strong>min-heap by default</strong>.</p>
 <h4 id="min-heap-implementation" tabindex="-1"><a class="header-anchor" href="#min-heap-implementation"><span>Min-Heap Implementation</span></a></h4>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Method 1: Default min-heap (natural ordering)</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Method 1: Default min-heap (natural ordering)</span>
 PriorityQueue&lt;Integer&gt; minHeap = <span class="hljs-keyword">new</span> <span class="hljs-title class_">PriorityQueue</span>&lt;&gt;();
 
 <span class="hljs-comment">// Method 2: Min-heap with explicit comparator</span>
@@ -168,9 +132,9 @@ PriorityQueue&lt;Integer&gt; minHeap3 = <span class="hljs-keyword">new</span> <s
         <span class="hljs-keyword">return</span> o1 - o2;  <span class="hljs-comment">// Ascending order</span>
     }
 });
-</code></pre>
+</code></pre></div>
 <h4 id="max-heap-implementation" tabindex="-1"><a class="header-anchor" href="#max-heap-implementation"><span>Max-Heap Implementation</span></a></h4>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Method 1: Using Collections.reverseOrder() - RECOMMENDED</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Method 1: Using Collections.reverseOrder() - RECOMMENDED</span>
 PriorityQueue&lt;Integer&gt; maxHeap = <span class="hljs-keyword">new</span> <span class="hljs-title class_">PriorityQueue</span>&lt;&gt;(Collections.reverseOrder());
 
 <span class="hljs-comment">// Method 2: Custom lambda comparator</span>
@@ -183,11 +147,11 @@ PriorityQueue&lt;Integer&gt; maxHeap3 = <span class="hljs-keyword">new</span> <s
         <span class="hljs-keyword">return</span> o2 - o1;  <span class="hljs-comment">// Descending order</span>
     }
 });
-</code></pre>
+</code></pre></div>
 <p><strong>Common Use Cases</strong>: Top-K problems, finding median, scheduling tasks</p>
 <h3 id="1-2-character-operations" tabindex="-1"><a class="header-anchor" href="#1-2-character-operations"><span>1.2) Character Operations</span></a></h3>
 <p><strong>Key Methods</strong>: <code>charAt()</code>, character comparisons, ASCII operations</p>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Basic character access</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Basic character access</span>
 <span class="hljs-type">String</span> <span class="hljs-variable">s</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;www.google.com&quot;</span>;
 <span class="hljs-type">char</span> <span class="hljs-variable">result</span> <span class="hljs-operator">=</span> s.charAt(<span class="hljs-number">6</span>);  <span class="hljs-comment">// Returns &#x27;g&#x27;</span>
 
@@ -201,8 +165,8 @@ PriorityQueue&lt;Integer&gt; maxHeap3 = <span class="hljs-keyword">new</span> <s
 <span class="hljs-comment">// Character to index mapping (lowercase a-z)</span>
 <span class="hljs-type">char</span> <span class="hljs-variable">c</span> <span class="hljs-operator">=</span> <span class="hljs-string">&#x27;c&#x27;</span>;
 <span class="hljs-type">int</span> <span class="hljs-variable">index</span> <span class="hljs-operator">=</span> c - <span class="hljs-string">&#x27;a&#x27;</span>;  <span class="hljs-comment">// Returns 2 (c is 3rd letter, 0-indexed)</span>
-</code></pre>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-type">String</span> <span class="hljs-variable">x</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;abcxyz&quot;</span>;
 <span class="hljs-keyword">for</span> ( Character c: x.toCharArray()){
     <span class="hljs-comment">/** 
@@ -217,11 +181,11 @@ PriorityQueue&lt;Integer&gt; maxHeap3 = <span class="hljs-keyword">new</span> <s
             <span class="hljs-string">&quot;, a - ? = &quot;</span> + (<span class="hljs-string">&#x27;a&#x27;</span> - c)
     );
 }
-</code></pre>
+</code></pre></div>
 <p><strong>Performance Note</strong>: <code>charAt(i)</code> is O(1) for strings, making it efficient for character-by-character processing.</p>
 <h3 id="1-3-char-digit-to-integer-value-char-0" tabindex="-1"><a class="header-anchor" href="#1-3-char-digit-to-integer-value-char-0"><span>1.3) Char Digit to Integer Value (<code>char - '0'</code>)</span></a></h3>
 <p><strong>Key Concept</strong>: Convert a character digit (‘0’-‘9’) to its integer value using ASCII subtraction.</p>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Basic conversion: char digit → int value</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Basic conversion: char digit → int value</span>
 <span class="hljs-type">char</span> <span class="hljs-variable">c</span> <span class="hljs-operator">=</span> <span class="hljs-string">&#x27;3&#x27;</span>;
 <span class="hljs-type">int</span> <span class="hljs-variable">value</span> <span class="hljs-operator">=</span> c - <span class="hljs-string">&#x27;0&#x27;</span>;  <span class="hljs-comment">// value = 3</span>
 
@@ -232,9 +196,9 @@ PriorityQueue&lt;Integer&gt; maxHeap3 = <span class="hljs-keyword">new</span> <s
 <span class="hljs-comment">// &#x27;3&#x27; = 51  →  &#x27;3&#x27; - &#x27;0&#x27; = 51 - 48 = 3</span>
 <span class="hljs-comment">// ...</span>
 <span class="hljs-comment">// &#x27;9&#x27; = 57  →  &#x27;9&#x27; - &#x27;0&#x27; = 57 - 48 = 9</span>
-</code></pre>
+</code></pre></div>
 <p><strong>Common Pattern: Increment/Decrement Digit Characters (LC 752 - Open the Lock)</strong></p>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 752 - Open the Lock</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 752 - Open the Lock</span>
 <span class="hljs-comment">// Rotate lock wheel: &#x27;0&#x27; → &#x27;1&#x27; → &#x27;2&#x27; ... &#x27;9&#x27; → &#x27;0&#x27; (wrap around)</span>
 
 <span class="hljs-type">String</span> <span class="hljs-variable">cur</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;0000&quot;</span>;
@@ -257,7 +221,7 @@ PriorityQueue&lt;Integer&gt; maxHeap3 = <span class="hljs-keyword">new</span> <s
     <span class="hljs-type">String</span> <span class="hljs-variable">str1</span> <span class="hljs-operator">=</span> cur.substring(<span class="hljs-number">0</span>, i) + charPlus + cur.substring(i + <span class="hljs-number">1</span>);
     <span class="hljs-type">String</span> <span class="hljs-variable">str2</span> <span class="hljs-operator">=</span> cur.substring(<span class="hljs-number">0</span>, i) + charMinus + cur.substring(i + <span class="hljs-number">1</span>);
 }
-</code></pre>
+</code></pre></div>
 <p><strong>Quick Reference Table:</strong></p>
 <table>
 <thead>
@@ -291,12 +255,12 @@ PriorityQueue&lt;Integer&gt; maxHeap3 = <span class="hljs-keyword">new</span> <s
 </tbody>
 </table>
 <p><strong>Why <code>+ 10</code> in decrement?</strong></p>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Without +10: (0 - 1) % 10 = -1  ❌ (negative!)</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Without +10: (0 - 1) % 10 = -1  ❌ (negative!)</span>
 <span class="hljs-comment">// With +10:    (0 - 1 + 10) % 10 = 9  ✅</span>
 
 <span class="hljs-comment">// The +10 ensures the value is always positive before modulo</span>
 <span class="hljs-type">int</span> <span class="hljs-variable">valMinus</span> <span class="hljs-operator">=</span> (digit - <span class="hljs-number">1</span> + <span class="hljs-number">10</span>) % <span class="hljs-number">10</span>;
-</code></pre>
+</code></pre></div>
 <p><strong>Comparison: Letter vs Digit Mapping</strong></p>
 <table>
 <thead>
@@ -323,7 +287,7 @@ PriorityQueue&lt;Integer&gt; maxHeap3 = <span class="hljs-keyword">new</span> <s
 </tbody>
 </table>
 <h3 id="1-4-replace-char-at-idx-in-string" tabindex="-1"><a class="header-anchor" href="#1-4-replace-char-at-idx-in-string"><span>1.4) Replace char at idx in String</span></a></h3>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 127</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 127</span>
 
 <span class="hljs-type">String</span> <span class="hljs-variable">s</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;abcd&quot;</span>;
 
@@ -334,7 +298,7 @@ arr[<span class="hljs-number">0</span>] = <span class="hljs-string">&#x27;z&#x27
 <span class="hljs-type">String</span> <span class="hljs-variable">newS</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">String</span>(arr);
 
 <span class="hljs-comment">//System.out.println(&quot;s =  &quot;  + new String());</span>
-</code></pre>
+</code></pre></div>
 <h2 id="2-array-and-collection-operations" tabindex="-1"><a class="header-anchor" href="#2-array-and-collection-operations"><span>2) Array and Collection Operations</span></a></h2>
 <h3 id="2-1-arrays-vs-collections-key-differences" tabindex="-1"><a class="header-anchor" href="#2-1-arrays-vs-collections-key-differences"><span>2.1) Arrays vs Collections Key Differences</span></a></h3>
 <p><strong>Critical Distinction</strong>:</p>
@@ -362,7 +326,7 @@ arr[<span class="hljs-number">0</span>] = <span class="hljs-string">&#x27;z&#x27
 </tr>
 </tbody>
 </table>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Arrays.asList - Fixed size, backed by original array</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Arrays.asList - Fixed size, backed by original array</span>
 Integer[] arr = {<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>};
 List&lt;Integer&gt; list1 = Arrays.asList(arr);
 list1.set(<span class="hljs-number">0</span>, <span class="hljs-number">99</span>);        <span class="hljs-comment">// ✅ Works - modifies original array</span>
@@ -371,10 +335,10 @@ list1.set(<span class="hljs-number">0</span>, <span class="hljs-number">99</span
 <span class="hljs-comment">// new ArrayList - Fully mutable, independent copy</span>
 List&lt;Integer&gt; list2 = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;(Arrays.asList(arr));
 list2.add(<span class="hljs-number">4</span>);            <span class="hljs-comment">// ✅ Works - doesn&#x27;t affect original array</span>
-</code></pre>
+</code></pre></div>
 <p><strong>Recommendation</strong>: Use <code>new ArrayList&lt;&gt;(Arrays.asList(arr))</code> when you need full mutability.</p>
 <h3 id="2-2-array-initialization-patterns" tabindex="-1"><a class="header-anchor" href="#2-2-array-initialization-patterns"><span>2.2) Array Initialization Patterns</span></a></h3>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// 1D Array Initialization</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// 1D Array Initialization</span>
 <span class="hljs-type">int</span>[] arr1 = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[<span class="hljs-number">5</span>];                    <span class="hljs-comment">// [0, 0, 0, 0, 0]</span>
 <span class="hljs-type">int</span>[] arr2 = {<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>};              <span class="hljs-comment">// Direct initialization</span>
 <span class="hljs-type">int</span>[] arr3 = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[]{<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>};     <span class="hljs-comment">// Explicit initialization</span>
@@ -392,10 +356,10 @@ result[<span class="hljs-number">1</span>] = <span class="hljs-keyword">new</spa
 <span class="hljs-comment">// Printing arrays</span>
 System.out.println(Arrays.toString(arr2));      <span class="hljs-comment">// 1D: [1, 2, 3, 4, 5]</span>
 System.out.println(Arrays.deepToString(result)); <span class="hljs-comment">// 2D: [[0, 1], [2, 3], [0, 0], [0, 0]]</span>
-</code></pre>
+</code></pre></div>
 <h3 id="2-2-array-initialization-patterns-1" tabindex="-1"><a class="header-anchor" href="#2-2-array-initialization-patterns-1"><span>2.2) Array Initialization Patterns</span></a></h3>
 <h3 id="2-3-array-list-conversions" tabindex="-1"><a class="header-anchor" href="#2-3-array-list-conversions"><span>2.3) Array ↔ List Conversions</span></a></h3>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Array → List Conversion</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Array → List Conversion</span>
 Integer[] arr = {<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>};
 
 <span class="hljs-comment">// Method 1: Fixed-size list (backed by array)</span>
@@ -418,11 +382,11 @@ Integer[] arr2 = list.toArray(Integer[]::<span class="hljs-keyword">new</span>);
 
 <span class="hljs-comment">// Method 3: For primitive arrays</span>
 <span class="hljs-type">int</span>[] primitiveArr = list.stream().mapToInt(Integer::intValue).toArray();
-</code></pre>
+</code></pre></div>
 <p><strong>Performance Note</strong>: <code>toArray(new T[size])</code> is generally faster than <code>toArray()</code> because it avoids internal resizing.</p>
 <h3 id="2-4-hashmap-advanced-operations" tabindex="-1"><a class="header-anchor" href="#2-4-hashmap-advanced-operations"><span>2.4) HashMap Advanced Operations</span></a></h3>
 <h4 id="nested-hashmap-pattern" tabindex="-1"><a class="header-anchor" href="#nested-hashmap-pattern"><span>Nested HashMap Pattern</span></a></h4>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Nested HashMap for complex relationships (LC 399 - Graph representation)</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Nested HashMap for complex relationships (LC 399 - Graph representation)</span>
 HashMap&lt;String, HashMap&lt;String, Double&gt;&gt; graph = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;();
 
 <span class="hljs-comment">// Efficient way to initialize nested structure</span>
@@ -438,9 +402,9 @@ HashMap&lt;String, HashMap&lt;String, Double&gt;&gt; graph = <span class="hljs-k
     graph.get(from).put(to, value);
     graph.get(to).put(from, <span class="hljs-number">1.0</span> / value);  <span class="hljs-comment">// Bidirectional relationship</span>
 }
-</code></pre>
+</code></pre></div>
 <h4 id="essential-hashmap-methods" tabindex="-1"><a class="header-anchor" href="#essential-hashmap-methods"><span>Essential HashMap Methods</span></a></h4>
-<pre data-lang="java"><code class="hljs language-java">Map&lt;String, Integer&gt; map = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;();
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java">Map&lt;String, Integer&gt; map = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;();
 
 <span class="hljs-comment">// Safe operations</span>
 map.putIfAbsent(key, defaultValue);           <span class="hljs-comment">// Only put if key doesn&#x27;t exist</span>
@@ -450,9 +414,9 @@ map.put(key, count);                          <span class="hljs-comment">// Upda
 <span class="hljs-comment">// Atomic operations (Java 8+)</span>
 map.merge(key, <span class="hljs-number">1</span>, Integer::sum);              <span class="hljs-comment">// Increment counter atomically</span>
 map.compute(key, (k, v) -&gt; v == <span class="hljs-literal">null</span> ? <span class="hljs-number">1</span> : v + <span class="hljs-number">1</span>); <span class="hljs-comment">// Custom computation</span>
-</code></pre>
+</code></pre></div>
 <h4 id="elegant-map-value-update-with-putifabsent" tabindex="-1"><a class="header-anchor" href="#elegant-map-value-update-with-putifabsent"><span>Elegant Map Value Update with <code>putIfAbsent</code></span></a></h4>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Elegant: use putIfAbsent + get (e.g. LC 399 - graph with adjacency list)</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Elegant: use putIfAbsent + get (e.g. LC 399 - graph with adjacency list)</span>
 Map&lt;String, List&lt;Node&gt;&gt; graph = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;();
 <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; equations.size(); i++) {
     <span class="hljs-type">String</span> <span class="hljs-variable">u</span> <span class="hljs-operator">=</span> equations.get(i).get(<span class="hljs-number">0</span>);
@@ -472,10 +436,10 @@ Map&lt;String, List&lt;Node&gt;&gt; graph = <span class="hljs-keyword">new</span
 List&lt;MyInfo&gt; tmpList = map.get(ai);
 tmpList.add(<span class="hljs-keyword">new</span> <span class="hljs-title class_">MyInfo</span>(ai, bi, val));
 map.put(ai, tmpList); <span class="hljs-comment">// unnecessary - list is already in the map</span>
-</code></pre>
+</code></pre></div>
 <h2 id="3-string-operations" tabindex="-1"><a class="header-anchor" href="#3-string-operations"><span>3) String Operations</span></a></h2>
 <h3 id="3-1-string-to-character-array" tabindex="-1"><a class="header-anchor" href="#3-1-string-to-character-array"><span>3.1) String to Character Array</span></a></h3>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Method 1: toCharArray() - Most efficient for character processing</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Method 1: toCharArray() - Most efficient for character processing</span>
 <span class="hljs-type">String</span> <span class="hljs-variable">s</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;hello&quot;</span>;
 <span class="hljs-type">char</span>[] chars = s.toCharArray();
 <span class="hljs-keyword">for</span> (<span class="hljs-type">char</span> c : chars) {
@@ -490,19 +454,19 @@ map.put(ai, tmpList); <span class="hljs-comment">// unnecessary - list is alread
 
 <span class="hljs-comment">// Method 3: split(&quot;&quot;) - Creates String array (less efficient)</span>
 String[] chars2 = s.split(<span class="hljs-string">&quot;&quot;</span>);  <span class="hljs-comment">// [&quot;h&quot;, &quot;e&quot;, &quot;l&quot;, &quot;l&quot;, &quot;o&quot;]</span>
-</code></pre>
+</code></pre></div>
 <p><strong>Performance</strong>: <code>toCharArray()</code> &gt; <code>charAt()</code> &gt; <code>split(&quot;&quot;)</code> for character iteration</p>
 <p><strong>Quick Reference: Array vs List</strong></p>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Array - Fixed size, primitive/object types</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Array - Fixed size, primitive/object types</span>
 <span class="hljs-type">int</span>[] intArray = {<span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>};           <span class="hljs-comment">// Primitive array</span>
 String[] stringArray = {<span class="hljs-string">&quot;a&quot;</span>, <span class="hljs-string">&quot;b&quot;</span>, <span class="hljs-string">&quot;c&quot;</span>}; <span class="hljs-comment">// Object array</span>
 
 <span class="hljs-comment">// List - Dynamic size, object types only</span>
 List&lt;Integer&gt; intList = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();   <span class="hljs-comment">// Wrapper type required</span>
 List&lt;String&gt; stringList = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;(); <span class="hljs-comment">// Object type</span>
-</code></pre>
+</code></pre></div>
 <h3 id="1-0-1-init-a-list" tabindex="-1"><a class="header-anchor" href="#1-0-1-init-a-list"><span>1-0-1) Init a List</span></a></h3>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 
 
 <span class="hljs-comment">// LC 102</span>
@@ -530,9 +494,9 @@ List&lt;List&lt;Integer&gt;&gt; commonCells = <span class="hljs-keyword">new</sp
 
 <span class="hljs-comment">// example 2</span>
 List&lt;<span class="hljs-type">int</span>[]&gt; result = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;(); <span class="hljs-comment">//return value</span>
-</code></pre>
+</code></pre></div>
 <h3 id="1-0-0-1-replace-list-val-at-index" tabindex="-1"><a class="header-anchor" href="#1-0-0-1-replace-list-val-at-index"><span>1-0-0-1) <code>Replace</code> list val at index</span></a></h3>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 
 List&lt;Integer&gt; list = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();
 list.add(<span class="hljs-number">1</span>);
@@ -545,9 +509,9 @@ list.set(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>)
 System.out.println(<span class="hljs-string">&quot;(after op) list = &quot;</span> + list); <span class="hljs-comment">// list = [0, 2, 3]</span>
 
 <span class="hljs-comment">// LC 24</span>
-</code></pre>
+</code></pre></div>
 <h4 id="1-0-0-2-reverse-loop-over-a-list" tabindex="-1"><a class="header-anchor" href="#1-0-0-2-reverse-loop-over-a-list"><span>1-0-0-2) <code>Reverse</code> loop over a list</span></a></h4>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 
 List&lt;Integer&gt; list = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();
 list.add(<span class="hljs-number">1</span>);
@@ -568,9 +532,9 @@ list.add(<span class="hljs-number">3</span>);
     System.out.println(list.get(i));
 }
 
-</code></pre>
+</code></pre></div>
 <h3 id="1-0-2-append-value-to-a-2d-list" tabindex="-1"><a class="header-anchor" href="#1-0-2-append-value-to-a-2d-list"><span>1-0-2) append value to a 2D list</span></a></h3>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 417</span>
 
 List&lt;List&lt;Integer&gt;&gt; commonCells = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();
@@ -584,9 +548,9 @@ List&lt;List&lt;Integer&gt;&gt; commonCells = <span class="hljs-keyword">new</sp
         }
     }
 }
-</code></pre>
+</code></pre></div>
 <h3 id="1-0-3-paste-value-to-list-with-index" tabindex="-1"><a class="header-anchor" href="#1-0-3-paste-value-to-list-with-index"><span>1-0-3) Paste value to List with <code>index</code></span></a></h3>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 102</span>
 <span class="hljs-keyword">public</span> List&lt;List&lt;Integer&gt;&gt; <span class="hljs-title function_">levelOrder</span><span class="hljs-params">(TreeNode root)</span> {
 
@@ -604,8 +568,8 @@ List&lt;List&lt;Integer&gt;&gt; commonCells = <span class="hljs-keyword">new</sp
     }
     <span class="hljs-comment">// ..</span>
 }
-</code></pre>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// ...</span>
 
 
@@ -633,9 +597,9 @@ res.get(depth).add(curRoot.val);
 
 
 <span class="hljs-comment">// ...</span>
-</code></pre>
+</code></pre></div>
 <h3 id="1-0-3-reverse-list" tabindex="-1"><a class="header-anchor" href="#1-0-3-reverse-list"><span>1-0-3) Reverse List</span></a></h3>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 107</span>
 
 <span class="hljs-comment">// ...</span>
@@ -659,9 +623,9 @@ System.out.println(<span class="hljs-string">&quot;list2 = &quot;</span> + list2
 */</span>
 Collections.reverse(list2);
 System.out.println(<span class="hljs-string">&quot;list2 = &quot;</span> + list2); <span class="hljs-comment">// list2 = [3, 2, 1]</span>
-</code></pre>
+</code></pre></div>
 <h3 id="1-0-4-reverse-string" tabindex="-1"><a class="header-anchor" href="#1-0-4-reverse-string"><span>1-0-4) Reverse String</span></a></h3>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java (via StringBuilder)</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java (via StringBuilder)</span>
 <span class="hljs-comment">// LC 567</span>
 
 <span class="hljs-keyword">private</span> String <span class="hljs-title function_">reverseString</span><span class="hljs-params">(String input)</span>{
@@ -673,9 +637,9 @@ System.out.println(<span class="hljs-string">&quot;list2 = &quot;</span> + list2
 <span class="hljs-type">StringBuilder</span> <span class="hljs-variable">builder</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">StringBuilder</span>(input).reverse();
 <span class="hljs-keyword">return</span> builder.toString();
 } 
-</code></pre>
+</code></pre></div>
 <h3 id="3-2-substring-operations" tabindex="-1"><a class="header-anchor" href="#3-2-substring-operations"><span>3.2) Substring Operations</span></a></h3>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-type">String</span> <span class="hljs-variable">s</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;hello world&quot;</span>;
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-type">String</span> <span class="hljs-variable">s</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;hello world&quot;</span>;
 
 <span class="hljs-comment">// substring(start, end) - [start, end) interval</span>
 System.out.println(s.substring(<span class="hljs-number">0</span>, <span class="hljs-number">1</span>));   <span class="hljs-comment">// &quot;h&quot;</span>
@@ -688,8 +652,8 @@ System.out.println(s.substring(<span class="hljs-number">2</span>, <span class="
 <span class="hljs-type">String</span> <span class="hljs-variable">lastChar</span> <span class="hljs-operator">=</span> s.substring(s.length() - <span class="hljs-number">1</span>);  <span class="hljs-comment">// Last character</span>
 <span class="hljs-type">String</span> <span class="hljs-variable">withoutFirst</span> <span class="hljs-operator">=</span> s.substring(<span class="hljs-number">1</span>);           <span class="hljs-comment">// Remove first character</span>
 <span class="hljs-type">String</span> <span class="hljs-variable">withoutLast</span> <span class="hljs-operator">=</span> s.substring(<span class="hljs-number">0</span>, s.length() - <span class="hljs-number">1</span>); <span class="hljs-comment">// Remove last character</span>
-</code></pre>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 752. Open the Lock</span>
 <span class="hljs-keyword">while</span> (!q.isEmpty()) {
     <span class="hljs-comment">// ...</span>
@@ -713,10 +677,10 @@ System.out.println(s.substring(<span class="hljs-number">2</span>, <span class="
     }
     <span class="hljs-comment">// ...</span>
 }
-</code></pre>
+</code></pre></div>
 <p><strong>Important</strong>: <code>substring(start, end)</code> uses <strong>[start, end)</strong> interval - includes start, excludes end.</p>
 <h3 id="3-3-string-character-replacement" tabindex="-1"><a class="header-anchor" href="#3-3-string-character-replacement"><span>3.3) String Character Replacement</span></a></h3>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Pattern: Replace character at specific index</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Pattern: Replace character at specific index</span>
 <span class="hljs-type">String</span> <span class="hljs-variable">original</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;apple&quot;</span>;
 <span class="hljs-type">char</span>[] replacements = {<span class="hljs-string">&#x27;1&#x27;</span>, <span class="hljs-string">&#x27;2&#x27;</span>, <span class="hljs-string">&#x27;3&#x27;</span>, <span class="hljs-string">&#x27;4&#x27;</span>, <span class="hljs-string">&#x27;5&#x27;</span>};
 
@@ -740,18 +704,18 @@ System.out.println(s.substring(<span class="hljs-number">2</span>, <span class="
 <span class="hljs-type">char</span>[] chars = original.toCharArray();
 chars[<span class="hljs-number">2</span>] = <span class="hljs-string">&#x27;X&#x27;</span>;  <span class="hljs-comment">// Replace specific character</span>
 <span class="hljs-type">String</span> <span class="hljs-variable">result</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">String</span>(chars);  <span class="hljs-comment">// &quot;apXle&quot;</span>
-</code></pre>
+</code></pre></div>
 <h3 id="3-4-string-to-integer-parsing-integer-parseint" tabindex="-1"><a class="header-anchor" href="#3-4-string-to-integer-parsing-integer-parseint"><span>3.4) String to Integer Parsing (<code>Integer.parseInt</code>)</span></a></h3>
 <p><strong>Key Behavior</strong>: <code>Integer.parseInt()</code> automatically strips leading zeros.</p>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Integer.parseInt handles leading zeros automatically</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Integer.parseInt handles leading zeros automatically</span>
 Integer.parseInt(<span class="hljs-string">&quot;001&quot;</span>);    <span class="hljs-comment">// 1</span>
 Integer.parseInt(<span class="hljs-string">&quot;00001&quot;</span>);  <span class="hljs-comment">// 1</span>
 Integer.parseInt(<span class="hljs-string">&quot;0100&quot;</span>);   <span class="hljs-comment">// 100</span>
 Integer.parseInt(<span class="hljs-string">&quot;0&quot;</span>);      <span class="hljs-comment">// 0</span>
 Integer.parseInt(<span class="hljs-string">&quot;42&quot;</span>);     <span class="hljs-comment">// 42</span>
-</code></pre>
+</code></pre></div>
 <p><strong>Common Pattern: Version Number Comparison (LC 165)</strong></p>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 165. Compare Version Numbers</span>
 <span class="hljs-comment">// Split version strings and compare revision by revision</span>
 <span class="hljs-comment">// Integer.parseInt handles leading zeros so &quot;1.01&quot; == &quot;1.001&quot;</span>
@@ -771,9 +735,9 @@ String[] v2 = version2.split(<span class="hljs-string">&quot;\\.&quot;</span>);
 }
 
 <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;  <span class="hljs-comment">// All revisions equal</span>
-</code></pre>
+</code></pre></div>
 <p><strong>Key Tricks:</strong></p>
-<pre><code class="hljs">1. Leading zeros handled automatically:
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">1. Leading zeros handled automatically:
    Integer.parseInt(&quot;001&quot;) == 1  ✅  (no manual stripping needed)
 
 2. Split on &quot;.&quot; requires regex escaping:
@@ -783,9 +747,9 @@ String[] v2 = version2.split(<span class="hljs-string">&quot;\\.&quot;</span>);
 3. Handle unequal lengths with ternary + default 0:
    int num = (i &lt; arr.length) ? Integer.parseInt(arr[i]) : 0;
    This treats &quot;1.0&quot; and &quot;1.0.0.0&quot; as equal
-</code></pre>
+</code></pre></div>
 <h3 id="1-0-4-2-sort-string" tabindex="-1"><a class="header-anchor" href="#1-0-4-2-sort-string"><span>1-0-4-2) Sort String</span></a></h3>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 49</span>
 
 <span class="hljs-comment">/** NOTE !!!
@@ -801,9 +765,9 @@ String[] v2 = version2.split(<span class="hljs-string">&quot;\\.&quot;</span>);
 <span class="hljs-type">char</span>[] x_array = x.toCharArray();
 Arrays.sort(x_array);
 <span class="hljs-type">String</span> <span class="hljs-variable">x_str</span>  <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">String</span>(x_array);
-</code></pre>
+</code></pre></div>
 <h3 id="1-0-5-access-elements-in-a-string" tabindex="-1"><a class="header-anchor" href="#1-0-5-access-elements-in-a-string"><span>1-0-5) Access elements in a String</span></a></h3>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java (via .split(&quot;&quot;))</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java (via .split(&quot;&quot;))</span>
 
 <span class="hljs-type">String</span> <span class="hljs-variable">word</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;heloooo 123 111&quot;</span>;
 <span class="hljs-keyword">for</span> (String x : word.split(<span class="hljs-string">&quot;&quot;</span>)){
@@ -819,9 +783,9 @@ cur = cur.children.get(c);
 }
 }
 <span class="hljs-comment">// ..</span>
-</code></pre>
+</code></pre></div>
 <h3 id="1-0-6-check-if-a-str-a-can-be-formed-by-the-oter-str-b-by-deleting-some-of-characters" tabindex="-1"><a class="header-anchor" href="#1-0-6-check-if-a-str-a-can-be-formed-by-the-oter-str-b-by-deleting-some-of-characters"><span>1-0-6) Check if a <code>str A</code> can be formed by the oter <code>str B</code> by deleting some of characters</span></a></h3>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 524</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 524</span>
 <span class="hljs-keyword">private</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">canForm</span><span class="hljs-params">(String x, String s)</span>{
 
     <span class="hljs-comment">/** 
@@ -872,9 +836,9 @@ cur = cur.children.get(c);
      */</span>
     <span class="hljs-keyword">return</span> j == x.length();
 }
-</code></pre>
+</code></pre></div>
 <h3 id="1-0-7-access-element-in-stringbuilder" tabindex="-1"><a class="header-anchor" href="#1-0-7-access-element-in-stringbuilder"><span>1-0-7) Access element in StringBuilder</span></a></h3>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 767</span>
 
 <span class="hljs-comment">// access element in sb vis `sb.charAt[idx]`</span>
@@ -889,9 +853,9 @@ cur = cur.children.get(c);
     <span class="hljs-comment">// ...</span>
 }
 <span class="hljs-comment">// ...</span>
-</code></pre>
+</code></pre></div>
 <h3 id="1-0-8-update-val-with-idx-in-stringbuilder" tabindex="-1"><a class="header-anchor" href="#1-0-8-update-val-with-idx-in-stringbuilder"><span>1-0-8) Update val with idx in StringBuilder</span></a></h3>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 127</span>
 
 <span class="hljs-comment">// modify val with idx </span>
@@ -906,9 +870,9 @@ cur = cur.children.get(c);
 sb.setCharAt(idx, c);  <span class="hljs-comment">// modify val to c per idx</span>
 
 <span class="hljs-comment">// ...</span>
-</code></pre>
+</code></pre></div>
 <h3 id="1-1-swap-elements-in-char-array" tabindex="-1"><a class="header-anchor" href="#1-1-swap-elements-in-char-array"><span>1-1) Swap elements in char array</span></a></h3>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 345</span>
 <span class="hljs-comment">// https://leetcode.com/problems/reverse-vowels-of-a-string/description/</span>
 
@@ -917,9 +881,9 @@ sb.setCharAt(idx, c);  <span class="hljs-comment">// modify val to c per idx</sp
     chars[x] = chars[y];
     chars[y] = temp;
 }
-</code></pre>
+</code></pre></div>
 <h3 id="1-1-1-assign-value-to-an-integer-array" tabindex="-1"><a class="header-anchor" href="#1-1-1-assign-value-to-an-integer-array"><span>1-1-1) Assign value to an integer array</span></a></h3>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 347</span>
 <span class="hljs-comment">// NOTE !! we define size when init int[]</span>
 <span class="hljs-type">int</span>[] top = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[k];
@@ -928,9 +892,9 @@ sb.setCharAt(idx, c);  <span class="hljs-comment">// modify val to c per idx</sp
     <span class="hljs-comment">// assign val to int[] via below</span>
     top[i] = heap.poll();
 }
-</code></pre>
+</code></pre></div>
 <h3 id="1-1-2-init-a-m-x-n-boolean-matrix" tabindex="-1"><a class="header-anchor" href="#1-1-2-init-a-m-x-n-boolean-matrix"><span>1-1-2) Init a <code>M x N</code> boolean matrix</span></a></h3>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 695</span>
 <span class="hljs-comment">// LC 200</span>
 <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">main</span><span class="hljs-params">(String[] args)</span> {
@@ -961,9 +925,9 @@ seen = <span class="hljs-keyword">new</span> <span class="hljs-title class_">boo
 <span class="hljs-type">int</span> <span class="hljs-variable">y</span> <span class="hljs-operator">=</span> <span class="hljs-number">4</span>;
 <span class="hljs-type">boolean</span> <span class="hljs-variable">visit</span> <span class="hljs-operator">=</span> <span class="hljs-type">boolean</span>[y][x];
 }
-</code></pre>
+</code></pre></div>
 <h3 id="1-1-3-access-m-x-n-boolean-matrix" tabindex="-1"><a class="header-anchor" href="#1-1-3-access-m-x-n-boolean-matrix"><span>1-1-3) Access <code>M x N</code> boolean matrix</span></a></h3>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 130</span>
 
 <span class="hljs-comment">// ...</span>
@@ -990,12 +954,12 @@ seen = <span class="hljs-keyword">new</span> <span class="hljs-title class_">boo
 }
 
 <span class="hljs-comment">// ...</span>
-</code></pre>
+</code></pre></div>
 <h3 id="1-2-char-array-to-string" tabindex="-1"><a class="header-anchor" href="#1-2-char-array-to-string"><span>1-2) Char array to String</span></a></h3>
 <ul>
 <li>so can 1) access element 2) loop over it</li>
 </ul>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 345</span>
 <span class="hljs-comment">// https://leetcode.com/problems/reverse-vowels-of-a-string/description/</span>
 
@@ -1008,9 +972,9 @@ System.out.println(list);
 <span class="hljs-comment">// char array -&gt; string</span>
 <span class="hljs-type">char</span>[] y = list;
 String.valueOf(list);     
-</code></pre>
+</code></pre></div>
 <h3 id="1-2-1-array-to-string" tabindex="-1"><a class="header-anchor" href="#1-2-1-array-to-string"><span>1-2-1) Array to String</span></a></h3>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// V1</span>
 <span class="hljs-comment">// https://youtu.be/xOppee_iSvo?t=206</span>
 Integer[] data = {<span class="hljs-number">5</span>, <span class="hljs-number">5</span>, <span class="hljs-number">7</span>, <span class="hljs-number">8</span>, <span class="hljs-number">9</span>, <span class="hljs-number">0</span>};
@@ -1022,9 +986,9 @@ Arrays.toString(data);
 <span class="hljs-type">char</span> array [] = strs.toCharArray();
 Arrays.sort(array);
 String.valueOf(array);
-</code></pre>
+</code></pre></div>
 <h3 id="1-3-stack-to-string" tabindex="-1"><a class="header-anchor" href="#1-3-stack-to-string"><span>1-3) Stack to String</span></a></h3>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 844</span>
 <span class="hljs-comment">// https://leetcode.com/problems/backspace-string-compare/editorial/</span>
 Stack&lt;Character&gt; ans = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Stack</span>();
@@ -1034,11 +998,11 @@ ans.push(<span class="hljs-string">&quot;c&quot;</span>);
 
 
 String.valueOf(ans);
-</code></pre>
+</code></pre></div>
 <h2 id="4-sorting-operations" tabindex="-1"><a class="header-anchor" href="#4-sorting-operations"><span>4) Sorting Operations</span></a></h2>
 <h3 id="4-1-array-sorting" tabindex="-1"><a class="header-anchor" href="#4-1-array-sorting"><span>4.1) Array Sorting</span></a></h3>
 <h4 id="basic-array-sorting" tabindex="-1"><a class="header-anchor" href="#basic-array-sorting"><span>Basic Array Sorting</span></a></h4>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Primitive arrays - natural order</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Primitive arrays - natural order</span>
 <span class="hljs-type">int</span>[] numbers = {<span class="hljs-number">5</span>, <span class="hljs-number">2</span>, <span class="hljs-number">8</span>, <span class="hljs-number">1</span>, <span class="hljs-number">9</span>};
 Arrays.sort(numbers);  <span class="hljs-comment">// [1, 2, 5, 8, 9]</span>
 
@@ -1046,9 +1010,9 @@ Arrays.sort(numbers);  <span class="hljs-comment">// [1, 2, 5, 8, 9]</span>
 String[] words = {<span class="hljs-string">&quot;apple&quot;</span>, <span class="hljs-string">&quot;banana&quot;</span>, <span class="hljs-string">&quot;cherry&quot;</span>};
 Arrays.sort(words);                              <span class="hljs-comment">// Natural order (lexicographic)</span>
 Arrays.sort(words, Collections.reverseOrder());  <span class="hljs-comment">// Reverse order</span>
-</code></pre>
+</code></pre></div>
 <h4 id="2d-array-sorting" tabindex="-1"><a class="header-anchor" href="#2d-array-sorting"><span>2D Array Sorting</span></a></h4>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Sort by first element</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Sort by first element</span>
 <span class="hljs-type">int</span>[][] intervals = {{<span class="hljs-number">15</span>,<span class="hljs-number">20</span>}, {<span class="hljs-number">0</span>,<span class="hljs-number">30</span>}, {<span class="hljs-number">5</span>,<span class="hljs-number">10</span>}};
 Arrays.sort(intervals, (a, b) -&gt; Integer.compare(a[<span class="hljs-number">0</span>], b[<span class="hljs-number">0</span>]));
 <span class="hljs-comment">// Result: {{0,30}, {5,10}, {15,20}}</span>
@@ -1068,7 +1032,7 @@ Arrays.sort(people, <span class="hljs-keyword">new</span> <span class="hljs-titl
         <span class="hljs-keyword">return</span> o1[<span class="hljs-number">0</span>] == o2[<span class="hljs-number">0</span>] ? o1[<span class="hljs-number">1</span>] - o2[<span class="hljs-number">1</span>] : o2[<span class="hljs-number">0</span>] - o1[<span class="hljs-number">0</span>];
     }
 });
-</code></pre>
+</code></pre></div>
 <h3 id="4-2-in-place-vs-stream-sorting" tabindex="-1"><a class="header-anchor" href="#4-2-in-place-vs-stream-sorting"><span>4.2) In-Place vs Stream Sorting</span></a></h3>
 <p><strong>Critical Difference</strong>: Mutability and performance implications</p>
 <table>
@@ -1099,14 +1063,14 @@ Arrays.sort(people, <span class="hljs-keyword">new</span> <span class="hljs-titl
 </tbody>
 </table>
 <h4 id="in-place-sorting-recommended" tabindex="-1"><a class="header-anchor" href="#in-place-sorting-recommended"><span>In-Place Sorting (Recommended)</span></a></h4>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-type">int</span>[][] intervals = {{<span class="hljs-number">15</span>,<span class="hljs-number">20</span>}, {<span class="hljs-number">0</span>,<span class="hljs-number">30</span>}, {<span class="hljs-number">5</span>,<span class="hljs-number">10</span>}};
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-type">int</span>[][] intervals = {{<span class="hljs-number">15</span>,<span class="hljs-number">20</span>}, {<span class="hljs-number">0</span>,<span class="hljs-number">30</span>}, {<span class="hljs-number">5</span>,<span class="hljs-number">10</span>}};
 
 <span class="hljs-comment">// Sorts original array directly</span>
 Arrays.sort(intervals, (a, b) -&gt; Integer.compare(a[<span class="hljs-number">0</span>], b[<span class="hljs-number">0</span>]));
 <span class="hljs-comment">// intervals is now: {{0,30}, {5,10}, {15,20}}</span>
-</code></pre>
+</code></pre></div>
 <h4 id="stream-sorting-functional-style" tabindex="-1"><a class="header-anchor" href="#stream-sorting-functional-style"><span>Stream Sorting (Functional Style)</span></a></h4>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-type">int</span>[][] intervals = {{<span class="hljs-number">15</span>,<span class="hljs-number">20</span>}, {<span class="hljs-number">0</span>,<span class="hljs-number">30</span>}, {<span class="hljs-number">5</span>,<span class="hljs-number">10</span>}};
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-type">int</span>[][] intervals = {{<span class="hljs-number">15</span>,<span class="hljs-number">20</span>}, {<span class="hljs-number">0</span>,<span class="hljs-number">30</span>}, {<span class="hljs-number">5</span>,<span class="hljs-number">10</span>}};
 
 <span class="hljs-comment">// Original array unchanged, returns sorted stream</span>
 <span class="hljs-type">int</span>[][] sorted = Arrays.stream(intervals)
@@ -1115,9 +1079,9 @@ Arrays.sort(intervals, (a, b) -&gt; Integer.compare(a[<span class="hljs-number">
 
 <span class="hljs-comment">// Original intervals still: {{15,20}, {0,30}, {5,10}}</span>
 <span class="hljs-comment">// sorted is: {{0,30}, {5,10}, {15,20}}</span>
-</code></pre>
+</code></pre></div>
 <p><strong>Demonstration:</strong></p>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-type">int</span>[][] intervals = {{<span class="hljs-number">15</span>,<span class="hljs-number">20</span>}, {<span class="hljs-number">0</span>,<span class="hljs-number">30</span>}, {<span class="hljs-number">5</span>,<span class="hljs-number">10</span>}};
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-type">int</span>[][] intervals = {{<span class="hljs-number">15</span>,<span class="hljs-number">20</span>}, {<span class="hljs-number">0</span>,<span class="hljs-number">30</span>}, {<span class="hljs-number">5</span>,<span class="hljs-number">10</span>}};
 System.out.println(<span class="hljs-string">&quot;Original: &quot;</span> + Arrays.deepToString(intervals));
 
 <span class="hljs-comment">// Stream sorting - original unchanged</span>
@@ -1129,7 +1093,7 @@ System.out.println(<span class="hljs-string">&quot;After stream (no collect): &q
 Arrays.sort(intervals, (a,b) -&gt; Integer.compare(a[<span class="hljs-number">0</span>], b[<span class="hljs-number">0</span>]));
 System.out.println(<span class="hljs-string">&quot;After Arrays.sort: &quot;</span> + Arrays.deepToString(intervals));
 <span class="hljs-comment">// Now: [[0, 30], [5, 10], [15, 20]]</span>
-</code></pre>
+</code></pre></div>
 <h3 id="4-3-collections-sorting" tabindex="-1"><a class="header-anchor" href="#4-3-collections-sorting"><span>4.3) Collections Sorting</span></a></h3>
 <p><strong>Key Principle</strong>:</p>
 <ul>
@@ -1138,7 +1102,7 @@ System.out.println(<span class="hljs-string">&quot;After Arrays.sort: &quot;</sp
 </ul>
 <h4 id="list-sorting-examples" tabindex="-1"><a class="header-anchor" href="#list-sorting-examples"><span>List Sorting Examples</span></a></h4>
 <h4 id="array-sorting-object-types" tabindex="-1"><a class="header-anchor" href="#array-sorting-object-types"><span>Array Sorting (Object Types)</span></a></h4>
-<pre data-lang="java"><code class="hljs language-java">Integer[] numbers = {<span class="hljs-number">5</span>, <span class="hljs-number">5</span>, <span class="hljs-number">7</span>, <span class="hljs-number">8</span>, <span class="hljs-number">9</span>, <span class="hljs-number">0</span>};
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java">Integer[] numbers = {<span class="hljs-number">5</span>, <span class="hljs-number">5</span>, <span class="hljs-number">7</span>, <span class="hljs-number">8</span>, <span class="hljs-number">9</span>, <span class="hljs-number">0</span>};
 
 <span class="hljs-comment">// Ascending order (natural)</span>
 Arrays.sort(numbers);
@@ -1148,9 +1112,9 @@ Arrays.sort(numbers, Collections.reverseOrder());
 
 <span class="hljs-comment">// Descending order - Method 2 (custom comparator)</span>
 Arrays.sort(numbers, (a, b) -&gt; b - a);
-</code></pre>
+</code></pre></div>
 <h4 id="list-sorting" tabindex="-1"><a class="header-anchor" href="#list-sorting"><span>List Sorting</span></a></h4>
-<pre data-lang="java"><code class="hljs language-java">List&lt;Integer&gt; list = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;(Arrays.asList(<span class="hljs-number">3</span>, <span class="hljs-number">1</span>, <span class="hljs-number">4</span>, <span class="hljs-number">1</span>, <span class="hljs-number">5</span>, <span class="hljs-number">9</span>));
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java">List&lt;Integer&gt; list = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;(Arrays.asList(<span class="hljs-number">3</span>, <span class="hljs-number">1</span>, <span class="hljs-number">4</span>, <span class="hljs-number">1</span>, <span class="hljs-number">5</span>, <span class="hljs-number">9</span>));
 
 <span class="hljs-comment">// Method 1: Collections.sort() - modifies original list</span>
 Collections.sort(list);                              <span class="hljs-comment">// Ascending</span>
@@ -1164,9 +1128,9 @@ list.sort((a, b) -&gt; b - a);                         <span class="hljs-comment
 List&lt;Integer&gt; sortedList = list.stream()
     .sorted(Collections.reverseOrder())
     .collect(Collectors.toList());
-</code></pre>
+</code></pre></div>
 <h4 id="complex-object-sorting" tabindex="-1"><a class="header-anchor" href="#complex-object-sorting"><span>Complex Object Sorting</span></a></h4>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Multi-criteria sorting example</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Multi-criteria sorting example</span>
 List&lt;Integer[]&gt; statusList = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();
 statusList.add(<span class="hljs-keyword">new</span> <span class="hljs-title class_">Integer</span>[]{<span class="hljs-number">1</span>, <span class="hljs-number">2</span>});
 statusList.add(<span class="hljs-keyword">new</span> <span class="hljs-title class_">Integer</span>[]{<span class="hljs-number">1</span>, <span class="hljs-number">1</span>});
@@ -1178,9 +1142,9 @@ statusList.sort((x, y) -&gt; {
     }
     <span class="hljs-keyword">return</span> x[<span class="hljs-number">1</span>] - y[<span class="hljs-number">1</span>];      <span class="hljs-comment">// Secondary: second element ascending</span>
 });
-</code></pre>
+</code></pre></div>
 <p><strong>Performance Comparison:</strong></p>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// For large datasets</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// For large datasets</span>
 List&lt;Integer&gt; largeList = <span class="hljs-comment">/* millions of elements */</span>;
 
 <span class="hljs-comment">// Fastest - in-place sorting</span>
@@ -1188,9 +1152,9 @@ Collections.sort(largeList);
 
 <span class="hljs-comment">// Slower - creates new collection</span>
 List&lt;Integer&gt; sorted = largeList.stream().sorted().collect(Collectors.toList());
-</code></pre>
+</code></pre></div>
 <h3 id="1-4-4-custom-sorting-list" tabindex="-1"><a class="header-anchor" href="#1-4-4-custom-sorting-list"><span>1-4-4) Custom sorting (List)</span></a></h3>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 524</span>
 <span class="hljs-comment">/** NOTE !!!!
  *
@@ -1215,7 +1179,7 @@ Collections.sort(collected, <span class="hljs-keyword">new</span> <span class="h
         <span class="hljs-keyword">return</span> lengthComparison; <span class="hljs-comment">// sort by length</span>
     }
 });
-</code></pre>
+</code></pre></div>
 <h3 id="1-4-4-1-custom-sort-comparator-return-value-rules" tabindex="-1"><a class="header-anchor" href="#1-4-4-1-custom-sort-comparator-return-value-rules"><span>1-4-4-1) Custom Sort — Comparator Return Value Rules ⭐</span></a></h3>
 <blockquote>
 <p><strong>Core Rule</strong>: The sign of the comparator’s return value determines element order.</p>
@@ -1246,7 +1210,7 @@ Collections.sort(collected, <span class="hljs-keyword">new</span> <span class="h
 </tr>
 </tbody>
 </table>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 905 - Sort Array By Parity</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 905 - Sort Array By Parity</span>
 <span class="hljs-comment">// IDEA: Custom Comparator — return -1/0/1 to control ordering</span>
 <span class="hljs-comment">// Even numbers before odd numbers using explicit return values</span>
 
@@ -1280,9 +1244,9 @@ Collections.sort(list, (o1, o2) -&gt; Integer.compare(o1 % <span class="hljs-num
     }
     <span class="hljs-keyword">return</span> nums;
 }
-</code></pre>
+</code></pre></div>
 <h4 id="comparator-mental-model" tabindex="-1"><a class="header-anchor" href="#comparator-mental-model"><span>Comparator Mental Model</span></a></h4>
-<pre><code class="hljs">compare(o1, o2):
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">compare(o1, o2):
   return NEGATIVE  →  keep o1 before o2   (o1 is &quot;smaller&quot;)
   return POSITIVE  →  move o1 after  o2   (o1 is &quot;larger&quot;)
   return 0         →  no change
@@ -1290,9 +1254,9 @@ Collections.sort(list, (o1, o2) -&gt; Integer.compare(o1 % <span class="hljs-num
 Tip: think of it as: &quot;what is o1 - o2?&quot;
   o1 &lt; o2  →  negative  →  ascending order (small first)
   o1 &gt; o2  →  positive  →  o2 goes first  (for descending: flip to o2 - o1)
-</code></pre>
+</code></pre></div>
 <h4 id="common-patterns-summary" tabindex="-1"><a class="header-anchor" href="#common-patterns-summary"><span>Common Patterns Summary</span></a></h4>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Ascending (natural order)</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Ascending (natural order)</span>
 (a, b) -&gt; a - b                          <span class="hljs-comment">// ⚠ may overflow for large ints</span>
 (a, b) -&gt; Integer.compare(a, b)          <span class="hljs-comment">// ✅ safe</span>
 
@@ -1307,9 +1271,9 @@ Tip: think of it as: &quot;what is o1 - o2?&quot;
 (s1, s2) -&gt; s1.length() != s2.length()
     ? s2.length() - s1.length()          <span class="hljs-comment">// longer first</span>
     : s1.compareTo(s2)                   <span class="hljs-comment">// lexicographic if same length</span>
-</code></pre>
+</code></pre></div>
 <h3 id="1-4-5-sort-on-hash-map-s-key-and-value" tabindex="-1"><a class="header-anchor" href="#1-4-5-sort-on-hash-map-s-key-and-value"><span>1-4-5) Sort on <code>Hash Map's key and value</code> *****</span></a></h3>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 692</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 692</span>
 
 
 <span class="hljs-comment">// IDEA: map sorting</span>
@@ -1340,9 +1304,9 @@ Collections.sort(res, (x, y) -&gt; {
     }
     <span class="hljs-keyword">return</span> valDiff;
 });
-</code></pre>
+</code></pre></div>
 <h3 id="1-4-6-sort-string-on-lexicographical-order" tabindex="-1"><a class="header-anchor" href="#1-4-6-sort-string-on-lexicographical-order"><span>1-4-6) sort string on <code>lexicographical</code> order</span></a></h3>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 692. Top K Frequent Words</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 692. Top K Frequent Words</span>
 
 <span class="hljs-type">String</span> <span class="hljs-variable">a</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;abcd&quot;</span>;
 <span class="hljs-type">String</span> <span class="hljs-variable">b</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;defg&quot;</span>;
@@ -1350,17 +1314,17 @@ Collections.sort(res, (x, y) -&gt; {
 <span class="hljs-comment">// sort on lexicographical</span>
 
 System.out.println(a.compareTo(b));
-</code></pre>
+</code></pre></div>
 <h3 id="1-5-arrays-copyofrange-get-sub-array" tabindex="-1"><a class="header-anchor" href="#1-5-arrays-copyofrange-get-sub-array"><span>1-5) <code>Arrays.copyOfRange</code> : Get sub array</span></a></h3>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 976</span>
 <span class="hljs-comment">// https://leetcode.com/problems/largest-perimeter-triangle/description/</span>
 nums = [<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">1</span>,<span class="hljs-number">10</span>, <span class="hljs-number">11</span>, <span class="hljs-number">22</span>, <span class="hljs-number">33</span>]
 <span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">2</span>;
 <span class="hljs-type">int</span>[] tmp = Arrays.copyOfRange(nums, i, i+<span class="hljs-number">3</span>);
-</code></pre>
+</code></pre></div>
 <h3 id="1-6-arrays-tostring-array-print-array-value" tabindex="-1"><a class="header-anchor" href="#1-6-arrays-tostring-array-print-array-value"><span>1-6) <code>Arrays.toString(array)</code>: Print <code>array</code> value</span></a></h3>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 997</span>
 
 <span class="hljs-comment">/** 
@@ -1387,9 +1351,9 @@ System.out.println(<span class="hljs-string">&quot;&gt;&gt;&gt; toTrust = &quot;
 System.out.println(<span class="hljs-string">&quot;&gt;&gt;&gt; trusted = &quot;</span> + Arrays.toString(trusted));
 
 <span class="hljs-comment">// ...</span>
-</code></pre>
+</code></pre></div>
 <h3 id="1-7-put-array-into-stack" tabindex="-1"><a class="header-anchor" href="#1-7-put-array-into-stack"><span>1-7) Put array into stack</span></a></h3>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 739</span>
 Stack&lt;<span class="hljs-type">int</span>[]&gt; stack = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Stack</span>&lt;&gt;();
 
@@ -1397,9 +1361,9 @@ Stack&lt;<span class="hljs-type">int</span>[]&gt; stack = <span class="hljs-keyw
 init[<span class="hljs-number">0</span>]  = temperatures[<span class="hljs-number">0</span>];
 init[<span class="hljs-number">1</span>] = <span class="hljs-number">0</span>;
 stack.push(init);
-</code></pre>
+</code></pre></div>
 <h3 id="1-7-1-loop-over-elements-in-stack" tabindex="-1"><a class="header-anchor" href="#1-7-1-loop-over-elements-in-stack"><span>1-7-1) Loop over elements in stack</span></a></h3>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 71</span>
 Stack&lt;String&gt; st = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Stack</span>&lt;&gt;();
 st.push(<span class="hljs-string">&quot;a&quot;</span>);
@@ -1410,16 +1374,16 @@ st.push(<span class="hljs-string">&quot;c&quot;</span>);
 <span class="hljs-keyword">for</span>(String x: st){
     System.out.println(x);
 }
-</code></pre>
+</code></pre></div>
 <h3 id="1-8-remove-element-in-string-stringbuilder" tabindex="-1"><a class="header-anchor" href="#1-8-remove-element-in-string-stringbuilder"><span>1-8) remove element in String (<code>StringBuilder</code>)</span></a></h3>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 22</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 22</span>
 <span class="hljs-type">StringBuilder</span> <span class="hljs-variable">b</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">StringBuilder</span>(<span class="hljs-string">&quot;wefew&quot;</span>);
 System.out.println(b.toString());
 b.deleteCharAt(<span class="hljs-number">2</span>);
 System.out.println(b.toString());
-</code></pre>
+</code></pre></div>
 <h3 id="1-9-1-order-hashmap-by-key-treemap" tabindex="-1"><a class="header-anchor" href="#1-9-1-order-hashmap-by-key-treemap"><span>1-9-1) Order HashMap by key (<code>TreeMap</code>)</span></a></h3>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 853</span>
 <span class="hljs-comment">// V1</span>
 HashMap&lt;Integer, Integer&gt; map = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;();
@@ -1432,24 +1396,24 @@ HashMap&lt;Integer, Integer&gt; map = <span class="hljs-keyword">new</span> <spa
 
 <span class="hljs-comment">// order by map key</span>
 Map&lt;Integer, Integer&gt; tree_map = <span class="hljs-keyword">new</span> <span class="hljs-title class_">TreeMap</span>(map);
-</code></pre>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 853</span>
 <span class="hljs-comment">// order Map key instead</span>
 HashMap&lt;Integer, Integer&gt; map = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;();
 Arrays.sort(map.keySet().toArray());
-</code></pre>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 346</span>
 <span class="hljs-comment">// sort array in descending order</span>
 Arrays.sort(tmp, (x, y) -&gt; Integer.compare(-x[<span class="hljs-number">1</span>], -y[<span class="hljs-number">1</span>]));
-</code></pre>
+</code></pre></div>
 <ul>
 <li><code>floorEntry</code> method in <code>TreeMap</code></li>
 <li><a href="https://blog.csdn.net/a1510841693/article/details/124323418">https://blog.csdn.net/a1510841693/article/details/124323418</a></li>
 <li>floorEntry() : It returns a key-value mapping associated with the greatest key less than or equal to the given key, or null if there is no such key.</li>
 </ul>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// floorEntry</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// floorEntry</span>
 <span class="hljs-comment">// LC 1146</span>
 
 <span class="hljs-comment">// ...</span>
@@ -1459,9 +1423,9 @@ Arrays.sort(tmp, (x, y) -&gt; Integer.compare(-x[<span class="hljs-number">1</sp
     <span class="hljs-keyword">return</span> historyRecords[index].floorEntry(snapId).getValue();
 }
 <span class="hljs-comment">// ...</span>
-</code></pre>
+</code></pre></div>
 <h3 id="1-9-2-sort-by-map-key-value" tabindex="-1"><a class="header-anchor" href="#1-9-2-sort-by-map-key-value"><span>1-9-2) Sort by Map key, value</span></a></h3>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// (GPT)</span>
 
 <span class="hljs-comment">// Create a HashMap</span>
@@ -1510,9 +1474,9 @@ keys.sort((k1, k2) -&gt; map.get(k1).compareTo(map.get(k2)));
 <span class="hljs-comment">// Print the sorted map</span>
 System.out.println(<span class="hljs-string">&quot;Sorted map: &quot;</span> + sortedMap);
 
-</code></pre>
+</code></pre></div>
 <h3 id="1-9-3-access-map-s-key-value-on-the-same-time" tabindex="-1"><a class="header-anchor" href="#1-9-3-access-map-s-key-value-on-the-same-time"><span>1-9-3) Access Map’s <code>key, value</code> on the same time</span></a></h3>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 501</span>
 
 List&lt;Integer&gt; modes = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();
@@ -1526,14 +1490,14 @@ List&lt;Integer&gt; modes = <span class="hljs-keyword">new</span> <span class="h
     }
 }
         
-</code></pre>
+</code></pre></div>
 <h3 id="1-10-get-max-val-from-an-array" tabindex="-1"><a class="header-anchor" href="#1-10-get-max-val-from-an-array"><span>1-10) Get max val from an Array</span></a></h3>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 875</span>
 <span class="hljs-comment">// https://stackoverflow.com/questions/1484347/finding-the-max-min-value-in-an-array-of-primitives-using-java</span>
 <span class="hljs-type">int</span>[] piles = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[<span class="hljs-number">5</span>];
 <span class="hljs-type">int</span> <span class="hljs-variable">r</span> <span class="hljs-operator">=</span> Arrays.stream(piles).max().getAsInt();
-</code></pre>
+</code></pre></div>
 <h3 id="1-12-get-most-freq-element-in-an-array" tabindex="-1"><a class="header-anchor" href="#1-12-get-most-freq-element-in-an-array"><span>1-12) Get most freq element in an array</span></a></h3>
 <h3 id="1-13-pair-data-structure" tabindex="-1"><a class="header-anchor" href="#1-13-pair-data-structure"><span>1-13) Pair data structure</span></a></h3>
 <ul>
@@ -1542,7 +1506,7 @@ List&lt;Integer&gt; modes = <span class="hljs-keyword">new</span> <span class="h
 <li>can be used in other data structure (e.g. queue, hashmap…)</li>
 <li>available in default Java lib, or apache.common lib or other lib</li>
 </ul>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 355</span>
 <span class="hljs-comment">// https://leetcode.com/problems/design-twitter/solutions/2720611/java-simple-hashmap-stack/</span>
 
@@ -1564,11 +1528,11 @@ Pair&lt;Integer, String&gt; p1 = <span class="hljs-keyword">new</span> <span cla
 <span class="hljs-comment">// use with other data structure</span>
 Queue&lt;Pair&lt;Integer, String&gt;&gt; q = <span class="hljs-keyword">new</span> <span class="hljs-title class_">LinkedList</span>&lt;&gt;();
 q.add(p1);
-</code></pre>
+</code></pre></div>
 <ul>
 <li>Or, you can define your own pair data structure:</li>
 </ul>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">MyPair</span>&lt;U, V&gt; {
 
 <span class="hljs-keyword">public</span> U first;
@@ -1583,9 +1547,9 @@ MyPair(U first, V second){
 
 <span class="hljs-comment">// setter</span>
 }
-</code></pre>
+</code></pre></div>
 <h3 id="1-14-k-vs-k" tabindex="-1"><a class="header-anchor" href="#1-14-k-vs-k"><span>1-14) k++ VS k++</span></a></h3>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 78</span>
 
 <span class="hljs-comment">/** NOTE HERE !!!
@@ -1594,26 +1558,26 @@ MyPair(U first, V second){
 *  i++ : do op first, then i+1
 *
 */</span>
-</code></pre>
+</code></pre></div>
 <h3 id="1-15-get-copy-current-object-e-g-array-list-instance" tabindex="-1"><a class="header-anchor" href="#1-15-get-copy-current-object-e-g-array-list-instance"><span>1-15) Get/copy current object (e.g. Array, List…) instance</span></a></h3>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 46</span>
 List&lt;List&lt;Integer&gt;&gt; ans = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();
 List&lt;Integer&gt; cur = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();
 <span class="hljs-comment">//...</span>
 ans.add(<span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;(cur));
 <span class="hljs-comment">//...</span>
-</code></pre>
+</code></pre></div>
 <h3 id="1-16-equals-vs-when-to-use-which" tabindex="-1"><a class="header-anchor" href="#1-16-equals-vs-when-to-use-which"><span>1-16) <code>equals()</code> vs <code>==</code> — When to Use Which</span></a></h3>
 <blockquote>
 <p><strong>Core Rule</strong>: <code>==</code> compares <strong>references</strong> (are they the same object?). <code>equals()</code> compares <strong>content</strong> (do they have the same value?).</p>
 </blockquote>
 <h4 id="the-rule" tabindex="-1"><a class="header-anchor" href="#the-rule"><span>The Rule</span></a></h4>
-<pre><code class="hljs">==        → compares memory addresses (reference identity)
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">==        → compares memory addresses (reference identity)
 equals()  → compares logical content (value equality)
-</code></pre>
+</code></pre></div>
 <h4 id="comparing-collections-list-set-map" tabindex="-1"><a class="header-anchor" href="#comparing-collections-list-set-map"><span>Comparing Collections (List, Set, Map)</span></a></h4>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 872 — Leaf-Similar Trees</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 872 — Leaf-Similar Trees</span>
 List&lt;Integer&gt; list1 = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();
 List&lt;Integer&gt; list2 = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();
 
@@ -1627,9 +1591,9 @@ getLeafSeq(root2, list2);
  */</span>
 list1 == list2        <span class="hljs-comment">// ❌ false — different objects, even if same content</span>
 list1.equals(list2)   <span class="hljs-comment">// ✅ true  — compares element-by-element</span>
-</code></pre>
+</code></pre></div>
 <h4 id="comparing-strings" tabindex="-1"><a class="header-anchor" href="#comparing-strings"><span>Comparing Strings</span></a></h4>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-type">String</span> <span class="hljs-variable">a</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">String</span>(<span class="hljs-string">&quot;hello&quot;</span>);
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-type">String</span> <span class="hljs-variable">a</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">String</span>(<span class="hljs-string">&quot;hello&quot;</span>);
 <span class="hljs-type">String</span> <span class="hljs-variable">b</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">String</span>(<span class="hljs-string">&quot;hello&quot;</span>);
 
 a == b          <span class="hljs-comment">// ❌ false — different objects</span>
@@ -1640,9 +1604,9 @@ a.equals(b)     <span class="hljs-comment">// ✅ true  — same content</span>
 <span class="hljs-type">String</span> <span class="hljs-variable">d</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;hello&quot;</span>;
 c == d          <span class="hljs-comment">// ✅ true (same pooled object) — but DON&#x27;T rely on this!</span>
 c.equals(d)     <span class="hljs-comment">// ✅ true — always use this</span>
-</code></pre>
+</code></pre></div>
 <h4 id="comparing-wrapper-types-integer-long-etc" tabindex="-1"><a class="header-anchor" href="#comparing-wrapper-types-integer-long-etc"><span>Comparing Wrapper Types (Integer, Long, etc.)</span></a></h4>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-type">Integer</span> <span class="hljs-variable">x</span> <span class="hljs-operator">=</span> <span class="hljs-number">127</span>;
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-type">Integer</span> <span class="hljs-variable">x</span> <span class="hljs-operator">=</span> <span class="hljs-number">127</span>;
 <span class="hljs-type">Integer</span> <span class="hljs-variable">y</span> <span class="hljs-operator">=</span> <span class="hljs-number">127</span>;
 x == y          <span class="hljs-comment">// ✅ true (cached: -128 to 127)</span>
 
@@ -1653,13 +1617,13 @@ a.equals(b)     <span class="hljs-comment">// ✅ true  — always correct</span
 
 <span class="hljs-comment">// SAFE alternative for null-safe comparison</span>
 Objects.equals(a, b)  <span class="hljs-comment">// ✅ handles null without NPE</span>
-</code></pre>
+</code></pre></div>
 <h4 id="comparing-primitives" tabindex="-1"><a class="header-anchor" href="#comparing-primitives"><span>Comparing Primitives</span></a></h4>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">5</span>;
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">5</span>;
 <span class="hljs-type">int</span> <span class="hljs-variable">j</span> <span class="hljs-operator">=</span> <span class="hljs-number">5</span>;
 i == j          <span class="hljs-comment">// ✅ correct — primitives have no .equals()</span>
                 <span class="hljs-comment">// Primitives are ALWAYS compared by value with ==</span>
-</code></pre>
+</code></pre></div>
 <h4 id="summary-table" tabindex="-1"><a class="header-anchor" href="#summary-table"><span>Summary Table</span></a></h4>
 <table>
 <thead>
@@ -1710,7 +1674,7 @@ i == j          <span class="hljs-comment">// ✅ correct — primitives have no
 </tbody>
 </table>
 <h4 id="interview-quick-rule" tabindex="-1"><a class="header-anchor" href="#interview-quick-rule"><span>Interview Quick Rule</span></a></h4>
-<pre><code class="hljs">Q: &quot;Should I use == or equals()?&quot;
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Q: &quot;Should I use == or equals()?&quot;
 
 → Is it a primitive (int, long, boolean, char, double)?
   YES → use ==
@@ -1721,9 +1685,9 @@ i == j          <span class="hljs-comment">// ✅ correct — primitives have no
 → Everything else (String, Integer, List, Object...)?
   → use equals()
   → use Objects.equals(a, b) if either could be null
-</code></pre>
+</code></pre></div>
 <h3 id="1-16-1-check-if-a-string-is-palindrome" tabindex="-1"><a class="header-anchor" href="#1-16-1-check-if-a-string-is-palindrome"><span>1-16-1) Check if a string is Palindrome</span></a></h3>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 131</span>
 <span class="hljs-type">boolean</span> <span class="hljs-title function_">isPalindrome</span><span class="hljs-params">(String s, <span class="hljs-type">int</span> low, <span class="hljs-type">int</span> high)</span> {
 <span class="hljs-keyword">while</span> (low &lt; high) {
@@ -1731,14 +1695,14 @@ i == j          <span class="hljs-comment">// ✅ correct — primitives have no
 }
 <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
 }   
-</code></pre>
+</code></pre></div>
 <h3 id="1-17-init-2d-array" tabindex="-1"><a class="header-anchor" href="#1-17-init-2d-array"><span>1-17) init 2D array</span></a></h3>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 417</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span>[][] DIRECTIONS = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[][]{{<span class="hljs-number">0</span>, <span class="hljs-number">1</span>}, {<span class="hljs-number">1</span>, <span class="hljs-number">0</span>}, {-<span class="hljs-number">1</span>, <span class="hljs-number">0</span>}, {<span class="hljs-number">0</span>, -<span class="hljs-number">1</span>}};
-</code></pre>
+</code></pre></div>
 <h3 id="1-18-arrays-fill-1-d" tabindex="-1"><a class="header-anchor" href="#1-18-arrays-fill-1-d"><span>1-18) Arrays.fill (1 D)</span></a></h3>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 300</span>
 
 <span class="hljs-comment">/** NOTE !!! ONLY work for 1 D (since array is 1 dimension) */</span>
@@ -1746,10 +1710,10 @@ i == j          <span class="hljs-comment">// ✅ correct — primitives have no
 
 <span class="hljs-comment">// fill op</span>
 Arrays.fill(dp,<span class="hljs-number">1</span>);
-</code></pre>
+</code></pre></div>
 <h2 id="5-queue-operations" tabindex="-1"><a class="header-anchor" href="#5-queue-operations"><span>5) Queue Operations</span></a></h2>
 <h3 id="5-1-priority-queue-examples" tabindex="-1"><a class="header-anchor" href="#5-1-priority-queue-examples"><span>5.1) Priority Queue Examples</span></a></h3>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Min-heap (default) - smallest element first</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Min-heap (default) - smallest element first</span>
 PriorityQueue&lt;Integer&gt; minHeap = <span class="hljs-keyword">new</span> <span class="hljs-title class_">PriorityQueue</span>&lt;&gt;();
 minHeap.addAll(Arrays.asList(<span class="hljs-number">5</span>, <span class="hljs-number">10</span>, <span class="hljs-number">1</span>, <span class="hljs-number">3</span>));
 <span class="hljs-keyword">while</span> (!minHeap.isEmpty()) {
@@ -1762,9 +1726,9 @@ maxHeap.addAll(Arrays.asList(<span class="hljs-number">5</span>, <span class="hl
 <span class="hljs-keyword">while</span> (!maxHeap.isEmpty()) {
     System.out.print(maxHeap.poll() + <span class="hljs-string">&quot; &quot;</span>);  <span class="hljs-comment">// Output: 10 5 3 1</span>
 }
-</code></pre>
+</code></pre></div>
 <h3 id="1-19-1-pq-priority-queue-with-custom-logic" tabindex="-1"><a class="header-anchor" href="#1-19-1-pq-priority-queue-with-custom-logic"><span>1-19-1) PQ (priority queue) with custom logic</span></a></h3>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 347</span>
 <span class="hljs-comment">// ...</span>
 
@@ -1781,7 +1745,7 @@ PriorityQueue&lt;Map.Entry&lt;Integer, Integer&gt;&gt; heap = <span class="hljs-
 );
 
 <span class="hljs-comment">// ...</span>
-</code></pre>
+</code></pre></div>
 <h3 id="5-2-queue-methods-add-vs-offer" tabindex="-1"><a class="header-anchor" href="#5-2-queue-methods-add-vs-offer"><span>5.2) Queue Methods: <code>add()</code> vs <code>offer()</code></span></a></h3>
 <table>
 <thead>
@@ -1807,7 +1771,7 @@ PriorityQueue&lt;Map.Entry&lt;Integer, Integer&gt;&gt; heap = <span class="hljs-
 </tr>
 </tbody>
 </table>
-<pre data-lang="java"><code class="hljs language-java">Queue&lt;Integer&gt; queue = <span class="hljs-keyword">new</span> <span class="hljs-title class_">LinkedList</span>&lt;&gt;();
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java">Queue&lt;Integer&gt; queue = <span class="hljs-keyword">new</span> <span class="hljs-title class_">LinkedList</span>&lt;&gt;();
 
 <span class="hljs-comment">// add() - throws exception on failure</span>
 <span class="hljs-keyword">try</span> {
@@ -1822,10 +1786,10 @@ PriorityQueue&lt;Map.Entry&lt;Integer, Integer&gt;&gt; heap = <span class="hljs-
 } <span class="hljs-keyword">else</span> {
     System.out.println(<span class="hljs-string">&quot;Queue is full&quot;</span>);
 }
-</code></pre>
+</code></pre></div>
 <p><strong>Recommendation</strong>: Use <code>offer()</code> for bounded queues, <code>add()</code> for unlimited queues like <code>LinkedList</code>.</p>
 <h3 id="5-3-queue-removal-methods" tabindex="-1"><a class="header-anchor" href="#5-3-queue-removal-methods"><span>5.3) Queue Removal Methods</span></a></h3>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 
 <span class="hljs-comment">// In Java, the remove() method is commonly used with various types of collections such as Queue, List, and Set. When used with a Queue, the remove() method is used to remove and return the front element of the queue.</span>
 
@@ -1881,9 +1845,9 @@ System.out.println(<span class="hljs-string">&quot;queue: &quot;</span> + queue)
 
 queue.remove();
 System.out.println(<span class="hljs-string">&quot;queue: &quot;</span> + queue); <span class="hljs-comment">// queue: [20, 30, 40]</span>
-</code></pre>
+</code></pre></div>
 <h3 id="1-20-hashmap-return-defalut-val" tabindex="-1"><a class="header-anchor" href="#1-20-hashmap-return-defalut-val"><span>1-20) Hashmap return defalut val</span></a></h3>
-<pre data-lang="java"><code class="hljs language-java">
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java">
 <span class="hljs-comment">// LC 424</span>
 <span class="hljs-comment">// NOTE : map.getOrDefault(key,0) syntax :  if can find key, return its value, else, return default 0</span>
 map.put(key, map.getOrDefault(key,<span class="hljs-number">0</span>)+<span class="hljs-number">1</span>);
@@ -1891,14 +1855,14 @@ map.put(key, map.getOrDefault(key,<span class="hljs-number">0</span>)+<span clas
 
 <span class="hljs-comment">// e.g.</span>
 map.getOrDefault(key,<span class="hljs-number">0</span>)
-</code></pre>
+</code></pre></div>
 <h1 id="2-other-tricks" tabindex="-1"><a class="header-anchor" href="#2-other-tricks"><span>2) Other tricks</span></a></h1>
 <h3 id="2-1-init-var-modify-it-in-another-method-and-use-it-pass-by-reference-pattern" tabindex="-1"><a class="header-anchor" href="#2-1-init-var-modify-it-in-another-method-and-use-it-pass-by-reference-pattern"><span>2-1) Init var, modify it in another method, and use it — Pass-by-Reference Pattern ⭐</span></a></h3>
 <blockquote>
 <p><strong>Core Concept</strong>: Reference types (StringBuilder, List, int[], Map, etc.) are passed by <strong>reference</strong>, not by value. Changes made inside a function persist after the function returns.</p>
 </blockquote>
 <h4 id="pattern-1-stringbuilder-for-path-string-building-lc-694" tabindex="-1"><a class="header-anchor" href="#pattern-1-stringbuilder-for-path-string-building-lc-694"><span>Pattern 1: StringBuilder for Path/String Building (LC 694)</span></a></h4>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 694 - Number of Distinct Islands</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 694 - Number of Distinct Islands</span>
 <span class="hljs-comment">// Pattern: Create placeholder → Pass to DFS → Use modified result</span>
 
 Set&lt;String&gt; uniqueIslands = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashSet</span>&lt;&gt;();
@@ -1946,9 +1910,9 @@ Set&lt;String&gt; uniqueIslands = <span class="hljs-keyword">new</span> <span cl
     <span class="hljs-comment">// Backtrack: undo the append</span>
     path.append(<span class="hljs-string">&#x27;O&#x27;</span>);
 }
-</code></pre>
+</code></pre></div>
 <p><strong>Memory Model:</strong></p>
-<pre><code class="hljs">Main thread:
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Main thread:
 pathSignature = StringBuilder{} at memory address 0x1000
 
     Call dfs(..., pathSignature, 'S')
@@ -1966,9 +1930,9 @@ pathSignature = StringBuilder{} at memory address 0x1000
 
 Back in main:
 pathSignature = StringBuilder{&quot;SDOO&quot;}  ✅ (MODIFIED!)
-</code></pre>
+</code></pre></div>
 <h4 id="pattern-2-list-for-collecting-results-lc-113-path-sum-ii" tabindex="-1"><a class="header-anchor" href="#pattern-2-list-for-collecting-results-lc-113-path-sum-ii"><span>Pattern 2: List for Collecting Results (LC 113 Path Sum II)</span></a></h4>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 113 - Path Sum II</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 113 - Path Sum II</span>
 <span class="hljs-comment">// Similar pattern but with List&lt;Integer&gt; for path collection</span>
 
 <span class="hljs-keyword">public</span> List&lt;List&lt;Integer&gt;&gt; <span class="hljs-title function_">pathSum</span><span class="hljs-params">(TreeNode root, <span class="hljs-type">int</span> targetSum)</span> {
@@ -1995,9 +1959,9 @@ pathSignature = StringBuilder{&quot;SDOO&quot;}  ✅ (MODIFIED!)
     <span class="hljs-comment">// Backtrack: undo the add</span>
     path.remove(path.size() - <span class="hljs-number">1</span>);
 }
-</code></pre>
+</code></pre></div>
 <p><strong>Key Difference from Primitives:</strong></p>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// ❌ PRIMITIVE: Changes don&#x27;t persist</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// ❌ PRIMITIVE: Changes don&#x27;t persist</span>
 <span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">addToSum</span><span class="hljs-params">(<span class="hljs-type">int</span> currentSum)</span> {
     currentSum += <span class="hljs-number">5</span>;  <span class="hljs-comment">// Only affects local copy</span>
 }
@@ -2012,9 +1976,9 @@ System.out.println(mySum);  <span class="hljs-comment">// Still 10, NOT 15!</spa
 List&lt;Integer&gt; myList = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();
 addToList(myList);
 System.out.println(myList);  <span class="hljs-comment">// [5] ✅ MODIFIED!</span>
-</code></pre>
+</code></pre></div>
 <h4 id="pattern-3-general-pattern-create-pass-modify-use" tabindex="-1"><a class="header-anchor" href="#pattern-3-general-pattern-create-pass-modify-use"><span>Pattern 3: General Pattern — Create, Pass, Modify, Use</span></a></h4>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Generic template for this pattern:</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Generic template for this pattern:</span>
 
 <span class="hljs-keyword">public</span> Type <span class="hljs-title function_">method</span><span class="hljs-params">()</span> {
     <span class="hljs-comment">// 1. Create placeholder (reference type)</span>
@@ -2037,7 +2001,7 @@ System.out.println(myList);  <span class="hljs-comment">// [5] ✅ MODIFIED!</sp
     <span class="hljs-comment">// Undo if backtracking required</span>
     data.undo(...);
 }
-</code></pre>
+</code></pre></div>
 <h4 id="common-reference-types-for-this-pattern" tabindex="-1"><a class="header-anchor" href="#common-reference-types-for-this-pattern"><span>Common Reference Types for This Pattern</span></a></h4>
 <table>
 <thead>
@@ -2100,7 +2064,7 @@ System.out.println(myList);  <span class="hljs-comment">// [5] ✅ MODIFIED!</sp
 </tbody>
 </table>
 <p><strong>When to Backtrack:</strong></p>
-<pre><code class="hljs">Rule: If the parameter is a reference type that gets MODIFIED, you must UNDO the modification.
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Rule: If the parameter is a reference type that gets MODIFIED, you must UNDO the modification.
 
 Path/List building:  path.add(val) → must do path.remove(...)
 StringBuilder:       sb.append(...) → must do sb.deleteCharAt(...)
@@ -2108,9 +2072,9 @@ Array modification:  arr[i] = val   → must do arr[i] = oldVal
 Map/Set:             data.add(x)    → must do data.remove(x)
 
 Primitives:          No backtrack needed (they're copied)
-</code></pre>
+</code></pre></div>
 <h4 id="pattern-4-list-collection-lc-131-palindrome-partitioning" tabindex="-1"><a class="header-anchor" href="#pattern-4-list-collection-lc-131-palindrome-partitioning"><span>Pattern 4: List Collection (LC 131 Palindrome Partitioning)</span></a></h4>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 131</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 131</span>
 <span class="hljs-keyword">public</span> List&lt;List&lt;String&gt;&gt; <span class="hljs-title function_">partition</span><span class="hljs-params">(String s)</span> {
     <span class="hljs-comment">/**
      * <span class="hljs-doctag">NOTE:</span> we can init result, pass it to method,
@@ -2152,23 +2116,23 @@ Primitives:          No backtrack needed (they're copied)
     }
     <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
 }
-</code></pre>
+</code></pre></div>
 <p><strong>Critical Distinction:</strong></p>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// ❌ WRONG: Adds reference to currentList (not a snapshot)</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// ❌ WRONG: Adds reference to currentList (not a snapshot)</span>
 result.add(currentList);  <span class="hljs-comment">// All entries point to same list!</span>
 
 <span class="hljs-comment">// ✅ CORRECT: Add a copy</span>
 result.add(<span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;(currentList));  <span class="hljs-comment">// Each entry is independent</span>
-</code></pre>
+</code></pre></div>
 <h3 id="2-2-get-max-min-from-3-numbers" tabindex="-1"><a class="header-anchor" href="#2-2-get-max-min-from-3-numbers"><span>2-2) Get max, min from 3 numbers</span></a></h3>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 
 <span class="hljs-comment">// LC 152</span>
 max = Math.max(Math.max(max * nums[i], min * nums[i]), nums[i]);
 min = Math.min(Math.min(temp * nums[i], min * nums[i]), nums[i]);
-</code></pre>
+</code></pre></div>
 <h3 id="2-3-use-long-to-avoid-int-overflow" tabindex="-1"><a class="header-anchor" href="#2-3-use-long-to-avoid-int-overflow"><span>2-3) Use long to avoid int overflow</span></a></h3>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 98</span>
 
 <span class="hljs-comment">// ...</span>
@@ -2185,9 +2149,9 @@ min = Math.min(Math.min(temp * nums[i], min * nums[i]), nums[i]);
 <span class="hljs-keyword">return</span> check_(root, smallest_val, biggest_val);
 
 <span class="hljs-comment">// ...</span>
-</code></pre>
+</code></pre></div>
 <h3 id="2-4-get-1-count-from-integer-s-binary-format" tabindex="-1"><a class="header-anchor" href="#2-4-get-1-count-from-integer-s-binary-format"><span>2-4) get “1” count from integer’s binary format</span></a></h3>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 
 <span class="hljs-comment">/**
 *  Integer.bitCount
@@ -2206,7 +2170,7 @@ min = Math.min(Math.min(temp * nums[i], min * nums[i]), nums[i]);
 
 <span class="hljs-comment">// LC 338</span>
 
-</code></pre>
+</code></pre></div>
 <h3 id="2-5-init-queue" tabindex="-1"><a class="header-anchor" href="#2-5-init-queue"><span>2-5) Init Queue</span></a></h3>
 <ul>
 <li>
@@ -2219,10 +2183,10 @@ min = Math.min(Math.min(temp * nums[i], min * nums[i]), nums[i]);
 <p>Consinder use one of below implementation:</p>
 </li>
 </ul>
-<pre><code class="hljs">AbstractQueue, ArrayBlockingQueue, ArrayDeque, ConcurrentLinkedQueue, DelayQueue, LinkedBlockingQueue, LinkedList, PriorityBlockingQueue, PriorityQueue, or SynchronousQueue.
-</code></pre>
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">AbstractQueue, ArrayBlockingQueue, ArrayDeque, ConcurrentLinkedQueue, DelayQueue, LinkedBlockingQueue, LinkedList, PriorityBlockingQueue, PriorityQueue, or SynchronousQueue.
+</code></pre></div>
 <h3 id="2-6-loop-over-elements-in-map" tabindex="-1"><a class="header-anchor" href="#2-6-loop-over-elements-in-map"><span>2-6) loop over elements in map</span></a></h3>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 
 <span class="hljs-comment">// LC 742</span>
 <span class="hljs-comment">/** NOTE
@@ -2238,7 +2202,7 @@ Map&lt;TreeNode, List&lt;TreeNode&gt;&gt; g;
         }
     }
 <span class="hljs-comment">// ...</span>
-</code></pre>
+</code></pre></div>
 <h3 id="2-7-treemap" tabindex="-1"><a class="header-anchor" href="#2-7-treemap"><span>2-7) TreeMap</span></a></h3>
 <ul>
 <li>java.util.TreeMap.floorKey()</li>
@@ -2250,7 +2214,7 @@ Map&lt;TreeNode, List&lt;TreeNode&gt;&gt; g;
 <li><a href="https://liaoxuefeng.com/books/java/collection/tree-map/index.html">https://liaoxuefeng.com/books/java/collection/tree-map/index.html</a></li>
 </ul>
 <h3 id="2-8-random-nextint" tabindex="-1"><a class="header-anchor" href="#2-8-random-nextint"><span>2-8) <code>random.nextInt</code></span></a></h3>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 528</span>
 
 <span class="hljs-comment">/** bound : range of random int can be returned */</span>
@@ -2261,9 +2225,9 @@ Map&lt;TreeNode, List&lt;TreeNode&gt;&gt; g;
 System.out.println(random.nextInt(<span class="hljs-number">10</span>));
 System.out.println(random.nextInt(<span class="hljs-number">10</span>));
 System.out.println(random.nextInt(<span class="hljs-number">100</span>));
-</code></pre>
+</code></pre></div>
 <h3 id="2-9-hashmap-track-element-count-in-order" tabindex="-1"><a class="header-anchor" href="#2-9-hashmap-track-element-count-in-order"><span>2-9) HashMap - Track element count in order</span></a></h3>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 767</span>
 
 <span class="hljs-comment">// ...</span>
@@ -2285,9 +2249,9 @@ PriorityQueue&lt;Map.Entry&lt;Character, Integer&gt;&gt; maxHeap = <span class="
 maxHeap.addAll(charCountMap.entrySet());
 
 <span class="hljs-comment">// ...</span>
-</code></pre>
+</code></pre></div>
 <h3 id="3-1-primitive-type-pass-in-func" tabindex="-1"><a class="header-anchor" href="#3-1-primitive-type-pass-in-func"><span>3-1) Primitive type pass in func</span></a></h3>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 695</span>
 
 <span class="hljs-comment">/**
@@ -2316,18 +2280,18 @@ maxHeap.addAll(charCountMap.entrySet());
                 _getArea(grid, seen, x, y-<span class="hljs-number">1</span>);
 
 }
-</code></pre>
+</code></pre></div>
 <h3 id="3-2-map-characters-to-idx" tabindex="-1"><a class="header-anchor" href="#3-2-map-characters-to-idx"><span>3-2) Map characters to idx</span></a></h3>
 <p>A <strong>classic Java trick</strong> for mapping characters to array indices — especially when working with the lowercase English alphabet (<code>'a'</code> to <code>'z'</code>).</p>
 <hr>
 <h3 id="line-in-question" tabindex="-1"><a class="header-anchor" href="#line-in-question"><span>👇 Line in question:</span></a></h3>
-<pre data-lang="java"><code class="hljs language-java">orderMap[order.charAt(i) - <span class="hljs-string">&#x27;a&#x27;</span>] = i;
-</code></pre>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java">orderMap[order.charAt(i) - <span class="hljs-string">&#x27;a&#x27;</span>] = i;
+</code></pre></div>
 <hr>
 <h3 id="what-s-happening" tabindex="-1"><a class="header-anchor" href="#what-s-happening"><span>🔍 What’s happening?</span></a></h3>
 <p>Let’s say:</p>
-<pre data-lang="java"><code class="hljs language-java">order = <span class="hljs-string">&quot;hlabcdefgijkmnopqrstuvwxyz&quot;</span>;
-</code></pre>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java">order = <span class="hljs-string">&quot;hlabcdefgijkmnopqrstuvwxyz&quot;</span>;
+</code></pre></div>
 <p>So <code>order.charAt(i)</code> gets a character from the alien alphabet — for example:</p>
 <ul>
 <li><code>i = 0</code>: <code>order.charAt(0)</code> = <code>'h'</code></li>
@@ -2336,8 +2300,8 @@ maxHeap.addAll(charCountMap.entrySet());
 ➜ <code>104 - 97 = 7</code></li>
 </ul>
 <p>So:</p>
-<pre data-lang="java"><code class="hljs language-java">orderMap[<span class="hljs-number">7</span>] = <span class="hljs-number">0</span>;
-</code></pre>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java">orderMap[<span class="hljs-number">7</span>] = <span class="hljs-number">0</span>;
+</code></pre></div>
 <p>This tells us:</p>
 <blockquote>
 <p>In the alien alphabet, <code>'h'</code> is at position <code>0</code>.</p>
@@ -2379,24 +2343,24 @@ maxHeap.addAll(charCountMap.entrySet());
 <hr>
 <h3 id="why-do-we-use-this" tabindex="-1"><a class="header-anchor" href="#why-do-we-use-this"><span>✅ Why do we use this?</span></a></h3>
 <p>Because we can now use a simple array of size 26:</p>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-type">int</span>[] orderMap = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[<span class="hljs-number">26</span>];
-</code></pre>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-type">int</span>[] orderMap = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[<span class="hljs-number">26</span>];
+</code></pre></div>
 <p>And <strong>store the rank</strong> of each character in constant time using:</p>
-<pre data-lang="java"><code class="hljs language-java">orderMap[c - <span class="hljs-string">&#x27;a&#x27;</span>]
-</code></pre>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java">orderMap[c - <span class="hljs-string">&#x27;a&#x27;</span>]
+</code></pre></div>
 <p>Which is way faster than repeatedly doing:</p>
-<pre data-lang="java"><code class="hljs language-java">order.indexOf(c)  <span class="hljs-comment">// O(n) each time</span>
-</code></pre>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java">order.indexOf(c)  <span class="hljs-comment">// O(n) each time</span>
+</code></pre></div>
 <hr>
 <h3 id="tl-dr" tabindex="-1"><a class="header-anchor" href="#tl-dr"><span>✅ TL;DR</span></a></h3>
-<pre data-lang="java"><code class="hljs language-java">order.charAt(i) - <span class="hljs-string">&#x27;a&#x27;</span>
-</code></pre>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java">order.charAt(i) - <span class="hljs-string">&#x27;a&#x27;</span>
+</code></pre></div>
 <p>✔️ Converts a letter to a <strong>0-based index</strong> (e.g. <code>'a'</code> → 0, <code>'z'</code> → 25)<br>
 ✔️ Works because characters are basically integers in Java (<code>char</code> uses UTF-16)<br>
 ✔️ Super efficient for problems limited to lowercase letters</p>
 <hr>
 <h3 id="6-2-character-range-iteration" tabindex="-1"><a class="header-anchor" href="#6-2-character-range-iteration"><span>6.2) Character Range Iteration</span></a></h3>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Iterate through lowercase alphabet</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Iterate through lowercase alphabet</span>
 <span class="hljs-keyword">for</span> (<span class="hljs-type">char</span> <span class="hljs-variable">c</span> <span class="hljs-operator">=</span> <span class="hljs-string">&#x27;a&#x27;</span>; c &lt;= <span class="hljs-string">&#x27;z&#x27;</span>; c++) {
     System.out.print(c + <span class="hljs-string">&quot; &quot;</span>);  <span class="hljs-comment">// Output: a b c d e f g h i j k l m n o p q r s t u v w x y z</span>
 }
@@ -2416,11 +2380,11 @@ maxHeap.addAll(charCountMap.entrySet());
         }
     }
 }
-</code></pre>
+</code></pre></div>
 <h2 id="7-quick-reference-summary" tabindex="-1"><a class="header-anchor" href="#7-quick-reference-summary"><span>7) Quick Reference &amp; Summary</span></a></h2>
 <h3 id="7-1-most-common-patterns" tabindex="-1"><a class="header-anchor" href="#7-1-most-common-patterns"><span>7.1) Most Common Patterns</span></a></h3>
 <h4 id="data-structure-initialization" tabindex="-1"><a class="header-anchor" href="#data-structure-initialization"><span>Data Structure Initialization</span></a></h4>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Arrays</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Arrays</span>
 <span class="hljs-type">int</span>[] arr = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[n];                    <span class="hljs-comment">// Fixed size</span>
 <span class="hljs-type">int</span>[][] matrix = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[rows][cols];      <span class="hljs-comment">// 2D array</span>
 
@@ -2433,9 +2397,9 @@ Queue&lt;Integer&gt; queue = <span class="hljs-keyword">new</span> <span class="
 <span class="hljs-comment">// Priority Queues</span>
 PriorityQueue&lt;Integer&gt; minHeap = <span class="hljs-keyword">new</span> <span class="hljs-title class_">PriorityQueue</span>&lt;&gt;();              <span class="hljs-comment">// Min-heap</span>
 PriorityQueue&lt;Integer&gt; maxHeap = <span class="hljs-keyword">new</span> <span class="hljs-title class_">PriorityQueue</span>&lt;&gt;(Collections.reverseOrder()); <span class="hljs-comment">// Max-heap</span>
-</code></pre>
+</code></pre></div>
 <h4 id="essential-conversions" tabindex="-1"><a class="header-anchor" href="#essential-conversions"><span>Essential Conversions</span></a></h4>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// String ↔ Character Array</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// String ↔ Character Array</span>
 <span class="hljs-type">String</span> <span class="hljs-variable">str</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;hello&quot;</span>;
 <span class="hljs-type">char</span>[] chars = str.toCharArray();          <span class="hljs-comment">// String to char array</span>
 <span class="hljs-type">String</span> <span class="hljs-variable">newStr</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">String</span>(chars);         <span class="hljs-comment">// Char array to String</span>
@@ -2447,9 +2411,9 @@ Integer[] newArr = list.toArray(<span class="hljs-keyword">new</span> <span clas
 
 <span class="hljs-comment">// Character to Index (for a-z)</span>
 <span class="hljs-type">int</span> <span class="hljs-variable">index</span> <span class="hljs-operator">=</span> character - <span class="hljs-string">&#x27;a&#x27;</span>;               <span class="hljs-comment">// &#x27;a&#x27;→0, &#x27;b&#x27;→1, ..., &#x27;z&#x27;→25</span>
-</code></pre>
+</code></pre></div>
 <h4 id="common-operations" tabindex="-1"><a class="header-anchor" href="#common-operations"><span>Common Operations</span></a></h4>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// HashMap with default values</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// HashMap with default values</span>
 map.getOrDefault(key, defaultValue);
 map.putIfAbsent(key, value);
 
@@ -2462,7 +2426,7 @@ list.sort(Collections.reverseOrder());     <span class="hljs-comment">// Reverse
 s.charAt(i);                               <span class="hljs-comment">// Get character at index</span>
 s.substring(start, end);                   <span class="hljs-comment">// [start, end) substring</span>
 <span class="hljs-type">StringBuilder</span> <span class="hljs-variable">sb</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">StringBuilder</span>();     <span class="hljs-comment">// Mutable string</span>
-</code></pre>
+</code></pre></div>
 <h3 id="7-2-performance-tips" tabindex="-1"><a class="header-anchor" href="#7-2-performance-tips"><span>7.2) Performance Tips</span></a></h3>
 <table>
 <thead>
@@ -2502,26 +2466,26 @@ s.substring(start, end);                   <span class="hljs-comment">// [start,
 </table>
 <h3 id="7-3-common-leetcode-patterns" tabindex="-1"><a class="header-anchor" href="#7-3-common-leetcode-patterns"><span>7.3) Common LeetCode Patterns</span></a></h3>
 <h4 id="frequency-counting" tabindex="-1"><a class="header-anchor" href="#frequency-counting"><span>Frequency Counting</span></a></h4>
-<pre data-lang="java"><code class="hljs language-java">Map&lt;Character, Integer&gt; freq = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;();
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java">Map&lt;Character, Integer&gt; freq = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;();
 <span class="hljs-keyword">for</span> (<span class="hljs-type">char</span> c : s.toCharArray()) {
     freq.put(c, freq.getOrDefault(c, <span class="hljs-number">0</span>) + <span class="hljs-number">1</span>);
 }
-</code></pre>
+</code></pre></div>
 <h4 id="two-pointers-with-character-comparison" tabindex="-1"><a class="header-anchor" href="#two-pointers-with-character-comparison"><span>Two Pointers with Character Comparison</span></a></h4>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-type">int</span> <span class="hljs-variable">left</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>, right = s.length() - <span class="hljs-number">1</span>;
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-type">int</span> <span class="hljs-variable">left</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>, right = s.length() - <span class="hljs-number">1</span>;
 <span class="hljs-keyword">while</span> (left &lt; right) {
     <span class="hljs-keyword">if</span> (s.charAt(left) != s.charAt(right)) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
     left++;
     right--;
 }
-</code></pre>
+</code></pre></div>
 <h4 id="priority-queue-for-top-k-problems" tabindex="-1"><a class="header-anchor" href="#priority-queue-for-top-k-problems"><span>Priority Queue for Top-K Problems</span></a></h4>
-<pre data-lang="java"><code class="hljs language-java">PriorityQueue&lt;Integer&gt; heap = <span class="hljs-keyword">new</span> <span class="hljs-title class_">PriorityQueue</span>&lt;&gt;();
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java">PriorityQueue&lt;Integer&gt; heap = <span class="hljs-keyword">new</span> <span class="hljs-title class_">PriorityQueue</span>&lt;&gt;();
 <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> num : nums) {
     heap.offer(num);
     <span class="hljs-keyword">if</span> (heap.size() &gt; k) heap.poll();
 }
-</code></pre>
+</code></pre></div>
 <h3 id="7-4-memory-management" tabindex="-1"><a class="header-anchor" href="#7-4-memory-management"><span>7.4) Memory Management</span></a></h3>
 <ul>
 <li><strong>Primitive arrays</strong>: More memory efficient than object arrays</li>
@@ -2531,7 +2495,7 @@ s.substring(start, end);                   <span class="hljs-comment">// [start,
 </ul>
 <h2 id="8-advanced-examples-recursion-patterns" tabindex="-1"><a class="header-anchor" href="#8-advanced-examples-recursion-patterns"><span>8) Advanced Examples &amp; Recursion Patterns</span></a></h2>
 <h3 id="8-1-recursion-parameter-passing" tabindex="-1"><a class="header-anchor" href="#8-1-recursion-parameter-passing"><span>8.1) Recursion Parameter Passing</span></a></h3>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 104</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 104</span>
 <span class="hljs-comment">// https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/LeetCodeJava/Recursion/MaximumDepthOfBinaryTree.java</span>
 
 **Important Concept**: In Java, primitives are **passed by value** (creates copies).
@@ -2567,7 +2531,7 @@ s.substring(start, end);                   <span class="hljs-comment">// [start,
     <span class="hljs-keyword">if</span> (root == <span class="hljs-literal">null</span>) <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
     <span class="hljs-keyword">return</span> <span class="hljs-number">1</span> + Math.max(maxDepth(root.left), maxDepth(root.right));
 }
-</code></pre>
+</code></pre></div>
 <p><strong>Key Takeaway</strong>: When you need to track state across recursive calls, either use instance variables or design the recursion to return and combine values.</p>
 <h3 id="8-2-primitive-vs-reference-types-in-recursion-backtracking-rule" tabindex="-1"><a class="header-anchor" href="#8-2-primitive-vs-reference-types-in-recursion-backtracking-rule"><span>8.2) Primitive vs Reference Types in Recursion — Backtracking Rule ⭐</span></a></h3>
 <blockquote>
@@ -2575,12 +2539,12 @@ s.substring(start, end);                   <span class="hljs-comment">// [start,
 Reference types (collections, arrays, objects) are pass-by-reference → shared state → <strong>must backtrack</strong>.</p>
 </blockquote>
 <h4 id="the-rule-1" tabindex="-1"><a class="header-anchor" href="#the-rule-1"><span>The Rule</span></a></h4>
-<pre><code class="hljs">Primitive param (int, long, double...)  →  copy per call  →  NO backtrack needed
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Primitive param (int, long, double...)  →  copy per call  →  NO backtrack needed
 Reference param (List, int[], HashMap)  →  shared object  →  MUST backtrack (add + remove)
 Global / instance variable              →  shared state   →  MUST backtrack
-</code></pre>
+</code></pre></div>
 <h4 id="case-1-primitive-no-backtracking-needed-lc-112-path-sum" tabindex="-1"><a class="header-anchor" href="#case-1-primitive-no-backtracking-needed-lc-112-path-sum"><span>Case 1: Primitive — No Backtracking Needed (LC 112 Path Sum)</span></a></h4>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 112 - Path Sum</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 112 - Path Sum</span>
 <span class="hljs-comment">// curSum is a primitive int → each recursive call gets its OWN COPY</span>
 <span class="hljs-comment">// → no backtracking needed</span>
 
@@ -2623,16 +2587,16 @@ Global / instance variable              →  shared state   →  MUST backtrack
     getPathHelper(root.left, newSum);
     getPathHelper(root.right, newSum);
 }
-</code></pre>
+</code></pre></div>
 <p><strong>Memory model:</strong></p>
-<pre><code class="hljs">Stack frame:  getPathHelper(node=4, curSum=5)
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Stack frame:  getPathHelper(node=4, curSum=5)
               ├── newSum = 9     ← local to THIS frame
               ├── calls getPathHelper(node.left, newSum=9)
               │     └── newSum = 20  ← different frame, isolated
               └── curSum is still 5 when left call returns ✅
-</code></pre>
+</code></pre></div>
 <h4 id="case-2-global-variable-backtracking-is-needed-lc-112-v0-2" tabindex="-1"><a class="header-anchor" href="#case-2-global-variable-backtracking-is-needed-lc-112-v0-2"><span>Case 2: Global Variable — Backtracking IS Needed (LC 112 V0-2)</span></a></h4>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// BAD pattern: using an instance variable for path sum</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// BAD pattern: using an instance variable for path sum</span>
 <span class="hljs-comment">// → ALL recursive calls share the SAME curSum → must backtrack!</span>
 
 <span class="hljs-keyword">private</span> <span class="hljs-type">int</span> <span class="hljs-variable">curSum</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;  <span class="hljs-comment">// shared across ALL calls ← danger!</span>
@@ -2659,9 +2623,9 @@ Global / instance variable              →  shared state   →  MUST backtrack
     curSum -= root.val;  <span class="hljs-comment">// MUST backtrack on failure path too</span>
     <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
 }
-</code></pre>
+</code></pre></div>
 <h4 id="case-3-reference-type-list-backtracking-is-needed-lc-113-path-sum-ii" tabindex="-1"><a class="header-anchor" href="#case-3-reference-type-list-backtracking-is-needed-lc-113-path-sum-ii"><span>Case 3: Reference Type (List) — Backtracking IS Needed (LC 113 Path Sum II)</span></a></h4>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// List is passed by reference → shared object → must backtrack</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// List is passed by reference → shared object → must backtrack</span>
 <span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">dfs</span><span class="hljs-params">(TreeNode node, <span class="hljs-type">int</span> remain, List&lt;Integer&gt; path, List&lt;List&lt;Integer&gt;&gt; res)</span> {
     <span class="hljs-keyword">if</span> (node == <span class="hljs-literal">null</span>) <span class="hljs-keyword">return</span>;
 
@@ -2676,9 +2640,9 @@ Global / instance variable              →  shared state   →  MUST backtrack
 
     path.remove(path.size() - <span class="hljs-number">1</span>);  <span class="hljs-comment">// ← MUST backtrack: undo the add</span>
 }
-</code></pre>
+</code></pre></div>
 <h4 id="case-4-stringbuilder-backtracking-is-needed-lc-988-smallest-string-starting-from-leaf" tabindex="-1"><a class="header-anchor" href="#case-4-stringbuilder-backtracking-is-needed-lc-988-smallest-string-starting-from-leaf"><span>Case 4: StringBuilder — Backtracking IS Needed (LC 988 Smallest String Starting From Leaf)</span></a></h4>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 988 - Smallest String Starting From Leaf</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 988 - Smallest String Starting From Leaf</span>
 <span class="hljs-comment">// StringBuilder is a reference type → shared object → MUST backtrack</span>
 
 <span class="hljs-keyword">private</span> <span class="hljs-type">String</span> <span class="hljs-variable">smallest</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;&quot;</span>;
@@ -2753,7 +2717,7 @@ Global / instance variable              →  shared state   →  MUST backtrack
     <span class="hljs-comment">// 4. BACKTRACK: Remove the last character before returning to parent</span>
     sb.deleteCharAt(sb.length() - <span class="hljs-number">1</span>);
 }
-</code></pre>
+</code></pre></div>
 <h4 id="summary-table-1" tabindex="-1"><a class="header-anchor" href="#summary-table-1"><span>Summary Table</span></a></h4>
 <table>
 <thead>
@@ -2810,7 +2774,7 @@ Global / instance variable              →  shared state   →  MUST backtrack
 </tbody>
 </table>
 <h4 id="interview-tips" tabindex="-1"><a class="header-anchor" href="#interview-tips"><span>Interview Tips</span></a></h4>
-<pre><code class="hljs">Q: &quot;Do I need to backtrack this variable?&quot;
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Q: &quot;Do I need to backtrack this variable?&quot;
 
 Decision tree:
 1. Is it a primitive (int, long, boolean, char...)?
@@ -2829,7 +2793,7 @@ Quick mental model:
   &quot;If I change this variable, will the CALLER see the change?&quot;
   YES → backtrack required
   NO  → no backtrack needed
-</code></pre>
+</code></pre></div>
 <hr>
 <h2 id="9-others" tabindex="-1"><a class="header-anchor" href="#9-others"><span>9) Others</span></a></h2>
 <h3 id="9-0-modifying-custom-class-fields-directly-v-field-1" tabindex="-1"><a class="header-anchor" href="#9-0-modifying-custom-class-fields-directly-v-field-1"><span>9.0) Modifying Custom Class Fields Directly (<code>v.field -= 1</code>) ⭐</span></a></h3>
@@ -2843,7 +2807,7 @@ Quick mental model:
 <li><strong>Field is not <code>final</code></strong></li>
 <li><strong>Reference is not <code>null</code></strong></li>
 </ol>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">class</span> <span class="hljs-title class_">ValCnt</span> {
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">class</span> <span class="hljs-title class_">ValCnt</span> {
     <span class="hljs-type">char</span> val;
     <span class="hljs-type">int</span> cnt;           <span class="hljs-comment">// package-private, non-final</span>
     ValCnt(<span class="hljs-type">char</span> val, <span class="hljs-type">int</span> cnt) { <span class="hljs-built_in">this</span>.val = val; <span class="hljs-built_in">this</span>.cnt = cnt; }
@@ -2851,42 +2815,42 @@ Quick mental model:
 
 <span class="hljs-type">ValCnt</span> <span class="hljs-variable">v</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">ValCnt</span>(<span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-number">3</span>);
 v.cnt -= <span class="hljs-number">1</span>;   <span class="hljs-comment">// ✅ allowed: accessible + non-final + non-null</span>
-</code></pre>
+</code></pre></div>
 <h4 id="when-you-cannot-modify-directly" tabindex="-1"><a class="header-anchor" href="#when-you-cannot-modify-directly"><span>When you CANNOT modify directly</span></a></h4>
 <p><strong>Case 1 — <code>private</code> field</strong> (outside the class)</p>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">class</span> <span class="hljs-title class_">ValCnt</span> {
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">class</span> <span class="hljs-title class_">ValCnt</span> {
     <span class="hljs-keyword">private</span> <span class="hljs-type">int</span> cnt;   <span class="hljs-comment">// private!</span>
 }
 
 v.cnt -= <span class="hljs-number">1</span>;   <span class="hljs-comment">// ❌ compile error — use a setter/method instead</span>
-</code></pre>
+</code></pre></div>
 <p><strong>Case 2 — <code>final</code> field</strong></p>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">class</span> <span class="hljs-title class_">ValCnt</span> {
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">class</span> <span class="hljs-title class_">ValCnt</span> {
     <span class="hljs-keyword">final</span> <span class="hljs-type">int</span> cnt;
 }
 
 v.cnt -= <span class="hljs-number">1</span>;   <span class="hljs-comment">// ❌ compile error — cannot assign to final variable</span>
-</code></pre>
+</code></pre></div>
 <p><strong>Case 3 — null reference</strong></p>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-type">ValCnt</span> <span class="hljs-variable">v</span> <span class="hljs-operator">=</span> <span class="hljs-literal">null</span>;
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-type">ValCnt</span> <span class="hljs-variable">v</span> <span class="hljs-operator">=</span> <span class="hljs-literal">null</span>;
 v.cnt -= <span class="hljs-number">1</span>;   <span class="hljs-comment">// ❌ NullPointerException at runtime</span>
-</code></pre>
+</code></pre></div>
 <h4 id="common-misconception-final-reference-vs-final-field" tabindex="-1"><a class="header-anchor" href="#common-misconception-final-reference-vs-final-field"><span>Common misconception: <code>final</code> reference vs <code>final</code> field</span></a></h4>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">final</span> <span class="hljs-type">ValCnt</span> <span class="hljs-variable">v</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">ValCnt</span>(<span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-number">3</span>);
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">final</span> <span class="hljs-type">ValCnt</span> <span class="hljs-variable">v</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">ValCnt</span>(<span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-number">3</span>);
 
 v.cnt -= <span class="hljs-number">1</span>;              <span class="hljs-comment">// ✅ allowed — final only locks the REFERENCE</span>
 v = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ValCnt</span>(<span class="hljs-string">&#x27;b&#x27;</span>, <span class="hljs-number">1</span>);  <span class="hljs-comment">// ❌ compile error — cannot reassign final reference</span>
-</code></pre>
+</code></pre></div>
 <p><code>final</code> on the variable means you cannot point <code>v</code> to a different object.
 It does <strong>not</strong> prevent mutating the object’s fields.</p>
 <h4 id="integer-wrapper-field-works-but-autoboxes" tabindex="-1"><a class="header-anchor" href="#integer-wrapper-field-works-but-autoboxes"><span><code>Integer</code> (wrapper) field — works but autoboxes</span></a></h4>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Holder</span> { Integer cnt; }
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Holder</span> { Integer cnt; }
 
 <span class="hljs-type">Holder</span> <span class="hljs-variable">h</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Holder</span>();
 h.cnt = <span class="hljs-number">3</span>;
 h.cnt -= <span class="hljs-number">1</span>;  <span class="hljs-comment">// ✅ works, but really: h.cnt = Integer.valueOf(h.cnt.intValue() - 1)</span>
              <span class="hljs-comment">//    creates a new Integer object; fails if field is final</span>
-</code></pre>
+</code></pre></div>
 <h4 id="summary-table-2" tabindex="-1"><a class="header-anchor" href="#summary-table-2"><span>Summary table</span></a></h4>
 <table>
 <thead>
@@ -2924,19 +2888,19 @@ h.cnt -= <span class="hljs-number">1</span>;  <span class="hljs-comment">// ✅ 
 </table>
 <h4 id="interview-trap-v-cnt-vs-v-cnt-vs-v-cnt-1" tabindex="-1"><a class="header-anchor" href="#interview-trap-v-cnt-vs-v-cnt-vs-v-cnt-1"><span>Interview trap: <code>v.cnt--</code> vs <code>--v.cnt</code> vs <code>v.cnt -= 1</code></span></a></h4>
 <p>All three decrement <code>cnt</code> by 1. The difference is the <strong>returned expression value</strong>:</p>
-<pre data-lang="java"><code class="hljs language-java">v.cnt = <span class="hljs-number">3</span>;
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java">v.cnt = <span class="hljs-number">3</span>;
 
 <span class="hljs-type">int</span> <span class="hljs-variable">a</span> <span class="hljs-operator">=</span> v.cnt--;   <span class="hljs-comment">// a = 3  (returns BEFORE decrement), v.cnt = 2</span>
 <span class="hljs-type">int</span> <span class="hljs-variable">b</span> <span class="hljs-operator">=</span> --v.cnt;   <span class="hljs-comment">// b = 1  (returns AFTER  decrement), v.cnt = 1</span>
 v.cnt -= <span class="hljs-number">1</span>;        <span class="hljs-comment">// no return value used, v.cnt = 0</span>
-</code></pre>
+</code></pre></div>
 <p>Use <code>v.cnt -= 1</code> when you only care about the side-effect, not the return value.</p>
 <hr>
 <h3 id="9-1-java-value-assign" tabindex="-1"><a class="header-anchor" href="#9-1-java-value-assign"><span>9.1) Java <code>value</code> assign</span></a></h3>
 <ul>
 <li><a href="https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/LeetCodeJava/LinkedList/ReverseLinkedList.java">https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/LeetCodeJava/LinkedList/ReverseLinkedList.java</a></li>
 </ul>
-<pre data-lang="java"><code class="hljs language-java">
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java">
     <span class="hljs-keyword">public</span> ListNode <span class="hljs-title function_">reverseList_0_0_1</span><span class="hljs-params">(ListNode head)</span> {
             <span class="hljs-comment">// edge</span>
             <span class="hljs-keyword">if</span>(head == <span class="hljs-literal">null</span> || head.next == <span class="hljs-literal">null</span>) {
@@ -2981,13 +2945,13 @@ v.cnt -= <span class="hljs-number">1</span>;        <span class="hljs-comment">/
             <span class="hljs-keyword">return</span> _prev;
         }
 
-</code></pre>
+</code></pre></div>
 <h3 id="9-2-java-re-construct-nodes" tabindex="-1"><a class="header-anchor" href="#9-2-java-re-construct-nodes"><span>9.2) Java <code>re-construct</code> nodes</span></a></h3>
 <ul>
 <li>LC 116</li>
 <li><a href="https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/LeetCodeJava/Recursion/PopulatingNextRightPointersInEachNode.java">https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/LeetCodeJava/Recursion/PopulatingNextRightPointersInEachNode.java</a></li>
 </ul>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">public</span> Node <span class="hljs-title function_">connect_0_1</span><span class="hljs-params">(Node root)</span> {
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">public</span> Node <span class="hljs-title function_">connect_0_1</span><span class="hljs-params">(Node root)</span> {
     <span class="hljs-keyword">if</span> (root == <span class="hljs-literal">null</span>)
         <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;
 
@@ -3041,12 +3005,12 @@ v.cnt -= <span class="hljs-number">1</span>;        <span class="hljs-comment">/
 
     <span class="hljs-keyword">return</span> root;
 }
-</code></pre>
+</code></pre></div>
 <h3 id="9-3-pre-calculate-perfect-squares-up-to-n" tabindex="-1"><a class="header-anchor" href="#9-3-pre-calculate-perfect-squares-up-to-n"><span>9.3) Pre-calculate Perfect Squares up to N</span></a></h3>
 <blockquote>
 <p><strong>Trick</strong>: Pre-compute all perfect squares ≤ N into a list, then iterate over the list instead of recalculating <code>i * i</code> each time. Useful in BFS/DP problems like LC 279 (Perfect Squares).</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Pre-calculate perfect squares up to n</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Pre-calculate perfect squares up to n</span>
 List&lt;Integer&gt; squares = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();
 <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span>; i * i &lt;= n; i++) {
     squares.add(i * i);
@@ -3058,20 +3022,20 @@ List&lt;Integer&gt; squares = <span class="hljs-keyword">new</span> <span class=
     <span class="hljs-keyword">if</span> (nextVal &lt; <span class="hljs-number">0</span>) <span class="hljs-keyword">break</span>; <span class="hljs-comment">// squares are sorted, early termination</span>
     <span class="hljs-comment">// ...</span>
 }
-</code></pre>
+</code></pre></div>
 <h3 id="9-4-charat-returns-ascii-not-the-digit-value" tabindex="-1"><a class="header-anchor" href="#9-4-charat-returns-ascii-not-the-digit-value"><span>9.4) <code>charAt()</code> Returns ASCII, NOT the Digit Value</span></a></h3>
 <blockquote>
 <p><strong>Pitfall</strong>: <code>new Integer(s.charAt(i))</code> gives the ASCII code (e.g. 51), not the digit (e.g. 3).</p>
 </blockquote>
 <h4 id="wrong" tabindex="-1"><a class="header-anchor" href="#wrong"><span>Wrong</span></a></h4>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-type">int</span> <span class="hljs-variable">val1</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Integer</span>(s.charAt(i));
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-type">int</span> <span class="hljs-variable">val1</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Integer</span>(s.charAt(i));
 <span class="hljs-comment">// s.charAt(i) = &#x27;3&#x27; → &#x27;3&#x27; is char → ASCII 51</span>
 <span class="hljs-comment">// val1 = 51 ❌</span>
-</code></pre>
+</code></pre></div>
 <h4 id="correct" tabindex="-1"><a class="header-anchor" href="#correct"><span>Correct</span></a></h4>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-type">int</span> <span class="hljs-variable">val1</span> <span class="hljs-operator">=</span> s.charAt(i) - <span class="hljs-string">&#x27;0&#x27;</span>;
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-type">int</span> <span class="hljs-variable">val1</span> <span class="hljs-operator">=</span> s.charAt(i) - <span class="hljs-string">&#x27;0&#x27;</span>;
 <span class="hljs-comment">// &#x27;3&#x27; - &#x27;0&#x27; = 51 - 48 = 3 ✅</span>
-</code></pre>
+</code></pre></div>
 <h4 id="why-char-is-stored-as-ascii-unicode-value" tabindex="-1"><a class="header-anchor" href="#why-char-is-stored-as-ascii-unicode-value"><span>Why: <code>char</code> is stored as ASCII/Unicode value</span></a></h4>
 <table>
 <thead>
@@ -3096,18 +3060,18 @@ List&lt;Integer&gt; squares = <span class="hljs-keyword">new</span> <span class=
 </tbody>
 </table>
 <h4 id="new-integer-is-also-deprecated" tabindex="-1"><a class="header-anchor" href="#new-integer-is-also-deprecated"><span><code>new Integer(...)</code> is also deprecated</span></a></h4>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">new</span> <span class="hljs-title class_">Integer</span>(...)          <span class="hljs-comment">// ❌ Deprecated, unnecessary object creation, slower</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">new</span> <span class="hljs-title class_">Integer</span>(...)          <span class="hljs-comment">// ❌ Deprecated, unnecessary object creation, slower</span>
 Integer.valueOf(...)      <span class="hljs-comment">// ✅ If you need an Integer object</span>
 <span class="hljs-type">int</span> <span class="hljs-variable">x</span> <span class="hljs-operator">=</span> ...;             <span class="hljs-comment">// ✅ Prefer primitives</span>
-</code></pre>
+</code></pre></div>
 <h4 id="for-multi-digit-substrings-parseint-is-correct" tabindex="-1"><a class="header-anchor" href="#for-multi-digit-substrings-parseint-is-correct"><span>For multi-digit substrings, <code>parseInt</code> is correct</span></a></h4>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-type">int</span> <span class="hljs-variable">val2</span> <span class="hljs-operator">=</span> Integer.parseInt(s.substring(i - <span class="hljs-number">2</span>, i));
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-type">int</span> <span class="hljs-variable">val2</span> <span class="hljs-operator">=</span> Integer.parseInt(s.substring(i - <span class="hljs-number">2</span>, i));
 <span class="hljs-comment">// ✅ Correct — parsing a String, not a char</span>
-</code></pre>
+</code></pre></div>
 <h4 id="tl-dr-1" tabindex="-1"><a class="header-anchor" href="#tl-dr-1"><span>TL;DR</span></a></h4>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">new</span> <span class="hljs-title class_">Integer</span>(s.charAt(i))  <span class="hljs-comment">// ❌ gives ASCII (e.g. 51)</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">new</span> <span class="hljs-title class_">Integer</span>(s.charAt(i))  <span class="hljs-comment">// ❌ gives ASCII (e.g. 51)</span>
 s.charAt(i) - <span class="hljs-string">&#x27;0&#x27;</span>         <span class="hljs-comment">// ✅ gives actual digit (e.g. 3)</span>
-</code></pre>
+</code></pre></div>
 
       </div>
       <div class="cheatsheet-footer">

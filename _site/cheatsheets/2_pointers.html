@@ -19,54 +19,18 @@
     }
   })();
   </script>
-  <script>document.addEventListener('DOMContentLoaded', function() {
-    document.querySelectorAll('pre code').forEach(function(codeEl) {
-      var pre = codeEl.parentElement;
-      var lang = '';
-      var cls = codeEl.className || '';
-      var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
-      if (m) lang = m[1];
-
-      // Add line numbers
-      var lines = codeEl.innerHTML.split('
-');
-      if (lines[lines.length - 1] === '') lines.pop();
-      var numbered = lines.map(function(line, i) {
-        return '<span class="hljs-ln-line"><span class="hljs-ln-n" data-line-number="' + (i + 1) + '"></span><span class="hljs-ln-code">' + line + '</span></span>';
-      }).join('
-');
-      codeEl.innerHTML = numbered;
-      codeEl.classList.add('hljs-ln');
-
-      var wrapper = document.createElement('div');
-      wrapper.className = 'code-block-wrapper';
-      pre.parentNode.insertBefore(wrapper, pre);
-      var header = document.createElement('div');
-      header.className = 'code-block-header';
-      if (lang) {
-        var label = document.createElement('span');
-        label.className = 'code-lang-label';
-        label.textContent = lang;
-        header.appendChild(label);
-      } else {
-        header.appendChild(document.createElement('span'));
-      }
-      var btn = document.createElement('button');
-      btn.className = 'copy-btn';
-      btn.textContent = 'Copy';
-      btn.addEventListener('click', function() {
-        var text = Array.from(codeEl.querySelectorAll('.hljs-ln-code')).map(function(el) { return el.textContent; }).join('
-');
-        navigator.clipboard.writeText(text).then(function() {
-          btn.textContent = 'Copied!';
-          btn.classList.add('copied');
-          setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
-        });
-      });
-      header.appendChild(btn);
-      wrapper.appendChild(header);
-      wrapper.appendChild(pre);
+  <script>
+  function copyCode(btn) {
+    var pre = btn.closest('.code-block-wrapper').querySelector('pre');
+    var text = pre ? pre.innerText : '';
+    navigator.clipboard.writeText(text).then(function() {
+      btn.textContent = 'Copied!';
+      btn.classList.add('copied');
+      setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
     });
+  }
+  </script>
+  <script>document.addEventListener('DOMContentLoaded', function() {
     document.querySelectorAll('table').forEach(function(table) {
       if (!table.parentElement.classList.contains('table-wrap')) {
         var wrapper = document.createElement('div');
@@ -260,13 +224,13 @@
 <li><strong>Overwrite</strong> (<code>nums[slow] = nums[fast]</code>): cleaner, preferred — array is already sorted so we just need to copy unique values forward</li>
 <li><strong>Swap</strong> (<code>swap(nums[slow], nums[fast])</code>): also correct but unnecessary for sorted arrays; used when original values need to be preserved elsewhere</li>
 </ul>
-<pre><code class="hljs">Pointer movement rules:
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Pointer movement rules:
   - fast: moves EVERY iteration (scans all elements)
   - slow: moves ONLY when a new unique value is found (after nums[fast] != nums[slow])
   - Both start at 0 (or slow=0, fast=1 in while-loop variants)
-</code></pre>
+</code></pre></div>
 <hr>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 26 (LC 83)</span>
 <span class="hljs-comment">// https://labuladong.online/algo/essential-technique/array-two-pointers-summary/#%E5%8E%9F%E5%9C%B0%E4%BF%AE%E6%94%B9</span>
 <span class="hljs-comment">/**
@@ -353,7 +317,7 @@
         <span class="hljs-keyword">return</span> slow + <span class="hljs-number">1</span>;
     }
 }
-</code></pre>
+</code></pre></div>
 <h4 id="pattern-summary" tabindex="-1"><a class="header-anchor" href="#pattern-summary"><span>Pattern Summary</span></a></h4>
 <table>
 <thead>
@@ -444,20 +408,20 @@
 <li>Since the array is sorted, if <code>nums[fast] == nums[slow - 2]</code>, writing it would create a 3rd consecutive duplicate → skip</li>
 <li>Both <code>slow</code> and <code>fast</code> start at index 2 (first two elements always allowed)</li>
 </ul>
-<pre><code class="hljs">Key condition: nums[fast] != nums[slow - 2]
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Key condition: nums[fast] != nums[slow - 2]
   → write nums[fast] to nums[slow], slow++
   
 Pointer initialization:
   slow = 2  (write pointer, first 2 slots are always valid)
   fast = 2  (read pointer, scans from index 2 onward)
-</code></pre>
+</code></pre></div>
 <p><strong>Why <code>slow - 2</code> and not <code>slow - 1</code>?</strong></p>
 <ul>
 <li><code>slow - 1</code> would only prevent 3rd+ duplicates if the LAST two wrote the same value</li>
 <li><code>slow - 2</code> directly checks if the slot two positions back already holds the same value — guaranteeing at most 2 copies</li>
 </ul>
 <hr>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 80 - Remove Duplicates from Sorted Array II</span>
 <span class="hljs-comment">// time: O(N), space: O(1)</span>
 <span class="hljs-comment">/**
@@ -520,9 +484,9 @@ Pointer initialization:
     }
     <span class="hljs-keyword">return</span> slow;
 }
-</code></pre>
+</code></pre></div>
 <h4 id="generalized-pattern-allow-at-most-k-duplicates" tabindex="-1"><a class="header-anchor" href="#generalized-pattern-allow-at-most-k-duplicates"><span>Generalized Pattern: Allow at most K duplicates</span></a></h4>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Generic template: allow each element at most K times</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Generic template: allow each element at most K times</span>
 <span class="hljs-comment">// LC 26 is K=1, LC 80 is K=2</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">removeDuplicatesAtMostK</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums, <span class="hljs-type">int</span> k)</span> {
     <span class="hljs-type">int</span> <span class="hljs-variable">slow</span> <span class="hljs-operator">=</span> k;
@@ -536,7 +500,7 @@ Pointer initialization:
 }
 <span class="hljs-comment">// LC 26: call with k=1  →  compare nums[fast] != nums[slow - 1]</span>
 <span class="hljs-comment">// LC 80: call with k=2  →  compare nums[fast] != nums[slow - 2]</span>
-</code></pre>
+</code></pre></div>
 <h4 id="lc-26-vs-lc-80-comparison" tabindex="-1"><a class="header-anchor" href="#lc-26-vs-lc-80-comparison"><span>LC 26 vs LC 80 Comparison</span></a></h4>
 <table>
 <thead>
@@ -602,7 +566,7 @@ Pointer initialization:
 </tbody>
 </table>
 <h3 id="0-2-1-remove-element" tabindex="-1"><a class="header-anchor" href="#0-2-1-remove-element"><span>0-2-1) Remove Element</span></a></h3>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 27</span>
 <span class="hljs-comment">// https://labuladong.online/algo/essential-technique/array-two-pointers-summary/#%E5%8E%9F%E5%9C%B0%E4%BF%AE%E6%94%B9</span>
 <span class="hljs-comment">/**
@@ -681,7 +645,7 @@ Pointer initialization:
         <span class="hljs-keyword">return</span> slow;
     }
 }
-</code></pre>
+</code></pre></div>
 <h3 id="0-2-1b-remove-element-bidirectional-two-pointers" tabindex="-1"><a class="header-anchor" href="#0-2-1b-remove-element-bidirectional-two-pointers"><span>0-2-1b) Remove Element (Bidirectional Two Pointers)</span></a></h3>
 <p><strong>Pattern: Left-Right pointers, shrink from both ends</strong></p>
 <p>Key difference from the fast-slow (0-2-1) approach:</p>
@@ -689,7 +653,7 @@ Pointer initialization:
 <li>Fast-slow overwrites sequentially → <strong>preserves relative order</strong></li>
 <li>Bidirectional replaces <code>nums[l]</code> with <code>nums[r]</code> → <strong>does NOT preserve order</strong>, but may do fewer writes (good when <code>val</code> is rare)</li>
 </ul>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 27 Remove Element - Bidirectional variant</span>
 <span class="hljs-comment">/**
  * Key Idea:
@@ -770,7 +734,7 @@ Pointer initialization:
     <span class="hljs-comment">// l is exactly the count of non-val elements</span>
     <span class="hljs-keyword">return</span> l;
 }
-</code></pre>
+</code></pre></div>
 <p><strong>Comparison: Fast-Slow vs Bidirectional</strong></p>
 <table>
 <thead>
@@ -813,7 +777,7 @@ Pointer initialization:
 <li>LC 80 Remove Duplicates from Sorted Array II — order matters, use fast-slow instead</li>
 </ul>
 <h3 id="0-2-2-move-zeros-to-end" tabindex="-1"><a class="header-anchor" href="#0-2-2-move-zeros-to-end"><span>0-2-2) Move Zeros to End</span></a></h3>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 283 Move Zeroes</span>
 <span class="hljs-comment">// https://leetcode.com/problems/move-zeroes/</span>
 <span class="hljs-comment">/**
@@ -930,7 +894,7 @@ Pointer initialization:
         }
     }
 }
-</code></pre>
+</code></pre></div>
 <p><strong>Similar Problems:</strong></p>
 <ul>
 <li>LC 283 Move Zeroes (this pattern)</li>
@@ -941,7 +905,7 @@ Pointer initialization:
 <li>LC 1089 Duplicate Zeros (expanding array version)</li>
 </ul>
 <h4 id="0-2-3-for-loop-expand-left-right-from-center" tabindex="-1"><a class="header-anchor" href="#0-2-3-for-loop-expand-left-right-from-center"><span>0-2-3) for loop + “expand <code>left</code>, <code>right</code> from center”</span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 005  Longest Palindromic Substring</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 005  Longest Palindromic Substring</span>
 <span class="hljs-comment"># LC 647 Palindromic Substrings</span>
 <span class="hljs-comment"># python</span>
 <span class="hljs-comment"># pseudo code</span>
@@ -975,9 +939,9 @@ Pointer initialization:
         left -= <span class="hljs-number">1</span>
         right += <span class="hljs-number">1</span>
 <span class="hljs-comment"># ...</span>
-</code></pre>
+</code></pre></div>
 <h4 id="0-2-4-move-right-pointer-then-move-left-point" tabindex="-1"><a class="header-anchor" href="#0-2-4-move-right-pointer-then-move-left-point"><span>0-2-4) Move <code>right pointer</code>, then move <code>left point</code></span></a></h4>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 567</span>
 
 <span class="hljs-type">int</span> <span class="hljs-variable">l</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
@@ -994,9 +958,9 @@ Pointer initialization:
 
 
 <span class="hljs-comment">// ...</span>
-</code></pre>
+</code></pre></div>
 <h4 id="0-2-5-subsequence-matching-one-always-moves-one-conditionally-moves" tabindex="-1"><a class="header-anchor" href="#0-2-5-subsequence-matching-one-always-moves-one-conditionally-moves"><span>0-2-5) Subsequence Matching (One Always Moves, One Conditionally Moves)</span></a></h4>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 392 Is Subsequence</span>
 <span class="hljs-comment">// https://leetcode.com/problems/is-subsequence/</span>
 
@@ -1061,7 +1025,7 @@ Pointer initialization:
     <span class="hljs-comment">// If i reached the end of s, all characters were found in order</span>
     <span class="hljs-keyword">return</span> i == s.length();
 }
-</code></pre>
+</code></pre></div>
 <p><strong>Classic Problems:</strong></p>
 <ul>
 <li>LC 392 Is Subsequence</li>
@@ -1069,7 +1033,7 @@ Pointer initialization:
 <li>LC 792 Number of Matching Subsequences</li>
 </ul>
 <h4 id="0-2-6-pattern-matching-with-character-type-constraints-camelcase-matching" tabindex="-1"><a class="header-anchor" href="#0-2-6-pattern-matching-with-character-type-constraints-camelcase-matching"><span>0-2-6) Pattern Matching with Character Type Constraints (CamelCase Matching)</span></a></h4>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 1023 Camelcase Matching</span>
 <span class="hljs-comment">// https://leetcode.com/problems/camelcase-matching/</span>
 
@@ -1183,8 +1147,8 @@ Pointer initialization:
     <span class="hljs-comment">// Match is only valid if we successfully navigated through the entire pattern</span>
     <span class="hljs-keyword">return</span> j == pattern.length();
 }
-</code></pre>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
 <span class="hljs-comment"># LC 1023 Camelcase Matching</span>
 
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">camelMatch</span>(<span class="hljs-params">queries, pattern</span>):
@@ -1230,7 +1194,7 @@ Pointer initialization:
         result.append(is_valid <span class="hljs-keyword">and</span> j == <span class="hljs-built_in">len</span>(pattern))
 
     <span class="hljs-keyword">return</span> result
-</code></pre>
+</code></pre></div>
 <p><strong>Key Differences from Standard Subsequence:</strong></p>
 <table>
 <thead>
@@ -1264,7 +1228,7 @@ Pointer initialization:
 </tbody>
 </table>
 <p><strong>Visualization:</strong></p>
-<pre><code class="hljs">Pattern = &quot;FB&quot;
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Pattern = &quot;FB&quot;
 
 Query 1: &quot;FooBar&quot;
   F → match ✓
@@ -1284,7 +1248,7 @@ Query 2: &quot;FooBarTest&quot;
   r → lowercase non-match ✓
   T → UPPERCASE non-match ✗ FAIL!
   Result: FALSE
-</code></pre>
+</code></pre></div>
 <p><strong>Pointer Movement Rules:</strong></p>
 <ol>
 <li>
@@ -1321,11 +1285,11 @@ Query 2: &quot;FooBarTest&quot;
 <p><strong>Pattern Overview:</strong>
 QuickSelect is a selection algorithm to find the Kth smallest/largest element in an unordered list. It’s related to QuickSort but only recurses into one side of the partition. This makes it <strong>O(n) average time</strong> instead of O(n log n).</p>
 <p><strong>Core Concept:</strong></p>
-<pre><code class="hljs">Given array: [3, 2, 1, 5, 6, 4], find 2nd largest (k=2)
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Given array: [3, 2, 1, 5, 6, 4], find 2nd largest (k=2)
 
 QuickSort: Sorts entire array → O(n log n)
 QuickSelect: Only finds the Kth element position → O(n) average
-</code></pre>
+</code></pre></div>
 <p><strong>Key Insight:</strong></p>
 <ul>
 <li>After partitioning around a pivot, the pivot is in its final sorted position</li>
@@ -1343,7 +1307,7 @@ QuickSelect: Only finds the Kth element position → O(n) average
 </ol>
 <hr>
 <h4 id="template-1-kth-largest-element" tabindex="-1"><a class="header-anchor" href="#template-1-kth-largest-element"><span>Template 1: Kth Largest Element</span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - QuickSelect for Kth Largest</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - QuickSelect for Kth Largest</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">findKthLargest</span>(<span class="hljs-params">nums, k</span>):
     <span class="hljs-string">&quot;&quot;&quot;
     Find Kth largest element using QuickSelect.
@@ -1398,8 +1362,8 @@ QuickSelect: Only finds the Kth element position → O(n) average
 <span class="hljs-comment"># Example usage:</span>
 <span class="hljs-comment"># nums = [3, 2, 1, 5, 6, 4], k = 2</span>
 <span class="hljs-comment"># Result: 5 (2nd largest)</span>
-</code></pre>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java - QuickSelect for Kth Largest</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java - QuickSelect for Kth Largest</span>
 <span class="hljs-comment">/**
  * LC 215 - Kth Largest Element in an Array
  *
@@ -1457,10 +1421,10 @@ QuickSelect: Only finds the Kth element position → O(n) average
         nums[j] = temp;
     }
 }
-</code></pre>
+</code></pre></div>
 <hr>
 <h4 id="visual-example-finding-2nd-largest-in-3-2-1-5-6-4" tabindex="-1"><a class="header-anchor" href="#visual-example-finding-2nd-largest-in-3-2-1-5-6-4"><span>Visual Example: Finding 2nd Largest in [3, 2, 1, 5, 6, 4]</span></a></h4>
-<pre><code class="hljs">Target: k = 2 (2nd largest)
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Target: k = 2 (2nd largest)
 Array: [3, 2, 1, 5, 6, 4]
 n = 6, so we need (n - k) = 4th smallest element (0-indexed)
 
@@ -1483,10 +1447,10 @@ Step 2: Partition right side [6, 5] with pivot = 5
 
 Check: pivot_idx (4) == k_smallest (4) ✓
 Answer: nums[4] = 5 (2nd largest element)
-</code></pre>
+</code></pre></div>
 <hr>
 <h4 id="template-2-k-closest-points-to-origin-lc-973" tabindex="-1"><a class="header-anchor" href="#template-2-k-closest-points-to-origin-lc-973"><span>Template 2: K Closest Points to Origin (LC 973)</span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - K Closest Points using QuickSelect</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - K Closest Points using QuickSelect</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">kClosest</span>(<span class="hljs-params">points, k</span>):
     <span class="hljs-string">&quot;&quot;&quot;
     Find K closest points to origin using QuickSelect.
@@ -1525,8 +1489,8 @@ Answer: nums[4] = 5 (2nd largest element)
     <span class="hljs-comment"># Find K smallest distances</span>
     quickselect(<span class="hljs-number">0</span>, <span class="hljs-built_in">len</span>(points) - <span class="hljs-number">1</span>, k - <span class="hljs-number">1</span>)
     <span class="hljs-keyword">return</span> points[:k]
-</code></pre>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java - K Closest Points</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java - K Closest Points</span>
 <span class="hljs-comment">/**
  * LC 973 - K Closest Points to Origin
  *
@@ -1579,10 +1543,10 @@ Answer: nums[4] = 5 (2nd largest element)
         points[j] = temp;
     }
 }
-</code></pre>
+</code></pre></div>
 <hr>
 <h4 id="optimization-randomized-pivot" tabindex="-1"><a class="header-anchor" href="#optimization-randomized-pivot"><span>Optimization: Randomized Pivot</span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Randomized QuickSelect for better average performance</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Randomized QuickSelect for better average performance</span>
 <span class="hljs-keyword">import</span> random
 
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">findKthLargest_randomized</span>(<span class="hljs-params">nums, k</span>):
@@ -1622,11 +1586,11 @@ Answer: nums[4] = 5 (2nd largest element)
 
     n = <span class="hljs-built_in">len</span>(nums)
     <span class="hljs-keyword">return</span> quickselect(<span class="hljs-number">0</span>, n - <span class="hljs-number">1</span>, n - k)
-</code></pre>
+</code></pre></div>
 <hr>
 <h4 id="partition-algorithm-variants" tabindex="-1"><a class="header-anchor" href="#partition-algorithm-variants"><span>Partition Algorithm Variants</span></a></h4>
 <p><strong>1. Hoare Partition (Two-Pointer from Ends):</strong></p>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">partition_hoare</span>(<span class="hljs-params">nums, left, right</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">partition_hoare</span>(<span class="hljs-params">nums, left, right</span>):
     <span class="hljs-string">&quot;&quot;&quot;
     Hoare&#x27;s partition: pointers move from both ends.
     More efficient with fewer swaps.
@@ -1649,9 +1613,9 @@ Answer: nums[4] = 5 (2nd largest element)
             <span class="hljs-keyword">return</span> j
 
         nums[i], nums[j] = nums[j], nums[i]
-</code></pre>
+</code></pre></div>
 <p><strong>2. Lomuto Partition (Single Pass):</strong></p>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">partition_lomuto</span>(<span class="hljs-params">nums, left, right</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">partition_lomuto</span>(<span class="hljs-params">nums, left, right</span>):
     <span class="hljs-string">&quot;&quot;&quot;
     Lomuto&#x27;s partition: single pointer from left.
     Simpler but may do more swaps.
@@ -1666,7 +1630,7 @@ Answer: nums[4] = 5 (2nd largest element)
 
     nums[i], nums[right] = nums[right], nums[i]
     <span class="hljs-keyword">return</span> i
-</code></pre>
+</code></pre></div>
 <hr>
 <h4 id="classic-leetcode-problems" tabindex="-1"><a class="header-anchor" href="#classic-leetcode-problems"><span>Classic LeetCode Problems</span></a></h4>
 <table>
@@ -1833,14 +1797,14 @@ Answer: nums[4] = 5 (2nd largest element)
 <li><strong>Tail recursion</strong>: Only recurse into smaller partition</li>
 </ul>
 <p><strong>3. Complexity Analysis:</strong></p>
-<pre><code class="hljs">Best/Average Case: O(n + n/2 + n/4 + ... + 1) = O(2n) = O(n)
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Best/Average Case: O(n + n/2 + n/4 + ... + 1) = O(2n) = O(n)
 
 Worst Case (bad pivots every time):
   O(n + (n-1) + (n-2) + ... + 1) = O(n²)
 
 With randomized pivot:
   Worst case O(n²) probability → near zero for large n
-</code></pre>
+</code></pre></div>
 <p><strong>4. Interview Talking Points:</strong></p>
 <ul>
 <li>“QuickSelect is like QuickSort but only recurses into one partition”</li>
@@ -1868,7 +1832,7 @@ With randomized pivot:
 </ul>
 <hr>
 <h4 id="advanced-median-of-medians-o-n-worst-case" tabindex="-1"><a class="header-anchor" href="#advanced-median-of-medians-o-n-worst-case"><span>Advanced: Median of Medians (O(n) Worst-Case)</span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">findKthLargest_median_of_medians</span>(<span class="hljs-params">nums, k</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">findKthLargest_median_of_medians</span>(<span class="hljs-params">nums, k</span>):
     <span class="hljs-string">&quot;&quot;&quot;
     Guaranteed O(n) worst-case using Median of Medians pivot selection.
     More complex but theoretically optimal.
@@ -1899,13 +1863,13 @@ With randomized pivot:
     <span class="hljs-comment"># Main quickselect with median of medians pivot</span>
     <span class="hljs-comment"># ... implementation ...</span>
     <span class="hljs-keyword">pass</span>
-</code></pre>
+</code></pre></div>
 <p><strong>Note:</strong> Median of Medians is rarely implemented in interviews due to complexity. Randomized QuickSelect is preferred in practice.</p>
 <hr>
 <h2 id="1-general-form" tabindex="-1"><a class="header-anchor" href="#1-general-form"><span>1) General form</span></a></h2>
 <h3 id="1-1-basic-op" tabindex="-1"><a class="header-anchor" href="#1-1-basic-op"><span>1-1) Basic OP</span></a></h3>
 <h4 id="1-1-1-reverse-array" tabindex="-1"><a class="header-anchor" href="#1-1-1-reverse-array"><span>1-1-1 : Reverse Array</span></a></h4>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-keyword">void</span> <span class="hljs-title function_">reverse</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums)</span>{
 
     <span class="hljs-type">int</span> <span class="hljs-variable">left</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
@@ -1921,12 +1885,12 @@ With randomized pivot:
         right -= <span class="hljs-number">1</span>;
     }
 }
-</code></pre>
+</code></pre></div>
 <h4 id="1-1-6-binary-search" tabindex="-1"><a class="header-anchor" href="#1-1-6-binary-search"><span>1-1-6: <a href="binary_search.html">binary search</a></span></a></h4>
 <h4 id="1-1-7-sliding-window" tabindex="-1"><a class="header-anchor" href="#1-1-7-sliding-window"><span>1-1-7: <a href="sliding_window.html">sliding window</a></span></a></h4>
 <h2 id="2-lc-example" tabindex="-1"><a class="header-anchor" href="#2-lc-example"><span>2) LC Example</span></a></h2>
 <h3 id="2-1-remove-element" tabindex="-1"><a class="header-anchor" href="#2-1-remove-element"><span>2-1) Remove Element</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
 <span class="hljs-comment"># basic</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">removeElement</span>(<span class="hljs-params">self, nums, val</span>):
@@ -1936,8 +1900,8 @@ With randomized pivot:
                 nums[length] = nums[i]
                 length += <span class="hljs-number">1</span>
         <span class="hljs-keyword">return</span> length
-</code></pre>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 026 : Remove Duplicates from Sorted Array</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 026 : Remove Duplicates from Sorted Array</span>
 <span class="hljs-comment"># https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Array/remove-duplicates-from-sorted-array.py</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># IDEA : 2 POINTERS: i, j</span>
@@ -1999,8 +1963,8 @@ With randomized pivot:
                 A[i], A[j+<span class="hljs-number">1</span>] = A[j+<span class="hljs-number">1</span>], A[i]
                 j = j + <span class="hljs-number">1</span>
         <span class="hljs-keyword">return</span> j+<span class="hljs-number">1</span>
-</code></pre>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 283 move-zeroes</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 283 move-zeroes</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">moveZeroes</span>(<span class="hljs-params">self, nums</span>):
@@ -2028,8 +1992,8 @@ With randomized pivot:
             <span class="hljs-keyword">else</span>:
                 j += <span class="hljs-number">1</span>
         <span class="hljs-keyword">return</span> nums
-</code></pre>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 080 : Remove Duplicates from Sorted Array II</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 080 : Remove Duplicates from Sorted Array II</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># IDEA : 2 POINTERS</span>
 <span class="hljs-comment">#### NOTE : THE nums already ordering</span>
@@ -2079,9 +2043,9 @@ With randomized pivot:
                 nums[slow+<span class="hljs-number">1</span>], nums[fast] = nums[fast], nums[slow+<span class="hljs-number">1</span>] 
                 slow += <span class="hljs-number">1</span>
         <span class="hljs-keyword">return</span> slow+<span class="hljs-number">1</span>
-</code></pre>
+</code></pre></div>
 <h3 id="2-2-longest-palindromic-substring" tabindex="-1"><a class="header-anchor" href="#2-2-longest-palindromic-substring"><span>2-2) Longest Palindromic Substring</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 005 Longest Palindromic Substring</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 005 Longest Palindromic Substring</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># IDEA : TWO POINTERS</span>
 <span class="hljs-comment"># -&gt; DEAL WITH odd, even len cases</span>
@@ -2156,9 +2120,9 @@ With randomized pivot:
         <span class="hljs-keyword">for</span> index <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(s)):
             res = <span class="hljs-built_in">max</span>(helper(index, index), helper(index, index + <span class="hljs-number">1</span>), res, key = <span class="hljs-built_in">len</span>)           
         <span class="hljs-keyword">return</span> res
-</code></pre>
+</code></pre></div>
 <h3 id="2-3-container-with-most-water" tabindex="-1"><a class="header-anchor" href="#2-3-container-with-most-water"><span>2-3) Container With Most Water</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 11 Container With Most Water</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 11 Container With Most Water</span>
 <span class="hljs-comment"># V0 </span>
 <span class="hljs-comment"># IDEA : TWO POINTERS </span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
@@ -2173,9 +2137,9 @@ With randomized pivot:
             <span class="hljs-keyword">else</span>:
                 r -= <span class="hljs-number">1</span>
         <span class="hljs-keyword">return</span> ans
-</code></pre>
+</code></pre></div>
 <h3 id="2-4-longest-consecutive-sequence" tabindex="-1"><a class="header-anchor" href="#2-4-longest-consecutive-sequence"><span>2-4) Longest Consecutive Sequence</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 128 Longest Consecutive Sequence</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 128 Longest Consecutive Sequence</span>
 
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># IDEA : sliding window</span>
@@ -2245,9 +2209,9 @@ With randomized pivot:
                     cur_len = <span class="hljs-number">1</span>
         <span class="hljs-comment"># check max len again</span>
         <span class="hljs-keyword">return</span> <span class="hljs-built_in">max</span>(max_len, cur_len)
-</code></pre>
+</code></pre></div>
 <h3 id="2-6-palindromic-substrings" tabindex="-1"><a class="header-anchor" href="#2-6-palindromic-substrings"><span>2-6) Palindromic Substrings</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 647. Palindromic Substrings</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 647. Palindromic Substrings</span>
 <span class="hljs-comment"># V0&#x27;</span>
 <span class="hljs-comment"># IDEA : TWO POINTERS</span>
 <span class="hljs-comment"># https://leetcode.com/problems/palindromic-substrings/discuss/1041760/Python-Easy-Solution-Beats-85</span>
@@ -2309,9 +2273,9 @@ With randomized pivot:
                 right += <span class="hljs-number">1</span>
 
         <span class="hljs-keyword">return</span> count
-</code></pre>
+</code></pre></div>
 <h3 id="2-7-sum-of-subarray-ranges" tabindex="-1"><a class="header-anchor" href="#2-7-sum-of-subarray-ranges"><span>2-7) Sum of Subarray Ranges</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 2104. Sum of Subarray Ranges</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 2104. Sum of Subarray Ranges</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># IDEA : BRUTE FORCE</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
@@ -2350,9 +2314,9 @@ With randomized pivot:
                 res += A[j] * (i - j) * (j - k)
             s.append(i)
         <span class="hljs-keyword">return</span> res
-</code></pre>
+</code></pre></div>
 <h3 id="2-8-trapping-rain-water" tabindex="-1"><a class="header-anchor" href="#2-8-trapping-rain-water"><span>2-8) Trapping Rain Water</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 42. Trapping Rain Water</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 42. Trapping Rain Water</span>
 <span class="hljs-comment"># NOTE : there is also 2 scan, dp approaches</span>
 <span class="hljs-comment"># V0&#x27;</span>
 <span class="hljs-comment"># IDEA : TWO POINTERS </span>
@@ -2389,9 +2353,9 @@ With randomized pivot:
                     right_max = height[right]
                 right -= <span class="hljs-number">1</span>  <span class="hljs-comment"># move right pointer </span>
         <span class="hljs-keyword">return</span> res
-</code></pre>
+</code></pre></div>
 <h3 id="2-9-next-permutation" tabindex="-1"><a class="header-anchor" href="#2-9-next-permutation"><span>2-9) Next Permutation</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 31. Next Permutation</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 31. Next Permutation</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">nextPermutation</span>(<span class="hljs-params">self, nums</span>):
@@ -2428,7 +2392,7 @@ With randomized pivot:
                 l = i
         num[k], num[l] = num[l], num[k]
         num[k + <span class="hljs-number">1</span>:] = num[:k:-<span class="hljs-number">1</span>] <span class="hljs-comment">### dounle check here ###</span>
-</code></pre>
+</code></pre></div>
 <h3 id="2-10-valid-palindrome-ii-palindrome-with-one-deletion" tabindex="-1"><a class="header-anchor" href="#2-10-valid-palindrome-ii-palindrome-with-one-deletion"><span>2-10) Valid Palindrome II (Palindrome with One Deletion)</span></a></h3>
 <p><strong>Pattern: Two Pointers with Mismatch Handling</strong></p>
 <ul>
@@ -2447,7 +2411,7 @@ With randomized pivot:
 <li>Don’t remove character and create new string (O(N) space)</li>
 <li>Instead, use pointers to check substring in-place (O(1) space)</li>
 </ul>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 680. Valid Palindrome II</span>
 <span class="hljs-comment">/**
  * Pattern: Palindrome with at most 1 deletion allowed
@@ -2511,8 +2475,8 @@ With randomized pivot:
     }
     <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
 }
-</code></pre>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
 <span class="hljs-comment"># LC 680. Valid Palindrome II</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">validPalindrome</span>(<span class="hljs-params">self, s</span>):
@@ -2535,7 +2499,7 @@ With randomized pivot:
                 r -= <span class="hljs-number">1</span>
 
         <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
-</code></pre>
+</code></pre></div>
 <p><strong>Common Mistakes:</strong></p>
 <ul>
 <li>❌ Creating new strings (O(N) space and time)</li>
@@ -2551,7 +2515,7 @@ With randomized pivot:
 <li>LC 234 Palindrome Linked List</li>
 </ul>
 <h3 id="2-11-merge-sorted-array" tabindex="-1"><a class="header-anchor" href="#2-11-merge-sorted-array"><span>2-11) Merge Sorted Array</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 88. Merge Sorted Array</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 88. Merge Sorted Array</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># IDEA : 2 pointers</span>
 <span class="hljs-comment">### NOTE : we need to merge the sorted arrat to nums1 with IN PLACE (CAN&#x27;T USE EXTRA CACHE)</span>
@@ -2573,9 +2537,9 @@ With randomized pivot:
                 q = q-<span class="hljs-number">1</span>
         <span class="hljs-comment"># if there&#x27;re still elements in nums2, we just replace the ones in nums1[:q+1] with them (nums2[:q+1])</span>
         nums1[:q+<span class="hljs-number">1</span>] = nums2[:q+<span class="hljs-number">1</span>]
-</code></pre>
+</code></pre></div>
 <h3 id="2-12-interval-list-intersections" tabindex="-1"><a class="header-anchor" href="#2-12-interval-list-intersections"><span>2-12) Interval List Intersections</span></a></h3>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 986</span>
     <span class="hljs-keyword">public</span> <span class="hljs-type">int</span>[][] intervalIntersection_1(<span class="hljs-type">int</span>[][] firstList, <span class="hljs-type">int</span>[][] secondList) {
         <span class="hljs-keyword">if</span> (firstList.length == <span class="hljs-number">0</span> || secondList.length == <span class="hljs-number">0</span>)
@@ -2641,7 +2605,7 @@ With randomized pivot:
 
         <span class="hljs-keyword">return</span> ans.toArray(<span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[ans.size()][<span class="hljs-number">2</span>]);
     }
-</code></pre>
+</code></pre></div>
 <h3 id="2-13-sort-colors-dutch-national-flag" tabindex="-1"><a class="header-anchor" href="#2-13-sort-colors-dutch-national-flag"><span>2-13) Sort Colors (Dutch National Flag)</span></a></h3>
 <p><strong>Pattern: Three-Way Partitioning with Two Pointers</strong></p>
 <ul>
@@ -2649,7 +2613,7 @@ With randomized pivot:
 <li>Partition array into three sections</li>
 <li>Single pass solution</li>
 </ul>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 75. Sort Colors</span>
 <span class="hljs-comment">/**
  * Pattern: Dutch National Flag - Three-way partitioning
@@ -2720,7 +2684,7 @@ With randomized pivot:
     nums[i] = nums[j];
     nums[j] = temp;
 }
-</code></pre>
+</code></pre></div>
 <p><strong>Similar Problems:</strong></p>
 <ul>
 <li>LC 75 Sort Colors (this pattern)</li>
@@ -2735,7 +2699,7 @@ With randomized pivot:
 <li>Avoid duplicates by skipping same values</li>
 <li>Sort array first</li>
 </ul>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 15. 3Sum</span>
 <span class="hljs-comment">/**
  * Pattern: Fixed element + Two pointers
@@ -2805,7 +2769,7 @@ With randomized pivot:
 
     <span class="hljs-keyword">return</span> result;
 }
-</code></pre>
+</code></pre></div>
 <p><strong>Similar Problems:</strong></p>
 <ul>
 <li>LC 15 3Sum (this pattern)</li>
@@ -2816,7 +2780,7 @@ With randomized pivot:
 </ul>
 <h3 id="2-15-reverse-string-reverse-words" tabindex="-1"><a class="header-anchor" href="#2-15-reverse-string-reverse-words"><span>2-15) Reverse String / Reverse Words</span></a></h3>
 <p><strong>Pattern: In-place Reversal with Two Pointers</strong></p>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 344. Reverse String</span>
 <span class="hljs-comment">/**
  * Pattern: Swap from both ends moving toward center
@@ -2847,7 +2811,7 @@ With randomized pivot:
         right--;
     }
 }
-</code></pre>
+</code></pre></div>
 <p><strong>Similar Problems:</strong></p>
 <ul>
 <li>LC 344 Reverse String</li>
@@ -2867,7 +2831,7 @@ With randomized pivot:
 <li>If <code>j &lt; n</code>, recurse on <code>s[0..j]</code> and sandwich the non-palindrome suffix around it</li>
 </ul>
 <p><strong>Dry Run — <code>s = &quot;aacecaaa&quot;</code>:</strong></p>
-<pre><code class="hljs">i scans right-to-left, j starts at 0
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">i scans right-to-left, j starts at 0
 
 i=7 s[7]='a' == s[0]='a'  -&gt; j=1
 i=6 s[6]='a' == s[1]='a'  -&gt; j=2
@@ -2880,16 +2844,16 @@ i=0 s[0]='a' != s[6]='a'  -&gt; j=7
 
 j == n? No (j=7 &lt; 8). suffix = s.substring(7) = &quot;a&quot;
 reversed(&quot;a&quot;) + shortestPalindrome(&quot;aacecaa&quot;) + &quot;a&quot;
-</code></pre>
+</code></pre></div>
 <p><strong>Key Insight — why does <code>j</code> track the prefix?</strong></p>
-<pre><code class="hljs">Scanning i from right to left acts like a &quot;sieve&quot;:
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Scanning i from right to left acts like a &quot;sieve&quot;:
 - Every time s[i] matches s[j], j advances one step right
 - After the full scan, s[0..j-1] is the longest possible palindromic prefix
   (not a strict palindrome proof, but works with the recursive structure)
 - The characters NOT in the prefix (s[j..n-1]) form the suffix that
   must be reversed and prepended to make the whole string a palindrome
-</code></pre>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 214. Shortest Palindrome</span>
 <span class="hljs-comment">/**
  * Pattern: Find longest palindromic prefix via right-to-left scan
@@ -2934,8 +2898,8 @@ reversed(&quot;a&quot;) + shortestPalindrome(&quot;aacecaa&quot;) + &quot;a&quot
      */</span>
     <span class="hljs-keyword">return</span> prefix + shortestPalindrome(s.substring(<span class="hljs-number">0</span>, j)) + suffix;
 }
-</code></pre>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 214. Shortest Palindrome — KMP approach (O(N) time)</span>
 <span class="hljs-comment">/**
  * IDEA: KMP Prefix Table
@@ -2968,9 +2932,9 @@ reversed(&quot;a&quot;) + shortestPalindrome(&quot;aacecaa&quot;) + &quot;a&quot
     }
     <span class="hljs-keyword">return</span> table;
 }
-</code></pre>
+</code></pre></div>
 <p><strong>Brute-force version (TLE on large inputs):</strong></p>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java — O(N^2) brute force</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java — O(N^2) brute force</span>
 <span class="hljs-comment">// Find largest i such that s[0..i] is a palindrome, then prepend reverse(s[i+1..n-1])</span>
 <span class="hljs-keyword">public</span> String <span class="hljs-title function_">shortestPalindromeBrute</span><span class="hljs-params">(String s)</span> {
     <span class="hljs-type">int</span> <span class="hljs-variable">n</span> <span class="hljs-operator">=</span> s.length();
@@ -2989,7 +2953,7 @@ reversed(&quot;a&quot;) + shortestPalindrome(&quot;aacecaa&quot;) + &quot;a&quot
     }
     <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
 }
-</code></pre>
+</code></pre></div>
 <p><strong>Pointer Movement Comparison:</strong></p>
 <table>
 <thead>

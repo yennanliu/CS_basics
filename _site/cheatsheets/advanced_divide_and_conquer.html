@@ -19,54 +19,18 @@
     }
   })();
   </script>
-  <script>document.addEventListener('DOMContentLoaded', function() {
-    document.querySelectorAll('pre code').forEach(function(codeEl) {
-      var pre = codeEl.parentElement;
-      var lang = '';
-      var cls = codeEl.className || '';
-      var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
-      if (m) lang = m[1];
-
-      // Add line numbers
-      var lines = codeEl.innerHTML.split('
-');
-      if (lines[lines.length - 1] === '') lines.pop();
-      var numbered = lines.map(function(line, i) {
-        return '<span class="hljs-ln-line"><span class="hljs-ln-n" data-line-number="' + (i + 1) + '"></span><span class="hljs-ln-code">' + line + '</span></span>';
-      }).join('
-');
-      codeEl.innerHTML = numbered;
-      codeEl.classList.add('hljs-ln');
-
-      var wrapper = document.createElement('div');
-      wrapper.className = 'code-block-wrapper';
-      pre.parentNode.insertBefore(wrapper, pre);
-      var header = document.createElement('div');
-      header.className = 'code-block-header';
-      if (lang) {
-        var label = document.createElement('span');
-        label.className = 'code-lang-label';
-        label.textContent = lang;
-        header.appendChild(label);
-      } else {
-        header.appendChild(document.createElement('span'));
-      }
-      var btn = document.createElement('button');
-      btn.className = 'copy-btn';
-      btn.textContent = 'Copy';
-      btn.addEventListener('click', function() {
-        var text = Array.from(codeEl.querySelectorAll('.hljs-ln-code')).map(function(el) { return el.textContent; }).join('
-');
-        navigator.clipboard.writeText(text).then(function() {
-          btn.textContent = 'Copied!';
-          btn.classList.add('copied');
-          setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
-        });
-      });
-      header.appendChild(btn);
-      wrapper.appendChild(header);
-      wrapper.appendChild(pre);
+  <script>
+  function copyCode(btn) {
+    var pre = btn.closest('.code-block-wrapper').querySelector('pre');
+    var text = pre ? pre.innerText : '';
+    navigator.clipboard.writeText(text).then(function() {
+      btn.textContent = 'Copied!';
+      btn.classList.add('copied');
+      setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
     });
+  }
+  </script>
+  <script>document.addEventListener('DOMContentLoaded', function() {
     document.querySelectorAll('table').forEach(function(table) {
       if (!table.parentElement.classList.contains('table-wrap')) {
         var wrapper = document.createElement('div');
@@ -220,7 +184,7 @@
 </tbody>
 </table>
 <h3 id="template-1-basic-inversion-counting" tabindex="-1"><a class="header-anchor" href="#template-1-basic-inversion-counting"><span>Template 1: Basic Inversion Counting</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">count_inversions</span>(<span class="hljs-params">arr</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">count_inversions</span>(<span class="hljs-params">arr</span>):
     <span class="hljs-string">&quot;&quot;&quot;Count total number of inversions using merge sort&quot;&quot;&quot;</span>
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">merge_and_count</span>(<span class="hljs-params">arr, temp, left, mid, right</span>):
         i, j, k = left, mid + <span class="hljs-number">1</span>, left
@@ -265,9 +229,9 @@
 
     temp = [<span class="hljs-number">0</span>] * <span class="hljs-built_in">len</span>(arr)
     <span class="hljs-keyword">return</span> merge_sort_and_count(arr[:], temp, <span class="hljs-number">0</span>, <span class="hljs-built_in">len</span>(arr) - <span class="hljs-number">1</span>)
-</code></pre>
+</code></pre></div>
 <h3 id="template-2-conditional-inversion-counting" tabindex="-1"><a class="header-anchor" href="#template-2-conditional-inversion-counting"><span>Template 2: Conditional Inversion Counting</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">count_reverse_pairs</span>(<span class="hljs-params">nums</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">count_reverse_pairs</span>(<span class="hljs-params">nums</span>):
     <span class="hljs-string">&quot;&quot;&quot;Count pairs where nums[i] &gt; 2 * nums[j] for i &lt; j&quot;&quot;&quot;</span>
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">merge_and_count</span>(<span class="hljs-params">nums, temp, left, mid, right</span>):
         <span class="hljs-comment"># Count reverse pairs first (before sorting)</span>
@@ -314,9 +278,9 @@
 
     temp = [<span class="hljs-number">0</span>] * <span class="hljs-built_in">len</span>(nums)
     <span class="hljs-keyword">return</span> merge_sort_and_count(nums[:], temp, <span class="hljs-number">0</span>, <span class="hljs-built_in">len</span>(nums) - <span class="hljs-number">1</span>)
-</code></pre>
+</code></pre></div>
 <h3 id="template-3-range-sum-divide-and-conquer" tabindex="-1"><a class="header-anchor" href="#template-3-range-sum-divide-and-conquer"><span>Template 3: Range Sum Divide and Conquer</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">count_range_sum</span>(<span class="hljs-params">nums, lower, upper</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">count_range_sum</span>(<span class="hljs-params">nums, lower, upper</span>):
     <span class="hljs-string">&quot;&quot;&quot;Count subarrays with sum in [lower, upper]&quot;&quot;&quot;</span>
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">merge_and_count</span>(<span class="hljs-params">prefix_sums, temp, left, mid, right</span>):
         count = <span class="hljs-number">0</span>
@@ -373,9 +337,9 @@
 
     temp = [<span class="hljs-number">0</span>] * <span class="hljs-built_in">len</span>(prefix_sums)
     <span class="hljs-keyword">return</span> divide_and_conquer(prefix_sums, temp, <span class="hljs-number">0</span>, <span class="hljs-built_in">len</span>(prefix_sums) - <span class="hljs-number">1</span>)
-</code></pre>
+</code></pre></div>
 <h3 id="template-4-array-reconstruction" tabindex="-1"><a class="header-anchor" href="#template-4-array-reconstruction"><span>Template 4: Array Reconstruction</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">create_sorted_array</span>(<span class="hljs-params">instructions</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">create_sorted_array</span>(<span class="hljs-params">instructions</span>):
     <span class="hljs-string">&quot;&quot;&quot;Create sorted array with minimum cost&quot;&quot;&quot;</span>
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">merge_and_count</span>(<span class="hljs-params">arr, temp, left, mid, right</span>):
         smaller_count = [<span class="hljs-number">0</span>] * <span class="hljs-built_in">len</span>(arr)
@@ -418,7 +382,7 @@
     <span class="hljs-comment"># Implementation depends on specific problem</span>
     <span class="hljs-comment"># This is a general framework for array reconstruction</span>
     <span class="hljs-keyword">pass</span>
-</code></pre>
+</code></pre></div>
 <h2 id="problems-by-pattern" tabindex="-1"><a class="header-anchor" href="#problems-by-pattern"><span>Problems by Pattern</span></a></h2>
 <h3 id="inversion-counting-problems" tabindex="-1"><a class="header-anchor" href="#inversion-counting-problems"><span><strong>Inversion Counting Problems</strong></span></a></h3>
 <table>
@@ -487,7 +451,7 @@
 <blockquote>
 <p>During merge, count how many right-half elements moved past each left-half element.</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 315 - Count of Smaller Numbers After Self</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 315 - Count of Smaller Numbers After Self</span>
 <span class="hljs-comment">// IDEA: Merge sort on indices; each right-side element that passes left side increments its count</span>
 <span class="hljs-comment">// time = O(N log N), space = O(N)</span>
 <span class="hljs-keyword">public</span> List&lt;Integer&gt; <span class="hljs-title function_">countSmaller</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums)</span> {
@@ -514,8 +478,8 @@
     <span class="hljs-keyword">while</span> (j &lt;= r) tmp[k++] = idx[j++];
     System.arraycopy(tmp, <span class="hljs-number">0</span>, idx, l, tmp.length);
 }
-</code></pre>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">countSmaller</span>(<span class="hljs-params">nums</span>):
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">countSmaller</span>(<span class="hljs-params">nums</span>):
     <span class="hljs-string">&quot;&quot;&quot;Count how many numbers after each element are smaller&quot;&quot;&quot;</span>
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">merge_and_count</span>(<span class="hljs-params">indices, temp, left, mid, right</span>):
         <span class="hljs-comment"># Count smaller elements to the right</span>
@@ -563,12 +527,12 @@
 
     merge_sort(indices, temp, <span class="hljs-number">0</span>, n - <span class="hljs-number">1</span>)
     <span class="hljs-keyword">return</span> counts
-</code></pre>
+</code></pre></div>
 <h3 id="2-2-reverse-pairs-lc-493-merge-sort-count-before-merge" tabindex="-1"><a class="header-anchor" href="#2-2-reverse-pairs-lc-493-merge-sort-count-before-merge"><span>2-2) Reverse Pairs (LC 493) — Merge Sort Count Before Merge</span></a></h3>
 <blockquote>
 <p>Count cross-half pairs (nums[i] &gt; 2*nums[j]) with two pointers before doing the merge.</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 493 - Reverse Pairs</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 493 - Reverse Pairs</span>
 <span class="hljs-comment">// IDEA: Merge sort — count i&gt;2j pairs across halves first, then merge normally</span>
 <span class="hljs-comment">// time = O(N log N), space = O(N)</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">reversePairs</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums)</span> {
@@ -591,8 +555,8 @@
     System.arraycopy(tmp, <span class="hljs-number">0</span>, nums, l, tmp.length);
     <span class="hljs-keyword">return</span> count;
 }
-</code></pre>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">reversePairs</span>(<span class="hljs-params">nums</span>):
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">reversePairs</span>(<span class="hljs-params">nums</span>):
     <span class="hljs-string">&quot;&quot;&quot;Count pairs where nums[i] &gt; 2 * nums[j] for i &lt; j&quot;&quot;&quot;</span>
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">merge_and_count</span>(<span class="hljs-params">nums, temp, left, mid, right</span>):
         <span class="hljs-comment"># Count reverse pairs first</span>
@@ -639,12 +603,12 @@
 
     temp = [<span class="hljs-number">0</span>] * <span class="hljs-built_in">len</span>(nums)
     <span class="hljs-keyword">return</span> merge_sort_and_count(nums[:], temp, <span class="hljs-number">0</span>, <span class="hljs-built_in">len</span>(nums) - <span class="hljs-number">1</span>)
-</code></pre>
+</code></pre></div>
 <h3 id="2-3-count-of-range-sum-lc-327-merge-sort-on-prefix-sums" tabindex="-1"><a class="header-anchor" href="#2-3-count-of-range-sum-lc-327-merge-sort-on-prefix-sums"><span>2-3) Count of Range Sum (LC 327) — Merge Sort on Prefix Sums</span></a></h3>
 <blockquote>
 <p>Build prefix sum array; count cross-half pairs (prefixSum[j] - prefixSum[i]) in [lower, upper].</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 327 - Count of Range Sum</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 327 - Count of Range Sum</span>
 <span class="hljs-comment">// IDEA: Merge sort on prefix sums; count cross pairs in [lower, upper] before merging</span>
 <span class="hljs-comment">// time = O(N log N), space = O(N)</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">countRangeSum</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums, <span class="hljs-type">int</span> lower, <span class="hljs-type">int</span> upper)</span> {
@@ -671,8 +635,8 @@
     System.arraycopy(tmp, <span class="hljs-number">0</span>, p, l, tmp.length);
     <span class="hljs-keyword">return</span> count;
 }
-</code></pre>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">countRangeSum</span>(<span class="hljs-params">nums, lower, upper</span>):
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">countRangeSum</span>(<span class="hljs-params">nums, lower, upper</span>):
     <span class="hljs-string">&quot;&quot;&quot;Count subarrays with sum in [lower, upper]&quot;&quot;&quot;</span>
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">merge_and_count</span>(<span class="hljs-params">prefix_sums, temp, left, mid, right</span>):
         count = <span class="hljs-number">0</span>
@@ -728,10 +692,10 @@
 
     temp = [<span class="hljs-number">0</span>] * <span class="hljs-built_in">len</span>(prefix_sums)
     <span class="hljs-keyword">return</span> divide_and_conquer(prefix_sums, temp, <span class="hljs-number">0</span>, <span class="hljs-built_in">len</span>(prefix_sums) - <span class="hljs-number">1</span>)
-</code></pre>
+</code></pre></div>
 <h2 id="advanced-techniques" tabindex="-1"><a class="header-anchor" href="#advanced-techniques"><span>Advanced Techniques</span></a></h2>
 <h3 id="optimization-strategies" tabindex="-1"><a class="header-anchor" href="#optimization-strategies"><span>Optimization Strategies</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">divide_and_conquer_optimizations</span>():
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">divide_and_conquer_optimizations</span>():
     <span class="hljs-string">&quot;&quot;&quot;Various optimization techniques for D&amp;C&quot;&quot;&quot;</span>
 
     <span class="hljs-comment"># 1. In-place operations to reduce space</span>
@@ -762,9 +726,9 @@
         <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(arr) &lt;= threshold:
             <span class="hljs-keyword">return</span> insertion_sort(arr)
         <span class="hljs-comment"># Regular merge sort for larger arrays</span>
-</code></pre>
+</code></pre></div>
 <h3 id="custom-merge-logic-patterns" tabindex="-1"><a class="header-anchor" href="#custom-merge-logic-patterns"><span>Custom Merge Logic Patterns</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">AdvancedMergePatterns</span>:
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">AdvancedMergePatterns</span>:
     <span class="hljs-string">&quot;&quot;&quot;Advanced merge logic for specific problems&quot;&quot;&quot;</span>
 
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">merge_with_multiple_conditions</span>(<span class="hljs-params">self, arr1, arr2</span>):
@@ -792,10 +756,10 @@
         <span class="hljs-string">&quot;&quot;&quot;Merge while reconstructing array with specific properties&quot;&quot;&quot;</span>
         <span class="hljs-comment"># Custom merge logic for array reconstruction problems</span>
         <span class="hljs-keyword">pass</span>
-</code></pre>
+</code></pre></div>
 <h2 id="performance-optimization-tips" tabindex="-1"><a class="header-anchor" href="#performance-optimization-tips"><span>Performance Optimization Tips</span></a></h2>
 <h3 id="time-complexity-analysis" tabindex="-1"><a class="header-anchor" href="#time-complexity-analysis"><span>Time Complexity Analysis</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">complexity_analysis</span>():
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">complexity_analysis</span>():
     <span class="hljs-string">&quot;&quot;&quot;Analyze time complexity of different D&amp;C approaches&quot;&quot;&quot;</span>
 
     <span class="hljs-comment"># Standard divide and conquer: T(n) = 2T(n/2) + O(n) = O(n log n)</span>
@@ -806,9 +770,9 @@
     <span class="hljs-comment">#   - If c &gt; 1: O(n^c)</span>
 
     <span class="hljs-keyword">pass</span>
-</code></pre>
+</code></pre></div>
 <h3 id="space-optimization" tabindex="-1"><a class="header-anchor" href="#space-optimization"><span>Space Optimization</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">space_optimizations</span>():
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">space_optimizations</span>():
     <span class="hljs-string">&quot;&quot;&quot;Techniques to reduce space complexity&quot;&quot;&quot;</span>
 
     <span class="hljs-comment"># 1. Reuse auxiliary arrays</span>
@@ -825,7 +789,7 @@
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">iterative_divide_conquer</span>(<span class="hljs-params">arr</span>):
         <span class="hljs-comment"># Bottom-up approach to save stack space</span>
         <span class="hljs-keyword">pass</span>
-</code></pre>
+</code></pre></div>
 <h2 id="summary-quick-reference" tabindex="-1"><a class="header-anchor" href="#summary-quick-reference"><span>Summary &amp; Quick Reference</span></a></h2>
 <h3 id="common-d-c-patterns" tabindex="-1"><a class="header-anchor" href="#common-d-c-patterns"><span>Common D&amp;C Patterns</span></a></h3>
 <table>

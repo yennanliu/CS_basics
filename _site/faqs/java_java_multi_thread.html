@@ -19,54 +19,18 @@
     }
   })();
   </script>
-  <script>document.addEventListener('DOMContentLoaded', function() {
-    document.querySelectorAll('pre code').forEach(function(codeEl) {
-      var pre = codeEl.parentElement;
-      var lang = '';
-      var cls = codeEl.className || '';
-      var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
-      if (m) lang = m[1];
-
-      // Add line numbers
-      var lines = codeEl.innerHTML.split('
-');
-      if (lines[lines.length - 1] === '') lines.pop();
-      var numbered = lines.map(function(line, i) {
-        return '<span class="hljs-ln-line"><span class="hljs-ln-n" data-line-number="' + (i + 1) + '"></span><span class="hljs-ln-code">' + line + '</span></span>';
-      }).join('
-');
-      codeEl.innerHTML = numbered;
-      codeEl.classList.add('hljs-ln');
-
-      var wrapper = document.createElement('div');
-      wrapper.className = 'code-block-wrapper';
-      pre.parentNode.insertBefore(wrapper, pre);
-      var header = document.createElement('div');
-      header.className = 'code-block-header';
-      if (lang) {
-        var label = document.createElement('span');
-        label.className = 'code-lang-label';
-        label.textContent = lang;
-        header.appendChild(label);
-      } else {
-        header.appendChild(document.createElement('span'));
-      }
-      var btn = document.createElement('button');
-      btn.className = 'copy-btn';
-      btn.textContent = 'Copy';
-      btn.addEventListener('click', function() {
-        var text = Array.from(codeEl.querySelectorAll('.hljs-ln-code')).map(function(el) { return el.textContent; }).join('
-');
-        navigator.clipboard.writeText(text).then(function() {
-          btn.textContent = 'Copied!';
-          btn.classList.add('copied');
-          setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
-        });
-      });
-      header.appendChild(btn);
-      wrapper.appendChild(header);
-      wrapper.appendChild(pre);
+  <script>
+  function copyCode(btn) {
+    var pre = btn.closest('.code-block-wrapper').querySelector('pre');
+    var text = pre ? pre.innerText : '';
+    navigator.clipboard.writeText(text).then(function() {
+      btn.textContent = 'Copied!';
+      btn.classList.add('copied');
+      setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
     });
+  }
+  </script>
+  <script>document.addEventListener('DOMContentLoaded', function() {
     document.querySelectorAll('table').forEach(function(table) {
       if (!table.parentElement.classList.contains('table-wrap')) {
         var wrapper = document.createElement('div');
@@ -176,7 +140,7 @@
 非同步：呼叫在發出之後，不用等待返回結果，該呼叫直接傳回。</p>
 <h3 id="volatile-explain" tabindex="-1"><a class="header-anchor" href="#volatile-explain"><span>volatile explain ?</span></a></h3>
 <p>在 Java 中，volatile 關鍵字除了保證變數的可見性，還有一個重要的功能是防止 JVM 的指令重新排序。 如果我們將變數宣告為 volatile ，在對這個變數進行讀寫操作的時候，會透過插入特定的 記憶體屏障 的方式來禁止指令重排序。</p>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// example : Singleton</span>
 
 <span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Singleton</span> {
@@ -201,7 +165,7 @@
         <span class="hljs-keyword">return</span> uniqueInstance;
     }
 }
-</code></pre>
+</code></pre></div>
 <p>uniqueInstance 採用volatile 關鍵字修飾也是必要的， uniqueInstance = new Singleton(); 這段程式碼其實是分為三步驟執行：為uniqueInstance 分配記憶體空間初始化uniqueInstance將uniqueInstance 指向分配的記憶體位址但是由於JVM 具有指令重 排的特性，執行順序有可能變成1-&gt;3-&gt;2。 指令重排在單執行緒環境下不會出現問題，但是在多執行緒環境下會導致一個執行緒獲得還沒有初始化的實例。 例如，執行緒 T1 執行了 1 和 3，此時 T2 呼叫 getUniqueInstance() 後發現 uniqueInstance 不為空，因此傳回 uniqueInstance，但此時 uniqueInstance 還未被初始化。</p>
 <ul>
 <li><a href="https://javaguide.cn/java/concurrent/java-concurrent-questions-02.html#%E5%A6%82%E4%BD%95%E7%A6%81%E6%AD%A2%E6%8C%87%E4%BB%A4%E9%87%8D%E6%8E%92%E5%BA%8F">https://javaguide.cn/java/concurrent/java-concurrent-questions-02.html#如何禁止指令重排序</a></li>

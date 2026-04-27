@@ -19,54 +19,18 @@
     }
   })();
   </script>
-  <script>document.addEventListener('DOMContentLoaded', function() {
-    document.querySelectorAll('pre code').forEach(function(codeEl) {
-      var pre = codeEl.parentElement;
-      var lang = '';
-      var cls = codeEl.className || '';
-      var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
-      if (m) lang = m[1];
-
-      // Add line numbers
-      var lines = codeEl.innerHTML.split('
-');
-      if (lines[lines.length - 1] === '') lines.pop();
-      var numbered = lines.map(function(line, i) {
-        return '<span class="hljs-ln-line"><span class="hljs-ln-n" data-line-number="' + (i + 1) + '"></span><span class="hljs-ln-code">' + line + '</span></span>';
-      }).join('
-');
-      codeEl.innerHTML = numbered;
-      codeEl.classList.add('hljs-ln');
-
-      var wrapper = document.createElement('div');
-      wrapper.className = 'code-block-wrapper';
-      pre.parentNode.insertBefore(wrapper, pre);
-      var header = document.createElement('div');
-      header.className = 'code-block-header';
-      if (lang) {
-        var label = document.createElement('span');
-        label.className = 'code-lang-label';
-        label.textContent = lang;
-        header.appendChild(label);
-      } else {
-        header.appendChild(document.createElement('span'));
-      }
-      var btn = document.createElement('button');
-      btn.className = 'copy-btn';
-      btn.textContent = 'Copy';
-      btn.addEventListener('click', function() {
-        var text = Array.from(codeEl.querySelectorAll('.hljs-ln-code')).map(function(el) { return el.textContent; }).join('
-');
-        navigator.clipboard.writeText(text).then(function() {
-          btn.textContent = 'Copied!';
-          btn.classList.add('copied');
-          setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
-        });
-      });
-      header.appendChild(btn);
-      wrapper.appendChild(header);
-      wrapper.appendChild(pre);
+  <script>
+  function copyCode(btn) {
+    var pre = btn.closest('.code-block-wrapper').querySelector('pre');
+    var text = pre ? pre.innerText : '';
+    navigator.clipboard.writeText(text).then(function() {
+      btn.textContent = 'Copied!';
+      btn.classList.add('copied');
+      setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
     });
+  }
+  </script>
+  <script>document.addEventListener('DOMContentLoaded', function() {
     document.querySelectorAll('table').forEach(function(table) {
       if (!table.parentElement.classList.contains('table-wrap')) {
         var wrapper = document.createElement('div');
@@ -181,7 +145,7 @@
 <hr>
 <h2 id="advanced-concurrency" tabindex="-1"><a class="header-anchor" href="#advanced-concurrency"><span>Advanced Concurrency</span></a></h2>
 <h3 id="1-fork-join-framework" tabindex="-1"><a class="header-anchor" href="#1-fork-join-framework"><span>1. Fork/Join Framework</span></a></h3>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">import</span> java.util.concurrent.*;
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">import</span> java.util.concurrent.*;
 
 <span class="hljs-comment">/**
  * Fork/Join: Divide-and-conquer parallelism with work stealing.
@@ -287,9 +251,9 @@
         System.out.println(<span class="hljs-string">&quot;Sum: &quot;</span> + sum);
     }
 }
-</code></pre>
+</code></pre></div>
 <h3 id="2-lock-free-programming" tabindex="-1"><a class="header-anchor" href="#2-lock-free-programming"><span>2. Lock-Free Programming</span></a></h3>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">import</span> java.util.concurrent.atomic.*;
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">import</span> java.util.concurrent.atomic.*;
 
 <span class="hljs-comment">/**
  * Lock-free stack using CAS (Compare-And-Swap).
@@ -381,9 +345,9 @@
         <span class="hljs-keyword">return</span> value.get();
     }
 }
-</code></pre>
+</code></pre></div>
 <h3 id="3-cas-and-aba-problem" tabindex="-1"><a class="header-anchor" href="#3-cas-and-aba-problem"><span>3. CAS and ABA Problem</span></a></h3>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">import</span> java.util.concurrent.atomic.*;
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">import</span> java.util.concurrent.atomic.*;
 
 <span class="hljs-comment">/**
  * ABA Problem: Value changes A -&gt; B -&gt; A, CAS succeeds but state changed.
@@ -479,9 +443,9 @@
         }
     }
 }
-</code></pre>
+</code></pre></div>
 <h3 id="4-memory-barriers-happens-before" tabindex="-1"><a class="header-anchor" href="#4-memory-barriers-happens-before"><span>4. Memory Barriers &amp; Happens-Before</span></a></h3>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">/**
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">/**
  * Java Memory Model (JMM) guarantees with happens-before relationships.
  */</span>
 <span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">MemoryBarrierDemo</span> {
@@ -552,11 +516,11 @@
      * 6. Transitivity: If A happens-before B and B happens-before C, then A happens-before C
      */</span>
 }
-</code></pre>
+</code></pre></div>
 <hr>
 <h2 id="advanced-locking" tabindex="-1"><a class="header-anchor" href="#advanced-locking"><span>Advanced Locking</span></a></h2>
 <h3 id="1-lock-striping" tabindex="-1"><a class="header-anchor" href="#1-lock-striping"><span>1. Lock Striping</span></a></h3>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">import</span> java.util.concurrent.locks.*;
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">import</span> java.util.concurrent.locks.*;
 
 <span class="hljs-comment">/**
  * Lock striping: Divide data into segments, each with its own lock.
@@ -660,10 +624,10 @@
         }
     }
 }
-</code></pre>
+</code></pre></div>
 <h3 id="2-distributed-lock-algorithms" tabindex="-1"><a class="header-anchor" href="#2-distributed-lock-algorithms"><span>2. Distributed Lock Algorithms</span></a></h3>
 <h4 id="redlock-redis" tabindex="-1"><a class="header-anchor" href="#redlock-redis"><span>Redlock (Redis)</span></a></h4>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">import</span> redis.clients.jedis.Jedis;
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">import</span> redis.clients.jedis.Jedis;
 <span class="hljs-keyword">import</span> redis.clients.jedis.params.SetParams;
 <span class="hljs-keyword">import</span> java.util.*;
 
@@ -778,9 +742,9 @@
         }
     }
 }
-</code></pre>
+</code></pre></div>
 <h4 id="zookeeper-lock" tabindex="-1"><a class="header-anchor" href="#zookeeper-lock"><span>ZooKeeper Lock</span></a></h4>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">import</span> org.apache.zookeeper.*;
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">import</span> org.apache.zookeeper.*;
 <span class="hljs-keyword">import</span> java.util.*;
 <span class="hljs-keyword">import</span> java.util.concurrent.CountDownLatch;
 
@@ -888,9 +852,9 @@
         <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
     }
 }
-</code></pre>
+</code></pre></div>
 <h3 id="3-database-locking" tabindex="-1"><a class="header-anchor" href="#3-database-locking"><span>3. Database Locking</span></a></h3>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">/**
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">/**
  * Database locking strategies.
  */</span>
 <span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">DatabaseLockingDemo</span> {
@@ -989,9 +953,9 @@
         OptimisticLockException(String msg) { <span class="hljs-built_in">super</span>(msg); }
     }
 }
-</code></pre>
+</code></pre></div>
 <h3 id="4-spin-lock-vs-mutex" tabindex="-1"><a class="header-anchor" href="#4-spin-lock-vs-mutex"><span>4. Spin Lock vs Mutex</span></a></h3>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">import</span> java.util.concurrent.atomic.*;
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">import</span> java.util.concurrent.atomic.*;
 
 <span class="hljs-comment">/**
  * Spin Lock: Busy-wait loop, good for short critical sections.
@@ -1093,7 +1057,7 @@
         myNode.set(myPred.get());
     }
 }
-</code></pre>
+</code></pre></div>
 <p><strong>Comparison:</strong></p>
 <table>
 <thead>
@@ -1139,7 +1103,7 @@
 <hr>
 <h2 id="high-traffic-patterns" tabindex="-1"><a class="header-anchor" href="#high-traffic-patterns"><span>High Traffic Patterns</span></a></h2>
 <h3 id="1-request-coalescing" tabindex="-1"><a class="header-anchor" href="#1-request-coalescing"><span>1. Request Coalescing</span></a></h3>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">import</span> java.util.concurrent.*;
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">import</span> java.util.concurrent.*;
 
 <span class="hljs-comment">/**
  * Request Coalescing: Multiple identical requests share one backend call.
@@ -1242,9 +1206,9 @@
         }, <span class="hljs-number">0</span>, maxWaitMs, TimeUnit.MILLISECONDS);
     }
 }
-</code></pre>
+</code></pre></div>
 <h3 id="2-load-shedding" tabindex="-1"><a class="header-anchor" href="#2-load-shedding"><span>2. Load Shedding</span></a></h3>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">import</span> java.util.concurrent.*;
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">import</span> java.util.concurrent.*;
 <span class="hljs-keyword">import</span> java.util.concurrent.atomic.*;
 
 <span class="hljs-comment">/**
@@ -1337,9 +1301,9 @@
         LoadSheddingException(String msg) { <span class="hljs-built_in">super</span>(msg); }
     }
 }
-</code></pre>
+</code></pre></div>
 <h3 id="3-bulkhead-pattern" tabindex="-1"><a class="header-anchor" href="#3-bulkhead-pattern"><span>3. Bulkhead Pattern</span></a></h3>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">import</span> java.util.concurrent.*;
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">import</span> java.util.concurrent.*;
 
 <span class="hljs-comment">/**
  * Bulkhead: Isolate failures to prevent cascading.
@@ -1437,9 +1401,9 @@
     <span class="hljs-keyword">private</span> PaymentResult <span class="hljs-title function_">callPaymentService</span><span class="hljs-params">(PaymentRequest req)</span> { <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>; }
     <span class="hljs-keyword">private</span> InventoryResult <span class="hljs-title function_">callInventoryService</span><span class="hljs-params">(String id)</span> { <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>; }
 }
-</code></pre>
+</code></pre></div>
 <h3 id="4-hot-key-problem" tabindex="-1"><a class="header-anchor" href="#4-hot-key-problem"><span>4. Hot Key Problem</span></a></h3>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">import</span> java.util.concurrent.*;
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">import</span> java.util.concurrent.*;
 
 <span class="hljs-comment">/**
  * Hot Key Problem: Few keys receive disproportionate traffic.
@@ -1606,9 +1570,9 @@
         }
     }
 }
-</code></pre>
+</code></pre></div>
 <h3 id="5-connection-pool-tuning" tabindex="-1"><a class="header-anchor" href="#5-connection-pool-tuning"><span>5. Connection Pool Tuning</span></a></h3>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">import</span> com.zaxxer.hikari.HikariConfig;
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">import</span> com.zaxxer.hikari.HikariConfig;
 <span class="hljs-keyword">import</span> com.zaxxer.hikari.HikariDataSource;
 
 <span class="hljs-comment">/**
@@ -1665,9 +1629,9 @@
         System.out.println(<span class="hljs-string">&quot;Threads waiting: &quot;</span> + ds.getHikariPoolMXBean().getThreadsAwaitingConnection());
     }
 }
-</code></pre>
+</code></pre></div>
 <h3 id="6-consistent-hashing" tabindex="-1"><a class="header-anchor" href="#6-consistent-hashing"><span>6. Consistent Hashing</span></a></h3>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">import</span> java.util.*;
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">import</span> java.util.*;
 <span class="hljs-keyword">import</span> java.util.concurrent.ConcurrentSkipListMap;
 <span class="hljs-keyword">import</span> java.security.MessageDigest;
 
@@ -1784,11 +1748,11 @@
         System.out.println(<span class="hljs-string">&quot;Replicas: &quot;</span> + replicas);
     }
 }
-</code></pre>
+</code></pre></div>
 <hr>
 <h2 id="real-world-scenarios" tabindex="-1"><a class="header-anchor" href="#real-world-scenarios"><span>Real-World Scenarios</span></a></h2>
 <h3 id="scenario-1-high-concurrency-counter-like-youtube-views" tabindex="-1"><a class="header-anchor" href="#scenario-1-high-concurrency-counter-like-youtube-views"><span>Scenario 1: High-Concurrency Counter (Like YouTube Views)</span></a></h3>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">import</span> java.util.concurrent.*;
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">import</span> java.util.concurrent.*;
 <span class="hljs-keyword">import</span> java.util.concurrent.atomic.*;
 
 <span class="hljs-comment">/**
@@ -1851,9 +1815,9 @@
         <span class="hljs-keyword">void</span> <span class="hljs-title function_">batchIncrement</span><span class="hljs-params">(Map&lt;String, Long&gt; increments)</span>;
     }
 }
-</code></pre>
+</code></pre></div>
 <h3 id="scenario-2-distributed-rate-limiter" tabindex="-1"><a class="header-anchor" href="#scenario-2-distributed-rate-limiter"><span>Scenario 2: Distributed Rate Limiter</span></a></h3>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">import</span> redis.clients.jedis.Jedis;
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">import</span> redis.clients.jedis.Jedis;
 <span class="hljs-keyword">import</span> java.util.*;
 
 <span class="hljs-comment">/**
@@ -1926,9 +1890,9 @@
         <span class="hljs-keyword">return</span> Math.max(<span class="hljs-number">0</span>, maxRequests - (<span class="hljs-type">int</span>) count);
     }
 }
-</code></pre>
+</code></pre></div>
 <h3 id="scenario-3-eventual-consistency-with-conflict-resolution" tabindex="-1"><a class="header-anchor" href="#scenario-3-eventual-consistency-with-conflict-resolution"><span>Scenario 3: Eventual Consistency with Conflict Resolution</span></a></h3>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">import</span> java.util.*;
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">import</span> java.util.*;
 
 <span class="hljs-comment">/**
  * Problem: Multiple services may update same data concurrently.
@@ -2048,11 +2012,11 @@
 
     <span class="hljs-keyword">enum</span> <span class="hljs-title class_">ConflictResult</span> { ACCEPTED, REJECTED, CONFLICT }
 }
-</code></pre>
+</code></pre></div>
 <hr>
 <h2 id="common-interview-questions" tabindex="-1"><a class="header-anchor" href="#common-interview-questions"><span>Common Interview Questions</span></a></h2>
 <h3 id="q1-how-would-you-implement-a-thread-safe-lru-cache" tabindex="-1"><a class="header-anchor" href="#q1-how-would-you-implement-a-thread-safe-lru-cache"><span>Q1: How would you implement a thread-safe LRU cache?</span></a></h3>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">import</span> java.util.*;
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">import</span> java.util.*;
 <span class="hljs-keyword">import</span> java.util.concurrent.locks.*;
 
 <span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">ConcurrentLRUCache</span>&lt;K, V&gt; {
@@ -2144,7 +2108,7 @@
         head.next = node;
     }
 }
-</code></pre>
+</code></pre></div>
 <h3 id="q2-explain-deadlock-vs-livelock-vs-starvation" tabindex="-1"><a class="header-anchor" href="#q2-explain-deadlock-vs-livelock-vs-starvation"><span>Q2: Explain deadlock vs livelock vs starvation.</span></a></h3>
 <table>
 <thead>
@@ -2188,7 +2152,7 @@
 </tr>
 </tbody>
 </table>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Deadlock example</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Deadlock example</span>
 <span class="hljs-type">Object</span> <span class="hljs-variable">lock1</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Object</span>();
 <span class="hljs-type">Object</span> <span class="hljs-variable">lock2</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Object</span>();
 
@@ -2203,7 +2167,7 @@
 <span class="hljs-comment">// Starvation: Non-fair lock with many high-priority threads</span>
 <span class="hljs-type">ReentrantLock</span> <span class="hljs-variable">unfairLock</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">ReentrantLock</span>(<span class="hljs-literal">false</span>);  <span class="hljs-comment">// unfair</span>
 <span class="hljs-comment">// Low priority thread may never acquire lock</span>
-</code></pre>
+</code></pre></div>
 <h3 id="q3-how-to-prevent-database-connection-pool-exhaustion" tabindex="-1"><a class="header-anchor" href="#q3-how-to-prevent-database-connection-pool-exhaustion"><span>Q3: How to prevent database connection pool exhaustion?</span></a></h3>
 <ol>
 <li><strong>Proper pool sizing</strong>: <code>connections = (core_count * 2) + effective_spindle_count</code></li>

@@ -19,54 +19,18 @@
     }
   })();
   </script>
-  <script>document.addEventListener('DOMContentLoaded', function() {
-    document.querySelectorAll('pre code').forEach(function(codeEl) {
-      var pre = codeEl.parentElement;
-      var lang = '';
-      var cls = codeEl.className || '';
-      var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
-      if (m) lang = m[1];
-
-      // Add line numbers
-      var lines = codeEl.innerHTML.split('
-');
-      if (lines[lines.length - 1] === '') lines.pop();
-      var numbered = lines.map(function(line, i) {
-        return '<span class="hljs-ln-line"><span class="hljs-ln-n" data-line-number="' + (i + 1) + '"></span><span class="hljs-ln-code">' + line + '</span></span>';
-      }).join('
-');
-      codeEl.innerHTML = numbered;
-      codeEl.classList.add('hljs-ln');
-
-      var wrapper = document.createElement('div');
-      wrapper.className = 'code-block-wrapper';
-      pre.parentNode.insertBefore(wrapper, pre);
-      var header = document.createElement('div');
-      header.className = 'code-block-header';
-      if (lang) {
-        var label = document.createElement('span');
-        label.className = 'code-lang-label';
-        label.textContent = lang;
-        header.appendChild(label);
-      } else {
-        header.appendChild(document.createElement('span'));
-      }
-      var btn = document.createElement('button');
-      btn.className = 'copy-btn';
-      btn.textContent = 'Copy';
-      btn.addEventListener('click', function() {
-        var text = Array.from(codeEl.querySelectorAll('.hljs-ln-code')).map(function(el) { return el.textContent; }).join('
-');
-        navigator.clipboard.writeText(text).then(function() {
-          btn.textContent = 'Copied!';
-          btn.classList.add('copied');
-          setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
-        });
-      });
-      header.appendChild(btn);
-      wrapper.appendChild(header);
-      wrapper.appendChild(pre);
+  <script>
+  function copyCode(btn) {
+    var pre = btn.closest('.code-block-wrapper').querySelector('pre');
+    var text = pre ? pre.innerText : '';
+    navigator.clipboard.writeText(text).then(function() {
+      btn.textContent = 'Copied!';
+      btn.classList.add('copied');
+      setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
     });
+  }
+  </script>
+  <script>document.addEventListener('DOMContentLoaded', function() {
     document.querySelectorAll('table').forEach(function(table) {
       if (!table.parentElement.classList.contains('table-wrap')) {
         var wrapper = document.createElement('div');
@@ -172,7 +136,7 @@
 <h3 id="1-idempotent-request-processing" tabindex="-1"><a class="header-anchor" href="#1-idempotent-request-processing"><span>1. Idempotent Request Processing</span></a></h3>
 <p><strong>Problem</strong>: Design a mechanism that prevents duplicate processing of requests with the same <code>requestId</code> within a configurable time window.</p>
 <h4 id="initial-design-v0-interview-whiteboard" tabindex="-1"><a class="header-anchor" href="#initial-design-v0-interview-whiteboard"><span>Initial Design (V0 - Interview Whiteboard)</span></a></h4>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">/**
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">/**
  * Design a mechanism that prevents duplicate processing of requests
  * with the same requestId within a configurable time window
  *
@@ -216,7 +180,7 @@
         <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Resp</span>(<span class="hljs-string">&quot;req is received&quot;</span>);
     }
 }
-</code></pre>
+</code></pre></div>
 <p><strong>Issues with V0:</strong></p>
 <ol>
 <li><code>HashMap</code> is NOT thread-safe</li>
@@ -226,7 +190,7 @@
 </ol>
 <hr>
 <h4 id="solution-v1-concurrenthashmap-with-atomic-check" tabindex="-1"><a class="header-anchor" href="#solution-v1-concurrenthashmap-with-atomic-check"><span>Solution V1: ConcurrentHashMap with Atomic Check</span></a></h4>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">import</span> lombok.AllArgsConstructor;
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">import</span> lombok.AllArgsConstructor;
 <span class="hljs-keyword">import</span> lombok.Data;
 <span class="hljs-keyword">import</span> java.util.concurrent.ConcurrentHashMap;
 <span class="hljs-keyword">import</span> java.util.Map;
@@ -287,14 +251,14 @@
 
     <span class="hljs-comment">// <span class="hljs-doctag">TODO:</span> Add cleanup task (ScheduledExecutor) to prevent infinite growth</span>
 }
-</code></pre>
+</code></pre></div>
 <p><strong>Improvement but still has issue:</strong></p>
 <ul>
 <li><code>get()</code> then <code>put()</code> is NOT atomic - still has race condition!</li>
 </ul>
 <hr>
 <h4 id="solution-v2-using-compute-for-true-atomicity" tabindex="-1"><a class="header-anchor" href="#solution-v2-using-compute-for-true-atomicity"><span>Solution V2: Using <code>compute()</code> for True Atomicity</span></a></h4>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">import</span> java.util.concurrent.*;
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">import</span> java.util.concurrent.*;
 
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">Request</span> {
     String reqId;
@@ -367,10 +331,10 @@
         }
     }
 }
-</code></pre>
+</code></pre></div>
 <hr>
 <h4 id="solution-v3-production-ready-with-cleanup" tabindex="-1"><a class="header-anchor" href="#solution-v3-production-ready-with-cleanup"><span>Solution V3: Production-Ready with Cleanup</span></a></h4>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">import</span> java.util.concurrent.*;
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">import</span> java.util.concurrent.*;
 <span class="hljs-keyword">import</span> java.time.Instant;
 
 <span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">IdempotentRequestProcessor</span> {
@@ -431,10 +395,10 @@
         <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Resp</span>(<span class="hljs-string">&quot;SUCCESS&quot;</span>, <span class="hljs-string">&quot;Processed: &quot;</span> + req.getReqId());
     }
 }
-</code></pre>
+</code></pre></div>
 <hr>
 <h4 id="solution-v4-distributed-version-with-redis" tabindex="-1"><a class="header-anchor" href="#solution-v4-distributed-version-with-redis"><span>Solution V4: Distributed Version with Redis</span></a></h4>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">import</span> redis.clients.jedis.Jedis;
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">import</span> redis.clients.jedis.Jedis;
 <span class="hljs-keyword">import</span> redis.clients.jedis.params.SetParams;
 
 <span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">DistributedIdempotentProcessor</span> {
@@ -477,7 +441,7 @@
         <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Resp</span>(<span class="hljs-string">&quot;SUCCESS&quot;</span>, <span class="hljs-string">&quot;Processed: &quot;</span> + req.getReqId());
     }
 }
-</code></pre>
+</code></pre></div>
 <hr>
 <h3 id="key-takeaways-for-idempotent-processing" tabindex="-1"><a class="header-anchor" href="#key-takeaways-for-idempotent-processing"><span>Key Takeaways for Idempotent Processing</span></a></h3>
 <table>
@@ -514,7 +478,7 @@
 <hr>
 <h3 id="2-rate-limiting" tabindex="-1"><a class="header-anchor" href="#2-rate-limiting"><span>2. Rate Limiting</span></a></h3>
 <h4 id="token-bucket-implementation" tabindex="-1"><a class="header-anchor" href="#token-bucket-implementation"><span>Token Bucket Implementation</span></a></h4>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">import</span> java.util.concurrent.atomic.AtomicLong;
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">import</span> java.util.concurrent.atomic.AtomicLong;
 <span class="hljs-keyword">import</span> java.util.concurrent.atomic.AtomicReference;
 
 <span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">TokenBucketRateLimiter</span> {
@@ -562,9 +526,9 @@
         }
     }
 }
-</code></pre>
+</code></pre></div>
 <h4 id="sliding-window-rate-limiter" tabindex="-1"><a class="header-anchor" href="#sliding-window-rate-limiter"><span>Sliding Window Rate Limiter</span></a></h4>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">import</span> java.util.concurrent.ConcurrentLinkedDeque;
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">import</span> java.util.concurrent.ConcurrentLinkedDeque;
 <span class="hljs-keyword">import</span> java.util.Deque;
 
 <span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">SlidingWindowRateLimiter</span> {
@@ -595,10 +559,10 @@
         <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
     }
 }
-</code></pre>
+</code></pre></div>
 <hr>
 <h3 id="3-circuit-breaker" tabindex="-1"><a class="header-anchor" href="#3-circuit-breaker"><span>3. Circuit Breaker</span></a></h3>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">import</span> java.util.concurrent.atomic.AtomicInteger;
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">import</span> java.util.concurrent.atomic.AtomicInteger;
 <span class="hljs-keyword">import</span> java.util.concurrent.atomic.AtomicLong;
 
 <span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">CircuitBreaker</span> {
@@ -687,10 +651,10 @@
         }
     }
 }
-</code></pre>
+</code></pre></div>
 <hr>
 <h3 id="4-request-deduplication-with-distributed-lock" tabindex="-1"><a class="header-anchor" href="#4-request-deduplication-with-distributed-lock"><span>4. Request Deduplication with Distributed Lock</span></a></h3>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">import</span> redis.clients.jedis.Jedis;
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">import</span> redis.clients.jedis.Jedis;
 <span class="hljs-keyword">import</span> redis.clients.jedis.params.SetParams;
 <span class="hljs-keyword">import</span> java.util.UUID;
 
@@ -778,7 +742,7 @@
         <span class="hljs-keyword">public</span> <span class="hljs-title function_">LockNotAcquiredException</span><span class="hljs-params">(String message)</span> { <span class="hljs-built_in">super</span>(message); }
     }
 }
-</code></pre>
+</code></pre></div>
 <hr>
 <h2 id="concurrency-patterns" tabindex="-1"><a class="header-anchor" href="#concurrency-patterns"><span>Concurrency Patterns</span></a></h2>
 <h3 id="concurrenthashmap-operations" tabindex="-1"><a class="header-anchor" href="#concurrenthashmap-operations"><span>ConcurrentHashMap Operations</span></a></h3>
@@ -813,7 +777,7 @@
 </tr>
 </tbody>
 </table>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Example: Atomic counter increment</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Example: Atomic counter increment</span>
 ConcurrentHashMap&lt;String, AtomicLong&gt; counters = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ConcurrentHashMap</span>&lt;&gt;();
 
 <span class="hljs-comment">// Safe increment</span>
@@ -825,10 +789,10 @@ counters.compute(<span class="hljs-string">&quot;hits&quot;</span>, (k, v) -&gt;
     v.incrementAndGet();
     <span class="hljs-keyword">return</span> v;
 });
-</code></pre>
+</code></pre></div>
 <hr>
 <h3 id="atomic-operations" tabindex="-1"><a class="header-anchor" href="#atomic-operations"><span>Atomic Operations</span></a></h3>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">import</span> java.util.concurrent.atomic.*;
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">import</span> java.util.concurrent.atomic.*;
 
 <span class="hljs-comment">// AtomicInteger/Long for simple counters</span>
 <span class="hljs-type">AtomicLong</span> <span class="hljs-variable">counter</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">AtomicLong</span>(<span class="hljs-number">0</span>);
@@ -843,11 +807,11 @@ stateRef.compareAndSet(oldState, newState);
 <span class="hljs-type">LongAdder</span> <span class="hljs-variable">adder</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">LongAdder</span>();
 adder.increment();
 adder.sum(); <span class="hljs-comment">// Get total</span>
-</code></pre>
+</code></pre></div>
 <hr>
 <h3 id="lock-strategies" tabindex="-1"><a class="header-anchor" href="#lock-strategies"><span>Lock Strategies</span></a></h3>
 <h4 id="1-reentrantlock-with-timeout" tabindex="-1"><a class="header-anchor" href="#1-reentrantlock-with-timeout"><span>1. ReentrantLock with Timeout</span></a></h4>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">import</span> java.util.concurrent.locks.ReentrantLock;
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">import</span> java.util.concurrent.locks.ReentrantLock;
 <span class="hljs-keyword">import</span> java.util.concurrent.TimeUnit;
 
 <span class="hljs-type">ReentrantLock</span> <span class="hljs-variable">lock</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">ReentrantLock</span>();
@@ -863,9 +827,9 @@ adder.sum(); <span class="hljs-comment">// Get total</span>
         <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">RuntimeException</span>(<span class="hljs-string">&quot;Could not acquire lock&quot;</span>);
     }
 }
-</code></pre>
+</code></pre></div>
 <h4 id="2-readwritelock-for-read-heavy-workloads" tabindex="-1"><a class="header-anchor" href="#2-readwritelock-for-read-heavy-workloads"><span>2. ReadWriteLock for Read-Heavy Workloads</span></a></h4>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">import</span> java.util.concurrent.locks.ReadWriteLock;
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">import</span> java.util.concurrent.locks.ReadWriteLock;
 <span class="hljs-keyword">import</span> java.util.concurrent.locks.ReentrantReadWriteLock;
 
 <span class="hljs-type">ReadWriteLock</span> <span class="hljs-variable">rwLock</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">ReentrantReadWriteLock</span>();
@@ -887,9 +851,9 @@ adder.sum(); <span class="hljs-comment">// Get total</span>
         rwLock.writeLock().unlock();
     }
 }
-</code></pre>
+</code></pre></div>
 <h4 id="3-stampedlock-for-optimistic-read" tabindex="-1"><a class="header-anchor" href="#3-stampedlock-for-optimistic-read"><span>3. StampedLock for Optimistic Read</span></a></h4>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">import</span> java.util.concurrent.locks.StampedLock;
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">import</span> java.util.concurrent.locks.StampedLock;
 
 <span class="hljs-type">StampedLock</span> <span class="hljs-variable">lock</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">StampedLock</span>();
 
@@ -909,11 +873,11 @@ adder.sum(); <span class="hljs-comment">// Get total</span>
     }
     <span class="hljs-keyword">return</span> localData;
 }
-</code></pre>
+</code></pre></div>
 <hr>
 <h2 id="api-design-patterns" tabindex="-1"><a class="header-anchor" href="#api-design-patterns"><span>API Design Patterns</span></a></h2>
 <h3 id="idempotency-key-pattern" tabindex="-1"><a class="header-anchor" href="#idempotency-key-pattern"><span>Idempotency Key Pattern</span></a></h3>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-meta">@PostMapping(&quot;/orders&quot;)</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-meta">@PostMapping(&quot;/orders&quot;)</span>
 <span class="hljs-keyword">public</span> ResponseEntity&lt;Order&gt; <span class="hljs-title function_">createOrder</span><span class="hljs-params">(
     <span class="hljs-meta">@RequestHeader(&quot;Idempotency-Key&quot;)</span> String idempotencyKey,
     <span class="hljs-meta">@RequestBody</span> CreateOrderRequest request)</span> {
@@ -928,9 +892,9 @@ adder.sum(); <span class="hljs-comment">// Get total</span>
     <span class="hljs-type">Order</span> <span class="hljs-variable">order</span> <span class="hljs-operator">=</span> orderService.createOrder(request, idempotencyKey);
     <span class="hljs-keyword">return</span> ResponseEntity.status(HttpStatus.CREATED).body(order);
 }
-</code></pre>
+</code></pre></div>
 <h3 id="retry-with-exponential-backoff" tabindex="-1"><a class="header-anchor" href="#retry-with-exponential-backoff"><span>Retry with Exponential Backoff</span></a></h3>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">public</span> &lt;T&gt; T <span class="hljs-title function_">executeWithRetry</span><span class="hljs-params">(Supplier&lt;T&gt; action, <span class="hljs-type">int</span> maxRetries)</span> {
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">public</span> &lt;T&gt; T <span class="hljs-title function_">executeWithRetry</span><span class="hljs-params">(Supplier&lt;T&gt; action, <span class="hljs-type">int</span> maxRetries)</span> {
     <span class="hljs-type">int</span> <span class="hljs-variable">attempt</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
     <span class="hljs-type">long</span> <span class="hljs-variable">backoffMs</span> <span class="hljs-operator">=</span> <span class="hljs-number">100</span>;
 
@@ -953,11 +917,11 @@ adder.sum(); <span class="hljs-comment">// Get total</span>
         }
     }
 }
-</code></pre>
+</code></pre></div>
 <hr>
 <h2 id="java-design-patterns-for-backend" tabindex="-1"><a class="header-anchor" href="#java-design-patterns-for-backend"><span>Java Design Patterns for Backend</span></a></h2>
 <h3 id="1-singleton-thread-safe" tabindex="-1"><a class="header-anchor" href="#1-singleton-thread-safe"><span>1. Singleton (Thread-Safe)</span></a></h3>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Double-checked locking with volatile</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Double-checked locking with volatile</span>
 <span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Singleton</span> {
     <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">volatile</span> Singleton instance;
 
@@ -994,9 +958,9 @@ adder.sum(); <span class="hljs-comment">// Get total</span>
         <span class="hljs-keyword">return</span> Holder.INSTANCE;
     }
 }
-</code></pre>
+</code></pre></div>
 <h3 id="2-producer-consumer-with-blockingqueue" tabindex="-1"><a class="header-anchor" href="#2-producer-consumer-with-blockingqueue"><span>2. Producer-Consumer with BlockingQueue</span></a></h3>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">import</span> java.util.concurrent.*;
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">import</span> java.util.concurrent.*;
 
 <span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">ProducerConsumer</span> {
 
@@ -1027,9 +991,9 @@ adder.sum(); <span class="hljs-comment">// Get total</span>
         consumers.shutdownNow();
     }
 }
-</code></pre>
+</code></pre></div>
 <h3 id="3-object-pool-pattern" tabindex="-1"><a class="header-anchor" href="#3-object-pool-pattern"><span>3. Object Pool Pattern</span></a></h3>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">import</span> java.util.concurrent.BlockingQueue;
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">import</span> java.util.concurrent.BlockingQueue;
 <span class="hljs-keyword">import</span> java.util.concurrent.LinkedBlockingQueue;
 
 <span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">ConnectionPool</span> {
@@ -1065,7 +1029,7 @@ adder.sum(); <span class="hljs-comment">// Get total</span>
         <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Connection</span>();
     }
 }
-</code></pre>
+</code></pre></div>
 <hr>
 <h2 id="common-interview-questions" tabindex="-1"><a class="header-anchor" href="#common-interview-questions"><span>Common Interview Questions</span></a></h2>
 <h3 id="q1-why-use-concurrenthashmap-compute-instead-of-get-put" tabindex="-1"><a class="header-anchor" href="#q1-why-use-concurrenthashmap-compute-instead-of-get-put"><span>Q1: Why use <code>ConcurrentHashMap.compute()</code> instead of get+put?</span></a></h3>

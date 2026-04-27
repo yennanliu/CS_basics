@@ -19,54 +19,18 @@
     }
   })();
   </script>
-  <script>document.addEventListener('DOMContentLoaded', function() {
-    document.querySelectorAll('pre code').forEach(function(codeEl) {
-      var pre = codeEl.parentElement;
-      var lang = '';
-      var cls = codeEl.className || '';
-      var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
-      if (m) lang = m[1];
-
-      // Add line numbers
-      var lines = codeEl.innerHTML.split('
-');
-      if (lines[lines.length - 1] === '') lines.pop();
-      var numbered = lines.map(function(line, i) {
-        return '<span class="hljs-ln-line"><span class="hljs-ln-n" data-line-number="' + (i + 1) + '"></span><span class="hljs-ln-code">' + line + '</span></span>';
-      }).join('
-');
-      codeEl.innerHTML = numbered;
-      codeEl.classList.add('hljs-ln');
-
-      var wrapper = document.createElement('div');
-      wrapper.className = 'code-block-wrapper';
-      pre.parentNode.insertBefore(wrapper, pre);
-      var header = document.createElement('div');
-      header.className = 'code-block-header';
-      if (lang) {
-        var label = document.createElement('span');
-        label.className = 'code-lang-label';
-        label.textContent = lang;
-        header.appendChild(label);
-      } else {
-        header.appendChild(document.createElement('span'));
-      }
-      var btn = document.createElement('button');
-      btn.className = 'copy-btn';
-      btn.textContent = 'Copy';
-      btn.addEventListener('click', function() {
-        var text = Array.from(codeEl.querySelectorAll('.hljs-ln-code')).map(function(el) { return el.textContent; }).join('
-');
-        navigator.clipboard.writeText(text).then(function() {
-          btn.textContent = 'Copied!';
-          btn.classList.add('copied');
-          setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
-        });
-      });
-      header.appendChild(btn);
-      wrapper.appendChild(header);
-      wrapper.appendChild(pre);
+  <script>
+  function copyCode(btn) {
+    var pre = btn.closest('.code-block-wrapper').querySelector('pre');
+    var text = pre ? pre.innerText : '';
+    navigator.clipboard.writeText(text).then(function() {
+      btn.textContent = 'Copied!';
+      btn.classList.add('copied');
+      setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
     });
+  }
+  </script>
+  <script>document.addEventListener('DOMContentLoaded', function() {
     document.querySelectorAll('table').forEach(function(table) {
       if (!table.parentElement.classList.contains('table-wrap')) {
         var wrapper = document.createElement('div');
@@ -155,7 +119,7 @@
 <li>to 7 base …</li>
 <li><a href="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/convert_int_n_base.png">https://github.com/yennanliu/CS_basics/blob/master/doc/pic/convert_int_n_base.png</a></li>
 </ul>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
 <span class="hljs-comment"># 504. Base 7</span>
 
 <span class="hljs-comment"># V0</span>
@@ -233,9 +197,9 @@ r = s.convertToBase7(num)
             <span class="hljs-keyword">return</span> _res
         <span class="hljs-keyword">else</span>:
             <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;-&quot;</span> + _res 
-</code></pre>
+</code></pre></div>
 <h4 id="1-1-0-transform-n-based-integer-to-10-based" tabindex="-1"><a class="header-anchor" href="#1-1-0-transform-n-based-integer-to-10-based"><span>1-1-0’) transform <code>N based integer to 10 based</code></span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># V1</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># V1</span>
 <span class="hljs-comment"># LC 1022. Sum of Root To Leaf Binary Numbers</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">convertToBaseN</span>(<span class="hljs-params">num, n</span>):
     <span class="hljs-keyword">return</span> <span class="hljs-built_in">int</span>(<span class="hljs-built_in">str</span>(num), n)
@@ -248,9 +212,9 @@ Out[<span class="hljs-number">35</span>]: <span class="hljs-number">11</span>
 
 In [<span class="hljs-number">36</span>]: <span class="hljs-built_in">int</span>(<span class="hljs-string">&quot;66&quot;</span>,<span class="hljs-number">7</span>)
 Out[<span class="hljs-number">36</span>]: <span class="hljs-number">48</span>
-</code></pre>
+</code></pre></div>
 <h4 id="1-1-1-check-prime-number" tabindex="-1"><a class="header-anchor" href="#1-1-1-check-prime-number"><span>1-1-1) check prime number</span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 762 Prime Number of Set Bits in Binary Representation</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 762 Prime Number of Set Bits in Binary Representation</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">check_prime</span>(<span class="hljs-params">x</span>):
     <span class="hljs-keyword">if</span> x &lt;= <span class="hljs-number">1</span>:
         <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
@@ -258,9 +222,9 @@ Out[<span class="hljs-number">36</span>]: <span class="hljs-number">48</span>
         <span class="hljs-keyword">if</span> x % i == <span class="hljs-number">0</span>:
             <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
     <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
-</code></pre>
+</code></pre></div>
 <h4 id="1-1-2-count-prime-number" tabindex="-1"><a class="header-anchor" href="#1-1-2-count-prime-number"><span>1-1-2) count prime number</span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 204 Count Primes</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 204 Count Primes</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># IDEA : set</span>
 <span class="hljs-comment"># https://leetcode.com/problems/count-primes/discuss/1343795/python%3A-sieve-of-eretosthenes</span>
@@ -281,8 +245,8 @@ Out[<span class="hljs-number">36</span>]: <span class="hljs-number">48</span>
                 <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(i*i, n, i):
                     nonprimes.add(j)
         <span class="hljs-keyword">return</span> n - <span class="hljs-built_in">len</span>(nonprimes) - <span class="hljs-number">2</span>  <span class="hljs-comment"># remove prime(1), prime(2)</span>
-</code></pre>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// algorithm book (labu) p.362</span>
 <span class="hljs-comment">// V1</span>
 <span class="hljs-type">int</span> <span class="hljs-title function_">countPrimes</span><span class="hljs-params">(<span class="hljs-type">int</span> n)</span>{
@@ -309,8 +273,8 @@ Out[<span class="hljs-number">36</span>]: <span class="hljs-number">48</span>
     }
     <span class="hljs-keyword">return</span> count;
 }
-</code></pre>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// algorithm book (labu) p.363</span>
 <span class="hljs-comment">// V1&#x27; (optimization)</span>
 <span class="hljs-type">int</span> <span class="hljs-title function_">countPrimes</span><span class="hljs-params">(<span class="hljs-type">int</span> n)</span>{
@@ -339,10 +303,10 @@ Out[<span class="hljs-number">36</span>]: <span class="hljs-number">48</span>
     }
     <span class="hljs-keyword">return</span> count;
 }
-</code></pre>
+</code></pre></div>
 <h2 id="2-lc-example" tabindex="-1"><a class="header-anchor" href="#2-lc-example"><span>2) LC Example</span></a></h2>
 <h3 id="2-1-excel-sheet-column-title" tabindex="-1"><a class="header-anchor" href="#2-1-excel-sheet-column-title"><span>2-1) Excel Sheet Column Title</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># 168 Excel Sheet Column Title</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># 168 Excel Sheet Column Title</span>
 <span class="hljs-comment"># https://leetcode.com/problems/excel-sheet-column-title/discuss/205987/Python-Solution-with-explanation</span>
 
 <span class="hljs-comment"># V0</span>
@@ -382,9 +346,9 @@ Out[<span class="hljs-number">36</span>]: <span class="hljs-number">48</span>
                     r+=<span class="hljs-number">26</span>
                 res = d[r] + res
         <span class="hljs-keyword">return</span> res
-</code></pre>
+</code></pre></div>
 <h3 id="2-2-solve-the-equation" tabindex="-1"><a class="header-anchor" href="#2-2-solve-the-equation"><span>2-2) Solve the Equation</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 640. Solve the Equation</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 640. Solve the Equation</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># IDEA : replace + eval + math</span>
 <span class="hljs-comment"># https://leetcode.com/problems/solve-the-equation/discuss/105362/Simple-2-liner-(and-more)</span>
@@ -399,9 +363,9 @@ Out[<span class="hljs-number">36</span>]: <span class="hljs-number">48</span>
         <span class="hljs-comment"># print (&quot;z = &quot; + str(z))</span>
         a, x = z.real, -z.imag
         <span class="hljs-keyword">return</span> <span class="hljs-string">&#x27;x=%d&#x27;</span> % (a / x) <span class="hljs-keyword">if</span> x <span class="hljs-keyword">else</span> <span class="hljs-string">&#x27;No solution&#x27;</span> <span class="hljs-keyword">if</span> a <span class="hljs-keyword">else</span> <span class="hljs-string">&#x27;Infinite solutions&#x27;</span>
-</code></pre>
+</code></pre></div>
 <h3 id="2-3-roman-to-integer" tabindex="-1"><a class="header-anchor" href="#2-3-roman-to-integer"><span>2-3) Roman to Integer</span></a></h3>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 13</span>
 
 <span class="hljs-comment">// V0-1</span>
@@ -445,7 +409,7 @@ Out[<span class="hljs-number">36</span>]: <span class="hljs-number">48</span>
 
     <span class="hljs-keyword">return</span> total;
 }
-</code></pre>
+</code></pre></div>
 
       </div>
       <div class="cheatsheet-footer">

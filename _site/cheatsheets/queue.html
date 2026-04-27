@@ -19,54 +19,18 @@
     }
   })();
   </script>
-  <script>document.addEventListener('DOMContentLoaded', function() {
-    document.querySelectorAll('pre code').forEach(function(codeEl) {
-      var pre = codeEl.parentElement;
-      var lang = '';
-      var cls = codeEl.className || '';
-      var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
-      if (m) lang = m[1];
-
-      // Add line numbers
-      var lines = codeEl.innerHTML.split('
-');
-      if (lines[lines.length - 1] === '') lines.pop();
-      var numbered = lines.map(function(line, i) {
-        return '<span class="hljs-ln-line"><span class="hljs-ln-n" data-line-number="' + (i + 1) + '"></span><span class="hljs-ln-code">' + line + '</span></span>';
-      }).join('
-');
-      codeEl.innerHTML = numbered;
-      codeEl.classList.add('hljs-ln');
-
-      var wrapper = document.createElement('div');
-      wrapper.className = 'code-block-wrapper';
-      pre.parentNode.insertBefore(wrapper, pre);
-      var header = document.createElement('div');
-      header.className = 'code-block-header';
-      if (lang) {
-        var label = document.createElement('span');
-        label.className = 'code-lang-label';
-        label.textContent = lang;
-        header.appendChild(label);
-      } else {
-        header.appendChild(document.createElement('span'));
-      }
-      var btn = document.createElement('button');
-      btn.className = 'copy-btn';
-      btn.textContent = 'Copy';
-      btn.addEventListener('click', function() {
-        var text = Array.from(codeEl.querySelectorAll('.hljs-ln-code')).map(function(el) { return el.textContent; }).join('
-');
-        navigator.clipboard.writeText(text).then(function() {
-          btn.textContent = 'Copied!';
-          btn.classList.add('copied');
-          setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
-        });
-      });
-      header.appendChild(btn);
-      wrapper.appendChild(header);
-      wrapper.appendChild(pre);
+  <script>
+  function copyCode(btn) {
+    var pre = btn.closest('.code-block-wrapper').querySelector('pre');
+    var text = pre ? pre.innerText : '';
+    navigator.clipboard.writeText(text).then(function() {
+      btn.textContent = 'Copied!';
+      btn.classList.add('copied');
+      setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
     });
+  }
+  </script>
+  <script>document.addEventListener('DOMContentLoaded', function() {
     document.querySelectorAll('table').forEach(function(table) {
       if (!table.parentElement.classList.contains('table-wrap')) {
         var wrapper = document.createElement('div');
@@ -270,7 +234,7 @@
 </tbody>
 </table>
 <h3 id="template-1-basic-queue-operations" tabindex="-1"><a class="header-anchor" href="#template-1-basic-queue-operations"><span>Template 1: Basic Queue Operations</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - Using collections.deque (recommended)</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - Using collections.deque (recommended)</span>
 <span class="hljs-keyword">from</span> collections <span class="hljs-keyword">import</span> deque
 
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">Queue</span>:
@@ -308,8 +272,8 @@
         <span class="hljs-keyword">if</span> <span class="hljs-variable language_">self</span>.queue:
             <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.queue.pop(<span class="hljs-number">0</span>)  <span class="hljs-comment"># O(n) operation</span>
         <span class="hljs-keyword">return</span> <span class="hljs-literal">None</span>
-</code></pre>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java - Using LinkedList</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java - Using LinkedList</span>
 <span class="hljs-keyword">import</span> java.util.*;
 
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">Queue</span>&lt;T&gt; {
@@ -351,9 +315,9 @@ Queue&lt;Integer&gt; queue = <span class="hljs-keyword">new</span> <span class="
 queue.offer(<span class="hljs-number">1</span>);  <span class="hljs-comment">// enqueue</span>
 queue.poll();    <span class="hljs-comment">// dequeue</span>
 queue.peek();    <span class="hljs-comment">// front</span>
-</code></pre>
+</code></pre></div>
 <h3 id="template-2-level-order-bfs-pattern" tabindex="-1"><a class="header-anchor" href="#template-2-level-order-bfs-pattern"><span>Template 2: Level-Order BFS Pattern</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - Tree level-order traversal</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - Tree level-order traversal</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">levelOrder</span>(<span class="hljs-params">root</span>):
     <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> root:
         <span class="hljs-keyword">return</span> []
@@ -393,8 +357,8 @@ queue.peek();    <span class="hljs-comment">// front</span>
                 queue.append((neighbor, dist + <span class="hljs-number">1</span>))
     
     <span class="hljs-keyword">return</span> visited
-</code></pre>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java - Level-order traversal</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java - Level-order traversal</span>
 <span class="hljs-keyword">public</span> List&lt;List&lt;Integer&gt;&gt; <span class="hljs-title function_">levelOrder</span><span class="hljs-params">(TreeNode root)</span> {
     List&lt;List&lt;Integer&gt;&gt; result = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();
     <span class="hljs-keyword">if</span> (root == <span class="hljs-literal">null</span>) <span class="hljs-keyword">return</span> result;
@@ -423,9 +387,9 @@ queue.peek();    <span class="hljs-comment">// front</span>
     
     <span class="hljs-keyword">return</span> result;
 }
-</code></pre>
+</code></pre></div>
 <h3 id="template-3-circular-queue-pattern" tabindex="-1"><a class="header-anchor" href="#template-3-circular-queue-pattern"><span>Template 3: Circular Queue Pattern</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - Fixed size circular queue</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - Fixed size circular queue</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">CircularQueue</span>:
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, k</span>):
         <span class="hljs-variable language_">self</span>.queue = [<span class="hljs-number">0</span>] * k
@@ -467,8 +431,8 @@ queue.peek();    <span class="hljs-comment">// front</span>
     
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">is_full</span>(<span class="hljs-params">self</span>):
         <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.count == <span class="hljs-variable language_">self</span>.capacity
-</code></pre>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java - Circular Queue</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java - Circular Queue</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">CircularQueue</span> {
     <span class="hljs-keyword">private</span> <span class="hljs-type">int</span>[] queue;
     <span class="hljs-keyword">private</span> <span class="hljs-type">int</span> head;
@@ -518,9 +482,9 @@ queue.peek();    <span class="hljs-comment">// front</span>
         <span class="hljs-keyword">return</span> count == capacity;
     }
 }
-</code></pre>
+</code></pre></div>
 <h3 id="template-4-monotonic-queue-pattern" tabindex="-1"><a class="header-anchor" href="#template-4-monotonic-queue-pattern"><span>Template 4: Monotonic Queue Pattern</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - Monotonic decreasing queue for sliding window maximum</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - Monotonic decreasing queue for sliding window maximum</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">MonotonicQueue</span>:
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self</span>):
         <span class="hljs-variable language_">self</span>.queue = deque()
@@ -563,8 +527,8 @@ queue.peek();    <span class="hljs-comment">// front</span>
             result.append(nums[dq[<span class="hljs-number">0</span>]])
     
     <span class="hljs-keyword">return</span> result
-</code></pre>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java - Monotonic Queue</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java - Monotonic Queue</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">MonotonicQueue</span> {
     <span class="hljs-keyword">private</span> LinkedList&lt;Integer&gt; queue;
     
@@ -619,9 +583,9 @@ queue.peek();    <span class="hljs-comment">// front</span>
     
     <span class="hljs-keyword">return</span> result;
 }
-</code></pre>
+</code></pre></div>
 <h3 id="template-5-queue-using-stacks-pattern" tabindex="-1"><a class="header-anchor" href="#template-5-queue-using-stacks-pattern"><span>Template 5: Queue Using Stacks Pattern</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - Implement queue using two stacks</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - Implement queue using two stacks</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">MyQueue</span>:
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self</span>):
         <span class="hljs-variable language_">self</span>.in_stack = []   <span class="hljs-comment"># For enqueue</span>
@@ -643,8 +607,8 @@ queue.peek();    <span class="hljs-comment">// front</span>
     
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">empty</span>(<span class="hljs-params">self</span>):
         <span class="hljs-keyword">return</span> <span class="hljs-built_in">len</span>(<span class="hljs-variable language_">self</span>.in_stack) == <span class="hljs-number">0</span> <span class="hljs-keyword">and</span> <span class="hljs-built_in">len</span>(<span class="hljs-variable language_">self</span>.out_stack) == <span class="hljs-number">0</span>
-</code></pre>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java - Queue using stacks</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java - Queue using stacks</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">MyQueue</span> {
     <span class="hljs-keyword">private</span> Stack&lt;Integer&gt; inStack;
     <span class="hljs-keyword">private</span> Stack&lt;Integer&gt; outStack;
@@ -677,9 +641,9 @@ queue.peek();    <span class="hljs-comment">// front</span>
         <span class="hljs-keyword">return</span> inStack.isEmpty() &amp;&amp; outStack.isEmpty();
     }
 }
-</code></pre>
+</code></pre></div>
 <h3 id="template-6-stream-processing-pattern" tabindex="-1"><a class="header-anchor" href="#template-6-stream-processing-pattern"><span>Template 6: Stream Processing Pattern</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - Moving average from data stream</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - Moving average from data stream</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">MovingAverage</span>:
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, size</span>):
         <span class="hljs-variable language_">self</span>.queue = deque()
@@ -709,8 +673,8 @@ queue.peek();    <span class="hljs-comment">// front</span>
         <span class="hljs-keyword">while</span> <span class="hljs-variable language_">self</span>.queue <span class="hljs-keyword">and</span> <span class="hljs-variable language_">self</span>.queue[<span class="hljs-number">0</span>] &lt;= timestamp - <span class="hljs-number">300</span>:
             <span class="hljs-variable language_">self</span>.queue.popleft()
         <span class="hljs-keyword">return</span> <span class="hljs-built_in">len</span>(<span class="hljs-variable language_">self</span>.queue)
-</code></pre>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java - Moving average</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java - Moving average</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">MovingAverage</span> {
     <span class="hljs-keyword">private</span> Queue&lt;Integer&gt; queue;
     <span class="hljs-keyword">private</span> <span class="hljs-type">int</span> windowSum;
@@ -733,7 +697,7 @@ queue.peek();    <span class="hljs-comment">// front</span>
         <span class="hljs-keyword">return</span> (<span class="hljs-type">double</span>) windowSum / queue.size();
     }
 }
-</code></pre>
+</code></pre></div>
 <h2 id="problems-by-pattern" tabindex="-1"><a class="header-anchor" href="#problems-by-pattern"><span>Problems by Pattern</span></a></h2>
 <h3 id="pattern-based-problem-tables" tabindex="-1"><a class="header-anchor" href="#pattern-based-problem-tables"><span>Pattern-Based Problem Tables</span></a></h3>
 <h4 id="bfs-level-order-problems" tabindex="-1"><a class="header-anchor" href="#bfs-level-order-problems"><span><strong>BFS &amp; Level-Order Problems</strong></span></a></h4>
@@ -1055,7 +1019,7 @@ queue.peek();    <span class="hljs-comment">// front</span>
 </tbody>
 </table>
 <h2 id="pattern-selection-strategy" tabindex="-1"><a class="header-anchor" href="#pattern-selection-strategy"><span>Pattern Selection Strategy</span></a></h2>
-<pre><code class="hljs">Problem Analysis Flowchart:
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Problem Analysis Flowchart:
 
 1. Is it a tree/graph traversal problem?
    ├── YES → Use BFS with Queue
@@ -1087,10 +1051,10 @@ queue.peek();    <span class="hljs-comment">// front</span>
    │         ├── Time window → Remove old entries
    │         └── Count window → Fixed size queue
    └── NO → Use basic queue operations
-</code></pre>
+</code></pre></div>
 <h2 id="basic-operations-reference" tabindex="-1"><a class="header-anchor" href="#basic-operations-reference"><span>Basic Operations Reference</span></a></h2>
 <h3 id="python-collections-deque" tabindex="-1"><a class="header-anchor" href="#python-collections-deque"><span>Python collections.deque</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">from</span> collections <span class="hljs-keyword">import</span> deque
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">from</span> collections <span class="hljs-keyword">import</span> deque
 
 <span class="hljs-comment"># Create deque</span>
 dq = deque()
@@ -1122,9 +1086,9 @@ size = <span class="hljs-built_in">len</span>(dq)
 is_empty = <span class="hljs-built_in">len</span>(dq) == <span class="hljs-number">0</span>
 count = dq.count(value)
 index = dq.index(value)
-</code></pre>
+</code></pre></div>
 <h3 id="java-queue-deque-operations" tabindex="-1"><a class="header-anchor" href="#java-queue-deque-operations"><span>Java Queue &amp; Deque Operations</span></a></h3>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">import</span> java.util.*;
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">import</span> java.util.*;
 
 <span class="hljs-comment">// Queue interface (FIFO)</span>
 Queue&lt;Integer&gt; queue = <span class="hljs-keyword">new</span> <span class="hljs-title class_">LinkedList</span>&lt;&gt;();
@@ -1161,7 +1125,7 @@ val = deque.getLast();     <span class="hljs-comment">// View rear (throws excep
 <span class="hljs-comment">// Stack operations on Deque</span>
 deque.push(<span class="hljs-number">5</span>);         <span class="hljs-comment">// Push to front (stack top)</span>
 val = deque.pop();     <span class="hljs-comment">// Pop from front (stack top)</span>
-</code></pre>
+</code></pre></div>
 <h2 id="summary-quick-reference" tabindex="-1"><a class="header-anchor" href="#summary-quick-reference"><span>Summary &amp; Quick Reference</span></a></h2>
 <h3 id="complexity-quick-reference" tabindex="-1"><a class="header-anchor" href="#complexity-quick-reference"><span>Complexity Quick Reference</span></a></h3>
 <table>
@@ -1256,30 +1220,30 @@ val = deque.pop();     <span class="hljs-comment">// Pop from front (stack top)<
 </table>
 <h3 id="common-patterns-tricks" tabindex="-1"><a class="header-anchor" href="#common-patterns-tricks"><span>Common Patterns &amp; Tricks</span></a></h3>
 <h4 id="level-order-processing" tabindex="-1"><a class="header-anchor" href="#level-order-processing"><span><strong>Level-Order Processing</strong></span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Process nodes level by level</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Process nodes level by level</span>
 level_size = <span class="hljs-built_in">len</span>(queue)
 <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(level_size):
     node = queue.popleft()
     <span class="hljs-comment"># Process node</span>
     <span class="hljs-comment"># Add children</span>
-</code></pre>
+</code></pre></div>
 <h4 id="circular-index-calculation" tabindex="-1"><a class="header-anchor" href="#circular-index-calculation"><span><strong>Circular Index Calculation</strong></span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Wrap around in circular buffer</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Wrap around in circular buffer</span>
 tail_index = (head + count) % capacity
 next_index = (current + <span class="hljs-number">1</span>) % capacity
-</code></pre>
+</code></pre></div>
 <h4 id="monotonic-property-maintenance" tabindex="-1"><a class="header-anchor" href="#monotonic-property-maintenance"><span><strong>Monotonic Property Maintenance</strong></span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Decreasing monotonic queue</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Decreasing monotonic queue</span>
 <span class="hljs-keyword">while</span> queue <span class="hljs-keyword">and</span> queue[-<span class="hljs-number">1</span>] &lt; new_val:
     queue.pop()
 queue.append(new_val)
-</code></pre>
+</code></pre></div>
 <h4 id="two-stack-queue-optimization" tabindex="-1"><a class="header-anchor" href="#two-stack-queue-optimization"><span><strong>Two-Stack Queue Optimization</strong></span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Amortized O(1) operations</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Amortized O(1) operations</span>
 <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> out_stack:
     <span class="hljs-keyword">while</span> in_stack:
         out_stack.append(in_stack.pop())
-</code></pre>
+</code></pre></div>
 <h3 id="problem-solving-steps" tabindex="-1"><a class="header-anchor" href="#problem-solving-steps"><span>Problem-Solving Steps</span></a></h3>
 <ol>
 <li>
@@ -1405,7 +1369,7 @@ queue.append(new_val)
 <blockquote>
 <p>Maintain a decreasing deque of indices; front is always the current window maximum.</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 239 - Sliding Window Maximum</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 239 - Sliding Window Maximum</span>
 <span class="hljs-comment">// IDEA: Monotonic deque — remove out-of-window front, remove smaller rear, front = max</span>
 <span class="hljs-comment">// time = O(N), space = O(k)</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span>[] maxSlidingWindow(<span class="hljs-type">int</span>[] nums, <span class="hljs-type">int</span> k) {
@@ -1420,12 +1384,12 @@ queue.append(new_val)
     }
     <span class="hljs-keyword">return</span> ans;
 }
-</code></pre>
+</code></pre></div>
 <h3 id="2-2-design-circular-queue-lc-622-array-with-head-count" tabindex="-1"><a class="header-anchor" href="#2-2-design-circular-queue-lc-622-array-with-head-count"><span>2-2) Design Circular Queue (LC 622) — Array with Head/Count</span></a></h3>
 <blockquote>
 <p>Fixed-size array; track head index and count; use modular arithmetic for wrap-around.</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 622 - Design Circular Queue</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 622 - Design Circular Queue</span>
 <span class="hljs-comment">// IDEA: Fixed array + head pointer + count; tail = (head + count - 1) % capacity</span>
 <span class="hljs-comment">// time = O(1) all ops, space = O(k)</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">MyCircularQueue</span> {
@@ -1449,7 +1413,7 @@ queue.append(new_val)
     <span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">isEmpty</span><span class="hljs-params">()</span> { <span class="hljs-keyword">return</span> count == <span class="hljs-number">0</span>; }
     <span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">isFull</span><span class="hljs-params">()</span>  { <span class="hljs-keyword">return</span> count == capacity; }
 }
-</code></pre>
+</code></pre></div>
 
       </div>
       <div class="cheatsheet-footer">

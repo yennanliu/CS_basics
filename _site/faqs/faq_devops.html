@@ -19,54 +19,18 @@
     }
   })();
   </script>
-  <script>document.addEventListener('DOMContentLoaded', function() {
-    document.querySelectorAll('pre code').forEach(function(codeEl) {
-      var pre = codeEl.parentElement;
-      var lang = '';
-      var cls = codeEl.className || '';
-      var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
-      if (m) lang = m[1];
-
-      // Add line numbers
-      var lines = codeEl.innerHTML.split('
-');
-      if (lines[lines.length - 1] === '') lines.pop();
-      var numbered = lines.map(function(line, i) {
-        return '<span class="hljs-ln-line"><span class="hljs-ln-n" data-line-number="' + (i + 1) + '"></span><span class="hljs-ln-code">' + line + '</span></span>';
-      }).join('
-');
-      codeEl.innerHTML = numbered;
-      codeEl.classList.add('hljs-ln');
-
-      var wrapper = document.createElement('div');
-      wrapper.className = 'code-block-wrapper';
-      pre.parentNode.insertBefore(wrapper, pre);
-      var header = document.createElement('div');
-      header.className = 'code-block-header';
-      if (lang) {
-        var label = document.createElement('span');
-        label.className = 'code-lang-label';
-        label.textContent = lang;
-        header.appendChild(label);
-      } else {
-        header.appendChild(document.createElement('span'));
-      }
-      var btn = document.createElement('button');
-      btn.className = 'copy-btn';
-      btn.textContent = 'Copy';
-      btn.addEventListener('click', function() {
-        var text = Array.from(codeEl.querySelectorAll('.hljs-ln-code')).map(function(el) { return el.textContent; }).join('
-');
-        navigator.clipboard.writeText(text).then(function() {
-          btn.textContent = 'Copied!';
-          btn.classList.add('copied');
-          setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
-        });
-      });
-      header.appendChild(btn);
-      wrapper.appendChild(header);
-      wrapper.appendChild(pre);
+  <script>
+  function copyCode(btn) {
+    var pre = btn.closest('.code-block-wrapper').querySelector('pre');
+    var text = pre ? pre.innerText : '';
+    navigator.clipboard.writeText(text).then(function() {
+      btn.textContent = 'Copied!';
+      btn.classList.add('copied');
+      setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
     });
+  }
+  </script>
+  <script>document.addEventListener('DOMContentLoaded', function() {
     document.querySelectorAll('table').forEach(function(table) {
       if (!table.parentElement.classList.contains('table-wrap')) {
         var wrapper = document.createElement('div');
@@ -200,7 +164,7 @@
 </tbody>
 </table>
 <h3 id="dockerfile" tabindex="-1"><a class="header-anchor" href="#dockerfile"><span>Dockerfile 重要概念</span></a></h3>
-<pre data-lang="dockerfile"><code class="hljs language-dockerfile"><span class="hljs-comment"># 使用輕量基底映像</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">dockerfile</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="dockerfile"><code class="hljs language-dockerfile"><span class="hljs-comment"># 使用輕量基底映像</span>
 <span class="hljs-keyword">FROM</span> node:<span class="hljs-number">18</span>-alpine
 
 <span class="hljs-keyword">WORKDIR</span><span class="language-bash"> /app</span>
@@ -217,7 +181,7 @@
 
 <span class="hljs-keyword">EXPOSE</span> <span class="hljs-number">3000</span>
 <span class="hljs-keyword">CMD</span><span class="language-bash"> [<span class="hljs-string">&quot;node&quot;</span>, <span class="hljs-string">&quot;server.js&quot;</span>]</span>
-</code></pre>
+</code></pre></div>
 <p><strong>最佳實踐：</strong></p>
 <ul>
 <li>將變動頻率低的步驟（安裝依賴）放前面，充分利用 Layer Cache</li>
@@ -225,7 +189,7 @@
 <li>使用 Multi-stage build 縮減最終映像大小</li>
 </ul>
 <p><strong>Multi-stage build 範例（Go）：</strong></p>
-<pre data-lang="dockerfile"><code class="hljs language-dockerfile"><span class="hljs-comment"># Stage 1：編譯</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">dockerfile</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="dockerfile"><code class="hljs language-dockerfile"><span class="hljs-comment"># Stage 1：編譯</span>
 <span class="hljs-keyword">FROM</span> golang:<span class="hljs-number">1.21</span> AS builder
 <span class="hljs-keyword">WORKDIR</span><span class="language-bash"> /app</span>
 <span class="hljs-keyword">COPY</span><span class="language-bash"> . .</span>
@@ -235,18 +199,18 @@
 <span class="hljs-keyword">FROM</span> scratch
 <span class="hljs-keyword">COPY</span><span class="language-bash"> --from=builder /app/server /server</span>
 <span class="hljs-keyword">ENTRYPOINT</span><span class="language-bash"> [<span class="hljs-string">&quot;/server&quot;</span>]</span>
-</code></pre>
+</code></pre></div>
 <h3 id="docker" tabindex="-1"><a class="header-anchor" href="#docker"><span>常用 Docker 指令</span></a></h3>
-<pre data-lang="bash"><code class="hljs language-bash">docker build -t my-app:v1 .          <span class="hljs-comment"># 建立映像</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="bash"><code class="hljs language-bash">docker build -t my-app:v1 .          <span class="hljs-comment"># 建立映像</span>
 docker run -d -p 8080:3000 my-app:v1  <span class="hljs-comment"># 後台執行</span>
 docker logs -f my-container           <span class="hljs-comment"># 追蹤日誌</span>
 docker <span class="hljs-built_in">exec</span> -it my-container sh        <span class="hljs-comment"># 進入容器</span>
 docker ps                              <span class="hljs-comment"># 列出運行中容器</span>
 docker images                          <span class="hljs-comment"># 列出本地映像</span>
 docker system prune -af               <span class="hljs-comment"># 清理未使用資源</span>
-</code></pre>
+</code></pre></div>
 <h3 id="docker-compose" tabindex="-1"><a class="header-anchor" href="#docker-compose"><span>Docker Compose（本地多容器開發）</span></a></h3>
-<pre data-lang="yaml"><code class="hljs language-yaml"><span class="hljs-attr">version:</span> <span class="hljs-string">&#x27;3.8&#x27;</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">yaml</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="yaml"><code class="hljs language-yaml"><span class="hljs-attr">version:</span> <span class="hljs-string">&#x27;3.8&#x27;</span>
 <span class="hljs-attr">services:</span>
   <span class="hljs-attr">app:</span>
     <span class="hljs-attr">build:</span> <span class="hljs-string">.</span>
@@ -272,11 +236,11 @@ docker system prune -af               <span class="hljs-comment"># 清理未使�
 
 <span class="hljs-attr">volumes:</span>
   <span class="hljs-attr">db_data:</span>
-</code></pre>
+</code></pre></div>
 <hr>
 <h2 id="2-kubernetes" tabindex="-1"><a class="header-anchor" href="#2-kubernetes"><span>2. Kubernetes 基礎</span></a></h2>
 <h3 id="-1" tabindex="-1"><a class="header-anchor" href="#-1"><span>架構概覽</span></a></h3>
-<pre><code class="hljs">Cluster
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Cluster
 ├── Control Plane（主節點）
 │   ├── API Server      ← 所有操作的入口
 │   ├── etcd            ← 儲存叢集狀態（key-value）
@@ -286,7 +250,7 @@ docker system prune -af               <span class="hljs-comment"># 清理未使�
     ├── kubelet         ← 管理此節點上的 Pod
     ├── kube-proxy      ← 處理網路規則
     └── Container Runtime (containerd)
-</code></pre>
+</code></pre></div>
 <h3 id="-2" tabindex="-1"><a class="header-anchor" href="#-2"><span>核心資源</span></a></h3>
 <table>
 <thead>
@@ -339,7 +303,7 @@ docker system prune -af               <span class="hljs-comment"># 清理未使�
 </tbody>
 </table>
 <h3 id="deployment" tabindex="-1"><a class="header-anchor" href="#deployment"><span>Deployment 範例</span></a></h3>
-<pre data-lang="yaml"><code class="hljs language-yaml"><span class="hljs-attr">apiVersion:</span> <span class="hljs-string">apps/v1</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">yaml</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="yaml"><code class="hljs language-yaml"><span class="hljs-attr">apiVersion:</span> <span class="hljs-string">apps/v1</span>
 <span class="hljs-attr">kind:</span> <span class="hljs-string">Deployment</span>
 <span class="hljs-attr">metadata:</span>
   <span class="hljs-attr">name:</span> <span class="hljs-string">my-app</span>
@@ -383,7 +347,7 @@ docker system prune -af               <span class="hljs-comment"># 清理未使�
             <span class="hljs-attr">port:</span> <span class="hljs-number">3000</span>
           <span class="hljs-attr">initialDelaySeconds:</span> <span class="hljs-number">15</span>
           <span class="hljs-attr">periodSeconds:</span> <span class="hljs-number">20</span>
-</code></pre>
+</code></pre></div>
 <h3 id="service" tabindex="-1"><a class="header-anchor" href="#service"><span>Service 類型</span></a></h3>
 <table>
 <thead>
@@ -454,7 +418,7 @@ docker system prune -af               <span class="hljs-comment"># 清理未使�
 </tbody>
 </table>
 <h3 id="hpa" tabindex="-1"><a class="header-anchor" href="#hpa"><span>HPA（水平自動擴縮）</span></a></h3>
-<pre data-lang="yaml"><code class="hljs language-yaml"><span class="hljs-attr">apiVersion:</span> <span class="hljs-string">autoscaling/v2</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">yaml</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="yaml"><code class="hljs language-yaml"><span class="hljs-attr">apiVersion:</span> <span class="hljs-string">autoscaling/v2</span>
 <span class="hljs-attr">kind:</span> <span class="hljs-string">HorizontalPodAutoscaler</span>
 <span class="hljs-attr">metadata:</span>
   <span class="hljs-attr">name:</span> <span class="hljs-string">my-app-hpa</span>
@@ -478,9 +442,9 @@ docker system prune -af               <span class="hljs-comment"># 清理未使�
       <span class="hljs-attr">target:</span>
         <span class="hljs-attr">type:</span> <span class="hljs-string">Utilization</span>
         <span class="hljs-attr">averageUtilization:</span> <span class="hljs-number">75</span>
-</code></pre>
+</code></pre></div>
 <h3 id="kubectl" tabindex="-1"><a class="header-anchor" href="#kubectl"><span>常用 kubectl 指令</span></a></h3>
-<pre data-lang="bash"><code class="hljs language-bash"><span class="hljs-comment"># 查看資源</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="bash"><code class="hljs language-bash"><span class="hljs-comment"># 查看資源</span>
 kubectl get pods -n production
 kubectl get deployments,services -n production
 kubectl get all -n production
@@ -502,28 +466,28 @@ kubectl scale deployment/my-app --replicas=5 -n production
 
 <span class="hljs-comment"># 強制刪除卡住的 Pod</span>
 kubectl delete pod my-pod -n production --grace-period=0 --force
-</code></pre>
+</code></pre></div>
 <hr>
 <h2 id="3-k8s-qps-requests-limits" tabindex="-1"><a class="header-anchor" href="#3-k8s-qps-requests-limits"><span>3. K8s 資源估算（QPS → Requests/Limits）</span></a></h2>
 <h3 id="-4" tabindex="-1"><a class="header-anchor" href="#-4"><span>核心公式</span></a></h3>
-<pre><code class="hljs">總 CPU    ≈ QPS × 每次請求的 CPU 消耗
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">總 CPU    ≈ QPS × 每次請求的 CPU 消耗
 總 Memory ≈ 基礎記憶體 + (並發數 × 每次請求的記憶體)
-</code></pre>
+</code></pre></div>
 <h3 id="little-s-law" tabindex="-1"><a class="header-anchor" href="#little-s-law"><span>步驟一：估算並發數（Little’s Law）</span></a></h3>
-<pre><code class="hljs">並發數 = QPS × 平均回應時間（秒）
-</code></pre>
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">並發數 = QPS × 平均回應時間（秒）
+</code></pre></div>
 <p>範例：QPS = 500，平均延遲 = 200ms</p>
-<pre><code class="hljs">並發數 = 500 × 0.2 = 100 個同時進行的請求
-</code></pre>
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">並發數 = 500 × 0.2 = 100 個同時進行的請求
+</code></pre></div>
 <h3 id="-5" tabindex="-1"><a class="header-anchor" href="#-5"><span>步驟二：量測每次請求消耗</span></a></h3>
 <p>用 k6 / Locust / JMeter 進行負載測試，再推算：</p>
-<pre><code class="hljs">CPU per request    = 負載測試時總 CPU 使用量 / QPS
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">CPU per request    = 負載測試時總 CPU 使用量 / QPS
 Memory per request ≈ (峰值記憶體 - 基礎記憶體) / 並發數
-</code></pre>
+</code></pre></div>
 <h3 id="-6" tabindex="-1"><a class="header-anchor" href="#-6"><span>步驟三：計算總資源需求</span></a></h3>
-<pre><code class="hljs">總 CPU    = QPS × CPU per request  × 安全係數（1.5～2）
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">總 CPU    = QPS × CPU per request  × 安全係數（1.5～2）
 總 Memory = (基礎記憶體 + 並發數 × Memory per request) × 安全係數（1.3～1.5）
-</code></pre>
+</code></pre></div>
 <h3 id="-7" tabindex="-1"><a class="header-anchor" href="#-7"><span>端對端範例</span></a></h3>
 <p>條件：QPS = 1000，延遲 = 100ms，CPU per req = 5m，基礎記憶體 = 200MB，Memory per req = 1MB</p>
 <table>
@@ -553,14 +517,14 @@ Memory per request ≈ (峰值記憶體 - 基礎記憶體) / 並發數
 </tbody>
 </table>
 <p>切分 10 個 Pod，每 Pod：</p>
-<pre data-lang="yaml"><code class="hljs language-yaml"><span class="hljs-attr">resources:</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">yaml</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="yaml"><code class="hljs language-yaml"><span class="hljs-attr">resources:</span>
   <span class="hljs-attr">requests:</span>
     <span class="hljs-attr">cpu:</span> <span class="hljs-string">&quot;500m&quot;</span>
     <span class="hljs-attr">memory:</span> <span class="hljs-string">&quot;64Mi&quot;</span>
   <span class="hljs-attr">limits:</span>
     <span class="hljs-attr">cpu:</span> <span class="hljs-string">&quot;1000m&quot;</span>
     <span class="hljs-attr">memory:</span> <span class="hljs-string">&quot;128Mi&quot;</span>
-</code></pre>
+</code></pre></div>
 <h3 id="requests-vs-limits" tabindex="-1"><a class="header-anchor" href="#requests-vs-limits"><span>Requests vs Limits 設定原則</span></a></h3>
 <table>
 <thead>
@@ -623,7 +587,7 @@ Memory per request ≈ (峰值記憶體 - 基礎記憶體) / 並發數
 <hr>
 <h2 id="4-ci-cd" tabindex="-1"><a class="header-anchor" href="#4-ci-cd"><span>4. CI/CD 流程設計</span></a></h2>
 <h3 id="pipeline" tabindex="-1"><a class="header-anchor" href="#pipeline"><span>標準 Pipeline 階段</span></a></h3>
-<pre><code class="hljs">程式碼提交（PR）
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">程式碼提交（PR）
   → Lint / Static Analysis（程式碼品質）
   → Unit Test（單元測試）
   → Build &amp; Package（Docker Image）
@@ -634,9 +598,9 @@ Memory per request ≈ (峰值記憶體 - 基礎記憶體) / 並發數
   → 手動審核（Production Gate）
   → Deploy to Production（部署正式環境）
   → 監控觀察（告警、回滾機制）
-</code></pre>
+</code></pre></div>
 <h3 id="github-actions" tabindex="-1"><a class="header-anchor" href="#github-actions"><span>GitHub Actions 範例</span></a></h3>
-<pre data-lang="yaml"><code class="hljs language-yaml"><span class="hljs-attr">name:</span> <span class="hljs-string">CI/CD</span> <span class="hljs-string">Pipeline</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">yaml</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="yaml"><code class="hljs language-yaml"><span class="hljs-attr">name:</span> <span class="hljs-string">CI/CD</span> <span class="hljs-string">Pipeline</span>
 
 <span class="hljs-attr">on:</span>
   <span class="hljs-attr">push:</span>
@@ -690,7 +654,7 @@ Memory per request ≈ (峰值記憶體 - 基礎記憶體) / 並發數
         <span class="hljs-attr">run:</span> <span class="hljs-string">|
           kubectl set image deployment/my-app \
             my-app=my-app:${{ github.sha }} -n production
-</span></code></pre>
+</span></code></pre></div>
 <h3 id="-9" tabindex="-1"><a class="header-anchor" href="#-9"><span>部署策略選擇</span></a></h3>
 <table>
 <thead>
@@ -780,7 +744,7 @@ Memory per request ≈ (峰值記憶體 - 基礎記憶體) / 並發數
 </tbody>
 </table>
 <h3 id="prometheus" tabindex="-1"><a class="header-anchor" href="#prometheus"><span>Prometheus 告警規則範例</span></a></h3>
-<pre data-lang="yaml"><code class="hljs language-yaml"><span class="hljs-attr">groups:</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">yaml</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="yaml"><code class="hljs language-yaml"><span class="hljs-attr">groups:</span>
 <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">app-alerts</span>
   <span class="hljs-attr">rules:</span>
   <span class="hljs-bullet">-</span> <span class="hljs-attr">alert:</span> <span class="hljs-string">HighErrorRate</span>
@@ -811,7 +775,7 @@ Memory per request ≈ (峰值記憶體 - 基礎記憶體) / 並發數
       <span class="hljs-attr">severity:</span> <span class="hljs-string">critical</span>
     <span class="hljs-attr">annotations:</span>
       <span class="hljs-attr">summary:</span> <span class="hljs-string">&quot;Pod <span class="hljs-template-variable">{{ $labels.pod }}</span> 持續重啟&quot;</span>
-</code></pre>
+</code></pre></div>
 <h3 id="-11" tabindex="-1"><a class="header-anchor" href="#-11"><span>告警設計原則</span></a></h3>
 <ul>
 <li>只針對<strong>影響用戶體驗</strong>的指標告警，避免告警疲勞（Alert Fatigue）</li>
@@ -856,11 +820,11 @@ Memory per request ≈ (峰值記憶體 - 基礎記憶體) / 並發數
 <p>原則：<code>SLA ≤ SLO</code>（內部目標要比對外承諾更嚴格）</p>
 </blockquote>
 <h3 id="error-budget" tabindex="-1"><a class="header-anchor" href="#error-budget"><span>錯誤預算（Error Budget）</span></a></h3>
-<pre><code class="hljs">錯誤預算 = 100% - SLO
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">錯誤預算 = 100% - SLO
 
 SLO = 99.9% 可用性
 → 每月允許停機時間 = 30天 × 24h × 60m × 0.1% ≈ 43 分鐘
-</code></pre>
+</code></pre></div>
 <p><strong>錯誤預算的用法：</strong></p>
 <ul>
 <li>預算充足 → 可以加快新功能部署、做 infra 變更</li>
@@ -900,7 +864,7 @@ SLO = 99.9% 可用性
 </tbody>
 </table>
 <h3 id="incident-response" tabindex="-1"><a class="header-anchor" href="#incident-response"><span>事故應對流程（Incident Response）</span></a></h3>
-<pre><code class="hljs">偵測（Detection）
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">偵測（Detection）
   → 告警觸發 or 用戶回報
   
 分類（Triage）
@@ -916,7 +880,7 @@ SLO = 99.9% 可用性
 事後檢討（Post-mortem）
   → 無責備文化（Blameless）
   → 記錄時間線、影響、根因、改善行動
-</code></pre>
+</code></pre></div>
 <h3 id="toil" tabindex="-1"><a class="header-anchor" href="#toil"><span>Toil（重複性工作）管理</span></a></h3>
 <p>SRE 原則：<code>Toil &lt; 50%</code> 的工作時間</p>
 <ul>
@@ -974,14 +938,14 @@ SLO = 99.9% 可用性
 </tbody>
 </table>
 <h3 id="dns" tabindex="-1"><a class="header-anchor" href="#dns"><span>DNS 解析流程</span></a></h3>
-<pre><code class="hljs">瀏覽器輸入 www.example.com
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">瀏覽器輸入 www.example.com
   → 查本地 Cache（/etc/hosts、瀏覽器）
   → 查本地 DNS Resolver（通常是路由器或 ISP）
   → 查 Root Name Server（.）
   → 查 TLD Name Server（.com）
   → 查 Authoritative Name Server（example.com）
   → 取得 IP 位址，建立連線
-</code></pre>
+</code></pre></div>
 <h3 id="load-balancer" tabindex="-1"><a class="header-anchor" href="#load-balancer"><span>負載平衡（Load Balancer）</span></a></h3>
 <table>
 <thead>
@@ -1012,13 +976,13 @@ SLO = 99.9% 可用性
 <li><strong>Weighted Round Robin</strong>：依伺服器權重分配</li>
 </ul>
 <h3 id="kubernetes" tabindex="-1"><a class="header-anchor" href="#kubernetes"><span>Kubernetes 網路模型</span></a></h3>
-<pre><code class="hljs">外部流量
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">外部流量
   → LoadBalancer Service / Ingress Controller
   → Service（ClusterIP，kube-proxy 做 DNAT）
   → Pod（每個 Pod 有獨立 IP）
-</code></pre>
+</code></pre></div>
 <p><strong>Ingress 路由範例：</strong></p>
-<pre data-lang="yaml"><code class="hljs language-yaml"><span class="hljs-attr">apiVersion:</span> <span class="hljs-string">networking.k8s.io/v1</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">yaml</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="yaml"><code class="hljs language-yaml"><span class="hljs-attr">apiVersion:</span> <span class="hljs-string">networking.k8s.io/v1</span>
 <span class="hljs-attr">kind:</span> <span class="hljs-string">Ingress</span>
 <span class="hljs-attr">metadata:</span>
   <span class="hljs-attr">name:</span> <span class="hljs-string">my-ingress</span>
@@ -1047,7 +1011,7 @@ SLO = 99.9% 可用性
             <span class="hljs-attr">name:</span> <span class="hljs-string">order-service</span>
             <span class="hljs-attr">port:</span>
               <span class="hljs-attr">number:</span> <span class="hljs-number">80</span>
-</code></pre>
+</code></pre></div>
 <h3 id="service-mesh" tabindex="-1"><a class="header-anchor" href="#service-mesh"><span>Service Mesh（服務網格）</span></a></h3>
 <p>用於微服務架構，在不修改應用程式碼的情況下提供：</p>
 <table>
@@ -1076,7 +1040,7 @@ SLO = 99.9% 可用性
 <hr>
 <h2 id="8-linux" tabindex="-1"><a class="header-anchor" href="#8-linux"><span>8. Linux 常用指令與概念</span></a></h2>
 <h3 id="-13" tabindex="-1"><a class="header-anchor" href="#-13"><span>進程與系統管理</span></a></h3>
-<pre data-lang="bash"><code class="hljs language-bash"><span class="hljs-comment"># 查看進程</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="bash"><code class="hljs language-bash"><span class="hljs-comment"># 查看進程</span>
 ps aux | grep my-app          <span class="hljs-comment"># 列出所有進程</span>
 top / htop                    <span class="hljs-comment"># 動態查看系統資源使用</span>
 <span class="hljs-built_in">kill</span> -9 &lt;PID&gt;                 <span class="hljs-comment"># 強制終止進程</span>
@@ -1091,9 +1055,9 @@ vmstat 1                      <span class="hljs-comment"># 系統虛擬記憶體
 <span class="hljs-comment"># CPU 和負載</span>
 <span class="hljs-built_in">uptime</span>                        <span class="hljs-comment"># 系統負載（load average）</span>
 <span class="hljs-built_in">nproc</span>                         <span class="hljs-comment"># CPU 核心數</span>
-</code></pre>
+</code></pre></div>
 <h3 id="-14" tabindex="-1"><a class="header-anchor" href="#-14"><span>網路診斷</span></a></h3>
-<pre data-lang="bash"><code class="hljs language-bash"><span class="hljs-comment"># 連線測試</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="bash"><code class="hljs language-bash"><span class="hljs-comment"># 連線測試</span>
 ping -c 4 google.com
 curl -v https://api.example.com/health    <span class="hljs-comment"># 測試 HTTP 請求</span>
 curl -o /dev/null -s -w <span class="hljs-string">&quot;%{http_code}\n&quot;</span> https://example.com
@@ -1107,9 +1071,9 @@ nslookup / dig example.com    <span class="hljs-comment"># DNS 查詢</span>
 
 <span class="hljs-comment"># 防火牆</span>
 iptables -L                   <span class="hljs-comment"># 列出防火牆規則</span>
-</code></pre>
+</code></pre></div>
 <h3 id="-15" tabindex="-1"><a class="header-anchor" href="#-15"><span>日誌與文件</span></a></h3>
-<pre data-lang="bash"><code class="hljs language-bash"><span class="hljs-comment"># 查看日誌</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="bash"><code class="hljs language-bash"><span class="hljs-comment"># 查看日誌</span>
 <span class="hljs-built_in">tail</span> -f /var/log/nginx/access.log      <span class="hljs-comment"># 追蹤日誌</span>
 journalctl -u nginx -f                 <span class="hljs-comment"># systemd 服務日誌</span>
 journalctl --since <span class="hljs-string">&quot;2024-01-01 00:00&quot;</span>  <span class="hljs-comment"># 指定時間範圍</span>
@@ -1122,14 +1086,14 @@ awk <span class="hljs-string">&#x27;{print $1}&#x27;</span> access.log | <span c
 <span class="hljs-comment"># 文件操作</span>
 find / -name <span class="hljs-string">&quot;*.log&quot;</span> -mtime +30 -delete    <span class="hljs-comment"># 刪除 30 天前的日誌</span>
 tar -czf backup.tar.gz /etc/nginx/         <span class="hljs-comment"># 壓縮備份</span>
-</code></pre>
+</code></pre></div>
 <h3 id="linux" tabindex="-1"><a class="header-anchor" href="#linux"><span>常見 Linux 概念</span></a></h3>
 <p><strong>Load Average（系統負載）：</strong></p>
-<pre><code class="hljs">uptime 輸出：load average: 1.23, 0.95, 0.88
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">uptime 輸出：load average: 1.23, 0.95, 0.88
               最近1分鐘  最近5分鐘  最近15分鐘
 
 規則：值 ≈ CPU 核心數 表示滿載；&gt; 核心數 表示過載
-</code></pre>
+</code></pre></div>
 <p><strong>進程狀態（Process States）：</strong></p>
 <table>
 <thead>
@@ -1193,7 +1157,7 @@ tar -czf backup.tar.gz /etc/nginx/         <span class="hljs-comment"># 壓縮�
 </tbody>
 </table>
 <h3 id="pvc" tabindex="-1"><a class="header-anchor" href="#pvc"><span>PVC 範例</span></a></h3>
-<pre data-lang="yaml"><code class="hljs language-yaml"><span class="hljs-attr">apiVersion:</span> <span class="hljs-string">v1</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">yaml</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="yaml"><code class="hljs language-yaml"><span class="hljs-attr">apiVersion:</span> <span class="hljs-string">v1</span>
 <span class="hljs-attr">kind:</span> <span class="hljs-string">PersistentVolumeClaim</span>
 <span class="hljs-attr">metadata:</span>
   <span class="hljs-attr">name:</span> <span class="hljs-string">mysql-pvc</span>
@@ -1204,7 +1168,7 @@ tar -czf backup.tar.gz /etc/nginx/         <span class="hljs-comment"># 壓縮�
   <span class="hljs-attr">resources:</span>
     <span class="hljs-attr">requests:</span>
       <span class="hljs-attr">storage:</span> <span class="hljs-string">10Gi</span>
-</code></pre>
+</code></pre></div>
 <p><strong>Access Mode 類型：</strong></p>
 <ul>
 <li><code>ReadWriteOnce (RWO)</code>：單一 Node 讀寫（最常見，適合 DB）</li>
@@ -1244,7 +1208,7 @@ tar -czf backup.tar.gz /etc/nginx/         <span class="hljs-comment"># 壓縮�
 </tr>
 </tbody>
 </table>
-<pre data-lang="yaml"><code class="hljs language-yaml"><span class="hljs-attr">apiVersion:</span> <span class="hljs-string">apps/v1</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">yaml</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="yaml"><code class="hljs language-yaml"><span class="hljs-attr">apiVersion:</span> <span class="hljs-string">apps/v1</span>
 <span class="hljs-attr">kind:</span> <span class="hljs-string">StatefulSet</span>
 <span class="hljs-attr">metadata:</span>
   <span class="hljs-attr">name:</span> <span class="hljs-string">mysql</span>
@@ -1279,7 +1243,7 @@ tar -czf backup.tar.gz /etc/nginx/         <span class="hljs-comment"># 壓縮�
       <span class="hljs-attr">resources:</span>
         <span class="hljs-attr">requests:</span>
           <span class="hljs-attr">storage:</span> <span class="hljs-string">20Gi</span>
-</code></pre>
+</code></pre></div>
 <hr>
 <h2 id="10-gitops" tabindex="-1"><a class="header-anchor" href="#10-gitops"><span>10. GitOps 工作流程</span></a></h2>
 <h3 id="gitops" tabindex="-1"><a class="header-anchor" href="#gitops"><span>什麼是 GitOps？</span></a></h3>
@@ -1291,7 +1255,7 @@ tar -czf backup.tar.gz /etc/nginx/         <span class="hljs-comment"># 壓縮�
 <li>回滾 = <code>git revert</code>，操作直覺且有審計記錄</li>
 </ul>
 <h3 id="gitops-vs-ci-cd" tabindex="-1"><a class="header-anchor" href="#gitops-vs-ci-cd"><span>GitOps vs 傳統 CI/CD</span></a></h3>
-<pre><code class="hljs">傳統 CI/CD（Push 模式）：
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">傳統 CI/CD（Push 模式）：
 CI Pipeline → kubectl apply → Cluster
 （CI 有 K8s 憑證，安全風險較高）
 
@@ -1299,10 +1263,10 @@ GitOps（Pull 模式）：
 開發者 → Git Commit → Git Repo
                           ↑ 持續 diff
                        ArgoCD/Flux（在叢集內）→ 自動同步
-</code></pre>
+</code></pre></div>
 <h3 id="argocd" tabindex="-1"><a class="header-anchor" href="#argocd"><span>ArgoCD 基本概念</span></a></h3>
 <p>ArgoCD 是最常見的 GitOps 工具，在叢集內持續監控 Git 與叢集狀態的差異：</p>
-<pre data-lang="yaml"><code class="hljs language-yaml"><span class="hljs-comment"># ArgoCD Application 定義</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">yaml</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="yaml"><code class="hljs language-yaml"><span class="hljs-comment"># ArgoCD Application 定義</span>
 <span class="hljs-attr">apiVersion:</span> <span class="hljs-string">argoproj.io/v1alpha1</span>
 <span class="hljs-attr">kind:</span> <span class="hljs-string">Application</span>
 <span class="hljs-attr">metadata:</span>
@@ -1323,9 +1287,9 @@ GitOps（Pull 模式）：
       <span class="hljs-attr">selfHeal:</span> <span class="hljs-literal">true</span>               <span class="hljs-comment"># 有人手動修改叢集時自動還原</span>
     <span class="hljs-attr">syncOptions:</span>
     <span class="hljs-bullet">-</span> <span class="hljs-string">CreateNamespace=true</span>
-</code></pre>
+</code></pre></div>
 <h3 id="gitops-1" tabindex="-1"><a class="header-anchor" href="#gitops-1"><span>GitOps 實踐流程</span></a></h3>
-<pre><code class="hljs">1. 開發者修改應用程式碼
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">1. 開發者修改應用程式碼
    → 觸發 CI Pipeline（測試、建立 Docker Image、推送到 Registry）
    → CI 自動更新 Config Repo 中的 image tag
 
@@ -1336,12 +1300,12 @@ GitOps（Pull 模式）：
 3. 需要回滾？
    → git revert 到上一個 commit
    → ArgoCD 自動同步，叢集回到舊版本
-</code></pre>
+</code></pre></div>
 <hr>
 <h2 id="11-security" tabindex="-1"><a class="header-anchor" href="#11-security"><span>11. 安全性（Security）</span></a></h2>
 <h3 id="k8s-rbac" tabindex="-1"><a class="header-anchor" href="#k8s-rbac"><span>K8s RBAC（角色存取控制）</span></a></h3>
 <p><strong>最小權限原則（Principle of Least Privilege）</strong></p>
-<pre data-lang="yaml"><code class="hljs language-yaml"><span class="hljs-comment"># 定義 Role（限定在特定 Namespace）</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">yaml</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="yaml"><code class="hljs language-yaml"><span class="hljs-comment"># 定義 Role（限定在特定 Namespace）</span>
 <span class="hljs-attr">apiVersion:</span> <span class="hljs-string">rbac.authorization.k8s.io/v1</span>
 <span class="hljs-attr">kind:</span> <span class="hljs-string">Role</span>
 <span class="hljs-attr">metadata:</span>
@@ -1367,7 +1331,7 @@ GitOps（Pull 模式）：
   <span class="hljs-attr">kind:</span> <span class="hljs-string">Role</span>
   <span class="hljs-attr">apiGroup:</span> <span class="hljs-string">rbac.authorization.k8s.io</span>
   <span class="hljs-attr">name:</span> <span class="hljs-string">pod-reader</span>
-</code></pre>
+</code></pre></div>
 <h3 id="secret" tabindex="-1"><a class="header-anchor" href="#secret"><span>Secret 安全管理</span></a></h3>
 <p>K8s Secret 預設只是 Base64 編碼，<strong>並非加密</strong>。生產環境建議：</p>
 <table>
@@ -1397,7 +1361,7 @@ GitOps（Pull 模式）：
 </tbody>
 </table>
 <h3 id="network-policy" tabindex="-1"><a class="header-anchor" href="#network-policy"><span>Network Policy（網路隔離）</span></a></h3>
-<pre data-lang="yaml"><code class="hljs language-yaml"><span class="hljs-comment"># 只允許來自 frontend namespace 的流量進入 backend</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">yaml</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="yaml"><code class="hljs language-yaml"><span class="hljs-comment"># 只允許來自 frontend namespace 的流量進入 backend</span>
 <span class="hljs-attr">apiVersion:</span> <span class="hljs-string">networking.k8s.io/v1</span>
 <span class="hljs-attr">kind:</span> <span class="hljs-string">NetworkPolicy</span>
 <span class="hljs-attr">metadata:</span>
@@ -1417,9 +1381,9 @@ GitOps（Pull 模式）：
     <span class="hljs-attr">ports:</span>
     <span class="hljs-bullet">-</span> <span class="hljs-attr">protocol:</span> <span class="hljs-string">TCP</span>
       <span class="hljs-attr">port:</span> <span class="hljs-number">8080</span>
-</code></pre>
+</code></pre></div>
 <h3 id="-17" tabindex="-1"><a class="header-anchor" href="#-17"><span>容器安全最佳實踐</span></a></h3>
-<pre data-lang="yaml"><code class="hljs language-yaml"><span class="hljs-attr">spec:</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">yaml</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="yaml"><code class="hljs language-yaml"><span class="hljs-attr">spec:</span>
   <span class="hljs-attr">securityContext:</span>
     <span class="hljs-attr">runAsNonRoot:</span> <span class="hljs-literal">true</span>           <span class="hljs-comment"># 禁止以 root 執行</span>
     <span class="hljs-attr">runAsUser:</span> <span class="hljs-number">1000</span>
@@ -1432,7 +1396,7 @@ GitOps（Pull 模式）：
       <span class="hljs-attr">capabilities:</span>
         <span class="hljs-attr">drop:</span>
         <span class="hljs-bullet">-</span> <span class="hljs-string">ALL</span>                          <span class="hljs-comment"># 移除所有 Linux capabilities</span>
-</code></pre>
+</code></pre></div>
 <hr>
 <h2 id="12-iac" tabindex="-1"><a class="header-anchor" href="#12-iac"><span>12. 基礎設施即代碼（IaC）</span></a></h2>
 <h3 id="iac" tabindex="-1"><a class="header-anchor" href="#iac"><span>為什麼使用 IaC？</span></a></h3>
@@ -1443,7 +1407,7 @@ GitOps（Pull 模式）：
 <li><strong>災難恢復</strong>：可快速重建整個環境</li>
 </ul>
 <h3 id="terraform" tabindex="-1"><a class="header-anchor" href="#terraform"><span>Terraform 核心概念</span></a></h3>
-<pre><code class="hljs"># 宣告 Provider
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs"># 宣告 Provider
 terraform {
   required_providers {
     aws = {
@@ -1472,16 +1436,16 @@ resource &quot;aws_vpc&quot; &quot;main&quot; {
 output &quot;vpc_id&quot; {
   value = aws_vpc.main.id
 }
-</code></pre>
-<pre data-lang="bash"><code class="hljs language-bash">terraform init      <span class="hljs-comment"># 初始化，下載 providers</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="bash"><code class="hljs language-bash">terraform init      <span class="hljs-comment"># 初始化，下載 providers</span>
 terraform plan      <span class="hljs-comment"># 預覽變更（不實際執行）</span>
 terraform apply     <span class="hljs-comment"># 執行變更</span>
 terraform destroy   <span class="hljs-comment"># 銷毀所有資源（謹慎使用）</span>
 terraform import    <span class="hljs-comment"># 將既有資源納入 Terraform 管理</span>
 terraform state list  <span class="hljs-comment"># 查看目前管理的資源</span>
-</code></pre>
+</code></pre></div>
 <h3 id="helm-kubernetes" tabindex="-1"><a class="header-anchor" href="#helm-kubernetes"><span>Helm（Kubernetes 套件管理）</span></a></h3>
-<pre data-lang="bash"><code class="hljs language-bash">helm repo add bitnami https://charts.bitnami.com/bitnami
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="bash"><code class="hljs language-bash">helm repo add bitnami https://charts.bitnami.com/bitnami
 helm repo update
 
 <span class="hljs-comment"># 安裝，並覆寫預設值</span>
@@ -1495,7 +1459,7 @@ helm upgrade my-redis bitnami/redis --<span class="hljs-built_in">set</span> ima
 helm rollback my-redis 1                                   <span class="hljs-comment"># 回滾到版本 1</span>
 helm list -n production                                    <span class="hljs-comment"># 查看安裝的 release</span>
 helm uninstall my-redis -n production                     <span class="hljs-comment"># 卸載</span>
-</code></pre>
+</code></pre></div>
 <hr>
 <h2 id="13" tabindex="-1"><a class="header-anchor" href="#13"><span>13. 常見面試題</span></a></h2>
 <h3 id="q1-docker" tabindex="-1"><a class="header-anchor" href="#q1-docker"><span>Q1：Docker 容器和虛擬機的主要差別？</span></a></h3>
@@ -1506,10 +1470,10 @@ helm uninstall my-redis -n production                     <span class="hljs-comm
 </ul>
 <hr>
 <h3 id="q2-k8s-deployment-pod-replicaset" tabindex="-1"><a class="header-anchor" href="#q2-k8s-deployment-pod-replicaset"><span>Q2：K8s 中 Deployment、Pod、ReplicaSet 的關係？</span></a></h3>
-<pre><code class="hljs">Deployment（管理更新策略與版本）
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Deployment（管理更新策略與版本）
   └── ReplicaSet（確保指定數量的 Pod 在運行）
        └── Pod（實際執行的容器，最小部署單位）
-</code></pre>
+</code></pre></div>
 <p>通常只操作 Deployment，不直接建立 ReplicaSet 或 Pod。</p>
 <hr>
 <h3 id="q3-readinessprobe-livenessprobe" tabindex="-1"><a class="header-anchor" href="#q3-readinessprobe-livenessprobe"><span>Q3：readinessProbe 和 livenessProbe 的差別？</span></a></h3>
@@ -1547,7 +1511,7 @@ helm uninstall my-redis -n production                     <span class="hljs-comm
 <li>設定 <code>terminationGracePeriodSeconds</code>，讓舊 Pod 優雅關閉（處理完進行中的請求）</li>
 <li>使用 <strong>PodDisruptionBudget</strong> 確保最少可用 Pod 數</li>
 </ol>
-<pre data-lang="yaml"><code class="hljs language-yaml"><span class="hljs-attr">apiVersion:</span> <span class="hljs-string">policy/v1</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">yaml</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="yaml"><code class="hljs language-yaml"><span class="hljs-attr">apiVersion:</span> <span class="hljs-string">policy/v1</span>
 <span class="hljs-attr">kind:</span> <span class="hljs-string">PodDisruptionBudget</span>
 <span class="hljs-attr">metadata:</span>
   <span class="hljs-attr">name:</span> <span class="hljs-string">my-app-pdb</span>
@@ -1556,7 +1520,7 @@ helm uninstall my-redis -n production                     <span class="hljs-comm
   <span class="hljs-attr">selector:</span>
     <span class="hljs-attr">matchLabels:</span>
       <span class="hljs-attr">app:</span> <span class="hljs-string">my-app</span>
-</code></pre>
+</code></pre></div>
 <hr>
 <h3 id="q5-slo-sla" tabindex="-1"><a class="header-anchor" href="#q5-slo-sla"><span>Q5：SLO 和 SLA 的差別，以及錯誤預算的用途？</span></a></h3>
 <ul>

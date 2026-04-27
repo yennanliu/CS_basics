@@ -19,54 +19,18 @@
     }
   })();
   </script>
-  <script>document.addEventListener('DOMContentLoaded', function() {
-    document.querySelectorAll('pre code').forEach(function(codeEl) {
-      var pre = codeEl.parentElement;
-      var lang = '';
-      var cls = codeEl.className || '';
-      var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
-      if (m) lang = m[1];
-
-      // Add line numbers
-      var lines = codeEl.innerHTML.split('
-');
-      if (lines[lines.length - 1] === '') lines.pop();
-      var numbered = lines.map(function(line, i) {
-        return '<span class="hljs-ln-line"><span class="hljs-ln-n" data-line-number="' + (i + 1) + '"></span><span class="hljs-ln-code">' + line + '</span></span>';
-      }).join('
-');
-      codeEl.innerHTML = numbered;
-      codeEl.classList.add('hljs-ln');
-
-      var wrapper = document.createElement('div');
-      wrapper.className = 'code-block-wrapper';
-      pre.parentNode.insertBefore(wrapper, pre);
-      var header = document.createElement('div');
-      header.className = 'code-block-header';
-      if (lang) {
-        var label = document.createElement('span');
-        label.className = 'code-lang-label';
-        label.textContent = lang;
-        header.appendChild(label);
-      } else {
-        header.appendChild(document.createElement('span'));
-      }
-      var btn = document.createElement('button');
-      btn.className = 'copy-btn';
-      btn.textContent = 'Copy';
-      btn.addEventListener('click', function() {
-        var text = Array.from(codeEl.querySelectorAll('.hljs-ln-code')).map(function(el) { return el.textContent; }).join('
-');
-        navigator.clipboard.writeText(text).then(function() {
-          btn.textContent = 'Copied!';
-          btn.classList.add('copied');
-          setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
-        });
-      });
-      header.appendChild(btn);
-      wrapper.appendChild(header);
-      wrapper.appendChild(pre);
+  <script>
+  function copyCode(btn) {
+    var pre = btn.closest('.code-block-wrapper').querySelector('pre');
+    var text = pre ? pre.innerText : '';
+    navigator.clipboard.writeText(text).then(function() {
+      btn.textContent = 'Copied!';
+      btn.classList.add('copied');
+      setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
     });
+  }
+  </script>
+  <script>document.addEventListener('DOMContentLoaded', function() {
     document.querySelectorAll('table').forEach(function(table) {
       if (!table.parentElement.classList.contains('table-wrap')) {
         var wrapper = document.createElement('div');
@@ -245,7 +209,7 @@
 </tbody>
 </table>
 <h3 id="template-1-basic-bellman-ford" tabindex="-1"><a class="header-anchor" href="#template-1-basic-bellman-ford"><span>Template 1: Basic Bellman-Ford</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">bellman_ford</span>(<span class="hljs-params">n, edges, src</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">bellman_ford</span>(<span class="hljs-params">n, edges, src</span>):
     <span class="hljs-string">&quot;&quot;&quot;
     Find shortest paths from src to all vertices
     n: number of vertices (0-indexed)
@@ -275,9 +239,9 @@
             <span class="hljs-keyword">return</span> <span class="hljs-literal">None</span>  <span class="hljs-comment"># Negative cycle detected</span>
 
     <span class="hljs-keyword">return</span> dist
-</code></pre>
+</code></pre></div>
 <h3 id="template-2-bellman-ford-with-negative-cycle-detection" tabindex="-1"><a class="header-anchor" href="#template-2-bellman-ford-with-negative-cycle-detection"><span>Template 2: Bellman-Ford with Negative Cycle Detection</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">bellman_ford_with_cycle_detection</span>(<span class="hljs-params">n, edges, src</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">bellman_ford_with_cycle_detection</span>(<span class="hljs-params">n, edges, src</span>):
     <span class="hljs-string">&quot;&quot;&quot;
     Bellman-Ford with detailed negative cycle detection
     Returns: (distances, has_negative_cycle, cycle_nodes)
@@ -324,9 +288,9 @@
 
     cycle.reverse()
     <span class="hljs-keyword">return</span> dist, <span class="hljs-literal">True</span>, cycle
-</code></pre>
+</code></pre></div>
 <h3 id="template-3-bellman-ford-with-k-edges-constraint" tabindex="-1"><a class="header-anchor" href="#template-3-bellman-ford-with-k-edges-constraint"><span>Template 3: Bellman-Ford with K Edges Constraint</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">bellman_ford_k_edges</span>(<span class="hljs-params">n, edges, src, dst, k</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">bellman_ford_k_edges</span>(<span class="hljs-params">n, edges, src, dst, k</span>):
     <span class="hljs-string">&quot;&quot;&quot;
     Find shortest path using at most k edges
     Useful for problems like &quot;Cheapest Flights Within K Stops&quot;
@@ -352,9 +316,9 @@
         prev_dist = dist[dst]
 
     <span class="hljs-keyword">return</span> dist[dst] <span class="hljs-keyword">if</span> dist[dst] != <span class="hljs-built_in">float</span>(<span class="hljs-string">&#x27;inf&#x27;</span>) <span class="hljs-keyword">else</span> -<span class="hljs-number">1</span>
-</code></pre>
+</code></pre></div>
 <h3 id="template-4-spfa-shortest-path-faster-algorithm" tabindex="-1"><a class="header-anchor" href="#template-4-spfa-shortest-path-faster-algorithm"><span>Template 4: SPFA (Shortest Path Faster Algorithm)</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">from</span> collections <span class="hljs-keyword">import</span> deque
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">from</span> collections <span class="hljs-keyword">import</span> deque
 
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">spfa</span>(<span class="hljs-params">n, edges, src</span>):
     <span class="hljs-string">&quot;&quot;&quot;
@@ -397,9 +361,9 @@
                         <span class="hljs-keyword">return</span> <span class="hljs-literal">None</span>  <span class="hljs-comment"># Negative cycle</span>
 
     <span class="hljs-keyword">return</span> dist
-</code></pre>
+</code></pre></div>
 <h3 id="template-5-bellman-ford-with-path-reconstruction" tabindex="-1"><a class="header-anchor" href="#template-5-bellman-ford-with-path-reconstruction"><span>Template 5: Bellman-Ford with Path Reconstruction</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">bellman_ford_with_path</span>(<span class="hljs-params">n, edges, src, dst</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">bellman_ford_with_path</span>(<span class="hljs-params">n, edges, src, dst</span>):
     <span class="hljs-string">&quot;&quot;&quot;
     Find shortest path and reconstruct the actual path
     Returns: (distance, path)
@@ -437,9 +401,9 @@
 
     path.reverse()
     <span class="hljs-keyword">return</span> dist[dst], path
-</code></pre>
+</code></pre></div>
 <h3 id="template-6-currency-arbitrage-detection" tabindex="-1"><a class="header-anchor" href="#template-6-currency-arbitrage-detection"><span>Template 6: Currency Arbitrage Detection</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">import</span> math
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">import</span> math
 
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">detect_arbitrage</span>(<span class="hljs-params">n, exchange_rates</span>):
     <span class="hljs-string">&quot;&quot;&quot;
@@ -474,7 +438,7 @@
             <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>  <span class="hljs-comment"># Arbitrage detected</span>
 
     <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
-</code></pre>
+</code></pre></div>
 <h2 id="algorithm-comparison" tabindex="-1"><a class="header-anchor" href="#algorithm-comparison"><span>Algorithm Comparison</span></a></h2>
 <h3 id="bellman-ford-vs-dijkstra-vs-floyd-warshall" tabindex="-1"><a class="header-anchor" href="#bellman-ford-vs-dijkstra-vs-floyd-warshall"><span>Bellman-Ford vs Dijkstra vs Floyd-Warshall</span></a></h3>
 <table>
@@ -550,7 +514,7 @@
 </tbody>
 </table>
 <h3 id="when-to-use-each-algorithm" tabindex="-1"><a class="header-anchor" href="#when-to-use-each-algorithm"><span>When to Use Each Algorithm</span></a></h3>
-<pre><code class="hljs">Shortest Path Algorithm Selection:
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Shortest Path Algorithm Selection:
 
 1. Does graph have negative edge weights?
    ├── YES → Continue to 2
@@ -575,7 +539,7 @@
    ├── Edge count constraint (K edges)? → Modified Bellman-Ford
    ├── Unweighted graph? → BFS
    └── Tree structure? → DFS/BFS
-</code></pre>
+</code></pre></div>
 <h3 id="performance-comparison" tabindex="-1"><a class="header-anchor" href="#performance-comparison"><span>Performance Comparison</span></a></h3>
 <p><strong>Example: Graph with V=1000 vertices</strong></p>
 <table>
@@ -670,7 +634,7 @@
 <blockquote>
 <p>Relax edges at most K+1 times; copy dist array each iteration to avoid using edges from same round.</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 787 - Cheapest Flights Within K Stops</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 787 - Cheapest Flights Within K Stops</span>
 <span class="hljs-comment">// IDEA: Bellman-Ford — relax edges k+1 times; copy dist array each iteration</span>
 <span class="hljs-comment">// time = O(K * E), space = O(N)</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">findCheapestPrice</span><span class="hljs-params">(<span class="hljs-type">int</span> n, <span class="hljs-type">int</span>[][] flights, <span class="hljs-type">int</span> src, <span class="hljs-type">int</span> dst, <span class="hljs-type">int</span> k)</span> {
@@ -687,8 +651,8 @@
     }
     <span class="hljs-keyword">return</span> dist[dst] == Integer.MAX_VALUE ? -<span class="hljs-number">1</span> : dist[dst];
 }
-</code></pre>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 787 - Cheapest Flights Within K Stops</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 787 - Cheapest Flights Within K Stops</span>
 <span class="hljs-comment"># Classic Bellman-Ford with K edges constraint</span>
 
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">findCheapestPrice</span>(<span class="hljs-params">n, flights, src, dst, k</span>):
@@ -754,12 +718,12 @@
                 queue.append((new_cost, neighbor, stops + <span class="hljs-number">1</span>))
 
     <span class="hljs-keyword">return</span> min_cost <span class="hljs-keyword">if</span> min_cost != <span class="hljs-built_in">float</span>(<span class="hljs-string">&#x27;inf&#x27;</span>) <span class="hljs-keyword">else</span> -<span class="hljs-number">1</span>
-</code></pre>
+</code></pre></div>
 <h3 id="2-2-network-delay-time-lc-743-bellman-ford-n-1-relaxations" tabindex="-1"><a class="header-anchor" href="#2-2-network-delay-time-lc-743-bellman-ford-n-1-relaxations"><span>2-2) Network Delay Time (LC 743) — Bellman-Ford N-1 Relaxations</span></a></h3>
 <blockquote>
 <p>Relax all edges N-1 times; minimum time for signal to reach all nodes = max of dist array.</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 743 - Network Delay Time</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 743 - Network Delay Time</span>
 <span class="hljs-comment">// IDEA: Bellman-Ford — relax all edges N-1 times; answer = max dist, -1 if any unreachable</span>
 <span class="hljs-comment">// time = O(N * E), space = O(N)</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">networkDelayTime</span><span class="hljs-params">(<span class="hljs-type">int</span>[][] times, <span class="hljs-type">int</span> n, <span class="hljs-type">int</span> k)</span> {
@@ -777,8 +741,8 @@
     }
     <span class="hljs-keyword">return</span> max;
 }
-</code></pre>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 743 - Network Delay Time</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 743 - Network Delay Time</span>
 <span class="hljs-comment"># Can use Bellman-Ford but Dijkstra is more efficient</span>
 
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">networkDelayTime</span>(<span class="hljs-params">times, n, k</span>):
@@ -803,9 +767,9 @@
     <span class="hljs-comment"># Find maximum delay</span>
     max_delay = <span class="hljs-built_in">max</span>(dist[<span class="hljs-number">1</span>:])
     <span class="hljs-keyword">return</span> max_delay <span class="hljs-keyword">if</span> max_delay != <span class="hljs-built_in">float</span>(<span class="hljs-string">&#x27;inf&#x27;</span>) <span class="hljs-keyword">else</span> -<span class="hljs-number">1</span>
-</code></pre>
+</code></pre></div>
 <h3 id="2-3-currency-arbitrage-detection-custom-bellman-ford-with-log-transform" tabindex="-1"><a class="header-anchor" href="#2-3-currency-arbitrage-detection-custom-bellman-ford-with-log-transform"><span>2-3) Currency Arbitrage Detection — Custom Bellman-Ford with Log Transform</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Detect arbitrage opportunity in currency exchange</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Detect arbitrage opportunity in currency exchange</span>
 <span class="hljs-keyword">import</span> math
 
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">detect_arbitrage_opportunity</span>(<span class="hljs-params">rates</span>):
@@ -901,9 +865,9 @@
     path.reverse()
 
     <span class="hljs-keyword">return</span> path
-</code></pre>
+</code></pre></div>
 <h3 id="2-4-minimum-cost-to-reach-destination-custom-bellman-ford-variant" tabindex="-1"><a class="header-anchor" href="#2-4-minimum-cost-to-reach-destination-custom-bellman-ford-variant"><span>2-4) Minimum Cost to Reach Destination — Custom Bellman-Ford Variant</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">min_cost_with_discounts</span>(<span class="hljs-params">n, roads, src, dst, discounts</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">min_cost_with_discounts</span>(<span class="hljs-params">n, roads, src, dst, discounts</span>):
     <span class="hljs-string">&quot;&quot;&quot;
     Find minimum cost where some roads have discounts (negative weights)
     roads: [(u, v, cost)]
@@ -933,9 +897,9 @@
             <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;Infinite arbitrage possible&quot;</span>
 
     <span class="hljs-keyword">return</span> dist[dst] <span class="hljs-keyword">if</span> dist[dst] != <span class="hljs-built_in">float</span>(<span class="hljs-string">&#x27;inf&#x27;</span>) <span class="hljs-keyword">else</span> -<span class="hljs-number">1</span>
-</code></pre>
+</code></pre></div>
 <h3 id="2-5-time-travel-problem-theoretical-negative-cycle-detection" tabindex="-1"><a class="header-anchor" href="#2-5-time-travel-problem-theoretical-negative-cycle-detection"><span>2-5) Time Travel Problem — Theoretical Negative-Cycle Detection</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">shortest_path_with_time_machine</span>(<span class="hljs-params">n, edges, src, dst</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">shortest_path_with_time_machine</span>(<span class="hljs-params">n, edges, src, dst</span>):
     <span class="hljs-string">&quot;&quot;&quot;
     Some edges go back in time (negative weight)
     Need to detect if infinite time travel loop exists
@@ -974,7 +938,7 @@
         <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;Can arrive arbitrarily early (time loop)&quot;</span>
 
     <span class="hljs-keyword">return</span> dist[dst] <span class="hljs-keyword">if</span> dist[dst] != <span class="hljs-built_in">float</span>(<span class="hljs-string">&#x27;inf&#x27;</span>) <span class="hljs-keyword">else</span> <span class="hljs-string">&quot;Unreachable&quot;</span>
-</code></pre>
+</code></pre></div>
 <h2 id="problems-by-pattern" tabindex="-1"><a class="header-anchor" href="#problems-by-pattern"><span>Problems by Pattern</span></a></h2>
 <h3 id="classic-shortest-path-with-negatives" tabindex="-1"><a class="header-anchor" href="#classic-shortest-path-with-negatives"><span><strong>Classic Shortest Path with Negatives</strong></span></a></h3>
 <table>
@@ -1121,7 +1085,7 @@
 <li>Working with unweighted graph (use BFS)</li>
 </ul>
 <h3 id="implementation-checklist" tabindex="-1"><a class="header-anchor" href="#implementation-checklist"><span>Implementation Checklist</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Bellman-Ford Implementation Checklist:</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Bellman-Ford Implementation Checklist:</span>
 
 <span class="hljs-comment"># 1. Initialize distances</span>
 dist = [<span class="hljs-built_in">float</span>(<span class="hljs-string">&#x27;inf&#x27;</span>)] * n
@@ -1150,33 +1114,33 @@ has_negative_cycle = <span class="hljs-literal">False</span>
 <span class="hljs-keyword">if</span> has_negative_cycle:
     <span class="hljs-keyword">return</span> <span class="hljs-literal">None</span>  <span class="hljs-comment"># or handle appropriately</span>
 <span class="hljs-keyword">return</span> dist
-</code></pre>
+</code></pre></div>
 <h3 id="common-optimizations" tabindex="-1"><a class="header-anchor" href="#common-optimizations"><span>Common Optimizations</span></a></h3>
 <ol>
 <li>
 <p><strong>Early Termination</strong></p>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># If no updates in an iteration, done early</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># If no updates in an iteration, done early</span>
 <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> updated:
     <span class="hljs-keyword">break</span>
-</code></pre>
+</code></pre></div>
 </li>
 <li>
 <p><strong>SPFA (Queue-Based)</strong></p>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Only process vertices that had updates</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Only process vertices that had updates</span>
 <span class="hljs-comment"># Average O(E), worst O(V·E)</span>
-</code></pre>
+</code></pre></div>
 </li>
 <li>
 <p><strong>Bidirectional Search</strong></p>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Run from both src and dst simultaneously</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Run from both src and dst simultaneously</span>
 <span class="hljs-comment"># Can reduce iterations by half</span>
-</code></pre>
+</code></pre></div>
 </li>
 <li>
 <p><strong>Iteration Limiting</strong></p>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># For K-edge constraint, stop after K iterations</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># For K-edge constraint, stop after K iterations</span>
 <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">min</span>(k, n-<span class="hljs-number">1</span>)):
-</code></pre>
+</code></pre></div>
 </li>
 </ol>
 <h2 id="summary-quick-reference" tabindex="-1"><a class="header-anchor" href="#summary-quick-reference"><span>Summary &amp; Quick Reference</span></a></h2>
@@ -1218,7 +1182,7 @@ has_negative_cycle = <span class="hljs-literal">False</span>
 </tbody>
 </table>
 <h3 id="core-algorithm-structure" tabindex="-1"><a class="header-anchor" href="#core-algorithm-structure"><span>Core Algorithm Structure</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Standard Bellman-Ford Pattern</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Standard Bellman-Ford Pattern</span>
 dist[src] = <span class="hljs-number">0</span>
 <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(V - <span class="hljs-number">1</span>):                    <span class="hljs-comment"># V-1 iterations</span>
     <span class="hljs-keyword">for</span> each edge (u, v, w):              <span class="hljs-comment"># All edges</span>
@@ -1229,7 +1193,7 @@ dist[src] = <span class="hljs-number">0</span>
 <span class="hljs-keyword">for</span> each edge (u, v, w):
     <span class="hljs-keyword">if</span> dist[u] + w &lt; dist[v]:
         <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;Negative cycle exists&quot;</span>
-</code></pre>
+</code></pre></div>
 <h3 id="key-differences-from-other-algorithms" tabindex="-1"><a class="header-anchor" href="#key-differences-from-other-algorithms"><span>Key Differences from Other Algorithms</span></a></h3>
 <table>
 <thead>
@@ -1269,21 +1233,21 @@ dist[src] = <span class="hljs-number">0</span>
 </table>
 <h3 id="common-patterns-tricks" tabindex="-1"><a class="header-anchor" href="#common-patterns-tricks"><span>Common Patterns &amp; Tricks</span></a></h3>
 <h4 id="pattern-1-negative-cycle-detection" tabindex="-1"><a class="header-anchor" href="#pattern-1-negative-cycle-detection"><span><strong>Pattern 1: Negative Cycle Detection</strong></span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># After V-1 iterations, one more check</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># After V-1 iterations, one more check</span>
 <span class="hljs-keyword">for</span> u, v, w <span class="hljs-keyword">in</span> edges:
     <span class="hljs-keyword">if</span> dist[u] + w &lt; dist[v]:
         <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;Has negative cycle&quot;</span>
-</code></pre>
+</code></pre></div>
 <h4 id="pattern-2-k-edge-constraint" tabindex="-1"><a class="header-anchor" href="#pattern-2-k-edge-constraint"><span><strong>Pattern 2: K-Edge Constraint</strong></span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Use temp array to ensure using previous iteration values</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Use temp array to ensure using previous iteration values</span>
 <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(k):
     temp = dist.copy()
     <span class="hljs-keyword">for</span> u, v, w <span class="hljs-keyword">in</span> edges:
         temp[v] = <span class="hljs-built_in">min</span>(temp[v], dist[u] + w)
     dist = temp
-</code></pre>
+</code></pre></div>
 <h4 id="pattern-3-path-reconstruction" tabindex="-1"><a class="header-anchor" href="#pattern-3-path-reconstruction"><span><strong>Pattern 3: Path Reconstruction</strong></span></a></h4>
-<pre data-lang="python"><code class="hljs language-python">parent = [-<span class="hljs-number">1</span>] * n
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python">parent = [-<span class="hljs-number">1</span>] * n
 <span class="hljs-comment"># During relaxation:</span>
 <span class="hljs-keyword">if</span> dist[u] + w &lt; dist[v]:
     dist[v] = dist[u] + w
@@ -1295,21 +1259,21 @@ path = []
     path.append(current)
     current = parent[current]
 path.reverse()
-</code></pre>
+</code></pre></div>
 <h4 id="pattern-4-arbitrage-detection" tabindex="-1"><a class="header-anchor" href="#pattern-4-arbitrage-detection"><span><strong>Pattern 4: Arbitrage Detection</strong></span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Convert multiplicative to additive</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Convert multiplicative to additive</span>
 weight = -math.log(exchange_rate)
 <span class="hljs-comment"># Negative cycle = arbitrage opportunity</span>
-</code></pre>
+</code></pre></div>
 <h4 id="pattern-5-early-termination" tabindex="-1"><a class="header-anchor" href="#pattern-5-early-termination"><span><strong>Pattern 5: Early Termination</strong></span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n - <span class="hljs-number">1</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n - <span class="hljs-number">1</span>):
     updated = <span class="hljs-literal">False</span>
     <span class="hljs-keyword">for</span> u, v, w <span class="hljs-keyword">in</span> edges:
         <span class="hljs-keyword">if</span> relax(u, v, w):
             updated = <span class="hljs-literal">True</span>
     <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> updated:
         <span class="hljs-keyword">break</span>  <span class="hljs-comment"># No more updates possible</span>
-</code></pre>
+</code></pre></div>
 <h3 id="common-mistakes-tips" tabindex="-1"><a class="header-anchor" href="#common-mistakes-tips"><span>Common Mistakes &amp; Tips</span></a></h3>
 <p><strong>🚫 Common Mistakes:</strong></p>
 <ul>

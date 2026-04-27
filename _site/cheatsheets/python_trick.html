@@ -19,54 +19,18 @@
     }
   })();
   </script>
-  <script>document.addEventListener('DOMContentLoaded', function() {
-    document.querySelectorAll('pre code').forEach(function(codeEl) {
-      var pre = codeEl.parentElement;
-      var lang = '';
-      var cls = codeEl.className || '';
-      var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
-      if (m) lang = m[1];
-
-      // Add line numbers
-      var lines = codeEl.innerHTML.split('
-');
-      if (lines[lines.length - 1] === '') lines.pop();
-      var numbered = lines.map(function(line, i) {
-        return '<span class="hljs-ln-line"><span class="hljs-ln-n" data-line-number="' + (i + 1) + '"></span><span class="hljs-ln-code">' + line + '</span></span>';
-      }).join('
-');
-      codeEl.innerHTML = numbered;
-      codeEl.classList.add('hljs-ln');
-
-      var wrapper = document.createElement('div');
-      wrapper.className = 'code-block-wrapper';
-      pre.parentNode.insertBefore(wrapper, pre);
-      var header = document.createElement('div');
-      header.className = 'code-block-header';
-      if (lang) {
-        var label = document.createElement('span');
-        label.className = 'code-lang-label';
-        label.textContent = lang;
-        header.appendChild(label);
-      } else {
-        header.appendChild(document.createElement('span'));
-      }
-      var btn = document.createElement('button');
-      btn.className = 'copy-btn';
-      btn.textContent = 'Copy';
-      btn.addEventListener('click', function() {
-        var text = Array.from(codeEl.querySelectorAll('.hljs-ln-code')).map(function(el) { return el.textContent; }).join('
-');
-        navigator.clipboard.writeText(text).then(function() {
-          btn.textContent = 'Copied!';
-          btn.classList.add('copied');
-          setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
-        });
-      });
-      header.appendChild(btn);
-      wrapper.appendChild(header);
-      wrapper.appendChild(pre);
+  <script>
+  function copyCode(btn) {
+    var pre = btn.closest('.code-block-wrapper').querySelector('pre');
+    var text = pre ? pre.innerText : '';
+    navigator.clipboard.writeText(text).then(function() {
+      btn.textContent = 'Copied!';
+      btn.classList.add('copied');
+      setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
     });
+  }
+  </script>
+  <script>document.addEventListener('DOMContentLoaded', function() {
     document.querySelectorAll('table').forEach(function(table) {
       if (!table.parentElement.classList.contains('table-wrap')) {
         var wrapper = document.createElement('div');
@@ -146,7 +110,7 @@
         <h1 id="python-tricks" tabindex="-1"><a class="header-anchor" href="#python-tricks"><span>Python Tricks</span></a></h1>
 <h2 id="1-examples" tabindex="-1"><a class="header-anchor" href="#1-examples"><span>1) Examples</span></a></h2>
 <h3 id="0-1-inverse-looping-elements-in-string" tabindex="-1"><a class="header-anchor" href="#0-1-inverse-looping-elements-in-string"><span>0-1) inverse looping elements in string</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python">In [<span class="hljs-number">5</span>]: <span class="hljs-keyword">def</span> <span class="hljs-title function_">check</span>(<span class="hljs-params">x</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python">In [<span class="hljs-number">5</span>]: <span class="hljs-keyword">def</span> <span class="hljs-title function_">check</span>(<span class="hljs-params">x</span>):
             <span class="hljs-comment">#### note here : range(len(x)-1,-1, -1</span>
             <span class="hljs-comment"># (end at idx = -1)</span>
    ...:     <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(x)-<span class="hljs-number">1</span>,-<span class="hljs-number">1</span>, -<span class="hljs-number">1</span>):
@@ -159,14 +123,14 @@
 <span class="hljs-number">2</span>
 <span class="hljs-number">1</span>
 <span class="hljs-number">0</span>
-</code></pre>
+</code></pre></div>
 <h3 id="0-2-assignment-vs-shallow-copy-vs-deep-copy" tabindex="-1"><a class="header-anchor" href="#0-2-assignment-vs-shallow-copy-vs-deep-copy"><span>0-2) assignment VS shallow copy VS deep copy</span></a></h3>
 <ul>
 <li><a href="https://www.runoob.com/w3cnote/python-understanding-dict-copy-shallow-or-deep.html">https://www.runoob.com/w3cnote/python-understanding-dict-copy-shallow-or-deep.html</a></li>
 <li><a href="https://iter01.com/578999.html">https://iter01.com/578999.html</a></li>
 <li>Type of copy : deep copy, shallow copy, reference copy</li>
 </ul>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 138</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 138</span>
 
 <span class="hljs-comment">#-------------------------------------------------</span>
 <span class="hljs-comment"># CASE 1) assignment : point to the same instance</span>
@@ -282,9 +246,9 @@ Out[<span class="hljs-number">32</span>]: [<span class="hljs-number">1</span>, <
 
 In [<span class="hljs-number">33</span>]: x
 Out[<span class="hljs-number">33</span>]: [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>]
-</code></pre>
+</code></pre></div>
 <h3 id="1-1-or-logic-for-either-existed-element" tabindex="-1"><a class="header-anchor" href="#1-1-or-logic-for-either-existed-element"><span>1-1) Or logic for either existed element</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python">In [<span class="hljs-number">8</span>]: <span class="hljs-keyword">def</span> <span class="hljs-title function_">test</span>(<span class="hljs-params">l1, l2</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python">In [<span class="hljs-number">8</span>]: <span class="hljs-keyword">def</span> <span class="hljs-title function_">test</span>(<span class="hljs-params">l1, l2</span>):
    ...:     <span class="hljs-keyword">if</span> l1 <span class="hljs-keyword">or</span> l2:
    ...:         <span class="hljs-keyword">return</span> l1 <span class="hljs-keyword">or</span> l2
    ...:
@@ -295,19 +259,19 @@ Out[<span class="hljs-number">33</span>]: [<span class="hljs-number">1</span>, <
    ...: <span class="hljs-built_in">print</span> (res2)
 l1
 l2
-</code></pre>
+</code></pre></div>
 <h3 id="1-2-swap-for-longer-array" tabindex="-1"><a class="header-anchor" href="#1-2-swap-for-longer-array"><span>1-2) swap for longer array</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(l1) &lt; <span class="hljs-built_in">len</span>(l2):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(l1) &lt; <span class="hljs-built_in">len</span>(l2):
    l1, l2 = l2, l1
-</code></pre>
+</code></pre></div>
 <h3 id="1-3-fina-numeric-items-from-a-string" tabindex="-1"><a class="header-anchor" href="#1-3-fina-numeric-items-from-a-string"><span>1-3) fina numeric items from a string</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 008</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 008</span>
 s = <span class="hljs-string">&#x27;4193 with words&#x27;</span>
 res = re.search(<span class="hljs-string">&#x27;(^[\+\-]?\d+)&#x27;</span>, s).group()
 <span class="hljs-built_in">print</span> (res)
-</code></pre>
+</code></pre></div>
 <h3 id="1-4-transform-n-based-integer-to-10-based" tabindex="-1"><a class="header-anchor" href="#1-4-transform-n-based-integer-to-10-based"><span>1-4) transform N based integer to 10 based</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># math.html</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># math.html</span>
 
 <span class="hljs-comment"># How does int(x[,base]) work?</span>
 <span class="hljs-comment"># -&gt; https://stackoverflow.com/questions/33664451/how-does-intx-base-work</span>
@@ -323,9 +287,9 @@ res = re.search(<span class="hljs-string">&#x27;(^[\+\-]?\d+)&#x27;</span>, s).g
 <span class="hljs-comment"># Out[78]: 4</span>
 
 <span class="hljs-comment"># LC 089</span>
-</code></pre>
+</code></pre></div>
 <h3 id="1-5-sort-freq-on-dict" tabindex="-1"><a class="header-anchor" href="#1-5-sort-freq-on-dict"><span>1-5) Sort freq on dict</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 451 Sort Characters By Frequency</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 451 Sort Characters By Frequency</span>
 <span class="hljs-comment"># V1</span>
 <span class="hljs-keyword">import</span> collections
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
@@ -357,9 +321,9 @@ r = s.frequencySort(x)
 x= [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">1</span>]
 s = Solution()
 r = s.frequencySort(x)
-</code></pre>
+</code></pre></div>
 <h3 id="1-6-insert-into-array-in-place" tabindex="-1"><a class="header-anchor" href="#1-6-insert-into-array-in-place"><span>1-6) Insert into array (in place)</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python">
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python">
 <span class="hljs-comment"># syntax : </span>
 <span class="hljs-comment"># arr.insert(&lt;index&gt;,&lt;value&gt;)</span>
 In [<span class="hljs-number">12</span>]: x = [<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>]
@@ -367,9 +331,9 @@ In [<span class="hljs-number">12</span>]: x = [<span class="hljs-number">1</span
 
 In [<span class="hljs-number">13</span>]: x
 Out[<span class="hljs-number">13</span>]: [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">77</span>, <span class="hljs-number">3</span>]
-</code></pre>
+</code></pre></div>
 <h3 id="1-6-add-new-element-to-begin-of-array-in-place" tabindex="-1"><a class="header-anchor" href="#1-6-add-new-element-to-begin-of-array-in-place"><span>1-6’) add new element to begin of array (in place)</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python">In [<span class="hljs-number">1</span>]: x = [<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>]
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python">In [<span class="hljs-number">1</span>]: x = [<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>]
 
 In [<span class="hljs-number">2</span>]: x
 Out[<span class="hljs-number">2</span>]: [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>]
@@ -383,9 +347,9 @@ In [<span class="hljs-number">5</span>]: x.insert(<span class="hljs-number">0</s
 
 In [<span class="hljs-number">6</span>]: x
 Out[<span class="hljs-number">6</span>]: [-<span class="hljs-number">1</span>, <span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>]
-</code></pre>
+</code></pre></div>
 <h3 id="1-7-sort-string" tabindex="-1"><a class="header-anchor" href="#1-7-sort-string"><span>1-7) sort string</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">_sort</span>(<span class="hljs-params">x</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">_sort</span>(<span class="hljs-params">x</span>):
     _x = <span class="hljs-built_in">list</span>(x)
     _x.sort()
     <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;&quot;</span>.join(_x)
@@ -394,21 +358,21 @@ x = <span class="hljs-string">&quot;bca&quot;</span>
 <span class="hljs-built_in">print</span> (x)
 x_ = _sort(x)
 <span class="hljs-built_in">print</span> (x_)
-</code></pre>
+</code></pre></div>
 <h3 id="1-8-get-quotient-remainder-of-a-integer-with-dividend" tabindex="-1"><a class="header-anchor" href="#1-8-get-quotient-remainder-of-a-integer-with-dividend"><span>1-8) get Quotient, Remainder of a integer with dividend</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python">In [<span class="hljs-number">1</span>]: x,y = <span class="hljs-built_in">divmod</span>(<span class="hljs-number">100</span>, <span class="hljs-number">3</span>)
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python">In [<span class="hljs-number">1</span>]: x,y = <span class="hljs-built_in">divmod</span>(<span class="hljs-number">100</span>, <span class="hljs-number">3</span>)
 
 In [<span class="hljs-number">2</span>]: x
 Out[<span class="hljs-number">2</span>]: <span class="hljs-number">33</span>
 
 In [<span class="hljs-number">3</span>]: y
 Out[<span class="hljs-number">3</span>]: <span class="hljs-number">1</span>
-</code></pre>
+</code></pre></div>
 <h3 id="1-9-all-operator" tabindex="-1"><a class="header-anchor" href="#1-9-all-operator"><span>1-9) <em>all</em> operator</span></a></h3>
 <ul>
 <li>Will return Boolean (true or false) per condition for ALL elements in a list</li>
 </ul>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># example 1</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># example 1</span>
 In [<span class="hljs-number">36</span>]: a = <span class="hljs-string">&quot;000&quot;</span>
 
 In [<span class="hljs-number">37</span>]: <span class="hljs-built_in">all</span>( i == <span class="hljs-string">&quot;0&quot;</span> <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> a )
@@ -437,9 +401,9 @@ Out[<span class="hljs-number">39</span>]: <span class="hljs-literal">False</span
                 tmp.add(val)
         _res = [res[<span class="hljs-number">0</span>]] + [ res[i] - res[i-<span class="hljs-number">1</span>] <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>, <span class="hljs-built_in">len</span>(res)) ]
         <span class="hljs-keyword">return</span> _res
-</code></pre>
+</code></pre></div>
 <h3 id="1-10-not-logic" tabindex="-1"><a class="header-anchor" href="#1-10-not-logic"><span>1-10) <code>not</code> logic</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment">#----------------------------</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment">#----------------------------</span>
 <span class="hljs-comment"># can be either None, [], &quot;&quot;</span>
 <span class="hljs-comment">#----------------------------</span>
 In [<span class="hljs-number">32</span>]: x = <span class="hljs-literal">None</span>
@@ -456,9 +420,9 @@ In [<span class="hljs-number">37</span>]: z = <span class="hljs-string">&quot;&q
 
 In [<span class="hljs-number">38</span>]: <span class="hljs-keyword">not</span> z
 Out[<span class="hljs-number">38</span>]: <span class="hljs-literal">True</span>
-</code></pre>
+</code></pre></div>
 <h3 id="1-11-sort-on-a-lambda-func" tabindex="-1"><a class="header-anchor" href="#1-11-sort-on-a-lambda-func"><span>1-11) <code>sort</code> on a <code>lambda func</code></span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># example 1</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># example 1</span>
 <span class="hljs-comment"># LC 973. K Closest Points to Origin</span>
 <span class="hljs-comment"># IDEA : sort + lambda</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
@@ -475,8 +439,8 @@ In [<span class="hljs-number">28</span>]: <span class="hljs-keyword">def</span> 
     ...: x.sort(key=<span class="hljs-keyword">lambda</span> x: my_func(x))
     ...: <span class="hljs-built_in">print</span> (x)
 [<span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, -<span class="hljs-number">4</span>, -<span class="hljs-number">5</span>, <span class="hljs-number">5</span>]
-</code></pre>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 937</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 937</span>
 <span class="hljs-comment"># https://leetcode.com/problems/reorder-data-in-log-files/solution/</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">my_func</span>(<span class="hljs-params"><span class="hljs-built_in">input</span></span>):
     <span class="hljs-comment"># do sth</span>
@@ -487,9 +451,9 @@ In [<span class="hljs-number">28</span>]: <span class="hljs-keyword">def</span> 
 
 my_array=[<span class="hljs-string">&quot;a1 9 2 3 1&quot;</span>,<span class="hljs-string">&quot;g1 act car&quot;</span>,<span class="hljs-string">&quot;zo4 4 7&quot;</span>,<span class="hljs-string">&quot;ab1 off key dog&quot;</span>,<span class="hljs-string">&quot;a8 act zoo&quot;</span>]
 my_array.sort(key=<span class="hljs-keyword">lambda</span> x : my_func)
-</code></pre>
+</code></pre></div>
 <h3 id="1-12-get-remainder-residual-when-divided-by-a-number" tabindex="-1"><a class="header-anchor" href="#1-12-get-remainder-residual-when-divided-by-a-number"><span>1-12) get remainder (residual) when divided by a number</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment">#-----------------</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment">#-----------------</span>
 <span class="hljs-comment"># V1 : %=</span>
 <span class="hljs-comment">#-----------------</span>
 
@@ -529,8 +493,8 @@ Out[<span class="hljs-number">19</span>]: <span class="hljs-number">2</span>
 
 In [<span class="hljs-number">20</span>]: r2
 Out[<span class="hljs-number">20</span>]: <span class="hljs-number">0</span>
-</code></pre>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 1010</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 1010</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># IDEA : dict</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
@@ -547,9 +511,9 @@ Out[<span class="hljs-number">20</span>]: <span class="hljs-number">0</span>
             <span class="hljs-keyword">else</span>:
                 rem[t] += <span class="hljs-number">1</span>
         <span class="hljs-keyword">return</span> pairs
-</code></pre>
+</code></pre></div>
 <h3 id="1-13-split-method" tabindex="-1"><a class="header-anchor" href="#1-13-split-method"><span>1-13) <code>split</code> method</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
 <span class="hljs-comment"># syntax : split(separator, number_of_split_result) </span>
 <span class="hljs-comment"># example 1</span>
 <span class="hljs-comment"># In [17]: x = &#x27;dig1 8 1 5 1&#x27;</span>
@@ -585,9 +549,9 @@ Out[<span class="hljs-number">20</span>]: <span class="hljs-number">0</span>
 
         logs.sort(key = <span class="hljs-keyword">lambda</span> x : f(x))
         <span class="hljs-keyword">return</span> logs <span class="hljs-comment">#sorted(logs, key = f)</span>
-</code></pre>
+</code></pre></div>
 <h3 id="1-13-array-extend" tabindex="-1"><a class="header-anchor" href="#1-13-array-extend"><span>1-13) array <code>extend</code></span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 969. Pancake Sorting</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 969. Pancake Sorting</span>
 
 In [<span class="hljs-number">10</span>]: x = [<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>]
 
@@ -602,9 +566,9 @@ In [<span class="hljs-number">14</span>]: x = x + [<span class="hljs-number">4</
 
 In [<span class="hljs-number">15</span>]: x
 Out[<span class="hljs-number">15</span>]: [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>]
-</code></pre>
+</code></pre></div>
 <h3 id="1-14-math-ceil" tabindex="-1"><a class="header-anchor" href="#1-14-math-ceil"><span>1-14) math <code>ceil</code></span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># https://www.runoob.com/python/func-number-ceil.html</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># https://www.runoob.com/python/func-number-ceil.html</span>
 <span class="hljs-comment"># https://www.runoob.com/python/func-number-ceil.html</span>
 
 <span class="hljs-string">&quot;&quot;&quot;
@@ -636,9 +600,9 @@ math.ceil(<span class="hljs-number">300.72</span>) :  <span class="hljs-number">
 <span class="hljs-keyword">else</span>:
     left = middle + <span class="hljs-number">1</span>
 <span class="hljs-comment">#...</span>
-</code></pre>
+</code></pre></div>
 <h3 id="1-15-math-floor" tabindex="-1"><a class="header-anchor" href="#1-15-math-floor"><span>1-15) math <code>floor</code></span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># https://www.geeksforgeeks.org/floor-ceil-function-python/</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># https://www.geeksforgeeks.org/floor-ceil-function-python/</span>
 
 <span class="hljs-string">&quot;&quot;&quot;
 floor() method in Python returns the floor of x 
@@ -657,9 +621,9 @@ In [<span class="hljs-number">8</span>]: <span class="hljs-keyword">import</span
 math.floor(-<span class="hljs-number">23.11</span>) :  -<span class="hljs-number">24</span>
 math.floor(<span class="hljs-number">300.16</span>) :  <span class="hljs-number">300</span>
 math.floor(<span class="hljs-number">300.72</span>) :  <span class="hljs-number">300</span>
-</code></pre>
+</code></pre></div>
 <h3 id="1-15-for-loop-dict" tabindex="-1"><a class="header-anchor" href="#1-15-for-loop-dict"><span>1-15) for loop dict</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python">d = {<span class="hljs-string">&#x27;a&#x27;</span>:<span class="hljs-number">1</span>, <span class="hljs-string">&#x27;b&#x27;</span>:<span class="hljs-number">2</span>, <span class="hljs-string">&#x27;c&#x27;</span>: <span class="hljs-number">3</span>}
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python">d = {<span class="hljs-string">&#x27;a&#x27;</span>:<span class="hljs-number">1</span>, <span class="hljs-string">&#x27;b&#x27;</span>:<span class="hljs-number">2</span>, <span class="hljs-string">&#x27;c&#x27;</span>: <span class="hljs-number">3</span>}
 <span class="hljs-comment"># loop over key, value</span>
 <span class="hljs-keyword">for</span> k, v <span class="hljs-keyword">in</span> d.items():
     <span class="hljs-built_in">print</span> (k, v)
@@ -671,9 +635,9 @@ math.floor(<span class="hljs-number">300.72</span>) :  <span class="hljs-number"
 <span class="hljs-comment"># loop over value</span>
 <span class="hljs-keyword">for</span> v <span class="hljs-keyword">in</span> d.values():
     <span class="hljs-built_in">print</span> (v)
-</code></pre>
+</code></pre></div>
 <h3 id="1-16-zip" tabindex="-1"><a class="header-anchor" href="#1-16-zip"><span>1-16) <code>zip()</code></span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
 In [<span class="hljs-number">1</span>]: <span class="hljs-keyword">for</span> x, y <span class="hljs-keyword">in</span> <span class="hljs-built_in">zip</span>([-<span class="hljs-number">1</span>, <span class="hljs-number">1</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>], [<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, -<span class="hljs-number">1</span>, <span class="hljs-number">1</span>]):
    ...:     <span class="hljs-built_in">print</span> (x, y)
    ...:
@@ -697,9 +661,9 @@ In [<span class="hljs-number">3</span>]: <span class="hljs-keyword">for</span> x
 <span class="hljs-number">1</span> <span class="hljs-number">0</span> <span class="hljs-number">0</span> <span class="hljs-number">9</span>
 <span class="hljs-number">0</span> -<span class="hljs-number">1</span> <span class="hljs-number">0</span> <span class="hljs-number">9</span>
 <span class="hljs-number">0</span> <span class="hljs-number">1</span> <span class="hljs-number">0</span> <span class="hljs-number">9</span>
-</code></pre>
+</code></pre></div>
 <h3 id="1-17-eval" tabindex="-1"><a class="header-anchor" href="#1-17-eval"><span>1-17) <code>eval()</code></span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># https://www.runoob.com/python/python-func-eval.html</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># https://www.runoob.com/python/python-func-eval.html</span>
 <span class="hljs-comment"># https://www.programiz.com/python-programming/methods/built-in/eval</span>
 <span class="hljs-comment"># The eval() method parses the expression passed to this method and runs python expression (code) within the program.</span>
 
@@ -721,9 +685,9 @@ Out[<span class="hljs-number">52</span>]: <span class="hljs-number">4</span>
 In [<span class="hljs-number">53</span>]: n = <span class="hljs-number">81</span>
     ...: <span class="hljs-built_in">eval</span>(<span class="hljs-string">&#x27;n + 4&#x27;</span>)
 Out[<span class="hljs-number">53</span>]: <span class="hljs-number">85</span>
-</code></pre>
+</code></pre></div>
 <h3 id="1-18-starred-expression" tabindex="-1"><a class="header-anchor" href="#1-18-starred-expression"><span>1-18) starred (“<code>*</code>”) expression</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Extended Iterable Unpacking</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Extended Iterable Unpacking</span>
 
 <span class="hljs-comment"># https://www.python.org/dev/peps/pep-3132/</span>
 <span class="hljs-comment"># http://swaywang.blogspot.com/2012/01/pythonstarred-expression.html</span>
@@ -766,9 +730,9 @@ vim
 <span class="hljs-comment"># example 5</span>
 args = [<span class="hljs-number">1</span>,<span class="hljs-number">3</span>]
 <span class="hljs-built_in">print</span> (<span class="hljs-built_in">range</span>(*args))
-</code></pre>
+</code></pre></div>
 <h3 id="1-19-datetime-string" tabindex="-1"><a class="header-anchor" href="#1-19-datetime-string"><span>1-19) <code>datetime() &lt;-&gt; string()</code></span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 681.Next Closest Time</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 681.Next Closest Time</span>
 <span class="hljs-comment"># https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/String/next-closest-time.py</span>
 
 <span class="hljs-keyword">from</span> datetime <span class="hljs-keyword">import</span> datetime, timedelta
@@ -796,9 +760,9 @@ x_str = x_datetime.strftime(<span class="hljs-string">&quot;%H:%M&quot;</span>)
 tmp = x_datetime + timedelta(minutes=<span class="hljs-number">10</span>)
 <span class="hljs-built_in">print</span> (tmp)
 <span class="hljs-comment"># 1900-01-01 10:30:00</span>
-</code></pre>
+</code></pre></div>
 <h3 id="1-20-itertools" tabindex="-1"><a class="header-anchor" href="#1-20-itertools"><span>1-20) <code>itertools</code></span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># https://docs.python.org/zh-cn/3/library/itertools.html</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># https://docs.python.org/zh-cn/3/library/itertools.html</span>
 <span class="hljs-comment"># https://docs.python.org/zh-tw/3/library/itertools.html</span>
 
 <span class="hljs-comment"># itertools — Functions creating iterators for efficient looping</span>
@@ -899,9 +863,9 @@ In [<span class="hljs-number">11</span>]:  x = itertools.product(<span class="hl
 
 In [<span class="hljs-number">12</span>]: <span class="hljs-built_in">print</span>(<span class="hljs-built_in">list</span>(x))
 [(<span class="hljs-string">&#x27;A&#x27;</span>, <span class="hljs-number">0</span>), (<span class="hljs-string">&#x27;A&#x27;</span>, <span class="hljs-number">1</span>), (<span class="hljs-string">&#x27;A&#x27;</span>, <span class="hljs-number">2</span>), (<span class="hljs-string">&#x27;B&#x27;</span>, <span class="hljs-number">0</span>), (<span class="hljs-string">&#x27;B&#x27;</span>, <span class="hljs-number">1</span>), (<span class="hljs-string">&#x27;B&#x27;</span>, <span class="hljs-number">2</span>), (<span class="hljs-string">&#x27;C&#x27;</span>, <span class="hljs-number">0</span>), (<span class="hljs-string">&#x27;C&#x27;</span>, <span class="hljs-number">1</span>), (<span class="hljs-string">&#x27;C&#x27;</span>, <span class="hljs-number">2</span>)]
-</code></pre>
+</code></pre></div>
 <h3 id="1-21-move-array-element-to-rightmost-leftmost-remove-append" tabindex="-1"><a class="header-anchor" href="#1-21-move-array-element-to-rightmost-leftmost-remove-append"><span>1-21) move array element to rightmost/leftmost : <code>remove</code>, <code>append</code></span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 146 LRU Cache</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 146 LRU Cache</span>
 In [<span class="hljs-number">18</span>]: x
 Out[<span class="hljs-number">18</span>]: [<span class="hljs-number">1</span>, <span class="hljs-number">3</span>, <span class="hljs-number">2</span>]
 
@@ -926,13 +890,13 @@ In [<span class="hljs-number">24</span>]: x.append(<span class="hljs-number">1</
 
 In [<span class="hljs-number">25</span>]: x
 Out[<span class="hljs-number">25</span>]: [<span class="hljs-number">3</span>, <span class="hljs-number">2</span>, <span class="hljs-number">1</span>]
-</code></pre>
+</code></pre></div>
 <h3 id="1-22-ordereddict-hashmap-linked-list" tabindex="-1"><a class="header-anchor" href="#1-22-ordereddict-hashmap-linked-list"><span>1-22) <code>OrderedDict </code> ( hashmap + linked list)</span></a></h3>
 <ul>
 <li>check <a href="Collection.html">Collection.md</a></li>
 </ul>
 <h3 id="1-23-filter" tabindex="-1"><a class="header-anchor" href="#1-23-filter"><span>1-23) <code>filter()</code></span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># https://www.runoob.com/python/python-func-filter.html</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># https://www.runoob.com/python/python-func-filter.html</span>
 
 <span class="hljs-comment">#-----------------------------------------------</span>
 <span class="hljs-comment"># syntax : filter(&lt;filter_func&gt;, &lt;iterable&gt;)</span>
@@ -971,9 +935,9 @@ In [<span class="hljs-number">16</span>]:
 
 In [<span class="hljs-number">16</span>]: <span class="hljs-built_in">list</span>(newlist)
 Out[<span class="hljs-number">16</span>]: [<span class="hljs-number">1</span>, <span class="hljs-number">4</span>, <span class="hljs-number">9</span>, <span class="hljs-number">16</span>, <span class="hljs-number">25</span>, <span class="hljs-number">36</span>, <span class="hljs-number">49</span>, <span class="hljs-number">64</span>, <span class="hljs-number">81</span>, <span class="hljs-number">100</span>]
-</code></pre>
+</code></pre></div>
 <h3 id="1-24-list-comprehension" tabindex="-1"><a class="header-anchor" href="#1-24-list-comprehension"><span>1-24) list comprehension</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment">#----------------------------</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment">#----------------------------</span>
 <span class="hljs-comment"># example 1</span>
 <span class="hljs-comment">#----------------------------</span>
 <span class="hljs-comment"># https://stackoverflow.com/questions/4260280/if-else-in-a-list-comprehension</span>
@@ -994,12 +958,12 @@ In [<span class="hljs-number">10</span>]: <span class="hljs-keyword">def</span> 
     ...:
     ...: [ x <span class="hljs-keyword">if</span> my_func(x) <span class="hljs-keyword">else</span> <span class="hljs-number">999</span>  <span class="hljs-keyword">for</span> x <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">5</span>)]
 Out[<span class="hljs-number">10</span>]: [<span class="hljs-number">0</span>, <span class="hljs-number">999</span>, <span class="hljs-number">2</span>, <span class="hljs-number">999</span>, <span class="hljs-number">4</span>]
-</code></pre>
+</code></pre></div>
 <h3 id="1-26-add-two-numbers-ii-decode-string" tabindex="-1"><a class="header-anchor" href="#1-26-add-two-numbers-ii-decode-string"><span>1-26) Add Two Numbers II,  Decode String</span></a></h3>
 <ul>
 <li>String -&gt; Int</li>
 </ul>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># 445 Add Two Numbers II</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># 445 Add Two Numbers II</span>
 <span class="hljs-comment"># 394 Decode String</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">str_2_int</span>(<span class="hljs-params">x</span>):
     r=<span class="hljs-number">0</span>
@@ -1035,12 +999,12 @@ In [<span class="hljs-number">64</span>]: <span class="hljs-keyword">for</span> 
 
 In [<span class="hljs-number">65</span>]: ans
 Out[<span class="hljs-number">65</span>]: <span class="hljs-number">5634</span>
-</code></pre>
+</code></pre></div>
 <h3 id="1-27-bisect-bisect-right-bisect-left-array-bisection-algorithm" tabindex="-1"><a class="header-anchor" href="#1-27-bisect-bisect-right-bisect-left-array-bisection-algorithm"><span>1-27) bisect : bisect_right, bisect_left (Array bisection algorithm)</span></a></h3>
 <ul>
 <li>algorithm for <code>NOT sorting an array eveytime</code> whenever there is a new inserted element</li>
 </ul>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># https://docs.python.org/zh-tw/3/library/bisect.html</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># https://docs.python.org/zh-tw/3/library/bisect.html</span>
 <span class="hljs-comment"># src code : https://github.com/python/cpython/blob/3.10/Lib/bisect.py</span>
 <span class="hljs-comment"># https://myapollo.com.tw/zh-tw/python-bisect/</span>
 <span class="hljs-comment"># https://www.liujiangblog.com/course/python/57</span>
@@ -1133,7 +1097,7 @@ In [<span class="hljs-number">7</span>]: <span class="hljs-keyword">import</span
    ...: bisect.insort_right(a, <span class="hljs-number">4</span>)
    ...: <span class="hljs-built_in">print</span> (a)
 [<span class="hljs-number">2</span>, <span class="hljs-number">4</span>, <span class="hljs-number">4</span>, <span class="hljs-number">6</span>, <span class="hljs-number">8</span>]
-</code></pre>
+</code></pre></div>
 <h3 id="1-27-1-heapq-priority-queue-min-heap-by-default" tabindex="-1"><a class="header-anchor" href="#1-27-1-heapq-priority-queue-min-heap-by-default"><span>1-27-1) heapq : Priority Queue (Min Heap by default)</span></a></h3>
 <p><strong>heapq</strong> - Heap queue algorithm (priority queue)</p>
 <ul>
@@ -1146,7 +1110,7 @@ In [<span class="hljs-number">7</span>]: <span class="hljs-keyword">import</span
 <li><a href="https://docs.python.org/3/library/heapq.html">https://docs.python.org/3/library/heapq.html</a></li>
 <li><a href="https://github.com/python/cpython/blob/3.10/Lib/heapq.py">https://github.com/python/cpython/blob/3.10/Lib/heapq.py</a></li>
 </ul>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">import</span> heapq
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">import</span> heapq
 
 <span class="hljs-comment">#-------------------------------</span>
 <span class="hljs-comment"># Basic Heap Operations</span>
@@ -1383,7 +1347,7 @@ heapq.heapify(heap)  <span class="hljs-comment"># O(n)</span>
 <span class="hljs-comment"># When k ≈ n: just sort the array</span>
 
 <span class="hljs-comment"># 3. For Top K problems with streaming data: maintain heap of size k</span>
-</code></pre>
+</code></pre></div>
 <p><strong>Common Interview Problems Using heapq:</strong></p>
 <ul>
 <li>LC 215: Kth Largest Element in an Array</li>
@@ -1417,7 +1381,7 @@ heapq.heapify(heap)  <span class="hljs-comment"># O(n)</span>
 </ul>
 </li>
 </ul>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># example 1</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># example 1</span>
 <span class="hljs-meta">@lru_cache</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">count_vowels</span>(<span class="hljs-params">sentence</span>):
     <span class="hljs-keyword">return</span> <span class="hljs-built_in">sum</span>(sentence.count(vowel) <span class="hljs-keyword">for</span> vowel <span class="hljs-keyword">in</span> <span class="hljs-string">&#x27;AEIOUaeiou&#x27;</span>)
@@ -1448,9 +1412,9 @@ heapq.heapify(heap)  <span class="hljs-comment"># O(n)</span>
     userinfos = UserInfo.query.<span class="hljs-built_in">all</span>()
     userinfo_list = [user.to_dict() <span class="hljs-keyword">for</span> user <span class="hljs-keyword">in</span> userinfos]
     <span class="hljs-keyword">return</span> jsonify(userinfo_list)
-</code></pre>
+</code></pre></div>
 <h3 id="1-29-fill-0-to-string" tabindex="-1"><a class="header-anchor" href="#1-29-fill-0-to-string"><span>1-29) fill “0” to String</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 67. Add Binary</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 67. Add Binary</span>
 <span class="hljs-comment">#NOTE : zfill syntax</span>
 <span class="hljs-comment">#    -&gt; fill n-1 &quot;0&quot; to a string at beginning</span>
 
@@ -1468,7 +1432,7 @@ Out[<span class="hljs-number">13</span>]: <span class="hljs-string">&#x27;0001&#
 
 In [<span class="hljs-number">14</span>]: x.zfill(<span class="hljs-number">10</span>)
 Out[<span class="hljs-number">14</span>]: <span class="hljs-string">&#x27;0000000001&#x27;</span>
-</code></pre>
+</code></pre></div>
 
       </div>
       <div class="cheatsheet-footer">

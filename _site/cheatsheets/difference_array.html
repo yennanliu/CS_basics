@@ -19,54 +19,18 @@
     }
   })();
   </script>
-  <script>document.addEventListener('DOMContentLoaded', function() {
-    document.querySelectorAll('pre code').forEach(function(codeEl) {
-      var pre = codeEl.parentElement;
-      var lang = '';
-      var cls = codeEl.className || '';
-      var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
-      if (m) lang = m[1];
-
-      // Add line numbers
-      var lines = codeEl.innerHTML.split('
-');
-      if (lines[lines.length - 1] === '') lines.pop();
-      var numbered = lines.map(function(line, i) {
-        return '<span class="hljs-ln-line"><span class="hljs-ln-n" data-line-number="' + (i + 1) + '"></span><span class="hljs-ln-code">' + line + '</span></span>';
-      }).join('
-');
-      codeEl.innerHTML = numbered;
-      codeEl.classList.add('hljs-ln');
-
-      var wrapper = document.createElement('div');
-      wrapper.className = 'code-block-wrapper';
-      pre.parentNode.insertBefore(wrapper, pre);
-      var header = document.createElement('div');
-      header.className = 'code-block-header';
-      if (lang) {
-        var label = document.createElement('span');
-        label.className = 'code-lang-label';
-        label.textContent = lang;
-        header.appendChild(label);
-      } else {
-        header.appendChild(document.createElement('span'));
-      }
-      var btn = document.createElement('button');
-      btn.className = 'copy-btn';
-      btn.textContent = 'Copy';
-      btn.addEventListener('click', function() {
-        var text = Array.from(codeEl.querySelectorAll('.hljs-ln-code')).map(function(el) { return el.textContent; }).join('
-');
-        navigator.clipboard.writeText(text).then(function() {
-          btn.textContent = 'Copied!';
-          btn.classList.add('copied');
-          setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
-        });
-      });
-      header.appendChild(btn);
-      wrapper.appendChild(header);
-      wrapper.appendChild(pre);
+  <script>
+  function copyCode(btn) {
+    var pre = btn.closest('.code-block-wrapper').querySelector('pre');
+    var text = pre ? pre.innerText : '';
+    navigator.clipboard.writeText(text).then(function() {
+      btn.textContent = 'Copied!';
+      btn.classList.add('copied');
+      setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
     });
+  }
+  </script>
+  <script>document.addEventListener('DOMContentLoaded', function() {
     document.querySelectorAll('table').forEach(function(table) {
       if (!table.parentElement.classList.contains('table-wrap')) {
         var wrapper = document.createElement('div');
@@ -244,7 +208,7 @@
 </tbody>
 </table>
 <h3 id="universal-difference-array-template" tabindex="-1"><a class="header-anchor" href="#universal-difference-array-template"><span>Universal Difference Array Template</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">difference_array_template</span>(<span class="hljs-params">nums, updates</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">difference_array_template</span>(<span class="hljs-params">nums, updates</span>):
     <span class="hljs-string">&quot;&quot;&quot;
     Universal template for difference array problems
     nums: original array
@@ -270,9 +234,9 @@
         result[i] = result[i-<span class="hljs-number">1</span>] + diff[i]
     
     <span class="hljs-keyword">return</span> result
-</code></pre>
+</code></pre></div>
 <h3 id="template-1-basic-difference-array" tabindex="-1"><a class="header-anchor" href="#template-1-basic-difference-array"><span>Template 1: Basic Difference Array</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">DifferenceArray</span>:
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">DifferenceArray</span>:
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, nums</span>):
         <span class="hljs-string">&quot;&quot;&quot;Initialize difference array from original array&quot;&quot;&quot;</span>
         <span class="hljs-variable language_">self</span>.n = <span class="hljs-built_in">len</span>(nums)
@@ -296,9 +260,9 @@
         <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>, <span class="hljs-variable language_">self</span>.n):
             result[i] = result[i-<span class="hljs-number">1</span>] + <span class="hljs-variable language_">self</span>.diff[i]
         <span class="hljs-keyword">return</span> result
-</code></pre>
+</code></pre></div>
 <h3 id="template-2-resource-allocation" tabindex="-1"><a class="header-anchor" href="#template-2-resource-allocation"><span>Template 2: Resource Allocation</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">check_resource_allocation</span>(<span class="hljs-params">intervals, capacity, resource_field=<span class="hljs-number">2</span></span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">check_resource_allocation</span>(<span class="hljs-params">intervals, capacity, resource_field=<span class="hljs-number">2</span></span>):
     <span class="hljs-string">&quot;&quot;&quot;
     Check if resource allocation is valid
     intervals: [[start, end, resource_needed], ...]
@@ -323,9 +287,9 @@
             <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
     
     <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
-</code></pre>
+</code></pre></div>
 <h3 id="template-3-event-timeline" tabindex="-1"><a class="header-anchor" href="#template-3-event-timeline"><span>Template 3: Event Timeline</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">process_events</span>(<span class="hljs-params">events</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">process_events</span>(<span class="hljs-params">events</span>):
     <span class="hljs-string">&quot;&quot;&quot;
     Process events on a timeline
     events: [[start_time, end_time, value], ...]
@@ -349,9 +313,9 @@
         timeline[i] += timeline[i-<span class="hljs-number">1</span>]
     
     <span class="hljs-keyword">return</span> timeline
-</code></pre>
+</code></pre></div>
 <h3 id="template-4-2d-difference-array" tabindex="-1"><a class="header-anchor" href="#template-4-2d-difference-array"><span>Template 4: 2D Difference Array</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">DifferenceArray2D</span>:
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">DifferenceArray2D</span>:
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, matrix</span>):
         <span class="hljs-string">&quot;&quot;&quot;Initialize 2D difference array&quot;&quot;&quot;</span>
         <span class="hljs-variable language_">self</span>.m, <span class="hljs-variable language_">self</span>.n = <span class="hljs-built_in">len</span>(matrix), <span class="hljs-built_in">len</span>(matrix[<span class="hljs-number">0</span>])
@@ -393,9 +357,9 @@
                     result[i][j] -= result[i-<span class="hljs-number">1</span>][j-<span class="hljs-number">1</span>]
         
         <span class="hljs-keyword">return</span> result
-</code></pre>
+</code></pre></div>
 <h3 id="template-5-optimized-with-coordinates-compression" tabindex="-1"><a class="header-anchor" href="#template-5-optimized-with-coordinates-compression"><span>Template 5: Optimized with Coordinates Compression</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">difference_array_compressed</span>(<span class="hljs-params">updates</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">difference_array_compressed</span>(<span class="hljs-params">updates</span>):
     <span class="hljs-string">&quot;&quot;&quot;
     Handle large coordinate space with compression
     updates: [[start, end, value], ...]
@@ -432,9 +396,9 @@
             result[point] = diff[i]
     
     <span class="hljs-keyword">return</span> result
-</code></pre>
+</code></pre></div>
 <h2 id="1-general-form" tabindex="-1"><a class="header-anchor" href="#1-general-form"><span>1) General form</span></a></h2>
-<pre data-lang="java"><code class="hljs language-java">
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java">
 <span class="hljs-comment">// java</span>
 <span class="hljs-comment">// https://labuladong.online/algo/data-structure/diff-array/</span>
 
@@ -474,8 +438,8 @@
         <span class="hljs-keyword">return</span> res;
     }
 }
-</code></pre>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// V2</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// V2</span>
 <span class="hljs-comment">// https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/AlgorithmJava/DifferenceArray.java</span>
 
 
@@ -512,7 +476,7 @@
 
 <span class="hljs-keyword">return</span> Arrays.copyOfRange(tmp, <span class="hljs-number">1</span>, n+<span class="hljs-number">1</span>);
 }
-</code></pre>
+</code></pre></div>
 <h2 id="problems-by-pattern" tabindex="-1"><a class="header-anchor" href="#problems-by-pattern"><span>Problems by Pattern</span></a></h2>
 <h3 id="pattern-based-problem-classification" tabindex="-1"><a class="header-anchor" href="#pattern-based-problem-classification"><span>Pattern-Based Problem Classification</span></a></h3>
 <h4 id="pattern-1-basic-range-update-problems" tabindex="-1"><a class="header-anchor" href="#pattern-1-basic-range-update-problems"><span><strong>Pattern 1: Basic Range Update Problems</strong></span></a></h4>
@@ -705,7 +669,7 @@
 <h3 id="1-1-basic-op" tabindex="-1"><a class="header-anchor" href="#1-1-basic-op"><span>1-1) Basic OP</span></a></h3>
 <h2 id="2-lc-example" tabindex="-1"><a class="header-anchor" href="#2-lc-example"><span>2) LC Example</span></a></h2>
 <h3 id="2-1-range-addition" tabindex="-1"><a class="header-anchor" href="#2-1-range-addition"><span>2-1) Range Addition</span></a></h3>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 370</span>
 
 
@@ -759,9 +723,9 @@
         <span class="hljs-keyword">return</span> df.result();
     }
 }
-</code></pre>
+</code></pre></div>
 <h3 id="2-2-corporate-flight-bookings" tabindex="-1"><a class="header-anchor" href="#2-2-corporate-flight-bookings"><span>2-2) Corporate Flight Bookings</span></a></h3>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 1109</span>
 
 <span class="hljs-comment">// V1</span>
@@ -784,9 +748,9 @@
         <span class="hljs-keyword">return</span> df.result();
     }
 }
-</code></pre>
+</code></pre></div>
 <h3 id="2-3-car-pooling" tabindex="-1"><a class="header-anchor" href="#2-3-car-pooling"><span>2-3) Car Pooling</span></a></h3>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 1094</span>
 <span class="hljs-comment">// https://leetcode.com/problems/car-pooling/description/</span>
 
@@ -824,9 +788,9 @@
         <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
     }
 }
-</code></pre>
+</code></pre></div>
 <h2 id="pattern-selection-strategy" tabindex="-1"><a class="header-anchor" href="#pattern-selection-strategy"><span>Pattern Selection Strategy</span></a></h2>
-<pre><code class="hljs">Difference Array Problem Analysis Flowchart:
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Difference Array Problem Analysis Flowchart:
 
 1. Does the problem involve range updates?
    ├── YES → Check update pattern
@@ -850,7 +814,7 @@
    ├── Online vs Offline → Difference array is offline
    ├── Need range queries? → Combine with Prefix Sum
    └── Overlapping intervals? → Check maximum overlap
-</code></pre>
+</code></pre></div>
 <h3 id="decision-framework" tabindex="-1"><a class="header-anchor" href="#decision-framework"><span>Decision Framework</span></a></h3>
 <ol>
 <li><strong>Identify range updates</strong>: Look for “update range [l, r]” operations</li>
@@ -953,13 +917,13 @@
 </table>
 <h3 id="common-patterns-tricks" tabindex="-1"><a class="header-anchor" href="#common-patterns-tricks"><span>Common Patterns &amp; Tricks</span></a></h3>
 <h4 id="pattern-range-update-formula" tabindex="-1"><a class="header-anchor" href="#pattern-range-update-formula"><span><strong>Pattern: Range Update Formula</strong></span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># To add val to range [start, end]:</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># To add val to range [start, end]:</span>
 diff[start] += val
 <span class="hljs-keyword">if</span> end + <span class="hljs-number">1</span> &lt; n:
     diff[end + <span class="hljs-number">1</span>] -= val
-</code></pre>
+</code></pre></div>
 <h4 id="pattern-off-by-one-for-intervals" tabindex="-1"><a class="header-anchor" href="#pattern-off-by-one-for-intervals"><span><strong>Pattern: Off-by-One for Intervals</strong></span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># If passengers get off at station x, they&#x27;re on board [start, x-1]</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># If passengers get off at station x, they&#x27;re on board [start, x-1]</span>
 <span class="hljs-comment"># If event ends at time t, it&#x27;s active [start, t]</span>
 <span class="hljs-comment"># Be careful with inclusive/exclusive boundaries!</span>
 
@@ -967,9 +931,9 @@ diff[start] += val
 <span class="hljs-keyword">for</span> passengers, pickup, dropoff <span class="hljs-keyword">in</span> trips:
     diff[pickup] += passengers
     diff[dropoff] -= passengers  <span class="hljs-comment"># Not dropoff-1!</span>
-</code></pre>
+</code></pre></div>
 <h4 id="pattern-maximum-concurrent-events" tabindex="-1"><a class="header-anchor" href="#pattern-maximum-concurrent-events"><span><strong>Pattern: Maximum Concurrent Events</strong></span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">max_concurrent</span>(<span class="hljs-params">intervals</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">max_concurrent</span>(<span class="hljs-params">intervals</span>):
     events = []
     <span class="hljs-keyword">for</span> start, end <span class="hljs-keyword">in</span> intervals:
         events.append((start, <span class="hljs-number">1</span>))   <span class="hljs-comment"># Start event</span>
@@ -983,7 +947,7 @@ diff[start] += val
         max_concurrent = <span class="hljs-built_in">max</span>(max_concurrent, current)
     
     <span class="hljs-keyword">return</span> max_concurrent
-</code></pre>
+</code></pre></div>
 <h3 id="problem-solving-steps" tabindex="-1"><a class="header-anchor" href="#problem-solving-steps"><span>Problem-Solving Steps</span></a></h3>
 <ol>
 <li><strong>Identify range operations</strong>: Look for [start, end] updates</li>
@@ -1026,7 +990,7 @@ diff[start] += val
 <li><strong>Coordinate Compression</strong>: Handling large sparse ranges</li>
 </ul>
 <h3 id="java-implementation-notes" tabindex="-1"><a class="header-anchor" href="#java-implementation-notes"><span>Java Implementation Notes</span></a></h3>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java Difference Array Class</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java Difference Array Class</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">Difference</span> {
     <span class="hljs-keyword">private</span> <span class="hljs-type">int</span>[] diff;
     
@@ -1054,9 +1018,9 @@ diff[start] += val
         <span class="hljs-keyword">return</span> res;
     }
 }
-</code></pre>
+</code></pre></div>
 <h3 id="python-implementation-notes" tabindex="-1"><a class="header-anchor" href="#python-implementation-notes"><span>Python Implementation Notes</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python class implementation</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python class implementation</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">DifferenceArray</span>:
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, nums</span>):
         <span class="hljs-variable language_">self</span>.n = <span class="hljs-built_in">len</span>(nums)
@@ -1076,7 +1040,7 @@ diff[start] += val
         <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>, <span class="hljs-variable language_">self</span>.n):
             result.append(result[-<span class="hljs-number">1</span>] + <span class="hljs-variable language_">self</span>.diff[i])
         <span class="hljs-keyword">return</span> result
-</code></pre>
+</code></pre></div>
 <hr>
 <p><strong>Must-Know Problems for Interviews</strong>: LC 370, 1109, 1094, 253, 732
 <strong>Advanced Problems</strong>: LC 732, 2132, 2251

@@ -19,54 +19,18 @@
     }
   })();
   </script>
-  <script>document.addEventListener('DOMContentLoaded', function() {
-    document.querySelectorAll('pre code').forEach(function(codeEl) {
-      var pre = codeEl.parentElement;
-      var lang = '';
-      var cls = codeEl.className || '';
-      var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
-      if (m) lang = m[1];
-
-      // Add line numbers
-      var lines = codeEl.innerHTML.split('
-');
-      if (lines[lines.length - 1] === '') lines.pop();
-      var numbered = lines.map(function(line, i) {
-        return '<span class="hljs-ln-line"><span class="hljs-ln-n" data-line-number="' + (i + 1) + '"></span><span class="hljs-ln-code">' + line + '</span></span>';
-      }).join('
-');
-      codeEl.innerHTML = numbered;
-      codeEl.classList.add('hljs-ln');
-
-      var wrapper = document.createElement('div');
-      wrapper.className = 'code-block-wrapper';
-      pre.parentNode.insertBefore(wrapper, pre);
-      var header = document.createElement('div');
-      header.className = 'code-block-header';
-      if (lang) {
-        var label = document.createElement('span');
-        label.className = 'code-lang-label';
-        label.textContent = lang;
-        header.appendChild(label);
-      } else {
-        header.appendChild(document.createElement('span'));
-      }
-      var btn = document.createElement('button');
-      btn.className = 'copy-btn';
-      btn.textContent = 'Copy';
-      btn.addEventListener('click', function() {
-        var text = Array.from(codeEl.querySelectorAll('.hljs-ln-code')).map(function(el) { return el.textContent; }).join('
-');
-        navigator.clipboard.writeText(text).then(function() {
-          btn.textContent = 'Copied!';
-          btn.classList.add('copied');
-          setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
-        });
-      });
-      header.appendChild(btn);
-      wrapper.appendChild(header);
-      wrapper.appendChild(pre);
+  <script>
+  function copyCode(btn) {
+    var pre = btn.closest('.code-block-wrapper').querySelector('pre');
+    var text = pre ? pre.innerText : '';
+    navigator.clipboard.writeText(text).then(function() {
+      btn.textContent = 'Copied!';
+      btn.classList.add('copied');
+      setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
     });
+  }
+  </script>
+  <script>document.addEventListener('DOMContentLoaded', function() {
     document.querySelectorAll('table').forEach(function(table) {
       if (!table.parentElement.classList.contains('table-wrap')) {
         var wrapper = document.createElement('div');
@@ -148,51 +112,51 @@
 <li>(LC 729)</li>
 </ul>
 <p>This document explains the logic used in the following code snippet from the <code>MyCalendar</code> class:</p>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">if</span> (start &lt; date.get(<span class="hljs-number">1</span>) &amp;&amp; end &gt; date.get(<span class="hljs-number">0</span>)) {
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">if</span> (start &lt; date.get(<span class="hljs-number">1</span>) &amp;&amp; end &gt; date.get(<span class="hljs-number">0</span>)) {
     <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;  <span class="hljs-comment">// There&#x27;s an overlap</span>
 }
-</code></pre>
+</code></pre></div>
 <h2 id="purpose" tabindex="-1"><a class="header-anchor" href="#purpose"><span>Purpose</span></a></h2>
 <p>The purpose of this logic is to check whether a new booking overlaps with an existing booking in the calendar. If the new booking overlaps with an existing booking, the function will return <code>false</code>, indicating that the booking cannot be made.</p>
 <h2 id="visual-explanation" tabindex="-1"><a class="header-anchor" href="#visual-explanation"><span>Visual Explanation</span></a></h2>
 <p>Imagine a timeline where each event has a start and an end time. The new event is represented by <code>start</code> and <code>end</code>, while an existing event is represented by <code>date.get(0)</code> (start) and <code>date.get(1)</code> (end).</p>
 <h3 id="cases" tabindex="-1"><a class="header-anchor" href="#cases"><span>Cases:</span></a></h3>
 <h3 id="1-no-overlap-new-event-is-completely-before-the-existing-event" tabindex="-1"><a class="header-anchor" href="#1-no-overlap-new-event-is-completely-before-the-existing-event"><span>1. <strong>No Overlap - New Event is Completely Before the Existing Event</strong></span></a></h3>
-<pre><code class="hljs">New:      |-----|   
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">New:      |-----|   
 Existing:          |-----|
-</code></pre>
+</code></pre></div>
 <ul>
 <li><strong>Condition</strong>: <code>end &lt;= date.get(0)</code></li>
 <li>Explanation: The new event ends before the existing event starts, so no overlap.</li>
 </ul>
 <h3 id="2-no-overlap-new-event-is-completely-after-the-existing-event" tabindex="-1"><a class="header-anchor" href="#2-no-overlap-new-event-is-completely-after-the-existing-event"><span>2. <strong>No Overlap - New Event is Completely After the Existing Event</strong></span></a></h3>
-<pre><code class="hljs">New:              |-----|
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">New:              |-----|
 Existing:  |-----|
-</code></pre>
+</code></pre></div>
 <ul>
 <li><strong>Condition</strong>: <code>start &gt;= date.get(1)</code></li>
 <li>Explanation: The new event starts after the existing event ends, so no overlap.</li>
 </ul>
 <h3 id="3-overlap-new-event-partially-overlaps-with-the-existing-event" tabindex="-1"><a class="header-anchor" href="#3-overlap-new-event-partially-overlaps-with-the-existing-event"><span>3. <strong>Overlap - New Event Partially Overlaps with the Existing Event</strong></span></a></h3>
-<pre><code class="hljs">New:       |-------|
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">New:       |-------|
 Existing:     |------|
-</code></pre>
+</code></pre></div>
 <ul>
 <li><strong>Condition</strong>: <code>start &lt; date.get(1)</code> and <code>end &gt; date.get(0)</code></li>
 <li>Explanation: The new event starts before the existing event ends and ends after the existing event starts, causing a partial overlap.</li>
 </ul>
 <h3 id="4-complete-overlap-new-event-starts-and-ends-inside-the-existing-event" tabindex="-1"><a class="header-anchor" href="#4-complete-overlap-new-event-starts-and-ends-inside-the-existing-event"><span>4. <strong>Complete Overlap - New Event Starts and Ends Inside the Existing Event</strong></span></a></h3>
-<pre><code class="hljs">New:         |---|
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">New:         |---|
 Existing:   |-------|
-</code></pre>
+</code></pre></div>
 <ul>
 <li><strong>Condition</strong>: <code>start &lt; date.get(1)</code> and <code>end &gt; date.get(0)</code></li>
 <li>Explanation: Both conditions are true, meaning the new event is entirely within the bounds of the existing event.</li>
 </ul>
 <h3 id="5-new-event-engulfs-the-existing-event-starts-before-and-ends-after" tabindex="-1"><a class="header-anchor" href="#5-new-event-engulfs-the-existing-event-starts-before-and-ends-after"><span>5. <strong>New Event Engulfs the Existing Event (Starts Before and Ends After)</strong></span></a></h3>
-<pre><code class="hljs">New:     |-----------|
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">New:     |-----------|
 Existing:   |-----|
-</code></pre>
+</code></pre></div>
 <ul>
 <li><strong>Condition</strong>: <code>start &lt; date.get(1)</code> and <code>end &gt; date.get(0)</code></li>
 <li>Explanation: The new event starts before and ends after the existing event, completely overlapping it.</li>

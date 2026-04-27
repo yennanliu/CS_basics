@@ -19,54 +19,18 @@
     }
   })();
   </script>
-  <script>document.addEventListener('DOMContentLoaded', function() {
-    document.querySelectorAll('pre code').forEach(function(codeEl) {
-      var pre = codeEl.parentElement;
-      var lang = '';
-      var cls = codeEl.className || '';
-      var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
-      if (m) lang = m[1];
-
-      // Add line numbers
-      var lines = codeEl.innerHTML.split('
-');
-      if (lines[lines.length - 1] === '') lines.pop();
-      var numbered = lines.map(function(line, i) {
-        return '<span class="hljs-ln-line"><span class="hljs-ln-n" data-line-number="' + (i + 1) + '"></span><span class="hljs-ln-code">' + line + '</span></span>';
-      }).join('
-');
-      codeEl.innerHTML = numbered;
-      codeEl.classList.add('hljs-ln');
-
-      var wrapper = document.createElement('div');
-      wrapper.className = 'code-block-wrapper';
-      pre.parentNode.insertBefore(wrapper, pre);
-      var header = document.createElement('div');
-      header.className = 'code-block-header';
-      if (lang) {
-        var label = document.createElement('span');
-        label.className = 'code-lang-label';
-        label.textContent = lang;
-        header.appendChild(label);
-      } else {
-        header.appendChild(document.createElement('span'));
-      }
-      var btn = document.createElement('button');
-      btn.className = 'copy-btn';
-      btn.textContent = 'Copy';
-      btn.addEventListener('click', function() {
-        var text = Array.from(codeEl.querySelectorAll('.hljs-ln-code')).map(function(el) { return el.textContent; }).join('
-');
-        navigator.clipboard.writeText(text).then(function() {
-          btn.textContent = 'Copied!';
-          btn.classList.add('copied');
-          setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
-        });
-      });
-      header.appendChild(btn);
-      wrapper.appendChild(header);
-      wrapper.appendChild(pre);
+  <script>
+  function copyCode(btn) {
+    var pre = btn.closest('.code-block-wrapper').querySelector('pre');
+    var text = pre ? pre.innerText : '';
+    navigator.clipboard.writeText(text).then(function() {
+      btn.textContent = 'Copied!';
+      btn.classList.add('copied');
+      setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
     });
+  }
+  </script>
+  <script>document.addEventListener('DOMContentLoaded', function() {
     document.querySelectorAll('table').forEach(function(table) {
       if (!table.parentElement.classList.contains('table-wrap')) {
         var wrapper = document.createElement('div');
@@ -206,7 +170,7 @@
 <li>The possible location of <code>target</code> is always inside <code>[l, r]</code></li>
 </ul>
 <p>Each iteration removes half the search space while preserving this invariant.</p>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Standard binary search pattern</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Standard binary search pattern</span>
 <span class="hljs-keyword">while</span> (l &lt;= r) {
     <span class="hljs-type">int</span> <span class="hljs-variable">mid</span> <span class="hljs-operator">=</span> l + (r - l) / <span class="hljs-number">2</span>;
 
@@ -218,15 +182,15 @@
         r = mid - <span class="hljs-number">1</span>;  <span class="hljs-comment">// All elements [mid..end] are &gt; target</span>
     }
 }
-</code></pre>
+</code></pre></div>
 <h4 id="when-the-loop-ends-pointer-positions" tabindex="-1"><a class="header-anchor" href="#when-the-loop-ends-pointer-positions"><span>When the Loop Ends: Pointer Positions</span></a></h4>
 <p>The loop terminates when <code>l &gt; r</code>, which means <code>l == r + 1</code>.</p>
 <p>At this exact moment, the array is split into two parts:</p>
-<pre><code class="hljs">Visual Representation:
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Visual Representation:
 
 index:     0   ...   r   l   ...   n-1
 value:   [&lt; target]  gap  [&gt; target]
-</code></pre>
+</code></pre></div>
 <p><strong>Key Properties When Loop Ends:</strong></p>
 <ol>
 <li><code>r</code> is the <strong>last element smaller than target</strong></li>
@@ -236,7 +200,7 @@ value:   [&lt; target]  gap  [&gt; target]
 <p>This is why <code>l</code> is the correct insertion position!</p>
 <h4 id="visual-example" tabindex="-1"><a class="header-anchor" href="#visual-example"><span>Visual Example</span></a></h4>
 <p>Let’s trace through <code>nums = [1, 3, 5, 6], target = 4</code>:</p>
-<pre><code class="hljs">Initial:
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Initial:
 l=0, r=3
 [1, 3, 5, 6]
  l        r
@@ -257,10 +221,10 @@ Loop ends (l &gt; r):
 - r points to 3 (last element &lt; 4)
 - l points to 5 (first element &gt; 4)
 - Insertion position is l = 2
-</code></pre>
+</code></pre></div>
 <h4 id="why-return-l" tabindex="-1"><a class="header-anchor" href="#why-return-l"><span>Why Return <code>l</code>?</span></a></h4>
 <p>When binary search completes without finding the target:</p>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">while</span> (l &lt;= r) {
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">while</span> (l &lt;= r) {
     <span class="hljs-type">int</span> <span class="hljs-variable">mid</span> <span class="hljs-operator">=</span> l + (r - l) / <span class="hljs-number">2</span>;
     <span class="hljs-keyword">if</span> (nums[mid] == target) <span class="hljs-keyword">return</span> mid;
     <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (nums[mid] &lt; target) l = mid + <span class="hljs-number">1</span>;
@@ -270,7 +234,7 @@ Loop ends (l &gt; r):
 <span class="hljs-comment">// Target not found</span>
 <span class="hljs-comment">// At this point: l &gt; r, specifically l == r + 1</span>
 <span class="hljs-keyword">return</span> l;  <span class="hljs-comment">// Correct insertion position</span>
-</code></pre>
+</code></pre></div>
 <p><strong>Guarantee:</strong></p>
 <ul>
 <li><code>nums[0..l-1] &lt; target</code> (by construction during search)</li>
@@ -313,7 +277,7 @@ Loop ends (l &gt; r):
 </tbody>
 </table>
 <h3 id="application-search-insert-position-lc-35" tabindex="-1"><a class="header-anchor" href="#application-search-insert-position-lc-35"><span>Application: Search Insert Position (LC 35)</span></a></h3>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 35 - The cleanest solution using pointer behavior</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 35 - The cleanest solution using pointer behavior</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">searchInsert</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums, <span class="hljs-type">int</span> target)</span> {
     <span class="hljs-keyword">if</span> (nums == <span class="hljs-literal">null</span> || nums.length == <span class="hljs-number">0</span>) {
         <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
@@ -337,7 +301,7 @@ Loop ends (l &gt; r):
     <span class="hljs-comment">// Key insight: l is always the correct insertion position</span>
     <span class="hljs-keyword">return</span> l;
 }
-</code></pre>
+</code></pre></div>
 <p><strong>Why this works without special cases:</strong></p>
 <ol>
 <li>If target exists: we return mid during the loop</li>
@@ -350,7 +314,7 @@ Loop ends (l &gt; r):
 </li>
 </ol>
 <h3 id="common-mistake-to-avoid" tabindex="-1"><a class="header-anchor" href="#common-mistake-to-avoid"><span>Common Mistake to Avoid</span></a></h3>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// ❌ WRONG: Trying to handle &quot;between mid and mid+1&quot; during the loop</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// ❌ WRONG: Trying to handle &quot;between mid and mid+1&quot; during the loop</span>
 <span class="hljs-keyword">while</span> (l &lt;= r) {
     <span class="hljs-type">int</span> <span class="hljs-variable">mid</span> <span class="hljs-operator">=</span> l + (r - l) / <span class="hljs-number">2</span>;
     <span class="hljs-keyword">if</span> (nums[mid] == target) <span class="hljs-keyword">return</span> mid;
@@ -361,7 +325,7 @@ Loop ends (l &gt; r):
     }
     <span class="hljs-comment">// ...</span>
 }
-</code></pre>
+</code></pre></div>
 <p><strong>Why this is wrong:</strong> Binary search naturally converges to the correct position. Trust the pointer invariant and just return <code>l</code> after the loop.</p>
 <hr>
 <h2 id="1-binary-search-types-patterns" tabindex="-1"><a class="header-anchor" href="#1-binary-search-types-patterns"><span>1) Binary Search Types &amp; Patterns</span></a></h2>
@@ -377,7 +341,7 @@ Loop ends (l &gt; r):
 <li><strong>Applications</strong>: Find target, find minimum element</li>
 </ul>
 <h4 id="find-minimum-in-rotated-sorted-array-lc-153" tabindex="-1"><a class="header-anchor" href="#find-minimum-in-rotated-sorted-array-lc-153"><span>Find Minimum in Rotated Sorted Array (LC 153)</span></a></h4>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Approach: Compare mid with boundaries to determine rotation point</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Approach: Compare mid with boundaries to determine rotation point</span>
 <span class="hljs-keyword">while</span> (r &gt;= l) {
     <span class="hljs-type">int</span> <span class="hljs-variable">mid</span> <span class="hljs-operator">=</span> (l + r) / <span class="hljs-number">2</span>;
     <span class="hljs-comment">// Case 1: left subarray + mid is ascending -&gt; search right</span>
@@ -389,8 +353,8 @@ Loop ends (l &gt; r):
         r = mid - <span class="hljs-number">1</span>;
     }
 }
-</code></pre>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Two-step approach: determine sorted half, then check target location</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Two-step approach: determine sorted half, then check target location</span>
 <span class="hljs-keyword">while</span> (r &gt;= l) {
     <span class="hljs-type">int</span> <span class="hljs-variable">mid</span> <span class="hljs-operator">=</span> (l + r) / <span class="hljs-number">2</span>;
     
@@ -417,7 +381,7 @@ Loop ends (l &gt; r):
         }
     }
 }
-</code></pre>
+</code></pre></div>
 <p><strong>Key Differences</strong>:</p>
 <ul>
 <li><strong>LC 153</strong> (Find Min): Only needs to determine which side to search</li>
@@ -436,7 +400,7 @@ Loop ends (l &gt; r):
 </ul>
 <h3 id="1-5-find-boundaries-lc-34" tabindex="-1"><a class="header-anchor" href="#1-5-find-boundaries-lc-34"><span>1.5) Find Boundaries (LC 34)</span></a></h3>
 <p><strong>Purpose</strong>: Find first and last occurrence of target</p>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Template for finding boundaries</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Template for finding boundaries</span>
 <span class="hljs-keyword">while</span> (r &gt;= l) {
     <span class="hljs-type">int</span> <span class="hljs-variable">mid</span> <span class="hljs-operator">=</span> (l + r) / <span class="hljs-number">2</span>;
     
@@ -454,10 +418,10 @@ Loop ends (l &gt; r):
     }
 }
 <span class="hljs-comment">// Post-processing needed to validate result</span>
-</code></pre>
+</code></pre></div>
 <h3 id="1-6-left-boundary-search-lc-367-875" tabindex="-1"><a class="header-anchor" href="#1-6-left-boundary-search-lc-367-875"><span>1.6) Left Boundary Search (LC 367, 875)</span></a></h3>
 <p><strong>Purpose</strong>: Find the leftmost occurrence of target</p>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">find_left_boundary</span>(<span class="hljs-params">nums, target</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">find_left_boundary</span>(<span class="hljs-params">nums, target</span>):
     l, r = <span class="hljs-number">0</span>, <span class="hljs-built_in">len</span>(nums) - <span class="hljs-number">1</span>
     
     <span class="hljs-keyword">while</span> l &lt;= r:
@@ -473,8 +437,8 @@ Loop ends (l &gt; r):
     <span class="hljs-keyword">if</span> l &gt;= <span class="hljs-built_in">len</span>(nums) <span class="hljs-keyword">or</span> nums[l] != target:
         <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>
     <span class="hljs-keyword">return</span> l
-</code></pre>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Generic left boundary template</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Generic left boundary template</span>
 <span class="hljs-keyword">while</span> (r &gt;= l) {
     <span class="hljs-type">int</span> <span class="hljs-variable">mid</span> <span class="hljs-operator">=</span> (l + r) / <span class="hljs-number">2</span>;
     <span class="hljs-keyword">if</span> (condition(mid)) {
@@ -484,10 +448,10 @@ Loop ends (l &gt; r):
     }
 }
 <span class="hljs-comment">// Result is typically at index &#x27;l&#x27;</span>
-</code></pre>
+</code></pre></div>
 <h3 id="1-7-right-boundary-search" tabindex="-1"><a class="header-anchor" href="#1-7-right-boundary-search"><span>1.7) Right Boundary Search</span></a></h3>
 <p><strong>Purpose</strong>: Find the rightmost occurrence of target</p>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">find_right_boundary</span>(<span class="hljs-params">nums, target</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">find_right_boundary</span>(<span class="hljs-params">nums, target</span>):
     l, r = <span class="hljs-number">0</span>, <span class="hljs-built_in">len</span>(nums) - <span class="hljs-number">1</span>
     
     <span class="hljs-keyword">while</span> l &lt;= r:
@@ -503,7 +467,7 @@ Loop ends (l &gt; r):
     <span class="hljs-keyword">if</span> r &lt; <span class="hljs-number">0</span> <span class="hljs-keyword">or</span> nums[r] != target:
         <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>
     <span class="hljs-keyword">return</span> r
-</code></pre>
+</code></pre></div>
 <h3 id="1-8-binary-search-on-answer-space" tabindex="-1"><a class="header-anchor" href="#1-8-binary-search-on-answer-space"><span>1.8) Binary Search on Answer Space ⭐⭐⭐⭐⭐</span></a></h3>
 <p><strong>Critical Pattern</strong> - One of the most important and frequently tested binary search applications in FAANG interviews.</p>
 <h4 id="concept" tabindex="-1"><a class="header-anchor" href="#concept"><span>Concept</span></a></h4>
@@ -540,7 +504,7 @@ Loop ends (l &gt; r):
 <li><strong>Validation function</strong>: Check if current value satisfies constraints</li>
 <li><strong>Update boundaries</strong> based on minimization/maximization goal</li>
 </ol>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Unified Template for Binary Search on Answer Space</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Unified Template for Binary Search on Answer Space</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">binarySearchOnAnswer</span><span class="hljs-params">(<span class="hljs-type">int</span>[] arr, <span class="hljs-type">int</span> target)</span> {
     <span class="hljs-comment">// Step 1: Define search space boundaries</span>
     <span class="hljs-type">int</span> <span class="hljs-variable">left</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span>;              <span class="hljs-comment">// Minimum possible answer</span>
@@ -576,7 +540,7 @@ Loop ends (l &gt; r):
     <span class="hljs-comment">// Returns true if &#x27;value&#x27; is valid, false otherwise</span>
     <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;  <span class="hljs-comment">// placeholder</span>
 }
-</code></pre>
+</code></pre></div>
 <hr>
 <h4 id="decision-matrix-minimize-vs-maximize" tabindex="-1"><a class="header-anchor" href="#decision-matrix-minimize-vs-maximize"><span>Decision Matrix: Minimize vs Maximize ⭐⭐⭐⭐⭐</span></a></h4>
 <table>
@@ -612,7 +576,7 @@ Loop ends (l &gt; r):
 <li><strong>Maximize</strong>: When valid, go <strong>right</strong> (larger values) → Find largest working value</li>
 </ul>
 <p><strong>Critical Template Difference:</strong></p>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// MINIMIZE pattern (LC 410, 1011)</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// MINIMIZE pattern (LC 410, 1011)</span>
 <span class="hljs-keyword">while</span> (left &lt; right) {
     <span class="hljs-type">int</span> <span class="hljs-variable">mid</span> <span class="hljs-operator">=</span> left + (right - left) / <span class="hljs-number">2</span>;  <span class="hljs-comment">// Standard mid</span>
     <span class="hljs-keyword">if</span> (isValid(mid)) right = mid;        <span class="hljs-comment">// Try smaller</span>
@@ -627,12 +591,12 @@ Loop ends (l &gt; r):
     <span class="hljs-keyword">else</span> right = mid - <span class="hljs-number">1</span>;
 }
 <span class="hljs-keyword">return</span> left;
-</code></pre>
+</code></pre></div>
 <hr>
 <h4 id="example-1-lc-410-split-array-largest-sum" tabindex="-1"><a class="header-anchor" href="#example-1-lc-410-split-array-largest-sum"><span>Example 1: LC 410 - Split Array Largest Sum ⭐⭐⭐⭐⭐</span></a></h4>
 <p><strong>Problem:</strong> Split array into m subarrays, minimize the largest sum among subarrays.</p>
 <p><strong>Insight:</strong> Binary search on possible “largest sum” values. For each mid, check if we can split array into ≤ m subarrays with each sum ≤ mid.</p>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 410 - Split Array Largest Sum</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 410 - Split Array Largest Sum</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span> {
     <span class="hljs-comment">/**
      * time = O(N × log(sum))
@@ -691,8 +655,8 @@ Loop ends (l &gt; r):
         <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;  <span class="hljs-comment">// Successfully split into ≤ k subarrays</span>
     }
 }
-</code></pre>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - LC 410</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - LC 410</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">splitArray</span>(<span class="hljs-params">nums, k</span>):
     <span class="hljs-string">&quot;&quot;&quot;
     Time: O(n × log(sum))
@@ -727,9 +691,9 @@ Loop ends (l &gt; r):
             left = mid + <span class="hljs-number">1</span>
 
     <span class="hljs-keyword">return</span> left
-</code></pre>
+</code></pre></div>
 <p><strong>Step-by-Step Trace:</strong> <code>nums = [7,2,5,10,8], k = 2</code></p>
-<pre><code class="hljs">Search space: [10, 32]  (max element to sum)
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Search space: [10, 32]  (max element to sum)
 
 Iteration 1: mid = 21
   Can split into [[7,2,5], [10,8]]? Sum = [14, 18] ≤ 21 ✓
@@ -749,11 +713,11 @@ Iteration 4: mid = 17
   Can split? Need to check...
 
 Final: left = 18 (minimum largest sum)
-</code></pre>
+</code></pre></div>
 <hr>
 <h4 id="example-2-lc-1011-capacity-to-ship-packages" tabindex="-1"><a class="header-anchor" href="#example-2-lc-1011-capacity-to-ship-packages"><span>Example 2: LC 1011 - Capacity To Ship Packages</span></a></h4>
 <p><strong>Problem:</strong> Ship packages within D days. Find minimum capacity needed.</p>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 1011 - Capacity To Ship Packages Within D Days</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 1011 - Capacity To Ship Packages Within D Days</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span> {
     <span class="hljs-comment">/**
      * time = O(N × log(sum))
@@ -803,11 +767,11 @@ Final: left = 18 (minimum largest sum)
         <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
     }
 }
-</code></pre>
+</code></pre></div>
 <hr>
 <h4 id="example-3-lc-875-koko-eating-bananas" tabindex="-1"><a class="header-anchor" href="#example-3-lc-875-koko-eating-bananas"><span>Example 3: LC 875 - Koko Eating Bananas</span></a></h4>
 <p><strong>Problem:</strong> Koko must eat all bananas within h hours. Find minimum eating speed.</p>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 875 - Koko Eating Bananas</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 875 - Koko Eating Bananas</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">minEatingSpeed</span>(<span class="hljs-params">piles, h</span>):
     <span class="hljs-string">&quot;&quot;&quot;
     Time: O(n × log(max_pile))
@@ -832,11 +796,11 @@ Final: left = 18 (minimum largest sum)
             left = mid + <span class="hljs-number">1</span>  <span class="hljs-comment"># Need faster speed</span>
 
     <span class="hljs-keyword">return</span> left
-</code></pre>
+</code></pre></div>
 <hr>
 <h4 id="example-4-lc-1283-find-the-smallest-divisor" tabindex="-1"><a class="header-anchor" href="#example-4-lc-1283-find-the-smallest-divisor"><span>Example 4: LC 1283 - Find the Smallest Divisor</span></a></h4>
 <p><strong>Problem:</strong> Find smallest divisor such that sum(ceil(num/divisor)) ≤ threshold.</p>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 1283 - Find the Smallest Divisor</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 1283 - Find the Smallest Divisor</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span> {
     <span class="hljs-comment">/**
      * time = O(N × log(max_num))
@@ -871,7 +835,7 @@ Final: left = 18 (minimum largest sum)
         <span class="hljs-keyword">return</span> sum;
     }
 }
-</code></pre>
+</code></pre></div>
 <hr>
 <h4 id="example-5-lc-1231-divide-chocolate-maximize-minimum" tabindex="-1"><a class="header-anchor" href="#example-5-lc-1231-divide-chocolate-maximize-minimum"><span>Example 5: LC 1231 - Divide Chocolate (Maximize Minimum) ⭐⭐⭐⭐⭐</span></a></h4>
 <p><strong>Problem:</strong> Divide chocolate bar into K+1 pieces (sharing with K friends). You eat the piece with minimum sweetness. Maximize that minimum sweetness.</p>
@@ -888,7 +852,7 @@ Final: left = 18 (minimum largest sum)
 <li>This maximizes the number of valid pieces for a given target</li>
 <li>Monotonic property: if minSweetness X works, X-1 also works (easier to split)</li>
 </ul>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 1231 - Divide Chocolate</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 1231 - Divide Chocolate</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span> {
     <span class="hljs-comment">/**
      * time = O(N × log(sum))
@@ -942,9 +906,9 @@ Final: left = 18 (minimum largest sum)
         <span class="hljs-keyword">return</span> pieces &gt;= totalPeople;  <span class="hljs-comment">// Can we make enough pieces?</span>
     }
 }
-</code></pre>
+</code></pre></div>
 <p><strong>Alternative Template (while l &lt; r):</strong></p>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">maximizeSweetness</span><span class="hljs-params">(<span class="hljs-type">int</span>[] sweetness, <span class="hljs-type">int</span> k)</span> {
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">maximizeSweetness</span><span class="hljs-params">(<span class="hljs-type">int</span>[] sweetness, <span class="hljs-type">int</span> k)</span> {
     <span class="hljs-type">int</span> <span class="hljs-variable">left</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span>;
     <span class="hljs-type">int</span> <span class="hljs-variable">right</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
     <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> s : sweetness) right += s;
@@ -963,9 +927,9 @@ Final: left = 18 (minimum largest sum)
 
     <span class="hljs-keyword">return</span> left;
 }
-</code></pre>
+</code></pre></div>
 <p><strong>Step-by-Step Trace:</strong> <code>sweetness = [1,2,3,4,5,6,7,8,9], k = 5</code></p>
-<pre><code class="hljs">Total people = 6, Sum = 45
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Total people = 6, Sum = 45
 Search space: [1, 7]  (1 to 45/6)
 
 Iteration 1: mid = 4
@@ -988,7 +952,7 @@ Iteration 3: mid = 7
   Invalid! Reduce: right = 6
 
 Final: left = 7 &gt; right = 6, return ans = 6
-</code></pre>
+</code></pre></div>
 <p><strong>Similar Problems (Maximize Minimum Pattern):</strong></p>
 <table>
 <thead>
@@ -1038,7 +1002,7 @@ Final: left = 7 &gt; right = 6, return ans = 6
 <li>PQ approach fails because it’s a <strong>matching optimization problem</strong> where local greedy selection doesn’t guarantee optimality</li>
 <li>Binary search has <strong>monotonic property</strong>: if maxDiff X works, any larger diff also works</li>
 </ul>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 2616 - Minimize the Maximum Difference of Pairs</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 2616 - Minimize the Maximum Difference of Pairs</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span> {
     <span class="hljs-comment">/**
      * time = O(N log N + N log(max-min))
@@ -1091,9 +1055,9 @@ Final: left = 7 &gt; right = 6, return ans = 6
         <span class="hljs-keyword">return</span> count &gt;= p;
     }
 }
-</code></pre>
+</code></pre></div>
 <p><strong>Step-by-Step Trace:</strong> <code>nums = [10,1,2,7,1,3], p = 2</code></p>
-<pre><code class="hljs">After sorting: [1, 1, 2, 3, 7, 10]
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">After sorting: [1, 1, 2, 3, 7, 10]
 Adjacent diffs: [0, 1, 1, 4, 3]
 
 Search space: [0, 9]  (min diff to max diff)
@@ -1111,9 +1075,9 @@ Iteration 3: mid = 1
   Valid! Try smaller: right = 1
 
 Final: left = 1 (minimum maximum difference)
-</code></pre>
+</code></pre></div>
 <p><strong>Why PQ Approach Fails - Counterexample:</strong></p>
-<pre><code class="hljs">nums = [1, 3, 4, 6, 7, 20], p = 2
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">nums = [1, 3, 4, 6, 7, 20], p = 2
 Sorted diffs: (3,4)=1, (6,7)=1, (1,3)=2, (4,6)=2, (7,20)=13
 
 PQ picks smallest first:
@@ -1123,17 +1087,17 @@ PQ picks smallest first:
 
 But in general, PQ may pick overlapping or suboptimal pairs.
 Binary search guarantees correctness via monotonic property.
-</code></pre>
+</code></pre></div>
 <hr>
 <h4 id="why-binary-search-works-for-minimize-the-maximum" tabindex="-1"><a class="header-anchor" href="#why-binary-search-works-for-minimize-the-maximum"><span>Why Binary Search Works for “Minimize the Maximum” ⭐⭐⭐⭐⭐</span></a></h4>
 <p>This is the <strong>theoretical foundation</strong> that makes binary search applicable to optimization problems.</p>
 <h5 id="the-monotonic-property-key-insight" tabindex="-1"><a class="header-anchor" href="#the-monotonic-property-key-insight"><span>The Monotonic Property (Key Insight)</span></a></h5>
 <p>Binary search requires a <strong>monotonic</strong> (sorted) property. For “Minimize the Maximum” problems, this property exists in the <strong>feasibility function</strong>:</p>
-<pre><code class="hljs">If we can achieve the goal with maximum value = X,
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">If we can achieve the goal with maximum value = X,
 then we can ALWAYS achieve it with maximum value = X + 1 (or any larger value).
-</code></pre>
+</code></pre></div>
 <p>This creates a <strong>monotonic feasibility curve</strong>:</p>
-<pre><code class="hljs">Answer Space:  0   1   2   3   4   5   6   7   8   9   ...
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Answer Space:  0   1   2   3   4   5   6   7   8   9   ...
                |---|---|---|---|---|---|---|---|---|---|
 Feasible?      ✗   ✗   ✗   ✗   ✓   ✓   ✓   ✓   ✓   ✓   ...
                            ↑
@@ -1143,7 +1107,7 @@ The feasibility function is monotonic:
 - All values LEFT of boundary: INFEASIBLE (✗)
 - All values RIGHT of boundary: FEASIBLE (✓)
 - We want to find the LEFTMOST ✓ (minimum feasible value)
-</code></pre>
+</code></pre></div>
 <h5 id="why-this-enables-binary-search" tabindex="-1"><a class="header-anchor" href="#why-this-enables-binary-search"><span>Why This Enables Binary Search</span></a></h5>
 <p><strong>Standard binary search</strong> finds a target in a sorted array.
 <strong>Binary search on answer</strong> finds the boundary in a sorted feasibility function.</p>
@@ -1196,7 +1160,7 @@ The feasibility function is monotonic:
 <li>Each iteration halves the search space while preserving the invariant</li>
 </ol>
 <h5 id="visual-example-lc-2616" tabindex="-1"><a class="header-anchor" href="#visual-example-lc-2616"><span>Visual Example: LC 2616</span></a></h5>
-<pre><code class="hljs">Problem: Find p=2 pairs with minimum maximum difference
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Problem: Find p=2 pairs with minimum maximum difference
 Array after sorting: [1, 1, 2, 3, 7, 10]
 
 Answer space (max diff): 0  1  2  3  4  5  6  7  8  9
@@ -1210,7 +1174,7 @@ Why monotonic?
 - If max_diff = 0 fails: only (1,1)=0 works, can't form 2 pairs ✗
 
 Larger max_diff → More pairs possible → Easier to satisfy constraint
-</code></pre>
+</code></pre></div>
 <h5 id="why-not-just-iterate-complexity-analysis" tabindex="-1"><a class="header-anchor" href="#why-not-just-iterate-complexity-analysis"><span>Why Not Just Iterate? (Complexity Analysis)</span></a></h5>
 <table>
 <thead>
@@ -1239,7 +1203,7 @@ Larger max_diff → More pairs possible → Easier to satisfy constraint
 <li>Binary: log(10⁹) × 10⁵ ≈ 30 × 10⁵ = 3×10⁶ operations ✓</li>
 </ul>
 <h5 id="the-three-requirements-for-binary-search-on-answer" tabindex="-1"><a class="header-anchor" href="#the-three-requirements-for-binary-search-on-answer"><span>The Three Requirements for Binary Search on Answer</span></a></h5>
-<pre><code class="hljs">✅ Requirement 1: BOUNDED answer space
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">✅ Requirement 1: BOUNDED answer space
    - Must have clear [min, max] range
    - Example: [0, max_element - min_element]
 
@@ -1250,9 +1214,9 @@ Larger max_diff → More pairs possible → Easier to satisfy constraint
 ✅ Requirement 3: EFFICIENT validation
    - Can check if answer X is valid in O(n) or O(n log n)
    - Usually uses greedy approach
-</code></pre>
+</code></pre></div>
 <h5 id="common-minimize-maximum-problem-structure" tabindex="-1"><a class="header-anchor" href="#common-minimize-maximum-problem-structure"><span>Common “Minimize Maximum” Problem Structure</span></a></h5>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">minimizeMaximum</span><span class="hljs-params">(<span class="hljs-type">int</span>[] arr, <span class="hljs-type">int</span> constraint)</span> {
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">minimizeMaximum</span><span class="hljs-params">(<span class="hljs-type">int</span>[] arr, <span class="hljs-type">int</span> constraint)</span> {
     <span class="hljs-comment">// Step 1: Define bounded search space</span>
     <span class="hljs-type">int</span> <span class="hljs-variable">left</span> <span class="hljs-operator">=</span> minPossibleAnswer;   <span class="hljs-comment">// Often 0 or min(arr)</span>
     <span class="hljs-type">int</span> <span class="hljs-variable">right</span> <span class="hljs-operator">=</span> maxPossibleAnswer;  <span class="hljs-comment">// Often sum(arr) or max(arr)</span>
@@ -1278,7 +1242,7 @@ Larger max_diff → More pairs possible → Easier to satisfy constraint
     <span class="hljs-comment">// Greedy check: can we satisfy constraint with this maxAllowed?</span>
     <span class="hljs-comment">// This is problem-specific</span>
 }
-</code></pre>
+</code></pre></div>
 <hr>
 <h4 id="common-patterns-tricks" tabindex="-1"><a class="header-anchor" href="#common-patterns-tricks"><span>Common Patterns &amp; Tricks</span></a></h4>
 <p><strong>Pattern 1: Minimize Maximum</strong> ⭐⭐⭐</p>
@@ -1313,7 +1277,7 @@ Larger max_diff → More pairs possible → Easier to satisfy constraint
 <hr>
 <h4 id="template-variations" tabindex="-1"><a class="header-anchor" href="#template-variations"><span>Template Variations</span></a></h4>
 <p><strong>Variation 1: Closed Interval [left, right]</strong></p>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">while</span> (left &lt;= right) {
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">while</span> (left &lt;= right) {
     <span class="hljs-type">int</span> <span class="hljs-variable">mid</span> <span class="hljs-operator">=</span> left + (right - left) / <span class="hljs-number">2</span>;
     <span class="hljs-keyword">if</span> (isValid(mid)) {
         result = mid;  <span class="hljs-comment">// Store potential answer</span>
@@ -1323,9 +1287,9 @@ Larger max_diff → More pairs possible → Easier to satisfy constraint
     }
 }
 <span class="hljs-keyword">return</span> result;
-</code></pre>
+</code></pre></div>
 <p><strong>Variation 2: Half-Open Interval [left, right)</strong></p>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">while</span> (left &lt; right) {
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">while</span> (left &lt; right) {
     <span class="hljs-type">int</span> <span class="hljs-variable">mid</span> <span class="hljs-operator">=</span> left + (right - left) / <span class="hljs-number">2</span>;
     <span class="hljs-keyword">if</span> (isValid(mid)) {
         right = mid;  <span class="hljs-comment">// Keep mid in range</span>
@@ -1334,7 +1298,7 @@ Larger max_diff → More pairs possible → Easier to satisfy constraint
     }
 }
 <span class="hljs-keyword">return</span> left;  <span class="hljs-comment">// left == right</span>
-</code></pre>
+</code></pre></div>
 <hr>
 <h4 id="interview-tips" tabindex="-1"><a class="header-anchor" href="#interview-tips"><span>Interview Tips</span></a></h4>
 <p><strong>How to Recognize:</strong></p>
@@ -1354,12 +1318,12 @@ Larger max_diff → More pairs possible → Easier to satisfy constraint
 </li>
 <li>
 <p><strong>Off-by-one in validation</strong></p>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// ❌ WRONG: Using &lt; instead of &lt;=</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// ❌ WRONG: Using &lt; instead of &lt;=</span>
 <span class="hljs-keyword">if</span> (currentSum + num &lt; maxSum) {...}
 
 <span class="hljs-comment">// ✅ CORRECT: Must allow equality</span>
 <span class="hljs-keyword">if</span> (currentSum + num &lt;= maxSum) {...}
-</code></pre>
+</code></pre></div>
 </li>
 <li>
 <p><strong>Wrong boundary update</strong></p>
@@ -1526,7 +1490,7 @@ Larger max_diff → More pairs possible → Easier to satisfy constraint
 </tbody>
 </table>
 <p><strong>Detailed Analysis:</strong></p>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// 1) while (l &lt;= r) - CLOSED BOUNDARY [l, r]</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// 1) while (l &lt;= r) - CLOSED BOUNDARY [l, r]</span>
 <span class="hljs-keyword">while</span> (l &lt;= r) {
     <span class="hljs-type">int</span> <span class="hljs-variable">mid</span> <span class="hljs-operator">=</span> l + (r - l) / <span class="hljs-number">2</span>;
     <span class="hljs-keyword">if</span> (nums[mid] == target) <span class="hljs-keyword">return</span> mid;
@@ -1535,8 +1499,8 @@ Larger max_diff → More pairs possible → Easier to satisfy constraint
 }
 <span class="hljs-comment">// Pros: Standard, easy to understand</span>
 <span class="hljs-comment">// Cons: Can return -1 if not found</span>
-</code></pre>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// 2) while (l &lt; r) - HALF-OPEN [l, r)</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// 2) while (l &lt; r) - HALF-OPEN [l, r)</span>
 <span class="hljs-keyword">while</span> (l &lt; r) {
     <span class="hljs-type">int</span> <span class="hljs-variable">mid</span> <span class="hljs-operator">=</span> l + (r - l) / <span class="hljs-number">2</span>;
     <span class="hljs-keyword">if</span> (nums[mid] &lt; target) l = mid + <span class="hljs-number">1</span>;       <span class="hljs-comment">// +1 to exclude mid</span>
@@ -1545,8 +1509,8 @@ Larger max_diff → More pairs possible → Easier to satisfy constraint
 <span class="hljs-comment">// After loop: l == r, points to answer or insertion point</span>
 <span class="hljs-comment">// Pros: Great for finding boundaries, no -1 return</span>
 <span class="hljs-comment">// Cons: Requires different logic for different problems</span>
-</code></pre>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// 3) while (l &lt; r - 1) - GAP-BASED</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// 3) while (l &lt; r - 1) - GAP-BASED</span>
 <span class="hljs-keyword">while</span> (l &lt; r - <span class="hljs-number">1</span>) {
     <span class="hljs-type">int</span> <span class="hljs-variable">mid</span> <span class="hljs-operator">=</span> l + (r - l) / <span class="hljs-number">2</span>;
     <span class="hljs-keyword">if</span> (condition(mid)) l = mid;
@@ -1555,7 +1519,7 @@ Larger max_diff → More pairs possible → Easier to satisfy constraint
 <span class="hljs-comment">// Final check needed: examine both l and r</span>
 <span class="hljs-comment">// Pros: Avoids infinite loops in complex conditions</span>
 <span class="hljs-comment">// Cons: More complex, requires post-processing</span>
-</code></pre>
+</code></pre></div>
 <p><strong>When to Use Each:</strong></p>
 <ul>
 <li><strong><code>while (l &lt;= r)</code></strong>: Classic binary search, finding exact values</li>
@@ -1605,7 +1569,7 @@ Larger max_diff → More pairs possible → Easier to satisfy constraint
 <blockquote>
 <p><strong>Programming Tip</strong>: Avoid using <code>else</code> - write all conditions as <code>else if</code> to clearly show all cases and avoid bugs.</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java Implementation</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java Implementation</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">binarySearch</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums, <span class="hljs-type">int</span> target)</span> {
     <span class="hljs-type">int</span> <span class="hljs-variable">left</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
     <span class="hljs-type">int</span> <span class="hljs-variable">right</span> <span class="hljs-operator">=</span> nums.length - <span class="hljs-number">1</span>;
@@ -1624,8 +1588,8 @@ Larger max_diff → More pairs possible → Easier to satisfy constraint
     }
     <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>;  <span class="hljs-comment">// Not found</span>
 }
-</code></pre>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python Implementation  </span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python Implementation  </span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">binary_search</span>(<span class="hljs-params">nums, target</span>):
     left, right = <span class="hljs-number">0</span>, <span class="hljs-built_in">len</span>(nums) - <span class="hljs-number">1</span>
     
@@ -1641,10 +1605,10 @@ Larger max_diff → More pairs possible → Easier to satisfy constraint
             right = mid - <span class="hljs-number">1</span>  <span class="hljs-comment"># Search left half</span>
             
     <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>  <span class="hljs-comment"># Target not found</span>
-</code></pre>
+</code></pre></div>
 <h3 id="2-2-left-boundary-template" tabindex="-1"><a class="header-anchor" href="#2-2-left-boundary-template"><span>2.2) Left Boundary Template</span></a></h3>
 <p><strong>Use Cases</strong>: Find leftmost occurrence, insertion point, first valid solution</p>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">/**
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">/**
  * Key Differences from Standard Binary Search:
  * 1. When nums[mid] == target: shrink RIGHT boundary (right = mid - 1)
  * 2. Post-processing: validate the result before returning
@@ -1672,8 +1636,8 @@ Larger max_diff → More pairs possible → Easier to satisfy constraint
     }
     <span class="hljs-keyword">return</span> left;
 }
-</code></pre>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python Left Boundary Implementation</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python Left Boundary Implementation</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">find_left_boundary</span>(<span class="hljs-params">nums, target</span>):
     left, right = <span class="hljs-number">0</span>, <span class="hljs-built_in">len</span>(nums) - <span class="hljs-number">1</span>
     
@@ -1692,10 +1656,10 @@ Larger max_diff → More pairs possible → Easier to satisfy constraint
     <span class="hljs-keyword">if</span> left &gt;= <span class="hljs-built_in">len</span>(nums) <span class="hljs-keyword">or</span> nums[left] != target:
         <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>
     <span class="hljs-keyword">return</span> left
-</code></pre>
+</code></pre></div>
 <h3 id="2-3-right-boundary-template" tabindex="-1"><a class="header-anchor" href="#2-3-right-boundary-template"><span>2.3) Right Boundary Template</span></a></h3>
 <p><strong>Use Cases</strong>: Find rightmost occurrence, last valid solution</p>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">/**
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">/**
  * Key Differences from Standard Binary Search:
  * 1. When nums[mid] == target: shrink LEFT boundary (left = mid + 1)
  * 2. Return left - 1 after validation
@@ -1723,8 +1687,8 @@ Larger max_diff → More pairs possible → Easier to satisfy constraint
     }
     <span class="hljs-keyword">return</span> right;
 }
-</code></pre>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python Right Boundary Implementation</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python Right Boundary Implementation</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">find_right_boundary</span>(<span class="hljs-params">nums, target</span>):
     left, right = <span class="hljs-number">0</span>, <span class="hljs-built_in">len</span>(nums) - <span class="hljs-number">1</span>
     
@@ -1743,7 +1707,7 @@ Larger max_diff → More pairs possible → Easier to satisfy constraint
     <span class="hljs-keyword">if</span> right &lt; <span class="hljs-number">0</span> <span class="hljs-keyword">or</span> nums[right] != target:
         <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>
     <span class="hljs-keyword">return</span> right
-</code></pre>
+</code></pre></div>
 <h2 id="3-summary-quick-reference" tabindex="-1"><a class="header-anchor" href="#3-summary-quick-reference"><span>3) Summary &amp; Quick Reference</span></a></h2>
 <h3 id="3-1-when-to-use-binary-search" tabindex="-1"><a class="header-anchor" href="#3-1-when-to-use-binary-search"><span>3.1) When to Use Binary Search</span></a></h3>
 <p>✅ <strong>Use Binary Search When:</strong></p>
@@ -1819,7 +1783,7 @@ Larger max_diff → More pairs possible → Easier to satisfy constraint
 <h2 id="4-leetcode-examples-applications" tabindex="-1"><a class="header-anchor" href="#4-leetcode-examples-applications"><span>4) LeetCode Examples &amp; Applications</span></a></h2>
 <p>This section demonstrates how to apply binary search patterns to solve specific problems.</p>
 <h3 id="4-1-search-in-rotated-sorted-array-lc-33-lc-81" tabindex="-1"><a class="header-anchor" href="#4-1-search-in-rotated-sorted-array-lc-33-lc-81"><span>4.1) Search in Rotated Sorted Array (LC 33, LC 81)</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 033. Search in Rotated Sorted Array</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 033. Search in Rotated Sorted Array</span>
 <span class="hljs-comment"># LC 081. Search in Rotated Sorted Array II</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># IDEA : BINARY SEARCH</span>
@@ -1864,8 +1828,8 @@ Larger max_diff → More pairs possible → Easier to satisfy constraint
                 <span class="hljs-keyword">else</span>:
                     left = mid + <span class="hljs-number">1</span>
         <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>     
-</code></pre>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 33</span>
 <span class="hljs-comment">// V3</span>
 <span class="hljs-comment">// IDEA : One Binary Search</span>
@@ -1903,10 +1867,10 @@ Larger max_diff → More pairs possible → Easier to satisfy constraint
 
     <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>;
 }
-</code></pre>
+</code></pre></div>
 <h3 id="4-2-two-sum-ii-input-array-is-sorted-lc-167" tabindex="-1"><a class="header-anchor" href="#4-2-two-sum-ii-input-array-is-sorted-lc-167"><span>4.2) Two Sum II - Input Array is Sorted (LC 167)</span></a></h3>
 <p><strong>Approach</strong>: Binary search for each element’s complement</p>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># 167 Two Sum II - Input array is sorted</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># 167 Two Sum II - Input array is sorted</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">twoSum</span>(<span class="hljs-params">self, numbers, target</span>):
         <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(numbers)):
@@ -1920,10 +1884,10 @@ Larger max_diff → More pairs possible → Easier to satisfy constraint
                     l = mid+<span class="hljs-number">1</span>
                 <span class="hljs-keyword">else</span>:
                     r = mid-<span class="hljs-number">1</span>
-</code></pre>
+</code></pre></div>
 <h3 id="4-3-find-peak-element-lc-162-lc-852" tabindex="-1"><a class="header-anchor" href="#4-3-find-peak-element-lc-162-lc-852"><span>4.3) Find Peak Element (LC 162, LC 852)</span></a></h3>
 <p><strong>Approach</strong>: Compare mid with adjacent elements to determine search direction</p>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 162 Find Peak Element, LC 852 Peak Index in a Mountain Array</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 162 Find Peak Element, LC 852 Peak Index in a Mountain Array</span>
 <span class="hljs-comment"># V0&#x27;</span>
 <span class="hljs-comment"># IDEA : RECURSIVE BINARY SEARCH</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
@@ -1938,8 +1902,8 @@ Larger max_diff → More pairs possible → Easier to satisfy constraint
             <span class="hljs-keyword">return</span> <span class="hljs-built_in">help</span>(nums, mid+<span class="hljs-number">1</span>, r) <span class="hljs-comment"># l = mid + 1</span>
             
         <span class="hljs-keyword">return</span> <span class="hljs-built_in">help</span>(nums, <span class="hljs-number">0</span>, <span class="hljs-built_in">len</span>(nums)-<span class="hljs-number">1</span>)
-</code></pre>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 162</span>
 <span class="hljs-comment">// V2</span>
 <span class="hljs-comment">// IDEA: RECURSIVE BINARY SEARCH</span>
@@ -1972,10 +1936,10 @@ Larger max_diff → More pairs possible → Easier to satisfy constraint
         }
         <span class="hljs-keyword">return</span> l;
     }
-</code></pre>
+</code></pre></div>
 <h3 id="4-4-valid-perfect-square-lc-367-sqrt-x-lc-69" tabindex="-1"><a class="header-anchor" href="#4-4-valid-perfect-square-lc-367-sqrt-x-lc-69"><span>4.4) Valid Perfect Square (LC 367) &amp; Sqrt(x) (LC 69)</span></a></h3>
 <p><strong>Approach</strong>: Binary search on the range [1, num] to find square root</p>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># 367 Valid Perfect Square, LC 69 Sqrt(x)</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># 367 Valid Perfect Square, LC 69 Sqrt(x)</span>
 <span class="hljs-comment"># V0&#x27;</span>
 <span class="hljs-comment"># IDEA : BINARY SEARCH</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
@@ -1990,8 +1954,8 @@ Larger max_diff → More pairs possible → Easier to satisfy constraint
                 left = mid + <span class="hljs-number">1</span>
         <span class="hljs-comment">### NOTE this</span>
         <span class="hljs-keyword">return</span> left * left == num
-</code></pre>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 367</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">isPerfectSquare</span><span class="hljs-params">(<span class="hljs-type">int</span> num)</span> {
 
@@ -2018,10 +1982,10 @@ Larger max_diff → More pairs possible → Easier to satisfy constraint
     }
     <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
 }
-</code></pre>
+</code></pre></div>
 <h3 id="4-5-minimum-size-subarray-sum-lc-209" tabindex="-1"><a class="header-anchor" href="#4-5-minimum-size-subarray-sum-lc-209"><span>4.5) Minimum Size Subarray Sum (LC 209)</span></a></h3>
 <p><strong>Approach</strong>: Binary search on possible subarray lengths + sliding window validation</p>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 209 Minimum Size Subarray Sum</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 209 Minimum Size Subarray Sum</span>
 <span class="hljs-comment">### NOTE : there is also sliding window approach</span>
 <span class="hljs-comment"># V1&#x27; </span>
 <span class="hljs-comment"># http://bookshadow.com/weblog/2015/05/12/leetcode-minimum-size-subarray-sum/</span>
@@ -2049,10 +2013,10 @@ Larger max_diff → More pairs possible → Easier to satisfy constraint
             <span class="hljs-keyword">if</span> sums &gt;= s:
                 <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
         <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
-</code></pre>
+</code></pre></div>
 <h3 id="4-6-first-bad-version-lc-278" tabindex="-1"><a class="header-anchor" href="#4-6-first-bad-version-lc-278"><span>4.6) First Bad Version (LC 278)</span></a></h3>
 <p><strong>Approach</strong>: Binary search to find the first occurrence where isBadVersion() returns true</p>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 278</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 278</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># IDEA : binary search</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
@@ -2068,20 +2032,20 @@ Larger max_diff → More pairs possible → Easier to satisfy constraint
         <span class="hljs-keyword">if</span> SVNRepo.isBadVersion(left):
             <span class="hljs-keyword">return</span> left
         <span class="hljs-keyword">return</span> right 
-</code></pre>
+</code></pre></div>
 <h3 id="4-7-search-insert-position-lc-35" tabindex="-1"><a class="header-anchor" href="#4-7-search-insert-position-lc-35"><span>4.7) Search Insert Position (LC 35)</span></a></h3>
 <p><strong>Problem</strong>: Find index of target in sorted array. If not found, return the index where it should be inserted.</p>
 <p><strong>Approach</strong>: Standard binary search - return <code>left</code> pointer when target not found</p>
 <h4 id="core-insight-why-left-is-the-insertion-position" tabindex="-1"><a class="header-anchor" href="#core-insight-why-left-is-the-insertion-position"><span>Core Insight: Why <code>left</code> is the Insertion Position</span></a></h4>
 <p>This is the <strong>critical insight</strong> that makes LC 35 trivial once understood. When binary search loop <code>while (l &lt;= r)</code> exits, the pointers have special meaning:</p>
-<pre><code class="hljs">Loop Exit Condition: l == r + 1 (l &gt; r)
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Loop Exit Condition: l == r + 1 (l &gt; r)
 
 Array State:
 [ elements &lt; target ]  r  |  l  [ elements &gt;= target ]
 
 index:     0   ...   r   l   ...   n-1
 value:    &lt; target   gap      &gt;= target
-</code></pre>
+</code></pre></div>
 <p><strong>What this means:</strong></p>
 <ul>
 <li><code>r</code> is the <strong>last element smaller than target</strong></li>
@@ -2089,7 +2053,7 @@ value:    &lt; target   gap      &gt;= target
 <li>The insertion position is <strong>exactly at <code>l</code></strong></li>
 </ul>
 <h4 id="detailed-trace-nums-1-3-5-6-target-4" tabindex="-1"><a class="header-anchor" href="#detailed-trace-nums-1-3-5-6-target-4"><span>Detailed Trace: <code>nums = [1, 3, 5, 6], target = 4</code></span></a></h4>
-<pre><code class="hljs">Initial State:
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Initial State:
 l=0, r=3
 [1,  3,  5,  6]
  l           r
@@ -2110,19 +2074,19 @@ Loop Ends (l &gt; r):
 - Insertion position: l = 2 ✓
 
 Result array if we insert 4: [1, 3, 4, 5, 6]
-</code></pre>
+</code></pre></div>
 <h4 id="mathematical-guarantee" tabindex="-1"><a class="header-anchor" href="#mathematical-guarantee"><span>Mathematical Guarantee</span></a></h4>
 <p>When the loop exits without finding target:</p>
-<pre><code class="hljs">Invariant maintained throughout search:
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Invariant maintained throughout search:
 - nums[0..l-1] &lt; target
 - nums[l..end] &gt;= target
 
 Therefore:
 - If target exists → found during loop
 - If target doesn't exist → l is exactly where it should be inserted
-</code></pre>
+</code></pre></div>
 <h4 id="java-implementation-standard-pattern" tabindex="-1"><a class="header-anchor" href="#java-implementation-standard-pattern"><span>Java Implementation (Standard Pattern)</span></a></h4>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">searchInsert</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums, <span class="hljs-type">int</span> target)</span> {
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">searchInsert</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums, <span class="hljs-type">int</span> target)</span> {
     <span class="hljs-keyword">if</span> (nums == <span class="hljs-literal">null</span> || nums.length == <span class="hljs-number">0</span>) {
         <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
     }
@@ -2147,9 +2111,9 @@ Therefore:
     <span class="hljs-comment">// By invariant: nums[0..l-1] &lt; target &amp;&amp; nums[l..end] &gt;= target</span>
     <span class="hljs-keyword">return</span> l;
 }
-</code></pre>
+</code></pre></div>
 <h4 id="python-alternative-left-boundary-style" tabindex="-1"><a class="header-anchor" href="#python-alternative-left-boundary-style"><span>Python Alternative (Left-Boundary Style)</span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">searchInsert</span>(<span class="hljs-params">self, nums, target</span>):
         left, right = <span class="hljs-number">0</span>, <span class="hljs-built_in">len</span>(nums)  <span class="hljs-comment"># Note: right = len(nums), not len-1</span>
         
@@ -2164,9 +2128,9 @@ Therefore:
         
         <span class="hljs-comment"># When left == right, left is insertion position</span>
         <span class="hljs-keyword">return</span> left
-</code></pre>
+</code></pre></div>
 <h4 id="why-this-works-without-special-cases" tabindex="-1"><a class="header-anchor" href="#why-this-works-without-special-cases"><span>Why This Works Without Special Cases</span></a></h4>
-<pre><code class="hljs">Compare two approaches:
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Compare two approaches:
 
 ❌ Complicated approach:
 Check if target is between mid and mid+1
@@ -2178,7 +2142,7 @@ Just return l when loop ends
 → Single line return
 → Works for all cases (found, insert at start, end, middle)
 → No special case handling needed
-</code></pre>
+</code></pre></div>
 <h4 id="complexity-analysis" tabindex="-1"><a class="header-anchor" href="#complexity-analysis"><span>Complexity Analysis</span></a></h4>
 <table>
 <thead>
@@ -2295,7 +2259,7 @@ Just return l when loop ends
 <li>LC 34: Find boundaries (apply same logic to both left and right)</li>
 <li>LC 1011, 875: Binary search on answer space (find minimum/maximum valid value)</li>
 </ul>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Example: LC 34 - Find First and Last Position</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Example: LC 34 - Find First and Last Position</span>
 <span class="hljs-comment"># Uses LC 35 insight twice (once for left boundary, once for right)</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">searchRange</span>(<span class="hljs-params">nums, target</span>):
     <span class="hljs-comment"># Find leftmost position (like LC 35 but looking for &gt;=)</span>
@@ -2305,10 +2269,10 @@ Just return l when loop ends
     right = binarySearchRight(nums, target)
     
     <span class="hljs-keyword">return</span> [left, right]
-</code></pre>
+</code></pre></div>
 <h3 id="4-8-capacity-to-ship-packages-within-d-days-lc-1011" tabindex="-1"><a class="header-anchor" href="#4-8-capacity-to-ship-packages-within-d-days-lc-1011"><span>4.8) Capacity To Ship Packages Within D Days (LC 1011)</span></a></h3>
 <p><strong>Approach</strong>: Binary search on capacity + greedy validation</p>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 1011</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 1011</span>
 <span class="hljs-comment"># V1</span>
 <span class="hljs-comment"># IDEA : BINARY SEARCH</span>
 <span class="hljs-comment"># https://leetcode.com/problems/capacity-to-ship-packages-within-d-days/discuss/390359/Simple-Python-Binary-Search</span>
@@ -2347,14 +2311,14 @@ Just return l when loop ends
                 <span class="hljs-keyword">else</span>:
                     r = mid - <span class="hljs-number">1</span>
             <span class="hljs-keyword">return</span> l
-</code></pre>
+</code></pre></div>
 <h3 id="4-9-split-array-largest-sum-lc-410-hard" tabindex="-1"><a class="header-anchor" href="#4-9-split-array-largest-sum-lc-410-hard"><span>4.9) Split Array Largest Sum (LC 410) [Hard]</span></a></h3>
 <p><strong>Approach</strong>: Binary search on the maximum sum + greedy partitioning</p>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 410 Split Array Largest Sum [Hard]</span>
-</code></pre>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 410 Split Array Largest Sum [Hard]</span>
+</code></pre></div>
 <h3 id="4-10-koko-eating-bananas-lc-875" tabindex="-1"><a class="header-anchor" href="#4-10-koko-eating-bananas-lc-875"><span>4.10) Koko Eating Bananas (LC 875)</span></a></h3>
 <p><strong>Approach</strong>: Binary search on eating speed + time calculation validation</p>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 875</span>
 
 <span class="hljs-comment">// V0</span>
@@ -2386,10 +2350,10 @@ Just return l when loop ends
 
     <span class="hljs-keyword">return</span> l;
 }
-</code></pre>
+</code></pre></div>
 <h3 id="4-11-find-k-closest-elements-lc-658" tabindex="-1"><a class="header-anchor" href="#4-11-find-k-closest-elements-lc-658"><span>4.11) Find K Closest Elements (LC 658)</span></a></h3>
 <p><strong>Approach</strong>: Two pointers approach to shrink array to k elements</p>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 658. Find K Closest Elements</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 658. Find K Closest Elements</span>
 <span class="hljs-comment"># V1&#x27;</span>
 <span class="hljs-comment"># https://blog.csdn.net/fuxuemingzhu/article/details/82968136</span>
 <span class="hljs-comment"># IDEA : TWO POINTERS </span>
@@ -2406,10 +2370,10 @@ Just return l when loop ends
             <span class="hljs-keyword">else</span>:
                 arr.pop(<span class="hljs-number">0</span>)
         <span class="hljs-keyword">return</span> arr
-</code></pre>
+</code></pre></div>
 <h3 id="4-12-sqrt-x-lc-69-alternative-implementation" tabindex="-1"><a class="header-anchor" href="#4-12-sqrt-x-lc-69-alternative-implementation"><span>4.12) Sqrt(x) (LC 69) - Alternative Implementation</span></a></h3>
 <p><strong>Approach</strong>: Binary search with careful boundary handling</p>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 069 Sqrt(x)</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 069 Sqrt(x)</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># IDEA : binary search</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
@@ -2451,10 +2415,10 @@ Just return l when loop ends
             <span class="hljs-keyword">else</span>:
                 l = mid + <span class="hljs-number">1</span>
         <span class="hljs-keyword">return</span> l <span class="hljs-keyword">if</span> l * l &lt; num <span class="hljs-keyword">else</span> l - <span class="hljs-number">1</span>
-</code></pre>
+</code></pre></div>
 <h3 id="4-13-find-first-and-last-position-of-element-in-sorted-array-lc-34" tabindex="-1"><a class="header-anchor" href="#4-13-find-first-and-last-position-of-element-in-sorted-array-lc-34"><span>4.13) Find First and Last Position of Element in Sorted Array (LC 34)</span></a></h3>
 <p><strong>Approach</strong>: Use left and right boundary search templates</p>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># 34. Find First and Last Position of Element in Sorted Array</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># 34. Find First and Last Position of Element in Sorted Array</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># IDEA : BINARY SEARCH</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
@@ -2477,8 +2441,8 @@ Just return l when loop ends
             <span class="hljs-keyword">return</span> [lo, hi]
                 
         <span class="hljs-keyword">return</span> [-<span class="hljs-number">1</span>, -<span class="hljs-number">1</span>]
-</code></pre>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 34</span>
 
 <span class="hljs-comment">// V0</span>
@@ -2525,10 +2489,10 @@ Just return l when loop ends
 
     <span class="hljs-keyword">return</span> bound;
 }
-</code></pre>
+</code></pre></div>
 <h3 id="4-14-search-a-2d-matrix-lc-74" tabindex="-1"><a class="header-anchor" href="#4-14-search-a-2d-matrix-lc-74"><span>4.14) Search a 2D Matrix (LC 74)</span></a></h3>
 <p><strong>Approach</strong>: Flatten 2D matrix to 1D using index conversion</p>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 74</span>
 <span class="hljs-comment">// V1</span>
 <span class="hljs-comment">// IDEA : BINARY SEARCH + FLATTEN MATRIX</span>
@@ -2562,26 +2526,26 @@ Just return l when loop ends
     }
     <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
 }
-</code></pre>
+</code></pre></div>
 <h3 id="4-15-find-minimum-in-rotated-sorted-array-lc-153" tabindex="-1"><a class="header-anchor" href="#4-15-find-minimum-in-rotated-sorted-array-lc-153"><span>4.15) Find Minimum in Rotated Sorted Array (LC 153)</span></a></h3>
 <p><strong>Approach</strong>: Compare mid with boundaries to find rotation point</p>
 <p><strong>Pattern</strong>: Rotated Sorted Array — Binary Search on Sorted Half</p>
 <p><strong>Core Idea</strong>: In a rotated sorted array, exactly one half (left or right of mid) is always sorted. Determine which half mid falls in, then search the unsorted half where the minimum must be.</p>
 <p><strong>Key Insight — Rotation Cycle</strong> (don’t memorize, understand via examples):</p>
-<pre><code class="hljs">// All rotations of [1,2,3,4,5]:
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">// All rotations of [1,2,3,4,5]:
 // [1,2,3,4,5]     // already ascending → nums[l] &lt;= nums[r], return nums[l]
 // [5,1,2,3,4]     // mid=2 &lt; r=4, right part is sorted → search left
 // [4,5,1,2,3]     // mid=1 &lt; r=3, right part is sorted → search left
 // [3,4,5,1,2]     // mid=5 &gt;= l=3, left part is sorted → search right
 // [2,3,4,5,1]     // mid=4 &gt;= l=2, left part is sorted → search right
 // cycle back to [1,2,3,4,5]
-</code></pre>
+</code></pre></div>
 <p><strong>Only 2 cases</strong> (after the early-exit sorted check):</p>
 <ol>
 <li><code>nums[mid] &gt;= nums[l]</code> → left part is sorted → min is in right half → <code>l = mid + 1</code></li>
 <li><code>nums[mid] &lt; nums[l]</code> → right part is sorted → min is in left half → <code>r = mid - 1</code></li>
 </ol>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 153</span>
     <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">findMin</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums)</span> {
         <span class="hljs-type">int</span> <span class="hljs-variable">l</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
@@ -2611,7 +2575,7 @@ Just return l when loop ends
         }
         <span class="hljs-keyword">return</span> res;
     }
-</code></pre>
+</code></pre></div>
 <p><strong>Similar Problems</strong>:</p>
 <table>
 <thead>
@@ -2638,7 +2602,7 @@ Just return l when loop ends
 <p><strong>Reference</strong>: See <code>leetcode_java/src/main/java/LeetCodeJava/BinarySearch/FindMinimumInRotatedSortedArray.java</code> for multiple approaches.</p>
 <h3 id="4-16-find-first-and-last-position-alternative-implementation" tabindex="-1"><a class="header-anchor" href="#4-16-find-first-and-last-position-alternative-implementation"><span>4.16) Find First and Last Position - Alternative Implementation</span></a></h3>
 <p><strong>Approach</strong>: Separate functions for finding first and last occurrences</p>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 34</span>
     <span class="hljs-keyword">public</span> <span class="hljs-type">int</span>[] searchRange_1(<span class="hljs-type">int</span>[] nums, <span class="hljs-type">int</span> target) {
         <span class="hljs-type">int</span>[] result = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[<span class="hljs-number">2</span>];
@@ -2691,10 +2655,10 @@ Just return l when loop ends
         }
         <span class="hljs-keyword">return</span> idx;
     }
-</code></pre>
+</code></pre></div>
 <h3 id="4-17-find-smallest-letter-greater-than-target-lc-744" tabindex="-1"><a class="header-anchor" href="#4-17-find-smallest-letter-greater-than-target-lc-744"><span>4.17) Find Smallest Letter Greater Than Target (LC 744)</span></a></h3>
 <p><strong>Pattern</strong>: <code>while (l &lt; r)</code> - Finding insertion position</p>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 744 Find Smallest Letter Greater Than Target</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 744 Find Smallest Letter Greater Than Target</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">nextGreatestLetter</span>(<span class="hljs-params">self, letters, target</span>):
         l, r = <span class="hljs-number">0</span>, <span class="hljs-built_in">len</span>(letters)
@@ -2709,10 +2673,10 @@ Just return l when loop ends
         
         <span class="hljs-comment"># Handle circular array - if no letter greater than target, return first</span>
         <span class="hljs-keyword">return</span> letters[l % <span class="hljs-built_in">len</span>(letters)]
-</code></pre>
+</code></pre></div>
 <h3 id="4-18-arranging-coins-lc-441" tabindex="-1"><a class="header-anchor" href="#4-18-arranging-coins-lc-441"><span>4.18) Arranging Coins (LC 441)</span></a></h3>
 <p><strong>Pattern</strong>: <code>while (l &lt;= r)</code> - Finding exact value with mathematical property</p>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 441 Arranging Coins</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 441 Arranging Coins</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">arrangeCoins</span><span class="hljs-params">(<span class="hljs-type">int</span> n)</span> {
     <span class="hljs-type">long</span> <span class="hljs-variable">l</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>, r = n;
     
@@ -2731,10 +2695,10 @@ Just return l when loop ends
     
     <span class="hljs-keyword">return</span> (<span class="hljs-type">int</span>) r;  <span class="hljs-comment">// Return the complete rows we can form</span>
 }
-</code></pre>
+</code></pre></div>
 <h3 id="4-19-minimum-number-of-days-to-make-m-bouquets-lc-1482" tabindex="-1"><a class="header-anchor" href="#4-19-minimum-number-of-days-to-make-m-bouquets-lc-1482"><span>4.19) Minimum Number of Days to Make m Bouquets (LC 1482)</span></a></h3>
 <p><strong>Pattern</strong>: <code>while (l &lt; r - 1)</code> - Complex validation with helper function</p>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 1482 Minimum Number of Days to Make m Bouquets</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 1482 Minimum Number of Days to Make m Bouquets</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">minDays</span>(<span class="hljs-params">self, bloomDay, m, k</span>):
         <span class="hljs-keyword">if</span> m * k &gt; <span class="hljs-built_in">len</span>(bloomDay):
@@ -2762,10 +2726,10 @@ Just return l when loop ends
                 l = mid + <span class="hljs-number">1</span>
         
         <span class="hljs-keyword">return</span> l
-</code></pre>
+</code></pre></div>
 <h3 id="4-20-search-a-2d-matrix-ii-lc-240" tabindex="-1"><a class="header-anchor" href="#4-20-search-a-2d-matrix-ii-lc-240"><span>4.20) Search a 2D Matrix II (LC 240)</span></a></h3>
 <p><strong>Pattern</strong>: <code>while (l &lt;= r)</code> - Search with elimination technique</p>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 240 Search a 2D Matrix II</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 240 Search a 2D Matrix II</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">searchMatrix</span>(<span class="hljs-params">self, matrix, target</span>):
         <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> matrix <span class="hljs-keyword">or</span> <span class="hljs-keyword">not</span> matrix[<span class="hljs-number">0</span>]:
@@ -2783,10 +2747,10 @@ Just return l when loop ends
                 row += <span class="hljs-number">1</span>  <span class="hljs-comment"># Move down</span>
         
         <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
-</code></pre>
+</code></pre></div>
 <h3 id="4-21-find-minimum-in-rotated-sorted-array-ii-lc-154" tabindex="-1"><a class="header-anchor" href="#4-21-find-minimum-in-rotated-sorted-array-ii-lc-154"><span>4.21) Find Minimum in Rotated Sorted Array II (LC 154)</span></a></h3>
 <p><strong>Pattern</strong>: <code>while (l &lt; r)</code> - Handling duplicates in rotated array</p>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 154 Find Minimum in Rotated Sorted Array II (with duplicates)</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 154 Find Minimum in Rotated Sorted Array II (with duplicates)</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">findMin</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums)</span> {
     <span class="hljs-type">int</span> <span class="hljs-variable">l</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>, r = nums.length - <span class="hljs-number">1</span>;
     
@@ -2808,10 +2772,10 @@ Just return l when loop ends
     
     <span class="hljs-keyword">return</span> nums[l];
 }
-</code></pre>
+</code></pre></div>
 <h3 id="4-22-missing-element-in-sorted-array-lc-1060" tabindex="-1"><a class="header-anchor" href="#4-22-missing-element-in-sorted-array-lc-1060"><span>4.22) Missing Element in Sorted Array (LC 1060)</span></a></h3>
 <p><strong>Pattern</strong>: <code>while (l &lt; r - 1)</code> - Finding missing elements with gap calculation</p>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 1060 Missing Element in Sorted Array</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 1060 Missing Element in Sorted Array</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">missingElement</span>(<span class="hljs-params">self, nums, k</span>):
         <span class="hljs-keyword">def</span> <span class="hljs-title function_">missing_count</span>(<span class="hljs-params">idx</span>):
@@ -2836,13 +2800,13 @@ Just return l when loop ends
         
         <span class="hljs-comment"># The k-th missing number is between nums[l] and nums[r]</span>
         <span class="hljs-keyword">return</span> nums[l] + k - missing_count(l)
-</code></pre>
+</code></pre></div>
 <h2 id="lc-examples" tabindex="-1"><a class="header-anchor" href="#lc-examples"><span>LC Examples</span></a></h2>
 <h3 id="2-1-find-first-and-last-position-lc-34-left-right-binary-search" tabindex="-1"><a class="header-anchor" href="#2-1-find-first-and-last-position-lc-34-left-right-binary-search"><span>2-1) Find First and Last Position (LC 34) — Left/Right Binary Search</span></a></h3>
 <blockquote>
 <p>Two binary searches: one for left boundary, one for right boundary.</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 34 - Find First and Last Position of Element in Sorted Array</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 34 - Find First and Last Position of Element in Sorted Array</span>
 <span class="hljs-comment">// IDEA: Binary search for left bound + right bound separately</span>
 <span class="hljs-comment">// time = O(log N), space = O(1)</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span>[] searchRange(<span class="hljs-type">int</span>[] nums, <span class="hljs-type">int</span> target) {
@@ -2866,12 +2830,12 @@ Just return l when loop ends
     }
     <span class="hljs-keyword">return</span> nums[l] == target ? l : -<span class="hljs-number">1</span>;
 }
-</code></pre>
+</code></pre></div>
 <h3 id="2-2-search-in-rotated-sorted-array-lc-33-binary-search-on-rotated-array" tabindex="-1"><a class="header-anchor" href="#2-2-search-in-rotated-sorted-array-lc-33-binary-search-on-rotated-array"><span>2-2) Search in Rotated Sorted Array (LC 33) — Binary Search on Rotated Array</span></a></h3>
 <blockquote>
 <p>Determine which half is sorted, then decide which half contains the target.</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 33 - Search in Rotated Sorted Array</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 33 - Search in Rotated Sorted Array</span>
 <span class="hljs-comment">// IDEA: Binary search — identify sorted half, narrow range</span>
 <span class="hljs-comment">// time = O(log N), space = O(1)</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">search</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums, <span class="hljs-type">int</span> target)</span> {
@@ -2889,12 +2853,12 @@ Just return l when loop ends
     }
     <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>;
 }
-</code></pre>
+</code></pre></div>
 <h3 id="2-3-koko-eating-bananas-lc-875-binary-search-on-answer" tabindex="-1"><a class="header-anchor" href="#2-3-koko-eating-bananas-lc-875-binary-search-on-answer"><span>2-3) Koko Eating Bananas (LC 875) — Binary Search on Answer</span></a></h3>
 <blockquote>
 <p>Binary search on the eating speed; check if all bananas can be eaten in H hours.</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 875 - Koko Eating Bananas</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 875 - Koko Eating Bananas</span>
 <span class="hljs-comment">// IDEA: Binary search on answer space [1, max(piles)]</span>
 <span class="hljs-comment">// time = O(N log M), space = O(1)  M = max pile size</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">minEatingSpeed</span><span class="hljs-params">(<span class="hljs-type">int</span>[] piles, <span class="hljs-type">int</span> h)</span> {
@@ -2911,12 +2875,12 @@ Just return l when loop ends
     <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> pile : piles) hours += (pile + speed - <span class="hljs-number">1</span>) / speed;
     <span class="hljs-keyword">return</span> hours &lt;= h;
 }
-</code></pre>
+</code></pre></div>
 <h3 id="2-4-find-minimum-in-rotated-sorted-array-lc-153-binary-search" tabindex="-1"><a class="header-anchor" href="#2-4-find-minimum-in-rotated-sorted-array-lc-153-binary-search"><span>2-4) Find Minimum in Rotated Sorted Array (LC 153) — Binary Search</span></a></h3>
 <blockquote>
 <p>The minimum is always in the unsorted half; compare mid with right boundary.</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 153 - Find Minimum in Rotated Sorted Array</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 153 - Find Minimum in Rotated Sorted Array</span>
 <span class="hljs-comment">// IDEA: Binary search — minimum is in the unsorted half</span>
 <span class="hljs-comment">// time = O(log N), space = O(1)</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">findMin</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums)</span> {
@@ -2928,12 +2892,12 @@ Just return l when loop ends
     }
     <span class="hljs-keyword">return</span> nums[l];
 }
-</code></pre>
+</code></pre></div>
 <h3 id="2-5-capacity-to-ship-packages-within-d-days-lc-1011-binary-search-on-answer" tabindex="-1"><a class="header-anchor" href="#2-5-capacity-to-ship-packages-within-d-days-lc-1011-binary-search-on-answer"><span>2-5) Capacity to Ship Packages Within D Days (LC 1011) — Binary Search on Answer</span></a></h3>
 <blockquote>
 <p>Binary search on ship capacity; check if all packages can be shipped in D days.</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 1011 - Capacity to Ship Packages Within D Days</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 1011 - Capacity to Ship Packages Within D Days</span>
 <span class="hljs-comment">// IDEA: Binary search on capacity range [max(weights), sum(weights)]</span>
 <span class="hljs-comment">// time = O(N log S), space = O(1)  S = sum of weights</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">shipWithinDays</span><span class="hljs-params">(<span class="hljs-type">int</span>[] weights, <span class="hljs-type">int</span> days)</span> {
@@ -2954,12 +2918,12 @@ Just return l when loop ends
     }
     <span class="hljs-keyword">return</span> daysNeeded &lt;= days;
 }
-</code></pre>
+</code></pre></div>
 <h3 id="2-6-find-peak-element-lc-162-binary-search-on-peak" tabindex="-1"><a class="header-anchor" href="#2-6-find-peak-element-lc-162-binary-search-on-peak"><span>2-6) Find Peak Element (LC 162) — Binary Search on Peak</span></a></h3>
 <blockquote>
 <p>If mid &lt; mid+1, peak is to the right; otherwise peak is to the left or at mid.</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 162 - Find Peak Element</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 162 - Find Peak Element</span>
 <span class="hljs-comment">// IDEA: Binary search — move toward the rising side</span>
 <span class="hljs-comment">// time = O(log N), space = O(1)</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">findPeakElement</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums)</span> {
@@ -2971,12 +2935,12 @@ Just return l when loop ends
     }
     <span class="hljs-keyword">return</span> l;
 }
-</code></pre>
+</code></pre></div>
 <h3 id="2-7-split-array-largest-sum-lc-410-binary-search-on-answer" tabindex="-1"><a class="header-anchor" href="#2-7-split-array-largest-sum-lc-410-binary-search-on-answer"><span>2-7) Split Array Largest Sum (LC 410) — Binary Search on Answer</span></a></h3>
 <blockquote>
 <p>Binary search on the maximum subarray sum; check if array can be split into m parts.</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 410 - Split Array Largest Sum</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 410 - Split Array Largest Sum</span>
 <span class="hljs-comment">// IDEA: Binary search on answer [max, sum]; check if k splits are sufficient</span>
 <span class="hljs-comment">// time = O(N log S), space = O(1)</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">splitArray</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums, <span class="hljs-type">int</span> k)</span> {
@@ -2997,12 +2961,12 @@ Just return l when loop ends
     }
     <span class="hljs-keyword">return</span> parts &lt;= k;
 }
-</code></pre>
+</code></pre></div>
 <h3 id="2-8-first-bad-version-lc-278-classic-binary-search" tabindex="-1"><a class="header-anchor" href="#2-8-first-bad-version-lc-278-classic-binary-search"><span>2-8) First Bad Version (LC 278) — Classic Binary Search</span></a></h3>
 <blockquote>
 <p>Find the leftmost bad version without calling the API more than necessary.</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 278 - First Bad Version</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 278 - First Bad Version</span>
 <span class="hljs-comment">// IDEA: Binary search for left boundary — first bad version</span>
 <span class="hljs-comment">// time = O(log N), space = O(1)</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">firstBadVersion</span><span class="hljs-params">(<span class="hljs-type">int</span> n)</span> {
@@ -3014,12 +2978,12 @@ Just return l when loop ends
     }
     <span class="hljs-keyword">return</span> l;
 }
-</code></pre>
+</code></pre></div>
 <h3 id="2-9-median-of-two-sorted-arrays-lc-4-binary-search-on-partition" tabindex="-1"><a class="header-anchor" href="#2-9-median-of-two-sorted-arrays-lc-4-binary-search-on-partition"><span>2-9) Median of Two Sorted Arrays (LC 4) — Binary Search on Partition</span></a></h3>
 <blockquote>
 <p>Binary search on partition of smaller array to find median in O(log(min(M,N))).</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 4 - Median of Two Sorted Arrays</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 4 - Median of Two Sorted Arrays</span>
 <span class="hljs-comment">// IDEA: Binary search partition on smaller array</span>
 <span class="hljs-comment">// time = O(log(min(M,N))), space = O(1)</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">double</span> <span class="hljs-title function_">findMedianSortedArrays</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums1, <span class="hljs-type">int</span>[] nums2)</span> {
@@ -3043,12 +3007,12 @@ Just return l when loop ends
     }
     <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
 }
-</code></pre>
+</code></pre></div>
 <h3 id="2-10-time-based-key-value-store-lc-981-binary-search-on-timestamps" tabindex="-1"><a class="header-anchor" href="#2-10-time-based-key-value-store-lc-981-binary-search-on-timestamps"><span>2-10) Time Based Key-Value Store (LC 981) — Binary Search on Timestamps</span></a></h3>
 <blockquote>
 <p>For each key, binary search on sorted timestamps to find the largest &lt;= given time.</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 981 - Time Based Key-Value Store</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 981 - Time Based Key-Value Store</span>
 <span class="hljs-comment">// IDEA: HashMap of key -&gt; sorted list of (timestamp, value); binary search on query</span>
 <span class="hljs-comment">// time = O(log N) per get, O(1) per set, space = O(N)</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">TimeMap</span> {
@@ -3070,12 +3034,12 @@ Just return l when loop ends
         <span class="hljs-keyword">return</span> idx == -<span class="hljs-number">1</span> ? <span class="hljs-string">&quot;&quot;</span> : vals.get(key).get(idx);
     }
 }
-</code></pre>
+</code></pre></div>
 <h3 id="2-11-minimum-number-of-days-to-make-m-bouquets-lc-1482-binary-search-on-days" tabindex="-1"><a class="header-anchor" href="#2-11-minimum-number-of-days-to-make-m-bouquets-lc-1482-binary-search-on-days"><span>2-11) Minimum Number of Days to Make m Bouquets (LC 1482) — Binary Search on Days</span></a></h3>
 <blockquote>
 <p>Binary search on the number of days; check if m bouquets of k adjacent flowers can be made.</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 1482 - Minimum Number of Days to Make m Bouquets</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 1482 - Minimum Number of Days to Make m Bouquets</span>
 <span class="hljs-comment">// IDEA: Binary search on days [min, max]; check feasibility</span>
 <span class="hljs-comment">// time = O(N log D), space = O(1)</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">minDays</span><span class="hljs-params">(<span class="hljs-type">int</span>[] bloomDay, <span class="hljs-type">int</span> m, <span class="hljs-type">int</span> k)</span> {
@@ -3097,12 +3061,12 @@ Just return l when loop ends
     }
     <span class="hljs-keyword">return</span> bouquets &gt;= m;
 }
-</code></pre>
+</code></pre></div>
 <h3 id="2-12-single-element-in-a-sorted-array-lc-540-binary-search" tabindex="-1"><a class="header-anchor" href="#2-12-single-element-in-a-sorted-array-lc-540-binary-search"><span>2-12) Single Element in a Sorted Array (LC 540) — Binary Search</span></a></h3>
 <blockquote>
 <p>Pair pattern breaks after the single element; binary search on even indices.</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 540 - Single Element in a Sorted Array</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 540 - Single Element in a Sorted Array</span>
 <span class="hljs-comment">// IDEA: Binary search — check if pair pattern holds at mid (even index)</span>
 <span class="hljs-comment">// time = O(log N), space = O(1)</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">singleNonDuplicate</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums)</span> {
@@ -3115,12 +3079,12 @@ Just return l when loop ends
     }
     <span class="hljs-keyword">return</span> nums[l];
 }
-</code></pre>
+</code></pre></div>
 <h3 id="2-13-minimize-the-maximum-difference-of-pairs-lc-2616-minimize-maximum-pattern" tabindex="-1"><a class="header-anchor" href="#2-13-minimize-the-maximum-difference-of-pairs-lc-2616-minimize-maximum-pattern"><span>2-13) Minimize the Maximum Difference of Pairs (LC 2616) — Minimize Maximum Pattern</span></a></h3>
 <blockquote>
 <p>Sort array, binary search on max difference, greedy pairing with skip.</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 2616 - Minimize the Maximum Difference of Pairs</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 2616 - Minimize the Maximum Difference of Pairs</span>
 <span class="hljs-comment">// IDEA: Sort + Binary Search on answer + Greedy pairing</span>
 <span class="hljs-comment">// time = O(N log N + N log(max-min)), space = O(1)</span>
 
@@ -3163,12 +3127,12 @@ Just return l when loop ends
     }
     <span class="hljs-keyword">return</span> count &gt;= p;
 }
-</code></pre>
+</code></pre></div>
 <h3 id="2-14-divide-chocolate-lc-1231-maximize-minimum-pattern" tabindex="-1"><a class="header-anchor" href="#2-14-divide-chocolate-lc-1231-maximize-minimum-pattern"><span>2-14) Divide Chocolate (LC 1231) — Maximize Minimum Pattern</span></a></h3>
 <blockquote>
 <p>Binary search on minimum sweetness; check if we can cut into K+1 pieces where each piece has sweetness ≥ target.</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 1231 - Divide Chocolate</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 1231 - Divide Chocolate</span>
 <span class="hljs-comment">// IDEA: Binary Search on answer space [1, sum/people]; MAXIMIZE MINIMUM pattern</span>
 <span class="hljs-comment">// time = O(N × log(sum)), space = O(1)</span>
 
@@ -3253,7 +3217,7 @@ This avoids counting all occurrences — O(log N) instead of <span class="hljs-t
     }
     <span class="hljs-keyword">return</span> firstIdx;
 }
-</code></pre>
+</code></pre></div>
 <p><strong>Template rules:</strong></p>
 <ul>
 <li>When <code>nums[mid] == target</code>: save <code>mid</code> as candidate, then <strong>shrink right</strong> (<code>high = mid - 1</code>) to keep searching left</li>
@@ -3261,7 +3225,7 @@ This avoids counting all occurrences — O(log N) instead of <span class="hljs-t
 </ul>
 <hr>
 <h4 id="lc-1150-solution" tabindex="-1"><a class="header-anchor" href="#lc-1150-solution"><span>LC 1150 Solution</span></a></h4>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 1150 - Check If a Number Is Majority Element in a Sorted Array</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 1150 - Check If a Number Is Majority Element in a Sorted Array</span>
 <span class="hljs-comment">// time: O(log N), space: O(1)</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">isMajorityElement</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums, <span class="hljs-type">int</span> target)</span> {
     <span class="hljs-type">int</span> <span class="hljs-variable">n</span> <span class="hljs-operator">=</span> nums.length;
@@ -3293,9 +3257,9 @@ This avoids counting all occurrences — O(log N) instead of <span class="hljs-t
     }
     <span class="hljs-keyword">return</span> firstIdx;
 }
-</code></pre>
+</code></pre></div>
 <p><strong>Alternative using lower_bound style (V1):</strong></p>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Uses two binary searches: first index of target, first index of (target+1)</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Uses two binary searches: first index of target, first index of (target+1)</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">isMajorityElement_v1</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums, <span class="hljs-type">int</span> target)</span> {
     <span class="hljs-type">int</span> <span class="hljs-variable">left</span>  <span class="hljs-operator">=</span> lowerBound(nums, target);      <span class="hljs-comment">// first index &gt;= target</span>
     <span class="hljs-type">int</span> <span class="hljs-variable">right</span> <span class="hljs-operator">=</span> lowerBound(nums, target + <span class="hljs-number">1</span>);  <span class="hljs-comment">// first index &gt;= target+1</span>
@@ -3311,10 +3275,10 @@ This avoids counting all occurrences — O(log N) instead of <span class="hljs-t
     }
     <span class="hljs-keyword">return</span> left;
 }
-</code></pre>
+</code></pre></div>
 <hr>
 <h4 id="visual-example-1" tabindex="-1"><a class="header-anchor" href="#visual-example-1"><span>Visual Example</span></a></h4>
-<pre><code class="hljs">nums = [2,4,5,5,5,5,5,6,6], target = 5, N = 9
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">nums = [2,4,5,5,5,5,5,6,6], target = 5, N = 9
 
 findFirstIndex(5) → index 2
 
@@ -3325,7 +3289,7 @@ Intuition:
 index:  0  1  2  3  4  5  6  7  8
 value:  2  4 [5] 5  5  5 [5] 6  6
            first↑           ↑ must still be 5 if majority
-</code></pre>
+</code></pre></div>
 <hr>
 <h4 id="find-first-index-comparison-with-similar-patterns" tabindex="-1"><a class="header-anchor" href="#find-first-index-comparison-with-similar-patterns"><span>Find First Index — Comparison with Similar Patterns</span></a></h4>
 <table>

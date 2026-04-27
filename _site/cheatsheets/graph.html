@@ -19,54 +19,18 @@
     }
   })();
   </script>
-  <script>document.addEventListener('DOMContentLoaded', function() {
-    document.querySelectorAll('pre code').forEach(function(codeEl) {
-      var pre = codeEl.parentElement;
-      var lang = '';
-      var cls = codeEl.className || '';
-      var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
-      if (m) lang = m[1];
-
-      // Add line numbers
-      var lines = codeEl.innerHTML.split('
-');
-      if (lines[lines.length - 1] === '') lines.pop();
-      var numbered = lines.map(function(line, i) {
-        return '<span class="hljs-ln-line"><span class="hljs-ln-n" data-line-number="' + (i + 1) + '"></span><span class="hljs-ln-code">' + line + '</span></span>';
-      }).join('
-');
-      codeEl.innerHTML = numbered;
-      codeEl.classList.add('hljs-ln');
-
-      var wrapper = document.createElement('div');
-      wrapper.className = 'code-block-wrapper';
-      pre.parentNode.insertBefore(wrapper, pre);
-      var header = document.createElement('div');
-      header.className = 'code-block-header';
-      if (lang) {
-        var label = document.createElement('span');
-        label.className = 'code-lang-label';
-        label.textContent = lang;
-        header.appendChild(label);
-      } else {
-        header.appendChild(document.createElement('span'));
-      }
-      var btn = document.createElement('button');
-      btn.className = 'copy-btn';
-      btn.textContent = 'Copy';
-      btn.addEventListener('click', function() {
-        var text = Array.from(codeEl.querySelectorAll('.hljs-ln-code')).map(function(el) { return el.textContent; }).join('
-');
-        navigator.clipboard.writeText(text).then(function() {
-          btn.textContent = 'Copied!';
-          btn.classList.add('copied');
-          setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
-        });
-      });
-      header.appendChild(btn);
-      wrapper.appendChild(header);
-      wrapper.appendChild(pre);
+  <script>
+  function copyCode(btn) {
+    var pre = btn.closest('.code-block-wrapper').querySelector('pre');
+    var text = pre ? pre.innerText : '';
+    navigator.clipboard.writeText(text).then(function() {
+      btn.textContent = 'Copied!';
+      btn.classList.add('copied');
+      setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
     });
+  }
+  </script>
+  <script>document.addEventListener('DOMContentLoaded', function() {
     document.querySelectorAll('table').forEach(function(table) {
       if (!table.parentElement.classList.contains('table-wrap')) {
         var wrapper = document.createElement('div');
@@ -250,7 +214,7 @@
 </tbody>
 </table>
 <h3 id="universal-graph-template" tabindex="-1"><a class="header-anchor" href="#universal-graph-template"><span>Universal Graph Template</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">graph_algorithm</span>(<span class="hljs-params">n, edges</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">graph_algorithm</span>(<span class="hljs-params">n, edges</span>):
     <span class="hljs-comment"># Build adjacency list</span>
     graph = collections.defaultdict(<span class="hljs-built_in">list</span>)
     <span class="hljs-keyword">for</span> u, v <span class="hljs-keyword">in</span> edges:
@@ -269,9 +233,9 @@
             result += <span class="hljs-number">1</span>
     
     <span class="hljs-keyword">return</span> result
-</code></pre>
+</code></pre></div>
 <h3 id="template-1-bfs-traversal" tabindex="-1"><a class="header-anchor" href="#template-1-bfs-traversal"><span>Template 1: BFS Traversal</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">bfs_template</span>(<span class="hljs-params">graph, start</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">bfs_template</span>(<span class="hljs-params">graph, start</span>):
     <span class="hljs-string">&quot;&quot;&quot;Breadth-first search template&quot;&quot;&quot;</span>
     <span class="hljs-keyword">from</span> collections <span class="hljs-keyword">import</span> deque
     
@@ -293,9 +257,9 @@
         level += <span class="hljs-number">1</span>
     
     <span class="hljs-keyword">return</span> level
-</code></pre>
+</code></pre></div>
 <h3 id="template-2-dfs-traversal" tabindex="-1"><a class="header-anchor" href="#template-2-dfs-traversal"><span>Template 2: DFS Traversal</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">dfs_template</span>(<span class="hljs-params">graph, start</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">dfs_template</span>(<span class="hljs-params">graph, start</span>):
     <span class="hljs-string">&quot;&quot;&quot;Depth-first search template&quot;&quot;&quot;</span>
     visited = <span class="hljs-built_in">set</span>()
     path = []
@@ -313,9 +277,9 @@
     
     dfs(start)
     <span class="hljs-keyword">return</span> visited
-</code></pre>
+</code></pre></div>
 <h3 id="template-3-union-find-dsu" tabindex="-1"><a class="header-anchor" href="#template-3-union-find-dsu"><span>Template 3: Union-Find (DSU)</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">UnionFind</span>:
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">UnionFind</span>:
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, n</span>):
         <span class="hljs-variable language_">self</span>.parent = <span class="hljs-built_in">list</span>(<span class="hljs-built_in">range</span>(n))
         <span class="hljs-variable language_">self</span>.rank = [<span class="hljs-number">0</span>] * n
@@ -344,9 +308,9 @@
     
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">connected</span>(<span class="hljs-params">self, x, y</span>):
         <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.find(x) == <span class="hljs-variable language_">self</span>.find(y)
-</code></pre>
+</code></pre></div>
 <h3 id="template-4-topological-sort-dfs" tabindex="-1"><a class="header-anchor" href="#template-4-topological-sort-dfs"><span>Template 4: Topological Sort (DFS)</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">topological_sort_dfs</span>(<span class="hljs-params">n, edges</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">topological_sort_dfs</span>(<span class="hljs-params">n, edges</span>):
     <span class="hljs-string">&quot;&quot;&quot;Topological sort using DFS&quot;&quot;&quot;</span>
     graph = collections.defaultdict(<span class="hljs-built_in">list</span>)
     <span class="hljs-keyword">for</span> u, v <span class="hljs-keyword">in</span> edges:
@@ -377,9 +341,9 @@
                 <span class="hljs-keyword">return</span> []  <span class="hljs-comment"># Cycle exists</span>
     
     <span class="hljs-keyword">return</span> result[::-<span class="hljs-number">1</span>]
-</code></pre>
+</code></pre></div>
 <h3 id="template-5-topological-sort-bfs-kahn-s" tabindex="-1"><a class="header-anchor" href="#template-5-topological-sort-bfs-kahn-s"><span>Template 5: Topological Sort (BFS/Kahn’s)</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">topological_sort_bfs</span>(<span class="hljs-params">n, edges</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">topological_sort_bfs</span>(<span class="hljs-params">n, edges</span>):
     <span class="hljs-string">&quot;&quot;&quot;Kahn&#x27;s algorithm for topological sort&quot;&quot;&quot;</span>
     <span class="hljs-keyword">from</span> collections <span class="hljs-keyword">import</span> deque
     
@@ -403,7 +367,7 @@
                 queue.append(neighbor)
     
     <span class="hljs-keyword">return</span> result <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(result) == n <span class="hljs-keyword">else</span> []
-</code></pre>
+</code></pre></div>
 <h3 id="template-6-bipartite-graph-checking" tabindex="-1"><a class="header-anchor" href="#template-6-bipartite-graph-checking"><span>Template 6: Bipartite Graph Checking</span></a></h3>
 <p><strong>Definition</strong>: A graph is bipartite if its vertices can be colored using only two colors such that no two adjacent vertices have the same color. Equivalent to checking if the graph has no odd-length cycles.</p>
 <p><strong>Time Complexity</strong>: O(V + E) - visit each vertex and edge once
@@ -424,7 +388,7 @@
 <li>Can be solved using BFS or DFS with 2-coloring</li>
 </ul>
 <h4 id="approach-1-bfs-with-coloring" tabindex="-1"><a class="header-anchor" href="#approach-1-bfs-with-coloring"><span><strong>Approach 1: BFS with Coloring</strong></span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">is_bipartite_bfs</span>(<span class="hljs-params">graph</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">is_bipartite_bfs</span>(<span class="hljs-params">graph</span>):
     <span class="hljs-string">&quot;&quot;&quot;Check if graph is bipartite using BFS&quot;&quot;&quot;</span>
     <span class="hljs-keyword">from</span> collections <span class="hljs-keyword">import</span> deque
 
@@ -453,9 +417,9 @@
                     <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
 
     <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
-</code></pre>
+</code></pre></div>
 <h4 id="approach-2-dfs-with-coloring" tabindex="-1"><a class="header-anchor" href="#approach-2-dfs-with-coloring"><span><strong>Approach 2: DFS with Coloring</strong></span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">is_bipartite_dfs</span>(<span class="hljs-params">graph</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">is_bipartite_dfs</span>(<span class="hljs-params">graph</span>):
     <span class="hljs-string">&quot;&quot;&quot;Check if graph is bipartite using DFS&quot;&quot;&quot;</span>
     n = <span class="hljs-built_in">len</span>(graph)
     colors = [-<span class="hljs-number">1</span>] * n
@@ -481,9 +445,9 @@
                 <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
 
     <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
-</code></pre>
+</code></pre></div>
 <h4 id="approach-3-union-find-advanced" tabindex="-1"><a class="header-anchor" href="#approach-3-union-find-advanced"><span><strong>Approach 3: Union-Find (Advanced)</strong></span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">is_bipartite_union_find</span>(<span class="hljs-params">n, edges</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">is_bipartite_union_find</span>(<span class="hljs-params">n, edges</span>):
     <span class="hljs-string">&quot;&quot;&quot;Check bipartite using Union-Find for conflict detection&quot;&quot;&quot;</span>
 
     <span class="hljs-keyword">class</span> <span class="hljs-title class_">UnionFind</span>:
@@ -515,9 +479,9 @@
         uf.union(v, u + n)  <span class="hljs-comment"># v with opposite of u</span>
 
     <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
-</code></pre>
+</code></pre></div>
 <h4 id="grid-based-bipartite-check" tabindex="-1"><a class="header-anchor" href="#grid-based-bipartite-check"><span><strong>Grid-based Bipartite Check</strong></span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">is_bipartite_grid</span>(<span class="hljs-params">grid</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">is_bipartite_grid</span>(<span class="hljs-params">grid</span>):
     <span class="hljs-string">&quot;&quot;&quot;Check if grid graph is bipartite (checkerboard pattern)&quot;&quot;&quot;</span>
     rows, cols = <span class="hljs-built_in">len</span>(grid), <span class="hljs-built_in">len</span>(grid[<span class="hljs-number">0</span>])
     colors = [[-<span class="hljs-number">1</span>] * cols <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(rows)]
@@ -550,9 +514,9 @@
                     <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
 
     <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
-</code></pre>
+</code></pre></div>
 <h4 id="enhanced-template-with-partition-information" tabindex="-1"><a class="header-anchor" href="#enhanced-template-with-partition-information"><span><strong>Enhanced Template with Partition Information</strong></span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">bipartite_partition</span>(<span class="hljs-params">graph</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">bipartite_partition</span>(<span class="hljs-params">graph</span>):
     <span class="hljs-string">&quot;&quot;&quot;
     Returns bipartite partition if exists, None otherwise
     Returns: (setA, setB) or None
@@ -582,10 +546,10 @@
     setB = [i <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n) <span class="hljs-keyword">if</span> colors[i] == <span class="hljs-number">1</span>]
 
     <span class="hljs-keyword">return</span> setA, setB
-</code></pre>
+</code></pre></div>
 <h4 id="related-problems-examples" tabindex="-1"><a class="header-anchor" href="#related-problems-examples"><span><strong>Related Problems &amp; Examples</strong></span></a></h4>
 <p><strong>LC 785: Is Graph Bipartite</strong></p>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">isBipartite</span>(<span class="hljs-params">self, graph</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">isBipartite</span>(<span class="hljs-params">self, graph</span>):
     <span class="hljs-string">&quot;&quot;&quot;LC 785 - Standard bipartite check&quot;&quot;&quot;</span>
     n = <span class="hljs-built_in">len</span>(graph)
     colors = {}
@@ -606,9 +570,9 @@
             <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> dfs(i, <span class="hljs-number">0</span>):
                 <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
     <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
-</code></pre>
+</code></pre></div>
 <p><strong>LC 886: Possible Bipartition</strong></p>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">possibleBipartition</span>(<span class="hljs-params">self, n, dislikes</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">possibleBipartition</span>(<span class="hljs-params">self, n, dislikes</span>):
     <span class="hljs-string">&quot;&quot;&quot;LC 886 - Build graph from dislike relationships&quot;&quot;&quot;</span>
     <span class="hljs-keyword">from</span> collections <span class="hljs-keyword">import</span> defaultdict
 
@@ -636,10 +600,10 @@
             <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> dfs(i, <span class="hljs-number">0</span>):
                 <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
     <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
-</code></pre>
+</code></pre></div>
 <h4 id="applications-variations" tabindex="-1"><a class="header-anchor" href="#applications-variations"><span><strong>Applications &amp; Variations</strong></span></a></h4>
 <p><strong>1. Maximum Bipartite Matching</strong></p>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">max_bipartite_matching</span>(<span class="hljs-params">graph, n, m</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">max_bipartite_matching</span>(<span class="hljs-params">graph, n, m</span>):
     <span class="hljs-string">&quot;&quot;&quot;Find maximum matching in bipartite graph&quot;&quot;&quot;</span>
     <span class="hljs-keyword">match</span> = [-<span class="hljs-number">1</span>] * m
 
@@ -659,9 +623,9 @@
             result += <span class="hljs-number">1</span>
 
     <span class="hljs-keyword">return</span> result
-</code></pre>
+</code></pre></div>
 <p><strong>2. Bipartite Graph Validation with Custom Logic</strong></p>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">validate_bipartite_assignment</span>(<span class="hljs-params">assignments, conflicts</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">validate_bipartite_assignment</span>(<span class="hljs-params">assignments, conflicts</span>):
     <span class="hljs-string">&quot;&quot;&quot;
     Validate if assignment is bipartite given conflict pairs
     assignments: list of items to assign
@@ -696,7 +660,7 @@
     group_b = [item <span class="hljs-keyword">for</span> item, color <span class="hljs-keyword">in</span> colors.items() <span class="hljs-keyword">if</span> color == <span class="hljs-number">1</span>]
 
     <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>, {<span class="hljs-string">&quot;Group A&quot;</span>: group_a, <span class="hljs-string">&quot;Group B&quot;</span>: group_b}
-</code></pre>
+</code></pre></div>
 <h4 id="performance-comparison" tabindex="-1"><a class="header-anchor" href="#performance-comparison"><span><strong>Performance Comparison</strong></span></a></h4>
 <table>
 <thead>
@@ -853,14 +817,14 @@ Bellman-Ford finds shortest paths from a single source to all vertices, even wit
 </li>
 </ol>
 <p><strong>Why V-1 Iterations?</strong></p>
-<pre><code class="hljs">In a graph with V vertices, the shortest path between any two vertices
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">In a graph with V vertices, the shortest path between any two vertices
 contains at most V-1 edges (no cycles).
 
 After k iterations, we have the shortest path using at most k edges.
 After V-1 iterations, we have the shortest paths for all pairs.
-</code></pre>
+</code></pre></div>
 <h5 id="python-implementation" tabindex="-1"><a class="header-anchor" href="#python-implementation"><span>Python Implementation</span></a></h5>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Bellman-Ford Algorithm</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Bellman-Ford Algorithm</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">bellman_ford</span>(<span class="hljs-params">n, edges, source</span>):
     <span class="hljs-string">&quot;&quot;&quot;
     Find shortest paths from source to all vertices.
@@ -904,9 +868,9 @@ After V-1 iterations, we have the shortest paths for all pairs.
 <span class="hljs-comment"># edges = [(0, 1, 4), (0, 2, 5), (1, 2, -3), (2, 3, 4)]</span>
 <span class="hljs-comment"># result = bellman_ford(4, edges, 0)</span>
 <span class="hljs-comment"># Output: [0, 4, 1, 5] (shortest distances from vertex 0)</span>
-</code></pre>
+</code></pre></div>
 <h5 id="java-implementation" tabindex="-1"><a class="header-anchor" href="#java-implementation"><span>Java Implementation</span></a></h5>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Bellman-Ford Algorithm</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Bellman-Ford Algorithm</span>
 <span class="hljs-comment">/**
  * LC 787 - Cheapest Flights Within K Stops (Bellman-Ford variant)
  *
@@ -953,9 +917,9 @@ After V-1 iterations, we have the shortest paths for all pairs.
         <span class="hljs-keyword">return</span> dist;
     }
 }
-</code></pre>
+</code></pre></div>
 <h5 id="visual-example" tabindex="-1"><a class="header-anchor" href="#visual-example"><span>Visual Example</span></a></h5>
-<pre><code class="hljs">Graph with negative edge:
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Graph with negative edge:
     0 --4--&gt; 1
     |       / |
     5     -3  |
@@ -981,9 +945,9 @@ Edge (2,3,4): dist[3] = min(5, 1+4) = 5 (no change)
 No updates → Early termination
 
 Final: dist = [0, 4, 1, 5] ✓
-</code></pre>
+</code></pre></div>
 <h5 id="negative-cycle-detection" tabindex="-1"><a class="header-anchor" href="#negative-cycle-detection"><span>Negative Cycle Detection</span></a></h5>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Example with negative cycle</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Example with negative cycle</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">detect_negative_cycle</span>(<span class="hljs-params">n, edges</span>):
     <span class="hljs-string">&quot;&quot;&quot;
     Detect if graph contains a negative cycle.
@@ -1012,7 +976,7 @@ Final: dist = [0, 4, 1, 5] ✓
 <span class="hljs-comment"># Example: edges = [(0,1,1), (1,2,-3), (2,0,1)]</span>
 <span class="hljs-comment"># Forms cycle: 0→1→2→0 with total weight 1-3+1 = -1</span>
 <span class="hljs-comment"># Returns: True</span>
-</code></pre>
+</code></pre></div>
 <hr>
 <h4 id="7-2-floyd-warshall-algorithm" tabindex="-1"><a class="header-anchor" href="#7-2-floyd-warshall-algorithm"><span>7.2) Floyd-Warshall Algorithm</span></a></h4>
 <p><strong>Core Concept:</strong>
@@ -1043,14 +1007,14 @@ Floyd-Warshall finds <strong>all-pairs shortest paths</strong> in a weighted gra
 </li>
 </ol>
 <p><strong>Why It Works:</strong></p>
-<pre><code class="hljs">After considering vertices {0, 1, ..., k} as intermediate:
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">After considering vertices {0, 1, ..., k} as intermediate:
 dist[i][j] = shortest path from i to j using only vertices {0...k}
 
 When k = n-1, we've considered all possible intermediates
 → dist[i][j] = shortest path from i to j
-</code></pre>
+</code></pre></div>
 <h5 id="python-implementation-1" tabindex="-1"><a class="header-anchor" href="#python-implementation-1"><span>Python Implementation</span></a></h5>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Floyd-Warshall Algorithm</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Floyd-Warshall Algorithm</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">floyd_warshall</span>(<span class="hljs-params">n, edges</span>):
     <span class="hljs-string">&quot;&quot;&quot;
     Find all-pairs shortest paths.
@@ -1097,9 +1061,9 @@ When k = n-1, we've considered all possible intermediates
 <span class="hljs-comment"># edges = [(0,1,3), (1,2,1), (0,2,7), (2,3,2)]</span>
 <span class="hljs-comment"># result = floyd_warshall(4, edges)</span>
 <span class="hljs-comment"># result[i][j] = shortest distance from i to j</span>
-</code></pre>
+</code></pre></div>
 <h5 id="java-implementation-1" tabindex="-1"><a class="header-anchor" href="#java-implementation-1"><span>Java Implementation</span></a></h5>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Floyd-Warshall Algorithm</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Floyd-Warshall Algorithm</span>
 <span class="hljs-comment">/**
  * LC 1334 - Find the City With the Smallest Number of Neighbors
  *
@@ -1139,9 +1103,9 @@ When k = n-1, we've considered all possible intermediates
         <span class="hljs-keyword">return</span> dist;
     }
 }
-</code></pre>
+</code></pre></div>
 <h5 id="visual-example-1" tabindex="-1"><a class="header-anchor" href="#visual-example-1"><span>Visual Example</span></a></h5>
-<pre><code class="hljs">Graph:
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Graph:
   0 --3--&gt; 1
   |        |
   7        1
@@ -1180,9 +1144,9 @@ Final:
 1 [  ∞   0   3   1 ]
 2 [  ∞   ∞   0   ∞ ]
 3 [  ∞   ∞   2   0 ]
-</code></pre>
+</code></pre></div>
 <h5 id="path-reconstruction" tabindex="-1"><a class="header-anchor" href="#path-reconstruction"><span>Path Reconstruction</span></a></h5>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Floyd-Warshall with path reconstruction</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Floyd-Warshall with path reconstruction</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">floyd_warshall_with_path</span>(<span class="hljs-params">n, edges</span>):
     <span class="hljs-string">&quot;&quot;&quot;
     Find all-pairs shortest paths and reconstruct paths.
@@ -1230,7 +1194,7 @@ Final:
 <span class="hljs-comment"># dist, next_v = floyd_warshall_with_path(4, edges)</span>
 <span class="hljs-comment"># path = reconstruct_path(next_v, 0, 3)</span>
 <span class="hljs-comment"># Output: [0, 1, 3] (path from 0 to 3)</span>
-</code></pre>
+</code></pre></div>
 <hr>
 <h4 id="7-3-classic-leetcode-problems" tabindex="-1"><a class="header-anchor" href="#7-3-classic-leetcode-problems"><span>7.3) Classic LeetCode Problems</span></a></h4>
 <table>
@@ -1360,7 +1324,7 @@ Final:
 </tbody>
 </table>
 <p><strong>Decision Tree:</strong></p>
-<pre><code class="hljs">Need shortest paths?
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Need shortest paths?
 ├─ Single source
 │  ├─ Negative weights? → Bellman-Ford
 │  └─ Non-negative? → Dijkstra (faster)
@@ -1368,11 +1332,11 @@ Final:
 └─ All pairs
    ├─ Dense graph or small V? → Floyd-Warshall
    └─ Sparse graph or large V? → Run Dijkstra V times
-</code></pre>
+</code></pre></div>
 <hr>
 <h4 id="7-5-interview-tips" tabindex="-1"><a class="header-anchor" href="#7-5-interview-tips"><span>7.5) Interview Tips</span></a></h4>
 <p><strong>1. Algorithm Selection:</strong></p>
-<pre><code class="hljs">Q: &quot;Find shortest path from A to B&quot;
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Q: &quot;Find shortest path from A to B&quot;
 → Clarify: Negative weights? → Bellman-Ford : Dijkstra
 
 Q: &quot;Find shortest paths between all pairs&quot;
@@ -1380,7 +1344,7 @@ Q: &quot;Find shortest paths between all pairs&quot;
 
 Q: &quot;Detect if negative cycle exists&quot;
 → Use: Bellman-Ford (only algorithm that detects this)
-</code></pre>
+</code></pre></div>
 <p><strong>2. Common Mistakes:</strong></p>
 <ul>
 <li><strong>Bellman-Ford</strong>: Forgetting to check <code>dist[u] != INF</code> before relaxation</li>
@@ -1389,7 +1353,7 @@ Q: &quot;Detect if negative cycle exists&quot;
 <li><strong>Negative cycles</strong>: Not checking after main algorithm</li>
 </ul>
 <p><strong>3. Optimization Tips:</strong></p>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Bellman-Ford: Early termination</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Bellman-Ford: Early termination</span>
 <span class="hljs-keyword">for</span> iteration <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n - <span class="hljs-number">1</span>):
     updated = <span class="hljs-literal">False</span>
     <span class="hljs-keyword">for</span> edge <span class="hljs-keyword">in</span> edges:
@@ -1401,7 +1365,7 @@ Q: &quot;Detect if negative cycle exists&quot;
 <span class="hljs-comment"># Floyd-Warshall: Only update if improves</span>
 <span class="hljs-keyword">if</span> dist[i][k] + dist[k][j] &lt; dist[i][j]:
     dist[i][j] = dist[i][k] + dist[k][j]
-</code></pre>
+</code></pre></div>
 <p><strong>4. Edge Cases:</strong></p>
 <ul>
 <li>Graph with no edges (all distances = INF except self)</li>
@@ -1461,7 +1425,7 @@ Uses DFS with two key arrays:</p>
 </li>
 </ol>
 <h5 id="python-implementation-2" tabindex="-1"><a class="header-anchor" href="#python-implementation-2"><span>Python Implementation</span></a></h5>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Tarjan&#x27;s Algorithm for SCC</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Tarjan&#x27;s Algorithm for SCC</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">tarjan_scc</span>(<span class="hljs-params">n, graph</span>):
     <span class="hljs-string">&quot;&quot;&quot;
     Find all strongly connected components using Tarjan&#x27;s algorithm.
@@ -1526,9 +1490,9 @@ Uses DFS with two key arrays:</p>
 <span class="hljs-comment">#                     ↑   ↓</span>
 <span class="hljs-comment">#                     └───┘</span>
 <span class="hljs-comment"># SCCs: [[0, 2, 1], [3, 5, 4]]</span>
-</code></pre>
+</code></pre></div>
 <h5 id="java-implementation-2" tabindex="-1"><a class="header-anchor" href="#java-implementation-2"><span>Java Implementation</span></a></h5>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Tarjan&#x27;s SCC Algorithm</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Tarjan&#x27;s SCC Algorithm</span>
 <span class="hljs-comment">/**
  * LC 1192 - Critical Connections in a Network (related)
  *
@@ -1594,7 +1558,7 @@ Uses DFS with two key arrays:</p>
         }
     }
 }
-</code></pre>
+</code></pre></div>
 <hr>
 <h4 id="8-2-finding-bridges-critical-connections" tabindex="-1"><a class="header-anchor" href="#8-2-finding-bridges-critical-connections"><span>8.2) Finding Bridges (Critical Connections)</span></a></h4>
 <p><strong>Definition</strong>: A bridge is an edge whose removal increases the number of connected components (disconnects the graph).</p>
@@ -1613,7 +1577,7 @@ Uses DFS with two key arrays:</p>
 </li>
 </ol>
 <h5 id="python-implementation-3" tabindex="-1"><a class="header-anchor" href="#python-implementation-3"><span>Python Implementation</span></a></h5>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Tarjan&#x27;s Algorithm for Bridges</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Tarjan&#x27;s Algorithm for Bridges</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">find_bridges</span>(<span class="hljs-params">n, edges</span>):
     <span class="hljs-string">&quot;&quot;&quot;
     Find all bridges (critical connections) in an undirected graph.
@@ -1676,9 +1640,9 @@ Uses DFS with two key arrays:</p>
 <span class="hljs-comment">#       2</span>
 <span class="hljs-comment">#</span>
 <span class="hljs-comment"># Bridge: [1, 3] (removing this disconnects 3 from rest)</span>
-</code></pre>
+</code></pre></div>
 <h5 id="java-implementation-3" tabindex="-1"><a class="header-anchor" href="#java-implementation-3"><span>Java Implementation</span></a></h5>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 1192 - Critical Connections in a Network</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 1192 - Critical Connections in a Network</span>
 <span class="hljs-comment">/**
  * time = O(V + E)
  * space = O(V + E)
@@ -1735,7 +1699,7 @@ Uses DFS with two key arrays:</p>
         }
     }
 }
-</code></pre>
+</code></pre></div>
 <hr>
 <h4 id="8-3-finding-articulation-points-cut-vertices" tabindex="-1"><a class="header-anchor" href="#8-3-finding-articulation-points-cut-vertices"><span>8.3) Finding Articulation Points (Cut Vertices)</span></a></h4>
 <p><strong>Definition</strong>: An articulation point is a vertex whose removal increases the number of connected components.</p>
@@ -1759,7 +1723,7 @@ Uses DFS with two key arrays:</p>
 </li>
 </ol>
 <h5 id="python-implementation-4" tabindex="-1"><a class="header-anchor" href="#python-implementation-4"><span>Python Implementation</span></a></h5>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Tarjan&#x27;s Algorithm for Articulation Points</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Tarjan&#x27;s Algorithm for Articulation Points</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">find_articulation_points</span>(<span class="hljs-params">n, edges</span>):
     <span class="hljs-string">&quot;&quot;&quot;
     Find all articulation points (cut vertices).
@@ -1830,9 +1794,9 @@ Uses DFS with two key arrays:</p>
 <span class="hljs-comment"># Articulation points: [1, 3]</span>
 <span class="hljs-comment"># (Removing 1 disconnects {0,2} from {3,4})</span>
 <span class="hljs-comment"># (Removing 3 disconnects 4 from rest)</span>
-</code></pre>
+</code></pre></div>
 <h5 id="java-implementation-4" tabindex="-1"><a class="header-anchor" href="#java-implementation-4"><span>Java Implementation</span></a></h5>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Articulation Points Algorithm</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Articulation Points Algorithm</span>
 <span class="hljs-comment">/**
  * time = O(V + E)
  * space = O(V + E)
@@ -1899,10 +1863,10 @@ Uses DFS with two key arrays:</p>
         }
     }
 }
-</code></pre>
+</code></pre></div>
 <hr>
 <h4 id="8-4-visual-example-tarjan-s-algorithm-walkthrough" tabindex="-1"><a class="header-anchor" href="#8-4-visual-example-tarjan-s-algorithm-walkthrough"><span>8.4) Visual Example: Tarjan’s Algorithm Walkthrough</span></a></h4>
-<pre><code class="hljs">Graph (Directed):
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Graph (Directed):
     0 → 1 → 2
     ↑       ↓
     └───────┘     3 ⇄ 4
@@ -1954,7 +1918,7 @@ Step 10: At 3, low[3] == disc[3] → SCC found!
   SCC #2: {3, 4, 5}
 
 Final SCCs: [{0,1,2}, {3,4,5}]
-</code></pre>
+</code></pre></div>
 <hr>
 <h4 id="8-5-classic-leetcode-problems" tabindex="-1"><a class="header-anchor" href="#8-5-classic-leetcode-problems"><span>8.5) Classic LeetCode Problems</span></a></h4>
 <table>
@@ -2051,20 +2015,20 @@ Final SCCs: [{0,1,2}, {3,4,5}]
 <hr>
 <h4 id="8-7-interview-tips" tabindex="-1"><a class="header-anchor" href="#8-7-interview-tips"><span>8.7) Interview Tips</span></a></h4>
 <p><strong>1. Recognition Patterns:</strong></p>
-<pre><code class="hljs">&quot;critical connections&quot; → Bridges (Tarjan)
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">&quot;critical connections&quot; → Bridges (Tarjan)
 &quot;strongly connected&quot; → SCC (Tarjan or Kosaraju)
 &quot;cut vertices&quot; → Articulation points (Tarjan)
 &quot;remove vertex/edge disconnects graph&quot; → Articulation/Bridge
-</code></pre>
+</code></pre></div>
 <p><strong>2. Key Differences:</strong></p>
-<pre><code class="hljs">SCC: Directed graph, maximal mutually reachable sets
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">SCC: Directed graph, maximal mutually reachable sets
 Bridges: Undirected graph, critical edges
 Articulation Points: Undirected graph, critical vertices
 
 low[v] == disc[v] → Root of SCC (directed)
 low[v] &gt; disc[u] → (u,v) is bridge (undirected)
 low[v] &gt;= disc[u] → u is articulation point (undirected)
-</code></pre>
+</code></pre></div>
 <p><strong>3. Common Mistakes:</strong></p>
 <ul>
 <li>Forgetting to skip parent edge in undirected graphs</li>
@@ -2073,7 +2037,7 @@ low[v] &gt;= disc[u] → u is articulation point (undirected)
 <li>Confusing <code>disc[u]</code> vs <code>low[u]</code> in back edge updates</li>
 </ul>
 <p><strong>4. Template to Memorize:</strong></p>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">tarjan_template</span>(<span class="hljs-params">v, parent=-<span class="hljs-number">1</span></span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">tarjan_template</span>(<span class="hljs-params">v, parent=-<span class="hljs-number">1</span></span>):
     disc[v] = low[v] = timer
     timer += <span class="hljs-number">1</span>
 
@@ -2089,7 +2053,7 @@ low[v] &gt;= disc[u] → u is articulation point (undirected)
         <span class="hljs-keyword">else</span>:
             <span class="hljs-comment"># Back edge</span>
             low[v] = <span class="hljs-built_in">min</span>(low[v], disc[u])  <span class="hljs-comment"># Or check on_stack for SCC</span>
-</code></pre>
+</code></pre></div>
 <p><strong>5. Talking Points:</strong></p>
 <ul>
 <li>“Tarjan’s uses single DFS with discovery times”</li>
@@ -2343,7 +2307,7 @@ low[v] &gt;= disc[u] → u is articulation point (undirected)
 <ul>
 <li>LC 200</li>
 </ul>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-keyword">void</span> <span class="hljs-title function_">dfs</span><span class="hljs-params">(<span class="hljs-type">char</span>[][] grid, <span class="hljs-type">int</span> r, <span class="hljs-type">int</span> c)</span>{
     <span class="hljs-type">int</span> <span class="hljs-variable">nr</span> <span class="hljs-operator">=</span> grid.length;
     <span class="hljs-type">int</span> <span class="hljs-variable">nc</span> <span class="hljs-operator">=</span> grid[<span class="hljs-number">0</span>].length;
@@ -2382,12 +2346,12 @@ low[v] &gt;= disc[u] → u is articulation point (undirected)
     <span class="hljs-keyword">return</span> num_islands;
 }
 
-</code></pre>
+</code></pre></div>
 <h4 id="1-1-2-max-area-of-island" tabindex="-1"><a class="header-anchor" href="#1-1-2-max-area-of-island"><span>1-1-2) Max Area of Island</span></a></h4>
 <ul>
 <li>LC 695</li>
 </ul>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-type">int</span>[][] grid;
 <span class="hljs-type">boolean</span>[][] seen;
 
@@ -2413,10 +2377,10 @@ low[v] &gt;= disc[u] → u is articulation point (undirected)
     }
     <span class="hljs-keyword">return</span> ans;
 }
-</code></pre>
+</code></pre></div>
 <h2 id="2-lc-example" tabindex="-1"><a class="header-anchor" href="#2-lc-example"><span>2) LC Example</span></a></h2>
 <h3 id="2-1-closest-leaf-in-a-binary-tree" tabindex="-1"><a class="header-anchor" href="#2-1-closest-leaf-in-a-binary-tree"><span>2-1) Closest Leaf in a Binary Tree</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># 742 Closest Leaf in a Binary Tree</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># 742 Closest Leaf in a Binary Tree</span>
 <span class="hljs-keyword">import</span> collections
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
     <span class="hljs-comment"># search via DFS</span>
@@ -2458,9 +2422,9 @@ low[v] &gt;= disc[u] → u is articulation point (undirected)
         <span class="hljs-variable language_">self</span>.buildGraph(node.left, node, k)
         <span class="hljs-variable language_">self</span>.buildGraph(node.right, node, k)
 
-</code></pre>
+</code></pre></div>
 <h3 id="2-2-number-of-connected-components-in-an-undirected-graph" tabindex="-1"><a class="header-anchor" href="#2-2-number-of-connected-components-in-an-undirected-graph"><span>2-2) Number of Connected Components in an Undirected Graph</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 323 Number of Connected Components in an Undirected Graph</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 323 Number of Connected Components in an Undirected Graph</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># IDEA : DFS</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
@@ -2483,9 +2447,9 @@ low[v] &gt;= disc[u] → u is articulation point (undirected)
                 helper(i)
                 count+=<span class="hljs-number">1</span>
         <span class="hljs-keyword">return</span> count
-</code></pre>
+</code></pre></div>
 <h3 id="2-3-clone-graph" tabindex="-1"><a class="header-anchor" href="#2-3-clone-graph"><span>2-3) Clone Graph</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 133. Clone Graph</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 133. Clone Graph</span>
 
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># IDEA : BFS</span>
@@ -2555,9 +2519,9 @@ low[v] &gt;= disc[u] → u is articulation point (undirected)
             <span class="hljs-keyword">if</span> n_copy:
                 node_copy.neighbors.append(n_copy)
         <span class="hljs-keyword">return</span> node_copy
-</code></pre>
+</code></pre></div>
 <h3 id="2-4-bus-routes" tabindex="-1"><a class="header-anchor" href="#2-4-bus-routes"><span>2-4) Bus Routes</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 815. Bus Routes</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 815. Bus Routes</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># IDEA : BFS + GRAPH</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
@@ -2581,9 +2545,9 @@ low[v] &gt;= disc[u] → u is articulation point (undirected)
                         seen.add(j)
                 routes[i] = []  <span class="hljs-comment"># seen route</span>
         <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>
-</code></pre>
+</code></pre></div>
 <h3 id="2-5-course-schedule" tabindex="-1"><a class="header-anchor" href="#2-5-course-schedule"><span>2-5) Course Schedule</span></a></h3>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// V0</span>
 <span class="hljs-comment">// IDEA : DFS (fix by gpt) (NOTE : there is also TOPOLOGICAL SORT solution)</span>
 <span class="hljs-comment">// NOTE !!! instead of maintain status (0,1,2), below video offers a simpler approach</span>
@@ -2679,10 +2643,10 @@ low[v] &gt;= disc[u] → u is articulation point (undirected)
     preMap.get(crs).clear(); <span class="hljs-comment">// Clear prerequisites as the course is confirmed to be processed</span>
     <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
 }
-</code></pre>
+</code></pre></div>
 <h2 id="decision-framework" tabindex="-1"><a class="header-anchor" href="#decision-framework"><span>Decision Framework</span></a></h2>
 <h3 id="pattern-selection-strategy" tabindex="-1"><a class="header-anchor" href="#pattern-selection-strategy"><span>Pattern Selection Strategy</span></a></h3>
-<pre><code class="hljs">Graph Algorithm Selection Flowchart:
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Graph Algorithm Selection Flowchart:
 
 1. What is the problem asking for?
    ├── Find shortest path → Continue to 2
@@ -2712,7 +2676,7 @@ low[v] &gt;= disc[u] → u is articulation point (undirected)
    ├── DAG → Topological sort possible
    ├── Bipartite → Two-coloring
    └── Grid → Treat as implicit graph
-</code></pre>
+</code></pre></div>
 <h3 id="algorithm-selection-guide" tabindex="-1"><a class="header-anchor" href="#algorithm-selection-guide"><span>Algorithm Selection Guide</span></a></h3>
 <table>
 <thead>
@@ -2820,7 +2784,7 @@ low[v] &gt;= disc[u] → u is articulation point (undirected)
 </table>
 <h3 id="graph-building-patterns" tabindex="-1"><a class="header-anchor" href="#graph-building-patterns"><span>Graph Building Patterns</span></a></h3>
 <h4 id="adjacency-list" tabindex="-1"><a class="header-anchor" href="#adjacency-list"><span><strong>Adjacency List</strong></span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># For edges list</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># For edges list</span>
 graph = defaultdict(<span class="hljs-built_in">list</span>)
 <span class="hljs-keyword">for</span> u, v <span class="hljs-keyword">in</span> edges:
     graph[u].append(v)
@@ -2830,9 +2794,9 @@ graph = defaultdict(<span class="hljs-built_in">list</span>)
 graph = defaultdict(<span class="hljs-built_in">list</span>)
 <span class="hljs-keyword">for</span> u, v, w <span class="hljs-keyword">in</span> edges:
     graph[u].append((v, w))
-</code></pre>
+</code></pre></div>
 <h4 id="adjacency-matrix" tabindex="-1"><a class="header-anchor" href="#adjacency-matrix"><span><strong>Adjacency Matrix</strong></span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># For unweighted</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># For unweighted</span>
 graph = [[<span class="hljs-number">0</span>] * n <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n)]
 <span class="hljs-keyword">for</span> u, v <span class="hljs-keyword">in</span> edges:
     graph[u][v] = <span class="hljs-number">1</span>
@@ -2842,10 +2806,10 @@ graph = [[<span class="hljs-number">0</span>] * n <span class="hljs-keyword">for
 graph = [[<span class="hljs-built_in">float</span>(<span class="hljs-string">&#x27;inf&#x27;</span>)] * n <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n)]
 <span class="hljs-keyword">for</span> u, v, w <span class="hljs-keyword">in</span> edges:
     graph[u][v] = w
-</code></pre>
+</code></pre></div>
 <h3 id="common-patterns-tricks" tabindex="-1"><a class="header-anchor" href="#common-patterns-tricks"><span>Common Patterns &amp; Tricks</span></a></h3>
 <h4 id="visited-tracking" tabindex="-1"><a class="header-anchor" href="#visited-tracking"><span><strong>Visited Tracking</strong></span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Set for simple visited</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Set for simple visited</span>
 visited = <span class="hljs-built_in">set</span>()
 
 <span class="hljs-comment"># Array for state tracking</span>
@@ -2854,9 +2818,9 @@ state = [<span class="hljs-number">0</span>] * n
 
 <span class="hljs-comment"># Dictionary for path reconstruction</span>
 parent = {}
-</code></pre>
+</code></pre></div>
 <h4 id="grid-as-graph" tabindex="-1"><a class="header-anchor" href="#grid-as-graph"><span><strong>Grid as Graph</strong></span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># 4-directional movement</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># 4-directional movement</span>
 directions = [(<span class="hljs-number">0</span>, <span class="hljs-number">1</span>), (<span class="hljs-number">1</span>, <span class="hljs-number">0</span>), (<span class="hljs-number">0</span>, -<span class="hljs-number">1</span>), (-<span class="hljs-number">1</span>, <span class="hljs-number">0</span>)]
 
 <span class="hljs-comment"># 8-directional movement</span>
@@ -2866,9 +2830,9 @@ directions = [(<span class="hljs-number">0</span>, <span class="hljs-number">1</
 <span class="hljs-comment"># Check bounds</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">is_valid</span>(<span class="hljs-params">r, c, rows, cols</span>):
     <span class="hljs-keyword">return</span> <span class="hljs-number">0</span> &lt;= r &lt; rows <span class="hljs-keyword">and</span> <span class="hljs-number">0</span> &lt;= c &lt; cols
-</code></pre>
+</code></pre></div>
 <h4 id="cycle-detection-patterns" tabindex="-1"><a class="header-anchor" href="#cycle-detection-patterns"><span><strong>Cycle Detection Patterns</strong></span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Directed graph - DFS with states</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Directed graph - DFS with states</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">has_cycle_directed</span>(<span class="hljs-params">graph</span>):
     <span class="hljs-comment"># 0: unvisited, 1: visiting, 2: visited</span>
     state = [<span class="hljs-number">0</span>] * n
@@ -2893,7 +2857,7 @@ directions = [(<span class="hljs-number">0</span>, <span class="hljs-number">1</
         <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> uf.union(u, v):
             <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>  <span class="hljs-comment"># Already connected</span>
     <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
-</code></pre>
+</code></pre></div>
 <h3 id="problem-solving-steps" tabindex="-1"><a class="header-anchor" href="#problem-solving-steps"><span>Problem-Solving Steps</span></a></h3>
 <ol>
 <li><strong>Identify graph type</strong>: Directed/undirected, weighted/unweighted</li>
@@ -2938,7 +2902,7 @@ directions = [(<span class="hljs-number">0</span>, <span class="hljs-number">1</
 <li><strong>Recursion/Backtracking</strong>: DFS implementation</li>
 </ul>
 <h3 id="2-6-find-eventual-safe-states" tabindex="-1"><a class="header-anchor" href="#2-6-find-eventual-safe-states"><span>2-6) Find Eventual Safe States</span></a></h3>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 802</span>
 
 <span class="hljs-comment">// V1-0</span>
@@ -3012,7 +2976,7 @@ directions = [(<span class="hljs-number">0</span>, <span class="hljs-number">1</
      */</span>
     <span class="hljs-keyword">return</span> states[node] = State.SAFE;
 }
-</code></pre>
+</code></pre></div>
 
       </div>
       <div class="cheatsheet-footer">

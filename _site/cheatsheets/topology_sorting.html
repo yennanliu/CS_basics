@@ -19,54 +19,18 @@
     }
   })();
   </script>
-  <script>document.addEventListener('DOMContentLoaded', function() {
-    document.querySelectorAll('pre code').forEach(function(codeEl) {
-      var pre = codeEl.parentElement;
-      var lang = '';
-      var cls = codeEl.className || '';
-      var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
-      if (m) lang = m[1];
-
-      // Add line numbers
-      var lines = codeEl.innerHTML.split('
-');
-      if (lines[lines.length - 1] === '') lines.pop();
-      var numbered = lines.map(function(line, i) {
-        return '<span class="hljs-ln-line"><span class="hljs-ln-n" data-line-number="' + (i + 1) + '"></span><span class="hljs-ln-code">' + line + '</span></span>';
-      }).join('
-');
-      codeEl.innerHTML = numbered;
-      codeEl.classList.add('hljs-ln');
-
-      var wrapper = document.createElement('div');
-      wrapper.className = 'code-block-wrapper';
-      pre.parentNode.insertBefore(wrapper, pre);
-      var header = document.createElement('div');
-      header.className = 'code-block-header';
-      if (lang) {
-        var label = document.createElement('span');
-        label.className = 'code-lang-label';
-        label.textContent = lang;
-        header.appendChild(label);
-      } else {
-        header.appendChild(document.createElement('span'));
-      }
-      var btn = document.createElement('button');
-      btn.className = 'copy-btn';
-      btn.textContent = 'Copy';
-      btn.addEventListener('click', function() {
-        var text = Array.from(codeEl.querySelectorAll('.hljs-ln-code')).map(function(el) { return el.textContent; }).join('
-');
-        navigator.clipboard.writeText(text).then(function() {
-          btn.textContent = 'Copied!';
-          btn.classList.add('copied');
-          setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
-        });
-      });
-      header.appendChild(btn);
-      wrapper.appendChild(header);
-      wrapper.appendChild(pre);
+  <script>
+  function copyCode(btn) {
+    var pre = btn.closest('.code-block-wrapper').querySelector('pre');
+    var text = pre ? pre.innerText : '';
+    navigator.clipboard.writeText(text).then(function() {
+      btn.textContent = 'Copied!';
+      btn.classList.add('copied');
+      setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
     });
+  }
+  </script>
+  <script>document.addEventListener('DOMContentLoaded', function() {
     document.querySelectorAll('table').forEach(function(table) {
       if (!table.parentElement.classList.contains('table-wrap')) {
         var wrapper = document.createElement('div');
@@ -250,7 +214,7 @@
 </ul>
 <h2 id="core-templates" tabindex="-1"><a class="header-anchor" href="#core-templates"><span>Core Templates</span></a></h2>
 <h3 id="template-1-bfs-kahn-s-algorithm" tabindex="-1"><a class="header-anchor" href="#template-1-bfs-kahn-s-algorithm"><span>Template 1: BFS (Kahn’s Algorithm)</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">topologicalSort_BFS</span>(<span class="hljs-params">numNodes, edges</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">topologicalSort_BFS</span>(<span class="hljs-params">numNodes, edges</span>):
     <span class="hljs-string">&quot;&quot;&quot;
     BFS-based topological sort using in-degree tracking.
     Time: O(V + E), Space: O(V)
@@ -317,9 +281,9 @@ public <span class="hljs-type">List</span>&lt;Integer&gt; topologicalSort_BFS(<s
     
     <span class="hljs-keyword">return</span> result.size() == numNodes ? result : new ArrayList&lt;&gt;();
 }
-</code></pre>
+</code></pre></div>
 <h3 id="template-2-dfs-three-color" tabindex="-1"><a class="header-anchor" href="#template-2-dfs-three-color"><span>Template 2: DFS (Three-Color)</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">topologicalSort_DFS</span>(<span class="hljs-params">numNodes, edges</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">topologicalSort_DFS</span>(<span class="hljs-params">numNodes, edges</span>):
     <span class="hljs-string">&quot;&quot;&quot;
     DFS-based topological sort with three-color marking.
     Time: O(V + E), Space: O(V)
@@ -395,9 +359,9 @@ private void dfs(<span class="hljs-built_in">int</span> node, Map&lt;Integer, <s
     color[node] = <span class="hljs-number">2</span>;
     result.add(node);
 }
-</code></pre>
+</code></pre></div>
 <h3 id="template-3-dfs-stack-based" tabindex="-1"><a class="header-anchor" href="#template-3-dfs-stack-based"><span>Template 3: DFS (Stack-based)</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># V0</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># IDEA : implement topologicalSortUtil, topologicalSort, and addEdge methods</span>
 <span class="hljs-comment"># step 1) maintain a stack, save &quot;ordering&quot; nodes in it (and return in final step)</span>
 <span class="hljs-comment"># step 2) init visited as [False]*self.V  (all nodes are NOT visited yet)</span>
@@ -451,9 +415,9 @@ g.addEdge(<span class="hljs-number">3</span>, <span class="hljs-number">1</span>
 <span class="hljs-comment"># ans should be TableB, TableD, TableC, TableA.</span>
 r = g.topologicalSort()
 <span class="hljs-built_in">print</span> (r)
-</code></pre>
+</code></pre></div>
 <h3 id="template-4-lexicographical-order" tabindex="-1"><a class="header-anchor" href="#template-4-lexicographical-order"><span>Template 4: Lexicographical Order</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">topologicalSort_Lexicographical</span>(<span class="hljs-params">numNodes, edges</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">topologicalSort_Lexicographical</span>(<span class="hljs-params">numNodes, edges</span>):
     <span class="hljs-string">&quot;&quot;&quot;
     Find smallest lexicographical topological order.
     Time: O((V + E) log V), Space: O(V)
@@ -518,9 +482,9 @@ public <span class="hljs-type">List</span>&lt;Integer&gt; topologicalSort_Lexico
     
     <span class="hljs-keyword">return</span> result.size() == numNodes ? result : new ArrayList&lt;&gt;();
 }
-</code></pre>
+</code></pre></div>
 <h3 id="template-5-all-topological-orders" tabindex="-1"><a class="header-anchor" href="#template-5-all-topological-orders"><span>Template 5: All Topological Orders</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">allTopologicalSorts</span>(<span class="hljs-params">graph, in_degree, path, result, visited</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">allTopologicalSorts</span>(<span class="hljs-params">graph, in_degree, path, result, visited</span>):
     <span class="hljs-string">&quot;&quot;&quot;
     Find all possible topological orderings.
     Time: O(V! × (V + E)), Space: O(V)
@@ -563,9 +527,9 @@ public <span class="hljs-type">List</span>&lt;Integer&gt; topologicalSort_Lexico
     visited = [<span class="hljs-literal">False</span>] * numNodes
     allTopologicalSorts(graph, in_degree, [], result, visited)
     <span class="hljs-keyword">return</span> result
-</code></pre>
+</code></pre></div>
 <h3 id="template-6-parallel-task-scheduling" tabindex="-1"><a class="header-anchor" href="#template-6-parallel-task-scheduling"><span>Template 6: Parallel Task Scheduling</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">parallelTaskScheduling</span>(<span class="hljs-params">numTasks, edges, times</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">parallelTaskScheduling</span>(<span class="hljs-params">numTasks, edges, times</span>):
     <span class="hljs-string">&quot;&quot;&quot;
     Find minimum time to complete all tasks with parallel execution.
     Time: O(V + E), Space: O(V)
@@ -649,9 +613,9 @@ public <span class="hljs-built_in">int</span> parallelTaskScheduling(<span class
     }
     <span class="hljs-keyword">return</span> maxTime;
 }
-</code></pre>
+</code></pre></div>
 <h3 id="template-7-tree-centroid-finding-leaf-trimming-for-undirected-trees" tabindex="-1"><a class="header-anchor" href="#template-7-tree-centroid-finding-leaf-trimming-for-undirected-trees"><span>Template 7: Tree Centroid Finding (Leaf Trimming for Undirected Trees)</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">findMinHeightTrees</span>(<span class="hljs-params">n, edges</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">findMinHeightTrees</span>(<span class="hljs-params">n, edges</span>):
     <span class="hljs-string">&quot;&quot;&quot;
     Find tree centroids using leaf trimming (similar to Kahn&#x27;s Algorithm for undirected trees).
     Time: O(V + E), Space: O(V)
@@ -754,9 +718,9 @@ public <span class="hljs-type">List</span>&lt;Integer&gt; findMinHeightTrees(<sp
     // The remaining nodes (<span class="hljs-number">1</span> <span class="hljs-keyword">or</span> <span class="hljs-number">2</span>) are the centroids
     <span class="hljs-keyword">return</span> new ArrayList&lt;&gt;(leaves);
 }
-</code></pre>
+</code></pre></div>
 <h3 id="template-8-union-find-connected-components" tabindex="-1"><a class="header-anchor" href="#template-8-union-find-connected-components"><span>Template 8: Union Find (Connected Components)</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">UnionFind</span>:
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">UnionFind</span>:
     <span class="hljs-string">&quot;&quot;&quot;
     Union Find with path compression and union by rank.
     Time: O(α(N)) per operation (nearly O(1)), Space: O(N)
@@ -844,7 +808,7 @@ public <span class="hljs-built_in">int</span> findCircleNum(<span class="hljs-bu
     }
     <span class="hljs-keyword">return</span> uf.count;
 }
-</code></pre>
+</code></pre></div>
 <h2 id="problem-classification" tabindex="-1"><a class="header-anchor" href="#problem-classification"><span>Problem Classification</span></a></h2>
 <table>
 <thead>
@@ -1199,7 +1163,7 @@ public <span class="hljs-built_in">int</span> findCircleNum(<span class="hljs-bu
 </tbody>
 </table>
 <h2 id="decision-framework" tabindex="-1"><a class="header-anchor" href="#decision-framework"><span>Decision Framework</span></a></h2>
-<pre><code class="hljs">START: Topological Sort Problem
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">START: Topological Sort Problem
 │
 ├── Working with undirected tree?
 │   │
@@ -1242,10 +1206,10 @@ public <span class="hljs-built_in">int</span> findCircleNum(<span class="hljs-bu
 │   └── NO → Continue
 │
 └── DEFAULT → Use Template 1 (BFS Kahn's Algorithm)
-</code></pre>
+</code></pre></div>
 <h2 id="2-lc-example" tabindex="-1"><a class="header-anchor" href="#2-lc-example"><span>2) LC Example</span></a></h2>
 <h3 id="2-2-course-schedule-ii" tabindex="-1"><a class="header-anchor" href="#2-2-course-schedule-ii"><span>2-2) Course Schedule II</span></a></h3>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 210</span>
 <span class="hljs-comment">// ref: leetcode_java/src/main/java/LeetCodeJava/BFS/CourseSchedule2.java</span>
 <span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">CourseSchedule2</span> {
@@ -1372,8 +1336,8 @@ public <span class="hljs-built_in">int</span> findCircleNum(<span class="hljs-bu
         <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
     }
 }
-</code></pre>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 210 Course Schedule II</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 210 Course Schedule II</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># IDEA : DFS + topological sort</span>
 <span class="hljs-comment"># SAME dfs logic as LC 207 (Course Schedule)</span>
@@ -1495,13 +1459,13 @@ public <span class="hljs-built_in">int</span> findCircleNum(<span class="hljs-bu
         visited[i] = <span class="hljs-number">2</span>
         path.append(i)
         <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
-</code></pre>
+</code></pre></div>
 <h3 id="2-2-course-schedule" tabindex="-1"><a class="header-anchor" href="#2-2-course-schedule"><span>2-2) Course Schedule</span></a></h3>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 207</span>
 <span class="hljs-comment">// same as LC 210</span>
-</code></pre>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 207 Course Schedule</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 207 Course Schedule</span>
 <span class="hljs-comment"># NOTE : there are also bracktrack, dfs approachs for this problem</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># IDEA : LC Course Schedule II </span>
@@ -1720,9 +1684,9 @@ public <span class="hljs-built_in">int</span> findCircleNum(<span class="hljs-bu
                     q.append(child)
         
         <span class="hljs-keyword">return</span> <span class="hljs-built_in">len</span>(stack) == numCourses
-</code></pre>
+</code></pre></div>
 <h3 id="2-3-number-of-provinces-lc-547" tabindex="-1"><a class="header-anchor" href="#2-3-number-of-provinces-lc-547"><span>2-3) Number of Provinces (LC 547)</span></a></h3>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 547</span>
 <span class="hljs-comment">// ref: leetcode_java/src/main/java/LeetCodeJava/DFS/NumberOfProvinces.java</span>
 
@@ -1841,8 +1805,8 @@ public <span class="hljs-built_in">int</span> findCircleNum(<span class="hljs-bu
         <span class="hljs-keyword">return</span> provinces;
     }
 }
-</code></pre>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
 <span class="hljs-comment"># LC 547 Number of Provinces</span>
 <span class="hljs-comment"># V0 - Union Find</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">UnionFind</span>:
@@ -1889,9 +1853,9 @@ public <span class="hljs-built_in">int</span> findCircleNum(<span class="hljs-bu
                 dfs(i)
                 provinces += <span class="hljs-number">1</span>
         <span class="hljs-keyword">return</span> provinces
-</code></pre>
+</code></pre></div>
 <h3 id="2-5-alien-dictionary" tabindex="-1"><a class="header-anchor" href="#2-5-alien-dictionary"><span>2-5) Alien Dictionary</span></a></h3>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 269</span>
 
  <span class="hljs-comment">// V0</span>
@@ -2038,8 +2002,8 @@ public <span class="hljs-built_in">int</span> findCircleNum(<span class="hljs-bu
         <span class="hljs-keyword">return</span> res.toString();
     }
 
-</code></pre>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
 <span class="hljs-comment"># 269 alien-dictionary</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">alienOrder</span>(<span class="hljs-params">self, words</span>):
@@ -2093,9 +2057,9 @@ public <span class="hljs-built_in">int</span> findCircleNum(<span class="hljs-bu
                 in_degree[word2[i]].add(word1[i])
                 out_degree[word1[i]].add(word2[i])
                 <span class="hljs-keyword">break</span>　　
-</code></pre>
+</code></pre></div>
 <h3 id="2-6-sequence-reconstruction" tabindex="-1"><a class="header-anchor" href="#2-6-sequence-reconstruction"><span>2-6) Sequence Reconstruction</span></a></h3>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 444</span>
     <span class="hljs-comment">// V1</span>
     <span class="hljs-comment">// https://www.youtube.com/watch?v=FHY1q1h9gq0</span>
@@ -2159,9 +2123,9 @@ public <span class="hljs-built_in">int</span> findCircleNum(<span class="hljs-bu
             indegree.put(node, <span class="hljs-number">0</span>);
         }
     }
-</code></pre>
+</code></pre></div>
 <h3 id="2-7-parallel-courses" tabindex="-1"><a class="header-anchor" href="#2-7-parallel-courses"><span>2-7) Parallel Courses</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 1136</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 1136</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">minimumSemesters</span>(<span class="hljs-params">n, relations</span>):
     <span class="hljs-string">&quot;&quot;&quot;
     Find minimum number of semesters to take all courses.
@@ -2197,9 +2161,9 @@ public <span class="hljs-built_in">int</span> findCircleNum(<span class="hljs-bu
         queue.extend(next_queue)
     
     <span class="hljs-keyword">return</span> semesters <span class="hljs-keyword">if</span> studied == n <span class="hljs-keyword">else</span> -<span class="hljs-number">1</span>
-</code></pre>
+</code></pre></div>
 <h3 id="2-8-find-eventual-safe-states" tabindex="-1"><a class="header-anchor" href="#2-8-find-eventual-safe-states"><span>2-8) Find Eventual Safe States</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 802</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 802</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">eventualSafeNodes</span>(<span class="hljs-params">graph</span>):
     <span class="hljs-string">&quot;&quot;&quot;
     Find all safe nodes (nodes from which all paths lead to terminal).
@@ -2230,9 +2194,9 @@ public <span class="hljs-built_in">int</span> findCircleNum(<span class="hljs-bu
                 queue.append(prev)
     
     <span class="hljs-keyword">return</span> <span class="hljs-built_in">sorted</span>(safe)
-</code></pre>
+</code></pre></div>
 <h3 id="2-9-minimum-height-trees-lc-310" tabindex="-1"><a class="header-anchor" href="#2-9-minimum-height-trees-lc-310"><span>2-9) Minimum Height Trees (LC 310)</span></a></h3>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 310</span>
 <span class="hljs-comment">// IDEA: Tree Centroid Finding - Leaf Trimming (Topological Sort for Undirected Trees)</span>
 <span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">MinimumHeightTrees</span> {
@@ -2323,8 +2287,8 @@ public <span class="hljs-built_in">int</span> findCircleNum(<span class="hljs-bu
         <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;(leaves);
     }
 }
-</code></pre>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
 <span class="hljs-comment"># LC 310</span>
 <span class="hljs-comment"># V0 - Tree Centroid Finding (Leaf Trimming for Undirected Trees)</span>
 <span class="hljs-keyword">from</span> collections <span class="hljs-keyword">import</span> deque
@@ -2412,7 +2376,7 @@ public <span class="hljs-built_in">int</span> findCircleNum(<span class="hljs-bu
             leaves = new_leaves
 
         <span class="hljs-keyword">return</span> leaves
-</code></pre>
+</code></pre></div>
 <p><strong>Core Logic Explanation:</strong></p>
 <ol>
 <li>
@@ -2450,12 +2414,12 @@ public <span class="hljs-built_in">int</span> findCircleNum(<span class="hljs-bu
 <li>Stop when ≤ 2 nodes remain — these are the <strong>centroids</strong></li>
 <li>This is <strong>multi-source BFS from leaves inward</strong>, NOT BFS from a single root</li>
 </ul>
-<pre><code class="hljs">[0,1,2,3,4]  (linear tree: 0-1-2-3-4)
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">[0,1,2,3,4]  (linear tree: 0-1-2-3-4)
 
 → remove 0,4       (outer leaves)
 → remove 1,3       (new leaves after trimming)
 → left with [2] ✅  (centroid)
-</code></pre>
+</code></pre></div>
 <p><strong>Pattern Recognition — When to Use Leaf Trimming:</strong></p>
 <table>
 <thead>

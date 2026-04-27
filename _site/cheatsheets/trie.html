@@ -19,54 +19,18 @@
     }
   })();
   </script>
-  <script>document.addEventListener('DOMContentLoaded', function() {
-    document.querySelectorAll('pre code').forEach(function(codeEl) {
-      var pre = codeEl.parentElement;
-      var lang = '';
-      var cls = codeEl.className || '';
-      var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
-      if (m) lang = m[1];
-
-      // Add line numbers
-      var lines = codeEl.innerHTML.split('
-');
-      if (lines[lines.length - 1] === '') lines.pop();
-      var numbered = lines.map(function(line, i) {
-        return '<span class="hljs-ln-line"><span class="hljs-ln-n" data-line-number="' + (i + 1) + '"></span><span class="hljs-ln-code">' + line + '</span></span>';
-      }).join('
-');
-      codeEl.innerHTML = numbered;
-      codeEl.classList.add('hljs-ln');
-
-      var wrapper = document.createElement('div');
-      wrapper.className = 'code-block-wrapper';
-      pre.parentNode.insertBefore(wrapper, pre);
-      var header = document.createElement('div');
-      header.className = 'code-block-header';
-      if (lang) {
-        var label = document.createElement('span');
-        label.className = 'code-lang-label';
-        label.textContent = lang;
-        header.appendChild(label);
-      } else {
-        header.appendChild(document.createElement('span'));
-      }
-      var btn = document.createElement('button');
-      btn.className = 'copy-btn';
-      btn.textContent = 'Copy';
-      btn.addEventListener('click', function() {
-        var text = Array.from(codeEl.querySelectorAll('.hljs-ln-code')).map(function(el) { return el.textContent; }).join('
-');
-        navigator.clipboard.writeText(text).then(function() {
-          btn.textContent = 'Copied!';
-          btn.classList.add('copied');
-          setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
-        });
-      });
-      header.appendChild(btn);
-      wrapper.appendChild(header);
-      wrapper.appendChild(pre);
+  <script>
+  function copyCode(btn) {
+    var pre = btn.closest('.code-block-wrapper').querySelector('pre');
+    var text = pre ? pre.innerText : '';
+    navigator.clipboard.writeText(text).then(function() {
+      btn.textContent = 'Copied!';
+      btn.classList.add('copied');
+      setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
     });
+  }
+  </script>
+  <script>document.addEventListener('DOMContentLoaded', function() {
     document.querySelectorAll('table').forEach(function(table) {
       if (!table.parentElement.classList.contains('table-wrap')) {
         var wrapper = document.createElement('div');
@@ -163,7 +127,7 @@
 <p><img src="../doc/pic/trie_2.png" ></p>
 <h3 id="0-1-types" tabindex="-1"><a class="header-anchor" href="#0-1-types"><span>0-1) Types</span></a></h3>
 <h3 id="0-2-pattern" tabindex="-1"><a class="header-anchor" href="#0-2-pattern"><span>0-2) Pattern</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">TrieNode</span>:
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">TrieNode</span>:
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self</span>):
         <span class="hljs-variable language_">self</span>.children = {}  <span class="hljs-comment"># HashMap for flexible alphabet</span>
         <span class="hljs-variable language_">self</span>.is_end = <span class="hljs-literal">False</span>
@@ -253,9 +217,9 @@
         <span class="hljs-keyword">return</span> true;
     }
 }
-</code></pre>
+</code></pre></div>
 <h3 id="template-2-trie-with-array-fixed-alphabet" tabindex="-1"><a class="header-anchor" href="#template-2-trie-with-array-fixed-alphabet"><span>Template 2: Trie with Array (Fixed Alphabet)</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">TrieNode</span>:
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">TrieNode</span>:
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self</span>):
         <span class="hljs-variable language_">self</span>.children = [<span class="hljs-literal">None</span>] * <span class="hljs-number">26</span>  <span class="hljs-comment"># For lowercase letters only</span>
         <span class="hljs-variable language_">self</span>.is_end = <span class="hljs-literal">False</span>
@@ -299,9 +263,9 @@
         isEnd = false;
     }
 }
-</code></pre>
+</code></pre></div>
 <h3 id="template-3-trie-with-wildcard-support" tabindex="-1"><a class="header-anchor" href="#template-3-trie-with-wildcard-support"><span>Template 3: Trie with Wildcard Support</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">WildcardTrie</span>:
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">WildcardTrie</span>:
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self</span>):
         <span class="hljs-variable language_">self</span>.root = TrieNode()
     
@@ -358,9 +322,9 @@ private boolean dfsSearch(String word, <span class="hljs-built_in">int</span> in
         <span class="hljs-keyword">return</span> dfsSearch(word, index + <span class="hljs-number">1</span>, node.children.get(c));
     }
 }
-</code></pre>
+</code></pre></div>
 <h3 id="template-4-autocomplete-trie" tabindex="-1"><a class="header-anchor" href="#template-4-autocomplete-trie"><span>Template 4: Autocomplete Trie</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">AutocompleteTrie</span>:
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">AutocompleteTrie</span>:
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self</span>):
         <span class="hljs-variable language_">self</span>.root = TrieNode()
     
@@ -428,9 +392,9 @@ private boolean dfsSearch(String word, <span class="hljs-built_in">int</span> in
         <span class="hljs-keyword">return</span> result;
     }
 }
-</code></pre>
+</code></pre></div>
 <h3 id="template-5-binary-trie-xor-problems" tabindex="-1"><a class="header-anchor" href="#template-5-binary-trie-xor-problems"><span>Template 5: Binary Trie (XOR Problems)</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">BinaryTrie</span>:
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">BinaryTrie</span>:
     <span class="hljs-keyword">class</span> <span class="hljs-title class_">Node</span>:
         <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self</span>):
             <span class="hljs-variable language_">self</span>.children = [<span class="hljs-literal">None</span>, <span class="hljs-literal">None</span>]  <span class="hljs-comment"># 0 and 1</span>
@@ -515,9 +479,9 @@ private boolean dfsSearch(String word, <span class="hljs-built_in">int</span> in
         <span class="hljs-keyword">return</span> maxXor;
     }
 }
-</code></pre>
+</code></pre></div>
 <h3 id="template-6-trie-with-delete-operation" tabindex="-1"><a class="header-anchor" href="#template-6-trie-with-delete-operation"><span>Template 6: Trie with Delete Operation</span></a></h3>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 208 (Modified)</span>
     <span class="hljs-comment">// V0</span>
     <span class="hljs-comment">// IDEA : https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Tree/implement-trie-prefix-tree.py#L49</span>
@@ -601,8 +565,8 @@ private boolean dfsSearch(String word, <span class="hljs-built_in">int</span> in
             <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
         }
     }
-</code></pre>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
 
 <span class="hljs-comment">#--------------------------</span>
 <span class="hljs-comment"># V1</span>
@@ -656,12 +620,12 @@ private boolean dfsSearch(String word, <span class="hljs-built_in">int</span> in
             <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> cur:
                 <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
         <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
-</code></pre>
+</code></pre></div>
 <h2 id="1-general-form" tabindex="-1"><a class="header-anchor" href="#1-general-form"><span>1) General form</span></a></h2>
 <h3 id="1-1-basic-op" tabindex="-1"><a class="header-anchor" href="#1-1-basic-op"><span>1-1) Basic OP</span></a></h3>
 <h2 id="2-lc-example" tabindex="-1"><a class="header-anchor" href="#2-lc-example"><span>2) LC Example</span></a></h2>
 <h3 id="2-1-implement-trie-prefix-tree" tabindex="-1"><a class="header-anchor" href="#2-1-implement-trie-prefix-tree"><span>2-1) Implement Trie (Prefix Tree)</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># 208. Implement Trie (Prefix Tree)</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># 208. Implement Trie (Prefix Tree)</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># IDEA : trie concept :  dict + tree</span>
 <span class="hljs-comment"># https://blog.csdn.net/fuxuemingzhu/article/details/79388432</span>
@@ -707,8 +671,8 @@ private boolean dfsSearch(String word, <span class="hljs-built_in">int</span> in
                 <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
         <span class="hljs-comment">### NOTE : we don&#x27;t need to check isword here, since it is &quot;startsWith&quot;</span>
         <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
-</code></pre>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 208</span>
 <span class="hljs-comment">// V1</span>
 <span class="hljs-comment">// https://leetcode.com/problems/implement-trie-prefix-tree/editorial/</span>
@@ -792,9 +756,9 @@ private boolean dfsSearch(String word, <span class="hljs-built_in">int</span> in
     }
 
 }
-</code></pre>
+</code></pre></div>
 <h3 id="2-2-add-and-search-word-data-structure-design" tabindex="-1"><a class="header-anchor" href="#2-2-add-and-search-word-data-structure-design"><span>2-2) Add and Search Word - Data structure design</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 211 Add and Search Word - Data structure design</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 211 Add and Search Word - Data structure design</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-keyword">from</span> collections <span class="hljs-keyword">import</span> defaultdict
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">Node</span>(<span class="hljs-title class_ inherited__">object</span>):
@@ -839,8 +803,8 @@ private boolean dfsSearch(String word, <span class="hljs-built_in">int</span> in
                 <span class="hljs-keyword">if</span> <span class="hljs-variable language_">self</span>.<span class="hljs-keyword">match</span>(word, index + <span class="hljs-number">1</span>, child):
                     <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
         <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
-</code></pre>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 211</span>
 
 <span class="hljs-comment">// V1</span>
@@ -910,9 +874,9 @@ private boolean dfsSearch(String word, <span class="hljs-built_in">int</span> in
         <span class="hljs-keyword">return</span> searchInNode(word, trie);
     }
 }
-</code></pre>
+</code></pre></div>
 <h3 id="2-3-search-suggestions-system" tabindex="-1"><a class="header-anchor" href="#2-3-search-suggestions-system"><span>2-3) Search Suggestions System</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 1268. Search Suggestions System</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 1268. Search Suggestions System</span>
 <span class="hljs-comment"># V1</span>
 <span class="hljs-comment"># IDEA : TRIE</span>
 <span class="hljs-comment"># https://leetcode.com/problems/search-suggestions-system/discuss/436183/Python-Trie-Solution</span>
@@ -955,8 +919,8 @@ private boolean dfsSearch(String word, <span class="hljs-built_in">int</span> in
         <span class="hljs-keyword">for</span> prod <span class="hljs-keyword">in</span> products:
             trie.insert(prod)
         <span class="hljs-keyword">return</span> trie.search(searchWord)
-</code></pre>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// IDEA : trie + dfs</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// IDEA : trie + dfs</span>
 <span class="hljs-comment">// https://leetcode.com/problems/search-suggestions-system/solution/</span>
 <span class="hljs-comment">// Custom class Trie with function to get 3 words starting with given prefix</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">Trie</span> {
@@ -1028,9 +992,9 @@ private boolean dfsSearch(String word, <span class="hljs-built_in">int</span> in
         <span class="hljs-keyword">return</span> result;
     }
 };
-</code></pre>
+</code></pre></div>
 <h3 id="2-4-word-search" tabindex="-1"><a class="header-anchor" href="#2-4-word-search"><span>2-4) Word Search</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 79. Word Search</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 79. Word Search</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># IDEA : DFS + backtracking</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
@@ -1072,9 +1036,9 @@ private boolean dfsSearch(String word, <span class="hljs-built_in">int</span> in
         visited[i][j] = <span class="hljs-literal">False</span>
 
         <span class="hljs-keyword">return</span> result
-</code></pre>
+</code></pre></div>
 <h3 id="2-5-word-search-ii" tabindex="-1"><a class="header-anchor" href="#2-5-word-search-ii"><span>2-5) Word Search II</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 212. Word Search II</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 212. Word Search II</span>
 
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># IDEA : DFS + trie</span>
@@ -1214,7 +1178,7 @@ private boolean dfsSearch(String word, <span class="hljs-built_in">int</span> in
                 <span class="hljs-keyword">if</span> board[row][col] <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> trie: <span class="hljs-keyword">continue</span>
                 <span class="hljs-variable language_">self</span>.checkList(board, row, col, <span class="hljs-string">&quot;&quot;</span>, trie, rList)
         <span class="hljs-keyword">return</span> <span class="hljs-built_in">list</span>(rList)
-</code></pre>
+</code></pre></div>
 
       </div>
       <div class="cheatsheet-footer">

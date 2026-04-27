@@ -19,54 +19,18 @@
     }
   })();
   </script>
-  <script>document.addEventListener('DOMContentLoaded', function() {
-    document.querySelectorAll('pre code').forEach(function(codeEl) {
-      var pre = codeEl.parentElement;
-      var lang = '';
-      var cls = codeEl.className || '';
-      var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
-      if (m) lang = m[1];
-
-      // Add line numbers
-      var lines = codeEl.innerHTML.split('
-');
-      if (lines[lines.length - 1] === '') lines.pop();
-      var numbered = lines.map(function(line, i) {
-        return '<span class="hljs-ln-line"><span class="hljs-ln-n" data-line-number="' + (i + 1) + '"></span><span class="hljs-ln-code">' + line + '</span></span>';
-      }).join('
-');
-      codeEl.innerHTML = numbered;
-      codeEl.classList.add('hljs-ln');
-
-      var wrapper = document.createElement('div');
-      wrapper.className = 'code-block-wrapper';
-      pre.parentNode.insertBefore(wrapper, pre);
-      var header = document.createElement('div');
-      header.className = 'code-block-header';
-      if (lang) {
-        var label = document.createElement('span');
-        label.className = 'code-lang-label';
-        label.textContent = lang;
-        header.appendChild(label);
-      } else {
-        header.appendChild(document.createElement('span'));
-      }
-      var btn = document.createElement('button');
-      btn.className = 'copy-btn';
-      btn.textContent = 'Copy';
-      btn.addEventListener('click', function() {
-        var text = Array.from(codeEl.querySelectorAll('.hljs-ln-code')).map(function(el) { return el.textContent; }).join('
-');
-        navigator.clipboard.writeText(text).then(function() {
-          btn.textContent = 'Copied!';
-          btn.classList.add('copied');
-          setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
-        });
-      });
-      header.appendChild(btn);
-      wrapper.appendChild(header);
-      wrapper.appendChild(pre);
+  <script>
+  function copyCode(btn) {
+    var pre = btn.closest('.code-block-wrapper').querySelector('pre');
+    var text = pre ? pre.innerText : '';
+    navigator.clipboard.writeText(text).then(function() {
+      btn.textContent = 'Copied!';
+      btn.classList.add('copied');
+      setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
     });
+  }
+  </script>
+  <script>document.addEventListener('DOMContentLoaded', function() {
     document.querySelectorAll('table').forEach(function(table) {
       if (!table.parentElement.classList.contains('table-wrap')) {
         var wrapper = document.createElement('div');
@@ -221,7 +185,7 @@
 </tbody>
 </table>
 <h3 id="node-js-express-redis" tabindex="-1"><a class="header-anchor" href="#node-js-express-redis"><span>程式碼範例（Node.js + Express + Redis）</span></a></h3>
-<pre data-lang="javascript"><code class="hljs language-javascript"><span class="hljs-keyword">const</span> session = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;express-session&#x27;</span>);
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">javascript</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="javascript"><code class="hljs language-javascript"><span class="hljs-keyword">const</span> session = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;express-session&#x27;</span>);
 <span class="hljs-keyword">const</span> <span class="hljs-title class_">RedisStore</span> = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;connect-redis&#x27;</span>)(session);
 <span class="hljs-keyword">const</span> { createClient } = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;redis&#x27;</span>);
 
@@ -245,7 +209,7 @@ app.<span class="hljs-title function_">post</span>(<span class="hljs-string">&#x
   req.<span class="hljs-property">session</span>.<span class="hljs-property">userId</span> = <span class="hljs-string">&#x27;user_123&#x27;</span>;
   res.<span class="hljs-title function_">send</span>(<span class="hljs-string">&#x27;Logged in!&#x27;</span>);
 });
-</code></pre>
+</code></pre></div>
 <h3 id="session-1" tabindex="-1"><a class="header-anchor" href="#session-1"><span>Session 的優缺點</span></a></h3>
 <p><strong>優點：</strong></p>
 <ul>
@@ -266,8 +230,8 @@ app.<span class="hljs-title function_">post</span>(<span class="hljs-string">&#x
 <li><strong>Payload（負載）</strong>：存放非敏感使用者資料（如 <code>userId</code>、<code>role</code>、<code>exp</code> 過期時間）</li>
 <li><strong>Signature（簽章）</strong>：伺服器用私鑰對前兩部分進行雜湊運算</li>
 </ol>
-<pre><code class="hljs">Signature = HMACSHA256(base64(Header) + &quot;.&quot; + base64(Payload), SecretKey)
-</code></pre>
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Signature = HMACSHA256(base64(Header) + &quot;.&quot; + base64(Payload), SecretKey)
+</code></pre></div>
 <blockquote>
 <p>Payload 只是 Base64 編碼，<strong>任何人都能解碼</strong>。絕對不要存密碼等敏感資料！</p>
 </blockquote>
@@ -288,7 +252,7 @@ app.<span class="hljs-title function_">post</span>(<span class="hljs-string">&#x
 <li><strong>優點</strong>：想登出時只需從資料庫刪除 Refresh Token，帳號在 15 分鐘後徹底失效</li>
 </ul>
 <h3 id="node-js" tabindex="-1"><a class="header-anchor" href="#node-js"><span>程式碼範例（Node.js）</span></a></h3>
-<pre data-lang="javascript"><code class="hljs language-javascript"><span class="hljs-keyword">const</span> jwt = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;jsonwebtoken&#x27;</span>);
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">javascript</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="javascript"><code class="hljs language-javascript"><span class="hljs-keyword">const</span> jwt = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;jsonwebtoken&#x27;</span>);
 <span class="hljs-keyword">const</span> <span class="hljs-variable constant_">SECRET_KEY</span> = <span class="hljs-string">&#x27;your_super_safe_secret_key&#x27;</span>;
 
 <span class="hljs-comment">// 簽發 Token（Login 時執行）</span>
@@ -313,7 +277,7 @@ app.<span class="hljs-title function_">post</span>(<span class="hljs-string">&#x
     <span class="hljs-title function_">next</span>();
   });
 }
-</code></pre>
+</code></pre></div>
 <h3 id="jwt" tabindex="-1"><a class="header-anchor" href="#jwt"><span>JWT 的優缺點</span></a></h3>
 <p><strong>優點：</strong></p>
 <ul>

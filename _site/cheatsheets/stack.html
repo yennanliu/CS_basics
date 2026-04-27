@@ -19,54 +19,18 @@
     }
   })();
   </script>
-  <script>document.addEventListener('DOMContentLoaded', function() {
-    document.querySelectorAll('pre code').forEach(function(codeEl) {
-      var pre = codeEl.parentElement;
-      var lang = '';
-      var cls = codeEl.className || '';
-      var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
-      if (m) lang = m[1];
-
-      // Add line numbers
-      var lines = codeEl.innerHTML.split('
-');
-      if (lines[lines.length - 1] === '') lines.pop();
-      var numbered = lines.map(function(line, i) {
-        return '<span class="hljs-ln-line"><span class="hljs-ln-n" data-line-number="' + (i + 1) + '"></span><span class="hljs-ln-code">' + line + '</span></span>';
-      }).join('
-');
-      codeEl.innerHTML = numbered;
-      codeEl.classList.add('hljs-ln');
-
-      var wrapper = document.createElement('div');
-      wrapper.className = 'code-block-wrapper';
-      pre.parentNode.insertBefore(wrapper, pre);
-      var header = document.createElement('div');
-      header.className = 'code-block-header';
-      if (lang) {
-        var label = document.createElement('span');
-        label.className = 'code-lang-label';
-        label.textContent = lang;
-        header.appendChild(label);
-      } else {
-        header.appendChild(document.createElement('span'));
-      }
-      var btn = document.createElement('button');
-      btn.className = 'copy-btn';
-      btn.textContent = 'Copy';
-      btn.addEventListener('click', function() {
-        var text = Array.from(codeEl.querySelectorAll('.hljs-ln-code')).map(function(el) { return el.textContent; }).join('
-');
-        navigator.clipboard.writeText(text).then(function() {
-          btn.textContent = 'Copied!';
-          btn.classList.add('copied');
-          setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
-        });
-      });
-      header.appendChild(btn);
-      wrapper.appendChild(header);
-      wrapper.appendChild(pre);
+  <script>
+  function copyCode(btn) {
+    var pre = btn.closest('.code-block-wrapper').querySelector('pre');
+    var text = pre ? pre.innerText : '';
+    navigator.clipboard.writeText(text).then(function() {
+      btn.textContent = 'Copied!';
+      btn.classList.add('copied');
+      setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
     });
+  }
+  </script>
+  <script>document.addEventListener('DOMContentLoaded', function() {
     document.querySelectorAll('table').forEach(function(table) {
       if (!table.parentElement.classList.contains('table-wrap')) {
         var wrapper = document.createElement('div');
@@ -263,7 +227,7 @@
 </li>
 </ul>
 <h3 id="0-2-pattern" tabindex="-1"><a class="header-anchor" href="#0-2-pattern"><span>0-2) Pattern</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
 <span class="hljs-comment"># LC 739, LC 503 - Find next `big number`</span>
 <span class="hljs-comment"># ...</span>
 stack = [] <span class="hljs-comment"># [[idx, val]]</span>
@@ -273,8 +237,8 @@ stack = [] <span class="hljs-comment"># [[idx, val]]</span>
         res[tmp[_idx]] = i - _idx
     stack.append([i, val]) 
 <span class="hljs-comment"># ...</span>
-</code></pre>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 739</span>
 <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">j</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; j &lt; temperatures.length; j++){
     <span class="hljs-type">int</span> <span class="hljs-variable">x</span> <span class="hljs-operator">=</span> temperatures[j];
@@ -294,11 +258,11 @@ stack = [] <span class="hljs-comment"># [[idx, val]]</span>
         nextGreater[st.peek().get(<span class="hljs-number">1</span>)] = j - st.peek().get(<span class="hljs-number">1</span>);
         st.pop();
     }
-</code></pre>
+</code></pre></div>
 <ul>
 <li>monotonic stack (<code>increasing</code>)</li>
 </ul>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 239</span>
 <span class="hljs-comment">// LC 496</span>
 <span class="hljs-comment">// ...</span>
@@ -321,11 +285,11 @@ stack = [] <span class="hljs-comment"># [[idx, val]]</span>
 }
 
 <span class="hljs-comment">// ...</span>
-</code></pre>
+</code></pre></div>
 <ul>
 <li><strong>Stack with Pair <code>[element, count]</code></strong> (adjacent duplicate removal with k)</li>
 </ul>
-<pre><code class="hljs">Core Idea:
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Core Idea:
   - Instead of pushing raw elements, push [element, count] pairs
   - When current element == stack top element: increment count
   - When count reaches k: pop (remove k consecutive duplicates)
@@ -343,8 +307,8 @@ Similar LC:
   - LC 1544  Make The String Great (adjacent opposite-case removal)
   - LC 394   Decode String (stack with count for repetition)
   - LC 726   Number of Atoms (nested count tracking)
-</code></pre>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python - Stack Pair pattern</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python - Stack Pair pattern</span>
 <span class="hljs-comment"># LC 1209</span>
 stack = [[<span class="hljs-string">&#x27;#&#x27;</span>, <span class="hljs-number">0</span>]]  <span class="hljs-comment"># sentinel to avoid empty-check</span>
 <span class="hljs-keyword">for</span> c <span class="hljs-keyword">in</span> s:
@@ -355,8 +319,8 @@ stack = [[<span class="hljs-string">&#x27;#&#x27;</span>, <span class="hljs-numb
     <span class="hljs-keyword">else</span>:
         stack.append([c, <span class="hljs-number">1</span>])
 <span class="hljs-keyword">return</span> <span class="hljs-string">&#x27;&#x27;</span>.join(c * cnt <span class="hljs-keyword">for</span> c, cnt <span class="hljs-keyword">in</span> stack)
-</code></pre>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java - Stack Pair pattern</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java - Stack Pair pattern</span>
 <span class="hljs-comment">// LC 1209</span>
 Stack&lt;<span class="hljs-type">int</span>[]&gt; stack = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Stack</span>&lt;&gt;(); <span class="hljs-comment">// {char_as_int, count}</span>
 <span class="hljs-keyword">for</span> (<span class="hljs-type">char</span> c : s.toCharArray()) {
@@ -376,11 +340,11 @@ Stack&lt;<span class="hljs-type">int</span>[]&gt; stack = <span class="hljs-keyw
     }
 }
 <span class="hljs-keyword">return</span> sb.toString();
-</code></pre>
+</code></pre></div>
 <ul>
 <li>monotonic stack (<code>decreasing</code>)</li>
 </ul>
-<pre data-lang="java"><code class="hljs language-java">
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java">
 <span class="hljs-comment">// java</span>
 <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">j</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; j &lt; temperatures.length; j++) {
     <span class="hljs-type">int</span> <span class="hljs-variable">x</span> <span class="hljs-operator">=</span> temperatures[j];
@@ -405,11 +369,11 @@ Stack&lt;<span class="hljs-type">int</span>[]&gt; stack = <span class="hljs-keyw
     <span class="hljs-comment">// Push the current temperature and its index to the stack</span>
     st.push(<span class="hljs-keyword">new</span> <span class="hljs-title class_">Pair</span>&lt;&gt;(x, j));
 }
-</code></pre>
+</code></pre></div>
 <ul>
 <li>monotonic stack (greedy removal pattern - Remove K Digits)</li>
 </ul>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 402 Remove K Digits</span>
 <span class="hljs-comment">// Pattern: Maintain monotonic increasing stack by greedily removing larger digits</span>
 
@@ -449,11 +413,11 @@ Deque&lt;Character&gt; stack = <span class="hljs-keyword">new</span> <span class
 }
 
 <span class="hljs-keyword">return</span> sb.length() == <span class="hljs-number">0</span> ? <span class="hljs-string">&quot;0&quot;</span> : sb.toString();
-</code></pre>
+</code></pre></div>
 <ul>
 <li>monotonic stack (lexicographical order with deduplication - Remove Duplicate Letters)</li>
 </ul>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 316 Remove Duplicate Letters (same as LC 1081)</span>
 <span class="hljs-comment">// Pattern: Monotonic increasing stack with &quot;will appear later&quot; check for lexicographical smallest result</span>
 
@@ -506,9 +470,9 @@ Stack&lt;Character&gt; stack = <span class="hljs-keyword">new</span> <span class
     sb.append(c);
 }
 <span class="hljs-keyword">return</span> sb.toString();
-</code></pre>
+</code></pre></div>
 <p><strong>Explanation of “will appear later” logic:</strong></p>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">/**
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">/**
  * lastOccurrence array tracks the LAST index of each character
  *
  * Example: s = &quot;cbacdcbc&quot;
@@ -532,11 +496,11 @@ Stack&lt;Character&gt; stack = <span class="hljs-keyword">new</span> <span class
  *
  * Result: &quot;acdb&quot; (lexicographically smallest)
  */</span>
-</code></pre>
+</code></pre></div>
 <ul>
 <li>monotonic stack (span accumulation pattern - Online Stock Span)</li>
 </ul>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 901 Online Stock Span</span>
 <span class="hljs-comment">// Pattern: Monotonic decreasing stack with span accumulation for streaming data</span>
 
@@ -565,11 +529,11 @@ Deque&lt;<span class="hljs-type">int</span>[]&gt; stack = <span class="hljs-keyw
  * 3. Stateful: maintains stack across multiple calls
  * 4. Stack stores pairs: [value, accumulated_count]
  */</span>
-</code></pre>
+</code></pre></div>
 <ul>
 <li>Implement Queue using Stacks</li>
 </ul>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 
 <span class="hljs-comment">// LC 232</span>
 <span class="hljs-comment">// V3</span>
@@ -619,40 +583,40 @@ Deque&lt;<span class="hljs-type">int</span>[]&gt; stack = <span class="hljs-keyw
         <span class="hljs-keyword">return</span> input.isEmpty() &amp;&amp; output.isEmpty();
     }
 }
-</code></pre>
+</code></pre></div>
 <h2 id="1-core-patterns" tabindex="-1"><a class="header-anchor" href="#1-core-patterns"><span>1) Core Patterns</span></a></h2>
 <h3 id="1-1-basic-stack-operations" tabindex="-1"><a class="header-anchor" href="#1-1-basic-stack-operations"><span>1-1) Basic Stack Operations</span></a></h3>
 <p><strong>Stack push (insert):</strong></p>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java</span>
 Stack&lt;Integer&gt; stack = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Stack</span>&lt;&gt;();
 stack.push(element);  <span class="hljs-comment">// O(1)</span>
-</code></pre>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python</span>
 stack = []
 stack.append(element)  <span class="hljs-comment"># O(1)</span>
-</code></pre>
+</code></pre></div>
 <p><strong>Stack pop (remove top):</strong></p>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java</span>
 <span class="hljs-type">int</span> <span class="hljs-variable">top</span> <span class="hljs-operator">=</span> stack.pop();  <span class="hljs-comment">// O(1), throws if empty</span>
-</code></pre>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python</span>
 top = stack.pop()  <span class="hljs-comment"># O(1), raises if empty</span>
-</code></pre>
+</code></pre></div>
 <p><strong>Stack peek (view top):</strong></p>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java</span>
 <span class="hljs-type">int</span> <span class="hljs-variable">top</span> <span class="hljs-operator">=</span> stack.peek();  <span class="hljs-comment">// O(1), throws if empty</span>
 <span class="hljs-keyword">if</span> (!stack.isEmpty()) {
     top = stack.peek();
 }
-</code></pre>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python</span>
 top = stack[-<span class="hljs-number">1</span>]  <span class="hljs-comment"># O(1), raises if empty</span>
 <span class="hljs-keyword">if</span> stack:
     top = stack[-<span class="hljs-number">1</span>]
-</code></pre>
+</code></pre></div>
 <hr>
 <h3 id="1-2-monotonic-stack-next-greater-element" tabindex="-1"><a class="header-anchor" href="#1-2-monotonic-stack-next-greater-element"><span>1-2) Monotonic Stack: Next Greater Element</span></a></h3>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 496</span>
   <span class="hljs-comment">// V0</span>
     <span class="hljs-comment">// IDEA : STACK</span>
@@ -747,9 +711,9 @@ top = stack[-<span class="hljs-number">1</span>]  <span class="hljs-comment"># O
         <span class="hljs-comment">//System.out.println(&quot;res = &quot; + res);</span>
         <span class="hljs-keyword">return</span> res;
     }
-</code></pre>
+</code></pre></div>
 <h3 id="1-1-2-2-next-greater-element-2" tabindex="-1"><a class="header-anchor" href="#1-1-2-2-next-greater-element-2"><span>1-1-2-2) next greater element 2</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># V0</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># IDEA : LC 739, LC 503</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">nextGreaterElements</span>(<span class="hljs-params">self, nums</span>):
@@ -773,9 +737,9 @@ top = stack[-<span class="hljs-number">1</span>]  <span class="hljs-comment"># O
                 res[_idx % _<span class="hljs-built_in">len</span>] = val
             stack.append([idx, val])
         <span class="hljs-keyword">return</span> res
-</code></pre>
+</code></pre></div>
 <h3 id="1-1-3-get-non-balanced-string" tabindex="-1"><a class="header-anchor" href="#1-1-3-get-non-balanced-string"><span>1-1-3) get <code>non balanced</code> String</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 1963. Minimum Number of Swaps to Make the String Balanced</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 1963. Minimum Number of Swaps to Make the String Balanced</span>
 
 <span class="hljs-comment"># NOTE !!! below trick will ONLY collect not Balanced ], [</span>
 <span class="hljs-comment">#          -&gt; e.g. &quot;]][[&quot; or &quot;]]][[[&quot;</span>
@@ -789,9 +753,9 @@ stack = []
     <span class="hljs-keyword">else</span>:
         stack.append()
 <span class="hljs-built_in">print</span> (stack)
-</code></pre>
+</code></pre></div>
 <h3 id="1-1-4-deal-with-pre-num-pre-string" tabindex="-1"><a class="header-anchor" href="#1-1-4-deal-with-pre-num-pre-string"><span>1-1-4) deal with <code>pre num, pre string</code></span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 227, 394</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 227, 394</span>
 <span class="hljs-comment"># ...</span>
 <span class="hljs-keyword">for</span> i, each <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(s):
     <span class="hljs-comment"># ...</span>
@@ -810,10 +774,10 @@ stack = []
         pre_op = each
         num = <span class="hljs-number">0</span>
 <span class="hljs-comment"># ...</span>
-</code></pre>
+</code></pre></div>
 <h2 id="2-leetcode-examples" tabindex="-1"><a class="header-anchor" href="#2-leetcode-examples"><span>2) LeetCode Examples</span></a></h2>
 <h3 id="2-1-decode-string" tabindex="-1"><a class="header-anchor" href="#2-1-decode-string"><span>2-1) Decode String</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 394 Decode String</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 394 Decode String</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># IDEA : STACK</span>
 <span class="hljs-comment"># NOTE : treat before cases separately</span>
@@ -856,8 +820,8 @@ stack = []
                 pre_string = stack.pop()
                 string = pre_string + pre_num * string
         <span class="hljs-keyword">return</span> string
-</code></pre>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 394 Decode String</span>
 
 <span class="hljs-comment">/**
@@ -1089,9 +1053,9 @@ stack = []
  *    - Can we decode in-place? (no, need stack for nesting)
  *    - How to handle very large k values? (streaming approach)
  */</span>
-</code></pre>
+</code></pre></div>
 <h3 id="2-2-next-greater-element-i" tabindex="-1"><a class="header-anchor" href="#2-2-next-greater-element-i"><span>2-2) Next Greater Element I</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># 496. Next Greater Element I</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># 496. Next Greater Element I</span>
 
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># IDEA : STACK (for + while loop)</span>
@@ -1148,8 +1112,8 @@ stack = []
                     tmp = []
                     <span class="hljs-keyword">break</span>
         <span class="hljs-keyword">return</span> res
-</code></pre>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 496</span>
 <span class="hljs-comment">// V0</span>
 <span class="hljs-comment">// IDEA : STACK</span>
@@ -1205,9 +1169,9 @@ stack = []
     <span class="hljs-comment">//System.out.println(&quot;res = &quot; + res);</span>
     <span class="hljs-keyword">return</span> res;
 }
-</code></pre>
+</code></pre></div>
 <h3 id="2-3-next-greater-element-ii" tabindex="-1"><a class="header-anchor" href="#2-3-next-greater-element-ii"><span>2-3) Next Greater Element II</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 503. Next Greater Element II</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 503. Next Greater Element II</span>
 
 <span class="hljs-comment"># V0&#x27;</span>
 <span class="hljs-comment"># IDEA : LC 739</span>
@@ -1256,9 +1220,9 @@ stack = []
             <span class="hljs-comment">### NOTE : we also need to append augLst[i] to stack</span>
             stack.append(augLst[i])
         <span class="hljs-keyword">return</span> res
-</code></pre>
+</code></pre></div>
 <h3 id="2-4-daily-temperatures" tabindex="-1"><a class="header-anchor" href="#2-4-daily-temperatures"><span>2-4) Daily Temperatures</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 739. Daily Temperatures</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 739. Daily Temperatures</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># IDEA : STACK</span>
 <span class="hljs-comment"># DEMO </span>
@@ -1292,8 +1256,8 @@ stack = []
             <span class="hljs-comment"># since the result (next higher temp) is decided by the coming temp, rather than current temp </span>
             stack.append((t, i))
         <span class="hljs-keyword">return</span> res
-</code></pre>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 739</span>
 
 <span class="hljs-comment">// V0</span>
@@ -1353,9 +1317,9 @@ stack = []
     <span class="hljs-comment">//System.out.println(&quot;nextGreater = &quot; + nextGreater);</span>
     <span class="hljs-keyword">return</span> nextGreater;
 }
-</code></pre>
+</code></pre></div>
 <h3 id="2-5-basic-calculator-i" tabindex="-1"><a class="header-anchor" href="#2-5-basic-calculator-i"><span>2-5) Basic Calculator I</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 224 Basic Calculator</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 224 Basic Calculator</span>
 <span class="hljs-comment"># V0&#x27;</span>
 <span class="hljs-comment"># IDEA : STACK</span>
 <span class="hljs-comment"># https://leetcode.com/problems/basic-calculator/solution/</span>
@@ -1422,9 +1386,9 @@ stack = []
                 operand = <span class="hljs-number">0</span>
 
         <span class="hljs-keyword">return</span> res + sign * operand
-</code></pre>
+</code></pre></div>
 <h3 id="2-5-basic-calculator-ii" tabindex="-1"><a class="header-anchor" href="#2-5-basic-calculator-ii"><span>2-5’) Basic Calculator II</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
 <span class="hljs-comment"># LC 227. Basic Calculator II, LC 224. Basic Calculator</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># IDEA : STACK</span>
@@ -1530,9 +1494,9 @@ stack = []
                 pre_op = each
                 num = <span class="hljs-number">0</span>
         <span class="hljs-keyword">return</span> <span class="hljs-built_in">sum</span>(stack)
-</code></pre>
+</code></pre></div>
 <h3 id="2-5-sum-of-subarray-minimums" tabindex="-1"><a class="header-anchor" href="#2-5-sum-of-subarray-minimums"><span>2-5) Sum of Subarray Minimums</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 907. Sum of Subarray Minimums</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 907. Sum of Subarray Minimums</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># IDEA :  increasing stacks</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
@@ -1554,9 +1518,9 @@ stack = []
             right[i] = count
             s2.append([A[i], count])
         <span class="hljs-keyword">return</span> <span class="hljs-built_in">sum</span>(a * l * r <span class="hljs-keyword">for</span> a, l, r <span class="hljs-keyword">in</span> <span class="hljs-built_in">zip</span>(A, left, right)) % mod
-</code></pre>
+</code></pre></div>
 <h3 id="2-6-asteroid-collision" tabindex="-1"><a class="header-anchor" href="#2-6-asteroid-collision"><span>2-6) Asteroid Collision</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 735. Asteroid Collision</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 735. Asteroid Collision</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">asteroidCollision</span>(<span class="hljs-params">self, asteroids</span>):
@@ -1572,9 +1536,9 @@ stack = []
             <span class="hljs-keyword">else</span>:
                 ans.append(new)
         <span class="hljs-keyword">return</span> ans
-</code></pre>
+</code></pre></div>
 <h3 id="2-7-remove-all-adjacent-duplicates-in-string" tabindex="-1"><a class="header-anchor" href="#2-7-remove-all-adjacent-duplicates-in-string"><span>2-7) Remove All Adjacent Duplicates in String</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 1047. Remove All Adjacent Duplicates In String</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 1047. Remove All Adjacent Duplicates In String</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># IDEA : STACK</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
@@ -1612,7 +1576,7 @@ stack = []
                     end += <span class="hljs-number">1</span>
                     a[end] = c
             <span class="hljs-keyword">return</span> <span class="hljs-string">&#x27;&#x27;</span>.join(a[: end + <span class="hljs-number">1</span>])
-</code></pre>
+</code></pre></div>
 <h3 id="2-8-remove-all-adjacent-duplicates-in-string-ii" tabindex="-1"><a class="header-anchor" href="#2-8-remove-all-adjacent-duplicates-in-string-ii"><span>2-8) Remove All Adjacent Duplicates in String II</span></a></h3>
 <p><strong>Pattern: Stack with Character-Count Pairs</strong></p>
 <p>This pattern uses <code>Stack&lt;int[]&gt;</code> or <code>Stack&lt;[char, count]&gt;</code> to efficiently track consecutive duplicates and their counts. It’s particularly useful when you need to remove k consecutive equal elements.</p>
@@ -1655,13 +1619,13 @@ stack = []
 <li>✓ Input constraint: k &gt;= 2 (if k=1, different approach needed)</li>
 </ul>
 <p><strong>Structure:</strong></p>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Core data structure</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Core data structure</span>
 Stack&lt;<span class="hljs-type">int</span>[]&gt; stack = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Stack</span>&lt;&gt;();
 <span class="hljs-comment">// Each element: {character_as_int, count}</span>
 
 <span class="hljs-comment">// Or for clarity</span>
 Stack&lt;Pair&lt;Character, Integer&gt;&gt; stack = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Stack</span>&lt;&gt;();
-</code></pre>
+</code></pre></div>
 <p><strong>Similar Problems:</strong></p>
 <ul>
 <li>LC 1047: Remove All Adjacent Duplicates in String (k=2 special case)</li>
@@ -1669,7 +1633,7 @@ Stack&lt;Pair&lt;Character, Integer&gt;&gt; stack = <span class="hljs-keyword">n
 <li>LC 316: Remove Duplicate Letters (lexicographical order with stack)</li>
 <li>LC 394: Decode String (stack with count, but for repetition)</li>
 </ul>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 1209. Remove All Adjacent Duplicates in String II</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 1209. Remove All Adjacent Duplicates in String II</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># IDEA : STACK</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
@@ -1717,8 +1681,8 @@ Stack&lt;Pair&lt;Character, Integer&gt;&gt; stack = <span class="hljs-keyword">n
                 <span class="hljs-keyword">else</span>:
                     stack.append([c, <span class="hljs-number">1</span>])
             <span class="hljs-keyword">return</span> <span class="hljs-string">&#x27;&#x27;</span>.join(c * k <span class="hljs-keyword">for</span> c, k <span class="hljs-keyword">in</span> stack)
-</code></pre>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 1209. Remove All Adjacent Duplicates in String II</span>
 
 <span class="hljs-comment">/**
@@ -1911,9 +1875,9 @@ Stack&lt;Pair&lt;Character, Integer&gt;&gt; stack = <span class="hljs-keyword">n
  *    - LC 394 (Decode String): similar stack with count pattern
  *    - LC 316 (Remove Duplicate Letters): stack with different removal criteria
  */</span>
-</code></pre>
+</code></pre></div>
 <h3 id="2-9-simplify-path" tabindex="-1"><a class="header-anchor" href="#2-9-simplify-path"><span>2-9) Simplify Path</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 71. Simplify Path</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 71. Simplify Path</span>
 
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># IDEA : STACK</span>
@@ -1929,9 +1893,9 @@ Stack&lt;Pair&lt;Character, Integer&gt;&gt; stack = <span class="hljs-keyword">n
                     result.pop()
         
         <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;/&quot;</span>+<span class="hljs-string">&quot;/&quot;</span>.join(result)
-</code></pre>
+</code></pre></div>
 <h3 id="2-10-min-stack" tabindex="-1"><a class="header-anchor" href="#2-10-min-stack"><span>2-10) Min Stack</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 155. Min Stack</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 155. Min Stack</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># IDEA : STACK</span>
 <span class="hljs-comment"># IDEA : </span>
@@ -1970,9 +1934,9 @@ Stack&lt;Pair&lt;Character, Integer&gt;&gt; stack = <span class="hljs-keyword">n
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">getMin</span>(<span class="hljs-params">self</span>):
         <span class="hljs-comment"># the latest min in stack is at stack[-1][1]</span>
         <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.stack[-<span class="hljs-number">1</span>][<span class="hljs-number">1</span>]
-</code></pre>
+</code></pre></div>
 <h3 id="2-11-sum-of-subarray-ranges" tabindex="-1"><a class="header-anchor" href="#2-11-sum-of-subarray-ranges"><span>2-11) Sum of Subarray Ranges</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 2104. Sum of Subarray Ranges</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 2104. Sum of Subarray Ranges</span>
 <span class="hljs-comment"># NOTE : there are also brute force, 2 pointers ... approaches</span>
 <span class="hljs-comment"># V0&#x27;</span>
 <span class="hljs-comment"># IDEA : monotonic stack</span>
@@ -1992,9 +1956,9 @@ Stack&lt;Pair&lt;Character, Integer&gt;&gt; stack = <span class="hljs-keyword">n
                 res += (i - j) * (j - s[-<span class="hljs-number">1</span>]) * A[j]
             s.append(i)
         <span class="hljs-keyword">return</span> res 
-</code></pre>
+</code></pre></div>
 <h3 id="2-11-largest-rectangle-in-histogram" tabindex="-1"><a class="header-anchor" href="#2-11-largest-rectangle-in-histogram"><span>2-11) Largest Rectangle in Histogram</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 84. Largest Rectangle in Histogram</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 84. Largest Rectangle in Histogram</span>
 <span class="hljs-comment"># python</span>
 <span class="hljs-comment"># V1&#x27;&#x27;&#x27;</span>
 <span class="hljs-comment"># IDEA : STACK</span>
@@ -2015,9 +1979,9 @@ Stack&lt;Pair&lt;Character, Integer&gt;&gt; stack = <span class="hljs-keyword">n
             current_width = <span class="hljs-built_in">len</span>(heights) - stack[-<span class="hljs-number">1</span>] - <span class="hljs-number">1</span>
             max_area = <span class="hljs-built_in">max</span>(max_area, current_height * current_width)
         <span class="hljs-keyword">return</span> max_area
-</code></pre>
+</code></pre></div>
 <h3 id="2-12-remove-duplicate-letters" tabindex="-1"><a class="header-anchor" href="#2-12-remove-duplicate-letters"><span>2-12) Remove Duplicate Letters</span></a></h3>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 316</span>
 
 <span class="hljs-comment">/**
@@ -2157,9 +2121,9 @@ Stack&lt;Character&gt; stack = <span class="hljs-keyword">new</span> <span class
 
   <span class="hljs-keyword">return</span> sb.toString();
 }
-</code></pre>
+</code></pre></div>
 <h3 id="2-13-remove-k-digits" tabindex="-1"><a class="header-anchor" href="#2-13-remove-k-digits"><span>2-13) Remove K Digits</span></a></h3>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 402. Remove K Digits</span>
 
 <span class="hljs-comment">/**
@@ -2246,9 +2210,9 @@ Stack&lt;Character&gt; stack = <span class="hljs-keyword">new</span> <span class
  * - Stack&lt;Character&gt; is synchronized and slow
  * - ArrayDeque is faster and modern alternative for stack operations
  */</span>
-</code></pre>
+</code></pre></div>
 <h3 id="2-14-online-stock-span" tabindex="-1"><a class="header-anchor" href="#2-14-online-stock-span"><span>2-14) Online Stock Span</span></a></h3>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 901. Online Stock Span</span>
 
 <span class="hljs-comment">/**
@@ -2385,7 +2349,7 @@ Stack&lt;Character&gt; stack = <span class="hljs-keyword">new</span> <span class
  * StockSpanner obj = new StockSpanner();
  * int span = obj.next(price);
  */</span>
-</code></pre>
+</code></pre></div>
 
       </div>
       <div class="cheatsheet-footer">

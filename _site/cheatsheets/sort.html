@@ -19,54 +19,18 @@
     }
   })();
   </script>
-  <script>document.addEventListener('DOMContentLoaded', function() {
-    document.querySelectorAll('pre code').forEach(function(codeEl) {
-      var pre = codeEl.parentElement;
-      var lang = '';
-      var cls = codeEl.className || '';
-      var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
-      if (m) lang = m[1];
-
-      // Add line numbers
-      var lines = codeEl.innerHTML.split('
-');
-      if (lines[lines.length - 1] === '') lines.pop();
-      var numbered = lines.map(function(line, i) {
-        return '<span class="hljs-ln-line"><span class="hljs-ln-n" data-line-number="' + (i + 1) + '"></span><span class="hljs-ln-code">' + line + '</span></span>';
-      }).join('
-');
-      codeEl.innerHTML = numbered;
-      codeEl.classList.add('hljs-ln');
-
-      var wrapper = document.createElement('div');
-      wrapper.className = 'code-block-wrapper';
-      pre.parentNode.insertBefore(wrapper, pre);
-      var header = document.createElement('div');
-      header.className = 'code-block-header';
-      if (lang) {
-        var label = document.createElement('span');
-        label.className = 'code-lang-label';
-        label.textContent = lang;
-        header.appendChild(label);
-      } else {
-        header.appendChild(document.createElement('span'));
-      }
-      var btn = document.createElement('button');
-      btn.className = 'copy-btn';
-      btn.textContent = 'Copy';
-      btn.addEventListener('click', function() {
-        var text = Array.from(codeEl.querySelectorAll('.hljs-ln-code')).map(function(el) { return el.textContent; }).join('
-');
-        navigator.clipboard.writeText(text).then(function() {
-          btn.textContent = 'Copied!';
-          btn.classList.add('copied');
-          setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
-        });
-      });
-      header.appendChild(btn);
-      wrapper.appendChild(header);
-      wrapper.appendChild(pre);
+  <script>
+  function copyCode(btn) {
+    var pre = btn.closest('.code-block-wrapper').querySelector('pre');
+    var text = pre ? pre.innerText : '';
+    navigator.clipboard.writeText(text).then(function() {
+      btn.textContent = 'Copied!';
+      btn.classList.add('copied');
+      setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
     });
+  }
+  </script>
+  <script>document.addEventListener('DOMContentLoaded', function() {
     document.querySelectorAll('table').forEach(function(table) {
       if (!table.parentElement.classList.contains('table-wrap')) {
         var wrapper = document.createElement('div');
@@ -353,7 +317,7 @@
 </tbody>
 </table>
 <h3 id="template-1-quick-sort" tabindex="-1"><a class="header-anchor" href="#template-1-quick-sort"><span>Template 1: Quick Sort</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - Classic Quick Sort</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - Classic Quick Sort</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">quickSort</span>(<span class="hljs-params">arr, low=<span class="hljs-number">0</span>, high=<span class="hljs-literal">None</span></span>):
     <span class="hljs-keyword">if</span> high <span class="hljs-keyword">is</span> <span class="hljs-literal">None</span>:
         high = <span class="hljs-built_in">len</span>(arr) - <span class="hljs-number">1</span>
@@ -411,8 +375,8 @@
             i += <span class="hljs-number">1</span>
     
     <span class="hljs-keyword">return</span> lt, gt
-</code></pre>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java - Quick Sort</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java - Quick Sort</span>
 <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">quickSort</span><span class="hljs-params">(<span class="hljs-type">int</span>[] arr, <span class="hljs-type">int</span> low, <span class="hljs-type">int</span> high)</span> {
     <span class="hljs-keyword">if</span> (low &lt; high) {
         <span class="hljs-type">int</span> <span class="hljs-variable">pi</span> <span class="hljs-operator">=</span> partition(arr, low, high);
@@ -441,9 +405,9 @@
     arr[i] = arr[j];
     arr[j] = temp;
 }
-</code></pre>
+</code></pre></div>
 <h3 id="template-2-merge-sort" tabindex="-1"><a class="header-anchor" href="#template-2-merge-sort"><span>Template 2: Merge Sort</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - Merge Sort</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - Merge Sort</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">mergeSort</span>(<span class="hljs-params">arr</span>):
     <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(arr) &lt;= <span class="hljs-number">1</span>:
         <span class="hljs-keyword">return</span> arr
@@ -508,8 +472,8 @@
         arr[k] = right_arr[j]
         j += <span class="hljs-number">1</span>
         k += <span class="hljs-number">1</span>
-</code></pre>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java - Merge Sort</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java - Merge Sort</span>
 <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">mergeSort</span><span class="hljs-params">(<span class="hljs-type">int</span>[] arr, <span class="hljs-type">int</span> left, <span class="hljs-type">int</span> right)</span> {
     <span class="hljs-keyword">if</span> (left &lt; right) {
         <span class="hljs-type">int</span> <span class="hljs-variable">mid</span> <span class="hljs-operator">=</span> left + (right - left) / <span class="hljs-number">2</span>;
@@ -553,9 +517,9 @@
         arr[k++] = rightArr[j++];
     }
 }
-</code></pre>
+</code></pre></div>
 <h3 id="template-3-custom-comparator-sorting" tabindex="-1"><a class="header-anchor" href="#template-3-custom-comparator-sorting"><span>Template 3: Custom Comparator Sorting</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - Custom sorting</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - Custom sorting</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">customSort</span>(<span class="hljs-params">self, items</span>):
         <span class="hljs-comment"># Single key</span>
@@ -600,8 +564,8 @@
         <span class="hljs-keyword">if</span> <span class="hljs-variable language_">self</span>.priority != other.priority:
             <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.priority &gt; other.priority
         <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.value &lt; other.value
-</code></pre>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java - Custom comparator</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java - Custom comparator</span>
 <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">customSort</span><span class="hljs-params">(List&lt;Item&gt; items)</span> {
     <span class="hljs-comment">// Lambda comparator</span>
     items.sort((a, b) -&gt; a.value - b.value);
@@ -642,9 +606,9 @@
         <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>.name.compareTo(other.name);
     }
 }
-</code></pre>
+</code></pre></div>
 <h3 id="template-4-quick-select-k-th-element" tabindex="-1"><a class="header-anchor" href="#template-4-quick-select-k-th-element"><span>Template 4: Quick Select (K-th Element)</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - Quick Select for k-th smallest</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - Quick Select for k-th smallest</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">quickSelect</span>(<span class="hljs-params">arr, k</span>):
     <span class="hljs-comment"># Find k-th smallest (0-indexed)</span>
     <span class="hljs-keyword">return</span> quickSelectHelper(arr, <span class="hljs-number">0</span>, <span class="hljs-built_in">len</span>(arr) - <span class="hljs-number">1</span>, k - <span class="hljs-number">1</span>)
@@ -679,9 +643,9 @@
     <span class="hljs-comment"># Move pivot to final position</span>
     arr[store_idx], arr[right] = arr[right], arr[store_idx]
     <span class="hljs-keyword">return</span> store_idx
-</code></pre>
+</code></pre></div>
 <h3 id="template-5-counting-sort" tabindex="-1"><a class="header-anchor" href="#template-5-counting-sort"><span>Template 5: Counting Sort</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - Counting Sort</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - Counting Sort</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">countingSort</span>(<span class="hljs-params">arr, max_val=<span class="hljs-literal">None</span></span>):
     <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> arr:
         <span class="hljs-keyword">return</span> arr
@@ -734,9 +698,9 @@
         count[arr[i] - min_val] -= <span class="hljs-number">1</span>
     
     <span class="hljs-keyword">return</span> output
-</code></pre>
+</code></pre></div>
 <h3 id="template-6-topological-sort" tabindex="-1"><a class="header-anchor" href="#template-6-topological-sort"><span>Template 6: Topological Sort</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - Topological Sort (Kahn&#x27;s Algorithm)</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - Topological Sort (Kahn&#x27;s Algorithm)</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">topologicalSort</span>(<span class="hljs-params">numNodes, edges</span>):
     <span class="hljs-comment"># Build graph and in-degree</span>
     graph = defaultdict(<span class="hljs-built_in">list</span>)
@@ -786,7 +750,7 @@
             dfs(i)
     
     <span class="hljs-keyword">return</span> stack[::-<span class="hljs-number">1</span>]
-</code></pre>
+</code></pre></div>
 <h2 id="problems-by-pattern" tabindex="-1"><a class="header-anchor" href="#problems-by-pattern"><span>Problems by Pattern</span></a></h2>
 <h3 id="pattern-based-problem-tables" tabindex="-1"><a class="header-anchor" href="#pattern-based-problem-tables"><span>Pattern-Based Problem Tables</span></a></h3>
 <h4 id="custom-comparator-problems" tabindex="-1"><a class="header-anchor" href="#custom-comparator-problems"><span><strong>Custom Comparator Problems</strong></span></a></h4>
@@ -1078,7 +1042,7 @@
 </tbody>
 </table>
 <h2 id="pattern-selection-strategy" tabindex="-1"><a class="header-anchor" href="#pattern-selection-strategy"><span>Pattern Selection Strategy</span></a></h2>
-<pre><code class="hljs">Problem Analysis Flowchart:
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Problem Analysis Flowchart:
 
 1. Need custom ordering rules?
    ├── YES → Custom Comparator
@@ -1109,7 +1073,7 @@
    │         ├── Integers → Counting sort
    │         └── With precision → Bucket sort
    └── NO → Use standard sorting
-</code></pre>
+</code></pre></div>
 <h2 id="summary-quick-reference" tabindex="-1"><a class="header-anchor" href="#summary-quick-reference"><span>Summary &amp; Quick Reference</span></a></h2>
 <h3 id="complexity-quick-reference" tabindex="-1"><a class="header-anchor" href="#complexity-quick-reference"><span>Complexity Quick Reference</span></a></h3>
 <table>
@@ -1218,7 +1182,7 @@
 </table>
 <h3 id="common-patterns-tricks" tabindex="-1"><a class="header-anchor" href="#common-patterns-tricks"><span>Common Patterns &amp; Tricks</span></a></h3>
 <h4 id="python-sorting-tricks" tabindex="-1"><a class="header-anchor" href="#python-sorting-tricks"><span><strong>Python Sorting Tricks</strong></span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Sort with multiple keys</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Sort with multiple keys</span>
 items.sort(key=<span class="hljs-keyword">lambda</span> x: (x[<span class="hljs-number">0</span>], -x[<span class="hljs-number">1</span>], x[<span class="hljs-number">2</span>]))
 
 <span class="hljs-comment"># Sort by custom class</span>
@@ -1231,9 +1195,9 @@ items.sort(key=<span class="hljs-keyword">lambda</span> x: x.primary)    <span c
 <span class="hljs-comment"># In-place vs new list</span>
 arr.sort()           <span class="hljs-comment"># In-place</span>
 sorted_arr = <span class="hljs-built_in">sorted</span>(arr)  <span class="hljs-comment"># New list</span>
-</code></pre>
+</code></pre></div>
 <h4 id="java-sorting-tricks" tabindex="-1"><a class="header-anchor" href="#java-sorting-tricks"><span><strong>Java Sorting Tricks</strong></span></a></h4>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Lambda comparator</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Lambda comparator</span>
 Arrays.sort(arr, (a, b) -&gt; a - b);
 
 <span class="hljs-comment">// Method reference</span>
@@ -1246,7 +1210,7 @@ Arrays.sort(items, Comparator
 
 <span class="hljs-comment">// Reverse order</span>
 Arrays.sort(arr, Collections.reverseOrder());
-</code></pre>
+</code></pre></div>
 <h3 id="problem-solving-steps" tabindex="-1"><a class="header-anchor" href="#problem-solving-steps"><span>Problem-Solving Steps</span></a></h3>
 <ol>
 <li>
@@ -1362,7 +1326,7 @@ Arrays.sort(arr, Collections.reverseOrder());
 </ul>
 <h2 id="lc-example" tabindex="-1"><a class="header-anchor" href="#lc-example"><span>LC Example</span></a></h2>
 <h3 id="2-1-pancake-sorting" tabindex="-1"><a class="header-anchor" href="#2-1-pancake-sorting"><span>2-1) Pancake Sorting</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
 <span class="hljs-comment"># LC 969 Pancake Sorting</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># IDEA : pankcake sort + while loop</span>
@@ -1474,8 +1438,8 @@ Arrays.sort(arr, Collections.reverseOrder());
             pointer -= <span class="hljs-number">1</span>
             
         <span class="hljs-keyword">return</span> result
-</code></pre>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// aAlgorithm book (labu) p. 347</span>
 
 <span class="hljs-comment">// record reverse op array</span>
@@ -1522,9 +1486,9 @@ List&lt;Integer&gt; <span class="hljs-title function_">pancakeSort</span><span c
 		j--;
 	}
 }
-</code></pre>
+</code></pre></div>
 <h3 id="2-1-reorder-data-in-log-files" tabindex="-1"><a class="header-anchor" href="#2-1-reorder-data-in-log-files"><span>2-1) Reorder Data in Log Files</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 937. Reorder Data in Log Files</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 937. Reorder Data in Log Files</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># IDEA : SORT BY KEY</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
@@ -1567,9 +1531,9 @@ List&lt;Integer&gt; <span class="hljs-title function_">pancakeSort</span><span c
             <span class="hljs-keyword">return</span> (<span class="hljs-number">0</span>, rest, _<span class="hljs-built_in">id</span>) <span class="hljs-keyword">if</span> rest[<span class="hljs-number">0</span>].isalpha() <span class="hljs-keyword">else</span> (<span class="hljs-number">1</span>, )
 
         <span class="hljs-keyword">return</span> <span class="hljs-built_in">sorted</span>(logs, key=get_key)
-</code></pre>
+</code></pre></div>
 <h3 id="2-2-meeting-rooms" tabindex="-1"><a class="header-anchor" href="#2-2-meeting-rooms"><span>2-2) Meeting Rooms</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 252. Meeting Rooms</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 252. Meeting Rooms</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">canAttendMeetings</span>(<span class="hljs-params">self, intervals</span>):
@@ -1585,9 +1549,9 @@ List&lt;Integer&gt; <span class="hljs-title function_">pancakeSort</span><span c
             <span class="hljs-keyword">if</span> intervals[i][<span class="hljs-number">0</span>] &lt; intervals[i-<span class="hljs-number">1</span>][<span class="hljs-number">1</span>]:
                 <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
         <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
-</code></pre>
+</code></pre></div>
 <h3 id="2-3-custom-sort-string" tabindex="-1"><a class="header-anchor" href="#2-3-custom-sort-string"><span>2-3) Custom Sort String</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 791. Custom Sort String</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 791. Custom Sort String</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># IDEA : COUNTER</span>
 <span class="hljs-keyword">from</span> collections <span class="hljs-keyword">import</span> Counter
@@ -1602,9 +1566,9 @@ List&lt;Integer&gt; <span class="hljs-title function_">pancakeSort</span><span c
         <span class="hljs-keyword">for</span> s <span class="hljs-keyword">in</span> s_map:
             res += s * s_map[s]
         <span class="hljs-keyword">return</span> res
-</code></pre>
+</code></pre></div>
 <h3 id="2-4-find-k-closest-elements" tabindex="-1"><a class="header-anchor" href="#2-4-find-k-closest-elements"><span>2-4) Find K Closest Elements</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 658. Find K Closest Elements</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 658. Find K Closest Elements</span>
 <span class="hljs-comment"># NOTE : there is also stack, binary search.. approaches</span>
 <span class="hljs-comment"># V0&#x27;</span>
 <span class="hljs-comment"># IDEA : SORTING</span>
@@ -1620,9 +1584,9 @@ List&lt;Integer&gt; <span class="hljs-title function_">pancakeSort</span><span c
         
         <span class="hljs-comment"># Sort again to have output in ascending order</span>
         <span class="hljs-keyword">return</span> <span class="hljs-built_in">sorted</span>(result)
-</code></pre>
+</code></pre></div>
 <h3 id="2-5-largest-number" tabindex="-1"><a class="header-anchor" href="#2-5-largest-number"><span>2-5) Largest Number</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 179. Largest Number</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 179. Largest Number</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># IDEA : Sorting via Custom Comparator</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">compare</span>(<span class="hljs-title class_ inherited__">str</span>):
@@ -1635,9 +1599,9 @@ List&lt;Integer&gt; <span class="hljs-title function_">pancakeSort</span><span c
         largest = <span class="hljs-built_in">sorted</span>([<span class="hljs-built_in">str</span>(v) <span class="hljs-keyword">for</span> v <span class="hljs-keyword">in</span> nums], key=compare) 
         largest = <span class="hljs-string">&#x27;&#x27;</span>.join(largest) 
         <span class="hljs-keyword">return</span> <span class="hljs-string">&#x27;0&#x27;</span> <span class="hljs-keyword">if</span> largest[<span class="hljs-number">0</span>] == <span class="hljs-string">&#x27;0&#x27;</span> <span class="hljs-keyword">else</span> largest 
-</code></pre>
+</code></pre></div>
 <h3 id="2-6-permutation-in-string" tabindex="-1"><a class="header-anchor" href="#2-6-permutation-in-string"><span>2-6) Permutation in String</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 567 </span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 567 </span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># IDEA : collections + sliding window</span>
 <span class="hljs-keyword">from</span> collections <span class="hljs-keyword">import</span> Counter
@@ -1661,8 +1625,8 @@ List&lt;Integer&gt; <span class="hljs-title function_">pancakeSort</span><span c
                     <span class="hljs-keyword">del</span> _s2[tmp[<span class="hljs-number">0</span>]]
                 l += <span class="hljs-number">1</span>
         <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
-</code></pre>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 567</span>
 <span class="hljs-comment">// V2</span>
 <span class="hljs-comment">// IDEA : SORTING</span>
@@ -1681,9 +1645,9 @@ List&lt;Integer&gt; <span class="hljs-title function_">pancakeSort</span><span c
     Arrays.sort(t);
     <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">String</span>(t);
 } 
-</code></pre>
+</code></pre></div>
 <h3 id="2-7-car-fleet" tabindex="-1"><a class="header-anchor" href="#2-7-car-fleet"><span>2-7) Car Fleet</span></a></h3>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 
 <span class="hljs-comment">// LC 853. Car Fleet</span>
 
@@ -1759,9 +1723,9 @@ List&lt;Integer&gt; <span class="hljs-title function_">pancakeSort</span><span c
 
         <span class="hljs-keyword">return</span> fleets;
     }
-</code></pre>
+</code></pre></div>
 <h3 id="2-7-topk-frequent-words" tabindex="-1"><a class="header-anchor" href="#2-7-topk-frequent-words"><span>2-7)  TopK Frequent Words</span></a></h3>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 692</span>
 
 <span class="hljs-comment">// V0-1</span>
@@ -1800,7 +1764,7 @@ List&lt;Integer&gt; <span class="hljs-title function_">pancakeSort</span><span c
     <span class="hljs-comment">// get top K result</span>
     <span class="hljs-keyword">return</span> res.subList(<span class="hljs-number">0</span>, k);
 }
-</code></pre>
+</code></pre></div>
 
       </div>
       <div class="cheatsheet-footer">

@@ -19,54 +19,18 @@
     }
   })();
   </script>
-  <script>document.addEventListener('DOMContentLoaded', function() {
-    document.querySelectorAll('pre code').forEach(function(codeEl) {
-      var pre = codeEl.parentElement;
-      var lang = '';
-      var cls = codeEl.className || '';
-      var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
-      if (m) lang = m[1];
-
-      // Add line numbers
-      var lines = codeEl.innerHTML.split('
-');
-      if (lines[lines.length - 1] === '') lines.pop();
-      var numbered = lines.map(function(line, i) {
-        return '<span class="hljs-ln-line"><span class="hljs-ln-n" data-line-number="' + (i + 1) + '"></span><span class="hljs-ln-code">' + line + '</span></span>';
-      }).join('
-');
-      codeEl.innerHTML = numbered;
-      codeEl.classList.add('hljs-ln');
-
-      var wrapper = document.createElement('div');
-      wrapper.className = 'code-block-wrapper';
-      pre.parentNode.insertBefore(wrapper, pre);
-      var header = document.createElement('div');
-      header.className = 'code-block-header';
-      if (lang) {
-        var label = document.createElement('span');
-        label.className = 'code-lang-label';
-        label.textContent = lang;
-        header.appendChild(label);
-      } else {
-        header.appendChild(document.createElement('span'));
-      }
-      var btn = document.createElement('button');
-      btn.className = 'copy-btn';
-      btn.textContent = 'Copy';
-      btn.addEventListener('click', function() {
-        var text = Array.from(codeEl.querySelectorAll('.hljs-ln-code')).map(function(el) { return el.textContent; }).join('
-');
-        navigator.clipboard.writeText(text).then(function() {
-          btn.textContent = 'Copied!';
-          btn.classList.add('copied');
-          setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
-        });
-      });
-      header.appendChild(btn);
-      wrapper.appendChild(header);
-      wrapper.appendChild(pre);
+  <script>
+  function copyCode(btn) {
+    var pre = btn.closest('.code-block-wrapper').querySelector('pre');
+    var text = pre ? pre.innerText : '';
+    navigator.clipboard.writeText(text).then(function() {
+      btn.textContent = 'Copied!';
+      btn.classList.add('copied');
+      setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
     });
+  }
+  </script>
+  <script>document.addEventListener('DOMContentLoaded', function() {
     document.querySelectorAll('table').forEach(function(table) {
       if (!table.parentElement.classList.contains('table-wrap')) {
         var wrapper = document.createElement('div');
@@ -257,18 +221,18 @@
 </ul>
 <h4 id="example" tabindex="-1"><a class="header-anchor" href="#example"><span>Example:</span></a></h4>
 <p>Let’s say you have a complete binary tree like this:</p>
-<pre><code class="hljs">        10
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">        10
        /  \
      15    20
     / \    /
    30 40  50
-</code></pre>
+</code></pre></div>
 <p>This tree as an <strong>array (1-based)</strong> would be:</p>
-<pre><code class="hljs"># `n is an &quot;index&quot;` in array
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs"># `n is an &quot;index&quot;` in array
 
 Index:   1   2   3   4   5   6
 Value: [10, 15, 20, 30, 40, 50]
-</code></pre>
+</code></pre></div>
 <p>Relationships:</p>
 <ul>
 <li>
@@ -361,7 +325,7 @@ Value: [10, 15, 20, 30, 40, 50]
 </tbody>
 </table>
 <h3 id="universal-tree-template" tabindex="-1"><a class="header-anchor" href="#universal-tree-template"><span>Universal Tree Template</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">tree_problem</span>(<span class="hljs-params">root</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">tree_problem</span>(<span class="hljs-params">root</span>):
     <span class="hljs-string">&quot;&quot;&quot;
     Universal template for most binary tree problems
     Can be adapted for traversal, calculation, or modification
@@ -381,9 +345,9 @@ Value: [10, 15, 20, 30, 40, 50]
     <span class="hljs-comment"># combine_results()</span>
     
     <span class="hljs-keyword">return</span> result
-</code></pre>
+</code></pre></div>
 <h3 id="template-1-tree-traversal-recursive" tabindex="-1"><a class="header-anchor" href="#template-1-tree-traversal-recursive"><span>Template 1: Tree Traversal (Recursive)</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Preorder Traversal</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Preorder Traversal</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">preorder</span>(<span class="hljs-params">root</span>):
     <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> root:
         <span class="hljs-keyword">return</span> []
@@ -400,9 +364,9 @@ Value: [10, 15, 20, 30, 40, 50]
     <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> root:
         <span class="hljs-keyword">return</span> []
     <span class="hljs-keyword">return</span> postorder(root.left) + postorder(root.right) + [root.val]
-</code></pre>
+</code></pre></div>
 <h3 id="template-2-tree-traversal-iterative" tabindex="-1"><a class="header-anchor" href="#template-2-tree-traversal-iterative"><span>Template 2: Tree Traversal (Iterative)</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Iterative Inorder with Stack</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Iterative Inorder with Stack</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">inorder_iterative</span>(<span class="hljs-params">root</span>):
     result, stack = [], []
     current = root
@@ -446,9 +410,9 @@ Value: [10, 15, 20, 30, 40, 50]
         result.append(current_level)
     
     <span class="hljs-keyword">return</span> result
-</code></pre>
+</code></pre></div>
 <h3 id="template-3-tree-construction" tabindex="-1"><a class="header-anchor" href="#template-3-tree-construction"><span>Template 3: Tree Construction</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">build_tree_from_traversals</span>(<span class="hljs-params">preorder, inorder</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">build_tree_from_traversals</span>(<span class="hljs-params">preorder, inorder</span>):
     <span class="hljs-string">&quot;&quot;&quot;
     Construct tree from preorder and inorder traversals
     Key insight: First element in preorder is always root
@@ -476,9 +440,9 @@ Value: [10, 15, 20, 30, 40, 50]
     )
     
     <span class="hljs-keyword">return</span> root
-</code></pre>
+</code></pre></div>
 <h3 id="template-4-path-problems" tabindex="-1"><a class="header-anchor" href="#template-4-path-problems"><span>Template 4: Path Problems</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">path_sum_template</span>(<span class="hljs-params">root, target</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">path_sum_template</span>(<span class="hljs-params">root, target</span>):
     <span class="hljs-string">&quot;&quot;&quot;
     Template for path sum problems
     Can track paths, sums, or other properties
@@ -536,9 +500,9 @@ Value: [10, 15, 20, 30, 40, 50]
     result = []
     dfs(root, <span class="hljs-number">0</span>, [])
     <span class="hljs-keyword">return</span> result
-</code></pre>
+</code></pre></div>
 <h3 id="template-5-tree-properties" tabindex="-1"><a class="header-anchor" href="#template-5-tree-properties"><span>Template 5: Tree Properties</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">tree_property_template</span>(<span class="hljs-params">root</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">tree_property_template</span>(<span class="hljs-params">root</span>):
     <span class="hljs-string">&quot;&quot;&quot;
     Calculate tree properties (height, diameter, balance)
     &quot;&quot;&quot;</span>
@@ -561,9 +525,9 @@ Value: [10, 15, 20, 30, 40, 50]
     <span class="hljs-variable language_">self</span>.result = <span class="hljs-number">0</span>
     helper(root)
     <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.result
-</code></pre>
+</code></pre></div>
 <h3 id="template-6-lca-lowest-common-ancestor" tabindex="-1"><a class="header-anchor" href="#template-6-lca-lowest-common-ancestor"><span>Template 6: LCA (Lowest Common Ancestor)</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">find_lca</span>(<span class="hljs-params">root, p, q</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">find_lca</span>(<span class="hljs-params">root, p, q</span>):
     <span class="hljs-string">&quot;&quot;&quot;
     Find lowest common ancestor of nodes p and q
     &quot;&quot;&quot;</span>
@@ -579,9 +543,9 @@ Value: [10, 15, 20, 30, 40, 50]
 
     <span class="hljs-comment"># One or both found in same subtree</span>
     <span class="hljs-keyword">return</span> left <span class="hljs-keyword">if</span> left <span class="hljs-keyword">else</span> right
-</code></pre>
+</code></pre></div>
 <h3 id="template-7-binary-search-on-trees" tabindex="-1"><a class="header-anchor" href="#template-7-binary-search-on-trees"><span>Template 7: Binary Search on Trees</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">count_complete_tree_nodes</span>(<span class="hljs-params">root</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">count_complete_tree_nodes</span>(<span class="hljs-params">root</span>):
     <span class="hljs-string">&quot;&quot;&quot;
     Count nodes in complete binary tree in O(log²n) time
     Key: Use binary search on tree structure
@@ -610,7 +574,7 @@ Value: [10, 15, 20, 30, 40, 50]
         <span class="hljs-comment"># Height = right_height, nodes = 2^right_height - 1</span>
         <span class="hljs-comment"># Plus root = 2^right_height</span>
         <span class="hljs-keyword">return</span> (<span class="hljs-number">1</span> &lt;&lt; right_height) + count_complete_tree_nodes(root.left)
-</code></pre>
+</code></pre></div>
 <h2 id="problems-by-pattern" tabindex="-1"><a class="header-anchor" href="#problems-by-pattern"><span>Problems by Pattern</span></a></h2>
 <h3 id="pattern-based-problem-classification" tabindex="-1"><a class="header-anchor" href="#pattern-based-problem-classification"><span>Pattern-Based Problem Classification</span></a></h3>
 <h4 id="pattern-1-tree-traversal-problems" tabindex="-1"><a class="header-anchor" href="#pattern-1-tree-traversal-problems"><span><strong>Pattern 1: Tree Traversal Problems</strong></span></a></h4>
@@ -993,7 +957,7 @@ Value: [10, 15, 20, 30, 40, 50]
 </ul>
 <h2 id="2-lc-example" tabindex="-1"><a class="header-anchor" href="#2-lc-example"><span>2) LC Example</span></a></h2>
 <h3 id="2-1-construct-binary-tree-from-preorder-and-inorder-traversal" tabindex="-1"><a class="header-anchor" href="#2-1-construct-binary-tree-from-preorder-and-inorder-traversal"><span>2-1) Construct Binary Tree from Preorder and Inorder Traversal</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
 <span class="hljs-comment"># LC 105. Construct Binary Tree from Preorder and Inorder Traversal</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># IDEA : BST property</span>
@@ -1018,9 +982,9 @@ Value: [10, 15, 20, 30, 40, 50]
         <span class="hljs-comment"># recursion for root.right </span>
         root.right = <span class="hljs-variable language_">self</span>.buildTree(preorder[index + <span class="hljs-number">1</span> : ], inorder[index + <span class="hljs-number">1</span> :]) <span class="hljs-comment">### since the BST is symmery so the length of left-sub-tree is same in both Preorder and Inorder, so we can use the index to get the right-sub-tree of Preorder as well</span>
         <span class="hljs-keyword">return</span> root
-</code></pre>
+</code></pre></div>
 <h3 id="2-2-construct-binary-tree-from-inorder-and-postorder-traversal" tabindex="-1"><a class="header-anchor" href="#2-2-construct-binary-tree-from-inorder-and-postorder-traversal"><span>2-2) Construct Binary Tree from Inorder and Postorder Traversal</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
 <span class="hljs-comment"># LC 106 Construct Binary Tree from Inorder and Postorder Traversal</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># IDEA : Binary Tree property, same as LC 105 </span>
@@ -1043,9 +1007,9 @@ Value: [10, 15, 20, 30, 40, 50]
         <span class="hljs-comment">### NOTE : postorder[idx:-1]</span>
         root.right =  <span class="hljs-variable language_">self</span>.buildTree(inorder[idx+<span class="hljs-number">1</span>:], postorder[idx:-<span class="hljs-number">1</span>])
         <span class="hljs-keyword">return</span> root
-</code></pre>
+</code></pre></div>
 <h3 id="2-3-binary-tree-paths" tabindex="-1"><a class="header-anchor" href="#2-3-binary-tree-paths"><span>2-3) Binary Tree Paths</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 257 Binary Tree Paths</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 257 Binary Tree Paths</span>
 
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># IDEA : BFS</span>
@@ -1087,9 +1051,9 @@ Value: [10, 15, 20, 30, 40, 50]
             <span class="hljs-keyword">return</span> []
         dfs(root, [<span class="hljs-built_in">str</span>(root.val)])
         <span class="hljs-keyword">return</span> ans
-</code></pre>
+</code></pre></div>
 <h3 id="2-4-binary-tree-longest-consecutive-sequence" tabindex="-1"><a class="header-anchor" href="#2-4-binary-tree-longest-consecutive-sequence"><span>2-4) Binary Tree Longest Consecutive Sequence</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 298 Binary Tree Longest Consecutive Sequence</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 298 Binary Tree Longest Consecutive Sequence</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># IDEA : DFS</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
@@ -1141,9 +1105,9 @@ Value: [10, 15, 20, 30, 40, 50]
                     stack.append((node.right, <span class="hljs-number">1</span>))
 
         <span class="hljs-keyword">return</span> maxLen
-</code></pre>
+</code></pre></div>
 <h3 id="2-5-binary-search-tree-iterator" tabindex="-1"><a class="header-anchor" href="#2-5-binary-search-tree-iterator"><span>2-5) Binary Search Tree Iterator</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 173. Binary Search Tree Iterator</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 173. Binary Search Tree Iterator</span>
 
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># IDEA : STACK + tree</span>
@@ -1173,9 +1137,9 @@ Value: [10, 15, 20, 30, 40, 50]
         :rtype: int
         &quot;&quot;&quot;</span>
         <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.stack.pop()
-</code></pre>
+</code></pre></div>
 <h3 id="2-6-count-complete-tree-nodes-binary-search-on-trees" tabindex="-1"><a class="header-anchor" href="#2-6-count-complete-tree-nodes-binary-search-on-trees"><span>2-6) Count Complete Tree Nodes (Binary Search on Trees)</span></a></h3>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 222. Count Complete Tree Nodes</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 222. Count Complete Tree Nodes</span>
 <span class="hljs-comment">// Java Implementation</span>
 
 <span class="hljs-comment">// V0 - BFS Approach</span>
@@ -1271,9 +1235,9 @@ Value: [10, 15, 20, 30, 40, 50]
     }
     <span class="hljs-keyword">return</span> height;
 }
-</code></pre>
+</code></pre></div>
 <h2 id="pattern-selection-strategy" tabindex="-1"><a class="header-anchor" href="#pattern-selection-strategy"><span>Pattern Selection Strategy</span></a></h2>
-<pre><code class="hljs">Problem Analysis Flowchart:
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Problem Analysis Flowchart:
 
 1. Does the problem require visiting nodes in specific order?
    ├── YES → Use Traversal Templates (1 or 2)
@@ -1315,7 +1279,7 @@ Value: [10, 15, 20, 30, 40, 50]
    │   ├── BST with kth element? → Template 7 with inorder traversal
    │   └── Need log time complexity? → Template 7 with binary search
    └── NO → Use Universal Template or reconsider problem type
-</code></pre>
+</code></pre></div>
 <h3 id="decision-framework" tabindex="-1"><a class="header-anchor" href="#decision-framework"><span>Decision Framework</span></a></h3>
 <ol>
 <li><strong>Identify pattern</strong>: Look for keywords (traversal, path, construct, property, ancestor)</li>
@@ -1448,7 +1412,7 @@ Value: [10, 15, 20, 30, 40, 50]
 </table>
 <h3 id="common-patterns-tricks" tabindex="-1"><a class="header-anchor" href="#common-patterns-tricks"><span>Common Patterns &amp; Tricks</span></a></h3>
 <h4 id="pattern-global-variable-for-optimization" tabindex="-1"><a class="header-anchor" href="#pattern-global-variable-for-optimization"><span><strong>Pattern: Global Variable for Optimization</strong></span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">maxPathSum</span>(<span class="hljs-params">self, root</span>):
         <span class="hljs-variable language_">self</span>.max_sum = <span class="hljs-built_in">float</span>(<span class="hljs-string">&#x27;-inf&#x27;</span>)
         
@@ -1462,9 +1426,9 @@ Value: [10, 15, 20, 30, 40, 50]
         
         helper(root)
         <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.max_sum
-</code></pre>
+</code></pre></div>
 <h4 id="pattern-level-processing-with-delimiter" tabindex="-1"><a class="header-anchor" href="#pattern-level-processing-with-delimiter"><span><strong>Pattern: Level Processing with Delimiter</strong></span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">rightSideView</span>(<span class="hljs-params">root</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">rightSideView</span>(<span class="hljs-params">root</span>):
     <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> root:
         <span class="hljs-keyword">return</span> []
     result, queue = [], [root, <span class="hljs-literal">None</span>]
@@ -1482,7 +1446,7 @@ Value: [10, 15, 20, 30, 40, 50]
             queue.append(<span class="hljs-literal">None</span>)
     
     <span class="hljs-keyword">return</span> result
-</code></pre>
+</code></pre></div>
 <h3 id="problem-solving-steps" tabindex="-1"><a class="header-anchor" href="#problem-solving-steps"><span>Problem-Solving Steps</span></a></h3>
 <ol>
 <li><strong>Analyze</strong>: Identify tree structure and required output</li>
@@ -1525,7 +1489,7 @@ Value: [10, 15, 20, 30, 40, 50]
 <li><strong>B-Tree</strong>: Self-balancing tree for databases</li>
 </ul>
 <h3 id="java-implementation-notes" tabindex="-1"><a class="header-anchor" href="#java-implementation-notes"><span>Java Implementation Notes</span></a></h3>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java TreeNode definition</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java TreeNode definition</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">TreeNode</span> {
     <span class="hljs-type">int</span> val;
     TreeNode left, right;
@@ -1537,9 +1501,9 @@ Queue&lt;TreeNode&gt; queue = <span class="hljs-keyword">new</span> <span class=
 
 <span class="hljs-comment">// Stack for iterative traversal</span>
 Stack&lt;TreeNode&gt; stack = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Stack</span>&lt;&gt;();
-</code></pre>
+</code></pre></div>
 <h3 id="python-implementation-notes" tabindex="-1"><a class="header-anchor" href="#python-implementation-notes"><span>Python Implementation Notes</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># TreeNode definition</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># TreeNode definition</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">TreeNode</span>:
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, val=<span class="hljs-number">0</span>, left=<span class="hljs-literal">None</span>, right=<span class="hljs-literal">None</span></span>):
         <span class="hljs-variable language_">self</span>.val = val
@@ -1552,7 +1516,7 @@ queue = deque([root])
 
 <span class="hljs-comment"># List as stack (append/pop)</span>
 stack = []
-</code></pre>
+</code></pre></div>
 <hr>
 <p><strong>Must-Know Problems for Interviews</strong>: LC 94, 102, 104, 105, 110, 124, 222, 226, 236, 297, 543
 <strong>Advanced Problems</strong>: LC 124, 222 (optimized), 297, 437, 863, 968

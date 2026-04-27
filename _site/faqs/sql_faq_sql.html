@@ -19,54 +19,18 @@
     }
   })();
   </script>
-  <script>document.addEventListener('DOMContentLoaded', function() {
-    document.querySelectorAll('pre code').forEach(function(codeEl) {
-      var pre = codeEl.parentElement;
-      var lang = '';
-      var cls = codeEl.className || '';
-      var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
-      if (m) lang = m[1];
-
-      // Add line numbers
-      var lines = codeEl.innerHTML.split('
-');
-      if (lines[lines.length - 1] === '') lines.pop();
-      var numbered = lines.map(function(line, i) {
-        return '<span class="hljs-ln-line"><span class="hljs-ln-n" data-line-number="' + (i + 1) + '"></span><span class="hljs-ln-code">' + line + '</span></span>';
-      }).join('
-');
-      codeEl.innerHTML = numbered;
-      codeEl.classList.add('hljs-ln');
-
-      var wrapper = document.createElement('div');
-      wrapper.className = 'code-block-wrapper';
-      pre.parentNode.insertBefore(wrapper, pre);
-      var header = document.createElement('div');
-      header.className = 'code-block-header';
-      if (lang) {
-        var label = document.createElement('span');
-        label.className = 'code-lang-label';
-        label.textContent = lang;
-        header.appendChild(label);
-      } else {
-        header.appendChild(document.createElement('span'));
-      }
-      var btn = document.createElement('button');
-      btn.className = 'copy-btn';
-      btn.textContent = 'Copy';
-      btn.addEventListener('click', function() {
-        var text = Array.from(codeEl.querySelectorAll('.hljs-ln-code')).map(function(el) { return el.textContent; }).join('
-');
-        navigator.clipboard.writeText(text).then(function() {
-          btn.textContent = 'Copied!';
-          btn.classList.add('copied');
-          setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
-        });
-      });
-      header.appendChild(btn);
-      wrapper.appendChild(header);
-      wrapper.appendChild(pre);
+  <script>
+  function copyCode(btn) {
+    var pre = btn.closest('.code-block-wrapper').querySelector('pre');
+    var text = pre ? pre.innerText : '';
+    navigator.clipboard.writeText(text).then(function() {
+      btn.textContent = 'Copied!';
+      btn.classList.add('copied');
+      setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
     });
+  }
+  </script>
+  <script>document.addEventListener('DOMContentLoaded', function() {
     document.querySelectorAll('table').forEach(function(table) {
       if (!table.parentElement.classList.contains('table-wrap')) {
         var wrapper = document.createElement('div');
@@ -168,13 +132,13 @@
 </ul>
 </li>
 </ul>
-<pre data-lang="sql"><code class="hljs language-sql"> 		# output : 
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">sql</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="sql"><code class="hljs language-sql"> 		# output : 
 			 a <span class="hljs-operator">|</span> b <span class="hljs-operator">|</span> c1 <span class="hljs-operator">|</span> c2 <span class="hljs-operator">|</span> d
 			 a1  b1  c11  c21   d1
 			 a2 b2  c12  c22   d2
 			 a3  b3  c13  c23   d3
 			 .......             
-</code></pre>
+</code></pre></div>
 <img src="../doc/pic/full_outer_join.gif" width="500" height="300">
 <ul>
 <li>Union : Consolidate the result of two queries and returns as single result set.
@@ -184,14 +148,14 @@
 </ul>
 </li>
 </ul>
-<pre data-lang="sql"><code class="hljs language-sql">		# output :   
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">sql</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="sql"><code class="hljs language-sql">		# output :   
 		  	  col1 <span class="hljs-operator">|</span> col2
 		  	   a1     b1
 		  	   a2     b2
 		  	   c1     d2
 		  	   c2     d2
 		  	   ..........
-</code></pre>
+</code></pre></div>
 <img src="../doc/pic/union_sql.png" width="500" height="300">
 <ul>
 <li>In short :
@@ -205,7 +169,7 @@
 <li><a href="https://www.solutionfactory.in/posts/Difference-between-Join-And-Union-in-SQL">https://www.solutionfactory.in/posts/Difference-between-Join-And-Union-in-SQL</a></li>
 </ul>
 <h4 id="3-find-the-orders-in-quater-no-hard-code" tabindex="-1"><a class="header-anchor" href="#3-find-the-orders-in-quater-no-hard-code"><span>3. Find the orders in Quater ? (no hard-code)</span></a></h4>
-<pre data-lang="sql"><code class="hljs language-sql"><span class="hljs-comment">-- postgre</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">sql</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="sql"><code class="hljs language-sql"><span class="hljs-comment">-- postgre</span>
 
 <span class="hljs-keyword">SELECT</span> <span class="hljs-built_in">extract</span>(QUARTER
                <span class="hljs-keyword">FROM</span> order_timestamp) <span class="hljs-keyword">AS</span> QUARTER,
@@ -213,17 +177,17 @@
 <span class="hljs-keyword">FROM</span> orders 
 <span class="hljs-keyword">GROUP</span> <span class="hljs-keyword">BY</span> <span class="hljs-number">1</span>;
 
-</code></pre>
-<pre data-lang="sql"><code class="hljs language-sql"><span class="hljs-comment">-- mysql</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">sql</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="sql"><code class="hljs language-sql"><span class="hljs-comment">-- mysql</span>
 
 <span class="hljs-keyword">SELECT</span> QUARTER(order_timestamp) <span class="hljs-keyword">AS</span> QUARTER,
        <span class="hljs-built_in">count</span>(<span class="hljs-operator">*</span>)
 <span class="hljs-keyword">FROM</span> orders 
 <span class="hljs-keyword">GROUP</span> <span class="hljs-keyword">BY</span> <span class="hljs-number">1</span>;
 
-</code></pre>
+</code></pre></div>
 <h4 id="4-select-value-and-max-value-with-conditions-in-one-query" tabindex="-1"><a class="header-anchor" href="#4-select-value-and-max-value-with-conditions-in-one-query"><span>4. Select value, and max value with conditions in one query?</span></a></h4>
-<pre data-lang="sql"><code class="hljs language-sql"><span class="hljs-comment">-- postgre</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">sql</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="sql"><code class="hljs language-sql"><span class="hljs-comment">-- postgre</span>
 
 <span class="hljs-keyword">SELECT</span> commit_timestamp,
        <span class="hljs-built_in">max</span>(commit_timestamp) max_commit_time,
@@ -237,9 +201,9 @@
 LIMIT <span class="hljs-number">10</span> ;
 
 
-</code></pre>
+</code></pre></div>
 <h4 id="5-select-data-with-value-larger-than-average-value" tabindex="-1"><a class="header-anchor" href="#5-select-data-with-value-larger-than-average-value"><span>5. Select data with value larger than average value?</span></a></h4>
-<pre data-lang="sql"><code class="hljs language-sql"><span class="hljs-comment">-- postgre</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">sql</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="sql"><code class="hljs language-sql"><span class="hljs-comment">-- postgre</span>
 <span class="hljs-comment">-- V1</span>
 
 <span class="hljs-keyword">WITH</span> user_commit_count <span class="hljs-keyword">AS</span>
@@ -260,9 +224,9 @@ LIMIT <span class="hljs-number">10</span> ;
      <span class="hljs-keyword">FROM</span> avg_commit)
 LIMIT <span class="hljs-number">30</span>;
 
-</code></pre>
+</code></pre></div>
 <h3 id="6-select-list-of-integer-from-1-100-recursive-cte" tabindex="-1"><a class="header-anchor" href="#6-select-list-of-integer-from-1-100-recursive-cte"><span>6. select list of integer from 1 -&gt; 100 (recursive CTE)?</span></a></h3>
-<pre data-lang="sql"><code class="hljs language-sql"><span class="hljs-comment">-- postgre</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">sql</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="sql"><code class="hljs language-sql"><span class="hljs-comment">-- postgre</span>
 
 <span class="hljs-keyword">WITH</span> <span class="hljs-keyword">RECURSIVE</span> my_num <span class="hljs-keyword">AS</span>
   (<span class="hljs-keyword">SELECT</span> <span class="hljs-number">1</span> <span class="hljs-keyword">AS</span> seqnum
@@ -272,7 +236,7 @@ LIMIT <span class="hljs-number">30</span>;
 <span class="hljs-keyword">SELECT</span> seqnum
 <span class="hljs-keyword">FROM</span> my_num;
 
-</code></pre>
+</code></pre></div>
 <h3 id="7-given-tables-movie-actor-multi-to-multi-relations-please-design-a-data-model-and-query-that-can-report-number-of-actor-with-given-movie-id-movie-name" tabindex="-1"><a class="header-anchor" href="#7-given-tables-movie-actor-multi-to-multi-relations-please-design-a-data-model-and-query-that-can-report-number-of-actor-with-given-movie-id-movie-name"><span>7. Given tables: movie, actor (multi to multi relations), please design a data model and query that can report number of actor with given movie-id/movie-name ?</span></a></h3>
 <h3 id="8-solve-the-many-to-many-db-design-problem" tabindex="-1"><a class="header-anchor" href="#8-solve-the-many-to-many-db-design-problem"><span>8. Solve the “many-to-many” DB design problem?</span></a></h3>
 <ul>
@@ -290,7 +254,7 @@ LIMIT <span class="hljs-number">30</span>;
 <li><a href="http://sqlqna.blogspot.com/2013/08/union-union-all.html">http://sqlqna.blogspot.com/2013/08/union-union-all.html</a></li>
 </ul>
 <h3 id="10-example-of-use-variable-in-sql" tabindex="-1"><a class="header-anchor" href="#10-example-of-use-variable-in-sql"><span>10. Example of use variable in SQL ?</span></a></h3>
-<pre data-lang="sql"><code class="hljs language-sql"># mysql
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">sql</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="sql"><code class="hljs language-sql"># mysql
 <span class="hljs-keyword">SELECT</span> 
 <span class="hljs-variable">@x</span> <span class="hljs-keyword">AS</span> x, 
 <span class="hljs-variable">@y</span> <span class="hljs-keyword">AS</span> y, 
@@ -299,21 +263,21 @@ LIMIT <span class="hljs-number">30</span>;
 <span class="hljs-keyword">FROM</span>
   (<span class="hljs-keyword">SELECT</span> <span class="hljs-variable">@x</span> :<span class="hljs-operator">=</span> <span class="hljs-number">0</span>, <span class="hljs-variable">@y</span> :<span class="hljs-operator">=</span> <span class="hljs-number">1</span>) INIT;
 
-</code></pre>
+</code></pre></div>
 <h3 id="11-delete-duplicate-record-from-table" tabindex="-1"><a class="header-anchor" href="#11-delete-duplicate-record-from-table"><span>11. Delete duplicate record from table ?</span></a></h3>
 <ul>
 <li><a href="https://github.com/yennanliu/CS_basics/blob/master/leetcode_SQL/delete-duplicate-emails.sql">https://github.com/yennanliu/CS_basics/blob/master/leetcode_SQL/delete-duplicate-emails.sql</a></li>
 </ul>
-<pre data-lang="sql"><code class="hljs language-sql"><span class="hljs-keyword">DELETE</span> a
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">sql</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="sql"><code class="hljs language-sql"><span class="hljs-keyword">DELETE</span> a
 <span class="hljs-keyword">FROM</span> <span class="hljs-keyword">TABLE</span> a,
            <span class="hljs-keyword">TABLE</span> b
 <span class="hljs-keyword">WHERE</span> a.id <span class="hljs-operator">=</span> b.id
   <span class="hljs-keyword">AND</span> a.timestamp <span class="hljs-operator">&gt;</span> b.timestamp
-</code></pre>
+</code></pre></div>
 <ul>
 <li>Follow up : if in the “whole column duplicate” case?</li>
 </ul>
-<pre data-lang="sql"><code class="hljs language-sql">
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">sql</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="sql"><code class="hljs language-sql">
 <span class="hljs-comment">-- build the table </span>
 <span class="hljs-keyword">CREATE TABLE</span> IF <span class="hljs-keyword">NOT</span> EXIST test( id <span class="hljs-type">int</span>, age <span class="hljs-type">int</span>);
 <span class="hljs-keyword">TRUNCATE</span> <span class="hljs-keyword">TABLE</span> test; 
@@ -351,12 +315,12 @@ LIMIT <span class="hljs-number">30</span>;
   ) temp
 ); 
 
-</code></pre>
+</code></pre></div>
 <h3 id="12-sql-deal-with-null-value" tabindex="-1"><a class="header-anchor" href="#12-sql-deal-with-null-value"><span>12. SQL deal with NULL value ?</span></a></h3>
 <ul>
 <li><code>IS NULL</code> VS <code> = NULL</code></li>
 </ul>
-<pre data-lang="sql"><code class="hljs language-sql"><span class="hljs-comment">-- select data where SALARY is not null</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">sql</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="sql"><code class="hljs language-sql"><span class="hljs-comment">-- select data where SALARY is not null</span>
  <span class="hljs-keyword">SELECT</span>  ID, NAME, AGE, ADDRESS, SALARY
    <span class="hljs-keyword">FROM</span> CUSTOMERS
    <span class="hljs-keyword">WHERE</span> SALARY <span class="hljs-keyword">IS</span> <span class="hljs-keyword">NOT NULL</span>; 
@@ -366,11 +330,11 @@ LIMIT <span class="hljs-number">30</span>;
    <span class="hljs-keyword">FROM</span> CUSTOMERS
    <span class="hljs-keyword">WHERE</span> SALARY <span class="hljs-keyword">IS</span> <span class="hljs-keyword">NULL</span>; 
 
-</code></pre>
+</code></pre></div>
 <ul>
 <li>COALESCE</li>
 </ul>
-<pre data-lang="sql"><code class="hljs language-sql">
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">sql</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="sql"><code class="hljs language-sql">
 <span class="hljs-comment">-- COALESCE</span>
 <span class="hljs-keyword">SELECT</span> StudentId, StudentName, Department, 
 Semester_I, Semester_II, Semester_III,
@@ -394,34 +358,34 @@ Semester_I, Semester_II, Semester_III,
 <span class="hljs-keyword">END</span> CASE_Result
 <span class="hljs-keyword">FROM</span> StudentDetails
 
-</code></pre>
+</code></pre></div>
 <ul>
 <li>Addition value with Null</li>
 </ul>
-<pre data-lang="sql"><code class="hljs language-sql">
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">sql</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="sql"><code class="hljs language-sql">
 <span class="hljs-comment">-- Method 1  : IFNULL</span>
 <span class="hljs-keyword">SELECT</span> IFNULL(<span class="hljs-keyword">NULL</span>, <span class="hljs-number">0</span>) <span class="hljs-operator">+</span> <span class="hljs-keyword">value</span>; 
 
 <span class="hljs-comment">-- Method 2  : COALESCE</span>
 <span class="hljs-keyword">SELECT</span> <span class="hljs-built_in">COALESCE</span>(<span class="hljs-keyword">NULL</span>, <span class="hljs-keyword">value</span>); 
 
-</code></pre>
+</code></pre></div>
 <ul>
 <li>Any Value + NULL = Any Value?</li>
 </ul>
-<pre data-lang="sql"><code class="hljs language-sql"><span class="hljs-keyword">SELECT</span> <span class="hljs-keyword">NULL</span> <span class="hljs-operator">+</span> <span class="hljs-number">100</span>;
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">sql</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="sql"><code class="hljs language-sql"><span class="hljs-keyword">SELECT</span> <span class="hljs-keyword">NULL</span> <span class="hljs-operator">+</span> <span class="hljs-number">100</span>;
 <span class="hljs-comment">-- NULL </span>
-</code></pre>
+</code></pre></div>
 <ul>
 <li>Output of NULL != NULL, NULL = NULL ?</li>
 </ul>
-<pre data-lang="sql"><code class="hljs language-sql"><span class="hljs-keyword">SELECT</span> <span class="hljs-keyword">NULL</span> <span class="hljs-operator">!=</span> <span class="hljs-keyword">NULL</span>;
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">sql</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="sql"><code class="hljs language-sql"><span class="hljs-keyword">SELECT</span> <span class="hljs-keyword">NULL</span> <span class="hljs-operator">!=</span> <span class="hljs-keyword">NULL</span>;
 <span class="hljs-comment">-- NULL </span>
 
 <span class="hljs-keyword">SELECT</span> <span class="hljs-keyword">NULL</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">NULL</span>;
 <span class="hljs-comment">-- NULL </span>
 
-</code></pre>
+</code></pre></div>
 <ul>
 <li><a href="https://www.codeproject.com/Articles/1017058/Handle-NULL-in-SQL-Server">https://www.codeproject.com/Articles/1017058/Handle-NULL-in-SQL-Server</a></li>
 <li><a href="https://www.tutorialspoint.com/sql/sql-null-values.htm">https://www.tutorialspoint.com/sql/sql-null-values.htm</a></li>
@@ -446,7 +410,7 @@ Semester_I, Semester_II, Semester_III,
 <p>How</p>
 </li>
 </ul>
-<pre data-lang="sql"><code class="hljs language-sql"><span class="hljs-comment">-- sub-query pattern</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">sql</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="sql"><code class="hljs language-sql"><span class="hljs-comment">-- sub-query pattern</span>
 <span class="hljs-keyword">SELECT</span> column_name [, column_name ]
 <span class="hljs-keyword">FROM</span>   table1 [, table2 ]
 <span class="hljs-keyword">WHERE</span>  column_name OPERATOR
@@ -454,7 +418,7 @@ Semester_I, Semester_II, Semester_III,
    <span class="hljs-keyword">FROM</span> table1 [, table2 ]
    [<span class="hljs-keyword">WHERE</span>])
 
-</code></pre>
+</code></pre></div>
 <ul>
 <li><a href="https://www.tutorialspoint.com/sql/sql-sub-queries.htm">https://www.tutorialspoint.com/sql/sql-sub-queries.htm</a></li>
 <li><a href="https://www.w3resource.com/sql/subqueries/understanding-sql-subqueries.php">https://www.w3resource.com/sql/subqueries/understanding-sql-subqueries.php</a></li>
@@ -473,18 +437,18 @@ Semester_I, Semester_II, Semester_III,
 <li>A window function performs a calculation across a set of table rows that are somehow related to the current row</li>
 <li>Pattern</li>
 </ul>
-<pre data-lang="sql"><code class="hljs language-sql"><span class="hljs-keyword">SELECT</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">sql</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="sql"><code class="hljs language-sql"><span class="hljs-keyword">SELECT</span>
 aggre_func() <span class="hljs-keyword">OVER</span> (<span class="hljs-keyword">PARTITION</span> <span class="hljs-keyword">BY</span> ... <span class="hljs-keyword">ORDER</span> <span class="hljs-keyword">BY</span> ...),
 <span class="hljs-built_in">ROW_NUMBER</span>() <span class="hljs-keyword">OVER</span> (<span class="hljs-keyword">PARTITION</span> <span class="hljs-keyword">BY</span> ... <span class="hljs-keyword">ORDER</span> <span class="hljs-keyword">BY</span> ...),
 <span class="hljs-built_in">RANK</span>() <span class="hljs-keyword">OVER</span> (<span class="hljs-keyword">PARTITION</span> <span class="hljs-keyword">BY</span> ... <span class="hljs-keyword">ORDER</span> <span class="hljs-keyword">BY</span> ...),
 <span class="hljs-built_in">LAG</span>(<span class="hljs-type">timestamp</span>, <span class="hljs-number">1</span>) <span class="hljs-keyword">OVER</span> (<span class="hljs-keyword">PARTITION</span> <span class="hljs-keyword">BY</span> ... <span class="hljs-keyword">ORDER</span> <span class="hljs-keyword">BY</span> ...) <span class="hljs-keyword">AS</span> prev_record,
 <span class="hljs-built_in">RANK</span>() <span class="hljs-keyword">OVER</span> (<span class="hljs-keyword">PARTITION</span> <span class="hljs-keyword">BY</span> <span class="hljs-type">timestamp</span>, <span class="hljs-keyword">ORDER</span> <span class="hljs-keyword">BY</span> <span class="hljs-built_in">count</span>(product_id)) <span class="hljs-keyword">AS</span> rank # NOTE : rank can <span class="hljs-keyword">order</span> <span class="hljs-keyword">by</span> count
 ...
-</code></pre>
+</code></pre></div>
 <ul>
 <li>Example</li>
 </ul>
-<pre data-lang="sql"><code class="hljs language-sql"><span class="hljs-comment">-- example 1 </span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">sql</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="sql"><code class="hljs language-sql"><span class="hljs-comment">-- example 1 </span>
 <span class="hljs-keyword">SELECT</span> duration_seconds,
        <span class="hljs-built_in">SUM</span>(duration_seconds) <span class="hljs-keyword">OVER</span> (<span class="hljs-keyword">ORDER</span> <span class="hljs-keyword">BY</span> start_time) <span class="hljs-keyword">AS</span> running_total
   <span class="hljs-keyword">FROM</span> tutorial.dc_bikeshare_q1_2012
@@ -510,7 +474,7 @@ aggre_func() <span class="hljs-keyword">OVER</span> (<span class="hljs-keyword">
   <span class="hljs-keyword">FROM</span> tutorial.dc_bikeshare_q1_2012
  <span class="hljs-keyword">WHERE</span> start_time <span class="hljs-operator">&lt;</span> <span class="hljs-string">&#x27;2012-01-08&#x27;</span>
 
-</code></pre>
+</code></pre></div>
 <ul>
 <li>ROW_NUMBER()
 <ul>
@@ -519,7 +483,7 @@ aggre_func() <span class="hljs-keyword">OVER</span> (<span class="hljs-keyword">
 </li>
 <li>Example</li>
 </ul>
-<pre data-lang="sql"><code class="hljs language-sql"><span class="hljs-keyword">SELECT</span> start_terminal,
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">sql</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="sql"><code class="hljs language-sql"><span class="hljs-keyword">SELECT</span> start_terminal,
        start_time,
        duration_seconds,
        <span class="hljs-built_in">ROW_NUMBER</span>() <span class="hljs-keyword">OVER</span> (<span class="hljs-keyword">PARTITION</span> <span class="hljs-keyword">BY</span> start_terminal
@@ -527,7 +491,7 @@ aggre_func() <span class="hljs-keyword">OVER</span> (<span class="hljs-keyword">
                     <span class="hljs-keyword">AS</span> row_number
   <span class="hljs-keyword">FROM</span> tutorial.dc_bikeshare_q1_2012
  <span class="hljs-keyword">WHERE</span> start_time <span class="hljs-operator">&lt;</span> <span class="hljs-string">&#x27;2012-01-08&#x27;</span>
-</code></pre>
+</code></pre></div>
 <ul>
 <li>RANK() and DENSE_RANK()
 <ul>
@@ -538,7 +502,7 @@ aggre_func() <span class="hljs-keyword">OVER</span> (<span class="hljs-keyword">
 </li>
 <li>Example</li>
 </ul>
-<pre data-lang="sql"><code class="hljs language-sql"><span class="hljs-keyword">SELECT</span> start_terminal,
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">sql</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="sql"><code class="hljs language-sql"><span class="hljs-keyword">SELECT</span> start_terminal,
        duration_seconds,
        <span class="hljs-built_in">RANK</span>() <span class="hljs-keyword">OVER</span> (<span class="hljs-keyword">PARTITION</span> <span class="hljs-keyword">BY</span> start_terminal
                     <span class="hljs-keyword">ORDER</span> <span class="hljs-keyword">BY</span> start_time)
@@ -546,7 +510,7 @@ aggre_func() <span class="hljs-keyword">OVER</span> (<span class="hljs-keyword">
   <span class="hljs-keyword">FROM</span> tutorial.dc_bikeshare_q1_2012
  <span class="hljs-keyword">WHERE</span> start_time <span class="hljs-operator">&lt;</span> <span class="hljs-string">&#x27;2012-01-08&#x27;</span>
 
-</code></pre>
+</code></pre></div>
 <ul>
 <li>LAG and LEAD()
 <ul>
@@ -555,7 +519,7 @@ aggre_func() <span class="hljs-keyword">OVER</span> (<span class="hljs-keyword">
 </li>
 <li>Example</li>
 </ul>
-<pre data-lang="sql"><code class="hljs language-sql"><span class="hljs-comment">-- example 1 </span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">sql</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="sql"><code class="hljs language-sql"><span class="hljs-comment">-- example 1 </span>
 <span class="hljs-keyword">SELECT</span> start_terminal,
        duration_seconds,
        <span class="hljs-built_in">LAG</span>(duration_seconds, <span class="hljs-number">1</span>) <span class="hljs-keyword">OVER</span>
@@ -576,7 +540,7 @@ aggre_func() <span class="hljs-keyword">OVER</span> (<span class="hljs-keyword">
  <span class="hljs-keyword">WHERE</span> start_time <span class="hljs-operator">&lt;</span> <span class="hljs-string">&#x27;2012-01-08&#x27;</span>
  <span class="hljs-keyword">ORDER</span> <span class="hljs-keyword">BY</span> start_terminal, duration_seconds
 
-</code></pre>
+</code></pre></div>
 <ul>
 <li>NTILE()
 <ul>
@@ -585,7 +549,7 @@ aggre_func() <span class="hljs-keyword">OVER</span> (<span class="hljs-keyword">
 </li>
 <li>Example</li>
 </ul>
-<pre data-lang="sql"><code class="hljs language-sql"><span class="hljs-keyword">SELECT</span> start_terminal,
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">sql</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="sql"><code class="hljs language-sql"><span class="hljs-keyword">SELECT</span> start_terminal,
        duration_seconds,
        <span class="hljs-built_in">NTILE</span>(<span class="hljs-number">4</span>) <span class="hljs-keyword">OVER</span>
          (<span class="hljs-keyword">PARTITION</span> <span class="hljs-keyword">BY</span> start_terminal <span class="hljs-keyword">ORDER</span> <span class="hljs-keyword">BY</span> duration_seconds)
@@ -600,12 +564,12 @@ aggre_func() <span class="hljs-keyword">OVER</span> (<span class="hljs-keyword">
  <span class="hljs-keyword">WHERE</span> start_time <span class="hljs-operator">&lt;</span> <span class="hljs-string">&#x27;2012-01-08&#x27;</span>
  <span class="hljs-keyword">ORDER</span> <span class="hljs-keyword">BY</span> start_terminal, duration_seconds
 
-</code></pre>
+</code></pre></div>
 <ul>
 <li>Can also define window function as alias (Defining a window alias)</li>
 <li>Example</li>
 </ul>
-<pre data-lang="sql"><code class="hljs language-sql"><span class="hljs-keyword">SELECT</span> start_terminal,
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">sql</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="sql"><code class="hljs language-sql"><span class="hljs-keyword">SELECT</span> start_terminal,
        duration_seconds,
        <span class="hljs-built_in">NTILE</span>(<span class="hljs-number">4</span>) <span class="hljs-keyword">OVER</span> ntile_window <span class="hljs-keyword">AS</span> quartile,
        <span class="hljs-built_in">NTILE</span>(<span class="hljs-number">5</span>) <span class="hljs-keyword">OVER</span> ntile_window <span class="hljs-keyword">AS</span> quintile,
@@ -615,7 +579,7 @@ aggre_func() <span class="hljs-keyword">OVER</span> (<span class="hljs-keyword">
 <span class="hljs-keyword">WINDOW</span> ntile_window <span class="hljs-keyword">AS</span>
          (<span class="hljs-keyword">PARTITION</span> <span class="hljs-keyword">BY</span> start_terminal <span class="hljs-keyword">ORDER</span> <span class="hljs-keyword">BY</span> duration_seconds)
  <span class="hljs-keyword">ORDER</span> <span class="hljs-keyword">BY</span> start_terminal, duration_seconds
-</code></pre>
+</code></pre></div>
 <ul>
 <li><a href="https://mode.com/sql-tutorial/sql-window-functions/">https://mode.com/sql-tutorial/sql-window-functions/</a></li>
 <li><a href="https://www.postgresql.org/docs/8.4/functions-window.html">https://www.postgresql.org/docs/8.4/functions-window.html</a></li>
@@ -657,7 +621,7 @@ aggre_func() <span class="hljs-keyword">OVER</span> (<span class="hljs-keyword">
 <p>example</p>
 </li>
 </ul>
-<pre data-lang="sql"><code class="hljs language-sql"><span class="hljs-comment">-- build table </span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">sql</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="sql"><code class="hljs language-sql"><span class="hljs-comment">-- build table </span>
 <span class="hljs-keyword">CREATE table</span> if <span class="hljs-keyword">not</span> <span class="hljs-keyword">exists</span> <span class="hljs-keyword">user</span>(id <span class="hljs-type">int</span>, age <span class="hljs-type">int</span>); 
 <span class="hljs-keyword">truncate</span> <span class="hljs-keyword">table</span> <span class="hljs-keyword">user</span>; 
 <span class="hljs-keyword">INSERT INTO</span> <span class="hljs-keyword">user</span> <span class="hljs-keyword">values</span> (<span class="hljs-number">1</span>, <span class="hljs-number">10</span>);
@@ -696,7 +660,7 @@ aggre_func() <span class="hljs-keyword">OVER</span> (<span class="hljs-keyword">
 <span class="hljs-comment">-- +-----------+----------+----------+</span>
 <span class="hljs-comment">-- 1 row in set (0.00 sec)</span>
 
-</code></pre>
+</code></pre></div>
 <ul>
 <li><a href="https://kknews.cc/tech/mro8689.html">https://kknews.cc/tech/mro8689.html</a></li>
 </ul>
@@ -722,14 +686,14 @@ aggre_func() <span class="hljs-keyword">OVER</span> (<span class="hljs-keyword">
 <p>Example</p>
 </li>
 </ul>
-<pre data-lang="sql"><code class="hljs language-sql"><span class="hljs-comment">-- example 1 </span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">sql</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="sql"><code class="hljs language-sql"><span class="hljs-comment">-- example 1 </span>
 <span class="hljs-keyword">SELECT</span> d.DEPT_NAME, <span class="hljs-built_in">count</span>(e.EMP_NAME) <span class="hljs-keyword">as</span> NUM_EMPLOYEE, <span class="hljs-built_in">avg</span>(e.EMP_SALARY) <span class="hljs-keyword">as</span> AVG_SALARY <span class="hljs-keyword">FROM</span> Employee e,
 Department d <span class="hljs-keyword">WHERE</span> e.DEPT_ID<span class="hljs-operator">=</span>d.DEPT_ID <span class="hljs-keyword">AND</span> EMP_SALARY <span class="hljs-operator">&gt;</span> <span class="hljs-number">5000</span> <span class="hljs-keyword">GROUP</span> <span class="hljs-keyword">BY</span> d.DEPT_NAME <span class="hljs-keyword">HAVING</span> AVG_SALARY <span class="hljs-operator">&gt;</span> <span class="hljs-number">7000</span>;
 
 <span class="hljs-comment">-- example 2 </span>
 <span class="hljs-keyword">update</span> DEPARTMENT <span class="hljs-keyword">set</span> DEPT_NAME<span class="hljs-operator">=</span>&quot;NewSales&quot; <span class="hljs-keyword">WHERE</span> DEPT_ID<span class="hljs-operator">=</span><span class="hljs-number">1</span> ; 
 
-</code></pre>
+</code></pre></div>
 <ul>
 <li><a href="https://www.geeksforgeeks.org/having-vs-where-clause-in-sql/">https://www.geeksforgeeks.org/having-vs-where-clause-in-sql/</a></li>
 <li><a href="https://javarevisited.blogspot.com/2013/08/difference-between-where-vs-having-clause-SQL-databse-group-by-comparision.html">https://javarevisited.blogspot.com/2013/08/difference-between-where-vs-having-clause-SQL-databse-group-by-comparision.html</a></li>
@@ -739,7 +703,7 @@ Department d <span class="hljs-keyword">WHERE</span> e.DEPT_ID<span class="hljs-
 <ul>
 <li>Pattern</li>
 </ul>
-<pre data-lang="sql"><code class="hljs language-sql">
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">sql</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="sql"><code class="hljs language-sql">
 <span class="hljs-keyword">CASE</span> expression   
     <span class="hljs-keyword">WHEN</span> expression_1 <span class="hljs-keyword">THEN</span> result_1
     <span class="hljs-keyword">WHEN</span> expression_2 <span class="hljs-keyword">THEN</span> result_2
@@ -747,11 +711,11 @@ Department d <span class="hljs-keyword">WHERE</span> e.DEPT_ID<span class="hljs-
     <span class="hljs-keyword">WHEN</span> expression_n <span class="hljs-keyword">THEN</span> result_n
     [ <span class="hljs-keyword">ELSE</span> else_result ]   
 <span class="hljs-keyword">END</span>  
-</code></pre>
+</code></pre></div>
 <ul>
 <li>Example</li>
 </ul>
-<pre data-lang="sql"><code class="hljs language-sql">
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">sql</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="sql"><code class="hljs language-sql">
 <span class="hljs-keyword">SELECT</span> 
     title, 
     rating,
@@ -768,7 +732,7 @@ Department d <span class="hljs-keyword">WHERE</span> e.DEPT_ID<span class="hljs-
     books
 <span class="hljs-keyword">ORDER</span> <span class="hljs-keyword">BY</span> 
     title;
-</code></pre>
+</code></pre></div>
 <ul>
 <li><a href="https://www.db2tutorial.com/db2-basics/db2-case-expression/">https://www.db2tutorial.com/db2-basics/db2-case-expression/</a></li>
 <li><a href="https://chartio.com/resources/tutorials/how-to-use-if-then-logic-in-sql-server/">https://chartio.com/resources/tutorials/how-to-use-if-then-logic-in-sql-server/</a></li>
@@ -808,19 +772,19 @@ Department d <span class="hljs-keyword">WHERE</span> e.DEPT_ID<span class="hljs-
 <p>Example</p>
 </li>
 </ul>
-<pre><code class="hljs">1) Count()
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">1) Count()
 2) Sum()
 3) Avg()
 4) Min()
 5) Max()
-</code></pre>
-<pre data-lang="sql"><code class="hljs language-sql">
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">sql</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="sql"><code class="hljs language-sql">
 <span class="hljs-keyword">SELECT</span> <span class="hljs-built_in">COUNT</span>()
 <span class="hljs-keyword">SELECT</span> <span class="hljs-built_in">Count</span>(<span class="hljs-keyword">Distinct</span> Salary)
 <span class="hljs-keyword">SELECT</span> <span class="hljs-built_in">Avg</span>(salary)  <span class="hljs-comment">--  Sum(salary) / count(salary) = 310/5</span>
 <span class="hljs-keyword">SELECT</span> <span class="hljs-built_in">Avg</span>(<span class="hljs-keyword">Distinct</span> salary) <span class="hljs-comment">-- = sum(Distinct salary) / Count(Distinct Salary) </span>
 
-</code></pre>
+</code></pre></div>
 <h3 id="21-explain-demo-on-hierarchy-select-in-sql" tabindex="-1"><a class="header-anchor" href="#21-explain-demo-on-hierarchy-select-in-sql"><span>21. Explain/demo on <code>hierarchy select</code> in SQL ?</span></a></h3>
 <h3 id="22-db-model-questions" tabindex="-1"><a class="header-anchor" href="#22-db-model-questions"><span>22. DB model questions?</span></a></h3>
 <ul>
@@ -832,7 +796,7 @@ Department d <span class="hljs-keyword">WHERE</span> e.DEPT_ID<span class="hljs-
 <ul>
 <li><a href="https://www.sqlservertutorial.net/sql-server-basics/sql-server-recursive-cte/">https://www.sqlservertutorial.net/sql-server-basics/sql-server-recursive-cte/</a></li>
 </ul>
-<pre data-lang="sql"><code class="hljs language-sql"><span class="hljs-keyword">WITH</span> <span class="hljs-keyword">recursive</span> cte(columns_name) 
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">sql</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="sql"><code class="hljs language-sql"><span class="hljs-keyword">WITH</span> <span class="hljs-keyword">recursive</span> cte(columns_name) 
 <span class="hljs-keyword">AS</span> (
 
   initial_query
@@ -842,14 +806,14 @@ Department d <span class="hljs-keyword">WHERE</span> e.DEPT_ID<span class="hljs-
 )
 <span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span> 
 <span class="hljs-keyword">FROM</span> cte
-</code></pre>
+</code></pre></div>
 <h3 id="24-explain-meaning" tabindex="-1"><a class="header-anchor" href="#24-explain-meaning"><span>24. explain <code>&lt;&gt;</code> meaning ?</span></a></h3>
-<pre data-lang="sql"><code class="hljs language-sql"># https:<span class="hljs-operator">/</span><span class="hljs-operator">/</span>docs.microsoft.com<span class="hljs-operator">/</span>en<span class="hljs-operator">-</span>us<span class="hljs-operator">/</span><span class="hljs-keyword">sql</span><span class="hljs-operator">/</span>t<span class="hljs-operator">-</span><span class="hljs-keyword">sql</span><span class="hljs-operator">/</span><span class="hljs-keyword">language</span><span class="hljs-operator">-</span>elements<span class="hljs-operator">/</span><span class="hljs-keyword">not</span><span class="hljs-operator">-</span>equal<span class="hljs-operator">-</span><span class="hljs-keyword">to</span><span class="hljs-operator">-</span>transact<span class="hljs-operator">-</span><span class="hljs-keyword">sql</span><span class="hljs-operator">-</span>traditional?<span class="hljs-keyword">view</span><span class="hljs-operator">=</span><span class="hljs-keyword">sql</span><span class="hljs-operator">-</span>server<span class="hljs-operator">-</span>ver15
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">sql</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="sql"><code class="hljs language-sql"># https:<span class="hljs-operator">/</span><span class="hljs-operator">/</span>docs.microsoft.com<span class="hljs-operator">/</span>en<span class="hljs-operator">-</span>us<span class="hljs-operator">/</span><span class="hljs-keyword">sql</span><span class="hljs-operator">/</span>t<span class="hljs-operator">-</span><span class="hljs-keyword">sql</span><span class="hljs-operator">/</span><span class="hljs-keyword">language</span><span class="hljs-operator">-</span>elements<span class="hljs-operator">/</span><span class="hljs-keyword">not</span><span class="hljs-operator">-</span>equal<span class="hljs-operator">-</span><span class="hljs-keyword">to</span><span class="hljs-operator">-</span>transact<span class="hljs-operator">-</span><span class="hljs-keyword">sql</span><span class="hljs-operator">-</span>traditional?<span class="hljs-keyword">view</span><span class="hljs-operator">=</span><span class="hljs-keyword">sql</span><span class="hljs-operator">-</span>server<span class="hljs-operator">-</span>ver15
 # <span class="hljs-keyword">Not</span> Equal <span class="hljs-keyword">To</span> (Transact <span class="hljs-keyword">SQL</span>)
 # Compares two expressions (a comparison operator). <span class="hljs-keyword">When</span> you compare nonnull expressions, the <span class="hljs-keyword">result</span> <span class="hljs-keyword">is</span> <span class="hljs-literal">TRUE</span> if the <span class="hljs-keyword">left</span> operand <span class="hljs-keyword">is</span> <span class="hljs-keyword">not</span> equal <span class="hljs-keyword">to</span> the <span class="hljs-keyword">right</span> operand; otherwise, the <span class="hljs-keyword">result</span> <span class="hljs-keyword">is</span> FALSE. If either <span class="hljs-keyword">or</span> <span class="hljs-keyword">both</span> operands <span class="hljs-keyword">are</span> <span class="hljs-keyword">NULL</span>, see the topic <span class="hljs-keyword">SET</span> ANSI_NULLS (Transact<span class="hljs-operator">-</span><span class="hljs-keyword">SQL</span>).
 expression <span class="hljs-operator">&lt;&gt;</span> expression  
 
-</code></pre>
+</code></pre></div>
 <h3 id="25-char-vs-varchar" tabindex="-1"><a class="header-anchor" href="#25-char-vs-varchar"><span>25. <code>char</code> VS <code>varchar</code> ?</span></a></h3>
 <ul>
 <li><a href="https://stackoverflow.com/questions/1885630/whats-the-difference-between-varchar-and-char#:~:text=CHAR%20is%20fixed%20length%20and,to%20store%20the%20actual%20text.&amp;text=The%20char%20is%20a%20fixed,variable%2Dlength%20character%20data%20type">https://stackoverflow.com/questions/1885630/whats-the-difference-between-varchar-and-char#:~:text=CHAR is fixed length and,to store the actual text.&amp;text=The char is a fixed,variable-length character data type</a>.</li>
@@ -871,7 +835,7 @@ expression <span class="hljs-operator">&lt;&gt;</span> expression
 <li>The LEAD function provides data on rows after the current row in the row set. For example, in a SELECT statement, you can compare values in the current row with values in the following row.</li>
 <li>example :</li>
 </ul>
-<pre data-lang="sql"><code class="hljs language-sql"># LC <span class="hljs-number">1790</span> : Biggest <span class="hljs-keyword">Window</span> <span class="hljs-keyword">Between</span> Visits
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">sql</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="sql"><code class="hljs language-sql"># LC <span class="hljs-number">1790</span> : Biggest <span class="hljs-keyword">Window</span> <span class="hljs-keyword">Between</span> Visits
 <span class="hljs-keyword">WITH</span> cte1 <span class="hljs-keyword">AS</span>
   (<span class="hljs-keyword">SELECT</span> user_id,
           <span class="hljs-built_in">coalesce</span>(<span class="hljs-built_in">lead</span>(visit_date) <span class="hljs-keyword">OVER</span> (<span class="hljs-keyword">PARTITION</span> <span class="hljs-keyword">BY</span> user_id
@@ -886,7 +850,7 @@ expression <span class="hljs-operator">&lt;&gt;</span> expression
 <span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span>
 <span class="hljs-keyword">FROM</span> cte2
 <span class="hljs-keyword">ORDER</span> <span class="hljs-keyword">BY</span> user_id
-</code></pre>
+</code></pre></div>
 <h3 id="27-explain-foreign-key-fk" tabindex="-1"><a class="header-anchor" href="#27-explain-foreign-key-fk"><span>27. Explain <code>foreign key</code> (fk) ?</span></a></h3>
 <ul>
 <li><a href="https://www.w3schools.com/sql/sql_foreignkey.asp">https://www.w3schools.com/sql/sql_foreignkey.asp</a></li>
@@ -909,7 +873,7 @@ expression <span class="hljs-operator">&lt;&gt;</span> expression
 <li><a href="https://aws.amazon.com/data-warehouse/?nc1=h_ls">https://aws.amazon.com/data-warehouse/?nc1=h_ls</a></li>
 </ul>
 <h3 id="29-rank-example" tabindex="-1"><a class="header-anchor" href="#29-rank-example"><span>29. Rank() example ?</span></a></h3>
-<pre data-lang="sql"><code class="hljs language-sql"># LC <span class="hljs-number">1831</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">sql</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="sql"><code class="hljs language-sql"># LC <span class="hljs-number">1831</span>
 <span class="hljs-keyword">WITH</span> cte <span class="hljs-keyword">AS</span>
   (<span class="hljs-keyword">SELECT</span> transaction_id,
           <span class="hljs-built_in">RANK</span>() <span class="hljs-keyword">OVER</span> (<span class="hljs-keyword">PARTITION</span> <span class="hljs-keyword">BY</span> <span class="hljs-type">DATE</span>(<span class="hljs-keyword">DAY</span>)
@@ -919,12 +883,12 @@ expression <span class="hljs-operator">&lt;&gt;</span> expression
 <span class="hljs-keyword">FROM</span> cte
 <span class="hljs-keyword">WHERE</span> rank <span class="hljs-operator">=</span> <span class="hljs-number">1</span>
 <span class="hljs-keyword">ORDER</span> <span class="hljs-keyword">BY</span> transaction_id
-</code></pre>
+</code></pre></div>
 <h3 id="30-exists-example" tabindex="-1"><a class="header-anchor" href="#30-exists-example"><span>30. <code>EXISTS</code> example ?</span></a></h3>
 <ul>
 <li><a href="https://www.fooish.com/sql/exists.html">https://www.fooish.com/sql/exists.html</a></li>
 </ul>
-<pre data-lang="sql"><code class="hljs language-sql"># V1
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">sql</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="sql"><code class="hljs language-sql"># V1
 <span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">FROM</span> table_a
 <span class="hljs-keyword">WHERE</span> <span class="hljs-keyword">EXISTS</span>
 (<span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">FROM</span> table_b <span class="hljs-keyword">WHERE</span> table_b.id<span class="hljs-operator">=</span>table_a.id);
@@ -935,14 +899,14 @@ expression <span class="hljs-operator">&lt;&gt;</span> expression
 <span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">FROM</span> table_a
 <span class="hljs-keyword">WHERE</span> id
 <span class="hljs-keyword">in</span> (<span class="hljs-keyword">SELECT</span> id <span class="hljs-keyword">FROM</span> table_b);
-</code></pre>
+</code></pre></div>
 <h3 id="31-explain-cross-join" tabindex="-1"><a class="header-anchor" href="#31-explain-cross-join"><span>31. explain <code>cross join</code> ?</span></a></h3>
 <ul>
 <li><a href="https://www.fooish.com/sql/cross-join.html">https://www.fooish.com/sql/cross-join.html</a></li>
 <li>Cross join will return <code>ALL POSSIBLE COMBINATION OF ROWS IN GIVEN columns and tables</code></li>
 <li>NOTE : below sql are eaual to each other</li>
 </ul>
-<pre data-lang="sql"><code class="hljs language-sql"># <span class="hljs-keyword">sql</span> <span class="hljs-number">1</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">sql</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="sql"><code class="hljs language-sql"># <span class="hljs-keyword">sql</span> <span class="hljs-number">1</span>
 <span class="hljs-keyword">SELECT</span> table_column1, table_column2...
 <span class="hljs-keyword">FROM</span> table_name1
 <span class="hljs-keyword">CROSS</span> <span class="hljs-keyword">JOIN</span> table_name2;
@@ -955,12 +919,12 @@ expression <span class="hljs-operator">&lt;&gt;</span> expression
 <span class="hljs-keyword">SELECT</span> table_column1, table_column2...
 <span class="hljs-keyword">FROM</span> table_name1
 <span class="hljs-keyword">JOIN</span> table_name2;
-</code></pre>
+</code></pre></div>
 <h3 id="33-left-join-example" tabindex="-1"><a class="header-anchor" href="#33-left-join-example"><span>33. Left join example ?</span></a></h3>
 <ul>
 <li>Note : Should use <code>IS NULL</code> (rather than “= null”)</li>
 </ul>
-<pre data-lang="sql"><code class="hljs language-sql"># LC <span class="hljs-number">0183</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">sql</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="sql"><code class="hljs language-sql"># LC <span class="hljs-number">0183</span>
 ### NOTE : 
 #       <span class="hljs-operator">-</span><span class="hljs-operator">&gt;</span> SHOULD BE o.CustomerId <span class="hljs-keyword">is</span> <span class="hljs-keyword">NULL</span>
 #       <span class="hljs-operator">-</span><span class="hljs-operator">&gt;</span> RATHER THAN o.CustomerId <span class="hljs-operator">=</span> <span class="hljs-keyword">NULL</span>
@@ -973,9 +937,9 @@ Orders o
 <span class="hljs-keyword">on</span> c.Id <span class="hljs-operator">=</span> o.CustomerId
 <span class="hljs-keyword">WHERE</span>
 o.CustomerId <span class="hljs-keyword">is</span> <span class="hljs-keyword">NULL</span> <span class="hljs-comment">-- note this condition</span>
-</code></pre>
+</code></pre></div>
 <h3 id="34-where-in-multiple-cols" tabindex="-1"><a class="header-anchor" href="#34-where-in-multiple-cols"><span>34. where in multiple cols</span></a></h3>
-<pre data-lang="sql"><code class="hljs language-sql"><span class="hljs-comment">-- LC 184 Department Highest Salary</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">sql</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="sql"><code class="hljs language-sql"><span class="hljs-comment">-- LC 184 Department Highest Salary</span>
 <span class="hljs-comment">/* V0 */</span>
 <span class="hljs-keyword">SELECT</span> d.name <span class="hljs-keyword">AS</span> Department,
        e.name <span class="hljs-keyword">AS</span> Employee,
@@ -989,7 +953,7 @@ o.CustomerId <span class="hljs-keyword">is</span> <span class="hljs-keyword">NUL
             <span class="hljs-built_in">max</span>(Salary) <span class="hljs-keyword">AS</span> salary
      <span class="hljs-keyword">FROM</span> Employee <span class="hljs-keyword">GROUP</span>
 <span class="hljs-keyword">BY</span> DepartmentId)
-</code></pre>
+</code></pre></div>
 <h3 id="35-the-best-medium-hard-data-analyst-sql-interview-questions" tabindex="-1"><a class="header-anchor" href="#35-the-best-medium-hard-data-analyst-sql-interview-questions"><span>35. The Best Medium-Hard Data Analyst SQL Interview Questions</span></a></h3>
 <ul>
 <li><a href="https://quip.com/2gwZArKuWk7W">https://quip.com/2gwZArKuWk7W</a></li>
@@ -999,7 +963,7 @@ o.CustomerId <span class="hljs-keyword">is</span> <span class="hljs-keyword">NUL
 </ul>
 </li>
 </ul>
-<pre data-lang="sql"><code class="hljs language-sql"><span class="hljs-comment">-- data</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">sql</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="sql"><code class="hljs language-sql"><span class="hljs-comment">-- data</span>
 <span class="hljs-operator">|</span> user_id <span class="hljs-operator">|</span> <span class="hljs-type">date</span>       <span class="hljs-operator">|</span>
 <span class="hljs-operator">|</span><span class="hljs-comment">---------|------------|</span>
 <span class="hljs-operator">|</span> <span class="hljs-number">1</span>       <span class="hljs-operator">|</span> <span class="hljs-number">2018</span><span class="hljs-number">-07</span><span class="hljs-number">-01</span> <span class="hljs-operator">|</span>
@@ -1008,8 +972,8 @@ o.CustomerId <span class="hljs-keyword">is</span> <span class="hljs-keyword">NUL
 <span class="hljs-operator">|</span> <span class="hljs-number">1</span>       <span class="hljs-operator">|</span> <span class="hljs-number">2018</span><span class="hljs-number">-07</span><span class="hljs-number">-02</span> <span class="hljs-operator">|</span>
 <span class="hljs-operator">|</span> ...     <span class="hljs-operator">|</span> ...        <span class="hljs-operator">|</span>
 <span class="hljs-operator">|</span> <span class="hljs-number">234</span>     <span class="hljs-operator">|</span> <span class="hljs-number">2018</span><span class="hljs-number">-10</span><span class="hljs-number">-04</span> <span class="hljs-operator">|</span>
-</code></pre>
-<pre data-lang="sql"><code class="hljs language-sql"><span class="hljs-keyword">WITH</span> mau <span class="hljs-keyword">AS</span> 
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">sql</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="sql"><code class="hljs language-sql"><span class="hljs-keyword">WITH</span> mau <span class="hljs-keyword">AS</span> 
 (
   <span class="hljs-keyword">SELECT</span> 
    <span class="hljs-comment">/* 
@@ -1050,13 +1014,13 @@ o.CustomerId <span class="hljs-keyword">is</span> <span class="hljs-keyword">NUL
     */</span>
     mau b <span class="hljs-keyword">ON</span> a.month_timestamp <span class="hljs-operator">=</span> b.month_timestamp <span class="hljs-operator">-</span> <span class="hljs-type">interval</span> <span class="hljs-string">&#x27;1 month&#x27;</span> 
 
-</code></pre>
+</code></pre></div>
 <ul>
 <li>Window Function Practice Problems</li>
 <li>Other Medium/Hard SQL Practice Problems</li>
 </ul>
 <h3 id="36-sql-sort-by-desc-and-asc-on-different-columns" tabindex="-1"><a class="header-anchor" href="#36-sql-sort-by-desc-and-asc-on-different-columns"><span>36. SQL sort by desc and asc (on different columns)</span></a></h3>
-<pre data-lang="sql"><code class="hljs language-sql"><span class="hljs-comment">-- LC 580 Count Student Number in Departments</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">sql</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="sql"><code class="hljs language-sql"><span class="hljs-comment">-- LC 580 Count Student Number in Departments</span>
 # V1
 # https:<span class="hljs-operator">/</span><span class="hljs-operator">/</span>www.datageekinme.com<span class="hljs-operator">/</span>general<span class="hljs-operator">/</span>leetcode<span class="hljs-operator">/</span>leetcode<span class="hljs-operator">-</span><span class="hljs-keyword">sql</span><span class="hljs-number">-580</span><span class="hljs-operator">-</span>count<span class="hljs-operator">-</span>student<span class="hljs-operator">-</span>number<span class="hljs-operator">-</span><span class="hljs-keyword">in</span><span class="hljs-operator">-</span>departments<span class="hljs-operator">/</span>
 <span class="hljs-keyword">select</span> 
@@ -1070,7 +1034,7 @@ o.CustomerId <span class="hljs-keyword">is</span> <span class="hljs-keyword">NUL
     (a.dept_id <span class="hljs-operator">=</span> b.dept_id)
 <span class="hljs-keyword">group</span> <span class="hljs-keyword">by</span> a.dept_name
 <span class="hljs-keyword">order</span> <span class="hljs-keyword">by</span> student_number <span class="hljs-keyword">desc</span>, a.dept_name <span class="hljs-keyword">asc</span>; <span class="hljs-comment">--- NOTE this !!!</span>
-</code></pre>
+</code></pre></div>
 
       </div>
       <div class="cheatsheet-footer">

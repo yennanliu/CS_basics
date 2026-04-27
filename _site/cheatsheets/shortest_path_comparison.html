@@ -19,54 +19,18 @@
     }
   })();
   </script>
-  <script>document.addEventListener('DOMContentLoaded', function() {
-    document.querySelectorAll('pre code').forEach(function(codeEl) {
-      var pre = codeEl.parentElement;
-      var lang = '';
-      var cls = codeEl.className || '';
-      var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
-      if (m) lang = m[1];
-
-      // Add line numbers
-      var lines = codeEl.innerHTML.split('
-');
-      if (lines[lines.length - 1] === '') lines.pop();
-      var numbered = lines.map(function(line, i) {
-        return '<span class="hljs-ln-line"><span class="hljs-ln-n" data-line-number="' + (i + 1) + '"></span><span class="hljs-ln-code">' + line + '</span></span>';
-      }).join('
-');
-      codeEl.innerHTML = numbered;
-      codeEl.classList.add('hljs-ln');
-
-      var wrapper = document.createElement('div');
-      wrapper.className = 'code-block-wrapper';
-      pre.parentNode.insertBefore(wrapper, pre);
-      var header = document.createElement('div');
-      header.className = 'code-block-header';
-      if (lang) {
-        var label = document.createElement('span');
-        label.className = 'code-lang-label';
-        label.textContent = lang;
-        header.appendChild(label);
-      } else {
-        header.appendChild(document.createElement('span'));
-      }
-      var btn = document.createElement('button');
-      btn.className = 'copy-btn';
-      btn.textContent = 'Copy';
-      btn.addEventListener('click', function() {
-        var text = Array.from(codeEl.querySelectorAll('.hljs-ln-code')).map(function(el) { return el.textContent; }).join('
-');
-        navigator.clipboard.writeText(text).then(function() {
-          btn.textContent = 'Copied!';
-          btn.classList.add('copied');
-          setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
-        });
-      });
-      header.appendChild(btn);
-      wrapper.appendChild(header);
-      wrapper.appendChild(pre);
+  <script>
+  function copyCode(btn) {
+    var pre = btn.closest('.code-block-wrapper').querySelector('pre');
+    var text = pre ? pre.innerText : '';
+    navigator.clipboard.writeText(text).then(function() {
+      btn.textContent = 'Copied!';
+      btn.classList.add('copied');
+      setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
     });
+  }
+  </script>
+  <script>document.addEventListener('DOMContentLoaded', function() {
     document.querySelectorAll('table').forEach(function(table) {
       if (!table.parentElement.classList.contains('table-wrap')) {
         var wrapper = document.createElement('div');
@@ -270,7 +234,7 @@
 </tbody>
 </table>
 <h2 id="decision-flowchart" tabindex="-1"><a class="header-anchor" href="#decision-flowchart"><span>Decision Flowchart</span></a></h2>
-<pre><code class="hljs">Start: What's the shortest path problem?
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Start: What's the shortest path problem?
 │
 ├── Unweighted graph?
 │   └── YES → BFS  O(V+E)
@@ -291,42 +255,42 @@
 └── Need negative cycle detection?
     ├── Single check → Bellman-Ford (V-th iteration)
     └── All pairs → Floyd-Warshall (check diagonal)
-</code></pre>
+</code></pre></div>
 <h2 id="common-mistakes-gotchas" tabindex="-1"><a class="header-anchor" href="#common-mistakes-gotchas"><span>Common Mistakes &amp; Gotchas</span></a></h2>
 <h3 id="1-using-dijkstra-with-negative-weights" tabindex="-1"><a class="header-anchor" href="#1-using-dijkstra-with-negative-weights"><span>1. Using Dijkstra with negative weights</span></a></h3>
-<pre><code class="hljs">Graph:  A --1--&gt; B --(-5)--&gt; C
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Graph:  A --1--&gt; B --(-5)--&gt; C
         A --3--&gt; C
 
 Dijkstra visits C via A→C (cost 3), marks C as done.
 Misses A→B→C (cost 1+(-5) = -4).  ← WRONG ANSWER
 
 Fix: Use Bellman-Ford.
-</code></pre>
+</code></pre></div>
 <h3 id="2-bellman-ford-vs-dijkstra-for-lc-787-cheapest-flights-k-stops" tabindex="-1"><a class="header-anchor" href="#2-bellman-ford-vs-dijkstra-for-lc-787-cheapest-flights-k-stops"><span>2. Bellman-Ford vs Dijkstra for LC 787 (Cheapest Flights K Stops)</span></a></h3>
-<pre><code class="hljs">Dijkstra alone doesn't work — K stop constraint means a longer
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Dijkstra alone doesn't work — K stop constraint means a longer
 path might be cheaper. Need modified Bellman-Ford with K iterations,
 or modified Dijkstra with state (node, stops_remaining).
-</code></pre>
+</code></pre></div>
 <h3 id="3-floyd-warshall-loop-order-matters" tabindex="-1"><a class="header-anchor" href="#3-floyd-warshall-loop-order-matters"><span>3. Floyd-Warshall loop order matters</span></a></h3>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// CORRECT: k (intermediate) must be outermost loop</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// CORRECT: k (intermediate) must be outermost loop</span>
 <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">k</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; k &lt; V; k++)        <span class="hljs-comment">// intermediate vertex</span>
     <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; V; i++)     <span class="hljs-comment">// source</span>
         <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">j</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; j &lt; V; j++) <span class="hljs-comment">// destination</span>
             dist[i][j] = Math.min(dist[i][j], dist[i][k] + dist[k][j]);
 
 <span class="hljs-comment">// WRONG: i or j as outermost loop gives incorrect results</span>
-</code></pre>
+</code></pre></div>
 <h3 id="4-when-to-use-dijkstra-vs-dp-on-grids" tabindex="-1"><a class="header-anchor" href="#4-when-to-use-dijkstra-vs-dp-on-grids"><span>4. When to use Dijkstra vs DP on grids</span></a></h3>
-<pre><code class="hljs">LC 64 (Min Path Sum): only move right/down → DAG → use DP (simpler)
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">LC 64 (Min Path Sum): only move right/down → DAG → use DP (simpler)
 LC 1631 (Min Effort):  move 4 directions → cycles possible → use Dijkstra
 LC 778 (Swim in Rising Water): 4 directions → Dijkstra or binary search + BFS
 
 Rule: If movement is restricted to one direction (no cycles) → DP.
       If movement allows backtracking/cycles → Dijkstra.
-</code></pre>
+</code></pre></div>
 <h2 id="variant-0-1-bfs" tabindex="-1"><a class="header-anchor" href="#variant-0-1-bfs"><span>Variant: 0-1 BFS</span></a></h2>
 <p>For graphs where edge weights are only 0 or 1:</p>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Time: O(V+E), Space: O(V)</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Time: O(V+E), Space: O(V)</span>
 <span class="hljs-keyword">from</span> collections <span class="hljs-keyword">import</span> deque
 
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">bfs01</span>(<span class="hljs-params">graph, src, n</span>):
@@ -344,7 +308,7 @@ Rule: If movement is restricted to one direction (no cycles) → DP.
                 <span class="hljs-keyword">else</span>:
                     dq.append(v)      <span class="hljs-comment"># 1-weight → back</span>
     <span class="hljs-keyword">return</span> dist
-</code></pre>
+</code></pre></div>
 <p><strong>Classic LC:</strong> LC 1368 (Min Cost to Make at Least One Valid Path) — 0-1 BFS on grid</p>
 <h2 id="lc-example" tabindex="-1"><a class="header-anchor" href="#lc-example"><span>LC Example</span></a></h2>
 <table>

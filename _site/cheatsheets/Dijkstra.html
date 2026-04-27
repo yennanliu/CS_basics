@@ -19,54 +19,18 @@
     }
   })();
   </script>
-  <script>document.addEventListener('DOMContentLoaded', function() {
-    document.querySelectorAll('pre code').forEach(function(codeEl) {
-      var pre = codeEl.parentElement;
-      var lang = '';
-      var cls = codeEl.className || '';
-      var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
-      if (m) lang = m[1];
-
-      // Add line numbers
-      var lines = codeEl.innerHTML.split('
-');
-      if (lines[lines.length - 1] === '') lines.pop();
-      var numbered = lines.map(function(line, i) {
-        return '<span class="hljs-ln-line"><span class="hljs-ln-n" data-line-number="' + (i + 1) + '"></span><span class="hljs-ln-code">' + line + '</span></span>';
-      }).join('
-');
-      codeEl.innerHTML = numbered;
-      codeEl.classList.add('hljs-ln');
-
-      var wrapper = document.createElement('div');
-      wrapper.className = 'code-block-wrapper';
-      pre.parentNode.insertBefore(wrapper, pre);
-      var header = document.createElement('div');
-      header.className = 'code-block-header';
-      if (lang) {
-        var label = document.createElement('span');
-        label.className = 'code-lang-label';
-        label.textContent = lang;
-        header.appendChild(label);
-      } else {
-        header.appendChild(document.createElement('span'));
-      }
-      var btn = document.createElement('button');
-      btn.className = 'copy-btn';
-      btn.textContent = 'Copy';
-      btn.addEventListener('click', function() {
-        var text = Array.from(codeEl.querySelectorAll('.hljs-ln-code')).map(function(el) { return el.textContent; }).join('
-');
-        navigator.clipboard.writeText(text).then(function() {
-          btn.textContent = 'Copied!';
-          btn.classList.add('copied');
-          setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
-        });
-      });
-      header.appendChild(btn);
-      wrapper.appendChild(header);
-      wrapper.appendChild(pre);
+  <script>
+  function copyCode(btn) {
+    var pre = btn.closest('.code-block-wrapper').querySelector('pre');
+    var text = pre ? pre.innerText : '';
+    navigator.clipboard.writeText(text).then(function() {
+      btn.textContent = 'Copied!';
+      btn.classList.add('copied');
+      setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
     });
+  }
+  </script>
+  <script>document.addEventListener('DOMContentLoaded', function() {
     document.querySelectorAll('table').forEach(function(table) {
       if (!table.parentElement.classList.contains('table-wrap')) {
         var wrapper = document.createElement('div');
@@ -205,15 +169,15 @@
 <p><strong>Question</strong>: Do we really need <code>dist[r][c]</code> (tracking minimum cost to reach each cell) for Dijkstra? Or is pure DP enough?</p>
 <p><strong>Answer</strong>: It depends on <strong>movement directions</strong>:</p>
 <h4 id="lc-64-minimum-path-sum-pure-dp-is-sufficient" tabindex="-1"><a class="header-anchor" href="#lc-64-minimum-path-sum-pure-dp-is-sufficient"><span><strong>LC 64: Minimum Path Sum</strong> ✅ Pure DP is Sufficient</span></a></h4>
-<pre><code class="hljs">Movement: RIGHT only ↓ or DOWN only →
-</code></pre>
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Movement: RIGHT only ↓ or DOWN only →
+</code></pre></div>
 <ul>
 <li><strong>Why DP works</strong>: You can only reach cell <code>(i,j)</code> from <code>(i-1,j)</code> or <code>(i,j-1)</code></li>
 <li><strong>No need for dist[][]</strong>: Each cell is computed exactly once in topological order</li>
 <li><strong>No revisits</strong>: You can never find a “better path” after already computing a cell</li>
 <li><strong>Solution</strong>: Simple 2D DP or O(min(m,n)) space 1D DP</li>
 </ul>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Pure DP - NO dist[][] needed</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Pure DP - NO dist[][] needed</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">minPathSum</span><span class="hljs-params">(<span class="hljs-type">int</span>[][] grid)</span> {
     <span class="hljs-type">int</span> <span class="hljs-variable">m</span> <span class="hljs-operator">=</span> grid.length, n = grid[<span class="hljs-number">0</span>].length;
     <span class="hljs-type">int</span>[][] dp = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[m][n];
@@ -235,17 +199,17 @@
     <span class="hljs-keyword">return</span> dp[m-<span class="hljs-number">1</span>][n-<span class="hljs-number">1</span>];
 }
 <span class="hljs-comment">// Time: O(m*n), Space: O(min(m,n))</span>
-</code></pre>
+</code></pre></div>
 <h4 id="lc-1631-path-with-minimum-effort-dijkstra-dist-needed" tabindex="-1"><a class="header-anchor" href="#lc-1631-path-with-minimum-effort-dijkstra-dist-needed"><span><strong>LC 1631: Path With Minimum Effort</strong> ⚠️ Dijkstra + dist[][] Needed</span></a></h4>
-<pre><code class="hljs">Movement: UP, DOWN, LEFT, RIGHT (all 4 directions)
-</code></pre>
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Movement: UP, DOWN, LEFT, RIGHT (all 4 directions)
+</code></pre></div>
 <ul>
 <li><strong>Why Dijkstra needed</strong>: You might reach a cell from multiple paths, and later find a better path</li>
 <li><strong>dist[][] is essential</strong>: Tracks “best cost found so far” for each cell</li>
 <li><strong>Revisits possible</strong>: When moving in all 4 directions, you can revisit cells with better costs</li>
 <li><strong>Solution</strong>: Dijkstra with dist[][] + PriorityQueue</li>
 </ul>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Dijkstra + dist[][] - NECESSARY for 4-directional movement</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Dijkstra + dist[][] - NECESSARY for 4-directional movement</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">minimumEffortPath</span><span class="hljs-params">(<span class="hljs-type">int</span>[][] heights)</span> {
     <span class="hljs-type">int</span> <span class="hljs-variable">m</span> <span class="hljs-operator">=</span> heights.length, n = heights[<span class="hljs-number">0</span>].length;
     
@@ -283,7 +247,7 @@
     <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>;
 }
 <span class="hljs-comment">// Time: O(m*n*log(m*n)), Space: O(m*n)</span>
-</code></pre>
+</code></pre></div>
 <h3 id="summary-table" tabindex="-1"><a class="header-anchor" href="#summary-table"><span>Summary Table</span></a></h3>
 <table>
 <thead>
@@ -324,8 +288,8 @@
 </tbody>
 </table>
 <h3 id="the-dist-purpose" tabindex="-1"><a class="header-anchor" href="#the-dist-purpose"><span>The dist[][] Purpose</span></a></h3>
-<pre><code class="hljs">dist[r][c] = &quot;What's the MINIMUM cost I've found SO FAR to reach (r,c)?&quot;
-</code></pre>
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">dist[r][c] = &quot;What's the MINIMUM cost I've found SO FAR to reach (r,c)?&quot;
+</code></pre></div>
 <ul>
 <li><strong>Initialize</strong>: <code>dist[r][c] = Integer.MAX_VALUE</code> (unknown)</li>
 <li><strong>Update</strong>: When PQ pops a cell with cost C, check <code>if (C &gt; dist[r][c]) continue;</code>
@@ -338,7 +302,7 @@
 </ul>
 <h3 id="dijkstra-implementation-variants-for-lc-1631" tabindex="-1"><a class="header-anchor" href="#dijkstra-implementation-variants-for-lc-1631"><span>Dijkstra Implementation Variants for LC 1631</span></a></h3>
 <h4 id="variant-1-using-dist-array-recommended" tabindex="-1"><a class="header-anchor" href="#variant-1-using-dist-array-recommended"><span><strong>Variant 1: Using dist[][] Array (Recommended)</strong></span></a></h4>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// dist[r][c] stores minimum cost found so far to reach (r,c)</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// dist[r][c] stores minimum cost found so far to reach (r,c)</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">minimumEffortPath</span><span class="hljs-params">(<span class="hljs-type">int</span>[][] heights)</span> {
     <span class="hljs-type">int</span> <span class="hljs-variable">m</span> <span class="hljs-operator">=</span> heights.length, n = heights[<span class="hljs-number">0</span>].length;
     <span class="hljs-type">int</span>[][] dist = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[m][n];
@@ -374,10 +338,10 @@
     }
     <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>;
 }
-</code></pre>
+</code></pre></div>
 <p><strong>Why it works</strong>: The <code>dist[][]</code> check <code>if (effort &gt; dist[r][c]) continue;</code> automatically skips any path that’s worse than the best we’ve found.</p>
 <h4 id="variant-2-using-visited-array" tabindex="-1"><a class="header-anchor" href="#variant-2-using-visited-array"><span><strong>Variant 2: Using visited[] Array</strong></span></a></h4>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// visited[] marks cells whose minimum effort is finalized</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// visited[] marks cells whose minimum effort is finalized</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">minimumEffortPath_visited</span><span class="hljs-params">(<span class="hljs-type">int</span>[][] heights)</span> {
     <span class="hljs-type">int</span> <span class="hljs-variable">m</span> <span class="hljs-operator">=</span> heights.length, n = heights[<span class="hljs-number">0</span>].length;
     <span class="hljs-type">boolean</span>[][] visited = <span class="hljs-keyword">new</span> <span class="hljs-title class_">boolean</span>[m][n];
@@ -407,7 +371,7 @@
     }
     <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>;
 }
-</code></pre>
+</code></pre></div>
 <p><strong>Why visited works</strong>: The min-heap guarantees that the first time we pop a cell is with optimal effort, so marking it visited prevents reprocessing.</p>
 <h4 id="variant-comparison" tabindex="-1"><a class="header-anchor" href="#variant-comparison"><span><strong>Variant Comparison</strong></span></a></h4>
 <table>
@@ -436,7 +400,7 @@
 </table>
 <h3 id="alternative-approaches-for-lc-1631" tabindex="-1"><a class="header-anchor" href="#alternative-approaches-for-lc-1631"><span>Alternative Approaches for LC 1631</span></a></h3>
 <h4 id="approach-3-binary-search-dfs" tabindex="-1"><a class="header-anchor" href="#approach-3-binary-search-dfs"><span><strong>Approach 3: Binary Search + DFS</strong></span></a></h4>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Binary search on effort + DFS to check if reachable</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Binary search on effort + DFS to check if reachable</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">minimumEffortPath_binarySearch</span><span class="hljs-params">(<span class="hljs-type">int</span>[][] heights)</span> {
     <span class="hljs-type">int</span> <span class="hljs-variable">lo</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>, hi = <span class="hljs-number">1_000_000</span>;
     
@@ -475,10 +439,10 @@
     }
     <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
 }
-</code></pre>
+</code></pre></div>
 <p><strong>Time</strong>: O((V+E) × log(maxH)) | <strong>Space</strong>: O(V)</p>
 <h4 id="approach-4-union-find-kruskal-s-algorithm" tabindex="-1"><a class="header-anchor" href="#approach-4-union-find-kruskal-s-algorithm"><span><strong>Approach 4: Union Find (Kruskal’s Algorithm)</strong></span></a></h4>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Build graph as edges, sort by weight, union until src-dest connected</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Build graph as edges, sort by weight, union until src-dest connected</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">minimumEffortPath_unionFind</span><span class="hljs-params">(<span class="hljs-type">int</span>[][] heights)</span> {
     <span class="hljs-type">int</span> <span class="hljs-variable">m</span> <span class="hljs-operator">=</span> heights.length, n = heights[<span class="hljs-number">0</span>].length;
     List&lt;<span class="hljs-type">int</span>[]&gt; edges = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();
@@ -529,7 +493,7 @@
         <span class="hljs-keyword">if</span> (rank[px] == rank[py]) rank[px]++;
     }
 }
-</code></pre>
+</code></pre></div>
 <p><strong>Time</strong>: O((V+E) log(V+E)) = O(m×n × log(m×n)) | <strong>Space</strong>: O(m×n)</p>
 <h3 id="approach-selection-for-lc-1631" tabindex="-1"><a class="header-anchor" href="#approach-selection-for-lc-1631"><span>Approach Selection for LC 1631</span></a></h3>
 <table>
@@ -583,8 +547,8 @@
 <li><strong>LC 1631</strong>: Can move UP/DOWN/LEFT/RIGHT → Cycles exist → DP fails ❌</li>
 </ul>
 <p>With 4-directional movement, you can have circular dependencies:</p>
-<pre><code class="hljs">(1,1) → (1,2) → (2,2) → (2,1) → (1,1)
-</code></pre>
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">(1,1) → (1,2) → (2,2) → (2,1) → (1,1)
+</code></pre></div>
 <p>DP requires dependencies to form a DAG (no cycles), so <strong>Dijkstra or Binary Search required</strong>.</p>
 <h3 id="q3-what-s-the-difference-between-cost-and-effort-in-lc-1631" tabindex="-1"><a class="header-anchor" href="#q3-what-s-the-difference-between-cost-and-effort-in-lc-1631"><span>Q3: What’s the difference between “cost” and “effort” in LC 1631?</span></a></h3>
 <p><strong>A</strong>: They measure different things in different problems:</p>
@@ -654,7 +618,7 @@
 </tbody>
 </table>
 <h3 id="universal-dijkstra-template" tabindex="-1"><a class="header-anchor" href="#universal-dijkstra-template"><span>Universal Dijkstra Template</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">import</span> heapq
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">import</span> heapq
 <span class="hljs-keyword">import</span> collections
 
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">dijkstra</span>(<span class="hljs-params">n, edges, src, dst</span>):
@@ -690,9 +654,9 @@
                 heapq.heappush(pq, (dist[v], v))
     
     <span class="hljs-keyword">return</span> dist[dst] <span class="hljs-keyword">if</span> dist[dst] != <span class="hljs-built_in">float</span>(<span class="hljs-string">&#x27;inf&#x27;</span>) <span class="hljs-keyword">else</span> -<span class="hljs-number">1</span>
-</code></pre>
+</code></pre></div>
 <h3 id="template-1-basic-dijkstra" tabindex="-1"><a class="header-anchor" href="#template-1-basic-dijkstra"><span>Template 1: Basic Dijkstra</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">dijkstra_basic</span>(<span class="hljs-params">n, edges, src</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">dijkstra_basic</span>(<span class="hljs-params">n, edges, src</span>):
     <span class="hljs-string">&quot;&quot;&quot;Find shortest paths from src to all nodes&quot;&quot;&quot;</span>
     graph = collections.defaultdict(<span class="hljs-built_in">list</span>)
     <span class="hljs-keyword">for</span> u, v, w <span class="hljs-keyword">in</span> edges:
@@ -713,9 +677,9 @@
                 heapq.heappush(pq, (dist[v], v))
     
     <span class="hljs-keyword">return</span> dist
-</code></pre>
+</code></pre></div>
 <h3 id="template-2-dijkstra-with-constraints" tabindex="-1"><a class="header-anchor" href="#template-2-dijkstra-with-constraints"><span>Template 2: Dijkstra with Constraints</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">dijkstra_constrained</span>(<span class="hljs-params">n, edges, src, dst, k</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">dijkstra_constrained</span>(<span class="hljs-params">n, edges, src, dst, k</span>):
     <span class="hljs-string">&quot;&quot;&quot;Shortest path with at most k stops/constraints&quot;&quot;&quot;</span>
     graph = collections.defaultdict(<span class="hljs-built_in">list</span>)
     <span class="hljs-keyword">for</span> u, v, w <span class="hljs-keyword">in</span> edges:
@@ -742,9 +706,9 @@
                 heapq.heappush(pq, (cost + w, v, stops - <span class="hljs-number">1</span>))
     
     <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>
-</code></pre>
+</code></pre></div>
 <h3 id="template-3-grid-based-dijkstra" tabindex="-1"><a class="header-anchor" href="#template-3-grid-based-dijkstra"><span>Template 3: Grid-based Dijkstra</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">dijkstra_grid</span>(<span class="hljs-params">grid</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">dijkstra_grid</span>(<span class="hljs-params">grid</span>):
     <span class="hljs-string">&quot;&quot;&quot;Find minimum cost path in 2D grid&quot;&quot;&quot;</span>
     rows, cols = <span class="hljs-built_in">len</span>(grid), <span class="hljs-built_in">len</span>(grid[<span class="hljs-number">0</span>])
     
@@ -776,9 +740,9 @@
                     heapq.heappush(pq, (new_cost, nr, nc))
     
     <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>
-</code></pre>
+</code></pre></div>
 <h3 id="template-4-multi-source-dijkstra" tabindex="-1"><a class="header-anchor" href="#template-4-multi-source-dijkstra"><span>Template 4: Multi-Source Dijkstra</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">dijkstra_multi_source</span>(<span class="hljs-params">n, edges, sources</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">dijkstra_multi_source</span>(<span class="hljs-params">n, edges, sources</span>):
     <span class="hljs-string">&quot;&quot;&quot;Shortest paths from multiple sources&quot;&quot;&quot;</span>
     graph = collections.defaultdict(<span class="hljs-built_in">list</span>)
     <span class="hljs-keyword">for</span> u, v, w <span class="hljs-keyword">in</span> edges:
@@ -803,9 +767,9 @@
                 heapq.heappush(pq, (dist[v], v))
     
     <span class="hljs-keyword">return</span> dist
-</code></pre>
+</code></pre></div>
 <h3 id="template-5-bidirectional-dijkstra" tabindex="-1"><a class="header-anchor" href="#template-5-bidirectional-dijkstra"><span>Template 5: Bidirectional Dijkstra</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">dijkstra_bidirectional</span>(<span class="hljs-params">n, edges, src, dst</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">dijkstra_bidirectional</span>(<span class="hljs-params">n, edges, src, dst</span>):
     <span class="hljs-string">&quot;&quot;&quot;Optimize by searching from both ends&quot;&quot;&quot;</span>
     graph = collections.defaultdict(<span class="hljs-built_in">list</span>)
     reverse = collections.defaultdict(<span class="hljs-built_in">list</span>)
@@ -842,7 +806,7 @@
     dist_bwd, path2 = dijkstra_helper(dst, reverse, dist_fwd)
     
     <span class="hljs-keyword">return</span> <span class="hljs-built_in">min</span>(path1, path2, dist_fwd[dst])
-</code></pre>
+</code></pre></div>
 <h2 id="problems-by-pattern" tabindex="-1"><a class="header-anchor" href="#problems-by-pattern"><span>Problems by Pattern</span></a></h2>
 <h3 id="classic-shortest-path-problems" tabindex="-1"><a class="header-anchor" href="#classic-shortest-path-problems"><span><strong>Classic Shortest Path Problems</strong></span></a></h3>
 <table>
@@ -1058,7 +1022,7 @@
 <blockquote>
 <p>Dijkstra from source k; answer is max of all shortest distances, or -1 if any unreachable.</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 743 - Network Delay Time</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 743 - Network Delay Time</span>
 <span class="hljs-comment">// IDEA: Dijkstra from source k; max shortest dist = time for signal to reach all nodes</span>
 <span class="hljs-comment">// time = O((V+E) log V), space = O(V+E)</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">networkDelayTime</span><span class="hljs-params">(<span class="hljs-type">int</span>[][] times, <span class="hljs-type">int</span> n, <span class="hljs-type">int</span> k)</span> {
@@ -1081,8 +1045,8 @@
     <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span>; i &lt;= n; i++) { <span class="hljs-keyword">if</span> (dist[i] == Integer.MAX_VALUE) <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>; max = Math.max(max, dist[i]); }
     <span class="hljs-keyword">return</span> max;
 }
-</code></pre>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 743 Network Delay Time</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 743 Network Delay Time</span>
 <span class="hljs-comment"># V0 </span>
 <span class="hljs-comment"># IDEA : Dijkstra</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
@@ -1101,12 +1065,12 @@
                     dist[v] = dist[smallest] + w
             done.add(smallest)
         <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span> <span class="hljs-keyword">if</span> <span class="hljs-built_in">float</span>(<span class="hljs-string">&#x27;inf&#x27;</span>) <span class="hljs-keyword">in</span> dist <span class="hljs-keyword">else</span> <span class="hljs-built_in">max</span>(dist)
-</code></pre>
+</code></pre></div>
 <h3 id="2-2-cheapest-flights-within-k-stops-lc-787-dijkstra-with-stop-counter" tabindex="-1"><a class="header-anchor" href="#2-2-cheapest-flights-within-k-stops-lc-787-dijkstra-with-stop-counter"><span>2-2) Cheapest Flights Within K Stops (LC 787) — Dijkstra with Stop Counter</span></a></h3>
 <blockquote>
 <p>State = (cost, node, stops); skip if stops &gt; k; don’t use visited set (stops matter).</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 787 - Cheapest Flights Within K Stops</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 787 - Cheapest Flights Within K Stops</span>
 <span class="hljs-comment">// IDEA: Dijkstra with state (cost, node, stops); stop expanding when stops &gt; k</span>
 <span class="hljs-comment">// time = O(E * K log(E*K)), space = O(E*K)</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">findCheapestPrice</span><span class="hljs-params">(<span class="hljs-type">int</span> n, <span class="hljs-type">int</span>[][] flights, <span class="hljs-type">int</span> src, <span class="hljs-type">int</span> dst, <span class="hljs-type">int</span> k)</span> {
@@ -1126,8 +1090,8 @@
     }
     <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>;
 }
-</code></pre>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 787 Cheapest Flights Within K Stops</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 787 Cheapest Flights Within K Stops</span>
 <span class="hljs-comment"># V1</span>
 <span class="hljs-comment"># IDEA : Dijkstra</span>
 <span class="hljs-comment"># https://leetcode.com/problems/cheapest-flights-within-k-stops/discuss/267200/Python-Dijkstra</span>
@@ -1155,12 +1119,12 @@
             <span class="hljs-keyword">for</span> y, dw <span class="hljs-keyword">in</span> graph[x].items():
                 heapq.heappush(pq, (w+dw, y, k-<span class="hljs-number">1</span>))
         <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>
-</code></pre>
+</code></pre></div>
 <h3 id="2-3-path-with-minimum-effort-lc-1631-dijkstra-min-effort-on-grid" tabindex="-1"><a class="header-anchor" href="#2-3-path-with-minimum-effort-lc-1631-dijkstra-min-effort-on-grid"><span>2-3) Path With Minimum Effort (LC 1631) — Dijkstra Min Effort on Grid</span></a></h3>
 <blockquote>
 <p>Minimize the maximum absolute difference along path; use min-heap with effort as priority key.</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 1631</span>
 
 <span class="hljs-comment">// V0-1</span>
@@ -1260,12 +1224,12 @@
 
     <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>; <span class="hljs-comment">// Should never reach here if input is valid</span>
 }
-</code></pre>
+</code></pre></div>
 <h3 id="2-4-path-with-maximum-probability-lc-1514-dijkstra-max-heap-on-probabilities" tabindex="-1"><a class="header-anchor" href="#2-4-path-with-maximum-probability-lc-1514-dijkstra-max-heap-on-probabilities"><span>2-4) Path with Maximum Probability (LC 1514) — Dijkstra Max-Heap on Probabilities</span></a></h3>
 <blockquote>
 <p>Max-heap Dijkstra multiplying edge probabilities; start at 1.0, maximize reach-probability.</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 1514</span>
 <span class="hljs-comment">// IDEA: Modified Dijkstra (max-heap, multiply probabilities instead of adding distances)</span>
 <span class="hljs-comment">// <span class="hljs-doctag">NOTE:</span> Use MAX heap since we want maximum probability</span>
@@ -1309,8 +1273,8 @@
         <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
     }
 }
-</code></pre>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
 <span class="hljs-comment"># LC 1514</span>
 <span class="hljs-comment"># IDEA: Modified Dijkstra with max-heap (negate probability for max behavior)</span>
 <span class="hljs-keyword">import</span> heapq
@@ -1344,12 +1308,12 @@
                     heapq.heappush(pq, (-new_prob, v))
 
         <span class="hljs-keyword">return</span> <span class="hljs-number">0.0</span>
-</code></pre>
+</code></pre></div>
 <h3 id="2-5-number-of-ways-to-arrive-at-destination-lc-1976-dijkstra-path-count" tabindex="-1"><a class="header-anchor" href="#2-5-number-of-ways-to-arrive-at-destination-lc-1976-dijkstra-path-count"><span>2-5) Number of Ways to Arrive at Destination (LC 1976) — Dijkstra + Path Count</span></a></h3>
 <blockquote>
 <p>Standard Dijkstra; track count of shortest paths at each node alongside minimum distance.</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 1976</span>
 <span class="hljs-comment">// IDEA: Dijkstra + count paths</span>
 <span class="hljs-comment">// <span class="hljs-doctag">NOTE:</span> Track both shortest distance AND number of ways to reach each node</span>
@@ -1398,8 +1362,8 @@
         <span class="hljs-keyword">return</span> (<span class="hljs-type">int</span>) (ways[n - <span class="hljs-number">1</span>] % MOD);
     }
 }
-</code></pre>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
 <span class="hljs-comment"># LC 1976</span>
 <span class="hljs-comment"># IDEA: Dijkstra + count shortest paths</span>
 <span class="hljs-keyword">import</span> heapq
@@ -1432,12 +1396,12 @@
                     ways[v] = (ways[v] + ways[u]) % MOD
 
         <span class="hljs-keyword">return</span> ways[n - <span class="hljs-number">1</span>] % MOD
-</code></pre>
+</code></pre></div>
 <h3 id="2-6-swim-in-rising-water-lc-778-dijkstra-min-max-on-grid" tabindex="-1"><a class="header-anchor" href="#2-6-swim-in-rising-water-lc-778-dijkstra-min-max-on-grid"><span>2-6) Swim in Rising Water (LC 778) — Dijkstra Min-Max on Grid</span></a></h3>
 <blockquote>
 <p>Min-heap where priority = max elevation seen so far; answer = time to reach bottom-right.</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 778</span>
 <span class="hljs-comment">// IDEA: Dijkstra (min PQ + BFS on grid)</span>
 <span class="hljs-comment">// <span class="hljs-doctag">NOTE:</span> Track max elevation along path (not sum of weights)</span>
@@ -1471,12 +1435,12 @@
     }
     <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>;
 }
-</code></pre>
+</code></pre></div>
 <h3 id="2-7-trapping-rain-water-ii-lc-407-multi-source-dijkstra-from-boundary" tabindex="-1"><a class="header-anchor" href="#2-7-trapping-rain-water-ii-lc-407-multi-source-dijkstra-from-boundary"><span>2-7) Trapping Rain Water II (LC 407) — Multi-Source Dijkstra from Boundary</span></a></h3>
 <blockquote>
 <p>Process boundary cells with min-heap; water trapped = max(boundary height) - cell height.</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 407</span>
 <span class="hljs-comment">// IDEA: Multi-source Dijkstra (PQ from boundary inward)</span>
 <span class="hljs-comment">// <span class="hljs-doctag">NOTE:</span> Start from all boundary cells, expand inward with min-heap</span>
@@ -1525,12 +1489,12 @@
     }
     <span class="hljs-keyword">return</span> totalWater;
 }
-</code></pre>
+</code></pre></div>
 <h3 id="2-8-minimum-obstacle-removal-to-reach-corner-lc-2290-0-1-bfs-dijkstra" tabindex="-1"><a class="header-anchor" href="#2-8-minimum-obstacle-removal-to-reach-corner-lc-2290-0-1-bfs-dijkstra"><span>2-8) Minimum Obstacle Removal to Reach Corner (LC 2290) — 0-1 BFS / Dijkstra</span></a></h3>
 <blockquote>
 <p>Cost = 1 for obstacle, 0 for empty cell; use 0-1 BFS (deque) or Dijkstra to minimize total.</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 2290</span>
 
 <span class="hljs-comment">// V0-1</span>
@@ -1644,10 +1608,10 @@
 
     <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>; <span class="hljs-comment">// should never happen</span>
 }
-</code></pre>
+</code></pre></div>
 <h2 id="decision-framework" tabindex="-1"><a class="header-anchor" href="#decision-framework"><span>Decision Framework</span></a></h2>
 <h3 id="pattern-selection-strategy" tabindex="-1"><a class="header-anchor" href="#pattern-selection-strategy"><span>Pattern Selection Strategy</span></a></h3>
-<pre><code class="hljs">Dijkstra Algorithm Selection Flowchart:
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Dijkstra Algorithm Selection Flowchart:
 
 1. Is it a shortest path problem?
    ├── NO → Consider other algorithms (DFS, BFS, DP)
@@ -1672,7 +1636,7 @@
 6. Need optimization for large graphs?
    ├── YES → Consider Bidirectional Dijkstra (Template 5)
    └── NO → Use selected template from above
-</code></pre>
+</code></pre></div>
 <h3 id="when-to-use-dijkstra-vs-bfs" tabindex="-1"><a class="header-anchor" href="#when-to-use-dijkstra-vs-bfs"><span>When to Use Dijkstra vs BFS</span></a></h3>
 <table>
 <thead>
@@ -1870,7 +1834,7 @@
 </tbody>
 </table>
 <h3 id="when-to-use-each-algorithm" tabindex="-1"><a class="header-anchor" href="#when-to-use-each-algorithm"><span>When to Use Each Algorithm</span></a></h3>
-<pre><code class="hljs">Shortest Path Algorithm Selection:
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Shortest Path Algorithm Selection:
 
 1. What type of problem?
    ├── All-pairs shortest path? → Continue to 2
@@ -1892,7 +1856,7 @@
    ├── Tree structure? → Use DFS/BFS: O(V)
    ├── Grid-based? → Dijkstra on implicit graph
    └── Transitive closure? → Floyd-Warshall (boolean variant)
-</code></pre>
+</code></pre></div>
 <h3 id="practical-comparison-examples" tabindex="-1"><a class="header-anchor" href="#practical-comparison-examples"><span>Practical Comparison Examples</span></a></h3>
 <p><strong>Example 1: Social Network (1000 users, 5000 friendships)</strong></p>
 <ul>
@@ -2116,7 +2080,7 @@
 </table>
 <h3 id="common-patterns-tricks" tabindex="-1"><a class="header-anchor" href="#common-patterns-tricks"><span>Common Patterns &amp; Tricks</span></a></h3>
 <h4 id="priority-queue-state" tabindex="-1"><a class="header-anchor" href="#priority-queue-state"><span><strong>Priority Queue State</strong></span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Basic state</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Basic state</span>
 (distance, node)
 
 <span class="hljs-comment"># With constraints</span>
@@ -2127,9 +2091,9 @@
 
 <span class="hljs-comment"># With path tracking</span>
 (distance, node, path)
-</code></pre>
+</code></pre></div>
 <h4 id="visited-set-optimization" tabindex="-1"><a class="header-anchor" href="#visited-set-optimization"><span><strong>Visited Set Optimization</strong></span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Option 1: Check after pop (recommended)</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Option 1: Check after pop (recommended)</span>
 <span class="hljs-keyword">if</span> node <span class="hljs-keyword">in</span> visited:
     <span class="hljs-keyword">continue</span>
 visited.add(node)
@@ -2137,9 +2101,9 @@ visited.add(node)
 <span class="hljs-comment"># Option 2: Check distance</span>
 <span class="hljs-keyword">if</span> d &gt; dist[node]:
     <span class="hljs-keyword">continue</span>
-</code></pre>
+</code></pre></div>
 <h4 id="path-reconstruction" tabindex="-1"><a class="header-anchor" href="#path-reconstruction"><span><strong>Path Reconstruction</strong></span></a></h4>
-<pre data-lang="python"><code class="hljs language-python">parent = {}
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python">parent = {}
 <span class="hljs-comment"># During relaxation:</span>
 parent[v] = u
 
@@ -2149,7 +2113,7 @@ path = []
     path.append(node)
     node = parent[node]
 path.reverse()
-</code></pre>
+</code></pre></div>
 <h3 id="problem-solving-steps" tabindex="-1"><a class="header-anchor" href="#problem-solving-steps"><span>Problem-Solving Steps</span></a></h3>
 <ol>
 <li><strong>Identify graph structure</strong>: Explicit edges or implicit (grid)?</li>

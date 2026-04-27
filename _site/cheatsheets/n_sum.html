@@ -19,54 +19,18 @@
     }
   })();
   </script>
-  <script>document.addEventListener('DOMContentLoaded', function() {
-    document.querySelectorAll('pre code').forEach(function(codeEl) {
-      var pre = codeEl.parentElement;
-      var lang = '';
-      var cls = codeEl.className || '';
-      var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
-      if (m) lang = m[1];
-
-      // Add line numbers
-      var lines = codeEl.innerHTML.split('
-');
-      if (lines[lines.length - 1] === '') lines.pop();
-      var numbered = lines.map(function(line, i) {
-        return '<span class="hljs-ln-line"><span class="hljs-ln-n" data-line-number="' + (i + 1) + '"></span><span class="hljs-ln-code">' + line + '</span></span>';
-      }).join('
-');
-      codeEl.innerHTML = numbered;
-      codeEl.classList.add('hljs-ln');
-
-      var wrapper = document.createElement('div');
-      wrapper.className = 'code-block-wrapper';
-      pre.parentNode.insertBefore(wrapper, pre);
-      var header = document.createElement('div');
-      header.className = 'code-block-header';
-      if (lang) {
-        var label = document.createElement('span');
-        label.className = 'code-lang-label';
-        label.textContent = lang;
-        header.appendChild(label);
-      } else {
-        header.appendChild(document.createElement('span'));
-      }
-      var btn = document.createElement('button');
-      btn.className = 'copy-btn';
-      btn.textContent = 'Copy';
-      btn.addEventListener('click', function() {
-        var text = Array.from(codeEl.querySelectorAll('.hljs-ln-code')).map(function(el) { return el.textContent; }).join('
-');
-        navigator.clipboard.writeText(text).then(function() {
-          btn.textContent = 'Copied!';
-          btn.classList.add('copied');
-          setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
-        });
-      });
-      header.appendChild(btn);
-      wrapper.appendChild(header);
-      wrapper.appendChild(pre);
+  <script>
+  function copyCode(btn) {
+    var pre = btn.closest('.code-block-wrapper').querySelector('pre');
+    var text = pre ? pre.innerText : '';
+    navigator.clipboard.writeText(text).then(function() {
+      btn.textContent = 'Copied!';
+      btn.classList.add('copied');
+      setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
     });
+  }
+  </script>
+  <script>document.addEventListener('DOMContentLoaded', function() {
     document.querySelectorAll('table').forEach(function(table) {
       if (!table.parentElement.classList.contains('table-wrap')) {
         var wrapper = document.createElement('div');
@@ -189,7 +153,7 @@
 </ul>
 <h3 id="0-2-pattern" tabindex="-1"><a class="header-anchor" href="#0-2-pattern"><span>0-2) Pattern</span></a></h3>
 <h2 id="1-general-form" tabindex="-1"><a class="header-anchor" href="#1-general-form"><span>1) General form</span></a></h2>
-<pre data-lang="c++"><code class="hljs language-c++"><span class="hljs-comment">// c++</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">c++</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="c++"><code class="hljs language-c++"><span class="hljs-comment">// c++</span>
 <span class="hljs-comment">//---------------------------------</span>
 <span class="hljs-comment">// 2 SUM general form (target = 0)</span>
 <span class="hljs-comment">//---------------------------------</span>
@@ -219,8 +183,8 @@ vector&lt;vector&lt;<span class="hljs-type">int</span>&gt;&gt; <span class="hljs
     }
     <span class="hljs-keyword">return</span> res;
 }
-</code></pre>
-<pre data-lang="c++"><code class="hljs language-c++"><span class="hljs-comment">// c++</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">c++</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="c++"><code class="hljs language-c++"><span class="hljs-comment">// c++</span>
 <span class="hljs-comment">//---------------------------------</span>
 <span class="hljs-comment">// 3 SUM general form (target = N)</span>
 <span class="hljs-comment">//---------------------------------</span>
@@ -277,8 +241,8 @@ vector&lt;vector&lt;<span class="hljs-type">int</span>&gt;&gt; <span class="hljs
     }
     <span class="hljs-keyword">return</span> res;
 }
-</code></pre>
-<pre data-lang="c++"><code class="hljs language-c++"><span class="hljs-comment">// c++</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">c++</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="c++"><code class="hljs language-c++"><span class="hljs-comment">// c++</span>
 <span class="hljs-comment">//---------------------------------</span>
 <span class="hljs-comment">// K SUM general form (target = N)</span>
 <span class="hljs-comment">//---------------------------------</span>
@@ -325,11 +289,11 @@ vector&lt;vector&lt;<span class="hljs-type">int</span>&gt;&gt; <span class="hljs
     }
     <span class="hljs-keyword">return</span>  res;
 }
-</code></pre>
+</code></pre></div>
 <h3 id="1-1-basic-op" tabindex="-1"><a class="header-anchor" href="#1-1-basic-op"><span>1-1) Basic OP</span></a></h3>
 <h2 id="2-lc-example" tabindex="-1"><a class="header-anchor" href="#2-lc-example"><span>2) LC Example</span></a></h2>
 <h3 id="2-1-2-sum" tabindex="-1"><a class="header-anchor" href="#2-1-2-sum"><span>2-1) 2 Sum</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 001</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 001</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">twoSum</span>(<span class="hljs-params">self, nums, target</span>):
         lookup = {}
@@ -338,9 +302,9 @@ vector&lt;vector&lt;<span class="hljs-type">int</span>&gt;&gt; <span class="hljs
                 <span class="hljs-keyword">return</span> [lookup[target - num], i]
             lookup[num] = i
         <span class="hljs-keyword">return</span> [-<span class="hljs-number">1</span>, -<span class="hljs-number">1</span>]
-</code></pre>
+</code></pre></div>
 <h3 id="2-1-2-sum-ii" tabindex="-1"><a class="header-anchor" href="#2-1-2-sum-ii"><span>2-1’) 2 Sum II</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 167 Two Sum II - Input Array Is Sorted</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 167 Two Sum II - Input Array Is Sorted</span>
 <span class="hljs-comment"># NOTE : we can also use &quot;2 sum&quot; dict approach</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># IDEA : TWO POINTERS</span>
@@ -363,9 +327,9 @@ vector&lt;vector&lt;<span class="hljs-type">int</span>&gt;&gt; <span class="hljs
             <span class="hljs-keyword">else</span>:
                 l += <span class="hljs-number">1</span>
         <span class="hljs-keyword">return</span> [-<span class="hljs-number">1</span>, -<span class="hljs-number">1</span>]
-</code></pre>
+</code></pre></div>
 <h3 id="2-2-3-sum" tabindex="-1"><a class="header-anchor" href="#2-2-3-sum"><span>2-2) 3 Sum</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 015</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 015</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># IDEA : for loop + 2 sum</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
@@ -463,9 +427,9 @@ vector&lt;vector&lt;<span class="hljs-type">int</span>&gt;&gt; <span class="hljs
                             res.append(tmp)
                 d[nums[j]] = j
         <span class="hljs-keyword">return</span> res
-</code></pre>
+</code></pre></div>
 <h3 id="2-3-4-sum" tabindex="-1"><a class="header-anchor" href="#2-3-4-sum"><span>2-3) 4 Sum</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 018</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 018</span>
 <span class="hljs-comment"># V0 </span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">fourSum</span>(<span class="hljs-params">self, nums, target</span>):
@@ -487,9 +451,9 @@ vector&lt;vector&lt;<span class="hljs-type">int</span>&gt;&gt; <span class="hljs
                     <span class="hljs-keyword">else</span>:
                         num3 += <span class="hljs-number">1</span>
         <span class="hljs-keyword">return</span> resultList
-</code></pre>
+</code></pre></div>
 <h3 id="2-4-two-sum-less-than-k" tabindex="-1"><a class="header-anchor" href="#2-4-two-sum-less-than-k"><span>2-4) Two Sum Less Than K</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 1099 Two Sum Less Than K</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 1099 Two Sum Less Than K</span>
 <span class="hljs-comment"># V1</span>
 <span class="hljs-comment"># https://goodtecher.com/leetcode-1099-two-sum-less-than-k/</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
@@ -521,7 +485,7 @@ vector&lt;vector&lt;<span class="hljs-type">int</span>&gt;&gt; <span class="hljs
             <span class="hljs-keyword">if</span> i2 &gt; i1:
                 ans = <span class="hljs-built_in">max</span>(ans, n1 + n2)
         <span class="hljs-keyword">return</span> ans
-</code></pre>
+</code></pre></div>
 
       </div>
       <div class="cheatsheet-footer">

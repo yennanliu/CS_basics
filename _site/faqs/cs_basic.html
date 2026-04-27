@@ -19,54 +19,18 @@
     }
   })();
   </script>
-  <script>document.addEventListener('DOMContentLoaded', function() {
-    document.querySelectorAll('pre code').forEach(function(codeEl) {
-      var pre = codeEl.parentElement;
-      var lang = '';
-      var cls = codeEl.className || '';
-      var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
-      if (m) lang = m[1];
-
-      // Add line numbers
-      var lines = codeEl.innerHTML.split('
-');
-      if (lines[lines.length - 1] === '') lines.pop();
-      var numbered = lines.map(function(line, i) {
-        return '<span class="hljs-ln-line"><span class="hljs-ln-n" data-line-number="' + (i + 1) + '"></span><span class="hljs-ln-code">' + line + '</span></span>';
-      }).join('
-');
-      codeEl.innerHTML = numbered;
-      codeEl.classList.add('hljs-ln');
-
-      var wrapper = document.createElement('div');
-      wrapper.className = 'code-block-wrapper';
-      pre.parentNode.insertBefore(wrapper, pre);
-      var header = document.createElement('div');
-      header.className = 'code-block-header';
-      if (lang) {
-        var label = document.createElement('span');
-        label.className = 'code-lang-label';
-        label.textContent = lang;
-        header.appendChild(label);
-      } else {
-        header.appendChild(document.createElement('span'));
-      }
-      var btn = document.createElement('button');
-      btn.className = 'copy-btn';
-      btn.textContent = 'Copy';
-      btn.addEventListener('click', function() {
-        var text = Array.from(codeEl.querySelectorAll('.hljs-ln-code')).map(function(el) { return el.textContent; }).join('
-');
-        navigator.clipboard.writeText(text).then(function() {
-          btn.textContent = 'Copied!';
-          btn.classList.add('copied');
-          setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
-        });
-      });
-      header.appendChild(btn);
-      wrapper.appendChild(header);
-      wrapper.appendChild(pre);
+  <script>
+  function copyCode(btn) {
+    var pre = btn.closest('.code-block-wrapper').querySelector('pre');
+    var text = pre ? pre.innerText : '';
+    navigator.clipboard.writeText(text).then(function() {
+      btn.textContent = 'Copied!';
+      btn.classList.add('copied');
+      setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
     });
+  }
+  </script>
+  <script>document.addEventListener('DOMContentLoaded', function() {
     document.querySelectorAll('table').forEach(function(table) {
       if (!table.parentElement.classList.contains('table-wrap')) {
         var wrapper = document.createElement('div');
@@ -179,10 +143,10 @@
 </tr>
 </tbody>
 </table>
-<pre><code class="hljs">程式（Program）= 食譜
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">程式（Program）= 食譜
 進程（Process）= 廚師照著食譜煮菜的過程（獨立的鍋碗瓢盆）
 執行緒（Thread）= 多個廚師同時在同一廚房裡合作
-</code></pre>
+</code></pre></div>
 <img src="../doc/pic/diff_process_thread.png">
 <h3 id="vs" tabindex="-1"><a class="header-anchor" href="#vs"><span>進程 vs 執行緒</span></a></h3>
 <table>
@@ -227,12 +191,12 @@
 </tbody>
 </table>
 <h3 id="-2" tabindex="-1"><a class="header-anchor" href="#-2"><span>執行緒的三種狀態</span></a></h3>
-<pre><code class="hljs">新建（New）→ 就緒（Runnable）→ 執行（Running）
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">新建（New）→ 就緒（Runnable）→ 執行（Running）
                    ↑                    ↓
                喚醒/解鎖          等待 IO / 鎖 / sleep
                                         ↓
                                   阻塞（Blocked）
-</code></pre>
+</code></pre></div>
 <h3 id="concurrency-vs-parallelism" tabindex="-1"><a class="header-anchor" href="#concurrency-vs-parallelism"><span>並行（Concurrency）vs 並行（Parallelism）</span></a></h3>
 <ul>
 <li><strong>Concurrency（並發）</strong>：多個任務交替執行，同一時刻只有一個在運行（單核心）</li>
@@ -241,7 +205,7 @@
 <hr>
 <h2 id="2" tabindex="-1"><a class="header-anchor" href="#2"><span>2. 記憶體管理</span></a></h2>
 <h3 id="-3" tabindex="-1"><a class="header-anchor" href="#-3"><span>記憶體區域劃分</span></a></h3>
-<pre><code class="hljs">高位址
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">高位址
 ┌───────────────┐
 │  Stack（堆疊） │ ← 自動管理；函數呼叫、區域變數；後進先出；容量有限
 ├───────────────┤
@@ -257,7 +221,7 @@
 ├───────────────┤
 │ Text Segment  │ ← 程式碼（唯讀）
 低位址
-</code></pre>
+</code></pre></div>
 <h3 id="stack-vs-heap" tabindex="-1"><a class="header-anchor" href="#stack-vs-heap"><span>Stack vs Heap</span></a></h3>
 <table>
 <thead>
@@ -488,18 +452,18 @@
 </tbody>
 </table>
 <h3 id="tcp" tabindex="-1"><a class="header-anchor" href="#tcp"><span>TCP 三次握手</span></a></h3>
-<pre><code class="hljs">Client              Server
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Client              Server
   |── SYN ──────────→|   (1) Client 說：我想連線
   |← SYN-ACK ────────|   (2) Server 說：好，我準備好了
   |── ACK ──────────→|   (3) Client 說：收到，連線建立
-</code></pre>
+</code></pre></div>
 <p><strong>四次揮手（斷線）：</strong></p>
-<pre><code class="hljs">Client              Server
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Client              Server
   |── FIN ──────────→|   (1) Client：我要關閉了
   |← ACK ────────────|   (2) Server：收到，但我還有資料要傳
   |← FIN ────────────|   (3) Server：我也傳完了，我要關閉
   |── ACK ──────────→|   (4) Client：好，連線關閉
-</code></pre>
+</code></pre></div>
 <h3 id="http" tabindex="-1"><a class="header-anchor" href="#http"><span>HTTP 狀態碼</span></a></h3>
 <table>
 <thead>
@@ -556,13 +520,13 @@
 </tbody>
 </table>
 <h3 id="https-tls" tabindex="-1"><a class="header-anchor" href="#https-tls"><span>HTTPS 與 TLS 握手</span></a></h3>
-<pre><code class="hljs">Client                          Server
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Client                          Server
   |─── ClientHello ────────────→|   支援的 TLS 版本、加密套件
   |←── ServerHello + 憑證 ──────|   選定的加密套件、伺服器公鑰
   |─── 驗證憑證 ────────────────|   確認憑證合法（CA 簽署）
   |─── 交換金鑰（pre-master） ──→|   用伺服器公鑰加密
   |←─ 雙方推導出對稱金鑰 ────────|   後續通訊用對稱加密
-</code></pre>
+</code></pre></div>
 <hr>
 <h2 id="5" tabindex="-1"><a class="header-anchor" href="#5"><span>5. 資料結構速查</span></a></h2>
 <h3 id="-5" tabindex="-1"><a class="header-anchor" href="#-5"><span>時間複雜度總覽</span></a></h3>
@@ -898,7 +862,7 @@
 <p><strong>負載因子（Load Factor）</strong>：元素數 / bucket 數，超過閾值（Java 預設 0.75）時擴容（rehash）。</p>
 <hr>
 <h3 id="q5-binary-search" tabindex="-1"><a class="header-anchor" href="#q5-binary-search"><span>Q5：Binary Search 的邊界條件如何處理？</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">binary_search</span>(<span class="hljs-params">nums, target</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">binary_search</span>(<span class="hljs-params">nums, target</span>):
     left, right = <span class="hljs-number">0</span>, <span class="hljs-built_in">len</span>(nums) - <span class="hljs-number">1</span>
     <span class="hljs-keyword">while</span> left &lt;= right:              <span class="hljs-comment"># ≤ 確保單元素也能處理</span>
         mid = left + (right - left) // <span class="hljs-number">2</span>  <span class="hljs-comment"># 防止 overflow</span>
@@ -909,7 +873,7 @@
         <span class="hljs-keyword">else</span>:
             right = mid - <span class="hljs-number">1</span>
     <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>
-</code></pre>
+</code></pre></div>
 <p><strong>常見變形：</strong></p>
 <ul>
 <li>找最左邊的符合元素：<code>right = mid - 1</code>（當找到時繼續向左）</li>

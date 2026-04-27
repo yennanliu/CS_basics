@@ -19,54 +19,18 @@
     }
   })();
   </script>
-  <script>document.addEventListener('DOMContentLoaded', function() {
-    document.querySelectorAll('pre code').forEach(function(codeEl) {
-      var pre = codeEl.parentElement;
-      var lang = '';
-      var cls = codeEl.className || '';
-      var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
-      if (m) lang = m[1];
-
-      // Add line numbers
-      var lines = codeEl.innerHTML.split('
-');
-      if (lines[lines.length - 1] === '') lines.pop();
-      var numbered = lines.map(function(line, i) {
-        return '<span class="hljs-ln-line"><span class="hljs-ln-n" data-line-number="' + (i + 1) + '"></span><span class="hljs-ln-code">' + line + '</span></span>';
-      }).join('
-');
-      codeEl.innerHTML = numbered;
-      codeEl.classList.add('hljs-ln');
-
-      var wrapper = document.createElement('div');
-      wrapper.className = 'code-block-wrapper';
-      pre.parentNode.insertBefore(wrapper, pre);
-      var header = document.createElement('div');
-      header.className = 'code-block-header';
-      if (lang) {
-        var label = document.createElement('span');
-        label.className = 'code-lang-label';
-        label.textContent = lang;
-        header.appendChild(label);
-      } else {
-        header.appendChild(document.createElement('span'));
-      }
-      var btn = document.createElement('button');
-      btn.className = 'copy-btn';
-      btn.textContent = 'Copy';
-      btn.addEventListener('click', function() {
-        var text = Array.from(codeEl.querySelectorAll('.hljs-ln-code')).map(function(el) { return el.textContent; }).join('
-');
-        navigator.clipboard.writeText(text).then(function() {
-          btn.textContent = 'Copied!';
-          btn.classList.add('copied');
-          setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
-        });
-      });
-      header.appendChild(btn);
-      wrapper.appendChild(header);
-      wrapper.appendChild(pre);
+  <script>
+  function copyCode(btn) {
+    var pre = btn.closest('.code-block-wrapper').querySelector('pre');
+    var text = pre ? pre.innerText : '';
+    navigator.clipboard.writeText(text).then(function() {
+      btn.textContent = 'Copied!';
+      btn.classList.add('copied');
+      setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
     });
+  }
+  </script>
+  <script>document.addEventListener('DOMContentLoaded', function() {
     document.querySelectorAll('table').forEach(function(table) {
       if (!table.parentElement.classList.contains('table-wrap')) {
         var wrapper = document.createElement('div');
@@ -292,7 +256,7 @@
 </tbody>
 </table>
 <h3 id="universal-heap-template" tabindex="-1"><a class="header-anchor" href="#universal-heap-template"><span>Universal Heap Template</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">solve_with_heap</span>(<span class="hljs-params">nums, k=<span class="hljs-literal">None</span></span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">solve_with_heap</span>(<span class="hljs-params">nums, k=<span class="hljs-literal">None</span></span>):
     <span class="hljs-keyword">import</span> heapq
     
     <span class="hljs-comment"># Create heap (min heap by default in Python)</span>
@@ -316,8 +280,8 @@
     <span class="hljs-comment"># max_val = -heapq.heappop(max_heap)  # Remove and get max</span>
     
     <span class="hljs-keyword">return</span> heap
-</code></pre>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java Universal Template</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java Universal Template</span>
 <span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">HeapSolution</span> {
     <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">solveWithHeap</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums, <span class="hljs-type">int</span> k)</span> {
         <span class="hljs-comment">// Min Heap</span>
@@ -336,7 +300,7 @@
         <span class="hljs-comment">// Add element: minHeap.offer(value)</span>
     }
 }
-</code></pre>
+</code></pre></div>
 <h3 id="specific-pattern-templates" tabindex="-1"><a class="header-anchor" href="#specific-pattern-templates"><span>Specific Pattern Templates</span></a></h3>
 <h4 id="1-kth-element-template" tabindex="-1"><a class="header-anchor" href="#1-kth-element-template"><span><strong>1. Kth Element Template</strong></span></a></h4>
 <p><strong>💡 Key Insight:</strong></p>
@@ -358,7 +322,7 @@
 </ul>
 </li>
 </ul>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">find_kth_largest</span>(<span class="hljs-params">nums, k</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">find_kth_largest</span>(<span class="hljs-params">nums, k</span>):
     <span class="hljs-keyword">import</span> heapq
 
     <span class="hljs-comment"># Method 1: Min heap of size k</span>
@@ -383,9 +347,9 @@
             heapq.heapreplace(heap, -num)
 
     <span class="hljs-keyword">return</span> -heap[<span class="hljs-number">0</span>]  <span class="hljs-comment"># kth smallest</span>
-</code></pre>
+</code></pre></div>
 <h4 id="2-top-k-frequency-template" tabindex="-1"><a class="header-anchor" href="#2-top-k-frequency-template"><span><strong>2. Top K Frequency Template</strong></span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">top_k_frequent</span>(<span class="hljs-params">nums, k</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">top_k_frequent</span>(<span class="hljs-params">nums, k</span>):
     <span class="hljs-keyword">from</span> collections <span class="hljs-keyword">import</span> Counter
     <span class="hljs-keyword">import</span> heapq
     
@@ -405,9 +369,9 @@
     <span class="hljs-comment"># heap = [(-freq, num) for num, freq in count.items()]</span>
     <span class="hljs-comment"># heapq.heapify(heap)</span>
     <span class="hljs-comment"># return [heapq.heappop(heap)[1] for _ in range(k)]</span>
-</code></pre>
+</code></pre></div>
 <h4 id="3-merge-k-sources-template" tabindex="-1"><a class="header-anchor" href="#3-merge-k-sources-template"><span><strong>3. Merge K Sources Template</strong></span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">merge_k_sorted_arrays</span>(<span class="hljs-params">arrays</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">merge_k_sorted_arrays</span>(<span class="hljs-params">arrays</span>):
     <span class="hljs-keyword">import</span> heapq
     
     heap = []
@@ -428,9 +392,9 @@
             heapq.heappush(heap, (next_val, array_idx, element_idx + <span class="hljs-number">1</span>))
     
     <span class="hljs-keyword">return</span> result
-</code></pre>
+</code></pre></div>
 <h4 id="4-two-heap-system-template-median" tabindex="-1"><a class="header-anchor" href="#4-two-heap-system-template-median"><span><strong>4. Two Heap System Template (Median)</strong></span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">MedianFinder</span>:
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">MedianFinder</span>:
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self</span>):
         <span class="hljs-keyword">import</span> heapq
         <span class="hljs-variable language_">self</span>.small = []  <span class="hljs-comment"># max heap (use negative values)</span>
@@ -450,9 +414,9 @@
             <span class="hljs-keyword">return</span> (<span class="hljs-variable language_">self</span>.large[<span class="hljs-number">0</span>] - <span class="hljs-variable language_">self</span>.small[<span class="hljs-number">0</span>]) / <span class="hljs-number">2.0</span>
         <span class="hljs-keyword">else</span>:
             <span class="hljs-keyword">return</span> <span class="hljs-built_in">float</span>(<span class="hljs-variable language_">self</span>.large[<span class="hljs-number">0</span>])
-</code></pre>
+</code></pre></div>
 <h4 id="5-heap-with-deduplication-template" tabindex="-1"><a class="header-anchor" href="#5-heap-with-deduplication-template"><span><strong>5. Heap with Deduplication Template</strong></span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">solve_with_unique_heap</span>(<span class="hljs-params">nums</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">solve_with_unique_heap</span>(<span class="hljs-params">nums</span>):
     <span class="hljs-keyword">import</span> heapq
 
     heap = []
@@ -464,9 +428,9 @@
             seen.add(num)
 
     <span class="hljs-keyword">return</span> heap
-</code></pre>
+</code></pre></div>
 <h4 id="6-grid-shortest-path-with-range-jumps-template" tabindex="-1"><a class="header-anchor" href="#6-grid-shortest-path-with-range-jumps-template"><span><strong>6. Grid Shortest Path with Range Jumps Template</strong></span></a></h4>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">/**
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">/**
  * Template for Grid Shortest Path with Variable Jump Ranges
  *
  * Pattern: DP + Per-row/column Priority Queues with Lazy Deletion
@@ -539,8 +503,8 @@
 
     <span class="hljs-keyword">return</span> dist[m - <span class="hljs-number">1</span>][n - <span class="hljs-number">1</span>];
 }
-</code></pre>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python Template: Grid Shortest Path with Range Jumps</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python Template: Grid Shortest Path with Range Jumps</span>
 <span class="hljs-keyword">import</span> heapq
 
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">grid_shortest_path</span>(<span class="hljs-params">grid</span>):
@@ -586,9 +550,9 @@
                 heapq.heappush(col_pqs[j], (dist[i][j], i))
 
     <span class="hljs-keyword">return</span> dist[m - <span class="hljs-number">1</span>][n - <span class="hljs-number">1</span>]
-</code></pre>
+</code></pre></div>
 <h4 id="7-frequency-uniqueness-template-greedy-heap-hashset" tabindex="-1"><a class="header-anchor" href="#7-frequency-uniqueness-template-greedy-heap-hashset"><span><strong>7. Frequency Uniqueness Template (Greedy + Heap/HashSet)</strong></span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">make_frequencies_unique</span>(<span class="hljs-params">s</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">make_frequencies_unique</span>(<span class="hljs-params">s</span>):
     <span class="hljs-string">&quot;&quot;&quot;
     Pattern: Make all character frequencies unique with minimum deletions
     Used in: LC 1647, LC 1481
@@ -651,8 +615,8 @@
 
     <span class="hljs-comment"># Best approach depends on constraints</span>
     <span class="hljs-keyword">return</span> hashset_approach()  <span class="hljs-comment"># Generally most intuitive</span>
-</code></pre>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java Version - Frequency Uniqueness</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java Version - Frequency Uniqueness</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">makeFrequenciesUnique</span><span class="hljs-params">(String s)</span> {
     <span class="hljs-comment">// Count frequencies</span>
     <span class="hljs-type">int</span>[] freq = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[<span class="hljs-number">26</span>];
@@ -678,7 +642,7 @@
 
     <span class="hljs-keyword">return</span> deletions;
 }
-</code></pre>
+</code></pre></div>
 <h3 id="python-heapq-api-reference" tabindex="-1"><a class="header-anchor" href="#python-heapq-api-reference"><span>Python heapq API Reference</span></a></h3>
 <ul>
 <li>Note :
@@ -744,7 +708,7 @@
 </ul>
 </li>
 </ul>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment">#------------------------</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment">#------------------------</span>
 <span class="hljs-comment"># PY API examples</span>
 <span class="hljs-comment">#------------------------</span>
 
@@ -935,10 +899,10 @@ In [<span class="hljs-number">54</span>]: numbers = [<span class="hljs-number">4
 In [<span class="hljs-number">55</span>]: klargest
 Out[<span class="hljs-number">55</span>]: [<span class="hljs-number">24</span>, <span class="hljs-number">4</span>, <span class="hljs-number">2</span>, <span class="hljs-number">1</span>, <span class="hljs-number">1</span>]
 
-</code></pre>
+</code></pre></div>
 <h3 id="1-2-heap-vs-stack-vs-queue" tabindex="-1"><a class="header-anchor" href="#1-2-heap-vs-stack-vs-queue"><span>1-2) Heap VS Stack VS Queue</span></a></h3>
 <h3 id="1-3-heap-sort" tabindex="-1"><a class="header-anchor" href="#1-3-heap-sort"><span>1-3) Heap sort</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># https://docs.python.org/zh-tw/3/library/heapq.html</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># https://docs.python.org/zh-tw/3/library/heapq.html</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">heapsort</span>(<span class="hljs-params">iterable</span>):
 
     h = []
@@ -948,9 +912,9 @@ Out[<span class="hljs-number">55</span>]: [<span class="hljs-number">24</span>, 
 
 <span class="hljs-comment"># heapsort([1, 3, 5, 7, 9, 2, 4, 6, 8, 0])</span>
 <span class="hljs-comment"># &gt;&gt;&gt; [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]</span>
-</code></pre>
+</code></pre></div>
 <h3 id="1-4-priority-queue" tabindex="-1"><a class="header-anchor" href="#1-4-priority-queue"><span>1-4) Priority Queue</span></a></h3>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 PriorityQueue pq
 <span class="hljs-comment">// random insert</span>
 <span class="hljs-keyword">for</span> i in {<span class="hljs-number">2</span>,<span class="hljs-number">4</span>,<span class="hljs-number">1</span>,<span class="hljs-number">9</span>,<span class="hljs-number">6</span>}:
@@ -962,8 +926,8 @@ PriorityQueue pq
 
 <span class="hljs-comment">// the output should be in order (small -&gt; big)</span>
 <span class="hljs-comment">// 1,2,4,6,9</span>
-</code></pre>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># 355 Design Twitter</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># 355 Design Twitter</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># https://github.com/labuladong/fucking-algorithm/blob/master/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E7%B3%BB%E5%88%97/%E8%AE%BE%E8%AE%A1Twitter.md</span>
 <span class="hljs-keyword">from</span> collections <span class="hljs-keyword">import</span> defaultdict
@@ -1012,10 +976,10 @@ PriorityQueue pq
 
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">unfollow</span>(<span class="hljs-params">self, followerId, followeeId</span>):
         <span class="hljs-variable language_">self</span>.follower_followees_map[followerId].discard(followeeId)
-</code></pre>
+</code></pre></div>
 <h2 id="2-lc-example" tabindex="-1"><a class="header-anchor" href="#2-lc-example"><span>2) LC Example</span></a></h2>
 <h3 id="2-0-top-k-frequent-elements" tabindex="-1"><a class="header-anchor" href="#2-0-top-k-frequent-elements"><span>2-0) Top K Frequent Elements</span></a></h3>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 347</span>
 <span class="hljs-comment">// V1</span>
 <span class="hljs-comment">// IDEA : HEAP</span>
@@ -1052,9 +1016,9 @@ PriorityQueue pq
     }
     <span class="hljs-keyword">return</span> top;
 }
-</code></pre>
+</code></pre></div>
 <h3 id="2-1-kth-largest-element-in-a-stream" tabindex="-1"><a class="header-anchor" href="#2-1-kth-largest-element-in-a-stream"><span>2-1) Kth Largest Element in a Stream</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># 703 Kth Largest Element in a Stream</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># 703 Kth Largest Element in a Stream</span>
 
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># IDEA : HEAP</span>
@@ -1104,9 +1068,9 @@ PriorityQueue pq
             <span class="hljs-comment"># heapreplace : pop first, then push</span>
             heapq.heapreplace(<span class="hljs-variable language_">self</span>.pool, val)
         <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.pool[<span class="hljs-number">0</span>]
-</code></pre>
+</code></pre></div>
 <h3 id="2-2-ugly-number-ii" tabindex="-1"><a class="header-anchor" href="#2-2-ugly-number-ii"><span>2-2) Ugly Number II</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># 264 Ugly Number II</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># 264 Ugly Number II</span>
 <span class="hljs-comment"># V0 </span>
 <span class="hljs-comment"># IDEA : HEAP</span>
 <span class="hljs-comment"># using brute force is too slow -&gt; time out error</span>
@@ -1145,9 +1109,9 @@ PriorityQueue pq
                 heapq.heappush(heap, ugly_number * <span class="hljs-number">5</span>)
 
         <span class="hljs-keyword">return</span> ugly_number
-</code></pre>
+</code></pre></div>
 <h3 id="2-3-find-median-from-data-stream" tabindex="-1"><a class="header-anchor" href="#2-3-find-median-from-data-stream"><span>2-3) Find Median from Data Stream</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># 295 Find Median from Data Stream</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># 295 Find Median from Data Stream</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># https://docs.python.org/zh-tw/3/library/heapq.html</span>
 <span class="hljs-comment"># https://github.com/python/cpython/blob/3.10/Lib/heapq.py</span>
@@ -1205,9 +1169,9 @@ PriorityQueue pq
         <span class="hljs-comment"># odd length</span>
         <span class="hljs-keyword">else</span>:
             <span class="hljs-keyword">return</span> <span class="hljs-built_in">float</span>(<span class="hljs-variable language_">self</span>.large[<span class="hljs-number">0</span>])
-</code></pre>
+</code></pre></div>
 <h3 id="2-4-minimum-cost-to-connect-sticks" tabindex="-1"><a class="header-anchor" href="#2-4-minimum-cost-to-connect-sticks"><span>2-4) Minimum Cost to Connect Sticks</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 1167 Minimum Cost to Connect Sticks</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 1167 Minimum Cost to Connect Sticks</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># IDEA : heapq</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
@@ -1221,9 +1185,9 @@ PriorityQueue pq
             res += s1 + s2 <span class="hljs-comment"># merge 2 shortest sticks</span>
             heappush(sticks, s1 + s2)
         <span class="hljs-keyword">return</span> res 
-</code></pre>
+</code></pre></div>
 <h3 id="2-5-the-kth-factor-of-n" tabindex="-1"><a class="header-anchor" href="#2-5-the-kth-factor-of-n"><span>2-5) The kth Factor of n</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 1492  The kth Factor of n</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 1492  The kth Factor of n</span>
 <span class="hljs-comment"># note : there is also brute force, math approaches</span>
 
 <span class="hljs-comment"># V1</span>
@@ -1250,9 +1214,9 @@ PriorityQueue pq
                     heappush_k(n // x)
                 
         <span class="hljs-keyword">return</span> -heappop(heap) <span class="hljs-keyword">if</span> k == <span class="hljs-built_in">len</span>(heap) <span class="hljs-keyword">else</span> -<span class="hljs-number">1</span>
-</code></pre>
+</code></pre></div>
 <h3 id="2-6-least-number-of-unique-integers-after-k-removals" tabindex="-1"><a class="header-anchor" href="#2-6-least-number-of-unique-integers-after-k-removals"><span>2-6) Least Number of Unique Integers after K Removals</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 1481. Least Number of Unique Integers after K Removals</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 1481. Least Number of Unique Integers after K Removals</span>
 <span class="hljs-comment"># NOTE : there&#x27;s also Counter approaches</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># IDEA : Counter</span>
@@ -1323,9 +1287,9 @@ PriorityQueue pq
             k -= <span class="hljs-number">1</span>
         
         <span class="hljs-keyword">return</span> <span class="hljs-built_in">len</span>(minHeap)
-</code></pre>
+</code></pre></div>
 <h3 id="2-7-maximum-number-of-events-that-can-be-attended" tabindex="-1"><a class="header-anchor" href="#2-7-maximum-number-of-events-that-can-be-attended"><span>2-7) Maximum Number of Events That Can Be Attended</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 1353. Maximum Number of Events That Can Be Attended</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 1353. Maximum Number of Events That Can Be Attended</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># IDEA : PRIORITY QUEUE</span>
 <span class="hljs-comment"># NOTE !!!</span>
@@ -1383,9 +1347,9 @@ PriorityQueue pq
                 ans += <span class="hljs-number">1</span>
                 heapq.heappop(endday)
         <span class="hljs-keyword">return</span>  ans
-</code></pre>
+</code></pre></div>
 <h3 id="2-8-maximum-frequency-stack" tabindex="-1"><a class="header-anchor" href="#2-8-maximum-frequency-stack"><span>2-8) Maximum Frequency Stack</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 895. Maximum Frequency Stack</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 895. Maximum Frequency Stack</span>
 <span class="hljs-comment"># V1&#x27;</span>
 <span class="hljs-comment"># IDEA : STACK</span>
 <span class="hljs-comment"># https://leetcode.com/problems/maximum-frequency-stack/solution/</span>
@@ -1410,9 +1374,9 @@ PriorityQueue pq
             <span class="hljs-variable language_">self</span>.maxfreq -= <span class="hljs-number">1</span>
 
         <span class="hljs-keyword">return</span> x
-</code></pre>
+</code></pre></div>
 <h3 id="2-9-ugly-number-ii" tabindex="-1"><a class="header-anchor" href="#2-9-ugly-number-ii"><span>2-9) Ugly Number II</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 264 Ugly Number II</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 264 Ugly Number II</span>
 <span class="hljs-comment"># V0 </span>
 <span class="hljs-comment"># IDEA : HEAP</span>
 <span class="hljs-comment"># using brute force is too slow -&gt; time out error</span>
@@ -1433,9 +1397,9 @@ PriorityQueue pq
                     heapq.heappush(heap, val*factor)
                     visited.add(val*factor)    
         <span class="hljs-keyword">return</span> val
-</code></pre>
+</code></pre></div>
 <h3 id="2-10-find-k-pairs-with-smallest-sums" tabindex="-1"><a class="header-anchor" href="#2-10-find-k-pairs-with-smallest-sums"><span>2-10) Find K Pairs with Smallest Sums</span></a></h3>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 373</span>
 
 <span class="hljs-comment">// V0-1</span>
@@ -1529,9 +1493,9 @@ PriorityQueue pq
 
     <span class="hljs-keyword">return</span> res;
 }
-</code></pre>
+</code></pre></div>
 <h3 id="2-11-kth-smallest-element-in-a-sorted-matrix" tabindex="-1"><a class="header-anchor" href="#2-11-kth-smallest-element-in-a-sorted-matrix"><span>2-11) Kth Smallest Element in a Sorted Matrix</span></a></h3>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 378</span>
 <span class="hljs-comment">// Reference: leetcode_java/src/main/java/LeetCodeJava/Heap/KthSmallestElementInASortedMatrix.java</span>
 
@@ -1588,9 +1552,9 @@ PriorityQueue pq
     <span class="hljs-comment">// Top of max-heap = kth smallest element</span>
     <span class="hljs-keyword">return</span> pq.peek();
 }
-</code></pre>
+</code></pre></div>
 <h3 id="2-12-minimum-deletions-to-make-character-frequencies-unique" tabindex="-1"><a class="header-anchor" href="#2-12-minimum-deletions-to-make-character-frequencies-unique"><span>2-12) Minimum Deletions to Make Character Frequencies Unique</span></a></h3>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 1647</span>
 <span class="hljs-comment">// Reference: leetcode_java/src/main/java/LeetCodeJava/Heap/MinimumDeletionsToMakeCharacterFrequenciesUnique.java</span>
 
@@ -1723,9 +1687,9 @@ PriorityQueue pq
  *
  * Pattern: Frequency Uniqueness with Greedy + Heap/Sort
  */</span>
-</code></pre>
+</code></pre></div>
 <h3 id="2-13-maximum-performance-of-a-team" tabindex="-1"><a class="header-anchor" href="#2-13-maximum-performance-of-a-team"><span>2-13) Maximum Performance of a Team</span></a></h3>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 1383</span>
 <span class="hljs-comment">// Reference: leetcode_java/src/main/java/LeetCodeJava/Heap/MaximumPerformanceOfAeam.java</span>
 
@@ -1867,9 +1831,9 @@ PriorityQueue pq
  * Pattern: Greedy + Sorting + Top K with Heap
  * Similar to: LC 857 (Minimum Cost to Hire K Workers)
  */</span>
-</code></pre>
+</code></pre></div>
 <h3 id="2-14-minimum-number-of-refueling-stops" tabindex="-1"><a class="header-anchor" href="#2-14-minimum-number-of-refueling-stops"><span>2-14) Minimum Number of Refueling Stops</span></a></h3>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 871</span>
 <span class="hljs-comment">// Reference: leetcode_java/src/main/java/LeetCodeJava/DynamicProgramming/MinimumNumberOfRefuelingStops.java</span>
 
@@ -2013,9 +1977,9 @@ PriorityQueue pq
  * Pattern: Greedy + Max Heap (delayed decision-making)
  * Similar to: LC 1353 (Max Events), LC 630 (Course Schedule III)
  */</span>
-</code></pre>
+</code></pre></div>
 <h3 id="2-15-minimum-number-of-visited-cells-in-a-grid" tabindex="-1"><a class="header-anchor" href="#2-15-minimum-number-of-visited-cells-in-a-grid"><span>2-15) Minimum Number of Visited Cells in a Grid</span></a></h3>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 2617</span>
 <span class="hljs-comment">// Reference: leetcode_java/src/main/java/LeetCodeJava/Graph/MinimumNumberOfVisitedCellsInAGrid.java</span>
 
@@ -2162,9 +2126,9 @@ PriorityQueue pq
  * - LC 1631: Path With Minimum Effort (Dijkstra on grid)
  * - LC 1293: Shortest Path with Obstacles (BFS + state)
  */</span>
-</code></pre>
+</code></pre></div>
 <h3 id="2-16-divide-intervals-into-minimum-number-of-groups" tabindex="-1"><a class="header-anchor" href="#2-16-divide-intervals-into-minimum-number-of-groups"><span>2-16) Divide Intervals Into Minimum Number of Groups</span></a></h3>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 2406</span>
 <span class="hljs-comment">// Reference: leetcode_java/src/main/java/LeetCodeJava/Heap/DivideIntervalsIntoMinimumNumberOfGroups.java</span>
 
@@ -2261,9 +2225,9 @@ PriorityQueue pq
  *   min groups = max concurrent overlaps
  *   → always equals heap size when using Sort + Min Heap approach
  */</span>
-</code></pre>
+</code></pre></div>
 <h3 id="2-17-minimize-deviation-in-array" tabindex="-1"><a class="header-anchor" href="#2-17-minimize-deviation-in-array"><span>2-17) Minimize Deviation in Array</span></a></h3>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 1675</span>
 <span class="hljs-comment">// Reference: leetcode_java/src/main/java/LeetCodeJava/Heap/MinimizeDeviationInArray.java</span>
 
@@ -2357,7 +2321,7 @@ PriorityQueue pq
  *   multiplying any even number makes it larger → increases max → worse.
  *   Only dividing the max is ever beneficial.
  */</span>
-</code></pre>
+</code></pre></div>
 <h2 id="problems-by-pattern" tabindex="-1"><a class="header-anchor" href="#problems-by-pattern"><span>Problems by Pattern</span></a></h2>
 <h3 id="pattern-based-problem-classification" tabindex="-1"><a class="header-anchor" href="#pattern-based-problem-classification"><span>Pattern-Based Problem Classification</span></a></h3>
 <h4 id="pattern-1-kth-element-problems-1" tabindex="-1"><a class="header-anchor" href="#pattern-1-kth-element-problems-1"><span><strong>Pattern 1: Kth Element Problems</strong></span></a></h4>
@@ -2824,7 +2788,7 @@ PriorityQueue pq
 </table>
 <h2 id="pattern-selection-strategy" tabindex="-1"><a class="header-anchor" href="#pattern-selection-strategy"><span>Pattern Selection Strategy</span></a></h2>
 <h3 id="decision-framework-flowchart" tabindex="-1"><a class="header-anchor" href="#decision-framework-flowchart"><span>Decision Framework Flowchart</span></a></h3>
-<pre><code class="hljs">Problem Analysis for Heap Usage:
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Problem Analysis for Heap Usage:
 
 1. Do you need the kth largest/smallest element?
    ├── YES → Use Kth Element Template
@@ -2861,10 +2825,10 @@ PriorityQueue pq
    │   ├── Median tracking → Min heap + max heap
    │   └── Balance requirement → Size-balanced heaps
    └── NO → Use Universal Heap Template
-</code></pre>
+</code></pre></div>
 <h3 id="template-selection-guide" tabindex="-1"><a class="header-anchor" href="#template-selection-guide"><span>Template Selection Guide</span></a></h3>
 <h4 id="when-to-use-min-heap-vs-max-heap" tabindex="-1"><a class="header-anchor" href="#when-to-use-min-heap-vs-max-heap"><span><strong>When to Use Min Heap vs Max Heap</strong></span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Min Heap Usage (Python default)</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Min Heap Usage (Python default)</span>
 situations = [
     <span class="hljs-string">&quot;Finding kth largest → Use min heap of size k&quot;</span>,
     <span class="hljs-string">&quot;Merge k sorted arrays → Track smallest current elements&quot;</span>, 
@@ -2879,7 +2843,7 @@ situations = [
     <span class="hljs-string">&quot;Median tracking → Left half uses max heap&quot;</span>,
     <span class="hljs-string">&quot;Frequency problems → Process most frequent first&quot;</span>
 ]
-</code></pre>
+</code></pre></div>
 <h4 id="heap-size-considerations" tabindex="-1"><a class="header-anchor" href="#heap-size-considerations"><span><strong>Heap Size Considerations</strong></span></a></h4>
 <ul>
 <li><strong>Fixed size k</strong>: For kth element problems, maintain heap size ≤ k</li>
@@ -2888,7 +2852,7 @@ situations = [
 </ul>
 <h3 id="common-decision-points" tabindex="-1"><a class="header-anchor" href="#common-decision-points"><span>Common Decision Points</span></a></h3>
 <h4 id="heap-vs-other-data-structures" tabindex="-1"><a class="header-anchor" href="#heap-vs-other-data-structures"><span><strong>Heap vs Other Data Structures</strong></span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Use Heap When:</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Use Heap When:</span>
 conditions = [
     <span class="hljs-string">&quot;Need frequent min/max access: O(1)&quot;</span>,
     <span class="hljs-string">&quot;Dynamic insertion with ordering: O(log N)&quot;</span>,
@@ -2909,7 +2873,7 @@ conditions = [
     <span class="hljs-string">&quot;Simple monotonic requirements&quot;</span>,
     <span class="hljs-string">&quot;No priority-based insertion needed&quot;</span>
 ]
-</code></pre>
+</code></pre></div>
 <h2 id="summary-quick-reference" tabindex="-1"><a class="header-anchor" href="#summary-quick-reference"><span>Summary &amp; Quick Reference</span></a></h2>
 <h3 id="complexity-quick-reference" tabindex="-1"><a class="header-anchor" href="#complexity-quick-reference"><span>Complexity Quick Reference</span></a></h3>
 <table>
@@ -3014,7 +2978,7 @@ conditions = [
 </table>
 <h3 id="common-patterns-tricks" tabindex="-1"><a class="header-anchor" href="#common-patterns-tricks"><span>Common Patterns &amp; Tricks</span></a></h3>
 <h4 id="max-heap-in-python-using-negation" tabindex="-1"><a class="header-anchor" href="#max-heap-in-python-using-negation"><span><strong>Max Heap in Python (Using Negation)</strong></span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">import</span> heapq
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">import</span> heapq
 
 <span class="hljs-comment"># Create max heap by negating values</span>
 max_heap = [-x <span class="hljs-keyword">for</span> x <span class="hljs-keyword">in</span> nums]
@@ -3026,9 +2990,9 @@ heapq.heappush(max_heap, -val)
 <span class="hljs-comment"># Get max value (remember to negate back)</span>
 max_val = -max_heap[<span class="hljs-number">0</span>]  <span class="hljs-comment"># peek</span>
 max_val = -heapq.heappop(max_heap)  <span class="hljs-comment"># pop</span>
-</code></pre>
+</code></pre></div>
 <h4 id="heap-with-custom-objects" tabindex="-1"><a class="header-anchor" href="#heap-with-custom-objects"><span><strong>Heap with Custom Objects</strong></span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Method 1: Using tuples (automatic comparison)</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Method 1: Using tuples (automatic comparison)</span>
 heap = []
 heapq.heappush(heap, (priority, data))
 
@@ -3043,9 +3007,9 @@ heapq.heappush(heap, (priority, data))
 
 heap = []
 heapq.heappush(heap, Task(<span class="hljs-number">1</span>, <span class="hljs-string">&quot;high priority&quot;</span>))
-</code></pre>
+</code></pre></div>
 <h4 id="lazy-deletion-pattern" tabindex="-1"><a class="header-anchor" href="#lazy-deletion-pattern"><span><strong>Lazy Deletion Pattern</strong></span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># For sliding window problems where direct deletion is needed</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># For sliding window problems where direct deletion is needed</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">LazyHeap</span>:
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self</span>):
         <span class="hljs-variable language_">self</span>.heap = []
@@ -3061,7 +3025,7 @@ heapq.heappush(heap, Task(<span class="hljs-number">1</span>, <span class="hljs-
     
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">delete</span>(<span class="hljs-params">self, val</span>):
         <span class="hljs-variable language_">self</span>.deleted.add(val)
-</code></pre>
+</code></pre></div>
 <h3 id="problem-solving-steps" tabindex="-1"><a class="header-anchor" href="#problem-solving-steps"><span>Problem-Solving Steps</span></a></h3>
 <ol>
 <li>

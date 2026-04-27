@@ -19,54 +19,18 @@
     }
   })();
   </script>
-  <script>document.addEventListener('DOMContentLoaded', function() {
-    document.querySelectorAll('pre code').forEach(function(codeEl) {
-      var pre = codeEl.parentElement;
-      var lang = '';
-      var cls = codeEl.className || '';
-      var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
-      if (m) lang = m[1];
-
-      // Add line numbers
-      var lines = codeEl.innerHTML.split('
-');
-      if (lines[lines.length - 1] === '') lines.pop();
-      var numbered = lines.map(function(line, i) {
-        return '<span class="hljs-ln-line"><span class="hljs-ln-n" data-line-number="' + (i + 1) + '"></span><span class="hljs-ln-code">' + line + '</span></span>';
-      }).join('
-');
-      codeEl.innerHTML = numbered;
-      codeEl.classList.add('hljs-ln');
-
-      var wrapper = document.createElement('div');
-      wrapper.className = 'code-block-wrapper';
-      pre.parentNode.insertBefore(wrapper, pre);
-      var header = document.createElement('div');
-      header.className = 'code-block-header';
-      if (lang) {
-        var label = document.createElement('span');
-        label.className = 'code-lang-label';
-        label.textContent = lang;
-        header.appendChild(label);
-      } else {
-        header.appendChild(document.createElement('span'));
-      }
-      var btn = document.createElement('button');
-      btn.className = 'copy-btn';
-      btn.textContent = 'Copy';
-      btn.addEventListener('click', function() {
-        var text = Array.from(codeEl.querySelectorAll('.hljs-ln-code')).map(function(el) { return el.textContent; }).join('
-');
-        navigator.clipboard.writeText(text).then(function() {
-          btn.textContent = 'Copied!';
-          btn.classList.add('copied');
-          setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
-        });
-      });
-      header.appendChild(btn);
-      wrapper.appendChild(header);
-      wrapper.appendChild(pre);
+  <script>
+  function copyCode(btn) {
+    var pre = btn.closest('.code-block-wrapper').querySelector('pre');
+    var text = pre ? pre.innerText : '';
+    navigator.clipboard.writeText(text).then(function() {
+      btn.textContent = 'Copied!';
+      btn.classList.add('copied');
+      setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
     });
+  }
+  </script>
+  <script>document.addEventListener('DOMContentLoaded', function() {
     document.querySelectorAll('table').forEach(function(table) {
       if (!table.parentElement.classList.contains('table-wrap')) {
         var wrapper = document.createElement('div');
@@ -231,7 +195,7 @@
 </table>
 <h2 id="templates-algorithms" tabindex="-1"><a class="header-anchor" href="#templates-algorithms"><span>Templates &amp; Algorithms</span></a></h2>
 <h3 id="template-1-binary-indexed-tree-fenwick-tree" tabindex="-1"><a class="header-anchor" href="#template-1-binary-indexed-tree-fenwick-tree"><span>Template 1: Binary Indexed Tree (Fenwick Tree)</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">BIT</span>:
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">BIT</span>:
     <span class="hljs-string">&quot;&quot;&quot;Binary Indexed Tree for range sum queries and point updates&quot;&quot;&quot;</span>
 
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, n</span>):
@@ -263,9 +227,9 @@
         <span class="hljs-string">&quot;&quot;&quot;Build BIT from array (1-indexed)&quot;&quot;&quot;</span>
         <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>, <span class="hljs-built_in">len</span>(arr)):
             <span class="hljs-variable language_">self</span>.update(i, arr[i])
-</code></pre>
+</code></pre></div>
 <h3 id="template-2-segment-tree-range-sum" tabindex="-1"><a class="header-anchor" href="#template-2-segment-tree-range-sum"><span>Template 2: Segment Tree (Range Sum)</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">SegmentTree</span>:
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">SegmentTree</span>:
     <span class="hljs-string">&quot;&quot;&quot;Segment Tree for range sum queries and point updates&quot;&quot;&quot;</span>
 
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, arr</span>):
@@ -317,9 +281,9 @@
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">range_sum</span>(<span class="hljs-params">self, left, right</span>):
         <span class="hljs-string">&quot;&quot;&quot;Get sum in range [left, right]&quot;&quot;&quot;</span>
         <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.query(<span class="hljs-number">1</span>, <span class="hljs-number">0</span>, <span class="hljs-variable language_">self</span>.n - <span class="hljs-number">1</span>, left, right)
-</code></pre>
+</code></pre></div>
 <h3 id="template-3-segment-tree-with-lazy-propagation" tabindex="-1"><a class="header-anchor" href="#template-3-segment-tree-with-lazy-propagation"><span>Template 3: Segment Tree with Lazy Propagation</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">LazySegmentTree</span>:
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">LazySegmentTree</span>:
     <span class="hljs-string">&quot;&quot;&quot;Segment Tree with lazy propagation for range updates&quot;&quot;&quot;</span>
 
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, arr</span>):
@@ -391,9 +355,9 @@
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">range_sum</span>(<span class="hljs-params">self, left, right</span>):
         <span class="hljs-string">&quot;&quot;&quot;Get sum in range [left, right]&quot;&quot;&quot;</span>
         <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.query_range(<span class="hljs-number">1</span>, <span class="hljs-number">0</span>, <span class="hljs-variable language_">self</span>.n - <span class="hljs-number">1</span>, left, right)
-</code></pre>
+</code></pre></div>
 <h3 id="template-4-2d-binary-indexed-tree" tabindex="-1"><a class="header-anchor" href="#template-4-2d-binary-indexed-tree"><span>Template 4: 2D Binary Indexed Tree</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">BIT2D</span>:
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">BIT2D</span>:
     <span class="hljs-string">&quot;&quot;&quot;2D Binary Indexed Tree for 2D range sum queries&quot;&quot;&quot;</span>
 
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, rows, cols</span>):
@@ -429,7 +393,7 @@
                 <span class="hljs-variable language_">self</span>.query(row1 - <span class="hljs-number">1</span>, col2) -
                 <span class="hljs-variable language_">self</span>.query(row2, col1 - <span class="hljs-number">1</span>) +
                 <span class="hljs-variable language_">self</span>.query(row1 - <span class="hljs-number">1</span>, col1 - <span class="hljs-number">1</span>))
-</code></pre>
+</code></pre></div>
 <h2 id="leetcode-problems-solutions" tabindex="-1"><a class="header-anchor" href="#leetcode-problems-solutions"><span>LeetCode Problems &amp; Solutions</span></a></h2>
 <h3 id="range-sum-query-problems" tabindex="-1"><a class="header-anchor" href="#range-sum-query-problems"><span><strong>Range Sum Query Problems</strong></span></a></h3>
 <table>
@@ -509,7 +473,7 @@
 </tbody>
 </table>
 <h3 id="lc-307-range-sum-query-mutable" tabindex="-1"><a class="header-anchor" href="#lc-307-range-sum-query-mutable"><span>LC 307: Range Sum Query - Mutable</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">NumArray</span>:
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">NumArray</span>:
     <span class="hljs-string">&quot;&quot;&quot;Range Sum Query with updates using BIT&quot;&quot;&quot;</span>
 
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, nums</span>):
@@ -543,9 +507,9 @@
 
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">sumRange</span>(<span class="hljs-params">self, left, right</span>):
         <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.seg_tree.range_sum(left, right)
-</code></pre>
+</code></pre></div>
 <h3 id="lc-315-count-of-smaller-numbers-after-self" tabindex="-1"><a class="header-anchor" href="#lc-315-count-of-smaller-numbers-after-self"><span>LC 315: Count of Smaller Numbers After Self</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">countSmaller</span>(<span class="hljs-params">nums</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">countSmaller</span>(<span class="hljs-params">nums</span>):
     <span class="hljs-string">&quot;&quot;&quot;Count smaller numbers after self using BIT&quot;&quot;&quot;</span>
     <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> nums:
         <span class="hljs-keyword">return</span> []
@@ -607,9 +571,9 @@
     indexed_nums = [(nums[i], i) <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(nums))]
     _, counts = mergeSort(indexed_nums)
     <span class="hljs-keyword">return</span> counts
-</code></pre>
+</code></pre></div>
 <h3 id="lc-493-reverse-pairs" tabindex="-1"><a class="header-anchor" href="#lc-493-reverse-pairs"><span>LC 493: Reverse Pairs</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">reversePairs</span>(<span class="hljs-params">nums</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">reversePairs</span>(<span class="hljs-params">nums</span>):
     <span class="hljs-string">&quot;&quot;&quot;Count reverse pairs using BIT and coordinate compression&quot;&quot;&quot;</span>
     <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> nums:
         <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>
@@ -659,9 +623,9 @@
         <span class="hljs-keyword">return</span> count
 
     <span class="hljs-keyword">return</span> mergeSort(nums, <span class="hljs-number">0</span>, <span class="hljs-built_in">len</span>(nums) - <span class="hljs-number">1</span>)
-</code></pre>
+</code></pre></div>
 <h3 id="lc-327-count-of-range-sum" tabindex="-1"><a class="header-anchor" href="#lc-327-count-of-range-sum"><span>LC 327: Count of Range Sum</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">countRangeSum</span>(<span class="hljs-params">nums, lower, upper</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">countRangeSum</span>(<span class="hljs-params">nums, lower, upper</span>):
     <span class="hljs-string">&quot;&quot;&quot;Count range sums in [lower, upper] using BIT&quot;&quot;&quot;</span>
     <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> nums:
         <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>
@@ -693,10 +657,10 @@
         bit.update(rank[ps], <span class="hljs-number">1</span>)
 
     <span class="hljs-keyword">return</span> count
-</code></pre>
+</code></pre></div>
 <h2 id="advanced-techniques" tabindex="-1"><a class="header-anchor" href="#advanced-techniques"><span>Advanced Techniques</span></a></h2>
 <h3 id="coordinate-compression" tabindex="-1"><a class="header-anchor" href="#coordinate-compression"><span>Coordinate Compression</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">coordinate_compress</span>(<span class="hljs-params">arr</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">coordinate_compress</span>(<span class="hljs-params">arr</span>):
     <span class="hljs-string">&quot;&quot;&quot;Compress coordinates for BIT usage&quot;&quot;&quot;</span>
     unique_vals = <span class="hljs-built_in">sorted</span>(<span class="hljs-built_in">set</span>(arr))
     rank_map = {val: i + <span class="hljs-number">1</span> <span class="hljs-keyword">for</span> i, val <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(unique_vals)}
@@ -710,9 +674,9 @@
     bit = BIT(max_rank)
     <span class="hljs-keyword">for</span> num <span class="hljs-keyword">in</span> nums:
         bit.update(rank_map[num], <span class="hljs-number">1</span>)  <span class="hljs-comment"># Add frequency</span>
-</code></pre>
+</code></pre></div>
 <h3 id="range-maximum-query-rmq-segment-tree" tabindex="-1"><a class="header-anchor" href="#range-maximum-query-rmq-segment-tree"><span>Range Maximum Query (RMQ) Segment Tree</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">RMQSegmentTree</span>:
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">RMQSegmentTree</span>:
     <span class="hljs-string">&quot;&quot;&quot;Segment Tree for Range Maximum Queries&quot;&quot;&quot;</span>
 
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, arr</span>):
@@ -743,7 +707,7 @@
 
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">range_max</span>(<span class="hljs-params">self, left, right</span>):
         <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.query_max(<span class="hljs-number">1</span>, <span class="hljs-number">0</span>, <span class="hljs-variable language_">self</span>.n - <span class="hljs-number">1</span>, left, right)
-</code></pre>
+</code></pre></div>
 <h2 id="performance-analysis" tabindex="-1"><a class="header-anchor" href="#performance-analysis"><span>Performance Analysis</span></a></h2>
 <h3 id="time-complexity-comparison" tabindex="-1"><a class="header-anchor" href="#time-complexity-comparison"><span>Time Complexity Comparison</span></a></h3>
 <table>
@@ -796,7 +760,7 @@
 </ul>
 <h2 id="implementation-tips" tabindex="-1"><a class="header-anchor" href="#implementation-tips"><span>Implementation Tips</span></a></h2>
 <h3 id="common-pitfalls-solutions" tabindex="-1"><a class="header-anchor" href="#common-pitfalls-solutions"><span>Common Pitfalls &amp; Solutions</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">bit_pitfalls</span>():
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">bit_pitfalls</span>():
     <span class="hljs-string">&quot;&quot;&quot;Common BIT implementation mistakes&quot;&quot;&quot;</span>
 
     <span class="hljs-comment"># ❌ Wrong: 0-indexed BIT</span>
@@ -831,7 +795,7 @@
         <span class="hljs-keyword">if</span> right &lt; start <span class="hljs-keyword">or</span> end &lt; left:
             <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>  <span class="hljs-comment"># Return identity element</span>
         <span class="hljs-comment"># ... rest of query logic</span>
-</code></pre>
+</code></pre></div>
 <h2 id="summary-quick-reference" tabindex="-1"><a class="header-anchor" href="#summary-quick-reference"><span>Summary &amp; Quick Reference</span></a></h2>
 <h3 id="when-to-use-each-structure" tabindex="-1"><a class="header-anchor" href="#when-to-use-each-structure"><span>When to Use Each Structure</span></a></h3>
 <table>
@@ -889,7 +853,7 @@
 <blockquote>
 <p>Segment tree supports O(log N) range sum query and point update.</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 307 - Range Sum Query - Mutable</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 307 - Range Sum Query - Mutable</span>
 <span class="hljs-comment">// IDEA: Segment Tree — build, update, query in O(log N)</span>
 <span class="hljs-comment">// time = O(log N) per op, space = O(N)</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">NumArray</span> {
@@ -917,12 +881,12 @@
         <span class="hljs-keyword">return</span> sum;
     }
 }
-</code></pre>
+</code></pre></div>
 <h3 id="2-2-my-calendar-i-lc-729-segment-tree-treemap-for-interval-booking" tabindex="-1"><a class="header-anchor" href="#2-2-my-calendar-i-lc-729-segment-tree-treemap-for-interval-booking"><span>2-2) My Calendar I (LC 729) — Segment Tree / TreeMap for Interval Booking</span></a></h3>
 <blockquote>
 <p>Use TreeMap to check if new booking overlaps with any existing booking.</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 729 - My Calendar I</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 729 - My Calendar I</span>
 <span class="hljs-comment">// IDEA: TreeMap — check overlap with floorKey and ceilingKey</span>
 <span class="hljs-comment">// time = O(log N) per booking, space = O(N)</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">MyCalendar</span> {
@@ -939,13 +903,13 @@
         <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
     }
 }
-</code></pre>
+</code></pre></div>
 <p>This comprehensive guide covers the essential concepts and implementations for Segment Trees and Binary Indexed Trees, with practical examples from LeetCode problems.</p>
 <h3 id="2-3-segment-tree-template-range-sum-with-lazy-propagation" tabindex="-1"><a class="header-anchor" href="#2-3-segment-tree-template-range-sum-with-lazy-propagation"><span>2-3) Segment Tree Template — Range Sum with Lazy Propagation</span></a></h3>
 <blockquote>
 <p>Full segment tree with range-update and range-query in O(log N).</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Segment Tree — Lazy Propagation Template</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Segment Tree — Lazy Propagation Template</span>
 <span class="hljs-comment">// time = O(log N) per update/query, space = O(N)</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">SegTree</span> {
     <span class="hljs-type">int</span>[] tree, lazy;
@@ -988,12 +952,12 @@
         <span class="hljs-keyword">return</span> query(<span class="hljs-number">2</span>*node+<span class="hljs-number">1</span>, l, mid, ql, qr) + query(<span class="hljs-number">2</span>*node+<span class="hljs-number">2</span>, mid+<span class="hljs-number">1</span>, r, ql, qr);
     }
 }
-</code></pre>
+</code></pre></div>
 <h3 id="2-4-corporate-flight-bookings-lc-1109-difference-array" tabindex="-1"><a class="header-anchor" href="#2-4-corporate-flight-bookings-lc-1109-difference-array"><span>2-4) Corporate Flight Bookings (LC 1109) — Difference Array</span></a></h3>
 <blockquote>
 <p>Range-add passengers [first, last]; prefix-sum to get totals per flight.</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 1109 - Corporate Flight Bookings</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 1109 - Corporate Flight Bookings</span>
 <span class="hljs-comment">// IDEA: Difference array — range add O(1), prefix sum O(N) for result</span>
 <span class="hljs-comment">// time = O(N + Q), space = O(N)</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span>[] corpFlightBookings(<span class="hljs-type">int</span>[][] bookings, <span class="hljs-type">int</span> n) {
@@ -1005,12 +969,12 @@
     <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span>; i &lt; n; i++) diff[i] += diff[i-<span class="hljs-number">1</span>];
     <span class="hljs-keyword">return</span> Arrays.copyOf(diff, n);
 }
-</code></pre>
+</code></pre></div>
 <h3 id="2-5-count-of-smaller-numbers-after-self-lc-315-iterative-segment-tree" tabindex="-1"><a class="header-anchor" href="#2-5-count-of-smaller-numbers-after-self-lc-315-iterative-segment-tree"><span>2-5) Count of Smaller Numbers After Self (LC 315) — Iterative Segment Tree</span></a></h3>
 <blockquote>
 <p>Build segment tree on value range; insert from right to left; query smaller prefix count.</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 315 - Count of Smaller Numbers After Self (Segment Tree on values)</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 315 - Count of Smaller Numbers After Self (Segment Tree on values)</span>
 <span class="hljs-comment">// IDEA: Iterative seg tree on [0, 20001] value range; query prefix, then update</span>
 <span class="hljs-comment">// time = O(N log M), space = O(M)</span>
 <span class="hljs-keyword">public</span> List&lt;Integer&gt; <span class="hljs-title function_">countSmaller</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums)</span> {
@@ -1028,12 +992,12 @@
 <span class="hljs-keyword">private</span> <span class="hljs-type">int</span>  <span class="hljs-title function_">queryTree</span><span class="hljs-params">(<span class="hljs-type">int</span>[] t, <span class="hljs-type">int</span> n, <span class="hljs-type">int</span> l, <span class="hljs-type">int</span> r)</span> {
     <span class="hljs-type">int</span> s=<span class="hljs-number">0</span>; <span class="hljs-keyword">for</span>(l+=n,r+=n+<span class="hljs-number">1</span>; l&lt;r; l&gt;&gt;=<span class="hljs-number">1</span>,r&gt;&gt;=<span class="hljs-number">1</span>) {<span class="hljs-keyword">if</span>((l&amp;<span class="hljs-number">1</span>)==<span class="hljs-number">1</span>)s+=t[l++];<span class="hljs-keyword">if</span>((r&amp;<span class="hljs-number">1</span>)==<span class="hljs-number">1</span>)s+=t[--r];} <span class="hljs-keyword">return</span> s;
 }
-</code></pre>
+</code></pre></div>
 <h3 id="2-6-falling-squares-lc-699-segment-tree-max" tabindex="-1"><a class="header-anchor" href="#2-6-falling-squares-lc-699-segment-tree-max"><span>2-6) Falling Squares (LC 699) — Segment Tree Max</span></a></h3>
 <blockquote>
 <p>Each square lands on the highest existing height in its range; track running max height.</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 699 - Falling Squares (naive O(N^2); segment tree gives O(N log N))</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 699 - Falling Squares (naive O(N^2); segment tree gives O(N log N))</span>
 <span class="hljs-comment">// IDEA: For each square compute max height in its column range, then update</span>
 <span class="hljs-comment">// time = O(N^2), space = O(N)</span>
 <span class="hljs-keyword">public</span> List&lt;Integer&gt; <span class="hljs-title function_">fallingSquares</span><span class="hljs-params">(<span class="hljs-type">int</span>[][] positions)</span> {
@@ -1053,12 +1017,12 @@
     }
     <span class="hljs-keyword">return</span> ans;
 }
-</code></pre>
+</code></pre></div>
 <h3 id="2-7-maximum-sum-rectangle-no-larger-than-k-lc-363-prefix-sum-treeset" tabindex="-1"><a class="header-anchor" href="#2-7-maximum-sum-rectangle-no-larger-than-k-lc-363-prefix-sum-treeset"><span>2-7) Maximum Sum Rectangle No Larger Than K (LC 363) — Prefix Sum + TreeSet</span></a></h3>
 <blockquote>
 <p>Fix column bounds; compress to 1D row sums; use TreeSet to find max sum ≤ k.</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 363 - Max Sum of Rectangle No Larger Than K</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 363 - Max Sum of Rectangle No Larger Than K</span>
 <span class="hljs-comment">// IDEA: Fix left/right cols; 1D Kadane + TreeSet for sum &lt;= k constraint</span>
 <span class="hljs-comment">// time = O(M^2 * N log N), space = O(N)</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">maxSumSubmatrix</span><span class="hljs-params">(<span class="hljs-type">int</span>[][] matrix, <span class="hljs-type">int</span> k)</span> {
@@ -1080,12 +1044,12 @@
     }
     <span class="hljs-keyword">return</span> ans;
 }
-</code></pre>
+</code></pre></div>
 <h3 id="2-8-range-module-lc-715-segment-tree-treemap" tabindex="-1"><a class="header-anchor" href="#2-8-range-module-lc-715-segment-tree-treemap"><span>2-8) Range Module (LC 715) — Segment Tree / TreeMap</span></a></h3>
 <blockquote>
 <p>Track which ranges are tracked; add, remove, and query ranges efficiently.</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 715 - Range Module (TreeMap approach)</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 715 - Range Module (TreeMap approach)</span>
 <span class="hljs-comment">// IDEA: TreeMap&lt;start, end&gt; — merge on addRange, split on removeRange</span>
 <span class="hljs-comment">// time = O(N log N) per op, space = O(N)</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">RangeModule</span> {
@@ -1108,12 +1072,12 @@
         map.subMap(left, right).clear();
     }
 }
-</code></pre>
+</code></pre></div>
 <h3 id="2-9-longest-increasing-subsequence-lc-300-segment-tree-on-values" tabindex="-1"><a class="header-anchor" href="#2-9-longest-increasing-subsequence-lc-300-segment-tree-on-values"><span>2-9) Longest Increasing Subsequence (LC 300) — Segment Tree on Values</span></a></h3>
 <blockquote>
 <p>Segment tree on compressed values; query max LIS length for values &lt; current, then update.</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 300 - LIS via Segment Tree (max query on value range)</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 300 - LIS via Segment Tree (max query on value range)</span>
 <span class="hljs-comment">// IDEA: Compress values; seg tree max query for all smaller values; update at current</span>
 <span class="hljs-comment">// time = O(N log N), space = O(N)</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">lengthOfLIS</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums)</span> {
@@ -1135,12 +1099,12 @@
 }
 <span class="hljs-keyword">private</span> <span class="hljs-type">int</span>  <span class="hljs-title function_">qmax</span><span class="hljs-params">(<span class="hljs-type">int</span>[] t, <span class="hljs-type">int</span> n, <span class="hljs-type">int</span> l, <span class="hljs-type">int</span> r)</span> { <span class="hljs-type">int</span> res=<span class="hljs-number">0</span>; <span class="hljs-keyword">for</span>(l+=n,r+=n+<span class="hljs-number">1</span>;l&lt;r;l&gt;&gt;=<span class="hljs-number">1</span>,r&gt;&gt;=<span class="hljs-number">1</span>){<span class="hljs-keyword">if</span>((l&amp;<span class="hljs-number">1</span>)==<span class="hljs-number">1</span>)res=Math.max(res,t[l++]);<span class="hljs-keyword">if</span>((r&amp;<span class="hljs-number">1</span>)==<span class="hljs-number">1</span>)res=Math.max(res,t[--r]);}<span class="hljs-keyword">return</span> res; }
 <span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">umax</span><span class="hljs-params">(<span class="hljs-type">int</span>[] t, <span class="hljs-type">int</span> n, <span class="hljs-type">int</span> i, <span class="hljs-type">int</span> v)</span> { <span class="hljs-keyword">for</span>(i+=n;i&gt;<span class="hljs-number">0</span>;i&gt;&gt;=<span class="hljs-number">1</span>) t[i]=Math.max(t[i],v); }
-</code></pre>
+</code></pre></div>
 <h3 id="2-10-my-calendar-ii-lc-731-segment-tree-treemap" tabindex="-1"><a class="header-anchor" href="#2-10-my-calendar-ii-lc-731-segment-tree-treemap"><span>2-10) My Calendar II (LC 731) — Segment Tree / TreeMap</span></a></h3>
 <blockquote>
 <p>Allow at most 2 overlapping bookings; reject if a third overlap would occur.</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 731 - My Calendar II</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 731 - My Calendar II</span>
 <span class="hljs-comment">// IDEA: Two TreeMaps — bookings and double-bookings; reject if new interval hits double-booked region</span>
 <span class="hljs-comment">// time = O(N^2) worst, space = O(N)</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">MyCalendarTwo</span> {
@@ -1156,7 +1120,7 @@
         <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
     }
 }
-</code></pre>
+</code></pre></div>
 
       </div>
       <div class="cheatsheet-footer">

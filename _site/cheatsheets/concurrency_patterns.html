@@ -19,54 +19,18 @@
     }
   })();
   </script>
-  <script>document.addEventListener('DOMContentLoaded', function() {
-    document.querySelectorAll('pre code').forEach(function(codeEl) {
-      var pre = codeEl.parentElement;
-      var lang = '';
-      var cls = codeEl.className || '';
-      var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
-      if (m) lang = m[1];
-
-      // Add line numbers
-      var lines = codeEl.innerHTML.split('
-');
-      if (lines[lines.length - 1] === '') lines.pop();
-      var numbered = lines.map(function(line, i) {
-        return '<span class="hljs-ln-line"><span class="hljs-ln-n" data-line-number="' + (i + 1) + '"></span><span class="hljs-ln-code">' + line + '</span></span>';
-      }).join('
-');
-      codeEl.innerHTML = numbered;
-      codeEl.classList.add('hljs-ln');
-
-      var wrapper = document.createElement('div');
-      wrapper.className = 'code-block-wrapper';
-      pre.parentNode.insertBefore(wrapper, pre);
-      var header = document.createElement('div');
-      header.className = 'code-block-header';
-      if (lang) {
-        var label = document.createElement('span');
-        label.className = 'code-lang-label';
-        label.textContent = lang;
-        header.appendChild(label);
-      } else {
-        header.appendChild(document.createElement('span'));
-      }
-      var btn = document.createElement('button');
-      btn.className = 'copy-btn';
-      btn.textContent = 'Copy';
-      btn.addEventListener('click', function() {
-        var text = Array.from(codeEl.querySelectorAll('.hljs-ln-code')).map(function(el) { return el.textContent; }).join('
-');
-        navigator.clipboard.writeText(text).then(function() {
-          btn.textContent = 'Copied!';
-          btn.classList.add('copied');
-          setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
-        });
-      });
-      header.appendChild(btn);
-      wrapper.appendChild(header);
-      wrapper.appendChild(pre);
+  <script>
+  function copyCode(btn) {
+    var pre = btn.closest('.code-block-wrapper').querySelector('pre');
+    var text = pre ? pre.innerText : '';
+    navigator.clipboard.writeText(text).then(function() {
+      btn.textContent = 'Copied!';
+      btn.classList.add('copied');
+      setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
     });
+  }
+  </script>
+  <script>document.addEventListener('DOMContentLoaded', function() {
     document.querySelectorAll('table').forEach(function(table) {
       if (!table.parentElement.classList.contains('table-wrap')) {
         var wrapper = document.createElement('div');
@@ -153,7 +117,7 @@
 </ul>
 <h2 id="pattern-1-print-in-order-sequence-control" tabindex="-1"><a class="header-anchor" href="#pattern-1-print-in-order-sequence-control"><span>Pattern 1: Print in Order / Sequence Control</span></a></h2>
 <h3 id="using-countdownlatch" tabindex="-1"><a class="header-anchor" href="#using-countdownlatch"><span>Using CountDownLatch</span></a></h3>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 1114 — Print in Order</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 1114 — Print in Order</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">Foo</span> {
     <span class="hljs-keyword">private</span> <span class="hljs-type">CountDownLatch</span> <span class="hljs-variable">latch1</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">CountDownLatch</span>(<span class="hljs-number">1</span>);
     <span class="hljs-keyword">private</span> <span class="hljs-type">CountDownLatch</span> <span class="hljs-variable">latch2</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">CountDownLatch</span>(<span class="hljs-number">1</span>);
@@ -174,9 +138,9 @@
         printThird.run();
     }
 }
-</code></pre>
+</code></pre></div>
 <h3 id="using-semaphore" tabindex="-1"><a class="header-anchor" href="#using-semaphore"><span>Using Semaphore</span></a></h3>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 1115 — Print FooBar Alternately</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 1115 — Print FooBar Alternately</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">FooBar</span> {
     <span class="hljs-keyword">private</span> <span class="hljs-type">int</span> n;
     <span class="hljs-keyword">private</span> <span class="hljs-type">Semaphore</span> <span class="hljs-variable">fooSem</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Semaphore</span>(<span class="hljs-number">1</span>);
@@ -200,9 +164,9 @@
         }
     }
 }
-</code></pre>
+</code></pre></div>
 <h2 id="pattern-2-producer-consumer-bounded-buffer" tabindex="-1"><a class="header-anchor" href="#pattern-2-producer-consumer-bounded-buffer"><span>Pattern 2: Producer-Consumer / Bounded Buffer</span></a></h2>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 1188 — Design Bounded Blocking Queue</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 1188 — Design Bounded Blocking Queue</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">BoundedBlockingQueue</span> {
     <span class="hljs-keyword">private</span> Queue&lt;Integer&gt; queue = <span class="hljs-keyword">new</span> <span class="hljs-title class_">LinkedList</span>&lt;&gt;();
     <span class="hljs-keyword">private</span> <span class="hljs-type">int</span> capacity;
@@ -233,9 +197,9 @@
 
     <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">size</span><span class="hljs-params">()</span> { lock.lock(); <span class="hljs-keyword">try</span> { <span class="hljs-keyword">return</span> queue.size(); } <span class="hljs-keyword">finally</span> { lock.unlock(); } }
 }
-</code></pre>
+</code></pre></div>
 <h2 id="pattern-3-read-write-lock-h2o-problem" tabindex="-1"><a class="header-anchor" href="#pattern-3-read-write-lock-h2o-problem"><span>Pattern 3: Read-Write Lock / H2O Problem</span></a></h2>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 1117 — Building H2O</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 1117 — Building H2O</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">H2O</span> {
     <span class="hljs-keyword">private</span> <span class="hljs-type">Semaphore</span> <span class="hljs-variable">hSem</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Semaphore</span>(<span class="hljs-number">2</span>);
     <span class="hljs-keyword">private</span> <span class="hljs-type">Semaphore</span> <span class="hljs-variable">oSem</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Semaphore</span>(<span class="hljs-number">0</span>);
@@ -255,7 +219,7 @@
         <span class="hljs-keyword">try</span> { barrier.await(); } <span class="hljs-keyword">catch</span> (BrokenBarrierException e) {}
     }
 }
-</code></pre>
+</code></pre></div>
 <h2 id="key-concurrency-primitives" tabindex="-1"><a class="header-anchor" href="#key-concurrency-primitives"><span>Key Concurrency Primitives</span></a></h2>
 <table>
 <thead>

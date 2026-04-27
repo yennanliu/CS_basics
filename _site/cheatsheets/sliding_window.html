@@ -19,54 +19,18 @@
     }
   })();
   </script>
-  <script>document.addEventListener('DOMContentLoaded', function() {
-    document.querySelectorAll('pre code').forEach(function(codeEl) {
-      var pre = codeEl.parentElement;
-      var lang = '';
-      var cls = codeEl.className || '';
-      var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
-      if (m) lang = m[1];
-
-      // Add line numbers
-      var lines = codeEl.innerHTML.split('
-');
-      if (lines[lines.length - 1] === '') lines.pop();
-      var numbered = lines.map(function(line, i) {
-        return '<span class="hljs-ln-line"><span class="hljs-ln-n" data-line-number="' + (i + 1) + '"></span><span class="hljs-ln-code">' + line + '</span></span>';
-      }).join('
-');
-      codeEl.innerHTML = numbered;
-      codeEl.classList.add('hljs-ln');
-
-      var wrapper = document.createElement('div');
-      wrapper.className = 'code-block-wrapper';
-      pre.parentNode.insertBefore(wrapper, pre);
-      var header = document.createElement('div');
-      header.className = 'code-block-header';
-      if (lang) {
-        var label = document.createElement('span');
-        label.className = 'code-lang-label';
-        label.textContent = lang;
-        header.appendChild(label);
-      } else {
-        header.appendChild(document.createElement('span'));
-      }
-      var btn = document.createElement('button');
-      btn.className = 'copy-btn';
-      btn.textContent = 'Copy';
-      btn.addEventListener('click', function() {
-        var text = Array.from(codeEl.querySelectorAll('.hljs-ln-code')).map(function(el) { return el.textContent; }).join('
-');
-        navigator.clipboard.writeText(text).then(function() {
-          btn.textContent = 'Copied!';
-          btn.classList.add('copied');
-          setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
-        });
-      });
-      header.appendChild(btn);
-      wrapper.appendChild(header);
-      wrapper.appendChild(pre);
+  <script>
+  function copyCode(btn) {
+    var pre = btn.closest('.code-block-wrapper').querySelector('pre');
+    var text = pre ? pre.innerText : '';
+    navigator.clipboard.writeText(text).then(function() {
+      btn.textContent = 'Copied!';
+      btn.classList.add('copied');
+      setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
     });
+  }
+  </script>
+  <script>document.addEventListener('DOMContentLoaded', function() {
     document.querySelectorAll('table').forEach(function(table) {
       if (!table.parentElement.classList.contains('table-wrap')) {
         var wrapper = document.createElement('div');
@@ -307,7 +271,7 @@
 </tbody>
 </table>
 <h3 id="1-2-universal-sliding-window-template" tabindex="-1"><a class="header-anchor" href="#1-2-universal-sliding-window-template"><span>1.2) Universal Sliding Window Template</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python Universal Template</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python Universal Template</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">sliding_window</span>(<span class="hljs-params">s, condition</span>):
     <span class="hljs-comment"># Initialize window state</span>
     left = <span class="hljs-number">0</span>
@@ -329,8 +293,8 @@
         result = update_result(result, left, right)
     
     <span class="hljs-keyword">return</span> result
-</code></pre>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java Universal Template  </span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java Universal Template  </span>
 <span class="hljs-keyword">public</span> ResultType <span class="hljs-title function_">slidingWindow</span><span class="hljs-params">(String s)</span> {
     <span class="hljs-comment">// Initialize window state</span>
     <span class="hljs-type">int</span> <span class="hljs-variable">left</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
@@ -358,11 +322,11 @@
     
     <span class="hljs-keyword">return</span> result;
 }
-</code></pre>
+</code></pre></div>
 <h3 id="1-3-template-1-fixed-size-window" tabindex="-1"><a class="header-anchor" href="#1-3-template-1-fixed-size-window"><span>1.3) Template 1: Fixed Size Window</span></a></h3>
 <p><strong>Use Cases</strong>: Anagrams, permutations, k-length substrings
 <strong>Pattern</strong>: Maintain exact window size, slide one position at a time</p>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Fixed Size Window Template</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Fixed Size Window Template</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">fixed_window</span>(<span class="hljs-params">s, k</span>):
     window = {}
     result = []
@@ -385,8 +349,8 @@
                 result.append(i - k + <span class="hljs-number">1</span>)
     
     <span class="hljs-keyword">return</span> result
-</code></pre>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Fixed Size Window Template - Java</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Fixed Size Window Template - Java</span>
 <span class="hljs-keyword">public</span> List&lt;Integer&gt; <span class="hljs-title function_">fixedWindow</span><span class="hljs-params">(String s, <span class="hljs-type">int</span> k)</span> {
     Map&lt;Character, Integer&gt; window = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;();
     List&lt;Integer&gt; result = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();
@@ -412,11 +376,11 @@
     }
     <span class="hljs-keyword">return</span> result;
 }
-</code></pre>
+</code></pre></div>
 <h3 id="1-4-template-2-variable-size-window-maximum-length" tabindex="-1"><a class="header-anchor" href="#1-4-template-2-variable-size-window-maximum-length"><span>1.4) Template 2: Variable Size Window (Maximum Length)</span></a></h3>
 <p><strong>Use Cases</strong>: Longest substring problems, maximum valid window
 <strong>Pattern</strong>: Expand until invalid, record max, then contract</p>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Variable Size Window (Maximum) Template</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Variable Size Window (Maximum) Template</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">max_window</span>(<span class="hljs-params">s</span>):
     left = <span class="hljs-number">0</span>
     window = {}
@@ -437,11 +401,11 @@
         max_len = <span class="hljs-built_in">max</span>(max_len, right - left + <span class="hljs-number">1</span>)
     
     <span class="hljs-keyword">return</span> max_len
-</code></pre>
+</code></pre></div>
 <h3 id="1-5-template-3-variable-size-window-minimum-length" tabindex="-1"><a class="header-anchor" href="#1-5-template-3-variable-size-window-minimum-length"><span>1.5) Template 3: Variable Size Window (Minimum Length)</span></a></h3>
 <p><strong>Use Cases</strong>: Minimum window substring, smallest valid window
 <strong>Pattern</strong>: Expand until valid, record min, then try to contract</p>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Variable Size Window (Minimum) Template  </span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Variable Size Window (Minimum) Template  </span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">min_window</span>(<span class="hljs-params">s, target</span>):
     left = <span class="hljs-number">0</span>
     window = {}
@@ -467,11 +431,11 @@
             left += <span class="hljs-number">1</span>
     
     <span class="hljs-keyword">return</span> result <span class="hljs-keyword">if</span> min_len != <span class="hljs-built_in">float</span>(<span class="hljs-string">&#x27;inf&#x27;</span>) <span class="hljs-keyword">else</span> <span class="hljs-string">&quot;&quot;</span>
-</code></pre>
+</code></pre></div>
 <h3 id="1-6-template-4-counting-subarrays" tabindex="-1"><a class="header-anchor" href="#1-6-template-4-counting-subarrays"><span>1.6) Template 4: Counting Subarrays</span></a></h3>
 <p><strong>Use Cases</strong>: Count subarrays meeting criteria
 <strong>Pattern</strong>: For each right position, count valid left positions</p>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Subarray Counting Template</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Subarray Counting Template</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">count_subarrays</span>(<span class="hljs-params">nums, condition</span>):
     left = <span class="hljs-number">0</span>
     count = <span class="hljs-number">0</span>
@@ -490,20 +454,20 @@
         count += right - left + <span class="hljs-number">1</span>
 
     <span class="hljs-keyword">return</span> count
-</code></pre>
+</code></pre></div>
 <h3 id="1-7-technique-exactly-k-problems-at-most-k-transformation" tabindex="-1"><a class="header-anchor" href="#1-7-technique-exactly-k-problems-at-most-k-transformation"><span>1.7) Technique: Exactly K Problems (At Most K Transformation)</span></a></h3>
 <p><strong>Core Insight:</strong>
 “Exactly K” problems are often difficult to solve directly, but can be transformed using the powerful formula:</p>
-<pre><code class="hljs">Exactly K = At Most K - At Most (K-1)
-</code></pre>
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Exactly K = At Most K - At Most (K-1)
+</code></pre></div>
 <p><strong>Why This Works:</strong></p>
-<pre><code class="hljs">At Most K: All subarrays with ≤ K distinct/count
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">At Most K: All subarrays with ≤ K distinct/count
 At Most (K-1): All subarrays with ≤ K-1 distinct/count
 
 Difference: Only subarrays with EXACTLY K distinct/count
-</code></pre>
+</code></pre></div>
 <p><strong>Proof by Example:</strong></p>
-<pre><code class="hljs">Array: [1, 2, 1, 2, 3]
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Array: [1, 2, 1, 2, 3]
 K = 2 (exactly 2 distinct integers)
 
 At Most 2 distinct:
@@ -516,10 +480,10 @@ Count = 5
 
 Exactly 2 distinct = 12 - 5 = 7 ✓
 [1,2], [1,2,1], [1,2,1,2], [2,1], [2,1,2], [1,2], [2,3]
-</code></pre>
+</code></pre></div>
 <hr>
 <h4 id="template-at-most-k-pattern" tabindex="-1"><a class="header-anchor" href="#template-at-most-k-pattern"><span>Template: At Most K Pattern</span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Universal At Most K Template</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Universal At Most K Template</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">at_most_k</span>(<span class="hljs-params">nums, k</span>):
     <span class="hljs-string">&quot;&quot;&quot;
     Count subarrays with AT MOST K distinct/elements/condition.
@@ -549,8 +513,8 @@ Exactly 2 distinct = 12 - 5 = 7 ✓
         count += right - left + <span class="hljs-number">1</span>
 
     <span class="hljs-keyword">return</span> count
-</code></pre>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Transform to Exactly K</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Transform to Exactly K</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">exactly_k</span>(<span class="hljs-params">nums, k</span>):
     <span class="hljs-string">&quot;&quot;&quot;
     Count subarrays with EXACTLY K distinct/elements/condition.
@@ -563,11 +527,11 @@ Exactly 2 distinct = 12 - 5 = 7 ✓
 
     <span class="hljs-comment"># Exactly K = At Most K - At Most (K-1)</span>
     <span class="hljs-keyword">return</span> at_most_k(nums, k) - at_most_k(nums, k - <span class="hljs-number">1</span>)
-</code></pre>
+</code></pre></div>
 <hr>
 <h4 id="full-example-lc-992-subarrays-with-k-different-integers" tabindex="-1"><a class="header-anchor" href="#full-example-lc-992-subarrays-with-k-different-integers"><span>Full Example: LC 992 - Subarrays with K Different Integers</span></a></h4>
 <p><strong>Problem:</strong> Count subarrays with exactly K distinct integers.</p>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - LC 992 Subarrays with K Different Integers</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - LC 992 Subarrays with K Different Integers</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">subarraysWithKDistinct</span>(<span class="hljs-params">nums, k</span>):
     <span class="hljs-string">&quot;&quot;&quot;
     Count subarrays with exactly K distinct integers.
@@ -611,8 +575,8 @@ Exactly 2 distinct = 12 - 5 = 7 ✓
 <span class="hljs-comment"># at_most_k(2) = 12</span>
 <span class="hljs-comment"># at_most_k(1) = 5</span>
 <span class="hljs-comment"># exactly_k(2) = 12 - 5 = 7 ✓</span>
-</code></pre>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java - LC 992 Subarrays with K Different Integers</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java - LC 992 Subarrays with K Different Integers</span>
 <span class="hljs-comment">/**
  * time = O(N)
  * space = O(K)
@@ -648,10 +612,10 @@ Exactly 2 distinct = 12 - 5 = 7 ✓
 
     <span class="hljs-keyword">return</span> count;
 }
-</code></pre>
+</code></pre></div>
 <hr>
 <h4 id="visual-example-why-at-most-k-at-most-k-1-works" tabindex="-1"><a class="header-anchor" href="#visual-example-why-at-most-k-at-most-k-1-works"><span>Visual Example: Why “At Most K - At Most (K-1)” Works</span></a></h4>
-<pre><code class="hljs">Array: [1, 2, 1, 3], K = 2 (exactly 2 distinct)
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Array: [1, 2, 1, 3], K = 2 (exactly 2 distinct)
 
 At Most 2 Distinct:
 Index 0 (1): [1] ✓                                 → count = 1
@@ -677,7 +641,7 @@ Exactly 2 Distinct = 8 - 4 = 4 ✓
 
 The 4 subarrays with exactly 2 distinct:
 [1,2], [1,2,1], [2,1], [1,3]
-</code></pre>
+</code></pre></div>
 <hr>
 <h4 id="classic-problems-using-this-technique" tabindex="-1"><a class="header-anchor" href="#classic-problems-using-this-technique"><span>Classic Problems Using This Technique</span></a></h4>
 <table>
@@ -738,22 +702,22 @@ The 4 subarrays with exactly 2 distinct:
 <hr>
 <h4 id="pattern-recognition-when-to-use-this-technique" tabindex="-1"><a class="header-anchor" href="#pattern-recognition-when-to-use-this-technique"><span>Pattern Recognition: When to Use This Technique</span></a></h4>
 <p><strong>Use “Exactly K” transformation when you see:</strong></p>
-<pre><code class="hljs">✅ &quot;exactly K distinct/different&quot;
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">✅ &quot;exactly K distinct/different&quot;
 ✅ &quot;exactly K times&quot;
 ✅ &quot;exactly K occurrences&quot;
 ✅ &quot;subarrays with exactly K ...&quot;
 ✅ COUNTING problems (not max/min length)
-</code></pre>
+</code></pre></div>
 <p><strong>Direct sliding window works when:</strong></p>
-<pre><code class="hljs">✅ &quot;at most K&quot;
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">✅ &quot;at most K&quot;
 ✅ &quot;maximum length with ≤ K&quot;
 ✅ &quot;minimum length with ≥ K&quot;
 ✅ &quot;longest substring with at most K&quot;
-</code></pre>
+</code></pre></div>
 <hr>
 <h4 id="common-mistakes" tabindex="-1"><a class="header-anchor" href="#common-mistakes"><span>Common Mistakes</span></a></h4>
 <p><strong>1. Forgetting k=0 Edge Case:</strong></p>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Wrong: Doesn&#x27;t handle k=0</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Wrong: Doesn&#x27;t handle k=0</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">exactly_k</span>(<span class="hljs-params">nums, k</span>):
     <span class="hljs-keyword">return</span> at_most_k(nums, k) - at_most_k(nums, k - <span class="hljs-number">1</span>)
     <span class="hljs-comment"># at_most_k(nums, -1) may fail!</span>
@@ -763,9 +727,9 @@ The 4 subarrays with exactly 2 distinct:
     <span class="hljs-keyword">if</span> k == <span class="hljs-number">0</span>:
         <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>
     <span class="hljs-keyword">return</span> at_most_k(nums, k) - at_most_k(nums, k - <span class="hljs-number">1</span>)
-</code></pre>
+</code></pre></div>
 <p><strong>2. Using Wrong Approach for Max/Min Length:</strong></p>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Wrong: Using &quot;exactly K&quot; transformation for max length</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Wrong: Using &quot;exactly K&quot; transformation for max length</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">longest_k_distinct</span>(<span class="hljs-params">s, k</span>):
     <span class="hljs-comment"># This gives COUNT, not LENGTH!</span>
     <span class="hljs-keyword">return</span> at_most_k(s, k) - at_most_k(s, k - <span class="hljs-number">1</span>)  ❌
@@ -774,31 +738,31 @@ The 4 subarrays with exactly 2 distinct:
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">longest_k_distinct</span>(<span class="hljs-params">s, k</span>):
     <span class="hljs-comment"># Track max window size during at_most_k</span>
     <span class="hljs-keyword">return</span> at_most_k_max_length(s, k)  ✓
-</code></pre>
+</code></pre></div>
 <p><strong>3. Confusing Count vs Length:</strong></p>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># For COUNTING subarrays: use right - left + 1</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># For COUNTING subarrays: use right - left + 1</span>
 count += right - left + <span class="hljs-number">1</span>
 
 <span class="hljs-comment"># For MAX LENGTH: track max window size</span>
 max_length = <span class="hljs-built_in">max</span>(max_length, right - left + <span class="hljs-number">1</span>)
-</code></pre>
+</code></pre></div>
 <hr>
 <h4 id="interview-tips" tabindex="-1"><a class="header-anchor" href="#interview-tips"><span>Interview Tips</span></a></h4>
 <p><strong>1. Recognition:</strong></p>
-<pre><code class="hljs">Interviewer: &quot;Count subarrays with exactly K ...&quot;
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Interviewer: &quot;Count subarrays with exactly K ...&quot;
 → Think: &quot;Exactly K = At Most K - At Most (K-1)&quot;
 
 Interviewer: &quot;Find longest substring with at most K ...&quot;
 → Think: &quot;Direct sliding window, no subtraction needed&quot;
-</code></pre>
+</code></pre></div>
 <p><strong>2. Complexity Analysis:</strong></p>
-<pre><code class="hljs">Time: O(n) - each element added once, removed at most once in each pass
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Time: O(n) - each element added once, removed at most once in each pass
       Total: 2 passes × O(n) = O(n)
 
 Space: O(k) - HashMap stores at most K distinct elements
-</code></pre>
+</code></pre></div>
 <p><strong>3. Template Code to Memorize:</strong></p>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">exactly_k</span>(<span class="hljs-params">nums, k</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">exactly_k</span>(<span class="hljs-params">nums, k</span>):
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">at_most_k</span>(<span class="hljs-params">limit</span>):
         left = <span class="hljs-number">0</span>
         count = <span class="hljs-number">0</span>
@@ -820,7 +784,7 @@ Space: O(k) - HashMap stores at most K distinct elements
     <span class="hljs-keyword">if</span> k == <span class="hljs-number">0</span>:
         <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>
     <span class="hljs-keyword">return</span> at_most_k(k) - at_most_k(k - <span class="hljs-number">1</span>)
-</code></pre>
+</code></pre></div>
 <p><strong>4. Talking Points:</strong></p>
 <ul>
 <li>“Direct ‘exactly K’ is hard because window validity changes non-monotonically”</li>
@@ -831,7 +795,7 @@ Space: O(k) - HashMap stores at most K distinct elements
 <hr>
 <h4 id="advanced-why-direct-exactly-k-is-hard" tabindex="-1"><a class="header-anchor" href="#advanced-why-direct-exactly-k-is-hard"><span>Advanced: Why Direct “Exactly K” is Hard</span></a></h4>
 <p><strong>Problem with direct approach:</strong></p>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Naive attempt (WRONG!)</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Naive attempt (WRONG!)</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">exactly_k_direct</span>(<span class="hljs-params">nums, k</span>):
     left = <span class="hljs-number">0</span>
     count = <span class="hljs-number">0</span>
@@ -851,17 +815,17 @@ Space: O(k) - HashMap stores at most K distinct elements
         <span class="hljs-comment"># There&#x27;s no clean condition! ❌</span>
 
     <span class="hljs-keyword">return</span> count
-</code></pre>
+</code></pre></div>
 <p><strong>Why “at most K” works:</strong></p>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Window validity is monotonic:</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Window validity is monotonic:</span>
 <span class="hljs-comment"># - If window is valid (≤ K), all sub-windows are valid</span>
 <span class="hljs-comment"># - If window becomes invalid (&gt; K), shrink until valid</span>
 <span class="hljs-comment"># - Clear shrinking condition: while len(window) &gt; k</span>
 
 <span class="hljs-comment"># This monotonic property makes sliding window perfect!</span>
-</code></pre>
+</code></pre></div>
 <p><strong>Mathematical proof of transformation:</strong></p>
-<pre><code class="hljs">Let S(k) = set of all subarrays with at most k distinct elements
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Let S(k) = set of all subarrays with at most k distinct elements
 
 S(2) = {[1], [1,2], [1,2,1], [2], [2,1], [1], [1,3], [3], ...}
 S(1) = {[1], [2], [1], [3], ...}  (only single-element subarrays)
@@ -871,7 +835,7 @@ S(2) \ S(1) = subarrays in S(2) but not in S(1)
             = subarrays with EXACTLY 2 distinct ✓
 
 Generalized: S(k) \ S(k-1) = subarrays with exactly k distinct
-</code></pre>
+</code></pre></div>
 <hr>
 <h3 id="1-8-when-pure-sliding-window-works-vs-when-you-need-extra-tricks" tabindex="-1"><a class="header-anchor" href="#1-8-when-pure-sliding-window-works-vs-when-you-need-extra-tricks"><span>1.8) When Pure Sliding Window Works vs. When You Need Extra Tricks</span></a></h3>
 <h4 id="core-question-is-the-validity-condition-monotonic" tabindex="-1"><a class="header-anchor" href="#core-question-is-the-validity-condition-monotonic"><span>Core Question: Is the Validity Condition Monotonic?</span></a></h4>
@@ -929,7 +893,7 @@ Generalized: S(k) \ S(k-1) = subarrays with exactly k distinct
 </tbody>
 </table>
 <h4 id="why-exactly-k-breaks-pure-sliding-window" tabindex="-1"><a class="header-anchor" href="#why-exactly-k-breaks-pure-sliding-window"><span>Why “Exactly K” Breaks Pure Sliding Window</span></a></h4>
-<pre><code class="hljs">nums = [2,2,1,2,1], k = 2
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">nums = [2,2,1,2,1], k = 2
 
 At r = 4 (last element), valid subarrays ending here:
   [1,2,1]           → starts at index 2
@@ -937,7 +901,7 @@ At r = 4 (last element), valid subarrays ending here:
   [2,2,1,2,1]       → starts at index 0
 
 → 3 valid left boundaries, but pure sliding window finds only 1!
-</code></pre>
+</code></pre></div>
 <p>Pure sliding window can only track one left boundary (the smallest valid window). For “exactly k”, you need to count ALL valid left positions.</p>
 <h4 id="fix-1-atmost-k-atmost-k-1-see-section-1-7" tabindex="-1"><a class="header-anchor" href="#fix-1-atmost-k-atmost-k-1-see-section-1-7"><span>Fix 1: atMost(k) - atMost(k-1)  ← See Section 1.7</span></a></h4>
 <h4 id="fix-2-prefix-trick-inside-sliding-window-see-section-1-9" tabindex="-1"><a class="header-anchor" href="#fix-2-prefix-trick-inside-sliding-window-see-section-1-9"><span>Fix 2: Prefix Trick Inside Sliding Window  ← See Section 1.9</span></a></h4>
@@ -945,7 +909,7 @@ At r = 4 (last element), valid subarrays ending here:
 <h3 id="1-9-prefix-trick-sliding-window-for-exactly-k-counting" tabindex="-1"><a class="header-anchor" href="#1-9-prefix-trick-sliding-window-for-exactly-k-counting"><span>1.9) Prefix Trick + Sliding Window (for “Exactly K” Counting)</span></a></h3>
 <p><strong>When to use:</strong> Count subarrays with <strong>exactly k</strong> of some element, where you want a single-pass O(n) solution without calling <code>atMost</code> twice.</p>
 <p><strong>Core Idea:</strong></p>
-<pre><code class="hljs">When oddCount reaches k (window has exactly k odds):
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">When oddCount reaches k (window has exactly k odds):
   - Count how many even numbers are at the LEFT edge of the window
     before hitting the (k-th-from-left) odd number
   - Each of these even numbers gives one more valid left boundary
@@ -956,7 +920,7 @@ After the window shrinks past the leftmost odd:
   - But `prefix` (the &quot;even gap&quot;) is PRESERVED
   - For every future r that keeps oddCount == k,
     those same left boundaries are still valid → add `prefix` again
-</code></pre>
+</code></pre></div>
 <p><strong>Why <code>prefix</code> resets to 0 when a new odd is encountered:</strong></p>
 <ul>
 <li>A new odd number at <code>r</code> changes which odd is the “k-th from left”</li>
@@ -964,7 +928,7 @@ After the window shrinks past the leftmost odd:
 <li>So reset <code>prefix = 0</code> and let the while loop rebuild it</li>
 </ul>
 <h4 id="template" tabindex="-1"><a class="header-anchor" href="#template"><span>Template</span></a></h4>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Prefix Trick + Sliding Window</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Prefix Trick + Sliding Window</span>
 <span class="hljs-comment">// time = O(N), space = O(1)</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">exactlyK</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums, <span class="hljs-type">int</span> k)</span> {
     <span class="hljs-type">int</span> <span class="hljs-variable">l</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>, res = <span class="hljs-number">0</span>, oddCount = <span class="hljs-number">0</span>, prefix = <span class="hljs-number">0</span>;
@@ -989,9 +953,9 @@ After the window shrinks past the leftmost odd:
 
     <span class="hljs-keyword">return</span> res;
 }
-</code></pre>
+</code></pre></div>
 <h4 id="walkthrough-nums-2-2-1-2-1-k-2" tabindex="-1"><a class="header-anchor" href="#walkthrough-nums-2-2-1-2-1-k-2"><span>Walkthrough: <code>nums = [2,2,1,2,1], k = 2</code></span></a></h4>
-<pre><code class="hljs">r=0 (2): oddCount=0, prefix=0  → res=0
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">r=0 (2): oddCount=0, prefix=0  → res=0
 r=1 (2): oddCount=0, prefix=0  → res=0
 r=2 (1): oddCount=1, prefix=0  → res=0   (new odd, prefix reset)
 r=3 (2): oddCount=1, prefix=0  → res=0
@@ -1001,7 +965,7 @@ r=4 (1): oddCount=2, prefix=0  → new odd, prefix reset to 0
     prefix=2, nums[1]=2 (even), l=2       → oddCount still 2
     prefix=3, nums[2]=1 (odd),  l=3, oddCount=1 → exit while
   res += 3 → res=3
-</code></pre>
+</code></pre></div>
 <p>Answer: 3 ✅ — the three subarrays <code>[1,2,1]</code>, <code>[2,1,2,1]</code>, <code>[2,2,1,2,1]</code></p>
 <h4 id="comparison-prefix-trick-vs-atmost-subtraction" tabindex="-1"><a class="header-anchor" href="#comparison-prefix-trick-vs-atmost-subtraction"><span>Comparison: Prefix Trick vs atMost Subtraction</span></a></h4>
 <table>
@@ -1278,7 +1242,7 @@ r=4 (1): oddCount=2, prefix=0  → new odd, prefix reset to 0
 </tbody>
 </table>
 <h3 id="2-2-template-selection-strategy" tabindex="-1"><a class="header-anchor" href="#2-2-template-selection-strategy"><span>2.2) Template Selection Strategy</span></a></h3>
-<pre><code class="hljs">Problem Analysis Flowchart:
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Problem Analysis Flowchart:
 
 1. Is window size fixed?
    ├── YES → Use Fixed Size Template
@@ -1295,11 +1259,11 @@ r=4 (1): oddCount=2, prefix=0  → new odd, prefix reset to 0
 4. Are you counting subarrays?
    ├── YES → Use Counting Template
    └── NO → Use custom approach
-</code></pre>
+</code></pre></div>
 <h2 id="3-detailed-leetcode-examples" tabindex="-1"><a class="header-anchor" href="#3-detailed-leetcode-examples"><span>3) Detailed LeetCode Examples</span></a></h2>
 <h3 id="3-1-fixed-size-window-examples" tabindex="-1"><a class="header-anchor" href="#3-1-fixed-size-window-examples"><span>3.1) Fixed Size Window Examples</span></a></h3>
 <h4 id="lc-567-permutation-in-string-template-fixed-size" tabindex="-1"><a class="header-anchor" href="#lc-567-permutation-in-string-template-fixed-size"><span>LC 567: Permutation in String (Template: Fixed Size)</span></a></h4>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 567</span>
     <span class="hljs-comment">// V0</span>
     <span class="hljs-comment">// IDEA: HASHMAP + SLIDING WINDOW (fixed by gpt)</span>
@@ -1371,8 +1335,8 @@ r=4 (1): oddCount=2, prefix=0  → new odd, prefix reset to 0
 
         <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
     }
-</code></pre>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 567 Permutation in String</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 567 Permutation in String</span>
 <span class="hljs-comment"># V0 </span>
 <span class="hljs-keyword">import</span> collections
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
@@ -1392,9 +1356,9 @@ r=4 (1): oddCount=2, prefix=0  → new odd, prefix reset to 0
                     <span class="hljs-keyword">del</span> c2[s2[p]]
                 p += <span class="hljs-number">1</span>
         <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
-</code></pre>
+</code></pre></div>
 <h4 id="lc-438-find-all-anagrams-in-a-string-template-fixed-size" tabindex="-1"><a class="header-anchor" href="#lc-438-find-all-anagrams-in-a-string-template-fixed-size"><span>LC 438: Find All Anagrams in a String (Template: Fixed Size)</span></a></h4>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 438</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 438</span>
     <span class="hljs-comment">// V0</span>
     <span class="hljs-comment">// IDEA: HASHMAP + 2 POINTERS (fixed by gpt)</span>
     <span class="hljs-keyword">public</span> List&lt;Integer&gt; <span class="hljs-title function_">findAnagrams</span><span class="hljs-params">(String s, String p)</span> {
@@ -1557,8 +1521,8 @@ r=4 (1): oddCount=2, prefix=0  → new odd, prefix reset to 0
         }
         <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
     }
-</code></pre>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 438 Find All Anagrams in a String</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 438 Find All Anagrams in a String</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># IDEA : SLIDING WINDOW + collections.Counter()</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
@@ -1582,10 +1546,10 @@ r=4 (1): oddCount=2, prefix=0  → new odd, prefix reset to 0
             <span class="hljs-keyword">if</span> cs == cp:
                 ans.append(i - lp + <span class="hljs-number">1</span>)
         <span class="hljs-keyword">return</span> ans
-</code></pre>
+</code></pre></div>
 <h3 id="3-2-variable-size-window-examples" tabindex="-1"><a class="header-anchor" href="#3-2-variable-size-window-examples"><span>3.2) Variable Size Window Examples</span></a></h3>
 <h4 id="lc-3-longest-substring-without-repeating-characters-template-variable-max" tabindex="-1"><a class="header-anchor" href="#lc-3-longest-substring-without-repeating-characters-template-variable-max"><span>LC 3: Longest Substring Without Repeating Characters (Template: Variable Max)</span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 003 Longest Substring Without Repeating Characters</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 003 Longest Substring Without Repeating Characters</span>
 <span class="hljs-comment"># V0&#x27;</span>
 <span class="hljs-comment"># IDEA : SLIDING WINDOW + DICT</span>
 <span class="hljs-comment">#       -&gt; use a hash table (d) record visited &quot;element&quot; (e.g. : a,b,c,...)</span>
@@ -1645,8 +1609,8 @@ r=4 (1): oddCount=2, prefix=0  → new odd, prefix reset to 0
             d[s[r]] = r
             res = <span class="hljs-built_in">max</span>(res, r -l + <span class="hljs-number">1</span>)
         <span class="hljs-keyword">return</span> res
-</code></pre>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// V0</span>
 <span class="hljs-comment">// IDEA : SLIDING WINDOW + HASH SET</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">lengthOfLongestSubstring</span><span class="hljs-params">(String s)</span> {
@@ -1683,10 +1647,10 @@ r=4 (1): oddCount=2, prefix=0  → new odd, prefix reset to 0
 
     <span class="hljs-keyword">return</span> ans;
 }
-</code></pre>
+</code></pre></div>
 <h3 id="3-3-counting-subarrays-examples" tabindex="-1"><a class="header-anchor" href="#3-3-counting-subarrays-examples"><span>3.3) Counting Subarrays Examples</span></a></h3>
 <h4 id="lc-713-subarray-product-less-than-k-template-counting" tabindex="-1"><a class="header-anchor" href="#lc-713-subarray-product-less-than-k-template-counting"><span>LC 713: Subarray Product Less Than K (Template: Counting)</span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 713 Subarray Product Less Than K</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 713 Subarray Product Less Than K</span>
 <span class="hljs-comment"># V0 </span>
 <span class="hljs-comment"># IDEA : SLIDING WINDOW </span>
 <span class="hljs-comment"># MAINTAIN 2 INDEX : left, i, SO THE SLIDING WINDOW IS : [left, i]</span>
@@ -1715,10 +1679,10 @@ r=4 (1): oddCount=2, prefix=0  → new odd, prefix reset to 0
             <span class="hljs-comment">#    -&gt; https://leetcode.com/problems/subarray-product-less-than-k/solution/           </span>
             result += (j - i + <span class="hljs-number">1</span>)           
         <span class="hljs-keyword">return</span> result
-</code></pre>
+</code></pre></div>
 <h3 id="3-4-minimum-window-examples" tabindex="-1"><a class="header-anchor" href="#3-4-minimum-window-examples"><span>3.4) Minimum Window Examples</span></a></h3>
 <h4 id="lc-209-minimum-size-subarray-sum-template-variable-min" tabindex="-1"><a class="header-anchor" href="#lc-209-minimum-size-subarray-sum-template-variable-min"><span>LC 209: Minimum Size Subarray Sum (Template: Variable Min)</span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 209 Minimum Size Subarray Sum</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 209 Minimum Size Subarray Sum</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># IDEA : SLIDING WINDOW : start, end</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
@@ -1749,9 +1713,9 @@ r=4 (1): oddCount=2, prefix=0  → new odd, prefix reset to 0
         <span class="hljs-keyword">if</span> minLength == n + <span class="hljs-number">1</span>:
             <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>         
         <span class="hljs-keyword">return</span> minLength
-</code></pre>
+</code></pre></div>
 <h4 id="lc-424-longest-repeating-character-replacement-template-variable-max" tabindex="-1"><a class="header-anchor" href="#lc-424-longest-repeating-character-replacement-template-variable-max"><span>LC 424: Longest Repeating Character Replacement (Template: Variable Max)</span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># lc 424. Longest Repeating Character Replacement</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># lc 424. Longest Repeating Character Replacement</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># IDEA : SLIDING WINDOW + DICT + 2 POINTERS</span>
 <span class="hljs-keyword">from</span> collections <span class="hljs-keyword">import</span> Counter
@@ -1793,8 +1757,8 @@ r=4 (1): oddCount=2, prefix=0  → new odd, prefix reset to 0
             maxLen = <span class="hljs-built_in">max</span>(maxLen, r - l + <span class="hljs-number">1</span>)     
 
         <span class="hljs-keyword">return</span> maxLen
-</code></pre>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 424</span>
 <span class="hljs-comment">// V2</span>
 <span class="hljs-comment">// IDEA : Sliding Window (Slow)</span>
@@ -1836,10 +1800,10 @@ r=4 (1): oddCount=2, prefix=0  → new odd, prefix reset to 0
     <span class="hljs-comment">// end + 1 - start - count is different element count</span>
     <span class="hljs-keyword">return</span> end + <span class="hljs-number">1</span> - start - count &lt;= k;
 }
-</code></pre>
+</code></pre></div>
 <h3 id="3-5-advanced-examples" tabindex="-1"><a class="header-anchor" href="#3-5-advanced-examples"><span>3.5) Advanced Examples</span></a></h3>
 <h4 id="lc-413-arithmetic-slices-template-custom" tabindex="-1"><a class="header-anchor" href="#lc-413-arithmetic-slices-template-custom"><span>LC 413: Arithmetic Slices (Template: Custom)</span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 413 Arithmetic Slices</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 413 Arithmetic Slices</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># IDEA : SLIDING DINDOW + 2 pointers</span>
 <span class="hljs-comment"># STEPS:</span>
@@ -1865,9 +1829,9 @@ r=4 (1): oddCount=2, prefix=0  → new odd, prefix reset to 0
                 <span class="hljs-keyword">else</span>:
                     <span class="hljs-keyword">break</span>
         <span class="hljs-keyword">return</span> res 
-</code></pre>
+</code></pre></div>
 <h4 id="lc-1151-minimum-swaps-to-group-all-1-s-together-template-fixed-size" tabindex="-1"><a class="header-anchor" href="#lc-1151-minimum-swaps-to-group-all-1-s-together-template-fixed-size"><span>LC 1151: Minimum Swaps to Group All 1’s Together (Template: Fixed Size)</span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 1151 Minimum Swaps to Group All 1&#x27;s Together</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 1151 Minimum Swaps to Group All 1&#x27;s Together</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># IDEA : Sliding Window with Two Pointers</span>
 <span class="hljs-comment"># IDEA : core : Find which sub-array HAS MOST &quot;1&quot;, since it means it needs MINIMUM SWAP for getting all &quot;1&quot; toogether</span>
@@ -1889,9 +1853,9 @@ r=4 (1): oddCount=2, prefix=0  → new odd, prefix reset to 0
             <span class="hljs-comment"># record the maximum number of 1&#x27;s in the window</span>
             max_one = <span class="hljs-built_in">max</span>(max_one, cnt_one)
         <span class="hljs-keyword">return</span> ones - max_one
-</code></pre>
+</code></pre></div>
 <h4 id="lc-763-partition-labels-template-custom-greedy-sliding-window" tabindex="-1"><a class="header-anchor" href="#lc-763-partition-labels-template-custom-greedy-sliding-window"><span>LC 763: Partition Labels (Template: Custom Greedy + Sliding Window)</span></a></h4>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 763 Partition Labels</span>
 
 <span class="hljs-comment">// V0-2</span>
@@ -1926,9 +1890,9 @@ r=4 (1): oddCount=2, prefix=0  → new odd, prefix reset to 0
 
     <span class="hljs-keyword">return</span> res;
 }
-</code></pre>
+</code></pre></div>
 <h3 id="lc-1838-frequency-of-the-most-frequent-element" tabindex="-1"><a class="header-anchor" href="#lc-1838-frequency-of-the-most-frequent-element"><span>LC 1838 Frequency of the Most Frequent Element</span></a></h3>
-<pre data-lang="java"><code class="hljs language-java">    <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">maxFrequency_0_1</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums, <span class="hljs-type">int</span> k)</span> {
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java">    <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">maxFrequency_0_1</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums, <span class="hljs-type">int</span> k)</span> {
         <span class="hljs-comment">/**
          *
          * Sort nums in non-decreasing order.
@@ -1997,7 +1961,7 @@ r=4 (1): oddCount=2, prefix=0  → new odd, prefix reset to 0
 
         <span class="hljs-keyword">return</span> res;
     }
-</code></pre>
+</code></pre></div>
 <h2 id="4-core-patterns-quick-reference" tabindex="-1"><a class="header-anchor" href="#4-core-patterns-quick-reference"><span>4) Core Patterns &amp; Quick Reference</span></a></h2>
 <blockquote>
 <p><strong>📌 Read this section after reviewing the templates (section 1) and before diving into detailed examples (sections 2-3).</strong></p>
@@ -2046,7 +2010,7 @@ r=4 (1): oddCount=2, prefix=0  → new odd, prefix reset to 0
 </table>
 <h3 id="4-2-common-patterns-tricks" tabindex="-1"><a class="header-anchor" href="#4-2-common-patterns-tricks"><span>4.2) Common Patterns &amp; Tricks</span></a></h3>
 <h4 id="character-frequency-tracking" tabindex="-1"><a class="header-anchor" href="#character-frequency-tracking"><span><strong>Character Frequency Tracking</strong></span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Track character counts in window</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Track character counts in window</span>
 window = {}
 window[char] = window.get(char, <span class="hljs-number">0</span>) + <span class="hljs-number">1</span>
 
@@ -2054,9 +2018,9 @@ window[char] = window.get(char, <span class="hljs-number">0</span>) + <span clas
 window[char] -= <span class="hljs-number">1</span>
 <span class="hljs-keyword">if</span> window[char] == <span class="hljs-number">0</span>:
     <span class="hljs-keyword">del</span> window[char]
-</code></pre>
+</code></pre></div>
 <h4 id="validity-conditions" tabindex="-1"><a class="header-anchor" href="#validity-conditions"><span><strong>Validity Conditions</strong></span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Common validity checks</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Common validity checks</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">is_valid_permutation</span>(<span class="hljs-params">window, target</span>):
     <span class="hljs-keyword">return</span> window == target
 
@@ -2065,9 +2029,9 @@ window[char] -= <span class="hljs-number">1</span>
 
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">is_valid_sum</span>(<span class="hljs-params">current_sum, target</span>):
     <span class="hljs-keyword">return</span> current_sum &gt;= target
-</code></pre>
+</code></pre></div>
 <h4 id="result-updates" tabindex="-1"><a class="header-anchor" href="#result-updates"><span><strong>Result Updates</strong></span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Maximum length problems</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Maximum length problems</span>
 max_len = <span class="hljs-built_in">max</span>(max_len, right - left + <span class="hljs-number">1</span>)
 
 <span class="hljs-comment"># Minimum length problems  </span>
@@ -2076,7 +2040,7 @@ max_len = <span class="hljs-built_in">max</span>(max_len, right - left + <span c
 
 <span class="hljs-comment"># Counting problems</span>
 count += right - left + <span class="hljs-number">1</span>  <span class="hljs-comment"># All subarrays ending at &#x27;right&#x27;</span>
-</code></pre>
+</code></pre></div>
 <h3 id="4-3-problem-solving-steps" tabindex="-1"><a class="header-anchor" href="#4-3-problem-solving-steps"><span>4.3) Problem-Solving Steps</span></a></h3>
 <ol>
 <li><strong>Identify Pattern</strong>: Fixed size, variable max/min, or counting?</li>
@@ -2119,7 +2083,7 @@ count += right - left + <span class="hljs-number">1</span>  <span class="hljs-co
 <blockquote>
 <p>Expand right, shrink left when zero count exceeds k.</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 1004 - Max Consecutive Ones III</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 1004 - Max Consecutive Ones III</span>
 <span class="hljs-comment">// IDEA: Sliding window — track zero count, shrink when zeroCnt &gt; k</span>
 <span class="hljs-comment">// time = O(N), space = O(1)</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">longestOnes</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums, <span class="hljs-type">int</span> k)</span> {
@@ -2134,12 +2098,12 @@ count += right - left + <span class="hljs-number">1</span>  <span class="hljs-co
     }
     <span class="hljs-keyword">return</span> ans;
 }
-</code></pre>
+</code></pre></div>
 <h4 id="lc-3-longest-substring-without-repeating-characters-variable-window" tabindex="-1"><a class="header-anchor" href="#lc-3-longest-substring-without-repeating-characters-variable-window"><span>LC 3: Longest Substring Without Repeating Characters — Variable Window</span></a></h4>
 <blockquote>
 <p>Shrink left pointer whenever a duplicate character enters the window.</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 3 - Longest Substring Without Repeating Characters</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 3 - Longest Substring Without Repeating Characters</span>
 <span class="hljs-comment">// IDEA: Sliding window with HashSet to track characters in window</span>
 <span class="hljs-comment">// time = O(N), space = O(min(N, charset))</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">lengthOfLongestSubstring</span><span class="hljs-params">(String s)</span> {
@@ -2154,12 +2118,12 @@ count += right - left + <span class="hljs-number">1</span>  <span class="hljs-co
     }
     <span class="hljs-keyword">return</span> ans;
 }
-</code></pre>
+</code></pre></div>
 <h4 id="lc-76-minimum-window-substring-variable-window-min-length" tabindex="-1"><a class="header-anchor" href="#lc-76-minimum-window-substring-variable-window-min-length"><span>LC 76: Minimum Window Substring — Variable Window (Min Length)</span></a></h4>
 <blockquote>
 <p>Expand to include all required chars, then shrink to minimize window.</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 76 - Minimum Window Substring</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 76 - Minimum Window Substring</span>
 <span class="hljs-comment">// IDEA: Sliding window with frequency maps; shrink when window is valid</span>
 <span class="hljs-comment">// time = O(N + M), space = O(N + M)</span>
 <span class="hljs-keyword">public</span> String <span class="hljs-title function_">minWindow</span><span class="hljs-params">(String s, String t)</span> {
@@ -2181,12 +2145,12 @@ count += right - left + <span class="hljs-number">1</span>  <span class="hljs-co
     }
     <span class="hljs-keyword">return</span> minLen == Integer.MAX_VALUE ? <span class="hljs-string">&quot;&quot;</span> : s.substring(start, start + minLen);
 }
-</code></pre>
+</code></pre></div>
 <h4 id="lc-567-permutation-in-string-fixed-window-anagram-check" tabindex="-1"><a class="header-anchor" href="#lc-567-permutation-in-string-fixed-window-anagram-check"><span>LC 567: Permutation in String — Fixed Window Anagram Check</span></a></h4>
 <blockquote>
 <p>Maintain character frequency of window size len(s1); check if it matches s1’s freq.</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 567 - Permutation in String</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 567 - Permutation in String</span>
 <span class="hljs-comment">// IDEA: Fixed sliding window — track char frequencies, check match</span>
 <span class="hljs-comment">// time = O(N), space = O(1)</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">checkInclusion</span><span class="hljs-params">(String s1, String s2)</span> {
@@ -2201,12 +2165,12 @@ count += right - left + <span class="hljs-number">1</span>  <span class="hljs-co
     }
     <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
 }
-</code></pre>
+</code></pre></div>
 <h4 id="lc-438-find-all-anagrams-in-a-string-fixed-window" tabindex="-1"><a class="header-anchor" href="#lc-438-find-all-anagrams-in-a-string-fixed-window"><span>LC 438: Find All Anagrams in a String — Fixed Window</span></a></h4>
 <blockquote>
 <p>Same as LC 567 but collect all starting indices where anagram window matches.</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 438 - Find All Anagrams in a String</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 438 - Find All Anagrams in a String</span>
 <span class="hljs-comment">// IDEA: Fixed sliding window — collect all positions where window = anagram</span>
 <span class="hljs-comment">// time = O(N), space = O(1)</span>
 <span class="hljs-keyword">public</span> List&lt;Integer&gt; <span class="hljs-title function_">findAnagrams</span><span class="hljs-params">(String s, String p)</span> {
@@ -2222,12 +2186,12 @@ count += right - left + <span class="hljs-number">1</span>  <span class="hljs-co
     }
     <span class="hljs-keyword">return</span> result;
 }
-</code></pre>
+</code></pre></div>
 <h4 id="lc-209-minimum-size-subarray-sum-variable-window-min-length" tabindex="-1"><a class="header-anchor" href="#lc-209-minimum-size-subarray-sum-variable-window-min-length"><span>LC 209: Minimum Size Subarray Sum — Variable Window (Min Length)</span></a></h4>
 <blockquote>
 <p>Expand right; once sum &gt;= target, shrink left to find minimum window length.</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 209 - Minimum Size Subarray Sum</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 209 - Minimum Size Subarray Sum</span>
 <span class="hljs-comment">// IDEA: Sliding window — shrink left when sum &gt;= target, record min length</span>
 <span class="hljs-comment">// time = O(N), space = O(1)</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">minSubArrayLen</span><span class="hljs-params">(<span class="hljs-type">int</span> target, <span class="hljs-type">int</span>[] nums)</span> {
@@ -2241,12 +2205,12 @@ count += right - left + <span class="hljs-number">1</span>  <span class="hljs-co
     }
     <span class="hljs-keyword">return</span> minLen == Integer.MAX_VALUE ? <span class="hljs-number">0</span> : minLen;
 }
-</code></pre>
+</code></pre></div>
 <h4 id="lc-424-longest-repeating-character-replacement-variable-window" tabindex="-1"><a class="header-anchor" href="#lc-424-longest-repeating-character-replacement-variable-window"><span>LC 424: Longest Repeating Character Replacement — Variable Window</span></a></h4>
 <blockquote>
 <p>Window is valid if (window size - max frequency) &lt;= k; expand and track max freq.</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 424 - Longest Repeating Character Replacement</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 424 - Longest Repeating Character Replacement</span>
 <span class="hljs-comment">// IDEA: Sliding window — valid if windowSize - maxFreq &lt;= k</span>
 <span class="hljs-comment">// time = O(N), space = O(1)</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">characterReplacement</span><span class="hljs-params">(String s, <span class="hljs-type">int</span> k)</span> {
@@ -2260,12 +2224,12 @@ count += right - left + <span class="hljs-number">1</span>  <span class="hljs-co
     }
     <span class="hljs-keyword">return</span> ans;
 }
-</code></pre>
+</code></pre></div>
 <h4 id="lc-713-subarray-product-less-than-k-sliding-window-count" tabindex="-1"><a class="header-anchor" href="#lc-713-subarray-product-less-than-k-sliding-window-count"><span>LC 713: Subarray Product Less Than K — Sliding Window Count</span></a></h4>
 <blockquote>
 <p>Shrink left when product &gt;= k; each valid right position contributes (r-l+1) subarrays.</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 713 - Subarray Product Less Than K</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 713 - Subarray Product Less Than K</span>
 <span class="hljs-comment">// IDEA: Sliding window — count subarrays ending at r with product &lt; k</span>
 <span class="hljs-comment">// time = O(N), space = O(1)</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">numSubarrayProductLessThanK</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums, <span class="hljs-type">int</span> k)</span> {
@@ -2278,12 +2242,12 @@ count += right - left + <span class="hljs-number">1</span>  <span class="hljs-co
     }
     <span class="hljs-keyword">return</span> count;
 }
-</code></pre>
+</code></pre></div>
 <h4 id="lc-239-sliding-window-maximum-monotonic-deque" tabindex="-1"><a class="header-anchor" href="#lc-239-sliding-window-maximum-monotonic-deque"><span>LC 239: Sliding Window Maximum — Monotonic Deque</span></a></h4>
 <blockquote>
 <p>Maintain a decreasing deque of indices; front is always the max of current window.</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 239 - Sliding Window Maximum</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 239 - Sliding Window Maximum</span>
 <span class="hljs-comment">// IDEA: Monotonic decreasing deque — front = max of current window</span>
 <span class="hljs-comment">// time = O(N), space = O(k)</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span>[] maxSlidingWindow(<span class="hljs-type">int</span>[] nums, <span class="hljs-type">int</span> k) {
@@ -2300,12 +2264,12 @@ count += right - left + <span class="hljs-number">1</span>  <span class="hljs-co
     }
     <span class="hljs-keyword">return</span> ans;
 }
-</code></pre>
+</code></pre></div>
 <h4 id="lc-1838-frequency-of-the-most-frequent-element-sliding-window" tabindex="-1"><a class="header-anchor" href="#lc-1838-frequency-of-the-most-frequent-element-sliding-window"><span>LC 1838: Frequency of the Most Frequent Element — Sliding Window</span></a></h4>
 <blockquote>
 <p>Sort array; expand right, shrink left when cost to equalize window exceeds k.</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 1838 - Frequency of the Most Frequent Element</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 1838 - Frequency of the Most Frequent Element</span>
 <span class="hljs-comment">// IDEA: Sort + sliding window — equalize all elements in window to nums[r]</span>
 <span class="hljs-comment">// time = O(N log N), space = O(1)</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">maxFrequency</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums, <span class="hljs-type">int</span> k)</span> {
@@ -2322,12 +2286,12 @@ count += right - left + <span class="hljs-number">1</span>  <span class="hljs-co
     }
     <span class="hljs-keyword">return</span> ans;
 }
-</code></pre>
+</code></pre></div>
 <h4 id="lc-159-longest-substring-with-at-most-two-distinct-characters-variable-window" tabindex="-1"><a class="header-anchor" href="#lc-159-longest-substring-with-at-most-two-distinct-characters-variable-window"><span>LC 159: Longest Substring with At Most Two Distinct Characters — Variable Window</span></a></h4>
 <blockquote>
 <p>Shrink left when distinct chars in window exceed 2; use frequency map.</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 159 - Longest Substring with At Most Two Distinct Characters</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 159 - Longest Substring with At Most Two Distinct Characters</span>
 <span class="hljs-comment">// IDEA: Sliding window with HashMap — shrink when distinct &gt; 2</span>
 <span class="hljs-comment">// time = O(N), space = O(1)</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">lengthOfLongestSubstringTwoDistinct</span><span class="hljs-params">(String s)</span> {
@@ -2345,7 +2309,7 @@ count += right - left + <span class="hljs-number">1</span>  <span class="hljs-co
     }
     <span class="hljs-keyword">return</span> ans;
 }
-</code></pre>
+</code></pre></div>
 
       </div>
       <div class="cheatsheet-footer">

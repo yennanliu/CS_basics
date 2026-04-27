@@ -19,54 +19,18 @@
     }
   })();
   </script>
-  <script>document.addEventListener('DOMContentLoaded', function() {
-    document.querySelectorAll('pre code').forEach(function(codeEl) {
-      var pre = codeEl.parentElement;
-      var lang = '';
-      var cls = codeEl.className || '';
-      var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
-      if (m) lang = m[1];
-
-      // Add line numbers
-      var lines = codeEl.innerHTML.split('
-');
-      if (lines[lines.length - 1] === '') lines.pop();
-      var numbered = lines.map(function(line, i) {
-        return '<span class="hljs-ln-line"><span class="hljs-ln-n" data-line-number="' + (i + 1) + '"></span><span class="hljs-ln-code">' + line + '</span></span>';
-      }).join('
-');
-      codeEl.innerHTML = numbered;
-      codeEl.classList.add('hljs-ln');
-
-      var wrapper = document.createElement('div');
-      wrapper.className = 'code-block-wrapper';
-      pre.parentNode.insertBefore(wrapper, pre);
-      var header = document.createElement('div');
-      header.className = 'code-block-header';
-      if (lang) {
-        var label = document.createElement('span');
-        label.className = 'code-lang-label';
-        label.textContent = lang;
-        header.appendChild(label);
-      } else {
-        header.appendChild(document.createElement('span'));
-      }
-      var btn = document.createElement('button');
-      btn.className = 'copy-btn';
-      btn.textContent = 'Copy';
-      btn.addEventListener('click', function() {
-        var text = Array.from(codeEl.querySelectorAll('.hljs-ln-code')).map(function(el) { return el.textContent; }).join('
-');
-        navigator.clipboard.writeText(text).then(function() {
-          btn.textContent = 'Copied!';
-          btn.classList.add('copied');
-          setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
-        });
-      });
-      header.appendChild(btn);
-      wrapper.appendChild(header);
-      wrapper.appendChild(pre);
+  <script>
+  function copyCode(btn) {
+    var pre = btn.closest('.code-block-wrapper').querySelector('pre');
+    var text = pre ? pre.innerText : '';
+    navigator.clipboard.writeText(text).then(function() {
+      btn.textContent = 'Copied!';
+      btn.classList.add('copied');
+      setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
     });
+  }
+  </script>
+  <script>document.addEventListener('DOMContentLoaded', function() {
     document.querySelectorAll('table').forEach(function(table) {
       if (!table.parentElement.classList.contains('table-wrap')) {
         var wrapper = document.createElement('div');
@@ -220,7 +184,7 @@
 </tbody>
 </table>
 <h3 id="template-1-robot-movement-simulation" tabindex="-1"><a class="header-anchor" href="#template-1-robot-movement-simulation"><span>Template 1: Robot Movement Simulation</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">RobotSimulation</span>:
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">RobotSimulation</span>:
     <span class="hljs-string">&quot;&quot;&quot;Template for robot movement simulation&quot;&quot;&quot;</span>
 
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self</span>):
@@ -270,9 +234,9 @@
             <span class="hljs-comment"># Add more commands as needed</span>
 
         <span class="hljs-keyword">return</span> (<span class="hljs-variable language_">self</span>.x, <span class="hljs-variable language_">self</span>.y)
-</code></pre>
+</code></pre></div>
 <h3 id="template-2-state-machine-simulation" tabindex="-1"><a class="header-anchor" href="#template-2-state-machine-simulation"><span>Template 2: State Machine Simulation</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">StateMachineSimulation</span>:
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">StateMachineSimulation</span>:
     <span class="hljs-string">&quot;&quot;&quot;Template for state machine based simulation&quot;&quot;&quot;</span>
 
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, initial_state</span>):
@@ -331,9 +295,9 @@
                 <span class="hljs-keyword">return</span> cycle_start, cycle_length
             seen_states[state] = i
         <span class="hljs-keyword">return</span> <span class="hljs-literal">None</span>, <span class="hljs-number">0</span>
-</code></pre>
+</code></pre></div>
 <h3 id="template-3-event-queue-simulation" tabindex="-1"><a class="header-anchor" href="#template-3-event-queue-simulation"><span>Template 3: Event Queue Simulation</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">import</span> heapq
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">import</span> heapq
 <span class="hljs-keyword">from</span> collections <span class="hljs-keyword">import</span> defaultdict
 
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">EventQueueSimulation</span>:
@@ -391,9 +355,9 @@
         <span class="hljs-variable language_">self</span>.system_state = saved_state
 
         <span class="hljs-keyword">return</span> result_state
-</code></pre>
+</code></pre></div>
 <h3 id="template-4-grid-world-simulation" tabindex="-1"><a class="header-anchor" href="#template-4-grid-world-simulation"><span>Template 4: Grid World Simulation</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">GridWorldSimulation</span>:
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">GridWorldSimulation</span>:
     <span class="hljs-string">&quot;&quot;&quot;Template for 2D grid-based simulation&quot;&quot;&quot;</span>
 
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, rows, cols</span>):
@@ -471,7 +435,7 @@
                 neighbors.append((new_row, new_col))
 
         <span class="hljs-keyword">return</span> neighbors
-</code></pre>
+</code></pre></div>
 <h2 id="problems-by-pattern" tabindex="-1"><a class="header-anchor" href="#problems-by-pattern"><span>Problems by Pattern</span></a></h2>
 <h3 id="robot-movement-problems" tabindex="-1"><a class="header-anchor" href="#robot-movement-problems"><span><strong>Robot Movement Problems</strong></span></a></h3>
 <table>
@@ -577,7 +541,7 @@
 <blockquote>
 <p>Map position to perimeter index (mod perimeter); track direction at each corner.</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 2069 - Walking Robot Simulation II</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 2069 - Walking Robot Simulation II</span>
 <span class="hljs-comment">// IDEA: Map perimeter as 1D array (mod perimeter); corners change direction</span>
 <span class="hljs-comment">// time = O(1) per step, space = O(1)</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">Robot</span> {
@@ -604,8 +568,8 @@
         <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;South&quot;</span>;
     }
 }
-</code></pre>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Robot</span>:
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Robot</span>:
     <span class="hljs-string">&quot;&quot;&quot;Optimized robot simulation with circular path detection&quot;&quot;&quot;</span>
 
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, width, height</span>):
@@ -655,12 +619,12 @@
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">getDir</span>(<span class="hljs-params">self</span>):
         <span class="hljs-string">&quot;&quot;&quot;Get current direction&quot;&quot;&quot;</span>
         <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.dir_names[<span class="hljs-variable language_">self</span>.direction]
-</code></pre>
+</code></pre></div>
 <h3 id="2-2-time-to-cross-a-bridge-lc-2532-multi-queue-simulation" tabindex="-1"><a class="header-anchor" href="#2-2-time-to-cross-a-bridge-lc-2532-multi-queue-simulation"><span>2-2) Time to Cross a Bridge (LC 2532) — Multi-Queue Simulation</span></a></h3>
 <blockquote>
 <p>Four priority queues: waiting left/right + working left/right; simulate worker assignments by time.</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 2532 - Time to Cross a Bridge</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 2532 - Time to Cross a Bridge</span>
 <span class="hljs-comment">// IDEA: 4 heaps (waitL, waitR, workL, workR); pick highest-efficiency waiting worker each step</span>
 <span class="hljs-comment">// time = O(N log K), space = O(K)  K = workers</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">findCrossingTime</span><span class="hljs-params">(<span class="hljs-type">int</span> n, <span class="hljs-type">int</span> k, <span class="hljs-type">int</span>[][] time)</span> {
@@ -700,8 +664,8 @@
     <span class="hljs-keyword">while</span> (!workR.isEmpty()) { <span class="hljs-type">int</span>[] w = workR.poll(); ans = Math.max(ans, w[<span class="hljs-number">0</span>]) + time[w[<span class="hljs-number">1</span>]][<span class="hljs-number">2</span>]; }
     <span class="hljs-keyword">return</span> ans;
 }
-</code></pre>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">import</span> heapq
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">import</span> heapq
 
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">findCrossingTime</span>(<span class="hljs-params">n, k, time</span>):
     <span class="hljs-string">&quot;&quot;&quot;Simulate workers crossing bridge with priority queues&quot;&quot;&quot;</span>
@@ -763,12 +727,12 @@
             current_time = next_time
 
     <span class="hljs-keyword">return</span> current_time
-</code></pre>
+</code></pre></div>
 <h3 id="2-3-number-of-spaces-cleaning-robot-cleaned-lc-2061-dfs-simulation-with-state" tabindex="-1"><a class="header-anchor" href="#2-3-number-of-spaces-cleaning-robot-cleaned-lc-2061-dfs-simulation-with-state"><span>2-3) Number of Spaces Cleaning Robot Cleaned (LC 2061) — DFS Simulation with State</span></a></h3>
 <blockquote>
 <p>DFS from (0,0) facing East; stop when revisiting the same (row, col, direction) state.</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 2061 - Number of Spaces Cleaning Robot Cleaned</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 2061 - Number of Spaces Cleaning Robot Cleaned</span>
 <span class="hljs-comment">// IDEA: DFS simulation; stop when (row, col, dir) state repeats (cycle detected)</span>
 <span class="hljs-comment">// time = O(M*N*4), space = O(M*N*4)</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">numberOfCleanRooms</span><span class="hljs-params">(<span class="hljs-type">int</span>[][] room)</span> {
@@ -789,8 +753,8 @@
     }
     <span class="hljs-keyword">return</span> count;
 }
-</code></pre>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">numberOfCleanRooms</span>(<span class="hljs-params">room</span>):
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">numberOfCleanRooms</span>(<span class="hljs-params">room</span>):
     <span class="hljs-string">&quot;&quot;&quot;Simulate robot cleaning with cycle detection&quot;&quot;&quot;</span>
     m, n = <span class="hljs-built_in">len</span>(room), <span class="hljs-built_in">len</span>(room[<span class="hljs-number">0</span>])
 
@@ -828,10 +792,10 @@
             direction = (direction + <span class="hljs-number">1</span>) % <span class="hljs-number">4</span>
 
     <span class="hljs-keyword">return</span> <span class="hljs-built_in">len</span>(cleaned)
-</code></pre>
+</code></pre></div>
 <h2 id="advanced-techniques" tabindex="-1"><a class="header-anchor" href="#advanced-techniques"><span>Advanced Techniques</span></a></h2>
 <h3 id="cycle-detection-in-simulations" tabindex="-1"><a class="header-anchor" href="#cycle-detection-in-simulations"><span>Cycle Detection in Simulations</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">detect_simulation_cycle</span>(<span class="hljs-params">state_sequence</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">detect_simulation_cycle</span>(<span class="hljs-params">state_sequence</span>):
     <span class="hljs-string">&quot;&quot;&quot;Detect cycles in simulation using Floyd&#x27;s algorithm&quot;&quot;&quot;</span>
 
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">get_next_state</span>(<span class="hljs-params">state</span>):
@@ -862,9 +826,9 @@
         cycle_length += <span class="hljs-number">1</span>
 
     <span class="hljs-keyword">return</span> slow, cycle_length
-</code></pre>
+</code></pre></div>
 <h3 id="state-compression-techniques" tabindex="-1"><a class="header-anchor" href="#state-compression-techniques"><span>State Compression Techniques</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">StateCompression</span>:
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">StateCompression</span>:
     <span class="hljs-string">&quot;&quot;&quot;Techniques for compressing simulation states&quot;&quot;&quot;</span>
 
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">hash_state</span>(<span class="hljs-params">self, state</span>):
@@ -885,9 +849,9 @@
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">compress_position_direction</span>(<span class="hljs-params">self, x, y, direction, max_x, max_y</span>):
         <span class="hljs-string">&quot;&quot;&quot;Compress position and direction into single value&quot;&quot;&quot;</span>
         <span class="hljs-keyword">return</span> x * max_y * <span class="hljs-number">4</span> + y * <span class="hljs-number">4</span> + direction
-</code></pre>
+</code></pre></div>
 <h3 id="optimization-strategies" tabindex="-1"><a class="header-anchor" href="#optimization-strategies"><span>Optimization Strategies</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">SimulationOptimizations</span>:
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">SimulationOptimizations</span>:
     <span class="hljs-string">&quot;&quot;&quot;Various optimization techniques for simulations&quot;&quot;&quot;</span>
 
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">precompute_cycles</span>(<span class="hljs-params">self, initial_states</span>):
@@ -914,10 +878,10 @@
         <span class="hljs-string">&quot;&quot;&quot;Simulate multiple entities in parallel&quot;&quot;&quot;</span>
         <span class="hljs-comment"># Use threading or multiprocessing for independent entities</span>
         <span class="hljs-keyword">pass</span>
-</code></pre>
+</code></pre></div>
 <h2 id="performance-optimization-tips" tabindex="-1"><a class="header-anchor" href="#performance-optimization-tips"><span>Performance Optimization Tips</span></a></h2>
 <h3 id="memory-management" tabindex="-1"><a class="header-anchor" href="#memory-management"><span>Memory Management</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">memory_optimization_techniques</span>():
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">memory_optimization_techniques</span>():
     <span class="hljs-string">&quot;&quot;&quot;Optimize memory usage in simulations&quot;&quot;&quot;</span>
 
     <span class="hljs-comment"># 1. Use generators for large sequences</span>
@@ -942,7 +906,7 @@
         <span class="hljs-comment"># Set bit: state |= (1 &lt;&lt; (row * width + col))</span>
         <span class="hljs-comment"># Check bit: (state &gt;&gt; (row * width + col)) &amp; 1</span>
         <span class="hljs-comment"># Clear bit: state &amp;= ~(1 &lt;&lt; (row * width + col))</span>
-</code></pre>
+</code></pre></div>
 <h2 id="summary-quick-reference" tabindex="-1"><a class="header-anchor" href="#summary-quick-reference"><span>Summary &amp; Quick Reference</span></a></h2>
 <h3 id="common-simulation-patterns" tabindex="-1"><a class="header-anchor" href="#common-simulation-patterns"><span>Common Simulation Patterns</span></a></h3>
 <table>

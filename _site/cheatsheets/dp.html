@@ -19,54 +19,18 @@
     }
   })();
   </script>
-  <script>document.addEventListener('DOMContentLoaded', function() {
-    document.querySelectorAll('pre code').forEach(function(codeEl) {
-      var pre = codeEl.parentElement;
-      var lang = '';
-      var cls = codeEl.className || '';
-      var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
-      if (m) lang = m[1];
-
-      // Add line numbers
-      var lines = codeEl.innerHTML.split('
-');
-      if (lines[lines.length - 1] === '') lines.pop();
-      var numbered = lines.map(function(line, i) {
-        return '<span class="hljs-ln-line"><span class="hljs-ln-n" data-line-number="' + (i + 1) + '"></span><span class="hljs-ln-code">' + line + '</span></span>';
-      }).join('
-');
-      codeEl.innerHTML = numbered;
-      codeEl.classList.add('hljs-ln');
-
-      var wrapper = document.createElement('div');
-      wrapper.className = 'code-block-wrapper';
-      pre.parentNode.insertBefore(wrapper, pre);
-      var header = document.createElement('div');
-      header.className = 'code-block-header';
-      if (lang) {
-        var label = document.createElement('span');
-        label.className = 'code-lang-label';
-        label.textContent = lang;
-        header.appendChild(label);
-      } else {
-        header.appendChild(document.createElement('span'));
-      }
-      var btn = document.createElement('button');
-      btn.className = 'copy-btn';
-      btn.textContent = 'Copy';
-      btn.addEventListener('click', function() {
-        var text = Array.from(codeEl.querySelectorAll('.hljs-ln-code')).map(function(el) { return el.textContent; }).join('
-');
-        navigator.clipboard.writeText(text).then(function() {
-          btn.textContent = 'Copied!';
-          btn.classList.add('copied');
-          setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
-        });
-      });
-      header.appendChild(btn);
-      wrapper.appendChild(header);
-      wrapper.appendChild(pre);
+  <script>
+  function copyCode(btn) {
+    var pre = btn.closest('.code-block-wrapper').querySelector('pre');
+    var text = pre ? pre.innerText : '';
+    navigator.clipboard.writeText(text).then(function() {
+      btn.textContent = 'Copied!';
+      btn.classList.add('copied');
+      setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
     });
+  }
+  </script>
+  <script>document.addEventListener('DOMContentLoaded', function() {
     document.querySelectorAll('table').forEach(function(table) {
       if (!table.parentElement.classList.contains('table-wrap')) {
         var wrapper = document.createElement('div');
@@ -334,7 +298,7 @@ Step 4. get the result</p>
 </tbody>
 </table>
 <h3 id="universal-dp-template" tabindex="-1"><a class="header-anchor" href="#universal-dp-template"><span>Universal DP Template</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">dp_solution</span>(<span class="hljs-params">input_data</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">dp_solution</span>(<span class="hljs-params">input_data</span>):
     <span class="hljs-comment"># Step 1: Define state</span>
     <span class="hljs-comment"># dp[i] represents...</span>
     
@@ -349,9 +313,9 @@ Step 4. get the result</p>
     
     <span class="hljs-comment"># Step 4: Return answer</span>
     <span class="hljs-keyword">return</span> dp[n-<span class="hljs-number">1</span>]
-</code></pre>
+</code></pre></div>
 <h3 id="template-1-1d-linear-dp" tabindex="-1"><a class="header-anchor" href="#template-1-1d-linear-dp"><span>Template 1: 1D Linear DP</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">linear_dp</span>(<span class="hljs-params">nums</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">linear_dp</span>(<span class="hljs-params">nums</span>):
     <span class="hljs-string">&quot;&quot;&quot;Classic 1D DP for sequence problems&quot;&quot;&quot;</span>
     n = <span class="hljs-built_in">len</span>(nums)
     <span class="hljs-keyword">if</span> n == <span class="hljs-number">0</span>:
@@ -367,7 +331,7 @@ Step 4. get the result</p>
         <span class="hljs-comment"># Or with skip: dp[i] = max(dp[i-1], dp[i-2] + nums[i])</span>
 
     <span class="hljs-keyword">return</span> dp[n-<span class="hljs-number">1</span>]
-</code></pre>
+</code></pre></div>
 <h3 id="1d-dp-array-sizing-and-loop-bounds-n-vs-n-1" tabindex="-1"><a class="header-anchor" href="#1d-dp-array-sizing-and-loop-bounds-n-vs-n-1"><span>1D DP: Array Sizing and Loop Bounds (<code>n</code> vs <code>n+1</code>)</span></a></h3>
 <p><strong>Key Question</strong>: Why do some 1D DP problems loop from <code>0 to n</code>, while others loop from <code>0 to n+1</code>?</p>
 <p>The difference comes down to <strong>what a single index in your DP array represents</strong>. Here are the three main reasons:</p>
@@ -390,7 +354,7 @@ Step 4. get the result</p>
 </li>
 </ul>
 <p><strong>Example: LC 198 (House Robber)</strong></p>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Approach 1: Array size = n (index-based)</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Approach 1: Array size = n (index-based)</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">rob_v1</span>(<span class="hljs-params">nums</span>):
     n = <span class="hljs-built_in">len</span>(nums)
     <span class="hljs-keyword">if</span> n == <span class="hljs-number">0</span>: <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>
@@ -416,7 +380,7 @@ Step 4. get the result</p>
         dp[i] = <span class="hljs-built_in">max</span>(dp[i-<span class="hljs-number">1</span>], dp[i-<span class="hljs-number">2</span>] + nums[i-<span class="hljs-number">1</span>])  <span class="hljs-comment"># Note: nums[i-1]</span>
 
     <span class="hljs-keyword">return</span> dp[n]  <span class="hljs-comment"># Answer at position n</span>
-</code></pre>
+</code></pre></div>
 <h4 id="2-physical-steps-vs-goals" tabindex="-1"><a class="header-anchor" href="#2-physical-steps-vs-goals"><span><strong>2. Physical “Steps” vs “Goals”</strong></span></a></h4>
 <p>In problems involving movement (stairs, paths), the “goal” is one step <strong>past</strong> the last index.</p>
 <p><strong>Example: LC 70 (Climbing Stairs) / LC 746 (Min Cost Climbing Stairs)</strong></p>
@@ -426,7 +390,7 @@ Step 4. get the result</p>
 <li>The “Floor” (goal) is at index <strong>3</strong></li>
 <li>Therefore, <code>dp</code> array needs size <code>n + 1</code> to include the landing</li>
 </ul>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 746: Min Cost Climbing Stairs</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 746: Min Cost Climbing Stairs</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">minCostClimbingStairs</span>(<span class="hljs-params">cost</span>):
     n = <span class="hljs-built_in">len</span>(cost)
     dp = [<span class="hljs-number">0</span>] * (n + <span class="hljs-number">1</span>)  <span class="hljs-comment"># Need n+1 for the &quot;top floor&quot;</span>
@@ -440,7 +404,7 @@ Step 4. get the result</p>
         dp[i] = <span class="hljs-built_in">min</span>(dp[i-<span class="hljs-number">1</span>] + cost[i-<span class="hljs-number">1</span>], dp[i-<span class="hljs-number">2</span>] + cost[i-<span class="hljs-number">2</span>])
 
     <span class="hljs-keyword">return</span> dp[n]  <span class="hljs-comment"># The top floor is at position n</span>
-</code></pre>
+</code></pre></div>
 <h4 id="3-handling-the-empty-base-case" tabindex="-1"><a class="header-anchor" href="#3-handling-the-empty-base-case"><span><strong>3. Handling the “Empty” Base Case</strong></span></a></h4>
 <p>Many DP problems need a base case representing “nothing” (target sum = 0, empty string, etc.).</p>
 <p><strong>Examples</strong>:</p>
@@ -448,7 +412,7 @@ Step 4. get the result</p>
 <li><strong>Knapsack/Coin Change</strong>: Need <code>dp[target + 1]</code> because <code>dp[0]</code> represents sum = 0</li>
 <li><strong>Longest Common Subsequence</strong>: Use <code>(n+1) x (m+1)</code> matrix where first row/column = empty string</li>
 </ul>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 322: Coin Change</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 322: Coin Change</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">coinChange</span>(<span class="hljs-params">coins, amount</span>):
     dp = [<span class="hljs-built_in">float</span>(<span class="hljs-string">&#x27;inf&#x27;</span>)] * (amount + <span class="hljs-number">1</span>)  <span class="hljs-comment"># Need amount+1</span>
     dp[<span class="hljs-number">0</span>] = <span class="hljs-number">0</span>  <span class="hljs-comment"># Base case: 0 coins needed for amount 0</span>
@@ -459,7 +423,7 @@ Step 4. get the result</p>
                 dp[i] = <span class="hljs-built_in">min</span>(dp[i], dp[i - coin] + <span class="hljs-number">1</span>)
 
     <span class="hljs-keyword">return</span> dp[amount] <span class="hljs-keyword">if</span> dp[amount] != <span class="hljs-built_in">float</span>(<span class="hljs-string">&#x27;inf&#x27;</span>) <span class="hljs-keyword">else</span> -<span class="hljs-number">1</span>
-</code></pre>
+</code></pre></div>
 <h4 id="comparison-summary" tabindex="-1"><a class="header-anchor" href="#comparison-summary"><span><strong>Comparison Summary</strong></span></a></h4>
 <table>
 <thead>
@@ -512,14 +476,14 @@ Step 4. get the result</p>
 <li>That’s <code>amount + 1</code> total positions</li>
 </ul>
 <h5 id="concrete-example-amount-5" tabindex="-1"><a class="header-anchor" href="#concrete-example-amount-5"><span><strong>Concrete Example: <code>amount = 5</code></strong></span></a></h5>
-<pre><code class="hljs">We need to represent amounts: 0, 1, 2, 3, 4, 5
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">We need to represent amounts: 0, 1, 2, 3, 4, 5
                          ↓    ↓   ↓   ↓   ↓   ↓
 Array indices needed:    [0]  [1] [2] [3] [4] [5]
 
 Therefore: dp array size = 6 = amount + 1
-</code></pre>
+</code></pre></div>
 <p>Java Code:</p>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-type">int</span> <span class="hljs-variable">amount</span> <span class="hljs-operator">=</span> <span class="hljs-number">5</span>;
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-type">int</span> <span class="hljs-variable">amount</span> <span class="hljs-operator">=</span> <span class="hljs-number">5</span>;
 <span class="hljs-type">int</span>[] dp = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[amount + <span class="hljs-number">1</span>];  <span class="hljs-comment">// size = 6, indices 0-5</span>
 
 <span class="hljs-comment">// Now we can store results for each amount:</span>
@@ -529,7 +493,7 @@ dp[<span class="hljs-number">2</span>] = ...  <span class="hljs-comment">// resu
 dp[<span class="hljs-number">3</span>] = ...  <span class="hljs-comment">// result for amount 3</span>
 dp[<span class="hljs-number">4</span>] = ...  <span class="hljs-comment">// result for amount 4</span>
 dp[<span class="hljs-number">5</span>] = ...  <span class="hljs-comment">// result for amount 5</span>
-</code></pre>
+</code></pre></div>
 <h5 id="lc-322-vs-lc-518-comparison" tabindex="-1"><a class="header-anchor" href="#lc-322-vs-lc-518-comparison"><span><strong>LC 322 vs LC 518 Comparison</strong></span></a></h5>
 <table>
 <thead>
@@ -583,7 +547,7 @@ dp[<span class="hljs-number">5</span>] = ...  <span class="hljs-comment">// resu
 </tbody>
 </table>
 <h5 id="detailed-code-example-lc-518-coin-change-ii" tabindex="-1"><a class="header-anchor" href="#detailed-code-example-lc-518-coin-change-ii"><span><strong>Detailed Code Example: LC 518 (Coin Change II)</strong></span></a></h5>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">change</span><span class="hljs-params">(<span class="hljs-type">int</span> amount, <span class="hljs-type">int</span>[] coins)</span> {
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">change</span><span class="hljs-params">(<span class="hljs-type">int</span> amount, <span class="hljs-type">int</span>[] coins)</span> {
     <span class="hljs-comment">// dp[i] = total number of COMBINATIONS that make up amount i</span>
     <span class="hljs-comment">// Index corresponds to the amount value</span>
     
@@ -609,17 +573,17 @@ dp[<span class="hljs-number">5</span>] = ...  <span class="hljs-comment">// resu
     
     <span class="hljs-keyword">return</span> dp[amount];  <span class="hljs-comment">// Answer is at index = amount</span>
 }
-</code></pre>
+</code></pre></div>
 <p><strong>Trace Example</strong>: <code>amount = 5, coins = [1, 2, 5]</code></p>
-<pre><code class="hljs">Initial:        dp = [1, 0, 0, 0, 0, 0]
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Initial:        dp = [1, 0, 0, 0, 0, 0]
 After coin 1:   dp = [1, 1, 1, 1, 1, 1]  (all amounts reachable with 1s)
 After coin 2:   dp = [1, 1, 2, 2, 3, 3]  (add combinations with 2s)
 After coin 5:   dp = [1, 1, 2, 2, 3, 4]  (add combination with 5)
 
 Result: dp[5] = 4 combinations: {5}, {2+2+1}, {2+1+1+1}, {1+1+1+1+1}
-</code></pre>
+</code></pre></div>
 <h5 id="lc-322-code-example-for-comparison" tabindex="-1"><a class="header-anchor" href="#lc-322-code-example-for-comparison"><span><strong>LC 322 Code Example (for comparison)</strong></span></a></h5>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">coinChange</span><span class="hljs-params">(<span class="hljs-type">int</span>[] coins, <span class="hljs-type">int</span> amount)</span> {
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">coinChange</span><span class="hljs-params">(<span class="hljs-type">int</span>[] coins, <span class="hljs-type">int</span> amount)</span> {
     <span class="hljs-comment">// dp[i] = minimum coins needed to make amount i</span>
     <span class="hljs-comment">// Same sizing: dp array size = amount + 1</span>
     
@@ -641,7 +605,7 @@ Result: dp[5] = 4 combinations: {5}, {2+2+1}, {2+1+1+1}, {1+1+1+1+1}
     
     <span class="hljs-keyword">return</span> dp[amount] == amount + <span class="hljs-number">1</span> ? -<span class="hljs-number">1</span> : dp[amount];
 }
-</code></pre>
+</code></pre></div>
 <h4 id="pro-tips" tabindex="-1"><a class="header-anchor" href="#pro-tips"><span><strong>💡 Pro Tips</strong></span></a></h4>
 <ol>
 <li>
@@ -668,7 +632,7 @@ Result: dp[5] = 4 combinations: {5}, {2+2+1}, {2+1+1+1}, {1+1+1+1+1}
 </li>
 </ol>
 <h4 id="side-by-side-example-lc-70-climbing-stairs" tabindex="-1"><a class="header-anchor" href="#side-by-side-example-lc-70-climbing-stairs"><span><strong>Side-by-Side Example: LC 70 (Climbing Stairs)</strong></span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Style 1: Array size = n+1 (RECOMMENDED for this problem)</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Style 1: Array size = n+1 (RECOMMENDED for this problem)</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">climbStairs_v1</span>(<span class="hljs-params">n</span>):
     <span class="hljs-keyword">if</span> n &lt;= <span class="hljs-number">2</span>:
         <span class="hljs-keyword">return</span> n
@@ -695,7 +659,7 @@ Result: dp[5] = 4 combinations: {5}, {2+2+1}, {2+1+1+1}, {1+1+1+1+1}
         dp[i] = dp[i-<span class="hljs-number">1</span>] + dp[i-<span class="hljs-number">2</span>]
 
     <span class="hljs-keyword">return</span> dp[n-<span class="hljs-number">1</span>]
-</code></pre>
+</code></pre></div>
 <p><strong>Note</strong>: For Climbing Stairs, the <code>n+1</code> style is more intuitive because:</p>
 <ul>
 <li><code>dp[i]</code> naturally represents “number of ways to reach step i”</li>
@@ -753,7 +717,7 @@ Result: dp[5] = 4 combinations: {5}, {2+2+1}, {2+1+1+1}, {1+1+1+1+1}
 <li>DP fills naturally from top-left to bottom-right</li>
 </ul>
 <h4 id="approach-1-2d-dp-standard" tabindex="-1"><a class="header-anchor" href="#approach-1-2d-dp-standard"><span><strong>Approach 1: 2D DP</strong> (Standard)</span></a></h4>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">minPathSum</span><span class="hljs-params">(<span class="hljs-type">int</span>[][] grid)</span> {
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">minPathSum</span><span class="hljs-params">(<span class="hljs-type">int</span>[][] grid)</span> {
     <span class="hljs-type">int</span> <span class="hljs-variable">m</span> <span class="hljs-operator">=</span> grid.length;
     <span class="hljs-type">int</span> <span class="hljs-variable">n</span> <span class="hljs-operator">=</span> grid[<span class="hljs-number">0</span>].length;
     <span class="hljs-type">int</span>[][] dp = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[m][n];
@@ -776,9 +740,9 @@ Result: dp[5] = 4 combinations: {5}, {2+2+1}, {2+1+1+1}, {1+1+1+1+1}
 
     <span class="hljs-keyword">return</span> dp[m - <span class="hljs-number">1</span>][n - <span class="hljs-number">1</span>];
 }
-</code></pre>
+</code></pre></div>
 <h4 id="approach-2-in-place-dp-modify-grid-directly-o-1-extra-space" tabindex="-1"><a class="header-anchor" href="#approach-2-in-place-dp-modify-grid-directly-o-1-extra-space"><span><strong>Approach 2: In-place DP</strong> (Modify grid directly — O(1) extra space)</span></a></h4>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">minPathSum</span><span class="hljs-params">(<span class="hljs-type">int</span>[][] grid)</span> {
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">minPathSum</span><span class="hljs-params">(<span class="hljs-type">int</span>[][] grid)</span> {
     <span class="hljs-type">int</span> <span class="hljs-variable">m</span> <span class="hljs-operator">=</span> grid.length, n = grid[<span class="hljs-number">0</span>].length;
 
     <span class="hljs-comment">// First column prefix sum</span>
@@ -796,10 +760,10 @@ Result: dp[5] = 4 combinations: {5}, {2+2+1}, {2+1+1+1}, {1+1+1+1+1}
 
     <span class="hljs-keyword">return</span> grid[m - <span class="hljs-number">1</span>][n - <span class="hljs-number">1</span>];
 }
-</code></pre>
+</code></pre></div>
 <p><strong>Trade-off</strong>: Modifies the input grid. Use when space is critical and mutation is acceptable.</p>
 <h4 id="approach-3-space-optimized-1d-dp-o-m-extra-space" tabindex="-1"><a class="header-anchor" href="#approach-3-space-optimized-1d-dp-o-m-extra-space"><span><strong>Approach 3: Space-Optimized 1D DP</strong> (O(m) extra space)</span></a></h4>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">minPathSum</span><span class="hljs-params">(<span class="hljs-type">int</span>[][] grid)</span> {
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">minPathSum</span><span class="hljs-params">(<span class="hljs-type">int</span>[][] grid)</span> {
     <span class="hljs-type">int</span> <span class="hljs-variable">m</span> <span class="hljs-operator">=</span> grid.length, n = grid[<span class="hljs-number">0</span>].length;
 
     <span class="hljs-comment">// cur[i] = min cost to reach current column at row i</span>
@@ -820,10 +784,10 @@ Result: dp[5] = 4 combinations: {5}, {2+2+1}, {2+1+1+1}, {1+1+1+1+1}
 
     <span class="hljs-keyword">return</span> cur[m - <span class="hljs-number">1</span>];
 }
-</code></pre>
+</code></pre></div>
 <p><strong>Key Insight</strong>: <code>cur[i]</code> before update = cost of reaching <code>(i, j-1)</code> (from left). After update of <code>cur[i-1]</code> = cost of reaching <code>(i-1, j)</code> (from above). So <code>min(cur[i-1], cur[i])</code> is exactly <code>min(above, left)</code>.</p>
 <h4 id="approach-4-top-down-memoization-recursive" tabindex="-1"><a class="header-anchor" href="#approach-4-top-down-memoization-recursive"><span><strong>Approach 4: Top-Down Memoization</strong> (Recursive)</span></a></h4>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">minPathSum</span><span class="hljs-params">(<span class="hljs-type">int</span>[][] grid)</span> {
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">minPathSum</span><span class="hljs-params">(<span class="hljs-type">int</span>[][] grid)</span> {
     <span class="hljs-type">int</span> <span class="hljs-variable">m</span> <span class="hljs-operator">=</span> grid.length - <span class="hljs-number">1</span>;
     <span class="hljs-type">int</span> <span class="hljs-variable">n</span> <span class="hljs-operator">=</span> grid[<span class="hljs-number">0</span>].length - <span class="hljs-number">1</span>;
     <span class="hljs-type">int</span>[][] dp = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[m + <span class="hljs-number">1</span>][n + <span class="hljs-number">1</span>];
@@ -848,7 +812,7 @@ Result: dp[5] = 4 combinations: {5}, {2+2+1}, {2+1+1+1}, {1+1+1+1+1}
     dp[m][n] = grid[m][n] + Math.min(helper(grid, m, n - <span class="hljs-number">1</span>, dp), helper(grid, m - <span class="hljs-number">1</span>, n, dp));
     <span class="hljs-keyword">return</span> dp[m][n];
 }
-</code></pre>
+</code></pre></div>
 <p><strong>Key Insight</strong>: Recurse from <code>(m-1, n-1)</code> down to <code>(0, 0)</code>. Base cases handle the first row/column (only one direction possible). Cache with <code>dp[m][n] != -1</code> guard.</p>
 <h4 id="approach-comparison" tabindex="-1"><a class="header-anchor" href="#approach-comparison"><span><strong>Approach Comparison</strong></span></a></h4>
 <table>
@@ -998,7 +962,7 @@ Result: dp[5] = 4 combinations: {5}, {2+2+1}, {2+1+1+1}, {1+1+1+1+1}
 </tbody>
 </table>
 <h4 id="visual-trace-example" tabindex="-1"><a class="header-anchor" href="#visual-trace-example"><span><strong>Visual Trace Example</strong></span></a></h4>
-<pre><code class="hljs">grid = [[1,3,1],
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">grid = [[1,3,1],
         [1,5,1],
         [4,2,1]]
 
@@ -1008,8 +972,8 @@ dp = [[1, 4, 5],
       [6, 8, 7]]
 
 Path: 1→3→1→1→1 = 7
-</code></pre>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python equivalent</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python equivalent</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">grid_dp</span>(<span class="hljs-params">grid</span>):
     <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> grid <span class="hljs-keyword">or</span> <span class="hljs-keyword">not</span> grid[<span class="hljs-number">0</span>]:
         <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>
@@ -1024,10 +988,10 @@ Path: 1→3→1→1→1 = 7
         <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>, n):
             dp[i][j] = <span class="hljs-built_in">min</span>(dp[i-<span class="hljs-number">1</span>][j], dp[i][j-<span class="hljs-number">1</span>]) + grid[i][j]
     <span class="hljs-keyword">return</span> dp[m-<span class="hljs-number">1</span>][n-<span class="hljs-number">1</span>]
-</code></pre>
+</code></pre></div>
 <p><strong>File Reference</strong>: <code>leetcode_java/src/main/java/LeetCodeJava/DynamicProgramming/MinimumPathSum.java</code></p>
 <h3 id="template-3-interval-dp" tabindex="-1"><a class="header-anchor" href="#template-3-interval-dp"><span>Template 3: Interval DP</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">interval_dp</span>(<span class="hljs-params">arr</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">interval_dp</span>(<span class="hljs-params">arr</span>):
     <span class="hljs-string">&quot;&quot;&quot;DP for interval/subarray problems&quot;&quot;&quot;</span>
     n = <span class="hljs-built_in">len</span>(arr)
     <span class="hljs-comment"># dp[i][j] = optimal value for interval [i, j]</span>
@@ -1047,7 +1011,7 @@ Path: 1→3→1→1→1 = 7
                               dp[i][k] + dp[k+<span class="hljs-number">1</span>][j] + cost(i, j))
 
     <span class="hljs-keyword">return</span> dp[<span class="hljs-number">0</span>][n-<span class="hljs-number">1</span>]
-</code></pre>
+</code></pre></div>
 <h3 id="template-3-2-classic-interval-dp-pattern-lc-312-burst-balloons-style" tabindex="-1"><a class="header-anchor" href="#template-3-2-classic-interval-dp-pattern-lc-312-burst-balloons-style"><span>Template 3-2: Classic Interval DP Pattern (LC 312 Burst Balloons Style)</span></a></h3>
 <p><strong>🎯 Key Insight</strong>: Think about which element to process <strong>LAST</strong>, not first!</p>
 <p>This is the hallmark of interval DP problems like Burst Balloons, Matrix Chain Multiplication, and similar problems where the order of operations matters.</p>
@@ -1058,12 +1022,12 @@ Path: 1→3→1→1→1 = 7
 <li><strong>Why “Last”?</strong> When <code>k</code> is last, the subproblems on left and right are independent</li>
 </ul>
 <p><strong>The 3-Level Nested Loop Structure</strong>:</p>
-<pre><code class="hljs">for length in [2, 3, ..., n+1]:        # Build from small to large intervals
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">for length in [2, 3, ..., n+1]:        # Build from small to large intervals
     for left in [0, 1, ..., n-length]: # Try all possible left boundaries
         right = left + length           # Calculate right boundary
         for k in [left+1, ..., right-1]: # Try each element as LAST
             # dp[left][right] = combine(dp[left][k], dp[k][right], cost)
-</code></pre>
+</code></pre></div>
 <h4 id="pattern-1-burst-balloons-lc-312-exclusive-boundaries" tabindex="-1"><a class="header-anchor" href="#pattern-1-burst-balloons-lc-312-exclusive-boundaries"><span><strong>Pattern 1: Burst Balloons (LC 312) - Exclusive Boundaries</strong></span></a></h4>
 <p><strong>Problem</strong>: Burst all balloons to maximize coins. Bursting balloon <code>i</code> gives <code>nums[i-1] * nums[i] * nums[i+1]</code> coins.</p>
 <p><strong>Key Insight</strong>:</p>
@@ -1084,7 +1048,7 @@ Path: 1→3→1→1→1 = 7
 </li>
 </ul>
 <p><strong>Python Implementation</strong>:</p>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">maxCoins</span>(<span class="hljs-params">nums</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">maxCoins</span>(<span class="hljs-params">nums</span>):
     <span class="hljs-string">&quot;&quot;&quot;LC 312: Burst Balloons - Classic Interval DP&quot;&quot;&quot;</span>
     n = <span class="hljs-built_in">len</span>(nums)
 
@@ -1109,9 +1073,9 @@ Path: 1→3→1→1→1 = 7
 
     <span class="hljs-comment"># Answer: burst all balloons between boundaries 0 and n+1</span>
     <span class="hljs-keyword">return</span> dp[<span class="hljs-number">0</span>][n + <span class="hljs-number">1</span>]
-</code></pre>
+</code></pre></div>
 <p><strong>Java Implementation</strong>:</p>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 312: Burst Balloons</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 312: Burst Balloons</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">maxCoins</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums)</span> {
     <span class="hljs-type">int</span> <span class="hljs-variable">n</span> <span class="hljs-operator">=</span> nums.length;
 
@@ -1143,10 +1107,10 @@ Path: 1→3→1→1→1 = 7
 
     <span class="hljs-keyword">return</span> dp[<span class="hljs-number">0</span>][n + <span class="hljs-number">1</span>];
 }
-</code></pre>
+</code></pre></div>
 <p><strong>Example Trace</strong>: <code>nums = [3,1,5,8]</code></p>
 <p>After adding boundaries: <code>[1, 3, 1, 5, 8, 1]</code> (indices 0-5)</p>
-<pre><code class="hljs">Building dp[0][5] (entire interval):
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Building dp[0][5] (entire interval):
   Try k=1 (value 3) as LAST:
     coins = balloons[0] * balloons[1] * balloons[5] = 1 * 3 * 1 = 3
     total = 3 + dp[0][1] + dp[1][5]
@@ -1164,11 +1128,11 @@ Path: 1→3→1→1→1 = 7
     total = 8 + dp[0][4] + dp[4][5]
 
 Result: dp[0][5] = 167
-</code></pre>
+</code></pre></div>
 <h4 id="pattern-2-inclusive-boundaries-variant" tabindex="-1"><a class="header-anchor" href="#pattern-2-inclusive-boundaries-variant"><span><strong>Pattern 2: Inclusive Boundaries Variant</strong></span></a></h4>
 <p>Some interval DP problems use <strong>inclusive</strong> boundaries where <code>dp[i][j]</code> includes elements <code>i</code> and <code>j</code>.</p>
 <p><strong>Python Implementation</strong>:</p>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">maxCoins_inclusive</span>(<span class="hljs-params">nums</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">maxCoins_inclusive</span>(<span class="hljs-params">nums</span>):
     <span class="hljs-string">&quot;&quot;&quot;Alternative: dp[i][j] includes balloons i through j&quot;&quot;&quot;</span>
     n = <span class="hljs-built_in">len</span>(nums)
     balloons = [<span class="hljs-number">1</span>] + nums + [<span class="hljs-number">1</span>]
@@ -1186,9 +1150,9 @@ Result: dp[0][5] = 167
                 dp[left][right] = <span class="hljs-built_in">max</span>(dp[left][right], coins)
 
     <span class="hljs-keyword">return</span> dp[<span class="hljs-number">1</span>][n]
-</code></pre>
+</code></pre></div>
 <h4 id="top-down-memoization-approach" tabindex="-1"><a class="header-anchor" href="#top-down-memoization-approach"><span><strong>Top-Down (Memoization) Approach</strong></span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">maxCoins_topdown</span>(<span class="hljs-params">nums</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">maxCoins_topdown</span>(<span class="hljs-params">nums</span>):
     <span class="hljs-string">&quot;&quot;&quot;Top-down with memoization&quot;&quot;&quot;</span>
     balloons = [<span class="hljs-number">1</span>] + nums + [<span class="hljs-number">1</span>]
     memo = {}
@@ -1212,9 +1176,9 @@ Result: dp[0][5] = 167
         <span class="hljs-keyword">return</span> max_coins
 
     <span class="hljs-keyword">return</span> dp(<span class="hljs-number">0</span>, <span class="hljs-built_in">len</span>(balloons) - <span class="hljs-number">1</span>)
-</code></pre>
+</code></pre></div>
 <p><strong>Java Top-Down</strong>:</p>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">maxCoins</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums)</span> {
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">maxCoins</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums)</span> {
     <span class="hljs-type">int</span> <span class="hljs-variable">n</span> <span class="hljs-operator">=</span> nums.length;
     <span class="hljs-type">int</span>[] balloons = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[n + <span class="hljs-number">2</span>];
     balloons[<span class="hljs-number">0</span>] = balloons[n + <span class="hljs-number">1</span>] = <span class="hljs-number">1</span>;
@@ -1249,7 +1213,7 @@ Result: dp[0][5] = 167
     dp[left][right] = maxCoins;
     <span class="hljs-keyword">return</span> maxCoins;
 }
-</code></pre>
+</code></pre></div>
 <h4 id="key-characteristics-of-this-pattern" tabindex="-1"><a class="header-anchor" href="#key-characteristics-of-this-pattern"><span><strong>Key Characteristics of This Pattern</strong></span></a></h4>
 <table>
 <thead>
@@ -1398,14 +1362,14 @@ Result: dp[0][5] = 167
 </ul>
 <p>Classic problems: <strong>LC 516 Longest Palindromic Subsequence</strong>, <strong>LC 5 Longest Palindromic Substring</strong>, <strong>LC 647 Palindromic Substrings</strong>.</p>
 <p><strong>Core Insight: Dependency Direction Determines Loop Order</strong></p>
-<pre><code class="hljs">dp[i][j] depends on:
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">dp[i][j] depends on:
     dp[i+1][j-1]   ← diagonal (i+1, j-1): both already computed
     dp[i+1][j]     ← row below: need i+1 before i  → loop i BACKWARD
     dp[i][j-1]     ← column left: need j-1 before j → loop j FORWARD
-</code></pre>
+</code></pre></div>
 <p>So: <strong>loop <code>i</code> from <code>n-1</code> down to <code>0</code>, loop <code>j</code> from <code>i+1</code> up to <code>n-1</code></strong>.</p>
 <p><strong>Template (Java)</strong>:</p>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-type">int</span> <span class="hljs-variable">n</span> <span class="hljs-operator">=</span> s.length();
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-type">int</span> <span class="hljs-variable">n</span> <span class="hljs-operator">=</span> s.length();
 <span class="hljs-type">int</span>[][] dp = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[n][n];
 
 <span class="hljs-comment">// Base case: single characters</span>
@@ -1423,7 +1387,7 @@ Result: dp[0][5] = 167
     }
 }
 <span class="hljs-keyword">return</span> dp[<span class="hljs-number">0</span>][n - <span class="hljs-number">1</span>];
-</code></pre>
+</code></pre></div>
 <p><strong>Why NOT <code>length</code>-based outer loop here?</strong></p>
 <p>The length-based loop (Template 3) also works, but the backward-i + forward-j approach is more intuitive when the transition naturally reads as “expand/shrink boundaries” rather than “try a split point k”.</p>
 <table>
@@ -1458,7 +1422,7 @@ Result: dp[0][5] = 167
 </ul>
 <hr>
 <h3 id="template-4-0-1-knapsack" tabindex="-1"><a class="header-anchor" href="#template-4-0-1-knapsack"><span>Template 4: 0/1 Knapsack</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">knapsack_01</span>(<span class="hljs-params">weights, values, capacity</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">knapsack_01</span>(<span class="hljs-params">weights, values, capacity</span>):
     <span class="hljs-string">&quot;&quot;&quot;0/1 Knapsack problem&quot;&quot;&quot;</span>
     n = <span class="hljs-built_in">len</span>(weights)
     <span class="hljs-comment"># dp[i][w] = max value with first i items, capacity w</span>
@@ -1474,9 +1438,9 @@ Result: dp[0][5] = 167
                               dp[i-<span class="hljs-number">1</span>][w-weights[i-<span class="hljs-number">1</span>]] + values[i-<span class="hljs-number">1</span>])
     
     <span class="hljs-keyword">return</span> dp[n][capacity]
-</code></pre>
+</code></pre></div>
 <h3 id="template-5-state-machine-dp" tabindex="-1"><a class="header-anchor" href="#template-5-state-machine-dp"><span>Template 5: State Machine DP</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">state_machine_dp</span>(<span class="hljs-params">prices, fee=<span class="hljs-number">0</span></span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">state_machine_dp</span>(<span class="hljs-params">prices, fee=<span class="hljs-number">0</span></span>):
     <span class="hljs-string">&quot;&quot;&quot;DP with multiple states (stock problems)&quot;&quot;&quot;</span>
     <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> prices:
         <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>
@@ -1493,9 +1457,9 @@ Result: dp[0][5] = 167
         cash = <span class="hljs-built_in">max</span>(cash, prev_hold + prices[i] - fee)  <span class="hljs-comment"># Sell</span>
 
     <span class="hljs-keyword">return</span> cash
-</code></pre>
+</code></pre></div>
 <h3 id="template-5-2-state-machine-dp-with-cooldown-lc-309-pattern" tabindex="-1"><a class="header-anchor" href="#template-5-2-state-machine-dp-with-cooldown-lc-309-pattern"><span>Template 5-2: State Machine DP with Cooldown (LC 309 Pattern)</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">state_machine_with_cooldown</span>(<span class="hljs-params">prices</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">state_machine_with_cooldown</span>(<span class="hljs-params">prices</span>):
     <span class="hljs-string">&quot;&quot;&quot;
     DP with 3 states for stock with cooldown
 
@@ -1529,9 +1493,9 @@ Result: dp[0][5] = 167
 
     <span class="hljs-comment"># Max profit when not holding stock</span>
     <span class="hljs-keyword">return</span> <span class="hljs-built_in">max</span>(sold, rest)
-</code></pre>
+</code></pre></div>
 <p><strong>State Transition Diagram for LC 309:</strong></p>
-<pre><code class="hljs">    ┌─────────────────────────────────────────┐
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">    ┌─────────────────────────────────────────┐
     │         State Machine Flow              │
     └─────────────────────────────────────────┘
 
@@ -1546,7 +1510,7 @@ Result: dp[0][5] = 167
     • SOLD → REST: Cooldown (no transaction)
     • REST → REST: Do nothing (rest)
     • HOLD → HOLD: Keep holding (hold)
-</code></pre>
+</code></pre></div>
 <p><strong>Key Insights:</strong></p>
 <ul>
 <li><strong>3 States vs 2 States</strong>: Unlike simple stock problems (buy/sell), this needs 3 states due to cooldown</li>
@@ -1555,7 +1519,7 @@ Result: dp[0][5] = 167
 <li><strong>Critical Transition</strong>: <code>hold = max(hold, rest - prices[i])</code> - can only buy after rest, not after sold</li>
 </ul>
 <h3 id="template-6-top-down-memoization" tabindex="-1"><a class="header-anchor" href="#template-6-top-down-memoization"><span>Template 6: Top-Down Memoization</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">top_down_dp</span>(<span class="hljs-params">nums</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">top_down_dp</span>(<span class="hljs-params">nums</span>):
     <span class="hljs-string">&quot;&quot;&quot;Top-down DP with memoization&quot;&quot;&quot;</span>
     memo = {}
 
@@ -1576,7 +1540,7 @@ Result: dp[0][5] = 167
         <span class="hljs-keyword">return</span> result
 
     <span class="hljs-keyword">return</span> dp(<span class="hljs-built_in">len</span>(nums) - <span class="hljs-number">1</span>)
-</code></pre>
+</code></pre></div>
 <h3 id="template-6-1-dfs-memoization-pattern-graph-sequence-chaining" tabindex="-1"><a class="header-anchor" href="#template-6-1-dfs-memoization-pattern-graph-sequence-chaining"><span>Template 6-1: DFS + Memoization Pattern (Graph/Sequence Chaining)</span></a></h3>
 <p><strong>Problem Type</strong>: Finding the longest chain/sequence where each element is derived from the previous by a single structural operation</p>
 <h4 id="pattern" tabindex="-1"><a class="header-anchor" href="#pattern"><span>🎯 Pattern</span></a></h4>
@@ -1630,7 +1594,7 @@ Result: dp[0][5] = 167
 <li>If a predecessor exists in the dp map, extend its chain</li>
 <li>This avoids the <code>isOneOff</code> comparison entirely</li>
 </ul>
-<pre><code class="hljs">words = [&quot;a&quot;,&quot;b&quot;,&quot;ba&quot;,&quot;bca&quot;,&quot;bda&quot;,&quot;bdca&quot;]
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">words = [&quot;a&quot;,&quot;b&quot;,&quot;ba&quot;,&quot;bca&quot;,&quot;bda&quot;,&quot;bdca&quot;]
 Sorted: [&quot;a&quot;,&quot;b&quot;,&quot;ba&quot;,&quot;bca&quot;,&quot;bda&quot;,&quot;bdca&quot;]
 
 dp[&quot;a&quot;]    = 1  (no predecessors)
@@ -1641,10 +1605,10 @@ dp[&quot;bda&quot;]  = 3  (remove 'd' → &quot;ba&quot; exists → dp[&quot;ba&
 dp[&quot;bdca&quot;] = 4  (remove 'c' → &quot;bda&quot; exists → dp[&quot;bda&quot;] + 1 = 4)
 
 Answer: 4
-</code></pre>
+</code></pre></div>
 <h4 id="approach-1-bottom-up-dp-recommended-simpler" tabindex="-1"><a class="header-anchor" href="#approach-1-bottom-up-dp-recommended-simpler"><span><strong>Approach 1: Bottom-up DP</strong> ⭐ (Recommended — simpler)</span></a></h4>
 <p><strong>State</strong>: <code>dp[word]</code> = length of longest chain ending at <code>word</code></p>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">longestStrChain</span><span class="hljs-params">(String[] words)</span> {
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">longestStrChain</span><span class="hljs-params">(String[] words)</span> {
     <span class="hljs-comment">// Step 1: Sort by word length (process predecessors before successors)</span>
     Arrays.sort(words, (a, b) -&gt; a.length() - b.length());
 
@@ -1668,11 +1632,11 @@ Answer: 4
 
     <span class="hljs-keyword">return</span> maxChain;
 }
-</code></pre>
+</code></pre></div>
 <p><strong>Why this works</strong>: Sorting guarantees that when we process word <code>w</code>, all words shorter than <code>w</code> are already in <code>dp</code>. Removing one character generates all possible predecessors of length <code>|w|-1</code>.</p>
 <h4 id="approach-2-top-down-dfs-memoization" tabindex="-1"><a class="header-anchor" href="#approach-2-top-down-dfs-memoization"><span><strong>Approach 2: Top-down DFS + Memoization</strong></span></a></h4>
 <p><strong>State</strong>: <code>memo[word]</code> = length of longest chain starting from <code>word</code></p>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">private</span> Map&lt;Integer, List&lt;String&gt;&gt; wordLengthMap;
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">private</span> Map&lt;Integer, List&lt;String&gt;&gt; wordLengthMap;
 <span class="hljs-keyword">private</span> Map&lt;String, Integer&gt; memo;
 
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">longestStrChain</span><span class="hljs-params">(String[] words)</span> {
@@ -1716,7 +1680,7 @@ Answer: 4
     }
     <span class="hljs-keyword">return</span> count &lt;= <span class="hljs-number">1</span>;
 }
-</code></pre>
+</code></pre></div>
 <h4 id="approach-comparison-1" tabindex="-1"><a class="header-anchor" href="#approach-comparison-1"><span><strong>Approach Comparison</strong></span></a></h4>
 <table>
 <thead>
@@ -1859,14 +1823,14 @@ Answer: 4
 </ol>
 <h4 id="core-dp-idea" tabindex="-1"><a class="header-anchor" href="#core-dp-idea"><span>💡 <strong>Core DP Idea</strong></span></a></h4>
 <p>The key insight is: <strong>When characters don’t match, choose the operation that leads to the minimum cost.</strong></p>
-<pre><code class="hljs">At position (i, j):
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">At position (i, j):
   - If chars match: No cost, take solution from (i-1, j-1)
   - If they don't:
       Delete from word1:   dp[i-1][j] + 1
       Insert into word1:   dp[i][j-1] + 1
       Replace in word1:    dp[i-1][j-1] + 1
       → Take the minimum of these three
-</code></pre>
+</code></pre></div>
 <h4 id="state-definition" tabindex="-1"><a class="header-anchor" href="#state-definition"><span><strong>State Definition</strong>:</span></a></h4>
 <ul>
 <li><code>dp[i][j]</code> = minimum operations to convert <code>word1[0...i-1]</code> to <code>word2[0...j-1]</code></li>
@@ -1877,7 +1841,7 @@ Answer: 4
 <li><code>dp[0][j] = j</code> (insert all j characters into empty string to get word2)</li>
 </ul>
 <h4 id="transition" tabindex="-1"><a class="header-anchor" href="#transition"><span><strong>Transition</strong>:</span></a></h4>
-<pre><code class="hljs">If word1[i-1] == word2[j-1]:
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">If word1[i-1] == word2[j-1]:
     dp[i][j] = dp[i-1][j-1]  (no operation needed)
 Else:
     dp[i][j] = 1 + min(
@@ -1885,9 +1849,9 @@ Else:
         dp[i][j-1],     # Insert into word1
         dp[i-1][j-1]    # Replace in word1
     )
-</code></pre>
+</code></pre></div>
 <h4 id="python-implementation-bottom-up" tabindex="-1"><a class="header-anchor" href="#python-implementation-bottom-up"><span><strong>Python Implementation (Bottom-Up)</strong>:</span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">minDistance</span>(<span class="hljs-params">word1, word2</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">minDistance</span>(<span class="hljs-params">word1, word2</span>):
     <span class="hljs-string">&quot;&quot;&quot;LC 72: Edit Distance - Bottom-Up DP&quot;&quot;&quot;</span>
     m, n = <span class="hljs-built_in">len</span>(word1), <span class="hljs-built_in">len</span>(word2)
     <span class="hljs-comment"># dp[i][j] = min operations to convert word1[:i] to word2[:j]</span>
@@ -1912,9 +1876,9 @@ Else:
                 )
 
     <span class="hljs-keyword">return</span> dp[m][n]
-</code></pre>
+</code></pre></div>
 <h4 id="java-implementation-bottom-up" tabindex="-1"><a class="header-anchor" href="#java-implementation-bottom-up"><span><strong>Java Implementation (Bottom-Up)</strong>:</span></a></h4>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 72: Edit Distance - Standard approach</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 72: Edit Distance - Standard approach</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">minDistance</span><span class="hljs-params">(String word1, String word2)</span> {
     <span class="hljs-type">int</span> <span class="hljs-variable">m</span> <span class="hljs-operator">=</span> word1.length();
     <span class="hljs-type">int</span> <span class="hljs-variable">n</span> <span class="hljs-operator">=</span> word2.length();
@@ -1948,10 +1912,10 @@ Else:
 
     <span class="hljs-keyword">return</span> dp[m][n];
 }
-</code></pre>
+</code></pre></div>
 <h4 id="implementation-variants" tabindex="-1"><a class="header-anchor" href="#implementation-variants"><span><strong>Implementation Variants</strong></span></a></h4>
 <p><strong>Variant 1: Top-Down Memoization (Recursion + Cache)</strong></p>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">private</span> <span class="hljs-type">int</span>[][] memo;
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">private</span> <span class="hljs-type">int</span>[][] memo;
 
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">minDistance</span><span class="hljs-params">(String word1, String word2)</span> {
     <span class="hljs-type">int</span> <span class="hljs-variable">m</span> <span class="hljs-operator">=</span> word1.length();
@@ -1989,9 +1953,9 @@ Else:
     memo[i][j] = res;
     <span class="hljs-keyword">return</span> res;
 }
-</code></pre>
+</code></pre></div>
 <p><strong>Variant 2: Space-Optimized (O(n) Space)</strong></p>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">minDistance</span><span class="hljs-params">(String word1, String word2)</span> {
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">minDistance</span><span class="hljs-params">(String word1, String word2)</span> {
     <span class="hljs-type">int</span> <span class="hljs-variable">m</span> <span class="hljs-operator">=</span> word1.length();
     <span class="hljs-type">int</span> <span class="hljs-variable">n</span> <span class="hljs-operator">=</span> word2.length();
     
@@ -2024,9 +1988,9 @@ Else:
 
     <span class="hljs-keyword">return</span> prev[n];
 }
-</code></pre>
+</code></pre></div>
 <h4 id="visual-dp-table-example" tabindex="-1"><a class="header-anchor" href="#visual-dp-table-example"><span><strong>Visual DP Table Example</strong></span></a></h4>
-<pre><code class="hljs">Input: word1 = &quot;horse&quot;, word2 = &quot;ros&quot;
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Input: word1 = &quot;horse&quot;, word2 = &quot;ros&quot;
 
        &quot;&quot;  r   o   s
     &quot;&quot; 0   1   2   3
@@ -2041,19 +2005,19 @@ Explanation:
   - Replace 'h' → 'r': &quot;rorse&quot;
   - Delete 'r': &quot;rose&quot;
   - Delete 'e': &quot;ros&quot;
-</code></pre>
+</code></pre></div>
 <h4 id="key-insights" tabindex="-1"><a class="header-anchor" href="#key-insights"><span><strong>Key Insights</strong></span></a></h4>
 <ol>
 <li>
 <p><strong>Three Operations Visualization</strong>:</p>
-<pre><code class="hljs">dp[i-1][j]      dp[i-1][j-1]
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">dp[i-1][j]      dp[i-1][j-1]
     ↓            ↘
 dp[i][j-1] →   dp[i][j]
 
 Delete (↓):    dp[i-1][j] + 1
 Replace (↘):   dp[i-1][j-1] + 1
 Insert (→):    dp[i][j-1] + 1
-</code></pre>
+</code></pre></div>
 </li>
 <li>
 <p><strong>Indexing Styles</strong>:</p>
@@ -2242,7 +2206,7 @@ Insert (→):    dp[i][j-1] + 1
 <li><strong>Related</strong>: See also Template 8 (Longest Common Subsequence) for the comparison-maximization variant</li>
 </ul>
 <h3 id="template-8-longest-common-subsequence-lcs" tabindex="-1"><a class="header-anchor" href="#template-8-longest-common-subsequence-lcs"><span>Template 8: Longest Common Subsequence (LCS)</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">lcs_dp</span>(<span class="hljs-params">text1, text2</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">lcs_dp</span>(<span class="hljs-params">text1, text2</span>):
     <span class="hljs-string">&quot;&quot;&quot;LCS pattern for string matching&quot;&quot;&quot;</span>
     m, n = <span class="hljs-built_in">len</span>(text1), <span class="hljs-built_in">len</span>(text2)
     <span class="hljs-comment"># dp[i][j] = LCS length of text1[:i] and text2[:j]</span>
@@ -2256,9 +2220,9 @@ Insert (→):    dp[i][j-1] + 1
                 dp[i][j] = <span class="hljs-built_in">max</span>(dp[i-<span class="hljs-number">1</span>][j], dp[i][j-<span class="hljs-number">1</span>])
 
     <span class="hljs-keyword">return</span> dp[m][n]
-</code></pre>
+</code></pre></div>
 <h3 id="template-9-state-compression-bitmask-dp" tabindex="-1"><a class="header-anchor" href="#template-9-state-compression-bitmask-dp"><span>Template 9: State Compression (Bitmask DP)</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">state_compression_dp</span>(<span class="hljs-params">graph</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">state_compression_dp</span>(<span class="hljs-params">graph</span>):
     <span class="hljs-string">&quot;&quot;&quot;Traveling Salesman Problem using bitmask DP&quot;&quot;&quot;</span>
     n = <span class="hljs-built_in">len</span>(graph)
     <span class="hljs-comment"># dp[mask][i] = min cost to visit all cities in mask, ending at city i</span>
@@ -2280,9 +2244,9 @@ Insert (→):    dp[i][j-1] + 1
 
     <span class="hljs-comment"># Return to starting city</span>
     <span class="hljs-keyword">return</span> <span class="hljs-built_in">min</span>(dp[(<span class="hljs-number">1</span> &lt;&lt; n) - <span class="hljs-number">1</span>][i] + graph[i][<span class="hljs-number">0</span>] <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>, n))
-</code></pre>
+</code></pre></div>
 <h3 id="template-10-palindrome-dp" tabindex="-1"><a class="header-anchor" href="#template-10-palindrome-dp"><span>Template 10: Palindrome DP</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">palindrome_dp</span>(<span class="hljs-params">s</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">palindrome_dp</span>(<span class="hljs-params">s</span>):
     <span class="hljs-string">&quot;&quot;&quot;Check palindromic substrings&quot;&quot;&quot;</span>
     n = <span class="hljs-built_in">len</span>(s)
     <span class="hljs-comment"># dp[i][j] = True if s[i:j+1] is palindrome</span>
@@ -2305,9 +2269,9 @@ Insert (→):    dp[i][j-1] + 1
                 dp[i][j] = <span class="hljs-literal">True</span>
 
     <span class="hljs-keyword">return</span> dp
-</code></pre>
+</code></pre></div>
 <p><strong>Key Palindrome DP Pattern:</strong></p>
-<pre><code class="hljs">Core Transition Equation:
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Core Transition Equation:
     dp[i][j] = true
        if:
            s[i] == s[j] AND
@@ -2322,9 +2286,9 @@ Explanation:
 Example: For &quot;babad&quot;
     - dp[0][2] = true because s[0]='b' == s[2]='b' AND j-i=2 (length 3)
     - dp[1][3] = true because s[1]='a' == s[3]='a' AND dp[2][2]=true
-</code></pre>
+</code></pre></div>
 <h3 id="template-11-fibonacci-like-patterns" tabindex="-1"><a class="header-anchor" href="#template-11-fibonacci-like-patterns"><span>Template 11: Fibonacci-like Patterns</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">fibonacci_variants</span>():
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">fibonacci_variants</span>():
     <span class="hljs-string">&quot;&quot;&quot;Common Fibonacci-like patterns&quot;&quot;&quot;</span>
 
     <span class="hljs-comment"># 1. Classic Fibonacci</span>
@@ -2359,7 +2323,7 @@ Example: For &quot;babad&quot;
             current = <span class="hljs-built_in">max</span>(prev1, prev2 + nums[i])
             prev2, prev1 = prev1, current
         <span class="hljs-keyword">return</span> prev1
-</code></pre>
+</code></pre></div>
 <h2 id="comprehensive-pattern-analysis" tabindex="-1"><a class="header-anchor" href="#comprehensive-pattern-analysis"><span>Comprehensive Pattern Analysis</span></a></h2>
 <h3 id="1d-dp-patterns" tabindex="-1"><a class="header-anchor" href="#1d-dp-patterns"><span><strong>1D DP Patterns</strong></span></a></h3>
 <table>
@@ -2404,7 +2368,7 @@ Example: For &quot;babad&quot;
 </tbody>
 </table>
 <p><strong>Template for 1D Linear DP</strong>:</p>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">linear_dp_optimized</span>(<span class="hljs-params">nums</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">linear_dp_optimized</span>(<span class="hljs-params">nums</span>):
     <span class="hljs-string">&quot;&quot;&quot;Space-optimized 1D DP&quot;&quot;&quot;</span>
     n = <span class="hljs-built_in">len</span>(nums)
     <span class="hljs-keyword">if</span> n == <span class="hljs-number">0</span>:
@@ -2421,7 +2385,7 @@ Example: For &quot;babad&quot;
         prev2, prev1 = prev1, current
 
     <span class="hljs-keyword">return</span> prev1
-</code></pre>
+</code></pre></div>
 <h3 id="2d-dp-patterns" tabindex="-1"><a class="header-anchor" href="#2d-dp-patterns"><span><strong>2D DP Patterns</strong></span></a></h3>
 <table>
 <thead>
@@ -2465,7 +2429,7 @@ Example: For &quot;babad&quot;
 </tbody>
 </table>
 <p><strong>Template for 2D DP with Space Optimization</strong>:</p>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">grid_dp_optimized</span>(<span class="hljs-params">grid</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">grid_dp_optimized</span>(<span class="hljs-params">grid</span>):
     <span class="hljs-string">&quot;&quot;&quot;Space-optimized 2D DP&quot;&quot;&quot;</span>
     <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> grid <span class="hljs-keyword">or</span> <span class="hljs-keyword">not</span> grid[<span class="hljs-number">0</span>]:
         <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>
@@ -2490,7 +2454,7 @@ Example: For &quot;babad&quot;
         prev = curr
 
     <span class="hljs-keyword">return</span> prev[n-<span class="hljs-number">1</span>]
-</code></pre>
+</code></pre></div>
 <h3 id="knapsack-patterns" tabindex="-1"><a class="header-anchor" href="#knapsack-patterns"><span><strong>Knapsack Patterns</strong></span></a></h3>
 <table>
 <thead>
@@ -2523,7 +2487,7 @@ Example: For &quot;babad&quot;
 </tbody>
 </table>
 <p><strong>Space-Optimized Knapsack</strong>:</p>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">knapsack_optimized</span>(<span class="hljs-params">weights, values, capacity</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">knapsack_optimized</span>(<span class="hljs-params">weights, values, capacity</span>):
     <span class="hljs-string">&quot;&quot;&quot;1D array knapsack&quot;&quot;&quot;</span>
     dp = [<span class="hljs-number">0</span>] * (capacity + <span class="hljs-number">1</span>)
 
@@ -2533,7 +2497,7 @@ Example: For &quot;babad&quot;
             dp[w] = <span class="hljs-built_in">max</span>(dp[w], dp[w - weights[i]] + values[i])
 
     <span class="hljs-keyword">return</span> dp[capacity]
-</code></pre>
+</code></pre></div>
 <h3 id="critical-pattern-loop-order-in-unbounded-knapsack-combinations-vs-permutations" tabindex="-1"><a class="header-anchor" href="#critical-pattern-loop-order-in-unbounded-knapsack-combinations-vs-permutations"><span><strong>Critical Pattern: Loop Order in Unbounded Knapsack (Combinations vs Permutations)</strong></span></a></h3>
 <p><strong>🔑 Key Insight</strong>: In unbounded knapsack problems (like Coin Change), the <strong>order of nested loops</strong> determines whether you count <strong>combinations</strong> or <strong>permutations</strong>.</p>
 <hr>
@@ -2593,7 +2557,7 @@ Example: For &quot;babad&quot;
 </ul>
 <hr>
 <h4 id="visual-summary-the-four-core-patterns" tabindex="-1"><a class="header-anchor" href="#visual-summary-the-four-core-patterns"><span><strong>📊 Visual Summary: The Four Core Patterns</strong></span></a></h4>
-<pre><code class="hljs">┌─────────────────────────────────────────────────────────────────────────┐
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">┌─────────────────────────────────────────────────────────────────────────┐
 │                     DP KNAPSACK PATTERN MATRIX                          │
 └─────────────────────────────────────────────────────────────────────────┘
 
@@ -2623,9 +2587,9 @@ Legend:
   Target→Item     = Outer loop: target,   Inner loop: items
   Forward         = Inner loop: i to target (allows reuse)
   BACKWARD ⚠️     = Inner loop: target to i (prevents reuse)
-</code></pre>
+</code></pre></div>
 <p><strong>🎯 Decision Flow:</strong></p>
-<pre><code class="hljs">Start
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Start
   │
   ├─ Question asks &quot;count ways&quot;?
   │   │
@@ -2640,7 +2604,7 @@ Legend:
   │             │   └─ NO  → Unbounded (FORWARD) [LC 322]
   │             │
   │             └─ Unknown → Check problem constraints
-</code></pre>
+</code></pre></div>
 <hr>
 <h4 id="master-pattern-table-dp-transitions-by-problem-type" tabindex="-1"><a class="header-anchor" href="#master-pattern-table-dp-transitions-by-problem-type"><span><strong>📋 Master Pattern Table: DP Transitions by Problem Type</strong></span></a></h4>
 <table>
@@ -2696,7 +2660,7 @@ Legend:
 </table>
 <hr>
 <h4 id="code-templates-by-pattern" tabindex="-1"><a class="header-anchor" href="#code-templates-by-pattern"><span><strong>💻 Code Templates by Pattern</strong></span></a></h4>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// ============================================</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// ============================================</span>
 <span class="hljs-comment">// PATTERN 1: COMBINATIONS (Item → Target)</span>
 <span class="hljs-comment">// ============================================</span>
 <span class="hljs-comment">// LC 518: Coin Change II</span>
@@ -2770,7 +2734,7 @@ Legend:
     }
     <span class="hljs-keyword">return</span> dp[target] &gt; target ? -<span class="hljs-number">1</span> : dp[target];
 }
-</code></pre>
+</code></pre></div>
 <p><strong>🔑 Key Observations:</strong></p>
 <ol>
 <li>
@@ -2798,7 +2762,7 @@ Legend:
 </ol>
 <hr>
 <h4 id="pattern-selection-decision-tree" tabindex="-1"><a class="header-anchor" href="#pattern-selection-decision-tree"><span><strong>🎯 Pattern Selection Decision Tree</strong></span></a></h4>
-<pre><code class="hljs">Question: What does the problem ask for?
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Question: What does the problem ask for?
 
 ├─ &quot;Count number of ways/combinations to reach target&quot;
 │  ├─ Order matters? (e.g., [1,2] ≠ [2,1])
@@ -2819,7 +2783,7 @@ Legend:
    │            Example: LC 416 Partition Equal Subset Sum
    │
    └─ Always use (Item → Capacity) order
-</code></pre>
+</code></pre></div>
 <hr>
 <h3 id="deep-dive-0-1-knapsack-subset-sum-pattern" tabindex="-1"><a class="header-anchor" href="#deep-dive-0-1-knapsack-subset-sum-pattern"><span><strong>Deep Dive: 0/1 Knapsack &amp; Subset Sum Pattern</strong> 🎒</span></a></h3>
 <p>This pattern is fundamental and appears in many disguised forms. Last Stone Weight II is a great example of recognizing when a problem is secretly a subset sum problem.</p>
@@ -2864,7 +2828,7 @@ Legend:
 <p><strong>Key Recognition</strong>: If you see “partition” or “divide into two groups” → think <strong>0/1 Knapsack</strong>.</p>
 <h4 id="core-idea-the-mathematical-transformation" tabindex="-1"><a class="header-anchor" href="#core-idea-the-mathematical-transformation"><span><strong>Core Idea: The Mathematical Transformation</strong> 🧮</span></a></h4>
 <p><strong>Problem</strong>: Partition array into two groups and minimize difference.</p>
-<pre><code class="hljs">Given: stones = [2, 7, 4, 1, 8, 1]
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Given: stones = [2, 7, 4, 1, 8, 1]
 Total sum = 23
 
 Goal: Split into two groups with min |sum1 - sum2|
@@ -2878,7 +2842,7 @@ Mathematical insight:
   To minimize this: Maximize S such that S ≤ total/2
   
   Result = total - 2*S (where S is the largest achievable sum ≤ total/2)
-</code></pre>
+</code></pre></div>
 <p><strong>Why This Works</strong>:</p>
 <ul>
 <li>Find the largest subset sum that doesn’t exceed <code>total / 2</code></li>
@@ -2888,7 +2852,7 @@ Mathematical insight:
 </ul>
 <h4 id="pattern-two-variants" tabindex="-1"><a class="header-anchor" href="#pattern-two-variants"><span><strong>Pattern: Two Variants</strong></span></a></h4>
 <p><strong>Variant 1: Boolean DP (Can we achieve this sum?)</strong></p>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">lastStoneWeightII</span><span class="hljs-params">(<span class="hljs-type">int</span>[] stones)</span> {
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">lastStoneWeightII</span><span class="hljs-params">(<span class="hljs-type">int</span>[] stones)</span> {
     <span class="hljs-type">int</span> <span class="hljs-variable">total</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
     <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> stone : stones) {
         total += stone;
@@ -2918,9 +2882,9 @@ Mathematical insight:
 
     <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
 }
-</code></pre>
+</code></pre></div>
 <p><strong>Variant 2: Integer DP (Maximum value achievable)</strong></p>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">lastStoneWeightII</span><span class="hljs-params">(<span class="hljs-type">int</span>[] stones)</span> {
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">lastStoneWeightII</span><span class="hljs-params">(<span class="hljs-type">int</span>[] stones)</span> {
     <span class="hljs-type">int</span> <span class="hljs-variable">total</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
     <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> stone : stones) {
         total += stone;
@@ -2944,9 +2908,9 @@ Mathematical insight:
 
     <span class="hljs-keyword">return</span> total - <span class="hljs-number">2</span> * dp[target];
 }
-</code></pre>
+</code></pre></div>
 <h4 id="why-iterate-backwards-the-critical-detail" tabindex="-1"><a class="header-anchor" href="#why-iterate-backwards-the-critical-detail"><span><strong>Why Iterate BACKWARDS? (The Critical Detail)</strong></span></a></h4>
-<pre><code class="hljs">❌ WRONG: Forward iteration (causes reuse)
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">❌ WRONG: Forward iteration (causes reuse)
 for (int j = stone; j &lt;= target; j++) {
     dp[j] = dp[j] || dp[j - stone];
 }
@@ -2970,9 +2934,9 @@ Example with stone=3, target=9:
   j=9: dp[9] = dp[6] (old value from previous stone) ✓
   j=6: dp[6] = dp[3] (old value from previous stone) ✓
   j=3: dp[3] = dp[0] (old value from previous stone) ✓
-</code></pre>
+</code></pre></div>
 <h4 id="complete-example-last-stone-weight-ii" tabindex="-1"><a class="header-anchor" href="#complete-example-last-stone-weight-ii"><span><strong>Complete Example: Last Stone Weight II</strong></span></a></h4>
-<pre><code class="hljs">stones = [2, 7, 4, 1, 8, 1]
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">stones = [2, 7, 4, 1, 8, 1]
 total = 23
 target = 23 / 2 = 11
 
@@ -2999,7 +2963,7 @@ After stone 4:
 
 Final: Find largest j ≤ 11 where dp[j] = T
        Result = 23 - 2 * j
-</code></pre>
+</code></pre></div>
 <h4 id="similar-leetcode-problems-2" tabindex="-1"><a class="header-anchor" href="#similar-leetcode-problems-2"><span><strong>Similar LeetCode Problems</strong> 📚</span></a></h4>
 <table>
 <thead>
@@ -3039,13 +3003,13 @@ Final: Find largest j ≤ 11 where dp[j] = T
 </table>
 <p><strong>Transformation Examples</strong>:</p>
 <p><strong>LC 416 (Partition Equal Subset)</strong>:</p>
-<pre><code class="hljs">Question: Can we partition into two equal subsets?
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Question: Can we partition into two equal subsets?
 Answer: Can we achieve sum = total/2?
 DP: boolean[] dp where dp[j] = can we make sum j?
 Return: dp[total/2]
-</code></pre>
+</code></pre></div>
 <p><strong>LC 494 (Target Sum)</strong>:</p>
-<pre><code class="hljs">Question: Assign +/- to reach target T
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Question: Assign +/- to reach target T
 Transformation: Let sum1 = sum of items with +
                 Let sum2 = sum of items with -
                 sum1 - sum2 = T
@@ -3056,7 +3020,7 @@ Transformation: Let sum1 = sum of items with +
 So: This is 0/1 knapsack! Find count of subsets with sum = (total + T) / 2
 DP: int[] dp where dp[j] = count of ways to make sum j
 Return: dp[(total + T) / 2]
-</code></pre>
+</code></pre></div>
 <h4 id="common-pitfalls-1" tabindex="-1"><a class="header-anchor" href="#common-pitfalls-1"><span><strong>Common Pitfalls</strong> ⚠️</span></a></h4>
 <ol>
 <li>
@@ -3179,7 +3143,7 @@ Return: dp[(total + T) / 2]
 </table>
 <hr>
 <h4 id="pattern-1-combinations-outer-coins-inner-amount" tabindex="-1"><a class="header-anchor" href="#pattern-1-combinations-outer-coins-inner-amount"><span><strong>Pattern 1: Combinations (Outer: Coins, Inner: Amount)</strong></span></a></h4>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 518: Coin Change II - Count combinations</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 518: Coin Change II - Count combinations</span>
 <span class="hljs-comment">// Example: [1,2] and [2,1] are the SAME combination</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">change</span><span class="hljs-params">(<span class="hljs-type">int</span> amount, <span class="hljs-type">int</span>[] coins)</span> {
     <span class="hljs-type">int</span>[] dp = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[amount + <span class="hljs-number">1</span>];
@@ -3199,7 +3163,7 @@ Return: dp[(total + T) / 2]
 
     <span class="hljs-keyword">return</span> dp[amount];
 }
-</code></pre>
+</code></pre></div>
 <p><strong>Why This Works</strong>:</p>
 <ul>
 <li>Process coins one at a time (e.g., first all 1s, then all 2s, then all 5s)</li>
@@ -3208,12 +3172,12 @@ Return: dp[(total + T) / 2]
 <li>Result: Only <strong>combinations</strong> (order doesn’t matter)</li>
 </ul>
 <p><strong>Example Trace</strong>: <code>coins = [1,2], amount = 3</code></p>
-<pre><code class="hljs">After coin 1: dp = [1, 1, 1, 1]  // {}, {1}, {1,1}, {1,1,1}
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">After coin 1: dp = [1, 1, 1, 1]  // {}, {1}, {1,1}, {1,1,1}
 After coin 2: dp = [1, 1, 2, 2]  // + {2}, {1,2}
 Result: 2 combinations → {1,1,1}, {1,2}
-</code></pre>
+</code></pre></div>
 <h4 id="pattern-2-permutations-outer-amount-inner-coins" tabindex="-1"><a class="header-anchor" href="#pattern-2-permutations-outer-amount-inner-coins"><span><strong>Pattern 2: Permutations (Outer: Amount, Inner: Coins)</strong></span></a></h4>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 377: Combination Sum IV - Count permutations</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 377: Combination Sum IV - Count permutations</span>
 <span class="hljs-comment">// Example: [1,2] and [2,1] are DIFFERENT permutations</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">combinationSum4</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums, <span class="hljs-type">int</span> target)</span> {
     <span class="hljs-type">int</span>[] dp = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[target + <span class="hljs-number">1</span>];
@@ -3232,7 +3196,7 @@ Result: 2 combinations → {1,1,1}, {1,2}
 
     <span class="hljs-keyword">return</span> dp[target];
 }
-</code></pre>
+</code></pre></div>
 <p><strong>Why This Counts Permutations</strong>:</p>
 <ul>
 <li>For each amount, ask: “What was the <strong>last coin</strong> I added?”</li>
@@ -3240,12 +3204,12 @@ Result: 2 combinations → {1,1,1}, {1,2}
 <li>Result: <strong>Permutations</strong> (order matters)</li>
 </ul>
 <p><strong>Example Trace</strong>: <code>nums = [1,2], target = 3</code></p>
-<pre><code class="hljs">dp[1]: Use 1 → [1] (1 way)
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">dp[1]: Use 1 → [1] (1 way)
 dp[2]: Use 1 → [1,1], Use 2 → [2] (2 ways)
 dp[3]: From dp[2] add 1 → [1,1,1], [2,1]
        From dp[1] add 2 → [1,2]
 Result: 3 permutations → {1,1,1}, {1,2}, {2,1}
-</code></pre>
+</code></pre></div>
 <h4 id="comparison-table" tabindex="-1"><a class="header-anchor" href="#comparison-table"><span><strong>Comparison Table</strong></span></a></h4>
 <table>
 <thead>
@@ -3273,7 +3237,7 @@ Result: 3 permutations → {1,1,1}, {1,2}, {2,1}
 </table>
 <h4 id="side-by-side-code-comparison" tabindex="-1"><a class="header-anchor" href="#side-by-side-code-comparison"><span><strong>🔥 Side-by-Side Code Comparison</strong></span></a></h4>
 <p><strong>LC 518: Coin Change II (Combinations)</strong></p>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">change</span><span class="hljs-params">(<span class="hljs-type">int</span> amount, <span class="hljs-type">int</span>[] coins)</span> {
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">change</span><span class="hljs-params">(<span class="hljs-type">int</span> amount, <span class="hljs-type">int</span>[] coins)</span> {
     <span class="hljs-type">int</span>[] dp = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[amount + <span class="hljs-number">1</span>];
     dp[<span class="hljs-number">0</span>] = <span class="hljs-number">1</span>; <span class="hljs-comment">// Base: 1 way to make 0</span>
 
@@ -3289,9 +3253,9 @@ Result: 3 permutations → {1,1,1}, {1,2}, {2,1}
 <span class="hljs-comment">// Example: amount=3, coins=[1,2]</span>
 <span class="hljs-comment">// Result: 2 combinations</span>
 <span class="hljs-comment">// {1,1,1}, {1,2}  (Note: [1,2] and [2,1] counted as same)</span>
-</code></pre>
+</code></pre></div>
 <p><strong>LC 377: Combination Sum IV (Permutations)</strong></p>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">combinationSum4</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums, <span class="hljs-type">int</span> target)</span> {
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">combinationSum4</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums, <span class="hljs-type">int</span> target)</span> {
     <span class="hljs-type">int</span>[] dp = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[target + <span class="hljs-number">1</span>];
     dp[<span class="hljs-number">0</span>] = <span class="hljs-number">1</span>; <span class="hljs-comment">// Base: 1 way to make 0</span>
 
@@ -3309,11 +3273,11 @@ Result: 3 permutations → {1,1,1}, {1,2}, {2,1}
 <span class="hljs-comment">// Example: target=3, nums=[1,2]</span>
 <span class="hljs-comment">// Result: 3 permutations</span>
 <span class="hljs-comment">// {1,1,1}, {1,2}, {2,1}  (Note: [1,2] and [2,1] are different)</span>
-</code></pre>
+</code></pre></div>
 <h4 id="detailed-trace-comparison-why-loop-order-matters" tabindex="-1"><a class="header-anchor" href="#detailed-trace-comparison-why-loop-order-matters"><span><strong>🔍 Detailed Trace Comparison: Why Loop Order Matters</strong></span></a></h4>
 <p><strong>Example: nums/coins = [1, 2], target/amount = 3</strong></p>
 <p><strong>LC 518 (Combinations - Coin Outer):</strong></p>
-<pre><code class="hljs">Initialize: dp = [1, 0, 0, 0]
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Initialize: dp = [1, 0, 0, 0]
 
 Process coin 1:
   i=1: dp[1] += dp[0] = 1    → [1, 1, 0, 0]  // ways: {1}
@@ -3327,9 +3291,9 @@ Process coin 2:
                                               // all coin-1 uses are done before coin-2
 
 Final: dp[3] = 2  ✅ Only {1,1,1} and {1,2}
-</code></pre>
+</code></pre></div>
 <p><strong>LC 377 (Permutations - Amount Outer):</strong></p>
-<pre><code class="hljs">Initialize: dp = [1, 0, 0, 0]
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Initialize: dp = [1, 0, 0, 0]
 
 i=1 (building sum 1):
   Try 1: dp[1] += dp[0] = 1   → [1, 1, 0, 0]  // ways: {1}
@@ -3345,7 +3309,7 @@ i=3 (building sum 3):
   Try 2: dp[3] += dp[1] = 2+1=3 → [1, 1, 2, 3]  // {1} + 2 = {1,2}  ✅
 
 Final: dp[3] = 3  ✅ All three: {1,1,1}, {1,2}, {2,1}
-</code></pre>
+</code></pre></div>
 <p><strong>Key Insight:</strong></p>
 <ul>
 <li><strong>LC 518 (Coin Outer)</strong>: Once you finish processing coin-1, you never revisit it. This forces a canonical order (all 1s before all 2s), preventing duplicates like {1,2} and {2,1}.</li>
@@ -3366,7 +3330,7 @@ Final: dp[3] = 3  ✅ All three: {1,1,1}, {1,2}, {2,1}
 <li>Keywords: “permutations”, “different orderings”, “sequences”</li>
 </ul>
 <h4 id="complete-java-example-lc-518-coin-change-ii" tabindex="-1"><a class="header-anchor" href="#complete-java-example-lc-518-coin-change-ii"><span><strong>Complete Java Example: LC 518 Coin Change II</strong></span></a></h4>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">change</span><span class="hljs-params">(<span class="hljs-type">int</span> amount, <span class="hljs-type">int</span>[] coins)</span> {
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">change</span><span class="hljs-params">(<span class="hljs-type">int</span> amount, <span class="hljs-type">int</span>[] coins)</span> {
     <span class="hljs-comment">// dp[i] = total number of combinations that make up amount i</span>
     <span class="hljs-type">int</span>[] dp = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[amount + <span class="hljs-number">1</span>];
 
@@ -3382,16 +3346,16 @@ Final: dp[3] = 3  ✅ All three: {1,1,1}, {1,2}, {2,1}
 
     <span class="hljs-keyword">return</span> dp[amount];
 }
-</code></pre>
+</code></pre></div>
 <p><strong>Test Cases</strong>:</p>
-<pre><code class="hljs">Input: amount = 5, coins = [1,2,5]
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Input: amount = 5, coins = [1,2,5]
 Output: 4
 Combinations: {5}, {2,2,1}, {2,1,1,1}, {1,1,1,1,1}
 
 Input: amount = 3, coins = [2]
 Output: 0
 Explanation: Cannot make 3 with only coins of 2
-</code></pre>
+</code></pre></div>
 <h4 id="problem-references" tabindex="-1"><a class="header-anchor" href="#problem-references"><span><strong>📚 Problem References</strong></span></a></h4>
 <table>
 <thead>
@@ -3484,14 +3448,14 @@ Explanation: Cannot make 3 with only coins of 2
 </tbody>
 </table>
 <p><strong>🔥 The ONLY Difference:</strong></p>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 518: Combinations</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 518: Combinations</span>
 <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> coin : coins)              <span class="hljs-comment">// ← ITEM OUTER</span>
     <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> coin; i &lt;= amount; i++)
 
 <span class="hljs-comment">// LC 377: Permutations</span>
 <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span>; i &lt;= target; i++)   <span class="hljs-comment">// ← TARGET OUTER</span>
     <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> num : nums)
-</code></pre>
+</code></pre></div>
 <p><strong>Both use the EXACT SAME transition: <code>dp[i] += dp[i - item]</code></strong></p>
 <hr>
 <h3 id="critical-pattern-understanding-if-i-coin-0-in-coin-change-dp" tabindex="-1"><a class="header-anchor" href="#critical-pattern-understanding-if-i-coin-0-in-coin-change-dp"><span><strong>Critical Pattern: Understanding <code>if (i - coin &gt;= 0)</code> in Coin Change DP</strong></span></a></h3>
@@ -3674,7 +3638,7 @@ Explanation: Cannot make 3 with only coins of 2
 </tbody>
 </table>
 <h4 id="the-dp-code-pattern" tabindex="-1"><a class="header-anchor" href="#the-dp-code-pattern"><span><strong>The DP Code Pattern</strong></span></a></h4>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">coinChange</span><span class="hljs-params">(<span class="hljs-type">int</span>[] coins, <span class="hljs-type">int</span> amount)</span> {
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">coinChange</span><span class="hljs-params">(<span class="hljs-type">int</span>[] coins, <span class="hljs-type">int</span> amount)</span> {
     <span class="hljs-keyword">if</span> (amount == <span class="hljs-number">0</span>) <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
 
     <span class="hljs-comment">// dp[i] = min coins to make amount i</span>
@@ -3702,7 +3666,7 @@ Explanation: Cannot make 3 with only coins of 2
     <span class="hljs-comment">// If value is still &quot;Infinity&quot;, we couldn&#x27;t reach it</span>
     <span class="hljs-keyword">return</span> dp[amount] &gt; amount ? -<span class="hljs-number">1</span> : dp[amount];
 }
-</code></pre>
+</code></pre></div>
 <p><strong>Reference</strong>: See <code>leetcode_java/src/main/java/LeetCodeJava/DynamicProgramming/CoinChange.java:356-408</code> for detailed implementation.</p>
 <h3 id="string-dp-patterns" tabindex="-1"><a class="header-anchor" href="#string-dp-patterns"><span><strong>String DP Patterns</strong></span></a></h3>
 <h4 id="the-two-string-two-sequence-grid-pattern" tabindex="-1"><a class="header-anchor" href="#the-two-string-two-sequence-grid-pattern"><span><strong>The “Two-String / Two-Sequence Grid” Pattern</strong> 🧩</span></a></h4>
@@ -3794,7 +3758,7 @@ Explanation: Cannot make 3 with only coins of 2
 <li><code>dp[i][j]</code> represents using the first <code>i</code> characters of string 1 and first <code>j</code> characters of string 2</li>
 </ul>
 <p><strong>Universal Template:</strong></p>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">stringDP</span><span class="hljs-params">(String s1, String s2)</span> {
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">stringDP</span><span class="hljs-params">(String s1, String s2)</span> {
     <span class="hljs-type">int</span> <span class="hljs-variable">m</span> <span class="hljs-operator">=</span> s1.length(), n = s2.length();
     <span class="hljs-type">int</span>[][] dp = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[m + <span class="hljs-number">1</span>][n + <span class="hljs-number">1</span>];
 
@@ -3827,7 +3791,7 @@ Explanation: Cannot make 3 with only coins of 2
 
     <span class="hljs-keyword">return</span> dp[m][n];
 }
-</code></pre>
+</code></pre></div>
 <p><strong>Space Optimization Secret</strong> ⚡</p>
 <p>In every “Two-String” problem, you only ever look at:</p>
 <ul>
@@ -3842,7 +3806,7 @@ Explanation: Cannot make 3 with only coins of 2
 <li>Rolling updates as you process each row</li>
 </ol>
 <p><strong>Example Space-Optimized LCS:</strong></p>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">longestCommonSubsequence</span><span class="hljs-params">(String s1, String s2)</span> {
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">longestCommonSubsequence</span><span class="hljs-params">(String s1, String s2)</span> {
     <span class="hljs-type">int</span> <span class="hljs-variable">m</span> <span class="hljs-operator">=</span> s1.length(), n = s2.length();
     <span class="hljs-type">int</span>[] prev = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[n + <span class="hljs-number">1</span>];
 
@@ -3860,14 +3824,14 @@ Explanation: Cannot make 3 with only coins of 2
 
     <span class="hljs-keyword">return</span> prev[n];
 }
-</code></pre>
+</code></pre></div>
 <hr>
 <h3 id="deep-dive-the-prefix-based-indexing-pattern-lcs-variants" tabindex="-1"><a class="header-anchor" href="#deep-dive-the-prefix-based-indexing-pattern-lcs-variants"><span><strong>Deep Dive: The Prefix-Based Indexing Pattern (LCS &amp; Variants)</strong> 🔍</span></a></h3>
 <p>This subsection focuses on understanding the <strong>1-indexed DP table</strong> concept that’s critical for getting string DP right.</p>
 <h4 id="why-1-indexed-dp-table" tabindex="-1"><a class="header-anchor" href="#why-1-indexed-dp-table"><span><strong>Why 1-Indexed DP Table?</strong></span></a></h4>
 <p>When building a 2D DP table for string problems, we use <code>dp[m+1][n+1]</code> instead of <code>dp[m][n]</code>. This might seem like off-by-one overhead, but it’s actually elegant:</p>
 <p><strong>The Key Insight</strong>: <code>dp[i][j]</code> represents the <strong>answer for a prefix of length i from string1 and prefix of length j from string2</strong>.</p>
-<pre><code class="hljs">✅ CORRECT: 1-indexed approach
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">✅ CORRECT: 1-indexed approach
    dp[i][j] = answer for string1.substring(0, i) and string2.substring(0, j)
    - Row index i ∈ [0, m] where m = string1.length()
    - Col index j ∈ [0, n] where n = string2.length()
@@ -3876,9 +3840,9 @@ Explanation: Cannot make 3 with only coins of 2
 ❌ WRONG: 0-indexed approach (will cause boundary issues)
    - No room for &quot;empty string&quot; base case
    - First iteration accesses negative indices
-</code></pre>
+</code></pre></div>
 <h4 id="the-prefix-concept-why-dp-i-1-and-dp-j-1-for-characters" tabindex="-1"><a class="header-anchor" href="#the-prefix-concept-why-dp-i-1-and-dp-j-1-for-characters"><span><strong>The Prefix Concept: Why dp[i-1] and dp[j-1] for Characters</strong></span></a></h4>
-<pre><code class="hljs">Example: string1 = &quot;abcde&quot;, string2 = &quot;ace&quot;
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Example: string1 = &quot;abcde&quot;, string2 = &quot;ace&quot;
 
 When i=3, j=2 (processing prefixes &quot;abc&quot; and &quot;ac&quot;):
   - DP state represents: LCS(&quot;abc&quot;, &quot;ac&quot;)
@@ -3892,9 +3856,9 @@ Index Mapping:
   i=3: prefix length 3 (first 3 chars) → access string1[2]
   ...
   Therefore: when at dp[i][j], compare string1[i-1] with string2[j-1]
-</code></pre>
+</code></pre></div>
 <h4 id="the-three-way-transition-logic-using-lcs-as-example" tabindex="-1"><a class="header-anchor" href="#the-three-way-transition-logic-using-lcs-as-example"><span><strong>The Three-Way Transition Logic (Using LCS as Example)</strong></span></a></h4>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Pattern: Two cases only</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Pattern: Two cases only</span>
 <span class="hljs-keyword">if</span> (string1.charAt(i - <span class="hljs-number">1</span>) == string2.charAt(j - <span class="hljs-number">1</span>)) {
     <span class="hljs-comment">// CASE 1: Characters match → extend previous best result</span>
     <span class="hljs-comment">// The matching characters contribute +1 to the LCS length</span>
@@ -3908,7 +3872,7 @@ Index Mapping:
     dp[i][j] = Math.max(dp[i - <span class="hljs-number">1</span>][j],    <span class="hljs-comment">// Skip from string1</span>
                        dp[i][j - <span class="hljs-number">1</span>]);    <span class="hljs-comment">// Skip from string2</span>
 }
-</code></pre>
+</code></pre></div>
 <p><strong>Why This Works:</strong></p>
 <ul>
 <li><strong>Diagonal (dp[i-1][j-1])</strong>: When characters match, we’re “using” both characters to build our answer. We take the best result from the shorter prefixes and add 1.</li>
@@ -3916,7 +3880,7 @@ Index Mapping:
 <li><strong>Horizontal (dp[i][j-1])</strong>: Alternatively, skip from string2 and see if we can find a good LCS with string1.</li>
 </ul>
 <h4 id="complete-lcs-example-with-grid" tabindex="-1"><a class="header-anchor" href="#complete-lcs-example-with-grid"><span><strong>Complete LCS Example with Grid</strong></span></a></h4>
-<pre><code class="hljs">string1 = &quot;abcde&quot;
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">string1 = &quot;abcde&quot;
 string2 = &quot;ace&quot;
 
 DP Grid (showing values):
@@ -3937,9 +3901,9 @@ Key moments:
   - dp[2][1]: Compare 'b' with 'a' → no match → max(dp[1][1], dp[2][0]) = 1
   - dp[3][2]: Compare 'c' with 'c' → match! → dp[2][1] + 1 = 2
   - dp[5][3]: Compare 'e' with 'e' → match! → dp[4][2] + 1 = 3
-</code></pre>
+</code></pre></div>
 <h4 id="java-implementation-pattern" tabindex="-1"><a class="header-anchor" href="#java-implementation-pattern"><span><strong>Java Implementation Pattern</strong></span></a></h4>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">longestCommonSubsequence</span><span class="hljs-params">(String text1, String text2)</span> {
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">longestCommonSubsequence</span><span class="hljs-params">(String text1, String text2)</span> {
     <span class="hljs-type">int</span> <span class="hljs-variable">m</span> <span class="hljs-operator">=</span> text1.length();
     <span class="hljs-type">int</span> <span class="hljs-variable">n</span> <span class="hljs-operator">=</span> text2.length();
 
@@ -3966,7 +3930,7 @@ Key moments:
 
     <span class="hljs-keyword">return</span> dp[m][n];  <span class="hljs-comment">// Answer for full strings</span>
 }
-</code></pre>
+</code></pre></div>
 <h4 id="when-to-use-this-pattern-1" tabindex="-1"><a class="header-anchor" href="#when-to-use-this-pattern-1"><span><strong>When to Use This Pattern</strong> 📋</span></a></h4>
 <p>Use the <strong>1-indexed prefix-based 2D DP</strong> when:</p>
 <table>
@@ -4087,9 +4051,9 @@ Key moments:
 <li><code>dp[i][j]</code> = can <code>s1[0..i-1]</code> and <code>s2[0..j-1]</code> form <code>s3[0..i+j-1]</code>?</li>
 </ul>
 <p><strong>Key Formula</strong>:</p>
-<pre><code class="hljs">dp[i][j] = (dp[i-1][j] &amp;&amp; s1[i-1] == s3[i+j-1])   // take from s1
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">dp[i][j] = (dp[i-1][j] &amp;&amp; s1[i-1] == s3[i+j-1])   // take from s1
          || (dp[i][j-1] &amp;&amp; s2[j-1] == s3[i+j-1])   // take from s2
-</code></pre>
+</code></pre></div>
 <p><strong>Base Cases</strong>:</p>
 <ul>
 <li><code>dp[0][0] = true</code> (empty + empty = empty)</li>
@@ -4223,7 +4187,7 @@ Key moments:
 <h4 id="approach-1-greedy-min-max-balance-tracking-optimal" tabindex="-1"><a class="header-anchor" href="#approach-1-greedy-min-max-balance-tracking-optimal"><span><strong>Approach 1: Greedy (Min/Max Balance Tracking)</strong> ⚡ OPTIMAL</span></a></h4>
 <p><strong>Time</strong>: O(n) | <strong>Space</strong>: O(1)</p>
 <p><strong>Key Insight</strong>: Track the <strong>range</strong> of possible unmatched open parentheses at each position.</p>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">checkValidString</span><span class="hljs-params">(String s)</span> {
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">checkValidString</span><span class="hljs-params">(String s)</span> {
     <span class="hljs-type">int</span> <span class="hljs-variable">minParenCnt</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; <span class="hljs-comment">// minimum possible unmatched &#x27;(&#x27;</span>
     <span class="hljs-type">int</span> <span class="hljs-variable">maxParenCnt</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; <span class="hljs-comment">// maximum possible unmatched &#x27;(&#x27;</span>
 
@@ -4249,7 +4213,7 @@ Key moments:
     <span class="hljs-comment">// Valid if we can have 0 unmatched &#x27;(&#x27;</span>
     <span class="hljs-keyword">return</span> minParenCnt == <span class="hljs-number">0</span>;
 }
-</code></pre>
+</code></pre></div>
 <p><strong>Why this works</strong>:</p>
 <ul>
 <li><code>maxParenCnt &lt; 0</code> → impossible to balance (too many ‘)’)</li>
@@ -4263,7 +4227,7 @@ Key moments:
 <ul>
 <li><code>dp[i][j]</code>: Can we have exactly <code>j</code> unmatched ‘(’ after processing first <code>i</code> characters?</li>
 </ul>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">checkValidString</span><span class="hljs-params">(String s)</span> {
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">checkValidString</span><span class="hljs-params">(String s)</span> {
     <span class="hljs-type">int</span> <span class="hljs-variable">n</span> <span class="hljs-operator">=</span> s.length();
     <span class="hljs-type">boolean</span>[][] dp = <span class="hljs-keyword">new</span> <span class="hljs-title class_">boolean</span>[n + <span class="hljs-number">1</span>][n + <span class="hljs-number">1</span>];
     dp[<span class="hljs-number">0</span>][<span class="hljs-number">0</span>] = <span class="hljs-literal">true</span>; <span class="hljs-comment">// empty string, 0 open parens</span>
@@ -4290,7 +4254,7 @@ Key moments:
 
     <span class="hljs-keyword">return</span> dp[n][<span class="hljs-number">0</span>]; <span class="hljs-comment">// n chars processed, 0 open parens</span>
 }
-</code></pre>
+</code></pre></div>
 <p><strong>State Transitions</strong>:</p>
 <ul>
 <li><code>'('</code>: <code>dp[i][j] = dp[i-1][j-1]</code> (increase open count)</li>
@@ -4304,7 +4268,7 @@ Key moments:
 <ul>
 <li><code>dp[i][j]</code>: Is substring <code>s[i..j]</code> valid?</li>
 </ul>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">checkValidString</span><span class="hljs-params">(String s)</span> {
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">checkValidString</span><span class="hljs-params">(String s)</span> {
     <span class="hljs-type">int</span> <span class="hljs-variable">n</span> <span class="hljs-operator">=</span> s.length();
     <span class="hljs-keyword">if</span> (n == <span class="hljs-number">0</span>) <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
 
@@ -4342,7 +4306,7 @@ Key moments:
 
     <span class="hljs-keyword">return</span> dp[<span class="hljs-number">0</span>][n - <span class="hljs-number">1</span>];
 }
-</code></pre>
+</code></pre></div>
 <p><strong>Key Pattern</strong>: This is classic <strong>Interval DP</strong> similar to:</p>
 <ul>
 <li>LC 312 (Burst Balloons)</li>
@@ -4352,7 +4316,7 @@ Key moments:
 <hr>
 <h4 id="approach-4-top-down-dp-recursion-memoization" tabindex="-1"><a class="header-anchor" href="#approach-4-top-down-dp-recursion-memoization"><span><strong>Approach 4: Top-Down DP (Recursion + Memoization)</strong> 🔄</span></a></h4>
 <p><strong>Time</strong>: O(n²) | <strong>Space</strong>: O(n²) + recursion stack</p>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">checkValidString</span><span class="hljs-params">(String s)</span> {
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">checkValidString</span><span class="hljs-params">(String s)</span> {
     <span class="hljs-type">int</span> <span class="hljs-variable">n</span> <span class="hljs-operator">=</span> s.length();
     Boolean[][] memo = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Boolean</span>[n + <span class="hljs-number">1</span>][n + <span class="hljs-number">1</span>];
     <span class="hljs-keyword">return</span> dfs(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, s, memo);
@@ -4382,11 +4346,11 @@ Key moments:
     memo[i][open] = result;
     <span class="hljs-keyword">return</span> result;
 }
-</code></pre>
+</code></pre></div>
 <hr>
 <h4 id="approach-5-bottom-up-dp" tabindex="-1"><a class="header-anchor" href="#approach-5-bottom-up-dp"><span><strong>Approach 5: Bottom-Up DP</strong> 📈</span></a></h4>
 <p><strong>Time</strong>: O(n²) | <strong>Space</strong>: O(n²)</p>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">checkValidString</span><span class="hljs-params">(String s)</span> {
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">checkValidString</span><span class="hljs-params">(String s)</span> {
     <span class="hljs-type">int</span> <span class="hljs-variable">n</span> <span class="hljs-operator">=</span> s.length();
     <span class="hljs-type">boolean</span>[][] dp = <span class="hljs-keyword">new</span> <span class="hljs-title class_">boolean</span>[n + <span class="hljs-number">1</span>][n + <span class="hljs-number">1</span>];
     dp[n][<span class="hljs-number">0</span>] = <span class="hljs-literal">true</span>; <span class="hljs-comment">// base: end with 0 open parens</span>
@@ -4410,11 +4374,11 @@ Key moments:
     }
     <span class="hljs-keyword">return</span> dp[<span class="hljs-number">0</span>][<span class="hljs-number">0</span>];
 }
-</code></pre>
+</code></pre></div>
 <hr>
 <h4 id="approach-6-space-optimized-dp" tabindex="-1"><a class="header-anchor" href="#approach-6-space-optimized-dp"><span><strong>Approach 6: Space-Optimized DP</strong> ⚡</span></a></h4>
 <p><strong>Time</strong>: O(n²) | <strong>Space</strong>: O(n)</p>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">checkValidString</span><span class="hljs-params">(String s)</span> {
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">checkValidString</span><span class="hljs-params">(String s)</span> {
     <span class="hljs-type">int</span> <span class="hljs-variable">n</span> <span class="hljs-operator">=</span> s.length();
     <span class="hljs-type">boolean</span>[] dp = <span class="hljs-keyword">new</span> <span class="hljs-title class_">boolean</span>[n + <span class="hljs-number">1</span>];
     dp[<span class="hljs-number">0</span>] = <span class="hljs-literal">true</span>;
@@ -4436,12 +4400,12 @@ Key moments:
     }
     <span class="hljs-keyword">return</span> dp[<span class="hljs-number">0</span>];
 }
-</code></pre>
+</code></pre></div>
 <p><strong>Space Optimization Technique</strong>: Rolling array - only keep current and previous row.</p>
 <hr>
 <h4 id="approach-7-stack-based-two-stacks" tabindex="-1"><a class="header-anchor" href="#approach-7-stack-based-two-stacks"><span><strong>Approach 7: Stack-Based (Two Stacks)</strong> 📚</span></a></h4>
 <p><strong>Time</strong>: O(n) | <strong>Space</strong>: O(n)</p>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">checkValidString</span><span class="hljs-params">(String s)</span> {
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">checkValidString</span><span class="hljs-params">(String s)</span> {
     Stack&lt;Integer&gt; leftStack = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Stack</span>&lt;&gt;();  <span class="hljs-comment">// indices of &#x27;(&#x27;</span>
     Stack&lt;Integer&gt; starStack = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Stack</span>&lt;&gt;();  <span class="hljs-comment">// indices of &#x27;*&#x27;</span>
 
@@ -4473,7 +4437,7 @@ Key moments:
 
     <span class="hljs-keyword">return</span> leftStack.isEmpty();
 }
-</code></pre>
+</code></pre></div>
 <p><strong>Key Insight</strong>: Store <strong>indices</strong> to ensure ‘*’ comes after ‘(’ when used as ‘)’.</p>
 <hr>
 <h4 id="pattern-comparison-summary" tabindex="-1"><a class="header-anchor" href="#pattern-comparison-summary"><span><strong>Pattern Comparison Summary</strong></span></a></h4>
@@ -4565,7 +4529,7 @@ Key moments:
 <li>Traveling salesman variants</li>
 </ul>
 <p><strong>Common Bitmask Operations</strong>:</p>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Check if i-th bit is set</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Check if i-th bit is set</span>
 <span class="hljs-keyword">if</span> mask &amp; (<span class="hljs-number">1</span> &lt;&lt; i):
     <span class="hljs-keyword">pass</span>
 
@@ -4580,9 +4544,9 @@ submask = mask
 <span class="hljs-keyword">while</span> submask:
     <span class="hljs-comment"># Process submask</span>
     submask = (submask - <span class="hljs-number">1</span>) &amp; mask
-</code></pre>
+</code></pre></div>
 <p><strong>Java Bitmask Operations</strong>:</p>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Check if i-th bit is set</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Check if i-th bit is set</span>
 <span class="hljs-keyword">if</span> ((mask &amp; (<span class="hljs-number">1</span> &lt;&lt; i)) != <span class="hljs-number">0</span>) {
     <span class="hljs-comment">// i-th item is included</span>
 }
@@ -4611,7 +4575,7 @@ submask = mask
 <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">submask</span> <span class="hljs-operator">=</span> mask; submask &gt; <span class="hljs-number">0</span>; submask = (submask - <span class="hljs-number">1</span>) &amp; mask) {
     <span class="hljs-comment">// Process submask</span>
 }
-</code></pre>
+</code></pre></div>
 <hr>
 <h4 id="pattern-1-visit-all-nodes-tsp-variant" tabindex="-1"><a class="header-anchor" href="#pattern-1-visit-all-nodes-tsp-variant"><span><strong>Pattern 1: Visit All Nodes (TSP Variant)</strong></span></a></h4>
 <p><strong>Problem Type</strong>: Find shortest path visiting all nodes exactly once</p>
@@ -4620,7 +4584,7 @@ submask = mask
 <p><strong>Time Complexity</strong>: O(2^n × n²)
 <strong>Space Complexity</strong>: O(2^n × n)</p>
 <p><strong>Example</strong>: LC 847 - Shortest Path Visiting All Nodes</p>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java Implementation</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java Implementation</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">shortestPathLength</span><span class="hljs-params">(<span class="hljs-type">int</span>[][] graph)</span> {
     <span class="hljs-type">int</span> <span class="hljs-variable">n</span> <span class="hljs-operator">=</span> graph.length;
     <span class="hljs-type">int</span>[][] dp = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[<span class="hljs-number">1</span> &lt;&lt; n][n];
@@ -4655,7 +4619,7 @@ submask = mask
 
     <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>;
 }
-</code></pre>
+</code></pre></div>
 <hr>
 <h4 id="pattern-2-assignment-problems" tabindex="-1"><a class="header-anchor" href="#pattern-2-assignment-problems"><span><strong>Pattern 2: Assignment Problems</strong></span></a></h4>
 <p><strong>Problem Type</strong>: Assign n tasks to n workers, minimize/maximize total cost</p>
@@ -4664,7 +4628,7 @@ submask = mask
 <p><strong>Time Complexity</strong>: O(2^n × n)
 <strong>Space Complexity</strong>: O(2^n)</p>
 <p><strong>Example</strong>: LC 1723 - Find Minimum Time to Finish All Jobs</p>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java Implementation</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java Implementation</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">minimumTimeRequired</span><span class="hljs-params">(<span class="hljs-type">int</span>[] jobs, <span class="hljs-type">int</span> k)</span> {
     <span class="hljs-type">int</span> <span class="hljs-variable">n</span> <span class="hljs-operator">=</span> jobs.length;
     <span class="hljs-type">int</span>[] dp = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[<span class="hljs-number">1</span> &lt;&lt; n];
@@ -4693,7 +4657,7 @@ submask = mask
 
     <span class="hljs-keyword">return</span> dp[(<span class="hljs-number">1</span> &lt;&lt; n) - <span class="hljs-number">1</span>];
 }
-</code></pre>
+</code></pre></div>
 <hr>
 <h4 id="pattern-3-subset-selection-with-constraints" tabindex="-1"><a class="header-anchor" href="#pattern-3-subset-selection-with-constraints"><span><strong>Pattern 3: Subset Selection with Constraints</strong></span></a></h4>
 <p><strong>Problem Type</strong>: Select subsets satisfying specific constraints</p>
@@ -4702,7 +4666,7 @@ submask = mask
 <p><strong>Time Complexity</strong>: O(2^n × n) or O(3^n) for submask iteration
 <strong>Space Complexity</strong>: O(2^n)</p>
 <p><strong>Example</strong>: LC 691 - Stickers to Spell Word</p>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java Implementation - Subset DP</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java Implementation - Subset DP</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">minStickers</span><span class="hljs-params">(String[] stickers, String target)</span> {
     <span class="hljs-type">int</span> <span class="hljs-variable">n</span> <span class="hljs-operator">=</span> target.length();
     <span class="hljs-type">int</span>[] dp = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[<span class="hljs-number">1</span> &lt;&lt; n];
@@ -4738,7 +4702,7 @@ submask = mask
 
     <span class="hljs-keyword">return</span> dp[(<span class="hljs-number">1</span> &lt;&lt; n) - <span class="hljs-number">1</span>];
 }
-</code></pre>
+</code></pre></div>
 <hr>
 <h4 id="pattern-4-partition-into-k-subsets" tabindex="-1"><a class="header-anchor" href="#pattern-4-partition-into-k-subsets"><span><strong>Pattern 4: Partition into K Subsets</strong></span></a></h4>
 <p><strong>Problem Type</strong>: Partition n items into k groups with constraints</p>
@@ -4747,7 +4711,7 @@ submask = mask
 <p><strong>Time Complexity</strong>: O(2^n × n)
 <strong>Space Complexity</strong>: O(2^n)</p>
 <p><strong>Example</strong>: LC 698 - Partition to K Equal Sum Subsets</p>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java Implementation</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java Implementation</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">canPartitionKSubsets</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums, <span class="hljs-type">int</span> k)</span> {
     <span class="hljs-type">int</span> <span class="hljs-variable">sum</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
     <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> num : nums) sum += num;
@@ -4777,7 +4741,7 @@ submask = mask
 
     <span class="hljs-keyword">return</span> dp[(<span class="hljs-number">1</span> &lt;&lt; n) - <span class="hljs-number">1</span>];
 }
-</code></pre>
+</code></pre></div>
 <hr>
 <h4 id="bitmask-dp-common-patterns-summary" tabindex="-1"><a class="header-anchor" href="#bitmask-dp-common-patterns-summary"><span><strong>Bitmask DP Common Patterns Summary</strong></span></a></h4>
 <table>
@@ -4825,7 +4789,7 @@ submask = mask
 <hr>
 <h4 id="advanced-techniques" tabindex="-1"><a class="header-anchor" href="#advanced-techniques"><span><strong>Advanced Techniques</strong></span></a></h4>
 <p><strong>1. Precomputing Subset Properties</strong>:</p>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Precompute sum for all subsets - O(2^n × n)</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Precompute sum for all subsets - O(2^n × n)</span>
 <span class="hljs-type">int</span>[] subsetSum = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[<span class="hljs-number">1</span> &lt;&lt; n];
 <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">mask</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; mask &lt; (<span class="hljs-number">1</span> &lt;&lt; n); mask++) {
     <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; n; i++) {
@@ -4834,18 +4798,18 @@ submask = mask
         }
     }
 }
-</code></pre>
+</code></pre></div>
 <p><strong>2. Submask Enumeration - O(3^n)</strong>:</p>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// For each mask, iterate through all its submasks</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// For each mask, iterate through all its submasks</span>
 <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">mask</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; mask &lt; (<span class="hljs-number">1</span> &lt;&lt; n); mask++) {
     <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">submask</span> <span class="hljs-operator">=</span> mask; submask &gt; <span class="hljs-number">0</span>; submask = (submask - <span class="hljs-number">1</span>) &amp; mask) {
         <span class="hljs-comment">// dp[mask] can be computed from dp[submask] and dp[mask ^ submask]</span>
         dp[mask] = Math.min(dp[mask], dp[submask] + dp[mask ^ submask]);
     }
 }
-</code></pre>
+</code></pre></div>
 <p><strong>3. SOS (Sum Over Subsets) DP - O(2^n × n)</strong>:</p>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// For each mask, sum values of all its submasks</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// For each mask, sum values of all its submasks</span>
 <span class="hljs-type">int</span>[] dp = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[<span class="hljs-number">1</span> &lt;&lt; n];
 <span class="hljs-comment">// ... initialize dp ...</span>
 
@@ -4856,7 +4820,7 @@ submask = mask
         }
     }
 }
-</code></pre>
+</code></pre></div>
 <hr>
 <h4 id="complexity-analysis-1" tabindex="-1"><a class="header-anchor" href="#complexity-analysis-1"><span><strong>Complexity Analysis</strong></span></a></h4>
 <table>
@@ -4941,7 +4905,7 @@ submask = mask
 </ol>
 <h3 id="advanced-dp-patterns" tabindex="-1"><a class="header-anchor" href="#advanced-dp-patterns"><span><strong>Advanced DP Patterns</strong></span></a></h3>
 <h4 id="interval-dp-template" tabindex="-1"><a class="header-anchor" href="#interval-dp-template"><span><strong>Interval DP Template</strong>:</span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">interval_dp</span>(<span class="hljs-params">arr</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">interval_dp</span>(<span class="hljs-params">arr</span>):
     <span class="hljs-string">&quot;&quot;&quot;Matrix chain multiplication style&quot;&quot;&quot;</span>
     n = <span class="hljs-built_in">len</span>(arr)
     dp = [[<span class="hljs-number">0</span>] * n <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n)]
@@ -4958,13 +4922,13 @@ submask = mask
                 dp[i][j] = <span class="hljs-built_in">min</span>(dp[i][j], cost)
 
     <span class="hljs-keyword">return</span> dp[<span class="hljs-number">0</span>][n-<span class="hljs-number">2</span>] <span class="hljs-keyword">if</span> n &gt; <span class="hljs-number">1</span> <span class="hljs-keyword">else</span> <span class="hljs-number">0</span>
-</code></pre>
+</code></pre></div>
 <hr>
 <h3 id="template-12-0-game-theory-minimax-dp-lc-486-predict-the-winner-style" tabindex="-1"><a class="header-anchor" href="#template-12-0-game-theory-minimax-dp-lc-486-predict-the-winner-style"><span>Template 12-0: Game Theory / Minimax DP (LC 486 Predict the Winner Style)</span></a></h3>
 <p><strong>Pattern</strong>: Two players take turns picking from either end of an array, both play optimally. Determine if player 1 can win.</p>
 <p><strong>Core Idea</strong>: Define <code>dp[i][j]</code> as the <strong>max score difference</strong> (current player − opponent) on subarray <code>nums[i..j]</code>. When you pick <code>nums[i]</code>, the opponent then faces <code>dp[i+1][j]</code> — which is <em>their</em> best relative score. Subtracting it gives your net advantage.</p>
 <p><strong>Why subtract?</strong> After you pick, it’s the opponent’s turn. <code>dp[i+1][j]</code> is the opponent’s max advantage on the remaining subarray. From your perspective, that advantage works against you, so you subtract it.</p>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 486. Predict the Winner — 2D DP</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 486. Predict the Winner — 2D DP</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">predictTheWinner</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums)</span> {
     <span class="hljs-type">int</span> <span class="hljs-variable">n</span> <span class="hljs-operator">=</span> nums.length;
     <span class="hljs-type">int</span>[][] dp = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[n][n];
@@ -4987,7 +4951,7 @@ submask = mask
 
     <span class="hljs-keyword">return</span> dp[<span class="hljs-number">0</span>][n - <span class="hljs-number">1</span>] &gt;= <span class="hljs-number">0</span>;  <span class="hljs-comment">// player 1 wins or ties</span>
 }
-</code></pre>
+</code></pre></div>
 <p><strong>Similar LeetCode Problems:</strong></p>
 <table>
 <thead>
@@ -5040,12 +5004,12 @@ Digit DP is a technique for counting numbers in range [L, R] that satisfy certai
 <li>Problem-specific state (sum of digits, previous digit, etc.)</li>
 </ul>
 <p><strong>Key Insight:</strong></p>
-<pre><code class="hljs">Count(L, R) = Count(0, R) - Count(0, L-1)
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Count(L, R) = Count(0, R) - Count(0, L-1)
 
 Build numbers digit-by-digit left to right:
 For each position, try all valid digits (0-9 or constrained by upper bound)
 Use memoization to avoid recalculating same states
-</code></pre>
+</code></pre></div>
 <p><strong>Common Use Cases:</strong></p>
 <ul>
 <li>Count numbers with digit sum = K</li>
@@ -5064,7 +5028,7 @@ Use memoization to avoid recalculating same states
 <li><code>started</code>: Whether non-zero digits have appeared (for handling leading zeros)</li>
 <li><strong>Problem-specific state</strong>: Sum, count, previous digit, etc.</li>
 </ol>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Universal Digit DP Template</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Universal Digit DP Template</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">count_numbers</span>(<span class="hljs-params">n</span>):
     <span class="hljs-string">&quot;&quot;&quot;
     Count numbers from 0 to n satisfying certain constraints.
@@ -5117,11 +5081,11 @@ Use memoization to avoid recalculating same states
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">count_range</span>(<span class="hljs-params">L, R</span>):
     <span class="hljs-string">&quot;&quot;&quot;Count numbers in range [L, R].&quot;&quot;&quot;</span>
     <span class="hljs-keyword">return</span> count_numbers(R) - count_numbers(L - <span class="hljs-number">1</span>)
-</code></pre>
+</code></pre></div>
 <hr>
 <h4 id="example-1-lc-902-numbers-at-most-n-given-digit-set" tabindex="-1"><a class="header-anchor" href="#example-1-lc-902-numbers-at-most-n-given-digit-set"><span>Example 1: LC 902 - Numbers At Most N Given Digit Set</span></a></h4>
 <p><strong>Problem:</strong> Given digit set D, count numbers ≤ N using only digits from D.</p>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 902 - Numbers At Most N Given Digit Set</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 902 - Numbers At Most N Given Digit Set</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">atMostNGivenDigitSet</span>(<span class="hljs-params">digits, n</span>):
     <span class="hljs-string">&quot;&quot;&quot;
     Count numbers using only digits from set, at most n.
@@ -5158,8 +5122,8 @@ Use memoization to avoid recalculating same states
         <span class="hljs-keyword">return</span> result
 
     <span class="hljs-keyword">return</span> count + dp(<span class="hljs-number">0</span>, <span class="hljs-literal">True</span>)
-</code></pre>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java - LC 902</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java - LC 902</span>
 <span class="hljs-comment">/**
  * time = O(log N × |D|)
  * space = O(log N)
@@ -5213,11 +5177,11 @@ Use memoization to avoid recalculating same states
         <span class="hljs-keyword">return</span> result;
     }
 }
-</code></pre>
+</code></pre></div>
 <hr>
 <h4 id="example-2-count-numbers-with-digit-sum-k" tabindex="-1"><a class="header-anchor" href="#example-2-count-numbers-with-digit-sum-k"><span>Example 2: Count Numbers with Digit Sum = K</span></a></h4>
 <p><strong>Problem:</strong> Count numbers in [1, N] where sum of digits equals K.</p>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Count numbers with digit sum = K</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Count numbers with digit sum = K</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">count_digit_sum_k</span>(<span class="hljs-params">n, k</span>):
     <span class="hljs-string">&quot;&quot;&quot;
     Count numbers from 1 to n where digit sum = k.
@@ -5259,11 +5223,11 @@ Use memoization to avoid recalculating same states
 
 <span class="hljs-comment"># Example: count_digit_sum_k(100, 5)</span>
 <span class="hljs-comment"># Numbers: 5, 14, 23, 32, 41, 50 → 6 numbers</span>
-</code></pre>
+</code></pre></div>
 <hr>
 <h4 id="example-3-lc-233-number-of-digit-one" tabindex="-1"><a class="header-anchor" href="#example-3-lc-233-number-of-digit-one"><span>Example 3: LC 233 - Number of Digit One</span></a></h4>
 <p><strong>Problem:</strong> Count total number of digit ‘1’ appearing in all integers from 1 to n.</p>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 233 - Number of Digit One</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 233 - Number of Digit One</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">countDigitOne</span>(<span class="hljs-params">n</span>):
     <span class="hljs-string">&quot;&quot;&quot;
     Count occurrences of digit 1 in range [1, n].
@@ -5300,8 +5264,8 @@ Use memoization to avoid recalculating same states
         <span class="hljs-keyword">return</span> result
 
     <span class="hljs-keyword">return</span> dp(<span class="hljs-number">0</span>, <span class="hljs-literal">True</span>, <span class="hljs-literal">False</span>, <span class="hljs-number">0</span>)
-</code></pre>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java - LC 233</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java - LC 233</span>
 <span class="hljs-comment">/**
  * time = O(log N × log N)
  * space = O(log N × log N)
@@ -5350,10 +5314,10 @@ Use memoization to avoid recalculating same states
         <span class="hljs-keyword">return</span> result;
     }
 }
-</code></pre>
+</code></pre></div>
 <hr>
 <h4 id="example-4-count-numbers-with-no-consecutive-same-digits" tabindex="-1"><a class="header-anchor" href="#example-4-count-numbers-with-no-consecutive-same-digits"><span>Example 4: Count Numbers with No Consecutive Same Digits</span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Count numbers without consecutive same digits</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Count numbers without consecutive same digits</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">count_no_consecutive</span>(<span class="hljs-params">n</span>):
     <span class="hljs-string">&quot;&quot;&quot;
     Count numbers from 1 to n with no two adjacent identical digits.
@@ -5391,7 +5355,7 @@ Use memoization to avoid recalculating same states
 
 <span class="hljs-comment"># Example: count_no_consecutive(100)</span>
 <span class="hljs-comment"># Valid: 10, 12, 13, 14, ..., 21, 23, 24, ... (exclude 11, 22, ...)</span>
-</code></pre>
+</code></pre></div>
 <hr>
 <h4 id="classic-leetcode-problems" tabindex="-1"><a class="header-anchor" href="#classic-leetcode-problems"><span>Classic LeetCode Problems</span></a></h4>
 <table>
@@ -5451,7 +5415,7 @@ Use memoization to avoid recalculating same states
 </table>
 <hr>
 <h4 id="visual-example-building-numbers-digit-by-digit" tabindex="-1"><a class="header-anchor" href="#visual-example-building-numbers-digit-by-digit"><span>Visual Example: Building Numbers Digit-by-Digit</span></a></h4>
-<pre><code class="hljs">Problem: Count numbers ≤ 523 with digit sum = 10
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Problem: Count numbers ≤ 523 with digit sum = 10
 
 Digits of 523: [5, 2, 3]
 
@@ -5484,20 +5448,20 @@ Position 0: Can use 0-5
    │        └─ ...
 
 Valid numbers: 109, 118, 127, ..., 505, 514, 523
-</code></pre>
+</code></pre></div>
 <hr>
 <h4 id="interview-tips-1" tabindex="-1"><a class="header-anchor" href="#interview-tips-1"><span>Interview Tips</span></a></h4>
 <p><strong>1. Recognition Patterns:</strong></p>
-<pre><code class="hljs">&quot;Count numbers in range with...&quot;
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">&quot;Count numbers in range with...&quot;
 &quot;How many numbers from L to R satisfy...&quot;
 &quot;Numbers where digits...&quot;
 → Think Digit DP
 
 Keywords: &quot;digit sum&quot;, &quot;consecutive digits&quot;, &quot;distinct digits&quot;,
          &quot;digit constraints&quot;, &quot;count numbers&quot;
-</code></pre>
+</code></pre></div>
 <p><strong>2. Common State Variables:</strong></p>
-<pre><code class="hljs">Always needed:
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Always needed:
 - pos: current digit position
 - tight: bounded by upper limit
 
@@ -5506,9 +5470,9 @@ Often needed:
 - prev_digit: for consecutive/adjacent constraints
 - sum: for digit sum problems
 - mask: for tracking which digits used (bitmask)
-</code></pre>
+</code></pre></div>
 <p><strong>3. Template Checklist:</strong></p>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">digit_dp</span>(<span class="hljs-params">n</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">digit_dp</span>(<span class="hljs-params">n</span>):
     digits = [<span class="hljs-built_in">int</span>(d) <span class="hljs-keyword">for</span> d <span class="hljs-keyword">in</span> <span class="hljs-built_in">str</span>(n)]
     memo = {}
 
@@ -5542,7 +5506,7 @@ Often needed:
         <span class="hljs-keyword">return</span> result
 
     <span class="hljs-keyword">return</span> dp(<span class="hljs-number">0</span>, <span class="hljs-literal">True</span>, <span class="hljs-literal">False</span>, initial_state)
-</code></pre>
+</code></pre></div>
 <p><strong>4. Common Mistakes:</strong></p>
 <ul>
 <li>Forgetting to handle leading zeros (use <code>started</code> flag)</li>
@@ -5551,7 +5515,7 @@ Often needed:
 <li>Off-by-one in range queries: <code>count(R) - count(L-1)</code></li>
 </ul>
 <p><strong>5. Optimization Tips:</strong></p>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Pruning: Skip impossible states</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Pruning: Skip impossible states</span>
 <span class="hljs-keyword">for</span> digit <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">0</span>, limit + <span class="hljs-number">1</span>):
     <span class="hljs-keyword">if</span> current_sum + digit &gt; target:
         <span class="hljs-keyword">break</span>  <span class="hljs-comment"># Remaining digits can&#x27;t help</span>
@@ -5562,7 +5526,7 @@ Often needed:
 <span class="hljs-meta">@lru_cache(<span class="hljs-params"><span class="hljs-literal">None</span></span>)</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">dp</span>(<span class="hljs-params">pos, tight, state</span>):
     <span class="hljs-comment"># ...</span>
-</code></pre>
+</code></pre></div>
 <p><strong>6. Talking Points:</strong></p>
 <ul>
 <li>“Digit DP builds numbers digit-by-digit with memoization”</li>
@@ -5572,7 +5536,7 @@ Often needed:
 </ul>
 <hr>
 <h4 id="advanced-range-query-optimization" tabindex="-1"><a class="header-anchor" href="#advanced-range-query-optimization"><span>Advanced: Range Query Optimization</span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Optimized range query</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Optimized range query</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">count_range_optimized</span>(<span class="hljs-params">L, R</span>):
     <span class="hljs-string">&quot;&quot;&quot;
     Handle range queries efficiently.
@@ -5597,7 +5561,7 @@ Often needed:
 
     <span class="hljs-comment"># Single call handles both L and R</span>
     <span class="hljs-keyword">return</span> count(R, L)
-</code></pre>
+</code></pre></div>
 <hr>
 <h2 id="problems-by-pattern" tabindex="-1"><a class="header-anchor" href="#problems-by-pattern"><span>Problems by Pattern</span></a></h2>
 <h3 id="linear-dp-problems" tabindex="-1"><a class="header-anchor" href="#linear-dp-problems"><span><strong>Linear DP Problems</strong></span></a></h3>
@@ -5950,19 +5914,19 @@ Often needed:
 </tbody>
 </table>
 <p><strong>State Machine Pattern Recognition:</strong></p>
-<pre><code class="hljs">Question asks...                          → Use this pattern
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Question asks...                          → Use this pattern
 ─────────────────────────────────────────────────────────────
 &quot;Cooldown after action&quot;                   → 3+ states (LC 309)
 &quot;Transaction fee/cost&quot;                    → 2 states with cost
 &quot;Limited transactions (k times)&quot;          → 2k states
 &quot;Unlimited transactions&quot;                  → 2 states (hold/cash)
-</code></pre>
+</code></pre></div>
 <h2 id="lc-examples" tabindex="-1"><a class="header-anchor" href="#lc-examples"><span>LC Examples</span></a></h2>
 <h3 id="2-1-unique-paths-lc-62-grid-dp-count-paths" tabindex="-1"><a class="header-anchor" href="#2-1-unique-paths-lc-62-grid-dp-count-paths"><span>2-1) Unique Paths (LC 62) — Grid DP Count Paths</span></a></h3>
 <blockquote>
 <p>dp[i][j] = dp[i-1][j] + dp[i][j-1]; paths from top-left to bottom-right on m×n grid.</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 
 <span class="hljs-comment">// LC 62</span>
 <span class="hljs-comment">// V0</span>
@@ -6000,8 +5964,8 @@ Often needed:
 
     <span class="hljs-keyword">return</span> dp[m - <span class="hljs-number">1</span>][n - <span class="hljs-number">1</span>];
 }
-</code></pre>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># 62. Unique Paths</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># 62. Unique Paths</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># IDEA : BFS + dp (memory)</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
@@ -6038,12 +6002,12 @@ Often needed:
                 d[col][row] = d[col - <span class="hljs-number">1</span>][row] + d[col][row - <span class="hljs-number">1</span>]
 
         <span class="hljs-keyword">return</span> d[m - <span class="hljs-number">1</span>][n - <span class="hljs-number">1</span>]
-</code></pre>
+</code></pre></div>
 <h3 id="2-2-maximum-product-subarray-lc-152-track-min-max-product" tabindex="-1"><a class="header-anchor" href="#2-2-maximum-product-subarray-lc-152-track-min-max-product"><span>2-2) Maximum Product Subarray (LC 152) — Track Min/Max Product</span></a></h3>
 <blockquote>
 <p>Track both max and min at each step (min can become max when multiplied by negative).</p>
 </blockquote>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># NOTE : there is also brute force approach</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># NOTE : there is also brute force approach</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># IDEA : brute force + product</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
@@ -6099,8 +6063,8 @@ Often needed:
             result = <span class="hljs-built_in">max</span>(max_so_far, result)
 
         <span class="hljs-keyword">return</span> result
-</code></pre>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 152</span>
 
 <span class="hljs-comment">// V0</span>
@@ -6162,12 +6126,12 @@ Often needed:
         <span class="hljs-keyword">return</span> c;
     }
 }
-</code></pre>
+</code></pre></div>
 <h3 id="2-3-best-time-to-buy-and-sell-stock-with-transaction-fee-lc-714-two-state-dp" tabindex="-1"><a class="header-anchor" href="#2-3-best-time-to-buy-and-sell-stock-with-transaction-fee-lc-714-two-state-dp"><span>2-3) Best Time to Buy and Sell Stock with Transaction Fee (LC 714) — Two-State DP</span></a></h3>
 <blockquote>
 <p>hold/free states; transition: hold = max(hold, free-price), free = max(free, hold+price-fee).</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 714</span>
 
   <span class="hljs-comment">// V0-1</span>
@@ -6256,12 +6220,12 @@ Often needed:
         <span class="hljs-comment">// The maximum profit at the end is when not holding any stock</span>
         <span class="hljs-keyword">return</span> cash;
     }
-</code></pre>
+</code></pre></div>
 <h3 id="2-4-best-time-to-buy-and-sell-stock-with-cooldown-lc-309-three-state-dp" tabindex="-1"><a class="header-anchor" href="#2-4-best-time-to-buy-and-sell-stock-with-cooldown-lc-309-three-state-dp"><span>2-4) Best Time to Buy and Sell Stock with Cooldown (LC 309) — Three-State DP</span></a></h3>
 <blockquote>
 <p>States: held/sold/rest; sold → rest → held cycle enforces one-day cooldown.</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 309. Best Time to Buy and Sell Stock with Cooldown</span>
 
 <span class="hljs-comment">/**
@@ -6349,9 +6313,9 @@ Often needed:
     <span class="hljs-comment">// Max profit when not holding stock</span>
     <span class="hljs-keyword">return</span> Math.max(sold, rest);
 }
-</code></pre>
+</code></pre></div>
 <p><strong>Example Walkthrough: prices = [1,2,3,0,2]</strong></p>
-<pre><code class="hljs">Day | Price | HOLD  | SOLD | REST | Action Taken
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Day | Price | HOLD  | SOLD | REST | Action Taken
 ----|-------|-------|------|------|-------------
  0  |   1   |  -1   |  0   |  0   | Buy at 1
  1  |   2   |  -1   |  1   |  0   | Sell at 2 (profit = 1)
@@ -6361,9 +6325,9 @@ Often needed:
 
 Optimal path: Buy@1 → Sell@2 → Cooldown → Buy@0 → Sell@2
 Max Profit: 3
-</code></pre>
+</code></pre></div>
 <p><strong>State Transition Trace (Day 4):</strong></p>
-<pre><code class="hljs">Previous State (Day 3):
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Previous State (Day 3):
   hold = 1, sold = 2, rest = 2
 
 Current Price: prices[4] = 2
@@ -6379,7 +6343,7 @@ Calculate New States:
        = max(2, 2) = 2  (stay in rest)
 
 Final Answer: max(sold, rest) = max(3, 2) = 3
-</code></pre>
+</code></pre></div>
 <p><strong>Key Differences from Regular Stock Problems:</strong></p>
 <table>
 <thead>
@@ -6447,7 +6411,7 @@ Final Answer: max(sold, rest) = max(3, 2) = 3
 <blockquote>
 <p>T(n) = T(n-1) + T(n-2) + T(n-3); maintain three rolling variables, no array needed.</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 1137. N-th Tribonacci Number</span>
 
 <span class="hljs-comment">// V0</span>
@@ -6471,12 +6435,12 @@ Final Answer: max(sold, rest) = max(3, 2) = 3
 
     <span class="hljs-keyword">return</span> dp[n];
 }
-</code></pre>
+</code></pre></div>
 <h3 id="2-6-decode-ways-lc-91-linear-dp-with-one-two-digit-check" tabindex="-1"><a class="header-anchor" href="#2-6-decode-ways-lc-91-linear-dp-with-one-two-digit-check"><span>2-6) Decode Ways (LC 91) — Linear DP with One/Two Digit Check</span></a></h3>
 <blockquote>
 <p>dp[i] = ways to decode s[0…i]; add dp[i-1] if single digit valid, dp[i-2] if two digits valid.</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 91. Decode Ways</span>
 
 <span class="hljs-comment">/**
@@ -6536,7 +6500,7 @@ Final Answer: max(sold, rest) = max(3, 2) = 3
 
     <span class="hljs-keyword">return</span> dp[n];
 }
-</code></pre>
+</code></pre></div>
 <p><strong>Similar LCs:</strong></p>
 <ul>
 <li>LC 91 Decode Ways</li>
@@ -6549,7 +6513,7 @@ Final Answer: max(sold, rest) = max(3, 2) = 3
 <blockquote>
 <p>O(n log n): maintain tails array with binary search; tails[i] = smallest tail of LIS of length i+1.</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 300. Longest Increasing Subsequence</span>
 
 <span class="hljs-comment">/**  NOTE !!!
@@ -6608,7 +6572,7 @@ Final Answer: max(sold, rest) = max(3, 2) = 3
 
     <span class="hljs-keyword">return</span> res;
 }
-</code></pre>
+</code></pre></div>
 <p><strong>LIS Pattern Explanation:</strong></p>
 <table>
 <thead>
@@ -6656,7 +6620,7 @@ Final Answer: max(sold, rest) = max(3, 2) = 3
 <li><code>dp[j] + 1</code> represents extending the LIS ending at <code>j</code> by adding <code>nums[i]</code></li>
 </ul>
 <p><strong>Example Walkthrough:</strong></p>
-<pre><code class="hljs">Input: nums = [10, 9, 2, 5, 3, 7, 101, 18]
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Input: nums = [10, 9, 2, 5, 3, 7, 101, 18]
 
 Initial: dp = [1, 1, 1, 1, 1, 1, 1, 1]
 
@@ -6671,12 +6635,12 @@ i=7, nums[7]=18: Can extend from multiple, dp[7] = 4
 
 Result: max(dp) = 4
 LIS: [2, 3, 7, 101] or [2, 5, 7, 101] or others
-</code></pre>
+</code></pre></div>
 <h3 id="2-8-sum-of-distances-in-tree-lc-834-re-rooting-dp" tabindex="-1"><a class="header-anchor" href="#2-8-sum-of-distances-in-tree-lc-834-re-rooting-dp"><span>2-8) Sum of Distances in Tree (LC 834) — Re-rooting DP</span></a></h3>
 <blockquote>
 <p>Two-pass DFS: compute root distances, then re-root by adjusting parent answer by ±subtree size.</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 834</span>
 <span class="hljs-comment">// Reference: leetcode_java/src/main/java/LeetCodeJava/Tree/SumOfDistancesInTree.java</span>
 
@@ -6799,8 +6763,8 @@ List&lt;Set&lt;Integer&gt;&gt; adj;
  *
  * Final: [8, 12, 6, 10, 10, 10] ✓
  */</span>
-</code></pre>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
 <span class="hljs-comment"># LC 834 Sum of Distances in Tree</span>
 <span class="hljs-comment"># Re-rooting DP template</span>
 
@@ -6848,9 +6812,9 @@ List&lt;Set&lt;Integer&gt;&gt; adj;
                 ans[v] = ans[u] - count[v] + (n - count[v])
 
         <span class="hljs-keyword">return</span> ans
-</code></pre>
+</code></pre></div>
 <h4 id="re-rooting-dp-template-general" tabindex="-1"><a class="header-anchor" href="#re-rooting-dp-template-general"><span>Re-rooting DP Template (General)</span></a></h4>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">/**
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">/**
  * RE-ROOTING DP TEMPLATE
  *
  * Use when: &quot;compute some aggregate for EVERY node as root&quot; on a tree
@@ -6879,13 +6843,13 @@ List&lt;Set&lt;Integer&gt;&gt; adj;
  * - Naive per-node DFS/BFS gives O(N²) → need O(N)
  * - Answer for child can be derived from parent&#x27;s answer
  */</span>
-</code></pre>
+</code></pre></div>
 <h3 id="2-6-perfect-squares-lc-279-unbounded-knapsack-min-count" tabindex="-1"><a class="header-anchor" href="#2-6-perfect-squares-lc-279-unbounded-knapsack-min-count"><span>2-6) Perfect Squares (LC 279) — Unbounded Knapsack (Min Count)</span></a></h3>
 <blockquote>
 <p><strong>Core Idea</strong>: Treat each perfect square (1, 4, 9, 16, …) as a “coin denomination.” Find the minimum number of coins to make amount <code>n</code>. This is exactly the <strong>Coin Change</strong> pattern (LC 322).</p>
 </blockquote>
 <p><strong>Pattern</strong>: Unbounded Knapsack — each square can be used unlimited times, minimize count.</p>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 279 - Perfect Squares (DP approach)</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 279 - Perfect Squares (DP approach)</span>
 <span class="hljs-comment">// IDEA: same as Coin Change — squares are coins, n is the target amount</span>
 <span class="hljs-comment">// time = O(N * sqrt(N)), space = O(N)</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">numSquares</span><span class="hljs-params">(<span class="hljs-type">int</span> n)</span> {
@@ -6902,7 +6866,7 @@ List&lt;Set&lt;Integer&gt;&gt; adj;
 
     <span class="hljs-keyword">return</span> dp[n];
 }
-</code></pre>
+</code></pre></div>
 <p><strong>Why this works like Coin Change</strong>:</p>
 <table>
 <thead>
@@ -6976,16 +6940,16 @@ List&lt;Set&lt;Integer&gt;&gt; adj;
 <h3 id="2-7-integer-break-lc-343-linear-dp-break-vs-no-break" tabindex="-1"><a class="header-anchor" href="#2-7-integer-break-lc-343-linear-dp-break-vs-no-break"><span>2-7) Integer Break (LC 343) — Linear DP (Break vs No-Break)</span></a></h3>
 <p><strong>Pattern</strong>: Linear DP — for each integer <code>i</code>, try all split points <code>j</code> and decide whether to break <code>(i-j)</code> further or not.</p>
 <p><strong>Core DP Idea</strong>:</p>
-<pre><code class="hljs">dp[i] = max product by breaking integer i into at least 2 positive integers
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">dp[i] = max product by breaking integer i into at least 2 positive integers
 
 Transition:
   dp[i] = max over all j in [1, i-1] of:
     max(j * (i - j),      // don't break (i-j) further
         j * dp[i - j])    // break (i-j) further using its best product
-</code></pre>
+</code></pre></div>
 <p>The key insight is the <strong>break vs no-break choice</strong>: when splitting <code>i</code> into <code>j + (i-j)</code>, the remainder <code>(i-j)</code> can either be kept as-is or broken further (using <code>dp[i-j]</code>). We must consider both because <code>dp[i-j]</code> assumes at least 2 parts, but sometimes using <code>(i-j)</code> directly is better (e.g., <code>dp[2]=1</code> but the value <code>2</code> itself is larger).</p>
 <p><strong>Greedy shortcut</strong>: Break into as many 3s as possible. If remainder is 1, replace <code>3+1</code> with <code>2+2</code> (since <code>2×2 &gt; 3×1</code>).</p>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// DP approach</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// DP approach</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">integerBreak</span><span class="hljs-params">(<span class="hljs-type">int</span> n)</span> {
     <span class="hljs-type">int</span>[] dp = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[n + <span class="hljs-number">1</span>];
     dp[<span class="hljs-number">1</span>] = <span class="hljs-number">1</span>;
@@ -6997,11 +6961,11 @@ Transition:
     }
     <span class="hljs-keyword">return</span> dp[n];
 }
-</code></pre>
+</code></pre></div>
 <p><strong>DP Table for n=10</strong>:</p>
-<pre><code class="hljs">i:      1  2  3  4  5  6  7  8  9  10
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">i:      1  2  3  4  5  6  7  8  9  10
 dp[i]:  1  1  2  4  6  9 12 18 27 36
-</code></pre>
+</code></pre></div>
 <p><strong>Similar LeetCode Problems</strong>:</p>
 <table>
 <thead>
@@ -7041,7 +7005,7 @@ dp[i]:  1  1  2  4  6  9 12 18 27 36
 </table>
 <h2 id="decision-framework" tabindex="-1"><a class="header-anchor" href="#decision-framework"><span>Decision Framework</span></a></h2>
 <h3 id="pattern-selection-strategy" tabindex="-1"><a class="header-anchor" href="#pattern-selection-strategy"><span>Pattern Selection Strategy</span></a></h3>
-<pre><code class="hljs">DP Problem Identification Flowchart:
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">DP Problem Identification Flowchart:
 
 1. Can the problem be broken into subproblems?
    ├── NO → Not a DP problem
@@ -7065,7 +7029,7 @@ dp[i]:  1  1  2  4  6  9 12 18 27 36
 5. Implementation approach?
    ├── Recursive structure clear → Top-down memoization
    └── Iterative structure clear → Bottom-up tabulation
-</code></pre>
+</code></pre></div>
 <h3 id="when-to-use-dp-vs-other-approaches" tabindex="-1"><a class="header-anchor" href="#when-to-use-dp-vs-other-approaches"><span>When to Use DP vs Other Approaches</span></a></h3>
 <table>
 <thead>
@@ -7160,7 +7124,7 @@ dp[i]:  1  1  2  4  6  9 12 18 27 36
 </tbody>
 </table>
 <h3 id="state-definition-guidelines" tabindex="-1"><a class="header-anchor" href="#state-definition-guidelines"><span>State Definition Guidelines</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># 1D: Position/index based</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># 1D: Position/index based</span>
 dp[i] = <span class="hljs-string">&quot;optimal value considering first i elements&quot;</span>
 
 <span class="hljs-comment"># 2D: Two dimensions</span>
@@ -7171,29 +7135,29 @@ dp[i][j] = <span class="hljs-string">&quot;optimal value for interval [i, j]&quo
 
 <span class="hljs-comment"># Boolean: Decision problems</span>
 dp[i] = <span class="hljs-string">&quot;whether target i is achievable&quot;</span>
-</code></pre>
+</code></pre></div>
 <h3 id="common-recurrence-relations" tabindex="-1"><a class="header-anchor" href="#common-recurrence-relations"><span>Common Recurrence Relations</span></a></h3>
 <h4 id="sum-count-patterns" tabindex="-1"><a class="header-anchor" href="#sum-count-patterns"><span><strong>Sum/Count Patterns</strong></span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Fibonacci-like</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Fibonacci-like</span>
 dp[i] = dp[i-<span class="hljs-number">1</span>] + dp[i-<span class="hljs-number">2</span>]
 
 <span class="hljs-comment"># Include/exclude current</span>
 dp[i] = dp[i-<span class="hljs-number">1</span>] + (dp[i-<span class="hljs-number">2</span>] + nums[i])
-</code></pre>
+</code></pre></div>
 <h4 id="min-max-patterns" tabindex="-1"><a class="header-anchor" href="#min-max-patterns"><span><strong>Min/Max Patterns</strong></span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Take or skip</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Take or skip</span>
 dp[i] = <span class="hljs-built_in">max</span>(dp[i-<span class="hljs-number">1</span>], dp[i-<span class="hljs-number">2</span>] + nums[i])
 
 <span class="hljs-comment"># Best from all previous</span>
 dp[i] = <span class="hljs-built_in">max</span>(dp[j] + score(j, i) <span class="hljs-keyword">for</span> j &lt; i)
-</code></pre>
+</code></pre></div>
 <h4 id="grid-patterns" tabindex="-1"><a class="header-anchor" href="#grid-patterns"><span><strong>Grid Patterns</strong></span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Path counting</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Path counting</span>
 dp[i][j] = dp[i-<span class="hljs-number">1</span>][j] + dp[i][j-<span class="hljs-number">1</span>]
 
 <span class="hljs-comment"># Min path</span>
 dp[i][j] = <span class="hljs-built_in">min</span>(dp[i-<span class="hljs-number">1</span>][j], dp[i][j-<span class="hljs-number">1</span>]) + grid[i][j]
-</code></pre>
+</code></pre></div>
 <h3 id="problem-solving-steps" tabindex="-1"><a class="header-anchor" href="#problem-solving-steps"><span>Problem-Solving Steps</span></a></h3>
 <ol>
 <li><strong>Identify if DP applicable</strong>: Check for overlapping subproblems</li>
@@ -7222,21 +7186,21 @@ dp[i][j] = <span class="hljs-built_in">min</span>(dp[i-<span class="hljs-number"
 </ul>
 <h3 id="space-optimization-techniques" tabindex="-1"><a class="header-anchor" href="#space-optimization-techniques"><span>Space Optimization Techniques</span></a></h3>
 <h4 id="rolling-array" tabindex="-1"><a class="header-anchor" href="#rolling-array"><span><strong>Rolling Array</strong></span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># From O(n²) to O(n)</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># From O(n²) to O(n)</span>
 <span class="hljs-comment"># Instead of dp[i][j], use dp[2][j]</span>
 curr = [<span class="hljs-number">0</span>] * n
 prev = [<span class="hljs-number">0</span>] * n
 <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(m):
     curr, prev = prev, curr
     <span class="hljs-comment"># Update curr based on prev</span>
-</code></pre>
+</code></pre></div>
 <h4 id="state-compression" tabindex="-1"><a class="header-anchor" href="#state-compression"><span><strong>State Compression</strong></span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># From O(n) to O(1) for Fibonacci-like</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># From O(n) to O(1) for Fibonacci-like</span>
 prev2, prev1 = <span class="hljs-number">0</span>, <span class="hljs-number">1</span>
 <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">2</span>, n):
     curr = prev1 + prev2
     prev2, prev1 = prev1, curr
-</code></pre>
+</code></pre></div>
 <h3 id="interview-tips-2" tabindex="-1"><a class="header-anchor" href="#interview-tips-2"><span>Interview Tips</span></a></h3>
 <ol>
 <li><strong>Start simple</strong>: Write recursive solution first</li>
@@ -7248,7 +7212,7 @@ prev2, prev1 = <span class="hljs-number">0</span>, <span class="hljs-number">1</
 </ol>
 <h3 id="state-machine-dp-interview-pattern-recognition" tabindex="-1"><a class="header-anchor" href="#state-machine-dp-interview-pattern-recognition"><span>State Machine DP Interview Pattern Recognition</span></a></h3>
 <p><strong>Quick Decision Tree:</strong></p>
-<pre><code class="hljs">Stock/Transaction Problem?
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Stock/Transaction Problem?
 ├─ NO → Check other DP patterns
 └─ YES → Continue below
 
@@ -7258,7 +7222,7 @@ Are there any constraints on transactions?
 ├─ Transaction fee → 2 states + fee deduction [LC 714]
 ├─ Limited k transactions → 2k states [LC 123, LC 188]
 └─ Buy only once → Kadane's algorithm [LC 121]
-</code></pre>
+</code></pre></div>
 <p><strong>State Machine Pattern Comparison:</strong></p>
 <table>
 <thead>
@@ -7372,7 +7336,7 @@ Are there any constraints on transactions?
 <hr>
 <h2 id="quick-decision-tree-which-dp-pattern-to-use" tabindex="-1"><a class="header-anchor" href="#quick-decision-tree-which-dp-pattern-to-use"><span>Quick Decision Tree: Which DP Pattern to Use?</span></a></h2>
 <h3 id="decision-flowchart" tabindex="-1"><a class="header-anchor" href="#decision-flowchart"><span>Decision Flowchart</span></a></h3>
-<pre><code class="hljs">START: What type of problem are you solving?
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">START: What type of problem are you solving?
 │
 ├─ Working with a SINGLE SEQUENCE/ARRAY?
 │  │
@@ -7417,7 +7381,7 @@ Are there any constraints on transactions?
    │
    └─ Use bitmask to compress state → Category 8 (State Compression DP)
                                        Examples: LC 691, 847, 1723
-</code></pre>
+</code></pre></div>
 <h3 id="quick-pattern-selection-table" tabindex="-1"><a class="header-anchor" href="#quick-pattern-selection-table"><span>Quick Pattern Selection Table</span></a></h3>
 <table>
 <thead>
@@ -7668,7 +7632,7 @@ Are there any constraints on transactions?
 <li>When a new element <code>nums[i]</code> pops smaller elements off the stack, those smaller elements will be removed. The key insight: if <code>nums[i]</code> must wait for a previously-popped element’s chain to clear first, <code>dp[i]</code> inherits the <strong>maximum</strong> wait time seen so far.</li>
 </ul>
 <p><strong>Transition (left-to-right scan)</strong>:</p>
-<pre><code class="hljs">currentSteps = 0
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">currentSteps = 0
 while stack not empty AND nums[i] &gt;= nums[stack.top()]:
     currentSteps = max(currentSteps, dp[stack.pop()])
 
@@ -7678,16 +7642,16 @@ else:                        // nums[i] is a new global maximum — never remove
     dp[i] = 0
 
 answer = max(dp[i]) for all i
-</code></pre>
+</code></pre></div>
 <p><strong>Transition (right-to-left scan — alternative)</strong>:</p>
-<pre><code class="hljs">for i from n-1 down to 0:
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">for i from n-1 down to 0:
     maxSteps = 0
     while stack not empty AND nums[i] &gt; nums[stack.top()]:
         maxSteps = max(maxSteps + 1, dp[stack.pop()])
     dp[i] = maxSteps
     res = max(res, dp[i])
     stack.push(i)
-</code></pre>
+</code></pre></div>
 <hr>
 <h3 id="template-lc-2289-steps-to-make-array-non-decreasing" tabindex="-1"><a class="header-anchor" href="#template-lc-2289-steps-to-make-array-non-decreasing"><span>Template: LC 2289 — Steps to Make Array Non-Decreasing</span></a></h3>
 <p><strong>Problem</strong>: Each step removes every element <code>nums[i]</code> where <code>nums[i-1] &gt; nums[i]</code>. Return the number of steps until the array is non-decreasing.</p>
@@ -7698,7 +7662,7 @@ answer = max(dp[i]) for all i
 <li>The monotonic stack tracks exactly who the current “killer” is.</li>
 </ul>
 <p><strong>Java — left-to-right (forward scan)</strong>:</p>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">totalSteps</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums)</span> {
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">totalSteps</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums)</span> {
     <span class="hljs-type">int</span> <span class="hljs-variable">n</span> <span class="hljs-operator">=</span> nums.length, maxSteps = <span class="hljs-number">0</span>;
     <span class="hljs-type">int</span>[] dp = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[n];
     Stack&lt;Integer&gt; stack = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Stack</span>&lt;&gt;();   <span class="hljs-comment">// monotonic decreasing (by value)</span>
@@ -7722,9 +7686,9 @@ answer = max(dp[i]) for all i
     }
     <span class="hljs-keyword">return</span> maxSteps;
 }
-</code></pre>
+</code></pre></div>
 <p><strong>Java — right-to-left (backward scan)</strong>:</p>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">totalSteps</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums)</span> {
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">totalSteps</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums)</span> {
     <span class="hljs-type">int</span> <span class="hljs-variable">n</span> <span class="hljs-operator">=</span> nums.length, res = <span class="hljs-number">0</span>;
     <span class="hljs-type">int</span>[] dp = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[n];
     Stack&lt;Integer&gt; stack = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Stack</span>&lt;&gt;();
@@ -7740,7 +7704,7 @@ answer = max(dp[i]) for all i
     }
     <span class="hljs-keyword">return</span> res;
 }
-</code></pre>
+</code></pre></div>
 <p><strong>Dry-run: <code>nums = [10, 1, 2, 7, 1, 3]</code></strong> (forward scan)</p>
 <table>
 <thead>

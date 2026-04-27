@@ -19,54 +19,18 @@
     }
   })();
   </script>
-  <script>document.addEventListener('DOMContentLoaded', function() {
-    document.querySelectorAll('pre code').forEach(function(codeEl) {
-      var pre = codeEl.parentElement;
-      var lang = '';
-      var cls = codeEl.className || '';
-      var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
-      if (m) lang = m[1];
-
-      // Add line numbers
-      var lines = codeEl.innerHTML.split('
-');
-      if (lines[lines.length - 1] === '') lines.pop();
-      var numbered = lines.map(function(line, i) {
-        return '<span class="hljs-ln-line"><span class="hljs-ln-n" data-line-number="' + (i + 1) + '"></span><span class="hljs-ln-code">' + line + '</span></span>';
-      }).join('
-');
-      codeEl.innerHTML = numbered;
-      codeEl.classList.add('hljs-ln');
-
-      var wrapper = document.createElement('div');
-      wrapper.className = 'code-block-wrapper';
-      pre.parentNode.insertBefore(wrapper, pre);
-      var header = document.createElement('div');
-      header.className = 'code-block-header';
-      if (lang) {
-        var label = document.createElement('span');
-        label.className = 'code-lang-label';
-        label.textContent = lang;
-        header.appendChild(label);
-      } else {
-        header.appendChild(document.createElement('span'));
-      }
-      var btn = document.createElement('button');
-      btn.className = 'copy-btn';
-      btn.textContent = 'Copy';
-      btn.addEventListener('click', function() {
-        var text = Array.from(codeEl.querySelectorAll('.hljs-ln-code')).map(function(el) { return el.textContent; }).join('
-');
-        navigator.clipboard.writeText(text).then(function() {
-          btn.textContent = 'Copied!';
-          btn.classList.add('copied');
-          setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
-        });
-      });
-      header.appendChild(btn);
-      wrapper.appendChild(header);
-      wrapper.appendChild(pre);
+  <script>
+  function copyCode(btn) {
+    var pre = btn.closest('.code-block-wrapper').querySelector('pre');
+    var text = pre ? pre.innerText : '';
+    navigator.clipboard.writeText(text).then(function() {
+      btn.textContent = 'Copied!';
+      btn.classList.add('copied');
+      setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
     });
+  }
+  </script>
+  <script>document.addEventListener('DOMContentLoaded', function() {
     document.querySelectorAll('table').forEach(function(table) {
       if (!table.parentElement.classList.contains('table-wrap')) {
         var wrapper = document.createElement('div');
@@ -181,14 +145,14 @@
 <li>Multiple recursive calls with same parameters</li>
 </ul>
 <h3 id="0-1-conversion-strategy" tabindex="-1"><a class="header-anchor" href="#0-1-conversion-strategy"><span>0-1) Conversion Strategy</span></a></h3>
-<pre><code class="hljs">Recursion (Exponential)
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Recursion (Exponential)
     ↓
 Top-Down DP (Memoization)
     ↓
 Bottom-Up DP (Tabulation)
     ↓
 Space-Optimized DP
-</code></pre>
+</code></pre></div>
 <p><strong>Top-Down (Memoization):</strong></p>
 <ul>
 <li>Keep recursive structure</li>
@@ -214,7 +178,7 @@ Space-Optimized DP
 <h3 id="1-1-fibonacci-sequence" tabindex="-1"><a class="header-anchor" href="#1-1-fibonacci-sequence"><span>1-1) Fibonacci Sequence</span></a></h3>
 <p><strong>Problem:</strong> Compute the nth Fibonacci number where F(n) = F(n-1) + F(n-2), F(0)=0, F(1)=1.</p>
 <h4 id="step-1-naive-recursion" tabindex="-1"><a class="header-anchor" href="#step-1-naive-recursion"><span>Step 1: Naive Recursion</span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - Naive Recursion</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - Naive Recursion</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">fib_recursive</span>(<span class="hljs-params">n</span>):
     <span class="hljs-string">&quot;&quot;&quot;
     Time: O(2^n) - exponential
@@ -223,8 +187,8 @@ Space-Optimized DP
     <span class="hljs-keyword">if</span> n &lt;= <span class="hljs-number">1</span>:
         <span class="hljs-keyword">return</span> n
     <span class="hljs-keyword">return</span> fib_recursive(n-<span class="hljs-number">1</span>) + fib_recursive(n-<span class="hljs-number">2</span>)
-</code></pre>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java - Naive Recursion</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java - Naive Recursion</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">fibRecursive</span><span class="hljs-params">(<span class="hljs-type">int</span> n)</span> {
     <span class="hljs-comment">/**
      * time = O(2^N) - exponential
@@ -233,9 +197,9 @@ Space-Optimized DP
     <span class="hljs-keyword">if</span> (n &lt;= <span class="hljs-number">1</span>) <span class="hljs-keyword">return</span> n;
     <span class="hljs-keyword">return</span> fibRecursive(n-<span class="hljs-number">1</span>) + fibRecursive(n-<span class="hljs-number">2</span>);
 }
-</code></pre>
+</code></pre></div>
 <p><strong>Problem:</strong> Massive redundant calculations!</p>
-<pre><code class="hljs">fib(5)
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">fib(5)
 ├── fib(4)
 │   ├── fib(3)
 │   │   ├── fib(2)
@@ -250,9 +214,9 @@ Space-Optimized DP
     │   ├── fib(1)
     │   └── fib(0)
     └── fib(1)
-</code></pre>
+</code></pre></div>
 <h4 id="step-2-top-down-dp-memoization" tabindex="-1"><a class="header-anchor" href="#step-2-top-down-dp-memoization"><span>Step 2: Top-Down DP (Memoization)</span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - Top-Down DP</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - Top-Down DP</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">fib_memo</span>(<span class="hljs-params">n, memo=<span class="hljs-literal">None</span></span>):
     <span class="hljs-string">&quot;&quot;&quot;
     Time: O(n) - each subproblem solved once
@@ -269,8 +233,8 @@ Space-Optimized DP
 
     memo[n] = fib_memo(n-<span class="hljs-number">1</span>, memo) + fib_memo(n-<span class="hljs-number">2</span>, memo)
     <span class="hljs-keyword">return</span> memo[n]
-</code></pre>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java - Top-Down DP</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java - Top-Down DP</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">fibMemo</span><span class="hljs-params">(<span class="hljs-type">int</span> n)</span> {
     <span class="hljs-keyword">return</span> fibMemoHelper(n, <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[n+<span class="hljs-number">1</span>]);
 }
@@ -287,9 +251,9 @@ Space-Optimized DP
     memo[n] = fibMemoHelper(n-<span class="hljs-number">1</span>, memo) + fibMemoHelper(n-<span class="hljs-number">2</span>, memo);
     <span class="hljs-keyword">return</span> memo[n];
 }
-</code></pre>
+</code></pre></div>
 <h4 id="step-3-bottom-up-dp-tabulation" tabindex="-1"><a class="header-anchor" href="#step-3-bottom-up-dp-tabulation"><span>Step 3: Bottom-Up DP (Tabulation)</span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - Bottom-Up DP</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - Bottom-Up DP</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">fib_dp</span>(<span class="hljs-params">n</span>):
     <span class="hljs-string">&quot;&quot;&quot;
     Time: O(n)
@@ -306,8 +270,8 @@ Space-Optimized DP
         dp[i] = dp[i-<span class="hljs-number">1</span>] + dp[i-<span class="hljs-number">2</span>]
 
     <span class="hljs-keyword">return</span> dp[n]
-</code></pre>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java - Bottom-Up DP</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java - Bottom-Up DP</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">fibDP</span><span class="hljs-params">(<span class="hljs-type">int</span> n)</span> {
     <span class="hljs-comment">/**
      * time = O(N)
@@ -325,9 +289,9 @@ Space-Optimized DP
 
     <span class="hljs-keyword">return</span> dp[n];
 }
-</code></pre>
+</code></pre></div>
 <h4 id="step-4-space-optimized-dp" tabindex="-1"><a class="header-anchor" href="#step-4-space-optimized-dp"><span>Step 4: Space-Optimized DP</span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - Space Optimized</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - Space Optimized</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">fib_optimized</span>(<span class="hljs-params">n</span>):
     <span class="hljs-string">&quot;&quot;&quot;
     Time: O(n)
@@ -344,8 +308,8 @@ Space-Optimized DP
         prev1 = current
 
     <span class="hljs-keyword">return</span> prev1
-</code></pre>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java - Space Optimized</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java - Space Optimized</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">fibOptimized</span><span class="hljs-params">(<span class="hljs-type">int</span> n)</span> {
     <span class="hljs-comment">/**
      * time = O(N)
@@ -363,7 +327,7 @@ Space-Optimized DP
 
     <span class="hljs-keyword">return</span> prev1;
 }
-</code></pre>
+</code></pre></div>
 <p><strong>Summary:</strong></p>
 <table>
 <thead>
@@ -405,14 +369,14 @@ Space-Optimized DP
 <h3 id="1-2-climbing-stairs-lc-70" tabindex="-1"><a class="header-anchor" href="#1-2-climbing-stairs-lc-70"><span>1-2) Climbing Stairs (LC 70)</span></a></h3>
 <p><strong>Problem:</strong> Climbing n stairs, can climb 1 or 2 steps. How many distinct ways?</p>
 <h4 id="step-1-recursion" tabindex="-1"><a class="header-anchor" href="#step-1-recursion"><span>Step 1: Recursion</span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">climbStairs_recursive</span>(<span class="hljs-params">n</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">climbStairs_recursive</span>(<span class="hljs-params">n</span>):
     <span class="hljs-string">&quot;&quot;&quot;Time: O(2^n), Space: O(n)&quot;&quot;&quot;</span>
     <span class="hljs-keyword">if</span> n &lt;= <span class="hljs-number">2</span>:
         <span class="hljs-keyword">return</span> n
     <span class="hljs-keyword">return</span> climbStairs_recursive(n-<span class="hljs-number">1</span>) + climbStairs_recursive(n-<span class="hljs-number">2</span>)
-</code></pre>
+</code></pre></div>
 <h4 id="step-2-memoization" tabindex="-1"><a class="header-anchor" href="#step-2-memoization"><span>Step 2: Memoization</span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">climbStairs_memo</span>(<span class="hljs-params">n, memo=<span class="hljs-literal">None</span></span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">climbStairs_memo</span>(<span class="hljs-params">n, memo=<span class="hljs-literal">None</span></span>):
     <span class="hljs-string">&quot;&quot;&quot;Time: O(n), Space: O(n)&quot;&quot;&quot;</span>
     <span class="hljs-keyword">if</span> memo <span class="hljs-keyword">is</span> <span class="hljs-literal">None</span>:
         memo = {}
@@ -425,9 +389,9 @@ Space-Optimized DP
 
     memo[n] = climbStairs_memo(n-<span class="hljs-number">1</span>, memo) + climbStairs_memo(n-<span class="hljs-number">2</span>, memo)
     <span class="hljs-keyword">return</span> memo[n]
-</code></pre>
+</code></pre></div>
 <h4 id="step-3-bottom-up-dp" tabindex="-1"><a class="header-anchor" href="#step-3-bottom-up-dp"><span>Step 3: Bottom-Up DP</span></a></h4>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 70 - Climbing Stairs</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 70 - Climbing Stairs</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">climbStairs</span><span class="hljs-params">(<span class="hljs-type">int</span> n)</span> {
     <span class="hljs-comment">/**
      * time = O(N)
@@ -445,9 +409,9 @@ Space-Optimized DP
 
     <span class="hljs-keyword">return</span> dp[n];
 }
-</code></pre>
+</code></pre></div>
 <h4 id="step-4-space-optimized" tabindex="-1"><a class="header-anchor" href="#step-4-space-optimized"><span>Step 4: Space Optimized</span></a></h4>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">climbStairsOptimized</span><span class="hljs-params">(<span class="hljs-type">int</span> n)</span> {
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">climbStairsOptimized</span><span class="hljs-params">(<span class="hljs-type">int</span> n)</span> {
     <span class="hljs-comment">/**
      * time = O(N)
      * space = O(1)
@@ -464,12 +428,12 @@ Space-Optimized DP
 
     <span class="hljs-keyword">return</span> prev1;
 }
-</code></pre>
+</code></pre></div>
 <hr>
 <h3 id="1-3-house-robber-lc-198" tabindex="-1"><a class="header-anchor" href="#1-3-house-robber-lc-198"><span>1-3) House Robber (LC 198)</span></a></h3>
 <p><strong>Problem:</strong> Array of house values. Can’t rob adjacent houses. Maximum robbery amount?</p>
 <h4 id="step-1-recursion-1" tabindex="-1"><a class="header-anchor" href="#step-1-recursion-1"><span>Step 1: Recursion</span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">rob_recursive</span>(<span class="hljs-params">nums, i=<span class="hljs-number">0</span></span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">rob_recursive</span>(<span class="hljs-params">nums, i=<span class="hljs-number">0</span></span>):
     <span class="hljs-string">&quot;&quot;&quot;
     Time: O(2^n)
     Space: O(n)
@@ -482,9 +446,9 @@ Space-Optimized DP
     skip_current = rob_recursive(nums, i+<span class="hljs-number">1</span>)
 
     <span class="hljs-keyword">return</span> <span class="hljs-built_in">max</span>(rob_current, skip_current)
-</code></pre>
+</code></pre></div>
 <h4 id="step-2-memoization-1" tabindex="-1"><a class="header-anchor" href="#step-2-memoization-1"><span>Step 2: Memoization</span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">rob_memo</span>(<span class="hljs-params">nums, i=<span class="hljs-number">0</span>, memo=<span class="hljs-literal">None</span></span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">rob_memo</span>(<span class="hljs-params">nums, i=<span class="hljs-number">0</span>, memo=<span class="hljs-literal">None</span></span>):
     <span class="hljs-string">&quot;&quot;&quot;Time: O(n), Space: O(n)&quot;&quot;&quot;</span>
     <span class="hljs-keyword">if</span> memo <span class="hljs-keyword">is</span> <span class="hljs-literal">None</span>:
         memo = {}
@@ -500,9 +464,9 @@ Space-Optimized DP
 
     memo[i] = <span class="hljs-built_in">max</span>(rob_current, skip_current)
     <span class="hljs-keyword">return</span> memo[i]
-</code></pre>
+</code></pre></div>
 <h4 id="step-3-bottom-up-dp-1" tabindex="-1"><a class="header-anchor" href="#step-3-bottom-up-dp-1"><span>Step 3: Bottom-Up DP</span></a></h4>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 198 - House Robber</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 198 - House Robber</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">rob</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums)</span> {
     <span class="hljs-comment">/**
      * time = O(N)
@@ -522,9 +486,9 @@ Space-Optimized DP
 
     <span class="hljs-keyword">return</span> dp[nums.length - <span class="hljs-number">1</span>];
 }
-</code></pre>
+</code></pre></div>
 <h4 id="step-4-space-optimized-1" tabindex="-1"><a class="header-anchor" href="#step-4-space-optimized-1"><span>Step 4: Space Optimized</span></a></h4>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">robOptimized</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums)</span> {
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">robOptimized</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums)</span> {
     <span class="hljs-comment">/**
      * time = O(N)
      * space = O(1)
@@ -543,12 +507,12 @@ Space-Optimized DP
 
     <span class="hljs-keyword">return</span> prev1;
 }
-</code></pre>
+</code></pre></div>
 <hr>
 <h3 id="1-4-coin-change-lc-322" tabindex="-1"><a class="header-anchor" href="#1-4-coin-change-lc-322"><span>1-4) Coin Change (LC 322)</span></a></h3>
 <p><strong>Problem:</strong> Array of coin denominations, target amount. Minimum coins needed?</p>
 <h4 id="step-1-recursion-2" tabindex="-1"><a class="header-anchor" href="#step-1-recursion-2"><span>Step 1: Recursion</span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">coinChange_recursive</span>(<span class="hljs-params">coins, amount</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">coinChange_recursive</span>(<span class="hljs-params">coins, amount</span>):
     <span class="hljs-string">&quot;&quot;&quot;
     Time: O(S^n) where S = amount, n = coins
     Space: O(amount)
@@ -566,9 +530,9 @@ Space-Optimized DP
             min_coins = <span class="hljs-built_in">min</span>(min_coins, result + <span class="hljs-number">1</span>)
 
     <span class="hljs-keyword">return</span> min_coins <span class="hljs-keyword">if</span> min_coins != <span class="hljs-built_in">float</span>(<span class="hljs-string">&#x27;inf&#x27;</span>) <span class="hljs-keyword">else</span> -<span class="hljs-number">1</span>
-</code></pre>
+</code></pre></div>
 <h4 id="step-2-memoization-2" tabindex="-1"><a class="header-anchor" href="#step-2-memoization-2"><span>Step 2: Memoization</span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">coinChange_memo</span>(<span class="hljs-params">coins, amount, memo=<span class="hljs-literal">None</span></span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">coinChange_memo</span>(<span class="hljs-params">coins, amount, memo=<span class="hljs-literal">None</span></span>):
     <span class="hljs-string">&quot;&quot;&quot;Time: O(S × n), Space: O(S)&quot;&quot;&quot;</span>
     <span class="hljs-keyword">if</span> memo <span class="hljs-keyword">is</span> <span class="hljs-literal">None</span>:
         memo = {}
@@ -589,9 +553,9 @@ Space-Optimized DP
 
     memo[amount] = min_coins <span class="hljs-keyword">if</span> min_coins != <span class="hljs-built_in">float</span>(<span class="hljs-string">&#x27;inf&#x27;</span>) <span class="hljs-keyword">else</span> -<span class="hljs-number">1</span>
     <span class="hljs-keyword">return</span> memo[amount]
-</code></pre>
+</code></pre></div>
 <h4 id="step-3-bottom-up-dp-2" tabindex="-1"><a class="header-anchor" href="#step-3-bottom-up-dp-2"><span>Step 3: Bottom-Up DP</span></a></h4>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 322 - Coin Change</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 322 - Coin Change</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">coinChange</span><span class="hljs-params">(<span class="hljs-type">int</span>[] coins, <span class="hljs-type">int</span> amount)</span> {
     <span class="hljs-comment">/**
      * time = O(S × N) where S = amount, N = coins
@@ -612,7 +576,7 @@ Space-Optimized DP
 
     <span class="hljs-keyword">return</span> dp[amount] &gt; amount ? -<span class="hljs-number">1</span> : dp[amount];
 }
-</code></pre>
+</code></pre></div>
 <hr>
 <h2 id="2-common-leetcode-problems" tabindex="-1"><a class="header-anchor" href="#2-common-leetcode-problems"><span>2) Common LeetCode Problems</span></a></h2>
 <h3 id="recursion-dp-conversions" tabindex="-1"><a class="header-anchor" href="#recursion-dp-conversions"><span>Recursion → DP Conversions</span></a></h3>
@@ -831,7 +795,7 @@ Space-Optimized DP
 <blockquote>
 <p>Cannot rob two adjacent houses; dp[i] = max(dp[i-1], dp[i-2] + nums[i]).</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 198 - House Robber</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 198 - House Robber</span>
 <span class="hljs-comment">// IDEA: DP — dp[i] = max money robbing up to house i</span>
 <span class="hljs-comment">// time = O(N), space = O(1)</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">rob</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums)</span> {
@@ -844,12 +808,12 @@ Space-Optimized DP
     }
     <span class="hljs-keyword">return</span> prev1;
 }
-</code></pre>
+</code></pre></div>
 <h3 id="2-2-word-break-lc-139-top-down-recursion-dp" tabindex="-1"><a class="header-anchor" href="#2-2-word-break-lc-139-top-down-recursion-dp"><span>2-2) Word Break (LC 139) — Top-down Recursion → DP</span></a></h3>
 <blockquote>
 <p>dp[i] = true if s[0…i] can be segmented using wordDict.</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 139 - Word Break</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 139 - Word Break</span>
 <span class="hljs-comment">// IDEA: DP — dp[i] means s[0..i-1] can be segmented</span>
 <span class="hljs-comment">// time = O(N^2), space = O(N)</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">wordBreak</span><span class="hljs-params">(String s, List&lt;String&gt; wordDict)</span> {
@@ -865,12 +829,12 @@ Space-Optimized DP
             }
     <span class="hljs-keyword">return</span> dp[n];
 }
-</code></pre>
+</code></pre></div>
 <h3 id="2-3-edit-distance-lc-72-2d-dp-string-string" tabindex="-1"><a class="header-anchor" href="#2-3-edit-distance-lc-72-2d-dp-string-string"><span>2-3) Edit Distance (LC 72) — 2D DP (String → String)</span></a></h3>
 <blockquote>
 <p>dp[i][j] = min operations to convert s1[0…i] to s2[0…j].</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 72 - Edit Distance</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 72 - Edit Distance</span>
 <span class="hljs-comment">// IDEA: 2D DP — dp[i][j] = min ops to convert word1[0..i-1] to word2[0..j-1]</span>
 <span class="hljs-comment">// time = O(M*N), space = O(M*N)</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">minDistance</span><span class="hljs-params">(String word1, String word2)</span> {
@@ -886,12 +850,12 @@ Space-Optimized DP
                 dp[i][j] = <span class="hljs-number">1</span> + Math.min(dp[i-<span class="hljs-number">1</span>][j-<span class="hljs-number">1</span>], Math.min(dp[i-<span class="hljs-number">1</span>][j], dp[i][j-<span class="hljs-number">1</span>]));
     <span class="hljs-keyword">return</span> dp[m][n];
 }
-</code></pre>
+</code></pre></div>
 <h3 id="2-4-fibonacci-number-lc-509-recursion-memoization-dp-o-1" tabindex="-1"><a class="header-anchor" href="#2-4-fibonacci-number-lc-509-recursion-memoization-dp-o-1"><span>2-4) Fibonacci Number (LC 509) — Recursion → Memoization → DP → O(1)</span></a></h3>
 <blockquote>
 <p>Classic example showing all 4 levels of optimization from naive recursion.</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 509 - Fibonacci Number</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 509 - Fibonacci Number</span>
 <span class="hljs-comment">// IDEA: Iterative DP — O(N) time, O(1) space (vs O(2^N) naive recursion)</span>
 <span class="hljs-comment">// time = O(N), space = O(1)</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">fib</span><span class="hljs-params">(<span class="hljs-type">int</span> n)</span> {
@@ -904,12 +868,12 @@ Space-Optimized DP
     }
     <span class="hljs-keyword">return</span> prev1;
 }
-</code></pre>
+</code></pre></div>
 <h3 id="2-5-unique-paths-lc-62-2d-recursion-dp" tabindex="-1"><a class="header-anchor" href="#2-5-unique-paths-lc-62-2d-recursion-dp"><span>2-5) Unique Paths (LC 62) — 2D Recursion → DP</span></a></h3>
 <blockquote>
 <p>Recursion <code>f(i,j) = f(i-1,j) + f(i,j-1)</code> → bottom-up DP with row compression.</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 62 - Unique Paths</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 62 - Unique Paths</span>
 <span class="hljs-comment">// IDEA: DP with 1D rolling array — dp[j] = paths to reach column j in current row</span>
 <span class="hljs-comment">// time = O(M*N), space = O(N)</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">uniquePaths</span><span class="hljs-params">(<span class="hljs-type">int</span> m, <span class="hljs-type">int</span> n)</span> {
@@ -920,12 +884,12 @@ Space-Optimized DP
             dp[j] += dp[j-<span class="hljs-number">1</span>];
     <span class="hljs-keyword">return</span> dp[n-<span class="hljs-number">1</span>];
 }
-</code></pre>
+</code></pre></div>
 <h3 id="2-6-triangle-lc-120-top-down-recursion-bottom-up-dp" tabindex="-1"><a class="header-anchor" href="#2-6-triangle-lc-120-top-down-recursion-bottom-up-dp"><span>2-6) Triangle (LC 120) — Top-Down Recursion → Bottom-Up DP</span></a></h3>
 <blockquote>
 <p>dp[i][j] = min path sum from (i,j) to bottom; convert triangle recursion bottom-up.</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 120 - Triangle</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 120 - Triangle</span>
 <span class="hljs-comment">// IDEA: Bottom-up DP in-place — start from second-to-last row, accumulate minimum path</span>
 <span class="hljs-comment">// time = O(N^2), space = O(1) modifying input</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">minimumTotal</span><span class="hljs-params">(List&lt;List&lt;Integer&gt;&gt; triangle)</span> {
@@ -937,12 +901,12 @@ Space-Optimized DP
             dp[col] = triangle.get(row).get(col) + Math.min(dp[col], dp[col+<span class="hljs-number">1</span>]);
     <span class="hljs-keyword">return</span> dp[<span class="hljs-number">0</span>];
 }
-</code></pre>
+</code></pre></div>
 <h3 id="2-7-longest-palindromic-subsequence-lc-516-interval-dp" tabindex="-1"><a class="header-anchor" href="#2-7-longest-palindromic-subsequence-lc-516-interval-dp"><span>2-7) Longest Palindromic Subsequence (LC 516) — Interval DP</span></a></h3>
 <blockquote>
 <p><code>dp[i][j]</code> = LPS length in s[i…j]; recursion <code>f(i,j)</code> → bottom-up by increasing length.</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 516 - Longest Palindromic Subsequence</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 516 - Longest Palindromic Subsequence</span>
 <span class="hljs-comment">// IDEA: Interval DP — dp[i][j] = LPS in s[i..j]</span>
 <span class="hljs-comment">// time = O(N^2), space = O(N^2)</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">longestPalindromeSubseq</span><span class="hljs-params">(String s)</span> {
@@ -957,12 +921,12 @@ Space-Optimized DP
         }
     <span class="hljs-keyword">return</span> dp[<span class="hljs-number">0</span>][n-<span class="hljs-number">1</span>];
 }
-</code></pre>
+</code></pre></div>
 <h3 id="2-8-coin-change-lc-322-recursion-with-pruning-dp" tabindex="-1"><a class="header-anchor" href="#2-8-coin-change-lc-322-recursion-with-pruning-dp"><span>2-8) Coin Change (LC 322) — Recursion with Pruning → DP</span></a></h3>
 <blockquote>
 <p>Recursion <code>f(amount) = 1 + min(f(amount-coin))</code> → bottom-up unbounded knapsack DP.</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 322 - Coin Change</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 322 - Coin Change</span>
 <span class="hljs-comment">// IDEA: Bottom-up DP — dp[i] = min coins for amount i; unbounded knapsack</span>
 <span class="hljs-comment">// time = O(amount * |coins|), space = O(amount)</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">coinChange</span><span class="hljs-params">(<span class="hljs-type">int</span>[] coins, <span class="hljs-type">int</span> amount)</span> {
@@ -974,12 +938,12 @@ Space-Optimized DP
             <span class="hljs-keyword">if</span> (coin &lt;= i) dp[i] = Math.min(dp[i], dp[i - coin] + <span class="hljs-number">1</span>);
     <span class="hljs-keyword">return</span> dp[amount] &gt; amount ? -<span class="hljs-number">1</span> : dp[amount];
 }
-</code></pre>
+</code></pre></div>
 <h3 id="2-9-combination-sum-iv-lc-377-recursion-dp-order-matters" tabindex="-1"><a class="header-anchor" href="#2-9-combination-sum-iv-lc-377-recursion-dp-order-matters"><span>2-9) Combination Sum IV (LC 377) — Recursion → DP (Order Matters)</span></a></h3>
 <blockquote>
 <p>dp[i] = number of ordered combinations summing to i; unlike knapsack, order of adding matters.</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 377 - Combination Sum IV</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 377 - Combination Sum IV</span>
 <span class="hljs-comment">// IDEA: DP — dp[i] = number of ordered ways to reach sum i</span>
 <span class="hljs-comment">// time = O(target * |nums|), space = O(target)</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">combinationSum4</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums, <span class="hljs-type">int</span> target)</span> {
@@ -990,12 +954,12 @@ Space-Optimized DP
             <span class="hljs-keyword">if</span> (num &lt;= i) dp[i] += dp[i - num];
     <span class="hljs-keyword">return</span> dp[target];
 }
-</code></pre>
+</code></pre></div>
 <h3 id="2-10-minimum-cost-to-cut-a-stick-lc-1547-interval-dp" tabindex="-1"><a class="header-anchor" href="#2-10-minimum-cost-to-cut-a-stick-lc-1547-interval-dp"><span>2-10) Minimum Cost to Cut a Stick (LC 1547) — Interval DP</span></a></h3>
 <blockquote>
 <p>dp[i][j] = min cost to make all cuts between cut[i] and cut[j]; try each middle cut.</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 1547 - Minimum Cost to Cut a Stick</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 1547 - Minimum Cost to Cut a Stick</span>
 <span class="hljs-comment">// IDEA: Interval DP — insert endpoints; dp[i][j] = min cost for cuts between i and j</span>
 <span class="hljs-comment">// time = O(M^3), space = O(M^2)  M = cuts.length</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">minCost</span><span class="hljs-params">(<span class="hljs-type">int</span> n, <span class="hljs-type">int</span>[] cuts)</span> {
@@ -1014,12 +978,12 @@ Space-Optimized DP
         }
     <span class="hljs-keyword">return</span> dp[<span class="hljs-number">0</span>][m+<span class="hljs-number">1</span>];
 }
-</code></pre>
+</code></pre></div>
 <h3 id="2-11-partition-array-for-maximum-sum-lc-1043-1d-dp" tabindex="-1"><a class="header-anchor" href="#2-11-partition-array-for-maximum-sum-lc-1043-1d-dp"><span>2-11) Partition Array for Maximum Sum (LC 1043) — 1D DP</span></a></h3>
 <blockquote>
 <p>dp[i] = max sum of partitioning array up to index i; try all sub-partitions of size 1…k.</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 1043 - Partition Array for Maximum Sum</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 1043 - Partition Array for Maximum Sum</span>
 <span class="hljs-comment">// IDEA: DP — dp[i] = max sum when array[0..i-1] is partitioned</span>
 <span class="hljs-comment">// time = O(N * k), space = O(N)</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">maxSumAfterPartitioning</span><span class="hljs-params">(<span class="hljs-type">int</span>[] arr, <span class="hljs-type">int</span> k)</span> {
@@ -1034,7 +998,7 @@ Space-Optimized DP
     }
     <span class="hljs-keyword">return</span> dp[n];
 }
-</code></pre>
+</code></pre></div>
 
       </div>
       <div class="cheatsheet-footer">

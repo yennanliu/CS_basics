@@ -19,54 +19,18 @@
     }
   })();
   </script>
-  <script>document.addEventListener('DOMContentLoaded', function() {
-    document.querySelectorAll('pre code').forEach(function(codeEl) {
-      var pre = codeEl.parentElement;
-      var lang = '';
-      var cls = codeEl.className || '';
-      var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
-      if (m) lang = m[1];
-
-      // Add line numbers
-      var lines = codeEl.innerHTML.split('
-');
-      if (lines[lines.length - 1] === '') lines.pop();
-      var numbered = lines.map(function(line, i) {
-        return '<span class="hljs-ln-line"><span class="hljs-ln-n" data-line-number="' + (i + 1) + '"></span><span class="hljs-ln-code">' + line + '</span></span>';
-      }).join('
-');
-      codeEl.innerHTML = numbered;
-      codeEl.classList.add('hljs-ln');
-
-      var wrapper = document.createElement('div');
-      wrapper.className = 'code-block-wrapper';
-      pre.parentNode.insertBefore(wrapper, pre);
-      var header = document.createElement('div');
-      header.className = 'code-block-header';
-      if (lang) {
-        var label = document.createElement('span');
-        label.className = 'code-lang-label';
-        label.textContent = lang;
-        header.appendChild(label);
-      } else {
-        header.appendChild(document.createElement('span'));
-      }
-      var btn = document.createElement('button');
-      btn.className = 'copy-btn';
-      btn.textContent = 'Copy';
-      btn.addEventListener('click', function() {
-        var text = Array.from(codeEl.querySelectorAll('.hljs-ln-code')).map(function(el) { return el.textContent; }).join('
-');
-        navigator.clipboard.writeText(text).then(function() {
-          btn.textContent = 'Copied!';
-          btn.classList.add('copied');
-          setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
-        });
-      });
-      header.appendChild(btn);
-      wrapper.appendChild(header);
-      wrapper.appendChild(pre);
+  <script>
+  function copyCode(btn) {
+    var pre = btn.closest('.code-block-wrapper').querySelector('pre');
+    var text = pre ? pre.innerText : '';
+    navigator.clipboard.writeText(text).then(function() {
+      btn.textContent = 'Copied!';
+      btn.classList.add('copied');
+      setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
     });
+  }
+  </script>
+  <script>document.addEventListener('DOMContentLoaded', function() {
     document.querySelectorAll('table').forEach(function(table) {
       if (!table.parentElement.classList.contains('table-wrap')) {
         var wrapper = document.createElement('div');
@@ -246,7 +210,7 @@
 </tbody>
 </table>
 <h3 id="template-1-two-pointers-most-common" tabindex="-1"><a class="header-anchor" href="#template-1-two-pointers-most-common"><span>Template 1: Two Pointers (Most Common)</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">is_palindrome_two_pointers</span>(<span class="hljs-params">s</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">is_palindrome_two_pointers</span>(<span class="hljs-params">s</span>):
     <span class="hljs-string">&quot;&quot;&quot;
     Basic palindrome check using two pointers
     Time: O(n), Space: O(1)
@@ -294,9 +258,9 @@
         <span class="hljs-keyword">return</span> true;
     }
 }
-</code></pre>
+</code></pre></div>
 <h3 id="template-2-center-expansion-substring-problems" tabindex="-1"><a class="header-anchor" href="#template-2-center-expansion-substring-problems"><span>Template 2: Center Expansion (Substring Problems)</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">longest_palindromic_substring</span>(<span class="hljs-params">s</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">longest_palindromic_substring</span>(<span class="hljs-params">s</span>):
     <span class="hljs-string">&quot;&quot;&quot;
     Find longest palindromic substring using center expansion
     Time: O(n²), Space: O(1)
@@ -355,9 +319,9 @@
         <span class="hljs-keyword">return</span> right - left - <span class="hljs-number">1</span>;
     }
 }
-</code></pre>
+</code></pre></div>
 <h3 id="template-3-dynamic-programming-complex-counting" tabindex="-1"><a class="header-anchor" href="#template-3-dynamic-programming-complex-counting"><span>Template 3: Dynamic Programming (Complex Counting)</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">count_palindromic_substrings</span>(<span class="hljs-params">s</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">count_palindromic_substrings</span>(<span class="hljs-params">s</span>):
     <span class="hljs-string">&quot;&quot;&quot;
     Count all palindromic substrings using DP
     Time: O(n²), Space: O(n²)
@@ -411,9 +375,9 @@
         expand_and_count(i, i + <span class="hljs-number">1</span>)
     
     <span class="hljs-keyword">return</span> count
-</code></pre>
+</code></pre></div>
 <h3 id="template-4-backtracking-partitioning" tabindex="-1"><a class="header-anchor" href="#template-4-backtracking-partitioning"><span>Template 4: Backtracking (Partitioning)</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">palindrome_partitioning</span>(<span class="hljs-params">s</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">palindrome_partitioning</span>(<span class="hljs-params">s</span>):
     <span class="hljs-string">&quot;&quot;&quot;
     Find all palindrome partitions using backtracking
     Time: O(n * 2^n), Space: O(n)
@@ -483,9 +447,9 @@
     
     backtrack(<span class="hljs-number">0</span>)
     <span class="hljs-keyword">return</span> result
-</code></pre>
+</code></pre></div>
 <h3 id="template-5-longest-palindromic-subsequence-dp" tabindex="-1"><a class="header-anchor" href="#template-5-longest-palindromic-subsequence-dp"><span>Template 5: Longest Palindromic Subsequence (DP)</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">longest_palindromic_subsequence</span>(<span class="hljs-params">s</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">longest_palindromic_subsequence</span>(<span class="hljs-params">s</span>):
     <span class="hljs-string">&quot;&quot;&quot;
     Find length of longest palindromic subsequence using DP
     Time: O(n²), Space: O(n²)
@@ -529,9 +493,9 @@
             prev = temp
     
     <span class="hljs-keyword">return</span> dp[n - <span class="hljs-number">1</span>]
-</code></pre>
+</code></pre></div>
 <h3 id="template-6-number-palindrome" tabindex="-1"><a class="header-anchor" href="#template-6-number-palindrome"><span>Template 6: Number Palindrome</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">is_palindrome_number</span>(<span class="hljs-params">x</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">is_palindrome_number</span>(<span class="hljs-params">x</span>):
     <span class="hljs-string">&quot;&quot;&quot;
     Check if integer is palindrome without converting to string
     Time: O(log x), Space: O(1)
@@ -575,7 +539,7 @@
         <span class="hljs-keyword">return</span> x == reversedHalf || x == reversedHalf / <span class="hljs-number">10</span>;
     }
 }
-</code></pre>
+</code></pre></div>
 <h2 id="problems-by-pattern" tabindex="-1"><a class="header-anchor" href="#problems-by-pattern"><span>Problems by Pattern</span></a></h2>
 <h3 id="pattern-1-basic-palindrome-validation-1" tabindex="-1"><a class="header-anchor" href="#pattern-1-basic-palindrome-validation-1"><span><strong>Pattern 1: Basic Palindrome Validation</strong></span></a></h3>
 <table>
@@ -960,7 +924,7 @@
 </ul>
 <h2 id="pattern-selection-framework" tabindex="-1"><a class="header-anchor" href="#pattern-selection-framework"><span>Pattern Selection Framework</span></a></h2>
 <h3 id="decision-flowchart-for-palindrome-problems" tabindex="-1"><a class="header-anchor" href="#decision-flowchart-for-palindrome-problems"><span>Decision Flowchart for Palindrome Problems</span></a></h3>
-<pre><code class="hljs">Problem Analysis Flowchart:
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Problem Analysis Flowchart:
 
 1. Is this a simple validation problem (check if input is palindrome)?
    ├── YES → Use Template 1: Two Pointers
@@ -1003,7 +967,7 @@
    │   ├── Additional constraints → Modify existing templates
    │   └── Novel problem type → Design custom solution
    └── NO → Re-analyze problem requirements
-</code></pre>
+</code></pre></div>
 <h3 id="template-selection-guide" tabindex="-1"><a class="header-anchor" href="#template-selection-guide"><span>Template Selection Guide</span></a></h3>
 <h4 id="when-to-use-each-template" tabindex="-1"><a class="header-anchor" href="#when-to-use-each-template"><span><strong>When to Use Each Template:</strong></span></a></h4>
 <p><strong>Template 1 - Two Pointers:</strong></p>
@@ -1228,7 +1192,7 @@
 </table>
 <h3 id="common-patterns-tricks" tabindex="-1"><a class="header-anchor" href="#common-patterns-tricks"><span>Common Patterns &amp; Tricks</span></a></h3>
 <h4 id="two-pointers-variations" tabindex="-1"><a class="header-anchor" href="#two-pointers-variations"><span><strong>Two Pointers Variations</strong></span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Basic two pointers</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Basic two pointers</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">is_palindrome_basic</span>(<span class="hljs-params">s</span>):
     left, right = <span class="hljs-number">0</span>, <span class="hljs-built_in">len</span>(s) - <span class="hljs-number">1</span>
     <span class="hljs-keyword">while</span> left &lt; right:
@@ -1266,9 +1230,9 @@
             right -= <span class="hljs-number">1</span>
         <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
     <span class="hljs-keyword">return</span> helper(<span class="hljs-number">0</span>, <span class="hljs-built_in">len</span>(s) - <span class="hljs-number">1</span>, <span class="hljs-literal">False</span>)
-</code></pre>
+</code></pre></div>
 <h4 id="center-expansion-patterns" tabindex="-1"><a class="header-anchor" href="#center-expansion-patterns"><span><strong>Center Expansion Patterns</strong></span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Standard center expansion</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Standard center expansion</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">expand_around_center</span>(<span class="hljs-params">s, left, right</span>):
     <span class="hljs-keyword">while</span> left &gt;= <span class="hljs-number">0</span> <span class="hljs-keyword">and</span> right &lt; <span class="hljs-built_in">len</span>(s) <span class="hljs-keyword">and</span> s[left] == s[right]:
         left -= <span class="hljs-number">1</span>
@@ -1301,9 +1265,9 @@
             left -= <span class="hljs-number">1</span>
             right += <span class="hljs-number">1</span>
     <span class="hljs-keyword">return</span> palindromes
-</code></pre>
+</code></pre></div>
 <h4 id="dp-optimization-patterns" tabindex="-1"><a class="header-anchor" href="#dp-optimization-patterns"><span><strong>DP Optimization Patterns</strong></span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Space optimization: 2D DP to 1D</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Space optimization: 2D DP to 1D</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">longest_palindromic_subsequence_1D</span>(<span class="hljs-params">s</span>):
     n = <span class="hljs-built_in">len</span>(s)
     dp = [<span class="hljs-number">1</span>] * n  <span class="hljs-comment"># dp[j] represents length for current i to j</span>
@@ -1340,7 +1304,7 @@
             is_palin[i][j] = (s[i] == s[j] <span class="hljs-keyword">and</span> is_palin[i+<span class="hljs-number">1</span>][j-<span class="hljs-number">1</span>])
     
     <span class="hljs-keyword">return</span> is_palin
-</code></pre>
+</code></pre></div>
 <h3 id="problem-solving-steps" tabindex="-1"><a class="header-anchor" href="#problem-solving-steps"><span>Problem-Solving Steps</span></a></h3>
 <ol>
 <li>
@@ -1463,7 +1427,7 @@
 <blockquote>
 <p>For each center (char or between chars), expand outward while palindrome holds.</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 5 - Longest Palindromic Substring</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 5 - Longest Palindromic Substring</span>
 <span class="hljs-comment">// IDEA: Expand around center — O(N^2) with O(1) space</span>
 <span class="hljs-comment">// time = O(N^2), space = O(1)</span>
 <span class="hljs-keyword">public</span> String <span class="hljs-title function_">longestPalindrome</span><span class="hljs-params">(String s)</span> {
@@ -1485,12 +1449,12 @@
     <span class="hljs-keyword">while</span> (l &gt;= <span class="hljs-number">0</span> &amp;&amp; r &lt; s.length() &amp;&amp; s.charAt(l) == s.charAt(r)) { l--; r++; }
     <span class="hljs-keyword">return</span> r - l - <span class="hljs-number">1</span>;
 }
-</code></pre>
+</code></pre></div>
 <h3 id="2-2-valid-palindrome-lc-125-two-pointers" tabindex="-1"><a class="header-anchor" href="#2-2-valid-palindrome-lc-125-two-pointers"><span>2-2) Valid Palindrome (LC 125) — Two Pointers</span></a></h3>
 <blockquote>
 <p>Skip non-alphanumeric characters and compare from both ends.</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 125 - Valid Palindrome</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 125 - Valid Palindrome</span>
 <span class="hljs-comment">// IDEA: Two pointers — skip non-alphanumeric, compare chars</span>
 <span class="hljs-comment">// time = O(N), space = O(1)</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">isPalindrome</span><span class="hljs-params">(String s)</span> {
@@ -1503,12 +1467,12 @@
     }
     <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
 }
-</code></pre>
+</code></pre></div>
 <h3 id="2-3-palindromic-substrings-lc-647-count-all-palindromes" tabindex="-1"><a class="header-anchor" href="#2-3-palindromic-substrings-lc-647-count-all-palindromes"><span>2-3) Palindromic Substrings (LC 647) — Count All Palindromes</span></a></h3>
 <blockquote>
 <p>Expand around each center; count every valid palindrome expansion.</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 647 - Palindromic Substrings</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 647 - Palindromic Substrings</span>
 <span class="hljs-comment">// IDEA: Expand around center — count all palindromes</span>
 <span class="hljs-comment">// time = O(N^2), space = O(1)</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">countSubstrings</span><span class="hljs-params">(String s)</span> {
@@ -1526,12 +1490,12 @@
     }
     <span class="hljs-keyword">return</span> cnt;
 }
-</code></pre>
+</code></pre></div>
 <h3 id="2-4-palindrome-number-lc-9-math-reversal" tabindex="-1"><a class="header-anchor" href="#2-4-palindrome-number-lc-9-math-reversal"><span>2-4) Palindrome Number (LC 9) — Math Reversal</span></a></h3>
 <blockquote>
 <p>Reverse second half of number and compare; negative or trailing-zero numbers are not palindromes.</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 9 - Palindrome Number</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 9 - Palindrome Number</span>
 <span class="hljs-comment">// IDEA: Reverse second half; compare with first half (avoids string conversion)</span>
 <span class="hljs-comment">// time = O(log N), space = O(1)</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">isPalindrome</span><span class="hljs-params">(<span class="hljs-type">int</span> x)</span> {
@@ -1540,12 +1504,12 @@
     <span class="hljs-keyword">while</span> (x &gt; rev) { rev = rev * <span class="hljs-number">10</span> + x % <span class="hljs-number">10</span>; x /= <span class="hljs-number">10</span>; }
     <span class="hljs-keyword">return</span> x == rev || x == rev / <span class="hljs-number">10</span>;  <span class="hljs-comment">// even/odd length</span>
 }
-</code></pre>
+</code></pre></div>
 <h3 id="2-5-valid-palindrome-ii-lc-680-two-pointers-with-one-skip" tabindex="-1"><a class="header-anchor" href="#2-5-valid-palindrome-ii-lc-680-two-pointers-with-one-skip"><span>2-5) Valid Palindrome II (LC 680) — Two Pointers with One Skip</span></a></h3>
 <blockquote>
 <p>Two pointers; when mismatch, try skipping left or right character and check rest.</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 680 - Valid Palindrome II</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 680 - Valid Palindrome II</span>
 <span class="hljs-comment">// IDEA: Two pointers — on mismatch, try skipping left or right character</span>
 <span class="hljs-comment">// time = O(N), space = O(1)</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">validPalindrome</span><span class="hljs-params">(String s)</span> {
@@ -1561,12 +1525,12 @@
     <span class="hljs-keyword">while</span> (l &lt; r) { <span class="hljs-keyword">if</span> (s.charAt(l++) != s.charAt(r--)) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>; }
     <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
 }
-</code></pre>
+</code></pre></div>
 <h3 id="2-6-palindrome-linked-list-lc-234-fast-slow-pointer-reverse" tabindex="-1"><a class="header-anchor" href="#2-6-palindrome-linked-list-lc-234-fast-slow-pointer-reverse"><span>2-6) Palindrome Linked List (LC 234) — Fast/Slow Pointer + Reverse</span></a></h3>
 <blockquote>
 <p>Find middle with slow/fast pointers; reverse second half; compare both halves.</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 234 - Palindrome Linked List</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 234 - Palindrome Linked List</span>
 <span class="hljs-comment">// IDEA: Find mid (slow/fast), reverse second half, compare with first half</span>
 <span class="hljs-comment">// time = O(N), space = O(1)</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">isPalindrome</span><span class="hljs-params">(ListNode head)</span> {
@@ -1582,12 +1546,12 @@
     <span class="hljs-keyword">while</span> (head != <span class="hljs-literal">null</span>) { <span class="hljs-type">ListNode</span> <span class="hljs-variable">next</span> <span class="hljs-operator">=</span> head.next; head.next = prev; prev = head; head = next; }
     <span class="hljs-keyword">return</span> prev;
 }
-</code></pre>
+</code></pre></div>
 <h3 id="2-7-longest-palindromic-subsequence-lc-516-interval-dp" tabindex="-1"><a class="header-anchor" href="#2-7-longest-palindromic-subsequence-lc-516-interval-dp"><span>2-7) Longest Palindromic Subsequence (LC 516) — Interval DP</span></a></h3>
 <blockquote>
 <p>dp[i][j] = LPS length in s[i…j]; match endpoints add 2, else take max of subproblems.</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 516 - Longest Palindromic Subsequence</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 516 - Longest Palindromic Subsequence</span>
 <span class="hljs-comment">// IDEA: Interval DP — dp[i][j] = LPS length of s[i..j]</span>
 <span class="hljs-comment">// time = O(N^2), space = O(N^2)</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">longestPalindromeSubseq</span><span class="hljs-params">(String s)</span> {
@@ -1603,12 +1567,12 @@
         }
     <span class="hljs-keyword">return</span> dp[<span class="hljs-number">0</span>][n-<span class="hljs-number">1</span>];
 }
-</code></pre>
+</code></pre></div>
 <h3 id="2-8-minimum-insertion-steps-to-make-a-string-palindrome-lc-1312-interval-dp" tabindex="-1"><a class="header-anchor" href="#2-8-minimum-insertion-steps-to-make-a-string-palindrome-lc-1312-interval-dp"><span>2-8) Minimum Insertion Steps to Make a String Palindrome (LC 1312) — Interval DP</span></a></h3>
 <blockquote>
 <p>Minimum insertions = N − LPS length; equivalent to inserting to make palindrome.</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 1312 - Minimum Insertion Steps to Make String Palindrome</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 1312 - Minimum Insertion Steps to Make String Palindrome</span>
 <span class="hljs-comment">// IDEA: minInsertions = s.length() - LPS(s)</span>
 <span class="hljs-comment">// time = O(N^2), space = O(N^2)</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">minInsertions</span><span class="hljs-params">(String s)</span> {
@@ -1623,12 +1587,12 @@
         }
     <span class="hljs-keyword">return</span> dp[<span class="hljs-number">0</span>][n-<span class="hljs-number">1</span>];
 }
-</code></pre>
+</code></pre></div>
 <h3 id="2-9-palindrome-partitioning-lc-131-backtracking" tabindex="-1"><a class="header-anchor" href="#2-9-palindrome-partitioning-lc-131-backtracking"><span>2-9) Palindrome Partitioning (LC 131) — Backtracking</span></a></h3>
 <blockquote>
 <p>DFS with backtracking; at each index try all palindromic prefixes as next partition.</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 131 - Palindrome Partitioning</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 131 - Palindrome Partitioning</span>
 <span class="hljs-comment">// IDEA: Backtracking — at each position try all palindromic prefixes; recurse on suffix</span>
 <span class="hljs-comment">// time = O(N * 2^N), space = O(N)</span>
 <span class="hljs-keyword">public</span> List&lt;List&lt;String&gt;&gt; <span class="hljs-title function_">partition</span><span class="hljs-params">(String s)</span> {
@@ -1652,12 +1616,12 @@
     <span class="hljs-keyword">while</span> (l &lt; r) <span class="hljs-keyword">if</span> (s.charAt(l++) != s.charAt(r--)) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
     <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
 }
-</code></pre>
+</code></pre></div>
 <h3 id="2-10-palindrome-partitioning-ii-lc-132-dp" tabindex="-1"><a class="header-anchor" href="#2-10-palindrome-partitioning-ii-lc-132-dp"><span>2-10) Palindrome Partitioning II (LC 132) — DP</span></a></h3>
 <blockquote>
 <p>dp[i] = minimum cuts for s[0…i]; precompute palindrome table or expand-around-center.</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 132 - Palindrome Partitioning II</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 132 - Palindrome Partitioning II</span>
 <span class="hljs-comment">// IDEA: DP — dp[i] = min cuts for s[0..i]; precompute isPalin table</span>
 <span class="hljs-comment">// time = O(N^2), space = O(N^2)</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">minCut</span><span class="hljs-params">(String s)</span> {
@@ -1675,12 +1639,12 @@
     }
     <span class="hljs-keyword">return</span> dp[n-<span class="hljs-number">1</span>];
 }
-</code></pre>
+</code></pre></div>
 <h3 id="2-11-find-longest-awesome-substring-lc-1542-bitmask-prefix-xor" tabindex="-1"><a class="header-anchor" href="#2-11-find-longest-awesome-substring-lc-1542-bitmask-prefix-xor"><span>2-11) Find Longest Awesome Substring (LC 1542) — Bitmask + Prefix XOR</span></a></h3>
 <blockquote>
 <p>Awesome = at most one character with odd frequency; track prefix XOR states.</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 1542 - Find Longest Awesome Substring</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 1542 - Find Longest Awesome Substring</span>
 <span class="hljs-comment">// IDEA: Prefix XOR bitmask; awesome substring iff XOR has at most 1 set bit</span>
 <span class="hljs-comment">// time = O(10 * N), space = O(1024)</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">longestAwesome</span><span class="hljs-params">(String s)</span> {
@@ -1699,7 +1663,7 @@
     }
     <span class="hljs-keyword">return</span> ans;
 }
-</code></pre>
+</code></pre></div>
 <ul>
 <li><strong>Tree Algorithms</strong>: Path problems, symmetric tree validation</li>
 </ul>

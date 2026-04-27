@@ -19,54 +19,18 @@
     }
   })();
   </script>
-  <script>document.addEventListener('DOMContentLoaded', function() {
-    document.querySelectorAll('pre code').forEach(function(codeEl) {
-      var pre = codeEl.parentElement;
-      var lang = '';
-      var cls = codeEl.className || '';
-      var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
-      if (m) lang = m[1];
-
-      // Add line numbers
-      var lines = codeEl.innerHTML.split('
-');
-      if (lines[lines.length - 1] === '') lines.pop();
-      var numbered = lines.map(function(line, i) {
-        return '<span class="hljs-ln-line"><span class="hljs-ln-n" data-line-number="' + (i + 1) + '"></span><span class="hljs-ln-code">' + line + '</span></span>';
-      }).join('
-');
-      codeEl.innerHTML = numbered;
-      codeEl.classList.add('hljs-ln');
-
-      var wrapper = document.createElement('div');
-      wrapper.className = 'code-block-wrapper';
-      pre.parentNode.insertBefore(wrapper, pre);
-      var header = document.createElement('div');
-      header.className = 'code-block-header';
-      if (lang) {
-        var label = document.createElement('span');
-        label.className = 'code-lang-label';
-        label.textContent = lang;
-        header.appendChild(label);
-      } else {
-        header.appendChild(document.createElement('span'));
-      }
-      var btn = document.createElement('button');
-      btn.className = 'copy-btn';
-      btn.textContent = 'Copy';
-      btn.addEventListener('click', function() {
-        var text = Array.from(codeEl.querySelectorAll('.hljs-ln-code')).map(function(el) { return el.textContent; }).join('
-');
-        navigator.clipboard.writeText(text).then(function() {
-          btn.textContent = 'Copied!';
-          btn.classList.add('copied');
-          setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
-        });
-      });
-      header.appendChild(btn);
-      wrapper.appendChild(header);
-      wrapper.appendChild(pre);
+  <script>
+  function copyCode(btn) {
+    var pre = btn.closest('.code-block-wrapper').querySelector('pre');
+    var text = pre ? pre.innerText : '';
+    navigator.clipboard.writeText(text).then(function() {
+      btn.textContent = 'Copied!';
+      btn.classList.add('copied');
+      setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
     });
+  }
+  </script>
+  <script>document.addEventListener('DOMContentLoaded', function() {
     document.querySelectorAll('table').forEach(function(table) {
       if (!table.parentElement.classList.contains('table-wrap')) {
         var wrapper = document.createElement('div');
@@ -276,7 +240,7 @@
 <li><strong>Proof</strong>: Element at index i has k/i chance to enter, k/(i+1) to stay → k/n final probability</li>
 </ul>
 <p><strong>Template 1: Single Random Element (k=1)</strong></p>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 382 - Linked List Random Node</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 382 - Linked List Random Node</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span> {
     <span class="hljs-keyword">private</span> ListNode head;
     <span class="hljs-keyword">private</span> Random random;
@@ -307,8 +271,8 @@
         <span class="hljs-keyword">return</span> result;
     }
 }
-</code></pre>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python implementation</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python implementation</span>
 <span class="hljs-keyword">import</span> random
 
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
@@ -329,9 +293,9 @@
             cur = cur.<span class="hljs-built_in">next</span>
 
         <span class="hljs-keyword">return</span> result
-</code></pre>
+</code></pre></div>
 <p><strong>Template 2: k Random Elements</strong></p>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 398 - Random Pick Index (variant: pick from array with duplicates)</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 398 - Random Pick Index (variant: pick from array with duplicates)</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span> {
     <span class="hljs-keyword">private</span> <span class="hljs-type">int</span>[] nums;
     <span class="hljs-keyword">private</span> Random random;
@@ -361,9 +325,9 @@
         <span class="hljs-keyword">return</span> result;
     }
 }
-</code></pre>
+</code></pre></div>
 <p><strong>Template 3: General k-Reservoir Sampling</strong></p>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">class</span> <span class="hljs-title class_">ReservoirSampling</span> {
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">class</span> <span class="hljs-title class_">ReservoirSampling</span> {
     <span class="hljs-keyword">private</span> <span class="hljs-type">int</span> k;
     <span class="hljs-keyword">private</span> <span class="hljs-type">int</span>[] reservoir;
     <span class="hljs-keyword">private</span> Random random;
@@ -399,8 +363,8 @@
         <span class="hljs-keyword">return</span> Arrays.copyOf(reservoir, Math.min(k, count));
     }
 }
-</code></pre>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python k-reservoir sampling</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python k-reservoir sampling</span>
 <span class="hljs-keyword">import</span> random
 
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">ReservoirSampling</span>:
@@ -422,7 +386,7 @@
 
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">get_sample</span>(<span class="hljs-params">self</span>) -&gt; <span class="hljs-built_in">list</span>:
         <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.reservoir[:]
-</code></pre>
+</code></pre></div>
 <p><strong>Key Insight:</strong> Probability math ensures uniform distribution</p>
 <ul>
 <li>Element i enters with probability k/i</li>
@@ -439,7 +403,7 @@
 <li><strong>Two-phase</strong>: (1) Find candidates, (2) Verify counts</li>
 </ul>
 <p><strong>Template 1: Standard Majority Element (&gt; n/2)</strong></p>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 169 - Majority Element</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 169 - Majority Element</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span> {
     <span class="hljs-comment">/**
      * time = O(N)
@@ -466,8 +430,8 @@
         <span class="hljs-keyword">return</span> candidate;
     }
 }
-</code></pre>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python implementation</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python implementation</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">majorityElement</span>(<span class="hljs-params">nums: <span class="hljs-built_in">list</span>[<span class="hljs-built_in">int</span>]</span>) -&gt; <span class="hljs-built_in">int</span>:
     <span class="hljs-string">&quot;&quot;&quot;Time: O(n), Space: O(1)&quot;&quot;&quot;</span>
     candidate = <span class="hljs-literal">None</span>
@@ -484,9 +448,9 @@
             count -= <span class="hljs-number">1</span>
 
     <span class="hljs-keyword">return</span> candidate
-</code></pre>
+</code></pre></div>
 <p><strong>Template 2: Generalized - Elements Appearing &gt; n/3 Times (LC 229)</strong></p>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 229 - Majority Element II (&gt; n/3)</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 229 - Majority Element II (&gt; n/3)</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span> {
     <span class="hljs-comment">/**
      * time = O(N)
@@ -531,8 +495,8 @@
         <span class="hljs-keyword">return</span> result;
     }
 }
-</code></pre>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - Majority Element II</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - Majority Element II</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">majorityElement</span>(<span class="hljs-params">nums: <span class="hljs-built_in">list</span>[<span class="hljs-built_in">int</span>]</span>) -&gt; <span class="hljs-built_in">list</span>[<span class="hljs-built_in">int</span>]:
     <span class="hljs-string">&quot;&quot;&quot;Time: O(n), Space: O(1)&quot;&quot;&quot;</span>
     <span class="hljs-comment"># Phase 1: Find up to 2 candidates</span>
@@ -559,9 +523,9 @@
             result.append(candidate)
 
     <span class="hljs-keyword">return</span> result
-</code></pre>
+</code></pre></div>
 <p><strong>Generalized Template: Top k-1 Elements (&gt; n/k)</strong></p>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">class</span> <span class="hljs-title class_">BoyerMooreGeneralized</span> {
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">class</span> <span class="hljs-title class_">BoyerMooreGeneralized</span> {
     <span class="hljs-comment">/**
      * Find elements appearing &gt; n/k times
      * time = O(N * k)
@@ -612,7 +576,7 @@
         <span class="hljs-keyword">return</span> result;
     }
 }
-</code></pre>
+</code></pre></div>
 <hr>
 <h3 id="1-3-count-min-sketch-frequency-estimation" tabindex="-1"><a class="header-anchor" href="#1-3-count-min-sketch-frequency-estimation"><span>1-3) Count-Min Sketch - Frequency Estimation</span></a></h3>
 <p><strong>Algorithm Overview:</strong></p>
@@ -624,7 +588,7 @@
 <li><strong>Parameters</strong>: w = ⌈e/ε⌉, d = ⌈ln(1/δ)⌉</li>
 </ul>
 <p><strong>Template:</strong></p>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">class</span> <span class="hljs-title class_">CountMinSketch</span> {
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">class</span> <span class="hljs-title class_">CountMinSketch</span> {
     <span class="hljs-keyword">private</span> <span class="hljs-type">int</span>[][] count; <span class="hljs-comment">// d × w matrix</span>
     <span class="hljs-keyword">private</span> <span class="hljs-type">int</span> d; <span class="hljs-comment">// Number of hash functions</span>
     <span class="hljs-keyword">private</span> <span class="hljs-type">int</span> w; <span class="hljs-comment">// Width of each row</span>
@@ -691,8 +655,8 @@
         <span class="hljs-keyword">return</span> d * w; <span class="hljs-comment">// Number of counters</span>
     }
 }
-</code></pre>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python Count-Min Sketch</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python Count-Min Sketch</span>
 <span class="hljs-keyword">import</span> math
 <span class="hljs-keyword">import</span> random
 
@@ -725,9 +689,9 @@
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">estimate_count</span>(<span class="hljs-params">self, item: <span class="hljs-built_in">int</span></span>) -&gt; <span class="hljs-built_in">int</span>:
         <span class="hljs-string">&quot;&quot;&quot;Time: O(d), Returns estimated frequency&quot;&quot;&quot;</span>
         <span class="hljs-keyword">return</span> <span class="hljs-built_in">min</span>(<span class="hljs-variable language_">self</span>.count[i][<span class="hljs-variable language_">self</span>._<span class="hljs-built_in">hash</span>(item, i)] <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-variable language_">self</span>.d))
-</code></pre>
+</code></pre></div>
 <p><strong>Usage Example:</strong></p>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Track top-k frequent elements in stream</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Track top-k frequent elements in stream</span>
 <span class="hljs-type">CountMinSketch</span> <span class="hljs-variable">cms</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">CountMinSketch</span>(<span class="hljs-number">0.01</span>, <span class="hljs-number">0.01</span>); <span class="hljs-comment">// 1% error, 99% confidence</span>
 
 <span class="hljs-comment">// Process stream</span>
@@ -737,7 +701,7 @@
 
 <span class="hljs-comment">// Query frequencies</span>
 <span class="hljs-type">int</span> <span class="hljs-variable">freq</span> <span class="hljs-operator">=</span> cms.estimateCount(<span class="hljs-number">42</span>); <span class="hljs-comment">// Estimated frequency of item 42</span>
-</code></pre>
+</code></pre></div>
 <hr>
 <h3 id="1-4-bloom-filter-membership-testing" tabindex="-1"><a class="header-anchor" href="#1-4-bloom-filter-membership-testing"><span>1-4) Bloom Filter - Membership Testing</span></a></h3>
 <p><strong>Algorithm Overview:</strong></p>
@@ -749,7 +713,7 @@
 <li><strong>Optimal k</strong>: (m/n) × ln(2)</li>
 </ul>
 <p><strong>Template:</strong></p>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">class</span> <span class="hljs-title class_">BloomFilter</span> {
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">class</span> <span class="hljs-title class_">BloomFilter</span> {
     <span class="hljs-keyword">private</span> BitSet bitSet;
     <span class="hljs-keyword">private</span> <span class="hljs-type">int</span> m; <span class="hljs-comment">// Bit array size</span>
     <span class="hljs-keyword">private</span> <span class="hljs-type">int</span> k; <span class="hljs-comment">// Number of hash functions</span>
@@ -823,8 +787,8 @@
         <span class="hljs-keyword">return</span> Math.pow(<span class="hljs-number">1</span> - Math.exp(-k * insertedElements / (<span class="hljs-type">double</span>) m), k);
     }
 }
-</code></pre>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python Bloom Filter</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python Bloom Filter</span>
 <span class="hljs-keyword">import</span> math
 <span class="hljs-keyword">import</span> mmh3  <span class="hljs-comment"># MurmurHash3 (install: pip install mmh3)</span>
 <span class="hljs-keyword">from</span> bitarray <span class="hljs-keyword">import</span> bitarray  <span class="hljs-comment"># (install: pip install bitarray)</span>
@@ -859,9 +823,9 @@
             <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> <span class="hljs-variable language_">self</span>.bit_array[index]:
                 <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>  <span class="hljs-comment"># Definitely not in set</span>
         <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>  <span class="hljs-comment"># Might be in set</span>
-</code></pre>
+</code></pre></div>
 <p><strong>Usage Example:</strong></p>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Check if URL has been visited</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Check if URL has been visited</span>
 <span class="hljs-type">BloomFilter</span> <span class="hljs-variable">bf</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">BloomFilter</span>(<span class="hljs-number">10000</span>, <span class="hljs-number">0.01</span>); <span class="hljs-comment">// 10k URLs, 1% false positive</span>
 
 <span class="hljs-comment">// Add URLs</span>
@@ -876,7 +840,7 @@ bf.add(<span class="hljs-string">&quot;https://google.com&quot;</span>);
 <span class="hljs-keyword">if</span> (!bf.mightContain(<span class="hljs-string">&quot;https://new-site.com&quot;</span>)) {
     <span class="hljs-comment">// Definitely NOT visited (100% sure)</span>
 }
-</code></pre>
+</code></pre></div>
 <hr>
 <h2 id="2-leetcode-problems-by-pattern" tabindex="-1"><a class="header-anchor" href="#2-leetcode-problems-by-pattern"><span>2) LeetCode Problems by Pattern</span></a></h2>
 <h3 id="2-1-reservoir-sampling" tabindex="-1"><a class="header-anchor" href="#2-1-reservoir-sampling"><span>2-1) Reservoir Sampling</span></a></h3>
@@ -1041,7 +1005,7 @@ bf.add(<span class="hljs-string">&quot;https://google.com&quot;</span>);
 <ol>
 <li>
 <p><strong>Wrong Probability Calculation</strong></p>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// ❌ WRONG: This is NOT uniform</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// ❌ WRONG: This is NOT uniform</span>
 <span class="hljs-keyword">if</span> (random.nextInt(i + <span class="hljs-number">1</span>) &lt; k) { <span class="hljs-comment">// Incorrect for k=1</span>
     reservoir[...] = element;
 }
@@ -1050,29 +1014,29 @@ bf.add(<span class="hljs-string">&quot;https://google.com&quot;</span>);
 <span class="hljs-keyword">if</span> (random.nextInt(count) == <span class="hljs-number">0</span>) {
     result = element;
 }
-</code></pre>
+</code></pre></div>
 </li>
 <li>
 <p><strong>Forgetting to Update Count</strong></p>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// ❌ WRONG: Count not incremented</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// ❌ WRONG: Count not incremented</span>
 <span class="hljs-keyword">while</span> (cur != <span class="hljs-literal">null</span>) {
     <span class="hljs-keyword">if</span> (random.nextInt(count) == <span class="hljs-number">0</span>) result = cur.val;
     cur = cur.next; <span class="hljs-comment">// Forgot: count++</span>
 }
-</code></pre>
+</code></pre></div>
 </li>
 <li>
 <p><strong>Off-by-One in Random Range</strong></p>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// ❌ WRONG: random.nextInt(count + 1) for decision</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// ❌ WRONG: random.nextInt(count + 1) for decision</span>
 <span class="hljs-comment">// ✅ CORRECT: random.nextInt(count) for k=1</span>
-</code></pre>
+</code></pre></div>
 </li>
 </ol>
 <h4 id="boyer-moore" tabindex="-1"><a class="header-anchor" href="#boyer-moore"><span>Boyer-Moore:</span></a></h4>
 <ol>
 <li>
 <p><strong>Missing Verification Phase</strong></p>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// ❌ WRONG: Assuming candidate is always majority</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// ❌ WRONG: Assuming candidate is always majority</span>
 <span class="hljs-keyword">return</span> candidate; <span class="hljs-comment">// What if no majority exists?</span>
 
 <span class="hljs-comment">// ✅ CORRECT: Verify count</span>
@@ -1081,11 +1045,11 @@ bf.add(<span class="hljs-string">&quot;https://google.com&quot;</span>);
     <span class="hljs-keyword">if</span> (num == candidate) actualCount++;
 }
 <span class="hljs-keyword">return</span> actualCount &gt; nums.length / <span class="hljs-number">2</span> ? candidate : -<span class="hljs-number">1</span>;
-</code></pre>
+</code></pre></div>
 </li>
 <li>
 <p><strong>Wrong Cancellation Logic</strong></p>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// ❌ WRONG: Only decrement candidate&#x27;s count</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// ❌ WRONG: Only decrement candidate&#x27;s count</span>
 <span class="hljs-keyword">if</span> (num != candidate) count--;
 
 <span class="hljs-comment">// ✅ CORRECT: Check count == 0 to reset</span>
@@ -1093,28 +1057,28 @@ bf.add(<span class="hljs-string">&quot;https://google.com&quot;</span>);
     candidate = num;
     count = <span class="hljs-number">1</span>;
 }
-</code></pre>
+</code></pre></div>
 </li>
 <li>
 <p><strong>For LC 229: Not Handling Same Candidates</strong></p>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// ❌ WRONG: candidate1 and candidate2 can be same initially</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// ❌ WRONG: candidate1 and candidate2 can be same initially</span>
 
 <span class="hljs-comment">// ✅ CORRECT: Check candidate1 first, then candidate2</span>
 <span class="hljs-keyword">if</span> (num == candidate1) count1++;
 <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (num == candidate2) count2++;
-</code></pre>
+</code></pre></div>
 </li>
 </ol>
 <h4 id="count-min-sketch" tabindex="-1"><a class="header-anchor" href="#count-min-sketch"><span>Count-Min Sketch:</span></a></h4>
 <ol>
 <li>
 <p><strong>Using Max Instead of Min</strong></p>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// ❌ WRONG: Taking maximum (gives wrong estimate)</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// ❌ WRONG: Taking maximum (gives wrong estimate)</span>
 <span class="hljs-type">int</span> <span class="hljs-variable">max</span> <span class="hljs-operator">=</span> Arrays.stream(counts).max().getAsInt();
 
 <span class="hljs-comment">// ✅ CORRECT: Taking minimum (minimizes overestimation)</span>
 <span class="hljs-type">int</span> <span class="hljs-variable">min</span> <span class="hljs-operator">=</span> Arrays.stream(counts).min().getAsInt();
-</code></pre>
+</code></pre></div>
 </li>
 <li>
 <p><strong>Insufficient Hash Functions</strong></p>
@@ -1128,7 +1092,7 @@ bf.add(<span class="hljs-string">&quot;https://google.com&quot;</span>);
 <ol>
 <li>
 <p><strong>Resetting Bits on Delete</strong></p>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// ❌ WRONG: Bloom filters don&#x27;t support deletion</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// ❌ WRONG: Bloom filters don&#x27;t support deletion</span>
 <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">delete</span><span class="hljs-params">(String item)</span> {
     <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; k; i++) {
         bitSet.clear(hash(item, i)); <span class="hljs-comment">// Breaks other items!</span>
@@ -1136,7 +1100,7 @@ bf.add(<span class="hljs-string">&quot;https://google.com&quot;</span>);
 }
 
 <span class="hljs-comment">// ✅ CORRECT: Use Counting Bloom Filter for deletions</span>
-</code></pre>
+</code></pre></div>
 </li>
 <li>
 <p><strong>Ignoring False Positive Rate</strong></p>
@@ -1199,7 +1163,7 @@ bf.add(<span class="hljs-string">&quot;https://google.com&quot;</span>);
 <li><strong>“Have you seen before?”</strong> → Bloom Filter</li>
 </ol>
 <h4 id="problem-solving-framework" tabindex="-1"><a class="header-anchor" href="#problem-solving-framework"><span>Problem-Solving Framework:</span></a></h4>
-<pre><code class="hljs">1. Identify constraint: Memory vs Accuracy
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">1. Identify constraint: Memory vs Accuracy
    ├─ Exact answer needed? → Reservoir Sampling or Boyer-Moore
    └─ Approximate OK? → Count-Min Sketch or Bloom Filter
 
@@ -1212,7 +1176,7 @@ bf.add(<span class="hljs-string">&quot;https://google.com&quot;</span>);
 3. Consider space-time tradeoff:
    ├─ More space → Better accuracy
    └─ Less space → More approximation error
-</code></pre>
+</code></pre></div>
 <h3 id="complexity-analysis" tabindex="-1"><a class="header-anchor" href="#complexity-analysis"><span>📊 Complexity Analysis</span></a></h3>
 <table>
 <thead>
@@ -1340,7 +1304,7 @@ bf.add(<span class="hljs-string">&quot;https://google.com&quot;</span>);
 <hr>
 <h2 id="5-complete-code-examples" tabindex="-1"><a class="header-anchor" href="#5-complete-code-examples"><span>5) Complete Code Examples</span></a></h2>
 <h3 id="example-1-weighted-reservoir-sampling-lc-528" tabindex="-1"><a class="header-anchor" href="#example-1-weighted-reservoir-sampling-lc-528"><span>Example 1: Weighted Reservoir Sampling (LC 528)</span></a></h3>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 528 - Random Pick with Weight</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 528 - Random Pick with Weight</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span> {
     <span class="hljs-keyword">private</span> <span class="hljs-type">int</span>[] prefixSum;
     <span class="hljs-keyword">private</span> Random random;
@@ -1377,9 +1341,9 @@ bf.add(<span class="hljs-string">&quot;https://google.com&quot;</span>);
         <span class="hljs-keyword">return</span> left;
     }
 }
-</code></pre>
+</code></pre></div>
 <h3 id="example-2-stream-median-related-problem-lc-295" tabindex="-1"><a class="header-anchor" href="#example-2-stream-median-related-problem-lc-295"><span>Example 2: Stream Median (Related Problem LC 295)</span></a></h3>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 295 - Find Median from Data Stream</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 295 - Find Median from Data Stream</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">MedianFinder</span> {
     <span class="hljs-keyword">private</span> PriorityQueue&lt;Integer&gt; maxHeap; <span class="hljs-comment">// Lower half</span>
     <span class="hljs-keyword">private</span> PriorityQueue&lt;Integer&gt; minHeap; <span class="hljs-comment">// Upper half</span>
@@ -1417,7 +1381,7 @@ bf.add(<span class="hljs-string">&quot;https://google.com&quot;</span>);
         <span class="hljs-keyword">return</span> (maxHeap.peek() + minHeap.peek()) / <span class="hljs-number">2.0</span>;
     }
 }
-</code></pre>
+</code></pre></div>
 <hr>
 <h2 id="summary" tabindex="-1"><a class="header-anchor" href="#summary"><span>Summary</span></a></h2>
 <p><strong>Core Streaming Algorithms:</strong></p>

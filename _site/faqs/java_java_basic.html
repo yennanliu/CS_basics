@@ -19,54 +19,18 @@
     }
   })();
   </script>
-  <script>document.addEventListener('DOMContentLoaded', function() {
-    document.querySelectorAll('pre code').forEach(function(codeEl) {
-      var pre = codeEl.parentElement;
-      var lang = '';
-      var cls = codeEl.className || '';
-      var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
-      if (m) lang = m[1];
-
-      // Add line numbers
-      var lines = codeEl.innerHTML.split('
-');
-      if (lines[lines.length - 1] === '') lines.pop();
-      var numbered = lines.map(function(line, i) {
-        return '<span class="hljs-ln-line"><span class="hljs-ln-n" data-line-number="' + (i + 1) + '"></span><span class="hljs-ln-code">' + line + '</span></span>';
-      }).join('
-');
-      codeEl.innerHTML = numbered;
-      codeEl.classList.add('hljs-ln');
-
-      var wrapper = document.createElement('div');
-      wrapper.className = 'code-block-wrapper';
-      pre.parentNode.insertBefore(wrapper, pre);
-      var header = document.createElement('div');
-      header.className = 'code-block-header';
-      if (lang) {
-        var label = document.createElement('span');
-        label.className = 'code-lang-label';
-        label.textContent = lang;
-        header.appendChild(label);
-      } else {
-        header.appendChild(document.createElement('span'));
-      }
-      var btn = document.createElement('button');
-      btn.className = 'copy-btn';
-      btn.textContent = 'Copy';
-      btn.addEventListener('click', function() {
-        var text = Array.from(codeEl.querySelectorAll('.hljs-ln-code')).map(function(el) { return el.textContent; }).join('
-');
-        navigator.clipboard.writeText(text).then(function() {
-          btn.textContent = 'Copied!';
-          btn.classList.add('copied');
-          setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
-        });
-      });
-      header.appendChild(btn);
-      wrapper.appendChild(header);
-      wrapper.appendChild(pre);
+  <script>
+  function copyCode(btn) {
+    var pre = btn.closest('.code-block-wrapper').querySelector('pre');
+    var text = pre ? pre.innerText : '';
+    navigator.clipboard.writeText(text).then(function() {
+      btn.textContent = 'Copied!';
+      btn.classList.add('copied');
+      setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
     });
+  }
+  </script>
+  <script>document.addEventListener('DOMContentLoaded', function() {
     document.querySelectorAll('table').forEach(function(table) {
       if (!table.parentElement.classList.contains('table-wrap')) {
         var wrapper = document.createElement('div');
@@ -157,10 +121,10 @@
 <li>a++ : assign a first, then do a += 1</li>
 <li>++a : do a += 1 first, then assign value</li>
 </ul>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 b = a++;
 b = ++a;
-</code></pre>
+</code></pre></div>
 <h3 id="java-basic-data-type-vs-reference-data-type" tabindex="-1"><a class="header-anchor" href="#java-basic-data-type-vs-reference-data-type"><span>Java basic data type (基本數據類型) VS reference data type (引用數據類型) **** ?</span></a></h3>
 <img src="../doc/pic/basic_ref_data_type.jpeg" width="500" height="300">
 <ul>
@@ -197,12 +161,12 @@ b = ++a;
 <p>Note : some reference class’ equals method already overriden (e.g. String), so its equals method already compare attr</p>
 </li>
 </ul>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">equals</span><span class="hljs-params">(Object obj)</span> {
  <span class="hljs-keyword">return</span> (<span class="hljs-built_in">this</span> == obj);
 }
-</code></pre>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 
 <span class="hljs-comment">// new Class : use a new storage in heap (內存)</span>
 <span class="hljs-type">String</span> <span class="hljs-variable">a</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">String</span>(<span class="hljs-string">&quot;123&quot;</span>);
@@ -214,7 +178,7 @@ System.out.println(a==b); <span class="hljs-comment">// false ( &quot;new&quot; 
 <span class="hljs-type">String</span> <span class="hljs-variable">c</span> <span class="hljs-operator">=</span> b;
 
 System.out.println(c==b); <span class="hljs-comment">// true ( c will fetch from constant pool (常量池))</span>
-</code></pre>
+</code></pre></div>
 </li>
 <li>
 <p><a href="https://blog.csdn.net/weixin_45658089/article/details/120248191">https://blog.csdn.net/weixin_45658089/article/details/120248191</a></p>
@@ -228,15 +192,15 @@ System.out.println(c==b); <span class="hljs-comment">// true ( c will fetch from
 <li>boxing : basic data type -&gt; reference type</li>
 <li>unboxing : reference type -&gt; basic data type</li>
 </ul>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-type">Integer</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span>; <span class="hljs-comment">// boxing</span>
 <span class="hljs-type">int</span> <span class="hljs-variable">n</span> <span class="hljs-operator">=</span> i; <span class="hljs-comment">// unboxing</span>
-</code></pre>
+</code></pre></div>
 <h3 id="string-constant-pool" tabindex="-1"><a class="header-anchor" href="#string-constant-pool"><span>String constant pool ?</span></a></h3>
 <ul>
 <li>Avoid repeatedly create same String, for better performance</li>
 </ul>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 
 <span class="hljs-comment">// 在堆中创建字符串对象”ab“</span>
 <span class="hljs-comment">// 将字符串对象”ab“的引用保存在字符串常量池中</span>
@@ -246,7 +210,7 @@ System.out.println(c==b); <span class="hljs-comment">// true ( c will fetch from
 <span class="hljs-type">String</span> <span class="hljs-variable">bb</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;ab&quot;</span>;
 
 System.out.println(aa==bb);<span class="hljs-comment">// true</span>
-</code></pre>
+</code></pre></div>
 <h3 id="member-variable-vs-local-variable" tabindex="-1"><a class="header-anchor" href="#member-variable-vs-local-variable"><span>成員變量 (member variable) VS 局部變量 (local variable) ?</span></a></h3>
 <ul>
 <li>
@@ -281,7 +245,7 @@ System.out.println(aa==bb);<span class="hljs-comment">// true</span>
 </ul>
 </li>
 </ul>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">VariableExample</span> {
 
     <span class="hljs-comment">// 成员变量</span>
@@ -313,7 +277,7 @@ System.out.println(aa==bb);<span class="hljs-comment">// true</span>
     }
 }
 
-</code></pre>
+</code></pre></div>
 <h3 id="what-static-variable-for" tabindex="-1"><a class="header-anchor" href="#what-static-variable-for"><span>What static variable for ?</span></a></h3>
 <h3 id="static-method-vs-instance-method" tabindex="-1"><a class="header-anchor" href="#static-method-vs-instance-method"><span>static method VS instance method ?</span></a></h3>
 <h3 id="overwrite-vs-overload" tabindex="-1"><a class="header-anchor" href="#overwrite-vs-overload"><span>Overwrite VS overload ?</span></a></h3>
@@ -395,13 +359,13 @@ System.out.println(aa==bb);<span class="hljs-comment">// true</span>
 </ul>
 <h3 id="arraylist-vs-linkedlist" tabindex="-1"><a class="header-anchor" href="#arraylist-vs-linkedlist"><span>ArrayList VS LinkedList ?</span></a></h3>
 <p>ArrayList</p>
-<pre><code>- 優點：ArrayList 是實現了基於動態數組的資料結構，因為位址連續，一旦資料儲存好了，查詢操作效率會比較高（在記憶體裡是連著放的）。
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code>- 優點：ArrayList 是實現了基於動態數組的資料結構，因為位址連續，一旦資料儲存好了，查詢操作效率會比較高（在記憶體裡是連著放的）。
 - 缺點：因為位址連續，ArrayList 要移動數據，所以插入和刪除操作效率比較低。
-</code></pre>
+</code></pre></div>
 <p>LinkedList</p>
-<pre><code>- 優點：LinkedList 是基於鍊錶的資料結構，位址是任意的，所以在開闢記憶體空間的時候不需要等一個連續的位址。 對於新增和刪除操作，LinkedList 比較佔優勢。 LinkedList 適用於要頭尾操作或插入指定位置的場景。
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code>- 優點：LinkedList 是基於鍊錶的資料結構，位址是任意的，所以在開闢記憶體空間的時候不需要等一個連續的位址。 對於新增和刪除操作，LinkedList 比較佔優勢。 LinkedList 適用於要頭尾操作或插入指定位置的場景。
 - 缺點：因為 LinkedList 要移動指針，所以查詢操作效能比較低。
-</code></pre>
+</code></pre></div>
 <p>適用場景分析</p>
 <ul>
 <li>當需要對資料進行對隨機存取的時候，選用 ArrayList。</li>
@@ -480,7 +444,7 @@ System.out.println(aa==bb);<span class="hljs-comment">// true</span>
 <li><a href="https://matthung0807.blogspot.com/2018/02/java-throw-throws.html">https://matthung0807.blogspot.com/2018/02/java-throw-throws.html</a></li>
 <li><a href="https://javabetter.cn/sidebar/sanfene/javase.html#_40-%E5%BC%82%E5%B8%B8%E7%9A%84%E5%A4%84%E7%90%86%E6%96%B9%E5%BC%8F">https://javabetter.cn/sidebar/sanfene/javase.html#_40-异常的处理方式</a></li>
 </ul>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-keyword">public</span> String <span class="hljs-title function_">getUserName</span><span class="hljs-params">(<span class="hljs-type">int</span> userId)</span> <span class="hljs-keyword">throws</span> SQLException { <span class="hljs-comment">// 會將SQLException拋給caller（就是呼叫這個方法的程式）</span>
    
    <span class="hljs-type">String</span> <span class="hljs-variable">userName</span> <span class="hljs-operator">=</span> userDao.getUserName(userId);
@@ -489,7 +453,7 @@ System.out.println(aa==bb);<span class="hljs-comment">// true</span>
    }
 
 }
-</code></pre>
+</code></pre></div>
 
       </div>
       <div class="cheatsheet-footer">

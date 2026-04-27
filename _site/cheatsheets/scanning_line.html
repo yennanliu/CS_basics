@@ -19,54 +19,18 @@
     }
   })();
   </script>
-  <script>document.addEventListener('DOMContentLoaded', function() {
-    document.querySelectorAll('pre code').forEach(function(codeEl) {
-      var pre = codeEl.parentElement;
-      var lang = '';
-      var cls = codeEl.className || '';
-      var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
-      if (m) lang = m[1];
-
-      // Add line numbers
-      var lines = codeEl.innerHTML.split('
-');
-      if (lines[lines.length - 1] === '') lines.pop();
-      var numbered = lines.map(function(line, i) {
-        return '<span class="hljs-ln-line"><span class="hljs-ln-n" data-line-number="' + (i + 1) + '"></span><span class="hljs-ln-code">' + line + '</span></span>';
-      }).join('
-');
-      codeEl.innerHTML = numbered;
-      codeEl.classList.add('hljs-ln');
-
-      var wrapper = document.createElement('div');
-      wrapper.className = 'code-block-wrapper';
-      pre.parentNode.insertBefore(wrapper, pre);
-      var header = document.createElement('div');
-      header.className = 'code-block-header';
-      if (lang) {
-        var label = document.createElement('span');
-        label.className = 'code-lang-label';
-        label.textContent = lang;
-        header.appendChild(label);
-      } else {
-        header.appendChild(document.createElement('span'));
-      }
-      var btn = document.createElement('button');
-      btn.className = 'copy-btn';
-      btn.textContent = 'Copy';
-      btn.addEventListener('click', function() {
-        var text = Array.from(codeEl.querySelectorAll('.hljs-ln-code')).map(function(el) { return el.textContent; }).join('
-');
-        navigator.clipboard.writeText(text).then(function() {
-          btn.textContent = 'Copied!';
-          btn.classList.add('copied');
-          setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
-        });
-      });
-      header.appendChild(btn);
-      wrapper.appendChild(header);
-      wrapper.appendChild(pre);
+  <script>
+  function copyCode(btn) {
+    var pre = btn.closest('.code-block-wrapper').querySelector('pre');
+    var text = pre ? pre.innerText : '';
+    navigator.clipboard.writeText(text).then(function() {
+      btn.textContent = 'Copied!';
+      btn.classList.add('copied');
+      setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
     });
+  }
+  </script>
+  <script>document.addEventListener('DOMContentLoaded', function() {
     document.querySelectorAll('table').forEach(function(table) {
       if (!table.parentElement.classList.contains('table-wrap')) {
         var wrapper = document.createElement('div');
@@ -263,7 +227,7 @@
 </tbody>
 </table>
 <h3 id="template-1-basic-interval-overlap" tabindex="-1"><a class="header-anchor" href="#template-1-basic-interval-overlap"><span>Template 1: Basic Interval Overlap</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - Count maximum overlapping intervals</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - Count maximum overlapping intervals</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">maxOverlap</span>(<span class="hljs-params">intervals</span>):
     events = []
     
@@ -305,8 +269,8 @@
             max_position = time
     
     <span class="hljs-keyword">return</span> max_overlap, max_position
-</code></pre>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java - Maximum interval overlap</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java - Maximum interval overlap</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">maxOverlap</span><span class="hljs-params">(<span class="hljs-type">int</span>[][] intervals)</span> {
     List&lt;<span class="hljs-type">int</span>[]&gt; events = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();
     
@@ -333,9 +297,9 @@
     
     <span class="hljs-keyword">return</span> maxOverlap;
 }
-</code></pre>
+</code></pre></div>
 <h3 id="template-2-weighted-interval-overlap" tabindex="-1"><a class="header-anchor" href="#template-2-weighted-interval-overlap"><span>Template 2: Weighted Interval Overlap</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - Sum of overlapping values (e.g., brightness)</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - Sum of overlapping values (e.g., brightness)</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">maxWeightedOverlap</span>(<span class="hljs-params">weighted_intervals</span>):
     events = []
     
@@ -376,8 +340,8 @@
         positions_weights[pos] = current_weight
     
     <span class="hljs-keyword">return</span> positions_weights
-</code></pre>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java - Weighted intervals</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java - Weighted intervals</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">maxWeightedOverlap</span><span class="hljs-params">(<span class="hljs-type">int</span>[][] weightedIntervals)</span> {
     <span class="hljs-comment">// weightedIntervals: [start, end, weight]</span>
     TreeMap&lt;Integer, Integer&gt; events = <span class="hljs-keyword">new</span> <span class="hljs-title class_">TreeMap</span>&lt;&gt;();
@@ -399,9 +363,9 @@
     
     <span class="hljs-keyword">return</span> maxWeight;
 }
-</code></pre>
+</code></pre></div>
 <h3 id="template-3-skyline-problem" tabindex="-1"><a class="header-anchor" href="#template-3-skyline-problem"><span>Template 3: Skyline Problem</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - Building skyline</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - Building skyline</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">getSkyline</span>(<span class="hljs-params">buildings</span>):
     events = []
     
@@ -429,8 +393,8 @@
             result.append([x, max_h])
     
     <span class="hljs-keyword">return</span> result
-</code></pre>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java - Skyline</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java - Skyline</span>
 <span class="hljs-keyword">public</span> List&lt;List&lt;Integer&gt;&gt; <span class="hljs-title function_">getSkyline</span><span class="hljs-params">(<span class="hljs-type">int</span>[][] buildings)</span> {
     List&lt;<span class="hljs-type">int</span>[]&gt; events = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();
     
@@ -470,9 +434,9 @@
     
     <span class="hljs-keyword">return</span> result;
 }
-</code></pre>
+</code></pre></div>
 <h3 id="template-4-calendar-booking" tabindex="-1"><a class="header-anchor" href="#template-4-calendar-booking"><span>Template 4: Calendar Booking</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - Calendar with multiple bookings</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - Calendar with multiple bookings</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">MyCalendarTwo</span>:
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self</span>):
         <span class="hljs-variable language_">self</span>.events = []  <span class="hljs-comment"># List of (time, delta)</span>
@@ -494,8 +458,8 @@
                 <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
         
         <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
-</code></pre>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java - Calendar booking</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java - Calendar booking</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">MyCalendarTwo</span> {
     List&lt;<span class="hljs-type">int</span>[]&gt; events;
     
@@ -525,9 +489,9 @@
         <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
     }
 }
-</code></pre>
+</code></pre></div>
 <h3 id="template-5-difference-array-pattern" tabindex="-1"><a class="header-anchor" href="#template-5-difference-array-pattern"><span>Template 5: Difference Array Pattern</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - Range addition using sweep line</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - Range addition using sweep line</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">rangeAddition</span>(<span class="hljs-params">length, updates</span>):
     <span class="hljs-comment"># updates: [[start, end, inc]]</span>
     diff = [<span class="hljs-number">0</span>] * (length + <span class="hljs-number">1</span>)
@@ -568,9 +532,9 @@
                 result[i][j] -= result[i-<span class="hljs-number">1</span>][j-<span class="hljs-number">1</span>]
     
     <span class="hljs-keyword">return</span> result
-</code></pre>
+</code></pre></div>
 <h3 id="template-6-interval-merge-with-sweep" tabindex="-1"><a class="header-anchor" href="#template-6-interval-merge-with-sweep"><span>Template 6: Interval Merge with Sweep</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - Merge overlapping intervals using sweep</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - Merge overlapping intervals using sweep</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">mergeIntervals</span>(<span class="hljs-params">intervals</span>):
     <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> intervals:
         <span class="hljs-keyword">return</span> []
@@ -596,7 +560,7 @@
             merged.append([start, time])
     
     <span class="hljs-keyword">return</span> merged
-</code></pre>
+</code></pre></div>
 <h2 id="problems-by-pattern" tabindex="-1"><a class="header-anchor" href="#problems-by-pattern"><span>Problems by Pattern</span></a></h2>
 <h3 id="pattern-based-problem-tables" tabindex="-1"><a class="header-anchor" href="#pattern-based-problem-tables"><span>Pattern-Based Problem Tables</span></a></h3>
 <h4 id="interval-overlap-problems" tabindex="-1"><a class="header-anchor" href="#interval-overlap-problems"><span><strong>Interval Overlap Problems</strong></span></a></h4>
@@ -840,7 +804,7 @@
 </tbody>
 </table>
 <h2 id="pattern-selection-strategy" tabindex="-1"><a class="header-anchor" href="#pattern-selection-strategy"><span>Pattern Selection Strategy</span></a></h2>
-<pre><code class="hljs">Problem Analysis Flowchart:
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Problem Analysis Flowchart:
 
 1. Are you counting overlapping intervals?
    ├── YES → Use Basic Sweep Line
@@ -872,7 +836,7 @@
    │         ├── 1D ranges → Simple difference
    │         └── 2D ranges → 2D difference
    └── NO → Use appropriate combination
-</code></pre>
+</code></pre></div>
 <h2 id="summary-quick-reference" tabindex="-1"><a class="header-anchor" href="#summary-quick-reference"><span>Summary &amp; Quick Reference</span></a></h2>
 <h3 id="complexity-quick-reference" tabindex="-1"><a class="header-anchor" href="#complexity-quick-reference"><span>Complexity Quick Reference</span></a></h3>
 <table>
@@ -967,14 +931,14 @@
 </table>
 <h3 id="common-patterns-tricks" tabindex="-1"><a class="header-anchor" href="#common-patterns-tricks"><span>Common Patterns &amp; Tricks</span></a></h3>
 <h4 id="event-ordering-rule" tabindex="-1"><a class="header-anchor" href="#event-ordering-rule"><span><strong>Event Ordering Rule</strong></span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Critical: Handle events at same position correctly</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Critical: Handle events at same position correctly</span>
 <span class="hljs-comment"># Start before End at same position</span>
 events.sort(key=<span class="hljs-keyword">lambda</span> x: (x[<span class="hljs-number">0</span>], -x[<span class="hljs-number">1</span>]))
 <span class="hljs-comment"># OR End before Start (depends on problem)</span>
 events.sort(key=<span class="hljs-keyword">lambda</span> x: (x[<span class="hljs-number">0</span>], x[<span class="hljs-number">1</span>]))
-</code></pre>
+</code></pre></div>
 <h4 id="interval-to-events-conversion" tabindex="-1"><a class="header-anchor" href="#interval-to-events-conversion"><span><strong>Interval to Events Conversion</strong></span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Standard conversion</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Standard conversion</span>
 <span class="hljs-keyword">for</span> start, end <span class="hljs-keyword">in</span> intervals:
     events.append((start, +<span class="hljs-number">1</span>))  <span class="hljs-comment"># Enter</span>
     events.append((end, -<span class="hljs-number">1</span>))     <span class="hljs-comment"># Exit</span>
@@ -982,9 +946,9 @@ events.sort(key=<span class="hljs-keyword">lambda</span> x: (x[<span class="hljs
 <span class="hljs-comment"># Inclusive vs Exclusive endpoints</span>
 events.append((end, -<span class="hljs-number">1</span>))     <span class="hljs-comment"># Exclusive end</span>
 events.append((end+<span class="hljs-number">1</span>, -<span class="hljs-number">1</span>))   <span class="hljs-comment"># Inclusive end</span>
-</code></pre>
+</code></pre></div>
 <h4 id="maximum-tracking-pattern" tabindex="-1"><a class="header-anchor" href="#maximum-tracking-pattern"><span><strong>Maximum Tracking Pattern</strong></span></a></h4>
-<pre data-lang="python"><code class="hljs language-python">max_value = <span class="hljs-number">0</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python">max_value = <span class="hljs-number">0</span>
 current = <span class="hljs-number">0</span>
 max_position = <span class="hljs-number">0</span>
 
@@ -993,14 +957,14 @@ max_position = <span class="hljs-number">0</span>
     <span class="hljs-keyword">if</span> current &gt; max_value:
         max_value = current
         max_position = pos
-</code></pre>
+</code></pre></div>
 <h4 id="skyline-height-management" tabindex="-1"><a class="header-anchor" href="#skyline-height-management"><span><strong>Skyline Height Management</strong></span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Use negative for max heap in Python</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Use negative for max heap in Python</span>
 <span class="hljs-keyword">import</span> heapq
 heights = [<span class="hljs-number">0</span>]  <span class="hljs-comment"># Ground level</span>
 heapq.heappush(heights, -height)  <span class="hljs-comment"># Add</span>
 max_height = -heights[<span class="hljs-number">0</span>]           <span class="hljs-comment"># Get max</span>
-</code></pre>
+</code></pre></div>
 <h3 id="problem-solving-steps" tabindex="-1"><a class="header-anchor" href="#problem-solving-steps"><span>Problem-Solving Steps</span></a></h3>
 <ol>
 <li>
@@ -1103,13 +1067,13 @@ max_height = -heights[<span class="hljs-number">0</span>]           <span class=
 </ol>
 <h3 id="advanced-techniques" tabindex="-1"><a class="header-anchor" href="#advanced-techniques"><span>Advanced Techniques</span></a></h3>
 <h4 id="coordinate-compression" tabindex="-1"><a class="header-anchor" href="#coordinate-compression"><span><strong>Coordinate Compression</strong></span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Compress large coordinate space</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Compress large coordinate space</span>
 coords = <span class="hljs-built_in">set</span>()
 <span class="hljs-keyword">for</span> start, end <span class="hljs-keyword">in</span> intervals:
     coords.add(start)
     coords.add(end)
 coord_map = {v: i <span class="hljs-keyword">for</span> i, v <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(<span class="hljs-built_in">sorted</span>(coords))}
-</code></pre>
+</code></pre></div>
 <h4 id="segment-tree-integration" tabindex="-1"><a class="header-anchor" href="#segment-tree-integration"><span><strong>Segment Tree Integration</strong></span></a></h4>
 <ul>
 <li>Use for dynamic updates</li>
@@ -1135,7 +1099,7 @@ coord_map = {v: i <span class="hljs-keyword">for</span> i, v <span class="hljs-k
 <blockquote>
 <p>Emit +1 on start, -1 on end; sort events; peak concurrent count = min rooms needed.</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 253 - Meeting Rooms II</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 253 - Meeting Rooms II</span>
 <span class="hljs-comment">// IDEA: Sweep line — +1 on start, -1 on end; sort (end before start at ties); track peak</span>
 <span class="hljs-comment">// time = O(N log N), space = O(N)</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">minMeetingRooms</span><span class="hljs-params">(<span class="hljs-type">int</span>[][] intervals)</span> {
@@ -1149,8 +1113,8 @@ coord_map = {v: i <span class="hljs-keyword">for</span> i, v <span class="hljs-k
     <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span>[] e : events) { rooms += e[<span class="hljs-number">1</span>]; maxRooms = Math.max(maxRooms, rooms); }
     <span class="hljs-keyword">return</span> maxRooms;
 }
-</code></pre>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 253 Meeting Rooms II</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 253 Meeting Rooms II</span>
 <span class="hljs-comment"># NOTE : there&#x27;re also priority queue, sorting approaches</span>
 
 <span class="hljs-comment"># V0</span>
@@ -1204,12 +1168,12 @@ coord_map = {v: i <span class="hljs-keyword">for</span> i, v <span class="hljs-k
                 n -= <span class="hljs-number">1</span> <span class="hljs-comment"># release the meeting room</span>
             max_num = <span class="hljs-built_in">max</span>(n, max_num)
         <span class="hljs-keyword">return</span> max_num
-</code></pre>
+</code></pre></div>
 <h3 id="2-2-brightest-position-on-street-lc-2021-weighted-sweep-line" tabindex="-1"><a class="header-anchor" href="#2-2-brightest-position-on-street-lc-2021-weighted-sweep-line"><span>2-2) Brightest Position on Street (LC 2021) — Weighted Sweep Line</span></a></h3>
 <blockquote>
 <p>Emit +1 at p−r and −1 at p+r+1; track position with maximum accumulated brightness.</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 2021 - Brightest Position on Street</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 2021 - Brightest Position on Street</span>
 <span class="hljs-comment">// IDEA: Sweep line — +1 at range start, -1 at range end+1; track max brightness position</span>
 <span class="hljs-comment">// time = O(N log N), space = O(N)</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">brightestPosition</span><span class="hljs-params">(<span class="hljs-type">int</span>[][] lights)</span> {
@@ -1226,8 +1190,8 @@ coord_map = {v: i <span class="hljs-keyword">for</span> i, v <span class="hljs-k
     }
     <span class="hljs-keyword">return</span> ans;
 }
-</code></pre>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 2021. Brightest Position on Street</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 2021. Brightest Position on Street</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># IDEA : Scanning line, LC 253 MEETING ROOM II</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
@@ -1311,14 +1275,14 @@ coord_map = {v: i <span class="hljs-keyword">for</span> i, v <span class="hljs-k
                 best = <span class="hljs-built_in">len</span>(heap)
                 res = left
         <span class="hljs-keyword">return</span> res
-</code></pre>
+</code></pre></div>
 <h3 id="2-3-divide-intervals-into-minimum-number-of-groups-lc-2406-sweep-line-peak-count" tabindex="-1"><a class="header-anchor" href="#2-3-divide-intervals-into-minimum-number-of-groups-lc-2406-sweep-line-peak-count"><span>2-3) Divide Intervals Into Minimum Number of Groups (LC 2406) — Sweep Line Peak Count</span></a></h3>
 <blockquote>
 <p>Min groups = peak concurrent overlaps. Three patterns: (1) sweep line events (+1/-1), (2) sort+PQ reuse group when <code>pq.peek() &lt; start</code> (strict <code>&lt;</code> because endpoints are inclusive), (3) difference array for fixed-range coordinates.</p>
 <p><strong>Key trap</strong>: <code>[1,5]</code> and <code>[5,10]</code> overlap — use <code>pq.peek() &lt; start</code> (not <code>&lt;=</code>) in PQ approach, and sort start(+1) before end(−1) at same time in sweep approach.</p>
 <p><strong>Similar LC</strong>: 253 Meeting Rooms II, 1094 Car Pooling, 2021 Brightest Position on Street, 1854 Maximum Population Year, 729/731/732 My Calendar I/II/III</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 2406 - Divide Intervals Into Minimum Number of Groups</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 2406 - Divide Intervals Into Minimum Number of Groups</span>
 <span class="hljs-comment">// IDEA: Sweep line — +1 on start, -1 on end; start before end at same time (inclusive overlap)</span>
 <span class="hljs-comment">// time = O(N log N), space = O(N)</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">minGroups</span><span class="hljs-params">(<span class="hljs-type">int</span>[][] intervals)</span> {
@@ -1354,12 +1318,12 @@ coord_map = {v: i <span class="hljs-keyword">for</span> i, v <span class="hljs-k
     <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> d : diff) { cur += d; max = Math.max(max, cur); }
     <span class="hljs-keyword">return</span> max;
 }
-</code></pre>
+</code></pre></div>
 <h3 id="2-4-my-calendar-ii-lc-731-track-double-booked-intervals" tabindex="-1"><a class="header-anchor" href="#2-4-my-calendar-ii-lc-731-track-double-booked-intervals"><span>2-4) My Calendar II (LC 731) — Track Double-Booked Intervals</span></a></h3>
 <blockquote>
 <p>New booking is invalid only if it overlaps a double-booked segment; otherwise record overlap.</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 731 - My Calendar II</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 731 - My Calendar II</span>
 <span class="hljs-comment">// IDEA: Track booked and overlaps lists; reject if new booking intersects any overlap</span>
 <span class="hljs-comment">// time = O(N^2), space = O(N)</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">MyCalendarTwo</span> {
@@ -1374,7 +1338,7 @@ coord_map = {v: i <span class="hljs-keyword">for</span> i, v <span class="hljs-k
         <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
     }
 }
-</code></pre>
+</code></pre></div>
 
       </div>
       <div class="cheatsheet-footer">

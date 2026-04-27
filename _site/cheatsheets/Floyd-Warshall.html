@@ -19,54 +19,18 @@
     }
   })();
   </script>
-  <script>document.addEventListener('DOMContentLoaded', function() {
-    document.querySelectorAll('pre code').forEach(function(codeEl) {
-      var pre = codeEl.parentElement;
-      var lang = '';
-      var cls = codeEl.className || '';
-      var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
-      if (m) lang = m[1];
-
-      // Add line numbers
-      var lines = codeEl.innerHTML.split('
-');
-      if (lines[lines.length - 1] === '') lines.pop();
-      var numbered = lines.map(function(line, i) {
-        return '<span class="hljs-ln-line"><span class="hljs-ln-n" data-line-number="' + (i + 1) + '"></span><span class="hljs-ln-code">' + line + '</span></span>';
-      }).join('
-');
-      codeEl.innerHTML = numbered;
-      codeEl.classList.add('hljs-ln');
-
-      var wrapper = document.createElement('div');
-      wrapper.className = 'code-block-wrapper';
-      pre.parentNode.insertBefore(wrapper, pre);
-      var header = document.createElement('div');
-      header.className = 'code-block-header';
-      if (lang) {
-        var label = document.createElement('span');
-        label.className = 'code-lang-label';
-        label.textContent = lang;
-        header.appendChild(label);
-      } else {
-        header.appendChild(document.createElement('span'));
-      }
-      var btn = document.createElement('button');
-      btn.className = 'copy-btn';
-      btn.textContent = 'Copy';
-      btn.addEventListener('click', function() {
-        var text = Array.from(codeEl.querySelectorAll('.hljs-ln-code')).map(function(el) { return el.textContent; }).join('
-');
-        navigator.clipboard.writeText(text).then(function() {
-          btn.textContent = 'Copied!';
-          btn.classList.add('copied');
-          setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
-        });
-      });
-      header.appendChild(btn);
-      wrapper.appendChild(header);
-      wrapper.appendChild(pre);
+  <script>
+  function copyCode(btn) {
+    var pre = btn.closest('.code-block-wrapper').querySelector('pre');
+    var text = pre ? pre.innerText : '';
+    navigator.clipboard.writeText(text).then(function() {
+      btn.textContent = 'Copied!';
+      btn.classList.add('copied');
+      setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
     });
+  }
+  </script>
+  <script>document.addEventListener('DOMContentLoaded', function() {
     document.querySelectorAll('table').forEach(function(table) {
       if (!table.parentElement.classList.contains('table-wrap')) {
         var wrapper = document.createElement('div');
@@ -245,7 +209,7 @@
 </tbody>
 </table>
 <h3 id="template-1-basic-floyd-warshall" tabindex="-1"><a class="header-anchor" href="#template-1-basic-floyd-warshall"><span>Template 1: Basic Floyd-Warshall</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">floyd_warshall</span>(<span class="hljs-params">n, edges</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">floyd_warshall</span>(<span class="hljs-params">n, edges</span>):
     <span class="hljs-string">&quot;&quot;&quot;
     Find shortest paths between all pairs of vertices
     n: number of vertices (0-indexed)
@@ -273,9 +237,9 @@
                     dist[i][j] = dist[i][k] + dist[k][j]
 
     <span class="hljs-keyword">return</span> dist
-</code></pre>
+</code></pre></div>
 <h3 id="template-2-floyd-warshall-with-path-reconstruction" tabindex="-1"><a class="header-anchor" href="#template-2-floyd-warshall-with-path-reconstruction"><span>Template 2: Floyd-Warshall with Path Reconstruction</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">floyd_warshall_with_path</span>(<span class="hljs-params">n, edges</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">floyd_warshall_with_path</span>(<span class="hljs-params">n, edges</span>):
     <span class="hljs-string">&quot;&quot;&quot;
     Find shortest paths and reconstruct actual paths
     Returns: (distance matrix, next vertex matrix)
@@ -312,9 +276,9 @@
         u = next_vertex[u][v]
         path.append(u)
     <span class="hljs-keyword">return</span> path
-</code></pre>
+</code></pre></div>
 <h3 id="template-3-transitive-closure-reachability" tabindex="-1"><a class="header-anchor" href="#template-3-transitive-closure-reachability"><span>Template 3: Transitive Closure (Reachability)</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">transitive_closure</span>(<span class="hljs-params">n, edges</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">transitive_closure</span>(<span class="hljs-params">n, edges</span>):
     <span class="hljs-string">&quot;&quot;&quot;
     Determine if there&#x27;s a path between every pair of vertices
     Returns: boolean reachability matrix
@@ -336,9 +300,9 @@
                 reach[i][j] = reach[i][j] <span class="hljs-keyword">or</span> (reach[i][k] <span class="hljs-keyword">and</span> reach[k][j])
 
     <span class="hljs-keyword">return</span> reach
-</code></pre>
+</code></pre></div>
 <h3 id="template-4-negative-cycle-detection" tabindex="-1"><a class="header-anchor" href="#template-4-negative-cycle-detection"><span>Template 4: Negative Cycle Detection</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">detect_negative_cycle</span>(<span class="hljs-params">n, edges</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">detect_negative_cycle</span>(<span class="hljs-params">n, edges</span>):
     <span class="hljs-string">&quot;&quot;&quot;
     Detect if graph contains negative cycle
     Returns: (has_negative_cycle, distance_matrix)
@@ -362,9 +326,9 @@
     has_negative_cycle = <span class="hljs-built_in">any</span>(dist[i][i] &lt; <span class="hljs-number">0</span> <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n))
 
     <span class="hljs-keyword">return</span> has_negative_cycle, dist
-</code></pre>
+</code></pre></div>
 <h3 id="template-5-minimax-path-bottleneck" tabindex="-1"><a class="header-anchor" href="#template-5-minimax-path-bottleneck"><span>Template 5: Minimax Path (Bottleneck)</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">floyd_warshall_minimax</span>(<span class="hljs-params">n, edges</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">floyd_warshall_minimax</span>(<span class="hljs-params">n, edges</span>):
     <span class="hljs-string">&quot;&quot;&quot;
     Find path that minimizes the maximum edge weight
     Useful for capacity/bandwidth problems
@@ -386,9 +350,9 @@
                 dist[i][j] = <span class="hljs-built_in">min</span>(dist[i][j], <span class="hljs-built_in">max</span>(dist[i][k], dist[k][j]))
 
     <span class="hljs-keyword">return</span> dist
-</code></pre>
+</code></pre></div>
 <h3 id="template-6-space-optimized-version" tabindex="-1"><a class="header-anchor" href="#template-6-space-optimized-version"><span>Template 6: Space-Optimized Version</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">floyd_warshall_optimized</span>(<span class="hljs-params">n, edges</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">floyd_warshall_optimized</span>(<span class="hljs-params">n, edges</span>):
     <span class="hljs-string">&quot;&quot;&quot;
     Space-optimized: use single matrix (in-place update)
     &quot;&quot;&quot;</span>
@@ -407,7 +371,7 @@
                 dist[i][j] = <span class="hljs-built_in">min</span>(dist[i][j], dist[i][k] + dist[k][j])
 
     <span class="hljs-keyword">return</span> dist
-</code></pre>
+</code></pre></div>
 <h2 id="algorithm-comparison" tabindex="-1"><a class="header-anchor" href="#algorithm-comparison"><span>Algorithm Comparison</span></a></h2>
 <h3 id="floyd-warshall-vs-dijkstra-vs-bellman-ford" tabindex="-1"><a class="header-anchor" href="#floyd-warshall-vs-dijkstra-vs-bellman-ford"><span>Floyd-Warshall vs Dijkstra vs Bellman-Ford</span></a></h3>
 <table>
@@ -477,7 +441,7 @@
 </tbody>
 </table>
 <h3 id="when-to-use-which-algorithm" tabindex="-1"><a class="header-anchor" href="#when-to-use-which-algorithm"><span>When to Use Which Algorithm</span></a></h3>
-<pre><code class="hljs">Algorithm Selection Flowchart:
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Algorithm Selection Flowchart:
 
 1. Need all-pairs shortest paths?
    ├── YES → Consider Floyd-Warshall
@@ -492,7 +456,7 @@
 3. Is graph dense (E ≈ V²)?
    ├── YES → Consider Floyd-Warshall for all-pairs
    └── NO → Dijkstra is more efficient
-</code></pre>
+</code></pre></div>
 <h3 id="practical-comparison-table" tabindex="-1"><a class="header-anchor" href="#practical-comparison-table"><span>Practical Comparison Table</span></a></h3>
 <table>
 <thead>
@@ -583,7 +547,7 @@
 <blockquote>
 <p>Run Floyd-Warshall; for each city count reachable cities within threshold; return city with fewest (largest index on tie).</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 1334 - Find the City With the Smallest Number of Neighbors at a Threshold Distance</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 1334 - Find the City With the Smallest Number of Neighbors at a Threshold Distance</span>
 <span class="hljs-comment">// IDEA: Floyd-Warshall all-pairs shortest path; count reachable per city within threshold</span>
 <span class="hljs-comment">// time = O(N^3), space = O(N^2)</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">findTheCity</span><span class="hljs-params">(<span class="hljs-type">int</span> n, <span class="hljs-type">int</span>[][] edges, <span class="hljs-type">int</span> distanceThreshold)</span> {
@@ -603,8 +567,8 @@
     }
     <span class="hljs-keyword">return</span> ans;
 }
-</code></pre>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 1334 - Find the City With the Smallest Number of Neighbors at a Threshold Distance</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 1334 - Find the City With the Smallest Number of Neighbors at a Threshold Distance</span>
 <span class="hljs-comment"># Classic Floyd-Warshall application</span>
 
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">findTheCity</span>(<span class="hljs-params">n, edges, distanceThreshold</span>):
@@ -638,12 +602,12 @@
             result_city = i
 
     <span class="hljs-keyword">return</span> result_city
-</code></pre>
+</code></pre></div>
 <h3 id="2-2-course-schedule-iv-lc-1462-floyd-warshall-transitive-closure" tabindex="-1"><a class="header-anchor" href="#2-2-course-schedule-iv-lc-1462-floyd-warshall-transitive-closure"><span>2-2) Course Schedule IV (LC 1462) — Floyd-Warshall Transitive Closure</span></a></h3>
 <blockquote>
 <p>Use boolean reachability matrix; reachable[i][j] = true if i is prerequisite of j (direct or indirect).</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 1462 - Course Schedule IV</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 1462 - Course Schedule IV</span>
 <span class="hljs-comment">// IDEA: Floyd-Warshall transitive closure; reachable[i][j] = i is prerequisite of j</span>
 <span class="hljs-comment">// time = O(N^3), space = O(N^2)</span>
 <span class="hljs-keyword">public</span> List&lt;Boolean&gt; <span class="hljs-title function_">checkIfPrerequisite</span><span class="hljs-params">(<span class="hljs-type">int</span> numCourses, <span class="hljs-type">int</span>[][] prerequisites, <span class="hljs-type">int</span>[][] queries)</span> {
@@ -657,8 +621,8 @@
     <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span>[] q : queries) ans.add(reach[q[<span class="hljs-number">0</span>]][q[<span class="hljs-number">1</span>]]);
     <span class="hljs-keyword">return</span> ans;
 }
-</code></pre>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 1462 - Course Schedule IV</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 1462 - Course Schedule IV</span>
 <span class="hljs-comment"># Transitive closure problem</span>
 
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">checkIfPrerequisite</span>(<span class="hljs-params">numCourses, prerequisites, queries</span>):
@@ -682,12 +646,12 @@
 
     <span class="hljs-comment"># Answer queries</span>
     <span class="hljs-keyword">return</span> [is_prereq[u][v] <span class="hljs-keyword">for</span> u, v <span class="hljs-keyword">in</span> queries]
-</code></pre>
+</code></pre></div>
 <h3 id="2-3-network-delay-time-alternative-solution-lc-743-floyd-warshall-all-pairs" tabindex="-1"><a class="header-anchor" href="#2-3-network-delay-time-alternative-solution-lc-743-floyd-warshall-all-pairs"><span>2-3) Network Delay Time Alternative Solution (LC 743) — Floyd-Warshall All-Pairs</span></a></h3>
 <blockquote>
 <p>Compute all-pairs distances; answer is max dist from source k (overkill vs Dijkstra but correct).</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 743 - Network Delay Time (Floyd-Warshall approach)</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 743 - Network Delay Time (Floyd-Warshall approach)</span>
 <span class="hljs-comment">// IDEA: All-pairs Floyd-Warshall; answer = max dist[k-1][i] for all i</span>
 <span class="hljs-comment">// time = O(N^3), space = O(N^2)</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">networkDelayTime</span><span class="hljs-params">(<span class="hljs-type">int</span>[][] times, <span class="hljs-type">int</span> n, <span class="hljs-type">int</span> k)</span> {
@@ -706,8 +670,8 @@
     }
     <span class="hljs-keyword">return</span> max;
 }
-</code></pre>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 743 - Network Delay Time</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 743 - Network Delay Time</span>
 <span class="hljs-comment"># Can use Floyd-Warshall but Dijkstra is more efficient</span>
 
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">networkDelayTime</span>(<span class="hljs-params">times, n, k</span>):
@@ -733,12 +697,12 @@
     max_dist = <span class="hljs-built_in">max</span>(dist[k_idx])
 
     <span class="hljs-keyword">return</span> max_dist <span class="hljs-keyword">if</span> max_dist != <span class="hljs-built_in">float</span>(<span class="hljs-string">&#x27;inf&#x27;</span>) <span class="hljs-keyword">else</span> -<span class="hljs-number">1</span>
-</code></pre>
+</code></pre></div>
 <h3 id="2-4-graph-connectivity-with-threshold-lc-1627-floyd-warshall-connectivity" tabindex="-1"><a class="header-anchor" href="#2-4-graph-connectivity-with-threshold-lc-1627-floyd-warshall-connectivity"><span>2-4) Graph Connectivity With Threshold (LC 1627) — Floyd-Warshall Connectivity</span></a></h3>
 <blockquote>
 <p>Build edges for all GCD &gt; threshold; use Floyd-Warshall transitive closure to answer queries.</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 1627 - Graph Connectivity With Threshold</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 1627 - Graph Connectivity With Threshold</span>
 <span class="hljs-comment">// IDEA: Connect multiples of each gcd &gt; threshold; Floyd-Warshall for connectivity queries</span>
 <span class="hljs-comment">// time = O(N^2 log N + N^3 + Q), space = O(N^2)</span>
 <span class="hljs-keyword">public</span> List&lt;Boolean&gt; <span class="hljs-title function_">areConnected</span><span class="hljs-params">(<span class="hljs-type">int</span> n, <span class="hljs-type">int</span> threshold, <span class="hljs-type">int</span>[][] queries)</span> {
@@ -755,8 +719,8 @@
     <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span>[] q : queries) ans.add(conn[q[<span class="hljs-number">0</span>]][q[<span class="hljs-number">1</span>]]);
     <span class="hljs-keyword">return</span> ans;
 }
-</code></pre>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 1627 - Graph Connectivity With Threshold</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 1627 - Graph Connectivity With Threshold</span>
 <span class="hljs-comment"># Union-Find is better, but Floyd-Warshall works</span>
 
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">areConnected</span>(<span class="hljs-params">n, threshold, queries</span>):
@@ -787,12 +751,12 @@
                     connected[i][j] = <span class="hljs-literal">True</span>
 
     <span class="hljs-keyword">return</span> [connected[u][v] <span class="hljs-keyword">for</span> u, v <span class="hljs-keyword">in</span> queries]
-</code></pre>
+</code></pre></div>
 <h3 id="2-5-shortest-path-visiting-all-nodes-lc-847-bfs-bitmask-floyd-warshall-preprocessing" tabindex="-1"><a class="header-anchor" href="#2-5-shortest-path-visiting-all-nodes-lc-847-bfs-bitmask-floyd-warshall-preprocessing"><span>2-5) Shortest Path Visiting All Nodes (LC 847) — BFS + Bitmask (Floyd-Warshall Preprocessing)</span></a></h3>
 <blockquote>
 <p>BFS with state (node, visitedMask); precompute pairwise distances with Floyd-Warshall if needed.</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 847 - Shortest Path Visiting All Nodes</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 847 - Shortest Path Visiting All Nodes</span>
 <span class="hljs-comment">// IDEA: BFS with bitmask state (node, visited); all nodes are valid starts</span>
 <span class="hljs-comment">// time = O(2^N * N), space = O(2^N * N)</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">shortestPathLength</span><span class="hljs-params">(<span class="hljs-type">int</span>[][] graph)</span> {
@@ -811,8 +775,8 @@
     }
     <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>;
 }
-</code></pre>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 847 - Shortest Path Visiting All Nodes</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 847 - Shortest Path Visiting All Nodes</span>
 <span class="hljs-comment"># Use BFS with bitmask, but Floyd-Warshall for preprocessing</span>
 
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">shortestPathLength</span>(<span class="hljs-params">graph</span>):
@@ -839,7 +803,7 @@
 
     <span class="hljs-comment"># Simplified return for template</span>
     <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>
-</code></pre>
+</code></pre></div>
 <h2 id="problems-by-pattern" tabindex="-1"><a class="header-anchor" href="#problems-by-pattern"><span>Problems by Pattern</span></a></h2>
 <h3 id="all-pairs-shortest-path-problems" tabindex="-1"><a class="header-anchor" href="#all-pairs-shortest-path-problems"><span><strong>All-Pairs Shortest Path Problems</strong></span></a></h3>
 <table>
@@ -992,7 +956,7 @@
 <li>Need fastest path finding (Dijkstra is faster for single-source)</li>
 </ul>
 <h3 id="implementation-checklist" tabindex="-1"><a class="header-anchor" href="#implementation-checklist"><span>Implementation Checklist</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Floyd-Warshall Implementation Checklist:</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Floyd-Warshall Implementation Checklist:</span>
 
 <span class="hljs-comment"># 1. Initialize distance matrix</span>
 dist = [[<span class="hljs-built_in">float</span>(<span class="hljs-string">&#x27;inf&#x27;</span>)] * n <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n)]
@@ -1012,7 +976,7 @@ has_neg_cycle = <span class="hljs-built_in">any</span>(dist[i][i] &lt; <span cla
 
 <span class="hljs-comment"># 5. Handle disconnected components</span>
 <span class="hljs-comment"># dist[i][j] == float(&#x27;inf&#x27;) means no path</span>
-</code></pre>
+</code></pre></div>
 <h2 id="summary-quick-reference" tabindex="-1"><a class="header-anchor" href="#summary-quick-reference"><span>Summary &amp; Quick Reference</span></a></h2>
 <h3 id="time-space-complexity" tabindex="-1"><a class="header-anchor" href="#time-space-complexity"><span>Time/Space Complexity</span></a></h3>
 <table>
@@ -1047,7 +1011,7 @@ has_neg_cycle = <span class="hljs-built_in">any</span>(dist[i][i] &lt; <span cla
 </tbody>
 </table>
 <h3 id="key-code-patterns" tabindex="-1"><a class="header-anchor" href="#key-code-patterns"><span>Key Code Patterns</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Pattern 1: Basic shortest path</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Pattern 1: Basic shortest path</span>
 dist[i][j] = <span class="hljs-built_in">min</span>(dist[i][j], dist[i][k] + dist[k][j])
 
 <span class="hljs-comment"># Pattern 2: Transitive closure (reachability)</span>
@@ -1061,7 +1025,7 @@ capacity[i][j] = <span class="hljs-built_in">max</span>(capacity[i][j], <span cl
 
 <span class="hljs-comment"># Pattern 5: Negative cycle detection</span>
 has_neg_cycle = <span class="hljs-built_in">any</span>(dist[i][i] &lt; <span class="hljs-number">0</span> <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n))
-</code></pre>
+</code></pre></div>
 <h3 id="common-variations" tabindex="-1"><a class="header-anchor" href="#common-variations"><span>Common Variations</span></a></h3>
 <table>
 <thead>

@@ -19,54 +19,18 @@
     }
   })();
   </script>
-  <script>document.addEventListener('DOMContentLoaded', function() {
-    document.querySelectorAll('pre code').forEach(function(codeEl) {
-      var pre = codeEl.parentElement;
-      var lang = '';
-      var cls = codeEl.className || '';
-      var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
-      if (m) lang = m[1];
-
-      // Add line numbers
-      var lines = codeEl.innerHTML.split('
-');
-      if (lines[lines.length - 1] === '') lines.pop();
-      var numbered = lines.map(function(line, i) {
-        return '<span class="hljs-ln-line"><span class="hljs-ln-n" data-line-number="' + (i + 1) + '"></span><span class="hljs-ln-code">' + line + '</span></span>';
-      }).join('
-');
-      codeEl.innerHTML = numbered;
-      codeEl.classList.add('hljs-ln');
-
-      var wrapper = document.createElement('div');
-      wrapper.className = 'code-block-wrapper';
-      pre.parentNode.insertBefore(wrapper, pre);
-      var header = document.createElement('div');
-      header.className = 'code-block-header';
-      if (lang) {
-        var label = document.createElement('span');
-        label.className = 'code-lang-label';
-        label.textContent = lang;
-        header.appendChild(label);
-      } else {
-        header.appendChild(document.createElement('span'));
-      }
-      var btn = document.createElement('button');
-      btn.className = 'copy-btn';
-      btn.textContent = 'Copy';
-      btn.addEventListener('click', function() {
-        var text = Array.from(codeEl.querySelectorAll('.hljs-ln-code')).map(function(el) { return el.textContent; }).join('
-');
-        navigator.clipboard.writeText(text).then(function() {
-          btn.textContent = 'Copied!';
-          btn.classList.add('copied');
-          setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
-        });
-      });
-      header.appendChild(btn);
-      wrapper.appendChild(header);
-      wrapper.appendChild(pre);
+  <script>
+  function copyCode(btn) {
+    var pre = btn.closest('.code-block-wrapper').querySelector('pre');
+    var text = pre ? pre.innerText : '';
+    navigator.clipboard.writeText(text).then(function() {
+      btn.textContent = 'Copied!';
+      btn.classList.add('copied');
+      setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
     });
+  }
+  </script>
+  <script>document.addEventListener('DOMContentLoaded', function() {
     document.querySelectorAll('table').forEach(function(table) {
       if (!table.parentElement.classList.contains('table-wrap')) {
         var wrapper = document.createElement('div');
@@ -162,7 +126,7 @@
 <li><strong>Use Case</strong>: When find operations greatly outnumber union operations</li>
 <li><strong>Implementation</strong>: Store component ID directly for each element</li>
 </ul>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Quick Find Implementation</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Quick Find Implementation</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">QuickFind</span> {
     <span class="hljs-keyword">private</span> <span class="hljs-type">int</span>[] id;
     <span class="hljs-keyword">private</span> <span class="hljs-type">int</span> count; <span class="hljs-comment">// number of components</span>
@@ -206,7 +170,7 @@
         <span class="hljs-keyword">return</span> find(p) == find(q);
     }
 }
-</code></pre>
+</code></pre></div>
 <p><strong>Quick Union (with optimizations):</strong></p>
 <ul>
 <li><strong>Find</strong>: O(α(n)) ≈ O(1) with path compression</li>
@@ -302,7 +266,7 @@
 <li><code>connected(x, y)</code>: Check if two nodes are in same component</li>
 </ul>
 <p><strong>Template (Union by Size):</strong></p>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">class</span> <span class="hljs-title class_">UnionFind</span> {
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">class</span> <span class="hljs-title class_">UnionFind</span> {
     <span class="hljs-type">int</span>[] parent, size;
     <span class="hljs-type">int</span> components;
 
@@ -341,9 +305,9 @@
         <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
     }
 }
-</code></pre>
+</code></pre></div>
 <p><strong>Alternative Template (Union by Rank):</strong></p>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">class</span> <span class="hljs-title class_">UnionFind</span> {
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">class</span> <span class="hljs-title class_">UnionFind</span> {
     <span class="hljs-type">int</span>[] parent, rank;
     <span class="hljs-type">int</span> components;
 
@@ -385,7 +349,7 @@
         components--;
     }
 }
-</code></pre>
+</code></pre></div>
 <p><strong>Key Differences: Size vs Rank</strong></p>
 <ul>
 <li><strong>Union by Size</strong>: Tracks actual count of nodes in each tree
@@ -411,7 +375,7 @@
 <h3 id="0-3-pattern-specific-code-examples" tabindex="-1"><a class="header-anchor" href="#0-3-pattern-specific-code-examples"><span>0-3) Pattern-Specific Code Examples</span></a></h3>
 <h4 id="pattern-1-basic-connectivity-cycle-detection" tabindex="-1"><a class="header-anchor" href="#pattern-1-basic-connectivity-cycle-detection"><span>Pattern 1: Basic Connectivity - Cycle Detection</span></a></h4>
 <p><strong>Problem: LC 261 - Graph Valid Tree</strong></p>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">validTree</span><span class="hljs-params">(<span class="hljs-type">int</span> n, <span class="hljs-type">int</span>[][] edges)</span> {
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">validTree</span><span class="hljs-params">(<span class="hljs-type">int</span> n, <span class="hljs-type">int</span>[][] edges)</span> {
     <span class="hljs-comment">// A tree must have exactly n-1 edges</span>
     <span class="hljs-keyword">if</span> (edges.length != n - <span class="hljs-number">1</span>) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
 
@@ -423,10 +387,10 @@
     }
     <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
 }
-</code></pre>
+</code></pre></div>
 <h4 id="pattern-2-component-counting" tabindex="-1"><a class="header-anchor" href="#pattern-2-component-counting"><span>Pattern 2: Component Counting</span></a></h4>
 <p><strong>Problem: LC 323 - Number of Connected Components</strong></p>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">countComponents</span><span class="hljs-params">(<span class="hljs-type">int</span> n, <span class="hljs-type">int</span>[][] edges)</span> {
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">countComponents</span><span class="hljs-params">(<span class="hljs-type">int</span> n, <span class="hljs-type">int</span>[][] edges)</span> {
     <span class="hljs-type">UnionFind</span> <span class="hljs-variable">uf</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">UnionFind</span>(n);
     <span class="hljs-type">int</span> <span class="hljs-variable">components</span> <span class="hljs-operator">=</span> n;
 
@@ -437,10 +401,10 @@
     }
     <span class="hljs-keyword">return</span> components;
 }
-</code></pre>
+</code></pre></div>
 <h4 id="pattern-3-find-redundant-edge-cycle-detection" tabindex="-1"><a class="header-anchor" href="#pattern-3-find-redundant-edge-cycle-detection"><span>Pattern 3: Find Redundant Edge (Cycle Detection)</span></a></h4>
 <p><strong>Problem: LC 684 - Redundant Connection</strong></p>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">public</span> <span class="hljs-type">int</span>[] findRedundantConnection(<span class="hljs-type">int</span>[][] edges) {
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">public</span> <span class="hljs-type">int</span>[] findRedundantConnection(<span class="hljs-type">int</span>[][] edges) {
     <span class="hljs-type">UnionFind</span> <span class="hljs-variable">uf</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">UnionFind</span>(edges.length + <span class="hljs-number">1</span>);
 
     <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span>[] edge : edges) {
@@ -451,10 +415,10 @@
     }
     <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;
 }
-</code></pre>
+</code></pre></div>
 <h4 id="pattern-4-2d-grid-connectivity" tabindex="-1"><a class="header-anchor" href="#pattern-4-2d-grid-connectivity"><span>Pattern 4: 2D Grid Connectivity</span></a></h4>
 <p><strong>Problem: LC 200 - Number of Islands</strong></p>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">numIslands</span><span class="hljs-params">(<span class="hljs-type">char</span>[][] grid)</span> {
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">numIslands</span><span class="hljs-params">(<span class="hljs-type">char</span>[][] grid)</span> {
     <span class="hljs-type">int</span> <span class="hljs-variable">rows</span> <span class="hljs-operator">=</span> grid.length, cols = grid[<span class="hljs-number">0</span>].length;
     <span class="hljs-type">UnionFind</span> <span class="hljs-variable">uf</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">UnionFind</span>(rows * cols);
     <span class="hljs-type">int</span> <span class="hljs-variable">islands</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
@@ -482,10 +446,10 @@
     }
     <span class="hljs-keyword">return</span> islands;
 }
-</code></pre>
+</code></pre></div>
 <h4 id="pattern-5-weighted-union-find-with-ratios" tabindex="-1"><a class="header-anchor" href="#pattern-5-weighted-union-find-with-ratios"><span>Pattern 5: Weighted Union Find (with Ratios)</span></a></h4>
 <p><strong>Problem: LC 399 - Evaluate Division</strong></p>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">class</span> <span class="hljs-title class_">WeightedUnionFind</span> {
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">class</span> <span class="hljs-title class_">WeightedUnionFind</span> {
     Map&lt;String, String&gt; parent;
     Map&lt;String, Double&gt; ratio; <span class="hljs-comment">// ratio[x] = x / parent[x]</span>
 
@@ -546,7 +510,7 @@
     }
     <span class="hljs-keyword">return</span> results;
 }
-</code></pre>
+</code></pre></div>
 <h4 id="pattern-6-bfs-union-find-climb-tree-lca" tabindex="-1"><a class="header-anchor" href="#pattern-6-bfs-union-find-climb-tree-lca"><span>Pattern 6: BFS + Union-Find Climb (Tree LCA)</span></a></h4>
 <p><strong>Problem: LC 865 - Smallest Subtree with all the Deepest Nodes</strong></p>
 <ul>
@@ -564,7 +528,7 @@
 <li><strong>Trade-off vs DFS</strong>: More intuitive for iterative thinkers; DFS post-order approach (return <code>(node, depth)</code> pair) is more concise and commonly used</li>
 <li><strong>Similar Problems</strong>: LC 236 (LCA), LC 1123 (same as 865), LC 1644, LC 1650</li>
 </ul>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 865 - BFS + Parent-Climb approach (simplified Union-Find concept)</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 865 - BFS + Parent-Climb approach (simplified Union-Find concept)</span>
 <span class="hljs-comment">// time = O(N), space = O(N)</span>
 <span class="hljs-keyword">public</span> TreeNode <span class="hljs-title function_">subtreeWithAllDeepest</span><span class="hljs-params">(TreeNode root)</span> {
     Map&lt;TreeNode, TreeNode&gt; parent = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;();
@@ -594,7 +558,7 @@
     }
     <span class="hljs-keyword">return</span> set.iterator().next();
 }
-</code></pre>
+</code></pre></div>
 <h2 id="1-example-problems-with-code-references" tabindex="-1"><a class="header-anchor" href="#1-example-problems-with-code-references"><span>1) Example Problems with Code References</span></a></h2>
 <h4 id="basic-connectivity-component-counting" tabindex="-1"><a class="header-anchor" href="#basic-connectivity-component-counting"><span>Basic Connectivity &amp; Component Counting</span></a></h4>
 <ul>
@@ -650,7 +614,7 @@
 </ul>
 <h2 id="2-diagrams" tabindex="-1"><a class="header-anchor" href="#2-diagrams"><span>2) Diagrams</span></a></h2>
 <h3 id="basic-union-operations" tabindex="-1"><a class="header-anchor" href="#basic-union-operations"><span>Basic Union Operations</span></a></h3>
-<pre><code class="hljs">Initial: [0] [1] [2] [3] [4]
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Initial: [0] [1] [2] [3] [4]
 
 After union(0,1): [0,1] [2] [3] [4]
                    1
@@ -661,9 +625,9 @@ After union(2,3): [0,1] [2,3] [4]
                    1     3
                   /     /
                  0     2
-</code></pre>
+</code></pre></div>
 <h3 id="path-compression-visualization" tabindex="-1"><a class="header-anchor" href="#path-compression-visualization"><span>Path Compression Visualization</span></a></h3>
-<pre><code class="hljs">Before find(1):           After find(1):
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Before find(1):           After find(1):
      4 (root)                4 (root)
      |                      /|\
      3                     1 2 3
@@ -676,9 +640,9 @@ Call find(1):
 - 1 → 2 → 3 → 4 (traversal)
 - During return, compress: parent[1] = 4, parent[2] = 4, parent[3] = 4
 - Result: All nodes point directly to root
-</code></pre>
+</code></pre></div>
 <h3 id="union-by-rank-example" tabindex="-1"><a class="header-anchor" href="#union-by-rank-example"><span>Union by Rank Example</span></a></h3>
-<pre><code class="hljs">Initial state:
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Initial state:
   0     1     2     3
 rank: 0 0 0 0
 
@@ -698,9 +662,9 @@ union(0, 2):
 Why rank increased:
 - rank[0] = 1, rank[2] = 1 (equal)
 - Attach 2 to 0, increment rank[0] to 2
-</code></pre>
+</code></pre></div>
 <h3 id="path-compression-in-action" tabindex="-1"><a class="header-anchor" href="#path-compression-in-action"><span>Path Compression in Action</span></a></h3>
-<pre><code class="hljs">Scenario: find(A) in chain A→B→C→D→E (root)
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Scenario: find(A) in chain A→B→C→D→E (root)
 
 Step 1: Recursive calls
   find(A) calls find(B)
@@ -721,13 +685,13 @@ After:   A → E
          B → E
          C → E
          D → E
-</code></pre>
+</code></pre></div>
 <h2 id="3-tips-pitfalls" tabindex="-1"><a class="header-anchor" href="#3-tips-pitfalls"><span>3) Tips &amp; Pitfalls</span></a></h2>
 <p><strong>Common Mistakes:</strong></p>
 <ol>
 <li>
 <p><strong>Forgetting Path Compression</strong>: Results in O(n) time instead of nearly O(1)</p>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// WRONG: No path compression</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// WRONG: No path compression</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">find</span><span class="hljs-params">(<span class="hljs-type">int</span> x)</span> {
     <span class="hljs-keyword">while</span> (parent[x] != x) x = parent[x];
     <span class="hljs-keyword">return</span> x;
@@ -740,11 +704,11 @@ After:   A → E
     }
     <span class="hljs-keyword">return</span> parent[x];
 }
-</code></pre>
+</code></pre></div>
 </li>
 <li>
 <p><strong>Not Tracking Component Count</strong>: Missing decrement in union operation</p>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// WRONG: Forgot to decrement</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// WRONG: Forgot to decrement</span>
 <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">union</span><span class="hljs-params">(<span class="hljs-type">int</span> x, <span class="hljs-type">int</span> y)</span> {
     parent[find(x)] = find(y);
 }
@@ -757,7 +721,7 @@ After:   A → E
         components--; <span class="hljs-comment">// Important!</span>
     }
 }
-</code></pre>
+</code></pre></div>
 </li>
 <li>
 <p><strong>Index Confusion</strong>: Mixing 0-based and 1-based indexing</p>
@@ -767,13 +731,13 @@ After:   A → E
 </li>
 <li>
 <p><strong>Wrong Parent Update</strong>: Updating node instead of root in union</p>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// WRONG: Update x directly</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// WRONG: Update x directly</span>
 parent[x] = parent[y];
 
 <span class="hljs-comment">// CORRECT: Update roots</span>
 <span class="hljs-type">int</span> <span class="hljs-variable">rootX</span> <span class="hljs-operator">=</span> find(x), rootY = find(y);
 parent[rootX] = rootY;
-</code></pre>
+</code></pre></div>
 </li>
 <li>
 <p><strong>Confusing Rank with Size</strong>:</p>
@@ -816,7 +780,7 @@ parent[rootX] = rootY;
 <blockquote>
 <p>Add edges one by one; if two nodes are already connected, this edge is redundant.</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 684 - Redundant Connection</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 684 - Redundant Connection</span>
 <span class="hljs-comment">// IDEA: Union-Find — detect cycle; redundant edge connects already-connected nodes</span>
 <span class="hljs-comment">// time = O(N * α(N)), space = O(N)</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span>[] findRedundantConnection(<span class="hljs-type">int</span>[][] edges) {
@@ -836,12 +800,12 @@ parent[rootX] = rootY;
 <span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">union</span><span class="hljs-params">(<span class="hljs-type">int</span>[] parent, <span class="hljs-type">int</span> x, <span class="hljs-type">int</span> y)</span> {
     parent[find(parent, x)] = find(parent, y);
 }
-</code></pre>
+</code></pre></div>
 <h3 id="2-2-number-of-provinces-lc-547-count-connected-components" tabindex="-1"><a class="header-anchor" href="#2-2-number-of-provinces-lc-547-count-connected-components"><span>2-2) Number of Provinces (LC 547) — Count Connected Components</span></a></h3>
 <blockquote>
 <p>Count the number of distinct roots after unioning all direct friendships.</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 547 - Number of Provinces</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 547 - Number of Provinces</span>
 <span class="hljs-comment">// IDEA: Union-Find — count distinct components (roots)</span>
 <span class="hljs-comment">// time = O(N^2 * α(N)), space = O(N)</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">findCircleNum</span><span class="hljs-params">(<span class="hljs-type">int</span>[][] isConnected)</span> {
@@ -862,12 +826,12 @@ parent[rootX] = rootY;
 <span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">union</span><span class="hljs-params">(<span class="hljs-type">int</span>[] parent, <span class="hljs-type">int</span> x, <span class="hljs-type">int</span> y)</span> {
     parent[find(parent, x)] = find(parent, y);
 }
-</code></pre>
+</code></pre></div>
 <h3 id="2-3-accounts-merge-lc-721-union-find-on-emails" tabindex="-1"><a class="header-anchor" href="#2-3-accounts-merge-lc-721-union-find-on-emails"><span>2-3) Accounts Merge (LC 721) — Union-Find on Emails</span></a></h3>
 <blockquote>
 <p>Union emails belonging to the same person; group by root; sort and format.</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 721 - Accounts Merge</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 721 - Accounts Merge</span>
 <span class="hljs-comment">// IDEA: Union-Find — union all emails in same account; group by root</span>
 <span class="hljs-comment">// time = O(N * M * α(N*M)), space = O(N*M)</span>
 <span class="hljs-keyword">public</span> List&lt;List&lt;String&gt;&gt; <span class="hljs-title function_">accountsMerge</span><span class="hljs-params">(List&lt;List&lt;String&gt;&gt; accounts)</span> {
@@ -903,12 +867,12 @@ parent[rootX] = rootY;
 <span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">union</span><span class="hljs-params">(Map&lt;String, String&gt; parent, String x, String y)</span> {
     parent.put(find(parent, x), find(parent, y));
 }
-</code></pre>
+</code></pre></div>
 <h3 id="2-4-graph-valid-tree-lc-261-union-find" tabindex="-1"><a class="header-anchor" href="#2-4-graph-valid-tree-lc-261-union-find"><span>2-4) Graph Valid Tree (LC 261) — Union-Find</span></a></h3>
 <blockquote>
 <p>Tree has exactly N-1 edges and no cycle; union each edge, return false on same-component edge.</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 261 - Graph Valid Tree</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 261 - Graph Valid Tree</span>
 <span class="hljs-comment">// IDEA: Union-Find — N-1 edges + no cycle = valid tree</span>
 <span class="hljs-comment">// time = O(N * α(N)), space = O(N)</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">validTree</span><span class="hljs-params">(<span class="hljs-type">int</span> n, <span class="hljs-type">int</span>[][] edges)</span> {
@@ -922,12 +886,12 @@ parent[rootX] = rootY;
     <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
 }
 <span class="hljs-keyword">private</span> <span class="hljs-type">int</span> <span class="hljs-title function_">find</span><span class="hljs-params">(<span class="hljs-type">int</span>[] p, <span class="hljs-type">int</span> x)</span> { <span class="hljs-keyword">return</span> p[x] == x ? x : (p[x] = find(p, p[x])); }
-</code></pre>
+</code></pre></div>
 <h3 id="2-5-number-of-connected-components-in-undirected-graph-lc-323-union-find" tabindex="-1"><a class="header-anchor" href="#2-5-number-of-connected-components-in-undirected-graph-lc-323-union-find"><span>2-5) Number of Connected Components in Undirected Graph (LC 323) — Union-Find</span></a></h3>
 <blockquote>
 <p>Union each edge; count remaining distinct roots as connected components.</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 323 - Number of Connected Components in Undirected Graph</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 323 - Number of Connected Components in Undirected Graph</span>
 <span class="hljs-comment">// IDEA: Union-Find — count distinct roots after unioning all edges</span>
 <span class="hljs-comment">// time = O(N * α(N)), space = O(N)</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">countComponents</span><span class="hljs-params">(<span class="hljs-type">int</span> n, <span class="hljs-type">int</span>[][] edges)</span> {
@@ -941,12 +905,12 @@ parent[rootX] = rootY;
     <span class="hljs-keyword">return</span> components;
 }
 <span class="hljs-keyword">private</span> <span class="hljs-type">int</span> <span class="hljs-title function_">find</span><span class="hljs-params">(<span class="hljs-type">int</span>[] p, <span class="hljs-type">int</span> x)</span> { <span class="hljs-keyword">return</span> p[x] == x ? x : (p[x] = find(p, p[x])); }
-</code></pre>
+</code></pre></div>
 <h3 id="2-6-surrounded-regions-lc-130-union-find-with-virtual-border-node" tabindex="-1"><a class="header-anchor" href="#2-6-surrounded-regions-lc-130-union-find-with-virtual-border-node"><span>2-6) Surrounded Regions (LC 130) — Union-Find with Virtual Border Node</span></a></h3>
 <blockquote>
 <p>Union all border ‘O’ cells to a virtual node; any ‘O’ not connected gets flipped to ‘X’.</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 130 - Surrounded Regions</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 130 - Surrounded Regions</span>
 <span class="hljs-comment">// IDEA: Union-Find — connect border O cells to virtual node; flip disconnected O cells</span>
 <span class="hljs-comment">// time = O(M*N), space = O(M*N)</span>
 <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">solve</span><span class="hljs-params">(<span class="hljs-type">char</span>[][] board)</span> {
@@ -967,12 +931,12 @@ parent[rootX] = rootY;
 }
 <span class="hljs-keyword">private</span> <span class="hljs-type">int</span> <span class="hljs-title function_">find</span><span class="hljs-params">(<span class="hljs-type">int</span>[] p, <span class="hljs-type">int</span> x)</span> { <span class="hljs-keyword">return</span> p[x]==x ? x : (p[x]=find(p,p[x])); }
 <span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">union</span><span class="hljs-params">(<span class="hljs-type">int</span>[] p, <span class="hljs-type">int</span> x, <span class="hljs-type">int</span> y)</span> { p[find(p,x)] = find(p,y); }
-</code></pre>
+</code></pre></div>
 <h3 id="2-7-smallest-string-with-swaps-lc-1202-union-find-sorting" tabindex="-1"><a class="header-anchor" href="#2-7-smallest-string-with-swaps-lc-1202-union-find-sorting"><span>2-7) Smallest String with Swaps (LC 1202) — Union-Find + Sorting</span></a></h3>
 <blockquote>
 <p>Union swap pairs; sort characters within each component; place sorted chars back.</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 1202 - Smallest String with Swaps</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 1202 - Smallest String with Swaps</span>
 <span class="hljs-comment">// IDEA: Union-Find — group indices; sort chars in each group and reassign</span>
 <span class="hljs-comment">// time = O(N log N), space = O(N)</span>
 <span class="hljs-keyword">public</span> String <span class="hljs-title function_">smallestStringWithSwaps</span><span class="hljs-params">(String s, List&lt;List&lt;Integer&gt;&gt; pairs)</span> {
@@ -994,12 +958,12 @@ parent[rootX] = rootY;
 }
 <span class="hljs-keyword">private</span> <span class="hljs-type">int</span> <span class="hljs-title function_">find</span><span class="hljs-params">(<span class="hljs-type">int</span>[] p, <span class="hljs-type">int</span> x)</span> { <span class="hljs-keyword">return</span> p[x]==x ? x : (p[x]=find(p,p[x])); }
 <span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">union</span><span class="hljs-params">(<span class="hljs-type">int</span>[] p, <span class="hljs-type">int</span> x, <span class="hljs-type">int</span> y)</span> { p[find(p,x)] = find(p,y); }
-</code></pre>
+</code></pre></div>
 <h3 id="2-8-most-stones-removed-with-same-row-or-column-lc-947-union-find" tabindex="-1"><a class="header-anchor" href="#2-8-most-stones-removed-with-same-row-or-column-lc-947-union-find"><span>2-8) Most Stones Removed with Same Row or Column (LC 947) — Union-Find</span></a></h3>
 <blockquote>
 <p>Union stones in the same row or column; answer = stones − number of components.</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 947 - Most Stones Removed with Same Row or Column</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 947 - Most Stones Removed with Same Row or Column</span>
 <span class="hljs-comment">// IDEA: Union-Find — stones sharing row/column are in same component; remove all but one</span>
 <span class="hljs-comment">// time = O(N^2 * α(N)), space = O(N)</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">removeStones</span><span class="hljs-params">(<span class="hljs-type">int</span>[][] stones)</span> {
@@ -1016,12 +980,12 @@ parent[rootX] = rootY;
 }
 <span class="hljs-keyword">private</span> <span class="hljs-type">int</span> <span class="hljs-title function_">find</span><span class="hljs-params">(<span class="hljs-type">int</span>[] p, <span class="hljs-type">int</span> x)</span> { <span class="hljs-keyword">return</span> p[x]==x ? x : (p[x]=find(p,p[x])); }
 <span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">union</span><span class="hljs-params">(<span class="hljs-type">int</span>[] p, <span class="hljs-type">int</span> x, <span class="hljs-type">int</span> y)</span> { p[find(p,x)] = find(p,y); }
-</code></pre>
+</code></pre></div>
 <h3 id="2-9-satisfiability-of-equality-equations-lc-990-union-find" tabindex="-1"><a class="header-anchor" href="#2-9-satisfiability-of-equality-equations-lc-990-union-find"><span>2-9) Satisfiability of Equality Equations (LC 990) — Union-Find</span></a></h3>
 <blockquote>
 <p>Process ‘==’ edges first; then check ‘!=’ pairs for contradiction.</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 990 - Satisfiability of Equality Equations</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 990 - Satisfiability of Equality Equations</span>
 <span class="hljs-comment">// IDEA: Union-Find — union on ==, validate != pairs for contradiction</span>
 <span class="hljs-comment">// time = O(N), space = O(26)</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">equationsPossible</span><span class="hljs-params">(String[] equations)</span> {
@@ -1036,12 +1000,12 @@ parent[rootX] = rootY;
 }
 <span class="hljs-keyword">private</span> <span class="hljs-type">int</span> <span class="hljs-title function_">find</span><span class="hljs-params">(<span class="hljs-type">int</span>[] p, <span class="hljs-type">int</span> x)</span> { <span class="hljs-keyword">return</span> p[x]==x ? x : (p[x]=find(p,p[x])); }
 <span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">union</span><span class="hljs-params">(<span class="hljs-type">int</span>[] p, <span class="hljs-type">int</span> x, <span class="hljs-type">int</span> y)</span> { p[find(p,x)] = find(p,y); }
-</code></pre>
+</code></pre></div>
 <h3 id="2-10-number-of-operations-to-make-network-connected-lc-1319-union-find" tabindex="-1"><a class="header-anchor" href="#2-10-number-of-operations-to-make-network-connected-lc-1319-union-find"><span>2-10) Number of Operations to Make Network Connected (LC 1319) — Union-Find</span></a></h3>
 <blockquote>
 <p>Need at least N-1 edges; count components; extra edges reconnect disconnected components.</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 1319 - Number of Operations to Make Network Connected</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 1319 - Number of Operations to Make Network Connected</span>
 <span class="hljs-comment">// IDEA: Union-Find — count components; need (components-1) extra cables</span>
 <span class="hljs-comment">// time = O(N * α(N)), space = O(N)</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">makeConnected</span><span class="hljs-params">(<span class="hljs-type">int</span> n, <span class="hljs-type">int</span>[][] connections)</span> {
@@ -1056,12 +1020,12 @@ parent[rootX] = rootY;
     <span class="hljs-keyword">return</span> components - <span class="hljs-number">1</span>;
 }
 <span class="hljs-keyword">private</span> <span class="hljs-type">int</span> <span class="hljs-title function_">find</span><span class="hljs-params">(<span class="hljs-type">int</span>[] p, <span class="hljs-type">int</span> x)</span> { <span class="hljs-keyword">return</span> p[x]==x ? x : (p[x]=find(p,p[x])); }
-</code></pre>
+</code></pre></div>
 <h3 id="2-11-longest-consecutive-sequence-lc-128-hashset-o-n" tabindex="-1"><a class="header-anchor" href="#2-11-longest-consecutive-sequence-lc-128-hashset-o-n"><span>2-11) Longest Consecutive Sequence (LC 128) — HashSet O(N)</span></a></h3>
 <blockquote>
 <p>For each number, only start counting if (num-1) is absent — marks sequence start.</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 128 - Longest Consecutive Sequence</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 128 - Longest Consecutive Sequence</span>
 <span class="hljs-comment">// IDEA: HashSet — only extend sequences from their start element</span>
 <span class="hljs-comment">// time = O(N), space = O(N)</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">longestConsecutive</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums)</span> {
@@ -1077,12 +1041,12 @@ parent[rootX] = rootY;
     }
     <span class="hljs-keyword">return</span> longest;
 }
-</code></pre>
+</code></pre></div>
 <h3 id="2-12-smallest-subtree-with-all-the-deepest-nodes-lc-865-bfs-union-find-climb" tabindex="-1"><a class="header-anchor" href="#2-12-smallest-subtree-with-all-the-deepest-nodes-lc-865-bfs-union-find-climb"><span>2-12) Smallest Subtree with all the Deepest Nodes (LC 865) — BFS + Union-Find Climb</span></a></h3>
 <blockquote>
 <p>BFS finds deepest nodes and parent map; then all deepest nodes “climb” upward via parents until they converge to the LCA. This is the same as LC 1123.</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 865 - Smallest Subtree with all the Deepest Nodes</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 865 - Smallest Subtree with all the Deepest Nodes</span>
 <span class="hljs-comment">// IDEA: BFS to find deepest level + build parent map, then climb upward until convergence</span>
 <span class="hljs-comment">// time = O(N), space = O(N)</span>
 <span class="hljs-keyword">public</span> TreeNode <span class="hljs-title function_">subtreeWithAllDeepest</span><span class="hljs-params">(TreeNode root)</span> {
@@ -1113,7 +1077,7 @@ parent[rootX] = rootY;
     }
     <span class="hljs-keyword">return</span> set.iterator().next();
 }
-</code></pre>
+</code></pre></div>
 
       </div>
       <div class="cheatsheet-footer">

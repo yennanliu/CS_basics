@@ -19,54 +19,18 @@
     }
   })();
   </script>
-  <script>document.addEventListener('DOMContentLoaded', function() {
-    document.querySelectorAll('pre code').forEach(function(codeEl) {
-      var pre = codeEl.parentElement;
-      var lang = '';
-      var cls = codeEl.className || '';
-      var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
-      if (m) lang = m[1];
-
-      // Add line numbers
-      var lines = codeEl.innerHTML.split('
-');
-      if (lines[lines.length - 1] === '') lines.pop();
-      var numbered = lines.map(function(line, i) {
-        return '<span class="hljs-ln-line"><span class="hljs-ln-n" data-line-number="' + (i + 1) + '"></span><span class="hljs-ln-code">' + line + '</span></span>';
-      }).join('
-');
-      codeEl.innerHTML = numbered;
-      codeEl.classList.add('hljs-ln');
-
-      var wrapper = document.createElement('div');
-      wrapper.className = 'code-block-wrapper';
-      pre.parentNode.insertBefore(wrapper, pre);
-      var header = document.createElement('div');
-      header.className = 'code-block-header';
-      if (lang) {
-        var label = document.createElement('span');
-        label.className = 'code-lang-label';
-        label.textContent = lang;
-        header.appendChild(label);
-      } else {
-        header.appendChild(document.createElement('span'));
-      }
-      var btn = document.createElement('button');
-      btn.className = 'copy-btn';
-      btn.textContent = 'Copy';
-      btn.addEventListener('click', function() {
-        var text = Array.from(codeEl.querySelectorAll('.hljs-ln-code')).map(function(el) { return el.textContent; }).join('
-');
-        navigator.clipboard.writeText(text).then(function() {
-          btn.textContent = 'Copied!';
-          btn.classList.add('copied');
-          setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
-        });
-      });
-      header.appendChild(btn);
-      wrapper.appendChild(header);
-      wrapper.appendChild(pre);
+  <script>
+  function copyCode(btn) {
+    var pre = btn.closest('.code-block-wrapper').querySelector('pre');
+    var text = pre ? pre.innerText : '';
+    navigator.clipboard.writeText(text).then(function() {
+      btn.textContent = 'Copied!';
+      btn.classList.add('copied');
+      setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
     });
+  }
+  </script>
+  <script>document.addEventListener('DOMContentLoaded', function() {
     document.querySelectorAll('table').forEach(function(table) {
       if (!table.parentElement.classList.contains('table-wrap')) {
         var wrapper = document.createElement('div');
@@ -468,7 +432,7 @@
 </tbody>
 </table>
 <h3 id="universal-dfs-template" tabindex="-1"><a class="header-anchor" href="#universal-dfs-template"><span>Universal DFS Template</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">dfs</span>(<span class="hljs-params">node, visited=<span class="hljs-literal">None</span></span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">dfs</span>(<span class="hljs-params">node, visited=<span class="hljs-literal">None</span></span>):
     <span class="hljs-string">&quot;&quot;&quot;
     Universal DFS template for trees and graphs
     Can be adapted for various problems
@@ -490,9 +454,9 @@
     
     <span class="hljs-comment"># Post-order processing if needed</span>
     <span class="hljs-comment"># process_after(node)</span>
-</code></pre>
+</code></pre></div>
 <h3 id="template-1-tree-traversal" tabindex="-1"><a class="header-anchor" href="#template-1-tree-traversal"><span>Template 1: Tree Traversal</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Preorder: Root -&gt; Left -&gt; Right</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Preorder: Root -&gt; Left -&gt; Right</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">preorder</span>(<span class="hljs-params">root</span>):
     <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> root:
         <span class="hljs-keyword">return</span> []
@@ -528,9 +492,9 @@
             stack.append(node.left)
     
     <span class="hljs-keyword">return</span> result
-</code></pre>
+</code></pre></div>
 <h3 id="template-2-graph-dfs" tabindex="-1"><a class="header-anchor" href="#template-2-graph-dfs"><span>Template 2: Graph DFS</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">dfs_graph</span>(<span class="hljs-params">graph, start</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">dfs_graph</span>(<span class="hljs-params">graph, start</span>):
     <span class="hljs-string">&quot;&quot;&quot;
     DFS for graph with cycle handling
     &quot;&quot;&quot;</span>
@@ -574,10 +538,10 @@
             <span class="hljs-keyword">if</span> dfs(node):
                 <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
     <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
-</code></pre>
+</code></pre></div>
 <h3 id="template-3-path-finding" tabindex="-1"><a class="header-anchor" href="#template-3-path-finding"><span>Template 3: Path Finding</span></a></h3>
 <p><strong>📚 Related Patterns</strong>: For comprehensive path problem patterns with multiple variations (path sum, max path, consecutive sequences, prefix sum technique), see <strong><a href="http://bst.md">bst.md</a> Template 7 (Path Problems)</strong> which provides 7 detailed path patterns with full implementations.</p>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">find_paths</span>(<span class="hljs-params">root, target</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">find_paths</span>(<span class="hljs-params">root, target</span>):
     <span class="hljs-string">&quot;&quot;&quot;
     Find all root-to-leaf paths with sum = target
     &quot;&quot;&quot;</span>
@@ -604,9 +568,9 @@
     result = []
     dfs(root, <span class="hljs-number">0</span>, [], result)
     <span class="hljs-keyword">return</span> result
-</code></pre>
+</code></pre></div>
 <h3 id="template-4-backtracking" tabindex="-1"><a class="header-anchor" href="#template-4-backtracking"><span>Template 4: Backtracking</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">backtrack_template</span>(<span class="hljs-params">candidates, target</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">backtrack_template</span>(<span class="hljs-params">candidates, target</span>):
     <span class="hljs-string">&quot;&quot;&quot;
     General backtracking template
     &quot;&quot;&quot;</span>
@@ -633,9 +597,9 @@
     result = []
     backtrack(<span class="hljs-number">0</span>, [], target)
     <span class="hljs-keyword">return</span> result
-</code></pre>
+</code></pre></div>
 <h3 id="template-5-tree-modification" tabindex="-1"><a class="header-anchor" href="#template-5-tree-modification"><span>Template 5: Tree Modification</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">modify_tree</span>(<span class="hljs-params">root, condition</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">modify_tree</span>(<span class="hljs-params">root, condition</span>):
     <span class="hljs-string">&quot;&quot;&quot;
     Modify tree structure based on condition
     &quot;&quot;&quot;</span>
@@ -657,9 +621,9 @@
         <span class="hljs-comment"># ... (find successor/predecessor)</span>
     
     <span class="hljs-keyword">return</span> root
-</code></pre>
+</code></pre></div>
 <h3 id="template-6-bottom-up-dfs" tabindex="-1"><a class="header-anchor" href="#template-6-bottom-up-dfs"><span>Template 6: Bottom-up DFS</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">bottom_up_dfs</span>(<span class="hljs-params">root</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">bottom_up_dfs</span>(<span class="hljs-params">root</span>):
     <span class="hljs-string">&quot;&quot;&quot;
     Process subtrees first, then current node
     Useful for subtree problems
@@ -683,9 +647,9 @@
     <span class="hljs-variable language_">self</span>.global_result = <span class="hljs-number">0</span>
     dfs(root)
     <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.global_result
-</code></pre>
+</code></pre></div>
 <h3 id="template-7-2-pass-dfs-boundary-elimination" tabindex="-1"><a class="header-anchor" href="#template-7-2-pass-dfs-boundary-elimination"><span>Template 7: 2-Pass DFS (Boundary Elimination)</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">two_pass_dfs</span>(<span class="hljs-params">grid</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">two_pass_dfs</span>(<span class="hljs-params">grid</span>):
     <span class="hljs-string">&quot;&quot;&quot;
     Two-pass approach for grid problems
     Pass 1: Eliminate boundary-connected cells
@@ -728,8 +692,8 @@
                 flood(r, c)  <span class="hljs-comment"># Mark to avoid double counting</span>
 
     <span class="hljs-keyword">return</span> count
-</code></pre>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java implementation</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java implementation</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">twoPassDFS</span><span class="hljs-params">(<span class="hljs-type">int</span>[][] grid)</span> {
     <span class="hljs-keyword">if</span> (grid == <span class="hljs-literal">null</span> || grid.length == <span class="hljs-number">0</span>) {
         <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
@@ -779,9 +743,9 @@
         flood(grid, r + dir[<span class="hljs-number">0</span>], c + dir[<span class="hljs-number">1</span>]);
     }
 }
-</code></pre>
+</code></pre></div>
 <h3 id="template-8-path-signature-shape-encoding" tabindex="-1"><a class="header-anchor" href="#template-8-path-signature-shape-encoding"><span>Template 8: Path Signature (Shape Encoding)</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">count_distinct_shapes</span>(<span class="hljs-params">grid</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">count_distinct_shapes</span>(<span class="hljs-params">grid</span>):
     <span class="hljs-string">&quot;&quot;&quot;
     Count distinct island shapes using path signatures
     Key: Encode each island&#x27;s shape as a unique string
@@ -822,8 +786,8 @@
                 unique_shapes.add(<span class="hljs-built_in">tuple</span>(path))
 
     <span class="hljs-keyword">return</span> <span class="hljs-built_in">len</span>(unique_shapes)
-</code></pre>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java implementation with directional encoding</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java implementation with directional encoding</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">numDistinctIslands</span><span class="hljs-params">(<span class="hljs-type">int</span>[][] grid)</span> {
     <span class="hljs-keyword">if</span> (grid == <span class="hljs-literal">null</span> || grid.length == <span class="hljs-number">0</span> || grid[<span class="hljs-number">0</span>].length == <span class="hljs-number">0</span>) {
         <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
@@ -882,8 +846,8 @@
     <span class="hljs-comment">// This distinguishes different branch structures</span>
     path.append(<span class="hljs-string">&#x27;O&#x27;</span>);
 }
-</code></pre>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Alternative: Relative coordinate encoding</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Alternative: Relative coordinate encoding</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">numDistinctIslands_v2</span><span class="hljs-params">(<span class="hljs-type">int</span>[][] grid)</span> {
     <span class="hljs-keyword">if</span> (grid == <span class="hljs-literal">null</span> || grid.length == <span class="hljs-number">0</span>) <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
     <span class="hljs-type">int</span> <span class="hljs-variable">rows</span> <span class="hljs-operator">=</span> grid.length, cols = grid[<span class="hljs-number">0</span>].length;
@@ -921,7 +885,7 @@
     dfs(grid, seen, r0, c0, r, c + <span class="hljs-number">1</span>, sb);
     dfs(grid, seen, r0, c0, r, c - <span class="hljs-number">1</span>, sb);
 }
-</code></pre>
+</code></pre></div>
 <p><strong>Key Concepts for Path Signatures:</strong></p>
 <ol>
 <li>
@@ -941,12 +905,12 @@
 </li>
 <li>
 <p><strong>Why Delimiters Matter</strong></p>
-<pre><code class="hljs">Shape 1:  11      Shape 2:   1
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Shape 1:  11      Shape 2:   1
            1                11
 
 Without delimiter: &quot;SDRO&quot;  vs &quot;SDRO&quot;  (Same - Wrong!)
 With delimiter:    &quot;SDOO&quot;  vs &quot;SDRO&quot;  (Different - Correct!)
-</code></pre>
+</code></pre></div>
 </li>
 <li>
 <p><strong>Consistency Guarantees</strong></p>
@@ -960,7 +924,7 @@ With delimiter:    &quot;SDOO&quot;  vs &quot;SDRO&quot;  (Different - Correct!)
 <li>
 <p><strong>Pass-by-Reference Pattern: Using StringBuilder for Path Recording</strong> ⭐</p>
 <p><strong>Key Insight</strong>: StringBuilder is a <strong>reference type</strong> (not a primitive). When passed to a function, changes made inside persist after the function returns.</p>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Pattern: Create placeholder → Pass to DFS → Use modified result</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Pattern: Create placeholder → Pass to DFS → Use modified result</span>
 
 Set&lt;String&gt; uniqueIslands = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashSet</span>&lt;&gt;();
 
@@ -1004,9 +968,9 @@ Set&lt;String&gt; uniqueIslands = <span class="hljs-keyword">new</span> <span cl
     <span class="hljs-comment">// Backtrack: remove the character added in this call</span>
     path.append(<span class="hljs-string">&#x27;O&#x27;</span>);  <span class="hljs-comment">// Backtrack marker</span>
 }
-</code></pre>
+</code></pre></div>
 <p><strong>Why This Works:</strong></p>
-<pre><code class="hljs">Memory Model:
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Memory Model:
 
 Main stack frame:
 ├── pathSignature = StringBuilder{} (heap object at address 0x1000)
@@ -1028,9 +992,9 @@ Main stack frame:
 
 Back in main:
 └── pathSignature = StringBuilder{&quot;SDO&quot;}  ✅ (modified!)
-</code></pre>
+</code></pre></div>
 <p><strong>Contrast with Primitives:</strong></p>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// ❌ WRONG: Primitive won&#x27;t persist changes</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// ❌ WRONG: Primitive won&#x27;t persist changes</span>
 <span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">dfs</span><span class="hljs-params">(<span class="hljs-type">int</span> curSum)</span> {
     curSum++;  <span class="hljs-comment">// Only affects local copy</span>
 }
@@ -1047,7 +1011,7 @@ System.out.println(mySum);  <span class="hljs-comment">// Still 5, NOT 6!</span>
 <span class="hljs-type">StringBuilder</span> <span class="hljs-variable">myPath</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">StringBuilder</span>();
 dfs(myPath);
 System.out.println(myPath);  <span class="hljs-comment">// Modified! ✅</span>
-</code></pre>
+</code></pre></div>
 <p><strong>Common Reference Types for This Pattern:</strong></p>
 <table>
 <thead>
@@ -1093,7 +1057,7 @@ System.out.println(myPath);  <span class="hljs-comment">// Modified! ✅</span>
 </li>
 </ol>
 <h3 id="template-9-dfs-with-validation-sub-component-detection" tabindex="-1"><a class="header-anchor" href="#template-9-dfs-with-validation-sub-component-detection"><span>Template 9: DFS with Validation (Sub-Component Detection)</span></a></h3>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">/**
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">/**
  * Pattern: DFS traversal on one grid while validating against another grid
  * Use case: Count sub-islands, validate subset components, inclusion checking
  * Key insight: Use boolean flag propagation to track whether ALL cells satisfy condition
@@ -1164,9 +1128,9 @@ System.out.println(myPath);  <span class="hljs-comment">// Modified! ✅</span>
 
     <span class="hljs-keyword">return</span> isValid;
 }
-</code></pre>
+</code></pre></div>
 <p><strong>Python Implementation:</strong></p>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">count_sub_components</span>(<span class="hljs-params">grid1, grid2</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">count_sub_components</span>(<span class="hljs-params">grid1, grid2</span>):
     <span class="hljs-string">&quot;&quot;&quot;
     Count components in grid2 that are completely contained in grid1
     &quot;&quot;&quot;</span>
@@ -1210,9 +1174,9 @@ System.out.println(myPath);  <span class="hljs-comment">// Modified! ✅</span>
                     count += <span class="hljs-number">1</span>
 
     <span class="hljs-keyword">return</span> count
-</code></pre>
+</code></pre></div>
 <p><strong>Concrete Example: LC 1905 - Count Sub Islands</strong></p>
-<pre><code class="hljs">Problem: Count islands in grid2 that are completely contained in grid1
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Problem: Count islands in grid2 that are completely contained in grid1
 
 grid1: [[1,1,1,0,0],    grid2: [[1,1,1,0,0],
         [0,1,1,1,1],            [0,0,1,0,0],
@@ -1237,9 +1201,9 @@ Key Insight:
 - Must traverse ENTIRE island in grid2
 - Check EVERY cell against grid1
 - Return true only if ALL cells pass validation
-</code></pre>
+</code></pre></div>
 <p><strong>Why Boolean Propagation Works:</strong></p>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// CORRECT: Visit all neighbors, accumulate results</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// CORRECT: Visit all neighbors, accumulate results</span>
 res = dfs(r - <span class="hljs-number">1</span>, c) &amp;&amp; res;
 res = dfs(r + <span class="hljs-number">1</span>, c) &amp;&amp; res;
 res = dfs(r, c - <span class="hljs-number">1</span>) &amp;&amp; res;
@@ -1247,7 +1211,7 @@ res = dfs(r, c + <span class="hljs-number">1</span>) &amp;&amp; res;
 
 <span class="hljs-comment">// WRONG: Short-circuits, doesn&#x27;t visit all cells</span>
 <span class="hljs-keyword">if</span> (!dfs(r - <span class="hljs-number">1</span>, c)) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;  <span class="hljs-comment">// Stops early, leaves cells unvisited!</span>
-</code></pre>
+</code></pre></div>
 <p><strong>Pattern Characteristics:</strong></p>
 <ul>
 <li><strong>Two Data Sources</strong>: One for structure (grid2), one for validation (grid1)</li>
@@ -1280,7 +1244,7 @@ res = dfs(r, c + <span class="hljs-number">1</span>) &amp;&amp; res;
 <li>LC 827: Making A Large Island (grid modification, max area)</li>
 </ul>
 <h3 id="template-10-bidirectional-graph-with-direction-tracking" tabindex="-1"><a class="header-anchor" href="#template-10-bidirectional-graph-with-direction-tracking"><span>Template 10: Bidirectional Graph with Direction Tracking</span></a></h3>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">/**
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">/**
  * Pattern: Build bidirectional graph with direction flags, count edge reversals via DFS
  * Use case: Reorder edges, reverse routes, make all paths lead to a target node
  * Key insight: Treat directed graph as undirected for traversal, but track original directions
@@ -1339,9 +1303,9 @@ res = dfs(r, c + <span class="hljs-number">1</span>) &amp;&amp; res;
         }
     }
 }
-</code></pre>
+</code></pre></div>
 <p><strong>Python Implementation:</strong></p>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">min_reorder</span>(<span class="hljs-params">n, connections</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">min_reorder</span>(<span class="hljs-params">n, connections</span>):
     <span class="hljs-string">&quot;&quot;&quot;
     Count minimum edge reversals to make all paths lead to node 0
     &quot;&quot;&quot;</span>
@@ -1369,7 +1333,7 @@ res = dfs(r, c + <span class="hljs-number">1</span>) &amp;&amp; res;
 
     dfs(<span class="hljs-number">0</span>)  <span class="hljs-comment"># Start from target node</span>
     <span class="hljs-keyword">return</span> count[<span class="hljs-number">0</span>]
-</code></pre>
+</code></pre></div>
 <p><strong>Key Concepts:</strong></p>
 <ol>
 <li>
@@ -1382,7 +1346,7 @@ res = dfs(r, c + <span class="hljs-number">1</span>) &amp;&amp; res;
 </li>
 <li>
 <p><strong>Why This Works</strong></p>
-<pre><code class="hljs">Example: connections = [[0,1],[1,3],[2,3],[4,0],[4,5]]
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Example: connections = [[0,1],[1,3],[2,3],[4,0],[4,5]]
 
 Original directed graph (edges point away from 0):
 0 -&gt; 1 -&gt; 3
@@ -1398,7 +1362,7 @@ During DFS from 0:
 - Visit 4: used edge 4-&gt;0 (flag=0) → no count
 - Visit 5: used edge 4-&gt;5 (flag=1) → count++
 Total = 3
-</code></pre>
+</code></pre></div>
 </li>
 <li>
 <p><strong>Direction Flag Logic</strong></p>
@@ -1451,7 +1415,7 @@ Total = 3
 <li>LC 1579: Remove Max Number of Edges to Keep Graph Fully Traversable (edge orientation)</li>
 </ul>
 <h3 id="template-11-component-pair-counting-unreachable-pairs" tabindex="-1"><a class="header-anchor" href="#template-11-component-pair-counting-unreachable-pairs"><span>Template 11: Component Pair Counting (Unreachable Pairs)</span></a></h3>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">/**
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">/**
  * Pattern: Count pairs of nodes that cannot reach each other across different components
  * Use case: Count unreachable/disconnected pairs, isolated node pairs
  * Key insight: For each component, multiply its size by nodes in OTHER components
@@ -1625,9 +1589,9 @@ Total = 3
 
     <span class="hljs-keyword">return</span> count;
 }
-</code></pre>
+</code></pre></div>
 <p><strong>Python Implementation:</strong></p>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">count_unreachable_pairs_dfs</span>(<span class="hljs-params">n, edges</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">count_unreachable_pairs_dfs</span>(<span class="hljs-params">n, edges</span>):
     <span class="hljs-string">&quot;&quot;&quot;
     Count unreachable pairs using DFS with forward counting
     &quot;&quot;&quot;</span>
@@ -1696,12 +1660,12 @@ Total = 3
         processed += size
 
     <span class="hljs-keyword">return</span> result
-</code></pre>
+</code></pre></div>
 <p><strong>Key Concepts:</strong></p>
 <ol>
 <li>
 <p><strong>Two Counting Approaches</strong></p>
-<pre><code class="hljs">Forward Counting (Approach 1):
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Forward Counting (Approach 1):
 - Component 1 (size=3): 3 × 0 = 0
 - Component 2 (size=2): 2 × 3 = 6
 - Component 3 (size=4): 4 × 5 = 20
@@ -1714,7 +1678,7 @@ Backward Counting (Approach 2):
 - Total: 26
 
 Both give same result, different order of calculation
-</code></pre>
+</code></pre></div>
 </li>
 <li>
 <p><strong>Why This Works</strong></p>
@@ -1727,7 +1691,7 @@ Both give same result, different order of calculation
 </li>
 <li>
 <p><strong>Visualization</strong></p>
-<pre><code class="hljs">Example: n=7, components=[3,2,2]
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Example: n=7, components=[3,2,2]
 
 Component A: {0,1,2}  (size=3)
 Component B: {3,4}     (size=2)
@@ -1741,7 +1705,7 @@ Total: 16 pairs
 
 Forward: 3×0 + 2×3 + 2×5 = 0+6+10 = 16 ✓
 Backward: 3×4 + 2×2 + 2×0 = 12+4+0 = 16 ✓
-</code></pre>
+</code></pre></div>
 </li>
 <li>
 <p><strong>Common Pitfalls</strong></p>
@@ -1789,7 +1753,7 @@ Backward: 3×4 + 2×2 + 2×0 = 12+4+0 = 16 ✓
 <ul>
 <li>Assign sub tree to node, then return updated node at final stage (Important !!!)</li>
 </ul>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 199</span>
 <span class="hljs-keyword">private</span> TreeNode <span class="hljs-title function_">_dfs</span><span class="hljs-params">(TreeNode node)</span>{
 
@@ -1805,11 +1769,11 @@ Backward: 3×4 + 2×2 + 2×0 = 12+4+0 = 16 ✓
     <span class="hljs-comment">/** NOTE !!! we need to return root as final step */</span>
     <span class="hljs-keyword">return</span> root2;
 }
-</code></pre>
+</code></pre></div>
 <ul>
 <li>Modify tree <code>in place</code>  (Important !!!)</li>
 </ul>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 701</span>
 
 <span class="hljs-comment">// ...</span>
@@ -1833,11 +1797,11 @@ Backward: 3×4 + 2×2 + 2×0 = 12+4+0 = 16 ✓
 }
 
 <span class="hljs-comment">// ... </span>
-</code></pre>
+</code></pre></div>
 <ul>
 <li>Tree transversal (DFS)</li>
 </ul>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
 <span class="hljs-comment"># form I : tree transversal</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">dfs</span>(<span class="hljs-params">root, target</span>):
 
@@ -1851,11 +1815,11 @@ Backward: 3×4 + 2×2 + 2×0 = 12+4+0 = 16 ✓
     <span class="hljs-keyword">if</span> root.val &gt; target:
        dfs(root.right, target)
        <span class="hljs-comment"># do sth</span>
-</code></pre>
+</code></pre></div>
 <ul>
 <li>Tree value moddify (DFS)</li>
 </ul>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># form II : modify values in tree</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># form II : modify values in tree</span>
 
 <span class="hljs-comment"># 669 Trim a Binary Search Tree</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
@@ -1903,8 +1867,8 @@ Backward: 3×4 + 2×2 + 2×0 = 12+4+0 = 16 ✓
             root.left = <span class="hljs-variable language_">self</span>.insertIntoBST(root.left, val)
 
         <span class="hljs-keyword">return</span> root
-</code></pre>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># form III : check if a value exist in the BST</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># form III : check if a value exist in the BST</span>
 
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">dfs</span>(<span class="hljs-params">root, value</span>):
     <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> root:
@@ -1915,8 +1879,8 @@ Backward: 3×4 + 2×2 + 2×0 = 12+4+0 = 16 ✓
         <span class="hljs-keyword">return</span> dfs(root.left, value) 
     <span class="hljs-keyword">if</span> root.val &lt; value:
         <span class="hljs-keyword">return</span> dfs(root.right, value)
-</code></pre>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># form IV : check if duplicated nodes in tree</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># form IV : check if duplicated nodes in tree</span>
 <span class="hljs-comment"># LC 652</span>
 <span class="hljs-comment"># python</span>
 m = collections.defaultdict(<span class="hljs-built_in">int</span>)
@@ -1933,7 +1897,7 @@ m = collections.defaultdict(<span class="hljs-built_in">int</span>)
 
     m[path] += <span class="hljs-number">1</span>
     <span class="hljs-keyword">return</span> path
-</code></pre>
+</code></pre></div>
 <ul>
 <li>
 <p>Grpah transversal (DFS)</p>
@@ -1942,7 +1906,7 @@ m = collections.defaultdict(<span class="hljs-built_in">int</span>)
 <p>Transversal in 4 directions (up, down, left, right)</p>
 </li>
 </ul>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 200</span>
 
 <span class="hljs-comment">/** NOTE !!!! BELOW approach has same effect */</span>
@@ -1968,9 +1932,9 @@ _is_island(grid, x, y-<span class="hljs-number">1</span>, seen);
     <span class="hljs-type">int</span> <span class="hljs-variable">newY</span> <span class="hljs-operator">=</span> y + dir[<span class="hljs-number">1</span>];
     _is_island(grid, newX, newY, seen);
 }
-</code></pre>
+</code></pre></div>
 <h3 id="0-3-tricks" tabindex="-1"><a class="header-anchor" href="#0-3-tricks"><span>0-3) Tricks</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># we don&#x27;t need to declare y,z in func, but we can use them in the func directly</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># we don&#x27;t need to declare y,z in func, but we can use them in the func directly</span>
 <span class="hljs-comment"># and can get the returned value as well, this trick is being used a lot in the dfs</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">test</span>():
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">func</span>(<span class="hljs-params">x</span>):
@@ -1984,7 +1948,7 @@ _is_island(grid, x, y-<span class="hljs-number">1</span>, seen);
     func(x)
 test()
 <span class="hljs-built_in">print</span> (z)
-</code></pre>
+</code></pre></div>
 <h2 id="problems-by-pattern" tabindex="-1"><a class="header-anchor" href="#problems-by-pattern"><span>Problems by Pattern</span></a></h2>
 <h3 id="pattern-based-problem-classification" tabindex="-1"><a class="header-anchor" href="#pattern-based-problem-classification"><span>Pattern-Based Problem Classification</span></a></h3>
 <h4 id="pattern-1-tree-traversal-problems" tabindex="-1"><a class="header-anchor" href="#pattern-1-tree-traversal-problems"><span><strong>Pattern 1: Tree Traversal Problems</strong></span></a></h4>
@@ -2619,16 +2583,16 @@ test()
 </ul>
 <h3 id="1-1-basic-op" tabindex="-1"><a class="header-anchor" href="#1-1-basic-op"><span>1-1) Basic OP</span></a></h3>
 <h4 id="1-1-1-add-1-to-all-node-value-in-binary-tree" tabindex="-1"><a class="header-anchor" href="#1-1-1-add-1-to-all-node-value-in-binary-tree"><span>1-1-1) Add 1 to all node.value in Binary tree?</span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Example) Add 1 to all node.value in Binary tree?</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Example) Add 1 to all node.value in Binary tree?</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">dfs</span>(<span class="hljs-params">root</span>):
     <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> root:
         <span class="hljs-keyword">return</span> 
     root.val += <span class="hljs-number">1</span> 
     dfs(root.left)
     dfs(root.right)
-</code></pre>
+</code></pre></div>
 <h4 id="1-1-2-check-if-2-binary-tree-are-the-same" tabindex="-1"><a class="header-anchor" href="#1-1-2-check-if-2-binary-tree-are-the-same"><span>1-1-2) check if 2 Binary tree are the same</span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Example) check if 2 Binary tree are the same ? </span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Example) check if 2 Binary tree are the same ? </span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">dfs</span>(<span class="hljs-params">root1, root2</span>):
     <span class="hljs-keyword">if</span> root1 == root2 == <span class="hljs-literal">None</span>:
         <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span> 
@@ -2641,9 +2605,9 @@ test()
             <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span> 
     <span class="hljs-keyword">return</span> dfs(root1.left, root2.left) \
            <span class="hljs-keyword">and</span> dfs(root1.right, root2.right)
-</code></pre>
+</code></pre></div>
 <h4 id="1-1-3-check-if-a-value-exist-in-the-bst" tabindex="-1"><a class="header-anchor" href="#1-1-3-check-if-a-value-exist-in-the-bst"><span>1-1-3) check if a value exist in the BST</span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Example) check if a value exist in the BST</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Example) check if a value exist in the BST</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">dfs</span>(<span class="hljs-params">root, value</span>):
     <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> root:
         <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
@@ -2661,9 +2625,9 @@ test()
         <span class="hljs-keyword">return</span> dfs(root.left, value) 
     <span class="hljs-keyword">if</span> root.val &lt; value:
         <span class="hljs-keyword">return</span> dfs(root.right, value)
-</code></pre>
+</code></pre></div>
 <h4 id="1-1-4-get-sum-of-sub-tree" tabindex="-1"><a class="header-anchor" href="#1-1-4-get-sum-of-sub-tree"><span>1-1-4) get sum of sub tree</span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># get sum of sub tree</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># get sum of sub tree</span>
 <span class="hljs-comment"># LC 508 Most Frequent Subtree Sum</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">get_sum</span>(<span class="hljs-params">root</span>):
     <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> root:
@@ -2673,18 +2637,18 @@ test()
     s = get_sum(root.left) + root.val + get_sum(root.right)
     res.append(s)
     <span class="hljs-keyword">return</span> s
-</code></pre>
+</code></pre></div>
 <h4 id="1-1-5-get-aggregated-sum-for-every-node-in-tree" tabindex="-1"><a class="header-anchor" href="#1-1-5-get-aggregated-sum-for-every-node-in-tree"><span>1-1-5) get <code>aggregated sum</code> for every node in tree</span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 663 Equal Tree Partition</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 663 Equal Tree Partition</span>
 <span class="hljs-comment"># LC 508 Most Frequent Subtree Sum</span>
 seen = []
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">_sum</span>(<span class="hljs-params">root</span>):
     <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> root:
         <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>
     seen.append( root.val + _<span class="hljs-built_in">sum</span>(root.left) + _<span class="hljs-built_in">sum</span>(root.right) )
-</code></pre>
+</code></pre></div>
 <h4 id="1-1-6-convert-bst-to-greater-tree" tabindex="-1"><a class="header-anchor" href="#1-1-6-convert-bst-to-greater-tree"><span>1-1-6) Convert BST to Greater Tree</span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Convert BST to Greater Tree </span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Convert BST to Greater Tree </span>
 <span class="hljs-comment"># LC 538</span>
 _<span class="hljs-built_in">sum</span> = <span class="hljs-number">0</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">dfs</span>(<span class="hljs-params">root</span>):
@@ -2692,9 +2656,9 @@ _<span class="hljs-built_in">sum</span> = <span class="hljs-number">0</span>
     _<span class="hljs-built_in">sum</span> += root.val
     root.val = _<span class="hljs-built_in">sum</span>
     dfs(root.left)
-</code></pre>
+</code></pre></div>
 <h4 id="1-1-7-serialize-and-deserialize-binary-tree" tabindex="-1"><a class="header-anchor" href="#1-1-7-serialize-and-deserialize-binary-tree"><span>1-1-7) Serialize and Deserialize Binary Tree</span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 297. Serialize and Deserialize Binary Tree</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 297. Serialize and Deserialize Binary Tree</span>
 <span class="hljs-comment"># please check below 2) LC Example</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># IDRA : DFS</span>
@@ -2738,8 +2702,8 @@ _<span class="hljs-built_in">sum</span> = <span class="hljs-number">0</span>
         data_list = data.split(<span class="hljs-string">&#x27;,&#x27;</span>)
         root = rdeserialize(data_list)
         <span class="hljs-keyword">return</span> root
-</code></pre>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 297</span>
 <span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Codec</span>{
     <span class="hljs-keyword">public</span> String <span class="hljs-title function_">serialize</span><span class="hljs-params">(TreeNode root)</span> {
@@ -2794,9 +2758,9 @@ _<span class="hljs-built_in">sum</span> = <span class="hljs-number">0</span>
         <span class="hljs-keyword">return</span> root;
     }
 }
-</code></pre>
+</code></pre></div>
 <h4 id="1-1-8-serialize-and-deserialize-bst" tabindex="-1"><a class="header-anchor" href="#1-1-8-serialize-and-deserialize-bst"><span>1-1-8) Serialize and Deserialize BST</span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 449. Serialize and Deserialize BST</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 449. Serialize and Deserialize BST</span>
 <span class="hljs-comment"># please check below 2) LC Example</span>
 <span class="hljs-comment"># NOTE : there is also a bfs approach</span>
 <span class="hljs-comment"># V1&#x27;</span>
@@ -2846,9 +2810,9 @@ _<span class="hljs-built_in">sum</span> = <span class="hljs-number">0</span>
                     u.right = node
                 stack.append(node)
         <span class="hljs-keyword">return</span> head
-</code></pre>
+</code></pre></div>
 <h4 id="1-1-9-find-longest-distance-between-nodes" tabindex="-1"><a class="header-anchor" href="#1-1-9-find-longest-distance-between-nodes"><span>1-1-9) find longest distance between nodes</span></a></h4>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 543 Diameter of Binary Tree</span>
 <span class="hljs-comment">// V1</span>
 <span class="hljs-comment">// IDEA : DFS</span>
@@ -2875,9 +2839,9 @@ _<span class="hljs-built_in">sum</span> = <span class="hljs-number">0</span>
     <span class="hljs-comment">// remember to add 1 for the path connecting the node and its parent</span>
     <span class="hljs-keyword">return</span> Math.max(leftPath, rightPath) + <span class="hljs-number">1</span>;
 }
-</code></pre>
+</code></pre></div>
 <h4 id="1-1-10-compare-node-val-with-path" tabindex="-1"><a class="header-anchor" href="#1-1-10-compare-node-val-with-path"><span>1-1-10) Compare node val with path</span></a></h4>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 1448</span>
 
 <span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">dfsCheckGoodNode</span><span class="hljs-params">(TreeNode node, <span class="hljs-type">int</span> maxSoFar)</span> {
@@ -2894,10 +2858,10 @@ _<span class="hljs-built_in">sum</span> = <span class="hljs-number">0</span>
     dfsCheckGoodNode(node.left, maxSoFar);
     dfsCheckGoodNode(node.right, maxSoFar);
 }
-</code></pre>
+</code></pre></div>
 <h2 id="2-lc-example" tabindex="-1"><a class="header-anchor" href="#2-lc-example"><span>2) LC Example</span></a></h2>
 <h3 id="2-1-validate-binary-search-tree" tabindex="-1"><a class="header-anchor" href="#2-1-validate-binary-search-tree"><span>2-1) Validate Binary Search Tree</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># 098 Validate Binary Search Tree</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># 098 Validate Binary Search Tree</span>
 <span class="hljs-comment">### NOTE : there is also bfs solution</span>
 <span class="hljs-comment"># https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Recursion/validate-binary-search-tree.py</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
@@ -2909,9 +2873,9 @@ _<span class="hljs-built_in">sum</span> = <span class="hljs-number">0</span>
         <span class="hljs-keyword">if</span> root.val &gt;= max_ <span class="hljs-keyword">or</span> root.val &lt;= min_:
             <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
         <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.valid(root.left, min_, root.val) <span class="hljs-keyword">and</span> <span class="hljs-variable language_">self</span>.valid(root.right, root.val, max_)
-</code></pre>
+</code></pre></div>
 <h3 id="2-2-insert-into-a-binary-search-tree" tabindex="-1"><a class="header-anchor" href="#2-2-insert-into-a-binary-search-tree"><span>2-2) Insert into a Binary Search Tree</span></a></h3>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 701</span>
 
 <span class="hljs-keyword">public</span> TreeNode <span class="hljs-title function_">insertIntoBST_0_1</span><span class="hljs-params">(TreeNode root, <span class="hljs-type">int</span> val)</span> {
@@ -2955,8 +2919,8 @@ _<span class="hljs-built_in">sum</span> = <span class="hljs-number">0</span>
         }
     }
 }
-</code></pre>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># 701 Insert into a Binary Search Tree</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># 701 Insert into a Binary Search Tree</span>
 
 <span class="hljs-comment"># VO : recursion + dfs</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
@@ -2968,10 +2932,10 @@ _<span class="hljs-built_in">sum</span> = <span class="hljs-number">0</span>
         <span class="hljs-keyword">elif</span> root.val &gt; val: 
             root.left = <span class="hljs-variable language_">self</span>.insertIntoBST(root.left, val);
         <span class="hljs-keyword">return</span>(root)
-</code></pre>
+</code></pre></div>
 <p>`</p>
 <h3 id="2-3-delete-node-in-a-bst" tabindex="-1"><a class="header-anchor" href="#2-3-delete-node-in-a-bst"><span>2-3) Delete Node in a BST</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># 450 Delete Node in a BST</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># 450 Delete Node in a BST</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># IDEA : RECURSION + BST PROPERTY</span>
 <span class="hljs-comment">#### 2 CASES :</span>
@@ -3002,8 +2966,8 @@ _<span class="hljs-built_in">sum</span> = <span class="hljs-number">0</span>
         root.left = <span class="hljs-variable language_">self</span>.deleteNode(root.left, key)
         root.right = <span class="hljs-variable language_">self</span>.deleteNode(root.right, key)
         <span class="hljs-keyword">return</span> root
-</code></pre>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 450</span>
 <span class="hljs-comment">// V0</span>
 <span class="hljs-comment">// IDEA: DFS + BST property</span>
@@ -3119,9 +3083,9 @@ _<span class="hljs-built_in">sum</span> = <span class="hljs-number">0</span>
     }
     <span class="hljs-keyword">return</span> node;
 }
-</code></pre>
+</code></pre></div>
 <h3 id="2-4-find-duplicate-subtrees" tabindex="-1"><a class="header-anchor" href="#2-4-find-duplicate-subtrees"><span>2-4) Find Duplicate Subtrees</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># 652 Find Duplicate Subtrees</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># 652 Find Duplicate Subtrees</span>
 <span class="hljs-keyword">import</span> collections
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">findDuplicateSubtrees</span>(<span class="hljs-params">self, root</span>):
@@ -3138,9 +3102,9 @@ _<span class="hljs-built_in">sum</span> = <span class="hljs-number">0</span>
             res.append(root) 
         m[path] += <span class="hljs-number">1</span>
         <span class="hljs-keyword">return</span> path
-</code></pre>
+</code></pre></div>
 <h3 id="2-5-trim-a-bst" tabindex="-1"><a class="header-anchor" href="#2-5-trim-a-bst"><span>2-5) Trim a BST</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># 669 Trim a Binary Search Tree</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># 669 Trim a Binary Search Tree</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">trimBST</span>(<span class="hljs-params">self, root, L, R</span>):
         <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> root:
@@ -3153,9 +3117,9 @@ _<span class="hljs-built_in">sum</span> = <span class="hljs-number">0</span>
             root.left = <span class="hljs-variable language_">self</span>.trimBST(root.left, L, R)
             root.right = <span class="hljs-variable language_">self</span>.trimBST(root.right, L, R)
             <span class="hljs-keyword">return</span> root
-</code></pre>
+</code></pre></div>
 <h3 id="2-6-maximum-width-of-binary-tree" tabindex="-1"><a class="header-anchor" href="#2-6-maximum-width-of-binary-tree"><span>2-6) Maximum Width of Binary Tree</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># 662 Maximum Width of Binary Tree</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># 662 Maximum Width of Binary Tree</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">widthOfBinaryTree</span>(<span class="hljs-params">self, root</span>):
         <span class="hljs-variable language_">self</span>.ans = <span class="hljs-number">0</span>
@@ -3169,9 +3133,9 @@ _<span class="hljs-built_in">sum</span> = <span class="hljs-number">0</span>
 
         dfs(root)
         <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.ans
-</code></pre>
+</code></pre></div>
 <h3 id="2-7-equal-tree-partition" tabindex="-1"><a class="header-anchor" href="#2-7-equal-tree-partition"><span>2-7) Equal Tree Partition</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># 663 Equal Tree Partition</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># 663 Equal Tree Partition</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># IDEA : DFS + cache</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
@@ -3200,9 +3164,9 @@ _<span class="hljs-built_in">sum</span> = <span class="hljs-number">0</span>
         total = sum_(root)
         seen.pop()
         <span class="hljs-keyword">return</span> total / <span class="hljs-number">2.0</span> <span class="hljs-keyword">in</span> seen
-</code></pre>
+</code></pre></div>
 <h3 id="2-8-split-bst" tabindex="-1"><a class="header-anchor" href="#2-8-split-bst"><span>2-8) Split BST</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># 776 Split BST</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># 776 Split BST</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># IDEA : BST properties (left &lt; root &lt; right) + recursion</span>
 <span class="hljs-comment"># https://blog.csdn.net/magicbean2/article/details/79679927</span>
@@ -3229,9 +3193,9 @@ _<span class="hljs-built_in">sum</span> = <span class="hljs-number">0</span>
             left, right = <span class="hljs-variable language_">self</span>.splitBST(root.right, V)
             root.right = left
             <span class="hljs-keyword">return</span> [root, right]
-</code></pre>
+</code></pre></div>
 <h3 id="2-9-evaluate-division" tabindex="-1"><a class="header-anchor" href="#2-9-evaluate-division"><span>2-9) Evaluate Division</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># 399 Evaluate Division</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># 399 Evaluate Division</span>
 <span class="hljs-comment"># there is also an &quot;union find&quot; solution</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">calcEquation</span>(<span class="hljs-params">self, equations, values, queries</span>):
@@ -3260,8 +3224,8 @@ _<span class="hljs-built_in">sum</span> = <span class="hljs-number">0</span>
             <span class="hljs-keyword">if</span> d &gt; <span class="hljs-number">0</span>:
                 <span class="hljs-keyword">return</span> d * graph[x][n]
         <span class="hljs-keyword">return</span> -<span class="hljs-number">1.0</span>
-</code></pre>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// V1</span>
 <span class="hljs-comment">// IDEA: DFS</span>
 <span class="hljs-comment">// https://leetcode.com/problems/evaluate-division/solutions/3543256/image-explanation-easiest-concise-comple-okpu/</span>
@@ -3347,9 +3311,9 @@ _<span class="hljs-built_in">sum</span> = <span class="hljs-number">0</span>
 
     <span class="hljs-keyword">return</span> gr;
 }
-</code></pre>
+</code></pre></div>
 <h3 id="2-10-most-frequent-subtree-sum" tabindex="-1"><a class="header-anchor" href="#2-10-most-frequent-subtree-sum"><span>2-10) Most Frequent Subtree Sum</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 508 Most Frequent Subtree Sum</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 508 Most Frequent Subtree Sum</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># IDEA : DFS + TREE</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
@@ -3394,9 +3358,9 @@ _<span class="hljs-built_in">sum</span> = <span class="hljs-number">0</span>
         _max_cnt = <span class="hljs-built_in">max</span>(d.values())
         ans = []
         <span class="hljs-keyword">return</span> [x <span class="hljs-keyword">for</span> x <span class="hljs-keyword">in</span> d <span class="hljs-keyword">if</span> d[x] == _max_cnt]
-</code></pre>
+</code></pre></div>
 <h3 id="2-11-convert-bst-to-greater-tree" tabindex="-1"><a class="header-anchor" href="#2-11-convert-bst-to-greater-tree"><span>2-11) Convert BST to Greater Tree</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 538 Convert BST to Greater Tree</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 538 Convert BST to Greater Tree</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># IDEA : DFS + recursion</span>
 <span class="hljs-comment">#      -&gt; NOTE : via DFS, the op will being executed in `INVERSE` order (last visit will be run first, then previous, then ...)</span>
@@ -3443,9 +3407,9 @@ _<span class="hljs-built_in">sum</span> = <span class="hljs-number">0</span>
         cur = <span class="hljs-number">0</span>
         <span class="hljs-built_in">help</span>(cur, root)
         <span class="hljs-keyword">return</span> root
-</code></pre>
+</code></pre></div>
 <h3 id="2-12-number-of-islands" tabindex="-1"><a class="header-anchor" href="#2-12-number-of-islands"><span>2-12) Number of Islands</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 200 Number of Islands, check LC 694, 711 as well</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 200 Number of Islands, check LC 694, 711 as well</span>
 <span class="hljs-comment"># V0 </span>
 <span class="hljs-comment"># IDEA : DFS</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
@@ -3478,9 +3442,9 @@ _<span class="hljs-built_in">sum</span> = <span class="hljs-number">0</span>
                     dfs(grid, [i,j])
                     res += <span class="hljs-number">1</span>
         <span class="hljs-keyword">return</span> res
-</code></pre>
+</code></pre></div>
 <h3 id="2-13-max-area-of-island" tabindex="-1"><a class="header-anchor" href="#2-13-max-area-of-island"><span>2-13) Max Area of Island</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 695. Max Area of Island</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 695. Max Area of Island</span>
 <span class="hljs-comment"># V1</span>
 <span class="hljs-comment"># https://blog.csdn.net/fuxuemingzhu/article/details/79182435</span>
 <span class="hljs-comment"># IDEA : DFS </span>
@@ -3512,9 +3476,9 @@ _<span class="hljs-built_in">sum</span> = <span class="hljs-number">0</span>
             x, y = i + d[<span class="hljs-number">0</span>], j + d[<span class="hljs-number">1</span>]
             <span class="hljs-keyword">if</span> <span class="hljs-number">0</span> &lt;= x &lt; M <span class="hljs-keyword">and</span> <span class="hljs-number">0</span> &lt;= y &lt; N <span class="hljs-keyword">and</span> grid[x][y]:
                 <span class="hljs-variable language_">self</span>.dfs(grid, x, y)
-</code></pre>
+</code></pre></div>
 <h3 id="2-14-binary-tree-paths" tabindex="-1"><a class="header-anchor" href="#2-14-binary-tree-paths"><span>2-14) Binary Tree Paths</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 257. Binary Tree Paths</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 257. Binary Tree Paths</span>
 <span class="hljs-comment"># V0 </span>
 <span class="hljs-comment"># IDEA : DFS </span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
@@ -3536,9 +3500,9 @@ _<span class="hljs-built_in">sum</span> = <span class="hljs-number">0</span>
         <span class="hljs-keyword">if</span> root.right:
             <span class="hljs-variable language_">self</span>.dfs(root.right, path_list, res)
         path_list.pop()
-</code></pre>
+</code></pre></div>
 <h3 id="2-15-lowest-common-ancestor-of-a-binary-tree" tabindex="-1"><a class="header-anchor" href="#2-15-lowest-common-ancestor-of-a-binary-tree"><span>2-15) Lowest Common Ancestor of a Binary Tree</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 236 Lowest Common Ancestor of a Binary Tree</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 236 Lowest Common Ancestor of a Binary Tree</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># IDEA : RECURSION + POST ORDER TRANSVERSAL</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
@@ -3566,9 +3530,9 @@ _<span class="hljs-built_in">sum</span> = <span class="hljs-number">0</span>
         <span class="hljs-comment">### NOTE here</span>
         <span class="hljs-comment"># if p, q both in left sub tree or both in right sub tree</span>
         <span class="hljs-keyword">return</span> left <span class="hljs-keyword">if</span> left <span class="hljs-keyword">else</span> right
-</code></pre>
+</code></pre></div>
 <h3 id="2-16-path-sum" tabindex="-1"><a class="header-anchor" href="#2-16-path-sum"><span>2-16) Path Sum</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 112 Path Sum</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 112 Path Sum</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># IDEA : DFS </span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
@@ -3579,9 +3543,9 @@ _<span class="hljs-built_in">sum</span> = <span class="hljs-number">0</span>
             <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span> <span class="hljs-keyword">if</span> <span class="hljs-built_in">sum</span> == root.val <span class="hljs-keyword">else</span> <span class="hljs-literal">False</span>
         <span class="hljs-keyword">else</span>:
             <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.hasPathSum(root.left, <span class="hljs-built_in">sum</span>-root.val) <span class="hljs-keyword">or</span> <span class="hljs-variable language_">self</span>.hasPathSum(root.right, <span class="hljs-built_in">sum</span>-root.val)
-</code></pre>
+</code></pre></div>
 <h3 id="2-17-path-sum-ii" tabindex="-1"><a class="header-anchor" href="#2-17-path-sum-ii"><span>2-17) Path Sum II</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 113 Path Sum II</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 113 Path Sum II</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># IDEA : DFS</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
@@ -3600,8 +3564,8 @@ _<span class="hljs-built_in">sum</span> = <span class="hljs-number">0</span>
             <span class="hljs-variable language_">self</span>.dfs(root.left, target, res, path + [root.left.val])
         <span class="hljs-keyword">if</span> root.right:
             <span class="hljs-variable language_">self</span>.dfs(root.right, target, res, path + [root.right.val])
-</code></pre>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 113</span>
 <span class="hljs-comment">// V0</span>
 <span class="hljs-comment">// IDEA : DFS + backtracking</span>
@@ -3642,9 +3606,9 @@ _<span class="hljs-built_in">sum</span> = <span class="hljs-number">0</span>
      <span class="hljs-comment">// NOTE !!! we do backtrack here (cancel previous adding to cur)</span>
      cur.remove(cur.size() - <span class="hljs-number">1</span>);
 }
-</code></pre>
+</code></pre></div>
 <h3 id="2-7-clone-graph" tabindex="-1"><a class="header-anchor" href="#2-7-clone-graph"><span>2-7) Clone graph</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># 133 Clone graph</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># 133 Clone graph</span>
 <span class="hljs-comment"># note : there is also a BFS solution</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># IDEA : DFS</span>
@@ -3670,9 +3634,9 @@ _<span class="hljs-built_in">sum</span> = <span class="hljs-number">0</span>
             <span class="hljs-keyword">if</span> n_copy:
                 node_copy.neighbors.append(n_copy)
         <span class="hljs-keyword">return</span> node_copy
-</code></pre>
+</code></pre></div>
 <h3 id="2-8-sentence-similarity-ii" tabindex="-1"><a class="header-anchor" href="#2-8-sentence-similarity-ii"><span>2-8) Sentence Similarity II</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 737. Sentence Similarity II</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 737. Sentence Similarity II</span>
 <span class="hljs-comment"># NOTE : there is also union-find solution</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># IDEA : DFS</span>
@@ -3704,9 +3668,9 @@ _<span class="hljs-built_in">sum</span> = <span class="hljs-number">0</span>
             <span class="hljs-keyword">if</span> sentence1[i] != sentence2[i] <span class="hljs-keyword">and</span> <span class="hljs-keyword">not</span> dfs(sentence1[i],  sentence2[i], visited):
                 <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
         <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
-</code></pre>
+</code></pre></div>
 <h3 id="2-9-concatenated-words" tabindex="-1"><a class="header-anchor" href="#2-9-concatenated-words"><span>2-9) Concatenated Words</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 472. Concatenated Words</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 472. Concatenated Words</span>
 <span class="hljs-comment"># V1</span>
 <span class="hljs-comment"># http://bookshadow.com/weblog/2016/12/18/leetcode-concatenated-words/</span>
 <span class="hljs-comment"># IDEA : DFS </span>
@@ -3732,9 +3696,9 @@ _<span class="hljs-built_in">sum</span> = <span class="hljs-number">0</span>
             <span class="hljs-keyword">if</span> word[:idx] <span class="hljs-keyword">in</span> <span class="hljs-variable language_">self</span>.wordSet <span class="hljs-keyword">and</span> <span class="hljs-variable language_">self</span>.search(word[idx:]):
                 <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
         <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
-</code></pre>
+</code></pre></div>
 <h3 id="2-10-maximum-product-of-splitted-binary-tree" tabindex="-1"><a class="header-anchor" href="#2-10-maximum-product-of-splitted-binary-tree"><span>2-10) Maximum Product of Splitted Binary Tree</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 1339. Maximum Product of Splitted Binary Tree</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 1339. Maximum Product of Splitted Binary Tree</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># IDEA : DFS</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
@@ -3754,9 +3718,9 @@ _<span class="hljs-built_in">sum</span> = <span class="hljs-number">0</span>
         <span class="hljs-keyword">for</span> s <span class="hljs-keyword">in</span> all_sums:
             best = <span class="hljs-built_in">max</span>(best, s * (total - s))   
         <span class="hljs-keyword">return</span> best % (<span class="hljs-number">10</span> ** <span class="hljs-number">9</span> + <span class="hljs-number">7</span>)
-</code></pre>
+</code></pre></div>
 <h3 id="2-11-serialize-and-deserialize-binary-tree" tabindex="-1"><a class="header-anchor" href="#2-11-serialize-and-deserialize-binary-tree"><span>2-11) Serialize and Deserialize Binary Tree</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 297. Serialize and Deserialize Binary Tree</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 297. Serialize and Deserialize Binary Tree</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># IDRA : DFS</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">Codec</span>:
@@ -3829,9 +3793,9 @@ _<span class="hljs-built_in">sum</span> = <span class="hljs-number">0</span>
             <span class="hljs-keyword">return</span> root
         <span class="hljs-keyword">else</span>:
             <span class="hljs-keyword">return</span> <span class="hljs-literal">None</span>
-</code></pre>
+</code></pre></div>
 <h3 id="2-12-serialize-and-deserialize-bst" tabindex="-1"><a class="header-anchor" href="#2-12-serialize-and-deserialize-bst"><span>2-12) Serialize and Deserialize BST</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 449. Serialize and Deserialize BST</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 449. Serialize and Deserialize BST</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># IDEA : BFS + queue op</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">Codec</span>:
@@ -3920,9 +3884,9 @@ _<span class="hljs-built_in">sum</span> = <span class="hljs-number">0</span>
             <span class="hljs-keyword">return</span> root
         <span class="hljs-keyword">else</span>:
             <span class="hljs-keyword">return</span> <span class="hljs-literal">None</span>
-</code></pre>
+</code></pre></div>
 <h3 id="2-12-number-of-closed-islands-2-pass-dfs" tabindex="-1"><a class="header-anchor" href="#2-12-number-of-closed-islands-2-pass-dfs"><span>2-12) Number of Closed Islands (2-Pass DFS)</span></a></h3>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 1254</span>
 <span class="hljs-comment">// V0</span>
 <span class="hljs-comment">// IDEA: 2-Pass DFS (Boundary Elimination)</span>
@@ -3986,8 +3950,8 @@ _<span class="hljs-built_in">sum</span> = <span class="hljs-number">0</span>
     flood(grid, r, c + <span class="hljs-number">1</span>);
     flood(grid, r, c - <span class="hljs-number">1</span>);
 }
-</code></pre>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
 <span class="hljs-comment"># LC 1254</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">closedIsland</span>(<span class="hljs-params">grid</span>):
     <span class="hljs-string">&quot;&quot;&quot;
@@ -4025,9 +3989,9 @@ _<span class="hljs-built_in">sum</span> = <span class="hljs-number">0</span>
                 flood(r, c)
 
     <span class="hljs-keyword">return</span> count
-</code></pre>
+</code></pre></div>
 <h3 id="2-13-pacific-atlantic-water-flow" tabindex="-1"><a class="header-anchor" href="#2-13-pacific-atlantic-water-flow"><span>2-13) Pacific Atlantic Water Flow</span></a></h3>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 417</span>
 <span class="hljs-comment">// V0</span>
 <span class="hljs-comment">// IDEA : DFS (fixed by GPT)</span>
@@ -4163,9 +4127,9 @@ _<span class="hljs-built_in">sum</span> = <span class="hljs-number">0</span>
         }
     }
 } 
-</code></pre>
+</code></pre></div>
 <h3 id="2-12-minesweeper" tabindex="-1"><a class="header-anchor" href="#2-12-minesweeper"><span>2-12) Minesweeper</span></a></h3>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 529</span>
 
 <span class="hljs-comment">// (there is also BFS solution)</span>
@@ -4273,9 +4237,9 @@ _<span class="hljs-built_in">sum</span> = <span class="hljs-number">0</span>
         }
     }
 }
-</code></pre>
+</code></pre></div>
 <h3 id="2-13-k-th-largest-perfect-subtree-size-in-binary-tree" tabindex="-1"><a class="header-anchor" href="#2-13-k-th-largest-perfect-subtree-size-in-binary-tree"><span>2-13) K-th Largest Perfect Subtree Size in Binary Tree</span></a></h3>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 3319</span>
 
 <span class="hljs-comment">// V0-1</span>
@@ -4368,9 +4332,9 @@ List&lt;Integer&gt; perfectSizes = <span class="hljs-keyword">new</span> <span c
 
     <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">SubtreeInfo</span>(height, size, isPerfect);
 }
-</code></pre>
+</code></pre></div>
 <h2 id="pattern-selection-strategy" tabindex="-1"><a class="header-anchor" href="#pattern-selection-strategy"><span>Pattern Selection Strategy</span></a></h2>
-<pre><code class="hljs">DFS Problem Analysis Flowchart:
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">DFS Problem Analysis Flowchart:
 
 1. Is it a tree/graph traversal problem?
    ├── YES → Check structure type
@@ -4404,7 +4368,7 @@ List&lt;Integer&gt; perfectSizes = <span class="hljs-keyword">new</span> <span c
    ├── Need shortest path? → Consider BFS instead
    ├── Has optimal substructure? → Consider DP
    └── Need all solutions? → DFS with backtracking
-</code></pre>
+</code></pre></div>
 <h3 id="decision-framework" tabindex="-1"><a class="header-anchor" href="#decision-framework"><span>Decision Framework</span></a></h3>
 <ol>
 <li><strong>Identify problem type</strong>: Tree, graph, grid, or combinatorial</li>
@@ -4513,7 +4477,7 @@ List&lt;Integer&gt; perfectSizes = <span class="hljs-keyword">new</span> <span c
 </table>
 <h3 id="common-patterns-tricks" tabindex="-1"><a class="header-anchor" href="#common-patterns-tricks"><span>Common Patterns &amp; Tricks</span></a></h3>
 <h4 id="pattern-global-variable-for-optimization" tabindex="-1"><a class="header-anchor" href="#pattern-global-variable-for-optimization"><span><strong>Pattern: Global Variable for Optimization</strong></span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">maxPathSum</span>(<span class="hljs-params">self, root</span>):
         <span class="hljs-variable language_">self</span>.max_sum = <span class="hljs-built_in">float</span>(<span class="hljs-string">&#x27;-inf&#x27;</span>)
         
@@ -4527,9 +4491,9 @@ List&lt;Integer&gt; perfectSizes = <span class="hljs-keyword">new</span> <span c
         
         dfs(root)
         <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.max_sum
-</code></pre>
+</code></pre></div>
 <h4 id="pattern-path-tracking-with-backtracking" tabindex="-1"><a class="header-anchor" href="#pattern-path-tracking-with-backtracking"><span><strong>Pattern: Path Tracking with Backtracking</strong></span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">all_paths</span>(<span class="hljs-params">root</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">all_paths</span>(<span class="hljs-params">root</span>):
     result = []
     
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">dfs</span>(<span class="hljs-params">node, path</span>):
@@ -4548,9 +4512,9 @@ List&lt;Integer&gt; perfectSizes = <span class="hljs-keyword">new</span> <span c
     
     dfs(root, [])
     <span class="hljs-keyword">return</span> result
-</code></pre>
+</code></pre></div>
 <h4 id="pattern-grid-dfs-with-directions" tabindex="-1"><a class="header-anchor" href="#pattern-grid-dfs-with-directions"><span><strong>Pattern: Grid DFS with Directions</strong></span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">grid_dfs</span>(<span class="hljs-params">grid, x, y, visited</span>):
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">grid_dfs</span>(<span class="hljs-params">grid, x, y, visited</span>):
     <span class="hljs-keyword">if</span> x &lt; <span class="hljs-number">0</span> <span class="hljs-keyword">or</span> x &gt;= <span class="hljs-built_in">len</span>(grid) <span class="hljs-keyword">or</span> y &lt; <span class="hljs-number">0</span> <span class="hljs-keyword">or</span> y &gt;= <span class="hljs-built_in">len</span>(grid[<span class="hljs-number">0</span>]):
         <span class="hljs-keyword">return</span>
     <span class="hljs-keyword">if</span> (x, y) <span class="hljs-keyword">in</span> visited <span class="hljs-keyword">or</span> grid[x][y] == <span class="hljs-number">0</span>:
@@ -4562,7 +4526,7 @@ List&lt;Integer&gt; perfectSizes = <span class="hljs-keyword">new</span> <span c
     directions = [(<span class="hljs-number">0</span>, <span class="hljs-number">1</span>), (<span class="hljs-number">1</span>, <span class="hljs-number">0</span>), (<span class="hljs-number">0</span>, -<span class="hljs-number">1</span>), (-<span class="hljs-number">1</span>, <span class="hljs-number">0</span>)]
     <span class="hljs-keyword">for</span> dx, dy <span class="hljs-keyword">in</span> directions:
         grid_dfs(grid, x + dx, y + dy, visited)
-</code></pre>
+</code></pre></div>
 <h3 id="problem-solving-steps" tabindex="-1"><a class="header-anchor" href="#problem-solving-steps"><span>Problem-Solving Steps</span></a></h3>
 <ol>
 <li><strong>Identify pattern</strong>: Tree, graph, backtracking, or path</li>
@@ -4601,7 +4565,7 @@ List&lt;Integer&gt; perfectSizes = <span class="hljs-keyword">new</span> <span c
 <h3 id="critical-dfs-early-return-pattern-path-finding" tabindex="-1"><a class="header-anchor" href="#critical-dfs-early-return-pattern-path-finding"><span>⚠️ CRITICAL: DFS Early Return Pattern (Path Finding)</span></a></h3>
 <p><strong>Problem</strong>: When searching for a path in DFS, what’s the difference between these two approaches?</p>
 <h4 id="wrong-approach-not-checking-return-value" tabindex="-1"><a class="header-anchor" href="#wrong-approach-not-checking-return-value"><span>❌ WRONG Approach: Not Checking Return Value</span></a></h4>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">private</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">dfsPathVisitor</span><span class="hljs-params">(<span class="hljs-type">int</span> node, <span class="hljs-type">int</span> destination, Map&lt;Integer, List&lt;Integer&gt;&gt; map, <span class="hljs-type">boolean</span>[] visited)</span> {
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">private</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">dfsPathVisitor</span><span class="hljs-params">(<span class="hljs-type">int</span> node, <span class="hljs-type">int</span> destination, Map&lt;Integer, List&lt;Integer&gt;&gt; map, <span class="hljs-type">boolean</span>[] visited)</span> {
     <span class="hljs-keyword">if</span> (node == destination) <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
 
     visited[node] = <span class="hljs-literal">true</span>;
@@ -4615,9 +4579,9 @@ List&lt;Integer&gt; perfectSizes = <span class="hljs-keyword">new</span> <span c
 
     <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;  <span class="hljs-comment">// Will ALWAYS return false (except for direct hits)</span>
 }
-</code></pre>
+</code></pre></div>
 <h4 id="correct-approach-early-return-on-success" tabindex="-1"><a class="header-anchor" href="#correct-approach-early-return-on-success"><span>✅ CORRECT Approach: Early Return on Success</span></a></h4>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">private</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">dfsPathVisitor</span><span class="hljs-params">(<span class="hljs-type">int</span> node, <span class="hljs-type">int</span> destination, Map&lt;Integer, List&lt;Integer&gt;&gt; map, <span class="hljs-type">boolean</span>[] visited)</span> {
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">private</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">dfsPathVisitor</span><span class="hljs-params">(<span class="hljs-type">int</span> node, <span class="hljs-type">int</span> destination, Map&lt;Integer, List&lt;Integer&gt;&gt; map, <span class="hljs-type">boolean</span>[] visited)</span> {
     <span class="hljs-keyword">if</span> (node == destination) <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
 
     visited[node] = <span class="hljs-literal">true</span>;
@@ -4633,11 +4597,11 @@ List&lt;Integer&gt; perfectSizes = <span class="hljs-keyword">new</span> <span c
 
     <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;  <span class="hljs-comment">// Only return false if ALL paths explored</span>
 }
-</code></pre>
+</code></pre></div>
 <hr>
 <h3 id="concrete-example-why-early-return-matters" tabindex="-1"><a class="header-anchor" href="#concrete-example-why-early-return-matters"><span>📊 Concrete Example: Why Early Return Matters</span></a></h3>
 <p><strong>Test Case:</strong></p>
-<pre><code class="hljs">Graph: 0 -- 1 -- 2 -- 3
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Graph: 0 -- 1 -- 2 -- 3
        |         |
        4 -------- 5
 
@@ -4650,11 +4614,11 @@ Adjacency List:
 5: [2, 4]
 
 Task: Find path from 0 to 3
-</code></pre>
+</code></pre></div>
 <hr>
 <h4 id="scenario-1-wrong-without-early-return" tabindex="-1"><a class="header-anchor" href="#scenario-1-wrong-without-early-return"><span>Scenario 1: ❌ WRONG (Without Early Return)</span></a></h4>
 <p><strong>Call Stack Trace:</strong></p>
-<pre><code class="hljs">1. dfsPathVisitor(0, 3, ..., visited=[])
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">1. dfsPathVisitor(0, 3, ..., visited=[])
    → visited = [0]
    → Loop neighbors: [1, 4]
 
@@ -4691,7 +4655,7 @@ Task: Find path from 0 to 3
    ← Level 0 finishes loop, returns FALSE
 
 ❌ FINAL RESULT: FALSE (Path exists but not detected!)
-</code></pre>
+</code></pre></div>
 <p><strong>Why it fails:</strong></p>
 <ul>
 <li>Found destination at step 4 (returned TRUE)</li>
@@ -4702,7 +4666,7 @@ Task: Find path from 0 to 3
 <hr>
 <h4 id="scenario-2-correct-with-early-return" tabindex="-1"><a class="header-anchor" href="#scenario-2-correct-with-early-return"><span>Scenario 2: ✅ CORRECT (With Early Return)</span></a></h4>
 <p><strong>Call Stack Trace:</strong></p>
-<pre><code class="hljs">1. dfsPathVisitor(0, 3, ..., visited=[])
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">1. dfsPathVisitor(0, 3, ..., visited=[])
    → visited = [0]
    → Loop neighbors: [1, 4]
 
@@ -4726,7 +4690,7 @@ Task: Find path from 0 to 3
    ← Returns TRUE immediately (skips neighbor 4!)
 
 ✅ FINAL RESULT: TRUE (Correct!)
-</code></pre>
+</code></pre></div>
 <p><strong>Why it works:</strong></p>
 <ul>
 <li>Found destination at step 4 (returned TRUE)</li>
@@ -4770,21 +4734,21 @@ Task: Find path from 0 to 3
 <hr>
 <h3 id="when-to-use-each-pattern" tabindex="-1"><a class="header-anchor" href="#when-to-use-each-pattern"><span>📝 When to Use Each Pattern</span></a></h3>
 <h4 id="pattern-1-early-return-path-existence-check" tabindex="-1"><a class="header-anchor" href="#pattern-1-early-return-path-existence-check"><span>Pattern 1: Early Return (Path Existence Check)</span></a></h4>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Use when: &quot;Does path exist?&quot; &quot;Can we reach?&quot; &quot;Is there a route?&quot;</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Use when: &quot;Does path exist?&quot; &quot;Can we reach?&quot; &quot;Is there a route?&quot;</span>
 <span class="hljs-keyword">if</span> (dfs(next)) {
     <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;  <span class="hljs-comment">// Found one path - that&#x27;s enough!</span>
 }
-</code></pre>
+</code></pre></div>
 <p><strong>Examples:</strong> LC 1971 (Path Exists), LC 797 (All Paths), LC 79 (Word Search)</p>
 <h4 id="pattern-2-continue-without-return-collecting-all-results" tabindex="-1"><a class="header-anchor" href="#pattern-2-continue-without-return-collecting-all-results"><span>Pattern 2: Continue Without Return (Collecting All Results)</span></a></h4>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Use when: &quot;Find ALL paths&quot; &quot;Count all solutions&quot; &quot;Collect all combinations&quot;</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Use when: &quot;Find ALL paths&quot; &quot;Count all solutions&quot; &quot;Collect all combinations&quot;</span>
 dfs(next);  <span class="hljs-comment">// Don&#x27;t return early - need to explore all branches</span>
-</code></pre>
+</code></pre></div>
 <p><strong>Examples:</strong> LC 257 (All Root-to-Leaf Paths), LC 113 (Path Sum II), LC 22 (Generate Parentheses)</p>
 <hr>
 <h3 id="real-implementation-reference" tabindex="-1"><a class="header-anchor" href="#real-implementation-reference"><span>🔍 Real Implementation Reference</span></a></h3>
 <p>From <strong>LC 1971 - Find if Path Exists in Graph</strong>:</p>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">private</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">dfsPathVisitor</span><span class="hljs-params">(<span class="hljs-type">int</span> node, <span class="hljs-type">int</span> destination,
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">private</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">dfsPathVisitor</span><span class="hljs-params">(<span class="hljs-type">int</span> node, <span class="hljs-type">int</span> destination,
                                 Map&lt;Integer, List&lt;Integer&gt;&gt; map,
                                 <span class="hljs-type">boolean</span>[] visited)</span> {
     <span class="hljs-comment">// Base case: destination reached</span>
@@ -4811,7 +4775,7 @@ dfs(next);  <span class="hljs-comment">// Don&#x27;t return early - need to expl
 
     <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;  <span class="hljs-comment">// Only return false if ALL neighbors failed</span>
 }
-</code></pre>
+</code></pre></div>
 <p><strong>Key Rule:</strong></p>
 <ul>
 <li><strong>Return TRUE eagerly</strong> (as soon as found)</li>
@@ -4827,7 +4791,7 @@ dfs(next);  <span class="hljs-comment">// Don&#x27;t return early - need to expl
 <li><strong>Topological Sort</strong>: DFS application for dependencies</li>
 </ul>
 <h3 id="2-14-number-of-distinct-islands" tabindex="-1"><a class="header-anchor" href="#2-14-number-of-distinct-islands"><span>2-14) Number of Distinct Islands</span></a></h3>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 694</span>
 <span class="hljs-comment">// V0</span>
 <span class="hljs-comment">// IDEA: DFS + Path Signatures (Directional Encoding)</span>
@@ -4917,8 +4881,8 @@ dfs(next);  <span class="hljs-comment">// Don&#x27;t return early - need to expl
     <span class="hljs-comment">// Without this, different shapes could produce the same signature!</span>
     path.append(<span class="hljs-string">&#x27;O&#x27;</span>);
 }
-</code></pre>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// V1</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// V1</span>
 <span class="hljs-comment">// IDEA: Alternative approach using relative coordinates</span>
 <span class="hljs-comment">/**
  * Instead of directional encoding, record relative positions from the starting point
@@ -4961,8 +4925,8 @@ dfs(next);  <span class="hljs-comment">// Don&#x27;t return early - need to expl
     dfsRelative(grid, seen, r0, c0, r, c + <span class="hljs-number">1</span>, sb);
     dfsRelative(grid, seen, r0, c0, r, c - <span class="hljs-number">1</span>, sb);
 }
-</code></pre>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
 <span class="hljs-comment"># LC 694</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># IDEA: DFS + Path Signatures</span>
@@ -5015,7 +4979,7 @@ dfs(next);  <span class="hljs-comment">// Don&#x27;t return early - need to expl
                 unique_shapes.add(<span class="hljs-built_in">tuple</span>(path))
 
     <span class="hljs-keyword">return</span> <span class="hljs-built_in">len</span>(unique_shapes)
-</code></pre>
+</code></pre></div>
 <p><strong>Why This Works:</strong></p>
 <ol>
 <li>
@@ -5035,14 +4999,14 @@ dfs(next);  <span class="hljs-comment">// Don&#x27;t return early - need to expl
 </li>
 <li>
 <p><strong>Backtrack Delimiter (‘O’)</strong></p>
-<pre><code class="hljs">Example showing why delimiter is needed:
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Example showing why delimiter is needed:
 
 Shape A:  11     Path without 'O': SDRO
            1     Path with 'O':    SDROO
 
 Shape B:   1     Path without 'O': SDRO (Same as A - WRONG!)
           11     Path with 'O':    SDORO (Different - CORRECT!)
-</code></pre>
+</code></pre></div>
 </li>
 <li>
 <p><strong>Translation Invariance</strong></p>
@@ -5055,7 +5019,7 @@ Shape B:   1     Path without 'O': SDRO (Same as A - WRONG!)
 <p><strong>Time Complexity:</strong> O(m × n) where m = rows, n = cols
 <strong>Space Complexity:</strong> O(m × n) for recursion stack and HashSet</p>
 <h3 id="java-implementation-notes" tabindex="-1"><a class="header-anchor" href="#java-implementation-notes"><span>Java Implementation Notes</span></a></h3>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java DFS with Stack</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java DFS with Stack</span>
 Stack&lt;TreeNode&gt; stack = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Stack</span>&lt;&gt;();
 stack.push(root);
 <span class="hljs-keyword">while</span> (!stack.isEmpty()) {
@@ -5074,9 +5038,9 @@ stack.push(root);
         }
     }
 }
-</code></pre>
+</code></pre></div>
 <h3 id="python-implementation-notes" tabindex="-1"><a class="header-anchor" href="#python-implementation-notes"><span>Python Implementation Notes</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Using collections.deque as stack</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Using collections.deque as stack</span>
 <span class="hljs-keyword">from</span> collections <span class="hljs-keyword">import</span> deque
 stack = deque([root])
 <span class="hljs-keyword">while</span> stack:
@@ -5090,11 +5054,11 @@ visited = <span class="hljs-built_in">set</span>()  <span class="hljs-comment">#
 <span class="hljs-comment"># Recursion limit for deep trees</span>
 <span class="hljs-keyword">import</span> sys
 sys.setrecursionlimit(<span class="hljs-number">10000</span>)
-</code></pre>
+</code></pre></div>
 <hr>
 <h2 id="quick-decision-tree-which-dfs-pattern-to-use" tabindex="-1"><a class="header-anchor" href="#quick-decision-tree-which-dfs-pattern-to-use"><span>Quick Decision Tree: Which DFS Pattern to Use?</span></a></h2>
 <h3 id="decision-flowchart" tabindex="-1"><a class="header-anchor" href="#decision-flowchart"><span>Decision Flowchart</span></a></h3>
-<pre><code class="hljs">START: What are you trying to do with the graph/tree?
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">START: What are you trying to do with the graph/tree?
 │
 ├─ Need to VISIT ALL NODES in specific order?
 │  │
@@ -5136,7 +5100,7 @@ sys.setrecursionlimit(<span class="hljs-number">10000</span>)
    │
    └─ Delete/insert/trim nodes → Pattern 5 (Tree Modification)
                                   Examples: LC 450, 701, 669
-</code></pre>
+</code></pre></div>
 <h3 id="quick-pattern-selection-table" tabindex="-1"><a class="header-anchor" href="#quick-pattern-selection-table"><span>Quick Pattern Selection Table</span></a></h3>
 <table>
 <thead>

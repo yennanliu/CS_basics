@@ -19,54 +19,18 @@
     }
   })();
   </script>
-  <script>document.addEventListener('DOMContentLoaded', function() {
-    document.querySelectorAll('pre code').forEach(function(codeEl) {
-      var pre = codeEl.parentElement;
-      var lang = '';
-      var cls = codeEl.className || '';
-      var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
-      if (m) lang = m[1];
-
-      // Add line numbers
-      var lines = codeEl.innerHTML.split('
-');
-      if (lines[lines.length - 1] === '') lines.pop();
-      var numbered = lines.map(function(line, i) {
-        return '<span class="hljs-ln-line"><span class="hljs-ln-n" data-line-number="' + (i + 1) + '"></span><span class="hljs-ln-code">' + line + '</span></span>';
-      }).join('
-');
-      codeEl.innerHTML = numbered;
-      codeEl.classList.add('hljs-ln');
-
-      var wrapper = document.createElement('div');
-      wrapper.className = 'code-block-wrapper';
-      pre.parentNode.insertBefore(wrapper, pre);
-      var header = document.createElement('div');
-      header.className = 'code-block-header';
-      if (lang) {
-        var label = document.createElement('span');
-        label.className = 'code-lang-label';
-        label.textContent = lang;
-        header.appendChild(label);
-      } else {
-        header.appendChild(document.createElement('span'));
-      }
-      var btn = document.createElement('button');
-      btn.className = 'copy-btn';
-      btn.textContent = 'Copy';
-      btn.addEventListener('click', function() {
-        var text = Array.from(codeEl.querySelectorAll('.hljs-ln-code')).map(function(el) { return el.textContent; }).join('
-');
-        navigator.clipboard.writeText(text).then(function() {
-          btn.textContent = 'Copied!';
-          btn.classList.add('copied');
-          setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
-        });
-      });
-      header.appendChild(btn);
-      wrapper.appendChild(header);
-      wrapper.appendChild(pre);
+  <script>
+  function copyCode(btn) {
+    var pre = btn.closest('.code-block-wrapper').querySelector('pre');
+    var text = pre ? pre.innerText : '';
+    navigator.clipboard.writeText(text).then(function() {
+      btn.textContent = 'Copied!';
+      btn.classList.add('copied');
+      setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
     });
+  }
+  </script>
+  <script>document.addEventListener('DOMContentLoaded', function() {
     document.querySelectorAll('table').forEach(function(table) {
       if (!table.parentElement.classList.contains('table-wrap')) {
         var wrapper = document.createElement('div');
@@ -196,7 +160,7 @@
 <h2 id="1-general-form" tabindex="-1"><a class="header-anchor" href="#1-general-form"><span>1) General form</span></a></h2>
 <h3 id="1-1-basic-op" tabindex="-1"><a class="header-anchor" href="#1-1-basic-op"><span>1-1) Basic OP</span></a></h3>
 <h4 id="1-1-0-split-array" tabindex="-1"><a class="header-anchor" href="#1-1-0-split-array"><span>1-1-0) Split Array</span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python_trick.html</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python_trick.html</span>
 
 <span class="hljs-comment">#-----------------------------------------------------------------------------------------------------</span>
 <span class="hljs-comment"># example 7 : itertools.islice : slice on iterator</span>
@@ -213,16 +177,16 @@ In [<span class="hljs-number">7</span>]: <span class="hljs-built_in">print</span
 In [<span class="hljs-number">18</span>]: y = itertools.islice(<span class="hljs-built_in">range</span>(<span class="hljs-number">10</span>), <span class="hljs-number">0</span>, <span class="hljs-number">10</span>, <span class="hljs-number">3</span>)
     ...: <span class="hljs-built_in">print</span> (<span class="hljs-built_in">list</span>(y))
 [<span class="hljs-number">0</span>, <span class="hljs-number">3</span>, <span class="hljs-number">6</span>, <span class="hljs-number">9</span>]
-</code></pre>
+</code></pre></div>
 <h4 id="1-1-1-insert-into-array" tabindex="-1"><a class="header-anchor" href="#1-1-1-insert-into-array"><span>1-1-1) Insert into Array</span></a></h4>
-<pre data-lang="python"><code class="hljs language-python">p=[[<span class="hljs-number">7</span>, <span class="hljs-number">0</span>], [<span class="hljs-number">7</span>, <span class="hljs-number">1</span>], [<span class="hljs-number">6</span>, <span class="hljs-number">1</span>], [<span class="hljs-number">5</span>, <span class="hljs-number">0</span>], [<span class="hljs-number">5</span>, <span class="hljs-number">2</span>], [<span class="hljs-number">4</span>, <span class="hljs-number">4</span>]]
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python">p=[[<span class="hljs-number">7</span>, <span class="hljs-number">0</span>], [<span class="hljs-number">7</span>, <span class="hljs-number">1</span>], [<span class="hljs-number">6</span>, <span class="hljs-number">1</span>], [<span class="hljs-number">5</span>, <span class="hljs-number">0</span>], [<span class="hljs-number">5</span>, <span class="hljs-number">2</span>], [<span class="hljs-number">4</span>, <span class="hljs-number">4</span>]]
 Out[<span class="hljs-number">27</span>]: [[<span class="hljs-number">7</span>, <span class="hljs-number">0</span>], [<span class="hljs-number">7</span>, <span class="hljs-number">1</span>], [<span class="hljs-number">6</span>, <span class="hljs-number">1</span>], [<span class="hljs-number">5</span>, <span class="hljs-number">0</span>], [<span class="hljs-number">5</span>, <span class="hljs-number">2</span>], [<span class="hljs-number">4</span>, <span class="hljs-number">4</span>]]
 In [<span class="hljs-number">28</span>]: p.insert(<span class="hljs-number">1</span>, [<span class="hljs-number">6</span>,<span class="hljs-number">1</span>])
 In [<span class="hljs-number">29</span>]: p
 Out[<span class="hljs-number">29</span>]: [[<span class="hljs-number">7</span>, <span class="hljs-number">0</span>], [<span class="hljs-number">6</span>, <span class="hljs-number">1</span>], [<span class="hljs-number">7</span>, <span class="hljs-number">1</span>], [<span class="hljs-number">6</span>, <span class="hljs-number">1</span>], [<span class="hljs-number">5</span>, <span class="hljs-number">0</span>], [<span class="hljs-number">5</span>, <span class="hljs-number">2</span>], [<span class="hljs-number">4</span>, <span class="hljs-number">4</span>]]
-</code></pre>
+</code></pre></div>
 <h4 id="1-1-2-delete-from-array" tabindex="-1"><a class="header-anchor" href="#1-1-2-delete-from-array"><span>1-1-2) Delete from Array</span></a></h4>
-<pre data-lang="python"><code class="hljs language-python">p=[[<span class="hljs-number">7</span>, <span class="hljs-number">0</span>], [<span class="hljs-number">7</span>, <span class="hljs-number">1</span>], [<span class="hljs-number">6</span>, <span class="hljs-number">1</span>], [<span class="hljs-number">5</span>, <span class="hljs-number">0</span>], [<span class="hljs-number">5</span>, <span class="hljs-number">2</span>], [<span class="hljs-number">4</span>, <span class="hljs-number">4</span>]]
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python">p=[[<span class="hljs-number">7</span>, <span class="hljs-number">0</span>], [<span class="hljs-number">7</span>, <span class="hljs-number">1</span>], [<span class="hljs-number">6</span>, <span class="hljs-number">1</span>], [<span class="hljs-number">5</span>, <span class="hljs-number">0</span>], [<span class="hljs-number">5</span>, <span class="hljs-number">2</span>], [<span class="hljs-number">4</span>, <span class="hljs-number">4</span>]]
 
 In [<span class="hljs-number">4</span>]: p
 Out[<span class="hljs-number">4</span>]: [[<span class="hljs-number">7</span>, <span class="hljs-number">0</span>], [<span class="hljs-number">7</span>, <span class="hljs-number">1</span>], [<span class="hljs-number">6</span>, <span class="hljs-number">1</span>], [<span class="hljs-number">5</span>, <span class="hljs-number">0</span>], [<span class="hljs-number">5</span>, <span class="hljs-number">2</span>], [<span class="hljs-number">4</span>, <span class="hljs-number">4</span>]]
@@ -231,16 +195,16 @@ In [<span class="hljs-number">5</span>]: p.remove([<span class="hljs-number">7</
 
 In [<span class="hljs-number">6</span>]: p
 Out[<span class="hljs-number">6</span>]: [[<span class="hljs-number">7</span>, <span class="hljs-number">0</span>], [<span class="hljs-number">6</span>, <span class="hljs-number">1</span>], [<span class="hljs-number">5</span>, <span class="hljs-number">0</span>], [<span class="hljs-number">5</span>, <span class="hljs-number">2</span>], [<span class="hljs-number">4</span>, <span class="hljs-number">4</span>]]
-</code></pre>
+</code></pre></div>
 <h4 id="1-1-3-check-if-element-in-array" tabindex="-1"><a class="header-anchor" href="#1-1-3-check-if-element-in-array"><span>1-1-3) check if element in Array</span></a></h4>
-<pre data-lang="python"><code class="hljs language-python">In [<span class="hljs-number">7</span>]: p
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python">In [<span class="hljs-number">7</span>]: p
 Out[<span class="hljs-number">7</span>]: [[<span class="hljs-number">7</span>, <span class="hljs-number">0</span>], [<span class="hljs-number">6</span>, <span class="hljs-number">1</span>], [<span class="hljs-number">5</span>, <span class="hljs-number">0</span>], [<span class="hljs-number">5</span>, <span class="hljs-number">2</span>], [<span class="hljs-number">4</span>, <span class="hljs-number">4</span>]]
 
 In [<span class="hljs-number">8</span>]: [<span class="hljs-number">7</span>,<span class="hljs-number">0</span>] <span class="hljs-keyword">in</span> p
 Out[<span class="hljs-number">8</span>]: <span class="hljs-literal">True</span>
-</code></pre>
+</code></pre></div>
 <h4 id="1-1-4-append-to-array-head-tail" tabindex="-1"><a class="header-anchor" href="#1-1-4-append-to-array-head-tail"><span>1-1-4) append to array (head, tail)</span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># tail</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># tail</span>
 In [<span class="hljs-number">9</span>]: p
 Out[<span class="hljs-number">9</span>]: [[<span class="hljs-number">7</span>, <span class="hljs-number">0</span>], [<span class="hljs-number">6</span>, <span class="hljs-number">1</span>], [<span class="hljs-number">5</span>, <span class="hljs-number">0</span>], [<span class="hljs-number">5</span>, <span class="hljs-number">2</span>], [<span class="hljs-number">4</span>, <span class="hljs-number">4</span>]]
 
@@ -248,9 +212,9 @@ In [<span class="hljs-number">10</span>]: p.append([<span class="hljs-number">0<
 
 In [<span class="hljs-number">11</span>]: p
 Out[<span class="hljs-number">11</span>]: [[<span class="hljs-number">7</span>, <span class="hljs-number">0</span>], [<span class="hljs-number">6</span>, <span class="hljs-number">1</span>], [<span class="hljs-number">5</span>, <span class="hljs-number">0</span>], [<span class="hljs-number">5</span>, <span class="hljs-number">2</span>], [<span class="hljs-number">4</span>, <span class="hljs-number">4</span>], [<span class="hljs-number">0</span>, <span class="hljs-number">0</span>]]
-</code></pre>
+</code></pre></div>
 <h4 id="1-1-5-sort-array" tabindex="-1"><a class="header-anchor" href="#1-1-5-sort-array"><span>1-1-5) Sort Array*****</span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Pattern :</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Pattern :</span>
 <span class="hljs-comment"># V1</span>
 _array.sort(key = <span class="hljs-keyword">lambda</span> x : &lt;your_sorting_func&gt;)
 
@@ -265,9 +229,9 @@ strs.sort(key = <span class="hljs-keyword">lambda</span> x : <span class="hljs-s
 
 <span class="hljs-comment">### NOTE can use this as well</span>
 <span class="hljs-built_in">sorted</span>(strs, key = <span class="hljs-keyword">lambda</span> x : <span class="hljs-string">&#x27;&#x27;</span>.join(<span class="hljs-built_in">sorted</span>(x)))
-</code></pre>
+</code></pre></div>
 <h4 id="1-1-6-flatten-array" tabindex="-1"><a class="header-anchor" href="#1-1-6-flatten-array"><span>1-1-6) Flatten Array</span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 341</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 341</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">NestedIterator</span>(<span class="hljs-title class_ inherited__">object</span>):
 
@@ -335,8 +299,8 @@ r2_ = [x <span class="hljs-keyword">for</span> x <span class="hljs-keyword">in</
 r3 = flatten2(_<span class="hljs-built_in">input</span>)
 r3_ = [x <span class="hljs-keyword">for</span> x <span class="hljs-keyword">in</span> r3]
 <span class="hljs-built_in">print</span> (r3_)
-</code></pre>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// algorithm book (labu) p.355</span>
 <span class="hljs-comment">//------------------------------------------</span>
 <span class="hljs-comment">// implement NestedInteger data structure</span>
@@ -371,8 +335,8 @@ r3_ = [x <span class="hljs-keyword">for</span> x <span class="hljs-keyword">in</
     }
 
 }
-</code></pre>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 341</span>
 <span class="hljs-comment">// algorithm book (labu) p.357</span>
 <span class="hljs-comment">//-----------------------------------------------------------</span>
@@ -417,8 +381,8 @@ r3_ = [x <span class="hljs-keyword">for</span> x <span class="hljs-keyword">in</
         }
     }
 }
-</code></pre>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 341</span>
 <span class="hljs-comment">// algorithm book (labu) p.358</span>
 <span class="hljs-comment">//-----------------------------------------------------------</span>
@@ -451,17 +415,17 @@ r3_ = [x <span class="hljs-keyword">for</span> x <span class="hljs-keyword">in</
         <span class="hljs-keyword">return</span> !list.isEmpty();
     }
 }
-</code></pre>
+</code></pre></div>
 <h4 id="1-1-7-sort-array-with-2-keys" tabindex="-1"><a class="header-anchor" href="#1-1-7-sort-array-with-2-keys"><span>1-1-7) Sort array with 2 keys</span></a></h4>
-<pre data-lang="python"><code class="hljs language-python">y = [[<span class="hljs-number">7</span>,<span class="hljs-number">0</span>], [<span class="hljs-number">4</span>,<span class="hljs-number">4</span>], [<span class="hljs-number">7</span>,<span class="hljs-number">1</span>], [<span class="hljs-number">5</span>,<span class="hljs-number">0</span>], [<span class="hljs-number">6</span>,<span class="hljs-number">1</span>], [<span class="hljs-number">5</span>,<span class="hljs-number">2</span>]]
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python">y = [[<span class="hljs-number">7</span>,<span class="hljs-number">0</span>], [<span class="hljs-number">4</span>,<span class="hljs-number">4</span>], [<span class="hljs-number">7</span>,<span class="hljs-number">1</span>], [<span class="hljs-number">5</span>,<span class="hljs-number">0</span>], [<span class="hljs-number">6</span>,<span class="hljs-number">1</span>], [<span class="hljs-number">5</span>,<span class="hljs-number">2</span>]]
 <span class="hljs-built_in">print</span> (y)
 y.sort(key = <span class="hljs-keyword">lambda</span> x : (-x[<span class="hljs-number">0</span>], x[<span class="hljs-number">1</span>]))
 <span class="hljs-built_in">print</span> (y)
 <span class="hljs-comment"># [[7, 0], [4, 4], [7, 1], [5, 0], [6, 1], [5, 2]]</span>
 <span class="hljs-comment"># [[7, 0], [7, 1], [6, 1], [5, 0], [5, 2], [4, 4]]</span>
-</code></pre>
+</code></pre></div>
 <h4 id="1-1-8-go-through-2-arrays-length-could-be-different" tabindex="-1"><a class="header-anchor" href="#1-1-8-go-through-2-arrays-length-could-be-different"><span>1-1-8) go through 2 arrays (length could be different)</span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment">#--------------------</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment">#--------------------</span>
 <span class="hljs-comment"># example 1</span>
 <span class="hljs-comment">#--------------------</span>
 
@@ -496,9 +460,9 @@ y.sort(key = <span class="hljs-keyword">lambda</span> x : (-x[<span class="hljs-
         
         <span class="hljs-comment"># the versions are equal</span>
         <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>
-</code></pre>
+</code></pre></div>
 <h4 id="1-1-9-shallow-deep-copy" tabindex="-1"><a class="header-anchor" href="#1-1-9-shallow-deep-copy"><span>1-1-9) shallow, deep copy</span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 670</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 670</span>
 <span class="hljs-comment"># V0&#x27;</span>
 <span class="hljs-comment"># IDEA : BRUTE FORCE</span>
 <span class="hljs-comment"># NOTE : there is also 2 pointers solution : </span>
@@ -521,7 +485,7 @@ y.sort(key = <span class="hljs-keyword">lambda</span> x : (-x[<span class="hljs-
                 A[i], A[j] = A[j], A[i]
 
         <span class="hljs-keyword">return</span> <span class="hljs-built_in">int</span>(<span class="hljs-string">&quot;&quot;</span>.join(ans))
-</code></pre>
+</code></pre></div>
 <hr>
 <h3 id="1-2-special-array-algorithms" tabindex="-1"><a class="header-anchor" href="#1-2-special-array-algorithms"><span>1-2) Special Array Algorithms</span></a></h3>
 <h4 id="1-2-1-boyer-moore-majority-vote-algorithm" tabindex="-1"><a class="header-anchor" href="#1-2-1-boyer-moore-majority-vote-algorithm"><span>1-2-1) Boyer-Moore Majority Vote Algorithm</span></a></h4>
@@ -550,7 +514,7 @@ y.sort(key = <span class="hljs-keyword">lambda</span> x : (-x[<span class="hljs-
 <li>Increment count for same element, decrement for different</li>
 <li>Majority element survives</li>
 </ul>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - LC 169</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - LC 169</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">majorityElement</span>(<span class="hljs-params">nums</span>):
     <span class="hljs-string">&quot;&quot;&quot;
     Find element appearing &gt; n/2 times
@@ -577,8 +541,8 @@ y.sort(key = <span class="hljs-keyword">lambda</span> x : (-x[<span class="hljs-
     <span class="hljs-keyword">if</span> nums.count(candidate) &gt; <span class="hljs-built_in">len</span>(nums) // <span class="hljs-number">2</span>:
         <span class="hljs-keyword">return</span> candidate
     <span class="hljs-keyword">return</span> <span class="hljs-literal">None</span>
-</code></pre>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java - LC 169</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java - LC 169</span>
 <span class="hljs-comment">// V0</span>
 <span class="hljs-comment">// IDEA: Boyer-Moore Majority Vote</span>
 <span class="hljs-comment">/**
@@ -624,9 +588,9 @@ y.sort(key = <span class="hljs-keyword">lambda</span> x : (-x[<span class="hljs-
     <span class="hljs-comment">// }</span>
     <span class="hljs-comment">// return actualCount &gt; nums.length / 2 ? candidate : -1;</span>
 }
-</code></pre>
+</code></pre></div>
 <p><strong>Example Trace:</strong> <code>nums = [2,2,1,1,1,2,2]</code></p>
-<pre><code class="hljs">Index | num | candidate | count | Action
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Index | num | candidate | count | Action
 --------------------------------------------
   0   |  2  |     2     |   1   | Initialize
   1   |  2  |     2     |   2   | Same, increment
@@ -637,7 +601,7 @@ y.sort(key = <span class="hljs-keyword">lambda</span> x : (-x[<span class="hljs-
   6   |  2  |     2     |   1   | Count=0, new candidate
 
 Result: 2 (appears 4 times &gt; 7/2 = 3.5)
-</code></pre>
+</code></pre></div>
 <hr>
 <h5 id="pattern-2-elements-appearing-n-3-times-lc-229" tabindex="-1"><a class="header-anchor" href="#pattern-2-elements-appearing-n-3-times-lc-229"><span><strong>Pattern 2: Elements Appearing &gt; n/3 Times - LC 229</strong></span></a></h5>
 <p><strong>Key Insight:</strong> At most 2 elements can appear more than n/3 times.</p>
@@ -647,7 +611,7 @@ Result: 2 (appears 4 times &gt; 7/2 = 3.5)
 <li>Cancellation requires decrementing both counts</li>
 <li>Must verify both candidates in phase 2</li>
 </ul>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - LC 229</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - LC 229</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">majorityElement</span>(<span class="hljs-params">nums</span>):
     <span class="hljs-string">&quot;&quot;&quot;
     Find all elements appearing &gt; n/3 times
@@ -679,8 +643,8 @@ Result: 2 (appears 4 times &gt; 7/2 = 3.5)
             result.append(candidate)
 
     <span class="hljs-keyword">return</span> result
-</code></pre>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java - LC 229</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java - LC 229</span>
 <span class="hljs-comment">// V0</span>
 <span class="hljs-comment">// IDEA: Boyer-Moore Majority Vote (Generalized)</span>
 <span class="hljs-comment">/**
@@ -734,9 +698,9 @@ Result: 2 (appears 4 times &gt; 7/2 = 3.5)
 
     <span class="hljs-keyword">return</span> result;
 }
-</code></pre>
+</code></pre></div>
 <p><strong>Example Trace:</strong> <code>nums = [3,2,3]</code></p>
-<pre><code class="hljs">Index | num | c1 | cnt1 | c2 | cnt2 | Action
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Index | num | c1 | cnt1 | c2 | cnt2 | Action
 -------------------------------------------------
   0   |  3  | 3  |  1   | 0  |  0   | Set candidate1
   1   |  2  | 3  |  1   | 2  |  1   | Set candidate2
@@ -747,11 +711,11 @@ Verification:
 - candidate2=2: appears 1 time ≤ 3/3 = 1 ✗
 
 Result: [3]
-</code></pre>
+</code></pre></div>
 <hr>
 <h5 id="pattern-3-generalized-k-majority-n-k-times" tabindex="-1"><a class="header-anchor" href="#pattern-3-generalized-k-majority-n-k-times"><span><strong>Pattern 3: Generalized k-Majority (&gt; n/k times)</strong></span></a></h5>
 <p><strong>Concept:</strong> For elements appearing more than n/k times, at most k-1 candidates exist.</p>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Generalized Boyer-Moore for n/k threshold</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Generalized Boyer-Moore for n/k threshold</span>
 <span class="hljs-keyword">import</span> java.util.*;
 
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">BoyerMooreGeneralized</span> {
@@ -805,14 +769,14 @@ Result: [3]
         <span class="hljs-keyword">return</span> result;
     }
 }
-</code></pre>
+</code></pre></div>
 <hr>
 <h4 id="boyer-moore-common-mistakes-tips" tabindex="-1"><a class="header-anchor" href="#boyer-moore-common-mistakes-tips"><span><strong>Boyer-Moore: Common Mistakes &amp; Tips</strong></span></a></h4>
 <p><strong>🚫 Common Mistakes:</strong></p>
 <ol>
 <li>
 <p><strong>Missing Verification Phase</strong></p>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// ❌ WRONG: Assuming candidate is always majority</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// ❌ WRONG: Assuming candidate is always majority</span>
 <span class="hljs-keyword">return</span> candidate;
 
 <span class="hljs-comment">// ✅ CORRECT: Verify count (if not guaranteed)</span>
@@ -821,11 +785,11 @@ Result: [3]
     <span class="hljs-keyword">if</span> (num == candidate) actualCount++;
 }
 <span class="hljs-keyword">return</span> actualCount &gt; nums.length / <span class="hljs-number">2</span> ? candidate : -<span class="hljs-number">1</span>;
-</code></pre>
+</code></pre></div>
 </li>
 <li>
 <p><strong>Wrong Cancellation Logic for LC 229</strong></p>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// ❌ WRONG: Only checking candidate1</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// ❌ WRONG: Only checking candidate1</span>
 <span class="hljs-keyword">if</span> (num != candidate1) count1--;
 
 <span class="hljs-comment">// ✅ CORRECT: Check both, reset on count=0</span>
@@ -840,17 +804,17 @@ Result: [3]
 } <span class="hljs-keyword">else</span> {
     count1--; count2--;
 }
-</code></pre>
+</code></pre></div>
 </li>
 <li>
 <p><strong>Not Handling Duplicate Candidates (LC 229)</strong></p>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// ❌ WRONG: candidate1 and candidate2 can be same initially</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// ❌ WRONG: candidate1 and candidate2 can be same initially</span>
 
 <span class="hljs-comment">// ✅ CORRECT: Check candidate1 first, then candidate2</span>
 <span class="hljs-keyword">if</span> (num == candidate1) count1++;
 <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (num == candidate2) count2++;
 <span class="hljs-comment">// ... rest of logic</span>
-</code></pre>
+</code></pre></div>
 </li>
 </ol>
 <p><strong>💡 Interview Tips:</strong></p>
@@ -952,7 +916,7 @@ Result: [3]
 <li>When any element’s frequency reaches 2, it’s common (seen in both arrays)</li>
 <li>Increment running count and store in result</li>
 </ul>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - LC 2657</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - LC 2657</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">findThePrefixCommonArray</span>(<span class="hljs-params">A, B</span>):
     <span class="hljs-string">&quot;&quot;&quot;
     Find prefix common array using frequency counting.
@@ -983,8 +947,8 @@ Result: [3]
         res[i] = common
 
     <span class="hljs-keyword">return</span> res
-</code></pre>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java - LC 2657</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java - LC 2657</span>
 <span class="hljs-comment">// V0</span>
 <span class="hljs-comment">// IDEA: Frequency Array + Running Count</span>
 <span class="hljs-comment">/**
@@ -1029,9 +993,9 @@ Result: [3]
 
     <span class="hljs-keyword">return</span> res;
 }
-</code></pre>
+</code></pre></div>
 <p><strong>Example Trace:</strong> <code>A = [1,3,2,4], B = [3,1,2,4]</code></p>
-<pre><code class="hljs">Index | A[i] | B[i] | frequency (after)     | commonCount | Action
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Index | A[i] | B[i] | frequency (after)     | commonCount | Action
 ----------------------------------------------------------------------
   0   |  1   |  3   | [0,1,0,1,0]           |     0       | freq[1]=1, freq[3]=1
   1   |  3   |  1   | [0,2,0,2,0]           |     2       | freq[3]=2 ✓, freq[1]=2 ✓
@@ -1039,11 +1003,11 @@ Result: [3]
   3   |  4   |  4   | [0,2,2,2,2]           |     4       | freq[4]=1, then freq[4]=2 ✓
 
 Result: [0, 2, 3, 4]
-</code></pre>
+</code></pre></div>
 <hr>
 <h5 id="generalized-pattern-frequency-threshold-detection" tabindex="-1"><a class="header-anchor" href="#generalized-pattern-frequency-threshold-detection"><span><strong>Generalized Pattern: Frequency Threshold Detection</strong></span></a></h5>
 <p>Use this pattern when you need to detect when elements reach a specific count threshold:</p>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Generalized frequency threshold pattern</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Generalized frequency threshold pattern</span>
 <span class="hljs-comment">/**
  * Detect when elements reach threshold k
  * Useful for: intersection counting, duplicate detection, k-frequency problems
@@ -1068,36 +1032,36 @@ Result: [0, 2, 3, 4]
         <span class="hljs-comment">// Use count as needed...</span>
     }
 }
-</code></pre>
+</code></pre></div>
 <hr>
 <h4 id="frequency-array-running-count-common-mistakes-tips" tabindex="-1"><a class="header-anchor" href="#frequency-array-running-count-common-mistakes-tips"><span><strong>Frequency Array + Running Count: Common Mistakes &amp; Tips</strong></span></a></h4>
 <p><strong>🚫 Common Mistakes:</strong></p>
 <ol>
 <li>
 <p><strong>Wrong Array Size</strong></p>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// ❌ WRONG: Off-by-one for 1-indexed values</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// ❌ WRONG: Off-by-one for 1-indexed values</span>
 <span class="hljs-type">int</span>[] frequency = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[n];  <span class="hljs-comment">// Can&#x27;t access frequency[n]</span>
 
 <span class="hljs-comment">// ✅ CORRECT: Size n+1 for values 1..n</span>
 <span class="hljs-type">int</span>[] frequency = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[n + <span class="hljs-number">1</span>];
-</code></pre>
+</code></pre></div>
 </li>
 <li>
 <p><strong>Checking Threshold Before Increment</strong></p>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// ❌ WRONG: Check before increment misses the transition</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// ❌ WRONG: Check before increment misses the transition</span>
 <span class="hljs-keyword">if</span> (frequency[x] == <span class="hljs-number">2</span>) count++;
 frequency[x]++;
 
 <span class="hljs-comment">// ✅ CORRECT: Increment first, then check</span>
 frequency[x]++;
 <span class="hljs-keyword">if</span> (frequency[x] == <span class="hljs-number">2</span>) count++;
-</code></pre>
+</code></pre></div>
 </li>
 <li>
 <p><strong>Not Handling Same Element in Both Arrays at Same Index</strong></p>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// For A[i] == B[i] case, frequency goes 0→1→2 in same iteration</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// For A[i] == B[i] case, frequency goes 0→1→2 in same iteration</span>
 <span class="hljs-comment">// This is handled correctly by processing A[i] then B[i] separately</span>
-</code></pre>
+</code></pre></div>
 </li>
 </ol>
 <p><strong>💡 Interview Tips:</strong></p>
@@ -1192,7 +1156,7 @@ frequency[x]++;
 <hr>
 <h2 id="2-lc-example" tabindex="-1"><a class="header-anchor" href="#2-lc-example"><span>2) LC Example</span></a></h2>
 <h3 id="2-1-queue-reconstruction-by-height" tabindex="-1"><a class="header-anchor" href="#2-1-queue-reconstruction-by-height"><span>2-1) Queue Reconstruction by Height</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 406 Queue Reconstruction by Height</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 406 Queue Reconstruction by Height</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">reconstructQueue</span>(<span class="hljs-params">self, people</span>):
         people.sort(key = <span class="hljs-keyword">lambda</span> x : (-x[<span class="hljs-number">0</span>], x[<span class="hljs-number">1</span>]))
@@ -1207,9 +1171,9 @@ frequency[x]++;
         &quot;&quot;&quot;</span>
             res.insert(p[<span class="hljs-number">1</span>], p)
         <span class="hljs-keyword">return</span> res
-</code></pre>
+</code></pre></div>
 <h3 id="2-2-product-of-array-except-self" tabindex="-1"><a class="header-anchor" href="#2-2-product-of-array-except-self"><span>2-2) Product of Array Except Self</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># 238 Product of Array Except Self</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># 238 Product of Array Except Self</span>
 <span class="hljs-comment"># IDEA : </span>
 <span class="hljs-comment"># SINCE output[i] = (x0 * x1 * ... * xi-1) * (xi+1 * .... * xn-1)</span>
 <span class="hljs-comment"># -&gt; SO DO A 2 LOOP</span>
@@ -1235,9 +1199,9 @@ frequency[x]++;
             right *= nums[x]
             output[x - <span class="hljs-number">1</span>] *= right
         <span class="hljs-keyword">return</span> output
-</code></pre>
+</code></pre></div>
 <h3 id="2-3-maximum-swap" tabindex="-1"><a class="header-anchor" href="#2-3-maximum-swap"><span>2-3) Maximum Swap</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># 670 Maximum Swap</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># 670 Maximum Swap</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">maximumSwap</span>(<span class="hljs-params">self, num</span>):
         <span class="hljs-string">&quot;&quot;&quot;
@@ -1258,9 +1222,9 @@ frequency[x]++;
                 left, right = i, max_idx        <span class="hljs-comment"># if current max digit &gt; current digit -&gt; save current max digit to right idnex, and save current index to left</span>
         digits[left], digits[right] = digits[right], digits[left] <span class="hljs-comment"># swap left and right when loop finished </span>
         <span class="hljs-keyword">return</span> <span class="hljs-built_in">int</span>(<span class="hljs-string">&quot;&quot;</span>.join(digits))
-</code></pre>
+</code></pre></div>
 <h3 id="2-7-best-time-to-buy-and-sell-stock" tabindex="-1"><a class="header-anchor" href="#2-7-best-time-to-buy-and-sell-stock"><span>2-7) Best Time to Buy and Sell Stock</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 121 Best Time to Buy and Sell Stock</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 121 Best Time to Buy and Sell Stock</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># IDEA : array op + problem understanding</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
@@ -1279,9 +1243,9 @@ frequency[x]++;
             <span class="hljs-keyword">elif</span> p - minPrice &gt; maxProfit:
                 maxProfit = p - minPrice
         <span class="hljs-keyword">return</span> maxProfit
-</code></pre>
+</code></pre></div>
 <h3 id="2-8-bulb-switcher-iii" tabindex="-1"><a class="header-anchor" href="#2-8-bulb-switcher-iii"><span>2-8) Bulb Switcher III</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 1375. Bulb Switcher III</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 1375. Bulb Switcher III</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">numTimesAllBlue</span>(<span class="hljs-params">self, light</span>):
@@ -1296,9 +1260,9 @@ frequency[x]++;
                 count += <span class="hljs-number">1</span>
         
         <span class="hljs-keyword">return</span> count
-</code></pre>
+</code></pre></div>
 <h3 id="2-9-robot-bounded-in-circle" tabindex="-1"><a class="header-anchor" href="#2-9-robot-bounded-in-circle"><span>2-9) Robot Bounded In Circle</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 1041. Robot Bounded In Circle</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 1041. Robot Bounded In Circle</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># IDEA : math + array</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
@@ -1327,9 +1291,9 @@ frequency[x]++;
                 x = x + dirs[idx][<span class="hljs-number">0</span>]
                 y = y + dirs[idx][<span class="hljs-number">1</span>]
         <span class="hljs-keyword">return</span> (x == <span class="hljs-number">0</span> <span class="hljs-keyword">and</span> y ==<span class="hljs-number">0</span>) <span class="hljs-keyword">or</span> idx !=<span class="hljs-number">0</span>
-</code></pre>
+</code></pre></div>
 <h3 id="2-10-maximum-length-of-subarray-with-positive-product" tabindex="-1"><a class="header-anchor" href="#2-10-maximum-length-of-subarray-with-positive-product"><span>2-10) Maximum Length of Subarray With Positive Product</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 1567 Maximum Length of Subarray With Positive Product</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 1567 Maximum Length of Subarray With Positive Product</span>
 
 <span class="hljs-comment"># V0</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
@@ -1376,9 +1340,9 @@ frequency[x]++;
                 <span class="hljs-keyword">else</span>:
                     res = <span class="hljs-built_in">max</span>(res, i - j)
         <span class="hljs-keyword">return</span> res
-</code></pre>
+</code></pre></div>
 <h3 id="2-11-corporate-flight-bookings" tabindex="-1"><a class="header-anchor" href="#2-11-corporate-flight-bookings"><span>2-11) Corporate Flight Bookings</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 1109. Corporate Flight Bookings</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 1109. Corporate Flight Bookings</span>
 <span class="hljs-comment"># V1</span>
 <span class="hljs-comment"># IDEA : ARRAY + prefix sum</span>
 <span class="hljs-comment"># https://leetcode.com/problems/corporate-flight-bookings/discuss/328856/JavaC%2B%2BPython-Sweep-Line</span>
@@ -1421,9 +1385,9 @@ frequency[x]++;
             tmp -= closes[i]
             
         <span class="hljs-keyword">return</span> ret
-</code></pre>
+</code></pre></div>
 <h3 id="2-12-first-missing-positive" tabindex="-1"><a class="header-anchor" href="#2-12-first-missing-positive"><span>2-12) First Missing Positive</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 41. First Missing Positive</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 41. First Missing Positive</span>
 <span class="hljs-comment"># V1&#x27;</span>
 <span class="hljs-comment"># IDEA :  Index as a hash key.</span>
 <span class="hljs-comment"># https://leetcode.com/problems/first-missing-positive/solution/</span>
@@ -1467,8 +1431,8 @@ frequency[x]++;
             <span class="hljs-keyword">return</span> n
 
         <span class="hljs-keyword">return</span> n + <span class="hljs-number">1</span>
-</code></pre>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 41. First Missing Positive</span>
 <span class="hljs-comment">// V0</span>
 <span class="hljs-comment">// IDEA: CYCLIC SORT</span>
@@ -1519,9 +1483,9 @@ frequency[x]++;
     <span class="hljs-comment">// 3. If all numbers 1 to n are present, the answer is n + 1</span>
     <span class="hljs-keyword">return</span> n + <span class="hljs-number">1</span>;
 }
-</code></pre>
+</code></pre></div>
 <h3 id="2-13-increasing-triplet-subsequence" tabindex="-1"><a class="header-anchor" href="#2-13-increasing-triplet-subsequence"><span>2-13) Increasing Triplet Subsequence</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 334 Increasing Triplet Subsequence</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 334 Increasing Triplet Subsequence</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># IDEA : MAINTAIN var first, second</span>
 <span class="hljs-comment">#        AND GO THROUGH nums to check if there exists x (on the right hand side of a, b )</span>
@@ -1542,9 +1506,9 @@ frequency[x]++;
             <span class="hljs-keyword">else</span>:                <span class="hljs-comment"># 3rd min num</span>
                 <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>      
         <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
-</code></pre>
+</code></pre></div>
 <h3 id="2-14-first-missing-positive" tabindex="-1"><a class="header-anchor" href="#2-14-first-missing-positive"><span>2-14) First Missing Positive</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 41. First Missing Positive</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 41. First Missing Positive</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># IDEA : for loop + while loop + problem understanding</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
@@ -1562,9 +1526,9 @@ frequency[x]++;
                 <span class="hljs-keyword">return</span> i+<span class="hljs-number">1</span>
             
         <span class="hljs-keyword">return</span> <span class="hljs-built_in">len</span>(nums)+<span class="hljs-number">1</span>
-</code></pre>
+</code></pre></div>
 <h3 id="2-15-rotate-array" tabindex="-1"><a class="header-anchor" href="#2-15-rotate-array"><span>2-15) Rotate Array</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 189. Rotate Array</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 189. Rotate Array</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># IDEA : pop + insert</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
@@ -1592,8 +1556,8 @@ frequency[x]++;
         &quot;&quot;&quot;</span>
         nums[:k], nums[k:] = nums[-k:], nums[:-k]
         <span class="hljs-keyword">return</span> nums
-</code></pre>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 189. Rotate Array</span>
 <span class="hljs-comment">// V0</span>
 <span class="hljs-comment">// IDEA: REVERSE ARRAY (3-reverse trick)</span>
@@ -1639,9 +1603,9 @@ frequency[x]++;
         end--;
     }
 }
-</code></pre>
+</code></pre></div>
 <h3 id="2-16-flatten-2d-vector" tabindex="-1"><a class="header-anchor" href="#2-16-flatten-2d-vector"><span>2-16) Flatten 2D Vector</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 251. Flatten 2D Vector</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 251. Flatten 2D Vector</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># IDEA : ARRAY OP</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">Vector2D</span>:
@@ -1664,9 +1628,9 @@ frequency[x]++;
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">hasNext</span>(<span class="hljs-params">self</span>):
         <span class="hljs-comment"># If the next position is a valid index of nums, return True.</span>
         <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.position + <span class="hljs-number">1</span> &lt; <span class="hljs-built_in">len</span>(<span class="hljs-variable language_">self</span>.nums)
-</code></pre>
+</code></pre></div>
 <h3 id="2-17-maximize-distance-to-closest-person" tabindex="-1"><a class="header-anchor" href="#2-17-maximize-distance-to-closest-person"><span>2-17) Maximize Distance to Closest Person</span></a></h3>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 849. Maximize Distance to Closest Person</span>
 
 <span class="hljs-comment">// V0-1</span>
@@ -1762,7 +1726,7 @@ frequency[x]++;
 
     <span class="hljs-keyword">return</span> maxDistance;
 }
-</code></pre>
+</code></pre></div>
 
       </div>
       <div class="cheatsheet-footer">

@@ -19,54 +19,18 @@
     }
   })();
   </script>
-  <script>document.addEventListener('DOMContentLoaded', function() {
-    document.querySelectorAll('pre code').forEach(function(codeEl) {
-      var pre = codeEl.parentElement;
-      var lang = '';
-      var cls = codeEl.className || '';
-      var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
-      if (m) lang = m[1];
-
-      // Add line numbers
-      var lines = codeEl.innerHTML.split('
-');
-      if (lines[lines.length - 1] === '') lines.pop();
-      var numbered = lines.map(function(line, i) {
-        return '<span class="hljs-ln-line"><span class="hljs-ln-n" data-line-number="' + (i + 1) + '"></span><span class="hljs-ln-code">' + line + '</span></span>';
-      }).join('
-');
-      codeEl.innerHTML = numbered;
-      codeEl.classList.add('hljs-ln');
-
-      var wrapper = document.createElement('div');
-      wrapper.className = 'code-block-wrapper';
-      pre.parentNode.insertBefore(wrapper, pre);
-      var header = document.createElement('div');
-      header.className = 'code-block-header';
-      if (lang) {
-        var label = document.createElement('span');
-        label.className = 'code-lang-label';
-        label.textContent = lang;
-        header.appendChild(label);
-      } else {
-        header.appendChild(document.createElement('span'));
-      }
-      var btn = document.createElement('button');
-      btn.className = 'copy-btn';
-      btn.textContent = 'Copy';
-      btn.addEventListener('click', function() {
-        var text = Array.from(codeEl.querySelectorAll('.hljs-ln-code')).map(function(el) { return el.textContent; }).join('
-');
-        navigator.clipboard.writeText(text).then(function() {
-          btn.textContent = 'Copied!';
-          btn.classList.add('copied');
-          setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
-        });
-      });
-      header.appendChild(btn);
-      wrapper.appendChild(header);
-      wrapper.appendChild(pre);
+  <script>
+  function copyCode(btn) {
+    var pre = btn.closest('.code-block-wrapper').querySelector('pre');
+    var text = pre ? pre.innerText : '';
+    navigator.clipboard.writeText(text).then(function() {
+      btn.textContent = 'Copied!';
+      btn.classList.add('copied');
+      setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
     });
+  }
+  </script>
+  <script>document.addEventListener('DOMContentLoaded', function() {
     document.querySelectorAll('table').forEach(function(table) {
       if (!table.parentElement.classList.contains('table-wrap')) {
         var wrapper = document.createElement('div');
@@ -227,7 +191,7 @@
 </ul>
 <h2 id="templates-and-patterns" tabindex="-1"><a class="header-anchor" href="#templates-and-patterns"><span>Templates and Patterns</span></a></h2>
 <h3 id="template-1-counting-frequency-pattern" tabindex="-1"><a class="header-anchor" href="#template-1-counting-frequency-pattern"><span>Template 1: Counting/Frequency Pattern</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Universal Counting Template</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Universal Counting Template</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">counting_pattern</span>(<span class="hljs-params">arr</span>):
     count = {}  <span class="hljs-comment"># or collections.defaultdict(int)</span>
     result = []
@@ -245,9 +209,9 @@
     <span class="hljs-keyword">return</span> result
 
 <span class="hljs-comment"># Examples: LC 49, LC 242, LC 451, LC 347, LC 692</span>
-</code></pre>
+</code></pre></div>
 <h3 id="template-2-two-sum-complement-finding" tabindex="-1"><a class="header-anchor" href="#template-2-two-sum-complement-finding"><span>Template 2: Two Sum/Complement Finding</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Two Sum Pattern Template</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Two Sum Pattern Template</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">two_sum_pattern</span>(<span class="hljs-params">nums, target</span>):
     seen = {}  <span class="hljs-comment"># {value: index}</span>
     
@@ -265,10 +229,10 @@
 <span class="hljs-comment"># - Multiple pairs: collect all instead of returning first</span>
 <span class="hljs-comment"># - K-diff pairs: check for num+k and num-k</span>
 <span class="hljs-comment"># - Examples: LC 1, LC 167, LC 15, LC 532, LC 1010</span>
-</code></pre>
+</code></pre></div>
 <h3 id="template-3-prefix-sum-with-hash-map" tabindex="-1"><a class="header-anchor" href="#template-3-prefix-sum-with-hash-map"><span>Template 3: Prefix Sum with Hash Map</span></a></h3>
 <p><strong>See detailed pattern explanation in <a href="#subarray-sum-count-pattern-lc-560-core-pattern">0-2) Pattern &gt; Subarray Sum Count Pattern</a></strong></p>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Prefix Sum Pattern Template</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Prefix Sum Pattern Template</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">prefix_sum_pattern</span>(<span class="hljs-params">nums, target</span>):
     prefix_sum = <span class="hljs-number">0</span>
     sum_count = {<span class="hljs-number">0</span>: <span class="hljs-number">1</span>}  <span class="hljs-comment"># {sum: count/index}</span>
@@ -289,7 +253,7 @@
 <span class="hljs-comment"># For max length problems, store index instead of count:</span>
 <span class="hljs-comment"># sum_index = {0: -1}, then calculate i - sum_index[prefix_sum - target]</span>
 <span class="hljs-comment"># Examples: LC 560, LC 325, LC 525, LC 523</span>
-</code></pre>
+</code></pre></div>
 <p><strong>Key Differences by Problem Type</strong>:</p>
 <ul>
 <li><strong>Count problems</strong> (LC 560, 930, 974): Store <code>{sum: count}</code>, check then update
@@ -305,7 +269,7 @@
 <li><strong>Existence problems</strong> (LC 523): Store <code>{sum: any_index}</code>, just need to find one</li>
 </ul>
 <h3 id="template-4-sliding-window-with-hash-map" tabindex="-1"><a class="header-anchor" href="#template-4-sliding-window-with-hash-map"><span>Template 4: Sliding Window with Hash Map</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Sliding Window with HashMap Template</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Sliding Window with HashMap Template</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">sliding_window_hashmap</span>(<span class="hljs-params">s, pattern</span>):
     <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(pattern) &gt; <span class="hljs-built_in">len</span>(s):
         <span class="hljs-keyword">return</span> []
@@ -341,9 +305,9 @@
     <span class="hljs-keyword">return</span> result
 
 <span class="hljs-comment"># Examples: LC 3, LC 76, LC 438, LC 567</span>
-</code></pre>
+</code></pre></div>
 <h3 id="template-5-hash-map-for-caching-memoization" tabindex="-1"><a class="header-anchor" href="#template-5-hash-map-for-caching-memoization"><span>Template 5: Hash Map for Caching/Memoization</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Caching/Memoization Template</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Caching/Memoization Template</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">CacheTemplate</span>:
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, capacity</span>):
         <span class="hljs-variable language_">self</span>.capacity = capacity
@@ -372,9 +336,9 @@
         <span class="hljs-keyword">pass</span>
 
 <span class="hljs-comment"># Examples: LC 146 (LRU), LC 460 (LFU)</span>
-</code></pre>
+</code></pre></div>
 <h3 id="template-6-graph-problems-with-hash-map" tabindex="-1"><a class="header-anchor" href="#template-6-graph-problems-with-hash-map"><span>Template 6: Graph Problems with Hash Map</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Graph with HashMap Template</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Graph with HashMap Template</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">graph_hashmap_pattern</span>(<span class="hljs-params">graph_input</span>):
     <span class="hljs-comment"># Build adjacency list/map</span>
     graph = {}  <span class="hljs-comment"># node -&gt; [neighbors] or node -&gt; {neighbor: weight}</span>
@@ -406,9 +370,9 @@
     <span class="hljs-keyword">return</span> result
 
 <span class="hljs-comment"># Examples: LC 133, LC 200, LC 694, LC 1257</span>
-</code></pre>
+</code></pre></div>
 <h3 id="template-7-treemap-pattern-ordered-map" tabindex="-1"><a class="header-anchor" href="#template-7-treemap-pattern-ordered-map"><span>Template 7: TreeMap Pattern (Ordered Map)</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - SortedDict (from sortedcontainers)</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - SortedDict (from sortedcontainers)</span>
 <span class="hljs-keyword">from</span> sortedcontainers <span class="hljs-keyword">import</span> SortedDict
 
 <span class="hljs-comment"># TreeMap Pattern Template</span>
@@ -439,8 +403,8 @@
     <span class="hljs-keyword">return</span> tree_map
 
 <span class="hljs-comment"># Examples: LC 853, LC 729/731/732, LC 846, LC 352, LC 981</span>
-</code></pre>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java - TreeMap Pattern</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java - TreeMap Pattern</span>
 <span class="hljs-keyword">import</span> java.util.*;
 
 <span class="hljs-comment">// TreeMap Pattern Template</span>
@@ -479,7 +443,7 @@
     SortedMap&lt;Integer, Integer&gt; headMap = treeMap.headMap(toKey);
     SortedMap&lt;Integer, Integer&gt; tailMap = treeMap.tailMap(fromKey);
 }
-</code></pre>
+</code></pre></div>
 <p><strong>TreeMap vs HashMap Comparison:</strong></p>
 <table>
 <thead>
@@ -550,16 +514,16 @@
 <ol>
 <li>
 <p><strong>Pattern 1: Ordered Map for Sorting</strong></p>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 853 - Car Fleet</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 853 - Car Fleet</span>
 <span class="hljs-comment">// Convert HashMap to TreeMap for sorted iteration</span>
 Map&lt;Integer, Integer&gt; map = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;();
 <span class="hljs-comment">// ... populate map ...</span>
 TreeMap&lt;Integer, Integer&gt; sorted = <span class="hljs-keyword">new</span> <span class="hljs-title class_">TreeMap</span>&lt;&gt;(map);
-</code></pre>
+</code></pre></div>
 </li>
 <li>
 <p><strong>Pattern 2: Interval Management</strong></p>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 729/731/732 - My Calendar series</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 729/731/732 - My Calendar series</span>
 <span class="hljs-comment">// Use TreeMap to check overlapping intervals</span>
 TreeMap&lt;Integer, Integer&gt; calendar = <span class="hljs-keyword">new</span> <span class="hljs-title class_">TreeMap</span>&lt;&gt;();
 
@@ -574,11 +538,11 @@ TreeMap&lt;Integer, Integer&gt; calendar = <span class="hljs-keyword">new</span>
     }
     <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
 }
-</code></pre>
+</code></pre></div>
 </li>
 <li>
 <p><strong>Pattern 3: Consecutive Elements</strong></p>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 846 - Hand of Straights</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 846 - Hand of Straights</span>
 <span class="hljs-comment">// Use TreeMap to process smallest elements first</span>
 TreeMap&lt;Integer, Integer&gt; count = <span class="hljs-keyword">new</span> <span class="hljs-title class_">TreeMap</span>&lt;&gt;();
 <span class="hljs-comment">// ... count frequency ...</span>
@@ -587,11 +551,11 @@ TreeMap&lt;Integer, Integer&gt; count = <span class="hljs-keyword">new</span> <s
     <span class="hljs-type">int</span> <span class="hljs-variable">first</span> <span class="hljs-operator">=</span> count.firstKey();
     <span class="hljs-comment">// Process consecutive sequence starting from first</span>
 }
-</code></pre>
+</code></pre></div>
 </li>
 <li>
 <p><strong>Pattern 4: Range/Stream Problems</strong></p>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 352 - Data Stream as Disjoint Intervals</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 352 - Data Stream as Disjoint Intervals</span>
 <span class="hljs-comment">// Maintain disjoint intervals in sorted order</span>
 TreeMap&lt;Integer, <span class="hljs-type">int</span>[]&gt; intervals = <span class="hljs-keyword">new</span> <span class="hljs-title class_">TreeMap</span>&lt;&gt;();
 
@@ -600,7 +564,7 @@ TreeMap&lt;Integer, <span class="hljs-type">int</span>[]&gt; intervals = <span c
     <span class="hljs-type">Integer</span> <span class="hljs-variable">higher</span> <span class="hljs-operator">=</span> intervals.ceilingKey(val);
     <span class="hljs-comment">// Merge intervals if needed</span>
 }
-</code></pre>
+</code></pre></div>
 </li>
 </ol>
 <p><strong>Classic LeetCode Problems:</strong></p>
@@ -677,7 +641,7 @@ TreeMap&lt;Integer, <span class="hljs-type">int</span>[]&gt; intervals = <span c
 </tbody>
 </table>
 <p><strong>Example: LC 853 - Car Fleet</strong></p>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - LC 853 Car Fleet</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - LC 853 Car Fleet</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">carFleet</span>(<span class="hljs-params">target, position, speed</span>):
     <span class="hljs-comment"># Use sorted iteration (similar to TreeMap)</span>
     cars = <span class="hljs-built_in">sorted</span>(<span class="hljs-built_in">zip</span>(position, speed), reverse=<span class="hljs-literal">True</span>)  <span class="hljs-comment"># Sort by position descending</span>
@@ -709,8 +673,8 @@ TreeMap&lt;Integer, <span class="hljs-type">int</span>[]&gt; intervals = <span c
             prev_time = time
 
     <span class="hljs-keyword">return</span> fleets
-</code></pre>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java - LC 853 Car Fleet</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java - LC 853 Car Fleet</span>
 <span class="hljs-comment">/**
  * time = O(N log N)
  * space = O(N)
@@ -744,9 +708,9 @@ TreeMap&lt;Integer, <span class="hljs-type">int</span>[]&gt; intervals = <span c
 
     <span class="hljs-keyword">return</span> fleets;
 }
-</code></pre>
+</code></pre></div>
 <p><strong>Example: LC 729 - My Calendar I</strong></p>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java - LC 729 My Calendar I</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java - LC 729 My Calendar I</span>
 <span class="hljs-comment">/**
  * time = O(log N) per operation
  * space = O(N)
@@ -779,8 +743,8 @@ TreeMap&lt;Integer, <span class="hljs-type">int</span>[]&gt; intervals = <span c
         <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
     }
 }
-</code></pre>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - LC 729 My Calendar I</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - LC 729 My Calendar I</span>
 <span class="hljs-keyword">from</span> sortedcontainers <span class="hljs-keyword">import</span> SortedDict
 
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">MyCalendar</span>:
@@ -809,7 +773,7 @@ TreeMap&lt;Integer, <span class="hljs-type">int</span>[]&gt; intervals = <span c
 
         <span class="hljs-variable language_">self</span>.calendar[start] = end
         <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
-</code></pre>
+</code></pre></div>
 <p><strong>Interview Tips for TreeMap Problems:</strong></p>
 <ol>
 <li>
@@ -951,7 +915,7 @@ TreeMap&lt;Integer, <span class="hljs-type">int</span>[]&gt; intervals = <span c
 </ul>
 </li>
 </ul>
-<pre><code class="hljs">subarray[i,j] = prefixSum[j] - prefixSum[i-1]
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">subarray[i,j] = prefixSum[j] - prefixSum[i-1]
 
 so, to find a subarray equals k
 
@@ -960,13 +924,13 @@ so, to find a subarray equals k
 -&gt; prefixSum[j]  - k = prefixSum[i-1]
 
 -&gt; so all need to do is : check if &quot;prefixSum[j]  - k&quot; is in map
-</code></pre>
+</code></pre></div>
 </li>
 <li>check <code>permutaion sub string</code>
 <ul>
 <li>LC 567</li>
 </ul>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 567</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 567</span>
 <span class="hljs-comment">// ...</span>
      <span class="hljs-comment">/** NOTE !!!
      *
@@ -981,7 +945,7 @@ so, to find a subarray equals k
         <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
     }
 <span class="hljs-comment">// ...</span>
-</code></pre>
+</code></pre></div>
 </li>
 </ul>
 </li>
@@ -1009,18 +973,18 @@ so, to find a subarray equals k
 <h4 id="subarray-sum-count-pattern-lc-560-core-pattern" tabindex="-1"><a class="header-anchor" href="#subarray-sum-count-pattern-lc-560-core-pattern"><span>Subarray Sum Count Pattern (LC 560 Core Pattern)</span></a></h4>
 <p><strong>Core Concept</strong>: Use hashmap to count ALL subarray combinations that sum to target in O(N) time with single loop.</p>
 <p><strong>Key Insight</strong>:</p>
-<pre><code class="hljs">If we want subarray[i,j] to sum to k:
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">If we want subarray[i,j] to sum to k:
   presum[j] - presum[i-1] = k
   → presum[i-1] = presum[j] - k
 
 So at index j, check if (presum[j] - k) exists in map!
-</code></pre>
+</code></pre></div>
 <p><strong>Critical Implementation Details</strong>:</p>
 <ol>
 <li>
 <p><strong>Use Count, NOT Index</strong>:</p>
-<pre data-lang="java"><code class="hljs language-java">Map&lt;Integer, Integer&gt; map = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;();  <span class="hljs-comment">// {prefixSum: count}</span>
-</code></pre>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java">Map&lt;Integer, Integer&gt; map = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;();  <span class="hljs-comment">// {prefixSum: count}</span>
+</code></pre></div>
 <ul>
 <li>Same prefix sum can occur MULTIPLE times</li>
 <li>We need to count ALL valid subarrays, not just find one</li>
@@ -1029,8 +993,8 @@ So at index j, check if (presum[j] - k) exists in map!
 </li>
 <li>
 <p><strong>Initialize with <code>map.put(0, 1)</code></strong>:</p>
-<pre data-lang="java"><code class="hljs language-java">map.put(<span class="hljs-number">0</span>, <span class="hljs-number">1</span>);  <span class="hljs-comment">// Handle subarrays starting from index 0</span>
-</code></pre>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java">map.put(<span class="hljs-number">0</span>, <span class="hljs-number">1</span>);  <span class="hljs-comment">// Handle subarrays starting from index 0</span>
+</code></pre></div>
 <ul>
 <li>When <code>presum[j] == k</code>, then <code>presum[j] - k = 0</code></li>
 <li>Need to count these subarrays starting from beginning</li>
@@ -1038,7 +1002,7 @@ So at index j, check if (presum[j] - k) exists in map!
 </li>
 <li>
 <p><strong>Check BEFORE Update</strong> (Critical Order):</p>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> num : nums) {
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> num : nums) {
     presum += num;
 
     <span class="hljs-comment">// 1. CHECK first: count how many previous prefix sums = (presum - k)</span>
@@ -1049,7 +1013,7 @@ So at index j, check if (presum[j] - k) exists in map!
     <span class="hljs-comment">// 2. UPDATE after: add current prefix sum for future iterations</span>
     map.put(presum, map.getOrDefault(presum, <span class="hljs-number">0</span>) + <span class="hljs-number">1</span>);
 }
-</code></pre>
+</code></pre></div>
 <ul>
 <li><strong>Why this order?</strong> Prevents counting current subarray with itself</li>
 <li>Current prefix sum should only be available for FUTURE iterations</li>
@@ -1064,7 +1028,7 @@ So at index j, check if (presum[j] - k) exists in map!
 <li><code>count += map.get(presum - k)</code> adds ALL valid subarrays ending at current index</li>
 </ul>
 <p><strong>Example Walkthrough</strong> (<code>nums = [1,1,1], k = 2</code>):</p>
-<pre><code class="hljs">i=0: num=1, presum=1
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">i=0: num=1, presum=1
   - Check: (1-2)=-1 not in map → count=0
   - Update: map={0:1, 1:1}
 
@@ -1077,7 +1041,7 @@ i=2: num=1, presum=3
   - Update: map={0:1, 1:1, 2:1, 3:1}
 
 Result: count=2 (subarrays [1,1] and [1,1])
-</code></pre>
+</code></pre></div>
 <p><strong>Related LC Problems (Same Pattern)</strong>:</p>
 <ul>
 <li>LC 560: Subarray Sum Equals K (exact pattern)</li>
@@ -1086,7 +1050,7 @@ Result: count=2 (subarrays [1,1] and [1,1])
 <li><strong>LC 974: Subarray Sums Divisible by K</strong> (use modulo <code>{remainder: count}</code>, <strong>handle negatives!</strong>)</li>
 </ul>
 <p><strong>Java Implementation Template</strong>:</p>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">subarraySum</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums, <span class="hljs-type">int</span> k)</span> {
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">subarraySum</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums, <span class="hljs-type">int</span> k)</span> {
     <span class="hljs-comment">// Map: {prefixSum: count} - NOT {prefixSum: index}!</span>
     Map&lt;Integer, Integer&gt; map = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;();
     map.put(<span class="hljs-number">0</span>, <span class="hljs-number">1</span>);  <span class="hljs-comment">// Handle subarrays from index 0</span>
@@ -1108,7 +1072,7 @@ Result: count=2 (subarrays [1,1] and [1,1])
 
     <span class="hljs-keyword">return</span> count;
 }
-</code></pre>
+</code></pre></div>
 <p><strong>When to Use Count vs Index</strong>:</p>
 <table>
 <thead>
@@ -1203,7 +1167,7 @@ Result: count=2 (subarrays [1,1] and [1,1])
 <ul>
 <li><code>get</code> : get value from dict with default value if key not existed</li>
 </ul>
-<pre data-lang="python"><code class="hljs language-python">In [<span class="hljs-number">10</span>]: d = {<span class="hljs-string">&#x27;a&#x27;</span>: <span class="hljs-number">1</span>, <span class="hljs-string">&#x27;b&#x27;</span>: <span class="hljs-number">2</span>}
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python">In [<span class="hljs-number">10</span>]: d = {<span class="hljs-string">&#x27;a&#x27;</span>: <span class="hljs-number">1</span>, <span class="hljs-string">&#x27;b&#x27;</span>: <span class="hljs-number">2</span>}
     ...: d[<span class="hljs-string">&#x27;a&#x27;</span>]
 Out[<span class="hljs-number">10</span>]: <span class="hljs-number">1</span>
 
@@ -1216,7 +1180,7 @@ Out[<span class="hljs-number">12</span>]: <span class="hljs-number">0</span>
 In [<span class="hljs-number">13</span>]: d.get(<span class="hljs-string">&#x27;z&#x27;</span>)
 
 In [<span class="hljs-number">14</span>]:
-</code></pre>
+</code></pre></div>
 <ul>
 <li><code>setdefault()</code>
 <ul>
@@ -1224,7 +1188,7 @@ In [<span class="hljs-number">14</span>]:
 </ul>
 </li>
 </ul>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment">#-------------------------------------------------------------------------------</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment">#-------------------------------------------------------------------------------</span>
 <span class="hljs-comment"># setdefault : will creatte key if key NOT existed (with value as well if defined)</span>
 <span class="hljs-comment">#-------------------------------------------------------------------------------</span>
 
@@ -1254,11 +1218,11 @@ car.setdefault(<span class="hljs-string">&quot;color&quot;</span>, <span class="
 <span class="hljs-comment">#  &#x27;year&#x27;: 1964,</span>
 <span class="hljs-comment">#  &#x27;my_key&#x27;: None,</span>
 <span class="hljs-comment">#  &#x27;color&#x27;: &#x27;white&#x27;}</span>
-</code></pre>
+</code></pre></div>
 <ul>
 <li><code>Sort</code> on <em><strong>hashmap (dict)</strong></em></li>
 </ul>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># https://stackoverflow.com/questions/613183/how-do-i-sort-a-dictionary-by-value</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># https://stackoverflow.com/questions/613183/how-do-i-sort-a-dictionary-by-value</span>
 
 x = {<span class="hljs-number">1</span>: <span class="hljs-number">2</span>, <span class="hljs-number">3</span>: <span class="hljs-number">4</span>, <span class="hljs-number">4</span>: <span class="hljs-number">3</span>, <span class="hljs-number">2</span>: <span class="hljs-number">1</span>, <span class="hljs-number">0</span>: <span class="hljs-number">0</span>}
 In [<span class="hljs-number">11</span>]: x.items()
@@ -1295,8 +1259,8 @@ sorted_x = <span class="hljs-built_in">sorted</span>(x.items(), key=<span class=
         <span class="hljs-keyword">for</span> item <span class="hljs-keyword">in</span> count_tuple_sorted:
             res += item[<span class="hljs-number">0</span>] * item[<span class="hljs-number">1</span>]
         <span class="hljs-keyword">return</span> res
-</code></pre>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># dict values -&gt; array</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># dict values -&gt; array</span>
 In [<span class="hljs-number">6</span>]:
    ...: mydict = {<span class="hljs-string">&#x27;a&#x27;</span>:[<span class="hljs-string">&#x27;a1&#x27;</span>,<span class="hljs-string">&#x27;a2&#x27;</span>,<span class="hljs-string">&#x27;a3&#x27;</span>], <span class="hljs-string">&#x27;b&#x27;</span>:[<span class="hljs-string">&#x27;b1&#x27;</span>,<span class="hljs-string">&#x27;b2&#x27;</span>,<span class="hljs-string">&#x27;b3&#x27;</span>]}
    ...:
@@ -1317,11 +1281,11 @@ In [<span class="hljs-number">6</span>]:
                 res[k] = []
             res[k].append(item)  <span class="hljs-comment"># if same, put all the same string into dict k </span>
         <span class="hljs-keyword">return</span> [res[x] <span class="hljs-keyword">for</span> x <span class="hljs-keyword">in</span> res]  <span class="hljs-comment"># output the result </span>
-</code></pre>
+</code></pre></div>
 <ul>
 <li>Get <code>max index</code> for each element in a string</li>
 </ul>
-<pre data-lang="python"><code class="hljs language-python">s = <span class="hljs-string">&#x27;ababcbacadefegdehijhklij&#x27;</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python">s = <span class="hljs-string">&#x27;ababcbacadefegdehijhklij&#x27;</span>
 {k:v <span class="hljs-keyword">for</span> k,v <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(s)}
 
 <span class="hljs-comment"># LC 763</span>
@@ -1365,11 +1329,11 @@ In [<span class="hljs-number">6</span>]:
                 ans.append(j - anchor + <span class="hljs-number">1</span>)
                 anchor = j + <span class="hljs-number">1</span>
         <span class="hljs-keyword">return</span> ans
-</code></pre>
+</code></pre></div>
 <ul>
 <li>Get pairs with specific sum</li>
 </ul>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 1010 Pairs of Songs With Total Durations Divisible by 60</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 1010 Pairs of Songs With Total Durations Divisible by 60</span>
 d = {}
 res = <span class="hljs-number">0</span>
 DURATION = some_duration
@@ -1382,11 +1346,11 @@ DURATION = some_duration
         d[tmp] = <span class="hljs-number">1</span>
     <span class="hljs-keyword">else</span>:
         d[tmp] += <span class="hljs-number">1</span>
-</code></pre>
+</code></pre></div>
 <ul>
 <li>Get <code>sub array sum</code></li>
 </ul>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># (algorithm book (labu) p.350)</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># (algorithm book (labu) p.350)</span>
 my_array = [<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>,<span class="hljs-number">5</span>]
 my_array_pre = [<span class="hljs-number">0</span>] * (<span class="hljs-built_in">len</span>(my_array)+<span class="hljs-number">1</span>)
 cur = <span class="hljs-number">0</span>
@@ -1409,11 +1373,11 @@ my_array_pre[<span class="hljs-number">1</span>+<span class="hljs-number">1</spa
 
 <span class="hljs-comment"># example 2 : sum of [2,3,4]</span>
 my_array_pre[<span class="hljs-number">3</span>+<span class="hljs-number">1</span>] - my_array_pre[<span class="hljs-number">1</span>] <span class="hljs-comment"># 2&#x27;s index is 1, and 4&#x27;s index is 3. (my_array = [1, 2, 3, 4, 5])</span>
-</code></pre>
+</code></pre></div>
 <ul>
 <li>Longest Substring</li>
 </ul>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 003</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 003</span>
 <span class="hljs-comment"># 2 pointers + dict</span>
 <span class="hljs-comment"># ....</span>
 l = <span class="hljs-number">0</span>
@@ -1425,7 +1389,7 @@ res = <span class="hljs-number">0</span>
     d[s[r]] = r
     res = <span class="hljs-built_in">max</span>(res, r-l+<span class="hljs-number">1</span>)
 <span class="hljs-comment"># ...</span>
-</code></pre>
+</code></pre></div>
 <h2 id="2-lc-example" tabindex="-1"><a class="header-anchor" href="#2-lc-example"><span>2) LC Example</span></a></h2>
 <h3 id="2-1-contiguous-array-lc-525" tabindex="-1"><a class="header-anchor" href="#2-1-contiguous-array-lc-525"><span>2-1) Contiguous Array (LC 525)</span></a></h3>
 <p><strong>Core Pattern: Transform + Prefix Sum + HashMap</strong></p>
@@ -1434,20 +1398,20 @@ res = <span class="hljs-number">0</span>
 <p>This is the same as finding <code>any 2 x-axis with same y-axis</code> in the visualization below.</p>
 <h4 id="pattern-breakdown" tabindex="-1"><a class="header-anchor" href="#pattern-breakdown"><span>Pattern Breakdown</span></a></h4>
 <p><strong>1. Problem Transformation:</strong></p>
-<pre><code class="hljs">Transform the binary array:
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Transform the binary array:
 - Treat 0 as -1
 - Treat 1 as +1
 
 Why? Equal 0s and 1s → sum of transformed array = 0
-</code></pre>
+</code></pre></div>
 <p><strong>2. HashMap Structure:</strong></p>
-<pre data-lang="java"><code class="hljs language-java">Map&lt;Integer, Integer&gt; map = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;();
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java">Map&lt;Integer, Integer&gt; map = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;();
 <span class="hljs-comment">// {count: first_index_where_count_occurred}</span>
 
 map.put(<span class="hljs-number">0</span>, -<span class="hljs-number">1</span>); <span class="hljs-comment">// Initialize for subarrays starting at index 0</span>
-</code></pre>
+</code></pre></div>
 <p><strong>3. Core Logic:</strong></p>
-<pre><code class="hljs">count: running sum (cumulative)
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">count: running sum (cumulative)
   - +1 for each 1
   - -1 for each 0
 
@@ -1455,20 +1419,20 @@ If count(i) == count(j) where i &lt; j:
   → Elements between i and j sum to 0
   → Subarray [i+1, j] is balanced (equal 0s and 1s)
   → Length = j - i
-</code></pre>
+</code></pre></div>
 <p><strong>4. Why Store FIRST Occurrence Only?</strong></p>
-<pre><code class="hljs">To maximize length, we want the earliest index with this count.
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">To maximize length, we want the earliest index with this count.
 If count appears at indices [3, 7, 10]:
   - Store index 3
   - When we see count again at index 10, length = 10 - 3 = 7 (maximum)
-</code></pre>
+</code></pre></div>
 <p><strong>5. Why Initialize map.put(0, -1)?</strong></p>
-<pre><code class="hljs">If from index 0 to i, count = 0:
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">If from index 0 to i, count = 0:
   → Entire subarray [0, i] is balanced
   → Length = i - (-1) = i + 1 ✓
 
 Without this initialization, we'd miss subarrays starting at index 0.
-</code></pre>
+</code></pre></div>
 <h4 id="visual-example" tabindex="-1"><a class="header-anchor" href="#visual-example"><span>Visual Example</span></a></h4>
 <p>Sequence: <code>[0, 0, 0, 0, 1, 1]</code>
 Count progression: 0 → -1 → -2 → -3 → -4 → -3 → -2</p>
@@ -1479,7 +1443,7 @@ Length = 5 - 1 = 4: <code>[0, 1, 1, 1]</code> wait, that’s wrong…</p>
 <p align="center"><img src="../doc/pic/lc_525_1.png" ></p>
 <h4 id="mathematical-reasoning" tabindex="-1"><a class="header-anchor" href="#mathematical-reasoning"><span>Mathematical Reasoning</span></a></h4>
 <p><strong>Why Same Count Means Balanced Subarray:</strong></p>
-<pre><code class="hljs">Let count(i) = cumulative sum at index i
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Let count(i) = cumulative sum at index i
 
 If count(i) == count(j) where i &lt; j:
   count(j) - count(i) = 0
@@ -1490,9 +1454,9 @@ This means:
 In transformed array (0→-1, 1→+1):
   sum = 0 means equal number of -1s and +1s
   → equal number of 0s and 1s in original array
-</code></pre>
+</code></pre></div>
 <h4 id="implementation-template" tabindex="-1"><a class="header-anchor" href="#implementation-template"><span>Implementation Template</span></a></h4>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java Template</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java Template</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">findMaxLength</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums)</span> {
     <span class="hljs-comment">// Map: {count: first_index_where_count_occurred}</span>
     Map&lt;Integer, Integer&gt; map = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;();
@@ -1518,8 +1482,8 @@ In transformed array (0→-1, 1→+1):
 
     <span class="hljs-keyword">return</span> maxLen;
 }
-</code></pre>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python Template</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python Template</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">findMaxLength</span>(<span class="hljs-params">nums</span>):
     <span class="hljs-comment"># Map: {count: first_index_where_count_occurred}</span>
     d = {<span class="hljs-number">0</span>: -<span class="hljs-number">1</span>}  <span class="hljs-comment"># Initialize for subarrays starting at index 0</span>
@@ -1539,7 +1503,7 @@ In transformed array (0→-1, 1→+1):
             d[count] = i
 
     <span class="hljs-keyword">return</span> max_len
-</code></pre>
+</code></pre></div>
 <h4 id="key-differences-from-lc-560-pattern" tabindex="-1"><a class="header-anchor" href="#key-differences-from-lc-560-pattern"><span>Key Differences from LC 560 Pattern</span></a></h4>
 <table>
 <thead>
@@ -1585,7 +1549,7 @@ In transformed array (0→-1, 1→+1):
 <li><strong>LC 325</strong>: Maximum Size Subarray Sum Equals k (prefix sum + index)</li>
 </ul>
 <hr>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># 525 Contiguous Array</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># 525 Contiguous Array</span>
 
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># IDEA : HashMap</span>
@@ -1649,7 +1613,7 @@ In transformed array (0→-1, 1→+1):
             <span class="hljs-keyword">else</span>:
                 _<span class="hljs-built_in">dict</span>[cur] = k
         <span class="hljs-keyword">return</span> r
-</code></pre>
+</code></pre></div>
 <h3 id="2-1-1-subarray-sums-divisible-by-k-lc-974" tabindex="-1"><a class="header-anchor" href="#2-1-1-subarray-sums-divisible-by-k-lc-974"><span>2-1-1) Subarray Sums Divisible by K (LC 974)</span></a></h3>
 <p><strong>Core Pattern: Prefix Sum + Modular Arithmetic + HashMap</strong></p>
 <h4 id="key-concept-1" tabindex="-1"><a class="header-anchor" href="#key-concept-1"><span>Key Concept</span></a></h4>
@@ -1657,7 +1621,7 @@ In transformed array (0→-1, 1→+1):
 <p>If two prefix sums have the <strong>same remainder mod K</strong>, their difference is divisible by K.</p>
 <h4 id="pattern-breakdown-1" tabindex="-1"><a class="header-anchor" href="#pattern-breakdown-1"><span>Pattern Breakdown</span></a></h4>
 <p><strong>1. Mathematical Foundation:</strong></p>
-<pre><code class="hljs">If prefix[i] % k == prefix[j] % k  (where j &lt; i)
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">If prefix[i] % k == prefix[j] % k  (where j &lt; i)
 
 Then:
   (prefix[i] - prefix[j]) % k == 0
@@ -1667,24 +1631,24 @@ Which means:
 
 Therefore:
   The subarray [j+1, i] has a sum divisible by k
-</code></pre>
+</code></pre></div>
 <p><strong>2. HashMap Structure:</strong></p>
-<pre data-lang="java"><code class="hljs language-java">Map&lt;Integer, Integer&gt; map = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;();
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java">Map&lt;Integer, Integer&gt; map = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;();
 <span class="hljs-comment">// {remainder: count}  ← Store COUNT, not index (similar to LC 560)</span>
 
 map.put(<span class="hljs-number">0</span>, <span class="hljs-number">1</span>); <span class="hljs-comment">// Initialize for subarrays starting from beginning</span>
-</code></pre>
+</code></pre></div>
 <p><strong>3. Why Store Remainder COUNT (Not Index)?</strong></p>
-<pre><code class="hljs">This is a &quot;count ALL subarrays&quot; problem (like LC 560).
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">This is a &quot;count ALL subarrays&quot; problem (like LC 560).
 
 If remainder 3 appears at indices [2, 5, 8]:
   - When we reach index 5: add 1 (subarray from index 2 to 5)
   - When we reach index 8: add 2 (subarrays from 2→8 and 5→8)
 
 Total: 3 valid subarrays
-</code></pre>
+</code></pre></div>
 <p><strong>4. Critical: Handle Negative Remainders</strong></p>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-type">int</span> <span class="hljs-variable">remainder</span> <span class="hljs-operator">=</span> prefixSum % k;
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-type">int</span> <span class="hljs-variable">remainder</span> <span class="hljs-operator">=</span> prefixSum % k;
 
 <span class="hljs-comment">// MUST adjust negative remainders to positive</span>
 <span class="hljs-keyword">if</span> (remainder &lt; <span class="hljs-number">0</span>) {
@@ -1693,15 +1657,15 @@ Total: 3 valid subarrays
 
 <span class="hljs-comment">// Or use this one-liner:</span>
 remainder = ((prefixSum % k) + k) % k;
-</code></pre>
+</code></pre></div>
 <p><strong>Why?</strong> In Java/Python, <code>-7 % 5 = -2</code>, but we need remainder 3 (since -2 ≡ 3 mod 5).</p>
 <p><strong>5. Initialization: Why map.put(0, 1)?</strong></p>
-<pre><code class="hljs">If prefixSum % k == 0 at some index i:
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">If prefixSum % k == 0 at some index i:
   → The entire subarray [0, i] is divisible by k
   → We need to count this case
 
 Without initialization, we'd miss these subarrays.
-</code></pre>
+</code></pre></div>
 <h4 id="visual-example-1" tabindex="-1"><a class="header-anchor" href="#visual-example-1"><span>Visual Example</span></a></h4>
 <p><strong>Input:</strong> <code>nums = [4, 5, 0, -2, -3, 1]</code>, <code>k = 5</code></p>
 <p><strong>Prefix sums:</strong> <code>[4, 9, 9, 7, 4, 5]</code></p>
@@ -1796,7 +1760,7 @@ Without initialization, we'd miss these subarrays.
 <li><code>[-2,-3]</code> (remainder 4 at indices 2 and 4)</li>
 </ol>
 <h4 id="implementation-template-1" tabindex="-1"><a class="header-anchor" href="#implementation-template-1"><span>Implementation Template</span></a></h4>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java Template</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java Template</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">subarraysDivByK</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums, <span class="hljs-type">int</span> k)</span> {
     <span class="hljs-comment">// Map: {remainder: count}</span>
     Map&lt;Integer, Integer&gt; map = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;();
@@ -1824,8 +1788,8 @@ Without initialization, we'd miss these subarrays.
 
     <span class="hljs-keyword">return</span> count;
 }
-</code></pre>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python Template</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python Template</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">subarraysDivByK</span>(<span class="hljs-params">nums, k</span>):
     <span class="hljs-comment"># Map: {remainder: count}</span>
     remainder_count = {<span class="hljs-number">0</span>: <span class="hljs-number">1</span>}
@@ -1846,11 +1810,11 @@ Without initialization, we'd miss these subarrays.
         remainder_count[remainder] = remainder_count.get(remainder, <span class="hljs-number">0</span>) + <span class="hljs-number">1</span>
 
     <span class="hljs-keyword">return</span> count
-</code></pre>
+</code></pre></div>
 <p><strong>Note:</strong> Python’s <code>%</code> operator always returns positive remainders, so no adjustment needed.</p>
 <h4 id="optimization-array-instead-of-hashmap" tabindex="-1"><a class="header-anchor" href="#optimization-array-instead-of-hashmap"><span>Optimization: Array Instead of HashMap</span></a></h4>
 <p>Since remainders are always in range <code>[0, k-1]</code>, use an array for better performance:</p>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">subarraysDivByK</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums, <span class="hljs-type">int</span> k)</span> {
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">subarraysDivByK</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums, <span class="hljs-type">int</span> k)</span> {
     <span class="hljs-type">int</span>[] remainderCount = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[k];
     remainderCount[<span class="hljs-number">0</span>] = <span class="hljs-number">1</span>;
 
@@ -1867,7 +1831,7 @@ Without initialization, we'd miss these subarrays.
 
     <span class="hljs-keyword">return</span> count;
 }
-</code></pre>
+</code></pre></div>
 <p><strong>Time Complexity:</strong> O(N)
 <strong>Space Complexity:</strong> O(K) instead of O(N)</p>
 <h4 id="key-differences-from-related-problems" tabindex="-1"><a class="header-anchor" href="#key-differences-from-related-problems"><span>Key Differences from Related Problems</span></a></h4>
@@ -1922,15 +1886,15 @@ Without initialization, we'd miss these subarrays.
 <h4 id="critical-why-negative-remainder-handling-matters" tabindex="-1"><a class="header-anchor" href="#critical-why-negative-remainder-handling-matters"><span>Critical: Why Negative Remainder Handling Matters</span></a></h4>
 <p><strong>Example:</strong> <code>nums = [-1, -2, -3]</code>, <code>k = 5</code></p>
 <p>Without adjustment:</p>
-<pre><code class="hljs">prefixSum = -1: remainder = -1 (wrong!)
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">prefixSum = -1: remainder = -1 (wrong!)
 prefixSum = -3: remainder = -3 (wrong!)
 prefixSum = -6: remainder = -1 (wrong!)
-</code></pre>
+</code></pre></div>
 <p>With adjustment:</p>
-<pre><code class="hljs">prefixSum = -1: remainder = 4 (correct: -1 ≡ 4 mod 5)
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">prefixSum = -1: remainder = 4 (correct: -1 ≡ 4 mod 5)
 prefixSum = -3: remainder = 2 (correct: -3 ≡ 2 mod 5)
 prefixSum = -6: remainder = 4 (correct: -6 ≡ 4 mod 5)
-</code></pre>
+</code></pre></div>
 <p>Now remainders 4 match → subarray <code>[-1]</code> and <code>[-2, -3]</code> have the same remainder → subarray <code>[-2, -3]</code> has sum divisible by 5 ✓</p>
 <h4 id="related-problems-same-pattern-1" tabindex="-1"><a class="header-anchor" href="#related-problems-same-pattern-1"><span>Related Problems (Same Pattern)</span></a></h4>
 <ul>
@@ -1947,20 +1911,20 @@ prefixSum = -6: remainder = 4 (correct: -6 ≡ 4 mod 5)
 <h4 id="core-idea" tabindex="-1"><a class="header-anchor" href="#core-idea"><span>Core Idea</span></a></h4>
 <p><strong>Transform:</strong> Replace each element with <code>num % 2</code> (1 if odd, 0 if even).</p>
 <p>Now the problem becomes: <strong>count subarrays whose sum equals k</strong> — exactly LC 560!</p>
-<pre><code class="hljs">map: {oddCount: frequency}
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">map: {oddCount: frequency}
      → &quot;How many times has this odd-count appeared so far?&quot;
 
 At index i with current oddCount:
   → Find how many previous positions had exactly (oddCount - k) odds
   → Those form subarrays with exactly k odds ending at i
-</code></pre>
+</code></pre></div>
 <p><strong>Why <code>map.put(0, 1)</code>?</strong></p>
-<pre><code class="hljs">If oddCount == k at index i:
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">If oddCount == k at index i:
   → Entire subarray [0, i] has exactly k odds
   → oddCount - k = 0, must have {0: 1} pre-initialized
-</code></pre>
+</code></pre></div>
 <h4 id="implementation-template-2" tabindex="-1"><a class="header-anchor" href="#implementation-template-2"><span>Implementation Template</span></a></h4>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java - LC 1248</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java - LC 1248</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">numberOfSubarrays</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums, <span class="hljs-type">int</span> k)</span> {
     <span class="hljs-comment">// map: {oddCount: frequency}</span>
     Map&lt;Integer, Integer&gt; map = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;();
@@ -1980,9 +1944,9 @@ At index i with current oddCount:
 
     <span class="hljs-keyword">return</span> res;
 }
-</code></pre>
+</code></pre></div>
 <h4 id="alternative-sliding-window-atmost-trick" tabindex="-1"><a class="header-anchor" href="#alternative-sliding-window-atmost-trick"><span>Alternative: Sliding Window (atMost trick)</span></a></h4>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Exactly k = atMost(k) - atMost(k-1)</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Exactly k = atMost(k) - atMost(k-1)</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">numberOfSubarrays</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums, <span class="hljs-type">int</span> k)</span> {
     <span class="hljs-keyword">return</span> atMost(nums, k) - atMost(nums, k - <span class="hljs-number">1</span>);
 }
@@ -1999,7 +1963,7 @@ At index i with current oddCount:
     }
     <span class="hljs-keyword">return</span> res;
 }
-</code></pre>
+</code></pre></div>
 <h4 id="key-differences-from-related-problems-1" tabindex="-1"><a class="header-anchor" href="#key-differences-from-related-problems-1"><span>Key Differences from Related Problems</span></a></h4>
 <table>
 <thead>
@@ -2049,7 +2013,7 @@ At index i with current oddCount:
 <ul>
 <li>Similar concept as Contiguous Array (LC 525)</li>
 </ul>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># 523 Continuous Subarray Sum</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># 523 Continuous Subarray Sum</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># IDEA : HASH TABLE</span>
 <span class="hljs-comment"># -&gt; if sum(nums[i:j]) % k == 0 for some i &lt; j, </span>
@@ -2090,9 +2054,9 @@ At index i with current oddCount:
             <span class="hljs-keyword">else</span>:
                 _<span class="hljs-built_in">dict</span>[tmp] = i
         <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
-</code></pre>
+</code></pre></div>
 <h3 id="2-3-group-anagrams" tabindex="-1"><a class="header-anchor" href="#2-3-group-anagrams"><span>2-3) Group Anagrams</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># 049 Group Anagrams</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># 049 Group Anagrams</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># IDEA : HASH TABLE</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
@@ -2105,9 +2069,9 @@ At index i with current oddCount:
             res[k].append(item)  <span class="hljs-comment"># if same, put all the same string into dict k </span>
         <span class="hljs-keyword">return</span> [res[x] <span class="hljs-keyword">for</span> x <span class="hljs-keyword">in</span> res]  <span class="hljs-comment"># output the result </span>
 
-</code></pre>
+</code></pre></div>
 <h3 id="2-3-longest-substring-without-repeating-characters" tabindex="-1"><a class="header-anchor" href="#2-3-longest-substring-without-repeating-characters"><span>2-3) Longest Substring Without Repeating Characters</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 003</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 003</span>
 <span class="hljs-comment"># V0&#x27;</span>
 <span class="hljs-comment"># IDEA : TWO POINTER + SLIDING WINDOW + DICT (NOTE this method !!!!)</span>
 <span class="hljs-comment">#       -&gt; use a hash table (d) record visited &quot;element&quot; (e.g. : a,b,c,...)</span>
@@ -2142,9 +2106,9 @@ At index i with current oddCount:
             d[s[r]] = r
             res = <span class="hljs-built_in">max</span>(res, r -l + <span class="hljs-number">1</span>)
         <span class="hljs-keyword">return</span> res
-</code></pre>
+</code></pre></div>
 <h3 id="2-4-count-primes" tabindex="-1"><a class="header-anchor" href="#2-4-count-primes"><span>2-4) Count Primes</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 204 Count Primes</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 204 Count Primes</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># IDEA : dict</span>
 <span class="hljs-comment"># https://leetcode.com/problems/count-primes/discuss/1343795/python%3A-sieve-of-eretosthenes</span>
@@ -2166,9 +2130,9 @@ At index i with current oddCount:
                 <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(i*i, n, i):
                     nonprimes.add(j)
         <span class="hljs-keyword">return</span> n - <span class="hljs-built_in">len</span>(nonprimes) - <span class="hljs-number">2</span>  <span class="hljs-comment"># remove prime(1), prime(2)</span>
-</code></pre>
+</code></pre></div>
 <h3 id="2-5-valid-sudoku" tabindex="-1"><a class="header-anchor" href="#2-5-valid-sudoku"><span>2-5) Valid Sudoku</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
 <span class="hljs-comment"># LC 036 Valid Sudoku</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
@@ -2209,8 +2173,8 @@ At index i with current oddCount:
                 <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(<span class="hljs-built_in">set</span>(cell)) != <span class="hljs-built_in">len</span>(cell): <span class="hljs-comment"># if not repetition </span>
                     <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
         <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
-</code></pre>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 036 Valid Sudoku</span>
 <span class="hljs-comment">// backtrack</span>
 <span class="hljs-comment">// (algorithm book (labu) p.311)</span>
@@ -2265,9 +2229,9 @@ bollean <span class="hljs-title function_">isValid</span><span class="hljs-param
     }
     <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
 }  
-</code></pre>
+</code></pre></div>
 <h3 id="2-6-pairs-of-songs-with-total-durations-divisible-by-60" tabindex="-1"><a class="header-anchor" href="#2-6-pairs-of-songs-with-total-durations-divisible-by-60"><span>2-6) Pairs of Songs With Total Durations Divisible by 60</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 1010. Pairs of Songs With Total Durations Divisible by 60</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 1010. Pairs of Songs With Total Durations Divisible by 60</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># IDEA : dict</span>
 <span class="hljs-comment"># IDEA : NOTE : we only count &quot;NUMBER OF PAIRS&quot;, instead get all pairs indexes</span>
@@ -2290,9 +2254,9 @@ bollean <span class="hljs-title function_">isValid</span><span class="hljs-param
                 <span class="hljs-comment">### NOTE : here : we plus 1 when an element already exist</span>
                 rem[t] += <span class="hljs-number">1</span>
         <span class="hljs-keyword">return</span> pairs
-</code></pre>
+</code></pre></div>
 <h3 id="2-7-subarray-sum-equals-k" tabindex="-1"><a class="header-anchor" href="#2-7-subarray-sum-equals-k"><span>2-7) Subarray Sum Equals K</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 560 : Subarray Sum Equals K</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 560 : Subarray Sum Equals K</span>
 
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># IDEA : HASH TABLE + sub array sum</span>
@@ -2333,8 +2297,8 @@ bollean <span class="hljs-title function_">isValid</span><span class="hljs-param
             <span class="hljs-keyword">else</span>:
                 d[nums[i]] += <span class="hljs-number">1</span>
         <span class="hljs-keyword">return</span> ans
-</code></pre>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 560 : Subarray Sum Equals K</span>
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 560 : Subarray Sum Equals K</span>
 <span class="hljs-comment">// java</span>
 <span class="hljs-comment">// (algorithm book (labu) p.350)</span>
 <span class="hljs-comment">// V1 : brute force + cum sum</span>
@@ -2387,9 +2351,9 @@ bollean <span class="hljs-title function_">isValid</span><span class="hljs-param
     }
     <span class="hljs-keyword">return</span> ans;
 }
-</code></pre>
+</code></pre></div>
 <h3 id="2-8-k-diff-pairs-in-an-array" tabindex="-1"><a class="header-anchor" href="#2-8-k-diff-pairs-in-an-array"><span>2-8) K-diff Pairs in an Array</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 532 K-diff Pairs in an Array</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 532 K-diff Pairs in an Array</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># IDEA : HASH TABLE</span>
 <span class="hljs-keyword">import</span> collections
@@ -2438,9 +2402,9 @@ bollean <span class="hljs-title function_">isValid</span><span class="hljs-param
                 <span class="hljs-keyword">elif</span> <span class="hljs-built_in">abs</span>(nums[j] - nums[i]) &gt; k:
                     <span class="hljs-keyword">break</span>
         <span class="hljs-keyword">return</span> res
-</code></pre>
+</code></pre></div>
 <h3 id="2-9-sentence-similarity" tabindex="-1"><a class="header-anchor" href="#2-9-sentence-similarity"><span>2-9) Sentence Similarity</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 734. Sentence Similarity</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 734. Sentence Similarity</span>
 <span class="hljs-comment"># V0&#x27;</span>
 <span class="hljs-comment"># https://zxi.mytechroad.com/blog/hashtable/leetcode-734-sentence-similarity/</span>
 <span class="hljs-keyword">import</span> collections
@@ -2484,9 +2448,9 @@ bollean <span class="hljs-title function_">isValid</span><span class="hljs-param
             <span class="hljs-keyword">if</span> sentence1[i] != sentence2[i] <span class="hljs-keyword">and</span> (tmp <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> similarPairs <span class="hljs-keyword">and</span> tmp[::-<span class="hljs-number">1</span>] <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> similarPairs):
                 <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
         <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
-</code></pre>
+</code></pre></div>
 <h3 id="2-10-lru-cache" tabindex="-1"><a class="header-anchor" href="#2-10-lru-cache"><span>2-10) LRU Cache</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 146 LRU Cache</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 146 LRU Cache</span>
 <span class="hljs-comment"># note : there is also array/queue approach</span>
 <span class="hljs-comment"># V1</span>
 <span class="hljs-comment"># IDEA : Ordered dictionary</span>
@@ -2526,9 +2490,9 @@ bollean <span class="hljs-title function_">isValid</span><span class="hljs-param
         <span class="hljs-variable language_">self</span>[key] = value
         <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(<span class="hljs-variable language_">self</span>) &gt; <span class="hljs-variable language_">self</span>.capacity:
             <span class="hljs-variable language_">self</span>.popitem(last = <span class="hljs-literal">False</span>)
-</code></pre>
+</code></pre></div>
 <h3 id="2-11-find-all-anagrams-in-a-string" tabindex="-1"><a class="header-anchor" href="#2-11-find-all-anagrams-in-a-string"><span>2-11) Find All Anagrams in a String</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 438. Find All Anagrams in a String</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 438. Find All Anagrams in a String</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># IDEA : SLIDING WINDOW + collections.Counter()</span>
 <span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
@@ -2547,9 +2511,9 @@ bollean <span class="hljs-title function_">isValid</span><span class="hljs-param
             <span class="hljs-keyword">if</span> cs == cp:
                 ans.append(i - lp + <span class="hljs-number">1</span>)
         <span class="hljs-keyword">return</span> ans
-</code></pre>
+</code></pre></div>
 <h3 id="2-12-brick-wall" tabindex="-1"><a class="header-anchor" href="#2-12-brick-wall"><span>2-12) Brick Wall</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 554. Brick Wall</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 554. Brick Wall</span>
 <span class="hljs-comment"># V0</span>
 <span class="hljs-comment"># IDEA : HASH TABLE + COUNTER UPDATE (looping every element in the list and cumsum and </span>
 <span class="hljs-keyword">import</span> collections
@@ -2567,9 +2531,9 @@ bollean <span class="hljs-title function_">isValid</span><span class="hljs-param
                 _counter.update([cum_sum])
                 count = <span class="hljs-built_in">max</span>(count, _counter[cum_sum])
         <span class="hljs-keyword">return</span> <span class="hljs-built_in">len</span>(wall) - count
-</code></pre>
+</code></pre></div>
 <h3 id="2-13-maximum-size-subarray-sum-equals-k" tabindex="-1"><a class="header-anchor" href="#2-13-maximum-size-subarray-sum-equals-k"><span>2-13) Maximum Size Subarray Sum Equals k</span></a></h3>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 325</span>
     <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">maxSubArrayLen_0_1</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums, <span class="hljs-type">int</span> k)</span> {
         <span class="hljs-comment">// Map to store (prefixSum, index)</span>
@@ -2644,9 +2608,9 @@ bollean <span class="hljs-title function_">isValid</span><span class="hljs-param
 
         <span class="hljs-keyword">return</span> maxSize;
     }
-</code></pre>
+</code></pre></div>
 <h3 id="2-14-smallest-common-region" tabindex="-1"><a class="header-anchor" href="#2-14-smallest-common-region"><span>2-14)  Smallest Common Region</span></a></h3>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 <span class="hljs-comment">// LC 1257</span>
 
 <span class="hljs-comment">// V0-1</span>
@@ -2693,7 +2657,7 @@ bollean <span class="hljs-title function_">isValid</span><span class="hljs-param
 
     <span class="hljs-keyword">return</span> region2;
 }
-</code></pre>
+</code></pre></div>
 <h2 id="problem-classification-table" tabindex="-1"><a class="header-anchor" href="#problem-classification-table"><span>Problem Classification Table</span></a></h2>
 <h3 id="category-1-counting-and-frequency-25-problems" tabindex="-1"><a class="header-anchor" href="#category-1-counting-and-frequency-25-problems"><span>Category 1: Counting and Frequency (25 problems)</span></a></h3>
 <table>
@@ -3390,7 +3354,7 @@ bollean <span class="hljs-title function_">isValid</span><span class="hljs-param
 </table>
 <h2 id="decision-framework" tabindex="-1"><a class="header-anchor" href="#decision-framework"><span>Decision Framework</span></a></h2>
 <h3 id="pattern-selection-flowchart" tabindex="-1"><a class="header-anchor" href="#pattern-selection-flowchart"><span>Pattern Selection Flowchart</span></a></h3>
-<pre><code class="hljs">START: Analyzing Hash Map Problem
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">START: Analyzing Hash Map Problem
                    |
                    v
            Are you counting elements/frequency?
@@ -3425,7 +3389,7 @@ bollean <span class="hljs-title function_">isValid</span><span class="hljs-param
                                                                               v     v
                                                                     [CATEGORY 6:   [OTHER PATTERNS]
                                                                      GRAPH]
-</code></pre>
+</code></pre></div>
 <h3 id="decision-questions" tabindex="-1"><a class="header-anchor" href="#decision-questions"><span>Decision Questions</span></a></h3>
 <ol>
 <li>
@@ -3588,7 +3552,7 @@ bollean <span class="hljs-title function_">isValid</span><span class="hljs-param
 </ol>
 <h3 id="implementation-best-practices" tabindex="-1"><a class="header-anchor" href="#implementation-best-practices"><span>🔧 Implementation Best Practices</span></a></h3>
 <h4 id="python-best-practices" tabindex="-1"><a class="header-anchor" href="#python-best-practices"><span>Python Best Practices</span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># 1. Use defaultdict for cleaner counting code</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># 1. Use defaultdict for cleaner counting code</span>
 <span class="hljs-keyword">from</span> collections <span class="hljs-keyword">import</span> defaultdict
 count = defaultdict(<span class="hljs-built_in">int</span>)  <span class="hljs-comment"># No need for get(key, 0)</span>
 
@@ -3606,9 +3570,9 @@ value = my_dict.get(key, default_value)
 <span class="hljs-comment"># 5. Use enumerate when you need both index and value</span>
 <span class="hljs-keyword">for</span> i, val <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(arr):
     <span class="hljs-comment"># Use both i and val</span>
-</code></pre>
+</code></pre></div>
 <h4 id="java-best-practices" tabindex="-1"><a class="header-anchor" href="#java-best-practices"><span>Java Best Practices</span></a></h4>
-<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// 1. Use getOrDefault to avoid null checks</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// 1. Use getOrDefault to avoid null checks</span>
 map.put(key, map.getOrDefault(key, <span class="hljs-number">0</span>) + <span class="hljs-number">1</span>);
 
 <span class="hljs-comment">// 2. Use containsKey for existence checks</span>
@@ -3619,7 +3583,7 @@ Map&lt;String, Integer&gt; map = <span class="hljs-keyword">new</span> <span cla
 
 <span class="hljs-comment">// 4. Use putIfAbsent for first occurrence</span>
 map.putIfAbsent(key, index);  <span class="hljs-comment">// Only puts if key doesn&#x27;t exist</span>
-</code></pre>
+</code></pre></div>
 <h3 id="common-mistakes-to-avoid" tabindex="-1"><a class="header-anchor" href="#common-mistakes-to-avoid"><span>⚠️ Common Mistakes to Avoid</span></a></h3>
 <ol>
 <li>
@@ -3627,7 +3591,7 @@ map.putIfAbsent(key, index);  <span class="hljs-comment">// Only puts if key doe
 </li>
 <li>
 <p><strong>Index Out of Bounds</strong>:</p>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Wrong: Can cause index errors</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Wrong: Can cause index errors</span>
 <span class="hljs-keyword">if</span> target - nums[i] <span class="hljs-keyword">in</span> seen:
     <span class="hljs-keyword">return</span> [i, seen[target - nums[i]]]
 seen[nums[i]] = i
@@ -3636,11 +3600,11 @@ seen[nums[i]] = i
 <span class="hljs-keyword">if</span> target - nums[i] <span class="hljs-keyword">in</span> seen:
     <span class="hljs-keyword">return</span> [seen[target - nums[i]], i]
 seen[nums[i]] = i
-</code></pre>
+</code></pre></div>
 </li>
 <li>
 <p><strong>Modifying Dict During Iteration</strong>:</p>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Wrong: Can cause runtime errors</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Wrong: Can cause runtime errors</span>
 <span class="hljs-keyword">for</span> key <span class="hljs-keyword">in</span> my_dict:
     <span class="hljs-keyword">if</span> condition:
         <span class="hljs-keyword">del</span> my_dict[key]
@@ -3649,7 +3613,7 @@ seen[nums[i]] = i
 to_delete = [k <span class="hljs-keyword">for</span> k, v <span class="hljs-keyword">in</span> my_dict.items() <span class="hljs-keyword">if</span> condition]
 <span class="hljs-keyword">for</span> k <span class="hljs-keyword">in</span> to_delete:
     <span class="hljs-keyword">del</span> my_dict[k]
-</code></pre>
+</code></pre></div>
 </li>
 <li>
 <p><strong>Ignoring Edge Cases</strong>:</p>
@@ -3671,7 +3635,7 @@ to_delete = [k <span class="hljs-keyword">for</span> k, v <span class="hljs-keyw
 </ol>
 <h3 id="advanced-techniques" tabindex="-1"><a class="header-anchor" href="#advanced-techniques"><span>🏆 Advanced Techniques</span></a></h3>
 <h4 id="1-multiple-hash-maps" tabindex="-1"><a class="header-anchor" href="#1-multiple-hash-maps"><span>1. Multiple Hash Maps</span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Track multiple relationships simultaneously</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Track multiple relationships simultaneously</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">complex_problem</span>(<span class="hljs-params">arr</span>):
     index_map = {}      <span class="hljs-comment"># value -&gt; index</span>
     freq_map = {}       <span class="hljs-comment"># value -&gt; frequency</span>
@@ -3681,9 +3645,9 @@ to_delete = [k <span class="hljs-keyword">for</span> k, v <span class="hljs-keyw
         index_map[val] = i
         freq_map[val] = freq_map.get(val, <span class="hljs-number">0</span>) + <span class="hljs-number">1</span>
         reverse_map[i] = val
-</code></pre>
+</code></pre></div>
 <h4 id="2-hash-map-other-data-structures" tabindex="-1"><a class="header-anchor" href="#2-hash-map-other-data-structures"><span>2. Hash Map + Other Data Structures</span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Hash Map + Priority Queue (Heap)</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Hash Map + Priority Queue (Heap)</span>
 <span class="hljs-keyword">import</span> heapq
 <span class="hljs-keyword">from</span> collections <span class="hljs-keyword">import</span> defaultdict
 
@@ -3701,16 +3665,16 @@ to_delete = [k <span class="hljs-keyword">for</span> k, v <span class="hljs-keyw
     <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(k):
         result.append(heapq.heappop(heap)[<span class="hljs-number">1</span>])
     <span class="hljs-keyword">return</span> result
-</code></pre>
+</code></pre></div>
 <h4 id="3-rolling-hash-for-string-problems" tabindex="-1"><a class="header-anchor" href="#3-rolling-hash-for-string-problems"><span>3. Rolling Hash for String Problems</span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># For substring pattern matching</span>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># For substring pattern matching</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">rolling_hash_example</span>(<span class="hljs-params">s, pattern</span>):
     base, mod = <span class="hljs-number">256</span>, <span class="hljs-number">10</span>**<span class="hljs-number">9</span> + <span class="hljs-number">7</span>
     pattern_hash = <span class="hljs-built_in">sum</span>(<span class="hljs-built_in">ord</span>(c) * <span class="hljs-built_in">pow</span>(base, i, mod) <span class="hljs-keyword">for</span> i, c <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(pattern)) % mod
     
     <span class="hljs-comment"># Slide window and update hash incrementally</span>
     <span class="hljs-comment"># ... implementation details</span>
-</code></pre>
+</code></pre></div>
 <h3 id="performance-optimization" tabindex="-1"><a class="header-anchor" href="#performance-optimization"><span>📈 Performance Optimization</span></a></h3>
 <ol>
 <li><strong>Choose Right Hash Function</strong>: Python’s built-in hash is usually optimal</li>
