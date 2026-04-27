@@ -3108,9 +3108,35 @@ public class Workspace25 {
 
 
     // LC 1099
+    // 9.32 - 43 am
+    // IDEA 1: sort + 2 pointers ???
     public int twoSumLessThanK(int[] nums, int k) {
-        return 0;
+        // edge
+
+        // default: small -> big ???
+        Arrays.sort(nums);
+
+        int l = 0;
+        int r = nums.length - 1;
+
+        int maxVal = -1;
+
+        while (r > l){
+            int cur = nums[l] + nums[r];
+            if(cur < k){
+                maxVal = Math.max(maxVal, cur);
+               // r -= 1;
+                l += 1;
+            }else{
+                //l += 1;.
+                r -= 1;
+            }
+        }
+
+        return maxVal < 0 ? -1 : maxVal;
     }
+
+
 
 
 

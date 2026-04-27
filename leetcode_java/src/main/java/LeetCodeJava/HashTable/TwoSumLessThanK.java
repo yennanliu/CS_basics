@@ -42,6 +42,61 @@ public class TwoSumLessThanK {
 //    public int twoSumLessThanK(int[] nums, int k) {
 //    }
 
+
+    // V0-1
+    // IDEA: Sorting + Two Pointers (GPT)
+    // TODO: validate
+    public int twoSumLessThanK_0_1(int[] nums, int k) {
+        Arrays.sort(nums);
+
+        int l = 0, r = nums.length - 1;
+        int maxVal = -1;
+
+        while (l < r) {
+            int cur = nums[l] + nums[r];
+
+            if (cur < k) {
+                maxVal = Math.max(maxVal, cur);
+                /** NOTE !!! */
+                l++;  // try bigger sum
+            } else {
+                /** NOTE !!! */
+                r--;  // need smaller sum
+            }
+        }
+
+        return maxVal;
+    }
+
+
+    // V0-2
+    // IDEA: Sorting + Two Pointers (GEMINI)
+    // TODO: validate
+    public int twoSumLessThanK_0_2(int[] nums, int k) {
+        // 1. Sort the array to use the two-pointer technique
+        Arrays.sort(nums);
+
+        int l = 0;
+        int r = nums.length - 1;
+        int maxVal = -1; // Standard LeetCode return for "not found"
+
+        while (l < r) {
+            int cur = nums[l] + nums[r];
+
+            if (cur < k) {
+                // If sum is valid, record it and try to find a larger one
+                maxVal = Math.max(maxVal, cur);
+                l++; // Increase sum by moving the left pointer
+            } else {
+                // If sum is too high, decrease it by moving the right pointer
+                r--;
+            }
+        }
+
+        return maxVal;
+    }
+
+
     // V1-1
     // IDEA: Sorting + Binary Search
     // https://leetcode.ca/2018-12-03-1099-Two-Sum-Less-Than-K/
@@ -74,6 +129,7 @@ public class TwoSumLessThanK {
         }
         return l;
     }
+    
 
 
 
