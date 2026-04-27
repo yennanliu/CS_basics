@@ -2941,8 +2941,66 @@ public class Workspace25 {
      *
      *
      */
-    //  IDEA 1) STACK ???? + `ZERO PREFIX` HANDLING
+    // IDEA 1) STACK ???? + `ZERO PREFIX` HANDLING
     public String removeKdigits(String num, int k) {
+        // edge
+        if(num.length() <= k){
+            return "0";
+        }
+
+        Stack<Character> st = new Stack<>();
+
+        // ??
+        for(char ch: num.toCharArray()){
+            while (!st.isEmpty() && st.peek() - ch > 0 && k > 0){
+                st.pop();
+                k -= 1;
+            }
+            //st.add(ch);
+            st.push(ch);
+        }
+
+        // NOTE !!! if k still > 0
+        // stack: FOLO
+        // if k still remains, remove from end
+        while (k > 0 && !st.isEmpty()){
+            st.pop();
+            k -= 1;
+        }
+
+        if(st.isEmpty()){
+            return "0";
+        }
+
+        int firstNonZeroIdx = 0;
+        int idx = 0;
+        
+        StringBuilder sb = new StringBuilder();
+
+        // /? find 1st non zero idx
+        for(int x: st){
+            if(x != '0'){
+                firstNonZeroIdx = idx;
+                //break;
+            }
+            sb.append(x);
+            idx += 1;
+        }
+
+        // ???
+        return sb.substring(firstNonZeroIdx);
+    }
+
+
+
+
+
+
+
+
+
+    //  IDEA 1) STACK ???? + `ZERO PREFIX` HANDLING
+    public String removeKdigits_9999(String num, int k) {
         // edge
         if(num == null){
             return num;
