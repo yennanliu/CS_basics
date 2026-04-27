@@ -40,7 +40,8 @@
 	- matrix.md (OK)
 	- monotonic_queue.md (OK)
 	- monotonic_stack.md (OK)
-	- n_sum.md (TODO: LC examples)
+	- n_sum.md (OK)
+	- palindrome.md (TODO: LC examples)
 
 
 - to review
