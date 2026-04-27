@@ -154,8 +154,10 @@ public class StepsToMakeArrayNonDecreasing {
              *
              */
             // While current element is >= the top of the stack,
-            // it means the current element will "survive" LONGER or
-            // eat the elements that the stack top was supposed to eat.
+            // it means the current element will
+            // 1) "survive" `LONGER` or
+            // 2) eat the elements that the
+            // `stack top` was supposed to `eat`.
             while (!stack.isEmpty() && nums[i] >= nums[stack.peek()]) {
                 currentSteps = Math.max(currentSteps, dp[stack.pop()]);
             }

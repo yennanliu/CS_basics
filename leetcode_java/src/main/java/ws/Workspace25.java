@@ -2730,13 +2730,49 @@ public class Workspace25 {
      *
      *   ---------------
      *
+     *        *
+     *      * ### 🎬 The Setup
+     *      * * **`dp[i]`**: Steps required to remove `nums[i]`.
+     *      * * **`stack`**: Stores indices of elements
+     *      that haven't been "eaten" yet (Monotonic Decreasing).
+     *      * * **`maxSteps`**: Our global answer.
+     *
      *
      */
     // IDEA: MONO STACK + DP ?????
+    // 10.47 - 10.57 ???
+    // IDEA: MONO STACK + DP (gemini)
     public int totalSteps(int[] nums) {
+        // edge
 
-        return 0;
+        int n = nums.length;
+        // dp /??
+        // `dp[i]`**: Steps required to remove `nums[i]`.
+        // for element at idx = i
+        int[] dp = new int[n];
+
+        // ???
+        // Stores indices of elements
+        // that haven't been "eaten"
+        // yet (Monotonic Decreasing).
+        Stack<Integer> st = new Stack<>();
+
+        int maxSteps = 0; // ??
+
+        // ???
+        for(int i = 0; i < nums.length; i++){
+            int cur = nums[i];
+
+        }
+
+
+
+
+        return maxSteps;
     }
+
+
+
 
 
     //  IDEA 2) STACK ???
